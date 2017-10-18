@@ -16,7 +16,6 @@ import ApplozicUserSignUp from './views/Pages/ApplozicUserSignUp'
 import PasswordReset from './views/Pages/PasswordReset/'
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
-import ApplozicUserSignUp from './views/Pages/ApplozicUserSignUp'
 
 // const history = createBrowserHistory();
 
