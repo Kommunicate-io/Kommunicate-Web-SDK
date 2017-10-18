@@ -1,0 +1,56 @@
+
+
+.copy_btn {
+	float:right;
+}
+
+.vis {
+	display:block;
+}
+
+.n-vis {
+	display: none;
+}
+
+.mck-alpha-contact-image {
+	cursor: pointer;
+	float: left;
+	width: 43px;
+	height: 43px;
+	margin-right: 12px;
+	border-radius: 50%;
+	font-size: 25px;
+	text-align: center;
+	line-height: 40px;
+	background-color: #DDA185;
+	color: rgb(250, 195, 215);
+}
+
+.mck-contact-icon {
+	font-weight: bold;
+	vertical-align: middle;
+	height: 43px;
+	line-height: 43px;
+	display: block;
+}
+
+#weekDays-selector input {
+  display: none!important;
+}
+
+#weekDays-selector input[type=checkbox] + label {
+  display: inline-block!important;
+  border-radius: 6px!important;
+  background: #dddddd!important;
+  /*height: 130px!important;*/
+  width: 80px!important;
+  margin-right: 3px!important;
+  line-height: 40px!important;
+  text-align: center!important;
+  cursor: pointer!important;
+}
+
+#weekDays-selector input[type=checkbox]:checked + label {
+  background: #2AD705!important;
+  color: #ffffff!important;
+}

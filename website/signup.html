@@ -1,0 +1,71 @@
+---
+layout:
+---
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="android chat sdk, iOS chat sdk, android messaging sdk, iOS messaging sdk, query chat plugin, javascript chat plugin, real time communication, chat server, mqtt chat server, mqtt android library, mqtt iOS library, open source chat, Download and Integrate SDK, Retain more engaged and satisfied users, Messaging integration in android apps, Messaging SDK for Android and ios, IOS & Android Mobile Chat SDK, mobile and web messaging, IP mssaging, In-App messaging, messaging backend server">
+    <meta name="description" content="Partner with Applozic, a simple and secure 'plug n play' messaging library. Hundreds of companies of all sizes love using Applozic and have increased user engagement by adding a social layer to their mobile/web apps.">
+    <meta name="author" content="">
+    <meta http-equiv=”content-language” content=”en-us”>
+
+    <title>Signup | Kommunicate.io</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet"> {% include headtag.html %}
+    <link rel="stylesheet" href="/assets/resources/css/signup.css" type="text/css">
+
+  </head>
+
+  <body id="page-top">
+
+    {% include_relative /sections/signup-main-section.html %}
+
+    <script type="text/javascript" src="/assets/resources/js/classie.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function($) {
+        var $form_signin_modal = $('#SigninModal'),
+          $forgot_password_modal = $('#ForgotPassworModal'),
+          $forgot_password_link = $('#forgot-password'),
+          $back_to_login_link = $forgot_password_modal.find('.back-to-singin a');
+
+        //show forgot-password form
+        $forgot_password_link.on('click', function(event) {
+          event.preventDefault();
+          forgot_password_selected();
+        });
+
+        //back to login from the forgot-password form
+        $back_to_login_link.on('click', function(event) {
+          event.preventDefault();
+          back_to_login_selected();
+        });
+
+        function back_to_login_selected() {
+          $('#SigninModal').modal("show");
+          $('#ForgotPassworModal').modal("hide");
+        }
+
+        function forgot_password_selected() {
+          $('#SigninModal').modal("hide");
+          $('#ForgotPassworModal').modal("show");
+        }
+
+      });
+    </script>
+
+    <script type="text/javascript">
+    (function(d, m){var s, h, o={appId: "295ab0fb79b2e1c3f3b1eb207b8e2b77a",isAnonymousChat:true,baseUrl:"https://apps-test.applozic.com"};
+    s = document.createElement("script");s.type = "text/javascript";
+    s.async=true;
+    s.src="https://apps-test.applozic.com/kommunicate.app";
+    h=document.getElementsByTagName("head")[0]; h.appendChild(s);
+    window.applozic=m;
+    m._globals=o;})(document, window.kommunicate || {});
+    </script>
+
+  </body>
+
+</html>

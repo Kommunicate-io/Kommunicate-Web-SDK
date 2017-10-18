@@ -1,0 +1,105 @@
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top header-sec-navbar">
+    <div class="container">
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle header-prop" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{site.contextPath}}/">
+                <img src="{{site.staticPath}}/images/applozic_logo.gif" alt="Applozic logo"></a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="menu-home hide">
+                    <a href="{{site.contextPath}}/">Home</a>
+                </li>
+                <li id="menu-dashboard" class="menu-dashboard hide">
+                    <a href="{{site.dashboard}}/admin/dashboard.html">
+                        Dashboard
+                    </a>
+                </li>
+                <li class="menu-features">
+                    <a href="{{site.contextPath}}/messaging-api-features.html">Features</a>
+                </li>
+                <li class="menu-price">
+                    <a href="{{site.contextPath}}/messaging-api-price.html">Pricing</a>
+                </li>
+                <li class="menu-developers hidden-for-small-down">
+                    <a id="menu-docs" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                        RESOURCES <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu menu-left">
+                        <li>
+                            <a rel="dofollow" href="{{site.contextPath}}/docs/" target="_blank" onclick="ga('send','event','ApiLinks','documentation','Header',1,{'nonInteraction': true});">DOCUMENTATION</a>
+                        </li>
+                        <li>
+                            <a rel="dofollow" class='ios-link' href="{{site.contextPath}}/messaging-api-use-cases.html" onclick="ga('send','event','header-dropdown','usecases','Header',1,{'nonInteraction': true});" style="text-transform: none !important;">USE CASES</a>
+                        </li>
+                        <li>
+                            <a rel="dofollow" href="{{site.contextPath}}/customers.html" onclick="ga('send','event','header-dropdown','customerStories','Header',1,{'nonInteraction': true});">CUSTOMER STORIES</a>
+                        </li>
+                        <li>
+                            <a rel="dofollow" href="https://www.applozic.com/blog" target="_blank" onclick="ga('send','event','header-dropdown','Blog','Header',1,{'nonInteraction': true});">BLOG</a>
+                        </li>
+<!--
+                        <li>
+                            <a rel="dofollow" href="https://www.applozic.com/docs/ionic-chat-plugin.html" target="_blank" onclick="ga('send','event','ApiLinks','ionic','Header',1,{'nonInteraction': true});">Ionic Chat SDK</a>
+                        </li>
+                        <li>
+                            <a rel="dofollow" href="https://www.applozic.com/docs/platform-api-chat.html" target="_blank" onclick="ga('send','event','ApiLinks','platform','Header',1,{'nonInteraction': true});">Platform APIs</a>
+                        </li>
+-->
+                    </ul>
+                </li>
+                <li class="menu-documentation visible-for-small-down visible-xs">
+                    <a href="{{site.contextPath}}/docs">documentation</a>
+                </li>
+<!--
+                <li class="menu-customers hidden-sm">
+                    <a href="{{site.contextPath}}/messaging-api-use-cases.html" onclick="ga('send','event','Homepage','UseCase','Header',1,{'nonInteraction': true});">USE CASES</a>
+                </li>
+-->
+<!--
+                <li class="menu-contact">
+                    <a id="menu-cont" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                        Contact <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu menu-left">
+                        <li>
+                            <a href="{{site.contextPath}}/contact.html">Corporate Contact</a>
+                        </li>
+                        <li>
+                            <a href="{{site.contextPath}}/partner.html">Affiliates/Partner</a>
+                        </li>
+                        <li>
+                            <a rel="dofollow" href="http://help.applozic.com/" target='_blank'>FAQs</a>
+                        </li>
+                    </ul>
+                </li>
+-->
+<!--
+                <li class="menu-blog">
+                    <a href="https://www.applozic.com/blog" target="_blank">Blog</a>
+                </li>
+-->
+                <li id="sign-out-btn" class="menu-signout hide">
+                    <a role="menuitem" href="{{site.contextPath}}/signout.page">
+                        Signout
+                    </a>
+                </li>
+                <li class="menu-signin">
+                    <a href="{{site.dashboard}}/signin.html">Signin</a>
+                </li>
+                <li class="menu-signup">
+                    <a class="header-link btn btn-green btn-signup" href="{{site.dashboard}}/signup.html" onclick="ga('send','event','Homepage','SignUp','Header',1,{'nonInteraction': true});">SignUp For Free</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+</nav>

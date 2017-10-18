@@ -1,0 +1,108 @@
+<html>
+<head>
+<title></title>
+<style>
+    .vis {
+     display:block!important;
+     }
+
+    .n-vis {
+     display:none!important;
+     }
+
+     .btn {
+     display: inline-block;
+    padding: 6px 12px;
+    margin-top:20px;
+    margin-left:530px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+     }
+
+    .login {
+     margin-top:200px;
+     height:300px;
+     }
+
+    .form-control {
+    display: block;
+    margin-top:20px;
+    margin-left:35%;
+    width: 25%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+      }
+
+ body{
+            background-image: url("https://s30.postimg.org/g5s65ufo1/OHEAOW0.jpg") !important;
+	        background-size: cover;
+	        background-repeat: none;
+        }
+</style>
+<script>
+ function validateform(){
+ var appId=  document.getElementById("appId").value;
+ var  isAnonymousChat= document.getElementById("isAnonymousChat").value;
+ document.getElementById("chat-submit").innerHTML = "Launching ......";
+logintochat(appId,isAnonymousChat);
+}
+
+function onenter() {
+window.onkeypress = function(event) {
+   if (event.keyCode == 13) {
+    var userId=  document.getElementById("userId").value;
+ var  userName= document.getElementById("userName").value;
+ var  password= document.getElementById("password").value;
+if(userId !=='' && userName !=='' && password !=='') {
+document.getElementById("chat-submit").innerHTML = "Launching ......";
+     validateform();
+   }
+}
+}
+}
+</script>
+</head>
+<script type="text/javascript">
+function logintochat (appId,isAnonymousChat) {
+  (function(d, m){var s, h, o={appId: appId,isAnonymousChat:isAnonymousChat,baseUrl:"https://apps-test.applozic.com",locShare: true};
+s = document.createElement("script");s.type = "text/javascript";
+s.async=true;
+s.src="https://apps-test.applozic.com/kommunicate.app";
+h=document.getElementsByTagName("head")[0]; h.appendChild(s);
+window.applozic=m;
+m._globals=o;})(document, window.kommunicate || {});
+}
+</script>
+<div id="login" class=" login vis">
+<form id="chatform" method="post">
+            <div>
+
+                <input type="text" id="appId" name="appId"  class="form-control"   placeholder="Enter your appId" required>
+            </div>
+            <div >
+
+                <input type="text" id="isAnonymousChat" name="isAnonymousChat"  class="form-control"  placeholder="isAnonymousChat"  required>
+            </div>
+
+                <button id="chat-submit" type="button"  class="btn"onclick="return validateform()"> <strong>LAUNCH PLUGIN</strong> </button>
+        </form>
+</div>
+  </body>
+</html>

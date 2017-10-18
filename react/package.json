@@ -1,0 +1,37 @@
+{
+  "name": "coreui-react",
+  "version": "1.0.0-alpha.6",
+  "private": true,
+  "homepage": ".",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2",
+    "react-scripts": "1.0.6"
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "chart.js": "2.5.0",
+    "history": "^4.6.1",
+    "jstz": "^1.0.11",
+    "moment-timezone": "^0.5.13",
+    "react": "^15.5.4",
+    "react-addons-css-transition-group": "15.5.2",
+    "react-addons-transition-group": "15.5.2",
+    "react-bootstrap": "^0.31.2",
+    "react-chartjs-2": "2.1.0",
+    "react-dom": "15.5.4",
+    "react-dropdown": "^1.2.5",
+    "react-notifications": "^1.4.3",
+    "react-router-dom": "4.1.1",
+    "reactstrap": "4.6.2",
+    "save": "^2.3.1",
+    "validator": "^8.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

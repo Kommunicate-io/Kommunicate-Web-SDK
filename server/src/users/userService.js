@@ -1,0 +1,256 @@
+const routes = require("../routers/routes.js");
+const userModel = require("../models").user;
+const db = require("../models");
+const stringUtils = require("underscore.string");
+const applozicClient = require("../utils/applozicClient");
+const config = require("../../conf/config");
+const registrationService = require("../register/registrationService");
+const bcrypt = require("bcrypt");
+let moment = require('moment-timezone');
+const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
+const KOMMUNICATE_ADMIN_ID =config.getProperties().kommunicateAdminId;
+const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPassword;
+const cacheClient = require("../cache/hazelCacheClient");
+/*
+this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
+*/
+const getUserByName = userName=>{
+  if(stringUtils.isBlank(userName)) {
+    console.log("empty userName received");
+    throw new Error("userName is Empty");
+  }
+  return new Promise((resolve,reject)=>{
+    console.log("fetching data for userName : ",userName);
+    userModel.findOne({where: {userName: userName}}).then(user => {
+      console.log("found data for user : ",user==null?null:user.dataValues);
+        user!==null?resolve(user.dataValues):resolve(null);
+    },err=>{
+      console.log("err",err);
+      return reject(err);
+    }).catch(err=>{
+      console.log("error while fetching data from db : ",err);
+      throw(err);
+    });
+  });
+};
+
+const createUser =user=>{
+  return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
+    return applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,"APPLICATION_WEB_ADMIN").then(applozicUser=>{
+      console.log("created user in applozic db",applozicUser.userName);
+      user.customerId=customer.id;
+      user.apzToken=new Buffer(user.userName+":"+user.password).toString('base64');
+      user.authorization = new Buffer(user.userId+":"+applozicUser.deviceKey).toString('base64');
+      user.accessToken = user.password;
+      user.userKey = applozicUser.userKey;
+      user.password=bcrypt.hashSync(user.password, 10);
+      return userModel.create(user).then(user=>{
+        return user?user.dataValues:null;
+      });
+    }).catch(err=>{
+      console.log("err while creating a user", err);
+      throw err;
+    });
+  });
+};
+function businessHoursInGMT(newValue,timezone) {
+    try{
+    const openTime = moment.tz(newValue.openTime,"HH:mm:ss",timezone);
+    openTime.day(newValue.day);
+    // const inGMT = moment(openTime.toISOString(),"HH:mm:ss");
+    const openingMomentGMT = moment.utc(openTime);
+    newValue.openingDay = openingMomentGMT.format("dddd");
+    newValue.openTime=openingMomentGMT.format("HH:mm:ss");
+
+    const closeTime = moment.tz(newValue.closeTime,"HH:mm:ss",timezone);
+    closeTime.day(newValue.day);
+    const closingMomentGMT = moment.utc(closeTime);
+    newValue.closingDay = closingMomentGMT.format("dddd");
+    newValue.closeTime=closingMomentGMT.format("HH:mm:ss");
+    return newValue;
+    // console.log("opening day : ",inGMT.format("dddd"));
+    // console.log("opening time : ",inGMT.format("HH:mm:ss"));
+  }catch(err) {
+    console.log("error while converting into GMT",err);
+    throw err;
+  }
+}
+
+const updateBusinessHoursOfUser = (userName,applicationId,businessHours,timezone,offHoursMessage)=>{
+    // get the business hours from db and update.
+
+    return db.sequelize.transaction(t=> {
+      return db.BusinessHour.findAll({where: {user_name: userName,application_id: applicationId},transaction: t}).then(result=>{
+        // console.log("got business hours from db ",result);
+        // var updatePromiseArray = createUpdatePromiseArray(c,businessHours);
+        // console.log("got business hours fromdb ", result);
+          return Promise.all(businessHours.map(newValue=>{
+            let isUpdated=false;
+
+            let valuesInGMT = businessHoursInGMT(newValue,timezone);
+              // console.log(" values in gmt :",valuesInGMT);
+            if(result.length>=1) {
+              for(let i=0; i<result.length; i++) {
+                let fields ={};
+                // console.log("old dtata",result[i].dataValues);
+                const oldWorkingDay= result[i].dataValues.day?result[i].dataValues.day.toUpperCase():"";
+                console.log("oldWorkingDay ",oldWorkingDay);
+                console.log("new Openng day ",valuesInGMT.openingDay.toUpperCase());
+                // check if day in local timezone matches
+                if(newValue.day.toUpperCase()===oldWorkingDay) {
+                  console.log("matched for day ",oldWorkingDay);
+                  fields.offHoursMessage=offHoursMessage?offHoursMessage:result[i].dataValues.offHoursMessage;
+                  fields.timezone = timezone?timezone:result[i].dataValues.timezone;
+                  let valueToBeUpdated = Object.assign(result[i].dataValues,valuesInGMT,fields);
+                  delete valueToBeUpdated.id;
+                  console.log("returning from loop");
+                  return updateBusinessHoursInDb(valueToBeUpdated,{userName: userName,applicationId: applicationId,day: result[i].dataValues.day},t);
+                }else if(i===result.length-1&&!isUpdated) {
+              // if we are here, means business hours for new day. persisting in db
+                  var ohMessage = offHoursMessage?offHoursMessage:config.getProperties().defaultOffhoursMessage;
+                  var bHobject = Object.assign(valuesInGMT,{userName: userName,applicationId: applicationId, timezone: timezone,offHoursMessage: ohMessage});
+                  console.log("storing in db: new record for day", bHobject);
+                  return insertBusinessHoursIntoDb(bHobject,t);
+                }
+              }
+            }else{
+              var ohMessage = offHoursMessage?offHoursMessage:config.getProperties().defaultOffhoursMessage;
+              var bHobject = Object.assign(valuesInGMT,{userName: userName,applicationId: applicationId, timezone: timezone,offHoursMessage: ohMessage});
+              console.log("storing in db: no record exists ", bHobject);
+              return insertBusinessHoursIntoDb(bHobject,t);
+            }
+          console.log("out side for loop");
+        }));
+      }).catch(err=>{
+        console.log("error while fetching business hours from db",err);
+        throw err;
+      });
+    });
+    // })
+    // return db.BusinessHour.upsert({"day": "sunday","openTime":"9:00","closeTime":"9:00"},{where:{user_name:"engineering@applozic.com"}});
+};
+
+const updateBusinessHoursInDb=(data,criteria,t)=>{
+  console.log("updating : data",data,"criteria :",criteria );
+  return db.BusinessHour.update(data,{where: criteria,transaction: t});
+};
+const getCustomerInfoByApplicationId = applicationId=>{
+  console.log("getting custome information from applicationId",applicationId);
+  return db.customer.find({where: {applicationId: applicationId}}).then(customer=>{
+    return customer?customer.dataValues:null;
+  });
+};
+
+const insertBusinessHoursIntoDb=(businessHours, transaction)=>{
+  return db.BusinessHour.create(businessHours,{transaction: transaction});
+};
+
+const getByUserNameAndAppId= (userName,appId)=>{
+  if(stringUtils.isBlank(userName)||stringUtils.isBlank(appId)) {
+    console.log("empty userName received");
+    throw new Error("userName or application id is empty");
+  }
+  return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+    if(!customer) {
+      return null;
+    }
+    return userModel.findOne({where: {userName: userName,customerId: customer.id}}).then(user => {
+      console.log("found data for user : ",user==null?null:user.dataValues);
+      return user!==null?user.dataValues:null;
+    });
+  });
+};
+
+const processOffBusinessHours = (message, todaysBusinessHours)=>{
+  const groupId = message.groupId;
+  const applicatioId = message.applicationKey;
+  if(!message || !todaysBusinessHours) {
+    throw new Error("messsage or userBusinessHoursConfig cant be empty");
+  }
+  let metadata = {from: "KOMMUNICATE_AGENT"};
+  return Promise.resolve(applozicClient.sendGroupMessage(groupId,todaysBusinessHours.off_hours_message,todaysBusinessHours.apz_token,todaysBusinessHours.application_id,todaysBusinessHours.user_name,metadata)).then(message=>{
+        if(message.status==200) {
+          console.log("message sent..");
+          return;
+        }
+  }).catch(err=>{
+    throw err;
+  });
+};
+
+const getByUserKey=userKey=>{
+  if(!userKey) {
+    throw new Error("userKey is Empty");
+  }
+  console.log("getting user information for key :",userKey);
+  return Promise.resolve(db.user.findOne({where: {userKey: userKey}}));
+};
+
+const getUserBusinessHoursByUserKey=userKey=>{
+  console.log("getting user's bussiness hours by userKey");
+  return Promise.resolve(db.sequelize.query("SELECT c.application_id,u.*,bh.* FROM users u JOIN business_hours bh ON  u.user_name = bh.user_name JOIN customers c ON u.customer_id = c.id  WHERE u.user_key = :userKey",{replacements: {"userKey": userKey},type: db.sequelize.QueryTypes.SELECT}));
+};
+const getUserBusinessHoursByUserNameAndAppId = (userName,applicationId)=>{
+  console.log("getting user's bussiness hours by userName and appId", userName,applicationId);
+  return Promise.resolve(db.sequelize.query("SELECT c.application_id,u.*,bh.* FROM business_hours bh JOIN customers c ON  bh.application_id = c.application_id AND  bh.application_id= :applicationId AND bh.user_name =:userName JOIN users  u ON u.customer_id =c.id and u.user_name=:userName",{replacements: {"userName": userName,"applicationId": applicationId},type: db.sequelize.QueryTypes.SELECT}));
+};
+
+const getConfigIfCurrentTimeOutOfBusinessHours = userBusinessHours=>{
+  if(!userBusinessHours)return false;
+    const today = moment().format("dddd").toUpperCase();
+    console.log("today ",today);
+    console.log("businessHours",userBusinessHours);
+
+    for(let i=0; i<userBusinessHours.length; i++) {
+      if(userBusinessHours[i].opening_day==today || userBusinessHours[i].closing_day ==today) {
+        const openTime = moment(userBusinessHours[i].open_time,"HH:mm:ss");
+        openTime.day(userBusinessHours[i].opening_day);
+        const closeTime = moment(userBusinessHours[i].close_time,"HH:mm:ss");
+        closeTime.day(userBusinessHours[i].closing_day);
+        let currentTime = moment();
+        if(currentTime.isBefore(openTime) || currentTime.isAfter(closeTime)) {
+          console.log("I am out of business hours. send automated message to user");
+          return userBusinessHours[i];
+        }
+        // console.log("today", today, "currentTime",currentTime,"openTime",openTime,"closeTime",closeTime,"openingDay",openingDay,"closingDay",closingDay);
+      }
+    }
+
+return null;
+};
+
+const isIntervalExceeds= (userBusinessHours) => {
+  const interval = config.getProperties().offBussinessHoursMessageInterval;
+  const key = userBusinessHours[0].user_name+"-"+userBusinessHours[0].application_id;
+  const mapPrifix = config.getEnvId()+"-businessHoursMessageSentMap";
+  return Promise.resolve(cacheClient.getDataFromMap(mapPrifix,key)).then(value=>{
+    return new Date().getTime()>(value+(interval*60*1000));
+  });
+};
+const getAdminUserNameFromGroupInfo = response=>{
+if(!response) {
+  throw new Error("group Info is empty");
+}
+  groupUsers = response.groupUsers;
+  console.log("group users",groupUsers);
+  for(let i= 0; i<Object.keys(groupUsers).length; i++) {
+    if((Object.values(groupUsers)[i]).role ===1) {
+      return (Object.values(groupUsers)[i]).userId;
+      // console.log("groupName",displayName);
+    }
+  }
+  return null;
+};
+
+exports.getUserByName = getUserByName;
+exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
+exports.createUser=createUser;
+exports.getCustomerInfoByApplicationId=getCustomerInfoByApplicationId;
+exports.getByUserNameAndAppId = getByUserNameAndAppId;
+exports.processOffBusinessHours = processOffBusinessHours;
+exports.getByUserKey = getByUserKey;
+exports.getUserBusinessHoursByUserKey=getUserBusinessHoursByUserKey;
+exports.getConfigIfCurrentTimeOutOfBusinessHours=getConfigIfCurrentTimeOutOfBusinessHours;
+exports.isIntervalExceeds= isIntervalExceeds;
+exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
+exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;

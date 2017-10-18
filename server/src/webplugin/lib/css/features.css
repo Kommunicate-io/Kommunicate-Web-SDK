@@ -1,0 +1,248 @@
+#features {
+    padding: 100px 0;
+}
+.feature-title{
+    font-size: 22px;
+}
+.feature-hr{
+    border-color: #00b4d4;
+}
+#features .sec-title{
+    color: #00b4d4;
+}
+.home-section{
+    background: #00B068;
+    padding-bottom: 0px;
+    display: none;
+}
+.home-section h2{
+    font-size: 25px;
+    font-weight: 600;
+    color: #fff;
+}
+.home-section h3{
+    color: #fff;
+}
+.user-chat{
+    background: #fff;
+    padding-top: 100px;
+    padding-bottom: 11px;
+}
+.user-chat h2{
+    font-size: 25px;
+    font-weight: 700;
+    color: #14546F;
+}
+.user-chat h3{
+    font-size: 24px;
+    font-weight: 600;
+    color: #00b010;
+}
+.user-chat img {
+    margin: 30px 0;
+    max-height: 445px;
+}
+.file-type{
+    background: #00B5D4;
+}
+.file-type h2{
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.voice-video, .user-integration{
+    background: #fff;
+    padding-bottom: 0px;
+}
+.voice-video h2{
+    font-size: 25px;
+    font-weight: 700;
+    color: #00b010;
+}
+.voice-video h3{
+    color: #222;
+}
+.sync{
+    background: #F8F8F8;
+}
+.sync h2, .user-integration h2, .typing_indicator h2{
+    font-size: 25px;
+    font-weight: 700;
+    color: #00b010;
+}
+i.fa-apple, i.fa-github {
+    color: #39648e;
+}
+.user-integration{
+    background: #fff;
+}
+.user-integration img {
+    margin-top: 40px;
+    max-height: 445px;
+}
+.ui-customization{
+    background: #333333;
+    padding-bottom: 0px;
+}
+.ui-customization h2{
+    color: #00b4d4;
+    font-size: 25px;
+    font-weight: 700;
+}
+.ui-customization h3{
+    color: #fff;
+}
+.ui-customization img {
+    display: inline-block !important;
+    width: 33%;
+    margin-top: 40px;
+    height: 450px;
+}
+.ui-customization .img-chat-center {
+    margin-left: -15px;
+    box-shadow: 0 0px 8px rgba(0,0,0,0.14),0 0px 14px rgba(0,0,0,0.28);
+    position: inherit;
+}
+.ui-customization .img-chat-right {
+    margin-left: -15px; 
+}
+@media(min-width:200px) and (max-width:300px){
+    #features {
+        padding: 65px 0;
+    }
+    .sec-title {
+        font-size: 27px !important;
+    }
+    h2.fon {
+        font-size: 18px;
+    }
+    h3.lead {
+        font-size: 25px;
+    }
+    .btn-xl {
+        padding: 20px 13px;
+    }
+    .header-prop {
+        right: -10px;
+    }
+}
+@media(min-width:301px) and (max-width:400px){
+    #features {
+        padding: 65px 0;
+    }
+    #mainNav {
+        min-height: 60px;
+    }
+    .sec-title {
+        font-size: 30px !important;
+    }
+    .sumome-share-client-wrapper.sumome-share-client-wrapper-mobile-bottom-bar {
+        height: 40px;
+    }
+    h2.fon {
+        font-size: 17px;
+    }
+}
+@media(min-width:401px) and (max-width:414px){
+    #features {
+        padding: 30px 0;
+    }
+    .img-responsive, .thumbnail a>img, .thumbnail>img {
+        margin: auto;
+    }
+    .image_capture {
+        background-position: -3271px -15px;
+    }
+
+}
+@media(min-width:500px) and (max-width:600px){
+    #features {
+        padding: 65px 0;
+    }
+    .features-icon-capture {
+        width: 250px;
+    }
+    h2.fon {
+        font-size: 24px;
+    }
+}
+@media(min-width:601px) and (max-width:700px){
+    #features {
+        padding: 35px 0;
+    }
+    .container {
+        padding-right: 60px;
+        padding-left: 60px;
+    }
+    .features-icon-text {
+        margin: 0;
+    }
+    .features-icon-capture {
+        width: 240px;
+    }
+}
+@media(min-width:701px) and (max-width:736px){
+    #features {
+        padding: 65px 0;
+    }
+    .container {
+        padding-right: 30px;
+        padding-left: 30px;
+        width: 651px;
+    }
+
+}
+@media(min-width:737px) and (max-width:800px){
+    #features {
+        padding: 65px 0;
+    }
+    .container {
+        padding-right: 10px;
+        padding-left: 10px;
+        width: 651px;
+    }
+    .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+        float: left;
+    }
+    .col-sm-4 {
+        width: 33.33%;
+    }
+    .upcoming {
+        text-align: center;
+        padding-top: 80px;
+    }
+    .top_spacing h3 {
+        margin-top: 65px;
+    }
+    .first_display {
+        float: right;
+        padding-top: 25px;
+    }
+    .user-top {
+        top: 30px;
+    }
+    .voice-video{
+        text-align: center;
+    }
+    .file-top {
+        top: 25px;
+    }
+}
+@media(min-width:1000px) and (max-width:1100px){
+    #features {
+        padding: 65px 0;
+    }
+    .top_spacing h3 {
+        margin-top: 100px;
+    }
+    .container {
+        width: 900px;
+    }
+    .user-top {
+        top: 100px;
+    }
+    .file-top {
+        top: 35px;
+    }
+}

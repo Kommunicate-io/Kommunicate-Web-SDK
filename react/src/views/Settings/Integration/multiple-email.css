@@ -1,0 +1,27 @@
+.multiple-email-container{
+	background-color: #FFF;
+	border: 1px solid #C0C0C0;
+	padding-left: 0;
+}
+
+.single-email-container{
+	display: inline-block;
+	border: 2px solid #C0C0C0;
+	background-color: #20a8d8;
+	color: #FFF;
+	margin: 5px;
+	margin-top: 5px;
+	border-radius: 15px;
+	padding: 5px;
+}
+
+.remove-email {
+	margin-left: 3px;
+	cursor: pointer;
+}
+
+.input-email {
+	border: 0;
+	width: 232px;
+	margin: 5px;
+}

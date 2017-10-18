@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+ .vis {
+     display:block!important;
+     }
+
+    .n-vis {
+     display:none!important;
+     }
+
+     .margin {
+    left-margin: 20px;
+     }
+
+</style>
+</head>
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+     $scope.submit = function() {
+       alert("submit");
+    };
+$scope.onPlatformChange = function() {
+       if($scope.MyData === 'Api.ai'){
+       alert("hi");
+       alert($scope.MyData);
+angular.element( document.querySelector( '#clientToken' ) ).removeClass('ng-hide').addClass('vis');
+angular.element( document.querySelector( '#devToken' ) ).removeClass('ng-hide').addClass('vis');
+    }
+    };
+$scope.configure = function() {
+       alert("hello");
+  angular.element( document.querySelector( '#configure' ) ).removeClass('vis').addClass('n-vis');
+  angular.element( document.querySelector( '#form1' ) ).removeClass('ng-hide').addClass('vis');
+    };
+    
+});
+
+</script>
+<body ng-app ="myApp" ng-controller="formCtrl">
+<button id ="configure" (click)="clicked($event)" class="vis">Configure</button>
+<div #itemId class="n-vis">
+  <form novalidate>
+    BOT
+    <input type="text" ng-model="user.firstName"><br><br>
+    
+     <select id="platform" ng-model="MyData" ng-change="onPlatformChange">
+                                                                      <option selected="" >Platform</option>
+                                                                        <option value="Api.ai" >Api.ai</option>
+                                                                        <option value="Message.ai">Message.ai</option>
+                           
+                                                                  </select>
+                                                                       <br>                  
+   <br>
+
+clientToken
+<input type="text" id="clientToken" ng-model="clientToken" class="ng-hide"><br><br>
+
+devToken
+<input type="text" id="devToken"  ng-model="devToken" class="ng-hide"><br><br>
+
+
+    <button ng-click="submit()">SUBMIT</button>
+    <button ng-click="reset()">RESET</button>
+  </form>
+ 
+</div>
+</body>
+</html>
+

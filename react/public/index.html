@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Kommunicate">
+    <meta name="author" content="Applozic Inc">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tag above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>Kommunicate</title>
+
+    <!-- Icons -->
+    <link href="%PUBLIC_URL%/css/font-awesome.min.css" rel="stylesheet">
+    <link href="%PUBLIC_URL%/css/simple-line-icons.css" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
+    <link href="%PUBLIC_URL%/css/dashboard.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+  <link href="%PUBLIC_URL%/applozic/css/app/fullview/applozic.combined.min.css"
+    rel="stylesheet">
+  <!-- AutoSuggest Plugin CSS -->
+  <link href="%PUBLIC_URL%/applozic/autosuggest/css/jquery.atwho.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/applozic/css/app/fullview/applozic.fullview.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/applozic/code/applozic-style.css" rel="stylesheet">
+
+  <style>
+
+  </style>
+  <!-- Custom JS -->
+  <link rel="stylesheet" href="node_modules/applozic-chat/src/css/app/fullview/applozic.plugin.css">
+
+  <script type="text/javascript">
+    var $original;
+    if (typeof jQuery !== 'undefined') {
+      $original = jQuery.noConflict(true);
+      $ = $original;
+      jQuery = $original;
+    }
+  </script>
+  <script src="%PUBLIC_URL%/applozic/js/jquery.min.js"></script>
+
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/panel.js"></script>
+
+  </head>
+
+  <!-- BODY options, add following classes to body to change options
+
+    // Header options
+    1. '.header-fixed'					- Fixed Header
+
+    // Sidebar options
+    1. '.sidebar-fixed'					- Fixed Sidebar
+    2. '.sidebar-hidden'				- Hidden Sidebar
+    3. '.sidebar-off-canvas'		- Off Canvas Sidebar
+    4. '.sidebar-minimized'			- Minimized Sidebar (Only icons)
+    5. '.sidebar-compact'			  - Compact Sidebar
+
+    // Aside options
+    1. '.aside-menu-fixed'			- Fixed Aside Menu
+    2. '.aside-menu-hidden'			- Hidden Aside Menu
+    3. '.aside-menu-off-canvas'	- Off Canvas Aside Menu
+
+    // Footer options
+    1. 'footer-fixed'						- Fixed footer
+
+  -->
+
+  <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start`.
+      To create a production bundle, use `npm run build`.
+    -->
+
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.plugins.min.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.widget.min.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.emojis.min.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.socket.min.js"></script>
+
+  <!-- JS for location sharing plugin, remove it if location sharing not required -->
+  <script type="text/javascript"
+    src="https://maps.google.com/maps/api/js?key=AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4&libraries=places"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/locationpicker.jquery.min.js"></script>
+
+  <!--JS for auto suggest plugin, use it if auto suggestions required -->
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/autosuggest/js/jquery.caret.min.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/autosuggest/js/jquery.atwho.min.js"></script>
+
+
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/applozic.common.js"></script>
+  <script type="text/javascript"
+    src="%PUBLIC_URL%/applozic/js/app/fullview/applozic.fullview.js"></script>
+  <script type="text/javascript">
+    var oModal = "";
+    if (typeof $original !== 'undefined') {
+      $ = $original;
+      jQuery = $original;
+      if (typeof $.fn.modal === 'function') {
+        oModal = $.fn.modal.noConflict();
+      }
+    } else {
+      $ = $applozic;
+      jQuery = $applozic;
+      if (typeof $applozic.fn.modal === 'function') {
+        oModal = $applozic.fn.modal.noConflict();
+      }
+    }
+  </script>
+
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
+
+
+  </body>
+</html>

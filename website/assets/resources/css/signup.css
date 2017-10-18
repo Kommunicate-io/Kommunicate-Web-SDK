@@ -1,0 +1,351 @@
+
+::selection {
+  background-color: #007fff;
+  color: #ffffff;
+}
+
+::-webkit-validation-bubble {
+  background-color: #ff0000;
+}
+
+html * {
+  font-family: 'Lato', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+.klfssm {
+  width: auto;
+  height: 40px;
+}
+.signup-main-section {
+  padding: 30px 0px;
+  /*background-image: url(/assets/resources/images/gplaypattern.png);
+  background-repeat: repeat;
+  background-attachment: fixed;*/
+  height: 100vh;
+}
+.signup-main-section:after {
+  content: '';
+  background-image: url(/assets/resources/images/gplaypattern.png);
+  background-repeat: repeat;
+  background-attachment: fixed;
+  /*background-color: #fff;*/
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
+.bg-box {
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.25);
+  /*padding: 20px 0px;*/
+  background-color: #fff;
+  width: 50%;
+  margin: 0 auto;
+}
+.kommunicate-logo-full {
+  width: auto;
+  height: 40px;
+}
+.form-column {
+  padding: 20px;
+  width: 100%;
+}
+.whats-new-section {
+  background-color: #000000;
+  padding: 20px 0px;
+}
+.whats-new-section h1 {
+  font-size: 18px;
+  font-style: normal;
+  line-height: 300px;
+}
+.signup-heading {
+  color: #007fff;
+  margin-bottom: 20px;
+}
+
+.btn-blue {
+  display: inline-block;
+  width: 35%;
+  padding: 15px 20px;
+  letter-spacing: 0.015em;
+  font-size: 14px;
+  background-color: #007FFF;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-decoration: none;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+  border-radius: 100px;
+  border: none;;
+}
+
+.btn-blue:hover {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+}
+
+/*Custom Input Fields Starts Here*/
+.input {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	margin: 0em 1em;
+	width: 100%;
+	width: calc(100% - 2em);
+	vertical-align: top;
+}
+
+.input__field {
+	position: relative;
+	display: block;
+	float: right;
+	padding: 0.8em;
+	width: 60%;
+	border: none;
+	border-radius: 0;
+	background: #f0f0f0;
+	color: #aaa;
+	font-weight: bold;
+  font-size: 20px;
+	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+	-webkit-appearance: none; /* for box shadows to show on iOS */
+}
+
+.input__field:focus {
+	outline: none;
+}
+
+.input__label {
+	display: inline-block;
+	float: right;
+	padding: 0 1em;
+	width: 40%;
+	color: #6a7989;
+	font-weight: bold;
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.input__label-content {
+	position: relative;
+	display: block;
+	padding: 1.6em 0;
+	width: 100%;
+}
+
+/* Hoshi */
+.input--hoshi {
+	overflow: hidden;
+}
+
+.input__field--hoshi {
+	margin-top: 1em;
+	padding: 0.85em 0.15em;
+	width: 100%;
+	background: transparent;
+	color: #595F6E;
+}
+
+.input__label--hoshi {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding: 0 0.25em;
+	width: 100%;
+	height: calc(100% - 1em);
+	text-align: left;
+	pointer-events: none;
+}
+
+.input__label-content--hoshi {
+	position: absolute;
+}
+
+.input__label--hoshi:before,
+.input__label--hoshi:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: calc(100% - 10px);
+	border-bottom: 1px solid #B9C1CA;
+}
+
+.input__label--hoshi:after {
+	margin-top: 2px;
+	border-bottom: 4px solid red;
+	-webkit-transform: translate3d(-100%, 0, 0);
+	transform: translate3d(-100%, 0, 0);
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: all 0.3s;
+}
+
+.input__label--hoshi-color-1:after {
+	border-color: #007fff;
+}
+
+.input__label--hoshi-color-2:after {
+	border-color: #007fff;
+}
+
+.input__label--hoshi-color-3:after {
+	border-color: #007fff;
+}
+
+.input__field--hoshi:focus + .input__label--hoshi:after,
+.input--filled .input__label--hoshi:after {
+	-webkit-transform: translate3d(0, 0, 0);
+	transform: translate3d(0, 0, 0);
+}
+
+.input__field--hoshi:focus + .input__label--hoshi .input__label-content--hoshi,
+.input--filled .input__label-content--hoshi {
+	-webkit-animation: anim-1 0.3s both;
+	animation: anim-1 0.3s both;
+}
+
+@-webkit-keyframes anim-1 {
+	50% {
+		opacity: 0;
+		-webkit-transform: translate3d(1em, 0, 0);
+		transform: translate3d(1em, 0, 0);
+	}
+	51% {
+		opacity: 0;
+		-webkit-transform: translate3d(-1em, -40%, 0);
+		transform: translate3d(-1em, -40%, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: translate3d(0, -40%, 0);
+		transform: translate3d(0, -40%, 0);
+	}
+}
+
+@keyframes anim-1 {
+	50% {
+		opacity: 0;
+		-webkit-transform: translate3d(1em, 0, 0);
+		transform: translate3d(1em, 0, 0);
+	}
+	51% {
+		opacity: 0;
+		-webkit-transform: translate3d(-1em, -40%, 0);
+		transform: translate3d(-1em, -40%, 0);
+	}
+	100% {
+		opacity: 1;
+		-webkit-transform: translate3d(0, -40%, 0);
+		transform: translate3d(0, -40%, 0);
+	}
+}
+/*Custom Input Fields Ends Here*/
+
+.signup-btn-group p {
+  display: inline-block;
+  float: right;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 16px 0px;
+  line-height: 11px;
+}
+.signup-btn-group p>a {
+  cursor: pointer;
+  color: #007fff;
+  font-weight: normal;
+}
+.signin-btn-group {
+  text-align: center;
+}
+.signin-btn-group p>a {
+  cursor: pointer;
+  color: #007fff;
+  font-weight: normal;
+}
+.forgot-password {
+  text-align: center;
+}
+
+@media (max-width:500px) {
+  .signin-signup-btn-group p {
+    float: none;
+    display: inherit;
+    text-align: center;
+  }
+  .btn-blue {
+    width: 100%;
+  }
+}
+
+@media (max-width:992px) {
+  .bg-box {
+    width: 100%;
+  }
+}
+
+.kommunicate-logo-full-svg {
+  width: auto;
+  height: 30px;
+}
+.kommunicate-logo-svg-div {
+  text-align: center;
+  /*margin-left: 14px;*/
+  margin-top: 15px;
+}
+.modal-title {
+  font-size: 24px;
+  font-weight: 400;
+  color: #000;
+  margin-top: 15px;
+  /*margin-left: 15px;*/
+  text-align: center;
+}
+.modal-header {
+  border: none;
+}
+.modal-content {
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 3px 7px rgba(0, 0, 0, 0.25);
+}
+
+.back-to-singin {
+  text-align: center;
+}
+.forgot-password-message {
+  padding: 10px 14px 0px 14px;
+  font-size: 16px;
+}
+.modal-forgot-password-content .modal-title {
+  font-weight: 300;
+}
+.modal-forgot-password-content .modal-body {
+  padding-top: 0px;
+}
+.error-message-text {
+  font-size: 16px;
+  color: #A31621;
+}
+.success-message-text {
+  font-size: 16px;
+  color: #8EA604;
+}

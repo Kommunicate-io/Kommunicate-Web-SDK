@@ -57,3 +57,14 @@ typings/
 # dotenv environment variables file
 .env
 
+#repo files
+server/node_modules/*
+react/node_modules/*
+angular/dashboard/node_modules/*
+Storage/.nb-gradle
+Storage/.gradle/
+Storage/build/*
+.DS_Store/*
+.DS_Store
+
+

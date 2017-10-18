@@ -1,0 +1,79 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:fb="http://ogp.me/ns/fb#">
+<head>
+<meta property="og:image" content="http://topioslibraries.com/images/panda-preview.png" />
+<meta property="og:image:width" content="450"/>
+<meta property="og:image:height" content="298"/>
+<meta name="keywords" content="android libraries, android SDK, android SDK tools, open source projects, github projects, android development kit">
+<meta name="description" content="Find the right Android Library specifically handpicked for your specific requirement.">
+<title>kommunicate chat demo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<!-- Custom JS -->
+<link rel="stylesheet" href="/css/applozic.plugin.css">
+<script type="text/javascript">
+var $original;
+if (typeof jQuery !== 'undefined') {
+  $original = jQuery.noConflict(true);
+  $ = $original;
+  jQuery = $original;
+}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/index.js"></script>
+
+<section id="chat" class="chat main-block" style="margin:auto;">
+    <div class="container" style="margin-top:10%;">
+        <div class="row">
+            <div class="form-box col-lg-4 col-md-4 col-xs-10 col-sm-6 col-lg-offset-4 col-md-offset-4 col-sm-offset-3 col-xs-offset-1">
+                <h3 class="sec-head-title text-center mt-25"><a href="https://www.kommunicate.io" style="color:#340f93">Kommunicate Visitor Chat</a></h3>
+                <div class="heading-base-line text-center">
+                    <span class="dot"><i class="fa-x fa fa-circle"></i></span>
+                </div>
+
+                <form id="chat-form" class="ph35" action="javascript:void(0);">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="env-url" name="url" placeholder="Select Environment - prod or test  " value ="prod" required>
+                    </div>
+                    <div class="form-group" >
+                        <input type="text" class="form-control" id="appKey" name="appKey" placeholder="Application key *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="userId" name="userId" placeholder="UserId / Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="form-group" style="display:none">
+                        <input type="text" class="form-control" id="contactNumber" name="contactNumber" placeholder="Contact number">
+                    </div>
+                    <div class="form-group">
+                        <p id="chat-response" class="hide"></p>
+                    </div>
+                    <div class="form-group mb-30">
+                        <button id="chat-submit" type="submit" class="btn btn-green pd-12 w-full span12 center-block" style="background-color:#340f93;"> <strong style="color:white">Launch Chat</strong> </button>
+                    </div>
+                    <br>
+
+                    <h4 class="text-center" style="color: #340f93"><a href="https://www.kommunicate.io" style="color: #340f93">Developed by Applozic Inc</a></h4>
+
+                </form>
+                <div id="chat-post-launch" class="text-center hide">
+                    <button id="chat-launcher" type="button" class="btn btn-success pd-12 w-full applozic-launcher"> <strong>START CHAT</strong> </button>
+                    <div class="section-line">
+                        <h3>or</h3>
+                    </div>
+                    <button id="chat-relauncher" type="button" class="btn btn-primary pd-12 w-full"><strong> RE-LAUNCH PLUGIN </strong></button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</head>
+</html>
