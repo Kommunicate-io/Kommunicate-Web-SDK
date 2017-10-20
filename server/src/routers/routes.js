@@ -31,8 +31,8 @@ exports.chat = chatRouter;
 
 
 const autoSuggestRouter = express.Router();
-const autoSuggestController = require('../autosuggest/autoSuggestController.js');
-exports.autoSuggest = autoSuggestRouter
+const autoSuggestController = require('../autosuggest/autoSuggestController');
+exports.autoSuggest = autoSuggestRouter;
 
 home.get('/',function(req,res){
   console.log("req received at home routes");
