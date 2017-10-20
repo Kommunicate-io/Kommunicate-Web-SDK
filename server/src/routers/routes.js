@@ -31,7 +31,7 @@ exports.chat = chatRouter;
 
 
 const autoSuggestRouter = express.Router();
-const autoSuggestController = require('../autosuggest/autoSuggestController');
+const autoSuggestController = require('../autosuggest/autosuggestController');
 exports.autoSuggest = autoSuggestRouter;
 
 home.get('/',function(req,res){
