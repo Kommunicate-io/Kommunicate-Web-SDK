@@ -14,6 +14,7 @@ var baseurl ={
   default:{
    baseUrl: "https://apps-test.applozic.com",
    kommunicateAPI: "http://localhost:3999"
+   // kommunicateAPI: "https://api-test.kommunicate.io"
   }
 }
 var config = {
@@ -43,7 +44,9 @@ var config = {
       createUser:baseurl.prod.kommunicateAPI+"/users",
       logo:baseurl.prod.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.prod.kommunicateAPI+"/misc/mail"
+      sendMail :baseurl.prod.kommunicateAPI+"/misc/mail",
+      signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
+      autoSuggest :baseurl.prod.kommunicateAPI+"/autoSuggest"
     },
     port:5454
   },
@@ -73,7 +76,9 @@ var config = {
       createUser:baseurl.dashboard.kommunicateAPI+"/users",
       logo:baseurl.dashboard.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail"
+      sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail",
+      signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
+      autoSuggest :baseurl.dashboard.kommunicateAPI+"/autoSuggest"
     },
     port:5454
   },
@@ -103,7 +108,9 @@ var config = {
       createUser:baseurl.test.kommunicateAPI+"/users",
       logo:baseurl.test.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:"https://dashboard-test.kommunicate.io/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.test.kommunicateAPI+"/misc/mail"
+      sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
+      signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
+      autoSuggest :baseurl.test.kommunicateAPI+"/autoSuggest"
     },
     port:5454
 
@@ -136,7 +143,8 @@ var config = {
       createUser:baseurl.default.kommunicateAPI+"/users",
       logo:baseurl.default.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:baseurl.default.kommunicateAPI+"/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.default.kommunicateAPI+"/misc/mail"
+      sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
+      autoSuggest :baseurl.default.kommunicateAPI+"/autoSuggest"
     },
     port:5454
   }
