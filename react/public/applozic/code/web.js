@@ -12,7 +12,6 @@ $(document).ready(function() {
 });
 
 var autoSuggestions = {};
-getSuggestions();
 
 function initAutoSuggestions() {
 
@@ -24,7 +23,7 @@ function initAutoSuggestions() {
       data: autoSuggestions[autoSuggest]
     })  
   }
-
+  
 }
 
 
@@ -145,9 +144,9 @@ function clearbit(email) {
 
 }
 
-function getSuggestions() {
+function getSuggestions(_urlAutoSuggest) {
 
-  fetch('http://localhost:3999/autoSuggest')
+  fetch(_urlAutoSuggest)
     .then(res => res.json())
     .then(response => {
       autoSuggestions_data = response.data;
@@ -163,6 +162,7 @@ function getSuggestions() {
         return prev;
       }, {});
       let categories = Object.keys(autoSuggestions);
+      initAutoSuggestions()
     })
     .catch(err => {console.log("Error in getting auto suggestions")});
 }
