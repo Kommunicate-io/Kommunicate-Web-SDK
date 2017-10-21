@@ -14,4 +14,8 @@ const getAllSuggestions = () => {
 
 }
 
+const createSuggestion = () => {
+	
+}
+
 exports.getAllSuggestions = getAllSuggestions
