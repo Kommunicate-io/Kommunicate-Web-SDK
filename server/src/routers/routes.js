@@ -32,6 +32,7 @@ exports.chat = chatRouter;
 
 const autoSuggestRouter = express.Router();
 const autoSuggestController = require('../autosuggest/autosuggestController');
+const autoSuggestValidation = require('../autosuggest/validation');
 exports.autoSuggest = autoSuggestRouter;
 
 home.get('/',function(req,res){
@@ -60,4 +61,5 @@ miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);
 autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
+autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion),autoSuggestController.createSuggestion);
 chatRouter.get('/visitor',chatController.visitorChat);
