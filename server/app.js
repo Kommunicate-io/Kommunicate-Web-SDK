@@ -46,8 +46,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //static patchCustomerapp.use('/css', express.static("css"));
-app.use('/plugin', express.static("src/webplugin"));
-app.use('/plugin/sidebox', express.static("src/webplugin"));
+app.use('/plugin', express.static(path.join(__dirname,"src/webplugin")));
+app.use('/plugin/sidebox', express.static(path.join(__dirname,"src/webplugin")));
 
 app.use('/img', express.static("img"));
 app.use('/chat/js',express.static("src/chat-demo"));

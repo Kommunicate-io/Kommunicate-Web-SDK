@@ -32,6 +32,9 @@ var MCK_CLIENT_GROUP_MAP = [];
         maxGroupSize: 100,
         authenticationTypeId: 0,
         isAnonymousChat:true,
+        groupName:"Kommunicate",
+        agentId:"",
+        agentName:"",
         labels: {
             'conversations.title': 'Conversations',
             'start.new': 'Start New',
@@ -237,6 +240,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'getConversation':
                         return oInstance.getConversation(params);
                         break;
+                    case 'loadConversationWithAgent':
+                        return oInstance.loadConversationWithAgent(params);
+                        break;
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -419,6 +425,9 @@ var MCK_CLIENT_GROUP_MAP = [];
         var ringToneService;
         var mckVideoCallringTone = null;
         var IS_ANONYMOUS_CHAT= appOptions.isAnonymousChat;
+        var DEFAULT_GROUP_NAME=appOptions.groupName;
+        var DEFAULT_AGENT_ID= appOptions.agentId;
+        var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
         _this.events = {
             'onConnectFailed': function() {},
@@ -439,6 +448,15 @@ var MCK_CLIENT_GROUP_MAP = [];
             'onUserActivated': function() {},
             'onUserDeactivated': function() {}
         };
+        _this.loadConversationWithAgent = function(params){
+
+            if(params&&params.agentId){
+                console.log("settingdefault agent inside Applozic");
+            mckMessageService.loadConversationWithAgents(params);
+            }else{
+                throw new Error("params are empty");
+            }
+        }
         var mckInitializeChannel = new MckInitializeChannel(_this);
         _this.getOptions = function() {
             return appOptions;
@@ -1689,6 +1707,70 @@ var MCK_CLIENT_GROUP_MAP = [];
              var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
+            _this.loadConversationWithAgents = function(params) {
+              if (window.applozic.PRODUCT_ID == "kommunicate") {
+                $mck_btn_leave_group
+                  .removeClass("vis")
+                  .addClass("n-vis");
+                $(".mck-conversation-tab-link")
+                  .removeClass("vis")
+                  .addClass("n-vis");
+              }
+              var formData = "type=" + 10 + "&startIndex=" + 0 + "&limit=" + 10;
+              $applozic.ajax({
+                url: MCK_BASE_URL + "/rest/ws/group/bytype",
+                type: "get",
+                data: formData,
+                contentType: "application/json",
+                success: function(result) {
+                  if (result.response.length > 0) {
+                    var groupid = result.response[0].id;
+                    $applozic.fn.applozic("loadGroupTab", groupid);
+                  } else {
+                    $applozic.fn.applozic("createGroup", {
+                      groupName: params.groupName,
+                      type: 10,
+                      admin: params.agentId,
+                      users: [
+                        {
+                          userId: "bot",
+                          displayName: "Bot",
+                          groupRole: 2,
+                          roleName: "APPLICATION_WEB_ADMIN"
+                        },
+                        {
+                          userId: params.agentId,
+                          displayName:params.agentName || params.agentId,
+                          groupRole: 1,
+                          roleName: "APPLICATION_WEB_ADMIN"
+                        }
+                      ],
+                      metadata: {
+                        CREATE_GROUP_MESSAGE: "",
+                        REMOVE_MEMBER_MESSAGE:
+                          ":adminName removed :userName",
+                        ADD_MEMBER_MESSAGE:
+                          ":adminName added :userName",
+                        JOIN_MEMBER_MESSAGE: ":userName joined",
+                        GROUP_NAME_CHANGE_MESSAGE:
+                          "Group name changed to :groupName",
+                        GROUP_ICON_CHANGE_MESSAGE:
+                          "Group icon changed",
+                        GROUP_LEFT_MESSAGE: ":userName left",
+                        DELETED_GROUP_MESSAGE:
+                          ":adminName deleted group",
+                        GROUP_USER_ROLE_UPDATED_MESSAGE:
+                          ":userName is :role now",
+                        GROUP_META_DATA_UPDATED_MESSAGE: "",
+                        ALERT: "false",
+                        HIDE: "true"
+                      },
+                      callback: function(response) {}
+                    });
+                  }
+                }
+              });
+            };
             _this.timer = function() {
                 var totalSeconds = 0;
                 var that = this;
@@ -1901,7 +1983,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                     	$applozic("#km-chatLoginModal").removeClass('n-vis').addClass('vis');
                     	$applozic("#km-chatLoginModal").css("display", "block");
                     	}else{
-                    		loadChat();
+                            mckMessageService.loadConversationWithAgents(
+                                {
+                                    groupName:DEFAULT_GROUP_NAME,
+                                    agentId:DEFAULT_AGENT_ID
+                                });
                     	}
                     }else{
                     var $this = $applozic(this);
@@ -6337,55 +6423,57 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.getGroupDisplayName = function(groupId) {
-                if (typeof MCK_GROUP_MAP[groupId] === 'object') {
-                    var group = MCK_GROUP_MAP[groupId];
-                    var displayName = group['displayName'];
-                   if(typeof group !== 'undefined' && group.type === 10){
-                    var userIdArray = [];
+              if (typeof MCK_GROUP_MAP[groupId] === "object") {
+                var group = MCK_GROUP_MAP[groupId];
+                var displayName = group["displayName"];
+              /*  if (typeof group !== "undefined" && group.type === 10) {
+                  var userIdArray = [];
 
-                   if (group.members.length > 0) {
-                  for (var i = 0; i < group.members.length; i++) {
-                     userIdArray.push(group.members[i]);
-                } }
-                    if(group.users[MCK_USER_ID].role === 0 ||group.users[MCK_USER_ID].role === 3) {
-
-                    displayName = "Kommunicate";
-                       } else {
-                  var contact ;
-                 for (var i = 0; i < userIdArray.length; i++) {
-                   var userId= userIdArray[i];
-                    if(group.users[userId].role === 3) {
-                     contact = userId;
-                       }
+                  if (group.members.length > 0) {
+                    for (var i = 0; i < group.members.length; i++) {
+                      userIdArray.push(group.members[i]);
+                    }
                   }
-                  displayName = mckMessageLayout.getTabDisplayName(contact, false);
+                  if (group.users[MCK_USER_ID].role === 0 || group.users[MCK_USER_ID].role === 3) {
+                    displayName = "Kommunicate";
+                  } else {
+                    var contact;
+                    for (var i = 0; i < userIdArray.length; i++) {
+                      var userId = userIdArray[i];
+                      if (group.users[userId].role === 3) {
+                        contact = userId;
+                      }
+                    }
+                    displayName = mckMessageLayout.getTabDisplayName(contact, false);
+                  }
+                }*/
+                if (group.type === 7) {
+                  var contact = mckMessageLayout.getContactFromGroupOfTwo(group);
+                  if (typeof contact !== "undefined") {
+                    displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
+                  }
                 }
-}
-                       if (group.type === 7) {
-                        var contact = mckMessageLayout.getContactFromGroupOfTwo(group);
-                        if (typeof contact !== 'undefined') {
-                            displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
-                        }
+                if (group.type === 3) {
+                  if (displayName.indexOf(MCK_USER_ID) !== -1) {
+                    displayName = displayName
+                      .replace(MCK_USER_ID, "")
+                      .replace(":", "");
+                    if (typeof MCK_GETUSERNAME === "function") {
+                      var name = MCK_GETUSERNAME(displayName);
+                      displayName = name ? name : displayName;
                     }
-                    if (group.type === 3) {
-                        if (displayName.indexOf(MCK_USER_ID) !== -1) {
-                            displayName = displayName.replace(MCK_USER_ID, '').replace(":", '');
-                            if (typeof(MCK_GETUSERNAME) === "function") {
-                                var name = (MCK_GETUSERNAME(displayName));
-                                displayName = (name) ? name : displayName;
-                            }
-                        }
-                    }
-                    if (!displayName && group.type === 5) {
-                        displayName = 'Broadcast';
-                    }
-                    if (!displayName) {
-                        displayName = group.contactId;
-                    }
-                    return displayName;
-                } else {
-                    return groupId;
+                  }
                 }
+                if (!displayName && group.type === 5) {
+                  displayName = "Broadcast";
+                }
+                if (!displayName) {
+                  displayName = group.contactId;
+                }
+                return displayName;
+              } else {
+                return groupId;
+              }
             };
             _this.getGroupImage = function(imageSrc) {
                 return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + MCK_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';

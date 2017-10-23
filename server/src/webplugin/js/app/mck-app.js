@@ -10,6 +10,7 @@ if (typeof jQuery !== 'undefined') {
         jQuery.fn.modal = oModal;
     }
 }
+
 var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
 function ApplozicSidebox() {
@@ -45,7 +46,10 @@ function ApplozicSidebox() {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
-    }];
+    },{
+        "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate.js"
+}
+];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];

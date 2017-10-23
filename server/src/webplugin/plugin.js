@@ -1,4 +1,4 @@
-window.applozic = window.applozic || {};
+window.applozic = window.kommunicate || {};
 //var MCK_CONTEXTPATH = "${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${contextPath}";
 //var MCK_STATICPATH = "${pluginStaticPath}";
 var MCK_CONTEXTPATH = ":MCK_CONTEXTPATH";
@@ -8,6 +8,7 @@ var MCK_ONINIT = "";
 window.applozic.PRODUCT_ID =":PRODUCT_ID";
 // $.getScript(MCK_STATICPATH + '/sidebox/js/app/mck-app.js');
 var options = applozic._globals;
+options.isAnonymousChat =options.isAnonymousChat||true;
 if (typeof options !== 'undefined') {
   MCK_ONINIT = options.onInit;
 }

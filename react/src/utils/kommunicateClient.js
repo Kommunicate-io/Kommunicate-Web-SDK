@@ -131,7 +131,8 @@ const callSendEmailAPI = (options) => {
       "from":localStorage.getItem('name') || localStorage.getItem('loggedinUser') +"<"+localStorage.getItem('loggedinUser')+">",
       "kommunicateScript":getJsCode(),
       "applicationId":localStorage.getItem('applicationId'),
-      "adminName":localStorage.getItem('name') || localStorage.getItem('loggedinUser')
+      "adminName":localStorage.getItem('name') || localStorage.getItem('loggedinUser'),
+      "adminId": localStorage.getItem('loggedinUser')
 
     }
   }))
