@@ -84,7 +84,9 @@ class Step1 extends Component {
     if(this.props.location && this.props.location.pathname ==="/installation"){
       const search = this.props.location.search;
       const params = new URLSearchParams(this.props.location.search);
-       localStorage.setItem("applicationId",params.get('applicationId')||null);
+       localStorage.setItem("applicationId",params.get('applicationId')||"your _application_id");
+       localStorage.setItem("agentId",params.get('agentId')||"default_agent_id");
+       localStorage.setItem("agentName",params.get('agentName')||"agent_display_name");
       this.state.hideShowInputEmail = true;
       this.state.hideNextBtn=true;
       

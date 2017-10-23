@@ -7,6 +7,9 @@ const getJsCode = () => {
   let options  = {};
   options.appId =localStorage.getItem("applicationId");
   options.isAnonymousChat=true;
+  options.groupName="Kommunicate_support";
+  options.agentId =localStorage.getItem("loggedinUser");
+  options.agentName = localStorage.getItem("name");
   var env = getEnvironmentId();
   
   if(env=="test"||env=="development"){
@@ -23,7 +26,7 @@ const getJsCode = () => {
       s.src = "${getConfig().kommunicateApi.pluginUrl}";
       let h = document.getElementsByTagName("head")[0];
       h.appendChild(s);
-      window.applozic = m;
+      window.kommunicate = m;
       m._globals = o;
     })(document, window.kommunicate || {});
 </script>`
@@ -31,7 +34,7 @@ const getJsCode = () => {
 }
 
 const getJsInstructions = () => {
-  return `Insert the following code in your web application to install Kommunicate. It can go in the <head/> or <body/>.`
+  return `Insert the following code in your web application to install Kommunicate. You can change groupName, agentId and agentName.   It can go in the <head/> or <body/>.`
 }
 
 /* TODO : move Invite Email Template into file and replace fields dynamically.

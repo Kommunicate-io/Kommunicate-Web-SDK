@@ -22,10 +22,10 @@ exports.createCustomer = customer=>{
   return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID,KOMMUNICATE_ADMIN_PASSWORD,"km-"+customer.userName+"-"+Math.floor(new Date().valueOf() * Math.random()))).then(application=>{
     console.log("successfully created ApplicationId: ",application.applicationId," creating applozic client");
 
-    return Promise.all([applozicClient.createApplozicClient(customer.userName,customer.password,application.applicationId,null,"APPLICATION_ADMIN"),
-                   applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),
+    return Promise.all([applozicClient.createApplozicClient(customer.userName,customer.password,application.applicationId,null,"APPLICATION_WEB_ADMIN"),
+                   /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
                    applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"APPLICATION_WEB_ADMIN"),
-    ]).then(([applozicCustomer,agent,bot])=>{
+    ]).then(([applozicCustomer,/*agent,*/bot])=>{
       customer.apzToken = new Buffer(customer.userName+":"+customer.password).toString('base64');
       let user = getUserObject(customer,applozicCustomer,application);
       customer.password= bcrypt.hashSync(customer.password, 10);
@@ -34,7 +34,7 @@ exports.createCustomer = customer=>{
       return customerModel.create(customer).then(customer=>{
         console.log("persited in db",customer?customer.dataValues:null);
         user.customerId=customer?customer.dataValues.id:null;
-        let agentobj= getFromApplozicUser(agent,customer,USER_TYPE.ADMIN);
+        //let agentobj= getFromApplozicUser(agent,customer,USER_TYPE.ADMIN);
         let botObj = getFromApplozicUser(bot,customer,USER_TYPE.BOT);
         // update bot plateform
         Promise.resolve(botPlatformClient.createBot({
@@ -51,9 +51,9 @@ exports.createCustomer = customer=>{
         }).catch(err=>{
           console.log("err while updating bot plateform..",err);
         });
-        return userModel.bulkCreate([user,agentobj,botObj]).spread((user,agent,bot)=>{
+        return userModel.bulkCreate([user,/*agentobj,*/botObj]).spread((user,/*agent,*/bot)=>{
           console.log("user created",user?user.dataValues:null);
-          console.log("created agent",agent.dataValues);
+         // console.log("created agent",agent.dataValues);
           console.log("created bot ",bot.dataValues);
           return getResponse(user.dataValues,application);
         });

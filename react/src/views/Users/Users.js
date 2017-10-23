@@ -17,7 +17,9 @@ class Users extends Component {
     var _this = this;
     window.$applozic.fn.applozic("fetchContacts", {'callback': function(response) {
         console.log(response);
+        if(response&&response.response){
         _this.setState({result: response.response.users});
+        }
       }
     });
   }

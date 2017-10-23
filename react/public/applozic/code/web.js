@@ -66,17 +66,17 @@ function initAutoSuggestions() {
         window.Aside.loadAgents();
       }
     }
-    var loginId =localStorage.isAdmin=="true"?"agent":userId;
-    var uPassword = localStorage.isAdmin=="true"?"agent":userPassword;
+    //var loginId =localStorage.isAdmin=="true"?"agent":userId;
+    //var uPassword = localStorage.isAdmin=="true"?"agent":userPassword;
     $applozic.fn.applozic({
       baseUrl: applozicBaseUrl,
       notificationIconLink:
           'https://www.applozic.com/resources/images/applozic_icon.png',
-      userId: loginId,
+      userId: userId,
       appId: appId,
       //appId: 'applozic-sample-app',
       // email:'userEmail',
-      accessToken: uPassword,
+      accessToken: userPassword,
       desktopNotification: true,
       swNotification: true,
       olStatus: true,

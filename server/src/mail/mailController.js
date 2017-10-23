@@ -18,7 +18,7 @@ exports.sendMail =(req,res)=>{
         if(!html){
             switch(options.templateName){
                 case "SEND_KOMMUNICATE_SCRIPT":
-                let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+req.body.applicationId;
+                let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+req.body.applicationId+"&agentId="+options.adminId+"&agentName="+options.adminName;
                 templatePath = path.join(__dirname,"/emailInstructionTemplate.html");
                 templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
                 templateReplacement[":adminName"] =options.from;
