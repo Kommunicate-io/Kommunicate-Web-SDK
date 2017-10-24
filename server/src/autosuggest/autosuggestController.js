@@ -13,3 +13,20 @@ exports.getAllSuggestions = (req, res) => {
 		.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 }
 
+exports.createSuggestion = (req, res) => {
+
+	console.log('Request received ', req.body);
+
+	const suggestion = {
+		category: req.body.category,
+		name:req.body.content,
+		content: req.body.content
+	}
+
+	autosuggestService.createSuggestion()
+		.then(response => {console.log(response)
+			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
+		})
+		.catch(err => {console.log(err)})
+}
+

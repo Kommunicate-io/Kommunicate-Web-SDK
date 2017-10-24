@@ -8,6 +8,7 @@ import Dropdown from 'react-dropdown';
 import {SplitButton, MenuItem} from 'react-bootstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
+import AutoSuggest from './AutoSuggest'
 
 //using moment-timezone to get a list of all the timezones...
 import moment from 'moment-timezone';
@@ -15,7 +16,7 @@ import moment from 'moment-timezone';
 //using jstz to get client timezone...
 import jstz from 'jstz';
 
-import {postAutoReply} from '../../utils/kommunicateClient' 
+import {postAutoReply} from '../../utils/kommunicateClient'
 
 class Autoreply extends Component {
 
@@ -200,6 +201,14 @@ class Autoreply extends Component {
                   WELCOME MESSAGE
                 </NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink
+                  className={classnames({ active: this.state.activeTab === '3' })}
+                  onClick={() => { this.toggle('3'); }}
+                >
+                  AUTO SUGGEST
+                </NavLink>
+              </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="1">
@@ -280,13 +289,16 @@ class Autoreply extends Component {
                     <div className="col-sm-12 col-md-12">
                       <div className="card">
                         <div className="card-header">
-                        <div className="card-block">
-                        </div>
+                          <div className="card-block">
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </TabPane>
+              <TabPane tabId="3">
+                <AutoSuggest />
               </TabPane>
             </TabContent>
           </div>
