@@ -34,7 +34,8 @@ class SetUpPage extends Component {
   		<div className="app">
 	  		<header className="app-header navbar">
         		<button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
-        			<a className="navbar-brand" href="https://www.kommunicate.io"></a>
+				<a href ="https://www.kommunicate.io" target="_blank" className = "a-undecorated"> <img src="/img/km-logo.png" height="50" width="33"></img>
+        		<span className= "brand-name">KOMMUNICATE</span></a>
         	</header>
   			<div className="row justify-content-center">
 	        	<div className="col-md-11 card">
