@@ -57,7 +57,7 @@ class ApplozicUserSignUp extends Component {
     const data = {
       userId: this.state.userName,
       password: this.state.password,
-      roleName:'APPLICATION_ADMIN'
+      roleName:'APPLICATION_WEB_ADMIN'
     }
   
     const args = {

@@ -34,7 +34,7 @@ var config = {
       statsUrl:baseurl.prod.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
       autoreplyUrl:'https://api.kommunicate.io/users/',
       getTimeZoneUrl:'https://api.kommunicate.io/misc/tz',
-      createApplozicUser: 'https://apps.applozic.com/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.prod.baseUrl+"/rest/ws/user/v2/create"
     },kommunicateApi:{
       login:baseurl.prod.kommunicateAPI+"/login",
       signup:baseurl.prod.kommunicateAPI+"/customers",
@@ -66,7 +66,7 @@ var config = {
       statsUrl:baseurl.dashboard.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
       autoreplyUrl:'http://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'http://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: 'https://apps.applozic.com/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.dashboard.baseUrl+'/rest/ws/user/v2/create'
     },kommunicateApi:{
       login:"https://api.kommunicate.io/login",
       signup:"https://api.kommunicate.io/customers",
@@ -98,7 +98,7 @@ var config = {
       devUrl:baseurl.test.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'https://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: 'https://apps.applozic.com/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.test.baseUrl+'/rest/ws/user/v2/create'
     },kommunicateApi:{
       login:"https://api-test.kommunicate.io/login",
       signup:"https://api-test.kommunicate.io/customers",
@@ -131,7 +131,7 @@ var config = {
       devUrl:baseurl.default.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'https://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: 'https://apps.applozic.com/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/v2/create'
     },
     kommunicateApi:{
       login:baseurl.default.kommunicateAPI+"/login",
