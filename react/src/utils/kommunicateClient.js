@@ -224,4 +224,44 @@ const checkUserInApplozic = ({header, data}) => {
       return response;
     })
 }
-export {createCustomer, getCustomerInfo,getUserInfo,saveToLocalStorage, patchCustomerInfo,notifyThatEmailIsSent, callSendEmailAPI, postAutoReply,createCustomerOrAgent,updatePassword,resetPassword, checkUserInApplozic}
+
+const getAllSuggestions = () => {
+
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest
+
+  return Promise.resolve(axios.get(autoSuggestUrl))
+    .then(response => response.data.data)
+    .then(autoSuggestions_data => {
+      const autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
+        prev.push({category:curr.category, name:curr.name, content:curr.content})
+        return prev;
+      }, [])
+      return autoSuggestions
+    })
+    .catch(err => {console.log("Error in getting auto suggestions")});
+}
+
+const createSuggestions = (suggestion) => {
+
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest
+
+  return Promise.resolve(axios.post(autoSuggestUrl, suggestion))
+    .then(response => {console.log(response)})
+}
+
+export {
+  createCustomer,
+  getCustomerInfo,
+  getUserInfo,
+  saveToLocalStorage,
+  patchCustomerInfo,
+  notifyThatEmailIsSent,
+  callSendEmailAPI,
+  postAutoReply,
+  createCustomerOrAgent,
+  updatePassword,
+  resetPassword,
+  checkUserInApplozic,
+  getAllSuggestions,
+  createSuggestions
+}
