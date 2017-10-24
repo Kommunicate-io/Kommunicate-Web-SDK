@@ -6,6 +6,11 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
+    userName: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      field: 'user_name'
+    },
     category: {
       type: DataTypes.STRING(50),
       allowNull: false,

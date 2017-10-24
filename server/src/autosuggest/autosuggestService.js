@@ -12,9 +12,21 @@ const getAllSuggestions = () => {
 		.catch(err => err);
 }
 
+const getSuggestionsByUser = (userName) => {
+	return autoSuggestModel.findAll({
+		where: {
+			userName: userName
+		}})
+		.then(suggestions => {
+			return suggestions
+		})
+		.catch(err => err);
+}
+
 const createSuggestion = (suggestion) => {
 	return autoSuggestModel.create(suggestion)
 }
 
 exports.getAllSuggestions = getAllSuggestions
 exports.createSuggestion = createSuggestion
+exports.getSuggestionsByUser = getSuggestionsByUser
