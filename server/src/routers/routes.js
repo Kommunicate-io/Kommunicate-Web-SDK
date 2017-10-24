@@ -61,5 +61,6 @@ miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);
 autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
+autoSuggestRouter.get('/:userName', autoSuggestController.getSuggestionsByUser);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion),autoSuggestController.createSuggestion);
 chatRouter.get('/visitor',chatController.visitorChat);
