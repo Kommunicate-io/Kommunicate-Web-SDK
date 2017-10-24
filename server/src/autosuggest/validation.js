@@ -1,4 +1,4 @@
-const joi = require('joio');
+const joi = require('joi');
 
 module.exports.createSuggestion = {
 	body:{
