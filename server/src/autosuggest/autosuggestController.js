@@ -17,7 +17,13 @@ exports.createSuggestion = (req, res) => {
 
 	console.log('Request received ', req.body);
 
-	autosuggestService.createSuggestion({category: req.body.category, name:req.body.content, content: req.body.content})
+	const suggestion = {
+		category: req.body.category,
+		name:req.body.content,
+		content: req.body.content
+	}
+
+	autosuggestService.createSuggestion()
 		.then(response => {console.log(response)
 			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
 		})
