@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../model/Notification';
-import { getAllSuggestions, createSuggestions }  from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByUser, createSuggestions }  from '../../utils/kommunicateClient'
 
 
 class AutoSuggest extends Component{
@@ -17,7 +17,14 @@ class AutoSuggest extends Component{
 	}
 
 	componentDidMount () {
-		getAllSuggestions()
+		// getAllSuggestions()
+		// 	.then(autoSuggestions => {
+		// 		this.setState({autoSuggestions: autoSuggestions})
+		// 		console.log(this.state.autoSuggestions)
+		// 		console.log(this.state.categories)
+		// 	})
+
+		getSuggestionsByUser(localStorage.getItem("loggedinUser"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
 				console.log(this.state.autoSuggestions)
@@ -27,6 +34,12 @@ class AutoSuggest extends Component{
 
 	viewAllSuggestions = () => {
 		this.setState({viewAllSuggestions: !this.state.viewAllSuggestions})
+		getSuggestionsByUser(localStorage.getItem("loggedinUser"))
+			.then(autoSuggestions => {
+				this.setState({autoSuggestions: autoSuggestions})
+				console.log(this.state.autoSuggestions)
+				console.log(this.state.categories)
+			})
 	}
 
 	_createSuggestion = () => {
@@ -34,13 +47,38 @@ class AutoSuggest extends Component{
 			Notification.info(" All fields are mandatory !!");
 		}else{
 			const suggestion = {
+				userName: localStorage.getItem("loggedinUser"),
 				category: this.state.category,
 				name: this.state.name,
 				content: this.state.content
 			}
-			createSuggestions(suggestion)
-		}
 
+			createSuggestions(suggestion)
+				.then(response => {
+					console.log(response)
+					if(response.status === 200 && response.data.code === "SUGESSTION_CREATED"){
+						Notification.info("Suggestion Created")
+
+						// Refresh the list with the new suggestion
+						this.setState((prevState) => {
+							autoSuggestions: prevState.autoSuggestions.push(suggestion)
+						})
+
+						// Reset the form
+						this.resetForm()
+					}else{
+						Notification.info("There was problem in creating the suggestion.");
+					}
+				})
+		}
+	}
+
+	resetForm = () => {
+		this.setState({
+			category: '',
+			name: '',
+			content: ''
+		})
 	}
 
 	render(){
@@ -51,56 +89,61 @@ class AutoSuggest extends Component{
 	          <div className="col-sm-12 col-md-12">
 	            <div className="card">
 	              <div className="card-header">
-	                <div className="card-block">
-	                  <div className="row">
-	                    <div className="col-4">
-	                      <div className="input-group mb-3">
-	                        <span className="input-group-addon">Category</span>
-	                        <input type="text" className="form-control" placeholder="Category" value={this.state.category} onChange={(e) => {this.setState({category: e.target.value})}}/>
-	                      </div>
-	                    </div>
-	                    <div className="col-4">
-	                      <div className="input-group mb-3">
-	                        <span className="input-group-addon">Name</span>
-	                        <input type="text" className="form-control" placeholder="Name" value={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}}/>
-	                      </div>
-	                    </div>
-	                    <div className="col-4">
-	                      <div className="input-group mb-3">
-	                        <span className="input-group-addon">Content</span>
-	                        <input type="text" className="form-control" placeholder="Content" value={this.state.content} onChange={(e) => {this.setState({content: e.target.value})}}/>
-	                      </div>
-	                    </div>
-	                  </div>
-	                  <div className="row">
-	                    <div className="col-6 text-right">
-	                      <button type="button" className="btn btn-primary px-4" onClick={this._createSuggestion}>Save Changes</button>
-	                    </div>
-	                    <div className="col-6 text-left">
-	                      <button type="button" className="btn btn-primary px-4">Cancel</button>
-	                    </div>
-	                  </div>
-	                  <div className="row">
-	                    <div className="col-12 text-left">
-	                      <button className="btn btn-link" onClick={this.viewAllSuggestions}>View All</button>
-	                    </div>
-	                  </div>
-	                  <div className={((this.state.viewAllSuggestions === true)  ? 'form-group' : 'n-vis')}>
-	                  	{
-	                  		Array.isArray(this.state.autoSuggestions) && (
-	                  			this.state.autoSuggestions.map((autoSuggestion, idx) => {
-		                  			return (
-		                  				<div className="input-group mb-3" key={idx}>
-			                  				<span className="input-group-addon">{`#${autoSuggestion.category}`}</span>
-			                  				<input type="text" className="form-control" defaultValue={autoSuggestion.name} readOnly={true} />
-			                  				<input type="text" className="form-control" defaultValue={autoSuggestion.content} readOnly={true} />
-		                  				</div>
-		                  			)
-	                  			})
-	                  		)
-	                  	}
-	                  </div>
-	                </div>
+	              	<strong>Add an auto suggestion</strong>
+	              </div>
+                <div className="card-block">
+                  <div className="row">
+                    <div className="col-6">
+                      <div className="input-group mb-3">
+                        <span className="input-group-addon">Category</span>	
+                        <input type="text" className="form-control" placeholder="Category" value={this.state.category} onChange={(e) => {this.setState({category: e.target.value})}}/>
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="input-group mb-3">
+                        <span className="input-group-addon">Name</span>
+                        <input type="text" className="form-control" placeholder="Name" value={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}}/>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">  
+                    <div className="col-12">
+                      <div className="input-group mb-3">
+                        <span className="input-group-addon">Content</span>
+                        <input type="text" className="form-control" placeholder="Content" value={this.state.content} onChange={(e) => {this.setState({content: e.target.value})}}/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-footer">
+                  <button type="button" className="btn btn-primary px-4" onClick={this._createSuggestion}>Save</button>
+                  <button type="button" className="btn btn-danger px-4" onClick={this.resetForm}>Cancel</button>
+                </div>
+	            </div>
+	            <div className="card">
+	              <div className="card-header">
+	              	<div className="row">
+                  	<div className="col-3 text-left">
+                  		<button className="btn btn-link" onClick={this.viewAllSuggestions}>View All Suggestions</button>
+                    </div>
+                  </div>
+	              </div>
+	              <div className={((this.state.viewAllSuggestions === true)  ? "card-block" : 'n-vis')}>
+	              	<div className="form-group">
+                  	{
+                  		Array.isArray(this.state.autoSuggestions) && (
+                  			this.state.autoSuggestions.map((autoSuggestion, idx) => {
+	                  			return (
+	                  				<div className="input-group mb-3" key={idx}>
+		                  				<span className="input-group-addon">{`#${autoSuggestion.category}`}</span>
+		                  				<input type="text" className="form-control" defaultValue={autoSuggestion.name} readOnly={true} />
+		                  				<input type="text" className="form-control" defaultValue={autoSuggestion.content} readOnly={true} />
+	                  				</div>
+	                  			)
+                  			})
+                  		)
+                  	}
+                  </div>
 	              </div>
 	            </div>
 	          </div>
