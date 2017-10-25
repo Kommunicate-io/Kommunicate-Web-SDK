@@ -265,6 +265,13 @@ const createSuggestions = (suggestion) => {
     .then(response => response)
 }
 
+const signUpWithApplozic = (data)=>{
+  const url = getConfig().kommunicateBaseUrl+"/customers/applozic";
+  return axios.post(url,{userName:data.userName,password:data.password,applicationId:data.applicationId}).then(response=>{
+    return response;
+  });
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -281,4 +288,6 @@ export {
   getAllSuggestions,
   getSuggestionsByUser,
   createSuggestions
+  signUpWithApplozic
+
 }

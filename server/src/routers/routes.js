@@ -57,6 +57,9 @@ signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginControl
 customerRouter.post('/',validate(customerValidation.createCustomer),registerController.createCustomer);
 customerRouter.patch('/:userId',registerController.patchCustomer);
 customerRouter.get('/:userName',registerController.getCustomerInformation);
+customerRouter.post('/applozic',function(req,res){
+                          console.log("called sign up with Applozic");
+                          registerController.signUpWithAplozic(req,res);});
 miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);
@@ -64,3 +67,4 @@ autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:userName', autoSuggestController.getSuggestionsByUser);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion),autoSuggestController.createSuggestion);
 chatRouter.get('/visitor',chatController.visitorChat);
+

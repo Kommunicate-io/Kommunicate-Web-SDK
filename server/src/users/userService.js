@@ -23,7 +23,7 @@ const getUserByName = userName=>{
     console.log("fetching data for userName : ",userName);
     userModel.findOne({where: {userName: userName}}).then(user => {
       console.log("found data for user : ",user==null?null:user.dataValues);
-        user!==null?resolve(user.dataValues):resolve(null);
+       return  user!==null? resolve(user.dataValues):resolve(null);
     },err=>{
       console.log("err",err);
       return reject(err);

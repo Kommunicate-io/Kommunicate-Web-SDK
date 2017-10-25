@@ -20,6 +20,7 @@ var baseurl ={
 var config = {
   prod: {
       homeUrl:baseurl.prod.baseUrl,
+      kommunicateBaseUrl : baseurl.prod.kommunicateAPI,
       applozicPlugin:{
       applozicHosturl:baseurl.prod.baseUrl,
       baseUrl:baseurl.prod.baseUrl+"/kommunicate.app",
@@ -52,6 +53,7 @@ var config = {
   },
   dashboard:{
     homeUrl:baseurl.dashboard.baseUrl,
+    kommunicateBaseUrl : baseurl.dashboard.kommunicateAPI,
      applozicPlugin:{
       applozicHosturl:baseurl.dashboard.baseUrl,
       baseUrl:baseurl.dashboard.baseUrl+"/kommunicate.app",
@@ -84,6 +86,7 @@ var config = {
   },
   test:{
      homeUrl:baseurl.test.baseUrl,
+     kommunicateBaseUrl : baseurl.test.kommunicateAPI,
      applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"https://apps-test.applozic.com/kommunicate.app",
@@ -117,6 +120,7 @@ var config = {
   },
   development: {
     homeUrl:baseurl.default.baseUrl,
+    kommunicateBaseUrl : baseurl.default.kommunicateAPI,
     applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"http://api-test.kommunicate.io/kommunicate.app",

@@ -24,7 +24,7 @@ exports.createCustomer = customer=>{
 
     return Promise.all([applozicClient.createApplozicClient(customer.userName,customer.password,application.applicationId,null,"APPLICATION_WEB_ADMIN"),
                    /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
-                   applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"APPLICATION_WEB_ADMIN"),
+                   applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"APPLICATION_WEB_ADMIN")
     ]).then(([applozicCustomer,/*agent,*/bot])=>{
       customer.apzToken = new Buffer(customer.userName+":"+customer.password).toString('base64');
       let user = getUserObject(customer,applozicCustomer,application);
@@ -141,6 +141,63 @@ exports.sendWelcomeMail= (email)=>{
     templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html")
   }
   return mailService.sendMail(mailOptions);
+}
+
+const populateDataInKommunicateDb = (options,application,applozicCustomer,applozicBot)=>{
+ let kmCustomer ={name:applozicCustomer.displayName,userName:options.userName,email:applozicCustomer.email,
+ contactNo:applozicCustomer.contactNumber,applicationId:application.applicationId}  ;
+ kmCustomer.password = bcrypt.hashSync(options.password, 10);
+ kmCustomer.apzToken = new Buffer(options.userName+":"+options.password).toString('base64');
+
+ let kmUser = {name:applozicCustomer.displayName,userName:options.userName,email:applozicBot.email,accessToken:options.password,role:options.role,type:USER_TYPE.BOT,userKey:applozicCustomer.userKey}
+ kmUser.password = bcrypt.hashSync(options.password, 10);
+ kmUser.apzToken = bcrypt.hashSync(options.password, 10);
+ kmUser.authorization = new Buffer(options.userName+":"+applozicCustomer.deviceKey).toString('base64');
+ kmUser.apzToken=new Buffer(options.userName+":"+options.password).toString('base64');
+
+ return db.sequelize.transaction(t=> { 
+  return customerModel.create(kmCustomer,{transaction:t}).then(customer=>{
+    console.log("persited in db",customer?customer.dataValues:null);
+    kmUser.customerId=customer?customer.dataValues.id:null;
+    // update bot plateform
+    let botObj = getFromApplozicUser(applozicBot,customer,USER_TYPE.BOT);
+    Promise.resolve(botPlatformClient.createBot({
+      "name": applozicBot.userId,
+      "key": applozicBot.userKey,
+      "brokerUrl": applozicBot.brokerUrl,
+      "accessToken": applozicBot.accessToken,
+      "applicationKey": application.applicationId,
+      "authorization":new Buffer(applozicBot.userId+":"+applozicBot.deviceKey).toString('base64'),
+      "type": "KOMMUNICATE_SUPPORT",
+    })).then(result=>{
+        console.log("bot platform updated....",result);
+        return result;
+    }).catch(err=>{
+      console.log("err while updating bot plateform..",err);
+    });
+    return userModel.bulkCreate([kmUser,/*agentobj,*/botObj],{transaction:t}).spread((user,/*agent,*/bot)=>{
+      console.log("user created",user?user.dataValues:null);
+     // console.log("created agent",agent.dataValues);
+      console.log("created bot ",bot.dataValues);
+      return getResponse(user.dataValues,application);
+    });
+  });
+})
+}
+
+exports.signUpWithApplozic = (options)=>{
+  return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
+    return Promise.all([applozicClient.applozicLogin(options.userName,options.password,options.applicationId,"APPLICATION_WEB_ADMIN"),
+    applozicClient.applozicLogin("bot","bot",options.applicationId,"APPLICATION_WEB_ADMIN")])
+    .then(([customer,bot])=>{
+      options.role= "APPLICATION_WEB_ADMIN";
+      return populateDataInKommunicateDb(options,application,customer,bot);
+    })
+
+  }).catch(e=>{
+    console.log("err",e);
+    throw e;
+  })
 }
 
 
