@@ -241,9 +241,9 @@ const getAllSuggestions = () => {
     .catch(err => {console.log("Error in getting auto suggestions")});
 }
 
-const getSuggestionsByUser = (userName) => {
+const getSuggestionsByAppKey = (applicationKey) => {
 
-  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userName
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationKey
 
   return Promise.resolve(axios.get(autoSuggestUrl))
     .then(response => response.data.data)
@@ -254,7 +254,7 @@ const getSuggestionsByUser = (userName) => {
       }, [])
       return autoSuggestions
     })
-    .catch(err => {console.log("Error in getting auto suggestions")});
+    .catch(err => err);
 }
 
 const createSuggestions = (suggestion) => {
@@ -279,6 +279,6 @@ export {
   resetPassword,
   checkUserInApplozic,
   getAllSuggestions,
-  getSuggestionsByUser,
+  getSuggestionsByAppKey,
   createSuggestions
 }
