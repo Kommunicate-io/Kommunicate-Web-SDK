@@ -6,6 +6,11 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
+    applicationKey: {
+      type: DataTypes.STRING(200),
+      allowNull: false,
+      field: 'application_key'
+    },
     userName: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -22,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       field: 'name'
     },
     content: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(500),
       allowNull: false,
       field: 'content'
     }
