@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByUser, createSuggestions }  from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppKey, createSuggestions }  from '../../utils/kommunicateClient'
 
 
 class AutoSuggest extends Component{
@@ -24,7 +24,7 @@ class AutoSuggest extends Component{
 		// 		console.log(this.state.categories)
 		// 	})
 
-		getSuggestionsByUser(localStorage.getItem("loggedinUser"))
+		getSuggestionsByAppKey(localStorage.getItem("applicationKey"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
 				console.log(this.state.autoSuggestions)
@@ -34,7 +34,7 @@ class AutoSuggest extends Component{
 
 	viewAllSuggestions = () => {
 		this.setState({viewAllSuggestions: !this.state.viewAllSuggestions})
-		getSuggestionsByUser(localStorage.getItem("loggedinUser"))
+		getSuggestionsByAppKey(localStorage.getItem("applicationKey"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
 				console.log(this.state.autoSuggestions)
@@ -47,6 +47,7 @@ class AutoSuggest extends Component{
 			Notification.info(" All fields are mandatory !!");
 		}else{
 			const suggestion = {
+				applicationKey: localStorage.getItem("applicationKey"),
 				userName: localStorage.getItem("loggedinUser"),
 				category: this.state.category,
 				name: this.state.name,
