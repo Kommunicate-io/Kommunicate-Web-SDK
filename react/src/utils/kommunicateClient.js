@@ -287,7 +287,7 @@ export {
   checkUserInApplozic,
   getAllSuggestions,
   getSuggestionsByUser,
-  createSuggestions
+  createSuggestions,
   signUpWithApplozic
 
 }
