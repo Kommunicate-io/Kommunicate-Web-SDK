@@ -22,7 +22,9 @@ const config ={
         hostUrl: "https://api.kommunicate.io",
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",
         passwordResetUrl : "https://chat.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-        dashboardHostUrl:"https://dashboard.kommunicate.io"
+        dashboardHostUrl:"https://dashboard.kommunicate.io",
+        applozicHostUrl : "https://chat.kommunicate.io"
+
       },
       cache: {
         hazelCache: {
@@ -65,7 +67,8 @@ const config ={
       hostUrl: "https://api-test.kommunicate.io",
       updatePasswordPage : "https://dashboard-test.kommunicate.io/password/update?code=:code",
       passwordResetUrl : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-      dashboardHostUrl:"https://dashboard-test.kommunicate.io"
+      dashboardHostUrl:"https://dashboard-test.kommunicate.io",
+      applozicHostUrl : "https://apps-test.applozic.com"
       
     },cache: {
       hazelCache: {
@@ -108,7 +111,8 @@ const config ={
       hostUrl: "http://localhost:3999",
       updatePasswordPage : "http://localhost:3000/password/update?code=:code",
       passwordResetUrl : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-      dashboardHostUrl:"http://localhost:3000"
+      dashboardHostUrl:"http://localhost:3000",
+      applozicHostUrl : "https://apps-test.applozic.com"
       
     },cache: {
       hazelCache: {
@@ -151,7 +155,8 @@ const config ={
         hostUrl: "https://api.kommunicate.io",
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",
         passwordResetUrl : "https://dashboard.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-        dashboardHostUrl:"https://dashboard.kommunicate.io"
+        dashboardHostUrl:"https://dashboard.kommunicate.io",
+        applozicHostUrl : "https://dashboard.applozic.com"
 
       },
       cache: {

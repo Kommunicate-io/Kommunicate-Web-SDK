@@ -213,3 +213,24 @@ exports.updatePassword = (options)=>{
     }
   });
 }
+
+// update user 
+exports.updateApplozicClient = (userName, accessToken,applicationId,user)=>{
+  return axios.post(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/v2/update",user,{headers:{
+    "Apz-Token":"Basic "+ new Buffer(userName+":"+accessToken).toString('base64'),
+    "Content-Type":"application/json",
+    "Apz-AppId":applicationId,
+    "Apz-Product-App":true
+   }})
+   .then(response=>{
+    if(response.data&&response.data.status ==="success"){
+      return {code:"success"};
+    }else {
+      throw {code:APPLOZIC_ERROR,data:response}
+    }
+   })
+   .catch(err=>{
+    console.log("error while updating user",err);
+    throw err;
+   })
+}
