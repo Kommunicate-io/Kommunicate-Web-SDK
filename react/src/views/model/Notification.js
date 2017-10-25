@@ -6,18 +6,18 @@ import {
 
 const  Notification = {
     info : function(message) {
-    NotificationManager.info(message, "Info", 1000);
+    NotificationManager.info(message, "Info", 1500);
   },
 
   success:function(message) {
-    NotificationManager.success(message, "Success", 1000);
+    NotificationManager.success(message, "Success", 1500);
   },
     warning : function(message) {
-    NotificationManager.warning(message, "Warning", 1000);
+    NotificationManager.warning(message, "Warning", 1500);
   },
 
   error: function(message) {
-    NotificationManager.error(message, "Error", 1000);
+    NotificationManager.error(message, "Error", 1500);
   }
   // NotificationManager.error('Error message', 'Click me!', 5000, () => {
   // alert('callback');

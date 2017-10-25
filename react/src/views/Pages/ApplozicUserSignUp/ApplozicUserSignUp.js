@@ -105,11 +105,21 @@ class ApplozicUserSignUp extends Component {
       userInfo.name=name;
       this.setState({disableRegisterButton:true}); 
       Promise.resolve(signUpWithApplozic({userName:email,password:password,applicationId:this.state.applicationId})).then((response) => {
-       saveToLocalStorage(email, password, response.data.name, response);
+       if(response){
+         if(response.data&& response.data.code==="USER_ALREADY_EXISTS")
+          Notification.info("User already exists, Please login.");
+          return;
+       }else if(response.data&& response.data.code==="APPLICATION_NOT_EXISTS"){
+        Notification.info("Incorrect Application Id. Try again");
+        return;
+       }else if(response.data&& response.data.code==="SUCCESS"){
+       
+        saveToLocalStorage(email, password, response.data.name, response);
         _this.setState({disableRegisterButton:false});
         //localStorage.isAdmin=="true"?this.props.history.push('/setUpPage'):this.props.history.push('/dashboard');
         this.props.history.push('/dashboard');
         return;
+       }else throw "error";
       }).catch(err=>{
         _this.setState({disableRegisterButton:false});
         let msg = err.code?err.message:"Something went wrong ";
