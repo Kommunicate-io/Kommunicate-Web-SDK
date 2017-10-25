@@ -1,4 +1,6 @@
 const registrationService = require("./registrationService");
+const userService = require('../users/userService');
+const joi = require("joi");
 
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
@@ -15,9 +17,9 @@ exports.createCustomer = (req,res)=>{
   if(userName&&(isPreSignUp||password)){
     console.log("request received for pre sign up, EmailId : ",userName);
     //TODO : check the if user exist form communicate Db;
-    Promise.resolve(registrationService.getCustomerByUserName(userName)).then(user=>{
+    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
-      if(user!=null){
+      if(customer!=null || !user){
         response.code ="USER_ALREADY_EXISTS";
         response.message="User Already Exists";
         res.status(200).json(response);
@@ -108,3 +110,65 @@ exports.getCustomerInformation = (req,res)=>{
 
 
 } 
+
+exports.signUpWithAplozic= (req,res)=>{
+  const userName = req.body.userName;
+  const password = req.body.password;
+  const applicationId = req.body.applicationId;
+  const email = req.body.email || userName;
+  let response={};
+
+  console.log("userName:", userName, password);
+  if(userName&&password){
+    console.log("request received to sign up with Applozic, EmailId : ",userName);
+    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
+      console.log("got the user from db",user);
+      if(customer || user){
+        response.code ="USER_ALREADY_EXISTS";
+        response.message="User Already Exists";
+        res.status(200).json(response);
+        return;
+      }else{
+        return registrationService.signUpWithApplozic({"userName":userName,"password":password,"email":email,"applicationId":applicationId}).then(result=>{
+          try{
+           registrationService.sendWelcomeMail(email);
+          }catch(err){
+            console.log("Error while sending welcom mail to user  ",err);
+          }
+            response.code="SUCCESS";
+              // replacing user Id with user name. can't delete userId from system for backward compatibility.
+              delete result.userId;
+              result.isAdmin=true;
+              response.data=result;
+              res.status(200).json(response);
+            }).catch(err=>{
+            console.log("error while creating a customer",err);
+            switch(err.code){
+              case "USER_ALREADY_EXISTS":
+                response.code ="USER_ALREADY_EXISTS";
+                response.message="user Already Exists";
+                res.status(200).json(response);
+                break;
+              case "APPLICATION_NOT_EXISTS":
+                response.code ="APPLICATION_NOT_EXISTS";
+                response.message="application Not exists";
+                res.status(200).json(response);
+              break;
+              default:
+                response.code ="INTERNAL_SERVER_ERROR";
+                response.message="something is broken";
+                res.status(500).json(response);
+                break;
+            }
+          });
+        }
+      })
+    }else{
+      response.code = "BAD_REQUEST";
+      response.message="some params are missing";
+      res.status(400).json(response);
+    }
+
+
+
+}

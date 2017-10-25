@@ -103,7 +103,7 @@ exports.getApplication=(customer)=>{
       },
     })).then(response=>{
       if (response.status == 200) {
-        if (response.data.status != "error") {
+        if (response.data != "error") {
           console.log("got application detail..status code :", response.status);
           return response.data;
         } else {
@@ -116,8 +116,7 @@ exports.getApplication=(customer)=>{
         throw err;
       }
     }).catch(err=>{
-      console.log("inside catch : ",err.response. status);
-      if (err.response.status==401) {
+      if (err.response&&err.response.status==401) {
         console.log("INVALID UserName or password : response received from server :", err.response.status);
         err.code = "INVALID_CREDENTIALS";
       }
@@ -125,8 +124,12 @@ exports.getApplication=(customer)=>{
     });
   };
 
-exports.applozicLogin =(userName,password,applicationId)=>{
-  return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1}))
+exports.applozicLogin =(userName,password,applicationId,role)=>{
+  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1};
+  if (role){
+    data.role= role;
+  }
+  return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, data))
   .then(response=>{
     let err={};
     if(response.status==200) {

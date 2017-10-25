@@ -4,7 +4,7 @@ import axios from 'axios';
 import {getConfig} from '../../.../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 import {SplitButton, MenuItem} from 'react-bootstrap';
-import  {createCustomer, saveToLocalStorage, createCustomerOrAgent, checkUserInApplozic} from '../../../utils/kommunicateClient'
+import  {createCustomer, saveToLocalStorage, createCustomerOrAgent, checkUserInApplozic, signUpWithApplozic} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
 
 class ApplozicUserSignUp extends Component {
@@ -71,11 +71,7 @@ class ApplozicUserSignUp extends Component {
 
     checkUserInApplozic(args)
       .then(response => {
-        if(response.data.errorResponse !== undefined &&
-           Array.isArray(response.data.errorResponse) &&
-           response.data.errorResponse[0].errorCode === 'AL-U-01'
-          )
-          {
+        if(response.status===200){
             this.createKommunicateAccount()
           }
       })
@@ -106,12 +102,13 @@ class ApplozicUserSignUp extends Component {
       userInfo.type = userType=="AGENT"?1:3;
       userInfo.applicationId = this.state.applicationId;
       userInfo.password = password;
-      userInfo.name=name
+      userInfo.name=name;
       this.setState({disableRegisterButton:true}); 
-      Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
-       saveToLocalStorage(email, password, name, response);
+      Promise.resolve(signUpWithApplozic({userName:email,password:password,applicationId:this.state.applicationId})).then((response) => {
+       saveToLocalStorage(email, password, response.data.name, response);
         _this.setState({disableRegisterButton:false});
-        localStorage.isAdmin=="true"?this.props.history.push('/setUpPage'):this.props.history.push('/dashboard');
+        //localStorage.isAdmin=="true"?this.props.history.push('/setUpPage'):this.props.history.push('/dashboard');
+        this.props.history.push('/dashboard');
         return;
       }).catch(err=>{
         _this.setState({disableRegisterButton:false});
