@@ -114,7 +114,7 @@ class ApplozicUserSignUp extends Component {
         return;
        }else if(response.data&& response.data.code==="SUCCESS"){
        
-        saveToLocalStorage(email, password, response.data.name, response);
+        saveToLocalStorage(email, password, response.data.data.name, response);
         _this.setState({disableRegisterButton:false});
         //localStorage.isAdmin=="true"?this.props.history.push('/setUpPage'):this.props.history.push('/dashboard');
         this.props.history.push('/dashboard');
