@@ -6,10 +6,10 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
-    applicationKey: {
+    applicationId: {
       type: DataTypes.STRING(200),
       allowNull: false,
-      field: 'application_key'
+      field: 'application_id'
     },
     userName: {
       type: DataTypes.STRING(50),
