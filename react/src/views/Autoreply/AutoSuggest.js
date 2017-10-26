@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppKey, createSuggestions }  from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions }  from '../../utils/kommunicateClient'
 
 
 class AutoSuggest extends Component{
@@ -24,7 +24,7 @@ class AutoSuggest extends Component{
 		// 		console.log(this.state.categories)
 		// 	})
 
-		getSuggestionsByAppKey(localStorage.getItem("applicationKey"))
+		getSuggestionsByAppId(localStorage.getItem("applicationId"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
 				// console.log(this.state.autoSuggestions)
@@ -34,7 +34,7 @@ class AutoSuggest extends Component{
 
 	viewAllSuggestions = () => {
 		this.setState({viewAllSuggestions: !this.state.viewAllSuggestions})
-		getSuggestionsByAppKey(localStorage.getItem("applicationKey"))
+		getSuggestionsByAppId(localStorage.getItem("applicationId"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
 				console.log(this.state.autoSuggestions)
@@ -47,7 +47,7 @@ class AutoSuggest extends Component{
 			Notification.info(" All fields are mandatory !!");
 		}else{
 			const suggestion = {
-				applicationKey: localStorage.getItem("applicationKey"),
+				applicationId: localStorage.getItem("applicationId"),
 				userName: localStorage.getItem("loggedinUser"),
 				category: this.state.category,
 				name: this.state.name,
@@ -134,7 +134,7 @@ class AutoSuggest extends Component{
                   	{
                   		Array.isArray(this.state.autoSuggestions) && (
                   			this.state.autoSuggestions.map((autoSuggestion, idx) => {
-                  				if(autoSuggestion.applicationKey === localStorage.getItem("applicationKey")){
+                  				if(autoSuggestion.applicationId === localStorage.getItem("applicationId")){
                   					return (
 		                  				<div className="input-group mb-3" key={idx}>
 			                  				<span className="input-group-addon">{`#${autoSuggestion.category}`}</span>
