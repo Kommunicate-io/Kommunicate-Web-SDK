@@ -63,18 +63,18 @@ return imageLink;
             <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}></button>
           </li>
           <li className="nav-item px-3">
-            <a className="nav-link" href="/dashboard">Dashboard</a>
+            <Link className="nav-link" redirect to ="/dashboard">Dashboard</Link>
           </li>
           <li className="nav-item px-3">
-            <a className="nav-link" href="/users">Users</a>
+            <Link className="nav-link"redirect to="/users">Users</Link>
           </li>
           <li className="nav-item px-3">
-            <a className="nav-link" href="/conversations">Conversations</a>
+            <Link className="nav-link" redirect to="/conversations">Conversations</Link>
           </li>
         </ul>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item d-md-down-none">
-            <a className="nav-link" href="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></a>
+            <Link className="nav-link" redirect to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
           </li>
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
