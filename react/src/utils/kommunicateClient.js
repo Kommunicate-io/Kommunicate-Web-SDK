@@ -241,15 +241,15 @@ const getAllSuggestions = () => {
     .catch(err => {console.log("Error in getting auto suggestions")});
 }
 
-const getSuggestionsByAppKey = (applicationKey) => {
+const getSuggestionsByAppId = (applicationId) => {
 
-  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationKey
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId
 
   return Promise.resolve(axios.get(autoSuggestUrl))
     .then(response => response.data.data)
     .then(autoSuggestions_data => {
       const autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
-        prev.push({applicationKey: curr.applicationKey,category:curr.category, name:curr.name, content:curr.content})
+        prev.push({applicationId: curr.applicationId,category:curr.category, name:curr.name, content:curr.content})
         return prev;
       }, [])
       return autoSuggestions
@@ -287,6 +287,6 @@ export {
   checkUserInApplozic,
   getAllSuggestions,
   createSuggestions,
-  getSuggestionsByAppKey,
+  getSuggestionsByAppId,
   signUpWithApplozic
 }

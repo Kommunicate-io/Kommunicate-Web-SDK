@@ -156,13 +156,11 @@ function getSuggestions(_urlAutoSuggest) {
       console.log(autoSuggestions_data)
       console.log(localStorage.getItem("applicationKey"))
       autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
-        if(curr.applicationKey === localStorage.getItem("applicationKey") || curr.applicationKey === "default"){
           if(curr.category in prev){
             prev[curr.category].push({name:curr.name, content:curr.content})
           }else{
             prev[curr.category] = [{name:curr.name, content:curr.content}]
           }
-        }
         return prev;
       }, {});
       let categories = Object.keys(autoSuggestions);
