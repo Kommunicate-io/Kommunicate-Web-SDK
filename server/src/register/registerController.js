@@ -5,7 +5,7 @@ const joi = require("joi");
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName?req.body.userName:req.body.userId;
-  //const userId =  userName;
+  //const userId =  userName; 
   const isPreSignUp = req.query.preSignUp;
   const password = isPreSignUp?userName:req.body.password;
   const name = req.body.name;
@@ -19,7 +19,7 @@ exports.createCustomer = (req,res)=>{
     //TODO : check the if user exist form communicate Db;
     Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
-      if(customer!=null || !user){
+      if(customer || user){
         response.code ="USER_ALREADY_EXISTS";
         response.message="User Already Exists";
         res.status(200).json(response);
