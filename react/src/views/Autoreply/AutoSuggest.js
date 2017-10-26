@@ -27,8 +27,8 @@ class AutoSuggest extends Component{
 		getSuggestionsByAppKey(localStorage.getItem("applicationKey"))
 			.then(autoSuggestions => {
 				this.setState({autoSuggestions: autoSuggestions})
-				console.log(this.state.autoSuggestions)
-				console.log(this.state.categories)
+				// console.log(this.state.autoSuggestions)
+				// console.log(this.state.categories)
 			})
 	}
 
@@ -134,13 +134,15 @@ class AutoSuggest extends Component{
                   	{
                   		Array.isArray(this.state.autoSuggestions) && (
                   			this.state.autoSuggestions.map((autoSuggestion, idx) => {
-	                  			return (
-	                  				<div className="input-group mb-3" key={idx}>
-		                  				<span className="input-group-addon">{`#${autoSuggestion.category}`}</span>
-		                  				<input type="text" className="form-control" defaultValue={autoSuggestion.name} readOnly={true} />
-		                  				<input type="text" className="form-control" defaultValue={autoSuggestion.content} readOnly={true} />
-	                  				</div>
-	                  			)
+                  				if(autoSuggestion.applicationKey === localStorage.getItem("applicationKey")){
+                  					return (
+		                  				<div className="input-group mb-3" key={idx}>
+			                  				<span className="input-group-addon">{`#${autoSuggestion.category}`}</span>
+			                  				<input type="text" className="form-control" defaultValue={autoSuggestion.name} readOnly={true} />
+			                  				<input type="text" className="form-control" defaultValue={autoSuggestion.content} readOnly={true} />
+		                  				</div>
+	                  				)
+                  				}
                   			})
                   		)
                   	}
