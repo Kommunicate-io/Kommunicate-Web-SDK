@@ -47,7 +47,7 @@ exports.createSuggestion = (req, res) => {
 		applicationKey: req.body.applicationKey,
 		userName:req.body.userName,
 		category: req.body.category,
-		name:req.body.content,
+		name:req.body.name,
 		content: req.body.content
 	}
 
