@@ -6,7 +6,8 @@ class Conversations extends Component {
 
   componentWillMount() {
     document.body.classList.toggle('aside-menu-hidden');
-    window.getSuggestions(getConfig().kommunicateApi.autoSuggest);
+    const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + localStorage.getItem("applicationKey")
+    window.getSuggestions(autoSuggestUrl);
   }
 
   componentWillUnmount() {
