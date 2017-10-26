@@ -56,13 +56,14 @@ backToLogin = ()=>{
   this.props.history.push('/login');
 }
 handlePasswordResetResponse=(response)=>{
-  Notification.info(response.message);
-  console.log("response".response);
+  Notification.info("Password reset link has been sent on your mail!");
+  console.log("response",response);
   !response.err?this.backToLogin():null;
 }
-handlePasswordResetError=(err)=>{
+handlePasswordResetError=(response)=>{
+  var err = response.response.data?response.response.data.message:"Somethimg went wrong! ";
   Notification.error(err);
-  console.log(err);
+  console.log(response);
 }
 
 submitForm = ()=>{
