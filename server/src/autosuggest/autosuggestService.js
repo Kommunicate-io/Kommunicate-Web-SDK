@@ -25,13 +25,15 @@ const getSuggestionsByUser = (userName) => {
 		.catch(err => err);
 }
 
-const getSuggestionsByAppKey = (applicationKey) => {
+const getSuggestionsByAppId = (applicationId) => {
 	
-	// SELECT * FROM auto_suggest WHERE  applicationKey='default' OR applicationKey=applicationKey;
+	// SELECT * FROM auto_suggest WHERE applicationId=applicationId;
 
 	return autoSuggestModel.findAll({
 		where: {
-			[Op.or]: [{applicationKey:'default'}, {applicationKey:applicationKey}]
+			// SELECT * FROM auto_suggest WHERE  applicationKey='default' OR applicationKey=applicationKey;
+			// [Op.or]: [{applicationKey:'default'}, {applicationKey:applicationKey}]
+			applicationId: applicationId
 		}})
 		.then(suggestions => {
 			return suggestions
@@ -45,4 +47,4 @@ const createSuggestion = (suggestion) => {
 
 exports.getAllSuggestions = getAllSuggestions
 exports.createSuggestion = createSuggestion
-exports.getSuggestionsByAppKey = getSuggestionsByAppKey
+exports.getSuggestionsByAppId = getSuggestionsByAppId
