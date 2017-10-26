@@ -249,7 +249,7 @@ const getSuggestionsByAppKey = (applicationKey) => {
     .then(response => response.data.data)
     .then(autoSuggestions_data => {
       const autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
-        prev.push({category:curr.category, name:curr.name, content:curr.content})
+        prev.push({applicationKey: curr.applicationKey,category:curr.category, name:curr.name, content:curr.content})
         return prev;
       }, [])
       return autoSuggestions

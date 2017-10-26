@@ -3,6 +3,8 @@ const autoSuggestModel = require("../models").AutoSuggest;
 const db = require("../models");
 const stringUtils = require("underscore.string");
 const config = require("../../conf/config");
+const Sequelize= require("sequelize");
+const Op = Sequelize.Op;
 
 const getAllSuggestions = () => {
 	return autoSuggestModel.findAll()
@@ -24,9 +26,12 @@ const getSuggestionsByUser = (userName) => {
 }
 
 const getSuggestionsByAppKey = (applicationKey) => {
+	
+	// SELECT * FROM auto_suggest WHERE  applicationKey='default' OR applicationKey=applicationKey;
+
 	return autoSuggestModel.findAll({
 		where: {
-			applicationKey: applicationKey
+			[Op.or]: [{applicationKey:'default'}, {applicationKey:applicationKey}]
 		}})
 		.then(suggestions => {
 			return suggestions
