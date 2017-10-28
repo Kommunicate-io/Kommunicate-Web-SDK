@@ -5,8 +5,8 @@ import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import  {getConfig} from '../../config/config.js';
 
 const brandPrimary =  '#20a8d8';
-const brandSuccess =  '#63c2de';
-const brandInfo =     '#f8cb00';
+const brandSuccess =  '#18A9B7';
+const brandInfo =     '#D13351';
 const brandDanger =   '#f86c6b';
 
 // Main Chart
@@ -167,7 +167,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn">
         <div className="row">
           <div className="col-sm-6 col-lg-4">
-            <div className="card card-inverse card-primary">
+            <div className="card card-inverse card-user">
               <div className="card-block pb-0">
                 <h4 className="mb-0">{this.state.newUsers}</h4>
                 <p>Users</p>

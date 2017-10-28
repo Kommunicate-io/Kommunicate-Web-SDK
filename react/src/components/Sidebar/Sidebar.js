@@ -64,7 +64,7 @@ class Sidebar extends Component {
               <NavLink to={'/reports'} className="nav-link" activeClassName="active"><i className="icon-notebook"></i> Reports</NavLink>
             </li>
             */}
-            <li className="nav-item">
+            <li className="nav-item nav-new-link">
               <NavLink to={'/bot'} className="nav-link" activeClassName="active"><i className="icon-magic-wand"></i> Bot <span className="badge badge-info">NEW</span></NavLink>
             </li>
 
