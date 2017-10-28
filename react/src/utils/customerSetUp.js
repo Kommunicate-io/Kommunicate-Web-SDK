@@ -9,7 +9,9 @@ const getJsCode = () => {
   options.isAnonymousChat=true;
   options.groupName="Kommunicate_support";
   options.agentId =localStorage.getItem("loggedinUser");
+  if(localStorage.getItem("name")&& (localStorage.getItem("name")!="undefined"|| localStorage.getItem("name")!="null")){
   options.agentName = localStorage.getItem("name");
+  }
   var env = getEnvironmentId();
   
   if(env=="test"||env=="development"){

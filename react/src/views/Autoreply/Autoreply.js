@@ -193,7 +193,7 @@ class Autoreply extends Component {
                   OFF HOURS
                 </NavLink>
               </NavItem>
-              <NavItem>
+              <NavItem hidden= {true} >
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}
                   onClick={() => { this.toggle('2'); }}
