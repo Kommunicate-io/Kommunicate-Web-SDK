@@ -9,9 +9,9 @@ function getJsCode (){
   options.isAnonymousChat=true;
   options.groupName="Kommunicate_support";
   options.agentId =localStorage.getItem("loggedinUser")||localStorage.getItem("agentId");
-  if(localStorage.getItem("name")&& (localStorage.getItem("name")!="undefined"|| localStorage.getItem("name")!="null")){
+  if(localStorage.getItem("name")&& localStorage.getItem("name")!="undefined"&& localStorage.getItem("name")!="null"){
   options.agentName = localStorage.getItem("name");
-  }else if(localStorage.getItem("agentName")&& (localStorage.getItem("agentName")!="undefined"|| localStorage.getItem("agentName")!="null")){
+  }else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
     options.agentName = localStorage.getItem("agentName");
   }
   var env = getEnvironmentId();
