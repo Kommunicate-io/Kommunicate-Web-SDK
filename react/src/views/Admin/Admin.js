@@ -62,6 +62,39 @@ handleKeyPress(event) {
     e.preventDefault();
   }
 
+  invokeImageUpload = (e) => {
+    e.preventDefault()
+
+    let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
+    
+    if(hiddenImageInputElem){
+      hiddenImageInputElem.click()
+    }
+  }
+
+  handleImageFiles = (e) => {
+    e.preventDefault()
+
+    const files = e.target.files;
+    const file = files[0];
+
+    let img = document.createElement("img")
+    img.height = 90
+    img.width = 60
+    img.classList.add("obj")
+    img.file = file
+
+    let thumbnail = document.getElementById("thumbnail")
+    while(thumbnail.hasChildNodes()) {
+       thumbnail.removeChild(thumbnail.firstChild)
+    }
+    thumbnail.appendChild(img)
+
+    let reader = new FileReader()
+    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+    reader.readAsDataURL(file)
+  }
+
   componentWillMount() {
 
     console.log("Admin will mount");
@@ -184,6 +217,15 @@ handleKeyPress(event) {
                          <option value="100">100</option>
                           <option value="500">500</option>
                       </select>
+                    </div>
+                  </div>
+                  <div className="form-group row">
+                    <label className="col-md-3 form-control-label" htmlFor="email-input">Upload Image</label>
+                    <div className="col-md-9">
+                      <input type="file" accept="image/*" className="form-control" id="hidden-image-input-element" name="image-input" onChange={this.handleImageFiles} style={{display:"none"}} />
+                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-cloud-upload"></i> Upload Image</button>
+                      <div id="thumbnail">
+                      </div>
                     </div>
                   </div>
                   <div className="card-footer">
