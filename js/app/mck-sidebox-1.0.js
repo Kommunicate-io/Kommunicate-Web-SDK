@@ -374,6 +374,9 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
         var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+        var MCK_AGENTID = appOptions.agentId;
+        var MCK_AGENTNAME = appOptions.agentName;
+        var MCK_GROUPNAME = appOptions.groupName;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : MCK_BASE_URL + "/resources/sidebox/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
@@ -2025,10 +2028,25 @@ var MCK_CLIENT_GROUP_MAP = [];
 			        });
 
 				var loadChat = function() {
-					if(window.applozic.PRODUCT_ID=='kommunicate'){
-						$mck_btn_leave_group.removeClass('vis').addClass('n-vis');
-						$(".mck-conversation-tab-link").removeClass('vis').addClass('n-vis');
-						}
+          console.log(MCK_AGENTID);
+          console.log(isPremium);
+          var agentId= MCK_AGENTID;
+          var agentName= MCK_AGENTNAME ? MCK_AGENTNAME : MCK_AGENTID;
+          if(MCK_AGENTID ==="applozic"){
+          if(isPremium){
+            agentId = "applozic-premium";
+            MCK_GROUPNAME = "Applozic-Premium-Support";
+          }else {
+            agentId = "applozic";
+            MCK_GROUPNAME = "Applozic-Support";
+          }
+          }
+            if (window.applozic.PRODUCT_ID == 'kommunicate' && MCK_AGENTID !=="applozic") {
+                $(".mck-conversation-tab-link").removeClass('vis').addClass('n-vis');
+            }
+            if(window.applozic.PRODUCT_ID == 'kommunicate' ){
+               $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
+            }
 						var formData = "type=" + 10 + "&startIndex=" + 0
 								+ "&limit=" + 10;
 						$applozic.ajax({
@@ -2043,7 +2061,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 											groupid);
 								} else {
 									$applozic.fn.applozic('createGroup', {
-										'groupName' : 'Kommnicate',
+										'groupName' : MCK_GROUPNAME,
 										'type' : 10,
 										'admin':'agent',
 										'users' : [ {
@@ -2052,8 +2070,8 @@ var MCK_CLIENT_GROUP_MAP = [];
 											groupRole : 2,
 											roleName:"APPLICATION_WEB_ADMIN"
 										}, {
-											userId : 'agent',
-											displayName : 'Agent',
+											userId : agentId,
+											displayName : agentName,
 											groupRole : 1,
 											roleName:"APPLICATION_WEB_ADMIN"
 										} ],
