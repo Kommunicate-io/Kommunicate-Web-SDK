@@ -3,14 +3,16 @@ import  {getConfig, getEnvironmentId} from '../config/config.js';
 const fs = require('fs');
 const path = require('path');
 
-const getJsCode = () => {
+function getJsCode (){
   let options  = {};
   options.appId =localStorage.getItem("applicationId");
   options.isAnonymousChat=true;
   options.groupName="Kommunicate_support";
-  options.agentId =localStorage.getItem("loggedinUser");
+  options.agentId =localStorage.getItem("loggedinUser")||localStorage.getItem("agentId");
   if(localStorage.getItem("name")&& (localStorage.getItem("name")!="undefined"|| localStorage.getItem("name")!="null")){
   options.agentName = localStorage.getItem("name");
+  }else if(localStorage.getItem("agentName")&& (localStorage.getItem("agentName")!="undefined"|| localStorage.getItem("agentName")!="null")){
+    options.agentName = localStorage.getItem("agentName");
   }
   var env = getEnvironmentId();
   
@@ -18,8 +20,8 @@ const getJsCode = () => {
     options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
   }
   console.log(options);
-  return (
-`<script type="text/javascript">
+
+var jsScript= `<script type="text/javascript">
     (function(d, m){
       let o = ${JSON.stringify(options)};
       let s = document.createElement("script");
@@ -31,12 +33,22 @@ const getJsCode = () => {
       window.kommunicate = m;
       m._globals = o;
     })(document, window.kommunicate || {});
-</script>`
-);
+</script>`;
+console.log(jsScript);
+return jsScript;
 }
 
 const getJsInstructions = () => {
-  return `Insert the following code in your web application to install Kommunicate. You can change groupName, agentId and agentName.   It can go in the <head/> or <body/>.`
+  return `Insert the following code in your web application to install Kommunicate.
+  Default parameters are pre populated. You can change them as you need.
+  Parameters:-
+    appId - your application Id.
+    isAnonymousChat - allow your users to chat in Anonymous mode.
+    groupName - Conversation Title.  
+    agentId -  Support agent Id(registered in Kommunicate) who will reply to the support queries
+    agentName - Display name for agent(agentId is default display name).
+    
+  You can paste the script in the <head/> or <body/> tag.`
 }
 
 /* TODO : move Invite Email Template into file and replace fields dynamically.

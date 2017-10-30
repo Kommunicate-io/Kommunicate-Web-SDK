@@ -56,8 +56,8 @@ return imageLink;
     return (
       <header className="app-header navbar">
         <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&9776;</button>
-       <a href ="https://www.kommunicate.io" target="_blank" className = "a-undecorated"> 
-        <span className= "brand-name">KOMMUNICATE</span></a>
+        <Link className="nav-link" redirect to ="/dashboard">
+        <span className= "brand-name">KOMMUNICATE</span></Link>
         <ul className="nav navbar-nav d-md-down-none">
           <li className="nav-item">
             <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}></button>

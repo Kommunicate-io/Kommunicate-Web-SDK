@@ -81,15 +81,20 @@ class Step1 extends Component {
     
   }
   componentWillMount(){
-    if(this.props.location && this.props.location.pathname ==="/installation"){
-      const search = this.props.location.search;
-      const params = new URLSearchParams(this.props.location.search);
-       localStorage.setItem("applicationId",params.get('applicationId')||"your _application_id");
-       localStorage.setItem("agentId",params.get('agentId')||"default_agent_id");
-       localStorage.setItem("agentName",params.get('agentName')||"agent_display_name");
+    if(this.props.location && this.props.location.pathname ==="/installation" &&this.props.location.search){
+      //const search = encodeURIComponent(this.props.location.search);
+      let paramArray = this.props.location.search.substr(1).split("&");
+      let params = {};
+      for(var i=0;i<paramArray.length;i++){
+        var item = paramArray[i].split("=");
+        params[item[0]]=item[1];
+      }
+      console.log("search",params);
+       localStorage.setItem("applicationId",params.applicationId||"your _application_id");
+       localStorage.setItem("agentId",params.agentId||"default_agent_id");
+       localStorage.setItem("agentName",params.agentName||"agent_display_name");
       this.state.hideShowInputEmail = true;
       this.state.hideNextBtn=true;
-      
        }
   }
 
@@ -133,7 +138,7 @@ class Step1 extends Component {
             <textarea style={texAreaStyle} className="form-control" rows='16' value={this.jsInstructions} readOnly />
           </div>
           <div className="form-group col-md-7">
-            <textarea style={texAreaStyle} className="form-control" rows='16' value={this.jsScript} readOnly />
+            <textarea style={texAreaStyle} className="form-control" rows='16' value={getJsCode()} readOnly />
           </div>
         </div>
         <div className="form-group"> 
