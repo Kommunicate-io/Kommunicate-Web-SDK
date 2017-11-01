@@ -35,6 +35,10 @@ const autoSuggestController = require('../autosuggest/autosuggestController');
 const autoSuggestValidation = require('../autosuggest/validation');
 exports.autoSuggest = autoSuggestRouter;
 
+const profileImageRouter = express.Router();
+const profileImageController = require('../profileImage/profileImageController');
+exports.profileImage = profileImageRouter;
+
 home.get('/',function(req,res){
   console.log("req received at home routes");
   res.status(200).json({"message":"Welcome to kommunicate"});
@@ -67,4 +71,5 @@ autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:applicationId', autoSuggestController.getSuggestionsByAppId);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion), autoSuggestController.createSuggestion);
 chatRouter.get('/visitor',chatController.visitorChat);
+profileImageRouter.post('/', profileImageController.uploadImageToS3)
 
