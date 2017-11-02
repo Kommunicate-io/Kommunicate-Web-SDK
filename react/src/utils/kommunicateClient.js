@@ -4,6 +4,7 @@ import {getConfig} from '../config/config';
 import isEmail from 'validator/lib/isEmail';
 import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
+import FormData from 'form-data'
 
 
 
@@ -272,6 +273,26 @@ const signUpWithApplozic = (data)=>{
   });
 }
 
+const sendProfileImage = (imageFile, imageFileName) => {
+
+  const profileImageUrl = getConfig().kommunicateApi.profileImage;
+
+  console.log(imageFile)
+  console.log(imageFileName)
+
+  let data = new FormData()
+
+  data.append('file', imageFile, imageFileName)
+
+  return Promise.resolve(axios.post(profileImageUrl, data, {
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    }
+  }))
+  .then(response => response)
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -288,5 +309,6 @@ export {
   getAllSuggestions,
   createSuggestions,
   getSuggestionsByAppId,
-  signUpWithApplozic
+  signUpWithApplozic,
+  sendProfileImage
 }
