@@ -35,6 +35,8 @@ const autoSuggestController = require('../autosuggest/autosuggestController');
 const autoSuggestValidation = require('../autosuggest/validation');
 exports.autoSuggest = autoSuggestRouter;
 
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
 const profileImageRouter = express.Router();
 const profileImageController = require('../profileImage/profileImageController');
 exports.profileImage = profileImageRouter;
@@ -71,5 +73,5 @@ autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:applicationId', autoSuggestController.getSuggestionsByAppId);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion), autoSuggestController.createSuggestion);
 chatRouter.get('/visitor',chatController.visitorChat);
-profileImageRouter.post('/', profileImageController.uploadImageToS3)
+profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3)
 
