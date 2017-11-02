@@ -82,7 +82,7 @@ class Sidebar extends Component {
                          <NavLink to={'/autoreply'} className="nav-link" activeClassName="active"><i className="icon-people"></i>Configuration</NavLink>
                       </li>
             <li className="nav-item">
-             <NavLink to={'/admin'} className="nav-link" activeClassName="active"><i className="icon-magic-wand"></i> User Profile</NavLink>
+             <NavLink to={'/admin'} className="nav-link" activeClassName="active"><i className="icon-magic-wand"></i>Profile</NavLink>
             </li>
             {/*
             <li className="nav-item nav-dropdown">
