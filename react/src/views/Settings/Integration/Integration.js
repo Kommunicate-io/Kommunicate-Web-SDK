@@ -14,7 +14,7 @@ class Integration extends Component {
     super(props);
     this.applicationKey= localStorage.getItem("applicationId");
     this.state = {
-      copySuccess: 'Copy',
+      copySuccess: 'Copy To Clipboard',
       emailInstructions: false,
       multipleEmailAddress: [],
       emailAddress: ''

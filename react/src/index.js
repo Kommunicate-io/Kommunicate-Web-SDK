@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
+import ThirdPartyScripts from './utils/ThirdPartyScripts';
 
 // Containers
 import Full from './containers/Full/'
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/" name="Home" render={ ({history}) =>  localStorage.getItem('loggedinUser') ?<Full history ={history}/> : <Redirect to={{pathname: '/login'}}/> }/>
         </Switch>
       </BrowserRouter>
+      <ThirdPartyScripts/>
       </div>
     )
   }
