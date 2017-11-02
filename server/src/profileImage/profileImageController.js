@@ -2,12 +2,12 @@ const uploadProfileImageService = require('./profileImageService')
 
 exports.uploadImageToS3 = (req, res) => {
 
-	console.log(req)
-	console.log("Here is the file")
-	console.log(req.file)
-	// console.log(req.file.originalname)
-
-	// console.log(uploadProfileImageService.uploadImageToS3(req.file));
+	if(!req.file){
+		res.status(403).json({
+			code: 'FAILED_TO_UPLOAD_TO_S3',
+			message: 'Image file missing in the request'
+		})
+	}
 
 	uploadProfileImageService.uploadImageToS3(req.file)
 	.then(response => {
@@ -26,5 +26,4 @@ exports.uploadImageToS3 = (req, res) => {
 		}
 	});
 
-	// res.status(200).json({code:"uploadProfileImageController"})
 }

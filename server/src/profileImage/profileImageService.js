@@ -48,26 +48,22 @@ const uploadImageToS3 = (imageFile) => {
 	};
 
 	var fs = require('fs');
-
 	var fileStream = fs.createReadStream(imageFile.path);
 	fileStream.on('error', function(err) {
 	  console.log('File Error', err);
 	});
 
 	uploadParams.Body = fileStream;
-
 	uploadParams.Key = "profile_pic/" + imageFile.originalname;
 
-	// call S3 to retrieve upload file to specified bucket
 	var uploadPromise = s3.upload(uploadParams).promise()
-
 	return uploadPromise
 		.then(data => ({code: 'SUCCESSFUL_UPLOAD_TO_S3', profileImageUrl: data.Location}))
 		.catch(err => ({code: 'FAILED_TO_UPLOAD_TO_S3', message:'failed to upload to s3'}))
 }
 
 exports.uploadImageToS3 = (imageFile) => {
-	console.log("uploadProfileImage");
+	console.log("uploadImageToS3");
 	console.log(imageFile.originalname);
 
 	if (checkIfBucketExists) {
