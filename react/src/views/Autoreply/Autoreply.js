@@ -9,6 +9,7 @@ import {SplitButton, MenuItem} from 'react-bootstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import AutoSuggest from './AutoSuggest'
+import Welcome from './Welcome'
 
 //using moment-timezone to get a list of all the timezones...
 import moment from 'moment-timezone';
@@ -49,7 +50,7 @@ class Autoreply extends Component {
     this.setState({timezone: jstz.determine().name()})
 
     // var getTimeZone = getConfig().applozicPlugin.getTimeZoneUrl;
-    
+
     // axios({
     //        method: 'get',
     //        url:getTimeZone
@@ -113,7 +114,7 @@ class Autoreply extends Component {
 
     postAutoReply(formdata);
 
-    
+
   }
 
   toggle(tab) {
@@ -145,7 +146,7 @@ class Autoreply extends Component {
   render() {
 
     let timezonearray_id =[];
-    
+
     for(let i = 0; i <= this.state.timezonearray.length; i++){
       timezonearray_id.push(i);
     }
@@ -193,7 +194,7 @@ class Autoreply extends Component {
                   OFF HOURS
                 </NavLink>
               </NavItem>
-              <NavItem hidden= {true} >
+              <NavItem hidden= {false} >
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}
                   onClick={() => { this.toggle('2'); }}
@@ -284,18 +285,7 @@ class Autoreply extends Component {
                 </div>
               </TabPane>
               <TabPane tabId="2">
-                <div className="animated fadeIn">
-                  <div className="row">
-                    <div className="col-sm-12 col-md-12">
-                      <div className="card">
-                        <div className="card-header">
-                          <div className="card-block">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <Welcome/>
               </TabPane>
               <TabPane tabId="3">
                 <AutoSuggest />
