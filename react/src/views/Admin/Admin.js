@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import  {getEnvironmentId,get} from '../../config/config.js';
 
-import {patchCustomerInfo, getCustomerInfo, getUserInfo} from '../../utils/kommunicateClient' 
+import {patchCustomerInfo, getCustomerInfo, getUserInfo, sendProfileImage} from '../../utils/kommunicateClient'
+
+import Notification from '../model/Notification';
 
 class Forms extends Component {
   constructor(props) {
@@ -15,7 +17,8 @@ class Forms extends Component {
       companyname: '',
       companysize: '',
       industry: '',
-      industryOthers: ''
+      industryOthers: '',
+      imageFile: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -78,22 +81,64 @@ handleKeyPress(event) {
     const files = e.target.files;
     const file = files[0];
 
-    let img = document.createElement("img")
-    img.height = 90
-    img.width = 60
-    img.classList.add("obj")
-    img.file = file
+    this.setState({imageFile: file})
+
+    console.log(file)
+
+    let imageTypeRegex = /^image\//
 
     let thumbnail = document.getElementById("thumbnail")
-    while(thumbnail.hasChildNodes()) {
-       thumbnail.removeChild(thumbnail.firstChild)
-    }
-    thumbnail.appendChild(img)
 
-    let reader = new FileReader()
-    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-    reader.readAsDataURL(file)
+    while(thumbnail.hasChildNodes()) {
+      thumbnail.removeChild(thumbnail.firstChild)
+    }
+
+    if(imageTypeRegex.test(file.type) && file.size <= 5000000){
+      let img = document.createElement("img")
+      img.height = 90
+      img.width = 60
+      img.classList.add("obj")
+      img.file = file
+
+      thumbnail.appendChild(img)
+
+      let reader = new FileReader()
+      reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+      reader.readAsDataURL(file)
+
+    }else if(!imageTypeRegex.test(file.type)){
+      Notification.info("Please select a image file")
+      return
+    }else if(file.size > 5000000){
+      Notification.info("Size exceeds 5MB")
+      return
+    }
+
   }
+
+  uploadImageToS3 = (e) => {
+    e.preventDefault()
+    let thumbnail = document.getElementById("thumbnail")
+    if(thumbnail.hasChildNodes()) {
+      let file = this.state.imageFile
+      sendProfileImage(file, localStorage.getItem("loggedinUser"))
+      .then(response => {
+        console.log(response)
+        if(response.data.code === "SUCCESSFUL_UPLOAD_TO_S3"){
+          Notification.info(response.data.message)
+        }else if(response.data.code === "FAILED_TO_UPLOAD_TO_S3"){
+          Notification.info(response.data.message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        Notification.info("Error in uploading image")
+      })
+    }else {
+      Notification.info("No file to upload")
+    }
+  }
+
 
   componentWillMount() {
 
@@ -158,6 +203,19 @@ handleKeyPress(event) {
               <div className="card-block">
                 <form method= "patch" onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
                   <div className="form-group row">
+                    <label className="col-md-3 form-control-label" htmlFor="email-input">Profile Image</label>
+                    <div className="col-md-9">
+                      <input type="file" accept="image/*" className="form-control" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} style={{display:"none"}} />
+                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
+                      <div>
+                        <span>Please select a file less than 5MB</span>
+                      </div>
+                      <div id="thumbnail">
+                      </div>
+                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
+                    </div>
+                  </div>
+                  <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="admin-name">Admin Name</label>
                     <div className="col-md-9">
                       <input type="text" id="admin-name" name="admin-name" onChange = {(event) => this.setState({name:event.target.value})} value={this.state.name} className="form-control" placeholder="Enter your name"/>
@@ -217,15 +275,6 @@ handleKeyPress(event) {
                          <option value="100">100</option>
                           <option value="500">500</option>
                       </select>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="email-input">Upload Image</label>
-                    <div className="col-md-9">
-                      <input type="file" accept="image/*" className="form-control" id="hidden-image-input-element" name="image-input" onChange={this.handleImageFiles} style={{display:"none"}} />
-                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-cloud-upload"></i> Upload Image</button>
-                      <div id="thumbnail">
-                      </div>
                     </div>
                   </div>
                   <div className="card-footer">
