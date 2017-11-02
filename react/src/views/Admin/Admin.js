@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import  {getEnvironmentId,get} from '../../config/config.js';
 
-import {patchCustomerInfo, getCustomerInfo, getUserInfo, sendProfileImage} from '../../utils/kommunicateClient'
+import {patchCustomerInfo, getCustomerInfo, getUserInfo, sendProfileImage, updateApplozicUser} from '../../utils/kommunicateClient'
 
 import Notification from '../model/Notification';
 
@@ -125,7 +125,13 @@ handleKeyPress(event) {
       .then(response => {
         console.log(response)
         if(response.data.code === "SUCCESSFUL_UPLOAD_TO_S3"){
+          
+          updateApplozicUser({imageLink: response.data.profileImageUrl})
+            .then(response => {console.log(response)})
+            .catch(err => {console.log(response)})
+
           Notification.info(response.data.message)
+
         }else if(response.data.code === "FAILED_TO_UPLOAD_TO_S3"){
           Notification.info(response.data.message)
         }

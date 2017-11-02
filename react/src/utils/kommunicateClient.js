@@ -293,6 +293,25 @@ const sendProfileImage = (imageFile, imageFileName) => {
   .then(response => response)
 }
 
+const updateApplozicUser = (userInfo) => {
+
+  const headers = {
+      'Content-Type':'application/json',
+      'Apz-AppId': localStorage.getItem("applicationId"),
+      'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+      // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
+    }
+
+  console.log(userInfo)
+
+  const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;
+
+  return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
+    headers: headers
+  })).then(response => {console.log(response); return response})
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -310,5 +329,6 @@ export {
   createSuggestions,
   getSuggestionsByAppId,
   signUpWithApplozic,
-  sendProfileImage
+  sendProfileImage,
+  updateApplozicUser,
 }
