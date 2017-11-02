@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import  {getConfig} from '../../.../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 
-import {getJsCode} from '../../../utils/customerSetUp';
+import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
 import {notifyThatEmailIsSent} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 
@@ -90,19 +90,23 @@ class Integration extends Component {
   render() {
     return (
       <div className="animated fadeIn">
+        
         <div className="row">
+          
           <div className="col-sm-12 col-md-12">
             <div className="card">
+            <div className ="row"><h4 className="instruction-heading">Add Chat in your product within a minute!</h4></div>
               <div className="card-header">
               <div className="card-block">
                <div>
                 <form>
-                  <div className="form-group">
-                    <textarea cols='117' rows='16'
-                      ref={(textarea) => this.textArea = textarea}
-                      value={this.script }
-                      readOnly
-                    />
+                  <div className="row">
+                    <div className="form-group col-md-5">
+                     <textarea  className="form-group instruction-text-area" rows='16' value={getJsInstructions()} readOnly />
+                    </div>
+                    <div className="form-group col-md-7">
+                      <textarea className="form-group script-text-area" ref={(textarea) => this.textArea = textarea} rows='16' value={this.script} readOnly />
+                    </div>
                   </div>
                   {
                     document.queryCommandSupported('copy') &&
