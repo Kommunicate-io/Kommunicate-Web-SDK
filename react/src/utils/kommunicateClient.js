@@ -4,6 +4,7 @@ import {getConfig} from '../config/config';
 import isEmail from 'validator/lib/isEmail';
 import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
+import FormData from 'form-data'
 
 
 
@@ -272,6 +273,45 @@ const signUpWithApplozic = (data)=>{
   });
 }
 
+const sendProfileImage = (imageFile, imageFileName) => {
+
+  const profileImageUrl = getConfig().kommunicateApi.profileImage;
+
+  console.log(imageFile)
+  console.log(imageFileName)
+
+  let data = new FormData()
+
+  data.append('file', imageFile, imageFileName)
+
+  return Promise.resolve(axios.post(profileImageUrl, data, {
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    }
+  }))
+  .then(response => response)
+}
+
+const updateApplozicUser = (userInfo) => {
+
+  const headers = {
+      'Content-Type':'application/json',
+      'Apz-AppId': localStorage.getItem("applicationId"),
+      'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+      // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
+    }
+
+  console.log(userInfo)
+
+  const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;
+
+  return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
+    headers: headers
+  })).then(response => {console.log(response); return response})
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -288,5 +328,7 @@ export {
   getAllSuggestions,
   createSuggestions,
   getSuggestionsByAppId,
-  signUpWithApplozic
+  signUpWithApplozic,
+  sendProfileImage,
+  updateApplozicUser,
 }

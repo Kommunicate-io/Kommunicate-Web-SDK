@@ -35,7 +35,8 @@ var config = {
       statsUrl:baseurl.prod.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
       autoreplyUrl:'https://api.kommunicate.io/users/',
       getTimeZoneUrl:'https://api.kommunicate.io/misc/tz',
-      createApplozicUser: baseurl.prod.baseUrl+"/rest/ws/user/v2/create"
+      createApplozicUser: baseurl.prod.baseUrl+"/rest/ws/user/v2/create",
+      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
     },kommunicateApi:{
       login:baseurl.prod.kommunicateAPI+"/login",
       signup:baseurl.prod.kommunicateAPI+"/customers",
@@ -47,7 +48,8 @@ var config = {
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.prod.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.prod.kommunicateAPI+"/autoSuggest"
+      autoSuggest :baseurl.prod.kommunicateAPI+"/autoSuggest",
+      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
   },
@@ -68,7 +70,8 @@ var config = {
       statsUrl:baseurl.dashboard.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
       autoreplyUrl:'http://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'http://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: baseurl.dashboard.baseUrl+'/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.dashboard.baseUrl+'/rest/ws/user/v2/create',
+      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
     },kommunicateApi:{
       login:"https://api.kommunicate.io/login",
       signup:"https://api.kommunicate.io/customers",
@@ -80,7 +83,8 @@ var config = {
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.dashboard.kommunicateAPI+"/autoSuggest"
+      autoSuggest :baseurl.dashboard.kommunicateAPI+"/autoSuggest",
+      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
   },
@@ -101,7 +105,8 @@ var config = {
       devUrl:baseurl.test.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'https://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: baseurl.test.baseUrl+'/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.test.baseUrl+'/rest/ws/user/v2/create',
+      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
     },kommunicateApi:{
       login:"https://api-test.kommunicate.io/login",
       signup:"https://api-test.kommunicate.io/customers",
@@ -113,7 +118,8 @@ var config = {
       activateAccountUrl:"https://dashboard-test.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.test.kommunicateAPI+"/autoSuggest"
+      autoSuggest :baseurl.test.kommunicateAPI+"/autoSuggest",
+      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
 
@@ -135,7 +141,8 @@ var config = {
       devUrl:baseurl.default.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'https://api-test.kommunicate.io/misc/tz',
-      createApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/v2/create'
+      createApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/v2/create',
+      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
     },
     kommunicateApi:{
       login:baseurl.default.kommunicateAPI+"/login",
@@ -148,7 +155,8 @@ var config = {
       logo:baseurl.default.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:baseurl.default.kommunicateAPI+"/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
-      autoSuggest :baseurl.default.kommunicateAPI+"/autoSuggest"
+      autoSuggest :baseurl.default.kommunicateAPI+"/autoSuggest",
+      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
   }

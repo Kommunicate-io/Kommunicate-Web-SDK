@@ -62,6 +62,7 @@ app.use('/misc',routes.misc);
 app.use('/autoSuggest',routes.autoSuggest);
 app.use('/signUpWithApplozic',routes.signUpWithApplozic);
 app.use('/chat',routes.chat);
+app.use('/profileImage',routes.profileImage);
 
 function startApp() {
     app.listen(port, function () {
