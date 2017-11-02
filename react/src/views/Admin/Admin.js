@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import  {getEnvironmentId,get} from '../../config/config.js';
-
 import {patchCustomerInfo, getCustomerInfo, getUserInfo, sendProfileImage, updateApplozicUser} from '../../utils/kommunicateClient'
-
 import Notification from '../model/Notification';
+import ImageUploader from './ImageUploader'
 
 class Forms extends Component {
   constructor(props) {
@@ -65,87 +64,6 @@ handleKeyPress(event) {
     e.preventDefault();
   }
 
-  invokeImageUpload = (e) => {
-    e.preventDefault()
-
-    let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
-    
-    if(hiddenImageInputElem){
-      hiddenImageInputElem.click()
-    }
-  }
-
-  handleImageFiles = (e) => {
-    e.preventDefault()
-
-    const files = e.target.files;
-    const file = files[0];
-
-    this.setState({imageFile: file})
-
-    console.log(file)
-
-    let imageTypeRegex = /^image\//
-
-    let thumbnail = document.getElementById("thumbnail")
-
-    while(thumbnail.hasChildNodes()) {
-      thumbnail.removeChild(thumbnail.firstChild)
-    }
-
-    if(imageTypeRegex.test(file.type) && file.size <= 5000000){
-      let img = document.createElement("img")
-      img.height = 90
-      img.width = 60
-      img.classList.add("obj")
-      img.file = file
-
-      thumbnail.appendChild(img)
-
-      let reader = new FileReader()
-      reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-      reader.readAsDataURL(file)
-
-    }else if(!imageTypeRegex.test(file.type)){
-      Notification.info("Please select a image file")
-      return
-    }else if(file.size > 5000000){
-      Notification.info("Size exceeds 5MB")
-      return
-    }
-
-  }
-
-  uploadImageToS3 = (e) => {
-    e.preventDefault()
-    let thumbnail = document.getElementById("thumbnail")
-    if(thumbnail.hasChildNodes()) {
-      let file = this.state.imageFile
-      sendProfileImage(file, localStorage.getItem("loggedinUser"))
-      .then(response => {
-        console.log(response)
-        if(response.data.code === "SUCCESSFUL_UPLOAD_TO_S3"){
-          
-          updateApplozicUser({imageLink: response.data.profileImageUrl})
-            .then(response => {console.log(response)})
-            .catch(err => {console.log(response)})
-
-          Notification.info(response.data.message)
-
-        }else if(response.data.code === "FAILED_TO_UPLOAD_TO_S3"){
-          Notification.info(response.data.message)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        Notification.info("Error in uploading image")
-      })
-    }else {
-      Notification.info("No file to upload")
-    }
-  }
-
-
   componentWillMount() {
 
     console.log("Admin will mount");
@@ -202,6 +120,11 @@ handleKeyPress(event) {
       <div className="animated fadeIn">
         <div className="row">
           <div className="col-md-12">
+            <ImageUploader 
+              handleImageFiles={this.handleImageFiles}
+              invokeImageUpload={this.invokeImageUpload}
+              uploadImageToS3={this.uploadImageToS3}
+            />
             <div className="card">
               <div className="card-header">
                 <strong>Admin Profile Form</strong>
@@ -209,20 +132,7 @@ handleKeyPress(event) {
               <div className="card-block">
                 <form method= "patch" onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="email-input">Profile Image</label>
-                    <div className="col-md-9">
-                      <input type="file" accept="image/*" className="form-control" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} style={{display:"none"}} />
-                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
-                      <div>
-                        <span>Please select a file less than 5MB</span>
-                      </div>
-                      <div id="thumbnail">
-                      </div>
-                      <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="admin-name">Admin Name</label>
+                    <label className="col-md-3 form-control-label" htmlFor="admin-name">Display Name</label>
                     <div className="col-md-9">
                       <input type="text" id="admin-name" name="admin-name" onChange = {(event) => this.setState({name:event.target.value})} value={this.state.name} className="form-control" placeholder="Enter your name"/>
                       <span className="help-block">Enter your name</span>
@@ -236,7 +146,7 @@ handleKeyPress(event) {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="role-input">Role</label>
+                    <label className="col-md-3 form-control-label" htmlFor="role-input">Designation</label>
                     <div className="col-md-9">
                       <input type="text" id="role-input" name="role-input" onChange = {(event) => this.setState({role:event.target.value})} value={this.state.role} className="form-control" placeholder="Role within the organization"/>
                       <span className="help-block">Please enter your role within the organization</span>
@@ -283,11 +193,11 @@ handleKeyPress(event) {
                       </select>
                     </div>
                   </div>
-                  <div className="card-footer">
-                    <button type="submit" className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Submit</button>
-                    <button type="reset" className="btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
-                  </div>
                 </form>
+              </div>
+              <div className="card-footer">
+                <button type="submit" className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Submit</button>
+                <button type="reset" className="btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
               </div>
             </div>
           </div>
