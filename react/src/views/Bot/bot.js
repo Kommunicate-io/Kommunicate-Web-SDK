@@ -3,20 +3,22 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-
+import BotDescription from './BotDescription.js';
 class Tabs extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       activeTab: '1',
+      descriptionType :"ADD_BOT",
+      descriptionHeader:"Step 1",
       userid: '',
       username: '',
       password:'',
       role :'',
       bot: '',
       ctoken: '',
-      platform:'',
+      platform:'api.ai',
       dtoken :''
     };
   this.handleSubmit = this.handleSubmit.bind(this);
@@ -73,7 +75,7 @@ class Tabs extends Component {
           }
        });
      }
-
+     // creating bot
     handleSubmit(event) {
         var applicationId =localStorage.getItem("applicationId");
         var username = localStorage.getItem("loggedinUser");
@@ -141,7 +143,7 @@ class Tabs extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '1' })}
-                  onClick={() => { this.toggle('1'); }}
+                  onClick={() => { this.toggle('1'); this.state.descriptionType = "ADD_BOT",this.state.descriptionHeader="Step 1"}}
                 >
                   Add Bot
                 </NavLink>
@@ -149,7 +151,7 @@ class Tabs extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}
-                  onClick={() => { this.toggle('2'); }}
+                  onClick={() => { this.toggle('2'); this.state.descriptionType = "CONFIGURE_BOT", this.state.descriptionHeader="Step 2"}}
                 >
                   Configure Bot
                 </NavLink>
@@ -158,21 +160,20 @@ class Tabs extends Component {
             <TabContent activeTab={this.state.activeTab}>
               <TabPane tabId="1">
                 <div className="animated fadeIn">
-       <form onSubmit={this.handleSubmit}>
         <div className="row">
         <div className="col-md-12">
             <div className="card">
               <div className="card-block">
                 <form className="form-horizontal">
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Userid</label>
+                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Bot Id</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-userid" name="hf-userid"  onChange = {(event) => this.setState({userid:event.target.value})} className="form-control" placeholder="Enter Userid"/>
-                      <span className="help-block">Please enter your userid</span>
+                      <input type="text" id="hf-userid" name="hf-userid"  onChange = {(event) => this.setState({userid:event.target.value})} className="form-control" placeholder="Enter unique bot id"/>
+                      <span className="help-block">Please enter unique bot id</span>
                     </div>
                   </div>
                    <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Username</label>
+                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Display Name</label>
                     <div className="col-md-9">
                       <input type="text" id="hf-username" onChange = {(event) => this.setState({username:event.target.value})} name="hf-username" className="form-control" placeholder="Enter Username"/>
                       <span className="help-block">Please enter your username</span>
@@ -185,7 +186,7 @@ class Tabs extends Component {
                       <span className="help-block">Please enter your password</span>
                     </div>
                   </div>
-                  <div className="form-group row">
+                  <div className="form-group row" hidden>
                     <label className="col-md-3 form-control-label" htmlFor="hf-role">Role</label>
                     <div className="col-md-9">
                       <input type="text" id="hf-role" name="hf-role"  onChange = {(event) => this.setState({role:event.target.value})}className="form-control" placeholder="Enter Role"/>
@@ -195,13 +196,12 @@ class Tabs extends Component {
                 </form>
               </div>
                <div className="card-footer">
-                <button type="submit" className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Submit</button>
+                <button type="submit" className="btn btn-sm btn-primary" onClick ={this.handleSubmit}><i className="fa fa-dot-circle-o"></i> Submit</button>
                 <button type="reset" className="btn btn-sm btn-danger"><i className="fa fa-ban"></i> Reset</button>
               </div>
               </div>
               </div>
               </div>
-              </form>
             </div>
               </TabPane>
               <TabPane tabId="2">
@@ -220,9 +220,9 @@ class Tabs extends Component {
 
                     </div>
                   </div>
-              <div >
+              <div hidden>
                   <select id="platform" onChange = {(event) => this.setState({platform:event.target.value})} >
-                  <option selected="" >Platform</option>
+                  <option selected="" >Api.ai</option>
                   <option value="Api.ai" >Api.ai</option>
                   <option value="Message.ai">Message.ai</option>
                   </select>
@@ -258,6 +258,9 @@ class Tabs extends Component {
       </div>
               </TabPane>
             </TabContent>
+          </div>
+          <div className="col-md-6 mb-4">
+            <BotDescription type ={this.state.descriptionType} header={this.state.descriptionHeader} />
           </div>
         </div>
       </div>
