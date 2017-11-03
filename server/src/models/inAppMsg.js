@@ -6,14 +6,15 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
-    c_id: {
-      type: DataTypes.INTEGER
+    customer_Id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     event_id: {
-      type: DataTypes.STRING(50)
+      type: DataTypes.INTEGER
     },
     message: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.TEXT(LONG),
       allowNull: false,
     },
     status: {
