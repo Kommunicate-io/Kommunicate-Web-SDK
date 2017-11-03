@@ -302,6 +302,8 @@ const updateApplozicUser = (userInfo) => {
       // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
     }
 
+  console.log(headers)
+
   console.log(userInfo)
 
   const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;

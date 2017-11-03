@@ -61,7 +61,7 @@ class ImageUploader extends Component{
     let thumbnail = document.getElementById("thumbnail")
     if(thumbnail.hasChildNodes()) {
       let file = this.state.imageFile
-      sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}`)
+      sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}.${file.name.split('.').pop()}`)
       .then(response => {
         console.log(response)
         if(response.data.code === "SUCCESSFUL_UPLOAD_TO_S3"){
@@ -69,6 +69,8 @@ class ImageUploader extends Component{
           updateApplozicUser({imageLink: response.data.profileImageUrl})
             .then(response => {console.log(response)})
             .catch(err => {console.log(response)})
+
+          localStorage.setItem("imageLink", response.data.profileImageUrl)
 
           Notification.info(response.data.message)
 
