@@ -11,7 +11,7 @@ class Header extends Component {
     this.state = {
       dropdownOpen: false,
       imageLink :localStorage.getItem("imageLink")==null?"img/avatars/default.png":localStorage.getItem("imageLink"),
-      displayName: localStorage.getItem("loggedinUser")
+      displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
     };
   }
 
