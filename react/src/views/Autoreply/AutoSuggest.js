@@ -71,6 +71,9 @@ class AutoSuggest extends Component{
 						Notification.info("There was problem in creating the suggestion.");
 					}
 				})
+				.catch(err => {
+					console.log(err)
+				})
 		}
 	}
 
