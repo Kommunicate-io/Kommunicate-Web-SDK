@@ -17,7 +17,7 @@ const config ={
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
         groupInfoUrl: "https://chat.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
-        createBotUrl: "http://topioslibraries.com/bot",
+        createBotUrl: "https://bots.applozic.com/bot",
         sendMessageUrl: "https://chat.kommunicate.io/rest/ws/message/v2/send",
         hostUrl: "https://api.kommunicate.io",
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",

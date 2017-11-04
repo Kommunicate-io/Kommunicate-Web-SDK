@@ -61,7 +61,7 @@ handlePasswordResetResponse=(response)=>{
   !response.err?this.backToLogin():null;
 }
 handlePasswordResetError=(response)=>{
-  var err = response.response.data?response.response.data.message:"Somethimg went wrong! ";
+  var err =(response.response&&response.response.data)?response.response.data.message:"Somethimg went wrong! ";
   Notification.error(err);
   console.log(response);
 }

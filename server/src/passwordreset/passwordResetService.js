@@ -90,26 +90,12 @@ exports.updatePassword = (newPassword,prRequest)=>{
       bcrypt.hash(newPassword,10),
       userService.getByUserNameAndAppId(prRequest.userName,prRequest.applicationId)
     ]).then(([isadmin,hash,user])=>{
-      // note : if it is admin then change the password for default agent and admin 
-      if(isadmin){
-        return userService.getByUserNameAndAppId("agent",prRequest.applicationId).then(agent=>{
-          return Promise.all([applozicClient.updatePassword({userName:agent.userName,newPassword:newPassword,oldPassword:agent.accessToken,applicationId:prRequest.applicationId}),
-            applozicClient.updatePassword({userName:prRequest.userName,newPassword:newPassword,oldPassword:user.accessToken,applicationId:prRequest.applicationId}),
-            db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:agent.id},transaction:t}),
-            db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t})
-          ]).then(([res1,res2,res3,res4])=>{
-            console.log("password updated successfully in all dbs for admin", user.userName);
-            return {"code":"SUCCESS"}
-          });
-        });
-      }else{
-          return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:prrequest.applicationId,userName:prRequest.userName}),
+          return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:prRequest.applicationId,userName:prRequest.userName}),
             db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t})
           ]).then(([res1,res2])=>{
             console.log("password updated successfully in all dbs for agent", user.userName);
             return {"code":"SUCCESS"}
           });
-      };
     }).then(response=>{
         return db.PasswordResetRequest.update({status:PASSWORD_RESET_REQUEST_STATUS.PROCESSED},{where:{id:prRequest.id},transaction:t}).then(response=>{
           console.log("password reset request updated ", prRequest.id);
