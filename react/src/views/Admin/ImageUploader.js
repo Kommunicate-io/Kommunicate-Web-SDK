@@ -52,22 +52,19 @@ class ImageUploader extends Component{
         reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
         reader.readAsDataURL(file)
 
-      } else if ( !imageTypeRegex.test(file.type) ) {
-        Notification.info("Please select a image file")
-        return
       } else if ( file.size > 5000000 ) {
         Notification.info("Size exceeds 5MB")
         return
       }
     }
-
   }
 
   uploadImageToS3 = (e) => {
     e.preventDefault()
     let thumbnail = document.getElementById("thumbnail")
-    if(thumbnail.hasChildNodes()) {
-      let file = this.state.imageFile
+    let imageTypeRegex = /^image\//
+    let file = this.state.imageFile
+    if(thumbnail.hasChildNodes() && file && imageTypeRegex.test(file.type) ) {
       sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}.${file.name.split('.').pop()}`)
       .then(response => {
         console.log(response)
