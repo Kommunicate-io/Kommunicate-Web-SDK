@@ -5,6 +5,10 @@ import Notification from '../model/Notification';
 
 class ImageUploader extends Component{
 
+  state = {
+    imageFile: undefined
+  }
+
   invokeImageUpload = (e) => {
     e.preventDefault()
 
@@ -29,29 +33,32 @@ class ImageUploader extends Component{
 
     let thumbnail = document.getElementById("thumbnail")
 
-    while(thumbnail.hasChildNodes()) {
-      thumbnail.removeChild(thumbnail.firstChild)
-    }
+    if ( file && imageTypeRegex.test(file.type) ) {
+      
+      while(thumbnail.hasChildNodes()) {
+        thumbnail.removeChild(thumbnail.firstChild)
+      }
 
-    if(imageTypeRegex.test(file.type) && file.size <= 5000000){
-      let img = document.createElement("img")
-      img.height = 90
-      img.width = 60
-      img.classList.add("obj")
-      img.file = file
+      if ( file.size <= 5000000 ) {
+        let img = document.createElement("img")
+        img.height = 90
+        img.width = 60
+        img.classList.add("obj")
+        img.file = file
 
-      thumbnail.appendChild(img)
+        thumbnail.appendChild(img)
 
-      let reader = new FileReader()
-      reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
-      reader.readAsDataURL(file)
+        let reader = new FileReader()
+        reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+        reader.readAsDataURL(file)
 
-    }else if(!imageTypeRegex.test(file.type)){
-      Notification.info("Please select a image file")
-      return
-    }else if(file.size > 5000000){
-      Notification.info("Size exceeds 5MB")
-      return
+      } else if ( !imageTypeRegex.test(file.type) ) {
+        Notification.info("Please select a image file")
+        return
+      } else if ( file.size > 5000000 ) {
+        Notification.info("Size exceeds 5MB")
+        return
+      }
     }
 
   }
@@ -68,7 +75,7 @@ class ImageUploader extends Component{
           
           updateApplozicUser({imageLink: response.data.profileImageUrl})
             .then(response => {console.log(response)})
-            .catch(err => {console.log(response)})
+            .catch(err => {console.log(err)})
 
           localStorage.setItem("imageLink", response.data.profileImageUrl)
 
