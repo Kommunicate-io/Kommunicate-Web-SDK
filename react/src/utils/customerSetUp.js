@@ -7,13 +7,13 @@ function getJsCode (){
   let options  = {};
   options.appId =localStorage.getItem("applicationId");
   options.isAnonymousChat=true;
-  options.groupName="Kommunicate_support";
   options.agentId =localStorage.getItem("loggedinUser")||localStorage.getItem("agentId");
   if(localStorage.getItem("name")&& localStorage.getItem("name")!="undefined"&& localStorage.getItem("name")!="null"){
   options.agentName = localStorage.getItem("name");
   }else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
     options.agentName = localStorage.getItem("agentName");
   }
+  options.groupName=options.agentName||options.agentId;
   var env = getEnvironmentId();
   
   if(env=="test"||env=="development"){

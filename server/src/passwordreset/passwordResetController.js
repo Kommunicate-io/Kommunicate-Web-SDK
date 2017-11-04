@@ -54,15 +54,20 @@ exports.updatePassword= (req,res)=>{
     return;
   }else{
     Promise.resolve(passwordResetService.getPasswordResetRequestByCodeAndStatus(req.body.code,passwordResetService.PASSWORD_RESET_REQUEST_STATUS.PENDING)).then(prRequest=>{
+      if(!prRequest){
+        console.log("password reset code expired.");
+        res.status(200).json({code:"CODE_EXPIRED","message":"Password reset code is expired. Please request new one!"});
+        return;
+      }
       return passwordResetService.updatePassword(newPassword,prRequest).then(result=>{
         if(result){
           console.log("result",result);
-          res.status(200).json({status:"SUCCESS"});
+          res.status(200).json({code:"SUCCESS"});
         }
     })
   }).catch(err=>{
     console.log("err while updating password",err);
-    res.status(500).json({status:"INTERNAL_SERVER_ERROR"});
+    res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
   })
 }
 }

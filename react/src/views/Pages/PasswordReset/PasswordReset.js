@@ -38,9 +38,16 @@ class PasswordReset extends React.Component{
   updatePassword = (event)=>{
     if(this.state.newPassword === this.state.confirmPassword){
       updatePassword({newPassword:this.state.newPassword,code:this.state.code}).then(result=>{
+        console.log("update password response",result);
+        if(result.data.code==="SUCCESS"){
         alert("Password updated successfully. Please login!");
         //window.location(getConfig().homeUrl+"/login");
         this.props.history.replace('/login');
+        }else if(result.data.code==="CODE_EXPIRED"){
+          alert("password reset link is expired. Please generate new link.")
+        }else{
+          throw new Error("error");
+        }
       }).catch(err=>{
         console.log(err);
         alert("something went wrong");
