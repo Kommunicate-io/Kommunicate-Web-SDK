@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { getConfig } from "../../.../../../config/config.js";
 import isEmail from "validator/lib/isEmail";
 
-import { getJsCode, getJsInstructions } from "../../../utils/customerSetUp";
-import { notifyThatEmailIsSent } from "../../../utils/kommunicateClient";
-import Notification from "../../model/Notification";
+import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
+import ValidationUtils from '../../../utils/validationUtils'
+import {notifyThatEmailIsSent} from '../../../utils/kommunicateClient';
+import Notification from '../../model/Notification';
 
 import "./multiple-email.css";
 
@@ -77,17 +78,10 @@ class Integration extends Component {
     }
   };
 
-  checkForSpace = e => {
-    if (
-      (e.keyCode === 0 || e.keyCode === 32 || e.keyCode === 13) &&
-      this.state.emailAddress.length > 0
-    ) {
-      this.setState({
-        multipleEmailAddress: this.state.multipleEmailAddress.concat([
-          this.state.emailAddress
-        ])
-      });
-      this.setState({ emailAddress: "" });
+  checkForSpace = (e) => {
+    if((e.keyCode === 0 || e.keyCode === 32 || e.keyCode === 13) && ValidationUtils.isValidEmail(this.state.emailAddress)) {
+      this.setState({multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress])})
+      this.setState({emailAddress: ''})
     }
     // console.log(this.state.multipleEmailAddress)
     // console.log(this.state.emailAddress)
