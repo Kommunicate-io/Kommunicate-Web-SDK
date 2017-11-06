@@ -8951,4 +8951,8 @@ hr.transparent {
  }
  .a-undecorated{
   text-decoration:none !important;
+ 
+}
+.a-unclickable{
+  pointer-events: none;
 }

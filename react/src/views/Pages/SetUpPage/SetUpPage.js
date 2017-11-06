@@ -15,7 +15,8 @@ class SetUpPage extends Component {
 
 		this.state = {
 			step: 1,
-			isSelectStepHidden:false
+			isSelectStepHidden:false,
+			disableAncher:true
 		}
 	}
 
@@ -27,6 +28,11 @@ class SetUpPage extends Component {
 
 	componentDidMount() {
 	}
+	componentWillMount(){
+		if(this.props.location && this.props.location.pathname ==="/installation" &&this.props.location.search){
+			this.state.disableAncher=false;
+			 }
+	}
 	
 
   render() {
@@ -34,7 +40,8 @@ class SetUpPage extends Component {
   		<div className="app">
 	  		<header className="app-header navbar">
         		<button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
-				<a href ="https://www.kommunicate.io" target="_blank" className = "a-undecorated"> <img src="/img/km-logo.png" height="50" width="33"></img>
+				
+				<a href ="https://www.kommunicate.io" target="_blank" className = {this.state.disableAncher?"a-undecorated a-unclickable":"a-undecorated"}> <img src="/img/km-logo.png" height="50" width="33"></img>
         		<span className= "brand-name">KOMMUNICATE</span></a>
         	</header>
   			<div className="row justify-content-center">
