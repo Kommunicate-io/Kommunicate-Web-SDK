@@ -17,7 +17,7 @@ function initAutoSuggestions() {
 
   for(autoSuggest in autoSuggestions){
     $('#mck-text-box').atwho({
-      at: `#${autoSuggest}`,
+      at: `/${autoSuggest}`,
       insertTpl: '${content}',
       displayTpl: '<li>${name} <small>${content}</small></li>',
       data: autoSuggestions[autoSuggest]
