@@ -34,7 +34,7 @@ constructor(props){
     loginButtonDisabled:false,
     isForgotPwdHidden:false
   }
-  this.state=this.initialState;
+  this.state=Object.assign({},this.initialState);
   this.submitForm = this.submitForm.bind(this);
 }
 
