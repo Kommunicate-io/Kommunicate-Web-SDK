@@ -3,6 +3,8 @@ import validator from 'validator';
 
 import Notification from '../model/Notification';
 import { getAllSuggestions, getSuggestionsByAppId, createSuggestions }  from '../../utils/kommunicateClient'
+import axios from 'axios';
+import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 
 
 class Welcome extends Component{
@@ -16,7 +18,22 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
 
   }
   submitWelcomeMessage = () => {
-    console.log(this.state.msg);
+     var applicationId =localStorage.getItem("applicationId");
+     var userId =localStorage.getItem("loggedinUser");
+     console.log(applicationId,userId);
+     var setWelcomeMessageUrl = getConfig().kommunicateApi.setWelcomeMessage;
+     axios({
+      method: 'post',
+      url:setWelcomeMessageUrl+applicationId+"/welcomeMessage",
+      data:{
+            "applicationId" : applicationId,
+            "message" : this.state.msg,
+            "userId" : "suarj@applozic.com",
+            "event" : "onwelcomepageload"
+          }
+       }).then(function(response){
+         console.log("message successfully send");
+       })
 
 	}
 render(){

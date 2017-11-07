@@ -6,16 +6,18 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
-    customer_Id: {
+    customerId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field : customer_id
     },
-    event_id: {
+    eventId: {
       type: DataTypes.INTEGER
     },
     message: {
       type: DataTypes.TEXT(LONG),
       allowNull: false,
+      field: event_id
     },
     status: {
       type: DataTypes.INTEGER,
