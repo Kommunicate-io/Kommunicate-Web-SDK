@@ -1712,9 +1712,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_btn_leave_group
                   .removeClass("vis")
                   .addClass("n-vis");
-                $(".mck-conversation-tab-link")
-                  .removeClass("vis")
-                  .addClass("n-vis");
               }
               var formData = "type=" + 10 + "&startIndex=" + 0 + "&limit=" + 10;
               $applozic.ajax({
