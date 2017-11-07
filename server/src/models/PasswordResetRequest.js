@@ -18,7 +18,7 @@ module.exports = (sequelize,DataTypes)=>{
      field: 'application_id'
    },
    authenticationCode:{
-     type:DataTypes.STRING,
+     type:DataTypes.STRING(36),
      allowNull: false,
      field: 'authentication_code',
      unique:true
