@@ -3806,3 +3806,11 @@ fill:white;
 .emoji-menu div {
 	width:100% !important;
 }
+mck-tab-link{
+	padding:5px;
+}
+#mck-msg-new{
+	background-color:#7767B4 !important;
+	color:white;
+	border-color: #7767B4 !important;
+}
