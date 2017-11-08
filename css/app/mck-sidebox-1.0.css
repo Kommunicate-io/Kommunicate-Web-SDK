@@ -3465,7 +3465,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	height: 14px;
 	border: 1px solid rgb(169, 169, 169);
 }
-
 @media (max-height:768px){
 	.mck-sidebox{
 		height:512px;
@@ -3599,6 +3598,12 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 @media ( min-width : 510px) {
 	.mck-box .mck-box-md {
 		width: 500px;
+	}
+	.emoji-menu{
+		width:379px !important;
+	}
+	.mck-sidebox.fade.in{
+		width:379;
 	}
 	.mck-box .mck-box-sm {
 		width: 379px;
