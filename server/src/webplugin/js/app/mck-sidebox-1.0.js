@@ -2026,7 +2026,6 @@ var MCK_CLIENT_GROUP_MAP = [];
           var agentName= DEFAULT_AGENT_NAME ? DEFAULT_AGENT_NAME : DEFAULT_AGENT_ID;
             if(window.applozic.PRODUCT_ID === 'kommunicate' ){
                $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
-               $(".mck-conversation-tab-link").removeClass('vis').addClass('n-vis');
             }
 						var formData = "type=" + 10 + "&startIndex=" + 0
 								+ "&limit=" + 10;
@@ -4361,6 +4360,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
+                if(msg.contentType==="RICH_TEXT_MESSAGE" && msg.metadata){
+
+                }
 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -4405,6 +4407,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus
                 }];
+
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
                 var emoji_template = '';
                 if (msg.message) {
@@ -8616,3 +8619,9 @@ var MCK_CLIENT_GROUP_MAP = [];
 
     }
 }($applozic, window, document));
+
+
+
+
+
+

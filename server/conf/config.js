@@ -92,7 +92,7 @@ const config ={
     port: 3999,
     db: {
       // url: "mysql://root:password@localhost:3306/kommunicate_test",
-      url: "mysql://admin:adm1n2ol6@staging-db.czgdklkcj9zm.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@testdb.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
