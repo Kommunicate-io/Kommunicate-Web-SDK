@@ -10,7 +10,7 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false,
-      imageLink :localStorage.getItem("imageLink")==null?"img/avatars/default.png":localStorage.getItem("imageLink"),
+      imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
     };
   }
@@ -42,7 +42,7 @@ class Header extends Component {
   }
 
 /*  getImageLink(){
-var imageLink = localStorage.getitem("imageLink")==undefined?"img/avatars/6.jpg":localStorage.getitem("imageLink");
+var imageLink = localStorage.getitem("imageLink")==undefined?"/img/avatars/6.jpg":localStorage.getitem("imageLink");
 return imageLink;
   }*/
   logout(e){
