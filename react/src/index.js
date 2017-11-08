@@ -35,7 +35,7 @@ class App extends Component {
           <Route exact path="/404" name="Page 404" component={Page404}/>
           <Route exact path="/500" name="Page 500" component={Page500}/>
           <Route exact path="/password/update" name = "Update Password" component = {PasswordReset}/>
-          <Route exact path='/applozicUserSignUp' name='Applozic User Sign Up' component={ApplozicUserSignUp} />
+          <Route exact path='/applozicsignup' name='Applozic User Sign Up' component={ApplozicUserSignUp} />
           <Route path="/" name="Home" render={ ({history}) =>  localStorage.getItem('loggedinUser') ?<Full history ={history}/> : <Redirect to={{pathname: '/login'}}/> }/>
         </Switch>
       </BrowserRouter>
