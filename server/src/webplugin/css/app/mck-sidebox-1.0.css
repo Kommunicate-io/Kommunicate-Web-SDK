@@ -3486,6 +3486,11 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	}
 	
 }
+@media (max-height:768px){
+	.mck-sidebox{
+		height:512px;
+	}
+}
 
 @media ( min-width : 310px) {
 	.emoji-menu{
