@@ -49,7 +49,7 @@ var config = {
       sendMail :baseurl.prod.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.prod.kommunicateAPI+"/autoSuggest",
-      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.prod.kommunicateAPI+"/profileImage"
     },
     port:5454
   },
@@ -84,7 +84,7 @@ var config = {
       sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.dashboard.kommunicateAPI+"/autoSuggest",
-      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.dashboard.kommunicateAPI+"/profileImage"
     },
     port:5454
   },
@@ -119,7 +119,7 @@ var config = {
       sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.test.kommunicateAPI+"/autoSuggest",
-      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.test.kommunicateAPI+"/profileImage"
     },
     port:5454
 
