@@ -113,7 +113,7 @@ class Dashboard extends Component {
                 var data = response.data;
                 console.log(data);
                 if (data.length > 0) {
-                  var stat = data[0];
+                  var stat = data[data.length - 1];
                   that.setState({
                     'newUsers': stat.newUserCount,
                     'conversations' :stat.channelCount,
