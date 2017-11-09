@@ -40,6 +40,21 @@ module.exports = function(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING(20)
     },
+    contactNo: {
+      type: DataTypes.STRING(20),
+      field: 'contact_no'
+    },
+    industry: {
+      type: DataTypes.STRING(20)
+    },
+    companyName: {
+      type: DataTypes.STRING(50),
+      field: 'company_name'
+    },
+    companySize: {
+      type: DataTypes.STRING(15),
+      field: 'company_size'
+    },
     type: {
       type: DataTypes.INTEGER,
       allowNull: false

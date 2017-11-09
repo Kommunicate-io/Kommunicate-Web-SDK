@@ -39,7 +39,7 @@ exports.getByUserNameAndAppId = function(req, res) {
   console.log("request received to get a users : ",userName, appId);
   userService.getByUserNameAndAppId(userName, appId).then(user=>{
     if(!user){
-      res.status(404).json({code:"NOT_FOUND",message:"No user exists with user name: " + userName});
+      res.status(404).json({code:"NOT_FOUND",message:"No user exists with user name: " + userName + " and appId: " + appId});
     }else{
       console.log("User from db", user);
       const userInfo = user;
@@ -205,4 +205,30 @@ exports.processOffBusinessHours=(req,res)=>{
       res.status(500).json({"code": "INTERNAL_SERVER_ERROR","message": "something went wrong"});
     });
   }
+};
+
+exports.patchUser = (req,res)=>{
+  let response ={};
+  let status;
+  const user = req.body;
+  const userId = req.params.userName;
+  const appId = req.params.appId;
+  console.log("request recieved to patch user: ",userId, "body",user);
+  userService.updateUser(userId, appId, user).then(isUpdated=>{
+    if(isUpdated){
+      response.code="SUCCESS";
+      response.message="updation successfull";
+      res.status(200).json(response);
+    }else{
+      response.code="NOT_FOUND";
+      response.message="resource not found by userId " + userId + " and appId: " + appId;
+      res.status(404).json(response);
+    }
+
+  }).catch((err)=>{
+    response.code="INTERNAL_SERVER_ERROR";
+    response.message="something went wrong!";
+    res.status(500).json(response);
+  });
+
 };
