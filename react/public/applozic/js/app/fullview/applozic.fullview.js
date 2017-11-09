@@ -1099,7 +1099,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
 				AUTH_CODE = '';
 				USER_DEVICE_KEY = '';
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + INITIALIZE_APP_URL,
 					type : 'post',
 					data : w.JSON.stringify(userPxy),
@@ -2110,7 +2110,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					var contact = mckMessageLayout.fetchContact(tabId);
 					_this.addMessageToTab(messagePxy, contact);
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					type : "GET",
 					url : MCK_BASE_URL + MESSAGE_ADD_INBOX_URL,
 					global : false,
@@ -2129,7 +2129,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				}
 				messagePxy.source = MCK_SOURCE;
 				var $mck_msg_div = $applozic("#mck-message-cell div[name='message']." + randomId);
-				$applozic.ajax({
+				mckUtils.ajax({
 					type : "POST",
 					url : MCK_BASE_URL + MESSAGE_SEND_URL,
 					global : false,
@@ -2193,7 +2193,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				var tabId = $mck_msg_inner.data('mck-id');
 				var isGroup = $mck_msg_inner.data("isgroup");
 				if (typeof tabId !== 'undefined') {
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + MESSAGE_DELETE_URL + "?key=" + msgKey,
 						type : 'get',
 						success : function(data) {
@@ -2232,7 +2232,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					if (conversationId) {
 						data += "&conversationId=" + conversationId;
 					}
-					$applozic.ajax({
+					mckUtils.ajax({
 						type : "get",
 						url : MCK_BASE_URL + CONVERSATION_DELETE_URL,
 						global : false,
@@ -2276,7 +2276,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					reqData += "&mainPageSize=100";
 				}
 				var response = new Object();
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
 					success : function(data) {
@@ -2332,7 +2332,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 						resp['topicId'] = params.topicId;
 					}
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqdata,
 					type : 'get',
 					global : false,
@@ -2396,7 +2396,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				if (!params.startTime) {
 					$mck_msg_inner.html('');
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
 					global : false,
@@ -2609,7 +2609,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			_this.updateContactList = function(tabId, isGroup) {
 				var tabExpr = (isGroup) ? "groupId=" + tabId : "userId=" + encodeURIComponent(tabId);
 				var paramData = "startIndex=0&pageSize=1&" + tabExpr;
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + MESSAGE_LIST_URL,
 					data : paramData,
 					global : false,
@@ -2631,7 +2631,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			};
 			_this.sendDeliveryUpdate = function(message) {
 				var data = "key=" + message.pairedMessageKey;
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + MESSAGE_DELIVERY_UPDATE_URL,
 					data : data,
 					global : false,
@@ -2643,7 +2643,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			_this.sendReadUpdate = function(key) {
 				if (typeof key !== "undefined" && key !== "") {
 					var data = "key=" + key;
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + MESSAGE_READ_UPDATE_URL,
 						data : data,
 						global : false,
@@ -2657,7 +2657,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				var ucTabId = (isGroup) ? 'group_' + tabId : 'user_' + tabId;
 				if (tabId && (mckMessageLayout.getUnreadCount(ucTabId) > 0)) {
 					var data = (isGroup) ? "groupId=" + tabId : "userId=" + encodeURIComponent(tabId);
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + CONVERSATION_READ_UPDATE_URL,
 						data : data,
 						global : false,
@@ -2705,7 +2705,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					if (params.fallBackTemplatesList && params.fallBackTemplatesList.length > 0) {
 						conversationPxy.fallBackTemplatesList = params.fallBackTemplatesList;
 					}
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + CONVERSATION_ID_URL,
 						global : false,
 						data : w.JSON.stringify(conversationPxy),
@@ -2756,7 +2756,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				if (params.pageSize) {
 					reqdata += '&pageSize=' + params.pageSize;
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + CONVERSATION_FETCH_URL,
 					data : reqdata,
 					type : 'get',
@@ -2836,7 +2836,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			_this.getTopicId = function(params) {
 				if (params.conversationId) {
 					var data = 'id=' + params.conversationId;
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + TOPIC_ID_URL,
 						data : data,
 						global : false,
@@ -2885,7 +2885,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			_this.sendConversationCloseUpdate = function(conversationId) {
 				if (conversationId) {
 					var data = "id=" + conversationId;
-					$applozic.ajax({
+					mckUtils.ajax({
 						url : MCK_BASE_URL + CONVERSATION_CLOSE_UPDATE_URL,
 						data : data,
 						global : false,
@@ -2996,7 +2996,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					groupInfo.imageUrl = params.groupIcon;
 				}
 				var response = new Object();
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + GROUP_CREATE_URL,
 					global : false,
 					data : w.JSON.stringify(groupInfo),
@@ -4906,7 +4906,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 						data = data.substring(0, data.length - 1);
 					}
 					if (data) {
-						$applozic.ajax({
+						mckUtils.ajax({
 							url : MCK_BASE_URL + CONTACT_NAME_URL,
 							data : data,
 							global : false,
@@ -4936,7 +4936,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					    roleNameListParam += "&" + "roleNameList=" + params.roleNameList[i];
 					}
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1" + roleNameListParam,
 					type : 'get',
 					global : false,
@@ -4954,7 +4954,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				$mck_search_loading.removeClass('n-vis').addClass('vis');
 				$mck_search_List.html('');
 				var userIdArray = [];
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1",
 					type : 'get',
 					global : false,
@@ -5020,7 +5020,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					}
 					return;
 				}
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + USER_DETAIL_URL + "?" + data,
 					type : 'get',
 					contentType : 'application/json',
@@ -5053,7 +5053,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 			};
 			_this.getUserStatus = function(params) {
 				var response = new Object();
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + USER_STATUS_URL,
 					type : 'get',
 					success : function(data) {
@@ -5085,7 +5085,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 					return;
 				}
 				var data = "userId=" + userId + "&block=" + isBlock;
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_BASE_URL + USER_BLOCK_URL,
 					type : 'get',
 					data : data,
@@ -6157,7 +6157,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 									$file_remove.trigger('click');
 								}
 							});
-							$applozic.ajax({
+							mckUtils.ajax({
 								type : "GET",
 								url : MCK_FILE_URL + FILE_UPLOAD_URL,
 								global : false,
@@ -6256,7 +6256,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				});
 			};
 			_this.deleteFileMeta = function(blobKey) {
-				$applozic.ajax({
+				mckUtils.ajax({
 					url : MCK_FILE_URL + FILE_DELETE_URL + '?key=' + blobKey,
 					type : 'post',
 					success : function() {},
@@ -6406,7 +6406,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 				if (MCK_SW_SUBSCRIPTION) {
 					var subscriptionId = MCK_SW_SUBSCRIPTION.endpoint.split("/").slice(-1)[0];
 					if (subscriptionId) {
-						$applozic.ajax({
+						mckUtils.ajax({
 							url : MCK_BASE_URL + MCK_SW_REGISTER_URL,
 							type : 'post',
 							data : 'registrationId=' + subscriptionId,
