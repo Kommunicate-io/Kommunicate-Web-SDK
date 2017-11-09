@@ -197,7 +197,7 @@ class Tabs extends Component {
               </div>
                <div className="card-footer">
                 <button type="submit" className="btn btn-sm btn-primary" onClick ={this.handleSubmit}><i className="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" className="btn btn-sm btn-danger"><i className="fa fa-ban"></i> Reset</button>
+                <button type="reset" className="btn btn-sm btn-danger n-vis"><i className="fa fa-ban"></i> Reset</button>
               </div>
               </div>
               </div>
@@ -249,7 +249,7 @@ class Tabs extends Component {
               </div>
               <div className="card-footer">
                 <button type="submit" className="btn btn-sm btn-primary" onClick={(event) => this.handleClick(event)}><i className="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" className="btn btn-sm btn-danger"><i className="fa fa-ban"></i> Reset</button>
+                <button type="reset" className="btn btn-sm btn-danger n-vis"><i className="fa fa-ban"></i> Reset</button>
               </div>
             </div>
           </div>
