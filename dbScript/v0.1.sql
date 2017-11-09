@@ -13,3 +13,5 @@ alter table customers add column role varchar(50), add column industry varchar(5
 
 alter table auto_suggests add user_name varchar(50);
 alter table auto_suggests add application_id varchar(200);
+
+alter table users add column role varchar(50), add column industry varchar(50), add column contact_no varchar(20), add column company_name varchar(20), add column company_size varchar(20);
