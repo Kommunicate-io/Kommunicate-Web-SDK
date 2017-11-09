@@ -80,12 +80,11 @@ const getCustomerInfo = (customer) => {
 const getUserInfo = (user, appId) => {
   // different from getCustomerInfo
 
-  // todo
-  // change the url for the user in the config file
   const getUserInfoUrl = getConfig().kommunicateApi.createUser + '/' + user + '/'+ appId;
 
   return Promise.resolve(axios.get(getUserInfoUrl))
     .then(response => {
+      console.log(response)
       if(response.status === 200 && response.data !== undefined){
         return response
       }
@@ -105,7 +104,36 @@ const patchCustomerInfo = (customerInfo, customer) => {
     }
   })).then(function(response){
      if(response.status === 200 && response.data !== undefined){
-       // console.log(response)
+       console.log(response)
+       return response;
+     }
+
+     if(response.status === 404 && response.data !== undefined){
+       console.log(response)
+       return response;
+     }
+  });
+}
+
+const patchUserInfo = (userInfo, userId, appId) => {
+
+  const patchUserUrl =getConfig().kommunicateApi.createUser + '/' + userId + '/'+ appId;
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: patchUserUrl,
+    data:JSON.stringify(userInfo),
+    headers: {
+     'Content-Type': 'application/json'
+    }
+  })).then(function(response){
+     if(response.status === 200 && response.data !== undefined){
+       console.log(response)
+       return response;
+     }
+
+     if(response.status === 404 && response.data !== undefined){
+       console.log(response)
        return response;
      }
   });
@@ -320,6 +348,7 @@ export {
   getUserInfo,
   saveToLocalStorage,
   patchCustomerInfo,
+  patchUserInfo,
   notifyThatEmailIsSent,
   callSendEmailAPI,
   postAutoReply,
