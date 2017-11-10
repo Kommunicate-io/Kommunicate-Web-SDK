@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
+import Notification from '../model/Notification';
 class Tabs extends Component {
 
   constructor(props) {
@@ -15,18 +16,28 @@ class Tabs extends Component {
       userid: '',
       username: '',
       password:'',
-      role :'',
+      role :'BOT',
       bot: '',
       ctoken: '',
       platform:'api.ai',
       dtoken :''
     };
+  
   this.handleSubmit = this.handleSubmit.bind(this);
   this.handleClick = this.handleClick.bind(this);
   this.toggle = this.toggle.bind(this);
    };
-
+  clearBotForm = ()=>{
+    this.state.userid="";
+    this.state.username="";
+    this.state.password="";
+    this.state.bot="";
+    this.state.ctoken="";
+    this.setState({dtoken:""});
+   }
+   
      handleClick (event){
+       var _this =this;
      event.preventDefault();
      var applicationId =localStorage.getItem("applicationId");
      var authorization =localStorage.getItem("authorization");
@@ -49,11 +60,10 @@ class Tabs extends Component {
                "userIdList" : [data.botname]
              },
              headers: {
-               "Application-Key": applicationId,
-              "Authorization":"Basic "+authorization,
+              "App-Product-App": true,
+              "Apz-Token": 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
               "Content-Type": "application/json",
-              "Device-Key" : devicekey,
-              "Access-Token": password
+              "Apz-AppId":applicationId
              }
           })
       .then(function(response){
@@ -61,7 +71,7 @@ class Tabs extends Component {
           console.log("success");
            axios({
          method: 'post',
-         url:'http://dashboard-test.applozic.com:5454/bot/'+response.data.response[0].id+'/configure',
+         url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
          data:JSON.stringify(data),
          headers: {
           "Content-Type": "application/json",
@@ -69,7 +79,9 @@ class Tabs extends Component {
           })
       .then(function(response){
        if(response.status==200 ){
-          alert("Bot configured successfully");
+        _this.clearBotForm();
+          Notification.info("Bot configured successfully");
+         
           }
        });
           }
@@ -77,6 +89,7 @@ class Tabs extends Component {
      }
      // creating bot
     handleSubmit(event) {
+      var _this=this;
         var applicationId =localStorage.getItem("applicationId");
         var username = localStorage.getItem("loggedinUser");
         var password = localStorage.getItem("password");
@@ -119,7 +132,8 @@ class Tabs extends Component {
         })
           .then(function(response){
            if(response.status==201 ){
-            alert("Bot successfully created");
+            _this.clearBotForm();
+            Notification.info("Bot successfully created");
          }
        });
          }
@@ -168,28 +182,28 @@ class Tabs extends Component {
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="hf-userid">Bot Id</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-userid" name="hf-userid"  onChange = {(event) => this.setState({userid:event.target.value})} className="form-control" placeholder="Enter unique bot id"/>
+                      <input type="text" id="hf-userid" name="hf-userid"  onChange = {(event) => this.setState({userid:event.target.value})} value={this.state.userid} className="form-control" placeholder="Enter unique bot id"/>
                       <span className="help-block">Please enter unique bot id</span>
                     </div>
                   </div>
                    <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="hf-userid">Display Name</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-username" onChange = {(event) => this.setState({username:event.target.value})} name="hf-username" className="form-control" placeholder="Enter Username"/>
+                      <input type="text" id="hf-username" onChange = {(event) => this.setState({username:event.target.value})} value={this.state.username} name="hf-username" className="form-control" placeholder="Enter Username"/>
                       <span className="help-block">Please enter your username</span>
                     </div>
                   </div>
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="hf-password">Password</label>
                     <div className="col-md-9">
-                      <input type="password" id="hf-password"  onChange = {(event) => this.setState({password:event.target.value})} name="hf-password" className="form-control" placeholder="Enter Password.."/>
+                      <input type="password" id="hf-password"  onChange = {(event) => this.setState({password:event.target.value})} value ={this.state.password} name="hf-password" className="form-control" placeholder="Enter Password.."/>
                       <span className="help-block">Please enter your password</span>
                     </div>
                   </div>
                   <div className="form-group row" hidden>
                     <label className="col-md-3 form-control-label" htmlFor="hf-role">Role</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-role" name="hf-role"  onChange = {(event) => this.setState({role:event.target.value})}className="form-control" placeholder="Enter Role"/>
+                      <input type="text" id="hf-role" name="hf-role"  onChange = {(event) => this.setState({role:event.target.value})} value = {this.state.role} className="form-control" placeholder="Enter Role"/>
                       <span className="help-block">Please enter your role</span>
                     </div>
                   </div>
@@ -216,12 +230,12 @@ class Tabs extends Component {
                     <label className="col-md-3 form-control-label" htmlFor="bot">Bot Id</label>
                     <div className="col-md-9">
 
-                      <input type="text"  onChange = {(event) => this.setState({bot:event.target.value})}  id="bot"  className="form-control" placeholder="Enter Bot id"/>
+                      <input type="text"  onChange = {(event) => this.setState({bot:event.target.value})}  value = {this.state.bot} id="bot"  className="form-control" placeholder="Enter Bot id"/>
 
                     </div>
                   </div>
               <div hidden>
-                  <select id="platform" onChange = {(event) => this.setState({platform:event.target.value})} >
+                  <select id="platform" onChange = {(event) => this.setState({platform:event.target.value})} value ={this.state.platform} >
                   <option selected="" >Api.ai</option>
                   <option value="Api.ai" >Api.ai</option>
                   <option value="Message.ai">Message.ai</option>
@@ -232,7 +246,7 @@ class Tabs extends Component {
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="ctoken">Client Token</label>
                     <div className="col-md-9">
-                      <input type="text" id="ctoken" name="ctoken"  onChange = {(event) => this.setState({ctoken:event.target.value})} className="form-control" placeholder="Enter Client Token.."/>
+                      <input type="text" id="ctoken" name="ctoken"  onChange = {(event) => this.setState({ctoken:event.target.value})} value ={this.state.ctoken} className="form-control" placeholder="Enter Client Token.."/>
 
                     </div>
                   </div>
@@ -240,7 +254,7 @@ class Tabs extends Component {
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="hf-dtoken">Dev Token</label>
                     <div className="col-md-9">
-                      <input type="text" value={this.state.dtoken} onChange = {(event) => this.setState({dtoken:event.target.value})} id="hf-dtoken" name="hf-dtoken" className="form-control"
+                      <input type="text" value={this.state.dtoken} onChange = {(event) => this.setState({dtoken:event.target.value})} value ={this.state.dtoken} id="hf-dtoken" name="hf-dtoken" className="form-control"
                   placeholder="Enter Dev.."/>
 
                     </div>
