@@ -134,7 +134,7 @@ var config = {
       sendMailUrl: "https://apps-test.applozic.com/applozic/rest/ws/mail/send",
       userDetailUrl:baseurl.default.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
       registerClientUrl: baseurl.default.baseUrl+"/rest/ws/register/client",
-      addBotUrl: 'http://dashboard-test.applozic.com:5454/bot',
+      addBotUrl: 'https://bots-test.applozic.com/bot',
       statsUrl:'https://apps-test.applozic.com/rest/ws/stats/get?appKey=:appKey',
       applicationList:baseurl.default.baseUrl+'/rest/ws/user/getlist?userId=:userId&roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:"https://apps-test.applozic.com/rest/ws/stats/filter?appKey=:appKey",
