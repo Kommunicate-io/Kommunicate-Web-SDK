@@ -6,6 +6,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 		baseUrl : "https://apps.applozic.com",
 		fileBaseUrl : "https://applozic.appspot.com",
 		notificationIconLink : '',
+		mapStaticAPIkey :'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
 		launcher : "applozic-launcher",
 		userId : null,
 		appId : null,
@@ -333,6 +334,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 		var MCK_AUTHENTICATION_TYPE_ID = appOptions.authenticationTypeId;
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
+		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
 		var IS_SW_NOTIFICATION_ENABLED = (typeof appOptions.swNotification === "boolean") ? appOptions.swNotification : false;
 		var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
 		var MCK_USER_ID = (IS_MCK_VISITOR) ? "guest" : $applozic.trim(appOptions.userId);
@@ -3667,11 +3669,11 @@ var MCK_CLIENT_GROUP_MAP = [];
 					try {
 						var geoLoc = $applozic.parseJSON(msg.message);
 						if (geoLoc.lat && geoLoc.lon) {
-							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '"/></a>';
+							return '<a href="http://maps.google.com/maps?&z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '"&key='+MCK_MAP_STATIC_API_KEY+'"/></a>';
 						}
 					} catch (ex) {
 						if (msg.message.indexOf(",") !== -1) {
-							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message + '" /></a>';
+							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message + '"&key='+MCK_MAP_STATIC_API_KEY+'" /></a>';
 						}
 					}
 				}
