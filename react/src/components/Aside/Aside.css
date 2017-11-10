@@ -223,6 +223,16 @@ ul#mck-group-search-list li {
   background: white;
 }
 
+.mck-nav-tab{
+    font-size: 16px !important;
+    color: #434e54 !important;
+}
+.li-nav-tab{
+    color: #28343a;
+    padding: 2px;
+    text-decoration: none !important;
+}
+
 .mck-message-inner-left .mck-box-top{
   background: whitesmoke;
 }

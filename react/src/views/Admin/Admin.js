@@ -213,7 +213,7 @@ handleKeyPress(event) {
               </div>
               <div className="card-footer">
                 <button type="submit" className="btn btn-sm btn-primary" onClick={this.handleSubmit}><i className="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" className="btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
+                <button type="reset" className="n-vis btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
               </div>
             </div>
           </div>
