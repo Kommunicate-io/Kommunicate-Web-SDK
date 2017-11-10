@@ -6,7 +6,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 		baseUrl : "https://apps.applozic.com",
 		fileBaseUrl : "https://applozic.appspot.com",
 		notificationIconLink : '',
-		mapStaticAPIkey :'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
+		mapStaticAPIkey :'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
 		launcher : "applozic-launcher",
 		userId : null,
 		appId : null,

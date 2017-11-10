@@ -8,7 +8,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         fileBaseUrl: 'https://applozic.appspot.com',
         notificationIconLink: '',
         launcher: 'applozic-launcher',
-        mapStaticAPIkey :'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
+        mapStaticAPIkey :'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
         userId: null,
         appId: null,
         userName: null,
