@@ -6,7 +6,7 @@ import classes from './Aside.css';
 class Aside extends Component {
   constructor(props) {
     super(props);
-
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6Zb97h8Vi1M7UAGtswUsxr9dwSVH5P-A&callback=initMap"type="text/javascript"></script>
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '1',
@@ -33,6 +33,7 @@ class Aside extends Component {
 
   componentDidMount() {
     // console.log("Aside Aside")
+    //loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyD6Zb97h8Vi1M7UAGtswUsxr9dwSVH5P-A&callback=initMap')
      if(localStorage.getItem("loggedinUser")===null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
