@@ -16,15 +16,15 @@ var MCK_LABELS;
 var MCK_BASE_URL;
 var MCK_CURR_LATITIUDE = 40.7324319;
 var MCK_CURR_LONGITUDE = -73.82480777777776;
-var mckUtils = new MckUtils();
-mckUtils.init();
+var kmUtils = new KmUtils();
+kmUtils.init();
 var mckDateUtils = new MckDateUtils();
-var mckGroupUtils = new MckGroupUtils();
+var kmGroupUtils = new KmGroupUtils();
 var mckContactUtils = new MckContactUtils();
-var mckGroupService = new MckGroupService();
+var kmGroupService = new KmGroupService();
 var mckMapUtils = new MckMapUtils();
 var mckNotificationUtils = new MckNotificationUtils();
-function MckUtils() {
+function KmUtils() {
     var _this = this;
     var TEXT_NODE = 3,
         ELEMENT_NODE = 1,
@@ -160,6 +160,7 @@ function MckUtils() {
 
     _this.ajax = function(options) {
         var reqOptions = Object.assign({}, options);
+        reqOptions.kommunicateDashboard = true;
         if (this.getEncryptionKey()) {
             var key = aesjs.util.convertStringToBytes(this.getEncryptionKey());
             var iv = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
@@ -221,18 +222,18 @@ function MckContactUtils() {
         return $applozic.trim(contactId.replace(/\@/g, 'AT').replace(/\./g, 'DOT').replace(/\*/g, 'STAR').replace(/\#/g, 'HASH').replace(/\|/g, 'VBAR').replace(/\+/g, 'PLUS').replace(/\;/g, 'SCOLON').replace(/\?/g, 'QMARK').replace(/\,/g, 'COMMA').replace(/\:/g, 'COLON'));
     };
 }
-function MckGroupUtils() {
+function KmGroupUtils() {
     var _this = this
     _this.getGroup = function(groupId) {
-        if (typeof MCK_GROUP_MAP[groupId] === 'object') {
-            return MCK_GROUP_MAP[groupId];
+        if (typeof KM_GROUP_MAP[groupId] === 'object') {
+            return KM_GROUP_MAP[groupId];
         } else {
             return;
         }
     };
     _this.getGroupByClientGroupId = function(clientGroupId) {
-        if (typeof MCK_CLIENT_GROUP_MAP[clientGroupId] === 'object') {
-            return MCK_CLIENT_GROUP_MAP[clientGroupId];
+        if (typeof KM_CLIENT_GROUP_MAP[clientGroupId] === 'object') {
+            return KM_CLIENT_GROUP_MAP[clientGroupId];
         } else {
             return;
         }
@@ -263,9 +264,9 @@ function MckGroupUtils() {
             'clientGroupId': group.clientGroupId,
             'isGroup': true
         };
-        MCK_GROUP_MAP[group.id] = groupFeed;
+        KM_GROUP_MAP[group.id] = groupFeed;
         if (group.clientGroupId) {
-            MCK_CLIENT_GROUP_MAP[group.clientGroupId] = groupFeed;
+            KM_CLIENT_GROUP_MAP[group.clientGroupId] = groupFeed;
         }
         return groupFeed;
     };
@@ -284,7 +285,7 @@ function MckGroupUtils() {
             'clientGroupId': '',
             'isGroup': true
         };
-        MCK_GROUP_MAP[groupId] = group;
+        KM_GROUP_MAP[groupId] = group;
         return group;
     };
 }
@@ -432,7 +433,7 @@ function MckNotificationUtils() {
         };
     };
 }
-function MckGroupService() {
+function KmGroupService() {
     var _this = this;
     var GROUP_LIST_URL = "/rest/ws/group/list";
     var GROUP_FEED_URL = "/rest/ws/group/info";
@@ -442,7 +443,7 @@ function MckGroupService() {
     var GROUP_REMOVE_MEMBER_URL = "/rest/ws/group/remove/member";
     _this.loadGroups = function(params) {
         var response = new Object();
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_LIST_URL,
             type: 'get',
             global: false,
@@ -497,7 +498,7 @@ function MckGroupService() {
         if (params.conversationId) {
             data += "&conversationId=" + params.conversationId;
         }
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_FEED_URL,
             data: data,
             type: 'get',
@@ -509,7 +510,7 @@ function MckGroupService() {
                         response.status = "error";
                         response.errorMessage = "GroupId not found";
                     } else {
-                        var group = mckGroupUtils.addGroup(groupFeed);
+                        var group = kmGroupUtils.addGroup(groupFeed);
                         response.status = "success";
                         response.data = group;
                     }
@@ -555,7 +556,7 @@ function MckGroupService() {
             }
             return;
         }
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_LEAVE_URL,
             data: data,
             type: 'get',
@@ -563,7 +564,7 @@ function MckGroupService() {
             success: function(data) {
                 if (data.status === "success") {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -614,7 +615,7 @@ function MckGroupService() {
             return;
         }
         data += '&userId=' + encodeURIComponent(params.userId);
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_REMOVE_MEMBER_URL,
             data: data,
             type: 'get',
@@ -622,7 +623,7 @@ function MckGroupService() {
             success: function(data) {
                 if (data.status === 'success') {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -670,7 +671,7 @@ function MckGroupService() {
         if (typeof params.role !== 'undefined') {
             data += '&role=' + params.role;
         }
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_ADD_MEMBER_URL,
             data: data,
             type: 'get',
@@ -678,7 +679,7 @@ function MckGroupService() {
             success: function(data) {
                 if (data.status === "success") {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -736,7 +737,7 @@ function MckGroupService() {
         if (params.metadata) {
           groupInfo.metadata = params.metadata;
         }
-        mckUtils.ajax({
+        kmUtils.ajax({
             url: MCK_BASE_URL + GROUP_UPDATE_INFO_URL,
             type: 'post',
             data: JSON.stringify(groupInfo),

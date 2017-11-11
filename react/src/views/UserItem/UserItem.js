@@ -19,7 +19,7 @@ class UserItem extends Component {
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
         var image = (user.imageLink) ? (user.imageLink):'';
         var imageExpr = (user.imageLink) ? 'img-avatar vis' :'n-vis';
-        var nameExpr =  (user.imageLink) ? 'n-vis' :'mck-alpha-contact-image vis';
+        var nameExpr =  (user.imageLink) ? 'n-vis' :'km-alpha-contact-image vis';
         var name = (user.displayName) ? (user.displayName).charAt(0).toUpperCase():(user.userId).charAt(0).toUpperCase();
         var createdAtTime = window.$applozic.fn.applozic('getDateTime',user.createdAtTime);
         var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined') ?(window.$applozic.fn.applozic('getDateTime',user.lastLoggedInAtTime)): '';
@@ -29,7 +29,7 @@ class UserItem extends Component {
                     <td className="text-center">
                       <div className="avatar">
                         <img src={user.imageLink} className= {imageExpr}/>
-                        <div className ={nameExpr}><span className="mck-contact-icon">{name}</span></div>
+                        <div className ={nameExpr}><span className="km-contact-icon">{name}</span></div>
                         <span className={online}></span>
                       </div>
                     </td>

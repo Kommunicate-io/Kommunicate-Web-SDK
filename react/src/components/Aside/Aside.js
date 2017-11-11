@@ -110,7 +110,7 @@ class Aside extends Component {
   changeAssignee(userId) {
     var that = this;
     this.setState({assignee:userId});
-    var groupId = window.$applozic(".left .person.active").data('mck-id');
+    var groupId = window.$applozic(".left .person.active").data('km-id');
     window.$applozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': this.state.group.groupId,
@@ -178,7 +178,7 @@ class Aside extends Component {
   }
 
   changeStatus(status) {
-    //var groupId = window.$applozic(".left .person.active").data('mck-id');
+    //var groupId = window.$applozic(".left .person.active").data('km-id');
     var that = this;
     window.$applozic.fn.applozic('updateGroupInfo',
                                     {
@@ -204,87 +204,87 @@ class Aside extends Component {
             <div id="sec-chat-box" className="col-lg-12 tab-box">
               <div id="chat-box-div" style={{height: '100%'}}>
 
-                <div className="mck-container">
-                  <div className="left mck-message-inner-left">
+                <div className="km-container">
+                  <div className="left km-message-inner-left">
                     <div className="panel-content">
-                      <div className="mck-box-top mck-row mck-wt-user-icon">
+                      <div className="km-box-top km-row km-wt-user-icon">
                         <div className="blk-lg-3">
-                          <div id="mck-user-icon" className="mck-user-icon"></div>
+                          <div id="km-user-icon" className="km-user-icon"></div>
                         </div>
                         <div className="blk-lg-7">
                            <ul id="kommunicate-panel-tabs" className="list-inline">
-                             <li className="active"><a href="javascript:void(0)" data-tab="mck-contact-cell">Assigned</a></li>
-                             <li><a id="mck-customers-cell-link" href="javascript:void(0)" data-tab="mck-customers-cell">Customers</a></li>
+                             <li className="active"><a href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
+                             <li><a id="km-customers-cell-link" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
                              {/*
-                               <li><a href="javascript:void(0)" data-tab="mck-unassigned-cell">Unassigned</a></li>
+                               <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
                               */}
                            </ul>
                         </div>
-                        <div className="blk-lg-2 move-right mck-menu-item mck-text-right">
-                            <div className="mck-dropdown-toggle" data-toggle="mckdropdown"
+                        <div className="blk-lg-2 move-right km-menu-item km-text-right">
+                            <div className="km-dropdown-toggle" data-toggle="mckdropdown"
                                 aria-expanded="true">
                                 <img
-                            src="applozic/images/icon-menu.png" className="mck-menu-icon" alt="Menu"/>
+                            src="applozic/images/icon-menu.png" className="km-menu-icon" alt="Menu"/>
                               </div>
-                              <ul id="mck-start-new-menu-box"
-                                className="mck-dropdown-menu mck-tab-menu-box menu-right"
+                              <ul id="km-start-new-menu-box"
+                                className="km-dropdown-menu km-tab-menu-box menu-right"
                                 role="menu">
                                 <li><a href="javascript:void(0)"
-                                  className="mck-group-search menu-item n-vis"
+                                  className="km-group-search menu-item n-vis"
                                   title="Groups">Groups</a></li>
                                 <li><a href="javascript:void(0)"
-                                  id="mck-new-group" className="menu-item" title="Create Group">Create
+                                  id="km-new-group" className="menu-item" title="Create Group">Create
                                     Group</a></li>
                               </ul>
                         </div>
                       </div>
-                      <div id="kommunicate-panel-body" className="mck-panel-body">
+                      <div id="kommunicate-panel-body" className="km-panel-body">
 
-                        <div id="mck-customers-cell" className="mck-customers-cell mck-panel-cell n-vis">
+                        <div id="km-customers-cell" className="km-customers-cell km-panel-cell n-vis">
 
-                          <div id="mck-search-tab-box" className="mck-search-tab-box mck-row n-vis">
-                            <div className="mck-row">
-                              <ul className="mck-nav mck-nav-panel">
-                                <li className="mck-nav-item mck-nav-divider"><a id="mck-contact-search-tab"
-                                  className="mck-nav-link mck-contact-search active" href="javascript:void(0)"><strong>Contacts</strong></a></li>
-                                <li className="mck-nav-item"><a id="mck-group-search-tab" className="mck-nav-link mck-group-search" href="javascript:void(0)"><strong>Groups</strong></a>
+                          <div id="km-search-tab-box" className="km-search-tab-box km-row n-vis">
+                            <div className="km-row">
+                              <ul className="km-nav km-nav-panel">
+                                <li className="km-nav-item km-nav-divider"><a id="km-contact-search-tab"
+                                  className="km-nav-link km-contact-search active" href="javascript:void(0)"><strong>Contacts</strong></a></li>
+                                <li className="km-nav-item"><a id="km-group-search-tab" className="km-nav-link km-group-search" href="javascript:void(0)"><strong>Groups</strong></a>
                                 </li>
                               </ul>
                             </div>
                           </div>
 
-                          <div className="mck-box-body">
-                            <div className="mck-form-group">
-                              <div id="mck-contact-search-input-box" className="mck-input-group blk-lg-12">
+                          <div className="km-box-body">
+                            <div className="km-form-group">
+                              <div id="km-contact-search-input-box" className="km-input-group blk-lg-12">
                                 <span
-                                  className="mck-search-icon"><a href="javascript:void(0)" role="link"
-                                  className="mck-contact-search-link"><span
-                                    className="mck-icon-search"></span></a></span>
-                                <input id="mck-contact-search-input" type="text"
+                                  className="km-search-icon"><a href="javascript:void(0)" role="link"
+                                  className="km-contact-search-link"><span
+                                    className="km-icon-search"></span></a></span>
+                                <input id="km-contact-search-input" type="text"
                                   data-provide="typeahead" placeholder="Search..." autoFocus />
                               </div>
-                               <div id="mck-group-search-input-box" className="mck-input-group blk-lg-12 n-vis">
+                               <div id="km-group-search-input-box" className="km-input-group blk-lg-12 n-vis">
                                 <span
-                                  className="mck-search-icon"><a href="javascript:void(0)" role="link"
-                                  className="mck-group-search-link"><span
-                                    className="mck-icon-search"></span></a></span>
-                                <input id="mck-group-search-input" type="text"
+                                  className="km-search-icon"><a href="javascript:void(0)" role="link"
+                                  className="km-group-search-link"><span
+                                    className="km-icon-search"></span></a></span>
+                                <input id="km-group-search-input" type="text"
                                   data-provide="typeahead" placeholder="Search..." autoFocus />
                               </div>
                             </div>
-                            <div className="mck-tab-cell">
-                              <div className="mck-message-inner">
-                                <ul id="mck-contact-search-list"
-                                  className="mck-contact-list mck-contact-search-list mck-nav mck-nav-tabs mck-nav-stacked"></ul>
-                                      <ul id="mck-group-search-list"
-                                  className="mck-contact-list mck-group-search-list mck-nav mck-nav-tabs mck-nav-stacked n-vis"></ul>
-                                <div id="mck-no-search-contacts" className="mck-show-more-icon n-vis">
+                            <div className="km-tab-cell">
+                              <div className="km-message-inner">
+                                <ul id="km-contact-search-list"
+                                  className="km-contact-list km-contact-search-list km-nav km-nav-tabs km-nav-stacked"></ul>
+                                      <ul id="km-group-search-list"
+                                  className="km-contact-list km-group-search-list km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                <div id="km-no-search-contacts" className="km-show-more-icon n-vis">
                                   <h3>No contacts yet!</h3>
                                 </div>
-                                  <div id="mck-no-search-groups" className="mck-show-more-icon n-vis">
+                                  <div id="km-no-search-groups" className="km-show-more-icon n-vis">
                                   <h3>No groups yet!</h3>
                                 </div>
-                                  <div id="mck-search-loading" className="mck-loading n-vis">
+                                  <div id="km-search-loading" className="km-loading n-vis">
                                     <img src="applozic/images/ring.gif"/>
                                   </div>
                               </div>
@@ -293,48 +293,48 @@ class Aside extends Component {
 
                         </div>
 
-                        <div id="mck-unassigned-cell" className="mck-unassigned-cell mck-panel-cell n-vis">
-                          <div className="mck-panel-inner mck-contacts-inner">
-                            <ul id="mck-assigned-list"
-                              className="people mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked">
+                        <div id="km-unassigned-cell" className="km-unassigned-cell km-panel-cell n-vis">
+                          <div className="km-panel-inner km-contacts-inner">
+                            <ul id="km-assigned-list"
+                              className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
                             </ul>
                           </div>
-                          <div id="mck-unassigned-loading" className="mck-loading n-vis">
+                          <div id="km-unassigned-loading" className="km-loading n-vis">
                             <img src="applozic/images/ring.gif"/>
                           </div>
-                          <div id="mck-no-unassigned-text"
-                            className="mck-no-data-text mck-text-muted n-vis">No
+                          <div id="km-no-unassigned-text"
+                            className="km-no-data-text km-text-muted n-vis">No
                             Leads yet!</div>
-                          <div id="mck-show-more-icon" className="mck-show-more-icon n-vis">
+                          <div id="km-show-more-icon" className="km-show-more-icon n-vis">
                             <h3>No more leads!</h3>
                           </div>
                         </div>
 
 
-                        <div id="mck-contact-cell" className="mck-assigned-cell mck-panel-cell">
+                        <div id="km-contact-cell" className="km-assigned-cell km-panel-cell">
 
-                          <div className="mck-box-body">
-                            <div className="mck-form-group">
-                              <div id="mck-assigned-search-input-box" className="mck-input-group blk-lg-12">
-                                <span className="mck-search-icon"> <a href="javascript:void(0)" role="link"
-                                className="mck-tab-search"> <span className="mck-icon-search"></span>
+                          <div className="km-box-body">
+                            <div className="km-form-group">
+                              <div id="km-assigned-search-input-box" className="km-input-group blk-lg-12">
+                                <span className="km-search-icon"> <a href="javascript:void(0)" role="link"
+                                className="km-tab-search"> <span className="km-icon-search"></span>
                               </a>
-                              </span> <input type="text" id="mck-search" data-provide="typeahead"
+                              </span> <input type="text" id="km-search" data-provide="typeahead"
                                 placeholder="Search..." autoFocus />
                               </div>
                             </div>
-                            <div className="mck-tab-cell">
-                              <div className="mck-message-inner">
-                                <ul id="mck-contact-list"
-                                  className="people mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked">
+                            <div className="km-tab-cell">
+                              <div className="km-message-inner">
+                                <ul id="km-contact-list"
+                                  className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
                                 </ul>
-                                <div id="mck-contact-loading" className="mck-loading">
+                                <div id="km-contact-loading" className="km-loading">
                                   <img src="applozic/images/ring.gif"/>
                                 </div>
-                                <div id="mck-no-contact-text"
-                                  className="mck-no-data-text mck-text-muted n-vis">No
+                                <div id="km-no-contact-text"
+                                  className="km-no-data-text km-text-muted n-vis">No
                                   conversations yet!</div>
-                                <div id="mck-show-more-icon" className="mck-show-more-icon n-vis">
+                                <div id="km-show-more-icon" className="km-show-more-icon n-vis">
                                   <h3>No more conversations!</h3>
                                 </div>
                               </div>
@@ -395,54 +395,54 @@ class Aside extends Component {
 
                           </div>
                       </div>
-                      <div id="mck-tab-header" className="mck-box-top n-vis">
-                        <div id="mck-tab-individual"
-                          className="mck-tab-individual mck-row">
-                          <div className="blk-lg-8 mck-box-title">
-                            <div id="mck-group-tab-title" className="n-vis">
-                              <a id="mck-tab-info" href="javascript:void(0)" className="mck-tab-info">
-                                <div className="mck-tab-title mck-truncate name"></div>
-                                <div className="mck-tab-status mck-truncate n-vis"></div>
-                                <div className="mck-typing-box mck-truncate n-vis">
+                      <div id="km-tab-header" className="km-box-top n-vis">
+                        <div id="km-tab-individual"
+                          className="km-tab-individual km-row">
+                          <div className="blk-lg-8 km-box-title">
+                            <div id="km-group-tab-title" className="n-vis">
+                              <a id="km-tab-info" href="javascript:void(0)" className="km-tab-info">
+                                <div className="km-tab-title km-truncate name"></div>
+                                <div className="km-tab-status km-truncate n-vis"></div>
+                                <div className="km-typing-box km-truncate n-vis">
                                   <span className="name-text"></span><span>typing...</span>
                                 </div>
                               </a>
                             </div>
-                            <div id="mck-individual-tab-title"
-                              className="mck-individual-tab-title">
-                              <a id="mck-tab-info-individual" href="javascript:void(0)" className="mck-tab-info">
-                                <div className="mck-tab-title mck-truncate name"></div>
-                                <div className="mck-tab-status mck-truncate n-vis"></div>
-                                <div className="mck-typing-box mck-truncate n-vis">
+                            <div id="km-individual-tab-title"
+                              className="km-individual-tab-title">
+                              <a id="km-tab-info-individual" href="javascript:void(0)" className="km-tab-info">
+                                <div className="km-tab-title km-truncate name"></div>
+                                <div className="km-tab-status km-truncate n-vis"></div>
+                                <div className="km-typing-box km-truncate n-vis">
                                   <span className="name-text"></span><span>typing...</span>
                                 </div>
                               </a>
                             </div>
                           </div>
                           <div className="blk-lg-4 move-right">
-                            <div id="mck-tab-menu" className="mck-menu-item mck-text-right">
-                              <div className="mck-dropdown-toggle" data-toggle="mckdropdown"
+                            <div id="km-tab-menu" className="km-menu-item km-text-right">
+                              <div className="km-dropdown-toggle" data-toggle="mckdropdown"
                                 aria-expanded="true">
-                                <img src="applozic/images/icon-menu.png" className="mck-menu-icon"
+                                <img src="applozic/images/icon-menu.png" className="km-menu-icon"
                                   alt="Tab Menu"/>
                               </div>
-                              <ul id="mck-tab-menu-list"
-                                className="mck-dropdown-menu mck-tab-menu-box menu-right"
+                              <ul id="km-tab-menu-list"
+                                className="km-dropdown-menu km-tab-menu-box menu-right"
                                 role="menu">
-                                <li className="mck-tab-message-option vis"><a href="javascript:void(0)"
-                                  id="mck-delete-button"
-                                  className="mck-delete-button menu-item vis"
+                                <li className="km-tab-message-option vis"><a href="javascript:void(0)"
+                                  id="km-delete-button"
+                                  className="km-delete-button menu-item vis"
                                   title="Clear Messages"> Clear Messages </a></li>
-                                <li id="li-mck-block-user" className="vis"><a href="javascript:void(0)"
-                                  id="mck-block-button" className="menu-item" title="Block User">Block
+                                <li id="li-km-block-user" className="vis"><a href="javascript:void(0)"
+                                  id="km-block-button" className="menu-item" title="Block User">Block
                                     User</a></li>
-                                <li id="li-mck-group-info"
-                                  className="mck-group-menu-options n-vis"><a href="javascript:void(0)"
-                                  id="mck-group-info-btn" className="menu-item mck-group-info-btn"
+                                <li id="li-km-group-info"
+                                  className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                  id="km-group-info-btn" className="menu-item km-group-info-btn"
                                   title="Group Info"> Group Info </a></li>
-                                <li id="li-mck-leave-group"
-                                  className="mck-group-menu-options n-vis"><a href="javascript:void(0)"
-                                  id="mck-leave-group-btn" className="menu-item" title="Exit Group">
+                                <li id="li-km-leave-group"
+                                  className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                  id="km-leave-group-btn" className="menu-item" title="Exit Group">
                                     Exit Group </a></li>
                               </ul>
                             </div>
@@ -450,179 +450,179 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-                      <div id="mck-product-group"
-                        className="mck-tab-panel mck-btn-group mck-product-group">
-                        <div id="mck-product-box"
-                          className="mck-product-box n-vis mck-dropdown-toggle"
+                      <div id="km-product-group"
+                        className="km-tab-panel km-btn-group km-product-group">
+                        <div id="km-product-box"
+                          className="km-product-box n-vis km-dropdown-toggle"
                           data-toggle="mckdropdown" aria-expanded="true">
-                          <div className="mck-row">
+                          <div className="km-row">
                             <div className="blk-lg-10">
-                              <div className="mck-row">
-                                <div className="blk-lg-3 mck-product-icon"></div>
+                              <div className="km-row">
+                                <div className="blk-lg-3 km-product-icon"></div>
                                 <div className="blk-lg-9">
-                                  <div className="mck-row">
-                                    <div className="blk-lg-8 mck-product-title mck-truncate"></div>
+                                  <div className="km-row">
+                                    <div className="blk-lg-8 km-product-title km-truncate"></div>
                                     <div
-                                      className="blk-lg-4 move-right mck-product-rt-up mck-truncate">
-                                      <strong className="mck-product-key"></strong>:<span
-                                        className="mck-product-value"></span>
+                                      className="blk-lg-4 move-right km-product-rt-up km-truncate">
+                                      <strong className="km-product-key"></strong>:<span
+                                        className="km-product-value"></span>
                                     </div>
                                   </div>
-                                  <div className="mck-row">
-                                    <div className="blk-lg-8 mck-truncate mck-product-subtitle"></div>
+                                  <div className="km-row">
+                                    <div className="blk-lg-8 km-truncate km-product-subtitle"></div>
                                     <div
-                                      className="blk-lg-4 move-right mck-product-rt-down mck-truncate">
-                                      <strong className="mck-product-key"></strong>:<span
-                                        className="mck-product-value"></span>
+                                      className="blk-lg-4 move-right km-product-rt-down km-truncate">
+                                      <strong className="km-product-key"></strong>:<span
+                                        className="km-product-value"></span>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                            <div className="blk-lg-2 mck-text-center">
-                              <span className="mck-caret n-vis"></span>
+                            <div className="blk-lg-2 km-text-center">
+                              <span className="km-caret n-vis"></span>
                             </div>
                           </div>
                         </div>
-                        <ul id="mck-conversation-list"
-                          className="mck-dropdown-menu menu-right mck-conversation-list n-vis"
+                        <ul id="km-conversation-list"
+                          className="km-dropdown-menu menu-right km-conversation-list n-vis"
                           role="menu"></ul>
                       </div>
-                      <div className="mck-panel-body">
-                        <div id="mck-message-cell" className="mck-message-cell mck-panel-cell">
+                      <div className="km-panel-body">
+                        <div id="km-message-cell" className="km-message-cell km-panel-cell">
                           <div id="conversation-section" className="conversation-section">
-                            <div className="chat mck-message-inner mck-panel-inner"
-                              data-mck-id="${contIdExpr}"></div>
-                            <div id="mck-msg-loading" className="mck-loading n-vis">
+                            <div className="chat km-message-inner km-panel-inner"
+                              data-km-id="${contIdExpr}"></div>
+                            <div id="km-msg-loading" className="km-loading n-vis">
                               <img src="applozic/images/ring.gif"/>
                             </div>
-                            <div id="mck-no-more-messages"
-                              className="mck-no-more-messages mck-show-more-icon n-vis">
+                            <div id="km-no-more-messages"
+                              className="km-no-more-messages km-show-more-icon n-vis">
                               <h3>No more messages!</h3>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="write">
-                        <div id="mck-sidebox-ft" className="mck-box-ft mck-panel-ft">
-                          <div className="mck-box-form mck-row n-vis">
+                        <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
+                          <div className="km-box-form km-row n-vis">
                             <div className="blk-lg-12">
-                              <p id="mck-msg-error" className="mck-sidebox-error n-vis"></p>
+                              <p id="km-msg-error" className="km-sidebox-error n-vis"></p>
                             </div>
                             <div className="blk-lg-12">
-                              <p id="mck-msg-response" className="mck-box-response n-vis"></p>
+                              <p id="km-msg-response" className="km-box-response n-vis"></p>
                             </div>
-                            <div id="mck-write-box" className="blk-lg-12 mck-write-box">
-                              <form id="mck-msg-form" className="vertical mck-msg-form">
-                                <div className="mck-form-group n-vis">
+                            <div id="km-write-box" className="blk-lg-12 km-write-box">
+                              <form id="km-msg-form" className="vertical km-msg-form">
+                                <div className="km-form-group n-vis">
                                   <label className="sr-only placeholder-text control-label"
-                                  htmlFor="mck-msg-to">To:</label> <input className="mck-form-cntrl"
-                                    id="mck-msg-to" name="mck-msg-to" placeholder="To" required/>
+                                  htmlFor="km-msg-to">To:</label> <input className="km-form-cntrl"
+                                    id="km-msg-to" name="km-msg-to" placeholder="To" required/>
                                 </div>
-                                <input id="mck-file-input" className="mck-file-input n-vis"
+                                <input id="km-file-input" className="km-file-input n-vis"
                                   type="file" name="files[]"/>
-                                <div id="mck-btn-attach" className="mck-btn-attach">
-                                  <div className="mck-dropdown-toggle" data-toggle="mckdropdown"
+                                <div id="km-btn-attach" className="km-btn-attach">
+                                  <div className="km-dropdown-toggle" data-toggle="mckdropdown"
                                     aria-expanded="true">
-                                    <a href="javascript:void(0)" type="button" id="mck-btn-attach"
-                                      className="write-link attach mck-btn-text-panel"
+                                    <a href="javascript:void(0)" type="button" id="km-btn-attach"
+                                      className="write-link attach km-btn-text-panel"
                                       aria-expanded="true" title="Attach File"> </a>
                                   </div>
-                                  <ul id="mck-upload-menu-list"
-                                    className="mck-dropup-menu mck-upload-menu-list" role="menu">
-                                    <li><a id="mck-file-up" href="javascript:void(0)"
-                                      className="mck-file-upload menu-item" title="File &amp; Photos">
+                                  <ul id="km-upload-menu-list"
+                                    className="km-dropup-menu km-upload-menu-list" role="menu">
+                                    <li><a id="km-file-up" href="javascript:void(0)"
+                                      className="km-file-upload menu-item" title="File &amp; Photos">
 
-                                        <img src="applozic/images/mck-icon-photo.png"
+                                        <img src="applozic/images/km-icon-photo.png"
                                         className="menu-icon" alt="File &amp; Photos"/> <span>Files
                                           &amp; Photos</span>
                                     </a></li>
-                                    <li><a id="mck-btn-loc" href="javascript:void(0)" className="menu-item"
+                                    <li><a id="km-btn-loc" href="javascript:void(0)" className="menu-item"
                                       title="Location"> <img
-                                        src="applozic/images/mck-icon-marker.png" className="menu-icon"
+                                        src="applozic/images/km-icon-marker.png" className="menu-icon"
                                         alt="Location"/> <span>Location</span>
                                     </a></li>
 
                                   </ul>
                                 </div>
-                                <a href="javascript:void(0)" id="mck-file-up2" type="button"
-                                  className="write-link attach n-vis mck-file-upload mck-btn-text-panel"
-                                  title="Attach File"> </a> <span id="mck-text-box"
-                                  contentEditable="true" className="mck-text-box mck-text required"></span>
+                                <a href="javascript:void(0)" id="km-file-up2" type="button"
+                                  className="write-link attach n-vis km-file-upload km-btn-text-panel"
+                                  title="Attach File"> </a> <span id="km-text-box"
+                                  contentEditable="true" className="km-text-box km-text required"></span>
 
-                                <a href="javascript:void(0)" type="button" id="mck-btn-smiley"
-                                  className="write-link smiley mck-btn-smiley mck-btn-text-panel"
+                                <a href="javascript:void(0)" type="button" id="km-btn-smiley"
+                                  className="write-link smiley km-btn-smiley km-btn-text-panel"
                                   title="Smiley"></a> <a href="javascript:void(0)" type="submit"
-                                  id="mck-msg-sbmt" className="write-link send mck-btn-text-panel"
+                                  id="km-msg-sbmt" className="write-link send km-btn-text-panel"
                                   title="Send Message"></a>
                               </form>
                             </div>
                             <div className="blk-lg-12">
-                              <div id="mck-file-box" className="n-vis"></div>
+                              <div id="km-file-box" className="n-vis"></div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div id="mck-group-create-tab"
-                      className="mck-group-create-tab mck-panel-sm mck-panel n-vis">
+                  <div id="km-group-create-tab"
+                      className="km-group-create-tab km-panel-sm km-panel n-vis">
                         <div className="panel-content">
-                      <div className="mck-box-top">
+                      <div className="km-box-top">
                         <div className="blk-lg-10">
-                          <div className="mck-box-title mck-truncate" title="Create Group">Create
+                          <div className="km-box-title km-truncate" title="Create Group">Create
                             Group</div>
                         </div>
                           <div className="blk-lg-2">
-                          <button type="button" id="mck-group-create-close"
-                            className="mck-box-close mck-close-panel move-right">
+                          <button type="button" id="km-group-create-close"
+                            className="km-box-close km-close-panel move-right">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                       </div>
-                      <div className="mck-box-body">
-                        <div className="mck-tab-cell">
-                          <div id="mck-group-create-panel"
-                            className="mck-tab-panel mck-message-inner mck-group-create-inner">
-                            <div className="mck-group-sub-sec">
-                              <div id="mck-group-create-icon-box"
-                                className="mck-group-create-icon-box mck-group-icon-box mck-hover-on">
-                                <div className="mck-group-icon"></div>
-                                <span className="mck-overlay-box">
-                                  <div className="mck-overlay">
-                                    <span className="mck-camera-icon"></span> <span
-                                      className="mck-overlay-label">Add Group Icon</span>
+                      <div className="km-box-body">
+                        <div className="km-tab-cell">
+                          <div id="km-group-create-panel"
+                            className="km-tab-panel km-message-inner km-group-create-inner">
+                            <div className="km-group-sub-sec">
+                              <div id="km-group-create-icon-box"
+                                className="km-group-create-icon-box km-group-icon-box km-hover-on">
+                                <div className="km-group-icon"></div>
+                                <span className="km-overlay-box">
+                                  <div className="km-overlay">
+                                    <span className="km-camera-icon"></span> <span
+                                      className="km-overlay-label">Add Group Icon</span>
                                   </div>
-                                  <div id="mck-group-create-icon-loading"
-                                    className="mck-loading n-vis">
+                                  <div id="km-group-create-icon-loading"
+                                    className="km-loading n-vis">
                                     <img
-                                      src="applozic/images/mck-loading.gif"/>
-                                  </div> <input id="mck-group-icon-upload"
-                                  className="mck-group-icon-upload n-vis" type="file"
+                                      src="applozic/images/km-loading.gif"/>
+                                  </div> <input id="km-group-icon-upload"
+                                  className="km-group-icon-upload n-vis" type="file"
                                   name="files[]"/>
                                 </span>
                               </div>
                             </div>
-                            <div id="mck-group-create-name-sec" className="mck-group-sub-sec">
-                              <div id="mck-group-create-name-box"
-                                className="mck-row mck-group-name-box">
+                            <div id="km-group-create-name-sec" className="km-group-sub-sec">
+                              <div id="km-group-create-name-box"
+                                className="km-row km-group-name-box">
                                 <div className="blk-lg-12">
-                                  <div className="mck-label">Group Title</div>
+                                  <div className="km-label">Group Title</div>
                                 </div>
                                 <div className="blk-lg-12">
-                                  <div id="mck-group-create-title" className="mck-group-create-title mck-group-title"
+                                  <div id="km-group-create-title" className="km-group-create-title km-group-title"
                                     contentEditable="true">Group title</div>
                                 </div>
                               </div>
                             </div>
-                            <div id="mck-group-create-type-sec" className="mck-group-sub-sec">
-                              <div id="mck-group-create-type-box"
-                                className="mck-row mck-group-type-box">
+                            <div id="km-group-create-type-sec" className="km-group-sub-sec">
+                              <div id="km-group-create-type-box"
+                                className="km-row km-group-type-box">
                                 <div className="blk-lg-12">
-                                  <div className="mck-label">Group Type</div>
+                                  <div className="km-label">Group Type</div>
                                 </div>
                                 <div className="blk-lg-12">
-                                  <select id="mck-group-create-type" className="mck-select">
+                                  <select id="km-group-create-type" className="km-select">
                                     <option value="2" selected>Public</option>
                                     <option value="1">Private</option>
                                     <option value="6">Open</option>
@@ -630,9 +630,9 @@ class Aside extends Component {
                                 </div>
                               </div>
                             </div>
-                            <div id="mck-group-create-btn-sec" className="mck-group-sub-sec">
-                              <button type="button" id="mck-btn-group-create"
-                                className="mck-btn mck-btn-green mck-btn-group-create"
+                            <div id="km-group-create-btn-sec" className="km-group-sub-sec">
+                              <button type="button" id="km-btn-group-create"
+                                className="km-btn km-btn-green km-btn-group-create"
                                 title="Create Group">Create Group</button>
                             </div>
                           </div>
@@ -640,72 +640,72 @@ class Aside extends Component {
                       </div>
                     </div>
                   </div>
-                  <div id="mck-group-info-tab"
-                    className="mck-group-info-tab mck-panel-sm mck-panel n-vis">
+                  <div id="km-group-info-tab"
+                    className="km-group-info-tab km-panel-sm km-panel n-vis">
                     <div className="panel-content">
-                      <div className="mck-box-top">
+                      <div className="km-box-top">
                         <div className="blk-lg-10">
-                          <div className="mck-box-title mck-truncate" title="Group Info">Group
+                          <div className="km-box-title km-truncate" title="Group Info">Group
                             Info</div>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" id="mck-group-info-close"
-                            className="mck-box-close mck-close-panel move-right">
+                          <button type="button" id="km-group-info-close"
+                            className="km-box-close km-close-panel move-right">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                       </div>
-                      <div id="mck-group-detail-panel" className="mck-group-detail-box">
-                        <div className="mck-group-icon-sec">
-                          <div id="mck-group-info-icon-box"
-                            className="mck-group-icon-box mck-group-info-icon-box mck-hover-on">
-                            <div className="mck-group-icon"></div>
-                            <span className="mck-overlay-box n-vis">
-                              <div className="mck-overlay">
-                                <span className="mck-camera-icon"></span> <span
-                                  className="mck-overlay-label">Change Group Icon</span>
+                      <div id="km-group-detail-panel" className="km-group-detail-box">
+                        <div className="km-group-icon-sec">
+                          <div id="km-group-info-icon-box"
+                            className="km-group-icon-box km-group-info-icon-box km-hover-on">
+                            <div className="km-group-icon"></div>
+                            <span className="km-overlay-box n-vis">
+                              <div className="km-overlay">
+                                <span className="km-camera-icon"></span> <span
+                                  className="km-overlay-label">Change Group Icon</span>
                               </div>
-                              <div id="mck-group-info-icon-loading" className="mck-loading n-vis">
-                                <img src="applozic/images/mck-loading.gif"/>
-                              </div> <input id="mck-group-icon-change"
-                              className="mck-group-icon-change n-vis" type="file" name="file[]" />
+                              <div id="km-group-info-icon-loading" className="km-loading n-vis">
+                                <img src="applozic/images/km-loading.gif"/>
+                              </div> <input id="km-group-icon-change"
+                              className="km-group-icon-change n-vis" type="file" name="file[]" />
                             </span>
                           </div>
-                          <div className="mck-text-center">
-                            <a id="mck-btn-group-icon-save" href="javascript:void(0)" role="link"
-                              className="mck-btn-group-icon-save n-vis" title="Click to save">
+                          <div className="km-text-center">
+                            <a id="km-btn-group-icon-save" href="javascript:void(0)" role="link"
+                              className="km-btn-group-icon-save n-vis" title="Click to save">
                               <img
-                              src="applozic/images/mck-icon-save.png"
+                              src="applozic/images/km-icon-save.png"
                               alt="Save"/>
                             </a>
                           </div>
                         </div>
-                        <div id="mck-group-name-sec" className="mck-group-name-sec">
-                          <div id="mck-group-name-box" className="mck-row mck-group-name-box">
+                        <div id="km-group-name-sec" className="km-group-name-sec">
+                          <div id="km-group-name-box" className="km-row km-group-name-box">
                             <div className="blk-lg-9">
-                              <div id="mck-group-title" className="mck-group-title"
+                              <div id="km-group-title" className="km-group-title"
                                 contentEditable="false">Group title</div>
                             </div>
-                            <div className="blk-lg-3 mck-group-name-edit-icon">
-                              <a id="mck-group-name-edit" href="javascript:void(0)" role="link"
-                                className="mck-group-name-edit vis" title="Edit"> <img
-                                src="applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
-                                id="mck-group-name-save" href="javascript:void(0)" role="link"
-                                className="mck-group-name-save n-vis" title="Click to save"> <img
-                                src="applozic/images/mck-icon-save.png" alt="Save"/></a>
+                            <div className="blk-lg-3 km-group-name-edit-icon">
+                              <a id="km-group-name-edit" href="javascript:void(0)" role="link"
+                                className="km-group-name-edit vis" title="Edit"> <img
+                                src="applozic/images/km-icon-write.png" alt="Edit"/></a> <a
+                                id="km-group-name-save" href="javascript:void(0)" role="link"
+                                className="km-group-name-save n-vis" title="Click to save"> <img
+                                src="applozic/images/km-icon-save.png" alt="Save"/></a>
                             </div>
                           </div>
                         </div>
-                        <div id="mck-group-member-panel"
-                          className="mck-tab-panel mck-group-member-panel vis">
-                          <div className="mck-group-md-sec">
-                            <div className="mck-row mck-group-member-text">Members</div>
-                            <div id="mck-group-add-member-box"
-                              className="mck-row mck-group-admin-options mck-group-add-member-box n-vis">
-                              <a id="mck-group-add-member" className="mck-group-add-member"
+                        <div id="km-group-member-panel"
+                          className="km-tab-panel km-group-member-panel vis">
+                          <div className="km-group-md-sec">
+                            <div className="km-row km-group-member-text">Members</div>
+                            <div id="km-group-add-member-box"
+                              className="km-row km-group-admin-options km-group-add-member-box n-vis">
+                              <a id="km-group-add-member" className="km-group-add-member"
                                 href="javascript:void(0)">
                                 <div className="blk-lg-3">
-                                  <img src="applozic/images/mck-icon-add-member.png"
+                                  <img src="applozic/images/km-icon-add-member.png"
                                     alt="Add Member"/>
                                 </div>
                                 <div className="blk-lg-9">Add member</div>
@@ -714,78 +714,78 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-                      <div className="mck-box-body">
-                        <div className="mck-tab-cell">
-                          <div className="mck-group-member-inner">
-                            <ul id="mck-group-member-list"
-                              className="mck-group-member-list mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked">
+                      <div className="km-box-body">
+                        <div className="km-tab-cell">
+                          <div className="km-group-member-inner">
+                            <ul id="km-group-member-list"
+                              className="km-group-member-list km-contact-list km-nav km-nav-tabs km-nav-stacked">
                             </ul>
                           </div>
                         </div>
                       </div>
-                      <div id="mck-group-info-ft" className="mck-group-info-ft">
-                        <button type="button" id="mck-btn-group-exit"
-                          className="mck-btn mck-btn-blue mck-btn-group-exit"
+                      <div id="km-group-info-ft" className="km-group-info-ft">
+                        <button type="button" id="km-btn-group-exit"
+                          className="km-btn km-btn-blue km-btn-group-exit"
                           title="Exit Group">Exit Group</button>
                       </div>
                     </div>
                   </div>
-                  <div id="mck-user-info-tab"
-                    className="mck-user-info-tab mck-panel-sm mck-panel n-vis">
+                  <div id="km-user-info-tab"
+                    className="km-user-info-tab km-panel-sm km-panel n-vis">
                     <div className="panel-content">
-                      <div className="mck-box-top">
+                      <div className="km-box-top">
                         <div className="blk-lg-10">
-                          <div className="mck-box-title mck-truncate" title="User Info">User
+                          <div className="km-box-title km-truncate" title="User Info">User
                             Info</div>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" id="mck-user-info-close"
-                            className="mck-box-close mck-close-panel move-right">
+                          <button type="button" id="km-user-info-close"
+                            className="km-box-close km-close-panel move-right">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                       </div>
-                      <div id="mck-user-detail-panel" className="mck-user-detail-box">
-                        <div className="mck-user-icon-sec">
-                          <div id="mck-user-info-icon-box"
-                            className="mck-user-icon-box mck-user-info-icon-box mck-hover-on">
-                            <div className="mck-user-icon">
+                      <div id="km-user-detail-panel" className="km-user-detail-box">
+                        <div className="km-user-icon-sec">
+                          <div id="km-user-info-icon-box"
+                            className="km-user-icon-box km-user-info-icon-box km-hover-on">
+                            <div className="km-user-icon">
                               <img src="" />
                             </div>
-                            <span className="mck-overlay-box n-vis">
-                              <div className="mck-overlay">
-                                <span className="mck-camera-icon"></span> <span
-                                  className="mck-overlay-label">Change Profile Picture</span>
+                            <span className="km-overlay-box n-vis">
+                              <div className="km-overlay">
+                                <span className="km-camera-icon"></span> <span
+                                  className="km-overlay-label">Change Profile Picture</span>
                               </div>
-                              <div id="mck-user-info-icon-loading" className="mck-loading n-vis">
-                                <img src="applozic/images/mck-loading.gif"/>
-                              </div> <input id="mck-user-icon-change"
-                              className="mck-user-icon-change n-vis" type="file" name="file[]" />
+                              <div id="km-user-info-icon-loading" className="km-loading n-vis">
+                                <img src="applozic/images/km-loading.gif"/>
+                              </div> <input id="km-user-icon-change"
+                              className="km-user-icon-change n-vis" type="file" name="file[]" />
                             </span>
                           </div>
-                          <div className="mck-text-center">
-                            <a id="mck-btn-user-icon-save" href="javascript:void(0)" role="link"
-                              className="mck-btn-user-icon-save n-vis" title="Click to save">
+                          <div className="km-text-center">
+                            <a id="km-btn-user-icon-save" href="javascript:void(0)" role="link"
+                              className="km-btn-user-icon-save n-vis" title="Click to save">
                               <img
-                              src="applozic/images/mck-icon-save.png"
+                              src="applozic/images/km-icon-save.png"
                               alt="Save"/>
                             </a>
                           </div>
                         </div>
-                        <div id="mck-user-name-sec" className="mck-user-name-sec">
-                          <div id="mck-user-name-box" className="mck-row mck-user-name-box">
+                        <div id="km-user-name-sec" className="km-user-name-sec">
+                          <div id="km-user-name-box" className="km-row km-user-name-box">
                             <div className="blk-lg-9">
-                              <div id="mck-user-title" className="mck-user-title"
+                              <div id="km-user-title" className="km-user-title"
                                 contentEditable="false">User title</div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="mck-box-body">
-                        <div className="mck-tab-cell">
-                          <div className="mck-user-info-inner">
-                            <ul id="mck-user-info-list"
-                              className="mck-user-info-list mck-nav mck-nav-tabs mck-nav-stacked">
+                      <div className="km-box-body">
+                        <div className="km-tab-cell">
+                          <div className="km-user-info-inner">
+                            <ul id="km-user-info-list"
+                              className="km-user-info-list km-nav km-nav-tabs km-nav-stacked">
                               <li className="email"></li>
                               <li className="bio"></li>
                               <li className="title"></li>
@@ -801,86 +801,86 @@ class Aside extends Component {
                 </div>
 
 
-                <div id="mck-loc-box" className="mck-box mck-loc-box fade"
+                <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">
-                  <div className="mck-box-dialog mck-box-md">
-                    <div className="mck-box-content">
-                      <div className="mck-box-top mck-row">
+                  <div className="km-box-dialog km-box-md">
+                    <div className="km-box-content">
+                      <div className="km-box-top km-row">
                         <div className="blk-lg-10">
-                          <h4 className="mck-box-title">Location Sharing</h4>
+                          <h4 className="km-box-title">Location Sharing</h4>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" className="mck-box-close" data-dismiss="mckbox"
+                          <button type="button" className="km-box-close" data-dismiss="mckbox"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                       </div>
-                      <div className="mck-box-body">
-                        <div className="mck-form-group">
+                      <div className="km-box-body">
+                        <div className="km-form-group">
                           <div className="blk-lg-12">
-                            <input id="mck-loc-address" type="text" className="mck-form-control"
+                            <input id="km-loc-address" type="text" className="km-form-control"
                               placeholder="Enter a location" autoComplete="off"/>
                           </div>
                         </div>
-                        <div id="mck-map-content" className="mck-loc-content"></div>
+                        <div id="km-map-content" className="km-loc-content"></div>
                         <div className="n-vis">
-                          <label className="blk-sm-2 mck-control-label">Lat.:</label>
+                          <label className="blk-sm-2 km-control-label">Lat.:</label>
                           <div className="blk-sm-3">
-                            <input type="text" id="mck-loc-lat" className="mck-form-control"/>
+                            <input type="text" id="km-loc-lat" className="km-form-control"/>
                           </div>
-                          <label className="blk-sm-2 mck-control-label">Long.:</label>
+                          <label className="blk-sm-2 km-control-label">Long.:</label>
                           <div className="blk-sm-3">
-                            <input type="text" id="mck-loc-lon" className="mck-form-control"/>
+                            <input type="text" id="km-loc-lon" className="km-form-control"/>
                           </div>
                         </div>
                       </div>
-                      <div className="mck-box-footer">
-                        <button id="mck-my-loc" type="button"
-                          className="mck-my-loc mck-btn mck-btn-green">My Location</button>
-                        <button id="mck-loc-submit" type="button"
-                          className="mck-btn mck-btn-blue mck-loc-submit move-right">Send</button>
-                        <button type="button" className="mck-btn mck-btn-default move-right"
+                      <div className="km-box-footer">
+                        <button id="km-my-loc" type="button"
+                          className="km-my-loc km-btn km-btn-green">My Location</button>
+                        <button id="km-loc-submit" type="button"
+                          className="km-btn km-btn-blue km-loc-submit move-right">Send</button>
+                        <button type="button" className="km-btn km-btn-default move-right"
                           data-dismiss="mckbox">Close</button>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div id="mck-goup-search-box"
-                  className="mck-box mck-group-search-box mck-sm-modal-box fade"
+                <div id="km-goup-search-box"
+                  className="km-box km-group-search-box km-sm-modal-box fade"
                   aria-hidden="false">
-                  <div className="mck-box-dialog mck-box-sm">
-                    <div className="mck-box-content">
-                      <div className="mck-box-top mck-row">
+                  <div className="km-box-dialog km-box-sm">
+                    <div className="km-box-content">
+                      <div className="km-box-top km-row">
                         <div className="blk-lg-3">
-                          <img src="applozic/images/mck-icon-add-member.png" alt="Add Member"/>
+                          <img src="applozic/images/km-icon-add-member.png" alt="Add Member"/>
                         </div>
                         <div className="blk-lg-7">
-                          <h4 className="mck-box-title">Add Member</h4>
+                          <h4 className="km-box-title">Add Member</h4>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" className="mck-box-close" data-dismiss="mckbox"
+                          <button type="button" className="km-box-close" data-dismiss="mckbox"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                       </div>
-                      <div className="mck-box-body">
-                        <div className="mck-form-group">
-                          <div className="mck-input-group blk-lg-12">
-                            <input id="mck-group-member-search" type="text" data-provide="typeahead"
+                      <div className="km-box-body">
+                        <div className="km-form-group">
+                          <div className="km-input-group blk-lg-12">
+                            <input id="km-group-member-search" type="text" data-provide="typeahead"
                               placeholder="Search..." autoFocus /> <span
-                              className="mck-search-icon"><a href="javascript:void(0)" role="link"
-                              className="mck-group-member-search-link"><span className="mck-icon-search"></span></a></span>
+                              className="km-search-icon"><a href="javascript:void(0)" role="link"
+                              className="km-group-member-search-link"><span className="km-icon-search"></span></a></span>
                           </div>
                         </div>
-                        <div className="mck-tab-cell">
-                          <div className="mck-message-inner">
-                            <ul id="mck-group-member-search-list"
-                              className=" mck-contact-list mck-group-search-list mck-nav mck-nav-tabs mck-nav-stacked"></ul>
-                                <div id="mck-no-gsm-text"
-                              className="mck-no-data-text mck-text-muted n-vis">No Users!</div>
+                        <div className="km-tab-cell">
+                          <div className="km-message-inner">
+                            <ul id="km-group-member-search-list"
+                              className=" km-contact-list km-group-search-list km-nav km-nav-tabs km-nav-stacked"></ul>
+                                <div id="km-no-gsm-text"
+                              className="km-no-data-text km-text-muted n-vis">No Users!</div>
                           </div>
                         </div>
                       </div>
@@ -890,7 +890,7 @@ class Aside extends Component {
 
               </div>
 
-              <div id="mck-sidebox"></div>
+              <div id="km-sidebox"></div>
             </div>
           </div>
 

@@ -130,5 +130,22 @@
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
 
 
+  <script type="text/javascript">
+  
+    (function(d, m){
+      let o = {"appId":"kommunicate376289bb1a8653f1f4c91ad36af06ece0","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io","groupName":"devashish@kommunicate.io","baseUrl":"https://apps-test.applozic.com/"};
+      let s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://api-test.kommunicate.io/kommunicate.app";
+      let h = document.getElementsByTagName("head")[0];
+      h.appendChild(s);
+      window.kommunicate = m;
+      m._globals = o;
+    })(document, window.kommunicate || {});
+    
+  </script>
+
+
   </body>
 </html>

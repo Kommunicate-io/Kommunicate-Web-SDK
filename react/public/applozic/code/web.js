@@ -16,7 +16,7 @@ var autoSuggestions = {};
 function initAutoSuggestions() {
 
   for(autoSuggest in autoSuggestions){
-    $('#mck-text-box').atwho({
+    $('#km-text-box').atwho({
       at: `/${autoSuggest}`,
       insertTpl: '${content}',
       displayTpl: '<li>${name} <small>${content}</small></li>',
@@ -50,7 +50,7 @@ function initAutoSuggestions() {
     }
 
     if (userId == 'applozic' || userId == 'applozic-premium') {
-        $("#mck-individual-tab-title .mck-tab-title").click(function () {
+        $("#km-individual-tab-title .km-tab-title").click(function () {
             clearbit($(this).text());
         });
     }
