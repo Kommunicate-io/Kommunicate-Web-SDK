@@ -3222,7 +3222,7 @@ var KM_CLIENT_GROUP_MAP = [];
 									filelb : $fileBox.find('.km-file-lb').html(),
 									filesize : $fileBox.find('.km-file-sz').html()
 								};
-								var fileMeta = $fileBox.data('mckfile');
+								var fileMeta = $fileBox.data('kmfile');
 								if (typeof fileMeta === 'object') {
 									file.fileMeta = fileMeta;
 								}
@@ -5149,7 +5149,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			var $mck_group_create_icon = $kmApplozic("#km-group-create-icon-box .km-group-icon");
 			var $mck_group_create_overlay_box = $kmApplozic("#km-group-create-icon-box .km-overlay-box");
 			var $mck_group_create_overlay_label = $kmApplozic("#km-group-create-icon-box .km-overlay-label");
-			var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}" data-alpha="${contFirstAlphaExpr}">' + '<div class="km-row km-group-member-info" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row">' + '<div class="blk-lg-8 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div>' + '<div class="blk-lg-4 km-group-admin-text move-right ${isAdminExpr}"><span>Admin</span></div></div>' + '<div class="km-row">' + '<div class="blk-lg-10 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div>' + '<div class="blk-lg-2 km-group-admin-options ${enableAdminMenuExpr}">' + '<div class="km-menu-box n-vis"><div class="km-dropdown-toggle km-group-admin-menu-toggle km-text-center" data-toggle="mckdropdown" aria-expanded="true">' + '<span class="km-caret"></span></div>' + '<ul id="km-group-admin-menu" class="km-dropdown-menu km-group-admin-menu km-tab-menu-box menu-right" role="menu">' + '<li><a href="#" class="km-btn-remove-member menu-item" title="Remove Member">Remove Member</a></li>' + '</ul></div></div>' + '</div></div></div></li>';
+			var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}" data-alpha="${contFirstAlphaExpr}">' + '<div class="km-row km-group-member-info" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row">' + '<div class="blk-lg-8 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div>' + '<div class="blk-lg-4 km-group-admin-text move-right ${isAdminExpr}"><span>Admin</span></div></div>' + '<div class="km-row">' + '<div class="blk-lg-10 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div>' + '<div class="blk-lg-2 km-group-admin-options ${enableAdminMenuExpr}">' + '<div class="km-menu-box n-vis"><div class="km-dropdown-toggle km-group-admin-menu-toggle km-text-center" data-toggle="kmdropdown" aria-expanded="true">' + '<span class="km-caret"></span></div>' + '<ul id="km-group-admin-menu" class="km-dropdown-menu km-group-admin-menu km-tab-menu-box menu-right" role="menu">' + '<li><a href="#" class="km-btn-remove-member menu-item" title="Remove Member">Remove Member</a></li>' + '</ul></div></div>' + '</div></div></div></li>';
 			var groupSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}">' + '<a class="km-add-to-group" href="#" data-km-id="${contIdExpr}">' + '<div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="km-row"><div class="blk-lg-12 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
 			$kmApplozic.template("groupMemberTemplate", groupContactbox);
 			$kmApplozic.template("groupSearchTemplate", groupSearchContact);
@@ -5836,30 +5836,30 @@ var KM_CLIENT_GROUP_MAP = [];
 			var MCK_MESSAGE_ARRAY = [];
 			var MCK_CONTACT_NAME_ARRAY = [];
 			_this.getMckMessageArray = function() {
-				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("mckMessageArray")) : MCK_MESSAGE_ARRAY;
+				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("kmMessageArray")) : MCK_MESSAGE_ARRAY;
 			};
 			_this.clearMckMessageArray = function() {
 				if (typeof (w.sessionStorage) !== "undefined") {
-					w.sessionStorage.removeItem("mckMessageArray");
+					w.sessionStorage.removeItem("kmMessageArray");
 				} else {
 					MCK_MESSAGE_ARRAY.length = 0;
 				}
 			};
 			_this.setMckMessageArray = function(messages) {
 				if (typeof (w.sessionStorage) !== "undefined") {
-					w.sessionStorage.setItem('mckMessageArray', w.JSON.stringify(messages));
+					w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(messages));
 				} else {
 					MCK_MESSAGE_ARRAY = messages;
 				}
 			};
 			_this.updateMckMessageArray = function(mckMessageArray) {
 				if (typeof (w.sessionStorage) !== "undefined") {
-					var mckLocalMessageArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('mckMessageArray'));
+					var mckLocalMessageArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('kmMessageArray'));
 					if (mckLocalMessageArray !== null) {
 						mckLocalMessageArray = mckLocalMessageArray.concat(mckMessageArray);
-						w.sessionStorage.setItem('mckMessageArray', w.JSON.stringify(mckLocalMessageArray));
+						w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(mckLocalMessageArray));
 					} else {
-						w.sessionStorage.setItem('mckMessageArray', w.JSON.stringify(mckMessageArray));
+						w.sessionStorage.setItem('kmMessageArray', w.JSON.stringify(mckMessageArray));
 					}
 					return mckMessageArray;
 				} else {
@@ -5868,22 +5868,22 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 			};
 			_this.getMckContactNameArray = function() {
-				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("mckContactNameArray")) : MCK_CONTACT_NAME_ARRAY;
+				return (typeof (w.sessionStorage) !== "undefined") ? $kmApplozic.parseJSON(w.sessionStorage.getItem("kmContactNameArray")) : MCK_CONTACT_NAME_ARRAY;
 			};
 			_this.setMckContactNameArray = function(mckContactNameArray) {
 				if (typeof (w.sessionStorage) !== "undefined") {
-					w.sessionStorage.setItem('mckContactNameArray', w.JSON.stringify(mckContactNameArray));
+					w.sessionStorage.setItem('kmContactNameArray', w.JSON.stringify(mckContactNameArray));
 				} else {
 					MCK_CONTACT_NAME_ARRAY = mckContactNameArray;
 				}
 			};
 			_this.updateMckContactNameArray = function(mckContactNameArray) {
 				if (typeof (w.sessionStorage) !== "undefined") {
-					var mckLocalcontactNameArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('mckContactNameArray'));
+					var mckLocalcontactNameArray = $kmApplozic.parseJSON(w.sessionStorage.getItem('kmContactNameArray'));
 					if (mckLocalcontactNameArray !== null) {
 						mckContactNameArray = mckContactNameArray.concat(mckLocalcontactNameArray);
 					}
-					w.sessionStorage.setItem('mckContactNameArray', w.JSON.stringify(mckContactNameArray));
+					w.sessionStorage.setItem('kmContactNameArray', w.JSON.stringify(mckContactNameArray));
 					return mckContactNameArray;
 				} else {
 					MCK_CONTACT_NAME_ARRAY = MCK_CONTACT_NAME_ARRAY.concat(mckContactNameArray);
@@ -6150,7 +6150,7 @@ var KM_CLIENT_GROUP_MAP = [];
 									$kmApplozic(".km-file-box .progress").removeClass('vis').addClass('n-vis');
 									$mck_text_box.removeAttr('required');
 									FILE_META.push(file_meta);
-									$fileContainer.data('mckfile', file_meta);
+									$fileContainer.data('kmfile', file_meta);
 									$mck_file_upload.children('input').val("");
 									return false;
 								} else {
@@ -6242,7 +6242,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				};
 				$kmApplozic(d).on("click", '.km-remove-file', function() {
 					var $currFileBox = $kmApplozic(this).parents('.km-file-box');
-					var currFileMeta = $currFileBox.data('mckfile');
+					var currFileMeta = $currFileBox.data('kmfile');
 					$currFileBox.remove();
 					$mck_msg_sbmt.attr('disabled', false);
 					if ($file_box.find('.km-file-box').length === 0) {
@@ -6300,7 +6300,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var $file_remove = $fileContainer.find(".km-remove-file");
 				var $file_progress = $fileContainer.find(".progress");
 				if (typeof file.fileMeta === 'object') {
-					$fileContainer.data('mckblob', file.fileMeta.blobKey);
+					$fileContainer.data('kmblob', file.fileMeta.blobKey);
 					$mck_text_box.removeAttr('required');
 					$mck_msg_sbmt.attr('disabled', false);
 					$file_remove.attr('disabled', false);

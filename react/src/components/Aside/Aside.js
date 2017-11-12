@@ -220,7 +220,7 @@ class Aside extends Component {
                            </ul>
                         </div>
                         <div className="blk-lg-2 move-right km-menu-item km-text-right">
-                            <div className="km-dropdown-toggle" data-toggle="mckdropdown"
+                            <div className="km-dropdown-toggle" data-toggle="kmdropdown"
                                 aria-expanded="true">
                                 <img
                             src="applozic/images/icon-menu.png" className="km-menu-icon" alt="Menu"/>
@@ -420,7 +420,7 @@ class Aside extends Component {
                           </div>
                           <div className="blk-lg-4 move-right">
                             <div id="km-tab-menu" className="km-menu-item km-text-right">
-                              <div className="km-dropdown-toggle" data-toggle="mckdropdown"
+                              <div className="km-dropdown-toggle" data-toggle="kmdropdown"
                                 aria-expanded="true">
                                 <img src="applozic/images/icon-menu.png" className="km-menu-icon"
                                   alt="Tab Menu"/>
@@ -453,7 +453,7 @@ class Aside extends Component {
                         className="km-tab-panel km-btn-group km-product-group">
                         <div id="km-product-box"
                           className="km-product-box n-vis km-dropdown-toggle"
-                          data-toggle="mckdropdown" aria-expanded="true">
+                          data-toggle="kmdropdown" aria-expanded="true">
                           <div className="km-row">
                             <div className="blk-lg-10">
                               <div className="km-row">
@@ -521,7 +521,7 @@ class Aside extends Component {
                                 <input id="km-file-input" className="km-file-input n-vis"
                                   type="file" name="files[]"/>
                                 <div id="km-btn-attach" className="km-btn-attach">
-                                  <div className="km-dropdown-toggle" data-toggle="mckdropdown"
+                                  <div className="km-dropdown-toggle" data-toggle="kmdropdown"
                                     aria-expanded="true">
                                     <a href="javascript:void(0)" type="button" id="km-btn-attach"
                                       className="write-link attach km-btn-text-panel"
@@ -809,7 +809,7 @@ class Aside extends Component {
                           <h4 className="km-box-title">Location Sharing</h4>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" className="km-box-close" data-dismiss="mckbox"
+                          <button type="button" className="km-box-close" data-dismiss="kmbox"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
@@ -840,7 +840,7 @@ class Aside extends Component {
                         <button id="km-loc-submit" type="button"
                           className="km-btn km-btn-blue km-loc-submit move-right">Send</button>
                         <button type="button" className="km-btn km-btn-default move-right"
-                          data-dismiss="mckbox">Close</button>
+                          data-dismiss="kmbox">Close</button>
                       </div>
                     </div>
                   </div>
@@ -859,7 +859,7 @@ class Aside extends Component {
                           <h4 className="km-box-title">Add Member</h4>
                         </div>
                         <div className="blk-lg-2">
-                          <button type="button" className="km-box-close" data-dismiss="mckbox"
+                          <button type="button" className="km-box-close" data-dismiss="kmbox"
                             aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
