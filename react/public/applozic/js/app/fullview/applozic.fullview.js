@@ -302,9 +302,9 @@ var KM_CLIENT_GROUP_MAP = [];
 		var IS_MCK_TAB_FOCUSED = true;
 		var MCK_TOTAL_UNREAD_COUNT = 0;
 		var MCK_MODE = appOptions.mode;
-    MCK_LABELS = appOptions.labels;
+    KM_LABELS = appOptions.labels;
 		var MCK_APP_ID = appOptions.appId;
-		MCK_BASE_URL = appOptions.baseUrl;
+		KM_BASE_URL = appOptions.baseUrl;
 		var MCK_CONNECTED_CLIENT_COUNT = 0;
 		var MCK_TOPIC_CONVERSATION_MAP = [];
 		var IS_MCK_USER_DEACTIVATED = false;
@@ -568,9 +568,9 @@ var KM_CLIENT_GROUP_MAP = [];
         MCK_TOPIC_DETAIL_MAP = [];
         KM_CLIENT_GROUP_MAP = [];
         IS_MCK_TAB_FOCUSED = true;
-        MCK_LABELS = optns.labels;
+        KM_LABELS = optns.labels;
         MCK_TOTAL_UNREAD_COUNT = 0;
-        MCK_BASE_URL = optns.baseUrl;
+        KM_BASE_URL = optns.baseUrl;
         TAB_FILE_DRAFT = new Object();
         MCK_GROUP_ARRAY = new Array();
         MCK_LAUNCHER = optns.launcher;
@@ -1102,7 +1102,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				AUTH_CODE = '';
 				USER_DEVICE_KEY = '';
 				kmUtils.ajax({
-					url : MCK_BASE_URL + INITIALIZE_APP_URL,
+					url : KM_BASE_URL + INITIALIZE_APP_URL,
 					type : 'post',
 					data : w.JSON.stringify(userPxy),
 					contentType : 'application/json',
@@ -1171,9 +1171,7 @@ var KM_CLIENT_GROUP_MAP = [];
 								'photoLink' : result.imageLink
 							});
 							$kmApplozic.ajaxPrefilter(function(options) {
-								console.log(options.kommunicateDashboard);
-								console.log("###ajaxPreFilter");
-								if (options.kommunicateDashboard && options.url.indexOf(MCK_BASE_URL) !== -1) {
+								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
 									// _this.manageIdleTime();
 									options.beforeSend = function(jqXHR) {
 										_this.setHeaders(jqXHR);
@@ -2116,7 +2114,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				kmUtils.ajax({
 					type : "GET",
-					url : MCK_BASE_URL + MESSAGE_ADD_INBOX_URL,
+					url : KM_BASE_URL + MESSAGE_ADD_INBOX_URL,
 					global : false,
 					data : "sender=" + encodeURIComponent(params.sender) + "&messageContent=" + encodeURIComponent(params.messageContent),
 					contentType : 'text/plain',
@@ -2135,7 +2133,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var $mck_msg_div = $kmApplozic("#km-message-cell div[name='message']." + randomId);
 				kmUtils.ajax({
 					type : "POST",
-					url : MCK_BASE_URL + MESSAGE_SEND_URL,
+					url : KM_BASE_URL + MESSAGE_SEND_URL,
 					global : false,
 					data : w.JSON.stringify(messagePxy),
 					contentType : 'application/json',
@@ -2198,7 +2196,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var isGroup = $mck_msg_inner.data("isgroup");
 				if (typeof tabId !== 'undefined') {
 					kmUtils.ajax({
-						url : MCK_BASE_URL + MESSAGE_DELETE_URL + "?key=" + msgKey,
+						url : KM_BASE_URL + MESSAGE_DELETE_URL + "?key=" + msgKey,
 						type : 'get',
 						success : function(data) {
 							if (data === 'success') {
@@ -2238,7 +2236,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					kmUtils.ajax({
 						type : "get",
-						url : MCK_BASE_URL + CONVERSATION_DELETE_URL,
+						url : KM_BASE_URL + CONVERSATION_DELETE_URL,
 						global : false,
 						data : data,
 						success : function() {
@@ -2281,7 +2279,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				var response = new Object();
 				kmUtils.ajax({
-					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
+					url : KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
 					success : function(data) {
 						response.status = "success";
@@ -2337,7 +2335,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 				}
 				kmUtils.ajax({
-					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqdata,
+					url : KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqdata,
 					type : 'get',
 					global : false,
 					success : function(data) {
@@ -2401,7 +2399,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_msg_inner.html('');
 				}
 				kmUtils.ajax({
-					url : MCK_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
+					url : KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
 					global : false,
 					success : function(data) {
@@ -2614,7 +2612,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var tabExpr = (isGroup) ? "groupId=" + tabId : "userId=" + encodeURIComponent(tabId);
 				var paramData = "startIndex=0&pageSize=1&" + tabExpr;
 				kmUtils.ajax({
-					url : MCK_BASE_URL + MESSAGE_LIST_URL,
+					url : KM_BASE_URL + MESSAGE_LIST_URL,
 					data : paramData,
 					global : false,
 					type : 'get',
@@ -2636,7 +2634,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			_this.sendDeliveryUpdate = function(message) {
 				var data = "key=" + message.pairedMessageKey;
 				kmUtils.ajax({
-					url : MCK_BASE_URL + MESSAGE_DELIVERY_UPDATE_URL,
+					url : KM_BASE_URL + MESSAGE_DELIVERY_UPDATE_URL,
 					data : data,
 					global : false,
 					type : 'get',
@@ -2648,7 +2646,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (typeof key !== "undefined" && key !== "") {
 					var data = "key=" + key;
 					kmUtils.ajax({
-						url : MCK_BASE_URL + MESSAGE_READ_UPDATE_URL,
+						url : KM_BASE_URL + MESSAGE_READ_UPDATE_URL,
 						data : data,
 						global : false,
 						type : 'get',
@@ -2662,7 +2660,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (tabId && (mckMessageLayout.getUnreadCount(ucTabId) > 0)) {
 					var data = (isGroup) ? "groupId=" + tabId : "userId=" + encodeURIComponent(tabId);
 					kmUtils.ajax({
-						url : MCK_BASE_URL + CONVERSATION_READ_UPDATE_URL,
+						url : KM_BASE_URL + CONVERSATION_READ_UPDATE_URL,
 						data : data,
 						global : false,
 						type : 'get',
@@ -2710,7 +2708,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						conversationPxy.fallBackTemplatesList = params.fallBackTemplatesList;
 					}
 					kmUtils.ajax({
-						url : MCK_BASE_URL + CONVERSATION_ID_URL,
+						url : KM_BASE_URL + CONVERSATION_ID_URL,
 						global : false,
 						data : w.JSON.stringify(conversationPxy),
 						type : 'post',
@@ -2761,7 +2759,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					reqdata += '&pageSize=' + params.pageSize;
 				}
 				kmUtils.ajax({
-					url : MCK_BASE_URL + CONVERSATION_FETCH_URL,
+					url : KM_BASE_URL + CONVERSATION_FETCH_URL,
 					data : reqdata,
 					type : 'get',
 					success : function(data) {
@@ -2841,7 +2839,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (params.conversationId) {
 					var data = 'id=' + params.conversationId;
 					kmUtils.ajax({
-						url : MCK_BASE_URL + TOPIC_ID_URL,
+						url : KM_BASE_URL + TOPIC_ID_URL,
 						data : data,
 						global : false,
 						type : 'get',
@@ -2890,7 +2888,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (conversationId) {
 					var data = "id=" + conversationId;
 					kmUtils.ajax({
-						url : MCK_BASE_URL + CONVERSATION_CLOSE_UPDATE_URL,
+						url : KM_BASE_URL + CONVERSATION_CLOSE_UPDATE_URL,
 						data : data,
 						global : false,
 						type : 'get',
@@ -3001,7 +2999,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				var response = new Object();
 				kmUtils.ajax({
-					url : MCK_BASE_URL + GROUP_CREATE_URL,
+					url : KM_BASE_URL + GROUP_CREATE_URL,
 					global : false,
 					data : w.JSON.stringify(groupInfo),
 					type : 'post',
@@ -3730,7 +3728,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						} else if (contact.photoData) {
 							imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
 						} else if (contact.photoLink) {
-							imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
+							imgsrctag = '<img src="' + KM_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
 						} else {
 							if (!displayName) {
 								displayName = contact.displayName;
@@ -3824,7 +3822,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				var contact = {
 					'contactId' : contactId,
-					'htmlId' : mckContactUtils.formatContactId(contactId),
+					'htmlId' : kmContactUtils.formatContactId(contactId),
 					'displayName' : displayName,
 					'name' : displayName + " <" + contactId + ">" + " [" + "Main" + "]",
 					'value' : contactId,
@@ -3856,7 +3854,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var photoData = (data.imageData) ? data.imageData : '';
 				var contact = {
 					'contactId' : contactId,
-					'htmlId' : mckContactUtils.formatContactId(contactId),
+					'htmlId' : kmContactUtils.formatContactId(contactId),
 					'displayName' : displayName,
 					'name' : displayName + " <" + contactId + ">" + " [" + "Main" + "]",
 					'value' : contactId,
@@ -4218,7 +4216,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 			};
 			_this.clearContactMessageData = function(tabId, isGroup) {
-				var htmlId = mckContactUtils.formatContactId(tabId);
+				var htmlId = kmContactUtils.formatContactId(tabId);
 				var contactIdExpr = (isGroup) ? 'group-' + htmlId : 'user-' + htmlId;
 				$kmApplozic("#li-" + contactIdExpr + " .km-cont-msg-date").html("");
 				$kmApplozic("#li-" + contactIdExpr + " .km-cont-msg-wrapper").html("");
@@ -4429,7 +4427,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				mckStorage.clearMckMessageArray();
 				var contact = (isGroup) ? kmGroupUtils.getGroup(tabId) : mckMessageLayout.getContact(tabId);
 				var currentTabId = $mck_msg_inner.data('km-id');
-				var htmlId = (typeof contact !== 'undefined') ? contact.htmlId : mckContactUtils.formatContactId(tabId);
+				var htmlId = (typeof contact !== 'undefined') ? contact.htmlId : kmContactUtils.formatContactId(tabId);
 				var contactIdExpr = (isGroup) ? 'group-' + htmlId : 'user-' + htmlId;
 				$kmApplozic("#li-" + contactIdExpr + " .km-cont-msg-wrapper").html('');
 				$kmApplozic("#li-" + contactIdExpr + " .time").html('');
@@ -4818,7 +4816,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					var tabId = $kmApplozic(this).data('km-id');
 					if (typeof tabId !== "undefined" && tabId !== "") {
 						userIdArray.push(tabId);
-						var htmlId = mckContactUtils.formatContactId('' + tabId);
+						var htmlId = kmContactUtils.formatContactId('' + tabId);
 						$kmApplozic(this).addClass(htmlId);
 						$kmApplozic(this).next().addClass(htmlId);
 					}
@@ -4911,7 +4909,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					if (data) {
 						kmUtils.ajax({
-							url : MCK_BASE_URL + CONTACT_NAME_URL,
+							url : KM_BASE_URL + CONTACT_NAME_URL,
 							data : data,
 							global : false,
 							type : 'get',
@@ -4941,7 +4939,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 				}
 				kmUtils.ajax({
-					url : MCK_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1" + roleNameListParam,
+					url : KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1" + roleNameListParam,
 					type : 'get',
 					global : false,
 					success : function(response) {
@@ -4959,7 +4957,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_search_List.html('');
 				var userIdArray = [];
 				kmUtils.ajax({
-					url : MCK_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1",
+					url : KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1",
 					type : 'get',
 					global : false,
 					success : function(response) {
@@ -5025,7 +5023,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return;
 				}
 				kmUtils.ajax({
-					url : MCK_BASE_URL + USER_DETAIL_URL + "?" + data,
+					url : KM_BASE_URL + USER_DETAIL_URL + "?" + data,
 					type : 'get',
 					contentType : 'application/json',
 					success : function(data) {
@@ -5058,7 +5056,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			_this.getUserStatus = function(params) {
 				var response = new Object();
 				kmUtils.ajax({
-					url : MCK_BASE_URL + USER_STATUS_URL,
+					url : KM_BASE_URL + USER_STATUS_URL,
 					type : 'get',
 					success : function(data) {
 						if (data.users.length > 0) {
@@ -5090,7 +5088,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				var data = "userId=" + userId + "&block=" + isBlock;
 				kmUtils.ajax({
-					url : MCK_BASE_URL + USER_BLOCK_URL,
+					url : KM_BASE_URL + USER_BLOCK_URL,
 					type : 'get',
 					data : data,
 					success : function(data) {
@@ -5356,7 +5354,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 			};
 			_this.getGroupImage = function(imageSrc) {
-				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + MCK_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
+				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
 			};
 			_this.addMemberToGroup = function(group, userId) {
 				if (typeof group.members === 'object') {
@@ -5913,14 +5911,14 @@ var KM_CLIENT_GROUP_MAP = [];
                          if (IS_LOC_SHARE_INIT) {
                              $mck_loc_box.mckModal();
                          } else {
-                             mckMapUtils.getCurrentLocation(_this.onGetCurrLocation, _this.onErrorCurrLocation);
+                             kmMapUtils.getCurrentLocation(_this.onGetCurrLocation, _this.onErrorCurrLocation);
                              IS_LOC_SHARE_INIT = true;
                          }
 
                      });
 				}
 				$mck_my_loc.on("click", function() {
-					mckMapUtils.getCurrentLocation(_this.onGetMyCurrLocation, _this.onErrorMyCurrLocation);
+					kmMapUtils.getCurrentLocation(_this.onGetMyCurrLocation, _this.onErrorMyCurrLocation);
 				});
 			};
 			_this.onGetCurrLocation = function(loc) {
@@ -6006,7 +6004,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var messagePxy = {
 					"type" : 5,
 					"contentType" : 2,
-					"message" : w.JSON.stringify(mckMapUtils.getSelectedLocation())
+					"message" : w.JSON.stringify(kmMapUtils.getSelectedLocation())
 				};
 				var conversationId = $mck_msg_inner.data('km-conversationid');
 				var topicId = $mck_msg_inner.data('km-topicid');
@@ -6229,7 +6227,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							return false;
 						});
 						data.append("file", file);
-						xhr.open('post', MCK_BASE_URL + FILE_AWS_UPLOAD_URL, true);
+						xhr.open('post', KM_BASE_URL + FILE_AWS_UPLOAD_URL, true);
 						xhr.setRequestHeader("UserId-Enabled", true);
 						xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
 						xhr.setRequestHeader("Application-Key", MCK_APP_ID);
@@ -6355,7 +6353,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							iconLink = imgsrc;
 						}
 					}
-					mckNotificationUtils.sendDesktopNotification(displayName, iconLink, msg);
+					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg);
 				}
 			};
 			_this.showNewMessageNotification = function(message, contact, displayName) {
@@ -6411,7 +6409,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					var subscriptionId = MCK_SW_SUBSCRIPTION.endpoint.split("/").slice(-1)[0];
 					if (subscriptionId) {
 						kmUtils.ajax({
-							url : MCK_BASE_URL + MCK_SW_REGISTER_URL,
+							url : KM_BASE_URL + MCK_SW_REGISTER_URL,
 							type : 'post',
 							data : 'registrationId=' + subscriptionId,
 							success : function(data) {},
@@ -6713,7 +6711,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						if (tabId === contact.contactId && !$mck_message_inner.data('isgroup')) {
 							$kmApplozic("#km-tab-individual .km-tab-status").html("Online");
 						}
-						var htmlId = mckContactUtils.formatContactId(userId);
+						var htmlId = kmContactUtils.formatContactId(userId);
 						$kmApplozic("#li-user-" + htmlId + " .km-ol-status").removeClass('n-vis').addClass('vis');
 						$kmApplozic(".km-user-ol-status." + htmlId).removeClass('n-vis').addClass('vis');
 						$kmApplozic(".km-user-ol-status." + htmlId).next().html('(Online)');

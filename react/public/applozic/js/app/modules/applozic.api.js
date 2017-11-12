@@ -4,7 +4,7 @@
         var ALApiService = {};
         var MCK_APP_ID = "";
         var mckUtils = new MckUtils();
-        var MCK_BASE_URL = "https://apps.applozic.com";
+        var KM_BASE_URL = "https://apps.applozic.com";
         var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
         var MESSAGE_LIST_URL = "/rest/ws/message/list";
         var MESSAGE_SEND_URL = "/rest/ws/message/send";
@@ -25,7 +25,7 @@
         }
 
         ALApiService.initServerUrl = function(serverUrl) {
-            MCK_BASE_URL = serverUrl;
+            KM_BASE_URL = serverUrl;
         }
 		
 		
@@ -39,7 +39,7 @@
             MCK_APP_ID = options.data.alUser.applicationId;
 		
             mckUtils.ajax({
-                url: MCK_BASE_URL + INITIALIZE_APP_URL,
+                url: KM_BASE_URL + INITIALIZE_APP_URL,
                 type: 'post',
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
                 data: JSON.stringify(options.data.alUser),
@@ -92,7 +92,7 @@
             var data = getAsUriParameters(options.data);
             var response = new Object();
             mckUtils.ajax({
-                url: MCK_BASE_URL + MESSAGE_LIST_URL + "?" + data,
+                url: KM_BASE_URL + MESSAGE_LIST_URL + "?" + data,
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
                 type: 'get',
                 success: function(data) {
@@ -124,7 +124,7 @@
         ALApiService.sendMessage = function(options) {
             mckUtils.ajax({
                 type: 'POST',
-                url: MCK_BASE_URL + MESSAGE_SEND_URL,
+                url: KM_BASE_URL + MESSAGE_SEND_URL,
                 global: false,
                 data: JSON.stringify(options.data.message),
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
@@ -149,7 +149,7 @@
          */
         ALApiService.sendDeliveryUpdate = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + MESSAGE_DELIVERY_UPDATE_URL,
+                url: KM_BASE_URL + MESSAGE_DELIVERY_UPDATE_URL,
                 data: "key=" + options.data.key,
                 global: false,
                 type: 'get',
@@ -166,7 +166,7 @@
          */
         ALApiService.sendReadUpdate = function(options) {            
             mckUtils.ajax({
-                url: MCK_BASE_URL + MESSAGE_READ_UPDATE_URL,
+                url: KM_BASE_URL + MESSAGE_READ_UPDATE_URL,
                 data: "key=" + options.data.key,
                 global: false,
                 type: 'get',
@@ -183,7 +183,7 @@
          */
         ALApiService.deleteMessage = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + MESSAGE_DELETE_URL + "?key=" + options.data.key,
+                url: KM_BASE_URL + MESSAGE_DELETE_URL + "?key=" + options.data.key,
                 global: false,                
                 type: 'get',
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
@@ -207,7 +207,7 @@
          */
         ALApiService.updateReplyMessage = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + UPDATE_REPLY_MAP + "?keys=" + options.data.key,
+                url: KM_BASE_URL + UPDATE_REPLY_MAP + "?keys=" + options.data.key,
                 type: 'get',
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
                 success: function(response) {
@@ -234,7 +234,7 @@
          */
         ALApiService.deleteConversation = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + CONVERSATION_DELETE_URL,                
+                url: KM_BASE_URL + CONVERSATION_DELETE_URL,                
                 type: "get",
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
                 global: false,
@@ -259,7 +259,7 @@
          */
         ALApiService.createGroup = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + GROUP_CREATE_URL,
+                url: KM_BASE_URL + GROUP_CREATE_URL,
                 global: false,
                 data: JSON.stringify(options.data.group),
                 type: 'post',
@@ -285,7 +285,7 @@
          */
         ALApiService.loadGroups = function(options) {
             mckUtils.ajax({
-                url: MCK_BASE_URL + GROUP_LIST_URL,
+                url: KM_BASE_URL + GROUP_LIST_URL,
                 type: 'get',
                 async: (typeof options.async !== 'undefined') ? options.async : true,                
                 global: false,

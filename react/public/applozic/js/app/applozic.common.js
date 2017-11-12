@@ -12,18 +12,18 @@ if (typeof $original !== 'undefined') {
 }
 var w = window,
     d = document;
-var MCK_LABELS;
-var MCK_BASE_URL;
+var KM_LABELS;
+var KM_BASE_URL;
 var MCK_CURR_LATITIUDE = 40.7324319;
 var MCK_CURR_LONGITUDE = -73.82480777777776;
 var kmUtils = new KmUtils();
 kmUtils.init();
 var mckDateUtils = new MckDateUtils();
 var kmGroupUtils = new KmGroupUtils();
-var mckContactUtils = new MckContactUtils();
+var kmContactUtils = new KmContactUtils();
 var kmGroupService = new KmGroupService();
-var mckMapUtils = new MckMapUtils();
-var mckNotificationUtils = new MckNotificationUtils();
+var kmMapUtils = new KmMapUtils();
+var kmNotificationUtils = new KmNotificationUtils();
 function KmUtils() {
     var _this = this;
     var TEXT_NODE = 3,
@@ -208,7 +208,7 @@ function KmUtils() {
     };
 
 }
-function MckContactUtils() {
+function KmContactUtils() {
     var _this = this;
     _this.getContactId = function(contact) {
         var contactId = contact.contactId;
@@ -251,7 +251,7 @@ function KmGroupUtils() {
             'groupId': group.id,
             'metadata': group.metadata,
             'contactId': group.id.toString(),
-            'htmlId': mckContactUtils.formatContactId('' + group.id),
+            'htmlId': kmContactUtils.formatContactId('' + group.id),
             'displayName': name,
             'value': group.id.toString(),
             'adminName': group.adminName,
@@ -273,7 +273,7 @@ function KmGroupUtils() {
     _this.createGroup = function(groupId) {
         var group = {
             'contactId': groupId.toString(),
-            'htmlId': mckContactUtils.formatContactId('' + groupId),
+            'htmlId': kmContactUtils.formatContactId('' + groupId),
             'displayName': groupId.toString(),
             'value': groupId.toString(),
             'type': 2,
@@ -289,7 +289,7 @@ function KmGroupUtils() {
         return group;
     };
 }
-function MckMapUtils() {
+function KmMapUtils() {
     var _this = this;
     _this.getCurrentLocation = function(succFunc, errFunc) {
         w.navigator.geolocation.getCurrentPosition(succFunc, errFunc);
@@ -301,7 +301,7 @@ function MckMapUtils() {
         };
     };
 }
-function MckNotificationUtils() {
+function KmNotificationUtils() {
     var _this = this;
     var PERMISSION_DEFAULT = "default",
         PERMISSION_GRANTED = "granted",
@@ -444,7 +444,7 @@ function KmGroupService() {
     _this.loadGroups = function(params) {
         var response = new Object();
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_LIST_URL,
+            url: KM_BASE_URL + GROUP_LIST_URL,
             type: 'get',
             global: false,
             success: function(data) {
@@ -499,7 +499,7 @@ function KmGroupService() {
             data += "&conversationId=" + params.conversationId;
         }
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_FEED_URL,
+            url: KM_BASE_URL + GROUP_FEED_URL,
             data: data,
             type: 'get',
             global: false,
@@ -557,7 +557,7 @@ function KmGroupService() {
             return;
         }
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_LEAVE_URL,
+            url: KM_BASE_URL + GROUP_LEAVE_URL,
             data: data,
             type: 'get',
             global: false,
@@ -616,7 +616,7 @@ function KmGroupService() {
         }
         data += '&userId=' + encodeURIComponent(params.userId);
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_REMOVE_MEMBER_URL,
+            url: KM_BASE_URL + GROUP_REMOVE_MEMBER_URL,
             data: data,
             type: 'get',
             global: false,
@@ -672,7 +672,7 @@ function KmGroupService() {
             data += '&role=' + params.role;
         }
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_ADD_MEMBER_URL,
+            url: KM_BASE_URL + GROUP_ADD_MEMBER_URL,
             data: data,
             type: 'get',
             global: false,
@@ -738,7 +738,7 @@ function KmGroupService() {
           groupInfo.metadata = params.metadata;
         }
         kmUtils.ajax({
-            url: MCK_BASE_URL + GROUP_UPDATE_INFO_URL,
+            url: KM_BASE_URL + GROUP_UPDATE_INFO_URL,
             type: 'post',
             data: JSON.stringify(groupInfo),
             contentType: 'application/json',
@@ -799,13 +799,13 @@ function MckDateUtils() {
             var hoursDiff = currentDate.getHours() - date.getHours();
             var timeDiff = w.Math.floor((currentDate.getTime() - date.getTime()) / 60000);
             if (timeDiff < 60) {
-                return (timeDiff <= 1) ? MCK_LABELS['last.seen'] + ' 1 min ' + MCK_LABELS['ago'] : MCK_LABELS['last.seen'] + ' ' + timeDiff + ' mins ' + MCK_LABELS['ago'];
+                return (timeDiff <= 1) ? KM_LABELS['last.seen'] + ' 1 min ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + timeDiff + ' mins ' + KM_LABELS['ago'];
             }
-            return (hoursDiff === 1) ? MCK_LABELS['last.seen'] + ' 1 hour ' + MCK_LABELS['ago'] : MCK_LABELS['last.seen'] + ' ' + hoursDiff + ' hours ' + MCK_LABELS['ago'];
+            return (hoursDiff === 1) ? KM_LABELS['last.seen'] + ' 1 hour ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + hoursDiff + ' hours ' + KM_LABELS['ago'];
         } else if ( ((currentDate.getDate() - date.getDate() === 1) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ) {
-            return MCK_LABELS['last.seen.on'] + ' yesterday';
+            return KM_LABELS['last.seen.on'] + ' yesterday';
         } else {
-            return MCK_LABELS['last.seen.on'] + ' ' + dateFormat(date, onlyDateFormat, false);
+            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(date, onlyDateFormat, false);
         }
     };
     _this.getTimeOrDate = function(createdAtTime, timeFormat) {
