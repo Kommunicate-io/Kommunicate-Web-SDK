@@ -12,7 +12,7 @@ class Conversations extends Component {
 
   componentWillUnmount() {
     document.body.classList.toggle('aside-menu-hidden');
-    window.$applozic.fn.applozic('loadTab', '');
+    window.$kmApplozic.fn.applozic('loadTab', '');
   }
 
   render() {

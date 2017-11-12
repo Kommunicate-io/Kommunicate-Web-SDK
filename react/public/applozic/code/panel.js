@@ -8,10 +8,10 @@ $(document).ready(function() {
 
     $("#km-user-info-close").on('click', function(e) {
         e.preventDefault();
-        $applozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
-        $applozic(".km-container").removeClass('km-panel-3');
-        $applozic('.emoji-menu').removeClass('km-panel-3');
-        $applozic('body').removeClass('km-panel-3');
+        $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
+        $kmApplozic(".km-container").removeClass('km-panel-3');
+        $kmApplozic('.emoji-menu').removeClass('km-panel-3');
+        $kmApplozic('body').removeClass('km-panel-3');
     });
 
     $("#kommunicate-panel-tabs li a").on('click', function(e) {
@@ -32,13 +32,13 @@ $(document).ready(function() {
     $(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
         $('.km-group-info-tab').removeClass("vis").addClass('n-vis');
         if ($('.km-user-info-tab').hasClass('n-vis')) {
-          $applozic('body').removeClass('km-panel-3').addClass('km-panel-3');
-          $applozic('.emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
-          $applozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
+          $kmApplozic('body').removeClass('km-panel-3').addClass('km-panel-3');
+          $kmApplozic('.emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
+          $kmApplozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
         } else {
-          $applozic('body').removeClass('km-panel-3');
-          $applozic('.emoji-menu').removeClass('km-panel-3');
-          $applozic(".km-container").removeClass('km-panel-3');
+          $kmApplozic('body').removeClass('km-panel-3');
+          $kmApplozic('.emoji-menu').removeClass('km-panel-3');
+          $kmApplozic(".km-container").removeClass('km-panel-3');
         }
 
         $('.km-user-info-tab').toggleClass("n-vis").toggleClass('vis');
@@ -51,13 +51,13 @@ $(document).ready(function() {
         if (typeof contactId == "undefined" || typeof contactId == "") {
             contactId = $("#km-msg-to").val();
         }
-        $applozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {
+        $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {
                     console.log(user);
                     if (typeof user !== "undefined") {
                         $("#km-user-name-sec .km-user-title").html(user.userName);
                         $("#km-user-info-list .email").html(user.email);
                         //$("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
-                        var imageLink = $applozic.fn.applozic("getContactImage", user);
+                        var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
                         $("#km-user-info-icon-box .km-user-icon").html(imageLink);
 
                         if (typeof user.email !== "undefined") {

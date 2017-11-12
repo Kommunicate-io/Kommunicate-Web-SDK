@@ -122,7 +122,7 @@
 	min-width: 300px;
 	bottom:38px;
 	box-shadow: 1px 1px 8px 2px rgba(84, 82, 82, 0.5) !important;
-	border-radius: 6px !important;
+	border-radius: 15px !important;
 }
 .mck-powered-by{
 	text-decoration: none;
@@ -860,7 +860,7 @@
 	color: #000;
 	text-shadow: 0 1px 0 #fff;
 	filter: alpha(opacity = 20);
-	opacity: .2;
+	opacity: .8;
 	-webkit-appearance: none;
 	padding: 0;
 	cursor: pointer;
@@ -2253,9 +2253,9 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-tab-link {
 	width: 30px !important;
-	height: 50px;
+	height: 45px;
 	display: table;
-	padding:5px !important;
+	padding-right:5px !important;
 }
 
 .mck-input-group {
@@ -2488,12 +2488,12 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-sidebox .mck-box-top .blk-lg-2 {
 	width: 20px;
-	height: 50px;
+	height: 45px;
 }
 
 .mck-sidebox .mck-tab-title-w-status, .mck-sidebox .mck-tab-title-w-typing
 	{
-	line-height: 35px;
+	line-height: 40px;
 	height: 30px;
 	position: relative;
 }
@@ -3345,6 +3345,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	width: 20px;
 	height: 20px;
 	vertical-align: middle;
+	filter:brightness(0) invert(1);
 }
 
 .mck-icon-marker-blue {
@@ -3800,11 +3801,16 @@ fill:white;
 .emoji-menu div {
 	width:100% !important;
 }
-mck-tab-link{
-	padding:5px;
-}
 #mck-msg-new{
 	background-color:#7767B4 !important;
 	color:white;
 	border-color: #7767B4 !important;
+}
+.mck-msg-list-icon{
+	filter:invert(1);
+}
+
+
+#mck-tab-conversation{
+	padding-left:35px;
 }

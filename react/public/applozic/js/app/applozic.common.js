@@ -1,13 +1,13 @@
-var $applozic = jQuery.noConflict(true);
+var $kmApplozic = jQuery.noConflict(true);
 if (typeof $original !== 'undefined') {
     $ = $original;
     jQuery = $original;
     if (typeof $.fn.template === 'function') {
-        $applozic.fn.template = $.fn.template;
+        $kmApplozic.fn.template = $.fn.template;
         jQuery.fn.template = $.fn.template;
-    } else if (typeof $applozic.fn.template === 'function') {
-        $.fn.template = $applozic.fn.template;
-        jQuery.fn.template = $applozic.fn.template;
+    } else if (typeof $kmApplozic.fn.template === 'function') {
+        $.fn.template = $kmApplozic.fn.template;
+        jQuery.fn.template = $kmApplozic.fn.template;
     }
 }
 var w = window,
@@ -30,13 +30,13 @@ function KmUtils() {
         ELEMENT_NODE = 1,
         TAGS_BLOCK = [ 'p', 'div', 'pre', 'form' ];
     _this.init = function() {
-        $applozic.ajax({
+        $kmApplozic.ajax({
             url: "https://apps.applozic.com/v2/tab/initialize.page",
             contentType: 'application/json',
             type: 'OPTIONS'
         }).done(function(data) {});
 
-        $applozic.ajax({
+        $kmApplozic.ajax({
             url: "https://apps.applozic.com/rest/ws/message/list",
             contentType: 'application/json',
             type: 'OPTIONS'
@@ -195,7 +195,7 @@ function KmUtils() {
                 }
             }
         }
-        $applozic.ajax(reqOptions);
+        $kmApplozic.ajax(reqOptions);
     };
 
     _this.isJsonString = function(str) {
@@ -219,7 +219,7 @@ function MckContactUtils() {
             contactId = contactId.substring(1);
         }
         contactId = decodeURIComponent(contactId);
-        return $applozic.trim(contactId.replace(/\@/g, 'AT').replace(/\./g, 'DOT').replace(/\*/g, 'STAR').replace(/\#/g, 'HASH').replace(/\|/g, 'VBAR').replace(/\+/g, 'PLUS').replace(/\;/g, 'SCOLON').replace(/\?/g, 'QMARK').replace(/\,/g, 'COMMA').replace(/\:/g, 'COLON'));
+        return $kmApplozic.trim(contactId.replace(/\@/g, 'AT').replace(/\./g, 'DOT').replace(/\*/g, 'STAR').replace(/\#/g, 'HASH').replace(/\|/g, 'VBAR').replace(/\+/g, 'PLUS').replace(/\;/g, 'SCOLON').replace(/\?/g, 'QMARK').replace(/\,/g, 'COMMA').replace(/\:/g, 'COLON'));
     };
 }
 function KmGroupUtils() {
@@ -241,7 +241,7 @@ function KmGroupUtils() {
     _this.addGroup = function(group) {
         var name = (group.name) ? group.name : group.id;
         var users = [];
-        $applozic.each(group.groupUsers, function(i, user) {
+        $kmApplozic.each(group.groupUsers, function(i, user) {
             if (user.userId) {
                 users[user.userId] = user;
             }

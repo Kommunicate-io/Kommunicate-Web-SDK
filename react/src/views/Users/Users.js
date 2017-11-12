@@ -15,7 +15,7 @@ class Users extends Component {
 
   componentWillMount() {
     var _this = this;
-    window.$applozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback': function(response) {
+    window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback': function(response) {
         console.log(response);
         if(response&&response.response){
         _this.setState({result: response.response.users});

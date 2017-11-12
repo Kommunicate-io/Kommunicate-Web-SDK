@@ -2572,6 +2572,8 @@ tbody.collapse.show {
     color: #607d8b;
     background-color: #e4e5e6;
     border-color: #ddd #ddd #e4e5e6; }
+  .nav-item:hover{
+      cursor:pointer;}
   .nav-tabs .dropdown-menu {
     margin-top: -1px; }
 

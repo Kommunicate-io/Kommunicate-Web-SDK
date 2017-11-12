@@ -6,7 +6,6 @@ import classes from './Aside.css';
 class Aside extends Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '1',
@@ -46,12 +45,12 @@ class Aside extends Component {
 
   loadAgents() {
       var that = this;
-      window.$applozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
+      window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
         if(response.status === 'success') {
-              var assign = window.$applozic("#assign");
+              var assign = window.$kmApplozic("#assign");
               that.setState({agents: response.response.users});
-              window.$applozic.each(response.response.users, function() {
-                  assign.append(window.$applozic("<option />").val(this.userId).text(that.getDisplayName(this)));
+              window.$kmApplozic.each(response.response.users, function() {
+                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
               });
             }
          }
@@ -64,7 +63,7 @@ class Aside extends Component {
 
   initConversation(groupId) {
     var that = this;
-    window.$applozic.fn.applozic("getGroup", {
+    window.$kmApplozic.fn.applozic("getGroup", {
         groupId: groupId, callback: function(response) {
           that.setState({group: response});
           that.selectAssignee();
@@ -98,20 +97,20 @@ class Aside extends Component {
       assignee = "agent";
     }
 
-    window.$applozic("#assign").val(assignee);
+    window.$kmApplozic("#assign").val(assignee);
   }
 
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
-      window.$applozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+      window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
     }
   }
 
   changeAssignee(userId) {
     var that = this;
     this.setState({assignee:userId});
-    var groupId = window.$applozic(".left .person.active").data('km-id');
-    window.$applozic.fn.applozic('updateGroupInfo',
+    var groupId = window.$kmApplozic(".left .person.active").data('km-id');
+    window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': this.state.group.groupId,
                                       'metadata': {
@@ -129,7 +128,7 @@ class Aside extends Component {
                                             }
                                           }
                                         }
-                                        window.$applozic.fn.applozic('sendGroupMessage', {
+                                        window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : groupId,
                                             'message' : "Assigned to " + displayName
                                           });
@@ -138,8 +137,8 @@ class Aside extends Component {
 
 
 
-    var loggedInUserId = window.$applozic.fn.applozic("getLoggedInUser");
-    window.$applozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
+    var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
+    window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
                                                   if (group.members.indexOf(userId) == -1) {
                                                     that.addGroupMember(groupId, userId, function() {
                                                       //that.updateGroupRole(groupId, [{userId: that.getGroupAdmin(group), role: 2}]);
@@ -154,7 +153,7 @@ class Aside extends Component {
 
   addGroupMember(groupId, userId, callback) {
     //'role' :  1,  // (optional)  USER(0), ADMIN(1), MODERATOR(2), MEMBER(3)
-    window.$applozic.fn.applozic('addGroupMember',{'groupId': groupId,
+    window.$kmApplozic.fn.applozic('addGroupMember',{'groupId': groupId,
                                         'userId': userId,
                                         'callback': function(response) {
                                           if (typeof callback === 'function') {
@@ -165,29 +164,29 @@ class Aside extends Component {
   }
 
   removeGroupMember(groupId, userId) {
-    window.$applozic.fn.applozic('removeGroupMember',{'groupId': groupId,
+    window.$kmApplozic.fn.applozic('removeGroupMember',{'groupId': groupId,
                                               'userId': userId,
                                               'callback': function(response) {console.log(response);}
                                               });
   }
 
   updateGroupRole(groupId, users) {
-    window.$applozic.fn.applozic('updateGroupInfo', {'groupId': groupId,
+    window.$kmApplozic.fn.applozic('updateGroupInfo', {'groupId': groupId,
                                      'users': users,
                                      'callback' : function(response){console.log(response);}});
   }
 
   changeStatus(status) {
-    //var groupId = window.$applozic(".left .person.active").data('km-id');
+    //var groupId = window.$kmApplozic(".left .person.active").data('km-id');
     var that = this;
-    window.$applozic.fn.applozic('updateGroupInfo',
+    window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': that.state.group.groupId,
                                       'metadata': {
                                                 'CONVERSATION_STATUS' : status
                                       },
                                       'callback': function(response) {
-                                        window.$applozic.fn.applozic('sendGroupMessage', {
+                                        window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : that.state.group.groupId,
                                             'message' : "Status changed to " + that.state.statuses[status]
                                           });

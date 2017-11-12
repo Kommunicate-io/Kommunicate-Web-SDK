@@ -27,6 +27,9 @@ layout:
     </div>
     {% include_relative /sections/homepage-beta-landing-page.html %}
     {% include_relative /sections/homepage-beta-trust-section.html %}
+    {% include_relative /sections/homepage-beta-features-section.html %}
+    {% include_relative /sections/homepage-beta-reasons-invite-list-section.html %}
+    {% include_relative /sections/homepage-beta-latest-section.html %}
     {% include_relative /sections/homepage-beta-cta-section.html %}
     {% include_relative /sections/homepage-beta-footer-section.html %}
 
@@ -103,18 +106,18 @@ layout:
     <script type="text/javascript">
       //Signup Form Variables
       var $fullName = $("#full-name"),
-          $emailAddress = $("#email-address"),
+          $emailAddress = $("#email-pre-signup"),
           $signupButton = $("#get-me-in-btn"),
-          $signupForm = $("#beta-signup-form"),
-          $successMsg = $("#signup-success-msg-div"),
-          $errorMsg1 = $("#signup-error-msg-div1"),
+          $signupForm = $("#pre-signup-form"),
+          $successMsg = $(".signup-success-msg-div"),
+          $errorMsg1 = $(".signup-error-msg-div1"),
           $errorMsg2 = $("#signup-error-msg-div2");
 
           $signupForm.submit(function(e) {
             var user = new Object();
-            user.userName = $("#email-address").val();
-            user.email = $("#email-address").val();
-            user.namwe = $("#full-name").val();
+            user.userName = $("#email-pre-signup").val();
+            user.email = $("#email-pre-signup").val();
+            user.namwe = $("#email-pre-signup").val();
 
 
             $signupButton.attr('disabled', true);
@@ -130,14 +133,19 @@ layout:
                 if (data.code === "SUCCESS") {
                   console.log("Registration Successful", data);
                   $successMsg.removeClass('hide').addClass('show');
-                  $signupButton.attr('disabled', true);
-                  $signupButton.html('Submitted Successfully');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
                 }
                 else {
                     console.log("User Already Exist", data);
                     $errorMsg1.removeClass('hide').addClass('show');
-                    $signupButton.attr('disabled', false);
-                    $signupButton.html('Get me in');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
                 }
             },
             error: function(data) {
@@ -152,17 +160,66 @@ layout:
         });
     </script>
 
+<script>
+// $(".hero-section-icon-link").click(function() {
+//     $('html,body').animate({
+//         scrollTop: $("#homepage-beta-features-section").offset().top},
+//         'slow');
+//         // $('#smart-campaigns').addClass('shake');
+// });
 
+//Select all links with hashes
+$('a[href*="#"]')
+  // Remove links that don't actually link to anything
+  .not('[href="#"]')
+  .not('[href="#0"]')
+  .click(function(event) {
+    // On-page links
+    if (
+      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+      &&
+      location.hostname == this.hostname
+    ) {
+      // Figure out element to scroll to
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      // Does a scroll target exist?
+      if (target.length) {
+        // Only prevent default if animation is actually gonna happen
+        event.preventDefault();
+        $('html, body').animate({
+          scrollTop: target.offset().top
+        }, 1000, function() {
+          // Callback after animation
+          // Must change focus!
+          var $target = $(target);
+          $target.focus();
+          if ($target.is(":focus")) { // Checking if the target was focused
+            return false;
+          } else {
+            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+            $target.focus(); // Set focus again
+          };
+        });
+      }
+    }
+  });
+
+</script>
 
     <script type="text/javascript">
-    (function(d, m){var s, h, o={appId: "295ab0fb79b2e1c3f3b1eb207b8e2b77a",isAnonymousChat:true,baseUrl : "https://chat.kommunicate.io"};
-    s = document.createElement("script");s.type = "text/javascript";
-    s.async=true;
-    s.src="https://api-test.kommunicate.io/kommunicate.app";
-    h=document.getElementsByTagName("head")[0]; h.appendChild(s);
-    window.applozic=m;
-    m._globals=o;})(document, window.kommunicate || {});
-    </script>
+    (function(d, m){
+      let o = {"appId":"167daf6888dda5299ccdf9bbb3f38edb3","isAnonymousChat":true,"agentId":"vibhor+testkomm09nov.03@applozic.com","agentName":"Vibhor","groupName":"Vibhor","baseUrl":"https://apps-test.applozic.com/"};
+      let s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://api-test.kommunicate.io/kommunicate.app";
+      let h = document.getElementsByTagName("head")[0];
+      h.appendChild(s);
+      window.kommunicate = m;
+      m._globals = o;
+    })(document, window.kommunicate || {});
+</script>
 
 </body>
 
