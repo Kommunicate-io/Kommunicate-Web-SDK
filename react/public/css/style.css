@@ -7342,6 +7342,10 @@ base-chart.chart {
   cursor: pointer;
 }
 
+iframe#crowd-shortcut {
+  display: none !important;
+}
+
 .row.row-equal {
   padding-right: 7.5px;
   padding-left: 7.5px;

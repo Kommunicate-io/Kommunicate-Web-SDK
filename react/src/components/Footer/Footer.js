@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 class Footer extends Component {
 
   openUserReport() {
-    console.log("####inside openUserReport");
     window._urq.push(['Feedback_Open']);
-    //alert('hello');
   }
 
   render() {
