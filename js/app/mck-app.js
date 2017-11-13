@@ -14,7 +14,7 @@ if (typeof jQuery !== 'undefined') {
 var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
 function ApplozicSidebox() {
-	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4";
+	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
     var mck_style_loader = [ {
             "name": "mck-combined", "url": MCK_STATICPATH + "/lib/css/mck-combined.min.css"
     }, {
