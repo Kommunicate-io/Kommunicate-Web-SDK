@@ -37,7 +37,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         agentName:"",
         labels: {
             'conversations.title': 'Conversations',
-            'start.new': 'Start New',
+            'start.new': 'Start New Conversation',
             'search.contacts': 'Contacts',
             'search.groups': 'Groups',
             'empty.groups': 'No groups yet!',
@@ -243,6 +243,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'loadConversationWithAgent':
                         return oInstance.loadConversationWithAgent(params);
                         break;
+    
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -451,12 +452,13 @@ var MCK_CLIENT_GROUP_MAP = [];
         _this.loadConversationWithAgent = function(params){
 
             if(params&&params.agentId){
-                console.log("settingdefault agent inside Applozic");
+                console.log("setting default agent inside Applozic");
             mckMessageService.loadConversationWithAgents(params);
             }else{
                 throw new Error("params are empty");
             }
         }
+
         var mckInitializeChannel = new MckInitializeChannel(_this);
         _this.getOptions = function() {
             return appOptions;
@@ -1707,12 +1709,67 @@ var MCK_CLIENT_GROUP_MAP = [];
              var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
+            _this.createNewConversation=function(params){
+                $applozic.fn.applozic("createGroup", {
+                    groupName: params.groupName,
+                    type: 10,
+                    admin: params.agentId,
+                    users: [
+                      {
+                        userId: "bot",
+                        displayName: "Bot",
+                        groupRole: 2,
+                        roleName: "BOT"
+                      },
+                      {
+                        userId: params.agentId,
+                        displayName:params.agentName || params.agentId,
+                        groupRole: 1,
+                        roleName: "APPLICATION_WEB_ADMIN"
+                      }
+                    ],
+                    metadata: {
+                      CREATE_GROUP_MESSAGE: "",
+                      REMOVE_MEMBER_MESSAGE:
+                        ":adminName removed :userName",
+                      ADD_MEMBER_MESSAGE:
+                        ":adminName added :userName",
+                      JOIN_MEMBER_MESSAGE: ":userName joined",
+                      GROUP_NAME_CHANGE_MESSAGE:
+                        "Group name changed to :groupName",
+                      GROUP_ICON_CHANGE_MESSAGE:
+                        "Group icon changed",
+                      GROUP_LEFT_MESSAGE: ":userName left",
+                      DELETED_GROUP_MESSAGE:
+                        ":adminName deleted group",
+                      GROUP_USER_ROLE_UPDATED_MESSAGE:
+                        ":userName is :role now",
+                      GROUP_META_DATA_UPDATED_MESSAGE: "",
+                      ALERT: "false",
+                      HIDE: "true"
+                    },
+                    callback: function(response) {
+                        console.log("response",response);
+                        if(response.status==='success' && response.data.clientGroupId){
+                          Kommunicate.createNewConversation({
+                              "groupId": response.data.clientGroupId,
+                              "participentUserId": MCK_USER_ID,
+                              "defaultAgentId":DEFAULT_AGENT_ID
+                          },function(err,result){
+                              console.log(err,result);
+                          })
+                        }
+                       // 
+                    }
+                  });
+            }
             _this.loadConversationWithAgents = function(params) {
               if (window.applozic.PRODUCT_ID == "kommunicate") {
                 $mck_btn_leave_group
                   .removeClass("vis")
                   .addClass("n-vis");
               }
+
               var formData = "type=" + 10 + "&startIndex=" + 0 + "&limit=" + 10;
               $applozic.ajax({
                 url: MCK_BASE_URL + "/rest/ws/group/bytype",
@@ -1720,54 +1777,19 @@ var MCK_CLIENT_GROUP_MAP = [];
                 data: formData,
                 contentType: "application/json",
                 success: function(result) {
-                  if (result.response.length > 0) {
-                    var groupid = result.response[0].id;
-                    $applozic.fn.applozic("loadGroupTab", groupid);
+                  if (result.response.length > 0 ) {
+                    var groupId = result.response[0].id;
+                    if(Cookies.get("_km-f-vis_")=="true"){
+                        $applozic.fn.applozic("loadGroupTab",groupId);
+                    }
+                    $applozic.fn.applozic("loadTab");
                   } else {
-                    $applozic.fn.applozic("createGroup", {
-                      groupName: params.groupName,
-                      type: 10,
-                      admin: params.agentId,
-                      users: [
-                        {
-                          userId: "bot",
-                          displayName: "Bot",
-                          groupRole: 2,
-                          roleName: "APPLICATION_WEB_ADMIN"
-                        },
-                        {
-                          userId: params.agentId,
-                          displayName:params.agentName || params.agentId,
-                          groupRole: 1,
-                          roleName: "APPLICATION_WEB_ADMIN"
-                        }
-                      ],
-                      metadata: {
-                        CREATE_GROUP_MESSAGE: "",
-                        REMOVE_MEMBER_MESSAGE:
-                          ":adminName removed :userName",
-                        ADD_MEMBER_MESSAGE:
-                          ":adminName added :userName",
-                        JOIN_MEMBER_MESSAGE: ":userName joined",
-                        GROUP_NAME_CHANGE_MESSAGE:
-                          "Group name changed to :groupName",
-                        GROUP_ICON_CHANGE_MESSAGE:
-                          "Group icon changed",
-                        GROUP_LEFT_MESSAGE: ":userName left",
-                        DELETED_GROUP_MESSAGE:
-                          ":adminName deleted group",
-                        GROUP_USER_ROLE_UPDATED_MESSAGE:
-                          ":userName is :role now",
-                        GROUP_META_DATA_UPDATED_MESSAGE: "",
-                        ALERT: "false",
-                        HIDE: "true"
-                      },
-                      callback: function(response) {}
-                    });
+                    mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID});
                   }
                 }
               });
             };
+            
             _this.timer = function() {
                 var totalSeconds = 0;
                 var that = this;
@@ -1827,7 +1849,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function() {
-                    mckMessageLayout.addContactsToContactSearchList();
+                    
+                   // mckMessageLayout.addContactsToContactSearchList();
+                   mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID});
+
                 });
                 $mck_group_search.click(function() {
                     mckMessageLayout.addGroupsToGroupSearchList();
@@ -1976,6 +2001,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function(e) {
                     e.preventDefault();
                     if(window.applozic.PRODUCT_ID=='kommunicate'){
+                        if (!Cookies.get("_km-f-vis_")) {
+                            Cookies.set("_km-f-vis_", "true");
+                        }else{
+                            Cookies.set("_km-f-vis_", "false");
+                        }
                     	if(IS_ANONYMOUS_CHAT ==="false"){
                     	$applozic("#km-chatLoginModal").removeClass('n-vis').addClass('vis');
                     	$applozic("#km-chatLoginModal").css("display", "block");
@@ -2021,61 +2051,18 @@ var MCK_CLIENT_GROUP_MAP = [];
 					return false;
 			        });
 
-				var loadChat = function() {
-          var agentId= DEFAULT_AGENT_ID;
-          var agentName= DEFAULT_AGENT_NAME ? DEFAULT_AGENT_NAME : DEFAULT_AGENT_ID;
-            if(window.applozic.PRODUCT_ID === 'kommunicate' ){
-               $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
-            }
-						var formData = "type=" + 10 + "&startIndex=" + 0
-								+ "&limit=" + 10;
-						$applozic.ajax({
-							url : MCK_BASE_URL + "/rest/ws/group/bytype",
-							type : 'get',
-							data : formData,
-							contentType : "application/json",
-							success : function(result) {
-								if (result.response.length > 0) {
-									var groupid = result.response[0].id;
-									$applozic.fn.applozic('loadGroupTab',
-											groupid);
-								} else {
-									$applozic.fn.applozic('createGroup', {
-										'groupName' : DEFAULT_GROUP_NAME,
-										'type' : 10,
-										'admin':agentId,
-										'users' : [ {
-											userId : 'bot',
-											displayName : 'Bot',
-											groupRole : 2,
-											roleName:"APPLICATION_WEB_ADMIN"
-										}, {
-											userId : agentId,
-											displayName : agentName,
-											groupRole : 1,
-											roleName:"APPLICATION_WEB_ADMIN"
-										} ],
-										'metadata': {
-								            'CREATE_GROUP_MESSAGE': '',
-								            'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
-								            'ADD_MEMBER_MESSAGE': ':adminName added :userName',
-								            'JOIN_MEMBER_MESSAGE': ':userName joined',
-								            'GROUP_NAME_CHANGE_MESSAGE': 'Group name changed to :groupName',
-								            'GROUP_ICON_CHANGE_MESSAGE': 'Group icon changed',
-								            'GROUP_LEFT_MESSAGE': ':userName left',
-								            'DELETED_GROUP_MESSAGE': ':adminName deleted group',
-								            'GROUP_USER_ROLE_UPDATED_MESSAGE': ':userName is :role now',
-								            'GROUP_META_DATA_UPDATED_MESSAGE': '',
-								            'ALERT': 'false',
-								            'HIDE': 'true'
-								        },
-										'callback' : function(response) {}
-									});
-								}
-							}
-						});
+		        var loadChat = function() {
+                    var agentId= DEFAULT_AGENT_ID;
+                    var agentName= DEFAULT_AGENT_NAME ? DEFAULT_AGENT_NAME : DEFAULT_AGENT_ID;
+                    if(window.applozic.PRODUCT_ID === 'kommunicate' ){
+                        $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
+                    }
+                    mckMessageService.loadConversationWithAgents({
+                        groupName:DEFAULT_GROUP_NAME,
+                        agentId:DEFAULT_AGENT_ID
+                    });
 
-					}
+		        }
 
 				$applozic(".km-login-model-close").on('click',function(e){
 
