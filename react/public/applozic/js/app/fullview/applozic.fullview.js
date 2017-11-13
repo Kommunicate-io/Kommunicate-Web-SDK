@@ -3669,11 +3669,11 @@ var KM_CLIENT_GROUP_MAP = [];
 					try {
 						var geoLoc = $kmApplozic.parseJSON(msg.message);
 						if (geoLoc.lat && geoLoc.lon) {
-							return '<a href="http://maps.google.com/maps?&z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '"&key='+MCK_MAP_STATIC_API_KEY+'"/></a>';
+							return '<a href="http://maps.google.com/maps?&z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '&key='+MCK_MAP_STATIC_API_KEY+'"/></a>';
 						}
 					} catch (ex) {
 						if (msg.message.indexOf(",") !== -1) {
-							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message + '"&key='+MCK_MAP_STATIC_API_KEY+'" /></a>';
+							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message +'&key='+MCK_MAP_STATIC_API_KEY+'" /></a>';
 						}
 					}
 				}
