@@ -7334,6 +7334,14 @@ base-chart.chart {
   background: #eceff1;
   border-top: 1px solid #cfd8dc; }
 
+.center {
+  margin: auto;
+  text-align: center;  }
+
+.user-report {
+  cursor: pointer;
+}
+
 .row.row-equal {
   padding-right: 7.5px;
   padding-left: 7.5px;
