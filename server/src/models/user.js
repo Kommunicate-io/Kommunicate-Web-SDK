@@ -40,10 +40,12 @@ module.exports = function(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING(20)
     },
+    // user is bot or agent. 1:Agent, 2:bot, 3: admin
     type: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    //it is primary key in applozic db. used as mqtt topic for user. 
     userKey:{
       type: DataTypes.STRING(50),
       allowNull: false,
