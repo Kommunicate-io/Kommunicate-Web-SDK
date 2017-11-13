@@ -14,7 +14,7 @@ var baseurl ={
   default:{
    baseUrl: "https://apps-test.applozic.com",
    kommunicateAPI: "https://api-test.kommunicate.io"
-   // kommunicateAPI: "https://api-test.kommunicate.io"
+   //kommunicateAPI: "https://api-test.kommunicate.io"
   }
 }
 var config = {
