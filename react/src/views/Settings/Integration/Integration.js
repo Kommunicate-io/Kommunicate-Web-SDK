@@ -3,6 +3,7 @@ import { getConfig } from "../../.../../../config/config.js";
 import isEmail from "validator/lib/isEmail";
 
 import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
+
 import ValidationUtils from '../../../utils/validationUtils'
 import {notifyThatEmailIsSent} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
