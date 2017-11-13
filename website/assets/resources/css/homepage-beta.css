@@ -87,18 +87,25 @@ a, a:hover {
     border: solid 1.5px #ffffff;
     transition: all 0.2s ease-in;
 }
+.landing-page-img-container svg, .landing-page-img-container .realtime-support-svg-icon path, .landing-page-img-container .realtime-support-svg-icon circle {
+    fill: #FFFFFF;
+    transition: all 0.2s ease-in;
+}
 .hero-section-icon-link:hover .landing-page-img-container {
     box-shadow: 1px 4px 12px 3px rgba(63, 60, 60, 0.5);
     background-color: #fff;
     border: solid 1.5px #8358b6;
 }
-.chatbots-copy-5 {
+.hero-section-icon-link:hover .landing-page-img-container svg, .hero-section-icon-link:hover .landing-page-img-container .realtime-support-svg-icon path, .hero-section-icon-link:hover .landing-page-img-container .realtime-support-svg-icon circle {
+    fill: #000000;
+}
+/*.chatbots-copy-5 {
     width: 48px;
     height: 49px;
     object-fit: contain;
     margin-left: 2px;
     margin-top: 5px;
-}
+}*/
 
 .homepage-beta-features-section:focus {
     outline: none;
@@ -220,7 +227,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     flex: 1 0 auto;
 }
 
-#pre-signup-form {
+.pre-signup-form {
     /*background-color: white;*/
     border-radius: 100px;
     padding-top: 4px;
@@ -232,7 +239,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     width: 50%;
     margin: 0 auto;
 }
-.why-kommunicate-section #pre-signup-form {
+.why-kommunicate-section .pre-signup-form {
     /*background-color: white;*/
     border-radius: 100px;
     padding-top: 4px;
@@ -245,19 +252,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     /*margin: 0 auto;*/
 }
 
-/*#pre-signup-form:hover {
+/*.pre-signup-form:hover {
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
 }*/
 
-#pre-signup-form br {
+.pre-signup-form br {
     display: none;
 }
 
-.signup-success-msg-div, .signup-error-msg-div1 {
+.signup-success-msg-div, .signup-error-msg-div1, .signup-error-msg-div2 {
     background-color: white;
     text-align: center;
     width: 100%;
     border-radius: 26px;
+    border: 1px solid #5d5ba8;
 }
 .signup-success-msg-text {
     font-size: 18px;
@@ -274,7 +282,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 
 
 @media only screen and (max-width: 568px) {
-    #pre-signup-form br {
+    .pre-signup-form br {
         display: block;
     }
     .form-submit-btn {
@@ -350,6 +358,10 @@ background: -webkit-linear-gradient(left, rgb(200,109,215) 31%,rgb(48,35,174) 10
     background-color: #fff !important;
     border: solid 0.5px #646060;
     border-radius: 20px;
+    padding-top: 15px;
+}
+.img-icon-container svg {
+    width: 60px;
 }
 .img-icon-container .chatbots-copy-5 {
     margin-top: 0px;
@@ -872,7 +884,7 @@ label {
     .homepage-beta-cta-section {
         height: 350px;
     }
-    #pre-signup-form {
+    .pre-signup-form {
         width: 100%;
         flex-wrap: wrap;
     }
@@ -943,7 +955,7 @@ label {
     .main-img-div {
         padding: 0em 7em;
     }
-    .why-kommunicate-section #pre-signup-form {
+    .why-kommunicate-section .pre-signup-form {
         width: 100%;
         flex-wrap: wrap;
     }
@@ -963,7 +975,7 @@ label {
     .main-img-div {
         padding: 0em 2em;
     }
-    .why-kommunicate-section #pre-signup-form {
+    .why-kommunicate-section .pre-signup-form {
         width: 100%;
         flex-wrap: wrap;
     }

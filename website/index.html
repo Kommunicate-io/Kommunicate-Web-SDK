@@ -29,7 +29,9 @@ layout:
     {% include_relative /sections/homepage-beta-trust-section.html %}
     {% include_relative /sections/homepage-beta-features-section.html %}
     {% include_relative /sections/homepage-beta-reasons-invite-list-section.html %}
-    {% include_relative /sections/homepage-beta-latest-section.html %}
+    <div class="hide">
+        {% include_relative /sections/homepage-beta-latest-section.html %}
+    </div>
     {% include_relative /sections/homepage-beta-cta-section.html %}
     {% include_relative /sections/homepage-beta-footer-section.html %}
 
@@ -109,9 +111,24 @@ layout:
           $emailAddress = $("#email-pre-signup"),
           $signupButton = $("#get-me-in-btn"),
           $signupForm = $("#pre-signup-form"),
+          $emailAddress2 = $("#email-pre-signup2"),
+          $signupButton2 = $("#get-me-in-btn2"),
+          $signupForm2 = $("#pre-signup-form2"),
+          $emailAddress3 = $("#email-pre-signup3"),
+          $signupButton3 = $("#get-me-in-btn3"),
+          $signupForm3 = $("#pre-signup-form3"),
+          $emailAddress4 = $("#email-pre-signup4"),
+          $signupButton4 = $("#get-me-in-btn4"),
+          $signupForm4 = $("#pre-signup-form4"),
+          $emailAddress5 = $("#email-pre-signup5"),
+          $signupButton5 = $("#get-me-in-btn5"),
+          $signupForm5 = $("#pre-signup-form5"),
+          $emailAddress6 = $("#email-pre-signup6"),
+          $signupButton6 = $("#get-me-in-btn6"),
+          $signupForm6 = $("#pre-signup-form6"),
           $successMsg = $(".signup-success-msg-div"),
           $errorMsg1 = $(".signup-error-msg-div1"),
-          $errorMsg2 = $("#signup-error-msg-div2");
+          $errorMsg2 = $(".signup-error-msg-div2");
 
           $signupForm.submit(function(e) {
             var user = new Object();
@@ -121,7 +138,7 @@ layout:
 
 
             $signupButton.attr('disabled', true);
-            $signupButton.html('Submitting... Please wait.');
+            $signupButton.html('Submitting...');
 
             var userSignup = $.ajax({
               contentType: "application/json",
@@ -134,6 +151,16 @@ layout:
                   console.log("Registration Successful", data);
                   $successMsg.removeClass('hide').addClass('show');
                   // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
                   $signupButton.addClass('hide');
                   $emailAddress.addClass('hide');
                   // $signupButton.html('Submitted Successfully');
@@ -141,6 +168,16 @@ layout:
                 else {
                     console.log("User Already Exist", data);
                     $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
                     $signupButton.addClass('hide');
                     $emailAddress.addClass('hide');
 
@@ -154,6 +191,351 @@ layout:
               $errorMsg2.removeClass('hide').addClass('show');
               $signupButton.attr('disabled', false);
               $signupButton.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm2.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup2").val();
+            user.email = $("#email-pre-signup2").val();
+            user.namwe = $("#email-pre-signup2").val();
+
+
+            $signupButton2.attr('disabled', true);
+            $signupButton2.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton2.attr('disabled', false);
+              $signupButton2.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm3.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup3").val();
+            user.email = $("#email-pre-signup3").val();
+            user.namwe = $("#email-pre-signup3").val();
+
+
+            $signupButton3.attr('disabled', true);
+            $signupButton3.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton3.attr('disabled', false);
+              $signupButton3.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm4.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup4").val();
+            user.email = $("#email-pre-signup4").val();
+            user.namwe = $("#email-pre-signup4").val();
+
+
+            $signupButton4.attr('disabled', true);
+            $signupButton4.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton4.attr('disabled', false);
+              $signupButton4.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm5.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup5").val();
+            user.email = $("#email-pre-signup5").val();
+            user.namwe = $("#email-pre-signup5").val();
+
+
+            $signupButton5.attr('disabled', true);
+            $signupButton5.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton5.attr('disabled', false);
+              $signupButton5.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm6.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup6").val();
+            user.email = $("#email-pre-signup6").val();
+            user.namwe = $("#email-pre-signup6").val();
+
+
+            $signupButton6.attr('disabled', true);
+            $signupButton6.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton6.attr('disabled', false);
+              $signupButton6.html('Get me in');
             }
           });
           return false;
