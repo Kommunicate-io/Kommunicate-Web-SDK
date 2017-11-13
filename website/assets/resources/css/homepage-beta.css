@@ -260,12 +260,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     display: none;
 }
 
-.signup-success-msg-div, .signup-error-msg-div1, .signup-error-msg-div2 {
+.signup-success-msg-div, .signup-error-msg-div1 {
     background-color: white;
     text-align: center;
     width: 100%;
     border-radius: 26px;
-    border: 1px solid #5d5ba8;
+    /*border: 1px solid #5d5ba8;*/
+}
+.signup-error-msg-div2 {
+    text-align: center;
+    width: 100%;
+    border-radius: 26px;
+}
+.signup-error-msg-div2 .signup-error-msg-text1 {
+    font-size: 18px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color: #2CA23C;
 }
 .signup-success-msg-text {
     font-size: 18px;
@@ -276,7 +287,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     font-size: 18px;
     margin-top: 15px;
     margin-bottom: 15px;
-    color: #f00;
+    color: #2CA23C;
 }
 
 
