@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import  {getEnvironmentId,get} from '../../config/config.js';
-
-import {patchCustomerInfo, getCustomerInfo, getUserInfo} from '../../utils/kommunicateClient' 
+import {patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo, sendProfileImage, updateApplozicUser} from '../../utils/kommunicateClient'
+import Notification from '../model/Notification';
+import ImageUploader from './ImageUploader'
 
 class Forms extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Forms extends Component {
       companyname: '',
       companysize: '',
       industry: '',
-      industryOthers: ''
+      industryOthers: '',
+      imageFile: ''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,13 +30,16 @@ handleKeyPress(event) {
         if (isNaN(num))
         {
           alert("Must input numbers");
-          return false;
+          this.setState({contact: ''})
+          return;
         }
     }
 
   handleSubmit(e) {
 
     e.preventDefault();
+
+    console.log('handle submit')
       
     const customerInfo = {
       "name" : this.state.name,
@@ -49,12 +54,25 @@ handleKeyPress(event) {
     if(localStorage.getItem("isAdmin") === 'true'){
       patchCustomerInfo(customerInfo, localStorage.getItem("loggedinUser"))
         .then(response => {
+          console.log(response)
           if(response.data.code === 'SUCCESS'){
-            alert(response.data.message)
+            Notification.info(response.data.message)
           }
-        }).catch(err => {alert(err)});
+        }).catch(err => {
+          console.log(err);
+          alert(err);
+        });
     }else{
-        // patchUserInfo()
+      patchUserInfo(customerInfo, localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId"))
+        .then(response => {
+          console.log(response)
+          if(response.data.code === 'SUCCESS'){
+            Notification.info(response.data.message)
+          }
+        }).catch(err => {
+          console.log(err);
+          alert(err);
+        });
       }
   }
 
@@ -118,14 +136,19 @@ handleKeyPress(event) {
       <div className="animated fadeIn">
         <div className="row">
           <div className="col-md-12">
+            <ImageUploader 
+              handleImageFiles={this.handleImageFiles}
+              invokeImageUpload={this.invokeImageUpload}
+              uploadImageToS3={this.uploadImageToS3}
+            />
             <div className="card">
               <div className="card-header">
                 <strong>Admin Profile Form</strong>
               </div>
               <div className="card-block">
-                <form method= "patch" onSubmit={this.handleSubmit} encType="multipart/form-data" className="form-horizontal">
+                <form className="form-horizontal">
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="admin-name">Admin Name</label>
+                    <label className="col-md-3 form-control-label" htmlFor="admin-name">Display Name</label>
                     <div className="col-md-9">
                       <input type="text" id="admin-name" name="admin-name" onChange = {(event) => this.setState({name:event.target.value})} value={this.state.name} className="form-control" placeholder="Enter your name"/>
                       <span className="help-block">Enter your name</span>
@@ -139,7 +162,7 @@ handleKeyPress(event) {
                     </div>
                   </div>
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="role-input">Role</label>
+                    <label className="col-md-3 form-control-label" htmlFor="role-input">Designation</label>
                     <div className="col-md-9">
                       <input type="text" id="role-input" name="role-input" onChange = {(event) => this.setState({role:event.target.value})} value={this.state.role} className="form-control" placeholder="Role within the organization"/>
                       <span className="help-block">Please enter your role within the organization</span>
@@ -186,11 +209,11 @@ handleKeyPress(event) {
                       </select>
                     </div>
                   </div>
-                  <div className="card-footer">
-                    <button type="submit" className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Submit</button>
-                    <button type="reset" className="btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
-                  </div>
                 </form>
+              </div>
+              <div className="card-footer">
+                <button type="submit" className="btn btn-sm btn-primary" onClick={this.handleSubmit}><i className="fa fa-dot-circle-o"></i> Submit</button>
+                <button type="reset" className="n-vis btn btn-sm btn-danger" onClick={this.handleReset}><i className="fa fa-ban"></i> Reset</button>
               </div>
             </div>
           </div>

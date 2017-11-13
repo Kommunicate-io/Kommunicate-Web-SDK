@@ -4,6 +4,7 @@ import {getConfig} from '../config/config';
 import isEmail from 'validator/lib/isEmail';
 import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
+import FormData from 'form-data'
 
 
 
@@ -79,12 +80,11 @@ const getCustomerInfo = (customer) => {
 const getUserInfo = (user, appId) => {
   // different from getCustomerInfo
 
-  // todo
-  // change the url for the user in the config file
   const getUserInfoUrl = getConfig().kommunicateApi.createUser + '/' + user + '/'+ appId;
 
   return Promise.resolve(axios.get(getUserInfoUrl))
     .then(response => {
+      console.log(response)
       if(response.status === 200 && response.data !== undefined){
         return response
       }
@@ -104,7 +104,36 @@ const patchCustomerInfo = (customerInfo, customer) => {
     }
   })).then(function(response){
      if(response.status === 200 && response.data !== undefined){
-       // console.log(response)
+       console.log(response)
+       return response;
+     }
+
+     if(response.status === 404 && response.data !== undefined){
+       console.log(response)
+       return response;
+     }
+  });
+}
+
+const patchUserInfo = (userInfo, userId, appId) => {
+
+  const patchUserUrl =getConfig().kommunicateApi.createUser + '/' + userId + '/'+ appId;
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: patchUserUrl,
+    data:JSON.stringify(userInfo),
+    headers: {
+     'Content-Type': 'application/json'
+    }
+  })).then(function(response){
+     if(response.status === 200 && response.data !== undefined){
+       console.log(response)
+       return response;
+     }
+
+     if(response.status === 404 && response.data !== undefined){
+       console.log(response)
        return response;
      }
   });
@@ -164,7 +193,7 @@ const postAutoReply = (formData) => {
     url:autoreplyUrl+username+'/business-hours',
     data:formData
   }).then((response) => {
-    alert("offhours details submit");
+    Notification.success('submitted successfully');
   });
 }
 
@@ -272,12 +301,54 @@ const signUpWithApplozic = (data)=>{
   });
 }
 
+const sendProfileImage = (imageFile, imageFileName) => {
+
+  const profileImageUrl = getConfig().kommunicateApi.profileImage;
+
+  console.log(imageFile)
+  console.log(imageFileName)
+
+  let data = new FormData()
+
+  data.append('file', imageFile, imageFileName)
+
+  return Promise.resolve(axios.post(profileImageUrl, data, {
+    headers: {
+      'accept': 'application/json',
+      'Content-Type': 'multipart/form-data',
+    }
+  }))
+  .then(response => response)
+}
+
+const updateApplozicUser = (userInfo) => {
+
+  const headers = {
+      'Content-Type':'application/json',
+      'Apz-AppId': localStorage.getItem("applicationId"),
+      'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+      // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
+    }
+
+  console.log(headers)
+
+  console.log(userInfo)
+
+  const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;
+
+  return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
+    headers: headers
+  })).then(response => {console.log(response); return response})
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
   getUserInfo,
   saveToLocalStorage,
   patchCustomerInfo,
+  patchUserInfo,
   notifyThatEmailIsSent,
   callSendEmailAPI,
   postAutoReply,
@@ -288,5 +359,7 @@ export {
   getAllSuggestions,
   createSuggestions,
   getSuggestionsByAppId,
-  signUpWithApplozic
+  signUpWithApplozic,
+  sendProfileImage,
+  updateApplozicUser,
 }

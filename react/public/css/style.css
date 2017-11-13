@@ -27,6 +27,10 @@ h1 {
   font-size: 2em;
   margin: 0.67em 0; }
 
+.mck-sidebox-launcher {
+  bottom: 8px !important;
+}
+
 figcaption,
 figure,
 main {
@@ -2572,6 +2576,8 @@ tbody.collapse.show {
     color: #607d8b;
     background-color: #e4e5e6;
     border-color: #ddd #ddd #e4e5e6; }
+  .nav-item:hover{
+      cursor:pointer;}
   .nav-tabs .dropdown-menu {
     margin-top: -1px; }
 
@@ -7328,6 +7334,18 @@ base-chart.chart {
   background: #eceff1;
   border-top: 1px solid #cfd8dc; }
 
+.center {
+  margin: auto;
+  text-align: center;  }
+
+.user-report {
+  cursor: pointer;
+}
+
+iframe#crowd-shortcut {
+  display: none !important;
+}
+
 .row.row-equal {
   padding-right: 7.5px;
   padding-left: 7.5px;
@@ -8951,4 +8969,8 @@ hr.transparent {
  }
  .a-undecorated{
   text-decoration:none !important;
+ 
+}
+.a-unclickable{
+  pointer-events: none;
 }

@@ -55,6 +55,16 @@
 
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/panel.js"></script>
 
+  <script type="text/javascript">
+    window._urq = window._urq || [];
+    _urq.push(['initSite', 'de3cfc74-25e0-4299-aa3b-7c0746ce5966']);
+    (function() {
+    var ur = document.createElement('script'); ur.type = 'text/javascript'; ur.async = true;
+    ur.src = ('https:' == document.location.protocol ? 'https://cdn.userreport.com/userreport.js' : 'http://cdn.userreport.com/userreport.js');
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ur, s);
+    })();
+  </script>
+
   </head>
 
   <!-- BODY options, add following classes to body to change options
@@ -98,8 +108,7 @@
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.socket.min.js"></script>
 
   <!-- JS for location sharing plugin, remove it if location sharing not required -->
-  <script type="text/javascript"
-    src="https://maps.google.com/maps/api/js?key=AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4&libraries=places"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI&libraries=places"></script>-->
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/locationpicker.jquery.min.js"></script>
 
   <!--JS for auto suggest plugin, use it if auto suggestions required -->
@@ -119,15 +128,32 @@
         oModal = $.fn.modal.noConflict();
       }
     } else {
-      $ = $applozic;
-      jQuery = $applozic;
-      if (typeof $applozic.fn.modal === 'function') {
-        oModal = $applozic.fn.modal.noConflict();
+      $ = $kmApplozic;
+      jQuery = $kmApplozic;
+      if (typeof $kmApplozic.fn.modal === 'function') {
+        oModal = $kmApplozic.fn.modal.noConflict();
       }
     }
   </script>
 
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
+
+
+  <script type="text/javascript">
+  
+    (function(d, m){
+      let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io","groupName":"devashish@kommunicate.io","baseUrl":"https://apps-test.applozic.com/"};
+      let s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://api-test.kommunicate.io/kommunicate.app";
+      let h = document.getElementsByTagName("head")[0];
+      h.appendChild(s);
+      window.kommunicate = m;
+      m._globals = o;
+    })(document, window.kommunicate || {});
+
+</script>
 
 
   </body>

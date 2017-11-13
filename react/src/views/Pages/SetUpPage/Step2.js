@@ -4,6 +4,8 @@ import {patchCustomerInfo} from '../../../utils/kommunicateClient'
 import { Link } from 'react-router-dom';
 import Notification from '../../model/Notification';
 
+import ImageUploader from '../../Admin/ImageUploader'
+
 class Step2 extends Component {
 
   constructor(props) {
@@ -46,6 +48,7 @@ class Step2 extends Component {
   render() {
   	return (
       <form className="form-horizontal" onSubmit={this.finishSetUp}>
+        <ImageUploader />
         <div className="form-group row">
           <label className="col-md-3 form-control-label" htmlFor="role-input">Role</label>
           <div className="col-md-9">

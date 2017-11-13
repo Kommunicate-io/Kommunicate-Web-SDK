@@ -135,7 +135,7 @@ const updateBusinessHoursInDb=(data,criteria,t)=>{
   return db.BusinessHour.update(data,{where: criteria,transaction: t});
 };
 const getCustomerInfoByApplicationId = applicationId=>{
-  console.log("getting custome information from applicationId",applicationId);
+  console.log("getting customer information from applicationId",applicationId);
   return db.customer.find({where: {applicationId: applicationId}}).then(customer=>{
     return customer?customer.dataValues:null;
   });
@@ -240,6 +240,23 @@ if(!response) {
     }
   }
   return null;
+};
+
+exports.updateUser = (userId, appId, user)=>{
+    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+      if(!customer) {
+        console.log("No customer in customer table with appId", appId);
+        return null;
+      }else {
+        return Promise.resolve(userModel.update(user,{where: {"userName": userId, customerId: customer.id}})).then(result=>{
+          console.log("successfully updated user",result[0]);
+          return result[0];
+        }).catch(err=>{
+          console.log("error while updating user",err);
+          throw err;
+        });
+      }
+    });
 };
 
 exports.getUserByName = getUserByName;

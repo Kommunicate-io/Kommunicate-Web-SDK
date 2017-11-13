@@ -223,19 +223,19 @@ class Autoreply extends Component {
                           <div className="card-block">
                             <div id ="weekDays-selector" className="weekDays-selector">
                               <input type="checkbox" id="weekday-mon" value="mon" onClick = {(event) => this.setState({mon:!this.state.mon})}  checked={this.state.mon} className="weekday" />
-                              <label htmlFor="weekday-mon">M</label>
+                              <label htmlFor="weekday-mon">MON</label>
                               <input type="checkbox" id="weekday-tue" value="tue" onClick = {(event) => this.setState({tue:!this.state.tue})}  checked={this.state.tue} className="weekday" />
-                              <label htmlFor="weekday-tue">T</label>
+                              <label htmlFor="weekday-tue">TUE</label>
                               <input type="checkbox" id="weekday-wed" value="wed" onClick = {(event) => this.setState({wed:!this.state.wed})}  checked={this.state.wed} className="weekday" />
-                              <label htmlFor="weekday-wed">W</label>
+                              <label htmlFor="weekday-wed">WED</label>
                               <input type="checkbox" id="weekday-thu" value="thu" onClick = {(event) => this.setState({thu:!this.state.thu})} checked={this.state.thu} className="weekday" />
-                              <label htmlFor="weekday-thu">T</label>
+                              <label htmlFor="weekday-thu">THU</label>
                               <input type="checkbox" id="weekday-fri"value="fri" onChange = {(event) => this.setState({fri:!this.state.fri})} checked={this.state.fri} className="weekday" />
-                              <label htmlFor="weekday-fri">F</label>
+                              <label htmlFor="weekday-fri">FRI</label>
                               <input type="checkbox" id="weekday-sat" value="sat" onChange = {(event) => this.setState({sat:!this.state.sat})} checked={this.state.sat} className="weekday" />
-                              <label htmlFor="weekday-sat">S</label>
+                              <label htmlFor="weekday-sat">SAT</label>
                               <input type="checkbox" id="weekday-sun" value="sun" onChange = {(event) => this.setState({sun:!this.state.sun})} checked={this.state.sun} className="weekday" />
-                              <label htmlFor="weekday-sun">S</label>
+                              <label htmlFor="weekday-sun">SUN</label>
                             </div>
                             <div className="form-group row">
                               <label className="col-md-3 form-control-label">Time Zone</label>
@@ -267,16 +267,16 @@ class Autoreply extends Component {
                                 </select>
                               </div>
                             </div>
-                          </div>
-                          <div className="form-group row">
-                            <label className="col-md-3 form-control-label">Message</label>
-                            <div className="col-md-9">
-                            <textarea id ="offhourmessage" rows="6" cols="60" onChange = {(event) => this.setState({msg:event.target.value})} value={this.state.msg} required></textarea>
+                            <div className="form-group row">
+                              <label className="col-md-3 form-control-label">Message</label>
+                              <div className="col-md-9">
+                                <textarea id="offhourmessage" rows="6" cols="60" onChange={(event) => this.setState({ msg: event.target.value })} value={this.state.msg} required></textarea>
+                              </div>
                             </div>
                           </div>
                           <div className="card-footer">
                             <button type="submit" className="btn btn-sm btn-primary px-4" ><i className="fa fa-dot-circle-o"></i> Submit</button>
-                            <button className="btn btn-sm btn-danger px-4" onClick={this.resetAutoReply}><i className="fa fa-ban"></i> Reset</button>
+                            <button className="n-vis btn btn-sm btn-danger px-4" onClick={this.resetAutoReply}><i className="fa fa-ban"></i> Reset</button>
                           </div>
                         </div>
                       </div>

@@ -16,8 +16,8 @@ var autoSuggestions = {};
 function initAutoSuggestions() {
 
   for(autoSuggest in autoSuggestions){
-    $('#mck-text-box').atwho({
-      at: `#${autoSuggest}`,
+    $('#km-text-box').atwho({
+      at: `/${autoSuggest}`,
       insertTpl: '${content}',
       displayTpl: '<li>${name} <small>${content}</small></li>',
       data: autoSuggestions[autoSuggest]
@@ -32,7 +32,7 @@ function initAutoSuggestions() {
   var $contactNumber = "";
   var $password = "";
   function logout(){
-    $applozic.fn.applozic("logout");
+    $kmApplozic.fn.applozic("logout");
   }
 
   function chatLogin() {
@@ -50,7 +50,7 @@ function initAutoSuggestions() {
     }
 
     if (userId == 'applozic' || userId == 'applozic-premium') {
-        $("#mck-individual-tab-title .mck-tab-title").click(function () {
+        $("#km-individual-tab-title .km-tab-title").click(function () {
             clearbit($(this).text());
         });
     }
@@ -68,7 +68,7 @@ function initAutoSuggestions() {
     }
     //var loginId =localStorage.isAdmin=="true"?"agent":userId;
     //var uPassword = localStorage.isAdmin=="true"?"agent":userPassword;
-    $applozic.fn.applozic({
+    $kmApplozic.fn.applozic({
       baseUrl: applozicBaseUrl,
       notificationIconLink:
           'https://www.applozic.com/resources/images/applozic_icon.png',
@@ -87,15 +87,15 @@ function initAutoSuggestions() {
   					 if(typeof tabDetail === 'object') {
   					        console.log(tabDetail.tabId  + " " + tabDetail.isGroup);
                     if (tabDetail.isGroup) {
-                      window.$applozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+                      window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
                       window.Aside.initConversation(tabDetail.tabId);
                     } else {
-                      window.$applozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+                      window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
                     }
   					 }
 					 },
       locShare: true,
-      googleApiKey: 'AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4',
+      googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: true,
       topicBox: topicBoxEnabled,
       authenticationTypeId: 1,

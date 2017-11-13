@@ -25,3 +25,16 @@
 	width: 232px;
 	margin: 5px;
 }
+.instruction-heading {
+	margin:auto;
+	padding:4px;
+}
+
+.instruction-text-area {
+	width:100%; 
+	background-color:#EBEFF1;
+	padding-left:5px;
+}
+.script-text-area{
+	width:100%;
+}

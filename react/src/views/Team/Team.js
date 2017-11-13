@@ -84,7 +84,7 @@ class Integration extends Component {
 
   componentWillMount() {
     var _this = this;
-    window.$applozic.fn.applozic("fetchContacts", {roleNameList: ['APPLICATION_ADMIN', 'APPLICATION_WEB_ADMIN'], 'callback': function(response) {
+    window.$kmApplozic.fn.applozic("fetchContacts", {roleNameList: ['APPLICATION_ADMIN', 'APPLICATION_WEB_ADMIN'], 'callback': function(response) {
         _this.setState({result: response.response.users});
       }
     });

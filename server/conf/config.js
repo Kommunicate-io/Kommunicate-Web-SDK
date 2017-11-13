@@ -17,7 +17,7 @@ const config ={
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
         groupInfoUrl: "https://chat.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
-        createBotUrl: "http://topioslibraries.com/bot",
+        createBotUrl: "https://bots.applozic.com/bot",
         sendMessageUrl: "https://chat.kommunicate.io/rest/ws/message/v2/send",
         hostUrl: "https://api.kommunicate.io",
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",
@@ -48,7 +48,7 @@ const config ={
   test: {
     port: 3999,
     db: {
-      url: "mysql://admin:adm1n2ol6@staging-db.czgdklkcj9zm.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@testdb.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
@@ -72,7 +72,7 @@ const config ={
       
     },cache: {
       hazelCache: {
-        url: "172.31.27.116",
+        url: "172.31.16.80",
         port: "5701",
         user: "dev",
         password: "dev"
@@ -92,7 +92,7 @@ const config ={
     port: 3999,
     db: {
       // url: "mysql://root:password@localhost:3306/kommunicate_test",
-      url: "mysql://admin:adm1n2ol6@staging-db.czgdklkcj9zm.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@testdb.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,

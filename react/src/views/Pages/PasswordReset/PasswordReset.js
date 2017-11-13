@@ -38,9 +38,16 @@ class PasswordReset extends React.Component{
   updatePassword = (event)=>{
     if(this.state.newPassword === this.state.confirmPassword){
       updatePassword({newPassword:this.state.newPassword,code:this.state.code}).then(result=>{
+        console.log("update password response",result);
+        if(result.data.code==="SUCCESS"){
         alert("Password updated successfully. Please login!");
         //window.location(getConfig().homeUrl+"/login");
         this.props.history.replace('/login');
+        }else if(result.data.code==="CODE_EXPIRED"){
+          alert("password reset link is expired. Please generate new link.")
+        }else{
+          throw new Error("error");
+        }
       }).catch(err=>{
         console.log(err);
         alert("something went wrong");
@@ -65,13 +72,13 @@ class PasswordReset extends React.Component{
                     <p className="text-muted">{this.state.subText}</p>
                     <div className="input-group mb-3" >
                       <span className="input-group-addon"><i className="icon-lock"></i></span>
-                       <input type="text" className="form-control" placeholder="Enter New Password"  onChange = { this.setNewPassword } value={ this.state.newPassword } onBlur ={this.state.handleUserNameBlur}/>
+                       <input type="password" className="form-control" placeholder="Enter New Password"  onChange = { this.setNewPassword } value={ this.state.newPassword } onBlur ={this.state.handleUserNameBlur}/>
                     </div>
 
 
                     <div className="input-group mb-3" >
                       <span className="input-group-addon"><i className="icon-lock"></i></span>
-                       <input type="text" className="form-control" placeholder="Confirm Password"  onChange = { this.setConfirmPassword } value={ this.state.confirmPassword } onBlur ={this.state.handleUserNameBlur}/>
+                       <input type="password" className="form-control" placeholder="Confirm Password"  onChange = { this.setConfirmPassword } value={ this.state.confirmPassword } onBlur ={this.state.handleUserNameBlur}/>
                     </div>
                     <div className="row">
                       <div className="col-3">

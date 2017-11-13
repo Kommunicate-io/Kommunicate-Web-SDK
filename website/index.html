@@ -27,6 +27,11 @@ layout:
     </div>
     {% include_relative /sections/homepage-beta-landing-page.html %}
     {% include_relative /sections/homepage-beta-trust-section.html %}
+    {% include_relative /sections/homepage-beta-features-section.html %}
+    {% include_relative /sections/homepage-beta-reasons-invite-list-section.html %}
+    <div class="hide">
+        {% include_relative /sections/homepage-beta-latest-section.html %}
+    </div>
     {% include_relative /sections/homepage-beta-cta-section.html %}
     {% include_relative /sections/homepage-beta-footer-section.html %}
 
@@ -103,22 +108,37 @@ layout:
     <script type="text/javascript">
       //Signup Form Variables
       var $fullName = $("#full-name"),
-          $emailAddress = $("#email-address"),
+          $emailAddress = $("#email-pre-signup"),
           $signupButton = $("#get-me-in-btn"),
-          $signupForm = $("#beta-signup-form"),
-          $successMsg = $("#signup-success-msg-div"),
-          $errorMsg1 = $("#signup-error-msg-div1"),
-          $errorMsg2 = $("#signup-error-msg-div2");
+          $signupForm = $("#pre-signup-form"),
+          $emailAddress2 = $("#email-pre-signup2"),
+          $signupButton2 = $("#get-me-in-btn2"),
+          $signupForm2 = $("#pre-signup-form2"),
+          $emailAddress3 = $("#email-pre-signup3"),
+          $signupButton3 = $("#get-me-in-btn3"),
+          $signupForm3 = $("#pre-signup-form3"),
+          $emailAddress4 = $("#email-pre-signup4"),
+          $signupButton4 = $("#get-me-in-btn4"),
+          $signupForm4 = $("#pre-signup-form4"),
+          $emailAddress5 = $("#email-pre-signup5"),
+          $signupButton5 = $("#get-me-in-btn5"),
+          $signupForm5 = $("#pre-signup-form5"),
+          $emailAddress6 = $("#email-pre-signup6"),
+          $signupButton6 = $("#get-me-in-btn6"),
+          $signupForm6 = $("#pre-signup-form6"),
+          $successMsg = $(".signup-success-msg-div"),
+          $errorMsg1 = $(".signup-error-msg-div1"),
+          $errorMsg2 = $(".signup-error-msg-div2");
 
           $signupForm.submit(function(e) {
             var user = new Object();
-            user.userName = $("#email-address").val();
-            user.email = $("#email-address").val();
-            user.namwe = $("#full-name").val();
+            user.userName = $("#email-pre-signup").val();
+            user.email = $("#email-pre-signup").val();
+            user.namwe = $("#email-pre-signup").val();
 
 
             $signupButton.attr('disabled', true);
-            $signupButton.html('Submitting... Please wait.');
+            $signupButton.html('Submitting...');
 
             var userSignup = $.ajax({
               contentType: "application/json",
@@ -128,21 +148,46 @@ layout:
               data: JSON.stringify(user),
               success: function(data) {
                 if (data.code === "SUCCESS") {
-                  console.log("Registration Successful", data);
+                 //  console.log("Registration Successful", data);
                   $successMsg.removeClass('hide').addClass('show');
-                  $signupButton.attr('disabled', true);
-                  $signupButton.html('Submitted Successfully');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
                 }
                 else {
-                    console.log("User Already Exist", data);
+                    // console.log("User Already Exist", data);
                     $errorMsg1.removeClass('hide').addClass('show');
-                    $signupButton.attr('disabled', false);
-                    $signupButton.html('Get me in');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
                 }
             },
             error: function(data) {
 
-              console.log(data);
+              // console.log(data);
               $errorMsg2.removeClass('hide').addClass('show');
               $signupButton.attr('disabled', false);
               $signupButton.html('Get me in');
@@ -150,19 +195,449 @@ layout:
           });
           return false;
         });
+
+
+
+
+          $signupForm2.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup2").val();
+            user.email = $("#email-pre-signup2").val();
+            user.namwe = $("#email-pre-signup2").val();
+
+
+            $signupButton2.attr('disabled', true);
+            $signupButton2.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                 //  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    // console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton2.attr('disabled', false);
+              $signupButton2.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm3.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup3").val();
+            user.email = $("#email-pre-signup3").val();
+            user.namwe = $("#email-pre-signup3").val();
+
+
+            $signupButton3.attr('disabled', true);
+            $signupButton3.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                 //  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    // console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton3.attr('disabled', false);
+              $signupButton3.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm4.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup4").val();
+            user.email = $("#email-pre-signup4").val();
+            user.namwe = $("#email-pre-signup4").val();
+
+
+            $signupButton4.attr('disabled', true);
+            $signupButton4.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                 //  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    // console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton4.attr('disabled', false);
+              $signupButton4.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm5.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup5").val();
+            user.email = $("#email-pre-signup5").val();
+            user.namwe = $("#email-pre-signup5").val();
+
+
+            $signupButton5.attr('disabled', true);
+            $signupButton5.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                 //  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    // console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton5.attr('disabled', false);
+              $signupButton5.html('Get me in');
+            }
+          });
+          return false;
+        });
+
+
+
+
+          $signupForm6.submit(function(e) {
+            var user = new Object();
+            user.userName = $("#email-pre-signup6").val();
+            user.email = $("#email-pre-signup6").val();
+            user.namwe = $("#email-pre-signup6").val();
+
+
+            $signupButton6.attr('disabled', true);
+            $signupButton6.html('Submitting...');
+
+            var userSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                 //  console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  // $signupButton.attr('disabled', true);
+                  $signupButton6.addClass('hide');
+                  $emailAddress6.addClass('hide');
+                  $signupButton5.addClass('hide');
+                  $emailAddress5.addClass('hide');
+                  $signupButton4.addClass('hide');
+                  $emailAddress4.addClass('hide');
+                  $signupButton3.addClass('hide');
+                  $emailAddress3.addClass('hide');
+                  $signupButton2.addClass('hide');
+                  $emailAddress2.addClass('hide');
+                  $signupButton.addClass('hide');
+                  $emailAddress.addClass('hide');
+                  // $signupButton.html('Submitted Successfully');
+                }
+                else {
+                    // console.log("User Already Exist", data);
+                    $errorMsg1.removeClass('hide').addClass('show');
+                    $signupButton6.addClass('hide');
+                    $emailAddress6.addClass('hide');
+                    $signupButton5.addClass('hide');
+                    $emailAddress5.addClass('hide');
+                    $signupButton4.addClass('hide');
+                    $emailAddress4.addClass('hide');
+                    $signupButton3.addClass('hide');
+                    $emailAddress3.addClass('hide');
+                    $signupButton2.addClass('hide');
+                    $emailAddress2.addClass('hide');
+                    $signupButton.addClass('hide');
+                    $emailAddress.addClass('hide');
+
+                    // $signupButton.attr('disabled', false);
+                    // $signupButton.html('Get me in');
+                }
+            },
+            error: function(data) {
+
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $signupButton6.attr('disabled', false);
+              $signupButton6.html('Get me in');
+            }
+          });
+          return false;
+        });
     </script>
 
+<script>
+// $(".hero-section-icon-link").click(function() {
+//     $('html,body').animate({
+//         scrollTop: $("#homepage-beta-features-section").offset().top},
+//         'slow');
+//         // $('#smart-campaigns').addClass('shake');
+// });
 
+//Select all links with hashes
+$('a[href*="#"]')
+  // Remove links that don't actually link to anything
+  .not('[href="#"]')
+  .not('[href="#0"]')
+  .click(function(event) {
+    // On-page links
+    if (
+      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
+      &&
+      location.hostname == this.hostname
+    ) {
+      // Figure out element to scroll to
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      // Does a scroll target exist?
+      if (target.length) {
+        // Only prevent default if animation is actually gonna happen
+        event.preventDefault();
+        $('html, body').animate({
+          scrollTop: target.offset().top
+        }, 1000, function() {
+          // Callback after animation
+          // Must change focus!
+          var $target = $(target);
+          $target.focus();
+          if ($target.is(":focus")) { // Checking if the target was focused
+            return false;
+          } else {
+            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+            $target.focus(); // Set focus again
+          };
+        });
+      }
+    }
+  });
+
+</script>
 
     <script type="text/javascript">
-    (function(d, m){var s, h, o={appId: "295ab0fb79b2e1c3f3b1eb207b8e2b77a",isAnonymousChat:true,baseUrl : "https://chat.kommunicate.io"};
-    s = document.createElement("script");s.type = "text/javascript";
-    s.async=true;
-    s.src="https://api-test.kommunicate.io/kommunicate.app";
-    h=document.getElementsByTagName("head")[0]; h.appendChild(s);
-    window.applozic=m;
-    m._globals=o;})(document, window.kommunicate || {});
-    </script>
+
+    var QUERYSTRING = 'test',
+        CURRENTURL = window.location.href;
+
+        if(CURRENTURL.indexOf(QUERYSTRING) != -1) {
+            (function(d, m){
+             let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io","groupName":"devashish@kommunicate.io","baseUrl":"https://apps-test.applozic.com/"};
+             let s = document.createElement("script");
+             s.type = "text/javascript";
+             s.async = true;
+             s.src = "https://api-test.kommunicate.io/kommunicate.app";
+             let h = document.getElementsByTagName("head")[0];
+             h.appendChild(s);
+             window.kommunicate = m;
+             m._globals = o;
+           })(document, window.kommunicate || {});
+        }
+        else {
+            (function(d, m){
+             let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io","groupName":"devashish@kommunicate.io","baseUrl":"https://apps.applozic.com/"};
+             let s = document.createElement("script");
+             s.type = "text/javascript";
+             s.async = true;
+             s.src = "https://api.kommunicate.io/kommunicate.app";
+             let h = document.getElementsByTagName("head")[0];
+             h.appendChild(s);
+             window.kommunicate = m;
+             m._globals = o;
+           })(document, window.kommunicate || {});
+        }
+
+
+   //  (function(d, m){
+   //   let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io","groupName":"devashish@kommunicate.io","baseUrl":"https://apps-test.applozic.com/"};
+   //   let s = document.createElement("script");
+   //   s.type = "text/javascript";
+   //   s.async = true;
+   //   s.src = "{{site.dashboard}}/kommunicate.app";
+   //   let h = document.getElementsByTagName("head")[0];
+   //   h.appendChild(s);
+   //   window.kommunicate = m;
+   //   m._globals = o;
+   // })(document, window.kommunicate || {});
+</script>
+
+<!-- Start of HubSpot Embed Code -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
+<!-- End of HubSpot Embed Code -->
 
 </body>
 

@@ -71,6 +71,9 @@ class AutoSuggest extends Component{
 						Notification.info("There was problem in creating the suggestion.");
 					}
 				})
+				.catch(err => {
+					console.log(err)
+				})
 		}
 	}
 
@@ -118,7 +121,7 @@ class AutoSuggest extends Component{
                 </div>
                 <div className="card-footer">
                   <button type="button" className="btn btn-primary px-4" onClick={this._createSuggestion}>Save</button>
-                  <button type="button" className="btn btn-danger px-4" onClick={this.resetForm}>Cancel</button>
+                  <button type="button" className="n-vis btn btn-danger px-4" onClick={this.resetForm}>Cancel</button>
                 </div>
 	            </div>
 	            <div className="card">

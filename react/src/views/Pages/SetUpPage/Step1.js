@@ -93,8 +93,10 @@ class Step1 extends Component {
        localStorage.setItem("applicationId",params.applicationId||"your _application_id");
        localStorage.setItem("agentId",params.agentId||"default_agent_id");
        localStorage.setItem("agentName",params.agentName||"agent_display_name");
-      this.state.hideShowInputEmail = true;
-      this.state.hideNextBtn=true;
+       this.setState({
+        hideShowInputEmail : true,
+        hideNextBtn : true
+       })
        }
   }
 
