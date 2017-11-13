@@ -211,9 +211,9 @@ class Aside extends Component {
                           <div id="km-user-icon" className="km-user-icon"></div>
                         </div>
                         <div className="blk-lg-7">
-                           <ul id="kommunicate-panel-tabs" className="list-inline">
-                             <li className="active"><a href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
-                             <li><a id="km-customers-cell-link" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
+                           <ul id="kommunicate-panel-tabs" className="list-inline km-nav-tab">
+                             <li className="active "><a className="li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
+                             <li><a id="km-customers-cell-link" className="li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
                              {/*
                                <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
                               */}

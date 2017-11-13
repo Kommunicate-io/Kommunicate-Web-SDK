@@ -174,6 +174,15 @@ ul#km-group-search-list li {
 #km-assigned-search-input-box {
     padding-left: 8px;
 }
+.km-nav-tab{
+       font-size: 16px !important;
+        color: #434e54 !important;
+    }
+.li-nav-tab{
+    color: #28343a;
+    padding: 2px;
+    text-decoration: none !important;
+    }
 .km-form-group {
     margin-bottom: 0px;
     float: left;
