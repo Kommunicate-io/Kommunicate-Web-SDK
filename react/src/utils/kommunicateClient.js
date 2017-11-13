@@ -193,7 +193,7 @@ const postAutoReply = (formData) => {
     url:autoreplyUrl+username+'/business-hours',
     data:formData
   }).then((response) => {
-    alert("offhours details submit");
+    Notification.success('submitted successfully');
   });
 }
 
