@@ -95,7 +95,7 @@ function initAutoSuggestions() {
   					 }
 					 },
       locShare: true,
-      googleApiKey: 'AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4',
+      googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: true,
       topicBox: topicBoxEnabled,
       authenticationTypeId: 1,
