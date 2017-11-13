@@ -281,7 +281,7 @@ span.emoji-sizer {
 	font-size: 20px !important;
 }
 
-.mck-cont-msg-wrapper span.emoji-sizer {
+.km-cont-msg-wrapper span.emoji-sizer {
 	margin: 0px !important
 }
 
@@ -334,7 +334,7 @@ img.emoji {
 	height: 260px;
 }
 
-.mck-panel-3.emoji-menu, .mck-panel-3 .emoji-menu {
+.km-panel-3.emoji-menu, .km-panel-3 .emoji-menu {
 	right:451px !important;
 	min-width : 198px;
 }

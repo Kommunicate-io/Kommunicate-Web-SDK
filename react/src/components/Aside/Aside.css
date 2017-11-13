@@ -27,11 +27,11 @@ html [type="button"],
 .applozic-chat-container {
     height: 100%;
 }
-span.mck-contact-search-tab img {
+span.km-contact-search-tab img {
     width: 36px;
     height: 36px;
 }
-/*  .mck-container {
+/*  .km-container {
                     left: 200px !important;
                     right: 200px !important;
                     top: 100px !important;
@@ -46,23 +46,23 @@ span.mck-contact-search-tab img {
     float: right;
     height: inherit;
 }
-.mck-group-detail-box,
-.mck-user-detail-box {
+.km-group-detail-box,
+.km-user-detail-box {
     padding: 10px 10px 0;
     position: relative;
     background-color: #F0F0F0;
     margin: 0;
 }
-.mck-group-info-tab .mck-box-body,
-.mck-user-info-tab .mck-box-body {
+.km-group-info-tab .km-box-body,
+.km-user-info-tab .km-box-body {
     background-color: #F0F0F0;
 }
-.mck-group-info-tab .mck-box-top .blk-lg-10,
-.mck-group-create-tab .mck-box-top .blk-lg-10,
-.mck-user-info-tab .mck-box-top .blk-lg-10 {
+.km-group-info-tab .km-box-top .blk-lg-10,
+.km-group-create-tab .km-box-top .blk-lg-10,
+.km-user-info-tab .km-box-top .blk-lg-10 {
     width: 250px;
 }
-.mck-user-name-sec .mck-user-title {
+.km-user-name-sec .km-user-title {
     vertical-align: middle;
     line-height: 29px;
     height: 29px;
@@ -74,37 +74,37 @@ span.mck-contact-search-tab img {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.mck-user-name-sec a {
+.km-user-name-sec a {
     border-left: 1px solid #ddd;
     line-height: 35px;
 }
-.mck-user-name-sec a.vis {
+.km-user-name-sec a.vis {
     display: initial !important;
 }
-.mck-user-info-tab .mck-box-top .blk-lg-2,
-.mck-user-create-tab .mck-box-top .blk-lg-2 {
+.km-user-info-tab .km-box-top .blk-lg-2,
+.km-user-create-tab .km-box-top .blk-lg-2 {
     width: 29px;
 }
-.mck-user-info-tab .mck-box-top .blk-lg-10,
-.mck-user-create-tab .mck-box-top .blk-lg-10 {
+.km-user-info-tab .km-box-top .blk-lg-10,
+.km-user-create-tab .km-box-top .blk-lg-10 {
     width: 250px;
 }
-.mck-user-detail-box {
+.km-user-detail-box {
     padding: 10px 10px 0;
     position: relative;
     background-color: #F0F0F0;
     margin: 0;
 }
-.mck-user-sub-sec {
+.km-user-sub-sec {
     padding: 10px 0;
     position: relative;
     vertical-align: baseline;
     outline: none;
 }
-.mck-user-icon-sec {
+.km-user-icon-sec {
     padding-bottom: 10px;
 }
-.mck-user-info-list li {
+.km-user-info-list li {
     float: left;
     width: 100%;
     background-color: white;
@@ -112,7 +112,7 @@ span.mck-contact-search-tab img {
     border-bottom: 1px solid whitesmoke;
     min-height: 32px;
 }
-.mck-user-icon-sec .mck-user-icon {
+.km-user-icon-sec .km-user-icon {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -120,12 +120,12 @@ span.mck-contact-search-tab img {
     top: 0;
     left: 0;
 }
-.mck-user-icon-box img {
+.km-user-icon-box img {
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
-.mck-user-icon-box {
+.km-user-icon-box {
     position: relative;
     width: 120px;
     height: 120px;
@@ -139,15 +139,15 @@ span.mck-contact-search-tab img {
     background-repeat: no-repeat;
     background-position: center center;
 }
-.mck-nav-panel .mck-nav-link,
-.mck-nav-panel .mck-nav-link.active {
+.km-nav-panel .km-nav-link,
+.km-nav-panel .km-nav-link.active {
     padding-left: 8px !important;
     padding-right: 8px !important;
 }
-#mck-user-info-tab .mck-alpha-contact-image {
+#km-user-info-tab .km-alpha-contact-image {
     border-radius: 110px;
 }
-#mck-user-info-tab .mck-alpha-contact-image {
+#km-user-info-tab .km-alpha-contact-image {
     height: 110px;
     width: 110px;
     max-width: 110px;
@@ -155,36 +155,45 @@ span.mck-contact-search-tab img {
     line-height: 110px !important;
     font-size: 25px !important;
 }
-#mck-user-info-tab .mck-alpha-contact-image .mck-contact-icon {
+#km-user-info-tab .km-alpha-contact-image .km-contact-icon {
     font-weight: bold;
     vertical-align: middle;
     height: 110px;
     line-height: 110px;
     display: block;
 }
-ul#mck-contact-search-list li,
-ul#mck-group-search-list li {
+ul#km-contact-search-list li,
+ul#km-group-search-list li {
     padding: 12px 15px;
     background: white;
     border-bottom: 1px solid #F3F3F3 !important;
     cursor: pointer;
 }
-#mck-contact-search-input-box,
-#mck-group-search-input-box,
-#mck-assigned-search-input-box {
+#km-contact-search-input-box,
+#km-group-search-input-box,
+#km-assigned-search-input-box {
     padding-left: 8px;
 }
-.mck-form-group {
+.km-nav-tab{
+       font-size: 16px !important;
+        color: #434e54 !important;
+    }
+.li-nav-tab{
+    color: #28343a;
+    padding: 2px;
+    text-decoration: none !important;
+    }
+.km-form-group {
     margin-bottom: 0px;
     float: left;
     border-bottom: 1px solid #F3F3F3 !important;
     height: 40px;
 }
 /*
-.mck-container .left .mck-box-top [class*="blk-"] {
+.km-container .left .km-box-top [class*="blk-"] {
   line-height: 47px !important;
 }*/
-#mck-visitors-cell .mck-contact-search-tab img {
+#km-visitors-cell .km-contact-search-tab img {
     float: left;
     width: 43px;
     height: 43px;
@@ -192,7 +201,7 @@ ul#mck-group-search-list li {
     border: 1px solid #ddd;
     border-radius: 50%;
 }
-/*#mck-group-search-list .mck-contact-search-tab {
+/*#km-group-search-list .km-contact-search-tab {
           color: #444 !important;
           border-radius: 0;
           border-bottom: 1px solid #F3F3F3 !important;
@@ -223,7 +232,7 @@ ul#mck-group-search-list li {
   background: white;
 }
 
-.mck-message-inner-left .mck-box-top{
+.km-message-inner-left .km-box-top{
   background: whitesmoke;
 }
 
@@ -232,7 +241,7 @@ ul#mck-group-search-list li {
   background-image: url('/applozic/images/chat-bg.png');
 }*/
 
-#mck-message-cell {
+#km-message-cell {
     background-image: url('/applozic/images/chat-bg-horizontal.png');
     margin: 0;
     padding: 0;
@@ -240,10 +249,10 @@ ul#mck-group-search-list li {
   /*  opacity: 0.5; */
 }
 
-.mck-container .right .bubble.mck-msg-left .mck-msg-box {
+.km-container .right .bubble.km-msg-left .km-msg-box {
   background-color: whitesmoke;
 }
 
-.mck-msg-center .mck-msg-box {
+.km-msg-center .km-msg-box {
     background: whitesmoke;
 }

@@ -1,42 +1,42 @@
-var $applozic = jQuery.noConflict(true);
+var $kmApplozic = jQuery.noConflict(true);
 if (typeof $original !== 'undefined') {
     $ = $original;
     jQuery = $original;
     if (typeof $.fn.template === 'function') {
-        $applozic.fn.template = $.fn.template;
+        $kmApplozic.fn.template = $.fn.template;
         jQuery.fn.template = $.fn.template;
-    } else if (typeof $applozic.fn.template === 'function') {
-        $.fn.template = $applozic.fn.template;
-        jQuery.fn.template = $applozic.fn.template;
+    } else if (typeof $kmApplozic.fn.template === 'function') {
+        $.fn.template = $kmApplozic.fn.template;
+        jQuery.fn.template = $kmApplozic.fn.template;
     }
 }
 var w = window,
     d = document;
-var MCK_LABELS;
-var MCK_BASE_URL;
+var KM_LABELS;
+var KM_BASE_URL;
 var MCK_CURR_LATITIUDE = 40.7324319;
 var MCK_CURR_LONGITUDE = -73.82480777777776;
-var mckUtils = new MckUtils();
-mckUtils.init();
+var kmUtils = new KmUtils();
+kmUtils.init();
 var mckDateUtils = new MckDateUtils();
-var mckGroupUtils = new MckGroupUtils();
-var mckContactUtils = new MckContactUtils();
-var mckGroupService = new MckGroupService();
-var mckMapUtils = new MckMapUtils();
-var mckNotificationUtils = new MckNotificationUtils();
-function MckUtils() {
+var kmGroupUtils = new KmGroupUtils();
+var kmContactUtils = new KmContactUtils();
+var kmGroupService = new KmGroupService();
+var kmMapUtils = new KmMapUtils();
+var kmNotificationUtils = new KmNotificationUtils();
+function KmUtils() {
     var _this = this;
     var TEXT_NODE = 3,
         ELEMENT_NODE = 1,
         TAGS_BLOCK = [ 'p', 'div', 'pre', 'form' ];
     _this.init = function() {
-        $applozic.ajax({
+        $kmApplozic.ajax({
             url: "https://apps.applozic.com/v2/tab/initialize.page",
             contentType: 'application/json',
             type: 'OPTIONS'
         }).done(function(data) {});
 
-        $applozic.ajax({
+        $kmApplozic.ajax({
             url: "https://apps.applozic.com/rest/ws/message/list",
             contentType: 'application/json',
             type: 'OPTIONS'
@@ -160,6 +160,7 @@ function MckUtils() {
 
     _this.ajax = function(options) {
         var reqOptions = Object.assign({}, options);
+        reqOptions.kommunicateDashboard = true;
         if (this.getEncryptionKey()) {
             var key = aesjs.util.convertStringToBytes(this.getEncryptionKey());
             var iv = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
@@ -194,7 +195,7 @@ function MckUtils() {
                 }
             }
         }
-        $applozic.ajax(reqOptions);
+        $kmApplozic.ajax(reqOptions);
     };
 
     _this.isJsonString = function(str) {
@@ -207,7 +208,7 @@ function MckUtils() {
     };
 
 }
-function MckContactUtils() {
+function KmContactUtils() {
     var _this = this;
     _this.getContactId = function(contact) {
         var contactId = contact.contactId;
@@ -218,21 +219,21 @@ function MckContactUtils() {
             contactId = contactId.substring(1);
         }
         contactId = decodeURIComponent(contactId);
-        return $applozic.trim(contactId.replace(/\@/g, 'AT').replace(/\./g, 'DOT').replace(/\*/g, 'STAR').replace(/\#/g, 'HASH').replace(/\|/g, 'VBAR').replace(/\+/g, 'PLUS').replace(/\;/g, 'SCOLON').replace(/\?/g, 'QMARK').replace(/\,/g, 'COMMA').replace(/\:/g, 'COLON'));
+        return $kmApplozic.trim(contactId.replace(/\@/g, 'AT').replace(/\./g, 'DOT').replace(/\*/g, 'STAR').replace(/\#/g, 'HASH').replace(/\|/g, 'VBAR').replace(/\+/g, 'PLUS').replace(/\;/g, 'SCOLON').replace(/\?/g, 'QMARK').replace(/\,/g, 'COMMA').replace(/\:/g, 'COLON'));
     };
 }
-function MckGroupUtils() {
+function KmGroupUtils() {
     var _this = this
     _this.getGroup = function(groupId) {
-        if (typeof MCK_GROUP_MAP[groupId] === 'object') {
-            return MCK_GROUP_MAP[groupId];
+        if (typeof KM_GROUP_MAP[groupId] === 'object') {
+            return KM_GROUP_MAP[groupId];
         } else {
             return;
         }
     };
     _this.getGroupByClientGroupId = function(clientGroupId) {
-        if (typeof MCK_CLIENT_GROUP_MAP[clientGroupId] === 'object') {
-            return MCK_CLIENT_GROUP_MAP[clientGroupId];
+        if (typeof KM_CLIENT_GROUP_MAP[clientGroupId] === 'object') {
+            return KM_CLIENT_GROUP_MAP[clientGroupId];
         } else {
             return;
         }
@@ -240,7 +241,7 @@ function MckGroupUtils() {
     _this.addGroup = function(group) {
         var name = (group.name) ? group.name : group.id;
         var users = [];
-        $applozic.each(group.groupUsers, function(i, user) {
+        $kmApplozic.each(group.groupUsers, function(i, user) {
             if (user.userId) {
                 users[user.userId] = user;
             }
@@ -250,7 +251,7 @@ function MckGroupUtils() {
             'groupId': group.id,
             'metadata': group.metadata,
             'contactId': group.id.toString(),
-            'htmlId': mckContactUtils.formatContactId('' + group.id),
+            'htmlId': kmContactUtils.formatContactId('' + group.id),
             'displayName': name,
             'value': group.id.toString(),
             'adminName': group.adminName,
@@ -263,16 +264,16 @@ function MckGroupUtils() {
             'clientGroupId': group.clientGroupId,
             'isGroup': true
         };
-        MCK_GROUP_MAP[group.id] = groupFeed;
+        KM_GROUP_MAP[group.id] = groupFeed;
         if (group.clientGroupId) {
-            MCK_CLIENT_GROUP_MAP[group.clientGroupId] = groupFeed;
+            KM_CLIENT_GROUP_MAP[group.clientGroupId] = groupFeed;
         }
         return groupFeed;
     };
     _this.createGroup = function(groupId) {
         var group = {
             'contactId': groupId.toString(),
-            'htmlId': mckContactUtils.formatContactId('' + groupId),
+            'htmlId': kmContactUtils.formatContactId('' + groupId),
             'displayName': groupId.toString(),
             'value': groupId.toString(),
             'type': 2,
@@ -284,11 +285,11 @@ function MckGroupUtils() {
             'clientGroupId': '',
             'isGroup': true
         };
-        MCK_GROUP_MAP[groupId] = group;
+        KM_GROUP_MAP[groupId] = group;
         return group;
     };
 }
-function MckMapUtils() {
+function KmMapUtils() {
     var _this = this;
     _this.getCurrentLocation = function(succFunc, errFunc) {
         w.navigator.geolocation.getCurrentPosition(succFunc, errFunc);
@@ -300,7 +301,7 @@ function MckMapUtils() {
         };
     };
 }
-function MckNotificationUtils() {
+function KmNotificationUtils() {
     var _this = this;
     var PERMISSION_DEFAULT = "default",
         PERMISSION_GRANTED = "granted",
@@ -432,7 +433,7 @@ function MckNotificationUtils() {
         };
     };
 }
-function MckGroupService() {
+function KmGroupService() {
     var _this = this;
     var GROUP_LIST_URL = "/rest/ws/group/list";
     var GROUP_FEED_URL = "/rest/ws/group/info";
@@ -442,8 +443,8 @@ function MckGroupService() {
     var GROUP_REMOVE_MEMBER_URL = "/rest/ws/group/remove/member";
     _this.loadGroups = function(params) {
         var response = new Object();
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_LIST_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_LIST_URL,
             type: 'get',
             global: false,
             success: function(data) {
@@ -497,8 +498,8 @@ function MckGroupService() {
         if (params.conversationId) {
             data += "&conversationId=" + params.conversationId;
         }
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_FEED_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_FEED_URL,
             data: data,
             type: 'get',
             global: false,
@@ -509,7 +510,7 @@ function MckGroupService() {
                         response.status = "error";
                         response.errorMessage = "GroupId not found";
                     } else {
-                        var group = mckGroupUtils.addGroup(groupFeed);
+                        var group = kmGroupUtils.addGroup(groupFeed);
                         response.status = "success";
                         response.data = group;
                     }
@@ -555,15 +556,15 @@ function MckGroupService() {
             }
             return;
         }
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_LEAVE_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_LEAVE_URL,
             data: data,
             type: 'get',
             global: false,
             success: function(data) {
                 if (data.status === "success") {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -614,15 +615,15 @@ function MckGroupService() {
             return;
         }
         data += '&userId=' + encodeURIComponent(params.userId);
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_REMOVE_MEMBER_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_REMOVE_MEMBER_URL,
             data: data,
             type: 'get',
             global: false,
             success: function(data) {
                 if (data.status === 'success') {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -670,15 +671,15 @@ function MckGroupService() {
         if (typeof params.role !== 'undefined') {
             data += '&role=' + params.role;
         }
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_ADD_MEMBER_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_ADD_MEMBER_URL,
             data: data,
             type: 'get',
             global: false,
             success: function(data) {
                 if (data.status === "success") {
                     if (params.clientGroupId) {
-                        var group = mckGroupUtils.getGroupByClientGroupId(params.clientGroupId);
+                        var group = kmGroupUtils.getGroupByClientGroupId(params.clientGroupId);
                         if (typeof group === 'object') {
                             params.groupId = group.contactId;
                         }
@@ -736,8 +737,8 @@ function MckGroupService() {
         if (params.metadata) {
           groupInfo.metadata = params.metadata;
         }
-        mckUtils.ajax({
-            url: MCK_BASE_URL + GROUP_UPDATE_INFO_URL,
+        kmUtils.ajax({
+            url: KM_BASE_URL + GROUP_UPDATE_INFO_URL,
             type: 'post',
             data: JSON.stringify(groupInfo),
             contentType: 'application/json',
@@ -798,13 +799,13 @@ function MckDateUtils() {
             var hoursDiff = currentDate.getHours() - date.getHours();
             var timeDiff = w.Math.floor((currentDate.getTime() - date.getTime()) / 60000);
             if (timeDiff < 60) {
-                return (timeDiff <= 1) ? MCK_LABELS['last.seen'] + ' 1 min ' + MCK_LABELS['ago'] : MCK_LABELS['last.seen'] + ' ' + timeDiff + ' mins ' + MCK_LABELS['ago'];
+                return (timeDiff <= 1) ? KM_LABELS['last.seen'] + ' 1 min ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + timeDiff + ' mins ' + KM_LABELS['ago'];
             }
-            return (hoursDiff === 1) ? MCK_LABELS['last.seen'] + ' 1 hour ' + MCK_LABELS['ago'] : MCK_LABELS['last.seen'] + ' ' + hoursDiff + ' hours ' + MCK_LABELS['ago'];
+            return (hoursDiff === 1) ? KM_LABELS['last.seen'] + ' 1 hour ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + hoursDiff + ' hours ' + KM_LABELS['ago'];
         } else if ( ((currentDate.getDate() - date.getDate() === 1) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ) {
-            return MCK_LABELS['last.seen.on'] + ' yesterday';
+            return KM_LABELS['last.seen.on'] + ' yesterday';
         } else {
-            return MCK_LABELS['last.seen.on'] + ' ' + dateFormat(date, onlyDateFormat, false);
+            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(date, onlyDateFormat, false);
         }
     };
     _this.getTimeOrDate = function(createdAtTime, timeFormat) {

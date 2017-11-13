@@ -40,7 +40,22 @@ module.exports = function(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING(20)
     },
-    // user is bot or agent. 1:Agent, 2:bot, 3: admin
+    contactNo: {
+      type: DataTypes.STRING(20),
+      field: 'contact_no'
+    },
+    industry: {
+      type: DataTypes.STRING(20)
+    },
+    companyName: {
+      type: DataTypes.STRING(50),
+      field: 'company_name'
+    },
+    companySize: {
+      type: DataTypes.STRING(15),
+      field: 'company_size'
+    },
+   // user is bot or agent. 1:Agent, 2:bot, 3: admin
     type: {
       type: DataTypes.INTEGER,
       allowNull: false
