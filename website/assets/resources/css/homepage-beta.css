@@ -21,9 +21,19 @@ a, a:hover {
     text-decoration: none;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
 .navbar-brand svg {
     width: auto;
     height: 90px;
+}
+.kommunicate-logo-text {
+    font-size: 28px;
+    color: #ffffff;
+
 }
 
 .mobile-only {
@@ -107,7 +117,7 @@ a, a:hover {
     margin-top: 5px;
 }*/
 
-.homepage-beta-features-section:focus {
+.homepage-beta-features-section:focus, .why-kommunicate-section:focus {
     outline: none;
 }
 @-webkit-keyframes spaceboots {
@@ -861,6 +871,51 @@ label {
     color: #8EA604;
 }
 
+
+
+.scroll-down {
+    /*position: absolute;*/
+    bottom: 62px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    z-index: 15;
+    width: 60px;
+}
+
+.scroll-down .fa-angle-down {
+    font-size: 40px;
+    color: #ffffff;
+    margin-top: 70px;
+    -webkit-animation: bounce 2s infinite  ease-in-out;
+    animation: bounce 2s infinite  ease-in-out;
+}
+
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); }
+  50% {
+    -webkit-transform: translate(0, 20px);
+            transform: translate(0, 20px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+@keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); }
+  50% {
+    -webkit-transform: translate(0, 20px);
+            transform: translate(0, 20px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+
 @media (max-width:768px) {
     .homepage-beta-landing-page-section {
         height: auto;
@@ -909,6 +964,10 @@ label {
 @media (max-width:350px) {
     .why-kommunicate-main-heading {
         font-size: 32px;
+    }
+    .navbar-brand {
+        padding-left: 0px;
+        margin-left: -33px;
     }
 }
 @media (max-width:560px) {
