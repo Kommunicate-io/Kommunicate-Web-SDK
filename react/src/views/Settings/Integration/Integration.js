@@ -69,7 +69,7 @@ class Integration extends Component {
                           </button>
                         </div>
                       )}
-                      <MultiEmail />
+                      <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                     </form>
                   </div>
                 </div>

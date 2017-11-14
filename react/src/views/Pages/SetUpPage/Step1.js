@@ -50,7 +50,7 @@ class Step1 extends Component {
 
   	return (
       <form>
-        <MultiEmail/>
+        <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
         <div className="row">
           <div className="form-group col-md-5">
             <textarea style={texAreaStyle} className="form-control" rows='16' value={this.jsInstructions} readOnly />

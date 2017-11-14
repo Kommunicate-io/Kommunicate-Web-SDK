@@ -14,7 +14,8 @@ class MultiEmail extends Component {
         this.state = {
             emailInstructions: false,
             multipleEmailAddress: [],
-            emailAddress: ""
+            emailAddress: "",
+            template: this.props.template,
         };
     }
 
@@ -26,18 +27,24 @@ class MultiEmail extends Component {
     sendMail = e => {
         const _this = this;
         e.preventDefault();
-        if (this.state.multipleEmailAddress.length >= 1) {
-            for (let i = 0; i < this.state.multipleEmailAddress.length; i++) {
-                if (!isEmail(this.state.multipleEmailAddress[i])) {
+        let multipleEmailAddress = this.state.multipleEmailAddress;
+        if(isEmail(this.state.emailAddress)) {
+            multipleEmailAddress = multipleEmailAddress.concat([this.state.emailAddress]);
+            this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
+            this.setState({ emailAddress: '' });
+        }
+        if (multipleEmailAddress.length >= 1) {
+            for (let i = 0; i < multipleEmailAddress.length; i++) {
+                if (!isEmail(multipleEmailAddress[i])) {
                     Notification.warning(
-                        this.state.multipleEmailAddress[i] + " is an invalid Email"
+                        multipleEmailAddress[i] + " is an invalid Email"
                     );
                     return;
                 }
             }
             notifyThatEmailIsSent({
-                to: this.state.multipleEmailAddress,
-                templateName: "SEND_KOMMUNICATE_SCRIPT"
+                to: multipleEmailAddress,
+                templateName: this.state.template
             }).then(data => {
                 _this.setState({ multipleEmailAddress: [], emailAddress: "" });
             });
@@ -49,7 +56,7 @@ class MultiEmail extends Component {
             } else {
                 notifyThatEmailIsSent({
                     to: this.state.emailAddress,
-                    templateName: "SEND_KOMMUNICATE_SCRIPT"
+                    templateName: this.state.template
                 }).then(data => {
                     _this.setState({ multipleEmailAddress: [], emailAddress: "" });
                 });
@@ -72,13 +79,6 @@ class MultiEmail extends Component {
         }
         // console.log(this.state.multipleEmailAddress)
         // console.log(this.state.emailAddress)
-    };
-
-    onBlur = (e) => {
-        if (ValidationUtils.isValidEmail(this.state.emailAddress)) {
-            this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
-            this.setState({ emailAddress: '' });
-        }
     };
 
     removeEmail = removeEmail => {
@@ -127,7 +127,6 @@ class MultiEmail extends Component {
                             value={this.state.emailAddress}
                             onKeyDown={this.checkForSpace}
                             onChange={this.multipleEmailHandler}
-                            onBlur={this.onBlur}
                             placeholder="Enter email here"
                         />
                     </div>
