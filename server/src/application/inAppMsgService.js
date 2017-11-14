@@ -19,8 +19,8 @@ exports.postWelcomeMsg=(options)=>{
     })
     
 }
-exports.sendWelcomeMessage=(message,bot)=>{
+/*exports.sendWelcomeMessage=(message,bot)=>{
     return db.InAppMsg.find({where:{customerId:bot.customerId}}).then(inAppMessage=>{
-        return applozicClient.
-    })
-}
+        //return applozicClient.sendGroupMessage
+    });
+}*/
