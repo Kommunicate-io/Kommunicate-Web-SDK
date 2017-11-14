@@ -89,5 +89,6 @@ conversationRouter.post('/', validate(conversationValidation.createConversation)
 conversationRouter.get('/participent/:participentId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
 
 //application router
-
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
+applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
+applicationRouter.post('/events',inAppMsgController.processEvents);

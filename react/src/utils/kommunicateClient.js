@@ -347,6 +347,18 @@ const updateApplozicUser = (userInfo) => {
 
 }
 
+const getWelcomeMessge = (applicationId)=>{
+  if (!applicationId){
+    throw new Error("application Id is missing");
+  }
+  const url= getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
+  return axios.get(url).then(response=>{
+    if (response.data.code=='success'){
+      return response.data.data.message;
+    }
+  });
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -367,4 +379,5 @@ export {
   signUpWithApplozic,
   sendProfileImage,
   updateApplozicUser,
+  getWelcomeMessge
 }

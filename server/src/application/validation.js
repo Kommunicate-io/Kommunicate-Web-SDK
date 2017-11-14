@@ -7,3 +7,8 @@ exports.postWelcomeMessage ={
         message:joi.string().required()
     }
 }
+exports.getWelcomeMessage ={
+    param:{
+        appId:joi.string().required()
+    }
+}

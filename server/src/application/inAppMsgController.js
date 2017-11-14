@@ -32,3 +32,39 @@ exports.sendWelcomeMessage=(message,bot)=>{
     }
 
 }
+
+exports.getInAppMessages=(req,res)=>{
+    const appId = req.params.appId;
+    console.log("request received to get welcome message for appId: ",appId);
+    registrationService.getCustomerByApplicationId(appId).then(customer=>{
+        if(!customer){
+            res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
+            return;
+        }
+    inAppMsgService.getInAppMessage(customer.id).then(inAppMessages=>{
+        res.status(200).json({code:'success',data:{message:inAppMessages.dataValues?inAppMessages.dataValues.message:""}});
+    }).catch(err=>{
+        res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});
+    });
+});
+}
+
+exports.processEvents=(req, res)=>{
+    const eventType = req.query.type;
+    const groupId = req.body.conversationId;
+    const applicationId = req.body.applicationId;
+    if(eventType == applicationUtils.EVENTS.CONVERSATION_STARTED){
+        return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+            return inAppMsgService.processConversationStartedEvent(groupId,customer).then(response=>{
+                console.log("message sent successfuly!");
+                res.status(200).json({code:"SUCCESS"});
+            })
+        }).catch(err=>{
+            console.log("err while sending welcome messgae");
+            res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
+        })
+    }else{
+        res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
+    }
+
+}
