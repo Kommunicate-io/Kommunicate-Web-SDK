@@ -18,21 +18,24 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
 
   }
   submitWelcomeMessage = () => {
+    var _this =this;
      var applicationId =localStorage.getItem("applicationId");
      var userId =localStorage.getItem("loggedinUser");
      console.log(applicationId,userId);
-     var setWelcomeMessageUrl = getConfig().kommunicateApi.setWelcomeMessage;
+     var setWelcomeMessageUrl = getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
      axios({
       method: 'post',
-      url:setWelcomeMessageUrl+applicationId+"/welcomeMessage",
+      url:setWelcomeMessageUrl,
       data:{
             "applicationId" : applicationId,
-            "message" : this.state.msg,
-            "userId" : "suarj@applozic.com",
-            "event" : "onwelcomepageload"
+            "message" : this.state.msg
           }
        }).then(function(response){
          console.log("message successfully send");
+         Notification.info("welcome message configured successfully");
+         _this.setState({msg:""});
+       }).catch(err=>{
+        Notification.error("something went wrong!");
        })
 
 	}

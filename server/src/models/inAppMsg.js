@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define("inAppMsg", {
+  return sequelize.define("in_app_msg", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -9,15 +9,15 @@ module.exports = function(sequelize, DataTypes) {
     customerId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      field : customer_id
+      field : "customer_id"
     },
     eventId: {
       type: DataTypes.INTEGER
     },
     message: {
-      type: DataTypes.TEXT(LONG),
+      type: DataTypes.TEXT,
       allowNull: false,
-      field: event_id
+      field: "event_id"
     },
     status: {
       type: DataTypes.INTEGER,
