@@ -49,7 +49,6 @@ class MultiEmail extends Component {
                 _this.setState({ multipleEmailAddress: [], emailAddress: "" });
             });
         } else {
-            console.log(this.state.emailAddress);
             if (!isEmail(this.state.emailAddress)) {
                 Notification.warning(this.state.emailAddress + " is an invalid Email");
                 return;
@@ -77,17 +76,13 @@ class MultiEmail extends Component {
             this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
             this.setState({ emailAddress: '' });
         }
-        // console.log(this.state.multipleEmailAddress)
-        // console.log(this.state.emailAddress)
     };
 
     removeEmail = removeEmail => {
-        // console.log(this.state.multipleEmailAddress);
         const filteredEmails = this.state.multipleEmailAddress.filter(
             email => email !== removeEmail
         );
         this.setState({ multipleEmailAddress: filteredEmails });
-        // console.log(this.state.multipleEmailAddress);
     };
 
     render() {
