@@ -1,13 +1,15 @@
 const registrationService = require("./registrationService");
 const userService = require('../users/userService');
 const joi = require("joi");
+const randomString  = require('randomstring');
+const inAppMessageService = require("../application/inAppMsgService");
 
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName?req.body.userName:req.body.userId;
   //const userId =  userName; 
   const isPreSignUp = req.query.preSignUp;
-  const password = isPreSignUp?userName:req.body.password;
+  const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
 
@@ -28,6 +30,7 @@ exports.createCustomer = (req,res)=>{
         return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name}).then(result=>{
           try{
           registrationService.sendWelcomeMail(email);
+          inAppMessageService.postWelcomeMsg({customerId:response.id,message:inAppMessageService.defaultMessage});
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }

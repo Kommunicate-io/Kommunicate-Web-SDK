@@ -28,6 +28,7 @@
     "node-minify": "^2.3.0",
     "nodemailer": "^4.1.0",
     "path": "^0.12.7",
+    "randomstring": "1.1.5",
     "request": "^2.81.0",
     "sequelize": "^4.4.2",
     "underscore.string": "^3.3.4",

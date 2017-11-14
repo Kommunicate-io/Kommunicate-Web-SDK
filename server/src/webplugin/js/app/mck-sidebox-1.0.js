@@ -1717,7 +1717,7 @@ var MCK_CLIENT_GROUP_MAP = [];
              var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
-            _this.createNewConversation=function(params){
+            _this.createNewConversation=function(params,callback){
                 $applozic.fn.applozic("createGroup", {
                     groupName: params.groupName,
                     type: 10,
@@ -1765,13 +1765,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                               "defaultAgentId":DEFAULT_AGENT_ID
                           },function(err,result){
                               console.log(err,result);
+                              if(!err){
+                                  callback(response.data.clientGroupId);
+                              }
                           })
                         }
                        // 
                     }
                   });
             }
-            _this.loadConversationWithAgents = function(params) {
+            _this.loadConversationWithAgents = function(params,callback) {
               if (window.applozic.PRODUCT_ID == "kommunicate") {
                 $mck_btn_leave_group
                   .removeClass("vis")
@@ -1792,7 +1795,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                     $applozic.fn.applozic("loadTab");
                   } else {
-                    mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID});
+                    mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID},callback);
+                    
                   }
                 }
               });
@@ -1859,7 +1863,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_contact_search.click(function() {
                     
                    // mckMessageLayout.addContactsToContactSearchList();
-                   mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID});
+                   mckMessageService.createNewConversation({groupName:DEFAULT_GROUP_NAME,agentId:DEFAULT_AGENT_ID},function(conversationId){
+                       Kommunicate.triggerEvent("1",{groupId:conversationId,applicationId:MCK_APP_ID});
+                   });
 
                 });
                 $mck_group_search.click(function() {
@@ -2018,11 +2024,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $applozic("#km-chatLoginModal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chatLoginModal").css("display", "block");
                     }else{
-                        if(Cookies.get("_km-f-vis_")==true){
+                        if(Cookies.get("_km-f-vis_")=="true"){
                             mckMessageService.loadConversationWithAgents({
                                 groupName:DEFAULT_GROUP_NAME,
                                 agentId:DEFAULT_AGENT_ID
-                            });
+                            },function(){
+                                Kommunicate.triggerEvent({groupId:"1",applicationId:MCK_APP_ID})});
                         }else{
                             var $this = $applozic(this);
                             var elem = this;
