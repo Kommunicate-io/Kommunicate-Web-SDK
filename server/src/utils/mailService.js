@@ -43,7 +43,7 @@ exports.sendMail= (options)=>{
     return fileService.readFile(options.templatePath,"utf8").then(rawTemplate=>{
         if(options.templateReplacement){
         template= rawTemplate.replace(new RegExp(Object.keys(options.templateReplacement).join("|"),"gi"),function(matched){
-            console.debug("matched: ",matched, "replaced with: ",options.templateReplacement[matched]);
+           console.log("matched: ",matched, "replaced with: ",options.templateReplacement[matched]);
             return options.templateReplacement[matched];
           });
         }else{
