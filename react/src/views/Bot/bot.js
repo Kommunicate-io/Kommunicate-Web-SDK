@@ -60,7 +60,7 @@ class Tabs extends Component {
                "userIdList" : [data.botname]
              },
              headers: {
-              "App-Product-App": true,
+              "Apz-Product-App": true,
               "Apz-Token": 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
               "Content-Type": "application/json",
               "Apz-AppId":applicationId
