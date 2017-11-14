@@ -2118,6 +2118,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	padding-left: 14px;
 	line-height: 13px;
 	padding-top: 7px;
+	padding-right: 10px;
 	
 }
 .mck-launcher-text{
