@@ -5,7 +5,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import UserItem from '../UserItem/'
 import {notifyThatEmailIsSent} from '../../utils/kommunicateClient' ;
-import '../Settings/Integration/multiple-email.css'
+import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 
