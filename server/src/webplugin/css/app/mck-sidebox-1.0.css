@@ -2100,8 +2100,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	z-index: 2243000;
 	bottom: 45px;
 	right: 35px;
-	width: 50px;
-	height: 50px;
+	width: 103px;
+	height: 39px;
 	-webkit-transform: translateZ(0);
 	
 }
@@ -2109,28 +2109,50 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-sidebox-launcher-with-preview {
 	width: 330px;
 }
-
+.mck-a-undecorated{
+	text-decoration: none;
+	color:#805CB5;
+}
+.mck-launcher-elem{
+	display:inline-block;
+	padding-left: 14px;
+	line-height: 13px;
+	padding-top: 7px;
+	
+}
+.mck-launcher-text{
+	width: 39px;
+	height: 19px;
+	font-family: OpenSans;
+	font-size: 14px;
+	letter-spacing: 2.1px;
+	text-align: left;
+	color: #964ac6;
+}
+.mck-launcher-svg{
+	width: 17px;
+	height: 17px;
+}
 .mck-sidebox-launcher .mck-button-launcher {
 	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 	background-size: 22px 22px;
 	box-sizing: content-box;
 	background-repeat: no-repeat;
-	border-radius: 50%;
 	border: 0;
 	position: absolute;
-	bottom: 0;
-	right: 0;
-	width: 48px;
-	height: 48px;
+	width: 103px;
+	height: 39px;
 	cursor: pointer;
 	outline: none;
 	background-position: center;
-	background-color: #805CB5;
 	-webkit-user-drag: none;
 	-webkit-transform: scale(1) rotate(360deg);
 	transform: scale(1) rotate(360deg);
 	-webkit-transition: -webkit-transform 150ms cubic-bezier(.4, 0, 1, 1);
 	transition: transform 150ms cubic-bezier(.4, 0, 1, 1);
+	border-radius: 22px;
+	background-color: #ffffff;
+	box-shadow: 1px 1px 6px 2px rgba(42, 41, 41, 0.5);
 }
 
 .mck-msg-preview {

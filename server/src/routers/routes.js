@@ -17,6 +17,8 @@ const conversationValidation =require ('../conversation/validation');
 const autoSuggestController = require('../autosuggest/autosuggestController');
 const autoSuggestValidation = require('../autosuggest/validation');
 const profileImageController = require('../profileImage/profileImageController');
+const applicationValidation = require('../application/validation');
+const inAppMsgController  = require('../application/inAppMsgController');
 
 
 //router declaration
@@ -56,7 +58,7 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 // requests to user router
 userRouter.get('/',userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
-userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
+userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
@@ -65,6 +67,7 @@ userRouter.post('/password-reset', passwordResetController.processPasswordResetR
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
+
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
@@ -84,3 +87,7 @@ chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
 conversationRouter.get('/participent/:participentId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
+
+//application router
+
+applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
