@@ -58,20 +58,6 @@ return imageLink;
         <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&9776;</button>
         <Link className="nav-link" redirect to ="/dashboard">
         <span className= "brand-name">KOMMUNICATE</span></Link>
-        <ul className="nav navbar-nav d-md-down-none">
-          <li className="nav-item">
-            <button className="nav-link navbar-toggler sidebar-toggler" type="button" onClick={this.sidebarToggle}></button>
-          </li>
-          <li className="nav-item px-3">
-            <Link className="nav-link" redirect to ="/dashboard">Dashboard</Link>
-          </li>
-          <li className="nav-item px-3">
-            <Link className="nav-link"redirect to="/users">Users</Link>
-          </li>
-          <li className="nav-item px-3">
-            <Link className="nav-link" redirect to="/conversations">Conversations</Link>
-          </li>
-        </ul>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item d-md-down-none">
             <Link className="nav-link" redirect to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
