@@ -21,9 +21,20 @@ a, a:hover {
     text-decoration: none;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
 .navbar-brand svg {
     width: auto;
-    height: 35px;
+    height: 90px;
+}
+.kommunicate-logo-text {
+    font-size: 28px;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .mobile-only {
@@ -107,7 +118,7 @@ a, a:hover {
     margin-top: 5px;
 }*/
 
-.homepage-beta-features-section:focus {
+.homepage-beta-features-section:focus, .why-kommunicate-section:focus {
     outline: none;
 }
 @-webkit-keyframes spaceboots {
@@ -260,12 +271,23 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     display: none;
 }
 
-.signup-success-msg-div, .signup-error-msg-div1, .signup-error-msg-div2 {
+.signup-success-msg-div, .signup-error-msg-div1 {
     background-color: white;
     text-align: center;
     width: 100%;
     border-radius: 26px;
-    border: 1px solid #5d5ba8;
+    /*border: 1px solid #5d5ba8;*/
+}
+.signup-error-msg-div2 {
+    text-align: center;
+    width: 100%;
+    border-radius: 26px;
+}
+.signup-error-msg-div2 .signup-error-msg-text1 {
+    font-size: 18px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color: #2CA23C;
 }
 .signup-success-msg-text {
     font-size: 18px;
@@ -276,7 +298,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     font-size: 18px;
     margin-top: 15px;
     margin-bottom: 15px;
-    color: #f00;
+    color: #2CA23C;
 }
 
 
@@ -300,6 +322,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 }
 
 .why-kommunicate-main-heading {
+    margin-top: 40px;
     font-weight: 300;
     font-size: 48px;
     /* color: #DE009C; */
@@ -327,6 +350,12 @@ background: -webkit-linear-gradient(left, rgb(200,109,215) 31%,rgb(48,35,174) 10
     border-bottom: 1px solid rgba(0,0,0,0.2);
     padding: 6em 0em;
 }
+
+.why-kommunicate-agent-chatbot-section .mobile-view, .why-kommunicate-reduce-ticket-section .mobile-view  {
+    display: none;
+}
+
+
 
 .homepage-beta-features-section {
     padding: 50px 5px 30px;
@@ -849,7 +878,52 @@ label {
     color: #8EA604;
 }
 
-@media (max-width:768px) {
+
+
+.scroll-down {
+    /*position: absolute;*/
+    bottom: 62px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 auto;
+    z-index: 15;
+    width: 60px;
+}
+
+.scroll-down .fa-angle-down {
+    font-size: 40px;
+    color: #ffffff;
+    margin-top: 70px;
+    -webkit-animation: bounce 2s infinite  ease-in-out;
+    animation: bounce 2s infinite  ease-in-out;
+}
+
+
+@-webkit-keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); }
+  50% {
+    -webkit-transform: translate(0, 20px);
+            transform: translate(0, 20px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+@keyframes bounce {
+  0% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); }
+  50% {
+    -webkit-transform: translate(0, 20px);
+            transform: translate(0, 20px); }
+  100% {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); } }
+
+
+@media (max-width:767px) {
     .homepage-beta-landing-page-section {
         height: auto;
         padding-bottom: 50px;
@@ -867,14 +941,14 @@ label {
         margin-bottom: 35px;
     }
     .mobile-only {
-        display: block;
+        display: none;
     }
     .mobile-only .navbar-brand svg {
         width: auto;
-        height: 60px;
+        height: 80px;
     }
     .desktop-only {
-        display: none;
+        display: block;
     }
 
     /*.mid-grid-cell {
@@ -892,11 +966,24 @@ label {
         padding: 3em 0em;
     }
 
+    .why-kommunicate-agent-chatbot-section .desktop-view, .why-kommunicate-reduce-ticket-section .desktop-view  {
+        display: none;
+    }
+    .why-kommunicate-agent-chatbot-section .mobile-view, .why-kommunicate-reduce-ticket-section .mobile-view  {
+        display: block;
+    }
+    .why-kommunicate-reduce-ticket-section .mobile-view {
+        margin-top: 20px;
+    }
 
 }
 @media (max-width:350px) {
     .why-kommunicate-main-heading {
         font-size: 32px;
+    }
+    .navbar-brand {
+        padding-left: 0px;
+        margin-left: -33px;
     }
 }
 @media (max-width:560px) {

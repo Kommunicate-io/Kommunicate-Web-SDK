@@ -29,8 +29,9 @@ exports.createCustomer = (req,res)=>{
       }else{
         return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name}).then(result=>{
           try{
-          registrationService.sendWelcomeMail(email);
           inAppMessageService.postWelcomeMsg({customerId:response.id,message:inAppMessageService.defaultMessage});
+          registrationService.sendWelcomeMail(email, name);
+
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }
@@ -134,7 +135,7 @@ exports.signUpWithAplozic= (req,res)=>{
       }else{
         return registrationService.signUpWithApplozic({"userName":userName,"password":password,"email":email,"applicationId":applicationId}).then(result=>{
           try{
-           registrationService.sendWelcomeMail(email);
+           registrationService.sendWelcomeMail(email, name);
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }

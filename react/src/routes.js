@@ -1,14 +1,16 @@
 const routes = {
   // '/': 'Home',
   '/dashboard': 'Dashboard',
-  '/users': 'Users',
+  '/users': 'Customers',
   '/conversations': 'Conversations',
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot',
   '/settings/integration': 'Integration',
   '/team': 'Team',
-  '/configuration':"Configuration"
+  '/configuration':"Configuration",
+  '/autoreply':"Configuration",
+  '/admin': "Profile"
 };
 
 export default routes;

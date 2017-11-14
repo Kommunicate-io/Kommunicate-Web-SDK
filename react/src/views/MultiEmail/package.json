@@ -1,0 +1,6 @@
+{
+  "name": "MultiEmail",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./MultiEmail.js"
+}

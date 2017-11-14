@@ -2227,7 +2227,7 @@ ol, ul {
 	display: none !important;
 }
 
-.km-msg-text span.emoji-sizer {
+.km-msg-text span.kmemoji-sizer {
 	margin: 1px 0 !important;
 }
 
@@ -2942,7 +2942,7 @@ ol, ul {
 
 .km-camera-icon {
 	display: block;
-	background-image: url(../../../images/km-icon-camera.png);
+	background-image: url(../../../images/mck-icon-camera.png);
 	background-repeat: no-repeat;
 	margin-top: 10px;
 	height: 20px;
@@ -2976,7 +2976,7 @@ ol, ul {
 	.km-icon-camera, .km-icon-marker, .km-icon-delivered, .km-icon-read,
 	.km-icon-sent, .km-icon-time {
 	display: inline-block;
-	background: url(../../../images/km-plugin-sprite.png) no-repeat;
+	background: url(../../../images/mck-plugin-sprite.png) no-repeat;
 	overflow: hidden;
 	text-indent: -9999px;
 	text-align: left;

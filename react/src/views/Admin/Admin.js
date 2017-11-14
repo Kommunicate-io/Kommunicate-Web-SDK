@@ -143,7 +143,7 @@ handleKeyPress(event) {
             />
             <div className="card">
               <div className="card-header">
-                <strong>Admin Profile Form</strong>
+                <strong>Profile</strong>
               </div>
               <div className="card-block">
                 <form className="form-horizontal">

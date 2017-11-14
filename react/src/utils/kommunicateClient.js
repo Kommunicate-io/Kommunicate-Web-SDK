@@ -184,6 +184,11 @@ const notifyThatEmailIsSent = (options) => {
   }
 
 const postAutoReply = (formData) => {
+  
+  if (formData.workingHours.length === 0){
+    Notification.success('please select date');
+    return;
+  }
 
   const autoreplyUrl = getConfig().applozicPlugin.autoreplyUrl;
   const username = localStorage.getItem("loggedinUser");
@@ -322,12 +327,12 @@ const sendProfileImage = (imageFile, imageFileName) => {
 }
 
 const updateApplozicUser = (userInfo) => {
-
+  
   const headers = {
       'Content-Type':'application/json',
-      'Apz-AppId': localStorage.getItem("applicationId"),
-      'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
-      // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
+      'Application-Key': localStorage.getItem("applicationId"),
+      'Authorization': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
+      'Access-Token': localStorage.getItem("password")
     }
 
   console.log(headers)

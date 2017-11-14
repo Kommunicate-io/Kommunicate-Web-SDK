@@ -921,7 +921,7 @@ Usually, in an app, you have a lot of UI components, and each of them has many d
 For an example, a simple button component could have following states:
 
 * With a text label.
-* With an emoji.
+* With an kmemoji.
 * In the disabled mode.
 
 Usually, it’s hard to see these states without running a sample app or some examples.

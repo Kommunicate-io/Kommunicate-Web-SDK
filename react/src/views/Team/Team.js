@@ -5,7 +5,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import UserItem from '../UserItem/'
 import {notifyThatEmailIsSent} from '../../utils/kommunicateClient' ;
-import '../Settings/Integration/multiple-email.css'
+import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 
@@ -33,17 +33,22 @@ class Integration extends Component {
       return;
     }
     e.preventDefault();
-    if(this.state.multipleEmailAddress.length >= 1){
-      console.log(this.state.multipleEmailAddress)
-      for(let i = 0; i < this.state.multipleEmailAddress.length; i++){
-        if(!isEmail(this.state.multipleEmailAddress[i])){
-          Notification.error(this.state.multipleEmailAddress[i] + " is an invalid Email");
+
+    let multipleEmailAddress = this.state.multipleEmailAddress;
+    if(isEmail(this.state.emailAddress)) {
+        multipleEmailAddress = multipleEmailAddress.concat([this.state.emailAddress]);
+        this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
+        this.setState({ emailAddress: '' });
+    }
+    if(multipleEmailAddress.length >= 1){
+      for(let i = 0; i < multipleEmailAddress.length; i++){
+        if(!isEmail(multipleEmailAddress[i])){
+          Notification.error(multipleEmailAddress[i] + " is an invalid Email");
           return;
         }
       }
-      notifyThatEmailIsSent({to:this.state.multipleEmailAddress,templateName:"INVITE_TEAM_MAIL"}).then(data=>{
+      notifyThatEmailIsSent({to:multipleEmailAddress,templateName:"INVITE_TEAM_MAIL"}).then(data=>{
         _this.setState({multipleEmailAddress: [],emailAddress:""});
-
       });
     }else{
       console.log(this.state.emailAddress)
