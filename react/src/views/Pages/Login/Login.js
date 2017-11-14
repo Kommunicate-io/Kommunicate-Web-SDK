@@ -170,7 +170,7 @@ login = (event)=>{
   }
   }else{
       console.log("err while getting application list, status : ",response.status);
-      Notification.error("something went wrong");
+      Notification.error(response.message);
     }
  });
 }
