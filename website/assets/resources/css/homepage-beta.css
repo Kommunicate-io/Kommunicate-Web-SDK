@@ -23,7 +23,7 @@ a, a:hover {
 
 .navbar-brand svg {
     width: auto;
-    height: 35px;
+    height: 90px;
 }
 
 .mobile-only {
@@ -311,6 +311,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 }
 
 .why-kommunicate-main-heading {
+    margin-top: 40px;
     font-weight: 300;
     font-size: 48px;
     /* color: #DE009C; */
@@ -878,14 +879,14 @@ label {
         margin-bottom: 35px;
     }
     .mobile-only {
-        display: block;
+        display: none;
     }
     .mobile-only .navbar-brand svg {
         width: auto;
-        height: 60px;
+        height: 80px;
     }
     .desktop-only {
-        display: none;
+        display: block;
     }
 
     /*.mid-grid-cell {
