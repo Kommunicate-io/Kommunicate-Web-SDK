@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions }  from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge }  from '../../utils/kommunicateClient'
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 
@@ -16,6 +16,13 @@ class Welcome extends Component{
     };
 this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
 
+  }
+  componentDidMount(){
+    getWelcomeMessge(localStorage.getItem("applicationId")).then(message=>{
+      this.setState({msg:message});
+    }).catch(err=>{
+      console.log("error while fetching welcome message",err);
+    })
   }
   submitWelcomeMessage = () => {
     var _this =this;
@@ -33,7 +40,7 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
        }).then(function(response){
          console.log("message successfully send");
          Notification.info("welcome message configured successfully");
-         _this.setState({msg:""});
+         //_this.setState({msg:""});
        }).catch(err=>{
         Notification.error("something went wrong!");
        })

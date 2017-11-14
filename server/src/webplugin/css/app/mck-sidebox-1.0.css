@@ -2105,6 +2105,9 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	-webkit-transform: translateZ(0);
 	
 }
+.mck-sidebox-launcher *{
+	font-family: 'sans-serif','OpenSans','Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+} 
 
 .mck-sidebox-launcher-with-preview {
 	width: 330px;
@@ -2116,14 +2119,11 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-launcher-elem{
 	display:inline-block;
 	padding-left: 14px;
-	line-height: 13px;
+	line-height: 20px;
 	padding-top: 7px;
-	padding-right: 10px;
 	
 }
 .mck-launcher-text{
-	width: 39px;
-	height: 19px;
 	font-family: OpenSans;
 	font-size: 14px;
 	letter-spacing: 2.1px;
@@ -2154,6 +2154,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	border-radius: 22px;
 	background-color: #ffffff;
 	box-shadow: 1px 1px 6px 2px rgba(42, 41, 41, 0.5);
+	display: flex;
+    align-items: flex-start;
 }
 
 .mck-msg-preview {
