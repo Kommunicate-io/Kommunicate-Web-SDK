@@ -3170,7 +3170,6 @@ var KM_CLIENT_GROUP_MAP = [];
 			};
 			_this.initEmojis = function() {
 				try {
-					console.log("applying kmemojiarea");
 					$kmApplozic("#km-text-box").kmemojiarea({
 						button : "#km-btn-smiley",
 						wysiwyg : true,
