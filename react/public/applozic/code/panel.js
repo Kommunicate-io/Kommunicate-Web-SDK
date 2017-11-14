@@ -10,7 +10,7 @@ $(document).ready(function() {
         e.preventDefault();
         $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
         $kmApplozic(".km-container").removeClass('km-panel-3');
-        $kmApplozic('.emoji-menu').removeClass('km-panel-3');
+        $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
         $kmApplozic('body').removeClass('km-panel-3');
     });
 
@@ -33,11 +33,11 @@ $(document).ready(function() {
         $('.km-group-info-tab').removeClass("vis").addClass('n-vis');
         if ($('.km-user-info-tab').hasClass('n-vis')) {
           $kmApplozic('body').removeClass('km-panel-3').addClass('km-panel-3');
-          $kmApplozic('.emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
+          $kmApplozic('.km-emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
           $kmApplozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
         } else {
           $kmApplozic('body').removeClass('km-panel-3');
-          $kmApplozic('.emoji-menu').removeClass('km-panel-3');
+          $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
           $kmApplozic(".km-container").removeClass('km-panel-3');
         }
 

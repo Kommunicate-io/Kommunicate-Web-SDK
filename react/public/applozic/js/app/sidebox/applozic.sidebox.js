@@ -249,11 +249,11 @@ var KM_CLIENT_GROUP_MAP = [];
                         $.fn.linkify = $kmApplozic.fn.linkify;
                         jQuery.fn.linkify = $kmApplozic.fn.linkify;
                     }
-                    if (typeof $.fn.emojiarea === 'function') {
-                        $kmApplozic.fn.emojiarea = $.fn.emojiarea;
-                    } else if (typeof $kmApplozic.fn.emojiarea === 'function') {
-                        $.fn.emojiarea = $kmApplozic.fn.emojiarea;
-                        jQuery.fn.emojiarea = $kmApplozic.fn.emojiarea;
+                    if (typeof $.fn.kmemojiarea === 'function') {
+                        $kmApplozic.fn.kmemojiarea = $.fn.kmemojiarea;
+                    } else if (typeof $kmApplozic.fn.kmemojiarea === 'function') {
+                        $.fn.kmemojiarea = $kmApplozic.fn.kmemojiarea;
+                        jQuery.fn.kmemojiarea = $kmApplozic.fn.kmemojiarea;
                     }
                     if (typeof $.fn.locationpicker === 'function') {
                         $kmApplozic.fn.locationpicker = $.fn.locationpicker;
@@ -3358,7 +3358,7 @@ var KM_CLIENT_GROUP_MAP = [];
             };
             _this.initEmojis = function() {
                 try {
-                    $kmApplozic("#km-text-box").emojiarea({
+                    $kmApplozic("#km-text-box").kmemojiarea({
                         button: "#km-btn-smiley",
                         wysiwyg: true,
                         menuPosition: 'top'
@@ -3720,9 +3720,9 @@ var KM_CLIENT_GROUP_MAP = [];
                 var emoji_template = "";
                 if (msg.message) {
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
-                    if (w.emoji !== null && typeof w.emoji !== 'undefined') {
-                        emoji_template = w.emoji.replace_unified(msg_text);
-                        emoji_template = w.emoji.replace_colons(emoji_template);
+                    if (w.kmemoji !== null && typeof w.kmemoji !== 'undefined') {
+                        emoji_template = w.kmemoji.replace_unified(msg_text);
+                        emoji_template = w.kmemoji.replace_colons(emoji_template);
                     } else {
                         emoji_template = msg_text;
                     }
@@ -4594,8 +4594,8 @@ var KM_CLIENT_GROUP_MAP = [];
                             if (mckUtils.startsWith(msg, "<img")) {
                                 return '<span class="km-icon-camera"></span>&nbsp;<span>image</span>';
                             } else {
-                                emoji_template = w.emoji.replace_unified(msg);
-                                emoji_template = w.emoji.replace_colons(emoji_template);
+                                emoji_template = w.kmemoji.replace_unified(msg);
+                                emoji_template = w.kmemoji.replace_colons(emoji_template);
                                 emoji_template = (emoji_template.indexOf('</span>') !== -1) ? emoji_template.substring(0, emoji_template.lastIndexOf('</span>')) : emoji_template.substring(0, size);
                             }
                             if (!contact.isGroup) {

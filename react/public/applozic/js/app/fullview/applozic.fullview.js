@@ -260,11 +260,11 @@ var KM_CLIENT_GROUP_MAP = [];
 						$.fn.linkify = $kmApplozic.fn.linkify;
 						jQuery.fn.linkify = $kmApplozic.fn.linkify;
 					}
-					if (typeof $.fn.emojiarea === 'function') {
-						$kmApplozic.fn.emojiarea = $.fn.emojiarea;
-					} else if (typeof $kmApplozic.fn.emojiarea === 'function') {
-						$.fn.emojiarea = $kmApplozic.fn.emojiarea;
-						jQuery.fn.emojiarea = $kmApplozic.fn.emojiarea;
+					if (typeof $.fn.kmemojiarea === 'function') {
+						$kmApplozic.fn.kmemojiarea = $.fn.kmemojiarea;
+					} else if (typeof $kmApplozic.fn.kmemojiarea === 'function') {
+						$.fn.kmemojiarea = $kmApplozic.fn.kmemojiarea;
+						jQuery.fn.kmemojiarea = $kmApplozic.fn.kmemojiarea;
 					}
 					var applozic = new Applozic(appOptions);
 					applozic.init();
@@ -1839,7 +1839,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					mckGroupLayout.loadGroupInfo(params);
 					// setting emaji width
 					var width = $kmApplozic('#km-write-box').css('width');
-					$kmApplozic(".emoji-menu").css('width',width);
+					$kmApplozic(".km-emoji-menu").css('width',width);
 				});
 				$mck_group_add_member.on('click', function(e) {
 					e.preventDefault();
@@ -3170,7 +3170,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			};
 			_this.initEmojis = function() {
 				try {
-					$kmApplozic("#km-text-box").emojiarea({
+					console.log("applying kmemojiarea");
+					$kmApplozic("#km-text-box").kmemojiarea({
 						button : "#km-btn-smiley",
 						wysiwyg : true,
 						menuPosition : 'top'
@@ -3577,9 +3578,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				var emoji_template = "";
 				if (msg.message) {
 					var msg_text = msg.message.replace(/\n/g, '<br/>');
-					if (w.emoji !== null && typeof w.emoji !== 'undefined') {
-						emoji_template = w.emoji.replace_unified(msg_text);
-						emoji_template = w.emoji.replace_colons(emoji_template);
+					if (w.kmemoji !== null && typeof w.kmemoji !== 'undefined') {
+						emoji_template = w.kmemoji.replace_unified(msg_text);
+						emoji_template = w.kmemoji.replace_colons(emoji_template);
 					} else {
 						emoji_template = msg_text;
 					}
@@ -4463,8 +4464,8 @@ var KM_CLIENT_GROUP_MAP = [];
 							if (kmUtils.startsWith(msg, "<img")) {
 								return '<span class="km-icon-camera"></span>&nbsp;<span>image</span>';
 							} else {
-								emoji_template = w.emoji.replace_unified(msg);
-								emoji_template = w.emoji.replace_colons(emoji_template);
+								emoji_template = w.kmemoji.replace_unified(msg);
+								emoji_template = w.kmemoji.replace_colons(emoji_template);
 								emoji_template = (emoji_template.indexOf('</span>') !== -1) ? emoji_template.substring(0, emoji_template.lastIndexOf('</span>')) : emoji_template.substring(0, size);
 							}
 							if (!contact.isGroup) {
@@ -5155,27 +5156,27 @@ var KM_CLIENT_GROUP_MAP = [];
 				e.preventDefault();
 				mckGroupLayout.loadCreateGroupTab();
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".emoji-menu").css('width',width);
+				$kmApplozic(".km-emoji-menu").css('width',width);
 			});
 			$mck_group_info_close.on('click', function(e) {
 				e.preventDefault();
 				$mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_container.removeClass('km-panel-3');
-				$kmApplozic('.emoji-menu').removeClass('km-panel-3');
+				$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 				$kmApplozic('body').removeClass('km-panel-3');
 				$mck_group_member_List.html('');
 				// setting emaji width
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".emoji-menu").css('width',width);
+				$kmApplozic(".km-emoji-menu").css('width',width);
 			});
 			$mck_group_create_close.on('click', function(e) {
 				e.preventDefault();
 				$mck_group_create_tab.removeClass('vis').addClass('n-vis');
 				$mck_container.removeClass('km-panel-3');
-				$kmApplozic('.emoji-menu').removeClass('km-panel-3');
+				$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 				$kmApplozic('body').removeClass('km-panel-3');
 				var width = $kmApplozic('#km-write-box').css('width');
-				$kmApplozic(".emoji-menu").css('width',width);
+				$kmApplozic(".km-emoji-menu").css('width',width);
 			});
 			var MAX_GROUP_NAME_SIZE = 30;
 			$kmApplozic('.km-group-name-box div[contenteditable]').keypress(function(e) {
@@ -5788,7 +5789,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						});
 					}
 					$kmApplozic('body').removeClass('km-panel-3');
-					$kmApplozic('.emoji-menu').removeClass('km-panel-3');
+					$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 					$mck_container.removeClass('km-panel-3').addClass('km-panel-3');
 					$mck_group_create_tab.removeClass('vis').addClass('n-vis');
 					$mck_group_info_tab.removeClass('n-vis').addClass('vis');
@@ -5802,7 +5803,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_group_create_overlay_label.html('Add Group Icon');
 				$mck_group_create_icon.html(_this.getGroupDefaultIcon());
 				$kmApplozic('body').addClass('km-panel-3');
-				$kmApplozic('.emoji-menu').addClass('km-panel-3');
+				$kmApplozic('.km-emoji-menu').addClass('km-panel-3');
 				$mck_container.addClass('km-panel-3');
 				$mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_group_create_tab.removeClass('n-vis').addClass('vis');

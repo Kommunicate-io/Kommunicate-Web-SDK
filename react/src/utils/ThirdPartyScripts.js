@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
+import { getConfig } from '../config/config';
 
 class ThirdPartyScripts extends Component {
     
       componentDidMount(){
+          // support chat widget
+          (function(d, m){
+            let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io",
+              "groupName":"devashish@kommunicate.io","baseUrl":getConfig().homeUrl};
+            let s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = getConfig().kommunicateApi.pluginUrl;
+            let h = document.getElementsByTagName("head")[0];
+            h.appendChild(s);
+            window.kommunicate = m;
+            m._globals = o;
+          })(document, window.kommunicate || {});
+
           // hot jar script
             (function(h,o,t,j,a,r){
                 h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};

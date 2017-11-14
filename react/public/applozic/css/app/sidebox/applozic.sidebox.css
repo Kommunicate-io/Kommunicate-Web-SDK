@@ -2246,7 +2246,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	display: none !important;
 }
 
-.km-msg-text span.emoji-sizer {
+.km-msg-text span.kmemoji-sizer {
 	margin: 1px 0 !important;
 }
 
