@@ -132,13 +132,14 @@ exports.isAdmin = (userName)=>{
   });
 }
 
-exports.sendWelcomeMail= (email)=>{
+exports.sendWelcomeMail= (email, userName)=>{
   console.log("sending welcome mail to ",email);
   let mailOptions = {
     to:email,
     from:"Devashish From Kommunicate <support@kommunicate.io>",
     subject:"Welcome to Kommunicate!",
-    templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html")
+    templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html"),
+    templateReplacement: {":USER_NAME" : userName}
   }
   return mailService.sendMail(mailOptions);
 }

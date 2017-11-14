@@ -33,7 +33,8 @@ a, a:hover {
 .kommunicate-logo-text {
     font-size: 28px;
     color: #ffffff;
-
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .mobile-only {
