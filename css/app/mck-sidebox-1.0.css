@@ -2131,8 +2131,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	color: #964ac6;
 }
 .mck-launcher-svg{
-	width: 17px;
-	height: 17px;
+	/*width: 17px;
+	height: 17px;*/
 }
 .mck-sidebox-launcher .mck-button-launcher {
 	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
