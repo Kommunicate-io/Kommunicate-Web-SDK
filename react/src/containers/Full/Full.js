@@ -45,7 +45,6 @@ class Full extends Component {
   }
 
   render() {
-    var updateProfilePic  =   this.updateProfilePic;
     return (
       <div className="app"> 
         <Header profilePicUrl={this.state.imageLink}/>
@@ -60,7 +59,7 @@ class Full extends Component {
                 <Route exact path="/conversations" name="Conversations" component={Conversations}/>
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
-                <Route exact path="/admin" name="Admin" component={Admin} updateProfilePic={updateProfilePic.bind(this)}/>
+                <Route exact path="/admin" name="Admin" component={Admin}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/settings/integration" name="Integration" component={Integration}/>

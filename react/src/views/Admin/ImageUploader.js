@@ -4,12 +4,11 @@ import Notification from '../model/Notification';
 
 
 class ImageUploader extends Component{
-  constructor (props) {
-    super(props)
-    this.state = {
+
+    state = {
       imageFile: undefined
     }
-  }
+ 
 
   invokeImageUpload = (e) => {
     e.preventDefault()
