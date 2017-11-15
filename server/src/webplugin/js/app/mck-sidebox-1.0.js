@@ -4252,6 +4252,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                      }
             };
             _this.addMessage = function(msg, contact, append, scroll, appendContextMenu) {
+                console.log(msg.contentType);
+                console.log(msg);
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -4280,6 +4282,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                      }
                 }
             }
+                
 
                 if (msg.type === 6 || msg.type === 7) {
                     return;
@@ -4360,9 +4363,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
-                if(msg.contentType==="RICH_TEXT_MESSAGE" && msg.metadata){
-
-                }
 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -4405,10 +4405,27 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileUrlExpr: _this.getFileurl(msg),
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
-                    contOlExpr: olStatus
+                    contOlExpr: olStatus,
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+                
+                console.log($("div[data-msgkey='" + msg.key + "']"));
+                if(msg.contentType === 23) {
+                    if(msg.metadata.msg_type === "BUTTON"){
+                        console.log("msg.contentType === 23 && metadata.msg_type === BUTTON")
+                        var elem = "<div><button class='mck-msg-reply-button mck-msg-center'>Button</button></div>"
+                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").append(elem)
+                    }
+                    if(msg.metadata.msg_type === "INPUT"){
+                        console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
+                        var elem = "<div><input type='text' class='mck-msg-reply-button mck-msg-center' placeholder='Enter your email...'/></div>"
+                        elem += "<div><button>Submit</button></div>"
+
+                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").append(elem)
+                    }
+                }
+
                 var emoji_template = '';
                 if (msg.message) {
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
@@ -8192,6 +8209,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.onMessage = function(obj) {
+                console.log("This is onMessage");
+                console.log(obj);
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
                     var messageType = resp.type;
