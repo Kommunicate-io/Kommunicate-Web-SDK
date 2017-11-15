@@ -23,7 +23,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         visitor: false,
         olStatus: false,
         groupUserCount: false,
-        desktopNotification: false,
+        desktopNotification: true,
         locShare: false,
         maxAttachmentSize: 25, // default size is 25MB
         notification: true,
@@ -391,7 +391,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var IS_MCK_TOPIC_HEADER = (typeof appOptions.topicHeader === 'boolean') ? (appOptions.topicHeader) : false;
         var MCK_SUPPORT_ID_DATA_ATTR = (appOptions.supportId) ? ('data-mck-id="' + appOptions.supportId + '"') : '';
         var IS_MCK_OWN_CONTACTS = (typeof appOptions.loadOwnContacts === "boolean") ? (appOptions.loadOwnContacts) : false;
-        var IS_MCK_NOTIFICATION = (typeof appOptions.desktopNotification === "boolean") ? appOptions.desktopNotification : false;
+        var IS_MCK_NOTIFICATION = (typeof appOptions.desktopNotification === "boolean") ? appOptions.desktopNotification : true;
         var IS_NOTIFICATION_ENABLED = (typeof appOptions.notification === "boolean") ? appOptions.notification : true;
         var IS_SW_NOTIFICATION_ENABLED = (typeof appOptions.swNotification === "boolean") ? appOptions.swNotification : false;
         var IS_AUTO_TYPE_SEARCH_ENABLED = (typeof appOptions.autoTypeSearchEnabled === "boolean") ? appOptions.autoTypeSearchEnabled : true;
@@ -1744,16 +1744,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                         ":adminName added :userName",
                       JOIN_MEMBER_MESSAGE: ":userName joined",
                       GROUP_NAME_CHANGE_MESSAGE:
-                        "Group name changed to :groupName",
+                        "Conversation name changed to :groupName",
                       GROUP_ICON_CHANGE_MESSAGE:
-                        "Group icon changed",
+                        "Conversation icon changed",
                       GROUP_LEFT_MESSAGE: ":userName left",
                       DELETED_GROUP_MESSAGE:
-                        ":adminName deleted group",
+                        ":adminName deleted Conversation",
                       GROUP_USER_ROLE_UPDATED_MESSAGE:
                         ":userName is :role now",
                       GROUP_META_DATA_UPDATED_MESSAGE: "",
-                      ALERT: "false",
+                      //ALERT: "false",
                       HIDE: "true"
                     },
                     callback: function(response) {

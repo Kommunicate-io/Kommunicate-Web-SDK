@@ -350,6 +350,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var IS_AUTO_TYPE_SEARCH_ENABLED = (typeof appOptions.autoTypeSearchEnabled === "boolean") ? appOptions.autoTypeSearchEnabled : true;
 		var MCK_CHECK_USER_BUSY_STATUS = (typeof appOptions.checkUserBusyWithStatus === "boolean") ? (appOptions.checkUserBusyWithStatus) : false;
 		var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof appOptions.launchOnUnreadMessage === "boolean") ? appOptions.launchOnUnreadMessage : false;
+		var NOTIFICATION_TONE = KM_BASE_URL + "/resources/sidebox/audio/notification_tone.mp3";
 		var CONVERSATION_STATUS_MAP = [ "DEFAULT", "NEW", "OPEN" ];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
 		var GROUP_TYPE_MAP = [ 1, 2, 5, 6 ];
@@ -375,6 +376,8 @@ var KM_CLIENT_GROUP_MAP = [];
 		var mckContactService = new MckContactService();
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
+		var ringToneService;
+		var mckNotificationTone = null
 		w.MCK_OL_MAP = new Array();
 		_this.events = {
 			'onConnectFailed' : function() {},
@@ -400,6 +403,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			return appOptions;
 		};
 		_this.init = function() {
+			ringToneService = new KmRingToneService();
+            mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
 			mckMessageService.init();
 			mckFileService.init();
 			mckInit.initializeApp(appOptions, false);
@@ -6353,7 +6358,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							iconLink = imgsrc;
 						}
 					}
-					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg);
+					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg,mckNotificationTone);
 				}
 			};
 			_this.showNewMessageNotification = function(message, contact, displayName) {

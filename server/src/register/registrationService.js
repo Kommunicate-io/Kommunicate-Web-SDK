@@ -24,7 +24,7 @@ exports.createCustomer = customer=>{
 
     return Promise.all([applozicClient.createApplozicClient(customer.userName,customer.password,application.applicationId,null,"APPLICATION_WEB_ADMIN"),
                    /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
-                   applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"APPLICATION_WEB_ADMIN")
+                   applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"BOT")
     ]).then(([applozicCustomer,/*agent,*/bot])=>{
       customer.apzToken = new Buffer(customer.userName+":"+customer.password).toString('base64');
       let user = getUserObject(customer,applozicCustomer,application);
@@ -189,7 +189,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 exports.signUpWithApplozic = (options)=>{
   return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin(options.userName,options.password,options.applicationId,"APPLICATION_WEB_ADMIN"),
-    applozicClient.applozicLogin("bot","bot",options.applicationId,"APPLICATION_WEB_ADMIN"),
+    applozicClient.applozicLogin("bot","bot",options.applicationId,"BOT"),
     applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})])
     .then(([customer,bot,userUpdated])=>{
       options.role= "APPLICATION_WEB_ADMIN";
