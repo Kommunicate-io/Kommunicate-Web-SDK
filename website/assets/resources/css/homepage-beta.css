@@ -21,10 +21,14 @@ a, a:hover {
     text-decoration: none;
 }
 
+.header-navbar-container {
+    width: auto;
+}
 .navbar-brand {
     display: flex;
     align-items: center;
     margin-top: 30px;
+    padding-left: 0px;
 }
 .navbar-brand svg {
     width: auto;
@@ -1054,6 +1058,13 @@ label {
         margin-top: 15px;
         border-radius: 26px;
     }
+    .icons-row-landing {
+        margin-bottom: 40px;
+        z-index: 10;
+    }
+    .homepage-beta-landing-page-section #pre-signup-form {
+        width: 70%;
+    }
 }
 @media (min-width:768px) and (max-width:991px) {
     .main-text-div {
@@ -1074,6 +1085,21 @@ label {
         margin-top: 15px;
         border-radius: 26px;
     }
+    .homepage-beta-landing-page-section {
+        height: auto;
+    }
+    .homepage-beta-landing-page-section #pre-signup-form {
+        width: 70%;
+    }
+    .icons-row-landing {
+        margin-bottom: 40px;
+        z-index: 10;
+    }
+    .scroll-down .fa-angle-down {
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
 }
 @media (min-width:1200px) {
     .main-text-div {
