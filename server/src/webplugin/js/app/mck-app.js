@@ -64,7 +64,8 @@ function ApplozicSidebox() {
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = MCK_STATICPATH + "/lib/js/jquery-3.1.1.min.js";
+            //script.src = MCK_STATICPATH + "/lib/js/jquery-3.1.1.min.js";
+            script.src = MCK_STATICPATH + "/lib/js/jquery-2.2.2.min.js"; 
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {

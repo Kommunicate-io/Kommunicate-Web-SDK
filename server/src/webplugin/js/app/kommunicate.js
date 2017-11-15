@@ -2,8 +2,8 @@
 
 Kommunicate ={
     BASE_URL:{
-        "https://chat.kommunicate.io/":"https://api.kommunicate.io/",
-        "https://apps-test.applozic.com/":"https://api-test.kommunicate.io/"
+        "https://chat.kommunicate.io/":"https://api.kommunicate.io",
+        "https://apps-test.applozic.com/":"https://api-test.kommunicate.io"
         //"https://apps-test.applozic.com/":"http://localhost:3999"
     },
     setDefaultAgent :function(agentName){
@@ -54,7 +54,7 @@ Kommunicate ={
         $applozic.ajax({
             url: Kommunicate.BASE_URL[MCK_BASE_URL] + "/applications/events?type="+event,
             type: "post",
-            data: JSON.stringify({"conversationId":options.groupId,applicationId:options.applicationId}),
+            data: JSON.stringify({"conversationId":options.groupId,"applicationId":options.applicationId}),
             contentType: "application/json",
             success: function(result) {
                 console.log("conversation triggering event");
