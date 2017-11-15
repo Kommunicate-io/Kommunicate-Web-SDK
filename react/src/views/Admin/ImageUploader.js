@@ -4,9 +4,11 @@ import Notification from '../model/Notification';
 
 
 class ImageUploader extends Component{
-
-  state = {
-    imageFile: undefined
+  constructor (props) {
+    super(props)
+    this.state = {
+      imageFile: undefined
+    }
   }
 
   invokeImageUpload = (e) => {
@@ -69,13 +71,13 @@ class ImageUploader extends Component{
       .then(response => {
         console.log(response)
         if(response.data.code === "SUCCESSFUL_UPLOAD_TO_S3"){
-          
+
           updateApplozicUser({imageLink: response.data.profileImageUrl})
             .then(response => {console.log(response)})
             .catch(err => {console.log(err)})
 
           localStorage.setItem("imageLink", response.data.profileImageUrl)
-
+          
           Notification.info(response.data.message)
 
         }else if(response.data.code === "FAILED_TO_UPLOAD_TO_S3"){

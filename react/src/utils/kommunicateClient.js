@@ -338,8 +338,8 @@ const updateApplozicUser = (userInfo) => {
     headers['Application-Key']=  localStorage.getItem("applicationId"),
     headers['Authorization']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
     headers['Access-Token']=localStorage.getItem("password")     
+  
   }
-
   console.log(headers)
 
   console.log(userInfo)
