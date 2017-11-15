@@ -116,7 +116,7 @@ class Tabs extends Component {
            if(response.status==200 ){
 
             if (response.data.message == "PASSWORD_INVALID" || response.data.message == "UPDATED") {
-              Notification.error(_this.state.userid + " bot already exists. Choose another Bot Id.");              
+              Notification.error(_this.state.userid + " already exists. Choose another Bot Id.");              
               return;
             }
 
