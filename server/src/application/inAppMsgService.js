@@ -3,7 +3,7 @@ const registrationService = require('../register/registrationService');
 const appUtils = require('./utils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require('../users/userService');
-exports.defaultMessage ="Hey there! How can we help you today?";
+exports.defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
         if(!inAppMessage){
