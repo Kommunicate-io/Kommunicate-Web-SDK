@@ -21,10 +21,14 @@ a, a:hover {
     text-decoration: none;
 }
 
+.header-navbar-container {
+    width: auto;
+}
 .navbar-brand {
     display: flex;
     align-items: center;
     margin-top: 30px;
+    padding-left: 0px;
 }
 .navbar-brand svg {
     width: auto;
@@ -118,6 +122,10 @@ a, a:hover {
     margin-top: 5px;
 }*/
 
+.why-kommunicate-section {
+    padding-top: 40px;
+}
+
 .homepage-beta-features-section:focus, .why-kommunicate-section:focus {
     outline: none;
 }
@@ -157,7 +165,7 @@ a, a:hover {
     letter-spacing: 0.015em;
     font-size: 18px;
     background-color: #fff;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1;
     color: rgb(73, 68, 150);
     text-decoration: none;
@@ -678,7 +686,7 @@ transform: scale(.6);
     margin-right: auto;
     border: none;
     height: 3px;
-    width:35%;
+    width:10%;
     background: rgb(200,109,215); /* Old browsers */
     background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%); /* FF3.6-15 */
     background: -webkit-linear-gradient(left, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -802,7 +810,9 @@ transform: scale(.6);
 
 .homepage-beta-footer-section .img-container svg {
     width: auto;
-    height: 53px;
+    height: 60px;
+    margin: 0 auto;
+    filter: opacity(0.6);
 }
 
 .address-container {
@@ -1054,6 +1064,13 @@ label {
         margin-top: 15px;
         border-radius: 26px;
     }
+    .icons-row-landing {
+        margin-bottom: 40px;
+        z-index: 10;
+    }
+    .homepage-beta-landing-page-section #pre-signup-form {
+        width: 70%;
+    }
 }
 @media (min-width:768px) and (max-width:991px) {
     .main-text-div {
@@ -1074,6 +1091,21 @@ label {
         margin-top: 15px;
         border-radius: 26px;
     }
+    .homepage-beta-landing-page-section {
+        height: auto;
+    }
+    .homepage-beta-landing-page-section #pre-signup-form {
+        width: 70%;
+    }
+    .icons-row-landing {
+        margin-bottom: 40px;
+        z-index: 10;
+    }
+    .scroll-down .fa-angle-down {
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
 }
 @media (min-width:1200px) {
     .main-text-div {
