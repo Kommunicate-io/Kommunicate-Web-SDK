@@ -327,13 +327,18 @@ const sendProfileImage = (imageFile, imageFileName) => {
 }
 
 const updateApplozicUser = (userInfo) => {
-  
   const headers = {
-      'Content-Type':'application/json',
-      'Application-Key': localStorage.getItem("applicationId"),
-      'Authorization': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
-      'Access-Token': localStorage.getItem("password")
-    }
+    'Content-Type':'application/json',
+   }
+  if(localStorage.getItem("isAdmin")==="true"){
+      headers['Appz-AppId']=localStorage.getItem("applicationId"),
+      headers['Appz-Token']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+    
+  }else{
+    headers['Application-Key']=  localStorage.getItem("applicationId"),
+    headers['Authorization']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
+    headers['Access-Token']=localStorage.getItem("password")     
+  }
 
   console.log(headers)
 
@@ -343,7 +348,8 @@ const updateApplozicUser = (userInfo) => {
 
   return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
     headers: headers
-  })).then(response => {console.log(response); return response})
+  })).then(response => {console.log(response); 
+    return response})
 
 }
 
