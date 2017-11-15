@@ -4436,7 +4436,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
                         var elem = "<div style='float: left; margin: 13px;'><input type='text' style='background-color: #FFF;width: 250px;height:35px;' placeholder='Enter your email...'/>"
                         elem += "<button style='height: 27px;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
-
                         $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").append(elem)
                     }
                 }
