@@ -331,8 +331,8 @@ const updateApplozicUser = (userInfo) => {
     'Content-Type':'application/json',
    }
   if(localStorage.getItem("isAdmin")==="true"){
-      headers['Appz-AppId']=localStorage.getItem("applicationId"),
-      headers['Appz-Token']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+      headers['Apz-AppId']=localStorage.getItem("applicationId"),
+      headers['Apz-Token']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
     
   }else{
     headers['Application-Key']=  localStorage.getItem("applicationId"),
