@@ -122,6 +122,10 @@ a, a:hover {
     margin-top: 5px;
 }*/
 
+.why-kommunicate-section {
+    padding-top: 40px;
+}
+
 .homepage-beta-features-section:focus, .why-kommunicate-section:focus {
     outline: none;
 }
@@ -161,7 +165,7 @@ a, a:hover {
     letter-spacing: 0.015em;
     font-size: 18px;
     background-color: #fff;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1;
     color: rgb(73, 68, 150);
     text-decoration: none;
