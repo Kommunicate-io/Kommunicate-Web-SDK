@@ -231,8 +231,6 @@ exports.updateApplozicClient = (userName, accessToken,applicationId,user)=>{
    })
    .catch(err=>{
     console.log("error while updating user",err);
-    console.log("#######");
-    console.log(err.data.errorResponse);
     throw err;
    })
 }
