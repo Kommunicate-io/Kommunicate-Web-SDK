@@ -1203,15 +1203,25 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function() {
-                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher mck-a-undecorated" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div class="mck-launcher-svg mck-launcher-elem"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17px" height="17px" viewBox="0 0 64 64" version="1.1">'+
-                '<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">'+
-                    '<g id="Group" fill-rule="nonzero" fill="#964AC6">'+
-                        '<path d="M17.7,48.8 L24.3,63.1 C24.5,63.6 25,64 25.6,64 C25.6,64 25.7,64 25.7,64 C26.2,64 26.7,63.7 27,63.3 L30.8,57 L60.1,5 L17.7,48.8 Z" id="Shape"/>'+
-                        '<path d="M0.7,40.5 C0.2,40.8 0,41.4 0,42 C0.1,42.6 0.5,43.1 1,43.3 L15.5,48.1 L61.8,0.2 C61.7,0.2 61.6,0.3 61.5,0.3 L0.7,40.5 Z" id="Shape"/>'+
-                        '<path d="M34.4,54.7 L52.1,62.9 C52.3,63 52.6,63.1 52.8,63.1 C53.1,63.1 53.3,63 53.6,62.9 C54.1,62.7 54.4,62.2 54.5,61.7 L63.8,2.5 L34.4,54.7 Z" id="Shape"/>'+
+                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div class="mck-launcher-svg mck-launcher-elem">'+
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 486.8 509.5" style="&#10;    height: 60px;&#10;    width: 60px;&#10;">'+
+                '<defs><style>.cls-1 {fill: #964ac6;}</style></defs>'+
+                '<g id="Layer_2" data-name="Layer 2">'+
+                  '<g id="Layer_1-2" data-name="Layer 1">'+
+                    '<g>'+
+                     '<path class="cls-1" d="M197.1,180.8s32.2,1.7,46.3,1.8,46.3-1.8,46.3-1.8c72.2-5.1,120.7-3.3,137.4,0l16,3-.8-6.1C442.3,79.6,352.4,0,241.5,0S40.7,79.6,40.7,177.7l-.8,6.8,19.7-3.8C76.4,177.5,124.9,175.6,197.1,180.8Z"/>'+
+                     '<path class="cls-1" d="M84.3,205c-31.2,5.1-33.5,22.8-33.5,22.8-4,46.1,23.3,72.7,44.3,76.4s63.8-.5,81.1-20,15.4-56.8,2.8-70.3S115.5,199.9,84.3,205ZM109,292.2a38.7,38.7,0,1,1,38.7-38.7A38.7,38.7,0,0,1,109,292.2Z"/>'+
+                     '<path class="cls-1" d="M308.8,310.3c-27.5-24.7-26.1-52.2-36.3-75.5-8.5-19.3-24.1-22.3-29.1-22.7s-20.6,3.4-29.1,22.7c-10.2,23.3-8.9,50.8-36.3,75.5,0,0-19.6,17.7-58.2,17.2s-47.1-2.3-59.6-14.9L59,311.5c13.5,86.3,89.5,148.5,182.8,148.5a181.6,181.6,0,0,0,54.6-8.3l83.7,57.9-20.9-92.6c34.7-29.4,56.2-52.9,65.6-102.4-11.6,10.9-21,12.6-57.7,13C328.4,328,308.8,310.3,308.8,310.3Zm-63.1,77.6-.9.2h-1.6c-48.8-3.5-57.6-39.7-58.6-60.3H303.8C302.8,348.3,294,384.6,245.7,387.9Z"/>'+
+                     '<path class="cls-1" d="M436,227.8s-2.3-17.7-33.5-22.8-82-4.7-94.6,8.9-14.4,50.8,2.8,70.3,60.1,23.8,81.1,20S440,273.9,436,227.8Zm-64.4,64.3a38.7,38.7,0,1,1,38.7-38.7A38.7,38.7,0,0,1,371.6,292.2Z"/>'+
+                      '<path class="cls-1" d="M119.5,253.3a12.9,12.9,0,0,1-13-12.7,12.5,12.5,0,0,1,2.4-7.4,20.2,20.2,0,1,0,19.9,16.2A13.1,13.1,0,0,1,119.5,253.3Z"/>'+
+                      '<path class="cls-1" d="M382.1,253.3a12.9,12.9,0,0,1-13-12.7,12.5,12.5,0,0,1,2.4-7.4,20.2,20.2,0,1,0,19.9,16.2A13.1,13.1,0,0,1,382.1,253.3Z"/>'+
+                      '<path class="cls-1" d="M33.1,241.5l6.8-57L0,191.9v32.6c20,5.1,22.4,13.5,28.4,30.3S46.8,298.4,59,311.5a177.6,177.6,0,0,1-2-19.9Z"/>'+
+                      '<path class="cls-1" d="M443.1,183.8c1.9,14.2,6.2,49.1,5,59-1.9,15.9-20.3,50.7-20.3,50.7-.8,7.5-1.9,14.5-3.1,21l1.9-1.9c12.6-12.6,25.6-41,31.7-57.8s8.4-25.2,28.4-30.3V191.9Z"/>'+
                     '</g>'+
+                  '</g>'+
                 '</g>'+
-            '</svg></div><div class ="mck-launcher-text mck-launcher-elem">Help</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+              '</svg>'+
+                '</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
             };
             _this.initializeApp = function(optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -2028,8 +2038,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                             mckMessageService.loadConversationWithAgents({
                                 groupName:DEFAULT_GROUP_NAME,
                                 agentId:DEFAULT_AGENT_ID
-                            },function(){
-                                Kommunicate.triggerEvent({groupId:"1",applicationId:MCK_APP_ID})});
+                            },function(groupId){
+                                Kommunicate.triggerEvent("1",{"groupId":groupId,"applicationId":MCK_APP_ID})});
                         }else{
                             var $this = $applozic(this);
                             var elem = this;
