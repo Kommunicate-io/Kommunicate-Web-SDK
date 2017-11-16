@@ -102,16 +102,21 @@ a, a:hover, a:focus, a:active {
     border: solid 1.5px #ffffff;
     transition: all 0.2s ease-in;
 }
-.landing-page-img-container svg, .landing-page-img-container .realtime-support-svg-icon path, .landing-page-img-container .realtime-support-svg-icon circle {
-    fill: #FFFFFF;
-    transition: all 0.2s ease-in;
+.km-realtime-support-only-white-icon-1
+.km-cross-platform-only-white-icon-1
+.km-dynamic-faqs-only-white-icon-1
+.km-integrations-only-white-icon-1
+.km-smart-campaigns-only-white-icon-1
+.km-chatbot-only-white-icon-1 {
+    transition: all 0.3s ease-in;
 }
 .hero-section-icon-link:hover .landing-page-img-container {
     box-shadow: 1px 4px 12px 3px rgba(63, 60, 60, 0.5);
     background-color: #fff;
     border: solid 1.5px #8358b6;
 }
-.hero-section-icon-link:hover .landing-page-img-container svg, .hero-section-icon-link:hover .landing-page-img-container .realtime-support-svg-icon path, .hero-section-icon-link:hover .landing-page-img-container .realtime-support-svg-icon circle {
+.hero-section-icon-link:hover .km-realtime-support-only-white-icon-1, .hero-section-icon-link:hover .km-cross-platform-only-white-icon-1,  .hero-section-icon-link:hover .km-dynamic-faqs-only-white-icon-1,
+.hero-section-icon-link:hover .km-integrations-only-white-icon-1, .hero-section-icon-link:hover .km-smart-campaigns-only-white-icon-1,  .hero-section-icon-link:hover .km-chatbot-only-white-icon-1  {
     fill: #000000;
 }
 /*.chatbots-copy-5 {
