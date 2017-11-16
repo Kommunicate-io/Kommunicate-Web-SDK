@@ -2139,8 +2139,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-repeat: no-repeat;
 	border: 0;
 	position: absolute;
-	width: 60px;
-	height: 60px;
+	width: 48px;
+	height: 48px;
 	cursor: pointer;
 	outline: none;
 	background-position: center;
@@ -2149,8 +2149,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	transform: scale(1) rotate(360deg);
 	-webkit-transition: -webkit-transform 150ms cubic-bezier(.4, 0, 1, 1);
 	transition: transform 150ms cubic-bezier(.4, 0, 1, 1);
-	border-radius: 22px;
-	background-color:transparent;
+	border-radius: 30px;
+	background-color:#964ac6;
 	display: flex;
 	align-items: flex-start;
 	bottom:15px;
