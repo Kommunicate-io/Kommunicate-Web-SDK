@@ -1203,7 +1203,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function() {
-                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div class="mck-launcher-svg mck-launcher-elem">'+
+                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 486.8 509.5" style="&#10;    height: 60px;&#10;    width: 60px;&#10;">'+
                 '<defs><style>.cls-1 {fill: #964ac6;}</style></defs>'+
                 '<g id="Layer_2" data-name="Layer 2">'+
