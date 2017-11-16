@@ -2100,8 +2100,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	z-index: 2243000;
 	bottom: 45px;
 	right: 35px;
-	width: 103px;
-	height: 39px;
 	-webkit-transform: translateZ(0);
 	
 }
@@ -2141,8 +2139,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-repeat: no-repeat;
 	border: 0;
 	position: absolute;
-	width: 103px;
-	height: 39px;
+	width: 60px;
+	height: 60px;
 	cursor: pointer;
 	outline: none;
 	background-position: center;
@@ -2152,9 +2150,11 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	-webkit-transition: -webkit-transform 150ms cubic-bezier(.4, 0, 1, 1);
 	transition: transform 150ms cubic-bezier(.4, 0, 1, 1);
 	border-radius: 22px;
-	background-color: #ffffff;
+	background-color:transparent;
 	display: flex;
-    align-items: flex-start;
+	align-items: flex-start;
+	bottom:15px;
+	right:15px;
 }
 
 .mck-msg-preview {
