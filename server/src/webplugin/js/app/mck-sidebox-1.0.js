@@ -4687,7 +4687,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
                         } else if (contact.photoLink) {
                             imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
-                        } else if (contact.role == 2) {
+                        } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
                             imgsrctag = '<img src="' + MCK_BASE_URL + '/resources/sidebox/css/app/images/kommunicate-bot.png' + '"/>';
                         } else {
                             if (!displayName) {
@@ -4839,8 +4839,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     'photoData': photoData,
                     'email': '',
                     'unsaved': true,
-                    'isGroup': false,
-                    'role': data.role
+                    'isGroup': false
                 };
                 MCK_CONTACT_MAP[contactId] = contact;
                 return contact;
