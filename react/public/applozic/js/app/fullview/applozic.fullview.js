@@ -377,6 +377,8 @@ var KM_CLIENT_GROUP_MAP = [];
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
 		w.MCK_OL_MAP = new Array();
+		var ringToneService;		
+		var mckNotificationTone = null;
 		_this.events = {
 			'onConnectFailed' : function() {},
 			'onConnect' : function() {},
@@ -401,6 +403,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			return appOptions;
 		};
 		_this.init = function() {
+			ringToneService = new KmRingToneService();		
+			mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
 			mckMessageService.init();
 			mckFileService.init();
 			mckInit.initializeApp(appOptions, false);
@@ -6354,7 +6358,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							iconLink = imgsrc;
 						}
 					}
-					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg);
+					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg, mckNotificationTone);
 				}
 			};
 			_this.showNewMessageNotification = function(message, contact, displayName) {
