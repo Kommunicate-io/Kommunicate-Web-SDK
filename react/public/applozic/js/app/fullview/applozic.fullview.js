@@ -1175,6 +1175,9 @@ var KM_CLIENT_GROUP_MAP = [];
 								'displayName' : result.displayName,
 								'photoLink' : result.imageLink
 							});
+							if(result.imageLink && result.imageLink!==""){
+								w.sessionStorage.setItem('userProfileUrl', result.imageLink);
+							}
 							$kmApplozic.ajaxPrefilter(function(options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
 									// _this.manageIdleTime();

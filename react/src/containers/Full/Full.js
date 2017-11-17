@@ -72,7 +72,7 @@ class Full extends Component {
               </Switch>
             </div>
           </main>
-          <Aside />
+          <Aside updateProfilePicUrl={this.updateProfilePic}/>
         </div>
         <Footer />
       </div>
