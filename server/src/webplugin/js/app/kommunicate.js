@@ -3,7 +3,9 @@
 Kommunicate ={
     BASE_URL:{
         "https://chat.kommunicate.io":"https://api.kommunicate.io",
-        "https://apps-test.applozic.com/":"https://api-test.kommunicate.io"
+        "https://chat.kommunicate.io/":"https://api.kommunicate.io",
+        "https://apps-test.applozic.com/":"https://api-test.kommunicate.io",
+        "https://apps-test.applozic.com":"https://api-test.kommunicate.io"
         //"https://apps-test.applozic.com/":"http://localhost:3999"
     },
     setDefaultAgent :function(agentName){
@@ -70,6 +72,4 @@ function KommunicateClient(){
     //agentId:DEFAULT_AGENT_ID
 
 }
-
-
 
