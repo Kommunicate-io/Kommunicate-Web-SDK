@@ -1836,8 +1836,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-videocall-image {
     cursor: pointer;
 	float: left;
-	width: 50px;
-	height: 55px;
+	width: 43px;
+	height: 43px;
 	margin-right: 12px;
 	border-radius: 50%;
 	font-size: 25px;
