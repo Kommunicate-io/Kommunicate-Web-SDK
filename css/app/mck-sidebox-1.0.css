@@ -1749,7 +1749,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator-bubble .mck-msg-right-muted {
-	margin-right: 44px;
+	/*margin-right: 44px;*/
 }
 
 .mck-msg-box .mck-attachment img {
@@ -1805,11 +1805,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	margin-top: -21.5px;
 }
 
-.mck-msg-avator-bubble.mck-msg-right .mck-msg-avator {
-	float: right;
-	right: 0;
-}
-
 .mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
 	float: left;
 	left: 0;
@@ -1820,6 +1815,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	float: right;
 	right: 0;
 	margin-right: 3px;
+	display: none;
 }
 
 .mck-msg-avator img {
@@ -1838,7 +1834,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-videocall-image {
-        cursor: pointer;
+    cursor: pointer;
 	float: left;
 	width: 50px;
 	height: 55px;
@@ -2424,7 +2420,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator-bubble.mck-msg-right .mck-msg-box {
- 	margin-right: 58px;
+ 	/*margin-right: 58px;*/
 }
 
 .mck-group-inner .bubble.mck-msg-left .mck-msg-box:after {
