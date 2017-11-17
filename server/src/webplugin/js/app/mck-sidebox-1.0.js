@@ -4812,7 +4812,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 return contact;
             };
             _this.createContactWithDetail = function(data) {
-                console.log(data);
                 var displayName = data.displayName;
                 var contactId = data.userId;
                 if (!displayName) {
