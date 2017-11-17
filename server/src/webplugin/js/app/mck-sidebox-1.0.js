@@ -4679,6 +4679,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             imgsrctag = '<img src="' + imgsrc + '"/>';
                         }
                     }
+                    console.log(contact);
                     if (!imgsrctag) {
                         if (contact.photoSrc) {
                             imgsrctag = '<img src="' + contact.photoSrc + '"/>';
@@ -4686,6 +4687,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                             imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
                         } else if (contact.photoLink) {
                             imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
+                        } else if (contact.role == 2) {
+                            imgsrctag = '<img src="' + MCK_BASE_URL + '/resources/sidebox/css/app/images/kommunicate-bot.png' + '"/>';
                         } else {
                             if (!displayName) {
                                 displayName = contact.displayName;
