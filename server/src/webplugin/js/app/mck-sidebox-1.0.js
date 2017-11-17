@@ -4704,7 +4704,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return '<div class="mck-alpha-contact-image mck-alpha-user"><span class="mck-icon-user"></span></div>';
                 }
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toUpperCase();
                     return '<div class="mck-videocall-image alpha_' + first_alpha + '"><span class="mck-contact-icon">' + first_alpha + '</span></div>';
@@ -4718,7 +4718,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 name = name.toString();
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toLowerCase();
                     return 'mck-text-' + first_alpha;

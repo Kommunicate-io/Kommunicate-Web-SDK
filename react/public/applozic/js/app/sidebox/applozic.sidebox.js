@@ -3916,7 +3916,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     return '<div class="km-alpha-contact-image km-alpha-user"><span class="km-icon-user"></span></div>';
                 }
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toUpperCase();
                     return '<div class="km-alpha-contact-image alpha_' + first_alpha + '"><span class="km-contact-icon">' + first_alpha + '</span></div>';
@@ -3930,7 +3930,7 @@ var KM_CLIENT_GROUP_MAP = [];
                 }
                 name = name.toString();
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toLowerCase();
                     return 'km-text-' + first_alpha;
