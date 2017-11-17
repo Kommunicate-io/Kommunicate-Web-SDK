@@ -4812,6 +4812,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 return contact;
             };
             _this.createContactWithDetail = function(data) {
+                console.log(data);
                 var displayName = data.displayName;
                 var contactId = data.userId;
                 if (!displayName) {
@@ -4838,7 +4839,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     'photoData': photoData,
                     'email': '',
                     'unsaved': true,
-                    'isGroup': false
+                    'isGroup': false,
+                    'role': data.role
                 };
                 MCK_CONTACT_MAP[contactId] = contact;
                 return contact;
