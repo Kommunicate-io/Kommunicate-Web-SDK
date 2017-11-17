@@ -141,6 +141,7 @@ handleKeyPress(event) {
               handleImageFiles={this.handleImageFiles}
               invokeImageUpload={this.invokeImageUpload}
               uploadImageToS3={this.uploadImageToS3}
+              updateProfilePicUrl={this.props.updateProfilePicUrl}
             />
             <div className="card">
               <div className="card-header">

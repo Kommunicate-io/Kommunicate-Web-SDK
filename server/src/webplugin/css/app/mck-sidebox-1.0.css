@@ -2100,8 +2100,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	z-index: 2243000;
 	bottom: 45px;
 	right: 35px;
-	width: 103px;
-	height: 39px;
 	-webkit-transform: translateZ(0);
 	
 }
@@ -2131,18 +2129,18 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	color: #964ac6;
 }
 .mck-launcher-svg{
-	width: 17px;
-	height: 17px;
+	/*width: 17px;
+	height: 17px;*/
 }
 .mck-sidebox-launcher .mck-button-launcher {
-	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+	/*box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);*/
 	background-size: 22px 22px;
 	box-sizing: content-box;
 	background-repeat: no-repeat;
 	border: 0;
 	position: absolute;
-	width: 103px;
-	height: 39px;
+	width: 48px;
+	height: 48px;
 	cursor: pointer;
 	outline: none;
 	background-position: center;
@@ -2151,11 +2149,12 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	transform: scale(1) rotate(360deg);
 	-webkit-transition: -webkit-transform 150ms cubic-bezier(.4, 0, 1, 1);
 	transition: transform 150ms cubic-bezier(.4, 0, 1, 1);
-	border-radius: 22px;
-	background-color: #ffffff;
-	box-shadow: 1px 1px 6px 2px rgba(42, 41, 41, 0.5);
+	border-radius: 30px;
+	background-color:#964ac6;
 	display: flex;
-    align-items: flex-start;
+	align-items: flex-start;
+	bottom:15px;
+	right:15px;
 }
 
 .mck-msg-preview {

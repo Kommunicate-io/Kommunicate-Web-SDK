@@ -359,7 +359,7 @@ function KmNotificationUtils() {
     _this.isChrome = function() {
         return /chrom(e|ium)/.test(w.navigator.userAgent.toLowerCase());
     };
-    _this.getNotification = function(displayName, iconLink, msg) {
+    _this.getNotification = function(displayName, iconLink, msg,mckNotificationTone) {
         var notification;
         if (w.Notification) { /* Safari 6, Chrome (23+) */
             notification = new w.Notification(displayName, {
@@ -395,14 +395,18 @@ function KmNotificationUtils() {
                 "ieVerification": ieVerification + 1
             };
         }
+        mckNotificationTone.play();
+        setTimeout(function() {
+            mckNotificationTone.stop();
+        }, 1000);
         return notification;
     };
-    _this.sendDesktopNotification = function(displayName, iconLink, msg) {
+    _this.sendDesktopNotification = function(displayName, iconLink, msg,mckNotificationTone) {
         if (_this.permissionLevel() !== PERMISSION_GRANTED) {
             w.Notification.requestPermission();
         }
         if (_this.permissionLevel() === PERMISSION_GRANTED) {
-            var notification = _this.getNotification(displayName, iconLink, msg);
+            var notification = _this.getNotification(displayName, iconLink, msg,mckNotificationTone);
             var notificationWrapper = _this.getWrapper(notification);
             if (notification && !notification.ieVerification && notification.addEventListener) {
                 notification.addEventListener("show", function() {

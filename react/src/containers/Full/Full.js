@@ -18,20 +18,22 @@ import Autoreply from '../../views/Autoreply/'
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 class Full extends Component {
 
+  
   constructor (props) {
     super(props)
+     //_this =this;
     this.state = { 
       imageLink:localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
     }
-    var updateProfilePic  = this.updateProfilePic.bind(this);
+    this.updateProfilePic  = this.updateProfilePic.bind(this);
     console.log("profilePicUrl",this.state.imageLink)
   }
 
-  updateProfilePic (url) { 
+  updateProfilePic(url) { 
     this.setState({
-      imageLink: url 
+      imageLink: url//localStorage.getItem("imageLink") 
     });
-    console.log("profilePicUrl updated",this.state.imageLink)
+    console.log("profilePicUrl updated",url, this.state.imageLink)
    }
   componentWillMount(){
     window.appHistory = this.props.history;
@@ -59,7 +61,9 @@ class Full extends Component {
                 <Route exact path="/conversations" name="Conversations" component={Conversations}/>
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
-                <Route exact path="/admin" name="Admin" component={Admin}/>
+                <Route exact path="/admin" name="Admin" render={()=>{
+                   return <Admin updateProfilePicUrl={this.updateProfilePic} />
+                }}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/settings/integration" name="Integration" component={Integration}/>

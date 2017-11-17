@@ -1726,8 +1726,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-sidebox .mck-group-member-list .
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	bottom: 20px;
 	right: 20px;
-	width: 50px;
-	height: 50px;
 	-webkit-transform: translateZ(0);
 }
 
@@ -1736,7 +1734,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-sidebox .mck-group-member-list .
 }
 
 .mck-sidebox-launcher .mck-button-launcher {
-	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+	/*box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);*/
 	background-size: 22px 22px;
 	box-sizing: content-box;
 	background-repeat: no-repeat;
@@ -1745,13 +1743,14 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-sidebox .mck-group-member-list .
 	border-width: 1px;
 	position: absolute;
 	bottom: 0;
+	bottom: 0;
 	right: 0;
-	width: 48px;
-	height: 48px;
+	width: 60px;
+	height: 60px;
 	cursor: pointer;
 	outline: none;
 	background-position: center;
-	background-color: #0071b2;
+	background-color:transparent;
 	border-color: #00498a;
 	-webkit-user-drag: none;
 	-webkit-transform: scale(1) rotate(360deg);
