@@ -4429,13 +4429,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if(msg.contentType === 23) {
                     if(msg.metadata.msg_type === "BUTTON"){
                         console.log("msg.contentType === 23 && metadata.msg_type === BUTTON")
-                        var elem = "<div><button class='mck-msg-reply-button mck-msg-center'>Button</button></div>"
-                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").append(elem)
+                        var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>Button</button></div>"
+                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                     }
                     if(msg.metadata.msg_type === "INPUT"){
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
-                        var elem = "<div><input type='text' class='mck-msg-reply-button mck-msg-center' placeholder='Enter your email...'/></div>"
-                        elem += "<div><button>Submit</button></div>"
+                        var elem = "<div style='float: left; margin: 13px;'><input type='text' style='background-color: #FFF;width: 250px;height:35px;' placeholder='Enter your email...'/>"
+                        elem += "<button style='height: 27px;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
 
                         $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").append(elem)
                     }
