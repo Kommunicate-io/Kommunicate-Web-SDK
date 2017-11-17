@@ -77,13 +77,13 @@ class ImageUploader extends Component {
             updateApplozicUser({ imageLink: response.data.profileImageUrl })
               .then(response => {
                 console.log(response); this.props.updateProfilePicUrl(imageUrl);
-                localStorage.setItem("imageLink", imageUrl);
-                Notification.info(response.data.message)
+                localStorage.setItem("imageLink", imageUrl);                
               }
               )
               .catch(err => { console.log(err) 
                 Notification.info("Error in uploading image")
               })
+              Notification.info(response.data.message)
           } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
             Notification.info(response.data.message)
           }
