@@ -1546,7 +1546,7 @@ ol, ul {
 
 .km-msg-avator-bubble.km-msg-right .km-msg-box:after,
 	.km-msg-avator-bubble.km-msg-right .km-msg-box:before {
-	left: calc(100% - 58px);
+	right: calc(100% - 58px);
 }
 
 .km-msg-left .km-msg-box:after, .km-msg-right .km-msg-box:after {
@@ -1615,9 +1615,10 @@ ol, ul {
 	margin-right: 15px;
 }
 
+/*
 .km-msg-avator-bubble .km-msg-right-muted {
 	margin-right: 58px;
-}
+}*/
 
 .km-msg-box .km-attachment img {
 	max-height: 120px;
@@ -1679,6 +1680,7 @@ ol, ul {
 .km-msg-avator-bubble.km-msg-right .km-msg-avator {
 	float: right;
 	right: 0;
+	display: none;
 }
 
 .km-msg-avator-bubble.km-msg-left .km-msg-avator {

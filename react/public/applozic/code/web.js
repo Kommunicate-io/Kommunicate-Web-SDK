@@ -79,6 +79,7 @@ function initAutoSuggestions() {
       accessToken: userPassword,
       desktopNotification: true,
       swNotification: true,
+      messageBubbleAvator: true,
       olStatus: true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
