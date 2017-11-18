@@ -6,8 +6,8 @@ class ThirdPartyScripts extends Component {
       componentDidMount(){
           // support chat widget
           (function(d, m){
-            let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io",
-              "groupName":"devashish@kommunicate.io","baseUrl":getConfig().homeUrl};
+            let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl};
             let s = document.createElement("script");
             s.type = "text/javascript";
             s.async = true;
