@@ -31,9 +31,9 @@ class Full extends Component {
 
   updateProfilePic(url) { 
     this.setState({
-      imageLink: url//localStorage.getItem("imageLink") 
+      imageLink: url==null ? "/img/avatars/default.png": url
     });
-    console.log("profilePicUrl updated",url, this.state.imageLink)
+    console.log("profilePicUrl updated",this.state.imageLink)
    }
   componentWillMount(){
     window.appHistory = this.props.history;
