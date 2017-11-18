@@ -243,6 +243,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'loadConversationWithAgent':
                         return oInstance.loadConversationWithAgent(params);
                         break;
+                    case 'updateUserIdentity':
+                        return oInstance.updateUserIdentity(params);
+                        break;
     
                 }
             } else if ($applozic.type(appOptions) === 'object') {
@@ -1007,6 +1010,9 @@ var MCK_CLIENT_GROUP_MAP = [];
             } else {
                 return 'Unsupported format. Please check format';
             }
+        };
+        _this.updateUserIdentity=function(params){
+            mckContactService.updateUserIdentity(params)
         };
         _this.sendGroupMessage = function(params) {
             if (typeof params === 'object') {
@@ -5954,6 +5960,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
             var CONTACT_LIST_URL = "/rest/ws/user/filter";
             var USER_STATUS_URL = "/rest/ws/user/chat/status";
+            var USER_IDENTITY_UPDATE_URL="rest/ws/user/change/identifier";
             _this.getContactDisplayName = function(userIdArray) {
                 var mckContactNameArray = [];
                 if (userIdArray.length > 0 && userIdArray[0]) {
@@ -6175,6 +6182,35 @@ var MCK_CLIENT_GROUP_MAP = [];
                     error: function() {}
                 });
             };
+
+            _this.updateUserIdentity=function(params){
+				if (params.newUserId===null || params.newUserId===""){
+                    return;
+                }
+				var data = {'newUserId':params.newUserId}
+				mckUtils.ajax({
+					url : MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
+					type : 'get',
+					data : data,
+					success : function(data) {
+						if (typeof data === 'object') {
+							if (data.status === 'success') {
+                                console.log(data);
+                                MCK_USER_ID=params.newUserId	
+                                if (params.callback) {
+                                    //update access token here
+                                    params.callback(data);
+                                }
+							}
+						}
+					},
+					error : function(data) {
+                        if (params.callback) {
+                            params.callback(data);
+                        }
+                    }
+				});
+			};
         }
 
         function MckGroupLayout() {

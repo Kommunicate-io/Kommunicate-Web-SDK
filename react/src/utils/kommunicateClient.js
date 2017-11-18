@@ -31,7 +31,7 @@ const createCustomer = function(email,password,name) {
            }
          } else  {
            //alert("Internal server error..");
-           throw {code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!!"};
+           throw {code:"INTERNAL_SERVER_ERROR",message:"retry again after some time!"};
          }
     });
 }

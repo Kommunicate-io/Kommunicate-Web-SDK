@@ -65,6 +65,13 @@ Kommunicate ={
                 console.log("err while starting Conversation");
             }
         });
+    },
+    updateUserIdentity:function(newUserId){
+        $applozic.fn.applozic('updateUserIdentity', 
+                                {'newUserId':newUserId,
+                                'callback':function(response){
+                                    console.log("callback response :", response);
+                                }});
     }
 }
 function KommunicateClient(){
