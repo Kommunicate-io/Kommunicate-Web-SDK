@@ -1737,15 +1737,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                     users: [
                       {
                         userId: "bot",
-                        displayName: "Bot",
-                        groupRole: 2,
-                        roleName: "BOT"
+                        groupRole: 2
                       },
                       {
                         userId: params.agentId,
-                        displayName:params.agentName || params.agentId,
-                        groupRole: 1,
-                        roleName: "APPLICATION_WEB_ADMIN"
+                        groupRole: 1
                       }
                     ],
                     metadata: {
