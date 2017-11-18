@@ -5678,15 +5678,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                                             mckUserUtils.lastSeenOfGroupOfTwo(contacts.contactId);
                                             mckMessageLayout.addMessage(message, contact, true, true, validated);
                                         }
-                                        //Todo: check for group meta data and message type
-                                        console.log(message);
-                                        console.log("group/contact");
-                                        console.log(group);
                                         
-                                        if (!message.metadata || message.metadata.category !== 'HIDDEN' && contact.type !== 7) {
+                                        if (!message.metadata || (message.metadata.category !== 'HIDDEN' && message.metadata.hide !== "true" && contact.type !== 7)) {
                                             mckMessageLayout.addMessage(message, contact, true, true, validated);
+                                            mckMessageService.sendReadUpdate(message.pairedMessageKey);                                            
                                         }
-                                        mckMessageService.sendReadUpdate(message.pairedMessageKey);
                                     }
                                     if (!message.groupId) {
                                         $applozic('#mck-tab-status').html(MCK_LABELS['online']);
