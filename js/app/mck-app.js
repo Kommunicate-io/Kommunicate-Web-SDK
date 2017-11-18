@@ -253,16 +253,15 @@ function ApplozicSidebox() {
         try {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
-            	if(options.isAnonymousChat){
-                if(!options.userId){
+            	if(options.isAnonymousChat && !options.userId){
                		 if (Cookies.get("kommunicate-id")) {
                			options.userId = Cookies.get("kommunicate-id");
                		}
                		else {
-               			options.userId = (options.userId) ?(options.userId) :getRandomId();
+               			options.userId = getRandomId();
                			Cookies.set("kommunicate-id", options.userId);
                		}
-            		}
+
             	}else{
             		// ask for email id;
             	}
