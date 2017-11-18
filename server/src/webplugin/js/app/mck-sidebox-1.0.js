@@ -5678,6 +5678,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                                             mckUserUtils.lastSeenOfGroupOfTwo(contacts.contactId);
                                             mckMessageLayout.addMessage(message, contact, true, true, validated);
                                         }
+                                        //Todo: check for group meta data and message type
+                                        console.log(message);
+                                        console.log("group/contact");
+                                        console.log(group);
+                                        
                                         if (!message.metadata || message.metadata.category !== 'HIDDEN' && contact.type !== 7) {
                                             mckMessageLayout.addMessage(message, contact, true, true, validated);
                                         }
@@ -8445,7 +8450,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 'messageKey': message.key
                             });
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
-                            //Todo: add check for group metadata.
                             mckStorage.updateLatestMessage(message);
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
                             var $mck_sidebox_content = $applozic("#mck-sidebox-content");
