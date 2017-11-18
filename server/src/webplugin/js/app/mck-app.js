@@ -65,7 +65,7 @@ function ApplozicSidebox() {
             var script = document.createElement('script');
             script.type = 'text/javascript';
             //script.src = MCK_STATICPATH + "/lib/js/jquery-3.1.1.min.js";
-            script.src = MCK_STATICPATH + "/lib/js/jquery-2.2.2.min.js"; 
+            script.src = MCK_STATICPATH + "/lib/js/jquery-2.2.2.min.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
@@ -254,11 +254,14 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
             	if(options.isAnonymousChat){
-            		if (Cookies.get("kommunicate-id")) {
-            			options.userId = Cookies.get("kommunicate-id");
-            		} else {
-            			options.userId = getRandomId();
-            			Cookies.set("kommunicate-id", options.userId);
+                if(!options.userId){
+               		 if (Cookies.get("kommunicate-id")) {
+               			options.userId = Cookies.get("kommunicate-id");
+               		}
+               		else {
+               			options.userId = (options.userId) ?(options.userId) :getRandomId();
+               			Cookies.set("kommunicate-id", options.userId);
+               		}
             		}
             	}else{
             		// ask for email id;
