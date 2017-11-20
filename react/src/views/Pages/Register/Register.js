@@ -86,8 +86,8 @@ class Register extends Component {
         return;
       }).catch(err=>{
         _this.setState({disableRegisterButton:false});
-        let msg = err.response.data ? err.response.data:"Something went wrong ";
-        if(err.response.data&&err.response.data==="BAD_REQUEST"){
+        let msg = err.code ? err.message:"Something went wrong ";
+        if(err.code&&err.code==="BAD_REQUEST"){
           msg = "Invalid Application Id.";
         }else if(err.code=="APP_NOT_RECEIVED"){
           Notification.error(msg);
