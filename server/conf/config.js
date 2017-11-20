@@ -48,7 +48,7 @@ const config ={
   test: {
     port: 3999,
     db: {
-      url: "mysql://testdbauser:db@u$er2o16@testdb.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
@@ -91,8 +91,8 @@ const config ={
   default: {
     port: 3999,
     db: {
-      // url: "mysql://root:password@localhost:3306/kommunicate_test",
-      url: "mysql://testdbauser:db@u$er2o16@testdb.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
+      //url: "mysql://root:@localhost:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
