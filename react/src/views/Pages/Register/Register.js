@@ -109,7 +109,7 @@ class Register extends Component {
               <div className="card mx-4">
                 <div className="card-block p-4">
                   <h1>Register</h1>
-                  <p className="text-muted">Create your account</p>
+                  <p className="text-muted">Sign Up</p>
                    <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
                    <input type="text" className="form-control" placeholder="name" onChange= {this.setUserName} required/>
