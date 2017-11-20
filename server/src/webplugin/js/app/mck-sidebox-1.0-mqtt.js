@@ -1909,9 +1909,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     e.preventDefault();
                     if(window.applozic.PRODUCT_ID=='kommunicate'){
                     	if(!IS_ANONYMOUS_CHAT){
-                    	$applozic("#km-chatLoginModal").removeClass('n-vis').addClass('vis');
-                    	$applozic("#km-chatLoginModal").css("display", "block");
-                    	}else{
+                            //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
+                            $applozic("#km-chat-login-modal").css("display", "block");
+                    	} else {
                     		loadChat(); 
                     	}
                     }else{
@@ -1994,8 +1994,8 @@ var MCK_CLIENT_GROUP_MAP = [];
 
 					} 
 				$applozic(".km-login-model-close").on('click',function(e){
-                	
-                	 $applozic("#km-chatLoginModal").removeClass('vis').addClass('n-vis');
+                     //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');
+                     $applozic("#km-chat-login-modal").css("display", "none");      
                 });
                 $applozic(d).on("click", ".mck-conversation-tab-link", function(e) {
                     e.preventDefault();

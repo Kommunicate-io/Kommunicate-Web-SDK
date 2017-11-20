@@ -122,9 +122,9 @@
 		.15s;
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s
 }
-#km-chatLoginModal{
+#km-chat-login-modal{
 	bottom:0 !important;
-	top: auto !importanr;
-	position:absolute;
-	
+	top: auto !important;
+	position: absolute;
+	display: none;
 }
