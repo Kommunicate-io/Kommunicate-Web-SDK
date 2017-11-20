@@ -4269,6 +4269,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                      }
             };
             _this.addMessage = function(msg, contact, append, scroll, appendContextMenu) {
+                console.log(msg.contentType);
+                console.log(msg);
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -4297,6 +4299,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                      }
                 }
             }
+                
 
                 if (msg.type === 6 || msg.type === 7) {
                     return;
@@ -4377,9 +4380,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (IS_MCK_OL_STATUS && w.MCK_OL_MAP[msg.to] && msg.contentType !== 10) {
                     olStatus = 'vis';
                 }
-                if(msg.contentType==="RICH_TEXT_MESSAGE" && msg.metadata){
-
-                }
 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -4422,10 +4422,74 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileUrlExpr: _this.getFileurl(msg),
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
-                    contOlExpr: olStatus
+                    contOlExpr: olStatus,
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
+                
+                if(msg.contentType === 23) {
+
+                    if(msg.metadata.msg_type === "BUTTON"){
+                        var payload = [];
+                        if(msg.metadata.payload){
+                            payload = $.parseJSON(msg.metadata.payload);
+                            if(!payload[0].hidden){
+                                var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
+                            }
+                            if(payload.length > 1){
+                                for(var i = 1; i < payload.length; i++){
+                                    if(!payload[i].hidden){
+                                        elem += "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[i].title + "</button></div>"
+                                    }
+                                }
+                            }
+                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        }else{
+                            console.log("msg.contentType === 23 && metadata.msg_type === BUTTON")
+                            var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>Button</button></div>"
+                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        }
+                    }
+
+                    if(msg.metadata.msg_type === "INPUT"){
+                        console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
+                        var elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                        elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
+                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                    }
+
+                    if(msg.metadata.msg_type === "LIST"){
+                        var payload = [];
+                        if(msg.metadata.payload){
+                            payload = $.parseJSON(msg.metadata.payload);
+                            console.log("msg.contentType === 23 && metadata.msg_type === LIST")
+                            var elem = "";
+                            if(!payload[0].hidden){
+                                if(payload[0].type.toLowerCase() === 'button'){
+                                    elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
+                                }else if(payload[0].type.toLowerCase() === "input"){
+                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                    elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[0].title + "</button></div>"
+                                }
+                            }
+
+                            if(payload.length > 1) {
+                                for(var i = 1; i < payload.length; i++) {
+                                    if(!payload[i].hidden) {
+                                        if(payload[i].type.toLowerCase() === 'button') {
+                                            elem += "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[i].title + "</button></div>"
+                                        } else if(payload[i].type.toLowerCase() === "input") {
+                                            elem += "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                            elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[i].title + "</button></div>"
+                                        }
+                                    }
+                                }
+                            }
+                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        }
+                    }
+                }
+
                 var emoji_template = '';
                 if (msg.message) {
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
@@ -8242,6 +8306,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.onMessage = function(obj) {
+                console.log("This is onMessage");
+                console.log(obj);
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
                     var messageType = resp.type;
