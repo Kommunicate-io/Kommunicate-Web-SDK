@@ -4425,15 +4425,12 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
                 
-                console.log($("div[data-msgkey='" + msg.key + "']"));
                 if(msg.contentType === 23) {
+
                     if(msg.metadata.msg_type === "BUTTON"){
                         var payload = [];
                         if(msg.metadata.payload){
-                            console.log(msg.metadata.payload);
                             payload = $.parseJSON(msg.metadata.payload);
-                            console.log(payload);
-                            console.log("msg.contentType === 23 && metadata.msg_type === BUTTON")
                             if(!payload[0].hidden){
                                 var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
                             }
@@ -4451,11 +4448,43 @@ var MCK_CLIENT_GROUP_MAP = [];
                             $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                         }
                     }
+
                     if(msg.metadata.msg_type === "INPUT"){
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
-                        var elem = "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                        var elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                         elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
                         $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                    }
+
+                    if(msg.metadata.msg_type === "LIST"){
+                        var payload = [];
+                        if(msg.metadata.payload){
+                            payload = $.parseJSON(msg.metadata.payload);
+                            console.log("msg.contentType === 23 && metadata.msg_type === LIST")
+                            var elem = "";
+                            if(!payload[0].hidden){
+                                if(payload[0].type.toLowerCase() === 'button'){
+                                    elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
+                                }else if(payload[0].type.toLowerCase() === "input"){
+                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                    elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[0].title + "</button></div>"
+                                }
+                            }
+
+                            if(payload.length > 1) {
+                                for(var i = 1; i < payload.length; i++) {
+                                    if(!payload[i].hidden) {
+                                        if(payload[i].type.toLowerCase() === 'button') {
+                                            elem += "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[i].title + "</button></div>"
+                                        } else if(payload[i].type.toLowerCase() === "input") {
+                                            elem += "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                            elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[i].title + "</button></div>"
+                                        }
+                                    }
+                                }
+                            }
+                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        }
                     }
                 }
 
