@@ -112,15 +112,15 @@ class Register extends Component {
                   <p className="text-muted">Sign Up</p>
                    <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
-                   <input type="text" className="form-control" placeholder="name" onChange= {this.setUserName} required/>
+                   <input autofocus type="text" className="form-control" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
                   </div>
                   <div className="input-group mb-3">
                     <span className="input-group-addon">@</span>
-                    <input type="text" className="form-control" placeholder="Email" onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email}/>
+                    <input id = "input-email" type="text" className="form-control" placeholder="Email" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email}/>
                   </div>
                   <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-lock"></i></span>
-                    <input type="password" className="form-control" placeholder="Password"  onChange={ this.setPassword }/>
+                    <input id="input-password"type="password" className="form-control" placeholder="Password"  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} />
                   </div>
                   <div className="input-group mb-4" hidden={true}>
                     <span className="input-group-addon"><i className="icon-lock"></i></span>
@@ -128,7 +128,7 @@ class Register extends Component {
                   </div>
                   <div className="row">
                     <div className="col-6 text-right">
-                      <button type="button" className="btn btn-primary px-4" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
+                      <button id="create-button"type="button" className="btn btn-primary px-4" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
                     </div>
                     <div className="col-6 text-center">
                       <button type="button" className="btn btn-primary px-4" onClick= { this.backToLogin } hidden ={this.state.isBackBtnHidden}>Back</button>
