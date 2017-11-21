@@ -1216,6 +1216,15 @@ label {
     .homepage-beta-landing-page-section #pre-signup-form {
         width: 70%;
     }
+    .homepage-beta-latest-section .Demo {
+        min-height: 382px;
+    }
+    .homepage-beta-latest-section .Demo span {
+        display: none;
+    }
+    .homepage-beta-features-section .Demo {
+        min-height: 308px;
+    }
 }
 @media (min-width:768px) and (max-width:991px) {
     .main-text-div {
@@ -1258,6 +1267,15 @@ label {
 @media (min-width:850px) and (max-width:991px) {
     .mid-grid-cell {
         padding-right: 7em;
+    }
+    .homepage-beta-latest-section .Demo {
+        min-height: 486px;
+    }
+    .homepage-beta-latest-section .Demo span {
+        display: none;
+    }
+    .homepage-beta-features-section .Demo {
+        min-height: 452px;
     }
 }
 
