@@ -4267,7 +4267,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return;
                 }
             };
+<<<<<<< HEAD
 
+=======
+>>>>>>> fe5680892387a3d2cbc67ca39c75471a596c17a7
             _this.sendUserEmail = function() {
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         let email = document.getElementById('input-for-email').value;
@@ -4517,13 +4520,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     if (!payload[i].hidden) {
                                         if (payload[i].type.toLowerCase() === 'button') {
                                             elem += "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[i].title + "</button></div>"
-<<<<<<< HEAD
-                                        } else if (payload[i].type.toLowerCase() === "input") {
-                                            elem += "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
-=======
                                         } else if(payload[i].type.toLowerCase() === "input") {
                                             elem += "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
->>>>>>> KM-455: Added sendUserEmail
                                             elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[i].title + "</button></div>"
                                         }
                                     }
