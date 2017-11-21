@@ -4276,8 +4276,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.sendUserEmail = function() {
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         var email = document.getElementById('input-for-email').value;
-                        var data = '{"email":"' + email + '"}';
-                        mckContactService.updateUser({data: data, success: function(response) {
+                        mckContactService.updateUser({data: {'email': email}, success: function(response) {
 
                             }, error: function(error) {
 
