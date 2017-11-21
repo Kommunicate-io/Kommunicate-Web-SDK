@@ -303,7 +303,7 @@ const signUpWithApplozic = (data)=>{
   const url = getConfig().kommunicateBaseUrl+"/customers/applozic";
   let user = {userId:data.userName,password:data.password,applicationId:data.applicationId};
   return axios.post(url,{userName:data.userName,password:data.password,applicationId:data.applicationId}).then(response=>{
-    $applozic.fn.applozic('updateUser', {data: user, success: function(response) {
+    window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
         console.log(response);
       }, error: function(error) {
         console.log(error);
@@ -331,7 +331,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
     }
   }))
   .then(response => {
-    $applozic.fn.applozic('updateUser', {data: {'imageLink': profileImageUrl}, success: function(response) {
+    window.$applozic.fn.applozic('updateUser', {data: {'imageLink': profileImageUrl}, success: function(response) {
         console.log(response);
       }, error: function(error) {
         console.log(error);
