@@ -4278,7 +4278,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         var email = document.getElementById('input-for-email').value;
                         var data = '{"email":"' + email + '"}';
                         mckContactService.updateUser({data: data, success: function(response) {
-                                
+
                             }, error: function(error) {
 
                             }
@@ -6317,7 +6317,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckUtils.ajax({
                     type: "POST",
                     url: window.MCK_BASE_URL + "/rest/ws/user/update",
-                    data: options.data,
+                    data: w.JSON.stringify(options.data),
                     contentType : 'application/json',
                     success: function(response) {
                         if (options.success) {
