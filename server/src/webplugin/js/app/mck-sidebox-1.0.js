@@ -4277,13 +4277,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         var email = document.getElementById('input-for-email').value;
                         var data = '{"email":"' + email + '"}';
-                        mckUtils.ajax({
-                            type: "POST",
-                            url: window.MCK_BASE_URL + "/rest/ws/user/update",
-                            data: data,
-                            contentType : 'application/json',
-                            success : function(data) {
-                                console.log("email updated successfully !");
+                        mckContactService.updateUser({data: data, success: function(response) {
+                                
+                            }, error: function(error) {
+
                             }
                         });
                     }else {
@@ -6315,7 +6312,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
             };
-            
+
             _this.updateUser = function(options) {
                 mckUtils.ajax({
                     type: "POST",
