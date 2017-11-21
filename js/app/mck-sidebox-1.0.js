@@ -6313,6 +6313,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
 
             _this.updateUser = function(options) {
+                console.log(options.data);
                 mckUtils.ajax({
                     type: "POST",
                     url: window.MCK_BASE_URL + "/rest/ws/user/update",
