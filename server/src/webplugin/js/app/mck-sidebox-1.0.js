@@ -4267,7 +4267,42 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return;
                 }
             };
-            _this.addMessage = function (msg, contact, append, scroll, appendContextMenu) {
+            _this.sendUserEmail = function() {
+                    if( document.getElementById('input-for-email').value.length > 1 ) {
+                        let email = document.getElementById('input-for-email').value;
+                        let data = '{"email":"' + email + '"}'
+                        $applozic.ajax({
+                            type: "POST",
+                            url: window.MCK_BASE_URL + "/rest/ws/user/update",
+                            headers: {
+                                "Content-Type":"application/json",
+                                "Application-Key":MCK_APP_ID,
+                                "Authorization":"Basic " + AUTH_CODE,
+                                "Device-Key":USER_DEVICE_KEY
+                            },
+                            data: data,
+                            contentType : 'application/json',
+                            success : function(data) {
+                                console.log("email updated successfully !");
+                            }
+                        })
+                    }else {
+                        alert("No email")
+                    }
+                }
+            _this.updateMetadata = function () {
+                $applozic.ajax({
+                    type : "POST",
+                    url : MCK_BASE_URL + "/rest/ws/message/update/metadata",
+                    global : false,
+                    data : data,
+                    contentType : 'application/json',
+                    success : function(data) {
+                        console.log("metadata cleared successfully !");
+                    }
+                });
+            }
+            _this.addMessage = function(msg, contact, append, scroll, appendContextMenu) {
                 console.log(msg.contentType);
                 console.log(msg);
                 var metadatarepiledto = '';
@@ -4453,8 +4488,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (msg.metadata.msg_type === "INPUT") {
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
                         var elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
-                        elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
+                        elem += "<button id='send-email-button' style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
                         $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        $("#send-email-button").click(function(){
+                            _this.sendUserEmail();
+                            _this.updateMetadata();
+                        })
                     }
 
                     if (msg.metadata.msg_type === "LIST") {
@@ -4477,8 +4516,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     if (!payload[i].hidden) {
                                         if (payload[i].type.toLowerCase() === 'button') {
                                             elem += "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[i].title + "</button></div>"
-                                        } else if (payload[i].type.toLowerCase() === "input") {
-                                            elem += "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                        } else if(payload[i].type.toLowerCase() === "input") {
+                                            elem += "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                                             elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[i].title + "</button></div>"
                                         }
                                     }
