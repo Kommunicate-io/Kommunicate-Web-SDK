@@ -31,7 +31,7 @@ const createCustomer = function(email,password,name) {
            }
          } else  {
            //alert("Internal server error..");
-           throw {code:"INTERNAL_SERVER_ERROR",message:"retry again after some time!"};
+           throw {code:response.data&&response.data.code?response.data.code:"INTERNAL_SERVER_ERROR",message:"Retry again after some time!!"};
          }
     });
 }
@@ -212,9 +212,13 @@ const createAgent =(agent)=>{
   return axios.post(url,agent).then(agent=>{
     console.debug("agent created successfully",agent);
     return agent;
+  }).catch(err=>{
+    let error = err.response&&err.response.data?err.response.data:err;
+    return Promise.reject(error);
   });
 }catch(err){
-    return Promise.reject(err);
+  let error = err.response&&err.reponse.data?err.reponse.data:err;
+    return Promise.reject(error);
   };
 
 }

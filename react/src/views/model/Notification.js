@@ -12,8 +12,9 @@ const  Notification = {
   success:function(message) {
     NotificationManager.success(message, "Success", 2000);
   },
-    warning : function(message) {
-    NotificationManager.warning(message, "Warning", 2000);
+    warning : function(message,time) {
+      var time =time?time:2000;
+    NotificationManager.warning(message, "Warning", time);
   },
 
   error: function(message) {

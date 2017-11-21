@@ -86,10 +86,17 @@ class Register extends Component {
         return;
       }).catch(err=>{
         _this.setState({disableRegisterButton:false});
-        let msg = err.code ? err.message:"Something went wrong ";
-        if(err.code&&err.code==="BAD_REQUEST"){
+
+        let msg = err.code?err.message:"Something went wrong ";
+        if(err.response&&err.response.code==="BAD_REQUEST"){
           msg = "Invalid Application Id.";
-        }else if(err.code=="APP_NOT_RECEIVED"){
+        }else if(err.response&&err.response.code =="USER_ALREADY_EXISTS"){
+          msg = " A user already exists with this email!"
+        }else if(err.code=="USER_ALREADY_EXISTS_PWD_INVALID"){
+          Notification.warning("This Email id already associated with another account. If you are the same person please enter correct password!", 3000);
+          return;
+        }
+        else if(err.code=="APP_NOT_RECEIVED"){
           Notification.error(msg);
           window.location ="/login";
           return;

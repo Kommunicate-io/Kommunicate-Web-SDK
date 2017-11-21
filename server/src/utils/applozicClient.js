@@ -31,9 +31,14 @@ exports.createApplozicClient = (userId,password,applicationId,gcmKey,role)=>{
         console.log("invalid application Id");
         err.code = "NVALID_APPLICATIONID";
         throw err;
-      } else {
+      } else if(response.data.message == "UPDATED"){
         console.log("user already exists in db userName : ", userId, "applicationId : ", applicationId);
         err.code = "USER_ALREADY_EXISTS";
+        err.data = response.data;
+        throw err;
+      }else if(response.data.message == "PASSWORD_INVALID"){
+        console.log("user already exists in db userName : ", userId, "applicationId : ", applicationId);
+        err.code = "USER_ALREADY_EXISTS_PWD_INVALID";
         err.data = response.data;
         throw err;
       }
@@ -214,10 +219,24 @@ exports.updatePassword = (options)=>{
   });
 }
 
-// update user 
-exports.updateApplozicClient = (userName, accessToken,applicationId,user)=>{
+/**
+ * update the user in applozic.
+ * @example applozicClient.updateApplozicClient("testUser","abcd","kommunicate-support",{"role:USER","name:"newUser"})
+ * @param {String} userName - userName of user to be updated, used to generate the access token
+ * @param {String} accessToken - access token of user, used to generate the access token 
+ * @param {String}applicationId - application Id 
+ * @param {Object}user - userObject you want to update
+ * @param {String} user.userId
+ * @param {Object} user.roleName
+ * @param {Object} options extra parameters
+ * @param {Object} options.apzToken has higher priority over userName and password.
+ * @return {Object} object having property code.
+ * @throws {Object} applozic err, network error
+ */
+exports.updateApplozicClient = (userName, accessToken,applicationId,user,options)=>{
+  let apzToken = options&&options.apzToken?options.apzToken:new Buffer(userName+":"+accessToken).toString('base64');
   return axios.post(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update",user,{headers:{
-    "Apz-Token":"Basic "+ new Buffer(userName+":"+accessToken).toString('base64'),
+    "Apz-Token":"Basic "+ apzToken,
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,
     "Apz-Product-App":true

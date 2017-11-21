@@ -34,9 +34,39 @@ const getUserByName = userName=>{
   });
 };
 
+/**
+ * This method will catch USER_ALREADY_EXIST error, and update the role of that user to APPLICATION_WEB_ADMIN.
+ * @param {User} user newuser object
+ * @param {Object} customer customer object
+ * @param {Objetc} err - error returned by applozic login/register API.
+ */
+let handleCreateUserError =(user,customer,err)=>{
+  console.log("catching the user Already exists. error", err);
+  if(err&&err.code=="USER_ALREADY_EXISTS" && err.data){
+    console.log("updating role to application web admin");
+    const data = err.data; 
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName,user.password,customer.applicationId,{userId:user.userName,roleName:"APPLICATION_WEB_ADMIN"},{apzToken: customer.apzToken})).then(response=>{
+      return err.data;
+    })
+  }else{
+    throw err;
+  }
+}
+
+/**
+ * creates a user. If a user already exists in Applozic db with same application_id, update the role of user to APPLICATION_WEB_ADMIN
+ * so User can behave as kommunicate Agent. @see userService.handleCreateUserError
+ * @param {Object} user to be created
+ * 
+ * @return {Object} userModel @see models/user.js
+ */
 const createUser =user=>{
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
-    return applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,"APPLICATION_WEB_ADMIN").then(applozicUser=>{
+    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,"APPLICATION_WEB_ADMIN")
+    .catch(err=>{
+      return handleCreateUserError(user,customer,err);
+    }))
+    .then(applozicUser=>{
       console.log("created user in applozic db",applozicUser.userName);
       user.customerId=customer.id;
       user.apzToken=new Buffer(user.userName+":"+user.password).toString('base64');
