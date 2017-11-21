@@ -36,7 +36,7 @@ var config = {
       autoreplyUrl:'https://api.kommunicate.io/users/',
       getTimeZoneUrl:'https://api.kommunicate.io/misc/tz',
       createApplozicUser: baseurl.prod.baseUrl+"/rest/ws/user/v2/create",
-      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
+      updateApplozicUser: baseurl.prod.baseUrl+'/rest/ws/user/update',
     },kommunicateApi:{
       login:baseurl.prod.kommunicateAPI+"/login",
       signup:baseurl.prod.kommunicateAPI+"/customers",
