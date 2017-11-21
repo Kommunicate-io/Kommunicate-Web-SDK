@@ -55,7 +55,7 @@ return imageLink;
   render() {
     return (
       <header className="app-header navbar">
-        <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&9776;</button>
+        <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
         <Link className="a-undecorated" redirect to ="/dashboard">
         <a href ="" target="_blank" className = "a-undecorated a-unclickable"/> <img src="/img/logo01.svg" height="50" width="50"></img>
         <span className= "brand-name">KOMMUNICATE</span></Link>
