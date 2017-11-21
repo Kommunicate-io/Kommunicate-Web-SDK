@@ -93,7 +93,7 @@ class Register extends Component {
         }else if(err.response&&err.response.code =="USER_ALREADY_EXISTS"){
           msg = " A user already exists with this email!"
         }else if(err.code=="USER_ALREADY_EXISTS_PWD_INVALID"){
-          Notification.warning("This Email id already associated with another account. If you are the same person please enter correct password!", 3000);
+          Notification.warning("This Email id already associated with another account. Please enter the correct password!", 3000);
           return;
         }
         else if(err.code=="APP_NOT_RECEIVED"){
