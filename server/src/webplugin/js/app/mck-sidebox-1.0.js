@@ -4269,17 +4269,11 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
             _this.sendUserEmail = function() {
                     if( document.getElementById('input-for-email').value.length > 1 ) {
-                        let email = document.getElementById('input-for-email').value;
-                        let data = '{"email":"' + email + '"}'
-                        $applozic.ajax({
+                        var email = document.getElementById('input-for-email').value;
+                        var data = '{"email":"' + email + '"}'
+                        mckUtils.ajax({
                             type: "POST",
                             url: window.MCK_BASE_URL + "/rest/ws/user/update",
-                            headers: {
-                                "Content-Type":"application/json",
-                                "Application-Key":MCK_APP_ID,
-                                "Authorization":"Basic " + AUTH_CODE,
-                                "Device-Key":USER_DEVICE_KEY
-                            },
                             data: data,
                             contentType : 'application/json',
                             success : function(data) {
@@ -4291,7 +4285,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 }
             _this.updateMetadata = function () {
-                $applozic.ajax({
+                mckUtils.ajax({
                     type : "POST",
                     url : MCK_BASE_URL + "/rest/ws/message/update/metadata",
                     global : false,
@@ -4466,7 +4460,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (msg.metadata.msg_type === "BUTTON") {
                         var payload = [];
                         if (msg.metadata.payload) {
-                            payload = $.parseJSON(msg.metadata.payload);
+                            payload = $applozic.parseJSON(msg.metadata.payload);
                             if (!payload[0].hidden) {
                                 var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
                             }
@@ -4477,11 +4471,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     }
                                 }
                             }
-                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                            $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                         } else {
                             console.log("msg.contentType === 23 && metadata.msg_type === BUTTON")
                             var elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>Button</button></div>"
-                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                            $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                         }
                     }
 
@@ -4489,8 +4483,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
                         var elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                         elem += "<button id='send-email-button' style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
-                        $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
-                        $("#send-email-button").click(function(){
+                        $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                        $applozic("#send-email-button").click(function(){
                             _this.sendUserEmail();
                             _this.updateMetadata();
                         })
@@ -4499,7 +4493,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (msg.metadata.msg_type === "LIST") {
                         var payload = [];
                         if (msg.metadata.payload) {
-                            payload = $.parseJSON(msg.metadata.payload);
+                            payload = $applozic.parseJSON(msg.metadata.payload);
                             console.log("msg.contentType === 23 && metadata.msg_type === LIST")
                             var elem = "";
                             if (!payload[0].hidden) {
@@ -4523,7 +4517,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     }
                                 }
                             }
-                            $("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
+                            $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                         }
                     }
                 }
