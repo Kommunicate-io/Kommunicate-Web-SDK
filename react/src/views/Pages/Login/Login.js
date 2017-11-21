@@ -74,55 +74,62 @@ handlePasswordResetError=(response)=>{
 }
 
 submitForm = ()=>{
-// alert("button clicked "+ this.state.userName+ "  "+this.state.password);
- //validateUser(this.state);
-var _this=this;
-const loginUrl= getConfig().kommunicateApi.login;
-var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
-if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
-  Notification.warning("username or password can't be empty!");
-}else{
-  console.log("inside submit form");
-  this.setState({loginButtonDisabled:true});
-  axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
-  .then(function(response){
-    if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
-      Notification.warning("Invalid credentials");
-      _this.setState({loginButtonDisabled:false});
-    }else if(response.status==200&&response.data.code=='SUCCESS'){
-      console.log("logged in successfully");
-      if (typeof(Storage) !== "undefined") {
-      localStorage.setItem("loggedinUser", userName);
-      localStorage.setItem("isAdmin", response.data.result.isAdmin||false);
-      localStorage.setItem("authorization", response.data.result.authorization);
-      if(response.data.result.apzToken){
-      localStorage.setItem("apzToken",response.data.result.apzToken);
-      }else{
-        var apzToken  = new Buffer(userName+":"+password).toString('base64');
-        localStorage.setItem("apzToken",apzToken);
-      }
-      if(response.data.result.application && response.data.result.application.key){
-      localStorage.setItem("applicationKey", response.data.result.application.key);
-      }
-      localStorage.setItem("applicationId", _this.state.applicationId);
-      localStorage.setItem("applicationName", _this.state.applicationName);
-      localStorage.setItem("application", JSON.stringify(response.data.result.application));
-      localStorage.setItem("password",password);
-      if(response.data.result.imageLink){
-        localStorage.setItem("imageLink",response.data.result.imageLink);
-      }
-      localStorage.setItem("name",response.data.result.name);
+  // alert("button clicked "+ this.state.userName+ "  "+this.state.password);
+  //validateUser(this.state);
+  var _this=this;
+  const loginUrl= getConfig().kommunicateApi.login;
+  var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
+  if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
+    Notification.warning("username or password can't be empty!");
+  }else{
+    console.log("inside submit form");
+    this.setState({loginButtonDisabled:true});
+    axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
+    .then(function(response){
+      if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
+        Notification.warning("Invalid credentials");
+        _this.setState({loginButtonDisabled:false});
+      } else if (response.status == 200 && response.data.code == 'SUCCESS') {
+        console.log("logged in successfully");
+        if (typeof (Storage) !== "undefined") {
+          localStorage.setItem("loggedinUser", userName);
+          localStorage.setItem("isAdmin", response.data.result.isAdmin || false);
+          localStorage.setItem("authorization", response.data.result.authorization);
+          if (response.data.result.apzToken) {
+            localStorage.setItem("apzToken", response.data.result.apzToken);
+          } else {
+            var apzToken = new Buffer(userName + ":" + password).toString('base64');
+            localStorage.setItem("apzToken", apzToken);
+          }
+          if (response.data.result.application && response.data.result.application.key) {
+            localStorage.setItem("applicationKey", response.data.result.application.key);
+          }
+          localStorage.setItem("applicationId", _this.state.applicationId);
+          localStorage.setItem("applicationName", _this.state.applicationName);
+          localStorage.setItem("application", JSON.stringify(response.data.result.application));
+          localStorage.setItem("password", password);
+          if (response.data.result.imageLink) {
+            localStorage.setItem("imageLink", response.data.result.imageLink);
+          }
+          localStorage.setItem("name", response.data.result.name);
+        }
+
+        window.$applozic.fn.applozic('logout');        
+        var options = window.applozic._globals;
+        options.userId = userId;
+        options.accessToken = password;
+        window.$applozic.fn.applozic(options);
+
+        _this.props.history.push("/dashboard");
+        _this.state=_this.initialState;
+    
+        //window.chatLogin();
     }
-  _this.props.history.push("/dashboard");
-  _this.state=_this.initialState;
-  
-    //window.chatLogin();
+    }).catch(function(err){
+      Notification.error("error logining in");
+      _this.setState({loginButtonDisabled:false});
+    });
   }
-  }).catch(function(err){
-    Notification.error("error logining in");
-    _this.setState({loginButtonDisabled:false});
-  });
-}
 }
 
 login = (event)=>{
