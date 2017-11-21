@@ -331,7 +331,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
     }
   }))
   .then(response => {
-    window.$applozic.fn.applozic('updateUser', {data: {'imageLink': profileImageUrl}, success: function(response) {
+    window.$applozic.fn.applozic('updateUser', {data: {'imageLink': response.profileImageUrl}, success: function(response) {
         console.log(response);
       }, error: function(error) {
         console.log(error);
