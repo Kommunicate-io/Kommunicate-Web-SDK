@@ -116,8 +116,8 @@ submitForm = ()=>{
 
         window.$applozic.fn.applozic('logout');        
         var options = window.applozic._globals;
-        options.userId = userId;
-        options.accessToken = password;
+        options.userId = _this.state.userName;
+        options.accessToken = _this.state.password;
         window.$applozic.fn.applozic(options);
 
         _this.props.history.push("/dashboard");
