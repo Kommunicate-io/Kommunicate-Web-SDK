@@ -89,7 +89,7 @@ class Tabs extends Component {
      }
      // creating bot
     handleSubmit(event) {
-      var _this=this;
+        var _this=this;
         var applicationId =localStorage.getItem("applicationId");
         var username = localStorage.getItem("loggedinUser");
         var password = localStorage.getItem("password");
@@ -104,7 +104,7 @@ class Tabs extends Component {
             "applicationId": applicationId,
             "authenticationTypeId":1
         }
-            axios({
+        axios({
             method: 'post',
             url: registerClientUrl,
             data:JSON.stringify(formData),
@@ -114,6 +114,12 @@ class Tabs extends Component {
         })
           .then(function(response){
            if(response.status==200 ){
+
+            if (response.data.message == "PASSWORD_INVALID" || response.data.message == "UPDATED") {
+              Notification.error(_this.state.userid + " already exists. Choose another Bot Id.");              
+              return;
+            }
+
             var data = {"name": formData.displayName,
               "key": response.data.userKey,
               "brokerUrl": response.data.brokerUrl,
@@ -121,13 +127,13 @@ class Tabs extends Component {
               "applicationKey": applicationId,
               "authorization": btoa(formData.userid+':'+response.data.deviceKey)
             }
-               axios({
-            method: 'post',
-            url: addBotUrl,
-            data:JSON.stringify(data),
-            headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
+            axios({
+              method: 'post',
+              url: addBotUrl,
+              data:JSON.stringify(data),
+              headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json'
             }
         })
           .then(function(response){

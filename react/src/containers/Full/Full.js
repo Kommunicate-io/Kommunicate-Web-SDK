@@ -18,6 +18,23 @@ import Autoreply from '../../views/Autoreply/'
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 class Full extends Component {
 
+  
+  constructor (props) {
+    super(props)
+     //_this =this;
+    this.state = { 
+      imageLink:localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
+    }
+    this.updateProfilePic  = this.updateProfilePic.bind(this);
+    console.log("profilePicUrl",this.state.imageLink)
+  }
+
+  updateProfilePic(url) { 
+    this.setState({
+      imageLink: url==null ? "/img/avatars/default.png": url
+    });
+    console.log("profilePicUrl updated",this.state.imageLink)
+   }
   componentWillMount(){
     window.appHistory = this.props.history;
   }
@@ -31,8 +48,8 @@ class Full extends Component {
 
   render() {
     return (
-      <div className="app">
-        <Header />
+      <div className="app"> 
+        <Header profilePicUrl={this.state.imageLink}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className="main">
@@ -44,7 +61,9 @@ class Full extends Component {
                 <Route exact path="/conversations" name="Conversations" component={Conversations}/>
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
-                <Route exact path="/admin" name="Admin" component={Admin}/>
+                <Route exact path="/admin" name="Admin" render={()=>{
+                   return <Admin updateProfilePicUrl={this.updateProfilePic} />
+                }}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/settings/integration" name="Integration" component={Integration}/>
@@ -53,7 +72,7 @@ class Full extends Component {
               </Switch>
             </div>
           </main>
-          <Aside />
+          <Aside updateProfilePicUrl={this.updateProfilePic}/>
         </div>
         <Footer />
       </div>

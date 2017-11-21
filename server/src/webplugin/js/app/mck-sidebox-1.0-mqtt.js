@@ -382,7 +382,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
         var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
-        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : MCK_BASE_URL + "/resources/sidebox/audio/notification_tone.mp3";
+        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -470,7 +470,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             if (IS_CALL_ENABLED) {
               notificationtoneoption.loop = true;
              ringToneService = new RingToneService();
-             mckVideoCallringTone = ringToneService.loadRingTone(MCK_BASE_URL + "/resources/sidebox/audio/applozic_video_call_ring_tone.mp3",notificationtoneoption);
+             mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3",notificationtoneoption);
             mckCallService.init();
               }
         };
@@ -1909,9 +1909,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     e.preventDefault();
                     if(window.applozic.PRODUCT_ID=='kommunicate'){
                     	if(!IS_ANONYMOUS_CHAT){
-                    	$applozic("#km-chatLoginModal").removeClass('n-vis').addClass('vis');
-                    	$applozic("#km-chatLoginModal").css("display", "block");
-                    	}else{
+                            //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
+                            $applozic("#km-chat-login-modal").css("display", "block");
+                    	} else {
                     		loadChat(); 
                     	}
                     }else{
@@ -1994,8 +1994,8 @@ var MCK_CLIENT_GROUP_MAP = [];
 
 					} 
 				$applozic(".km-login-model-close").on('click',function(e){
-                	
-                	 $applozic("#km-chatLoginModal").removeClass('vis').addClass('n-vis');
+                     //$applozic("#km-chat-login-modal").removeClass('vis').addClass('n-vis');
+                     $applozic("#km-chat-login-modal").css("display", "none");      
                 });
                 $applozic(d).on("click", ".mck-conversation-tab-link", function(e) {
                     e.preventDefault();
@@ -4592,7 +4592,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return '<div class="mck-alpha-contact-image mck-alpha-user"><span class="mck-icon-user"></span></div>';
                 }
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toUpperCase();
                     return '<div class="mck-videocall-image alpha_' + first_alpha + '"><span class="mck-contact-icon">' + first_alpha + '</span></div>';
@@ -4606,7 +4606,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 name = name.toString();
                 var first_alpha = name.charAt(0);
-                var letters = /^[a-zA-Z]+$/;
+                var letters = /^[a-zA-Z0-9]+$/;
                 if (first_alpha.match(letters)) {
                     first_alpha = first_alpha.toLowerCase();
                     return 'mck-text-' + first_alpha;
@@ -8464,7 +8464,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.init = function() {
                  notificationtoneoption.loop = true;
                 _this.token = mckStorage.getAppHeaders() !== null ? mckStorage.getAppHeaders().videoToken : undefined;
-                _this.ringToneForHost = ringToneService.loadRingTone(MCK_BASE_URL + "/resources/sidebox/audio/applozic_video_call_ring_tone.mp3",notificationtoneoption);
+                _this.ringToneForHost = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3",notificationtoneoption);
                 //start videocall button in menu
                 $applozic("#mck-btn-video-call").on('click', function(e) {
                    

@@ -3,6 +3,7 @@ const userService = require('../users/userService');
 const joi = require("joi");
 const randomString  = require('randomstring');
 const inAppMessageService = require("../application/inAppMsgService");
+const applozicClient = require("../utils/applozicClient");
 
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
@@ -72,6 +73,13 @@ exports.patchCustomer = (req,res)=>{
   const userId = req.params.userId;
   console.log("request recieved to update customer: ",userId, "body",customer);
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
+    userService.getAdminUserByAppId(customer.applicationId).then(user=>{
+      applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,{userId:userId, displayName:customer.name, email: customer.email}).then(response=>{
+        console.log("Applozic update user response: " + response);
+      }).catch(err=>{
+        console.log("error while updating Applozic user");
+      })    
+    });
     if(isUpdated){
       response.code="SUCCESS";
       response.message="updation successfull";

@@ -478,8 +478,8 @@ body {
 .km-container .right .km-group-inner .bubble.km-msg-left .km-msg-box
 	{
 	padding: 4px 8px;
-	color: #333;
-	background: #fff;
+	/*color: #333;
+	background: white;*/
 }
 
 .km-container .right .km-group-inner .bubble.km-msg-left .km-msg-box:after
@@ -491,11 +491,11 @@ body {
 	float: left;
 	color: #1a1a1a;
 	font-size: 14px;
-	margin-left: 15px;
+	/*margin-left: 15px;*/
 	padding: 10px 14px 12px;
 	max-width: 85%;
 	border-radius: 5px;
-	background-color: #FFFFFF;
+	background-color: whitesmoke;
 	-webkit-align-self: flex-end;
 	-ms-flex-item-align: end;
 	align-self: flex-end;

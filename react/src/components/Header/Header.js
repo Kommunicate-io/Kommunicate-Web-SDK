@@ -10,7 +10,7 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false,
-      imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
+      //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
     };
   }
@@ -55,7 +55,7 @@ return imageLink;
   render() {
     return (
       <header className="app-header navbar">
-        <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&9776;</button>
+        <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
         <Link className="a-undecorated" redirect to ="/dashboard">
         <a href ="" target="_blank" className = "a-undecorated a-unclickable"/> <img src="/img/logo01.svg" height="50" width="50"></img>
         <span className= "brand-name">KOMMUNICATE</span></Link>
@@ -66,7 +66,7 @@ return imageLink;
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
-                <img src= { this.state.imageLink } className="img-avatar" alt={this.state.displayName}/>
+                <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
 

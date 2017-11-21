@@ -31,7 +31,7 @@ const createCustomer = function(email,password,name) {
            }
          } else  {
            //alert("Internal server error..");
-           throw {code:response.data&&response.data.code?response.data.code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!!"};
+           throw {code:response.data&&response.data.code?response.data.code:"INTERNAL_SERVER_ERROR",message:"Retry again after some time!!"};
          }
     });
 }
@@ -305,7 +305,14 @@ const createSuggestions = (suggestion) => {
 
 const signUpWithApplozic = (data)=>{
   const url = getConfig().kommunicateBaseUrl+"/customers/applozic";
+  let user = {userId:data.userName,password:data.password,applicationId:data.applicationId};
   return axios.post(url,{userName:data.userName,password:data.password,applicationId:data.applicationId}).then(response=>{
+    window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
+        console.log(response);
+      }, error: function(error) {
+        console.log(error);
+      }
+    });
     return response;
   });
 }
@@ -327,18 +334,31 @@ const sendProfileImage = (imageFile, imageFileName) => {
       'Content-Type': 'multipart/form-data',
     }
   }))
-  .then(response => response)
+  .then(response => {
+    window.$applozic.fn.applozic('updateUser', {data: {'imageLink': response.profileImageUrl}, success: function(response) {
+        console.log(response);
+      }, error: function(error) {
+        console.log(error);
+      }
+    });
+    return response;
+  });
 }
 
 const updateApplozicUser = (userInfo) => {
-  
   const headers = {
-      'Content-Type':'application/json',
-      'Application-Key': localStorage.getItem("applicationId"),
-      'Authorization': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
-      'Access-Token': localStorage.getItem("password")
-    }
-
+    'Content-Type':'application/json',
+   }
+  if(localStorage.getItem("isAdmin")==="true"){
+      headers['Apz-AppId']=localStorage.getItem("applicationId"),
+      headers['Apz-Token']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64')
+    
+  }else{
+    headers['Application-Key']=  localStorage.getItem("applicationId"),
+    headers['Authorization']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
+    headers['Access-Token']=localStorage.getItem("password")     
+  
+  }
   console.log(headers)
 
   console.log(userInfo)
@@ -347,7 +367,8 @@ const updateApplozicUser = (userInfo) => {
 
   return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
     headers: headers
-  })).then(response => {console.log(response); return response})
+  })).then(response => {console.log(response); 
+    return response})
 
 }
 

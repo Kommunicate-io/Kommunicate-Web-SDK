@@ -235,7 +235,7 @@ exports.updatePassword = (options)=>{
  */
 exports.updateApplozicClient = (userName, accessToken,applicationId,user,options)=>{
   let apzToken = options&&options.apzToken?options.apzToken:new Buffer(userName+":"+accessToken).toString('base64');
-  return axios.post(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/v2/update",user,{headers:{
+  return axios.post(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update",user,{headers:{
     "Apz-Token":"Basic "+ apzToken,
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,

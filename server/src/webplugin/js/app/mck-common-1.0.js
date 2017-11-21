@@ -261,7 +261,8 @@ function MckGroupUtils() {
             'removedMembersId': removedMembersId,
             'clientGroupId': group.clientGroupId,
             'isGroup': true,
-            'deletedAtTime' :group.deletedAtTime
+            'deletedAtTime' :group.deletedAtTime,
+            'metadata': group.metadata
         };
         MCK_GROUP_MAP[group.id] = groupFeed;
         if (group.clientGroupId) {

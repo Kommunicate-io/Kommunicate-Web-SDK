@@ -175,6 +175,22 @@ const insertBusinessHoursIntoDb=(businessHours, transaction)=>{
   return db.BusinessHour.create(businessHours,{transaction: transaction});
 };
 
+const getAdminUserByAppId = (appId)=> {
+  if(stringUtils.isBlank(appId)) {
+    console.log("empty appid received");
+    throw new Error("application id is empty");
+  }
+  return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+    if(!customer) {
+      return null;
+    }
+    return userModel.findOne({where: {customerId: customer.id, type: 3}}).then(user => {
+      console.log("found data for user : ",user==null?null:user.dataValues);
+      return user!==null?user.dataValues:null;
+    });
+  });
+};
+
 const getByUserNameAndAppId= (userName,appId)=>{
   if(stringUtils.isBlank(userName)||stringUtils.isBlank(appId)) {
     console.log("empty userName received");
@@ -293,6 +309,7 @@ exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
 exports.createUser=createUser;
 exports.getCustomerInfoByApplicationId=getCustomerInfoByApplicationId;
+exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;
 exports.getByUserKey = getByUserKey;

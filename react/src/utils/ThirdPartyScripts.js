@@ -5,9 +5,18 @@ class ThirdPartyScripts extends Component {
     
       componentDidMount(){
           // support chat widget
+          let userId = localStorage.getItem('loggedinUser');
+
           (function(d, m){
-            let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","agentName":"devashish@kommunicate.io",
-              "groupName":"devashish@kommunicate.io","baseUrl":getConfig().homeUrl};
+            let o = {};
+            if (userId) {
+              o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+              "userId": localStorage.getItem('loggedinUser'), "accessToken": localStorage.getItem("password"),
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl};
+            } else {
+              o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl};
+            }
             let s = document.createElement("script");
             s.type = "text/javascript";
             s.async = true;

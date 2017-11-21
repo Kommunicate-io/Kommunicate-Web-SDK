@@ -350,7 +350,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var IS_AUTO_TYPE_SEARCH_ENABLED = (typeof appOptions.autoTypeSearchEnabled === "boolean") ? appOptions.autoTypeSearchEnabled : true;
 		var MCK_CHECK_USER_BUSY_STATUS = (typeof appOptions.checkUserBusyWithStatus === "boolean") ? (appOptions.checkUserBusyWithStatus) : false;
 		var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof appOptions.launchOnUnreadMessage === "boolean") ? appOptions.launchOnUnreadMessage : false;
-		var NOTIFICATION_TONE = KM_BASE_URL + "/resources/sidebox/audio/notification_tone.mp3";
+		var NOTIFICATION_TONE = "/audio/notification_tone.mp3";		
 		var CONVERSATION_STATUS_MAP = [ "DEFAULT", "NEW", "OPEN" ];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
 		var GROUP_TYPE_MAP = [ 1, 2, 5, 6 ];
@@ -376,9 +376,9 @@ var KM_CLIENT_GROUP_MAP = [];
 		var mckContactService = new MckContactService();
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
-		var ringToneService;
-		var mckNotificationTone = null
 		w.MCK_OL_MAP = new Array();
+		var ringToneService;		
+		var mckNotificationTone = null;
 		_this.events = {
 			'onConnectFailed' : function() {},
 			'onConnect' : function() {},
@@ -403,8 +403,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			return appOptions;
 		};
 		_this.init = function() {
-			ringToneService = new KmRingToneService();
-            mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
+			ringToneService = new KmRingToneService();		
+			mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
 			mckMessageService.init();
 			mckFileService.init();
 			mckInit.initializeApp(appOptions, false);
@@ -1175,6 +1175,9 @@ var KM_CLIENT_GROUP_MAP = [];
 								'displayName' : result.displayName,
 								'photoLink' : result.imageLink
 							});
+							if(result.imageLink && result.imageLink!==""){
+								w.sessionStorage.setItem('userProfileUrl', result.imageLink);
+							}
 							$kmApplozic.ajaxPrefilter(function(options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
 									// _this.manageIdleTime();
@@ -3749,7 +3752,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					return '<div class="km-alpha-contact-image km-alpha-user"><span class="km-icon-user"></span></div>';
 				}
 				var first_alpha = name.charAt(0);
-				var letters = /^[a-zA-Z]+$/;
+				var letters = /^[a-zA-Z0-9]+$/;
+				
 				if (first_alpha.match(letters)) {
 					first_alpha = first_alpha.toUpperCase();
 					return '<div class="km-alpha-contact-image alpha_' + first_alpha + '"><span class="km-contact-icon">' + first_alpha + '</span></div>';
@@ -3763,7 +3767,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				name = name.toString();
 				var first_alpha = name.charAt(0);
-				var letters = /^[a-zA-Z]+$/;
+				var letters = /^[a-zA-Z0-9]+$/;				
 				if (first_alpha.match(letters)) {
 					first_alpha = first_alpha.toLowerCase();
 					return 'km-text-' + first_alpha;
@@ -6358,7 +6362,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							iconLink = imgsrc;
 						}
 					}
-					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg,mckNotificationTone);
+					kmNotificationUtils.sendDesktopNotification(displayName, iconLink, msg, mckNotificationTone);
 				}
 			};
 			_this.showNewMessageNotification = function(message, contact, displayName) {

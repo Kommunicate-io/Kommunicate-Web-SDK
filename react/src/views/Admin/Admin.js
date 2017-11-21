@@ -48,7 +48,8 @@ handleKeyPress(event) {
       "contactNo" : this.state.contact,
       "companyName": this.state.companyname,
       "companySize":this.state.companysize,
-      "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry
+      "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry,
+      "applicationId": localStorage.getItem('applicationId')
     }
 
     if(localStorage.getItem("isAdmin") === 'true'){
@@ -140,6 +141,7 @@ handleKeyPress(event) {
               handleImageFiles={this.handleImageFiles}
               invokeImageUpload={this.invokeImageUpload}
               uploadImageToS3={this.uploadImageToS3}
+              updateProfilePicUrl={this.props.updateProfilePicUrl}
             />
             <div className="card">
               <div className="card-header">

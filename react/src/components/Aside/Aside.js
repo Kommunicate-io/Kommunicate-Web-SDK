@@ -52,6 +52,9 @@ class Aside extends Component {
               window.$kmApplozic.each(response.response.users, function() {
                   assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
               });
+              if(sessionStorage.getItem("userProfileUrl")!=null){
+                that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"))
+              }
             }
          }
       });
@@ -192,6 +195,11 @@ class Aside extends Component {
                                           });
                                       }
                                     });
+  }
+
+  updateUserContactDetail(userId, params){
+    var data={'contacts':userId};
+    window.$kmApplozic.fn.applozic('loadContacts', data.contacts );
   }
 
   render() {
