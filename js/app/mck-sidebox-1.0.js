@@ -6316,7 +6316,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 console.log(options.data);
                 mckUtils.ajax({
                     type: "POST",
-                    url: window.MCK_BASE_URL + "/rest/ws/user/update",
+                    url: MCK_BASE_URL + "/rest/ws/user/update",
                     data: w.JSON.stringify(options.data),
                     contentType : 'application/json',
                     success: function(response) {
