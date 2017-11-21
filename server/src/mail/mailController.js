@@ -38,6 +38,7 @@ exports.sendMail =(req,res)=>{
                 options.templatePath = templatePath;
                 options.templateReplacement = templateReplacement;
                 options.subject = "Invitation to Join Kommunicate ";
+                options.bcc = "hello@kommunicate.io";
                 break;
 
             }
