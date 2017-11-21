@@ -392,9 +392,14 @@ background-clip: text;
 
 
 
+
 .homepage-beta-features-section {
     padding: 50px 5px 30px;
     position: relative;
+}
+.homepage-beta-features-section .section-heading {
+    margin-top: 30px;
+    margin-bottom: 50px;
 }
 .homepage-beta-features-section::before {
     content: "";
@@ -896,6 +901,7 @@ transform: scale(.6);
     font-weight: 300;
     font-size: 32px;
     margin-bottom: 60px;
+    margin-top: 0px;
 }
 
 .cta-section-cta-btn {
@@ -1243,6 +1249,9 @@ label {
     .scroll-down .fa-angle-down {
         margin-top: 40px;
         margin-bottom: 20px;
+    }
+    .homepage-beta-cta-section .pre-signup-form {
+        width: 75%;
     }
 
 }
