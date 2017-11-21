@@ -4267,10 +4267,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                     return;
                 }
             };
-<<<<<<< HEAD
-
-=======
->>>>>>> fe5680892387a3d2cbc67ca39c75471a596c17a7
             _this.sendUserEmail = function() {
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         let email = document.getElementById('input-for-email').value;
