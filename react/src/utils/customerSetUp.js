@@ -51,21 +51,5 @@ const getJsInstructions = () => {
   You can paste the script in the <head/> or <body/> tag.`
 }
 
-/* TODO : move Invite Email Template into file and replace fields dynamically.
-
-const getInviteTeamEmailTemplate = (params)=>{
-
-  return new Promise(function(resolve,reject){
-    fs.readFile(path.join(__dirname,"/inviteTeamTemplate.html"), 'utf8', function (err,data) {
-      if (err) {
-       return reject(err);
-      }else{
-        return resolve(data.replace(new RegExp(Object.keys(params).join("|"),"gi"), function(matched){
-          return params[matched];
-        }));
-      }
-    });
-  });
-}*/
 
 export {getJsCode, getJsInstructions}
