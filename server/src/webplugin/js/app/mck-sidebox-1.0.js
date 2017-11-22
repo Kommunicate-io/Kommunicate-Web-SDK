@@ -4274,10 +4274,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.sendUserEmail = function() {
+                    console.log(document.getElementById('input-for-email').value)
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         var email = document.getElementById('input-for-email').value;
                         mckContactService.updateUser({data: {'email': email}, success: function(response) {
-
+                                console.log("email updated successfully !");
+                                $applozic("#input-for-email").hide();
+                                $applozic("#send-email-button").hide()
                             }, error: function(error) {
 
                             }
@@ -4286,7 +4289,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                         alert("No email");
                     }
                 }
-            _this.updateMetadata = function () {
+            _this.updateMetadata = function (msg_Key, msg_metadata) {
+
+                var data = w.JSON.stringify({
+                    key: msg_Key,
+                    metadata: msg_metadata
+                });
+
                 mckUtils.ajax({
                     type : "POST",
                     url : MCK_BASE_URL + "/rest/ws/message/update/metadata",
@@ -4481,14 +4490,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                     }
 
-                    if (msg.metadata.msg_type === "INPUT") {
+                    if (msg.metadata.msg_type === "INPUT" && !(msg.metadata.hidden === "false" ? false:true) ) {
                         console.log("msg.contentType === 23 && metadata.msg_type === INPUT")
                         var elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                         elem += "<button id='send-email-button' style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>Submit</button></div>"
                         $applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12").after(elem)
                         $applozic("#send-email-button").click(function(){
-                            _this.sendUserEmail();
-                            _this.updateMetadata();
+                            if( document.getElementById('input-for-email').value.length > 1 ){
+                                _this.sendUserEmail();
+                                _this.updateMetadata(msg.key, {hidden:"true"});
+                            }
                         })
                     }
 
@@ -4502,7 +4513,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 if (payload[0].type.toLowerCase() === 'button') {
                                     elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
                                 } else if (payload[0].type.toLowerCase() === "input") {
-                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                                     elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[0].title + "</button></div>"
                                 }
                             }
