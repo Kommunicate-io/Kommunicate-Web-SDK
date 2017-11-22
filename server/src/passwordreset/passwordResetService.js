@@ -47,7 +47,7 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     //console.log(template);
 
    let mailOptions = {
-    from: '"Kommunicate" <support@applozic.com>', // sender address
+    from: '"Kommunicate" <support@kommunicate.io>', // sender address
     to: user.email, // list of receivers
     subject: "Reset Your Password", // Subject line
     text: template, // plain text body
