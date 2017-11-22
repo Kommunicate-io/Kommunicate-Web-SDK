@@ -4279,8 +4279,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         var email = document.getElementById('input-for-email').value;
                         mckContactService.updateUser({data: {'email': email}, success: function(response) {
                                 console.log("email updated successfully !");
-                                $applozic("#input-for-email").hide();
-                                $applozic("#send-email-button").hide()
+                                $applozic("#input-for-email").after("<div style='width: 100px; margin: auto;'><span>Email Sent</span></div>");
+                                $applozic("#input-for-email").remove();
+                                $applozic("#send-email-button").remove();
                             }, error: function(error) {
 
                             }
