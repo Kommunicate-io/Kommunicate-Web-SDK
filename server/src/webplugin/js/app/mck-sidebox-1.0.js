@@ -4513,7 +4513,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 if (payload[0].type.toLowerCase() === 'button') {
                                     elem = "<div style='width: 100px; margin: auto;'><button style='height: 27px;color: #FFF;background-color: #000;border-radius: 10px; width: 100px; margin: 10px;'>" + payload[0].title + "</button></div>"
                                 } else if (payload[0].type.toLowerCase() === "input") {
-                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input id='input-for-email' type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
+                                    elem = "<div style='float: left; margin: 13px; width: 100%'><input type='text' style='background-color: #FFF;width: 60%;height:35px;' placeholder='Enter your email...'/>"
                                     elem += "<button style='height: 27px; width: 11%;color: #FFF;background-color: #000;border-radius: 0 10px 10px 0;'>" + payload[0].title + "</button></div>"
                                 }
                             }
