@@ -5,6 +5,7 @@ import Notification from '../model/Notification';
 import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge }  from '../../utils/kommunicateClient'
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
+import { Label, Input } from 'reactstrap';
 
 
 class Welcome extends Component{
@@ -54,15 +55,29 @@ render(){
       <div className="card">
         <div className="card-header">
           <div className="card-block">
-          <div className="form-group row form-control-label">Message</div>
-            <div className="form-group row">
-            <textarea id ="offhourmessage" rows="6" cols="60" onChange = {(event) => this.setState({msg:event.target.value})} value={this.state.msg} required></textarea>
+            <div>
+              <h4>Enable automatic welcome message </h4>
+              <Label className="switch switch-3d switch-success">
+                  <Input type="checkbox" className="switch-input" defaultChecked/>
+                  <span className="switch-label"></span>
+                  <span className="switch-handle"></span>
+              </Label>
+              <p>(welcome message will be automatically shown to the user on opening the chat box)</p>
+              <p>You can update status as offline or online manually from the header above. Show me where</p>
+            </div> 
+            <hr />
+            <div>
+              <h4> When you are online </h4>
+              <p>Start solving your users’ issues with this message </p>
+              <i className="icon-arrow-right icons font-2xl d-block mt-4"></i>
+            </div>
+            <hr />
+            <div>
+              <h4> When you are offline </h4>
+              <p>Ask your user to leave a message so that you can get back to them later</p>
+              <i className="icon-arrow-right icons font-2xl d-block mt-4"></i>
             </div>
           </div>
-        </div>
-        <div className="card-footer">
-          <button type="button" className="btn btn-primary px-4" onClick={this.submitWelcomeMessage}>Save</button>
-          <button type="reset" className="btn btn-danger px-4">Cancel</button>
         </div>
       </div>
     </div>
