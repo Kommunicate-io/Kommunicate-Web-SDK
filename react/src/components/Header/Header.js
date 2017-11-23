@@ -71,7 +71,14 @@ return imageLink;
               </button>
 
               <DropdownMenu className="dropdown-menu-right">
-                <DropdownItem onClick={ this.logout }><i className="fa fa-lock"></i> Logout</DropdownItem>
+                <DropdownItem>
+                  <p>{localStorage.getItem("name")}</p>
+                  <p>{localStorage.getItem("loggedinUser")}</p>
+                  <p> You are online <span className="avatar-status badge-success"></span></p>
+                </DropdownItem>
+                <DropdownItem> Go Offline </DropdownItem>
+                <DropdownItem> Profile </DropdownItem>
+                <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
 
               </DropdownMenu>
             </Dropdown>
