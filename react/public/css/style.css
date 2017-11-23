@@ -8974,3 +8974,55 @@ hr.transparent {
 .a-unclickable{
   pointer-events: none;
 }
+
+.enable-automatic-welcome {
+  width: 326px;
+  height: 23px;
+  font-size: 17px;
+  letter-spacing: 1.2px;
+  text-align: left;
+  color: #515050;
+}
+
+.welcome-message-will {
+  width: 353px;
+  height: 28px;
+  font-size: 10px;
+  letter-spacing: 0.9px;
+  text-align: left;
+  color: #515050;
+}
+
+.you-can-update-status {
+  width: 449px;
+  height: 30px;
+  font-size: 11px;
+  letter-spacing: 0.9px;
+  color: #515050;
+}
+
+.you-can-update-status .text-style-1 {
+  font-weight: 600;
+}
+
+.you-can-update-status .text-style-2 {
+  color: #4997f3;
+}
+
+.start-solving-your-user {
+  width: 265px;
+  height: 14px;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #87898b;
+}
+
+.ask-your-user-to {
+  width: 381px;
+  height: 14px;
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #87898b;
+}
