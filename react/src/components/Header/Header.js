@@ -74,6 +74,7 @@ return imageLink;
                 <DropdownItem>
                   <p>{localStorage.getItem("name")}</p>
                   <p>{localStorage.getItem("loggedinUser")}</p>
+                  <p> You are online <span className="avatar-status badge-success"></span></p>
                 </DropdownItem>
                 <DropdownItem> Go Offline </DropdownItem>
                 <DropdownItem> Profile </DropdownItem>
