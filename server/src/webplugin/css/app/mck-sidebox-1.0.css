@@ -138,7 +138,7 @@
 .mck-powered-by:hover{
 	text-decoration:line
 }
-#mck-textbox-container{
+#mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
 }
