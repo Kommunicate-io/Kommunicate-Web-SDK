@@ -2406,7 +2406,6 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (!params.startTime) {
 					$mck_msg_inner.html('');
 				}
-				console.log("loading message list from server");
 				kmUtils.ajax({
 					url : KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
