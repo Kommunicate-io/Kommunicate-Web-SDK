@@ -11,6 +11,8 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID =config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPassword;
 const cacheClient = require("../cache/hazelCacheClient");
+const logger = require('../utils/logger');
+const botPlatformClient = require("../utils/botPlatformClient");
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -62,9 +64,14 @@ let handleCreateUserError =(user,customer,err)=>{
  */
 const createUser =user=>{
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
-    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,"APPLICATION_WEB_ADMIN")
+    let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";
+    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role)
     .catch(err=>{
+      if(user.type===registrationService.USER_TYPE.AGENT){
       return handleCreateUserError(user,customer,err);
+      }else{
+        throw err;
+      }
     }))
     .then(applozicUser=>{
       console.log("created user in applozic db",applozicUser.userName);
@@ -74,7 +81,23 @@ const createUser =user=>{
       user.accessToken = user.password;
       user.userKey = applozicUser.userKey;
       user.password=bcrypt.hashSync(user.password, 10);
-      return userModel.create(user).then(user=>{
+      return userModel.create(user).catch(err=>{
+        logger.error("error while creating bot",err);
+      }).then(user=>{
+        if(user.type==registrationService.USER_TYPE.BOT){
+          // keeping it async for now. 
+          botPlatformClient.createBot({
+            "name": user.userName,
+            "key": user.userKey,
+            "brokerUrl": applozicUser.brokerUrl,
+            "accessToken": user.accessToken,
+            "applicationKey": customer.applicationId,
+            "authorization": user.authorization,
+            "type": "KOMMUNICATE_SUPPORT",
+          }).catch(err=>{
+            logger.error("error while creating bot platform",err);
+          })
+        }
         return user?user.dataValues:null;
       });
     }).catch(err=>{
@@ -164,6 +187,12 @@ const updateBusinessHoursInDb=(data,criteria,t)=>{
   console.log("updating : data",data,"criteria :",criteria );
   return db.BusinessHour.update(data,{where: criteria,transaction: t});
 };
+/**
+ * Returns the customer object for given applicationId @see models/customer.js
+ * Ruturns null if no customer found
+ * @param {String} applicationId
+ * @return {Object} customer 
+ */
 const getCustomerInfoByApplicationId = applicationId=>{
   console.log("getting customer information from applicationId",applicationId);
   return db.customer.find({where: {applicationId: applicationId}}).then(customer=>{
@@ -304,6 +333,22 @@ exports.updateUser = (userId, appId, user)=>{
       }
     });
 };
+/**
+ * Get list of all users if type is not specified.
+ * Specify type to filter users  1:Agents, 2: Bots
+ * @param {Object} customer
+ * @param {number} customer.id 
+ * @param {Number} type 
+ * @return {Object} 
+ */
+const getAllUsersOfCustomer = (customer,type)=>{
+  logger.info("fetching Users for customer, ",customer.id);
+  let criteria={customerId:customer.id};
+  if(type){
+    criteria.type= type;
+  }
+  return Promise.resolve(userModel.findAll({where:criteria}));
+}
 
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
@@ -318,3 +363,4 @@ exports.getConfigIfCurrentTimeOutOfBusinessHours=getConfigIfCurrentTimeOutOfBusi
 exports.isIntervalExceeds= isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;
+exports.getAllUsersOfCustomer= getAllUsersOfCustomer;

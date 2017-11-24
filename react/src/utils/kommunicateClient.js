@@ -6,12 +6,22 @@ import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 
-
-
+/**
+ * Creates Customer /Bot/ Agent   
+ * @param {Object} userInfo 
+ * @param {Object} userInfo.userName
+ * @param {Object} userInfo.email
+ * @param {Object} userInfo.type
+ * @param {Object} userInfo.applicationId
+ * @param {Object} userInfo.password
+ * @param {Object} userInfo.name
+ * @param {String} userType 
+ */
 const createCustomerOrAgent = (userInfo, userType)=>{
   switch(userType){
     case "AGENT":
-    return createAgent(userInfo);
+    case "BOT":
+      return createAgent(userInfo);
     default:
     return createCustomer(userInfo.email,userInfo.password,userInfo.name);
   }
@@ -383,7 +393,24 @@ const getWelcomeMessge = (applicationId)=>{
     }
   });
 }
-
+/**
+ * this method fetch the all users(agents and Bots) for applicationId.
+ * pass userType to filter result: 1 for Agent, 2 for Bot
+ * @param {String} applicationId 
+ * @param {Number} userType 1 for Agent, 2 for Bot
+ * @return {Object} List of bot/agents 
+ * @throws {Object} Error 
+ */
+const getUsersByType = (applicationId,userType)=>{
+  let url = getConfig().kommunicateBaseUrl+"/users?appId="+applicationId;
+  if(userType){
+    url+= "&type="+userType;
+  }
+  return axios.get(url).then(result=>{
+    //loggo.info("got data from db",result!=null);
+    return result.data?result.data.data:[];
+  });
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -404,5 +431,6 @@ export {
   signUpWithApplozic,
   sendProfileImage,
   updateApplozicUser,
-  getWelcomeMessge
+  getWelcomeMessge,
+  getUsersByType
 }
