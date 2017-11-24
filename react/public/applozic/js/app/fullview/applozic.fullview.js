@@ -2598,6 +2598,8 @@ var KM_CLIENT_GROUP_MAP = [];
 										$mck_contacts_inner.animate({
 											scrollTop : 0
 										}, 0);
+
+										$kmApplozic(".left .person:first").trigger('click');
 									}
 								} else {
 									$mck_contacts_inner.data('datetime', '');
@@ -4319,10 +4321,11 @@ var KM_CLIENT_GROUP_MAP = [];
 					var $textMessage = $kmApplozic("#li-" + contHtmlExpr + " .msgTextExpr");
 					(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
 					if (!$kmApplozic(".left .person").length) {
+						/* Note; removing because of cyclic dependency where loadTab calls this back.
 						_this.loadTab({
 							tabId : isGroupTab ? message.groupId : contact.contactId,
 							'isGroup' : isGroupTab
-						});
+						});*/
 					} else if ($mck_no_contact_text.hasClass('vis')) {
 						$mck_no_contact_text.removeClass('vis').addClass('n-vis');
 					}
