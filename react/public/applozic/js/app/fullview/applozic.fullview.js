@@ -3721,16 +3721,26 @@ var KM_CLIENT_GROUP_MAP = [];
 					return '';
 				}
 			};
+            _this.getImageUrlForGroupType =function(contact){
+				var roleType='';
+				var userDetail=MCK_USER_DETAIL_MAP[MCK_USER_ID];
+				if(userDetail.roleType==3){
+					roleType=8;
+				}else if(userDetail.roleType==8){
+					roleType=3;
+				}
+				for (var i = 0; i < contact.members.length; i++) {
+					userDetail=MCK_USER_DETAIL_MAP[contact.members[i]];
+					if(userDetail.imageLink && userDetail.roleType==roleType && userDetail.imageLink !== ""){
+						return '<img src="' + userDetail.imageLink + '"/>';
+					}
+                }
+                return mckGroupLayout.getGroupImage(contact.imageUrl);
+			};
 			_this.getContactImageLink = function(contact, displayName) {
 				var imgsrctag = '';
-				if(contact.users && contact.type==10){
-                    for (var i = 0; i < contact.members.length; i++) {
-                        var userDetail=MCK_USER_DETAIL_MAP[contact.members[i]];
-                        if(userDetail.imageLink && userDetail.roleType==3 && userDetail.imageLink !== ""){
-                            imgsrctag= '<img src="' + userDetail.imageLink + '"/>';
-                            break;
-                        }
-                    }
+				if(contact.members && contact.type==10){
+					imgsrctag=_this.getImageUrlForGroupType(contact);
                 } else if (contact.isGroup) {
 					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
 				} else {
