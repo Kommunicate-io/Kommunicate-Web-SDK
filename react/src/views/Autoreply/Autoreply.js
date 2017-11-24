@@ -284,7 +284,7 @@ class Autoreply extends Component {
                 </div>
               </TabPane>
               <TabPane tabId="2">
-              <Welcome/>
+                <Welcome/>
               </TabPane>
               <TabPane tabId="3">
                 <AutoSuggest />
