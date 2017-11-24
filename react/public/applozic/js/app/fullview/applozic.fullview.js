@@ -2406,6 +2406,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (!params.startTime) {
 					$mck_msg_inner.html('');
 				}
+				console.log("loading message list from server");
 				kmUtils.ajax({
 					url : KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type : 'get',
@@ -3340,10 +3341,10 @@ var KM_CLIENT_GROUP_MAP = [];
 					mckInitializeChannel.subscibeToTypingChannel(params.tabId, params.isGroup);
 					if (typeof MCK_ON_TAB_CLICKED === 'function') {
 							MCK_ON_TAB_CLICKED({
-                  tabId: params.tabId,
-                  isGroup: params.isGroup
-              });
-          }
+							tabId: params.tabId,
+							isGroup: params.isGroup
+						});
+					}
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 					$kmApplozic("#li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
@@ -3384,12 +3385,14 @@ var KM_CLIENT_GROUP_MAP = [];
 					var mckMessageArray = mckStorage.getMckMessageArray();
 					mckInitializeChannel.unsubscibeToTypingChannel();
 					if (mckMessageArray !== null && mckMessageArray.length > 0) {
-						mckMessageLayout.addContactsFromMessageList({
-							message : mckMessageArray
-						}, true);
-						$mck_contacts_inner.animate({
-							scrollTop : 0
-						}, 0);
+						if ($kmApplozic(".km-contact-list").length === 0) {
+							mckMessageLayout.addContactsFromMessageList({
+								message : mckMessageArray
+							}, true);
+							$mck_contacts_inner.animate({
+								scrollTop : 0
+							}, 0);
+						}
 						_this.openConversation();
 						return;
 					}
