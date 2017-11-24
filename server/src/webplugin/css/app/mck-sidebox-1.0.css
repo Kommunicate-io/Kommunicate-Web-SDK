@@ -870,7 +870,8 @@
 }
 
 .mck-box-close span {
-	vertical-align: middle;
+	display: block;
+	margin: auto;
 }
 
 .mck-box-title {
@@ -3828,8 +3829,9 @@ fill:white;
 }
 .mck-msg-list-icon{
 	filter:invert(1);
+	display: block;
+	margin: auto;
 }
-
 
 #mck-tab-conversation{
 	padding-left:35px;
