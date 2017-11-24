@@ -6316,7 +6316,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                         if (typeof data === 'object') {
                             if (data.status === 'success') {
                                 console.log(data);
-                                MCK_USER_ID = params.newUserId
+                                MCK_USER_ID = params.newUserId;
+                                var mckAppHeaders=  mckStorage.getAppHeaders(data);
+                                mckAppHeaders.userId=MCK_USER_ID;
+                                mckStorage.setAppHeaders(mckAppHeaders);
+                                AUTH_CODE = btoa(mckAppHeaders.userId + ':' + mckAppHeaders.deviceKey);
                                 if (params.callback) {
                                     //update access token here
                                     params.callback(data);
