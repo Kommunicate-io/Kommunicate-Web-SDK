@@ -1,6 +1,8 @@
 const Sequelize= require("sequelize");
 const config = require("../../conf/config.js");
 const path = require("path");
+var winston = require('winston');
+let options = config.getProperties().db.options;
 var sequelize = new Sequelize(config.getProperties().db.url,config.getProperties().db.options);
 
 sequelize.authenticate().then(function() {

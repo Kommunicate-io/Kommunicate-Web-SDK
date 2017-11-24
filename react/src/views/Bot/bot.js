@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
+import {getUsersByType,createCustomerOrAgent} from '../../utils/kommunicateClient';
 class Tabs extends Component {
 
   constructor(props) {
@@ -20,13 +23,25 @@ class Tabs extends Component {
       bot: '',
       ctoken: '',
       platform:'api.ai',
-      dtoken :''
+      dtoken :'',
+      // amap of {botId :botName}
+      botOptionList:[],
+     
     };
+  this.applicationId = localStorage.getItem("applicationId");
   
   this.handleSubmit = this.handleSubmit.bind(this);
   this.handleClick = this.handleClick.bind(this);
   this.toggle = this.toggle.bind(this);
    };
+   componentWillMount =()=>{
+    //this.populateBotOptions();
+   }
+  componentDidMount=()=>{
+    //console.log("options",this.state.botListInnerHtml);
+  
+  }
+
   clearBotForm = ()=>{
     this.state.userid="";
     this.state.username="";
@@ -46,6 +61,17 @@ class Tabs extends Component {
      var devicekey = device.split(":")[1];
      var env = getEnvironmentId();
      var userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
+
+     if(!this.state.bot){
+       Notification.info("Please select a bot!!");
+       return;
+     }else if(!this.state.ctoken){
+      Notification.info("Please enter the client token!!");
+      return;
+     }else if(!this.state.dtoken){
+      Notification.info("Please select a developer token!!");
+      return;
+     }
      var data = {
             "clientToken" : this.state.ctoken,
             "devToken" : this.state.dtoken,
@@ -90,60 +116,30 @@ class Tabs extends Component {
      // creating bot
     handleSubmit(event) {
         var _this=this;
-        var applicationId =localStorage.getItem("applicationId");
-        var username = localStorage.getItem("loggedinUser");
-        var password = localStorage.getItem("password");
-        var env = getEnvironmentId();
-        var registerClientUrl =get(env).applozicPlugin.registerClientUrl;
-        var addBotUrl =get(env).applozicPlugin.addBotUrl;
-        var formData = {
-            "userId" : this.state.userid,
-            "displayName" : this.state.username,
-            "password" : this.state.password,
-            "roleName" : this.state.role,
-            "applicationId": applicationId,
-            "authenticationTypeId":1
+
+        if(!this.state.userid){
+          Notification.info("Please enter a Bot Id !!");
+          return;
+        }else if(!this.state.username){
+          Notification.info("Please select display name of the bot!!");
+          return;
+         }else if(!this.state.password){
+         Notification.info("Please enter a password !!");
+         return;
         }
-        axios({
-            method: 'post',
-            url: registerClientUrl,
-            data:JSON.stringify(formData),
-            headers: {
-            'Content-Type': 'application/json'
-            }
-        })
-          .then(function(response){
-           if(response.status==200 ){
-
-            if (response.data.message == "PASSWORD_INVALID" || response.data.message == "UPDATED") {
-              Notification.error(_this.state.userid + " already exists. Choose another Bot Id.");              
-              return;
-            }
-
-            var data = {"name": formData.displayName,
-              "key": response.data.userKey,
-              "brokerUrl": response.data.brokerUrl,
-              "accessToken": formData.password,
-              "applicationKey": applicationId,
-              "authorization": btoa(formData.userid+':'+response.data.deviceKey)
-            }
-            axios({
-              method: 'post',
-              url: addBotUrl,
-              data:JSON.stringify(data),
-              headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json'
-            }
-        })
-          .then(function(response){
-           if(response.status==201 ){
-            _this.clearBotForm();
-            Notification.info("Bot successfully created");
-         }
-       });
-         }
-    });
+        var applicationId =localStorage.getItem("applicationId");
+        Promise.resolve(createCustomerOrAgent({userName:this.state.userid,type:2,applicationId:applicationId,password:this.state.password,name:this.state.username},"BOT"))
+        .then(bot=>{
+          Notification.info("Bot successfully created");
+          _this.clearBotForm();
+         }).catch(err=>{
+           if(err.code=="USER_ALREADY_EXISTS"){
+            Notification.info("Bot Id is already taken. try again.");
+            return;
+           }
+          Notification.error("Something went wrong");
+          console.log("err creating bot",err);
+         })
   }
 
   toggle(tab) {
@@ -152,6 +148,33 @@ class Tabs extends Component {
         activeTab: tab
       });
     }
+  }
+  populateBotOptions=()=>{
+    var _this =this;
+    Promise.resolve(getUsersByType(this.applicationId,2)).then(data=>{
+      console.log("received data",data);
+      //_this.state.botOptionList.push({"value":"","label":"Select",disabled:true,selected:true,clearableValue:false});
+      data.forEach(function(elem){
+        let botName =elem.name||elem.userName;
+        let botId =elem.userName;
+        //_this.state.botNameMap[botId] =botName;
+        _this.state.botOptionList.push({value:botId,label:botName});
+        _this.setState({botOptionList:_this.state.botOptionList});
+      });
+    }).catch(err=>{
+      console.log("err while fetching bot list ",err);
+    });
+  }
+  handleClickOnConfigureTab=()=>{
+     this.toggle('2'); 
+     this.state.descriptionType = "CONFIGURE_BOT";
+     this.state.descriptionHeader="Step 2";
+     this.state.botOptionList=[];
+     this.populateBotOptions();
+  }
+  handleOnChangeforBotId =(e)=>{
+        
+        this.setState({userid:e.target.value});
   }
 
   render() {
@@ -171,7 +194,7 @@ class Tabs extends Component {
               <NavItem>
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}
-                  onClick={() => { this.toggle('2'); this.state.descriptionType = "CONFIGURE_BOT", this.state.descriptionHeader="Step 2"}}
+                  onClick={this.handleClickOnConfigureTab}
                 >
                   Configure Bot
                 </NavLink>
@@ -188,7 +211,8 @@ class Tabs extends Component {
                   <div className="form-group row">
                     <label className="col-md-3 form-control-label" htmlFor="hf-userid">Bot Id</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-userid" name="hf-userid"  onChange = {(event) => this.setState({userid:event.target.value})} value={this.state.userid} className="form-control" placeholder="Enter unique bot id"/>
+                      <input type="text" id="hf-userid" name="hf-userid" 
+                        onChange = {this.handleOnChangeforBotId} value={this.state.userid} className="form-control" placeholder="Enter unique bot id"/>
                       <span className="help-block">Please enter unique bot id</span>
                     </div>
                   </div>
@@ -209,7 +233,7 @@ class Tabs extends Component {
                   <div className="form-group row" hidden>
                     <label className="col-md-3 form-control-label" htmlFor="hf-role">Role</label>
                     <div className="col-md-9">
-                      <input type="text" id="hf-role" name="hf-role"  onChange = {(event) => this.setState({role:event.target.value})} value = {this.state.role} className="form-control" placeholder="Enter Role"/>
+                      <input type="text" id="hf-role" name="hf-role" onChange = {(event) => this.setState({role:event.target.value})} value = {this.state.role} className="form-control" placeholder="Enter Role"/>
                       <span className="help-block">Please enter your role</span>
                     </div>
                   </div>
@@ -233,11 +257,13 @@ class Tabs extends Component {
               <div className="card-block">
                 <form action="" method="post" className="form-horizontal">
                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="bot">Bot Id</label>
+                    <label className="col-md-3 form-control-label" htmlFor="bot">Select Bot</label>
                     <div className="col-md-9">
-
-                      <input type="text"  onChange = {(event) => this.setState({bot:event.target.value})}  value = {this.state.bot} id="bot"  className="form-control" placeholder="Enter Bot id"/>
-
+                    <Select
+                      name="km-bot-id"
+                      value={this.state.bot}
+                      onChange={(value) => this.setState({bot:value})}
+                      options={this.state.botOptionList}/>
                     </div>
                   </div>
               <div hidden>
