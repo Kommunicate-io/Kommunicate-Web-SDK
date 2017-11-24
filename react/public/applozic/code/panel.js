@@ -55,7 +55,11 @@ $(document).ready(function() {
                     console.log(user);
                     if (typeof user !== "undefined") {
                         $("#km-user-name-sec .km-user-title").html(user.userName);
-                        $("#km-user-info-list .email").html(user.email);
+                        if (user.email) {
+                            $("#km-user-info-list .email").html(user.email);                       
+                        } else {
+                            $("#km-user-info-list .email").html(user.userId);
+                        }
                         //$("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
                         var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
                         $("#km-user-info-icon-box .km-user-icon").html(imageLink);
