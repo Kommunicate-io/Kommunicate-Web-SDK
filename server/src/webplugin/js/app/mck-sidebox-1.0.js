@@ -4779,7 +4779,15 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
             _this.getContactImageLink = function (contact, displayName) {
                 var imgsrctag = '';
-                if (contact.isGroup && contact.type !== 7) {
+                if(contact.users && contact.type==10){
+                    for (var i = 0; i < contact.members.length; i++) {
+                        var userDetail=MCK_USER_DETAIL_MAP[contact.members[i]];
+                        if(userDetail.imageLink && userDetail.roleType==8 && userDetail.imageLink !== ""){
+                            imgsrctag= '<img src="' + userDetail.imageLink + '"/>';
+                            break;
+                        }
+                    }
+                } else if (contact.isGroup && contact.type !== 7) {
                     imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
                 } else {
                     if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {

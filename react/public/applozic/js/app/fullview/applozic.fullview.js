@@ -3721,7 +3721,15 @@ var KM_CLIENT_GROUP_MAP = [];
 			};
 			_this.getContactImageLink = function(contact, displayName) {
 				var imgsrctag = '';
-				if (contact.isGroup) {
+				if(contact.users && contact.type==10){
+                    for (var i = 0; i < contact.members.length; i++) {
+                        var userDetail=MCK_USER_DETAIL_MAP[contact.members[i]];
+                        if(userDetail.imageLink && userDetail.roleType==3 && userDetail.imageLink !== ""){
+                            imgsrctag= '<img src="' + userDetail.imageLink + '"/>';
+                            break;
+                        }
+                    }
+                } else if (contact.isGroup) {
 					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
 				} else {
 					if (typeof (MCK_GETUSERIMAGE) === "function") {
