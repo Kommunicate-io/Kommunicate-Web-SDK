@@ -376,8 +376,6 @@ class Aside extends Component {
                                   })
                                }
                                 */}
-
-                                 )}
                                </select>
 
                             </div>
