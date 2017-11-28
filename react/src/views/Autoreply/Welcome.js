@@ -6,6 +6,8 @@ import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcome
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import { Label, Input } from 'reactstrap';
+import WhenYouAreOnline from './WhenYouAreOnline'
+import WhenYouAreOffline from './WhenYouAreOffline'
 
 
 class Welcome extends Component{
@@ -74,29 +76,9 @@ render(){
               </div>
             </div>
             <hr />
-            <div>
-              <div className="row">
-                <div className="col-6">
-                  <h4> When you are online </h4>
-                  <p className="start-solving-your-user">Start solving your users’ issues with this message </p>
-                </div>
-                <div className="col-6">
-                  <i className="icon-arrow-down icons font-2xl d-block mt-4 text-right"></i>
-                </div>
-              </div>
-            </div>
+            <WhenYouAreOnline />
             <hr />
-            <div>
-              <div className="row">
-                <div className="col-6">
-                  <h4> When you are offline </h4>
-                  <p className="ask-your-user-to">Ask your user to leave a message so that you can get back to them later</p>
-                </div>
-                <div className="col-6">
-                  <i className="icon-arrow-down icons font-2xl d-block mt-4 text-right"></i>
-                </div>
-              </div>
-            </div>
+            <WhenYouAreOffline />
           </div>
         </div>
       </div>
