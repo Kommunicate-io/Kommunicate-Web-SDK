@@ -39,16 +39,12 @@ return jsScript;
 }
 
 const getJsInstructions = () => {
-  return `Insert the following code in your web application to install Kommunicate.
-  Default parameters are pre populated. You can change them as you need.
-  Parameters:-
-    appId - your application Id.
-    isAnonymousChat - allow your users to chat in Anonymous mode.
-    groupName - Conversation Title.  
-    agentId -  Support agent Id(registered in Kommunicate) who will reply to the support queries
-    agentName - Display name for agent(agentId is default display name).
-    
-  You can paste the script in the <head/> or <body/> tag.`
+  return `<!—Example—>
+  !DOCTYPE html>
+  <html lang=“en”>
+    <head>
+      --- insert_Kommunicate_code_here ---
+    </head>`
 }
 
 

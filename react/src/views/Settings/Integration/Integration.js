@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { getConfig } from "../../.../../../config/config.js";
 import MultiEmail from '../../MultiEmail/';
-
+import Accordion from './Accordion';
 import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
 
 
@@ -13,7 +13,15 @@ class Integration extends Component {
     this.state = {
       copySuccess: "Copy To Clipboard"
     };
+
     this.script = getJsCode();
+    this.data={ title: "Some more instructions", 
+    content:`Default parameters are pre populated. You can change them as you need.<br>
+    Parameters <br>
+        <b>appId -</b> your application Id.<br>
+        <b>isAnonymousChat -</b> allow your users to chat in Anonymous mode<br>
+        <b>groupName -</b>Conversation Title tagentId -  Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
+        <b>tagentName -</b> Display name for agent(agentId is default display name)`};
   }
 
   copyToClipboard = e => {
@@ -28,38 +36,48 @@ class Integration extends Component {
     return (
       <div className="animated fadeIn">
         <div className="row">
-          <div className="col-sm-12 col-md-12">
+          <div className="col-md-10">
             <div className="card">
-              <div className="row">
-                <h4 className="instruction-heading">
-                  Add Chat in your product within a minute!
-                </h4>
+              <div className="intgration-card-header">
+                <h5>
+                Follow the steps below to add Kommunicate Chat in your product
+                </h5>
               </div>
-              <div className="card-header">
-                <div className="card-block">
+              <div className="card-main">
                   <div>
-                    <form>
-                      <div className="row">
-                        <div className="form-group col-md-5">
-                          <textarea
-                            className="form-group instruction-text-area"
-                            rows="16"
+                    <h6>1.Locate the header or body tags in your connected Client Count</h6>
+                  </div>
+                  <div className="outer-box col-md-10 integration-font"> 
+                    <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
+                    <p>You will be requiredto paste the code within either of these tags.</p>
+                    <div>
+                    <textarea
+                            className="script-text-area"
+                            rows="7"
                             value={getJsInstructions()}
                             readOnly
-                          />
-                        </div>
-                        <div className="form-group col-md-7">
+                     />
+	                  </div>
+                  </div>
+                  
+                  <div>
+                    <h6>2.Copy the code from below and paste it as explained in point 1</h6>
+                  </div>
+                  <div className="outer-box col-md-10 integration-font">
+                    <p> Paste the Kommunicate code just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags.</p>
+                    <div className="">
                           <textarea
-                            className="form-group script-text-area"
+                            className="script-text-area"
                             ref={textarea => (this.textArea = textarea)}
                             rows="16"
                             value={this.script}
                             readOnly
                           />
-                        </div>
-                      </div>
+                    </div>
+                  </div>
+                  <div id="outer">
+                    <div className="inner">
                       {document.queryCommandSupported("copy") && (
-                        <div className="form-group">
                           <button
                             type="button"
                             className="btn btn-primary"
@@ -67,14 +85,15 @@ class Integration extends Component {
                           >
                             {this.state.copySuccess}
                           </button>
-                        </div>
                       )}
+                    </div>
+                     <div className="inner">
                       <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-                    </form>
-                  </div>
+                     </div>
+                    <Accordion data={this.data}/>
                 </div>
-              </div>
             </div>
+          </div>
           </div>
         </div>
       </div>

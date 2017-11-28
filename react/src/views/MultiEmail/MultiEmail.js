@@ -12,7 +12,7 @@ class MultiEmail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            emailInstructions: false,
+            emailInstructions: true,
             multipleEmailAddress: [],
             emailAddress: "",
             template: this.props.template,
@@ -88,15 +88,15 @@ class MultiEmail extends Component {
     render() {
         return (
             <div>
-                <div className="form-group">
+                {/*<div className="form-group">
                     <button
-                        className="btn btn-sm btn-primary px-4"
+                        className="btn btn-primary"
                         onClick={this.showEmailInput}
                     >
                         {" "}
-                        Email instructions to the team{" "}
+                        Email instructions{" "}
                     </button>
-                </div>
+                </div>*/}
                 <div className={
                     this.state.emailInstructions === true
                         ? "form-group row"
@@ -127,7 +127,7 @@ class MultiEmail extends Component {
                     </div>
                     <div className="col-md-7">
                         <button
-                            className="btn btn-sm btn-primary px-4 m-t-1px"
+                            className="btn btn-primary px-4 m-t-1px"
                             onClick={this.sendMail}
                         >
                             {" "}
