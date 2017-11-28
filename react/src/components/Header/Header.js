@@ -69,12 +69,11 @@ return imageLink;
                 <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
-
               <DropdownMenu className="dropdown-menu-right">
                 <DropdownItem>
-                  <p>{localStorage.getItem("name")}</p>
-                  <p>{localStorage.getItem("loggedinUser")}</p>
-                  <span> You are online <span className="avatar-status badge-success"></span></span>
+                  <p className="header-user-name">{localStorage.getItem("name")}</p>
+                  <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
+                  <span className="header-user-online"> You are online <span className="avatar-status badge-success"></span></span>
                 </DropdownItem>
                 <DropdownItem> Go Offline </DropdownItem>
                 <DropdownItem> Profile </DropdownItem>

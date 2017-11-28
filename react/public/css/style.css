@@ -9026,3 +9026,36 @@ hr.transparent {
   text-align: left;
   color: #87898b;
 }
+
+.cursor-is-pointer {
+  cursor: pointer;
+}
+
+.header-user-name {
+  width: 104px;
+  height: 20px;
+  font-size: 15px;
+  letter-spacing: 1.1px;
+  text-align: left;
+  color: #515050;
+  
+}
+
+.header-user-email {
+  width: 87px;
+  height: 11px;
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #696464;
+
+}
+
+.header-user-online {
+  width: 71px;
+  height: 13px;
+  font-size: 9px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #696464;
+}
