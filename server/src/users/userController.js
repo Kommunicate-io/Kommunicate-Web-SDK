@@ -10,6 +10,7 @@ let moment = require('moment-timezone');
 const cacheClient = require("../cache/hazelCacheClient");
 const dbUtils = require('../utils/dbUtils')
 const logger = require('../utils/logger');
+const bcrypt = require('bcrypt');
 
 exports.getAllUsers = function(req, res) {
   logger.info("request received to get all users");
@@ -257,3 +258,24 @@ exports.patchUser = (req,res)=>{
   });
 
 };
+
+exports.updatePassword=(req,res)=>{
+  logger.info("request received to update password");
+  const newPassword = req.body.newPassword;
+  const oldPassword =req.body.oldPassword;
+  const userName = req.body.userName;
+  const applicationId = req.body.applicationId;
+    return userService.getByUserNameAndAppId(userName,applicationId).then(user=>{
+      if(bcrypt.compareSync(oldPassword, user.password)){
+        return userService.updatePassword(newPassword,user).then(result=>{
+          return res.status(200).json({code:"SUCCESS",message:"password updated"});
+        })
+      }else{
+        return res.status(200).json({code:"INVALID_CREDENTIALS",message:"wrong old password"});
+      }
+    })
+  .catch(err=>{
+    logger.error("error while updating password",err);
+    return res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"something went wrong"});
+  })
+}

@@ -349,6 +349,29 @@ const getAllUsersOfCustomer = (customer,type)=>{
   }
   return Promise.resolve(userModel.findAll({where:criteria}));
 }
+/**
+ * update a new password for user
+ * @param {String} newPassword 
+ * @param {Object} user
+ * @param {Number} user.id
+ * @param {Number} user.customerId
+ * @param {String} user.userName
+ */
+exports.updatePassword=(newPassword,user)=>{
+  logger.info("updating password for user Id: ",user.id);
+  return db.sequelize.transaction(t=> {
+    let apzToken = new Buffer(user.userName+":"+newPassword).toString('base64');
+    return Promise.all([registrationService.getCustomerById (user.customerId),bcrypt.hash(newPassword,10)])
+    .then(([customer,hash])=>{
+      return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:customer.applicationId,userName:user.userName}),
+        db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t})])
+        .then(([res1,res2])=>{
+            console.log("password updated successfully in all dbs for agent", user.userName);
+            return {"code":"SUCCESS"}
+        });
+      })
+  });
+}
 
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
