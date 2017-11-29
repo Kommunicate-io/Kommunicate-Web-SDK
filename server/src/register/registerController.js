@@ -4,6 +4,7 @@ const joi = require("joi");
 const randomString  = require('randomstring');
 const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
+//const logger =require("../utils/logger");
 
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
@@ -28,14 +29,15 @@ exports.createCustomer = (req,res)=>{
         res.status(200).json(response);
         return;
       }else{
-        return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name}).then(result=>{
-          try{
-          inAppMessageService.postWelcomeMsg({customerId:response.id,message:inAppMessageService.defaultMessage});
-          registrationService.sendWelcomeMail(email, name);
-
-          }catch(err){
-            console.log("Error while sending welcom mail to user  ",err);
-          }
+        return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name})
+        .then(result=>{
+          inAppMessageService.postWelcomeMsg({customerId:result.id,message:inAppMessageService.defaultMessage})
+          .catch(err=>{
+            console.log("err while storing welcome message in db");
+          });
+          registrationService.sendWelcomeMail(email, name).catch(err=>{
+            console.log("Error while sending welcom mail to user",err);
+          });
             response.code="SUCCESS";
               // replacing user Id with user name. can't delete userId from system for backward compatibility.
               delete result.userId;
