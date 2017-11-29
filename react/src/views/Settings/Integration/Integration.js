@@ -45,7 +45,7 @@ class Integration extends Component {
               </div>
               <div className="card-main">
                   <div>
-                    <h6>1.Locate the header or body tags in your connected Client Count</h6>
+                    <h6>1. Locate the header or body tags in your code</h6>
                   </div>
                   <div className="outer-box col-md-10 integration-font"> 
                     <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
