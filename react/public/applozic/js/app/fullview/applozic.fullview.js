@@ -1258,13 +1258,13 @@ var KM_CLIENT_GROUP_MAP = [];
 						}
 					}
 				});
-				$kmApplozic(d).on("click", ".fancybox", function(e) {
+				$kmApplozic(d).on("click", ".kmfancybox", function(e) {
 					var $this = $kmApplozic(this);
 					var contentType = $this.data('type');
 					if (contentType.indexOf("video") !== -1) {
 						var videoTag = $this.find('.km-video-box').html(),
 							video;
-						$this.fancybox({
+						$this.kmfancybox({
 							content : videoTag,
 							title : $this.data('name'),
 							padding : 0,
@@ -1279,14 +1279,14 @@ var KM_CLIENT_GROUP_MAP = [];
 								}
 							},
 							beforeShow : function() {
-								video = $kmApplozic('.fancybox-inner').find('video').get(0);
+								video = $kmApplozic('.kmfancybox-inner').find('video').get(0);
 								video.load();
 								video.play();
 							}
 						});
 					} else {
 						var href = $this.data('url');
-						$kmApplozic(this).fancybox({
+						$kmApplozic(this).kmfancybox({
 							'openEffect' : 'none',
 							'closeEffect' : 'none',
 							'padding' : 0,
@@ -3692,11 +3692,11 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (typeof msg.fileMeta === "object") {
 					if (msg.fileMeta.contentType.indexOf("image") !== -1) {
 						if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-							return '<a href="#" role="link" class="km-file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
 						} else if (msg.contentType === 5) {
-							return '<a href="#" role="link" class="km-km-file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+							return '<a href="#" role="link" class="km-km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
 						} else {
-							return '<a href="#" role="link" class="km-file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
 						}
 					} else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
 					    return '<video controls class="km-video-player">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/mp4">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/ogg">Your browser does not support the video tag.</video>';

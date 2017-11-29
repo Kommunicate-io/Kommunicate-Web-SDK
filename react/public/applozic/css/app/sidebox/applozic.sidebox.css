@@ -2131,7 +2131,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	overflow: hidden;
 }
 
-.fancybox-overlay {
+.kmfancybox-overlay {
 	z-index: 22455000 !important;
 }
 
@@ -2250,7 +2250,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	margin: 1px 0 !important;
 }
 
-.fancybox-opened {
+.kmfancybox-opened {
 	z-index: 2247483650;
 }
 
@@ -2562,7 +2562,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	padding-top: 10px;
 }
 
-.fancybox-inner video {
+.kmfancybox-inner video {
 	background: #000;
 	display: block;
 	height: 100%;
