@@ -2098,7 +2098,7 @@ ol, ul {
 	z-index: 2245500 !important;
 }
 
-.km-file-text .file-preview-link {
+.km-file-text .km-file-preview-link {
 	text-decoration: none;
 	width: 100%
 }

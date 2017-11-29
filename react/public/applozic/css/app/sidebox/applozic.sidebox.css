@@ -2135,7 +2135,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	z-index: 22455000 !important;
 }
 
-.km-file-text .file-preview-link {
+.km-file-text .km-file-preview-link {
 	text-decoration: none;
 	width: 100%
 }
