@@ -359,7 +359,7 @@ function KmNotificationUtils() {
     _this.isChrome = function() {
         return /chrom(e|ium)/.test(w.navigator.userAgent.toLowerCase());
     };
-    _this.getNotification = function(displayName, iconLink, msg,mckNotificationTone) {
+    _this.getNotification = function(displayName, iconLink, msg, mckNotificationTone) {
         var notification;
         if (w.Notification) { /* Safari 6, Chrome (23+) */
             notification = new w.Notification(displayName, {
@@ -395,6 +395,8 @@ function KmNotificationUtils() {
                 "ieVerification": ieVerification + 1
             };
         }
+        console.log("####playing note: ");
+        console.log(mckNotificationTone);
         mckNotificationTone.play();
         setTimeout(function() {
             mckNotificationTone.stop();
