@@ -99,7 +99,7 @@ class MultiEmail extends Component {
                 </div>*/}
                 <div className={
                     this.state.emailInstructions === true
-                        ? "form-group row"
+                        ? "row"
                         : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
@@ -124,7 +124,8 @@ class MultiEmail extends Component {
                             onChange={this.multipleEmailHandler}
                             placeholder="Enter email here"
                         />
-                    </div>
+                        <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by comma or Space</p></div>
+                    </div> 
                     <div className="col-md-7">
                         <button
                             className="btn btn-primary px-4 m-t-1px"

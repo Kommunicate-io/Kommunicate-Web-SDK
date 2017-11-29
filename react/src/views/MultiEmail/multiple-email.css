@@ -1,6 +1,5 @@
 .multiple-email-container{
 	background-color: #FFF;
-	border: 1px solid #C0C0C0;
 	padding-left: 0;
 }
 
@@ -21,9 +20,8 @@
 }
 
 .input-email {
-	border: 0;
-	width: 232px;
-	margin: 5px;
+	width: 168px;
+    padding: 6px;
 }
 .instruction-heading {
 	margin:auto;
@@ -86,3 +84,17 @@
 	  margin-top: 15px;
 	  margin-right: 15px;
   }
+  .tip-enter-m {
+	width: 200px !important;
+	height: 26px !important;
+	font-family: OpenSans !important;
+	font-size: 11px !important;
+	letter-spacing: 0.5px !important;
+	text-align: left !important;
+	color: #868383 !important;
+	background-color: transparent !important;
+}
+
+.tip-enter-m .tip-text-style {
+	font-weight: 600 !important;
+}
