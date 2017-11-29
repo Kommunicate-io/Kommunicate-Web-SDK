@@ -395,8 +395,6 @@ function KmNotificationUtils() {
                 "ieVerification": ieVerification + 1
             };
         }
-        console.log("####playing note: ");
-        console.log(mckNotificationTone);
         mckNotificationTone.play();
         setTimeout(function() {
             mckNotificationTone.stop();
