@@ -47,8 +47,12 @@ return imageLink;
   }*/
   logout(e){
     window.logout();
-    window.$kmApplozic.fn.applozic('logout');     
-    window.$applozic.fn.applozic('logout'); 
+    if (window.$kmApplozic) {
+      window.$kmApplozic.fn.applozic('logout');           
+    }
+    if (window.$applozic) {
+      window.$applozic.fn.applozic('logout');       
+    }
     sessionStorage.clear();
     localStorage.clear();
     //window.location="/login";
