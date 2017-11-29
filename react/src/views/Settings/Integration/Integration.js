@@ -65,7 +65,7 @@ class Integration extends Component {
                   </div>
                   <div className="outer-box col-md-10 integration-font">
                     <p> Paste the Kommunicate code just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags.</p>
-                    <div className="">
+                    <div>
                           <textarea
                             className="script-text-area"
                             ref={textarea => (this.textArea = textarea)}
@@ -74,9 +74,20 @@ class Integration extends Component {
                             readOnly
                           />
                     </div>
+                  <div>
+                  {document.queryCommandSupported("copy") && (
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={this.copyToClipboard}
+                          >
+                            {this.state.copySuccess}
+                          </button>
+                      )}
+                  </div>
                   </div>
                   <div id="outer">
-                    <div className="inner">
+                    {/*<div className="inner">
                       {document.queryCommandSupported("copy") && (
                           <button
                             type="button"
@@ -86,10 +97,10 @@ class Integration extends Component {
                             {this.state.copySuccess}
                           </button>
                       )}
-                    </div>
-                     <div className="inner">
+                    </div>*/}
+        
                       <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-                     </div>
+                     
                     <Accordion data={this.data}/>
                 </div>
             </div>
