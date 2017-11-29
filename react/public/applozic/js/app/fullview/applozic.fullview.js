@@ -7,7 +7,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		fileBaseUrl : "https://applozic.appspot.com",
 		notificationIconLink : '',
 		launcher : "kommunicate-launcher",
-		mapStaticAPIkey :'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',		
+		mapStaticAPIkey :'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
 		userId : null,
 		appId : null,
 		userName : null,
@@ -350,7 +350,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var IS_AUTO_TYPE_SEARCH_ENABLED = (typeof appOptions.autoTypeSearchEnabled === "boolean") ? appOptions.autoTypeSearchEnabled : true;
 		var MCK_CHECK_USER_BUSY_STATUS = (typeof appOptions.checkUserBusyWithStatus === "boolean") ? (appOptions.checkUserBusyWithStatus) : false;
 		var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof appOptions.launchOnUnreadMessage === "boolean") ? appOptions.launchOnUnreadMessage : false;
-		var NOTIFICATION_TONE = "/audio/notification_tone.mp3";		
+		var NOTIFICATION_TONE = "/audio/notification_tone.mp3";
 		var CONVERSATION_STATUS_MAP = [ "DEFAULT", "NEW", "OPEN" ];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
 		var GROUP_TYPE_MAP = [ 1, 2, 5, 6 ];
@@ -377,7 +377,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
 		w.MCK_OL_MAP = new Array();
-		var ringToneService;		
+		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
 			'onConnectFailed' : function() {},
@@ -403,7 +403,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			return appOptions;
 		};
 		_this.init = function() {
-			ringToneService = new KmRingToneService();		
+			ringToneService = new KmRingToneService();
 			mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
 			mckMessageService.init();
 			mckFileService.init();
@@ -3775,7 +3775,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				var first_alpha = name.charAt(0);
 				var letters = /^[a-zA-Z0-9]+$/;
-				
+
 				if (first_alpha.match(letters)) {
 					first_alpha = first_alpha.toUpperCase();
 					return '<div class="km-alpha-contact-image alpha_' + first_alpha + '"><span class="km-contact-icon">' + first_alpha + '</span></div>';
@@ -3789,7 +3789,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				name = name.toString();
 				var first_alpha = name.charAt(0);
-				var letters = /^[a-zA-Z0-9]+$/;				
+				var letters = /^[a-zA-Z0-9]+$/;
 				if (first_alpha.match(letters)) {
 					first_alpha = first_alpha.toLowerCase();
 					return 'km-text-' + first_alpha;
@@ -6681,9 +6681,9 @@ var KM_CLIENT_GROUP_MAP = [];
 			};
 			_this.sendStatus = function(status) {
 				if (stompClient && stompClient.connected) {
-					stompClient.send('/topic/status', {
+					stompClient.send('/topic/status-v2', {
 						"content-type" : "text/plain"
-					}, MCK_TOKEN + "," + status);
+					}, MCK_TOKEN + "," + USER_DEVICE_KEY + "," + status);
 				}
 			};
 			_this.onConnect = function() {
