@@ -99,11 +99,18 @@ class MultiEmail extends Component {
                 </div>*/}
                 <div className={
                     this.state.emailInstructions === true
-                        ? "row"
+                        ? "form-group row"
                         : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
                     <div className="form-group col-md-5 multiple-email-container">
+                    <input
+                            className="input-email"
+                            value={this.state.emailAddress}
+                            onKeyDown={this.checkForSpace}
+                            onChange={this.multipleEmailHandler}
+                            placeholder="Enter email here"
+                        />
                         {this.state.multipleEmailAddress.map((email, i) => (
                             <div className="single-email-container" key={i}>
                                 <span>{email}</span>
@@ -117,24 +124,17 @@ class MultiEmail extends Component {
                               </span>
                             </div>
                         ))}
-                        <input
-                            className="input-email"
-                            value={this.state.emailAddress}
-                            onKeyDown={this.checkForSpace}
-                            onChange={this.multipleEmailHandler}
-                            placeholder="Enter email here"
-                        />
-                        <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by comma or Space</p></div>
                     </div> 
                     <div className="col-md-7">
                         <button
-                            className="btn btn-primary px-4 m-t-1px"
+                            className="btn btn-primary px-5 m-t-1px"
                             onClick={this.sendMail}
                         >
                             {" "}
                             Send{" "}
                         </button>
                     </div>
+                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space</p></div>
                 </div>
             </div>
         );

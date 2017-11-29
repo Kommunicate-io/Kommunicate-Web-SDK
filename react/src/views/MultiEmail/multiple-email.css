@@ -1,5 +1,6 @@
 .multiple-email-container{
 	background-color: #FFF;
+	border: 1px solid #C0C0C0;
 	padding-left: 0;
 }
 
@@ -20,8 +21,9 @@
 }
 
 .input-email {
-	width: 168px;
-    padding: 6px;
+	border: 0;		
+	width: 383px;	
+	margin: 5px;
 }
 .instruction-heading {
 	margin:auto;
@@ -67,7 +69,7 @@
   }
   .outer-box{
 	margin-top: 15px;
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 	padding-top: 20px;
 	padding-bottom: 6px;
 	float: left;
