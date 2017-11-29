@@ -5,8 +5,14 @@ import Notification from '../model/Notification';
 
 class ImageUploader extends Component {
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    updateProfilePicUrl: function(url){
+      //default
+    }
+  }
+
+  constructor(props,defaultProps ) {
+    super(props, defaultProps);
     this.state = {
       imageFile: undefined
     }
@@ -76,7 +82,8 @@ class ImageUploader extends Component {
             imageUrl = response.data.profileImageUrl
             updateApplozicUser({ imageLink: response.data.profileImageUrl })
               .then(response => {
-                console.log(response); this.props.updateProfilePicUrl(imageUrl);
+                console.log(response);
+                this.props.updateProfilePicUrl(imageUrl);
                 localStorage.setItem("imageLink", imageUrl);  
                 Notification.info("Successfully uploaded..")              
               }
