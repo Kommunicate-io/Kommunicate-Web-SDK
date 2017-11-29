@@ -5368,14 +5368,15 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					if (!displayName && group.type === 5) {
 						displayName = 'Broadcast';
-					}if (group.type === 10){
-            for(var i= 0;i<Object.keys(group.users).length;i++){
-              if((Object.values(group.users)[i]).role ===3){
-              	displayName =(Object.values(group.users)[i]).userId;
-                //console.log("groupName",displayName);
-                break;
-              }
-          	}
+					}
+					if (group.type === 10){
+						for(var i= 0;i<Object.keys(group.users).length;i++){
+							if((Object.values(group.users)[i]).role ===3){
+								displayName =(Object.values(group.users)[i]).userId;
+								//console.log("groupName",displayName);
+								break;
+							}
+						}
 					}
 					if (!displayName) {
 						displayName = group.contactId;

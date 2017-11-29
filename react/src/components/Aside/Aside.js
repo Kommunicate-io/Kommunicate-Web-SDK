@@ -197,6 +197,21 @@ class Aside extends Component {
                                     });
   }
 
+  removeBot() {
+    var that = this;
+    var groupId = window.$kmApplozic(".left .person.active").data('km-id');
+
+    window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
+        for(var i= 0;i<Object.keys(group.users).length;i++) {
+          var userDetail = Object.values(group.users)[i];
+          if(userDetail.roleType && userDetail.roleType === 1) {
+            that.removeGroupMember(groupId, userDetail.userId);    
+          }
+        }
+      }
+    });
+  }
+
   updateUserContactDetail(userId, params){
     var data={'contacts':userId};
     window.$kmApplozic.fn.applozic('loadContacts', data.contacts );
@@ -396,6 +411,9 @@ class Aside extends Component {
                                 <option value="3">Spam</option>
                                 <option value="4">Duplicate</option>
                               </select>
+                            </div>
+                            <div className="form-group col-sm-2">
+                                <button id="takeover-from-bot" className="btn btn-secondary btn-sm" onClick={this.removeBot}>Takeover from Bot</button>
                             </div>
 
                           </div>
