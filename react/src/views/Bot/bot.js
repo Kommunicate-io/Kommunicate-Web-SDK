@@ -76,7 +76,7 @@ class Tabs extends Component {
             "clientToken" : this.state.ctoken,
             "devToken" : this.state.dtoken,
             "aiPlatform" : this.state.platform,
-            "botname":this.state.bot
+            "botname":this.state.bot.value
         }
 
         axios({
