@@ -31,7 +31,6 @@ class Aside extends Component {
   }
 
   componentDidMount() {
-     console.log("Aside Aside")
      if(localStorage.getItem("loggedinUser")===null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
