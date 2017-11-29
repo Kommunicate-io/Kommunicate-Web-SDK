@@ -70,7 +70,7 @@
 
 #kmfancybox-loading, .kmfancybox-close, .kmfancybox-prev span, .kmfancybox-next span
 	{
-	background-image: url(../../../images/kmfancybox_sprite.png)
+	background-image: url(../../../images/fancybox_sprite.png)
 }
 
 #kmfancybox-loading {
@@ -88,7 +88,7 @@
 #kmfancybox-loading div {
 	width: 44px;
 	height: 44px;
-	background: url(../../../images/kmfancybox_loading.gif) center center no-repeat
+	background: url(../../../images/fancybox_loading.gif) center center no-repeat
 }
 
 .kmfancybox-close {
@@ -176,7 +176,7 @@
 	overflow: hidden;
 	display: none;
 	z-index: 8010;
-	background: url(../../../images/kmfancybox_overlay.png)
+	background: url(../../../images/fancybox_overlay.png)
 }
 
 .kmfancybox-overlay-fixed {
@@ -252,11 +252,11 @@
 	(min-device-pixel-ratio: 1.5) {
 	#kmfancybox-loading, .kmfancybox-close, .kmfancybox-prev span, .kmfancybox-next span
 		{
-		background-image: url(../../../images/kmfancybox_sprite@2x.png);
+		background-image: url(../../../images/fancybox_sprite@2x.png);
 		background-size: 44px 152px
 	}
 	#kmfancybox-loading div {
-		background-image: url(../../../images/kmfancybox_loading@2x.gif);
+		background-image: url(../../../images/fancybox_loading@2x.gif);
 		background-size: 24px 24px
 	}
 }
