@@ -11,7 +11,7 @@ class Integration extends Component {
     super(props);
     this.applicationKey = localStorage.getItem("applicationId");
     this.state = {
-      copySuccess: "Copy Code to Clipboard "
+      copySuccess: "Copy"
     };
 
     this.script = getJsCode();
@@ -62,7 +62,7 @@ class Integration extends Component {
                   </div>
                   
                   <div>
-                    <h6>2.Copy the code from below and paste it as explained in point 1</h6>
+                    <h6>2. Copy the code from below and paste it as explained in point 1</h6>
                   </div>
                   <div className="outer-box col-md-10 integration-font">
                     <p> Paste the Kommunicate code just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags.</p>
