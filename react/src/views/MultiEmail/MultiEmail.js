@@ -72,7 +72,7 @@ class MultiEmail extends Component {
     };
 
     checkForSpace = (e) => {
-        if ((e.keyCode === 0 || e.keyCode === 32 || e.keyCode === 13) && ValidationUtils.isValidEmail(this.state.emailAddress)) {
+        if ((e.keyCode === 188 || e.keyCode === 0 || e.keyCode === 32 || e.keyCode === 13) && ValidationUtils.isValidEmail(this.state.emailAddress)) {
             this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
             this.setState({ emailAddress: '' });
         }
@@ -134,7 +134,7 @@ class MultiEmail extends Component {
                             Send{" "}
                         </button>
                     </div>
-                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space</p></div>
+                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by comma or Space </p></div>
                 </div>
             </div>
         );

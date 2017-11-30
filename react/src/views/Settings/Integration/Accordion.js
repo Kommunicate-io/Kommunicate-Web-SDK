@@ -31,13 +31,13 @@ class Accordion extends Component{
     render () {
         return (
            <div className="col-md-10">
+           <div className="thin-line"></div>
            <div className="title" onClick={this.handleClick}>
            <div className="arrow-wrapper">
                <i className={this.state.dropDown? "fa fa-angle-down fa-rotate-180": "fa fa-angle-down"} ></i>
              </div>
               <span className="title-text"> {this.data.title}</span>  
            </div>
-           <div className="thin-line"></div>
            <div className={this.state.dropDown? "content content-open" : "content"}>
              <div id="content-area" className={this.state.dropDown  ? "content-text content-text-open" : "content-text"}> 
              {this.data.content}

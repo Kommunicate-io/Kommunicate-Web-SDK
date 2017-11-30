@@ -70,4 +70,5 @@
 }
 .thin-line {
   border-block-end: 1px solid rgba(0, 0, 0, 0.3);
+  margin-bottom:16px
 }
