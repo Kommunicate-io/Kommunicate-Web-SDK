@@ -52,6 +52,7 @@
   visibility: visible;
   opacity: 1;
   transition: all .8s ease-in;
+  padding-bottom: 5px;
 }
 
 .fa-angle-down {
