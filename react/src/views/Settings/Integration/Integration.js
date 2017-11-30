@@ -20,7 +20,8 @@ class Integration extends Component {
     Parameters: <br>
         <b>appId -</b> your application Id.<br>
         <b>isAnonymousChat -</b> allow your users to chat in Anonymous mode<br>
-        <b>groupName -</b>Conversation Title tagentId -  Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
+        <b>groupName -</b> Conversation Title<br> 
+        <b>agentId -<b> Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
         <b>agentName -</b> Display name for agent(agentId is default display name)`};
   }
 
