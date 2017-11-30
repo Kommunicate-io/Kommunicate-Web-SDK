@@ -13,11 +13,6 @@ module.exports.createCustomer= {
   }
 module.exports.patchCustomer={
   body:{
-        applicationId:joi.string().required(),
-        role: joi.string(),
-        companyName: joi.string(),
-        industry: joi.string(),
-        companySize: joi.number(),
-        contactNo:joi.number()
+        applicationId:joi.string().required()
   }
 }
