@@ -50,7 +50,7 @@ class Integration extends Component {
                   </div>
                   <div className="outer-box col-md-10 integration-font"> 
                     <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
-                    <p>You will be requiredto paste the code within either of these tags.</p>
+                    <p>You will be required to paste the code within either of these tags.</p>
                     <div>
                     <textarea
                             className="script-text-area"
