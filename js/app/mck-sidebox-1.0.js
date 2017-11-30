@@ -4967,7 +4967,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     'photoData': photoData,
                     'email': '',
                     'unsaved': true,
-                    'isGroup': false
+                    'isGroup': false,
+                    'roleType' : data.roleType
                 };
                 MCK_CONTACT_MAP[contactId] = contact;
                 return contact;
@@ -4996,6 +4997,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var photoData = (data.imageData) ? data.imageData : '';
                 if (photoData && !contact.photoData) {
                     contact.photoData = photoData;
+                }
+                if (data.roleType) {
+                    contact.roleType = data.roleType;
                 }
                 MCK_CONTACT_MAP[contactId] = contact;
                 return contact;
