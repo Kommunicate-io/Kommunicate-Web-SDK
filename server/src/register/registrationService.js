@@ -131,13 +131,24 @@ exports.isAdmin = (userName)=>{
     return customer?true:false;
   });
 }
-
+/**
+ * this method returns the customer information by id,
+ * @param {Number} id
+ * @return {Object} sequalize db object
+ */
+exports.getCustomerById = (id)=>{
+  console.log("fetching customer information by Id", id);
+  return db.customer.findOne({where: {id: id}}).then(customer=>{
+    return customer;
+  });
+}
 exports.sendWelcomeMail= (email, userName)=>{
   console.log("sending welcome mail to ",email);
   let mailOptions = {
     to:email,
     from:"Devashish From Kommunicate <support@kommunicate.io>",
     subject:"Welcome to Kommunicate!",
+    bcc:"techdisrupt@applozic.com",
     templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html"),
     templateReplacement: {":USER_NAME" : userName}
   }

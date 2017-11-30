@@ -62,7 +62,7 @@ const config ={
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
-      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+      createBotUrl: "https://bots-test.applozic.com/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "https://api-test.kommunicate.io",
       updatePasswordPage : "https://dashboard-test.kommunicate.io/password/update?code=:code",

@@ -31,7 +31,6 @@ class Aside extends Component {
   }
 
   componentDidMount() {
-    // console.log("Aside Aside")
      if(localStorage.getItem("loggedinUser")===null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
@@ -71,6 +70,7 @@ class Aside extends Component {
           that.setState({group: response});
           that.selectAssignee();
           that.selectStatus();
+          that.setUpAgentTakeOver(response);
         }
     });
   }
@@ -90,7 +90,6 @@ class Aside extends Component {
   }
 
   selectAssignee() {
-    console.log(this.state.group);
     var assignee = this.getGroupAdmin(this.state.group);
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_ASSIGNEE) {
       assignee = this.state.group.metadata.CONVERSATION_ASSIGNEE;
@@ -109,6 +108,44 @@ class Aside extends Component {
     }
   }
 
+  removeServiceBots() {
+    var that = this;
+    var group = that.state.group;
+    for(var key in group.users) {
+      if(group.users.hasOwnProperty(key)) {
+        var groupUser = group.users[key];
+
+        window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
+            if (user.roleType == 1 && user.userId !== "bot") {
+              that.removeGroupMember(group.groupId, user.userId);  
+            }
+          }
+        }); 
+      }
+    }
+    var takeOverEle = document.getElementById("takeover-from-bot");
+    takeOverEle.classList.remove("vis");
+    takeOverEle.classList.add("n-vis");  
+  }
+
+  setUpAgentTakeOver(group) {
+    for(var key in group.users) {
+      if(group.users.hasOwnProperty(key)) {
+        var groupUser = group.users[key];
+
+        window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
+            if (user.roleType == 1 && user.userId !== "bot") {
+              var takeOverEle = document.getElementById("takeover-from-bot");
+              takeOverEle.classList.remove("n-vis");
+              takeOverEle.classList.add("vis");          
+              return;
+            }
+          }
+        });
+      }
+    }
+  }
+
   changeAssignee(userId) {
     var that = this;
     this.setState({assignee:userId});
@@ -120,7 +157,6 @@ class Aside extends Component {
                                                 'CONVERSATION_ASSIGNEE' : userId
                                       },
                                       'callback': function(response) {
-                                        console.log(response);
                                         var displayName = "";
                                         for(var key in that.state.agents) {
                                           if(that.state.agents.hasOwnProperty(key)) {
@@ -396,6 +432,9 @@ class Aside extends Component {
                                 <option value="3">Spam</option>
                                 <option value="4">Duplicate</option>
                               </select>
+                            </div>
+                            <div className="form-group col-sm-2">
+                                <button id="takeover-from-bot" className="btn btn-secondary btn-sm n-vis" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
                             </div>
 
                           </div>

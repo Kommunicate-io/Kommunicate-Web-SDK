@@ -46,5 +46,14 @@ module.exports.getAllUser = {
   }
 }
 
+module.exports.updatePassword = {
+  body:{
+    userName:joi.string().required(),
+    applicationId:joi.string().required(),
+    oldPassword:joi.string().required(),
+    newPassword:joi.string().required()
+  }
+}
+
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;

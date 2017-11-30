@@ -244,7 +244,7 @@ register=(event)=>{
                     </div>
                     <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox}>
                       <span className="input-group-addon"><i className="icon-lock"></i></span>
-                      <input autofocus type="password" className="form-control" placeholder="Password"  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress}/>
+                      <input type="password" className="form-control" placeholder="Password"  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress}/>
                     </div>
 
                     <div className="row">

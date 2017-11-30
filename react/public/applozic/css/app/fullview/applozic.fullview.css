@@ -2094,11 +2094,11 @@ ol, ul {
 	border-radius: 110px;
 }
 
-.fancybox-overlay {
+.kmfancybox-overlay {
 	z-index: 2245500 !important;
 }
 
-.km-file-text .file-preview-link {
+.km-file-text .km-file-preview-link {
 	text-decoration: none;
 	width: 100%
 }
@@ -2233,7 +2233,7 @@ ol, ul {
 	margin: 1px 0 !important;
 }
 
-.fancybox-opened {
+.kmfancybox-opened {
 	z-index: 2247483650;
 }
 
@@ -2534,7 +2534,7 @@ ol, ul {
 	padding-top: 10px;
 }
 
-.fancybox-inner video {
+.kmfancybox-inner video {
 	background: #000;
 	display: block;
 	height: 100%;

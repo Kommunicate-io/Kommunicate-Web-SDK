@@ -12,7 +12,9 @@ class Conversations extends Component {
 
   componentWillUnmount() {
     document.body.classList.toggle('aside-menu-hidden');
-    window.$kmApplozic.fn.applozic('loadTab', '');
+    if (window.$kmApplozic.fn.applozic("getLoggedInUser")) {
+      window.$kmApplozic.fn.applozic('loadTab', '');
+    }
   }
 
   render() {

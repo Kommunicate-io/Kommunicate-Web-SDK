@@ -11,3 +11,8 @@ module.exports.createCustomer= {
       companySize : joi.string()
       }
   }
+module.exports.patchCustomer={
+  body:{
+        applicationId:joi.string().required()
+  }
+}

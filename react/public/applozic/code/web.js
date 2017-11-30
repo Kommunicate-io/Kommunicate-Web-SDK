@@ -71,7 +71,8 @@ function initAutoSuggestions() {
     $kmApplozic.fn.applozic({
       baseUrl: applozicBaseUrl,
       notificationIconLink:
-          'https://www.applozic.com/resources/images/applozic_icon.png',
+          'https://www.kommunicate.io/favicon.ico',
+      notificationSoundLink: 'https://api.kommunicate.io/plugin/audio/notification_tone.mp3',
       userId: userId,
       appId: appId,
       //appId: 'applozic-sample-app',

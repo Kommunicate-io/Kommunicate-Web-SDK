@@ -68,12 +68,12 @@ userRouter.post('/password-reset', passwordResetController.processPasswordResetR
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
-
+userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
 customerRouter.post('/',validate(customerValidation.createCustomer),registerController.createCustomer);
-customerRouter.patch('/:userId',registerController.patchCustomer);
+customerRouter.patch('/:userId',validate(customerValidation.patchCustomer),registerController.patchCustomer);
 customerRouter.get('/:userName',registerController.getCustomerInformation);
 customerRouter.post('/applozic',function(req,res){
                           console.log("called sign up with Applozic");

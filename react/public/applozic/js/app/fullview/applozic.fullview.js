@@ -350,7 +350,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var IS_AUTO_TYPE_SEARCH_ENABLED = (typeof appOptions.autoTypeSearchEnabled === "boolean") ? appOptions.autoTypeSearchEnabled : true;
 		var MCK_CHECK_USER_BUSY_STATUS = (typeof appOptions.checkUserBusyWithStatus === "boolean") ? (appOptions.checkUserBusyWithStatus) : false;
 		var IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof appOptions.launchOnUnreadMessage === "boolean") ? appOptions.launchOnUnreadMessage : false;
-		var NOTIFICATION_TONE = "/audio/notification_tone.mp3";
+		var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KM_BASE_URL + "/plugin/audio/notification_tone.mp3";
 		var CONVERSATION_STATUS_MAP = [ "DEFAULT", "NEW", "OPEN" ];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
 		var GROUP_TYPE_MAP = [ 1, 2, 5, 6 ];
@@ -404,7 +404,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		};
 		_this.init = function() {
 			ringToneService = new KmRingToneService();
-			mckNotificationTone = ringToneService.loadRingTone(NOTIFICATION_TONE,{loop:false});
+			mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK,{loop:false});
 			mckMessageService.init();
 			mckFileService.init();
 			mckInit.initializeApp(appOptions, false);
@@ -1258,13 +1258,13 @@ var KM_CLIENT_GROUP_MAP = [];
 						}
 					}
 				});
-				$kmApplozic(d).on("click", ".fancybox", function(e) {
+				$kmApplozic(d).on("click", ".kmfancybox", function(e) {
 					var $this = $kmApplozic(this);
 					var contentType = $this.data('type');
 					if (contentType.indexOf("video") !== -1) {
 						var videoTag = $this.find('.km-video-box').html(),
 							video;
-						$this.fancybox({
+						$this.kmfancybox({
 							content : videoTag,
 							title : $this.data('name'),
 							padding : 0,
@@ -1279,14 +1279,14 @@ var KM_CLIENT_GROUP_MAP = [];
 								}
 							},
 							beforeShow : function() {
-								video = $kmApplozic('.fancybox-inner').find('video').get(0);
+								video = $kmApplozic('.kmfancybox-inner').find('video').get(0);
 								video.load();
 								video.play();
 							}
 						});
 					} else {
 						var href = $this.data('url');
-						$kmApplozic(this).fancybox({
+						$kmApplozic(this).kmfancybox({
 							'openEffect' : 'none',
 							'closeEffect' : 'none',
 							'padding' : 0,
@@ -3692,18 +3692,18 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (typeof msg.fileMeta === "object") {
 					if (msg.fileMeta.contentType.indexOf("image") !== -1) {
 						if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-							return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
 						} else if (msg.contentType === 5) {
-							return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+							return '<a href="#" role="link" class="km-km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
 						} else {
-							return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
 						}
 					} else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
 					    return '<video controls class="km-video-player">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/mp4">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/ogg">Your browser does not support the video tag.</video>';
 					} else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
 						return '<audio controls class="km-audio-player">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="audio/ogg">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="audio/mpeg">Audio element not supported.</audio>' + '<p class="km-file-tag"><span class="file-name">' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></p>';
 					} else {
-						return '<a href="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" role="link" class="file-preview-link" target="_blank"><span class="file-detail"><span class="km-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+						return '<a href="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" role="link" class="km-file-preview-link" target="_blank"><span class="file-detail"><span class="km-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
 					}
 				}
 				return "";
@@ -3894,7 +3894,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					'photoData' : photoData,
 					'email' : '',
 					'unsaved' : true,
-					'isGroup' : false
+					'isGroup' : false,
+					'roleType' : data.roleType
 				};
 				MCK_CONTACT_MAP[contactId] = contact;
 				return contact;
@@ -3921,6 +3922,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				var photoData = (data.imageData) ? data.imageData : "";
 				if (photoData) {
 					contact.photoData = photoData;
+				}
+				if (data.roleType) {
+					contact.roleType = data.roleType;
 				}
 				MCK_CONTACT_MAP[contactId] = contact;
 				return contact;
@@ -5368,14 +5372,15 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					if (!displayName && group.type === 5) {
 						displayName = 'Broadcast';
-					}if (group.type === 10){
-            for(var i= 0;i<Object.keys(group.users).length;i++){
-              if((Object.values(group.users)[i]).role ===3){
-              	displayName =(Object.values(group.users)[i]).userId;
-                //console.log("groupName",displayName);
-                break;
-              }
-          	}
+					}
+					if (group.type === 10){
+						for(var i= 0;i<Object.keys(group.users).length;i++){
+							if((Object.values(group.users)[i]).role ===3){
+								displayName =(Object.values(group.users)[i]).userId;
+								//console.log("groupName",displayName);
+								break;
+							}
+						}
 					}
 					if (!displayName) {
 						displayName = group.contactId;
