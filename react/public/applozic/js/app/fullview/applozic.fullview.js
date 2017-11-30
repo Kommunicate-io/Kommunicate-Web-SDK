@@ -165,7 +165,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return "success";
 					break;
 				case 'setOnline':
-					oInstance.setOffline();
+					oInstance.setOnline();
 					return 'success';
 					break;
 			     case 'logout':
