@@ -8605,7 +8605,8 @@ app-root {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  overflow-y: hidden; }
   .app-body .main {
     flex: 1;
     min-width: 0; }

@@ -26,6 +26,7 @@ class Step2 extends Component {
     e.preventDefault();
 
     const customerInfo = {
+      applicationId:localStorage.getItem('applicationId'),
       role: this.state.role,
       contactNo: this.state.contact_no,
       companyName: this.state.company_name,

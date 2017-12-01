@@ -148,6 +148,7 @@ exports.sendWelcomeMail= (email, userName)=>{
     to:email,
     from:"Devashish From Kommunicate <support@kommunicate.io>",
     subject:"Welcome to Kommunicate!",
+    bcc:"techdisrupt@applozic.com",
     templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html"),
     templateReplacement: {":USER_NAME" : userName}
   }

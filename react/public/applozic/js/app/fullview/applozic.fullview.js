@@ -165,7 +165,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return "success";
 					break;
 				case 'setOnline':
-					oInstance.setOffline();
+					oInstance.setOnline();
 					return 'success';
 					break;
 			     case 'logout':
@@ -3894,7 +3894,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					'photoData' : photoData,
 					'email' : '',
 					'unsaved' : true,
-					'isGroup' : false
+					'isGroup' : false,
+					'roleType' : data.roleType
 				};
 				MCK_CONTACT_MAP[contactId] = contact;
 				return contact;
@@ -3921,6 +3922,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				var photoData = (data.imageData) ? data.imageData : "";
 				if (photoData) {
 					contact.photoData = photoData;
+				}
+				if (data.roleType) {
+					contact.roleType = data.roleType;
 				}
 				MCK_CONTACT_MAP[contactId] = contact;
 				return contact;

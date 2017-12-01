@@ -134,7 +134,7 @@ class MultiEmail extends Component {
                             Send{" "}
                         </button>
                     </div>
-                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space</p></div>
+                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div>
                 </div>
             </div>
         );

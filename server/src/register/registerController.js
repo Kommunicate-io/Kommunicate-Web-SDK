@@ -145,7 +145,11 @@ exports.signUpWithAplozic= (req,res)=>{
       }else{
         return registrationService.signUpWithApplozic({"userName":userName,"password":password,"email":email,"applicationId":applicationId}).then(result=>{
           try{
-           registrationService.sendWelcomeMail(email, name);
+            inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
+            .catch(err=>{
+              console.log("err while storing welcome message in db");
+            });
+           registrationService.sendWelcomeMail(email, userName);
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }

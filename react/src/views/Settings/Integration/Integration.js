@@ -11,17 +11,18 @@ class Integration extends Component {
     super(props);
     this.applicationKey = localStorage.getItem("applicationId");
     this.state = {
-      copySuccess: "Copy To Clipboard"
+      copySuccess: "Copy"
     };
 
     this.script = getJsCode();
     this.data={ title: "Some more instructions", 
-    content:`Default parameters are pre populated. You can change them as you need.<br>
-    Parameters <br>
+    content:`<p>Default parameters are pre populated. You can change them as you need.<p>
+    Parameters: <br>
         <b>appId -</b> your application Id.<br>
         <b>isAnonymousChat -</b> allow your users to chat in Anonymous mode<br>
-        <b>groupName -</b>Conversation Title tagentId -  Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
-        <b>tagentName -</b> Display name for agent(agentId is default display name)`};
+        <b>groupName -</b> Conversation Title<br> 
+        <b>agentId -</b> Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
+        <b>agentName -</b> Display name for agent(agentId is default display name)`};
   }
 
   copyToClipboard = e => {
@@ -45,11 +46,11 @@ class Integration extends Component {
               </div>
               <div className="card-main">
                   <div>
-                    <h6>1.Locate the header or body tags in your connected Client Count</h6>
+                    <h6>1. Locate the header or body tags in your code</h6>
                   </div>
                   <div className="outer-box col-md-10 integration-font"> 
                     <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
-                    <p>You will be requiredto paste the code within either of these tags.</p>
+                    <p>You will be required to paste the code within either of these tags.</p>
                     <div>
                     <textarea
                             className="script-text-area"
@@ -61,7 +62,7 @@ class Integration extends Component {
                   </div>
                   
                   <div>
-                    <h6>2.Copy the code from below and paste it as explained in point 1</h6>
+                    <h6>2. Copy the code from below and paste it as explained in point 1</h6>
                   </div>
                   <div className="outer-box col-md-10 integration-font">
                     <p> Paste the Kommunicate code just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags.</p>

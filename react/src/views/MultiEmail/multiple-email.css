@@ -22,7 +22,7 @@
 
 .input-email {
 	border: 0;		
-	width: 383px;	
+	width: 100%;	
 	margin: 5px;
 }
 .instruction-heading {
@@ -87,7 +87,7 @@
 	  margin-right: 15px;
   }
   .tip-enter-m {
-	width: 200px !important;
+	width: 380px !important;
 	height: 26px !important;
 	font-family: OpenSans !important;
 	font-size: 11px !important;

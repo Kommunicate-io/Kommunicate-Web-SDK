@@ -5,8 +5,14 @@ import './Admin.css';
 
 class ImageUploader extends Component {
 
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+    updateProfilePicUrl: function(url){
+      //default
+    }
+  }
+
+  constructor(props,defaultProps ) {
+    super(props, defaultProps);
     this.state = {
       imageFile: undefined,
       file: "/img/avatars/default.png"
@@ -85,16 +91,18 @@ class ImageUploader extends Component {
     let imageUrl=''
     if (thumbnail.hasChildNodes() && file && imageTypeRegex.test(file.type)) {
       sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}.${file.name.split('.').pop()}`)
-          .then(response => {
-            console.log(response)
-            if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
-              imageUrl = response.data.profileImageUrl
-              updateApplozicUser({ imageLink: response.data.profileImageUrl })
-                  .then(response => {
-                    console.log(response); this.props.updateProfilePicUrl(imageUrl);
-                    localStorage.setItem("imageLink", imageUrl);
-                    Notification.info("Successfully uploaded..")
-                  }
+           .then(response => {
+          console.log(response)
+          if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+            imageUrl = response.data.profileImageUrl
+            updateApplozicUser({ imageLink: response.data.profileImageUrl })
+              .then(response => {
+                console.log(response);
+                this.props.updateProfilePicUrl(imageUrl);
+                localStorage.setItem("imageLink", imageUrl);  
+                Notification.info("Successfully uploaded..")              
+              }
+
               )
                   .catch(err => { console.log(err)
                     Notification.info("Error in uploading image")
