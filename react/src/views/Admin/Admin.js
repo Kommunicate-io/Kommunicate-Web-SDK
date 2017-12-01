@@ -41,6 +41,7 @@ class Forms extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.industries = ['Please select', 'E-commerce', 'Marketplaces', 'SaaS', 'E-learning', 'Healthcare', 'On-Demand Services', 'Social', 'Fin Tech', 'Entertainment', 'Gaming', 'Travel' , 'Other'];
     this.handlePassword = this.handlePassword.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
     this.openModal = this.openModal.bind(this);
 
     this.closeModal = this.closeModal.bind(this);
@@ -110,9 +111,20 @@ class Forms extends Component {
   handleReset(e){
     e.preventDefault();
   }
-
+  
+  validatePassword(e){
+    e.preventDefault();
+    console.log('validate password')
+    if(this.state.newPassword.length < 6){
+      Notification.info("Your password must have at least 6 characters ")
+      return
+    }
+    else{
+     this.handlePassword(e)
+    }
+  }
   handlePassword(e){
-   
+    
     e.preventDefault();
     
     console.log('handle password')
@@ -262,6 +274,11 @@ class Forms extends Component {
                         </div>
                     </div> }>
                       <div className="password-wrapper">
+                        <div className="row">
+                          <div className="col-md-12">
+                          <div className="about-password-text">Your password must have at least 6 characters</div>
+                          </div>
+                        </div>
                         <div className="form-group row">
                           <div className="col-md-4">
                             <label className="form-control-label">Current Password</label>
@@ -280,7 +297,7 @@ class Forms extends Component {
                         </div>
                         <div className="form-group row">
                           <div className="col-md-4">
-                            <button className="btn-primary" type="submit" onClick={this.handlePassword}>Save changes </button>
+                            <button className="btn-primary" type="submit" onClick={this.validatePassword}>Save changes </button>
                           </div>
                         </div>
                       </div>

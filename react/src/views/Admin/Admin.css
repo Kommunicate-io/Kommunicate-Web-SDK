@@ -76,3 +76,11 @@
 .change-courser {
     cursor:pointer;
 }
+.about-password-text {
+    font-family: 'OpenSans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.7px;
+    text-align: left;
+    color: #87898b;
+    padding-bottom: 5px;
+}
