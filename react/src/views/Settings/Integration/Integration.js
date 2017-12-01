@@ -16,6 +16,7 @@ class Integration extends Component {
 
     this.script = getJsCode();
     this.data={ title: "Some more instructions", 
+    subtitle:"Parameters user",
     content:`<p>Default parameters are pre populated. You can change them as you need.<p>
     Parameters: <br>
         <b>appId -</b> your application Id.<br>
@@ -25,6 +26,10 @@ class Integration extends Component {
         <b>agentName -</b> Display name for agent(agentId is default display name)`};
   }
 
+  componentDidMount(){
+    document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
+  }
+  
   copyToClipboard = e => {
     e.preventDefault();
     this.textArea.select();
@@ -51,15 +56,8 @@ class Integration extends Component {
                   <div className="outer-box col-md-10 integration-font"> 
                     <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
                     <p>You will be required to paste the code within either of these tags.</p>
-                    <div>
-                    <textarea
-                            className="script-text-area"
-                            rows="7"
-                            value={getJsInstructions()}
-                            readOnly
-                     />
-	                  </div>
-                  </div>
+                    <div id="instruction-display-area"/>
+                    </div>
                   
                   <div>
                     <h6>2. Copy the code from below and paste it as explained in point 1</h6>
