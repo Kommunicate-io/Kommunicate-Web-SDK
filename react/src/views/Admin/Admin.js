@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import  {getEnvironmentId,get} from '../../config/config.js';
-import {patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo, sendProfileImage, updateApplozicUser} from '../../utils/kommunicateClient'
+import {patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo, sendProfileImage, updateApplozicUser, changePassword } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import ImageUploader from './ImageUploader'
 import './Admin.css';
@@ -31,13 +31,16 @@ class Forms extends Component {
       industry: '',
       industryOthers: '',
       imageFile: '',
-      modalIsOpen: false
+      modalIsOpen: false,
+      currentPassword: '',
+      newPassword: '',
+      rePassword:''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.industries = ['Please select', 'E-commerce', 'Marketplaces', 'SaaS', 'E-learning', 'Healthcare', 'On-Demand Services', 'Social', 'Fin Tech', 'Entertainment', 'Gaming', 'Travel' , 'Other'];
-
+    this.handlePassword = this.handlePassword.bind(this);
     this.openModal = this.openModal.bind(this);
 
     this.closeModal = this.closeModal.bind(this);
@@ -108,6 +111,23 @@ class Forms extends Component {
     e.preventDefault();
   }
 
+  handlePassword(e){
+   
+    e.preventDefault();
+    
+    console.log('handle password')
+    
+    if (this.state.newPassword !== this.state.rePassword){
+      Notification.info("Password does not match")
+    return      
+    }else{
+      changePassword({
+        oldPassword : this.state.currentPassword,
+        newPassword: this.state.newPassword
+      })
+     
+    }
+  }
 
   componentWillMount() {
 
@@ -215,14 +235,14 @@ class Forms extends Component {
                         <div className="row">
                           <div className="col-md-6">
                             <label className="form-control-label" htmlFor="admin-name">Name</label>
-                            <input type="text" id="admin-name" name="admin-name" onChange = {(event) => this.setState({name:event.target.value})} value={this.state.name} className="form-control input-filed" placeholder="Enter your name"/><br/>
+                            <input type="text" id="admin-name" name="admin-name" onChange = {(event) => this.setState({name:event.target.value})} value={this.state.name} className="form-control input-field" placeholder="Enter your name"/><br/>
                             <label className="form-control-label" htmlFor="email-input">Email</label>
-                            <input type="email" id="email-input" name="email-input" onChange = {(event) => this.setState({email:event.target.value})} value={this.state.email} className="form-control input-filed" placeholder="Enter Email" required/><br/>
+                            <input type="email" id="email-input" name="email-input" onChange = {(event) => this.setState({email:event.target.value})} value={this.state.email} className="form-control input-field" placeholder="Enter Email" required/><br/>
                             <label className="form-control-label" htmlFor="role-input">Designation</label>
-                            <input type="text" id="role-input" name="role-input" onChange = {(event) => this.setState({role:event.target.value})} value={this.state.role} className="form-control input-filed" placeholder="Role within the organization"/><br/>
+                            <input type="text" id="role-input" name="role-input" onChange = {(event) => this.setState({role:event.target.value})} value={this.state.role} className="form-control input-field" placeholder="Role within the organization"/><br/>
                             <label className="form-control-label label-contact" htmlFor="number-input">Contact Number (optional)</label>
-                            <input type="text" id="number-input" maxLength="10" name="number-input" onKeyPress={this.handleKeyPress} onChange = {(event) => this.setState({contact:event.target.value})} value={this.state.contact} className="form-control input-filed" placeholder="Enter contact no."/><br/>
-                            <button className="password-change-btn" type="submit" onClick={this.handleSubmit}>Save changes </button>
+                            <input type="text" id="number-input" maxLength="10" name="number-input" onKeyPress={this.handleKeyPress} onChange = {(event) => this.setState({contact:event.target.value})} value={this.state.contact} className="form-control input-field" placeholder="Enter contact no."/><br/>
+                            <button className="btn-primary" type="submit" onClick={this.handleSubmit}>Save changes </button>
                           </div>
                         </div>
                       </div>
@@ -245,22 +265,22 @@ class Forms extends Component {
                         <div className="form-group row">
                           <div className="col-md-4">
                             <label className="form-control-label">Current Password</label>
-                            <input type="password" id="current-password-input" name="current-password-input" className="form-control input-field" placeholder="Enter your current password"/><br/>
+                            <input type="password" id="current-password-input" name="current-password-input" className="form-control input-field" onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
                           </div>
                         </div>
                         <div className="form-group row">
                           <div className="col-md-4">
                             <label className="form-control-label">New Password</label>
-                            <input type="password" id="new-password-input" name="new-password-input" className="form-control input-field" placeholder="Enter your new password"/><br/>
+                            <input type="password" id="new-password-input" name="new-password-input" className="form-control input-field" onChange = {(event) => this.setState({newPassword:event.target.value})} value={this.state.newPassword} placeholder="Enter your new password"/><br/>
                           </div>
                           <div className="col-md-4">
                             <label className="form-control-label">Re-type new Password</label>
-                            <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" placeholder="Re-type your current password"/><br/>
+                            <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" onChange = {(event) => this.setState({rePassword:event.target.value})} valu={this.state.rePassword} placeholder="Re-type your current password"/><br/>
                           </div>
                         </div>
                         <div className="form-group row">
                           <div className="col-md-4">
-                            <button className="password-change-btn" type="submit">Save changes </button>
+                            <button className="btn-primary" type="submit" onClick={this.handlePassword}>Save changes </button>
                           </div>
                         </div>
                       </div>
