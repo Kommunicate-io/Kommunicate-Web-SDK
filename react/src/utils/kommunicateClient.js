@@ -412,6 +412,38 @@ const getUsersByType = (applicationId,userType)=>{
     return result.data?result.data.data:[];
   });
 }
+
+/*** 
+ * this method will update the password
+ * @param {Object} option
+ * @param {Object} option.applicationId this is application id
+ * 
+*/
+const changePassword =(option)=>{
+
+  const patchClientUrl = getConfig().kommunicateBaseUrl+"/users/password/update";
+  return Promise.resolve(axios({
+    method: 'post',
+    url: patchClientUrl,
+    data: {
+      "userName": localStorage.getItem('loggedinUser'),
+      "applicationId": localStorage.getItem('applicationId'),
+      "oldPassword": option.oldPassword,
+      "newPassword": option.newPassword
+    }
+
+  })).then((response) => { 
+    if(response.data.code === 'SUCCESS')
+    {
+      Notification.success('Password Changed Successfully');
+      localStorage.setItem("password", option.newPassword);
+      return "SUCCESS";
+    } 
+  })
+  //.catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
+  .catch(err => {console.log("Error in updating password")});
+
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -433,5 +465,6 @@ export {
   sendProfileImage,
   updateApplozicUser,
   getWelcomeMessge,
-  getUsersByType
+  getUsersByType,
+  changePassword
 }
