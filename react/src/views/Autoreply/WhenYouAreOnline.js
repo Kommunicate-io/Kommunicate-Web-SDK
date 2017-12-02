@@ -49,6 +49,32 @@ class WhenYouAreOnline extends Component {
 	        	<button>Anonymous User</button>
 	        	<button>Known User</button>
 	        </div>
+	        <div className="form-group row">
+	        	<div className="col-3">
+	        		<p>Mesage for anonymous users</p>
+	        		<textarea
+                className="form-group script-text-area"
+                rows="5"
+                readOnly
+              />
+              <button>Anonymous User</button>
+	        		<button>Known User</button>
+	        	</div>
+	        	<div className="col-1">
+	        	</div>
+	        	<div className="col-3">
+	        		<p>Mesage for known users</p>
+	        		<textarea
+                className="form-group script-text-area"
+                rows="5"
+                readOnly
+              />
+              <div className="row">
+              	<button>Anonymous User</button>
+	        			<button>Known User</button>
+              </div>
+	        	</div>
+	        </div>
 	  		</div>
 			</div>
 		)
