@@ -20,6 +20,7 @@
 }
 .divider {
     opacity: 0.36;
+    border-top: 1px solid rgba(14, 14, 14, 0.26);
 }
 .default-dp{
     width: 133px;
@@ -27,7 +28,7 @@
     border-radius: 65px;
 }
 .chevron-up-password {
-    color: #f4f0f0;
+    color: #dad8d8;
 }
 .edit-dp-btn {
     position: absolute;
@@ -83,4 +84,18 @@
     text-align: left;
     color: #87898b;
     padding-bottom: 5px;
+}
+.setup-btn-group {
+    margin-top: 20px;
+}
+.card-footer {
+    border: none ;
+    background-color: white;
+}
+.about-dp{
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-align: left;
+    color: #7d7f81;
 }
