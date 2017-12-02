@@ -118,10 +118,12 @@ submitForm = ()=>{
           window.$applozic.fn.applozic('logout');
         }
 
-        var options = window.applozic._globals;
-        options.userId = _this.state.userName;
-        options.accessToken = _this.state.password;
-        window.$applozic.fn.applozic(options);
+        if (window.$applozic) {
+          var options = window.applozic._globals;
+          options.userId = _this.state.userName;
+          options.accessToken = _this.state.password;
+          window.$applozic.fn.applozic(options);          
+        }
 
         _this.props.history.push("/dashboard");
         _this.state=_this.initialState;
@@ -129,6 +131,7 @@ submitForm = ()=>{
         //window.chatLogin();
     }
     }).catch(function(err){
+      console.log(err);
       Notification.error("Error during login.");
       _this.setState({loginButtonDisabled:false});
     });

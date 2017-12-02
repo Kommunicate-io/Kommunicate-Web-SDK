@@ -2599,7 +2599,7 @@ var KM_CLIENT_GROUP_MAP = [];
 											scrollTop : 0
 										}, 0);
 
-										$kmApplozic(".left .person:first").trigger('click');
+										//$kmApplozic(".left .person:first").trigger('click');
 									}
 								} else {
 									$mck_contacts_inner.data('datetime', '');

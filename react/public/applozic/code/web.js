@@ -62,7 +62,7 @@ function initAutoSuggestions() {
         $('#chat').css('display', 'none');
         $('#chat-box-div').css('display', 'block');
         initAutoSuggestions();
-        $("#li-chat a").trigger('click');
+        //$("#li-chat a").trigger('click');
         window.Aside.loadAgents();
       }
     }
@@ -85,6 +85,8 @@ function initAutoSuggestions() {
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
              //window.location="/conversations";
+             console.log("###Tab clicked: ");
+             console.log(tabDetail);
              window.appHistory.replace('/conversations');
   					 if(typeof tabDetail === 'object') {
   					        console.log(tabDetail.tabId  + " " + tabDetail.isGroup);
