@@ -7,6 +7,7 @@ import './Admin.css';
 import Collapsible from 'react-collapsible';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
+import AvatarEditor from 'react-avatar-editor'
 const customStyles = {
   content : {
     top                   : '50%',
@@ -34,7 +35,8 @@ class Forms extends Component {
       modalIsOpen: false,
       currentPassword: '',
       newPassword: '',
-      rePassword:''
+      rePassword:'',
+      repeatPassword:''
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,6 +44,7 @@ class Forms extends Component {
     this.industries = ['Please select', 'E-commerce', 'Marketplaces', 'SaaS', 'E-learning', 'Healthcare', 'On-Demand Services', 'Social', 'Fin Tech', 'Entertainment', 'Gaming', 'Travel' , 'Other'];
     this.handlePassword = this.handlePassword.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
+    this.clearPasswordfields = this.clearPasswordfields.bind(this)
     this.openModal = this.openModal.bind(this);
 
     this.closeModal = this.closeModal.bind(this);
@@ -67,7 +70,7 @@ class Forms extends Component {
   }
 
   handleSubmit(e) {
-
+  
     e.preventDefault();
 
     console.log('handle submit')
@@ -129,18 +132,29 @@ class Forms extends Component {
     
     console.log('handle password')
     
-    if (this.state.newPassword !== this.state.rePassword){
+    if (this.state.newPassword !== this.state.repeatPassword){
       Notification.info("Password does not match")
+       
     return      
     }else{
       changePassword({
         oldPassword : this.state.currentPassword,
-        newPassword: this.state.newPassword
+        newPassword: this.state.newPassword,
       })
-     
+      this.clearPasswordfields() 
+      
     }
   }
+  clearPasswordfields(){
+    console.log('clear password')
+    this.setState({
+      currentPassword: '',
+      newPassword: '',
+      repeatPassword: '',
+      rePassword: ''  
 
+    })
+  }
   componentWillMount() {
 
     console.log("Admin will mount");
@@ -201,12 +215,7 @@ class Forms extends Component {
           <div className="row">
 
             <div className="col-md-12">
-              {/*<ImageUploader
-               handleImageFiles={this.handleImageFiles}
-               invokeImageUpload={this.invokeImageUpload}
-               uploadImageToS3={this.uploadImageToS3}
-               updateProfilePicUrl={this.props.updateProfilePicUrl}
-               /> */}
+              
               <div className="card">
                 <div className="card-block">
                   <div className="row">
@@ -216,12 +225,20 @@ class Forms extends Component {
                       </div>
                     </div>
                   </div>
-                  <form className="form-horizontal">
+                  <form className="form-horizontal" autocomplete="off">
                     <div className="form-group row">
                       <div className="col-md-4">
+                      <ImageUploader
+                          handleImageFiles={this.handleImageFiles}
+                          invokeImageUpload={this.invokeImageUpload}
+                          uploadImageToS3={this.uploadImageToS3}
+                          updateProfilePicUrl={this.props.updateProfilePicUrl}
+                        /> 
+                        {/*
                         <img src="/img/avatars/default.png" className="default-dp"></img><br/>
                         <div className="edit-dp-btn">
                           <br/><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                          
                           <Modal
                               isOpen={this.state.modalIsOpen}
 
@@ -240,8 +257,8 @@ class Forms extends Component {
                                   updateProfilePicUrl={this.props.updateProfilePicUrl}
                                   />
                             </div>
-                          </Modal>
-                        </div>
+                          </Modal> 
+                        </div>*/}
                       </div>
                       <div className="col-md-8">
                         <div className="row">
@@ -264,7 +281,11 @@ class Forms extends Component {
                         <hr className="divider" />
                       </div>
                     </div>
-                    <Collapsible trigger={
+                    
+                  </form>
+                  <form className="form-horizontal" autocomplete="off">
+                  <Collapsible trigger={
+                    
                     <div className="form-group row">
                         <div className="col-md-3">
                           <h5 className="password-wrapper-header change-courser">Change Password</h5>
@@ -282,7 +303,7 @@ class Forms extends Component {
                         <div className="form-group row">
                           <div className="col-md-4">
                             <label className="form-control-label">Current Password</label>
-                            <input type="password" id="current-password-input" name="current-password-input" className="form-control input-field" onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
+                            <input type="password" id="current-password-input" onKeyPress={this.handleKeyPress} name="current-password-input" className="form-control input-field" onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
                           </div>
                         </div>
                         <div className="form-group row">
@@ -291,13 +312,17 @@ class Forms extends Component {
                             <input type="password" id="new-password-input" name="new-password-input" className="form-control input-field" onChange = {(event) => this.setState({newPassword:event.target.value})} value={this.state.newPassword} placeholder="Enter your new password"/><br/>
                           </div>
                           <div className="col-md-4">
+                            <label className="form-control-label">Re-type New Password</label>
+                            <input type="password" id="re-new-password-input" name="re-new-password-input" className="form-control input-field" onChange = {(event) => this.setState({repeatPassword:event.target.value})} value={this.state.repeatPassword} placeholder="Enter your new password"/><br/>
+                          </div>{/* 
+                          <div className="col-md-4">
                             <label className="form-control-label">Re-type new Password</label>
                             <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" onChange = {(event) => this.setState({rePassword:event.target.value})} valu={this.state.rePassword} placeholder="Re-type your current password"/><br/>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="form-group row">
                           <div className="col-md-4">
-                            <button className="btn-primary" type="submit" onClick={this.validatePassword}>Save changes </button>
+                            <button className="btn-primary" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes </button>
                           </div>
                         </div>
                       </div>
@@ -307,6 +332,8 @@ class Forms extends Component {
                         </div>
                       </div>
                     </Collapsible>
+
+                  </form>
 
 
                     {/*
@@ -372,7 +399,7 @@ class Forms extends Component {
                      </select>
                      </div>
                      </div>*/}
-                  </form>
+                  
                 </div>
                 {/*
                  <div className="card-footer">

@@ -2,8 +2,23 @@ import React, { Component } from 'react';
 import { sendProfileImage, updateApplozicUser } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import './Admin.css';
+import AvatarEditor from 'react-avatar-editor'
+
 
 class ImageUploader extends Component {
+  
+  onClickSave = () => {
+    if (this.editor) {
+      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
+      // drawn on another canvas, or added to the DOM.
+      const canvas = this.editor.getImage()
+
+      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
+      const canvasScaled = this.editor.getImageScaledToCanvas()
+    }
+  }
+
+  setEditorRef = (editor) => this.editor = editor
 
   static defaultProps = {
     updateProfilePicUrl: function(url){
@@ -18,14 +33,14 @@ class ImageUploader extends Component {
       file: "/img/avatars/default.png"
     }
   }
-
+  
   chooseImage =() => {
-    if(document.getElementById("hidden-image-input-element").value != "") {
-      let d = document.getElementById("default-dp");
-      d.style.display = "none";
+   if(document.getElementById("hidden-image-input-element").value != "") {
+     let d = document.getElementById("default-dp");
+     d.style.display = "none";
     }
-    else {
-      let e = document.getElementById("default-dp");
+   else {
+     let e = document.getElementById("default-dp");
       e.style.display = "block";
     }
 
@@ -123,36 +138,43 @@ class ImageUploader extends Component {
   render() {
     return (
         <div className="card">
-          <div className="card-header">
+      {/* <div className="card-header">
             <strong>Set Profile Image</strong>
-          </div>
+          </div> */}
           <div className="card-block">
             <div className="form-group row">
               <label className="col-md-3 form-control-label" htmlFor="email-input">Profile Image</label>
               <div className="col-md-9">
                 <div className="form-group row">
                   <div className="col-md-4">
+                  <img src="/img/avatars/default.png" id="default-dp" className="default-dp"></img><br/>
+                    
+                    {/*
                     <img src="/img/avatars/default.png" className="default-dp" id="default-dp"></img><br/>
+                    */}
                     <div id="thumbnail"></div>
+                    {/*
                     <div className="edit-dp-btn">
                       <h5>Edit Display Photo</h5>
                     </div>
+                    */}
                     <input type="file"  accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
+                    
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <span>Please select a file less than 5MB</span>
-                </div>
                 <div id="thumbnail">
                 </div>
               </div>
             </div>
           </div>
           <div className="card-footer">
+            <div>
+              <span className="about-dp">Please select a file less than 5MB</span>
+            </div>
             <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
             <button type="submit" className="btn btn-sm btn-danger" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
           </div>
-          {/* new */}
+          
 
         </div>
     )

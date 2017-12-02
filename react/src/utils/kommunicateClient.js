@@ -439,6 +439,9 @@ const changePassword =(option)=>{
       localStorage.setItem("password", option.newPassword);
       return "SUCCESS";
     } 
+    else {
+      Notification.success('Wrong current password');
+    }
   })
   //.catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
   .catch(err => {console.log("Error in updating password")});
