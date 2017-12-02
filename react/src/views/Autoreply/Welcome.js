@@ -57,29 +57,42 @@ render(){
       <div className="card">
         <div className="card-header">
           <div className="card-block">
-            <div>
-              <div className="col-6">
-                <div  className="row">
-                  <h4 className="enable-automatic-welcome">Enable automatic welcome message </h4>
-                  <Label className="switch switch-3d switch-success">
-                      <Input type="checkbox" className="switch-input" defaultChecked/>
-                      <span className="switch-label"></span>
-                      <span className="switch-handle"></span>
-                  </Label>
-                </div>
-                <div className="row">
-                  <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
-                </div>
-                <div className="row">
-                  <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. <span className="you-can-update-status text-style-2">Show me where</span></p>
-                </div>
-              </div>
+            <div className="form-group row form-control-label">
+              Message
             </div>
-            <hr />
-            <WhenYouAreOnline />
-            <hr />
-            <WhenYouAreOffline />
+            <div className="form-group row">
+              <textarea id ="offhourmessage" rows="6" cols="60" onChange = {(event) => this.setState({msg:event.target.value})} value={this.state.msg} required></textarea>
+            {
+              // <div>
+              // <div className="col-6">
+              //   <div  className="row">
+              //     <h4 className="enable-automatic-welcome">Enable automatic welcome message </h4>
+              //     <Label className="switch switch-3d switch-success">
+              //         <Input type="checkbox" className="switch-input" defaultChecked/>
+              //         <span className="switch-label"></span>
+              //         <span className="switch-handle"></span>
+              //     </Label>
+              //   </div>
+              //   <div className="row">
+              //     <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
+              //   </div>
+              //   <div className="row">
+              //     <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. <span className="you-can-update-status text-style-2">Show me where</span></p>
+              //   </div>
+              // </div>
+              // </div>
+              // <hr />
+              // <WhenYouAreOnline />
+              // <hr />
+              // <WhenYouAreOffline />
+
+            }
+            </div>
           </div>
+        </div>
+        <div className="card-footer">
+          <button type="button" className="btn btn-primary px-4" onClick={this.submitWelcomeMessage}>Save</button>
+          <button type="reset" className="btn btn-danger px-4">Cancel</button>
         </div>
       </div>
     </div>

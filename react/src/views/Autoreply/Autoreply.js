@@ -26,7 +26,7 @@ class Autoreply extends Component {
 
     this.state = {
      days:'',
-     activeTab: '3',
+     activeTab: '2',
      mon:false,
      tue:false,
      wed:false,
@@ -194,7 +194,7 @@ class Autoreply extends Component {
                 </NavLink>
               </NavItem>
               <NavItem hidden= {false} >
-                <NavLink style ={{display:"none"}}
+                <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}
                   onClick={() => { this.toggle('2'); }}
                 >
