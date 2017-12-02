@@ -39,12 +39,15 @@ return jsScript;
 }
 
 const getJsInstructions = () => {
-  return `<!—Example—>
-  !DOCTYPE html>
-  <html lang=“en”>
-    <head>
-      --- insert_Kommunicate_code_here ---
-    </head>`
+  return `
+  <div  class="instruction-display-area">
+  <div class="script-text-area">
+  &lt;!—Example—&gt;<br>
+  !DOCTYPE html&gt;<br>
+  &lt;html lang=“en”&gt;<br>
+  &lt;head&gt;<br>
+  &nbsp;&nbsp;<b>insert_Kommunicate_code_here</b><br>
+      &lt;/head&gt;</div></div>`
 }
 
 
