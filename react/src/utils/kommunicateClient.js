@@ -359,16 +359,9 @@ const sendProfileImage = (imageFile, imageFileName) => {
 const updateApplozicUser = (userInfo) => {
   const headers = {
     'Content-Type':'application/json',
-   }
-  if(localStorage.getItem("isAdmin")==="true"){
-      headers['Apz-AppId']=localStorage.getItem("applicationId"),
-      headers['Apz-Token']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
-      headers['Apz-Product-App']='true'
-  }else{
-    headers['Application-Key']=  localStorage.getItem("applicationId"),
-    headers['Authorization']= 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("deviceKey")).toString('base64'),
-    headers['Access-Token']=localStorage.getItem("password")     
-  
+    'Apz-AppId':localStorage.getItem("applicationId"),
+    'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
+    'Apz-Product-App':'true'    
   }
   console.log(headers)
 
