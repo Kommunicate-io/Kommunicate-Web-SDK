@@ -292,7 +292,7 @@ class Forms extends Component {
                           </div>
                           <div className="col-md-4">
                             <label className="form-control-label">Re-type new Password</label>
-                            <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" onChange = {(event) => this.setState({rePassword:event.target.value})} valu={this.state.rePassword} placeholder="Re-type your current password"/><br/>
+                            <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" onChange = {(event) => this.setState({rePassword:event.target.value})} value={this.state.rePassword} placeholder="Re-type your current password"/><br/>
                           </div>
                         </div>
                         <div className="form-group row">
