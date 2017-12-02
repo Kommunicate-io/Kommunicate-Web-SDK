@@ -84,20 +84,19 @@ function initAutoSuggestions() {
       olStatus: true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
-             //window.location="/conversations";
-             console.log("###Tab clicked: ");
-             console.log(tabDetail);
-             window.appHistory.replace('/conversations');
-  					 if(typeof tabDetail === 'object') {
-  					        console.log(tabDetail.tabId  + " " + tabDetail.isGroup);
-                    if (tabDetail.isGroup) {
-                      window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
-                      window.Aside.initConversation(tabDetail.tabId);
-                    } else {
-                      window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
-                    }
-  					 }
-					 },
+            window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+
+            window.appHistory.replace('/conversations');
+
+  					if(typeof tabDetail === 'object') {
+              if (tabDetail.isGroup) {
+                window.$kmApplozic("#km-toolbar").removeClass('n-vis').addClass('vis');
+                window.Aside.initConversation(tabDetail.tabId);
+              } else {
+                window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+              }
+  					}
+					},
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: true,
