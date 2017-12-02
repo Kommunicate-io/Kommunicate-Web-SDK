@@ -114,7 +114,10 @@ submitForm = ()=>{
           localStorage.setItem("name", response.data.result.name);
         }
 
-        window.$applozic.fn.applozic('logout');        
+        if (window.$applozic && window.$applozic.fn.applozic("getLoggedInUser")) {
+          window.$applozic.fn.applozic('logout');
+        }
+
         var options = window.applozic._globals;
         options.userId = _this.state.userName;
         options.accessToken = _this.state.password;
@@ -126,7 +129,7 @@ submitForm = ()=>{
         //window.chatLogin();
     }
     }).catch(function(err){
-      Notification.error("error logining in");
+      Notification.error("Error during login.");
       _this.setState({loginButtonDisabled:false});
     });
   }
