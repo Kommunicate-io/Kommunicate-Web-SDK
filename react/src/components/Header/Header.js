@@ -47,10 +47,10 @@ return imageLink;
   }*/
   logout(e){
     window.logout();
-    if (window.$kmApplozic) {
+    if (window.$kmApplozic && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
       window.$kmApplozic.fn.applozic('logout');           
     }
-    if (window.$applozic) {
+    if (window.$applozic && window.$applozic.fn.applozic("getLoggedInUser")) {
       window.$applozic.fn.applozic('logout');       
     }
     sessionStorage.clear();
@@ -80,12 +80,15 @@ return imageLink;
                 <DropdownItem>
                   <p className="header-user-name">{localStorage.getItem("name")}</p>
                   <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
-                  <span className="header-user-online"> You are online <span className="avatar-status badge-success"></span></span>
+                  {
+                    //<span className="header-user-online"> You are online <span className="avatar-status badge-success"></span></span>
+                  }
                 </DropdownItem>
-                <DropdownItem> Go Offline </DropdownItem>
-                <DropdownItem> Profile </DropdownItem>
+                {
+                  //<DropdownItem> Go Offline </DropdownItem>
+                  //<DropdownItem> Profile </DropdownItem>
+                }
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
-
               </DropdownMenu>
             </Dropdown>
           </li>

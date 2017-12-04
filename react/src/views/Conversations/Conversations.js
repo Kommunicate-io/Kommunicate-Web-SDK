@@ -8,11 +8,21 @@ class Conversations extends Component {
     document.body.classList.toggle('aside-menu-hidden');
     const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + localStorage.getItem("applicationId")
     window.getSuggestions(autoSuggestUrl);
+
+    /*if (window.$kmApplozic(".left .person").length > 0 && window.$kmApplozic(".left .person.active").length === 0) {
+      window.$kmApplozic(".left .person:first").trigger('click');
+    }*/
+    var prevSelection = window.$kmApplozic("#km-contact-list .person.prev-selection");
+    if (prevSelection.length === 1) {
+      prevSelection.removeClass('prev-selection');      
+      prevSelection.trigger('click');
+    }
   }
 
   componentWillUnmount() {
     document.body.classList.toggle('aside-menu-hidden');
     if (window.$kmApplozic.fn.applozic("getLoggedInUser")) {
+      window.$kmApplozic("#km-contact-list .person.active").addClass('prev-selection');
       window.$kmApplozic.fn.applozic('loadTab', '');
     }
   }

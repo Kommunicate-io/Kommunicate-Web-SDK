@@ -244,11 +244,6 @@ class Forms extends Component {
                   
                   <PasswordAccordion />
                     
-                    
-                   
-                     
-                 
-
 
                     {/*
                      <div className="form-group row">

@@ -13,7 +13,6 @@
 	letter-spacing: 0.7px;
 	text-align: left;
   color: #5e6061;
-  margin-left: 10px;
 }
 
 .title:hover {
@@ -21,7 +20,7 @@
 }
 
 .content {
-  height: 30px;
+  height: 16px;
   background-color: transparent;
   border-radius: 4px;
   color: #9b9797;
@@ -70,6 +69,14 @@
   right: 0;
 }
 .thin-line {
-  border-block-end: 1px solid rgba(0, 0, 0, 0.3);
-  margin-bottom:16px
+  border-block-end: 1px solid #a5b0bd;
+  margin-bottom:16px;
+  opacity: 30%;
+}
+.subtitle-text{
+  color:#9b9797;
+  font-size: 12px;
+}
+.accordion{
+  padding-left: 0px !important;
 }
