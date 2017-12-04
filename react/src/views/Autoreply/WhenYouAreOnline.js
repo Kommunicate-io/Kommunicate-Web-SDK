@@ -29,7 +29,7 @@ class WhenYouAreOnline extends Component {
 			<div className="cursor-is-pointer">
         <div className="row">
           <div className="col-6">
-            <h4> When you are online </h4>
+            <h4 className="when-you-are-online-heading"> When you are online </h4>
             <p className="start-solving-your-user">Start solving your users’ issues with this message </p>
           </div>
           <div className="col-6" onClick={this.methodToShowPrefs}>
@@ -42,37 +42,44 @@ class WhenYouAreOnline extends Component {
 	          : "n-vis"
 	    		}
 	        style={{ marginLeft: "0" }}>
-	        <div>
-	        	<h3>Preview:</h3>
+	        <div className="form-group row">
+	        	<div className="col-12">
+	        		<h3 className="welcome-preview">Preview:</h3>
+	        	</div>
 	        </div>
-	        <div>
-	        	<button>Anonymous User</button>
-	        	<button>Known User</button>
+	        <div className="form-group row">
+	        	<div className="col-12">
+	        		<button className="welcome-user-button welcome-anonymous-user-button">Anonymous User</button>
+	        		<button className="welcome-user-button welcome-known-user-button">Known User</button>
+	        	</div>
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-3">
-	        		<p>Mesage for anonymous users</p>
+	        		<p className="welcome-user-message">Mesage for anonymous users <i className="fa fa-info-circle fa-sm mt-4"></i></p>
 	        		<textarea
-                className="form-group script-text-area"
+                className="form-group script-text-area welcome-message-textarea"
                 rows="5"
                 readOnly
               />
-              <button>Anonymous User</button>
-	        		<button>Known User</button>
 	        	</div>
 	        	<div className="col-1">
 	        	</div>
 	        	<div className="col-3">
-	        		<p>Mesage for known users</p>
+	        		<p className="welcome-user-message">Mesage for known users <i className="fa fa-info-circle fa-sm mt-4"></i></p>
 	        		<textarea
-                className="form-group script-text-area"
+                className="form-group script-text-area welcome-message-textarea"
                 rows="5"
                 readOnly
               />
-              <div className="row">
-              	<button>Anonymous User</button>
-	        			<button>Known User</button>
-              </div>
+	        	</div>
+	        </div>
+	        <div className="form-group row">
+	        	<div className="col-4">
+              <button className="welcome-buttons">Add another message</button>
+	        		<button className="welcome-buttons">Add input field</button>
+	        	</div>
+	        	<div className="col-5 text-left">
+              <button className="welcome-buttons">Add another message</button>
 	        	</div>
 	        </div>
 	  		</div>
