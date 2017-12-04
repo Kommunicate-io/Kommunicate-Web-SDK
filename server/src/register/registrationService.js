@@ -142,15 +142,28 @@ exports.getCustomerById = (id)=>{
     return customer;
   });
 }
-exports.sendWelcomeMail= (email, userName)=>{
-  console.log("sending welcome mail to ",email);
+exports.sendWelcomeMail= (email, userName, agent, companyName)=>{
+  console.log("sending welcome mail to ",email, companyName);
+  let tamplatePath='';
+  let templateReplacement='';
+  let subject='';
+  if(agent){
+    let organization=companyName!==undefined && companyName!=null?companyName:'';
+    subject="Thanks for joining"+organization+" on Kommunicate"
+    templatePath= path.join(__dirname,"../mail/agentWelcomeMailTamplate.html"),
+    templateReplacement ={":USER_NAME" : userName, ":ORGANIZATION": organization}
+  }else{
+    subject="Welcome to Kommunicate!"
+    templatePath=path.join(__dirname,"../mail/welcomeMailTemplate.html"),
+    templateReplacement= {":USER_NAME" : userName}
+  }
   let mailOptions = {
     to:email,
     from:"Devashish From Kommunicate <support@kommunicate.io>",
-    subject:"Welcome to Kommunicate!",
+    subject:subject,
     bcc:"techdisrupt@applozic.com",
-    templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html"),
-    templateReplacement: {":USER_NAME" : userName}
+    templatePath: templatePath,
+    templateReplacement: templateReplacement
   }
   return mailService.sendMail(mailOptions);
 }
