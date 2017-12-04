@@ -4,10 +4,10 @@ import {patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo, sendProf
 import Notification from '../model/Notification';
 import ImageUploader from './ImageUploader'
 import './Admin.css';
-import Collapsible from 'react-collapsible';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import AvatarEditor from 'react-avatar-editor'
+import PasswordAccordion from './PasswordAccordion';
 const customStyles = {
   content : {
     top                   : '50%',
@@ -32,23 +32,20 @@ class Forms extends Component {
       industry: '',
       industryOthers: '',
       imageFile: '',
-      modalIsOpen: false,
-      currentPassword: '',
-      newPassword: '',
-      rePassword:'',
-      repeatPassword:''
+      modalIsOpen: false
+      
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.industries = ['Please select', 'E-commerce', 'Marketplaces', 'SaaS', 'E-learning', 'Healthcare', 'On-Demand Services', 'Social', 'Fin Tech', 'Entertainment', 'Gaming', 'Travel' , 'Other'];
-    this.handlePassword = this.handlePassword.bind(this);
-    this.validatePassword = this.validatePassword.bind(this);
-    this.clearPasswordfields = this.clearPasswordfields.bind(this)
+    //this.handlePassword = this.handlePassword.bind(this);
+    //this.validatePassword = this.validatePassword.bind(this);
+    //this.clearPasswordfields = this.clearPasswordfields.bind(this)
     this.openModal = this.openModal.bind(this);
-
-    this.closeModal = this.closeModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);   
   }
+  
   openModal() {
     this.setState({modalIsOpen: true});
   }
@@ -115,46 +112,7 @@ class Forms extends Component {
     e.preventDefault();
   }
   
-  validatePassword(e){
-    e.preventDefault();
-    console.log('validate password')
-    if(this.state.newPassword.length < 6){
-      Notification.info("Your password must have at least 6 characters ")
-      return
-    }
-    else{
-     this.handlePassword(e)
-    }
-  }
-  handlePassword(e){
-    
-    e.preventDefault();
-    
-    console.log('handle password')
-    
-    if (this.state.newPassword !== this.state.repeatPassword){
-      Notification.info("Password does not match")
-       
-    return      
-    }else{
-      changePassword({
-        oldPassword : this.state.currentPassword,
-        newPassword: this.state.newPassword,
-      })
-      this.clearPasswordfields() 
-      
-    }
-  }
-  clearPasswordfields(){
-    console.log('clear password')
-    this.setState({
-      currentPassword: '',
-      newPassword: '',
-      repeatPassword: '',
-      rePassword: ''  
-
-    })
-  }
+  
   componentWillMount() {
 
     console.log("Admin will mount");
@@ -271,71 +229,21 @@ class Forms extends Component {
                             <input type="text" id="role-input" name="role-input" onChange = {(event) => this.setState({role:event.target.value})} value={this.state.role} className="form-control input-field" placeholder="Role within the organization"/><br/>
                             <label className="form-control-label label-contact" htmlFor="number-input">Contact Number (optional)</label>
                             <input type="text" id="number-input" maxLength="10" name="number-input" onKeyPress={this.handleKeyPress} onChange = {(event) => this.setState({contact:event.target.value})} value={this.state.contact} className="form-control input-field" placeholder="Enter contact no."/><br/>
-                            <button className="btn-primary" type="submit" onClick={this.handleSubmit}>Save changes </button>
+                            <button className="btn-primary" autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </button>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div className="row">
-                      <div className="col-md-12">
+                      <div className="col-md-10">
                         <hr className="divider" />
                       </div>
                     </div>
                     
                   </form>
-                  <form className="form-horizontal" autocomplete="off">
-                  <Collapsible trigger={
+                  
+                  <PasswordAccordion />
                     
-                    <div className="form-group row">
-                        <div className="col-md-3">
-                          <h5 className="password-wrapper-header change-courser">Change Password</h5>
-                        </div>
-                        <div className="col-md-4">
-                          <h5><i className="fa fa-chevron-up chevron-up-password pull-right change-courser"></i></h5>
-                        </div>
-                    </div> }>
-                      <div className="password-wrapper">
-                        <div className="row">
-                          <div className="col-md-12">
-                          <div className="about-password-text">Your password must have at least 6 characters</div>
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <div className="col-md-4">
-                            <label className="form-control-label">Current Password</label>
-                            <input type="password" id="current-password-input" onKeyPress={this.handleKeyPress} name="current-password-input" className="form-control input-field" onChange = {(event) => this.setState({currentPassword:event.target.value})} value={this.state.currentPassword} placeholder="Enter your current password"/><br/>
-                          </div>
-                        </div>
-                        <div className="form-group row">
-                          <div className="col-md-4">
-                            <label className="form-control-label">New Password</label>
-                            <input type="password" id="new-password-input" name="new-password-input" className="form-control input-field" onChange = {(event) => this.setState({newPassword:event.target.value})} value={this.state.newPassword} placeholder="Enter your new password"/><br/>
-                          </div>
-                          <div className="col-md-4">
-                            <label className="form-control-label">Re-type New Password</label>
-                            <input type="password" id="re-new-password-input" name="re-new-password-input" className="form-control input-field" onChange = {(event) => this.setState({repeatPassword:event.target.value})} value={this.state.repeatPassword} placeholder="Enter your new password"/><br/>
-                          </div>{/* 
-                          <div className="col-md-4">
-                            <label className="form-control-label">Re-type new Password</label>
-                            <input type="password" id="new-password-input-re" name="new-password-input-re" className="form-control input-field" onChange = {(event) => this.setState({rePassword:event.target.value})} value={this.state.rePassword} placeholder="Re-type your current password"/><br/>
-                          </div> */}
-
-                        </div>
-                        <div className="form-group row">
-                          <div className="col-md-4">
-                            <button className="btn-primary" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-12">
-                          <hr className="divider" />
-                        </div>
-                      </div>
-                    </Collapsible>
-
-                  </form>
-
 
                     {/*
                      <div className="form-group row">
