@@ -9,16 +9,16 @@ class WhenYouAreOnline extends Component {
 		upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
 	}
 
-  methodToShowPrefs = (e) => {
+  methodToShowOfflinePrefs = (e) => {
   	e.preventDefault();
-  	if(this.state.showPrefs){
+  	if(this.state.showOfflinePrefs){
   		this.setState({
-  			showPrefs: false,
+  			showOfflinePrefs: false,
   			upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
   		})
   	}else{
   		this.setState({
-  			showPrefs: true,
+  			showOfflinePrefs: true,
   			upDownIcon: "icon-arrow-up icons font-2xl d-block mt-4 text-right"
   		})
   	}
@@ -29,10 +29,10 @@ class WhenYouAreOnline extends Component {
       <div className="cursor-is-pointer">
         <div className="row">
           <div className="col-6">
-            <h4> When you are offline </h4>
+            <h4 className="when-you-are-online-heading"> When you are offline </h4>
             <p className="ask-your-user-to">Ask your user to leave a message so that you can get back to them later</p>
           </div>
-          <div className="col-6">
+          <div className="col-6" onClick={this.methodToShowOfflinePrefs}>
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>
@@ -42,7 +42,7 @@ class WhenYouAreOnline extends Component {
 	          : "n-vis"
 	    		}
 	        style={{ marginLeft: "0" }}>
-	        <h3>Preview:</h3>
+	        <h3 className="welcome-preview">Preview:</h3>
 	  		</div>
 			</div>
 		)

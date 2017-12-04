@@ -8976,6 +8976,10 @@ hr.transparent {
   pointer-events: none;
 }
 
+.welcome-message-container {
+  background-color: #fff;
+}
+
 .enable-automatic-welcome {
   width: 326px;
   height: 23px;
@@ -9019,6 +9023,20 @@ hr.transparent {
   color: #87898b;
 }
 
+.when-you-are-online-heading {
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #5e6061;
+}
+
+.welcome-preview {
+  font-size: 17px;
+  letter-spacing: 1.2px;
+  text-align: left;
+  color: #515050;
+}
+
 .ask-your-user-to {
   width: 381px;
   height: 14px;
@@ -9030,6 +9048,50 @@ hr.transparent {
 
 .cursor-is-pointer {
   cursor: pointer;
+}
+
+.welcome-buttons {
+  height: 21px;
+  border-radius: 13px;
+  background-color: #5c5aa7;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.welcome-user-message {
+  font-size: 10px;
+  letter-spacing: 0.9px;
+  text-align: left;
+  color: #515050;
+}
+
+.welcome-user-button {
+  height: 35px;
+}
+
+.welcome-anonymous-user-button {
+  background-color: #ffffff;
+  border: solid 1px #979797;
+  border-radius: 2px 0 0 2px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #000000;
+}
+
+.welcome-known-user-button {
+  background-color: #f3efef;
+  border: solid 1px #979797;
+  border-radius: 0 2px 2px 0;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #afabab;
+}
+
+.welcome-message-textarea {
+  border-radius: 2px;
+  border: solid 1px #5c5aa7;
 }
 
 .header-user-name {
@@ -9060,3 +9122,7 @@ hr.transparent {
   text-align: left;
   color: #696464;
 }
+
+.switch-enable-automatic > .switch-input:checked ~ .switch-label {
+  background: #5c5aa7 !important;
+  border-color: #5c5aa7; }
