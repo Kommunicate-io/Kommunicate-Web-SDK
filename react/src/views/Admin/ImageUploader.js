@@ -137,8 +137,9 @@ class ImageUploader extends Component {
 
   render() {
     return (
+      <form>
         <div className="card">
-      {/* <div className="card-header">
+          {/* <div className="card-header">
             <strong>Set Profile Image</strong>
           </div> */}
           <div className="card-block">
@@ -171,12 +172,11 @@ class ImageUploader extends Component {
             <div>
               <span className="about-dp">Please select a file less than 5MB</span>
             </div>
-            <button type="submit" className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
-            <button type="submit" className="btn btn-sm btn-danger" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
+            <button type="submit" autoFocus={true} className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
+            <button type="submit" autoFocus={true} className="btn btn-sm btn-danger" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
           </div>
-          
-
         </div>
+      </form>  
     )
   }
 }

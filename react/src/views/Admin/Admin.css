@@ -47,13 +47,12 @@
     opacity: 0;
 }
 .password-wrapper-header{
-    width: 127px;
-    height: 19px;
     font-family: 'OpenSans', sans-serif;
     font-size: 14px;
     letter-spacing: 0.7px;
     text-align: left;
     color: #5e6061;
+    font-weight: 100;
 }
 .save-btn {
     width: 104px;
