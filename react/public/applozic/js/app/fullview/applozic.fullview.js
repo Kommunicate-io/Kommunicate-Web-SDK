@@ -3733,7 +3733,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				for (var i = 0; i < contact.members.length; i++) {
 					userDetail=MCK_USER_DETAIL_MAP[contact.members[i]];
-					if(userDetail.imageLink && userDetail.roleType==roleType && userDetail.imageLink !== ""){
+					if(userDetail && userDetail.imageLink && userDetail.roleType==roleType && userDetail.imageLink !== ""){
 						return '<img src="' + userDetail.imageLink + '"/>';
 					}
                 }

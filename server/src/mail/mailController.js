@@ -104,7 +104,7 @@ const getEmailFormat=(options,custInfo)=>{
                 templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
-                options.subject =  custInfo.companyName!=='' && null!==custInfo.companyName?"join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
+                options.subject =  custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
                 options.bcc = "hello@kommunicate.io";
                 break;
 
