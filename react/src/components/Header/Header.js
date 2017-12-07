@@ -78,7 +78,7 @@ return imageLink;
               </button>
               <DropdownMenu className="dropdown-menu-right">
                 <DropdownItem>
-                  <p className="header-user-name">{localStorage.getItem("name")}</p>
+                  <p className="header-user-name">{this.state.displayName}</p>
                   <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
                   {
                     //<span className="header-user-online"> You are online <span className="avatar-status badge-success"></span></span>
