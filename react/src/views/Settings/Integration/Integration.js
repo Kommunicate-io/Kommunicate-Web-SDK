@@ -16,7 +16,7 @@ class Integration extends Component {
 
     this.script = getJsCode();
     this.data={ title: "Some more instructions", 
-    subtitle:"Parameters user",
+    subtitle:"Parameters used",
     content:`<p>Default parameters are pre populated. You can change them as you need.<p>
     Parameters: <br>
         <b>appId -</b> your application Id.<br>
