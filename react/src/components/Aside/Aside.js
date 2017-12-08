@@ -116,7 +116,7 @@ class Aside extends Component {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-            if (user.roleType == 1 && user.userId !== "bot") {
+            if (user && user.roleType && user.roleType == 1 && user.userId !== "bot") {
               that.removeGroupMember(group.groupId, user.userId);  
             }
           }
