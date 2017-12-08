@@ -44,11 +44,11 @@ a, a:hover, a:focus, a:active {
 }
 .navbar-brand svg {
     width: auto;
-    height: 55px;
+    height: 45px;
     margin-right: 15px;
 }
 .kommunicate-logo-text {
-    font-size: 28px;
+    font-size: 25px;
     color: #5C5AA7;
     text-transform: uppercase;
     font-weight: 700;
@@ -84,7 +84,7 @@ a, a:hover, a:focus, a:active {
 }
 
 .hero-text {
-    color: #24374e;
+    color: #5C5AA7;
     font-size: 44px;
     font-weight: 800;
     font-style: normal;
