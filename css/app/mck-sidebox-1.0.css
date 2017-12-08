@@ -3498,6 +3498,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width:300px !important;
 	}
 
+	.mck-sidebox {
+		right: 10px !important;
+		bottom: 10px;
+	}
 	.mck-sidebox.fade.in{
 		width:300px;
 	}
