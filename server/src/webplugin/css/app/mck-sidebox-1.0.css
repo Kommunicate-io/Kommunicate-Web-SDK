@@ -3504,7 +3504,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		bottom: 10px;
 	}
 	.mck-sidebox.fade.in{
-		width:100%;
+		width:300px;
 	}
 	.mck-sidebox .mck-box-sm, .mck-box .mck-box-md {
 		width: 300px;
