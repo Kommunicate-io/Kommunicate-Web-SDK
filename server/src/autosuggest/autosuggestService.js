@@ -45,6 +45,24 @@ const createSuggestion = (suggestion) => {
 	return autoSuggestModel.create(suggestion)
 }
 
+const updateSuggetion = (suggestion) => {
+	return autoSuggestModel.update(suggestion, {
+		where: {
+			id: suggestion.id
+		}
+	});
+}
+
+const deleteSuggetion = (suggestion) => {
+	return autoSuggestModel.destroy( {
+		where: {
+			id: suggestion.id
+		}
+	});
+}
+
 exports.getAllSuggestions = getAllSuggestions
 exports.createSuggestion = createSuggestion
 exports.getSuggestionsByAppId = getSuggestionsByAppId
+exports.updateSuggetion = updateSuggetion
+exports.deleteSuggetion = deleteSuggetion

@@ -9,3 +9,15 @@ module.exports.createSuggestion = {
 		content: joi.string().required(),
 	}
 }
+
+module.exports.updateSuggestion = {
+	body:{
+		id:joi.number().required(),
+	}
+}
+
+module.exports.deleteSuggetion = {
+	body:{
+		id:joi.number().required(),
+	}
+}
