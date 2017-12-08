@@ -691,11 +691,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffae27', end
 
 .see-more-link {
     margin-left: 15px;
-    color: rgb(73, 68, 150);
+    color: rgb(255, 255, 255);
     font-size: 18px;
     border-radius: 26px;
     padding: 10px 20px;
-    background: rgb(255, 255, 255);
+    background: #5C5AA7;
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -722,7 +722,7 @@ font-size: 18px;
 transform: scale(.6);
 }
 .see-more-link:hover, .see-more-link:focus, .see-more-link:active {
-    color: rgb(73, 68, 150);
+    color: rgb(255, 255, 255);
 }
 .see-more-link:hover .fa-arrow-right {
     margin-left: 10px;
