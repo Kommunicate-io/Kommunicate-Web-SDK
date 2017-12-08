@@ -21,6 +21,18 @@ a, a:hover, a:focus, a:active {
     text-decoration: none;
 }
 
+
+#bg-stries {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+
+
+
+
 .header-navbar-container {
     width: auto;
 }
@@ -37,7 +49,7 @@ a, a:hover, a:focus, a:active {
 }
 .kommunicate-logo-text {
     font-size: 28px;
-    color: #ffffff;
+    color: #5C5AA7;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -48,10 +60,12 @@ a, a:hover, a:focus, a:active {
 
 .homepage-beta-landing-page-section {
     height: 100vh;
-    background: url(/assets/resources/images/kommunicate-hero-image.jpg) no-repeat center;
+    /* background: url(/assets/resources/images/kommunicate-hero-image.jpg) no-repeat center; */
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI5NzciIHZpZXdCb3g9IjAgMCAxNDQwIDk3NyIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48dGl0bGU+aGVybzwvdGl0bGU+PGRlc2M+Q3JlYXRlZCB1c2luZyBGaWdtYTwvZGVzYz48ZyBpZD0iQ2FudmFzIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMjk1IC0xNjMpIj48ZyBpZD0iaGVybyI+PGcgaWQ9IlJlY3RhbmdsZSAzIiBvcGFjaXR5PSIwLjIxNDk1NyI+PHVzZSB4bGluazpocmVmPSIjcGF0aDBfZmlsbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjgyIDE2MykiIGZpbGw9InVybCgjcGFpbnQwX3JhZGlhbCkiLz48L2c+PGcgaWQ9IlJlY3RhbmdsZSAzIiBvcGFjaXR5PSIwLjIxNDk1NyI+PHVzZSB4bGluazpocmVmPSIjcGF0aDFfZmlsbCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNTA5IDY2KSIgZmlsbD0idXJsKCNwYWludDFfcmFkaWFsKSIvPjwvZz48ZyBpZD0iUmVjdGFuZ2xlIDMiIG9wYWNpdHk9IjAuMjA2MDEyIj48dXNlIHhsaW5rOmhyZWY9IiNwYXRoMV9maWxsIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSg5NzcgLTE3NSkiIGZpbGw9InVybCgjcGFpbnQyX3JhZGlhbCkiLz48L2c+PC9nPjwvZz48ZGVmcz48cmFkaWFsR3JhZGllbnQgaWQ9InBhaW50MF9yYWRpYWwiIGN4PSIwLjUiIGN5PSIwLjUiIHI9IjAuNSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMTUzMC45MiAxNDY5Ljc2IC0yMzI1LjgyIDk2Ny40MzQgOTkyLjQzOCAtMTI4Ny4zKSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMUU3N0UxIi8+PHN0b3Agb2Zmc2V0PSIwLjY2NjY3MyIgc3RvcC1jb2xvcj0iI0I0RDJGNSIvPjxzdG9wIG9mZnNldD0iMC43MTQ5NzgiIHN0b3AtY29sb3I9IiNCRkQ4RjYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGRkZGRkYiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0icGFpbnQxX3JhZGlhbCIgY3g9IjAuNSIgY3k9IjAuNSIgcj0iMC41IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxMjAyLjg4IDE2NjguNDIgLTE4MjcuNDYgMTA5OC4xOSA3NzkuNzg2IC0xNDYxLjMpIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxRTc3RTEiLz48c3RvcCBvZmZzZXQ9IjAuNjY2NjczIiBzdG9wLWNvbG9yPSIjQjREMkY1Ii8+PHN0b3Agb2Zmc2V0PSIwLjcxNDk3OCIgc3RvcC1jb2xvcj0iI0JGRDhGNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGRkZGRiIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJwYWludDJfcmFkaWFsIiBjeD0iMC41IiBjeT0iMC41IiByPSIwLjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDExNjIuMDEgMTYxMS43MiAtMTc2NS4zNyAxMDYwLjg4IDc4OS42MTEgLTEzODUuOTUpIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwRTQyODAiLz48c3RvcCBvZmZzZXQ9IjAuNjY2NjczIiBzdG9wLWNvbG9yPSIjQjREMkY1Ii8+PHN0b3Agb2Zmc2V0PSIwLjcxNDk3OCIgc3RvcC1jb2xvcj0iI0JGRDhGNiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0ZGRkZGRiIvPjwvcmFkaWFsR3JhZGllbnQ+PHBhdGggaWQ9InBhdGgwX2ZpbGwiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSAwIDBMIDE0OTcgMEwgMTQ5NyA5NDZMIDAgOTQ2TCAwIDBaIi8+PHBhdGggaWQ9InBhdGgxX2ZpbGwiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTSA3MDMuMjI3IDBMIDExNzYuMjMgMEwgNTM2LjA0IDEwMDMuNjRMIDAgMTA3My44NkwgNzAzLjIyNyAwWiIvPjwvZGVmcz48L3N2Zz4=) no-repeat center;
     /*background-repeat: no-repeat;
     background-position: center center;*/
     background-size: cover;
+    background-color: #f6fafd;
 }
 
 /*.homepage-beta-landing-page-section:before {
@@ -70,15 +84,15 @@ a, a:hover, a:focus, a:active {
 }
 
 .hero-text {
-    color: rgb(255, 255, 255);
-    font-size: 40px;
-    font-weight: 700;
+    color: #24374e;
+    font-size: 44px;
+    font-weight: 800;
     font-style: normal;
 }
 
 .hero-subtext {
     font-size: 22px;
-    color: #fff;
+    color: rgba(36, 55, 78, 0.7);
     font-weight: 400;
     font-style: normal;
 }
@@ -86,7 +100,7 @@ a, a:hover, a:focus, a:active {
 .icon-heading {
     font-size: 20px;
     font-weight: 300;
-    color: #fff;
+    color: #24374e;
     transition: all 0.2s ease-in;
 }
 .hero-section-icon-link, .hero-section-icon-link:focus, .hero-section-icon-link:hover {
@@ -100,7 +114,7 @@ a, a:hover, a:focus, a:active {
     height: 65px;
     margin: 0 auto;
     border-radius: 20px;
-    border: solid 1.5px #ffffff;
+    border: solid 1.5px #24374e;
     transition: all 0.2s ease-in;
 }
 .km-realtime-support-only-white-icon-1
@@ -110,15 +124,35 @@ a, a:hover, a:focus, a:active {
 .km-smart-campaigns-only-white-icon-1
 .km-chatbot-only-white-icon-1 {
     transition: all 0.3s ease-in;
+    fill: #24374eb3;
 }
 .hero-section-icon-link:hover .landing-page-img-container {
-    box-shadow: 1px 4px 12px 3px rgba(63, 60, 60, 0.5);
+    box-shadow: 1px 4px 12px 3px rgba(63, 60, 60, 0.233);
     background-color: #fff;
-    border: solid 1.5px #8358b6;
+    border: 1.5px solid #5C5AA7;
+    background: #5C5AA7;
 }
+/* .realtime-icon-link:hover .realtime-icon-container {
+    background: linear-gradient(to bottom, rgba(235,120,20,1) 0%,rgba(191,73,157,1) 100%);
+}
+.cross-plat-icon-link:hover .cross-plat-icon-container {
+    background: #5C55A7
+}
+.dynamic-faq-icon-link:hover .dynamic-faq-icon-container {
+    background: #5C55A7
+}
+.integrations-icon-link:hover .integrations-icon-container {
+    background: #5C55A7
+}
+.campaign-icon-link:hover .campaign-icon-container {
+    background: #5C55A7
+}
+.bot-icon-link:hover .bot-icon-container {
+    background: #5C55A7
+} */
 .hero-section-icon-link:hover .km-realtime-support-only-white-icon-1, .hero-section-icon-link:hover .km-cross-platform-only-white-icon-1,  .hero-section-icon-link:hover .km-dynamic-faqs-only-white-icon-1,
 .hero-section-icon-link:hover .km-integrations-only-white-icon-1, .hero-section-icon-link:hover .km-smart-campaigns-only-white-icon-1,  .hero-section-icon-link:hover .km-chatbot-only-white-icon-1  {
-    fill: #000000;
+    fill: #ffffff;
 }
 /*.chatbots-copy-5 {
     width: 48px;
@@ -188,10 +222,10 @@ animation-timing-function: linear;
     /*    text-transform: uppercase;*/
     letter-spacing: 0.015em;
     font-size: 18px;
-    background-color: #fff;
+    /* background-color: #fff; */
     font-weight: 500;
     line-height: 1;
-    color: rgb(73, 68, 150);
+    color: rgb(255, 255, 255);
     text-decoration: none;
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
@@ -202,6 +236,12 @@ animation-timing-function: linear;
     text-decoration: none;
     border: none;
     flex: 0 1 auto;
+    background: #5C5AA7;
+    background-color: #5C5AA7;
+    box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
+}
+.form-submit-btn:focus {
+    outline: none;
 }
 .why-kommunicate-section .form-submit-btn {
     display: inline-block;
@@ -240,9 +280,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 }
 
 .cta-email-pre-signup {
-    background: transparent;
+    background: #fff;
     width: 50%;
-    color: #fff;
+    color: #5c5aa7;
     font-size: 18px;
     padding: 15px 16px 15px 14px;
     margin: 0;
@@ -253,6 +293,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     /*margin-right: 5px;*/
     border: 1px solid white;
     flex: 1 0 auto;
+    box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
 }
 .why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
     background: transparent;
@@ -1037,7 +1078,7 @@ label {
 
 .scroll-down .fa-angle-down {
     font-size: 40px;
-    color: #ffffff;
+    color: #5C55A7;
     margin-top: 70px;
     -webkit-animation: bounce 2s infinite  ease-in-out;
     animation: bounce 2s infinite  ease-in-out;
@@ -1300,19 +1341,19 @@ label {
 }
 
 
-input::-webkit-input-placeholder {
+/* input::-webkit-input-placeholder {
     font-size: 18px !important;
     color: rgba(255, 255, 255, 0.7) !important;
 }
 
 input:-moz-placeholder {
-    /* Firefox 18- */
+
     font-size: 18px !important;
     color: rgba(255, 255, 255, 0.7) !important;
 }
 
 input::-moz-placeholder {
-    /* Firefox 19+ */
+
     font-size: 18px !important;
     color: rgba(255, 255, 255, 0.7) !important;
 }
@@ -1320,7 +1361,7 @@ input::-moz-placeholder {
 input:-ms-input-placeholder {
     font-size: 18px !important;
     color: rgba(255, 255, 255, 0.7) !important;
-}
+} */
 .why-kommunicate-section input::-webkit-input-placeholder, .homepage-beta-cta-section input::-webkit-input-placeholder {
     font-size: 16px !important;
     color: #5B5959 !important;
