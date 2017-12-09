@@ -47,7 +47,7 @@ let handleCreateUserError =(user,customer,err)=>{
   if(err&&err.code=="USER_ALREADY_EXISTS" && err.data){
     console.log("updating role to application web admin");
     const data = err.data; 
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName,user.password,customer.applicationId,{userId:user.userName,roleName:"APPLICATION_WEB_ADMIN"},{apzToken: customer.apzToken})).then(response=>{
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName,user.password,customer.applicationId,{userId:user.userName,roleName:"APPLICATION_WEB_ADMIN"},{apzToken: new Buffer(KOMMUNICATE_ADMIN_ID+":"+KOMMUNICATE_ADMIN_PASSWORD).toString("base64")})).then(response=>{
       return err.data;
     })
   }else{

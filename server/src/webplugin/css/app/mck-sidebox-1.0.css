@@ -3498,6 +3498,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width:300px !important;
 	}
 
+	.mck-sidebox {
+		right: 10px !important;
+		bottom: 10px;
+	}
 	.mck-sidebox.fade.in{
 		width:300px;
 	}
@@ -3835,4 +3839,11 @@ fill:white;
 
 #mck-tab-conversation{
 	padding-left:35px;
+}
+
+#mck-launcher-icon-svg{
+	height: 35px;
+    width: 35px;
+    padding-left: 5px;
+    padding-top: 5px;
 }

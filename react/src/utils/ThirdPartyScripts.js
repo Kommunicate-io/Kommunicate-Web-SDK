@@ -12,10 +12,10 @@ class ThirdPartyScripts extends Component {
             if (userId) {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
               "userId": localStorage.getItem('loggedinUser'), "accessToken": localStorage.getItem("password"),
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl};
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
             } else {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl};
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
             }
             let s = document.createElement("script");
             s.type = "text/javascript";

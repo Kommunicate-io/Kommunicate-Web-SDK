@@ -96,6 +96,9 @@ exports.createUser = function(req,res) {
     }else{
       return Promise.all([userService.createUser(req.body),applozicClient.getApplication(customer)]).then(([user,application])=>{
           logger.info("user created successfully.. ",user);
+          if(user.type===1){
+            registrationService.sendWelcomeMail(user.email, user.name , true, user.companyName);
+          }
           user.application = application;
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;

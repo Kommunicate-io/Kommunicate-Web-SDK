@@ -157,7 +157,7 @@ function ApplozicSidebox() {
         try {
         	if(applozic.PRODUCT_ID =='kommunicate'){
        		 applozic._globals.locShare = ((applozic._globals.locShare)=== false) ? false : true;
-       		 applozic._globals.googleApiKey= (applozic._globals.locShare === true) ?"AIzaSyDKfWHzu9X7Z2hByeW4RRFJrD9SizOzZt4":"";
+       		 applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
        	 }
             $.each(mck_script_loader1, function(i, data) {
                 if (data.name === "mck-common") {

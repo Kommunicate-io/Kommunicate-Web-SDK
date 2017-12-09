@@ -100,3 +100,12 @@
 .tip-enter-m .tip-text-style {
 	font-weight: 600 !important;
 }
+
+.instruction-display-area{
+	width:100%;
+	height: 100%;
+	border: 1px solid #868383;
+	background-color: white;
+	padding: 6px;
+	margin-bottom: 8px;
+}

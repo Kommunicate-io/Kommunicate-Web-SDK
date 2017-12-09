@@ -142,26 +142,39 @@ exports.getCustomerById = (id)=>{
     return customer;
   });
 }
-exports.sendWelcomeMail= (email, userName)=>{
-  console.log("sending welcome mail to ",email);
+exports.sendWelcomeMail= (email, userName, agent, companyName)=>{
+  console.log("sending welcome mail to ",email, companyName);
+  let tamplatePath='';
+  let templateReplacement='';
+  let subject='';
+  if(agent){
+    let organization=companyName!==undefined && companyName!=null?companyName:'';
+    subject="Thanks for joining"+organization+" on Kommunicate"
+    templatePath= path.join(__dirname,"../mail/agentWelcomeMailTamplate.html"),
+    templateReplacement ={":USER_NAME" : userName, ":ORGANIZATION": organization}
+  }else{
+    subject="Welcome to Kommunicate!"
+    templatePath=path.join(__dirname,"../mail/welcomeMailTemplate.html"),
+    templateReplacement= {":USER_NAME" : userName}
+  }
   let mailOptions = {
     to:email,
     from:"Devashish From Kommunicate <support@kommunicate.io>",
-    subject:"Welcome to Kommunicate!",
+    subject:subject,
     bcc:"techdisrupt@applozic.com",
-    templatePath: path.join(__dirname,"../mail/welcomeMailTemplate.html"),
-    templateReplacement: {":USER_NAME" : userName}
+    templatePath: templatePath,
+    templateReplacement: templateReplacement
   }
   return mailService.sendMail(mailOptions);
 }
 
 const populateDataInKommunicateDb = (options,application,applozicCustomer,applozicBot)=>{
- let kmCustomer ={name:applozicCustomer.displayName,userName:options.userName,email:applozicCustomer.email,
+ let kmCustomer ={name:applozicCustomer.displayName,userName:options.userName,email:options.email,
  contactNo:applozicCustomer.contactNumber,applicationId:application.applicationId}  ;
  kmCustomer.password = bcrypt.hashSync(options.password, 10);
  kmCustomer.apzToken = new Buffer(options.userName+":"+options.password).toString('base64');
 
- let kmUser = {name:applozicCustomer.displayName,userName:options.userName,email:applozicBot.email,accessToken:options.password,role:options.role,type:USER_TYPE.ADMIN,userKey:applozicCustomer.userKey}
+ let kmUser = {name:applozicCustomer.displayName,userName:options.userName,email:options.email,accessToken:options.password,role:options.role,type:USER_TYPE.ADMIN,userKey:applozicCustomer.userKey}
  kmUser.password = bcrypt.hashSync(options.password, 10);
  kmUser.apzToken = bcrypt.hashSync(options.password, 10);
  kmUser.authorization = new Buffer(options.userName+":"+applozicCustomer.deviceKey).toString('base64');
@@ -200,11 +213,13 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 exports.signUpWithApplozic = (options)=>{
   return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin(options.userName,options.password,options.applicationId,"APPLICATION_WEB_ADMIN"),
-    applozicClient.applozicLogin("bot","bot",options.applicationId,"BOT"),
-    applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})])
-    .then(([customer,bot,userUpdated])=>{
-      options.role= "APPLICATION_WEB_ADMIN";
-      return populateDataInKommunicateDb(options,application,customer,bot);
+    applozicClient.applozicLogin("bot","bot",options.applicationId,"BOT")])
+    .then(([customer,bot])=>{
+      return applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})
+      .then(updatedUser=>{
+        options.role= "APPLICATION_WEB_ADMIN";
+        return populateDataInKommunicateDb(options,application,customer,bot);
+      })
     })
 
   }).catch(e=>{

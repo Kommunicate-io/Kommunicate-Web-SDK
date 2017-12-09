@@ -149,7 +149,7 @@ exports.signUpWithAplozic= (req,res)=>{
             .catch(err=>{
               console.log("err while storing welcome message in db");
             });
-           registrationService.sendWelcomeMail(email, userName);
+           registrationService.sendWelcomeMail(email, userName, false,'');
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }
