@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import "./PasswordAccordion.css";
-import {changePassword } from '../../utils/kommunicateClient'
+import '../Settings/Integration/Accordion.css';
+import {changePassword } from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
 import './Admin.css';
+
 
 
 class PasswordAccordion extends Component{
@@ -33,11 +34,15 @@ class PasswordAccordion extends Component{
     validatePassword(e){
         e.preventDefault();
         console.log('validate password')
-        if(this.state.newPassword.length < 6){
-          Notification.info("Your password must have at least 6 characters ")
+        if(this.state.currentPassword.length < 1){
+          Notification.info("Enter Your Current Password")
+          console.log("Current password is not entered")
           return
         }
-        else{
+        else if(this.state.newPassword.length < 6){
+          Notification.info("Your password must have at least 6 characters ")
+          return
+        }else{
          this.handlePassword(e)
         }
       }

@@ -34,7 +34,7 @@
 
 .content-open {
   margin-top: 0px;
-  height: 200px;
+  height: 100%;
   letter-spacing: 1.5px;
   transition: all 350ms cubic-bezier(0.080, 1.090, 0.320, 1.275);
 }

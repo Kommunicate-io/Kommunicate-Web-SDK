@@ -13,7 +13,10 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    overflow              : 'hidden',
+    height                : '450px',
+    width                 : '600px'
   }
 };
 class Step2 extends Component {
@@ -27,8 +30,15 @@ class Step2 extends Component {
       company_name:'',
       company_size:'',
       industry: '',
-      industryOthers: ''
+      industryOthers: '',
+      imageFile: '',
+      modalIsOpen: false,
+      scale: 1.2,
+      imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
+
     }
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   finishSetUp = (e) => {
@@ -55,6 +65,15 @@ class Step2 extends Component {
     // window.location = '/dashboard';
     this.props.history.push('/dashboard');
   }
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+
+
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
+  }
 
   render() {
   	return (
@@ -64,12 +83,6 @@ class Step2 extends Component {
           <div className="row">
 
             <div className="col-md-12">
-              {/*<ImageUploader
-               handleImageFiles={this.handleImageFiles}
-               invokeImageUpload={this.invokeImageUpload}
-               uploadImageToS3={this.uploadImageToS3}
-               updateProfilePicUrl={this.props.updateProfilePicUrl}
-               /> */}
               <div className="card">
                 <div className="card-block">
                   <form className="form-horizontal">
@@ -77,38 +90,35 @@ class Step2 extends Component {
                       <div className="col-md-2">
                       </div>
                       <div className="col-md-4">
-                        <ImageUploader
-                         handleImageFiles={this.handleImageFiles}
-                         invokeImageUpload={this.invokeImageUpload}
-                          uploadImageToS3={this.uploadImageToS3}
-                          updateProfilePicUrl={this.props.updateProfilePicUrl}
-                        />
-                        {/* 
-                        <img src="/img/avatars/default.png" className="default-dp"></img><br/>
-                        <div className="edit-dp-btn">
-                          <br/><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
-                          <Modal
-                              isOpen={this.state.modalIsOpen}
+                      <img src={this.state.imageFile} className="default-dp"></img><br />
+                      <div className="edit-dp-btn">
+                        <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
 
-                              onRequestClose={this.closeModal}
-                              style={customStyles}
-                              contentLabel="Example Modal"
-                              >
+                        <Modal
+                          isOpen={this.state.modalIsOpen}
 
-                            <div className="change-courser" onClick={this.closeModal}>close</div>
-                            <div>I am a modal</div>
-                            <div className="row">
-                              <ImageUploader
-                                  handleImageFiles={this.handleImageFiles}
-                                  invokeImageUpload={this.invokeImageUpload}
-                                  uploadImageToS3={this.uploadImageToS3}
-                                  updateProfilePicUrl={this.props.updateProfilePicUrl}
-                                  />
-                            </div>
-                          </Modal>
-                        </div> 
-                        */}
+                          onRequestClose={this.closeModal}
+                          style={customStyles}
+                          contentLabel="Example Modal"
+
+                        >
+
+                          <div className="change-courser close-icon" onClick={this.closeModal}>X</div>
+
+                          <div className="row">
+                            <ImageUploader
+                              handleImageFiles={this.handleImageFiles}
+                              invokeImageUpload={this.invokeImageUpload}
+                              uploadImageToS3={this.uploadImageToS3}
+                              updateProfilePicUrl={this.props.updateProfilePicUrl}
+                              handleClose={this.closeModal}
+                            />
+                          </div>
+                        </Modal>
                       </div>
+
+                      </div> 
+                        
                       <div className="col-md-4">
                         <div className="row">
                           <div className="col-md-12">

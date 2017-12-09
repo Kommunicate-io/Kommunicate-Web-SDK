@@ -1,46 +1,50 @@
 import React, { Component } from 'react';
-import { sendProfileImage, updateApplozicUser } from '../../utils/kommunicateClient'
+import { sendProfileImage, updateApplozicUser, patchUserInfo } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import './Admin.css';
 import AvatarEditor from 'react-avatar-editor'
+import Modal from 'react-modal';
 
 
 class ImageUploader extends Component {
-  
-  onClickSave = () => {
-    if (this.editor) {
-      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
-      // drawn on another canvas, or added to the DOM.
-      const canvas = this.editor.getImage()
-
-      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
-      const canvasScaled = this.editor.getImageScaledToCanvas()
-    }
-  }
-
-  setEditorRef = (editor) => this.editor = editor
 
   static defaultProps = {
-    updateProfilePicUrl: function(url){
+    updateProfilePicUrl: function (url) {
       //default
     }
   }
 
-  constructor(props,defaultProps ) {
+  constructor(props, defaultProps) {
     super(props, defaultProps);
     this.state = {
-      imageFile: undefined,
-      file: "/img/avatars/default.png"
+      //imageFile: undefined,
+      imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
+      file: "/img/avatars/default.png",
+      scale: 1.2,
+      canvas: '',
+      imageUrl: ''
+      //  byteString:'',
+      //  mimeString:'',
+      //  mime:'',
+      //  ia:'',
+      //  id:'',
+      //  ab:'',
+
+
     }
+    this.handleScale = this.handleScale.bind(this);
+    this.onClickSave = this.onClickSave.bind(this);
+    this.dataURItoBlob = this.dataURItoBlob.bind(this);
+    this.handleRemoveImage = this.handleRemoveImage.bind(this);
   }
-  
-  chooseImage =() => {
-   if(document.getElementById("hidden-image-input-element").value != "") {
-     let d = document.getElementById("default-dp");
-     d.style.display = "none";
+
+  chooseImage = () => {
+    if (document.getElementById("hidden-image-input-element").value != "") {
+      let d = document.getElementById("default-dp");
+      d.style.display = "none";
     }
-   else {
-     let e = document.getElementById("default-dp");
+    else {
+      let e = document.getElementById("default-dp");
       e.style.display = "block";
     }
 
@@ -56,12 +60,19 @@ class ImageUploader extends Component {
     }
   };
 
+
+
   handleImageFiles = (e) => {
-    this.chooseImage()
+    //this.chooseImage()
+    var file_name = document.getElementById("hidden-image-input-element").value;
+    var file_extn = file_name.split('.').pop().toLowerCase();
+    console.log(file_name)
+    console.log(file_extn)
     e.preventDefault()
 
     const files = e.target.files;
     const file = files[0];
+
 
     this.setState({ imageFile: file })
 
@@ -69,13 +80,13 @@ class ImageUploader extends Component {
 
     let imageTypeRegex = /^image\//
 
-    let thumbnail = document.getElementById("thumbnail")
+    //let thumbnail = document.getElementById("thumbnail")
 
     if (file && imageTypeRegex.test(file.type)) {
 
-      while (thumbnail.hasChildNodes()) {
-        thumbnail.removeChild(thumbnail.firstChild)
-      }
+      // while (thumbnail.hasChildNodes()) {
+      //   thumbnail.removeChild(thumbnail.firstChild)
+      //}
 
       if (file.size <= 5000000) {
 
@@ -85,7 +96,7 @@ class ImageUploader extends Component {
         img.classList.add("obj")
         img.file = file
 
-        thumbnail.appendChild(img)
+        //thumbnail.appendChild(img)
 
         let reader = new FileReader()
         reader.onload = (function (aImg) { return function (e) { aImg.src = e.target.result; }; })(img);
@@ -97,16 +108,37 @@ class ImageUploader extends Component {
       }
     }
   }
-
-  uploadImageToS3 = (e) => {
+  cropMethod = (e) => {
     e.preventDefault()
-    let thumbnail = document.getElementById("thumbnail")
+    if (document.getElementById("hidden-image-input-element").value != "") {
+      var _this = this;
+      return Promise.resolve(_this.onClickSave()).then(setTimeout(function () { _this.uploadImageToS3(); }, 1000)).catch(err => {
+        console.log(err);
+      })
+
+    }
+    else {
+      Notification.info("Upload a Photo")
+      return
+    }
+
+
+
+  }
+
+  uploadImageToS3 = () => {
+    //e.preventDefault()  
+    let blob = this.dataURItoBlob(this.state.canvas)
+    console.log(blob)
+    //this.dataURItoBlob(this.state.canvas)
+    // let thumbnail = document.getElementById("thumbnail")
     let imageTypeRegex = /^image\//
-    let file = this.state.imageFile
-    let imageUrl=''
-    if (thumbnail.hasChildNodes() && file && imageTypeRegex.test(file.type)) {
+    //let file = this.state.imageFile
+    let file = blob
+    let imageUrl = ''
+    if (file) {
       sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}.${file.name.split('.').pop()}`)
-           .then(response => {
+        .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
             imageUrl = response.data.profileImageUrl
@@ -114,71 +146,155 @@ class ImageUploader extends Component {
               .then(response => {
                 console.log(response);
                 this.props.updateProfilePicUrl(imageUrl);
-                localStorage.setItem("imageLink", imageUrl);  
-                Notification.info("Successfully uploaded..")              
+                localStorage.setItem("imageLink", imageUrl);
+                Notification.info("Successfully uploaded..")
               }
 
               )
-                  .catch(err => { console.log(err)
-                    Notification.info("Error in uploading image")
-                  })
-            } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
-              Notification.info(response.data.message)
-            }
-          })
-          .catch(err => {
-            console.log(err)
-            Notification.info("Error in uploading image")
-          })
+              .catch(err => {
+                console.log(err)
+                Notification.info("Error in uploading image")
+              })
+          } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
+            Notification.info(response.data.message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          Notification.info("Error in uploading image")
+        })
     } else {
       Notification.info("No file to upload")
     }
   }
+  handleScale(event) {
+    this.setState({
+      scale: event.target.value / 100
+    })
+  }
+  dataURItoBlob(dataURI) {
+
+    // convert base64 to raw binary data held in a string
+    // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+
+    let byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    let ab = new ArrayBuffer(byteString.length);
+    let ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    //Old Code
+    //write the ArrayBuffer to a blob, and you're done
+    //var bb = new BlobBuilder();
+    //bb.append(ab);
+    //return bb.getBlob(mimeString);
+
+    //New Code
+    // return new Blob([this.state.ab], {type:this.state.mimeString});
+    let blob = new Blob([ia], { type: 'image/jpeg' });
+    let file = new File([blob], "image.jpg");
+    return file
+    console.log(file)
+
+
+  }
+  onClickSave = () => {
+
+    //e.preventDefault()
+    //let img = this.editor.getImage().toDataURL();
+    //let rect = this.editor.getCroppingRect();
+    if (this.editor) {
+      // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
+      // drawn on another canvas, or added to the DOM.
+      //let canvas =this.props.canvas
+      //this.setState.canvas = this.editor.getImage().toDataURL();
+      this.setState({
+        canvas: this.editor.getImageScaledToCanvas().toDataURL()
+      })
+      //this.dataURItoBlob(this.state.canvas)
+
+      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
+      const canvasScaled = this.editor.getImageScaledToCanvas()
+
+
+    }
+
+  }
+  handleRemoveImage = (e) => {
+    e.preventDefault();
+    this.setState({
+      imageUrl: "https://dashboard-test.kommunicate.io/img/avatars/default.png"
+    })
+    let dpUrl = { imageLink: "https://dashboard-test.kommunicate.io/img/avatars/default.png" }
+
+    updateApplozicUser(dpUrl)
+      .then(response => {
+        console.log(response);
+        this.props.updateProfilePicUrl(this.state.imageUrl);
+        localStorage.setItem("imageLink", this.state.imageUrl);
+        Notification.info("Display Photo Removed..")
+      }
+      )
+  }
+  setEditorRef = (editor) => this.editor = editor
 
   render() {
     return (
       <form>
-        <div className="card">
-          {/* <div className="card-header">
-            <strong>Set Profile Image</strong>
-          </div> */}
-          <div className="card-block">
-            <div className="form-group row">
-              <label className="col-md-3 form-control-label" htmlFor="email-input">Profile Image</label>
-              <div className="col-md-9">
-                <div className="form-group row">
-                  <div className="col-md-4">
-                  <img src="/img/avatars/default.png" id="default-dp" className="default-dp"></img><br/>
-                    
-                    {/*
-                    <img src="/img/avatars/default.png" className="default-dp" id="default-dp"></img><br/>
-                    */}
-                    <div id="thumbnail"></div>
-                    {/*
-                    <div className="edit-dp-btn">
-                      <h5>Edit Display Photo</h5>
-                    </div>
-                    */}
-                    <input type="file"  accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
-                    
-                    </div>
-                  </div>
-                <div id="thumbnail">
-                </div>
+        <div className="modal-wrapper">
+          <div className="image-editor-container">
+            <div className="avatar-editor"> 
+              {/* Cropped Image
+                      <img src={this.state.canvas} className="hidden-copped-img"/> 
+                      */}
+            <AvatarEditor
+              ref={this.setEditorRef}
+              image={this.state.imageFile}
+              /* width={300}
+               height={300}
+               border={60}*/
+              borderRadius={130}
+              color={[255, 255, 255, 0.6]} // RGBA
+              scale={this.state.scale}
+              rotate={0}
+            />
+
+            </div>
+            <div className="range-slider"><i className="icon-picture zoom-icon-left"></i>
+              <input type="range" className="slider-input" min="100" max="500" step="50" onChange={this.handleScale} /><i className="icon-picture zoom-icon-right"></i>
+            </div>
+            <div className="modal-btn-group">
+              <button className="upload-img-button" autoFocus={false} id="upload-img-button" onClick={this.invokeImageUpload}>Upload Photo</button>
+              <button className="remove-img-button" autoFocus={false} id="remove-img-button" onClick={this.handleRemoveImage}>Remove Photo</button>
+            </div>
+
+            {/* <button type="submit" autoFocus={true} className="btn btn-sm btn-danger"  onClick={this.cropMethod}> Save Image</button> */}
+          </div>
+
+          <input type="file" accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
+          <div className="row">
+            <div className="col-md-12">
+              <div className="modal-footer-button">
+                <button type="submit" autoFocus={false} className="btn btn-sm btn-danger" id="cancel-button" onClick={this.props.handleClose}> Canel</button>
+                <button type="submit" autoFocus={false} className="btn btn-sm btn-danger" id="image-input-button" onClick={this.cropMethod}><i className="icon-cloud-upload"></i> Save</button>
+
               </div>
             </div>
           </div>
-          <div className="card-footer">
-            <div>
-              <span className="about-dp">Please select a file less than 5MB</span>
-            </div>
-            <button type="submit" autoFocus={true} className="btn btn-sm btn-primary" id="image-input-button" onClick={this.invokeImageUpload}><i className="icon-picture"></i> Select Image</button>
-            <button type="submit" autoFocus={true} className="btn btn-sm btn-danger" id="image-input-button" onClick={this.uploadImageToS3}><i className="icon-cloud-upload"></i> Upload Image</button>
-          </div>
         </div>
-      </form>  
+
+
+      </form>
     )
   }
 }
+
+
 export default ImageUploader
 
