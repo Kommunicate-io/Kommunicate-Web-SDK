@@ -4813,7 +4813,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         } else if (contact.photoLink) {
                             imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
                         } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                            imgsrctag = '<img src="' + 'https://www.kommunicate.io/android-chrome-192x192.png' + '"/>';
+                            imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.png' + '"/>';
                         } else {
                             if (!displayName) {
                                 displayName = contact.displayName;
