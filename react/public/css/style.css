@@ -9139,5 +9139,35 @@ hr.transparent {
 
 .switch-enable-automatic > .switch-input:checked ~ .switch-label {
   background: #5c5aa7 !important;
-  border-color: #5c5aa7; 
+  border-color: #5c5aa7;
+}
+
+.online-indicator {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #1cde14;
+}
+
+.offline-indicator {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #d2d7d2;
+}
+
+.online-indicator-profile-pic {
+  position: absolute;
+  right: 66%;
+  bottom: 0;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #1cde14;
 }
