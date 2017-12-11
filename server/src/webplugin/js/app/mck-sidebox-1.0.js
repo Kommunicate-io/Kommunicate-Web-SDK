@@ -1214,27 +1214,23 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
-                /* return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 486.8 509.5" style="&#10;    height: 60px;&#10;    width: 60px;&#10;">'+
-                 '<defs><style>.cls-1 {fill: #964ac6;}</style></defs>'+
-                 '<g id="Layer_2" data-name="Layer 2">'+
-                   '<g id="Layer_1-2" data-name="Layer 1">'+
-                     '<g>'+
-                      '<path class="cls-1" d="M197.1,180.8s32.2,1.7,46.3,1.8,46.3-1.8,46.3-1.8c72.2-5.1,120.7-3.3,137.4,0l16,3-.8-6.1C442.3,79.6,352.4,0,241.5,0S40.7,79.6,40.7,177.7l-.8,6.8,19.7-3.8C76.4,177.5,124.9,175.6,197.1,180.8Z"/>'+
-                      '<path class="cls-1" d="M84.3,205c-31.2,5.1-33.5,22.8-33.5,22.8-4,46.1,23.3,72.7,44.3,76.4s63.8-.5,81.1-20,15.4-56.8,2.8-70.3S115.5,199.9,84.3,205ZM109,292.2a38.7,38.7,0,1,1,38.7-38.7A38.7,38.7,0,0,1,109,292.2Z"/>'+
-                      '<path class="cls-1" d="M308.8,310.3c-27.5-24.7-26.1-52.2-36.3-75.5-8.5-19.3-24.1-22.3-29.1-22.7s-20.6,3.4-29.1,22.7c-10.2,23.3-8.9,50.8-36.3,75.5,0,0-19.6,17.7-58.2,17.2s-47.1-2.3-59.6-14.9L59,311.5c13.5,86.3,89.5,148.5,182.8,148.5a181.6,181.6,0,0,0,54.6-8.3l83.7,57.9-20.9-92.6c34.7-29.4,56.2-52.9,65.6-102.4-11.6,10.9-21,12.6-57.7,13C328.4,328,308.8,310.3,308.8,310.3Zm-63.1,77.6-.9.2h-1.6c-48.8-3.5-57.6-39.7-58.6-60.3H303.8C302.8,348.3,294,384.6,245.7,387.9Z"/>'+
-                      '<path class="cls-1" d="M436,227.8s-2.3-17.7-33.5-22.8-82-4.7-94.6,8.9-14.4,50.8,2.8,70.3,60.1,23.8,81.1,20S440,273.9,436,227.8Zm-64.4,64.3a38.7,38.7,0,1,1,38.7-38.7A38.7,38.7,0,0,1,371.6,292.2Z"/>'+
-                       '<path class="cls-1" d="M119.5,253.3a12.9,12.9,0,0,1-13-12.7,12.5,12.5,0,0,1,2.4-7.4,20.2,20.2,0,1,0,19.9,16.2A13.1,13.1,0,0,1,119.5,253.3Z"/>'+
-                       '<path class="cls-1" d="M382.1,253.3a12.9,12.9,0,0,1-13-12.7,12.5,12.5,0,0,1,2.4-7.4,20.2,20.2,0,1,0,19.9,16.2A13.1,13.1,0,0,1,382.1,253.3Z"/>'+
-                       '<path class="cls-1" d="M33.1,241.5l6.8-57L0,191.9v32.6c20,5.1,22.4,13.5,28.4,30.3S46.8,298.4,59,311.5a177.6,177.6,0,0,1-2-19.9Z"/>'+
-                       '<path class="cls-1" d="M443.1,183.8c1.9,14.2,6.2,49.1,5,59-1.9,15.9-20.3,50.7-20.3,50.7-.8,7.5-1.9,14.5-3.1,21l1.9-1.9c12.6-12.6,25.6-41,31.7-57.8s8.4-25.2,28.4-30.3V191.9Z"/>'+
-                     '</g>'+
-                   '</g>'+
-                 '</g>'+
-               '</svg>'+
-                 '</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
-             */
-                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
+                '<svg id="mck-launcher-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 274.8 271.4">'+
+                '<defs><style> .cls-1 {fill : #fff;}</style></defs>'+
+                '<g id="Layer_2" data-name="Layer 2">'+
+                  '<g id="Layer_1-2" data-name="Layer 1">'+
+                    '<g>'+
+                      '<path class="cls-1" d="M269.8,141a21.5,21.5,0,1,0-37.4,14.4q-9,17.1-21.8,26.2t-20,9.5a9.9,9.9,0,0,1-6.9-2.6,8.1,8.1,0,0,1-2.8-6.2q0-2.6,1.9-11.7L204.3,70H179.8l-4.4,21.2q-15.7-25-41.1-25-17,0-33.4,11.9T74.3,111q-10.2,21.1-10.2,40.9,0,26.7,14.2,44.1t35.5,17.4q21,0,41.1-22.5.9,12.1,6.7,17.4t20.3,5.4q28.8,0,54.8-29.3a103.2,103.2,0,0,0,15.1-22.1A21.5,21.5,0,0,0,269.8,141ZM160.5,157.9q-7.1,16.3-19,25.9T119,193.4q-13.3,0-21.6-10.8t-8.3-28.3a80.9,80.9,0,0,1,14.5-47.1q14.5-21,32.1-21,14.5,0,23.2,10.7t8.7,28.7A80.6,80.6,0,0,1,160.5,157.9Z"/>'+
+                      '<path class="cls-1" d="M246.2,57.3h-2.1a126.7,126.7,0,0,0-12.6-15q-27.1-27.6-71-31.3a21.5,21.5,0,1,0,.4,20q31.5,3.8,53.9,23.6a88.2,88.2,0,0,1,12.7,13.8,21.5,21.5,0,1,0,18.9-11.2Z"/>'+
+                      '<path class="cls-1" d="M80.7,14.5A21.5,21.5,0,0,0,59.6,40Q41.9,55.3,29.9,78.2a151.1,151.1,0,0,0-17.1,60.4,21.5,21.5,0,1,0,19.7,1.3q2.2-45.4,32-76.2,3.9-4.1,8.2-7.7a21.5,21.5,0,1,0,8.1-41.4Z"/>'+
+                      '<path class="cls-1" d="M253.3,195.8A21.5,21.5,0,0,0,232.9,224a110.3,110.3,0,0,1-23.3,15q-25.2,12.5-59.8,12.5-55.3,0-86.1-27.1a21.5,21.5,0,0,0,1.2-7.1c0-.1,0-.2,0-.3s0-.2,0-.3a21.5,21.5,0,1,0-42.9,0c0,.1,0,.2,0,.3s0,.2,0,.3a21.5,21.5,0,0,0,26.3,20.9l.6.6q36.5,32.6,100.4,32.6,47.3,0,77.9-18.9a150.6,150.6,0,0,0,20.1-14.7,21.5,21.5,0,1,0,6-42.1Z"/>'+
+                    '</g>'+
+                  '</g>'+
+                '</g>'+
+              '</svg>'+
+             '</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+        
+                //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
             };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -4817,7 +4813,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         } else if (contact.photoLink) {
                             imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
                         } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                            imgsrctag = '<img src="' + 'https://www.kommunicate.io/android-chrome-192x192.png' + '"/>';
+                            imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '"/>';
                         } else {
                             if (!displayName) {
                                 displayName = contact.displayName;

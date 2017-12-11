@@ -47,10 +47,10 @@ return imageLink;
   }*/
   logout(e){
     window.logout();
-    if (window.$kmApplozic && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
+    if (typeof window.$kmApplozic !== "undefined" && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
       window.$kmApplozic.fn.applozic('logout');           
     }
-    if (window.$applozic && window.$applozic.fn.applozic("getLoggedInUser")) {
+    if (typeof window.$applozic !== "undefined" && window.$applozic.fn.applozic("getLoggedInUser")) {
       window.$applozic.fn.applozic('logout');       
     }
     sessionStorage.clear();

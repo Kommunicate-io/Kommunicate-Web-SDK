@@ -34,6 +34,12 @@ const config ={
           password: "dev"
         }
       },
+      mailProvider:{
+        accessKey:"support@kommunicate.io", 
+        accessPassword:"knowledge123", 
+        serviceEmail:"noreply@kommunicate.io",
+        serviceProvider:"2" 
+      },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
       kommunicateAdminPassword: "techdisrupt",
@@ -78,6 +84,12 @@ const config ={
         password: "dev"
       }
     },
+    mailProvider:{
+      accessKey:"support@kommunicate.io", 
+      accessPassword:"knowledge123", 
+      serviceEmail:"noreply@kommunicate.io",
+      serviceProvider:"2" 
+    },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateAdminId: "suraj@applozic.com",
     kommunicateAdminPassword: "1234567890",
@@ -121,6 +133,12 @@ const config ={
         user: "dev",
         password: "dev"
       }
+    },
+    mailProvider:{
+      accessKey:"support@kommunicate.io", 
+      accessPassword:"knowledge123", 
+      serviceEmail:"noreply@kommunicate.io",
+      serviceProvider:"2" 
     },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateParentAppName: "suraj",
@@ -167,6 +185,12 @@ const config ={
           password: "dev"
         }
       },
+      mailProvider:{
+        accessKey:"support@kommunicate.io", 
+        accessPassword:"knowledge123", 
+        serviceEmail:"noreply@kommunicate.io",
+        serviceProvider:"2" 
+      },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
       kommunicateAdminPassword: "techdisrupt",
@@ -177,11 +201,18 @@ const config ={
       // this property define how often Off business hours notification will be sent to user. value in minute
       offBussinessHoursMessageInterval: 5,
 
+  },
+  companyDetail:{
+    companyLogo: 'https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/applozic-sample-app-videocall-1.png',
+    companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306'
   }
 };
 exports.getProperties = function() {
   let envId = getEnvId()?getEnvId():"default";
   return config[envId];
+};
+exports.getCompanyDetail = function() {
+  return config["companyDetail"];
 };
 const getEnvId= function() {
   return process.env.NODE_ENV ||"default";

@@ -65,3 +65,41 @@ exports.createSuggestion = (req, res) => {
 		})
 }
 
+exports.updateSuggestion = (req, res) => {
+	console.log('Request received ', req.body);
+
+	const suggestion = { id: req.body.id };
+	if (null !== req.body.category) {
+		suggestion['category'] = req.body.category
+	}
+	if (null !== req.body.name) {
+		suggestion['name'] = req.body.name
+	}
+	if (null !== req.body.content) {
+		suggestion['content'] = req.body.content
+	}
+	autosuggestService.updateSuggetion(suggestion).then(response => {
+		res.status(200).json({ code: "SUGESSTION_UPDATED_SUCCESSFULLY", data: "success" })
+	}).catch(err => {
+		res.status(500).json({
+			code: "INTERNAL_SERVER_ERROR",
+			message: "Something in auto suggest went wrong!",
+			error: err
+		})
+	})
+}
+
+exports.deleteSuggetion = (req, res) => {
+	console.log("delete req: ",req)
+	const suggestion = { id: req.body.id };
+	autosuggestService.deleteSuggetion(suggestion).then(response => {
+		res.status(200).json({ code: "SUGESSTION_DELETED_SUCCESSFULLY", data: "success" })
+	}).catch(err => {
+		console.log("error detail for delete suggetion: ", err)
+		res.status(500).json({
+			code: "INTERNAL_SERVER_ERROR",
+			message: "Something in auto suggest went wrong!",
+			error: err
+		})
+	})
+}
