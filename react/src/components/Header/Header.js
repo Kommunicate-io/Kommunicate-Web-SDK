@@ -9,6 +9,8 @@ class Header extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
+      changeStatusLabel: "Go Away",
+      status: localStorage.getItem("statusOnlineOffline"),
       dropdownOpen: false,
       //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
@@ -59,6 +61,25 @@ return imageLink;
     window.appHistory.replace('/login');
   }
 
+
+  toggleStatus = () => {
+
+    if(this.state.status === "1"){
+      localStorage.setItem("statusOnlineOffline", 0)
+      this.setState({
+        status: "0",
+        changeStatusLabel: "Go Online"
+      })
+
+    }else{
+      localStorage.setItem("statusOnlineOffline", 1)
+      this.setState({
+        status: "1",
+        changeStatusLabel: "Go Away"
+      })
+    }
+  }
+
   render() {
     return (
       <header className="app-header navbar">
@@ -73,21 +94,20 @@ return imageLink;
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
-                <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
+                <div style={{display: "inline-block"}}>
+                  <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
+                  <span className={localStorage.getItem("statusOnlineOffline") === "1" ? "online-indicator-profile-pic": null}></span>
+                </div>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
               <DropdownMenu className="dropdown-menu-right">
                 <DropdownItem>
                   <p className="header-user-name">{this.state.displayName}</p>
                   <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
-                  {
-                    //<span className="header-user-online"> You are online <span className="avatar-status badge-success"></span></span>
-                  }
+                  <span className="header-user-online"> {localStorage.getItem("statusOnlineOffline") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
                 </DropdownItem>
-                {
-                  //<DropdownItem> Go Offline </DropdownItem>
-                  //<DropdownItem> Profile </DropdownItem>
-                }
+                <DropdownItem onClick={this.toggleStatus}> {this.state.changeStatusLabel} </DropdownItem>
+                <DropdownItem> Profile </DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
             </Dropdown>
