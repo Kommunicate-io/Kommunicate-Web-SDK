@@ -29,7 +29,7 @@ class WhenYouAreOnline extends Component {
       <div className="cursor-is-pointer">
         <div className="row">
           <div className="col-6">
-            <h4 className="when-you-are-online-heading"> When you are offline </h4>
+            <h4 className="when-you-are-online-heading"> When you are offline <span className="offline-indicator"></span></h4>
             <p className="ask-your-user-to">Ask your user to leave a message so that you can get back to them later</p>
           </div>
           <div className="col-6" onClick={this.methodToShowOfflinePrefs}>

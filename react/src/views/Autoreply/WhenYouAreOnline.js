@@ -29,7 +29,7 @@ class WhenYouAreOnline extends Component {
 			<div className="cursor-is-pointer">
         <div className="row">
           <div className="col-6">
-            <h4 className="when-you-are-online-heading"> When you are online </h4>
+            <h4 className="when-you-are-online-heading"> When you are online <span className="online-indicator"></span></h4>
             <p className="start-solving-your-user">Start solving your users’ issues with this message </p>
           </div>
           <div className="col-6" onClick={this.methodToShowPrefs}>
