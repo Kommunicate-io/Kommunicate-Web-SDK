@@ -3723,7 +3723,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return '';
 				}
 			};
-            _this.getImageUrlForGroupType =function(contact){
+            _this.getImageUrlForGroupType =function(contact,displayName){
 				var roleType='';
 				var userDetail=MCK_USER_DETAIL_MAP[MCK_USER_ID];
 				if(userDetail.roleType && userDetail.roleType==3){
@@ -3737,12 +3737,12 @@ var KM_CLIENT_GROUP_MAP = [];
 						return '<img src="' + userDetail.imageLink + '"/>';
 					}
                 }
-                return mckGroupLayout.getGroupImage(contact.imageUrl);
+                return _this.getContactImageByAlphabet(displayName);;
 			};
 			_this.getContactImageLink = function(contact, displayName) {
 				var imgsrctag = '';
 				if(contact.members && contact.type==10){
-					imgsrctag=_this.getImageUrlForGroupType(contact);
+					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
                 } else if (contact.isGroup) {
 					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
 				} else {
