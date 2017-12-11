@@ -19,6 +19,7 @@ function getJsCode (){
   if(env=="test"||env=="development"){
     options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
   }
+  options.email = '';
   console.log(options);
 
 var jsScript= `<script type="text/javascript">

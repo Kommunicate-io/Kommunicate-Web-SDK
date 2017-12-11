@@ -202,17 +202,24 @@ const config ={
       offBussinessHoursMessageInterval: 5,
 
   },
-  companyDetail:{
-    companyLogo: 'https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/applozic-sample-app-videocall-1.png',
-    companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306'
+  commonProperties: {
+    applicationWebhooks:[
+      {type: 1, url: "", notifyVia: "0", fallbackTime: 300},/*type: 1-undelivered 2-unread*/
+      {type: 2, url: "", notifyVia: "0", fallbackTime: 300}
+      ],
+
+    companyDetail:{
+      companyLogo: 'https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/applozic-sample-app-videocall-1.png',
+      companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306'
+    }
   }
 };
 exports.getProperties = function() {
   let envId = getEnvId()?getEnvId():"default";
   return config[envId];
 };
-exports.getCompanyDetail = function() {
-  return config["companyDetail"];
+exports.getCommonProperties = function() {
+  return config["commonProperties"];
 };
 const getEnvId= function() {
   return process.env.NODE_ENV ||"default";

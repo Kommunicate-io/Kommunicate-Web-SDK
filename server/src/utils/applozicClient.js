@@ -62,11 +62,12 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
   const apzToken = "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64');
   let applicationPxy = {
     name: applicationName,
-    companyLogo: config.getCompanyDetail().companyLogo,
-    companyAddress: config.getCompanyDetail().companyAddress,
-    mailProviderPxy: config.getProperties().mailProvider
+    companyLogo: config.getCommonProperties().companyDetail.companyLogo,
+    companyAddress: config.getCommonProperties().companyDetail.companyAddress,
+    mailProviderPxy: config.getProperties().mailProvider,
+    applicationWebhookPxys: config.getCommonProperties().applicationWebhooks
   }
- 
+  
   return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
         headers: {
           "Apz-Token": apzToken,
