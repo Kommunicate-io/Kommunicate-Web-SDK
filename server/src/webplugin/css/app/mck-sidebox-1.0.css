@@ -110,7 +110,8 @@
 .mck-sidebox {
 	position: fixed !important;
 	right: 29px !important;
-	height:600px;
+	height: 600px;
+	max-height: calc(100% - 10px) !important;
 	left: auto !important;
 	margin: 0 !important;
 	border: 0 !important;
@@ -3500,7 +3501,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 	.mck-sidebox {
 		right: 10px !important;
-		bottom: 10px;
+		bottom: 2px;
 	}
 	.mck-sidebox.fade.in{
 		width:300px;
