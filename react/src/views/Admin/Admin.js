@@ -8,7 +8,8 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import AvatarEditor from 'react-avatar-editor'
 import PasswordAccordion from './PasswordAccordion';
-import { baseurl, getConfig} from '../../config/config.js'
+import { getResource } from '../../config/config.js'
+
 
 const customStyles = {
   content: {
@@ -37,11 +38,9 @@ class Forms extends Component {
       companysize: '',
       industry: '',
       industryOthers: '',
-      imageFile: '',
       modalIsOpen: false,
       scale: 1.2,
-     // imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
-      imageFile: localStorage.getItem("imageLink") == null ? baseurl.defaultImage.imageUrl : localStorage.getItem("imageLink")
+      imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink")
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
