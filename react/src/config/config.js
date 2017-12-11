@@ -21,7 +21,7 @@ var config = {
   prod: {
       homeUrl:baseurl.prod.baseUrl,
       kommunicateBaseUrl : baseurl.prod.kommunicateAPI,
-      kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
+      kommunicateDashboardUrl:"https://dashboard.kommunicate.io",
       applozicPlugin:{
       applozicHosturl:baseurl.prod.baseUrl,
       baseUrl:baseurl.prod.baseUrl+"/kommunicate.app",
