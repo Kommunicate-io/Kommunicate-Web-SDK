@@ -3852,3 +3852,66 @@ fill:white;
     padding-left: 5px;
     padding-top: 5px;
 }
+/*css for ask number of rooms in hotel booking */
+.km-room-person-selector-text {
+border-bottom-left-radius: 4px;
+}
+.km-room-person-selector-container {
+margin-top: 3px;
+border-top-left-radius: 4px;
+}
+.km-room-person-selector-container .km-room-title-text {
+margin-top: 5px;
+margin-bottom: 10px;
+font-size: 14px;
+font-weight: 600;
+}
+.km-room-person-selector-container hr {
+height: 1px;
+background-color: #D9D9D9;
+border: none;
+}
+.km-add-room-button-container {
+margin-top: 15px;
+margin-bottom: 5px;
+}
+.km-add-more-rooms {
+appearance: none;
+-webkit-appearance: none;
+outline: none;
+border: 1px solid #00b0ff;
+background-color: #fff;
+color: #00b0ff;
+border-radius: 18px;
+font-size: 14px;
+padding: 5px 10px;
+cursor: pointer;
+}
+.km-done-button {
+float: right;
+}
+
+.km-room-person-selector-container .km-room-selector #km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector #km-person-number-field:disabled {
+background-color: transparent;
+border: none;
+color: #000;
+font-size: 14px;
+text-align: center;
+width: 30px;
+margin-left: 22px;
+}
+.km-room-selector, .km-person-selector {
+margin-bottom: 15px;
+}
+.km-room-person-selector-container input[type="button"] {
+height: 30px;
+width: 30px;
+margin-left: 10px;
+border: #ddd 1px solid;
+background-color: #ffffff;
+color: #000;
+border-radius: 50%;
+box-shadow: 0px 1px 4px 1px rgba(0,0,0,.12);
+outline: none;
+cursor: pointer;
+}
