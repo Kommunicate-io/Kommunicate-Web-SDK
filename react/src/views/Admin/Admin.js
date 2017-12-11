@@ -8,6 +8,8 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import AvatarEditor from 'react-avatar-editor'
 import PasswordAccordion from './PasswordAccordion';
+import { baseurl, getConfig} from '../../config/config.js'
+
 const customStyles = {
   content: {
     top: '50%',
@@ -38,8 +40,8 @@ class Forms extends Component {
       imageFile: '',
       modalIsOpen: false,
       scale: 1.2,
-      imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
-
+     // imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
+      imageFile: localStorage.getItem("imageLink") == null ? baseurl.defaultImage.imageUrl : localStorage.getItem("imageLink")
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);

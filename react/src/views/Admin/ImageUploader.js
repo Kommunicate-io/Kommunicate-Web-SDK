@@ -4,6 +4,7 @@ import Notification from '../model/Notification';
 import './Admin.css';
 import AvatarEditor from 'react-avatar-editor'
 import Modal from 'react-modal';
+import { getResource, get } from '../../config/config.js'
 
 
 class ImageUploader extends Component {
@@ -17,39 +18,17 @@ class ImageUploader extends Component {
   constructor(props, defaultProps) {
     super(props, defaultProps);
     this.state = {
-      //imageFile: undefined,
-      imageFile: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
-      file: "/img/avatars/default.png",
+      imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink"),
+      file : getResource().defaultImageUrl,
       scale: 1.2,
       canvas: '',
       imageUrl: ''
-      //  byteString:'',
-      //  mimeString:'',
-      //  mime:'',
-      //  ia:'',
-      //  id:'',
-      //  ab:'',
-
-
     }
     this.handleScale = this.handleScale.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
     this.dataURItoBlob = this.dataURItoBlob.bind(this);
     this.handleRemoveImage = this.handleRemoveImage.bind(this);
   }
-
-  chooseImage = () => {
-    if (document.getElementById("hidden-image-input-element").value != "") {
-      let d = document.getElementById("default-dp");
-      d.style.display = "none";
-    }
-    else {
-      let e = document.getElementById("default-dp");
-      e.style.display = "block";
-    }
-
-  }
-
   invokeImageUpload = (e) => {
     e.preventDefault()
 
@@ -59,25 +38,16 @@ class ImageUploader extends Component {
       hiddenImageInputElem.click()
     }
   };
-
-
-
   handleImageFiles = (e) => {
-    //this.chooseImage()
     var file_name = document.getElementById("hidden-image-input-element").value;
     var file_extn = file_name.split('.').pop().toLowerCase();
     console.log(file_name)
     console.log(file_extn)
     e.preventDefault()
-
     const files = e.target.files;
     const file = files[0];
-
-
     this.setState({ imageFile: file })
-
     console.log(file)
-
     let imageTypeRegex = /^image\//
 
     //let thumbnail = document.getElementById("thumbnail")
@@ -111,9 +81,12 @@ class ImageUploader extends Component {
   cropMethod = (e) => {
     e.preventDefault()
     if (document.getElementById("hidden-image-input-element").value != "") {
-      var _this = this;
-      return Promise.resolve(_this.onClickSave()).then(setTimeout(function () { _this.uploadImageToS3(); }, 1000)).catch(err => {
-        console.log(err);
+       var _this = this;
+      return Promise.resolve(_this.onClickSave()).then(res=>{
+         _this.uploadImageToS3()})
+         .catch(err => {
+       console.log(err);
+      
       })
 
     }
@@ -205,34 +178,26 @@ class ImageUploader extends Component {
 
   }
   onClickSave = () => {
-
     //e.preventDefault()
     //let img = this.editor.getImage().toDataURL();
     //let rect = this.editor.getCroppingRect();
     if (this.editor) {
       // This returns a HTMLCanvasElement, it can be made into a data URL or a blob,
       // drawn on another canvas, or added to the DOM.
-      //let canvas =this.props.canvas
-      //this.setState.canvas = this.editor.getImage().toDataURL();
       this.setState({
         canvas: this.editor.getImageScaledToCanvas().toDataURL()
       })
-      //this.dataURItoBlob(this.state.canvas)
-
-      // If you want the image resized to the canvas size (also a HTMLCanvasElement)
-      const canvasScaled = this.editor.getImageScaledToCanvas()
-
-
+      
+     return '';
     }
-
+    
   }
   handleRemoveImage = (e) => {
     e.preventDefault();
     this.setState({
-      imageUrl: "https://dashboard-test.kommunicate.io/img/avatars/default.png"
+      imageUrl: get('prod').kommunicateDashboardUrl+getResource().defaultImageUrl,
     })
-    let dpUrl = { imageLink: "https://dashboard-test.kommunicate.io/img/avatars/default.png" }
-
+   let dpUrl = { imageLink: get('prod').kommunicateDashboardUrl+getResource().defaultImageUrl }
     updateApplozicUser(dpUrl)
       .then(response => {
         console.log(response);
