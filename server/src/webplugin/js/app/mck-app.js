@@ -48,6 +48,8 @@ function ApplozicSidebox() {
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
     },{
         "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate.js"
+},{
+    "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/km-richtext-markup-1.0.js"
 }
 ];
     var mck_script_loader2 = [ {

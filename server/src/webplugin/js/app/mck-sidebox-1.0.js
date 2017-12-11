@@ -3933,6 +3933,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class="mck-msg-box ${msgClassExpr}">' +
+                
+                '<div id ="mck-msg-box-text">'
                 '<div class= "move-right mck-msg-text"></div>' +
                 '<div class ="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">' +
                 '<div class="mck-msgto">${msgReplyTo} </div>' +
@@ -3944,6 +3946,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-fileurl= "${fileUrlExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}</div>' +
                 '<div class="mck-msg-text mck-msg-content"></div>' +
+                '</div>'+
+                '<div id = "mck-msg-box-rich-text class =${kmRichTextMarkupVisibility} >'+
+                '${kmRichTextMarkup}'+
+                '</div>'+
                 '</div>' +
                 '</div>' +
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
@@ -4459,6 +4465,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
+                    kmRichTextMarkupVisibility:'vis',
+                    kmRichTextMarkup: Kommunicate.markup.KM_HOTEL_ROOM_PAX_INFO
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
