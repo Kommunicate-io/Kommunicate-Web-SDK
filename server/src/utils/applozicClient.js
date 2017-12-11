@@ -60,10 +60,14 @@ this method create an application in applozic db.
 exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
   console.log("going to call applozic url: ", config.getProperties().urls.createApplication, "applicationName:", applicationName);
   const apzToken = "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64');
-
-  return Promise.resolve(axios.post(config.getProperties().urls.createApplication, {
-        name: applicationName,
-      }, {
+  let applicationPxy = {
+    name: applicationName,
+    companyLogo: config.getCompanyDetail().companyLogo,
+    companyAddress: config.getCompanyDetail().companyAddress,
+    mailProviderPxy: config.getProperties().mailProvider
+  }
+ 
+  return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
         headers: {
           "Apz-Token": apzToken,
           "Content-Type": "application/json",
