@@ -48,7 +48,7 @@ var config = {
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.prod.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.prod.kommunicateAPI+"/autoSuggest",
+      autoSuggest :baseurl.prod.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.prod.kommunicateAPI+"/profileImage"
     },
     port:5454
@@ -83,7 +83,7 @@ var config = {
       activateAccountUrl:"https://dashboard.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.dashboard.kommunicateAPI+"/autoSuggest",
+      autoSuggest :baseurl.dashboard.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.dashboard.kommunicateAPI+"/profileImage"
     },
     port:5454
@@ -118,7 +118,7 @@ var config = {
       activateAccountUrl:"https://dashboard-test.kommunicate.io/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
-      autoSuggest :baseurl.test.kommunicateAPI+"/autoSuggest",
+      autoSuggest :baseurl.test.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.test.kommunicateAPI+"/profileImage"
     },
     port:5454
@@ -155,7 +155,7 @@ var config = {
       logo:baseurl.default.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:baseurl.default.kommunicateAPI+"/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
-      autoSuggest :baseurl.default.kommunicateAPI+"/autoSuggest",
+      autoSuggest :baseurl.default.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
