@@ -13,14 +13,15 @@ var baseurl ={
   },
   default:{
    baseUrl: "https://apps-test.applozic.com",
-   kommunicateAPI: "http://localhost:3999"
-   //kommunicateAPI: "https://api-test.kommunicate.io"
+  // kommunicateAPI: "http://localhost:3999"
+   kommunicateAPI: "https://api-test.kommunicate.io"
   }
 }
 var config = {
   prod: {
       homeUrl:baseurl.prod.baseUrl,
       kommunicateBaseUrl : baseurl.prod.kommunicateAPI,
+      kommunicateDashboardUrl:"https://dashboard.kommunicate.io",
       applozicPlugin:{
       applozicHosturl:baseurl.prod.baseUrl,
       baseUrl:baseurl.prod.baseUrl+"/kommunicate.app",
@@ -56,6 +57,7 @@ var config = {
   dashboard:{
     homeUrl:baseurl.dashboard.baseUrl,
     kommunicateBaseUrl : baseurl.dashboard.kommunicateAPI,
+    kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
      applozicPlugin:{
       applozicHosturl:baseurl.dashboard.baseUrl,
       baseUrl:baseurl.dashboard.baseUrl+"/kommunicate.app",
@@ -91,6 +93,7 @@ var config = {
   test:{
      homeUrl:baseurl.test.baseUrl,
      kommunicateBaseUrl : baseurl.test.kommunicateAPI,
+     kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
      applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"https://apps-test.applozic.com/kommunicate.app",
@@ -127,6 +130,7 @@ var config = {
   development: {
     homeUrl:baseurl.default.baseUrl,
     kommunicateBaseUrl : baseurl.default.kommunicateAPI,
+    kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
     applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"http://api-test.kommunicate.io/kommunicate.app",
@@ -159,18 +163,25 @@ var config = {
       profileImage:baseurl.default.kommunicateAPI+"/profileImage"
     },
     port:5454
-  }
+  },
+  resources:{
+    defaultImageUrl:"/img/avatars/default.png"
+  },
+  
 }
 
 export function get(env) {
   return config[env] || config.development;
 }
-  export function getEnvironmentId() {
+export function getEnvironmentId() {
 return process.env.REACT_APP_NODE_ENV || "development";
 }
 export function getConfig() {
   var env =process.env.REACT_APP_NODE_ENV;
  return config[env] || config.development;
 }
-
+export function getResource(){
+  return config['resources'];
+}
 export {baseurl};
+
