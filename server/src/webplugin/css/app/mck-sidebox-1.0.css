@@ -2099,6 +2099,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	bottom: 45px;
 	right: 35px;
 	-webkit-transform: translateZ(0);
+	height: 50px;
+	width: 50px;
+	border-radius: 25px;
+	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 	
 }
 .mck-sidebox-launcher *{
@@ -2131,7 +2135,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	height: 17px;*/
 }
 .mck-sidebox-launcher .mck-button-launcher {
-	/*box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);*/
+	/*box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
 	background-size: 22px 22px;
 	box-sizing: content-box;
 	background-repeat: no-repeat;
@@ -2152,7 +2156,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	display: flex;
 	align-items: flex-start;
 	bottom:15px;
-	right:15px;
+	right:15px;*/
 }
 
 .mck-msg-preview {
