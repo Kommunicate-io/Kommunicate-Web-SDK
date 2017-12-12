@@ -134,7 +134,7 @@ class Aside extends Component {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-            if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
+            if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               var takeOverEle = document.getElementById("takeover-from-bot");
               takeOverEle.classList.remove("n-vis");
               takeOverEle.classList.add("vis");          
