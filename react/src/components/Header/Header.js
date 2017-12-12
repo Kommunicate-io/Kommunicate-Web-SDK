@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom' ;
 
+import {goAway, goOnline} from '../../utils/kommunicateClient'
+
 class Header extends Component {
 
   constructor(props) {
@@ -58,18 +60,22 @@ return imageLink;
   toggleStatus = () => {
 
     if(this.state.status === "1"){
-      localStorage.setItem("statusOnlineOffline", 0)
-      this.setState({
-        status: "0",
-        changeStatusLabel: "Go Online"
-      })
-
+      // localStorage.setItem("statusOnlineOffline", 0);
+      goAway(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
+        console.log(response);
+        this.setState({
+          status: localStorage.getItem("statusOnlineOffline"),
+          changeStatusLabel: "Go Online"
+        });
+      });
     }else{
-      localStorage.setItem("statusOnlineOffline", 1)
-      this.setState({
-        status: "1",
-        changeStatusLabel: "Go Away"
-      })
+      // localStorage.setItem("statusOnlineOffline", 1);
+      goOnline(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
+        this.setState({
+          status: localStorage.getItem("statusOnlineOffline"),
+          changeStatusLabel: "Go Away"
+        });
+      });
     }
   }
 
