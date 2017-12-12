@@ -765,7 +765,7 @@ transform: scale(.6);
     color: #393636;
     margin-top: 15px;
 }
-.reasons-invite-img-container {
+.reasons-invite-img-container, .reasons-invite-img-container svg {
     width: auto;
     height: 90px;
 }
