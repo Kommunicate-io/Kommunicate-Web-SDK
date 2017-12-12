@@ -3726,9 +3726,9 @@ var KM_CLIENT_GROUP_MAP = [];
             _this.getImageUrlForGroupType =function(contact,displayName){
 				var roleType='';
 				var userDetail=MCK_USER_DETAIL_MAP[MCK_USER_ID];
-				if(userDetail.roleType && userDetail.roleType==3){
+				if(userDetail && userDetail.roleType && userDetail.roleType==3){
 					roleType=8;
-				}else if(userDetail.roleType && userDetail.roleType==8){
+				}else if(userDetail && userDetail.roleType && userDetail.roleType==8){
 					roleType=3;
 				}
 				for (var i = 0; i < contact.members.length; i++) {
@@ -3737,7 +3737,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						return '<img src="' + userDetail.imageLink + '"/>';
 					}
                 }
-                return _this.getContactImageByAlphabet(displayName);;
+                return _this.getContactImageByAlphabet(displayName);
 			};
 			_this.getContactImageLink = function(contact, displayName) {
 				var imgsrctag = '';
