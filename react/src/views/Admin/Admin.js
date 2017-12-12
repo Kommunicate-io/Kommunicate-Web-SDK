@@ -210,6 +210,8 @@ class Forms extends Component {
                       <img src={this.state.imageFile} className="default-dp"></img><br />
                       <div className="edit-dp-btn">
                         <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                        <div className="about-dp">Your customers will see this photo</div>
+                        
 
                         <Modal
                           isOpen={this.state.modalIsOpen}
@@ -220,7 +222,7 @@ class Forms extends Component {
 
                         >
 
-                          <div className="change-courser close-icon" onClick={this.closeModal}>X</div>
+                          <div className="change-courser close-icon pull-right" onClick={this.closeModal}>X</div>
                           
                           <div /*className="row"*/>
                             <ImageUploader
@@ -235,6 +237,7 @@ class Forms extends Component {
                           
                         </Modal>
                       </div>
+                     
                     </div>
                     <div className="col-md-8">
                       <div className="row">
