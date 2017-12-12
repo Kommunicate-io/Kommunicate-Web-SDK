@@ -479,7 +479,7 @@ export {
   updateApplozicUser,
   getWelcomeMessge,
   getUsersByType,
-  changePassword
+  changePassword,
   goAway,
   goOnline
 }
