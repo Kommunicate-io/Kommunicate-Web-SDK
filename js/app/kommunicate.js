@@ -1,12 +1,14 @@
 
 
 Kommunicate ={
-    BASE_URL:{
-        "https://chat.kommunicate.io":"https://api.kommunicate.io",
-        "https://chat.kommunicate.io/":"https://api.kommunicate.io",
-        "https://apps-test.applozic.com/":"https://api-test.kommunicate.io",
-        "https://apps-test.applozic.com":"https://api-test.kommunicate.io"
-        //"https://apps-test.applozic.com/":"http://localhost:3999"
+    getBaseUrl: function(){
+        switch(MCK_BASE_URL){
+            case "https://apps-test.applozic.com/":
+            case "https://apps-test.applozic.com":
+                return "https://api-test.kommunicate.io";
+            default:
+                return "https://api.kommunicate.io";
+        }
     },
     setDefaultAgent :function(agentName){
         //kommunicate.defaultAgent  = agentName;
@@ -17,7 +19,7 @@ Kommunicate ={
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
         }
         $applozic.ajax({
-            url: Kommunicate.BASE_URL[MCK_BASE_URL] + "/conversations/participent/"+options.userId,
+            url: Kommunicate.getBaseUrl()+ "/conversations/participent/"+options.userId,
             type: "get",
             success: function(result) {
                 callback(null,result);
@@ -38,7 +40,7 @@ Kommunicate ={
                 "defaultAgentId":options.defaultAgentId
         }
        $applozic.ajax({
-            url: Kommunicate.BASE_URL[MCK_BASE_URL] + "/conversations",
+            url: Kommunicate.getBaseUrl()+ "/conversations",
             type: "post",
             data: JSON.stringify(data),
             contentType: "application/json",
@@ -54,7 +56,7 @@ Kommunicate ={
     },
     triggerEvent:function(event,options){
         $applozic.ajax({
-            url: Kommunicate.BASE_URL[MCK_BASE_URL] + "/applications/events?type="+event,
+            url: Kommunicate.getBaseUrl() + "/applications/events?type="+event,
             type: "post",
             data: JSON.stringify({"conversationId":options.groupId,"applicationId":options.applicationId}),
             contentType: "application/json",
