@@ -213,7 +213,8 @@ const config ={
 
     companyDetail:{
       companyLogo: 'https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/applozic-sample-app-videocall-1.png',
-      companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306'
+      companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306',
+      websiteUrl:'https://www.kommunicate.io/'
     },
     groupMetadata:{
       ADD_MEMBER_MESSAGE:":adminName added :userName",

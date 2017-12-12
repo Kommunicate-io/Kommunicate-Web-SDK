@@ -65,7 +65,8 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
     companyLogo: config.getCommonProperties().companyDetail.companyLogo,
     companyAddress: config.getCommonProperties().companyDetail.companyAddress,
     mailProviderPxy: config.getProperties().mailProvider,
-    applicationWebhookPxys: config.getCommonProperties().applicationWebhooks
+    applicationWebhookPxys: config.getCommonProperties().applicationWebhooks,
+    websiteUrl:config.getCommonProperties().companyDetail.websiteUrl,
   }
   
   return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
