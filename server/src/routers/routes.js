@@ -79,6 +79,8 @@ userRouter.get('/password/reset-form',passwordResetController.processUpdatePassw
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
+userRouter.patch('/goAway/:userName/:appId',userController.goAway);
+userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
