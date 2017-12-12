@@ -68,6 +68,8 @@ userRouter.post('/password-reset', passwordResetController.processPasswordResetR
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
+userRouter.patch('/goAway/:userName/:appId',userController.goAway);
+userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);

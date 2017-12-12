@@ -257,3 +257,46 @@ exports.patchUser = (req,res)=>{
   });
 
 };
+
+exports.goAway = (req, res) => {
+  let response = {};
+  const action = req.params.action;
+  const userId = req.params.userName;
+  const appId = req.params.appId;
+  userService.goAway(userId, appId).then(isUpdated => {
+    if(isUpdated){
+      response.code="SUCCESS";
+      response.message="status changed to away successfully";
+      res.status(200).json(response);
+    }else{
+      response.code="NOT_FOUND";
+      response.message="resource not found by userId " + userId + " and appId: " + appId;
+      res.status(404).json(response);
+    }
+  }).catch(err => {
+    response.code="INTERNAL_SERVER_ERROR";
+    response.message="something went wrong!";
+    res.status(500).json(response);
+  })
+}
+
+exports.goOnline = (req, res) => {
+  let response = {};
+  const userId = req.params.userName;
+  const appId = req.params.appId;
+  userService.goOnline(userId, appId).then(isUpdated => {
+    if(isUpdated){
+      response.code="SUCCESS";
+      response.message="status changed to online successfully";
+      res.status(200).json(response);
+    }else{
+      response.code="NOT_FOUND";
+      response.message="resource not found by userId " + userId + " and appId: " + appId;
+      res.status(404).json(response);
+    }
+  }).catch(err => {
+    response.code="INTERNAL_SERVER_ERROR";
+    response.message="something went wrong!";
+    res.status(500).json(response);
+  })
+}
