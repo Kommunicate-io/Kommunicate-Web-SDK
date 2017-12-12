@@ -18,8 +18,8 @@ class Step1 extends Component {
     this.jsInstructions = getJsInstructions();
 	}
 
-  componentDidMount() {
-    
+  componentDidMount(){
+		document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
   }
 
   componentWillMount(){
@@ -52,8 +52,7 @@ class Step1 extends Component {
       <form>
         <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
         <div className="row">
-          <div className="form-group col-md-5">
-            <textarea style={texAreaStyle} className="form-control" rows='16' value={this.jsInstructions} readOnly />
+          <div id="instruction-display-area" className="form-group col-md-5">
           </div>
           <div className="form-group col-md-7">
             <textarea style={texAreaStyle} className="form-control" rows='16' value={getJsCode()} readOnly />
