@@ -94,8 +94,8 @@ class Step2 extends Component {
                       <div className="col-md-4">
                         <img src={this.state.imageFile} className="default-dp"></img><br />
                         <div className="edit-dp-btn">
-                          <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
-
+                        <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                        <div className="about-dp">Your customers will see this photo</div>
                           <Modal
                             isOpen={this.state.modalIsOpen}
 

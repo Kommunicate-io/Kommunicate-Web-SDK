@@ -26,6 +26,7 @@
     width: 133px;
     height: 134px;
     border-radius: 65px;
+    margin-left: 30px;
 }
 .chevron-up-password {
     color: #dad8d8;
@@ -42,6 +43,8 @@
     letter-spacing: 1.1px;
     text-align: left;
     color: #0d77f2;
+    margin: 0 auto;
+    text-align: center
 }
 .user-dp-input{
     opacity: 0;
@@ -92,11 +95,14 @@
     background-color: white;
 }
 .about-dp{
+    width: 183px;
+    height: 14px;
+    font-family: OpenSans;
     font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
+    letter-spacing: 0.7px;
     text-align: left;
-    color: #7d7f81;
+    color: #87898b;
+    margin-left: 17px;
 }
 .hidden-cropped-img{
     visibility: hidden;
@@ -110,7 +116,7 @@ canvas {
     text-align: center;
     width: 400px;
     margin-left: 78px;
-
+    margin-top: 30px;
 }
 .modal-footer-button{
     text-align: right;
@@ -187,4 +193,5 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 .display-photo-wrapper{
     padding: 35px;
+   
 }
