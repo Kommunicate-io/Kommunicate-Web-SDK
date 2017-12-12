@@ -333,6 +333,40 @@ exports.updateUser = (userId, appId, user)=>{
       }
     });
 };
+
+exports.goAway = (userId, appId)=>{
+    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+      if(!customer) {
+        console.log("No customer in customer table with appId", appId);
+        return null;
+      }else {
+        return Promise.resolve(userModel.update({ statusOnlineOffline: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+          console.log("successfully updated user status to offline",result[0]);
+          return result[0];
+        }).catch(err=>{
+          console.log("error while updating user",err);
+          throw err;
+        });
+      }
+    });
+};
+
+exports.goOnline = (userId, appId)=>{
+    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+      if(!customer) {
+        console.log("No customer in customer table with appId", appId);
+        return null;
+      }else {
+        return Promise.resolve(userModel.update({ statusOnlineOffline: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+          console.log("successfully updated user status to online",result[0]);
+          return result[0];
+        }).catch(err=>{
+          console.log("error while updating user",err);
+          throw err;
+        });
+      }
+    });
+};
 /**
  * Get list of all users if type is not specified.
  * Specify type to filter users  1:Agents, 2: Bots
