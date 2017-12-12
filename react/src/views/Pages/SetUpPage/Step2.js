@@ -105,7 +105,7 @@ class Step2 extends Component {
 
                           >
 
-                            <div className="change-courser close-icon" onClick={this.closeModal}>X</div>
+                            <div className="change-courser close-icon pull-right" onClick={this.closeModal}>X</div>
 
                             <div className="row">
                               <ImageUploader
