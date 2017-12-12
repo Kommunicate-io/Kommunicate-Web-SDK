@@ -381,7 +381,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
         var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
-        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/notification_tone.mp3";
+        var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.getBaseUrl()+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
         var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -1215,20 +1215,25 @@ var MCK_CLIENT_GROUP_MAP = [];
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
                 return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-                '<svg id="mck-launcher-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 274.8 271.4">'+
-                '<defs><style> .cls-1 {fill : #fff;}</style></defs>'+
-                '<g id="Layer_2" data-name="Layer 2">'+
-                  '<g id="Layer_1-2" data-name="Layer 1">'+
-                    '<g>'+
-                      '<path class="cls-1" d="M269.8,141a21.5,21.5,0,1,0-37.4,14.4q-9,17.1-21.8,26.2t-20,9.5a9.9,9.9,0,0,1-6.9-2.6,8.1,8.1,0,0,1-2.8-6.2q0-2.6,1.9-11.7L204.3,70H179.8l-4.4,21.2q-15.7-25-41.1-25-17,0-33.4,11.9T74.3,111q-10.2,21.1-10.2,40.9,0,26.7,14.2,44.1t35.5,17.4q21,0,41.1-22.5.9,12.1,6.7,17.4t20.3,5.4q28.8,0,54.8-29.3a103.2,103.2,0,0,0,15.1-22.1A21.5,21.5,0,0,0,269.8,141ZM160.5,157.9q-7.1,16.3-19,25.9T119,193.4q-13.3,0-21.6-10.8t-8.3-28.3a80.9,80.9,0,0,1,14.5-47.1q14.5-21,32.1-21,14.5,0,23.2,10.7t8.7,28.7A80.6,80.6,0,0,1,160.5,157.9Z"/>'+
-                      '<path class="cls-1" d="M246.2,57.3h-2.1a126.7,126.7,0,0,0-12.6-15q-27.1-27.6-71-31.3a21.5,21.5,0,1,0,.4,20q31.5,3.8,53.9,23.6a88.2,88.2,0,0,1,12.7,13.8,21.5,21.5,0,1,0,18.9-11.2Z"/>'+
-                      '<path class="cls-1" d="M80.7,14.5A21.5,21.5,0,0,0,59.6,40Q41.9,55.3,29.9,78.2a151.1,151.1,0,0,0-17.1,60.4,21.5,21.5,0,1,0,19.7,1.3q2.2-45.4,32-76.2,3.9-4.1,8.2-7.7a21.5,21.5,0,1,0,8.1-41.4Z"/>'+
-                      '<path class="cls-1" d="M253.3,195.8A21.5,21.5,0,0,0,232.9,224a110.3,110.3,0,0,1-23.3,15q-25.2,12.5-59.8,12.5-55.3,0-86.1-27.1a21.5,21.5,0,0,0,1.2-7.1c0-.1,0-.2,0-.3s0-.2,0-.3a21.5,21.5,0,1,0-42.9,0c0,.1,0,.2,0,.3s0,.2,0,.3a21.5,21.5,0,0,0,26.3,20.9l.6.6q36.5,32.6,100.4,32.6,47.3,0,77.9-18.9a150.6,150.6,0,0,0,20.1-14.7,21.5,21.5,0,1,0,6-42.1Z"/>'+
-                    '</g>'+
-                  '</g>'+
-                '</g>'+
-              '</svg>'+
-             '</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 416 430" style="enable-background:new 0 0 416 430;" xml:space="preserve">
+              <style type="text/css">
+                  .st0{fill:#5C5AA7;}
+                  .st1{fill:#FFFFFF;}
+              </style>
+              
+              <path class="st0" d="M381.6,320.5l19,108.3l-99.1-36.2c-28.1,14.3-59.8,22.3-93.5,22.3C93.8,414.9,1.2,322.3,1.2,208.1  S93.8,1.2,208,1.2s206.8,92.6,206.8,206.8C414.8,249.5,402.6,288.1,381.6,320.5z"/>
+              <g id="Layer_2">
+                  <g id="Layer_1-2">
+                      <g>
+                          <path class="st1" d="M338.3,212.8c0-12.1-9.8-22-21.9-22c-12.1,0-22,9.8-22,21.9c0,5.5,2,10.8,5.7,14.9     c-6.1,11.7-13.6,20.6-22.3,26.8c-8.7,6.2-15.5,9.4-20.4,9.7c-2.6,0.1-5.1-0.9-7.1-2.7c-1.8-1.6-2.9-3.9-2.9-6.3     c0-1.8,0.6-5.8,1.9-12l22-102.8h-25l-4.5,21.7c-10.7-17-24.7-25.6-42-25.6c-11.6,0-23,4.1-34.1,12.2     c-11.2,8.1-20.2,19.3-27.2,33.6c-7,14.4-10.4,28.3-10.4,41.8c0,18.2,4.8,33.2,14.5,45.1c9.7,11.9,21.8,17.8,36.3,17.8     c14.3,0,28.3-7.7,42-23c0.6,8.2,2.9,14.2,6.8,17.8c4,3.6,10.9,5.5,20.7,5.5c19.6,0,38.3-10,56-29.9c6.1-6.8,11.3-14.4,15.4-22.6     C330.6,232.8,338.3,223.6,338.3,212.8z M226.6,230.1c-4.8,11.1-11.3,19.9-19.4,26.5c-8.1,6.5-15.8,9.8-23,9.8     c-9.1,0-16.4-3.7-22.1-11c-5.7-7.4-8.5-17-8.5-28.9c-0.2-17.2,5-34,14.8-48.1c9.9-14.3,20.8-21.5,32.8-21.5     c9.9,0,17.8,3.6,23.7,10.9c5.9,7.3,8.9,17.1,8.9,29.3C233.7,208.5,231.3,219.7,226.6,230.1z"/>
+                          <path class="st1" d="M314.2,127.3H312c-3.9-5.4-8.2-10.6-12.9-15.3c-18.5-18.8-42.7-29.5-72.6-32c-5.9-10.6-19.2-14.5-29.9-8.6     c-10.6,5.9-14.5,19.2-8.6,29.9s19.2,14.5,29.9,8.6c3.9-2.1,7.1-5.4,9-9.4c21.5,2.6,39.8,10.6,55.1,24.1c4.8,4.2,9.2,9,13,14.1     c-5.8,10.7-1.9,24,8.8,29.8s24,1.9,29.8-8.8c5.8-10.7,1.9-24-8.8-29.8c-3.2-1.8-6.8-2.7-10.5-2.7L314.2,127.3z"/>
+                          <path class="st1" d="M145,83.5c-12.1,0-22,9.9-22,22c0,1.4,0.1,2.7,0.4,4.1c-12.1,10.4-22.2,23.4-30.4,39     c-10.1,19.1-16,40.2-17.5,61.7c-11.1,4.9-16.2,17.8-11.4,28.9c4.9,11.1,17.8,16.2,28.9,11.4s16.2-17.8,11.4-28.9     c-1.8-4.2-4.9-7.7-8.8-10c1.5-30.9,12.4-56.9,32.7-77.9c2.7-2.8,5.5-5.4,8.4-7.9c11.2,4.6,24.1-0.8,28.7-12     c4.6-11.2-0.8-24.1-12-28.7c-2.7-1.1-5.5-1.6-8.4-1.6L145,83.5z"/>
+                          <path class="st1" d="M321.4,268.8c-12.1,0-22,9.9-21.9,22c0,2.3,0.4,4.6,1.1,6.8c-7.3,6.1-15.3,11.2-23.8,15.3     c-17.2,8.5-37.5,12.8-61.1,12.8c-37.7,0-67-9.2-88-27.7c0.8-2.3,1.2-4.8,1.2-7.3c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3     c0.8-12.1-8.3-22.6-20.4-23.4c-12.1-0.8-22.6,8.3-23.4,20.4c-0.1,1-0.1,2,0,3c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.3     c0,12.1,9.9,21.9,22,21.9c1.6,0,3.3-0.2,4.8-0.6l0.6,0.6c24.9,22.2,59.1,33.3,102.6,33.3c32.2,0,58.8-6.4,79.6-19.3     c7.3-4.4,14.1-9.5,20.5-15c11.6,3.5,23.9-3.1,27.3-14.8c3.5-11.6-3.1-23.9-14.8-27.3c-2.1-0.6-4.3-0.9-6.4-0.9L321.4,268.8z"/>
+                      </g>
+                  </g>
+              </g>
+              </svg>`
+             +'</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
         
                 //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
             };
@@ -3933,6 +3938,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class="mck-msg-box ${msgClassExpr}">' +
+            
                 '<div class= "move-right mck-msg-text"></div>' +
                 '<div class ="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">' +
                 '<div class="mck-msgto">${msgReplyTo} </div>' +
@@ -3946,6 +3952,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
                 '</div>' +
+              
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
                 '</div>' +
                 '<div class="n-vis mck-context-menu">' +
@@ -3956,6 +3963,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '</ul>' +
                 '</div>' +
                 '</div>';
+              
             var contactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}" data-msg-time="${msgCreatedAtTimeExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${conversationExpr}" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="mck-conversation-topic mck-truncate ${contHeaderExpr}">${titleExpr}</div>' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="mck-row">' + '<div class="blk-lg-8 mck-cont-name mck-truncate"><div class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</div><strong>${contNameExpr}</strong></div>' + '<div class="mck-text-muted move-right mck-cont-msg-date mck-truncate blk-lg-4">${msgCreatedDateExpr}</div></div>' + '<div class="mck-row">' + '<div class="mck-cont-msg-wrapper blk-lg-6 mck-truncate msgTextExpr"></div>' + '<div class="mck-unread-count-box move-right mck-truncate ${contUnreadExpr}"><span class="mck-unread-count-text">{{html contUnreadCount}}</span></div>' + '</div></div></div></a></li>';
             var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-mck-conversationid="${convIdExpr}" data-mck-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-mck-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="mck-row mck-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
             var searchContactbox = '<li id="li-${contHtmlExpr}" class="${contIdExpr}"><a class="applozic-launcher" href="#" data-mck-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9"><div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong>' + '<div class="move-right mck-group-count-box mck-group-count-text ${displayGroupUserCountExpr}">${groupUserCountExpr}</div></div>' + '<div class="blk-lg-12 mck-text-muted">${contLastSeenExpr}</div></div></div></div></a></li>';
@@ -4459,8 +4467,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
+                    //kmRichTextMarkupVisibility:'n-vis',
+                   // kmRichTextMarkup: Kommunicate.markup.KM_HOTEL_ROOM_PAX_INFO
+                    //kmRichTextMarkup: '<div>hello</div>'                    
                 }];
-
+                
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
                 if (msg.contentType === 23) {
