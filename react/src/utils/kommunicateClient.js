@@ -440,6 +440,23 @@ const changePassword =(option)=>{
   .catch(err => {console.log("Error in updating password")});
 
 }
+
+const goAway = (userId, appId) => {
+  let url = getConfig().kommunicateBaseUrl+"/users/goAway/"+userId+"/"+appId;
+  return Promise.resolve(axios.patch(url)).then(result => {
+    console.log(result);
+    localStorage.setItem("statusOnlineOffline", 0)
+  })
+}
+
+const goOnline = (userId, appId) => {
+  let url = getConfig().kommunicateBaseUrl+"/users/goOnline/"+userId+"/"+appId;
+  return Promise.resolve(axios.patch(url)).then(result => {
+    console.log(result);
+    localStorage.setItem("statusOnlineOffline", 1)
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -462,5 +479,7 @@ export {
   updateApplozicUser,
   getWelcomeMessge,
   getUsersByType,
-  changePassword
+  changePassword,
+  goAway,
+  goOnline
 }
