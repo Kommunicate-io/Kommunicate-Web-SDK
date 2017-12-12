@@ -17,6 +17,7 @@ const config ={
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
         groupInfoUrl: "https://chat.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
+        createGroup:"https://chat.kommunicate.io/rest/ws/group/v2.1/create",
         createBotUrl: "https://bots.applozic.com/bot",
         sendMessageUrl: "https://chat.kommunicate.io/rest/ws/message/v2/send",
         hostUrl: "https://api.kommunicate.io",
@@ -68,6 +69,7 @@ const config ={
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
+      createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
       createBotUrl: "https://bots-test.applozic.com/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "https://api-test.kommunicate.io",
@@ -118,6 +120,7 @@ const config ={
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
+      createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
@@ -211,8 +214,21 @@ const config ={
     companyDetail:{
       companyLogo: 'https://kommunicate.s3.ap-south-1.amazonaws.com/profile_pic/applozic-sample-app-videocall-1.png',
       companyAddress: 'Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306'
+    },
+    groupMetadata:{
+      ADD_MEMBER_MESSAGE:":adminName added :userName",
+      CREATE_GROUP_MESSAGE:"",
+      DELETED_GROUP_MESSAGE:":adminName deleted Conversation",
+      GROUP_ICON_CHANGE_MESSAGE:"Conversation icon changed",
+      GROUP_LEFT_MESSAGE:":userName left",
+      GROUP_META_DATA_UPDATED_MESSAGE:"",
+      GROUP_NAME_CHANGE_MESSAGE:"Conversation name changed to :groupName",
+      GROUP_USER_ROLE_UPDATED_MESSAGE:":userName is :role now",
+      HIDE:"true",
+      JOIN_MEMBER_MESSAGE:":userName joined",
+      REMOVE_MEMBER_MESSAGE:":adminName removed :userName"
     }
-  }
+}
 };
 exports.getProperties = function() {
   let envId = getEnvId()?getEnvId():"default";

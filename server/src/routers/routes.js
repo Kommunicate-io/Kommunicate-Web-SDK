@@ -33,6 +33,7 @@ const signUpWithApplozicRouter = express.Router();
 const conversationRouter =express.Router();
 const autoSuggestRouter = express.Router();
 const profileImageRouter = express.Router();
+const groupRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -46,6 +47,7 @@ exports.chat = chatRouter;
 exports.conversation=conversationRouter;
 exports.autoSuggest = autoSuggestRouter;
 exports.profileImage = profileImageRouter;
+exports.group = groupRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -95,3 +97,5 @@ conversationRouter.get('/participent/:participentId',validate(conversationValida
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
 applicationRouter.post('/events',inAppMsgController.processEvents);
+//group router
+groupRouter.post('/create',userController.createGroupOfAllAgents)

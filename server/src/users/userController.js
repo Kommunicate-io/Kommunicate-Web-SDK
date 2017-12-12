@@ -282,3 +282,34 @@ exports.updatePassword=(req,res)=>{
     return res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"something went wrong"});
   })
 }
+
+exports.createGroupOfAllAgents = (req, res) => {
+  if(req.body.applicationKey===undefined){
+    return res.status(500).json({ code: "INVALID_APPLICATION_KEY", message: "invalid application" });
+  }
+  let groupInfo = { type: 10, users: [], metadata: config.getCommonProperties().groupMetadata }
+  return Promise.resolve(userService.getCustomerInfoByApplicationId(req.body.applicationKey)).then(customer => {
+    if (!customer) {
+      return res.status(500).json({ code: "CUSTOMER_NOT_FOUND", message: "customer not found" });
+    }
+    groupInfo.admin = customer.userName;
+    groupInfo.groupName = customer.name;
+    return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
+      if (users) {
+        users.forEach(function (user) {
+          console.log(user);
+          groupInfo.users.push({ userId: user.userName, groupRole: user.type === 3 ? 1 : 2 });
+        });
+        return Promise.resolve(applozicClient.createGroup(groupInfo, customer.applicationId, customer.apzToken)).then(response => {
+          return res.status(200).json(response.data);
+        }).catch(err => {
+          return res.status(500).json({ code: "UNABLE_TO_CREATE_GROUP", message: "unable to create group" });
+        });
+      }
+      return res.status(500).json({ code: "NO_USER_FOUND", message: "user not found" });
+    }).catch(err => { });
+  }).catch(err => {
+    console.log("error during creating group", err)
+    return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" })
+  });
+}

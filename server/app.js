@@ -64,6 +64,7 @@ app.use('/signUpWithApplozic',routes.signUpWithApplozic);
 app.use('/chat',routes.chat);
 app.use('/profileImage',routes.profileImage);
 app.use('/conversations',routes.conversation);
+app.use('/group',routes.group);
 
 function startApp() {
     app.listen(port, function () {

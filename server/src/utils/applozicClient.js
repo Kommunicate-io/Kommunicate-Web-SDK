@@ -282,3 +282,24 @@ exports.sendGroupMessageByBot = (groupId,message,authorization,applicationId,met
     throw err;
   });
 };
+
+exports.createGroup = (groupInfo, applicationId, appzToken) => {
+  let url = config.getProperties().urls.createGroup;
+  return Promise.resolve(axios.post(url, groupInfo, {
+    headers: {
+      "Content-Type": "application/json",
+      "Apz-AppId": applicationId,
+      'Apz-Token': "Basic " + apzToken
+    }
+  })).then(response => {
+    console.log("received response from applozic", response.status);
+    if (response.status == 200) {
+      return response;
+    } else {
+      throw new Error("ERROR: received response from applozic" + response.status);
+    }
+  }).catch(err => {
+    console.log("error while sending message ", err);
+    throw err;
+  });
+}
