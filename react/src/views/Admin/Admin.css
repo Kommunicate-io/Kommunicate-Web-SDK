@@ -11,12 +11,24 @@
     color: #b8babb;
 }
 .brand-header > h5 {
-    font-family: 'OpenSans', sans-serif;;
+    font-family: 'OpenSans', sans-serif;
     font-size: 18px;
     letter-spacing: 1.5px;
     text-align: left;
     color: #7d7f81;
     margin-bottom: 25px;
+}
+#cancel-button{
+    font-family: 'OpenSans', sans-serif;
+    width: 66px;
+    height: 26px;
+    border-radius: 2px;
+    background-color: #f4f4f8;
+    border: solid 1px #a8a7c4;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    color: rgba(35, 33, 33, 0.6);
 }
 .divider {
     opacity: 0.36;
@@ -131,6 +143,15 @@ canvas {
 }
 #image-input-button {
     margin-left: 4px;
+    background-color: #5c5aa7;
+    font-family: 'OpenSans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    color: #ffffff;
+    width: 66px;
+    height: 26px;
+    border-radius: 2px;
 }
 .zoom-icon-left {
     margin-right: 5px;

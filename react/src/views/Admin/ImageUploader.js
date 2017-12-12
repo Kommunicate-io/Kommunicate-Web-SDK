@@ -246,8 +246,8 @@ class ImageUploader extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="modal-footer-button">
-                <button type="submit" autoFocus={false} className="btn btn-sm btn-danger" id="cancel-button" onClick={this.props.handleClose}> Canel</button>
-                <button type="submit" autoFocus={false} className="btn btn-sm btn-danger" id="image-input-button" onClick={this.cropMethod}><i className="icon-cloud-upload"></i> Save</button>
+                <button type="submit" autoFocus={false} className="btn btn-sm" id="cancel-button" onClick={this.props.handleClose}> Canel</button>
+                <button type="submit" autoFocus={false} className="btn btn-sm" id="image-input-button" onClick={this.cropMethod}>Save</button>
 
               </div>
             </div>
