@@ -11,6 +11,7 @@ import PasswordAccordion from './PasswordAccordion';
 import { getResource } from '../../config/config.js'
 
 
+
 const customStyles = {
   content: {
     top: '50%',
@@ -41,6 +42,7 @@ class Forms extends Component {
       modalIsOpen: false,
       scale: 1.2,
       imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink")
+     
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -207,7 +209,7 @@ class Forms extends Component {
                           updateProfilePicUrl={this.props.updateProfilePicUrl}
                         /> */}
 
-                      <img src={this.state.imageFile} className="default-dp"></img><br />
+                      <img src={ this.state.imageFile} className="default-dp" /><br />
                       <div className="edit-dp-btn">
                         <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
                         <div className="about-dp">Your customers will see this photo</div>

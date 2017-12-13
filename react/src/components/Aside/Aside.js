@@ -53,6 +53,7 @@ class Aside extends Component {
               });
               if(sessionStorage.getItem("userProfileUrl")!=null){
                 that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"))
+                localStorage.setItem("imageLink", sessionStorage.getItem("userProfileUrl"))
               }
             }
          }
