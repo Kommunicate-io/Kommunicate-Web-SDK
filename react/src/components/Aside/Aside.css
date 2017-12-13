@@ -256,3 +256,7 @@ ul#km-group-search-list li {
 .km-msg-center .km-msg-box {
     background: whitesmoke;
 }
+
+#takeover-from-bot {
+    display: none;
+}

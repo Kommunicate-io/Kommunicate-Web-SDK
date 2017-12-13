@@ -126,20 +126,20 @@ class Aside extends Component {
       }
     }
     var takeOverEle = document.getElementById("takeover-from-bot");
-    takeOverEle.classList.remove("vis");
-    takeOverEle.classList.add("n-vis");  
+    takeOverEle.style.display = "none";    
   }
 
   setUpAgentTakeOver(group) {
+    var takeOverEle = document.getElementById("takeover-from-bot");
+    takeOverEle.style.display = "none";
+    
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              var takeOverEle = document.getElementById("takeover-from-bot");
-              takeOverEle.classList.remove("n-vis");
-              takeOverEle.classList.add("vis");          
+              takeOverEle.style.display = "block";              
               return;
             }
           }
@@ -436,7 +436,7 @@ class Aside extends Component {
                               </select>
                             </div>
                             <div className="form-group col-sm-2">
-                                <button id="takeover-from-bot" className="btn btn-secondary btn-sm n-vis" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
+                                <button id="takeover-from-bot" className="btn btn-secondary btn-sm" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
                             </div>
 
                           </div>
