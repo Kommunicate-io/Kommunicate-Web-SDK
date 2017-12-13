@@ -5598,6 +5598,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					if (groupInfo.imageUrl) {
 						group.imageUrl = groupInfo.imageUrl;
 					}
+					if (groupInfo.metadata) {
+						group.metadata = groupInfo.metadata;
+					}
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
