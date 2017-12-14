@@ -94,6 +94,7 @@ const createUser =user=>{
             "applicationKey": customer.applicationId,
             "authorization": user.authorization,
             "type": "KOMMUNICATE_SUPPORT",
+            "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
           }).catch(err=>{
             logger.error("error while creating bot platform",err);
           })
