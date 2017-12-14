@@ -3611,9 +3611,23 @@ var KM_CLIENT_GROUP_MAP = [];
                     return;
                 }
             };
-            _this.getContactDisplayName = function(userId) {
+            _this.getContactDisplayName = function (userId) {
+
                 if (typeof MCK_CONTACT_NAME_MAP[userId] === 'string') {
                     return MCK_CONTACT_NAME_MAP[userId];
+                } else if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
+                    var userDetail = MCK_USER_DETAIL_MAP[userId];
+                    if (typeof userDetail !== "undefined") {
+                        return userDetail.displayName;
+                    } else {
+                        var userIdArray = new Array();
+                        userIdArray.push(userId);
+                        mckContactService.getUsersDetail(userIdArray, { 'async': false });
+                        var userDetail = mckUserUtils.getUserDetail(userId);
+                        if (typeof userDetail !== "undefined") {
+                            return userDetail.displayName;
+                        }
+                    }
                 } else {
                     return;
                 }
