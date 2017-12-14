@@ -8970,7 +8970,17 @@ hr.transparent {
  }
  .a-undecorated{
   text-decoration:none !important;
+  margin-left:10px !important;
  
+}
+@media(max-width: 991px) {
+  .a-undecorated {
+       margin-left: 60px;
+  }
+}
+.a-undecorated img {
+  width:35px;
+  height:auto;
 }
 .a-unclickable{
   pointer-events: none;
