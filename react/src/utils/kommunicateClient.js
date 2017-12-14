@@ -58,6 +58,7 @@ const saveToLocalStorage = (email, password, name,response) => {
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
     localStorage.setItem("password",password);
+    localStorage.setItem("statusOnlineOffline", response.data.data.statusOnlineOffline);
     localStorage.setItem("isAdmin",response.data.data.isAdmin||false);
     if(response.data.data.application){
       localStorage.setItem("application", JSON.stringify(response.data.data.application));
