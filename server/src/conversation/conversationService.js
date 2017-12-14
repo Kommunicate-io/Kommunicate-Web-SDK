@@ -1,5 +1,7 @@
 const db = require("../models");
 const CONVERSATION_STATUS = require('./conversationUtils').CONVERSATION_STATUS;
+const applozicClient = require("../utils/applozicClient");
+const userService= require("../users/userService");
 /**
  * returns conversation list of given participent_user_Id
  * @userId
@@ -32,3 +34,25 @@ exports.createConversation= (options)=>{
 
 }
 
+exports.addMemberIntoConversation = (data) => {
+    let groupInfo = { userIds: [], clientGroupIds:[data.groupId] }
+    return Promise.resolve(userService.getCustomerInfoByApplicationId(data.applicationId)).then(customer => {
+        if (customer) {
+            return Promise.resolve(userService.getAllUsersOfCustomer(customer, 1)).then(users => {
+                if (users) {
+                    users.forEach(function (user) {
+                        groupInfo.userIds.push(user.userName);
+                    });
+                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, customer.apzToken)).then(response => {
+                        return response.data;
+                    });
+                }
+            })
+        }else{
+            return 0;
+        }
+    }).catch(err => {
+        console.log("error during creating group", err)
+        return 0;
+    });
+}

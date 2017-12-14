@@ -1801,7 +1801,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                             Kommunicate.createNewConversation({
                                 "groupId": response.data.clientGroupId,
                                 "participentUserId": MCK_USER_ID,
-                                "defaultAgentId": DEFAULT_AGENT_ID
+                                "defaultAgentId": DEFAULT_AGENT_ID,
+                                "applicationId": MCK_APP_ID
                             }, function (err, result) {
                                 console.log(err, result);
                                 if (!err) {

@@ -304,3 +304,26 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
     throw err;
   });
 }
+
+exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken)=>{
+
+  let url = config.getProperties().urls.addMemberIntoConversation;
+  return Promise.resolve(axios.post(url, groupInfo, {
+    headers: {
+      "Content-Type": "application/json",
+      "Apz-AppId": applicationId,
+      'Apz-Token': "Basic " + apzToken,
+      'Apz-Product-App':'true'
+    }
+  })).then(response => {
+    console.log("received response from applozic", response.status);
+    if (response.status == 200) {
+      return response;
+    } else {
+      throw new Error("ERROR: received response from applozic" + response.status);
+    }
+  }).catch(err => {
+    console.log("error while sending message ", err);
+    throw err;
+  });
+}
