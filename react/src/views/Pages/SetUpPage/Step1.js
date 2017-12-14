@@ -4,6 +4,7 @@ import {getJsCode, getJsInstructions} from '../../../utils/customerSetUp';
 
 import Notification from '../../model/Notification';
 import MultiEmail from '../../MultiEmail/';
+import Integration from '../../Settings/Integration/';
 
 class Step1 extends Component {
 
@@ -19,7 +20,7 @@ class Step1 extends Component {
 	}
 
   componentDidMount(){
-		document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
+		//document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
   }
 
   componentWillMount(){
@@ -42,27 +43,18 @@ class Step1 extends Component {
   }
 
   render() {
-
-    const texAreaStyle = { 
-      "backgroundColor": "#FFF",
-      "color":"#000"
-    }
-
-  	return (
+    return (
       <form>
-        <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-        <div className="row">
-          <div id="instruction-display-area" className="form-group col-md-5">
-          </div>
-          <div className="form-group col-md-7">
-            <textarea style={texAreaStyle} className="form-control" rows='16' value={getJsCode()} readOnly />
+        <div className="row justify-content-center">
+          <div className="col-md-10">
+            <Integration />
           </div>
         </div>
-        <div className="form-group"> 
-          <button className="btn btn-sm btn-primary px-4" onClick={this.props.changeStep} hidden = {this.state.hideNextBtn}> Next </button>
+        <div className="form-group">
+          <button className="btn btn-sm btn-primary px-4" onClick={this.props.changeStep} hidden={this.state.hideNextBtn}> Next </button>
         </div>
       </form>
-  	)
+    )
   }
 }
 
