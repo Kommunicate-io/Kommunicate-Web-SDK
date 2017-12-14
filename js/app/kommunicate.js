@@ -37,7 +37,8 @@ Kommunicate ={
                 "groupId": options.groupId,
                 "participentUserId": options.participentUserId,
                 "createdBy": options.participentUserId,
-                "defaultAgentId":options.defaultAgentId
+                "defaultAgentId":options.defaultAgentId,
+                "applicationId":options.applicationId,
         }
        $applozic.ajax({
             url: Kommunicate.getBaseUrl()+ "/conversations",
