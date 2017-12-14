@@ -9099,9 +9099,25 @@ hr.transparent {
   color: #afabab;
 }
 
-.welcome-message-textarea {
+.welcome-msg-textarea-btn-container {
   border-radius: 2px;
   border: solid 1px #5c5aa7;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+.welcome-message-textarea {
+  border: 0px;
+  margin: 0;
+  resize: none;
+}
+
+.welcome-msg-textarea-button {
+  width: 100%;
+  height: 23px;
+  opacity: 0.69;
+  background-color: #e1dddd;
+  border: solid 1px #c1bcbc;
+  text-align: left;
 }
 
 .header-user-name {
@@ -9162,7 +9178,7 @@ hr.transparent {
 
 .online-indicator-profile-pic {
   position: absolute;
-  right: 77%;
+  left: 35px;
   bottom: 0;
   display: inline-block;
   width: 13px;
@@ -9171,3 +9187,16 @@ hr.transparent {
   color: #fff;
   background-color: #1cde14;
 }
+
+.user-chat-preview {
+  border-radius: 0 0 10px 10px;
+  width: 256px;
+  height: 177px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+.user-reply-section {
+  height: 50px;
+  width: 100%;
+}
+
