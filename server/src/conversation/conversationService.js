@@ -2,6 +2,8 @@ const db = require("../models");
 const CONVERSATION_STATUS = require('./conversationUtils').CONVERSATION_STATUS;
 const applozicClient = require("../utils/applozicClient");
 const userService= require("../users/userService");
+const registrationService = require("../register/registrationService");
+
 /**
  * returns conversation list of given participent_user_Id
  * @userId
@@ -36,7 +38,7 @@ exports.createConversation= (options)=>{
 
 exports.addMemberIntoConversation = (data) => {
     let groupInfo = { userIds: [], clientGroupIds:[data.groupId] }
-    return Promise.resolve(userService.getCustomerInfoByApplicationId(data.applicationId)).then(customer => {
+    return Promise.resolve(registrationService.getCustomerByUserName(data.userId)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getAllUsersOfCustomer(customer, 1)).then(users => {
                 if (users) {

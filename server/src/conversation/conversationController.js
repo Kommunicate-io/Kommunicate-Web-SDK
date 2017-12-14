@@ -23,9 +23,6 @@ exports.getConversationList=(req, res)=>{
 
 exports.createConversation= (req,res)=>{
     console.log("request received to create conversation");
-    conversationService.addMemberIntoConversation(req.body).catch(err=>{
-        console.log("error while creating conversation ", err);
-    });
     return Promise.resolve(conversationService.createConversation(req.body)).then(result=>{
         console.log("conversation created successfully", result.dataValues);
         res.status(201).json({code:"SUCCESS",data:result.dataValues});
@@ -38,5 +35,15 @@ exports.createConversation= (req,res)=>{
         }
 
     })
+
+}
+
+exports.addMemberIntoConversation = (req, res) => {
+    conversationService.addMemberIntoConversation(req.body).then(response=>{
+        console.log('response', response)
+        res.status(201).json({code:"SUCCESS", data:'success'});
+    }).catch(err => {
+        console.log("error while creating conversation ", err);
+    });
 
 }

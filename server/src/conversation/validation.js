@@ -26,3 +26,10 @@ module.exports.getConversationList= {
         type:joi.string()
       }
   }
+
+  module.exports.addMemberIntoConversation= {
+    body:{
+        groupId:joi.number().integer().required(),
+        userId:joi.string().required(),
+    }
+  }
