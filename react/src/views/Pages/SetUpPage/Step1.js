@@ -47,7 +47,7 @@ class Step1 extends Component {
       <form>
         <div className="row justify-content-center">
           <div className="col-md-10">
-            <Integration />
+            <Integration cardSize={12}/>
           </div>
         </div>
         <div className="form-group">

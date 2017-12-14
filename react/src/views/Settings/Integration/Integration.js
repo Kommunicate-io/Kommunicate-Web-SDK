@@ -7,11 +7,15 @@ import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
 
 const pluginBaseUrl = getConfig().kommunicateApi.pluginUrl;
 class Integration extends Component {
-  constructor(props) {
-    super(props);
+  static defaultProps = {
+   cardSize:10
+  }
+  constructor(props, defaultProps) {
+    super(props, defaultProps);
     this.applicationKey = localStorage.getItem("applicationId");
     this.state = {
-      copySuccess: "Copy"
+      copySuccess: "Copy",
+      cardSize:10
     };
 
     this.script = getJsCode();
@@ -43,7 +47,7 @@ class Integration extends Component {
     return (
       <div className="animated fadeIn">
         <div className="row">
-          <div className="col-md-10">
+          <div className={"col-md-"+this.props.cardSize}>
             <div className="card">
               <div className="intgration-card-header">
                 <h5>
