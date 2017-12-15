@@ -54,8 +54,7 @@ const uploadImageToS3 = (imageFile) => {
 	});
 
 	uploadParams.Body = fileStream;
-	uploadParams.Key = "profile_pic/" + imageFile.originalname;
-
+	uploadParams.Key = "profile_pic/" + new Date().getTime()+imageFile.originalname;
 	var uploadPromise = s3.upload(uploadParams).promise()
 	return uploadPromise
 		.then(data => ({code: 'SUCCESSFUL_UPLOAD_TO_S3', profileImageUrl: data.Location}))
