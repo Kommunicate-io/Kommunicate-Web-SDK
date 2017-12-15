@@ -1215,42 +1215,28 @@ var MCK_CLIENT_GROUP_MAP = [];
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
                 return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-              `<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-              viewBox="0 0 416 430" style="enable-background:new 0 0 416 430;" xml:space="preserve">
-         <style type="text/css">
-             .st0{fill:#5C5AA7;}
-             .st1{fill:#FFFFFF;}
-         </style>
-         <title>New-KM-Logo-Final</title>
-         <path class="st0" d="M381.6,320.5l19,108.3l-99.1-36.2c-28.1,14.3-59.8,22.3-93.5,22.3C93.8,414.9,1.2,322.3,1.2,208.1
-             S93.8,1.2,208,1.2S414.8,93.8,414.8,208C414.8,249.5,402.6,288.1,381.6,320.5z"/>
-         <g id="Layer_2">
-             <g id="Layer_1-2">
-                 <g>
-                     <path class="st1" d="M311.6,215.6c0-9.9-8-18-17.9-18c-9.9,0-18,8-18,17.9c0,4.5,1.6,8.8,4.7,12.2c-5,9.6-11.1,16.8-18.2,21.9
-                         c-7.1,5.1-12.7,7.7-16.7,7.9c-2.1,0.1-4.2-0.7-5.8-2.2c-1.5-1.3-2.4-3.2-2.4-5.2c0-1.5,0.5-4.7,1.6-9.8l18-84h-20.4l-3.7,17.7
-                         c-8.7-13.9-20.2-20.9-34.3-20.9c-9.5,0-18.8,3.4-27.9,10c-9.2,6.6-16.5,15.8-22.2,27.5c-5.7,11.8-8.5,23.1-8.5,34.2
-                         c0,14.9,3.9,27.1,11.9,36.9c7.9,9.7,17.8,14.6,29.7,14.6c11.7,0,23.1-6.3,34.3-18.8c0.5,6.7,2.4,11.6,5.6,14.6
-                         c3.3,2.9,8.9,4.5,16.9,4.5c16,0,31.3-8.2,45.8-24.4c5-5.6,9.2-11.8,12.6-18.5C305.3,232,311.6,224.4,311.6,215.6z M220.3,229.8
-                         c-3.9,9.1-9.2,16.3-15.9,21.7c-6.6,5.3-12.9,8-18.8,8c-7.4,0-13.4-3-18.1-9c-4.7-6-6.9-13.9-6.9-23.6
-                         c-0.2-14.1,4.1-27.8,12.1-39.3c8.1-11.7,17-17.6,26.8-17.6c8.1,0,14.6,2.9,19.4,8.9c4.8,6,7.3,14,7.3,24
-                         C226.1,212.1,224.1,221.3,220.3,229.8z"/>
-                     <path class="st1" d="M314.2,127.3H312c-3.9-5.4-8.2-10.6-12.9-15.3c-18.5-18.8-42.7-29.5-72.6-32c-5.9-10.6-19.2-14.5-29.9-8.6
-                         c-10.6,5.9-14.5,19.2-8.6,29.9s19.2,14.5,29.9,8.6c3.9-2.1,7.1-5.4,9-9.4c21.5,2.6,39.8,10.6,55.1,24.1c4.8,4.2,9.2,9,13,14.1
-                         c-5.8,10.7-1.9,24,8.8,29.8s24,1.9,29.8-8.8s1.9-24-8.8-29.8c-3.2-1.8-6.8-2.7-10.5-2.7L314.2,127.3z"/>
-                     <path class="st1" d="M145,83.5c-12.1,0-22,9.9-22,22c0,1.4,0.1,2.7,0.4,4.1c-12.1,10.4-22.2,23.4-30.4,39
-                         c-10.1,19.1-16,40.2-17.5,61.7c-11.1,4.9-16.2,17.8-11.4,28.9c4.9,11.1,17.8,16.2,28.9,11.4s16.2-17.8,11.4-28.9
-                         c-1.8-4.2-4.9-7.7-8.8-10c1.5-30.9,12.4-56.9,32.7-77.9c2.7-2.8,5.5-5.4,8.4-7.9c11.2,4.6,24.1-0.8,28.7-12
-                         c4.6-11.2-0.8-24.1-12-28.7C150.7,84.1,147.9,83.6,145,83.5L145,83.5z"/>
-                     <path class="st1" d="M321.4,268.8c-12.1,0-22,9.9-21.9,22c0,2.3,0.4,4.6,1.1,6.8c-7.3,6.1-15.3,11.2-23.8,15.3
-                         c-17.2,8.5-37.5,12.8-61.1,12.8c-37.7,0-67-9.2-88-27.7c0.8-2.3,1.2-4.8,1.2-7.3c0-0.1,0-0.2,0-0.3c0-0.1,0-0.2,0-0.3
-                         c0.8-12.1-8.3-22.6-20.4-23.4s-22.6,8.3-23.4,20.4c-0.1,1-0.1,2,0,3c0,0.1,0,0.2,0,0.3c0,0.1,0,0.2,0,0.3
-                         c0,12.1,9.9,21.9,22,21.9c1.6,0,3.3-0.2,4.8-0.6l0.6,0.6c24.9,22.2,59.1,33.3,102.6,33.3c32.2,0,58.8-6.4,79.6-19.3
-                         c7.3-4.4,14.1-9.5,20.5-15c11.6,3.5,23.9-3.1,27.3-14.8c3.5-11.6-3.1-23.9-14.8-27.3c-2.1-0.6-4.3-0.9-6.4-0.9L321.4,268.8z"/>
-                 </g>
-             </g>
-         </g>
-         </svg>`
+              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 416 430" style="enable-background:new 0 0 416 430;" xml:space="preserve">
+              <style type="text/css">
+                  .st0{fill:#5C5AA7;}
+                  .st1{fill:#FFFFFF;}
+              </style>
+              <title>New-KM-Logo-Final</title>
+              <path class="st0" d="M381.6,320.5l19,108.3l-99.1-36.2c-28.1,14.3-59.8,22.3-93.5,22.3C93.8,414.9,1.2,322.3,1.2,208.1  S93.8,1.2,208,1.2S414.8,93.8,414.8,208C414.8,249.5,402.6,288.1,381.6,320.5z"/>
+              <g id="Layer_2_1_">
+                  <g>
+                      <g>
+                          <ellipse class="st1" cx="146.4" cy="213.1" rx="20.9" ry="20.9"/>
+                          <ellipse class="st1" cx="208.8" cy="213.1" rx="20.9" ry="20.9"/>
+                          <circle class="st1" cx="265.7" cy="213.1" r="20.9"/>
+                      </g>
+                      <g>
+                          <path class="st1" d="M207.2,65.8c-4.3-7.2-12.3-12-21.3-12c-11.8,0-21.6,8.2-24.2,19.2c-44.6,14.5-79.8,49.8-94.2,94.4     c-11.2,2.5-19.5,12.4-19.5,24.3c0,9.2,5,17.3,12.5,21.6c3.6,2.1,7.8,3.3,12.3,3.3c4.9,0,9.3-1.4,13.2-3.9     c7-4.4,11.7-12.1,11.7-21c0-6.2-2.2-11.8-6-16.1c11.8-37,40.9-66.2,77.8-78.2c4.3,3.9,10,6.1,16.4,6.1c9,0,16.9-4.8,21.3-12     c2.3-3.7,3.6-8.2,3.6-12.9C210.7,73.9,209.4,69.5,207.2,65.8z"/>
+                          <path class="st1" d="M346.4,167.7c-11.4-36.1-36.4-66.1-69.2-84c-0.9-12.9-11.7-23-24.8-23c-7,0-13.4,2.9-18,7.7     c-4.2,4.4-6.9,10.5-6.9,17.2c0,2.7,0.5,5.4,1.3,7.8c3.3,9.8,12.6,16.9,23.6,16.9c4.8,0,9.2-1.4,13.1-3.7     c26.2,14.6,46.4,38.7,55.8,67.6c-4.3,4.4-7,10.6-7,17.3c0,9.5,5.3,17.6,13.1,21.8c3.5,1.9,7.5,2.9,11.7,2.9c5.1,0,10-1.6,14-4.3     c6.5-4.4,10.9-12,10.9-20.4C364.1,180.4,356.6,170.9,346.4,167.7z"/>
+                          <path class="st1" d="M350.2,241.9c-4.6-5.3-11.2-8.5-18.7-8.5c-2.1,0-4,0.2-6,0.7c-10.9,2.7-18.9,12.5-18.9,24.1     c0,5.4,1.8,10.4,4.7,14.5c-20.9,36-59.9,60.2-104.4,60.2c-44.6,0-83.5-24.2-104.4-60.2c2.9-4.1,4.7-9.1,4.7-14.5     c0-11.7-8.1-21.5-19-24.2c-1.9-0.5-3.9-0.7-5.8-0.7c-7.5,0-14.1,3.3-18.7,8.4c-3.9,4.3-6.2,10.2-6.2,16.4     c0,12.5,9.2,22.9,21.4,24.5c24.9,45.1,73,75.7,128.2,75.7s103.3-30.6,128.2-75.7c12-1.8,21.1-12.1,21.1-24.5     C356.2,252,354,246.2,350.2,241.9z"/>
+                      </g>
+                  </g>
+              </g>
+              </svg>`
              +'</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
         
                 //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
