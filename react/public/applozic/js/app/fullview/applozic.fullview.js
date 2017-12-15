@@ -1461,7 +1461,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			var CONVERSATION_DELETE_URL = "/rest/ws/message/delete/conversation";
 			var CONVERSATION_READ_UPDATE_URL = "/rest/ws/message/read/conversation";
 			var offlineblk = '<div id="km-ofl-blk" class="km-m-b"><div class="km-clear"><div class="blk-lg-12 km-text-light km-text-muted km-test-center">${userIdExpr} is offline now</div></div></div>';
-			$kmApplozic.template("oflTemplate", offlineblk);
+			$kmApplozic.template("KMoflTemplate", offlineblk);
 			$kmApplozic(d).on("click", ".km-message-delete", function() {
 				_this.deleteMessage($kmApplozic(this).parents('.km-m-b').data("msgkey"));
 			});
@@ -3162,11 +3162,11 @@ var KM_CLIENT_GROUP_MAP = [];
 			var contactbox = '<li id="li-${contHtmlExpr}" class="person ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
-			$kmApplozic.template("messageTemplate", markup);
-			$kmApplozic.template("contactTemplate", contactbox);
-			$kmApplozic.template("convTemplate", convbox);
-			$kmApplozic.template("searchContactbox", searchContactbox);
-			$kmApplozic.template("conversationTemplate", conversationbox);
+			$kmApplozic.template("KMmessageTemplate", markup);
+			$kmApplozic.template("KMcontactTemplate", contactbox);
+			$kmApplozic.template("KMconvTemplate", convbox);
+			$kmApplozic.template("KMsearchContactbox", searchContactbox);
+			$kmApplozic.template("KMconversationTemplate", conversationbox);
 			var $mck_msg_inner = $kmApplozic("#km-message-inner");
 			_this.getMckMessageInner = function() {
 				return $mck_msg_inner;
@@ -3584,8 +3584,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize
 				} ];
-				append ? $kmApplozic.tmpl("messageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.tmpl("messageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
-				append ? $kmApplozic.tmpl("messageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.tmpl("messageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
+				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
+				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
 				var emoji_template = "";
 				if (msg.message) {
 					var msg_text = msg.message.replace(/\n/g, '<br/>');
@@ -3804,7 +3804,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return;
 				} else {
 					if (isReloaded) {
-						$mck_contact_list.html('');
+						//$mck_contact_list.html('');
 					}
 					if (typeof data.message.length === 'undefined') {
 						if (data.message.groupId) {
@@ -4312,15 +4312,15 @@ var KM_CLIENT_GROUP_MAP = [];
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
 				if ($listId === "km-contact-search-list") {
-					$kmApplozic.tmpl("contactTemplate", contactList).prependTo('#' + $listId);
+					$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
 				} else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : "") > latestCreatedAtTime || prepend) {
-						$kmApplozic.tmpl("contactTemplate", contactList).prependTo('#' + $listId);
-						$kmApplozic.tmpl("conversationTemplate", contactList).prependTo('#conversation-section');
+						$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
+						$kmApplozic.tmpl("KMconversationTemplate", contactList).prependTo('#conversation-section');
 					} else {
-						$kmApplozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
-						$kmApplozic.tmpl("conversationTemplate", contactList).appendTo('#conversation-section');
+						$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
+						$kmApplozic.tmpl("KMconversationTemplate", contactList).appendTo('#conversation-section');
 					}
 					var $textMessage = $kmApplozic("#li-" + contHtmlExpr + " .kmMsgTextExpr");
 					(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
@@ -4357,7 +4357,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					contNameExpr : displayName,
 					contTabExpr : isGroupTab
 				} ];
-				$kmApplozic.tmpl("searchContactbox", contactList).prependTo('#' + $listId);
+				$kmApplozic.tmpl("KMsearchContactbox", contactList).prependTo('#' + $listId);
 			};
 			_this.addConversationMenu = function(tabId, isGroup) {
 				var currTabId = $mck_msg_inner.data('km-id');
@@ -4393,7 +4393,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							convTitleExpr : title,
 							mckLauncherExpr : MCK_LAUNCHER
 						} ];
-						$kmApplozic.tmpl("convTemplate", convList).appendTo($mck_conversation_list);
+						$kmApplozic.tmpl("KMconvTemplate", convList).appendTo($mck_conversation_list);
 					}
 				});
 				if ($kmApplozic("#km-conversation-list li").length < 2) {
@@ -5185,8 +5185,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			var $mck_group_create_overlay_label = $kmApplozic("#km-group-create-icon-box .km-overlay-label");
 			var groupContactbox = '<li id="li-gm-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}" data-alpha="${contFirstAlphaExpr}">' + '<div class="km-row km-group-member-info" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row">' + '<div class="blk-lg-8 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div>' + '<div class="blk-lg-4 km-group-admin-text move-right ${isAdminExpr}"><span>Admin</span></div></div>' + '<div class="km-row">' + '<div class="blk-lg-10 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div>' + '<div class="blk-lg-2 km-group-admin-options ${enableAdminMenuExpr}">' + '<div class="km-menu-box n-vis"><div class="km-dropdown-toggle km-group-admin-menu-toggle km-text-center" data-toggle="kmdropdown" aria-expanded="true">' + '<span class="km-caret"></span></div>' + '<ul id="km-group-admin-menu" class="km-dropdown-menu km-group-admin-menu km-tab-menu-box menu-right" role="menu">' + '<li><a href="#" class="km-btn-remove-member menu-item" title="Remove Member">Remove Member</a></li>' + '</ul></div></div>' + '</div></div></div></li>';
 			var groupSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}">' + '<a class="km-add-to-group" href="#" data-km-id="${contIdExpr}">' + '<div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="km-row"><div class="blk-lg-12 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
-			$kmApplozic.template("groupMemberTemplate", groupContactbox);
-			$kmApplozic.template("groupSearchTemplate", groupSearchContact);
+			$kmApplozic.template("KMgroupMemberTemplate", groupContactbox);
+			$kmApplozic.template("KMgroupSearchTemplate", groupSearchContact);
 			$mck_new_group.on('click', function(e) {
 				e.preventDefault();
 				mckGroupLayout.loadCreateGroupTab();
@@ -5747,7 +5747,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					isAdminExpr : isGroupAdminExpr,
 					enableAdminMenuExpr : enableAdminMenuExpr
 				} ];
-				$kmApplozic.tmpl("groupMemberTemplate", contactList).appendTo('#km-group-member-list');
+				$kmApplozic.tmpl("KMgroupMemberTemplate", contactList).appendTo('#km-group-member-list');
 			};
 			_this.addMembersToGroupSearchList = function() {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
@@ -5800,7 +5800,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					contLastSeenExpr : lastSeenStatus,
 					contNameExpr : displayName
 				} ];
-				$kmApplozic.tmpl("groupSearchTemplate", contactList).appendTo('#km-group-member-search-list');
+				$kmApplozic.tmpl("KMgroupSearchTemplate", contactList).appendTo('#km-group-member-search-list');
 			};
 			_this.loadGroupInfo = function(params) {
 				if (params.groupId) {
@@ -6102,7 +6102,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
 			var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
 			var mck_filebox_tmpl = '<div id="km-filebox-${fileIdExpr}" class="km-file-box ${fileIdExpr}">' + '<div class="km-file-expr">' + '<span class="km-file-content blk-lg-7"><span class="km-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="km-file-sz">${fileSizeExpr}</span></span>' + '<span class="progress progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar progress-bar-success bar" stye></span></span>' + '<span class="move-right blk-lg-2">' + '<button type="button" class="km-box-close km-remove-file" data-dismiss="div" aria-hidden="true">&times;</button>' + '</span></div></div>';
-			$kmApplozic.template("fileboxTemplate", mck_filebox_tmpl);
+			$kmApplozic.template("KMfileboxTemplate", mck_filebox_tmpl);
 			_this.init = function() {
 				$mck_file_upload.on('click', function() {
 					$mck_file_input.trigger('click');
@@ -6141,7 +6141,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							fileNameExpr : '<a href="#">' + file.name + '</a>',
 							fileSizeExpr : _this.getFilePreviewSize(file.size)
 						} ];
-						$kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+						$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
 						var $fileContainer = $kmApplozic(".km-file-box." + randomId);
 						var $file_name = $kmApplozic(".km-file-box." + randomId + " .km-file-lb");
 						var $file_progressbar = $kmApplozic(".km-file-box." + randomId + " .progress .bar");
@@ -6333,7 +6333,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileIdExpr : fileboxId,
 					fileName : fileName
 				} ];
-				$kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+				$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
 				var $fileContainer = $kmApplozic(".km-file-box." + fileboxId);
 				var $file_remove = $fileContainer.find(".km-remove-file");
 				var $file_progress = $fileContainer.find(".progress");
