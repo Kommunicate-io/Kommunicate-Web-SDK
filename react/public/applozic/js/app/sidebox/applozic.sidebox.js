@@ -3730,7 +3730,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus
                 } ];
-                append ? $kmApplozic.tmpl("messageTemplate", msgList).appendTo("#km-message-cell .km-message-inner") : $kmApplozic.tmpl("messageTemplate", msgList).prependTo("#km-message-cell .km-message-inner");
+                append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner");
                 var emoji_template = "";
                 if (msg.message) {
                     var msg_text = msg.message.replace(/\n/g, '<br/>');
@@ -4366,7 +4366,7 @@ var KM_CLIENT_GROUP_MAP = [];
                 if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : '') >= latestCreatedAtTime || ($listId.indexOf("search") !== -1 && prepend)) {
                     $kmApplozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
                 } else {
-                    $kmApplozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
+                    $kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
                 }
                 var $textMessage = $kmApplozic("#li-" + contHtmlExpr + " .kmMsgTextExpr");
                 (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
@@ -4482,7 +4482,7 @@ var KM_CLIENT_GROUP_MAP = [];
                             convTitleExpr: title,
                             mckLauncherExpr: MCK_LAUNCHER
                         } ];
-                        $kmApplozic.tmpl("convTemplate", convList).appendTo($mck_conversation_list);
+                        $kmApplozic.tmpl("KMconvTemplate", convList).appendTo($mck_conversation_list);
                     }
                 });
                 if ($kmApplozic("#km-conversation-list li").length < 2) {
@@ -6496,7 +6496,7 @@ var KM_CLIENT_GROUP_MAP = [];
                             fileNameExpr: '<a href="#">' + file.name + '</a>',
                             fileSizeExpr: _this.getFilePreviewSize(file.size)
                         } ];
-                        $kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+                        $kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
                         var $fileContainer = $kmApplozic(".km-file-box." + randomId);
                         var $file_name = $kmApplozic(".km-file-box." + randomId + " .km-file-lb");
                         var $file_progressbar = $kmApplozic(".km-file-box." + randomId + " .progress .bar");
@@ -6688,7 +6688,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     fileIdExpr: fileboxId,
                     fileName: fileName
                 } ];
-                $kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+                $kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
                 var $fileContainer = $kmApplozic(".km-file-box." + fileboxId);
                 var $file_remove = $fileContainer.find(".km-remove-file");
                 var $file_progress = $fileContainer.find(".progress");

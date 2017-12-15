@@ -3584,8 +3584,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize
 				} ];
-				append ? $kmApplozic.tmpl("messageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.tmpl("messageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
-				append ? $kmApplozic.tmpl("messageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.tmpl("messageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
+				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
+				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
 				var emoji_template = "";
 				if (msg.message) {
 					var msg_text = msg.message.replace(/\n/g, '<br/>');
@@ -4312,15 +4312,15 @@ var KM_CLIENT_GROUP_MAP = [];
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
 				if ($listId === "km-contact-search-list") {
-					$kmApplozic.tmpl("contactTemplate", contactList).prependTo('#' + $listId);
+					$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
 				} else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : "") > latestCreatedAtTime || prepend) {
-						$kmApplozic.tmpl("contactTemplate", contactList).prependTo('#' + $listId);
-						$kmApplozic.tmpl("conversationTemplate", contactList).prependTo('#conversation-section');
+						$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
+						$kmApplozic.tmpl("KMconversationTemplate", contactList).prependTo('#conversation-section');
 					} else {
-						$kmApplozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
-						$kmApplozic.tmpl("conversationTemplate", contactList).appendTo('#conversation-section');
+						$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
+						$kmApplozic.tmpl("KMconversationTemplate", contactList).appendTo('#conversation-section');
 					}
 					var $textMessage = $kmApplozic("#li-" + contHtmlExpr + " .kmMsgTextExpr");
 					(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
@@ -4357,7 +4357,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					contNameExpr : displayName,
 					contTabExpr : isGroupTab
 				} ];
-				$kmApplozic.tmpl("searchContactbox", contactList).prependTo('#' + $listId);
+				$kmApplozic.tmpl("KMsearchContactbox", contactList).prependTo('#' + $listId);
 			};
 			_this.addConversationMenu = function(tabId, isGroup) {
 				var currTabId = $mck_msg_inner.data('km-id');
@@ -4393,7 +4393,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							convTitleExpr : title,
 							mckLauncherExpr : MCK_LAUNCHER
 						} ];
-						$kmApplozic.tmpl("convTemplate", convList).appendTo($mck_conversation_list);
+						$kmApplozic.tmpl("KMconvTemplate", convList).appendTo($mck_conversation_list);
 					}
 				});
 				if ($kmApplozic("#km-conversation-list li").length < 2) {
@@ -5747,7 +5747,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					isAdminExpr : isGroupAdminExpr,
 					enableAdminMenuExpr : enableAdminMenuExpr
 				} ];
-				$kmApplozic.tmpl("groupMemberTemplate", contactList).appendTo('#km-group-member-list');
+				$kmApplozic.tmpl("KMgroupMemberTemplate", contactList).appendTo('#km-group-member-list');
 			};
 			_this.addMembersToGroupSearchList = function() {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
@@ -5800,7 +5800,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					contLastSeenExpr : lastSeenStatus,
 					contNameExpr : displayName
 				} ];
-				$kmApplozic.tmpl("groupSearchTemplate", contactList).appendTo('#km-group-member-search-list');
+				$kmApplozic.tmpl("KMgroupSearchTemplate", contactList).appendTo('#km-group-member-search-list');
 			};
 			_this.loadGroupInfo = function(params) {
 				if (params.groupId) {
@@ -6141,7 +6141,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							fileNameExpr : '<a href="#">' + file.name + '</a>',
 							fileSizeExpr : _this.getFilePreviewSize(file.size)
 						} ];
-						$kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+						$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
 						var $fileContainer = $kmApplozic(".km-file-box." + randomId);
 						var $file_name = $kmApplozic(".km-file-box." + randomId + " .km-file-lb");
 						var $file_progressbar = $kmApplozic(".km-file-box." + randomId + " .progress .bar");
@@ -6333,7 +6333,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileIdExpr : fileboxId,
 					fileName : fileName
 				} ];
-				$kmApplozic.tmpl("fileboxTemplate", fileboxList).appendTo('#km-file-box');
+				$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
 				var $fileContainer = $kmApplozic(".km-file-box." + fileboxId);
 				var $file_remove = $fileContainer.find(".km-remove-file");
 				var $file_progress = $fileContainer.find(".progress");
