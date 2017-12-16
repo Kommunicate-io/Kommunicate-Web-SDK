@@ -1,0 +1,25 @@
+{
+  "id": "default",
+  "description": "Default settings",
+  "engineFactory": "org.template.textclassification.TextClassificationEngine",
+  "datasource": {
+    "params": {
+      "appName": "Applozic"
+    }
+  },
+  "preparator": {
+    "params": {
+      "nGram": 1,
+      "numFeatures": 500,
+      "SPPMI": false
+    }
+  },
+  "algorithms": [
+    {
+      "name": "lr",
+      "params": {
+        "regParam": 0.00000005
+      }
+    }
+  ]
+}

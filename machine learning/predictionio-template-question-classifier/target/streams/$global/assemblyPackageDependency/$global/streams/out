@@ -1,0 +1,8 @@
+[0m[[0minfo[0m] [0mIncluding from cache: lucene-core-6.5.1.jar[0m
+[0m[[0minfo[0m] [0mIncluding from cache: scala-library-2.11.8.jar[0m
+[0m[[0mdebug[0m] [0mCalculate mappings...[0m
+[0m[[0minfo[0m] [0mChecking every *.class/*.jar file's SHA-1.[0m
+[0m[[0minfo[0m] [0mMerging files...[0m
+[0m[[33mwarn[0m] [0mMerging 'META-INF/MANIFEST.MF' with strategy 'discard'[0m
+[0m[[33mwarn[0m] [0mStrategy 'discard' was applied to a file[0m
+[0m[[0minfo[0m] [0mAssembly up to date: /Users/devashish/Documents/Servers/apache-predictionio-0.12.0-incubating/predictionio-template-text-classifier/target/scala-2.11/org.example.textclassification-assembly-0.1-SNAPSHOT-deps.jar[0m
