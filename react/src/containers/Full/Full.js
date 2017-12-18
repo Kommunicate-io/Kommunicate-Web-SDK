@@ -62,7 +62,7 @@ class Full extends Component {
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
                 <Route exact path="/admin" name="Admin" render={()=>{
-                   return <Admin updateProfilePicUrl={this.updateProfilePic} />
+                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink}/>
                 }}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>

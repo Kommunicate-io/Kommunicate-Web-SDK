@@ -12,7 +12,11 @@ class ImageUploader extends Component {
   static defaultProps = {
     updateProfilePicUrl: function (url) {
       //default
+
+    },updateProfileImgUrl: function (url){
+
     }
+    
   }
 
   constructor(props, defaultProps) {
@@ -82,8 +86,9 @@ class ImageUploader extends Component {
     e.preventDefault()
     if (document.getElementById("hidden-image-input-element").value != "") {
        var _this = this;
-      return Promise.resolve(_this.onClickSave()).then(res=>{
-         _this.uploadImageToS3()})
+      return Promise.resolve(_this.onClickSave()).then(res => {
+        _this.uploadImageToS3()
+      })
          .catch(err => {
        console.log(err);
       
@@ -114,12 +119,13 @@ class ImageUploader extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+            localStorage.setItem("imageLink", response.data.profileImageUrl)
             imageUrl = response.data.profileImageUrl
             updateApplozicUser({ imageLink: response.data.profileImageUrl })
               .then(response => {
                 console.log(response);
                 this.props.updateProfilePicUrl(imageUrl);
-                localStorage.setItem("imageLink", imageUrl);
+                this.props.updateProfileImgUrl(imageUrl);
                 Notification.info("Successfully uploaded..")
               }
 
@@ -149,7 +155,6 @@ class ImageUploader extends Component {
 
     // convert base64 to raw binary data held in a string
     // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
-
     let byteString = atob(dataURI.split(',')[1]);
 
     // separate out the mime component
@@ -202,6 +207,7 @@ class ImageUploader extends Component {
       .then(response => {
         console.log(response);
         this.props.updateProfilePicUrl(this.state.imageUrl);
+        this.props.updateProfileImgUrl(this.state.imageUrl)
         localStorage.setItem("imageLink", this.state.imageUrl);
         Notification.info("Display Photo Removed..")
       }
