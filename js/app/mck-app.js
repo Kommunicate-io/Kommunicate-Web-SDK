@@ -230,8 +230,8 @@ function ApplozicSidebox() {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.1.min.js";
-            //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
+            //script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.1.min.js";
+            script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
