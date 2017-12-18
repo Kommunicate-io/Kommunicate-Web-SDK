@@ -41,7 +41,14 @@ class Step2 extends Component {
     }
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.updateProfileImgUrl  = this.updateProfileImgUrl.bind(this);
   }
+  updateProfileImgUrl(url) { 
+    this.setState({
+      imageFile: url==null ? "/img/avatars/default.png": url
+    });
+    console.log("profilePicUrl updated",this.state.imageLink)
+   }
 
   finishSetUp = (e) => {
 
@@ -112,7 +119,7 @@ class Step2 extends Component {
                                 handleImageFiles={this.handleImageFiles}
                                 invokeImageUpload={this.invokeImageUpload}
                                 uploadImageToS3={this.uploadImageToS3}
-                                updateProfilePicUrl={this.props.updateProfilePicUrl}
+                                updateProfileImgUrl={this.updateProfileImgUrl}
                                 handleClose={this.closeModal}
                               />
                             </div>
