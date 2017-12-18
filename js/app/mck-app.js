@@ -48,10 +48,13 @@ function ApplozicSidebox() {
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
     },{
         "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate.js"
-},{
+    },{
+        "name": "emojis", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
+    },{
     "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/km-richtext-markup-1.0.js"
-}
-];
+    },{
+    "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/km-rich-text-event-handler.js"
+    }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];

@@ -3891,7 +3891,7 @@ cursor: pointer;
 float: right;
 }
 
-.km-room-person-selector-container .km-room-selector #km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector #km-person-number-field:disabled {
+.km-room-person-selector-container .km-room-selector .km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector #km-person-number-field:disabled {
 background-color: transparent;
 border: none;
 color: #000;
@@ -3902,6 +3902,10 @@ margin-left: 22px;
 }
 .km-room-selector, .km-person-selector {
 margin-bottom: 15px;
+display: flex;
+flex-wrap: nowrap;
+flex-direction: row;
+align-items: center;
 }
 .km-room-person-selector-container input[type="button"] {
 height: 30px;
@@ -3915,3 +3919,267 @@ box-shadow: 0px 1px 4px 1px rgba(0,0,0,.12);
 outline: none;
 cursor: pointer;
 }
+
+#mck-msg-box-rich-text-container{
+	width: 93%;
+    border-radius: 10px;
+    /*background-color: #fff;*/
+    margin: 5px 0px 0px 7px;
+    float: left;
+    padding: 10px;
+	top: 0;
+	
+}
+
+.km-card-message-container {
+    width: 104%;
+    display: flex;
+    overflow-x: hidden;
+    margin-right: 0px;
+    margin: 0;
+    /* width: 315px; */
+    padding-left: 0;
+    max-width: 105%;
+    transform: translateX(-10px);
+}
+.km-next-card-btn, .km-previous-card-btn {
+    position: absolute;
+    bottom: 50%;
+    /* transform: translateY(-50%); */
+    background-color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: 1px 2px 4px 1px rgba(0,0,0,.12);
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    z-index: 5;
+}
+.km-next-card-btn {
+    right: 0px;
+}
+.km-previous-card-btn {
+    left: 0px;
+}
+.km-single-card-message {
+    width: 285px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.20), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px 0px rgba(0, 0, 0, 0.12);
+}
+.km-single-card-message:focus {
+    outline: none;
+}
+.km-card-message-header {
+    border-radius: 8px;
+    position: relative;
+}
+.km-card-message-image-continer {
+    border-radius: 8px 8px 0px 0px;
+    width: 100%;
+    height: 100px;
+    background-image: url('/images/card-message-img-1.jpg');
+    background-size: cover;
+	background-position-y: 30%;
+	object-fit: cover;
+}
+.km-image-card-2 {
+    background-image: url('/images/card-message-img-2.jpg');
+}
+.km-card-message-image-price-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #7766B5;
+    padding: 5px 15px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    color: #fff;
+	font-weight: 500;
+    font-size: 16px;
+}
+.km-card-message-body {
+    height: 67px;
+    padding: 0px 10px;
+    border-bottom: 1px solid #D9D9D9;
+}
+.km-card-message-body-title {
+    font-size: 16px;
+    margin: 10px 0px 5px;
+    color: #7766B5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.km-card-message-body-ratings svg {
+    width: 16px;
+    height: 16px;
+}
+.km-star-filled {
+    fill: #FFD700;
+}
+.km-star-empty {
+    fill: #c1c1c1;
+}
+.km-card-message-body-address {
+    width: 100%;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.km-card-message-body-address-icon svg {
+    width: auto;
+    height: 16px;
+    margin-bottom: -3px;
+    fill:#7766B5;
+}
+.card-message-footer {
+    width: 100%;
+    height: 34px;
+}
+.km-card-message-footer-button {
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    height: 35px;
+    color: #7766B5 !important;
+    font-size: 15px !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+}
+.km-card-message-img{
+	width:100%;
+	height:100px;
+	object-fit: cover;
+	border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+}
+/** slick plugin css started*/
+
+/* Slider */
+.slick-slider
+{
+    position: relative;
+
+    display: block;
+    box-sizing: border-box;
+
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list
+{
+    position: relative;
+
+    display: block;
+    overflow: hidden;
+
+    margin: 0;
+    padding: 0;
+}
+.slick-list:focus
+{
+    outline: none;
+}
+.slick-list.dragging
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list
+{
+    -webkit-transform: translate3d(0, 0, 0);
+       -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+         -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+}
+
+.slick-track
+{
+    position: relative;
+    top: 0;
+    left: 0;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.slick-track:before,
+.slick-track:after
+{
+    display: table;
+
+    content: '';
+}
+.slick-track:after
+{
+    clear: both;
+}
+.slick-loading .slick-track
+{
+    visibility: hidden;
+}
+
+.slick-slide
+{
+    display: none;
+    float: left;
+    min-height: 1px;
+}
+[dir='rtl'] .slick-slide
+{
+    float: right;
+}
+.slick-slide img
+{
+    display: block;
+}
+.slick-slide.slick-loading img
+{
+    display: none;
+}
+.slick-slide.dragging img
+{
+    pointer-events: none;
+}
+.slick-initialized .slick-slide
+{
+    display: block;
+}
+.slick-loading .slick-slide
+{
+    visibility: hidden;
+}
+.slick-vertical .slick-slide
+{
+    display: block;
+
+    height: auto;
+
+    border: 1px solid transparent;
+}
+.slick-arrow.slick-hidden {
+    display: none;
+}
+
+/* slick css ends here*/
