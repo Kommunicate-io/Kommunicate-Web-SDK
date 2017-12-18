@@ -86,8 +86,8 @@ miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendM
 autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:applicationId', autoSuggestController.getSuggestionsByAppId);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion), autoSuggestController.createSuggestion);
-autoSuggestRouter.post('/update',validate(autoSuggestValidation.updateSuggestion), autoSuggestController.updateSuggestion)
-autoSuggestRouter.delete('/delete',validate(autoSuggestValidation.deleteSuggetion), autoSuggestController.deleteSuggetion)
+autoSuggestRouter.patch('/',validate(autoSuggestValidation.updateSuggestion), autoSuggestController.updateSuggestion)
+autoSuggestRouter.delete('/',validate(autoSuggestValidation.deleteSuggetion), autoSuggestController.deleteSuggetion)
 chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
