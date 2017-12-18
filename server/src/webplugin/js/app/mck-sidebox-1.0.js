@@ -1763,20 +1763,14 @@ var MCK_CLIENT_GROUP_MAP = [];
                     ],
                     metadata: {
                         CREATE_GROUP_MESSAGE: "",
-                        REMOVE_MEMBER_MESSAGE:
-                        ":adminName removed :userName",
-                        ADD_MEMBER_MESSAGE:
-                        ":adminName added :userName",
-                        JOIN_MEMBER_MESSAGE: ":userName joined",
-                        GROUP_NAME_CHANGE_MESSAGE:
-                        "Conversation name changed to :groupName",
-                        GROUP_ICON_CHANGE_MESSAGE:
-                        "Conversation icon changed",
-                        GROUP_LEFT_MESSAGE: ":userName left",
-                        DELETED_GROUP_MESSAGE:
-                        ":adminName deleted Conversation",
-                        GROUP_USER_ROLE_UPDATED_MESSAGE:
-                        ":userName is :role now",
+                        REMOVE_MEMBER_MESSAGE:"",
+                        ADD_MEMBER_MESSAGE:"",
+                        JOIN_MEMBER_MESSAGE: "",
+                        GROUP_NAME_CHANGE_MESSAGE:"",
+                        GROUP_ICON_CHANGE_MESSAGE:"",
+                        GROUP_LEFT_MESSAGE: "",
+                        DELETED_GROUP_MESSAGE:"",
+                        GROUP_USER_ROLE_UPDATED_MESSAGE:"",
                         GROUP_META_DATA_UPDATED_MESSAGE: "",
                         //ALERT: "false",
                         HIDE: "true"
