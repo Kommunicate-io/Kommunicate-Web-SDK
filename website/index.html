@@ -102,66 +102,6 @@ layout:
     	}
       });
     </script> -->
-
-    <script type="text/javascript">
-      //Signup Form Variables 
-
-      var $newSignupForm = $(".pre-signup-form"),
-          $newSignupEmailId = $("input[name=email]"),
-          $newSignupSubmitButton = $("button[name=submit-btn]"),
-          $successMsg = $(".signup-success-msg-div"),
-          $errorMsg1 = $(".signup-error-msg-div1"),
-          $errorMsg2 = $(".signup-error-msg-div2");
-
-
-          $newSignupForm.submit(function(e) {
-            var formm = $(this);
-            var user = new Object();
-            user.userName = formm.find("input[name=email]").val();
-            user.email = formm.find("input[name=email]").val();
-            user.namwe = formm.find("input[name=email]").val();
-
-            formm.find("button[name=submit-btn]").attr('disabled', true);
-            formm.find("button[name=submit-btn]").html('Submitting...');
-
-            var newUserSignup = $.ajax({
-              contentType: "application/json",
-              dataType: "json",
-              url: "https://api.kommunicate.io/customers?preSignUp=true",
-              type: "post",
-              data: JSON.stringify(user),
-              success: function(data) {
-                if (data.code === "SUCCESS") {
-                  // console.log("Registration Successful", data);
-                  $successMsg.removeClass('hide').addClass('show');
-                  $newSignupEmailId.addClass('hide');
-                  $newSignupSubmitButton.addClass('hide');
-
-                }
-                else {
-                  // console.log("User Already Exist", data);
-                  $errorMsg1.removeClass('hide').addClass('show');
-                  $newSignupEmailId.addClass('hide');
-                  $newSignupSubmitButton.addClass('hide');
-                }
-              },
-              error: function(data) {
-
-              // console.log(data);
-              $errorMsg2.removeClass('hide').addClass('show');
-              $newSignupSubmitButton.attr('disabled', false);
-              $newSignupSubmitButton.html('Get me in');
-              }
-            });
-
-            return false;
-          });
-
-
-
-
-    </script>
-
 <script>
 // $(".hero-section-icon-link").click(function() {
 //     $('html,body').animate({
@@ -226,6 +166,8 @@ $('a[href*="#"]')
              window.kommunicate = m;
              m._globals = o;
            })(document, window.kommunicate || {});
+            
+             $("form").attr("action", "https://dashboard-test.kommunicate.io/register");
         }
         else {
             (function(d, m){
@@ -239,6 +181,8 @@ $('a[href*="#"]')
              window.kommunicate = m;
              m._globals = o;
            })(document, window.kommunicate || {});
+            
+            $("form").attr("action", "https://dashboard.kommunicate.io/register");
         }
 
 
