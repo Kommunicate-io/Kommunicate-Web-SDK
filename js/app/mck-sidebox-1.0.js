@@ -3934,40 +3934,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
-            /*var markup1 = '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
-                '<div class="mck-clear">' +
-                '<div class="blk-lg-12">' +
-                '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
-                '<div class="mck-msg-box ${msgClassExpr}">' +
-            
-                '<div class= "move-right mck-msg-text"></div>' +
-                '<div class ="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">' +
-                '<div class="mck-msgto">${msgReplyTo} </div>' +
-                '</div>' +
-                '<div class ="mck-msg-reply mck-verticalLine ${msgReplyDivExpr}">' +
-                '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
-                '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
-                '</div>' +
-                '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
-                '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-fileurl= "${fileUrlExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}</div>' +
-                '<div class="mck-msg-text mck-msg-content"></div>' +
-                '</div>' +
-                '</div>' +
-                '<div id = "mck-msg-box-rich-text-container" class =${kmRichTextMarkupVisibility} >'+
-                '{{html kmRichTextMarkup}}</div>'+
-                '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
-                '</div>' +
-                '<div class="n-vis mck-context-menu">' +
-                '<ul>' +
-                '<li><a class="mck-message-forward ${msgForwardVisibleExpr}">${msgForwardExpr}</a></li>' +
-                '<li><a class="mck-message-delete">${msgDeleteExpr}</a></li>' +
-                '<li><a class="mck-message-reply">${msgReplyExpr}</a></li>' +
-                '</ul>' +
-                '</div>' +
-                '</div>';*/
-
-
-
                 var markup=   '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
                 '<div class="mck-clear">' +
                 '<div class="blk-lg-12">' +
