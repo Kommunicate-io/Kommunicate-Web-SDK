@@ -50,11 +50,7 @@ function ApplozicSidebox() {
         "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     },
     {
-        "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate.js"
-    },{
-    "name":"km-rich-text-markup","url" : MCK_STATICPATH+"/js/app/km-richtext-markup-1.0.js"
-    },{
-    "name":"km-event-handler","url" : MCK_STATICPATH+"/js/app/km-rich-text-event-handler.js"
+        "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate-richtext-0.1.min.js"
     }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
