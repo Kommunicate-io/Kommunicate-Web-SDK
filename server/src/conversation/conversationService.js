@@ -34,7 +34,6 @@ exports.createConversation= (options)=>{
         status:CONVERSATION_STATUS.OPEN,
         agentId:options.defaultAgentId,
         createdBy:options.createdBy,
-        metadata:config.getCommonProperties().groupMetadata,
     }
     return Promise.resolve(db.Conversation.create(conversation)).then(result=>{
         console.log("conversation created successfully",result);
