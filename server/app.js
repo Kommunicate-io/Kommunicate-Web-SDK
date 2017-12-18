@@ -28,6 +28,18 @@ compressor.minify({
   }
 });
 compressor.minify({
+  compressor: 'gcc',
+  input: ['./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js'],
+  output: './src/webplugin/js/app/kommunicate-richtext-0.1.min.js',
+  callback: function (err, min) {
+    if(!err)
+    console.log("minified successfully");
+    else {
+      console.log("err while minifying kommunicate-richtext-0.1.min.js",err);
+    }
+  }
+});
+compressor.minify({
   compressor: 'clean-css',
   input: ['./src/webplugin/css/app/mck-sidebox-1.0.css'],
   output: './src/webplugin/js/app/mck-sidebox-1.0.min.css',
