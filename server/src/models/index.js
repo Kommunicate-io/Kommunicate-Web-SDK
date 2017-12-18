@@ -12,11 +12,11 @@ sequelize.authenticate().then(function() {
 })
 var db = {};
 
-const models = ['user','customer','BusinessHour','PasswordResetRequest', 'AutoSuggest',"Conversation","InAppMsg","IssueType","IssueTypeAutoReply"];
+const models = ['user','customer','BusinessHour','PasswordResetRequest', 'AutoSuggest',"Conversation","InAppMsg","IssueType"];
 models.forEach(function(model) {
 db[model]= sequelize.import(path.join(__dirname, model));
 });
-//dont use foreign keys
+//dont use foreign keys ,"IssueTypeAutoReply"
 //db.OffBusinessHoursConfig.belongsTo(db.BusinessHour,{constraints:false});
 
 db.sequelize = sequelize;
