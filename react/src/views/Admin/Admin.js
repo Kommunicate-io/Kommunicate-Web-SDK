@@ -209,7 +209,8 @@ class Forms extends Component {
                           updateProfilePicUrl={this.props.updateProfilePicUrl}
                         /> */}
 
-                      <img src={ this.state.imageFile} className="default-dp" /><br />
+                      <img src={ this.props.profilePicUrl } className="default-dp" /><br /> 
+              
                       <div className="edit-dp-btn">
                         <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
                         <div className="about-dp">Your customers will see this photo</div>
@@ -267,7 +268,7 @@ class Forms extends Component {
                 </form>
 
                 <PasswordAccordion />
-                <img src={this.props.profilePicUrl} className="img-avatar" alt={this.state.displayName} />
+                
                 {/*   
                   <div className="image-editor-container">
                     <AvatarEditor
