@@ -47,13 +47,14 @@ function ApplozicSidebox() {
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
     },{
+        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
+    },
+    {
         "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/kommunicate.js"
     },{
-        "name": "emojis", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
+    "name":"km-rich-text-markup","url" : MCK_STATICPATH+"/js/app/km-richtext-markup-1.0.js"
     },{
-    "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/km-richtext-markup-1.0.js"
-    },{
-    "name":"kommunicate","url" : MCK_STATICPATH+"/js/app/km-rich-text-event-handler.js"
+    "name":"km-event-handler","url" : MCK_STATICPATH+"/js/app/km-rich-text-event-handler.js"
     }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
@@ -277,7 +278,7 @@ function ApplozicSidebox() {
                 $applozic.fn.applozic(options);
             }
         } catch (e) {
-            console.log("Plugin loading error. Refresh page.");
+            console.log("Plugin loading error. Refresh page.",e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }
