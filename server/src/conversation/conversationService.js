@@ -3,6 +3,7 @@ const CONVERSATION_STATUS = require('./conversationUtils').CONVERSATION_STATUS;
 const applozicClient = require("../utils/applozicClient");
 const userService= require("../users/userService");
 const registrationService = require("../register/registrationService");
+const config = require('../../conf/config.js')
 
 /**
  * returns conversation list of given participent_user_Id
@@ -28,7 +29,13 @@ exports.getConversationList =(participentUserId)=>{
 exports.createConversation= (options)=>{
     console.log("creating new converation, options:",options);
     //return Promise.resolve().then().catch();
-    let conversation = {groupId:options.groupId,participentUserId:options.participentUserId,status:CONVERSATION_STATUS.OPEN,agentId:options.defaultAgentId,createdBy:options.createdBy}
+    let conversation = {groupId:options.groupId,
+        participentUserId:options.participentUserId,
+        status:CONVERSATION_STATUS.OPEN,
+        agentId:options.defaultAgentId,
+        createdBy:options.createdBy,
+        metadata:config.getCommonProperties().groupMetadata,
+    }
     return Promise.resolve(db.Conversation.create(conversation)).then(result=>{
         console.log("conversation created successfully",result);
         return result;

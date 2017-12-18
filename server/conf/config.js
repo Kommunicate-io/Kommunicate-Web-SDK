@@ -222,17 +222,16 @@ const config ={
       websiteUrl:'https://www.kommunicate.io/'
     },
     groupMetadata:{
-      ADD_MEMBER_MESSAGE:":adminName added :userName",
+      ADD_MEMBER_MESSAGE:"",
       CREATE_GROUP_MESSAGE:"",
-      DELETED_GROUP_MESSAGE:":adminName deleted Conversation",
-      GROUP_ICON_CHANGE_MESSAGE:"Conversation icon changed",
-      GROUP_LEFT_MESSAGE:":userName left",
+      DELETED_GROUP_MESSAGE:"",
+      GROUP_LEFT_MESSAGE:"",
       GROUP_META_DATA_UPDATED_MESSAGE:"",
-      GROUP_NAME_CHANGE_MESSAGE:"Conversation name changed to :groupName",
-      GROUP_USER_ROLE_UPDATED_MESSAGE:":userName is :role now",
+      GROUP_NAME_CHANGE_MESSAGE:"",
+      GROUP_USER_ROLE_UPDATED_MESSAGE:"",
       HIDE:"true",
-      JOIN_MEMBER_MESSAGE:":userName joined",
-      REMOVE_MEMBER_MESSAGE:":adminName removed :userName"
+      JOIN_MEMBER_MESSAGE:"",
+      REMOVE_MEMBER_MESSAGE:""
     }
 }
 };
