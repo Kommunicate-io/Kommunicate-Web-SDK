@@ -75,7 +75,32 @@ Kommunicate ={
                                 'callback':function(response){
                                     console.log("callback response :", response);
                                 }});
+    },
+    isRichTextMessage:function(metadata){
+        // contentType should be 300 for rich text message in metadata
+        return metadata&&metadata.contentType==300;
+    },
+    getRichTextMessageTemplate: function(metadata){
+        if (metadata){
+            switch(metadata.templateId){
+                // 1 for get room pax info template
+                case "1":
+                    return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
+                break;
+                //2 for hotel card template
+                case "2":
+                    
+                    return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
+                break;
+                default:
+                return "";
+                break;
+            }
+        }else{
+            return "";
+        }
     }
+   
 }
 function KommunicateClient(){
     //groupName:DEFAULT_GROUP_NAME,
