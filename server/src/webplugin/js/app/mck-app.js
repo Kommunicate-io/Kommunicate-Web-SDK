@@ -85,6 +85,7 @@ function ApplozicSidebox() {
             }
             head.appendChild(script);
         } catch (e) {
+            
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
@@ -278,6 +279,7 @@ function ApplozicSidebox() {
                 $applozic.fn.applozic(options);
             }
         } catch (e) {
+            console.log(e);
             console.log("Plugin loading error. Refresh page.",e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
