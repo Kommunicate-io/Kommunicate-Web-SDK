@@ -8,3 +8,21 @@ exports.createIssueTypeAutoReply = (issueTypeAutoReply) => {
         return result;
     })
 }
+
+exports.getIssueTypeAutoReply = (issueTypeAutoReply) => {
+    let criteria = {}
+    if (issueTypeAutoReply.id) {
+        criteria.id = issueTypeAutoReply.id
+    }
+    if (issueTypeAutoReply.issueTypeId) {
+        criteria.issueTypeId = issueTypeAutoReply.issueTypeId
+    }
+    if (issueTypeAutoReply.sequence) {
+        criteria.sequence = issueTypeAutoReply.sequence
+    }
+    if (issueTypeAutoReply.createdBy) {
+        criteria.createdBy = issueTypeAutoReply.createdBy
+    }
+    console.log('criteria for get issueTypeAutoReply', criteria)
+    return Promise.resolve(issueTypeAutoReplyModel.findAll({ where: criteria }));
+}

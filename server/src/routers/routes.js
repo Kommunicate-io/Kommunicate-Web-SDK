@@ -117,3 +117,4 @@ issueTypeRouter.post('/',issueTypeAutoReplyController.createIssueTypeAutoReply)
  * CRUD API's for 'IssueTypeAutoReply' object
  */
 issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueTypeAutoReply), issueTypeAutoReplyController.createIssueTypeAutoReply)
+issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
