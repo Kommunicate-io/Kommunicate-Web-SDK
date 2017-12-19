@@ -1,4 +1,4 @@
-const issueTypeAutoReplyService = require('./issueTypeAutoReplyService.js')
+const issueTypeAutoReplyService = require('./issueTypeAutoReplyService.js');
 
 
 
@@ -23,5 +23,13 @@ exports.getIssueTypeAutoReply = (req, res) => {
         return res.status(200).json({ code: 'SUCCESS', data: result })
     }).catch(err => {
         return res.status(500).json({ data:'INTERNAL_SERVER-ERROR', message:'something went wrong'})
+    })
+}
+
+exports.updateIssueTypeAutoReply = (req, res) => {
+    return Promise.resolve(issueTypeAutoReplyService.updateIssueTypeAutoReply(req.body)).then(response => {
+        return res.status(200).json({ code: 'UPDATED_SUCCESSFULLY', message: response })
+    }).catch(err => {
+        return res.status(500).json({ data: 'INTERNAL_SERVER-ERROR', message: 'something went wrong' })
     })
 }

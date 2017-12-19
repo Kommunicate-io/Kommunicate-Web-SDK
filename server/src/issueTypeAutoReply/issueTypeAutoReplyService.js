@@ -26,3 +26,7 @@ exports.getIssueTypeAutoReply = (issueTypeAutoReply) => {
     console.log('criteria for get issueTypeAutoReply', criteria)
     return Promise.resolve(issueTypeAutoReplyModel.findAll({ where: criteria }));
 }
+
+exports.updateIssueTypeAutoReply = (issueTypeAutoReply) => {
+    return Promise.resolve(issueTypeAutoReplyModel.update(issueTypeAutoReply, { where: { id: issueTypeAutoReply.id } }));
+}

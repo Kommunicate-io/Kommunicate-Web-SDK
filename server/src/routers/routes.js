@@ -20,9 +20,9 @@ const profileImageController = require('../profileImage/profileImageController')
 const applicationValidation = require('../application/validation');
 const inAppMsgController  = require('../application/inAppMsgController');
 const issueTypecontroller = require('../issuetype/issueTypeController');
-const issueTypeValidation = require('../issuetype/validation')
-const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController')
-const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation')
+const issueTypeValidation = require('../issuetype/validation');
+const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController');
+const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
 
 
 //router declaration
@@ -118,3 +118,4 @@ issueTypeRouter.post('/',issueTypeAutoReplyController.createIssueTypeAutoReply)
  */
 issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueTypeAutoReply), issueTypeAutoReplyController.createIssueTypeAutoReply)
 issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
+issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
