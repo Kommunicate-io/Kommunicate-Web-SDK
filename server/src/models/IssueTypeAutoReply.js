@@ -7,7 +7,7 @@ module.exports = function(sequelize, DataTypes) {
         primaryKey: true,
         allowNull: false
       },
-      name: {
+      issueTypeId: {
         type: DataTypes.INTEGER,
         field:'issue_type_id',
       },

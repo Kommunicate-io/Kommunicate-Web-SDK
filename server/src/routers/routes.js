@@ -19,7 +19,10 @@ const autoSuggestValidation = require('../autosuggest/validation');
 const profileImageController = require('../profileImage/profileImageController');
 const applicationValidation = require('../application/validation');
 const inAppMsgController  = require('../application/inAppMsgController');
-//const issueTypeValidation
+const issueTypecontroller = require('../issuetype/issueTypeController');
+const issueTypeValidation = require('../issuetype/validation')
+const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController')
+const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation')
 
 
 //router declaration
@@ -104,5 +107,11 @@ applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.ge
 applicationRouter.post('/events',inAppMsgController.processEvents);
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)
-issueTypeRouter.get('/',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages)
-issueTypeReplyRouter.get('/',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages)
+/**
+ * CRUD API's for 'IssueType' object
+ */
+issueTypeRouter.post('/',issueTypeAutoReplyController.createIssueTypeAutoReply)
+/**
+ * CRUD API's for 'IssueTypeAutoReply' object
+ */
+issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueTypeAutoReply), issueTypeAutoReplyController.createIssueTypeAutoReply)
