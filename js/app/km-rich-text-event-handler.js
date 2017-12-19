@@ -9,7 +9,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
     //slick.js
-   // Kommunicate.richMsgEventHandler.initializeSlick($applozic);
+   Kommunicate.richMsgEventHandler.initializeSlick($applozic);
 }
 
 
@@ -20,11 +20,11 @@ Kommunicate.attachEvents = function($applozic){
  */
 Kommunicate.richMsgEventHandler ={
     initializeSlick:function($applozic){
-        console.log("initializing slick");
+        //console.log("initializing slick");
         var cardMessageContainer = $applozic('.km-card-message-container');
-        console.log("selected by class",cardMessageContainer);
+        //console.log("selected by class",cardMessageContainer);
         
-               /* cardMessageContainer.slick({
+             cardMessageContainer.slick({
                     dots: false,
                     infinite: false,
                     speed: 300,
@@ -33,7 +33,7 @@ Kommunicate.richMsgEventHandler ={
                     variableWidth: true,
                     prevArrow: false,
                     nextArrow: false
-                });*/
+                });
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
@@ -50,29 +50,33 @@ Kommunicate.richMsgEventHandler ={
         document.getElementById('km-person-number-field').stepUp();
     },
     addMoreRoom : function(e){
-        return;
-        /*
-        //uncomment this code toadd more rooms and update send  message call accordingly 
-
        var container = e.target.parentElement.parentElement.parentElement;
        var roomCount = Number(e.target.dataset.roomcount)+1;
        e.target.setAttribute("roomcount",roomCount);
        var roomInfoElem = document.createElement('div');
        roomInfoElem.innerHTML=Kommunicate.markup.getSingleRoomPaxInfo(roomCount);
-       container.getElementsByClassName('km-room-person-selector-container')[0].appendChild(roomInfoElem);*/
+       container.getElementsByClassName('km-room-person-selector-container')[0].appendChild(roomInfoElem);
           
     },
     processSelectedRoom:function(e){
         //TODO : handle multiple room select  
-        var roomInfoContainer = e.target.parentElement.parentElement;
-       var numOfguest=roomInfoContainer.getElementsByClassName('km-room-number-field')[0].value;
+        // TODO: number of rooms should not greater than entered erlier.
+       // var roomInfoContainer = e.target.parentElement.parentElement;
+        var roomGuestJson =[];
+       var roomGuest= document.querySelectorAll(".km-room-person-selector-container input.km-room-number-field");
+        // TODO: process number of child if required
+        var message=""
+       for(var i=0;i<roomGuest.length;i++){
+        roomGuestJson.push({"NoOfAdults":roomGuest[i].value});
+        message += "Room "+ (i+1) +" Guest "+roomGuest[i].value +"\n";
+       }
         //send message to group
         //[{"NoOfAdults":1,"NoOfChild":2,"ChildAge":[8,9]}]
         var messagePxy={
-            'message' : "Room 1, Guest "+numOfguest , //message to send 
+            'message' : message , //message to send 
             'metadata':{
                 isRoomGuestJSON:true,
-                roomGuestJson:'[{"NoOfAdults":'+numOfguest+'}]',
+                roomGuestJson:JSON.stringify(roomGuestJson),
                 guestTypeId:"ADULTS"
 
             }
