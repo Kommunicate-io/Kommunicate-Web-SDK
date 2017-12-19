@@ -3923,7 +3923,7 @@ cursor: pointer;
 #mck-msg-box-rich-text-container{
 	width: 93%;
     border-radius: 10px;
-    /*background-color: #fff;*/
+    background-color: #fff;
     margin: 5px 0px 0px 7px;
     float: left;
     padding: 10px;
