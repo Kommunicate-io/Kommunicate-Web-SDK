@@ -5375,8 +5375,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					if (group.type === 10){
 						for(var i= 0;i<Object.keys(group.users).length;i++){
-							if((Object.values(group.users)[i]).role ===3){
-								displayName =(Object.values(group.users)[i]).userId;
+							var userDetail=MCK_USER_DETAIL_MAP[(Object.values(group.users)[i]).userId];
+							if(userDetail&&userDetail.roleType&&userDetail.roleType===3){
+								displayName =userDetail.userId;
 								//console.log("groupName",displayName);
 								break;
 							}
