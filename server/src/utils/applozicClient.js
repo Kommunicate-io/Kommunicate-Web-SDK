@@ -305,14 +305,14 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
   });
 }
 
-exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken)=>{
-
+exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)=>{
   let url = config.getProperties().urls.addMemberIntoConversation;
   return Promise.resolve(axios.post(url, groupInfo, {
     headers: {
       "Content-Type": "application/json",
-      "Apz-AppId": applicationId,
-      'Apz-Token': "Basic " + apzToken,
+      "Application-Key": applicationId,
+      'Authorization': "Basic " + apzToken,
+      'Of-User-Id':ofUserId,
       'Apz-Product-App':'true'
     }
   })).then(response => {

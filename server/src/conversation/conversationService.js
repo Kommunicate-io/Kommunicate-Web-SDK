@@ -44,14 +44,23 @@ exports.createConversation= (options)=>{
 
 exports.addMemberIntoConversation = (data) => {
     let groupInfo = { userIds: [], clientGroupIds:[data.groupId] }
+    let header={}
     return Promise.resolve(registrationService.getCustomerByUserName(data.userId)).then(customer => {
         if (customer) {
-            return Promise.resolve(userService.getAllUsersOfCustomer(customer, 1)).then(users => {
+            return Promise.resolve(userService.getAllUsersOfCustomer(customer,undefined)).then(users => {
                 if (users) {
                     users.forEach(function (user) {
-                        groupInfo.userIds.push(user.userName);
+                        if(user.type===2){
+                            header.apzToken=user.apzToken
+                        }
+                        if(user.type===3){
+                            header.ofUserId=user.userName
+                        }
+                            groupInfo.userIds.push(user.userName);
+                        
                     });
-                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, customer.apzToken)).then(response => {
+    
+                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
                         return response.data;
                     });
                 }
