@@ -23,7 +23,7 @@ class PasswordReset extends React.Component{
     /*const params = new URLSearchParams(search);
     const code = params.get('code');*/
 
-    let code = CommonUtils.getUrlParameter(search, 'code');
+    const code = CommonUtils.getUrlParameter(search, 'code');
     if (code) {
         this.state.code = code;
     }
