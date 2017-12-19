@@ -9,7 +9,7 @@ exports.createIssueTypeAutoReply={
     }
 }
 
-exports.updateIssueTypeAutoReply={
+exports.updateDeleteIssueTypeAutoReply={
     body:{
         id:joi.number().integer().required(),
         issueTypeId:joi.number().integer(),

@@ -118,4 +118,5 @@ issueTypeRouter.post('/',issueTypeAutoReplyController.createIssueTypeAutoReply)
  */
 issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueTypeAutoReply), issueTypeAutoReplyController.createIssueTypeAutoReply)
 issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
-issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
+issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
+issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.deleteIssueTypeAutoReply)

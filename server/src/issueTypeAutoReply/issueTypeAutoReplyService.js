@@ -30,3 +30,7 @@ exports.getIssueTypeAutoReply = (issueTypeAutoReply) => {
 exports.updateIssueTypeAutoReply = (issueTypeAutoReply) => {
     return Promise.resolve(issueTypeAutoReplyModel.update(issueTypeAutoReply, { where: { id: issueTypeAutoReply.id } }));
 }
+
+exports.deleteIssueTypeAutoReply=(id)=>{
+    return Promise.resolve(issueTypeAutoReplyModel.destroy({where:{id:id}}))
+}
