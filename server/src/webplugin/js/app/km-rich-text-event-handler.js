@@ -9,7 +9,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
     //slick.js
-   Kommunicate.richMsgEventHandler.initializeSlick($applozic);
+   //Kommunicate.richMsgEventHandler.initializeSlick($applozic);
 }
 
 
@@ -24,7 +24,7 @@ Kommunicate.richMsgEventHandler ={
         var cardMessageContainer = $applozic('.km-card-message-container');
         //console.log("selected by class",cardMessageContainer);
         
-             cardMessageContainer.slick({
+            /* cardMessageContainer.slick({
                     dots: false,
                     infinite: false,
                     speed: 300,
@@ -33,7 +33,7 @@ Kommunicate.richMsgEventHandler ={
                     variableWidth: true,
                     prevArrow: false,
                     nextArrow: false
-                });
+                });*/
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
@@ -67,7 +67,7 @@ Kommunicate.richMsgEventHandler ={
         // TODO: process number of child if required
         var message=""
        for(var i=0;i<roomGuest.length;i++){
-        roomGuestJson.push({"NoOfAdults":roomGuest[i].value});
+        roomGuestJson.push({"NoOfAdults":roomGuest[i].value,"NoOfChild": 0,"ChildAge": []});
         message += "Room "+ (i+1) +" Guest "+roomGuest[i].value +"\n";
        }
         //send message to group
