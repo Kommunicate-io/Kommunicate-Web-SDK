@@ -37,7 +37,7 @@ class Register extends Component {
      //this.state.email = invitedUserEmail;
      this.state.isEmailReadonly =false;
      this.state.isBackBtnHidden =true;
-     this.state.applicationId = params.get('applicationId');
+     this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId');
 
    }
     //console.log("location",this.props.location);
