@@ -26,7 +26,7 @@ class Register extends Component {
   }
   componentWillMount(){
     const search = this.props.location.search;
-    const params = new URLSearchParams(search);
+    //const params = new URLSearchParams(search);
     /*const isInvited = params.get('invite');*/
 
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
