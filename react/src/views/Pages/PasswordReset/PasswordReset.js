@@ -2,7 +2,7 @@
 import React from 'react';
 import {updatePassword} from '../../../utils/kommunicateClient';
 import {getConfig} from '../../../config/config';
-import CommonUtils from '../../utils/CommonUtils';
+import CommonUtils from '../../../utils/CommonUtils';
 
 class PasswordReset extends React.Component{
 
