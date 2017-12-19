@@ -77,6 +77,8 @@ app.use('/chat',routes.chat);
 app.use('/profileImage',routes.profileImage);
 app.use('/conversations',routes.conversation);
 app.use('/group',routes.group);
+app.use('/issuetype', routes.issueType);
+app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
 
 function startApp() {
     app.listen(port, function () {

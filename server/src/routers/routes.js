@@ -19,6 +19,7 @@ const autoSuggestValidation = require('../autosuggest/validation');
 const profileImageController = require('../profileImage/profileImageController');
 const applicationValidation = require('../application/validation');
 const inAppMsgController  = require('../application/inAppMsgController');
+//const issueTypeValidation
 
 
 //router declaration
@@ -34,6 +35,8 @@ const conversationRouter =express.Router();
 const autoSuggestRouter = express.Router();
 const profileImageRouter = express.Router();
 const groupRouter = express.Router();
+const issueTypeRouter = express.Router();
+const issueTypeReplyRouter = express.Router(); 
 
 //export routers
 exports.home = home;
@@ -48,6 +51,8 @@ exports.conversation=conversationRouter;
 exports.autoSuggest = autoSuggestRouter;
 exports.profileImage = profileImageRouter;
 exports.group = groupRouter;
+exports.issueType = issueTypeRouter;
+exports.issueTypeAutoReply = issueTypeReplyRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -99,3 +104,5 @@ applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.ge
 applicationRouter.post('/events',inAppMsgController.processEvents);
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)
+issueTypeRouter.get('/',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages)
+issueTypeReplyRouter.get('/',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages)
