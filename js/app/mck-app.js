@@ -37,6 +37,8 @@ function ApplozicSidebox() {
     }, {
             "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
 
+    },{
+        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }, {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
 
@@ -46,8 +48,6 @@ function ApplozicSidebox() {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
-    },{
-        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
