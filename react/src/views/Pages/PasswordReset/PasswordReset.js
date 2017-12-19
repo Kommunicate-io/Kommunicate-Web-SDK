@@ -2,6 +2,8 @@
 import React from 'react';
 import {updatePassword} from '../../../utils/kommunicateClient';
 import {getConfig} from '../../../config/config';
+import CommonUtils from '../../utils/CommonUtils';
+
 class PasswordReset extends React.Component{
 
   constructor(props){
@@ -18,13 +20,15 @@ class PasswordReset extends React.Component{
   }
   componentWillMount(){
     const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const code = params.get('code');
-   if(code){
-     
-      this.state.code=code;
-   }
+    /*const params = new URLSearchParams(search);
+    const code = params.get('code');*/
+
+    let code = CommonUtils.getUrlParameter(search, 'code');
+    if (code) {
+        this.state.code = code;
+    }
   }
+
   componentDidMount(){
    // console.log("compponent did mount");
   }

@@ -5,6 +5,7 @@ import {getConfig} from '../../.../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 import  {createCustomer, saveToLocalStorage,createCustomerOrAgent} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
+import CommonUtils from '../../utils/CommonUtils';
 
 class Register extends Component {
   constructor(props){
@@ -25,8 +26,11 @@ class Register extends Component {
   }
   componentWillMount(){
     const search = this.props.location.search;
-    const params = new URLSearchParams(search);
-    const isInvited = params.get('invite');
+    /*const params = new URLSearchParams(search);
+    const isInvited = params.get('invite');*/
+
+    const isInvited = CommonUtils.getUrlParameter(search, 'invite');
+
    if(isInvited){
      this.state.isInvite=true;
      //this.state.invitedUserEmail=invitedUserEmail;
