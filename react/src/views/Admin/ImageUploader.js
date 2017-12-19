@@ -127,6 +127,7 @@ class ImageUploader extends Component {
                 this.props.updateProfilePicUrl(imageUrl);
                 this.props.updateProfileImgUrl(imageUrl);
                 Notification.info("Successfully uploaded..")
+                this.props.handleClose();
               }
 
               )
@@ -209,7 +210,8 @@ class ImageUploader extends Component {
         this.props.updateProfilePicUrl(this.state.imageUrl);
         this.props.updateProfileImgUrl(this.state.imageUrl)
         localStorage.setItem("imageLink", this.state.imageUrl);
-        Notification.info("Display Photo Removed..")
+        Notification.info("Display Photo Removed..");
+        this.props.handleClose();
       }
       )
   }
@@ -252,7 +254,7 @@ class ImageUploader extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="modal-footer-button">
-                <button type="submit" autoFocus={false} className="btn btn-sm" id="cancel-button" onClick={this.props.handleClose}> Canel</button>
+                <button type="submit" autoFocus={false} className="btn btn-sm" id="cancel-button" onClick={this.props.handleClose}> Cancel</button>
                 <button type="submit" autoFocus={false} className="btn btn-sm" id="image-input-button" onClick={this.cropMethod}>Save</button>
 
               </div>
