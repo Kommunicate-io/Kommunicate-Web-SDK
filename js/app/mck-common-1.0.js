@@ -8,6 +8,13 @@ if (typeof $original !== 'undefined') {
     } else if (typeof $applozic.fn.template === 'function') {
         $.fn.template = $applozic.fn.template;
         jQuery.fn.template = $applozic.fn.template;
+    } 
+    if (typeof $.fn.slick === 'function') {
+        $applozic.fn.slick = $.fn.slick;
+        jQuery.fn.slick = $.fn.slick;
+    } else if (typeof $applozic.fn.slick === 'function') {
+        $.fn.slick = $applozic.fn.slick;
+        jQuery.fn.slick = $applozic.fn.slick;
     }
 }
 var w = window,
