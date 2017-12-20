@@ -45,6 +45,7 @@ exports.createCustomer = customer=>{
           "applicationKey": application.applicationId,
           "authorization": botObj.authorization,
           "type": "KOMMUNICATE_SUPPORT",
+          "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
         })).then(result=>{
             console.log("bot platform updated....",result);
             return result;
@@ -194,6 +195,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
       "applicationKey": application.applicationId,
       "authorization":new Buffer(applozicBot.userId+":"+applozicBot.deviceKey).toString('base64'),
       "type": "KOMMUNICATE_SUPPORT",
+      "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
     })).then(result=>{
         console.log("bot platform updated....",result);
         return result;
