@@ -3920,7 +3920,7 @@ outline: none;
 cursor: pointer;
 }
 
-#mck-msg-box-rich-text-container{
+.mck-msg-box-rich-text-container{
 	width: 93%;
     border-radius: 10px;
     background-color: #fff;

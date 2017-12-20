@@ -259,8 +259,8 @@ class Aside extends Component {
                         </div>
                         <div className="blk-lg-7">
                            <ul id="kommunicate-panel-tabs" className="list-inline km-nav-tab">
-                             <li className="active "><a className="li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
-                             <li><a id="km-customers-cell-link" className="li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
+                             <li className="active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
+                             <li><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
                              {/*
                                <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
                               */}
@@ -480,14 +480,14 @@ class Aside extends Component {
                                   id="km-delete-button"
                                   className="km-delete-button menu-item vis"
                                   title="Clear Messages"> Clear Messages </a></li>
-                                <li id="li-km-block-user" className="vis"><a href="javascript:void(0)"
+                                <li id="km-li-block-user" className="vis"><a href="javascript:void(0)"
                                   id="km-block-button" className="menu-item" title="Block User">Block
                                     User</a></li>
-                                <li id="li-km-group-info"
+                                <li id="km-li-group-info"
                                   className="km-group-menu-options n-vis"><a href="javascript:void(0)"
                                   id="km-group-info-btn" className="menu-item km-group-info-btn"
                                   title="Group Info"> Group Info </a></li>
-                                <li id="li-km-leave-group"
+                                <li id="km-li-leave-group"
                                   className="km-group-menu-options n-vis"><a href="javascript:void(0)"
                                   id="km-leave-group-btn" className="menu-item" title="Exit Group">
                                     Exit Group </a></li>
