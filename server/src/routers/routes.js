@@ -19,7 +19,7 @@ const autoSuggestValidation = require('../autosuggest/validation');
 const profileImageController = require('../profileImage/profileImageController');
 const applicationValidation = require('../application/validation');
 const inAppMsgController  = require('../application/inAppMsgController');
-const issueTypecontroller = require('../issuetype/issueTypeController');
+const issueTypeController = require('../issuetype/issueTypeController');
 const issueTypeValidation = require('../issuetype/validation');
 const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController');
 const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
@@ -112,7 +112,7 @@ groupRouter.post('/create',userController.createGroupOfAllAgents)
 /**
  * CRUD API's for 'IssueType' object
  */
-issueTypeRouter.post('/',issueTypeAutoReplyController.createIssueTypeAutoReply)
+issueTypeRouter.post('/',validate(issueTypeValidation.createIssueType), issueTypeController.createIssueType)
 /**
  * CRUD API's for 'IssueTypeAutoReply' object
  */

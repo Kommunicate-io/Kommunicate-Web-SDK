@@ -13,21 +13,10 @@ exports.getByCustomerId=(customerId)=>{
 }
 
 
-exports.createIssue = (options) => {
-    console.log("creating new issue, options:", options);
-    let IssueType = {
-        issueName: options.issueName,
-        description: options.description,
-        createdBy: options.createdBy,
-        status: options.status,
-        customerId: options.customerId
-    }
-
-    return Promise.resolve(issueTypeModel.create(IssueType)).then(result => {
-        console.log("issue created successfully", result);
-        return result;
+exports.createIssueType = (IssueType) => {
+    return Promise.resolve(issueTypeModel.create(IssueType)).catch(err=>{
+        return { code: err.parent.code, message: err.parent.sqlMessage }
     });
-
 }
 
 exports.updateIssueType=(issueType)=>{
