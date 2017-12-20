@@ -13,7 +13,8 @@ $(document).ready(function(){
         $currentUrl = window.location.href,
         $DashboardApiUrl, $DashboardApplozicApiUrl, $DashboardUrl,
         // $mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        $mailformat = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$/;
+        $mailformat = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$/,
+        $passformat = /^.{6,}$/;
     
         if($currentUrl.indexOf($queryString) != -1) {
             $DashboardApiUrl = "https://api-test.kommunicate.io";
@@ -124,7 +125,7 @@ $(document).ready(function(){
                             if($("#km-login-userPassword").val() == "") {
                                 $kmErrorMessage1.html("Password is required. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
                                 window.setTimeout("$('#km-form-error1').removeClass('shown-vis').addClass('hidden-vis')", 3000);
-                            } else if($("#km-login-userPassword").length < 6) {
+                            } else if(!$("#km-login-userPassword").val().match($passformat) ) {
                                 $kmErrorMessage1.html("Password must be minimum of 6 characters. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
                                 window.setTimeout("$('#km-form-error1').removeClass('shown-vis').addClass('hidden-vis')", 3000);
                             } else {
