@@ -54,9 +54,6 @@ Kommunicate.richMsgEventHandler ={
        var roomInfoElem = document.createElement('div');
        roomInfoElem.innerHTML=Kommunicate.markup.getSingleRoomPaxInfo(roomCount);
        container.getElementsByClassName('km-room-person-selector-container')[0].appendChild(roomInfoElem);
-        
-        //slick.js
-        Kommunicate.richMsgEventHandler.initializeSlick($applozic);
     },
     processSelectedRoom:function(e){
         //TODO : handle multiple room select  
@@ -65,7 +62,7 @@ Kommunicate.richMsgEventHandler ={
        // $(e.target).closest('mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field')
         var roomGuestJson =[];
        //var roomGuest= document.querySelectorAll(".km-room-person-selector-container input.km-room-number-field");
-       var roomGuest = $(e.target).closest('mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field');
+       var roomGuest = $(e.target).closest('.mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field');
      
        // TODO: process number of child if required
         var message=""
