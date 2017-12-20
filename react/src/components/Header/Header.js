@@ -63,12 +63,16 @@ return imageLink;
     return (
       <header className="app-header navbar">
         <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
-        <Link className="a-undecorated" redirect to ="/dashboard">
-        <a href ="" target="_blank" className = "a-undecorated a-unclickable"/> <img src="/img/logo01.svg" height="50" width="50"></img>
-        <span className= "brand-name">KOMMUNICATE</span></Link>
+        <Link className="a-undecorated" to ="/dashboard">
+          {
+            // <a href ="" target="_blank" className = "a-undecorated a-unclickable"/>
+          }
+          <img src="/img/logo01.svg" height="50" width="50"></img>
+          <span className= "brand-name">KOMMUNICATE</span>
+        </Link>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item d-md-down-none">
-            <Link className="nav-link" redirect to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
+            <Link className="nav-link" to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
           </li>
           <li className="nav-item">
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
