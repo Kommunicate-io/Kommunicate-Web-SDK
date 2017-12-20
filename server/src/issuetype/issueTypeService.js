@@ -8,8 +8,12 @@ exports.getById = (issueTypeId) => {
     return Promise.resolve(issueTypeModel.findAll({where:{id:issueTypeId}}));
 }
 
-exports.getByCustomerId=(customerId)=>{
-    return Promise.resolve(issueTypeModel.findAll({where:{customerId:customerId}}));
+exports.getIssueType=(issueType)=>{
+    let criteria={}
+    if(criteria.id){
+        criteria.id=issueType.id
+    }
+    return Promise.resolve(issueTypeModel.findAll({where:criteria}));
 }
 
 

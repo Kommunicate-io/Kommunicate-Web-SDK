@@ -1,9 +1,9 @@
 const issueTypeService = require('./issueTypeService.js')
 
 
-exports.getAllIssueType = (req, res) => {
+exports.getIssueType = (req, res) => {
 
-    issueTypeService.getByCustomerId(req.param.customerID).then(issueTypes => {
+    issueTypeService.getIssueType(req.param.customerID).then(issueTypes => {
         if (!issueTypes) {
             res.status(404).json({ code: "NO_ISSUE_FOUND" });
         } else {
