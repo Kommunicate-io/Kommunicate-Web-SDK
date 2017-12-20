@@ -8,8 +8,6 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
-    //slick.js
-   Kommunicate.richMsgEventHandler.initializeSlick($applozic);
 }
 
 
@@ -19,12 +17,12 @@ Kommunicate.attachEvents = function($applozic){
  * define your event listeners.
  */
 Kommunicate.richMsgEventHandler ={
-    initializeSlick:function($applozic){
+    initializeSlick:function($cardMessageContainer){
         //console.log("initializing slick");
-        var cardMessageContainer = $applozic('.km-card-message-container');
+       // var cardMessageContainer = $applozic('.km-card-message-container');
         //console.log("selected by class",cardMessageContainer);
         
-           /*  cardMessageContainer.slick({
+            $cardMessageContainer.not('.slick-initialized').slick({
                     dots: false,
                     infinite: false,
                     speed: 300,
@@ -33,7 +31,7 @@ Kommunicate.richMsgEventHandler ={
                     variableWidth: true,
                     prevArrow: false,
                     nextArrow: false
-                }); */
+                });
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
@@ -56,15 +54,20 @@ Kommunicate.richMsgEventHandler ={
        var roomInfoElem = document.createElement('div');
        roomInfoElem.innerHTML=Kommunicate.markup.getSingleRoomPaxInfo(roomCount);
        container.getElementsByClassName('km-room-person-selector-container')[0].appendChild(roomInfoElem);
-          
+        
+        //slick.js
+        Kommunicate.richMsgEventHandler.initializeSlick($applozic);
     },
     processSelectedRoom:function(e){
         //TODO : handle multiple room select  
         // TODO: number of rooms should not greater than entered erlier.
        // var roomInfoContainer = e.target.parentElement.parentElement;
+       // $(e.target).closest('mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field')
         var roomGuestJson =[];
-       var roomGuest= document.querySelectorAll(".km-room-person-selector-container input.km-room-number-field");
-        // TODO: process number of child if required
+       //var roomGuest= document.querySelectorAll(".km-room-person-selector-container input.km-room-number-field");
+       var roomGuest = $(e.target).closest('mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field');
+     
+       // TODO: process number of child if required
         var message=""
        for(var i=0;i<roomGuest.length;i++){
         roomGuestJson.push({"NoOfAdults":roomGuest[i].value,"NoOfChild": 0,"ChildAge": []});

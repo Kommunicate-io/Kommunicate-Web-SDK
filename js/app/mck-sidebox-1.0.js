@@ -3951,7 +3951,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div id="mck-msg-box-rich-text-container" class =${kmRichTextMarkupVisibility} >'+
+                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility}" >'+
                 '{{html kmRichTextMarkup}}</div>'+
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
                 '</div>' +
@@ -4482,7 +4482,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-                Kommunicate.richMsgEventHandler.initializeSlick($applozic);
+
+                Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12 > .km-card-message-container"));
+
                 if (msg.contentType === 23) {
 
                     if (msg.metadata.msg_type === "BUTTON") {
