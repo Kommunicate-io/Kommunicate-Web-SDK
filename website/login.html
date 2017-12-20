@@ -1,8 +1,8 @@
 ---
 layout:
-title: SignUp
+title: Login
 ---
-<html> 
+<html>  
 
   <head>
     <meta charset="utf-8">
@@ -13,7 +13,7 @@ title: SignUp
     <meta name="author" content="">
     <meta http-equiv=”content-language” content=”en-us”>
 
-    <title>Signup | Kommunicate.io</title>
+    <title>Login | Kommunicate.io</title>
     
     {% include headtag.html %}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
@@ -24,34 +24,10 @@ title: SignUp
 
   <body id="page-top">
 
-    {% include_relative /sections/signup-main-section.html %}
+    {% include_relative /sections/login-main-section.html %}
 
     <script type="text/javascript" src="/assets/resources/js/classie.js"></script>
+    </script>
   </body>
-
-  <script>
-  // Function to capture only Email Id from URL
-  function getQueryVariable(variable) {
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            if (pair[0] == variable) {
-                return pair[1];
-            }
-        }
-        return (false);
-    }
-    var newEmailValueFronURL = getQueryVariable("email");
-
-    if (newEmailValueFronURL == false) {
-        //        console.log("No Email Id found in the URL");
-        var emailInputField = document.getElementById("km-signup-userId").value = '';
-    } else {
-        var updatedNewEmailValueFronURL = newEmailValueFronURL.replace('%40', '@').replace('%2B', '+');
-        //        console.log(updatedNewEmailValueFronURL);
-        var emailInputField = document.getElementById("km-signup-userId").value = updatedNewEmailValueFronURL;
-    }
-  </script>
 
 </html>

@@ -1,4 +1,4 @@
-<section class="signup-main-section" id="signup-main-section">
+<section class="login-main-section" id="login-main-section">
     <header>
         <div class="header-container">
             <div class="logo-container">
@@ -59,38 +59,123 @@
                     </g>
                   </svg>
             </div>
-            <div class="link-container">
-                <p>
-                    Already have an account? <a href="/login/">Sign In</a>
-                </p> 
-            </div>
         </div>
     </header>
 
     <div class="container">
         <div class="row form-row">
-            <div class="col-lg-12">
-                <h1 class="signup-heading">Sign Up</h1>
-                <h3 class="signup-sub-heading">Your account information</h3>
-            
-                <form action="javascript:void(0);" method="post" id="km-signup-form" class="km-signup-form">
-                  <div id="km-form-error1" class="km-form-error1 hidden-vis">
+
+            <div class="col-lg-6 km-forgot-password-div hide">
+                <h1 class="signup-heading">Resetting Password</h1>
+                <h3 class="signup-sub-heading">Please enter your registered email ID, your password reset link will be sent there.</h3>
+                <div id="km-form-error2" class="km-form-error1 hidden-vis">
+                    There is some problem with your request. Please try again after some time.
+                </div>
+                <div class="group form-group forgot-pass-form-group">
+                        <input type="email" id="km-forgot-pass-userId" name="userId" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$" placeholder=" " required autofocus onfocus="this.removeAttribute('readonly');" readonly autocomplete="off" onkeypress="onEnterKeyPress3(event)" >
+                        <label class="label-for-input email-label">Email Id</label>
+                </div>
+                <div id="frgt-successful-message-div" class="frgt-successful-message-div hide">
+                    <p>Password reset link has been sent to your Email Id</p>
+                    <div id="frgt-successful-message-icon" class="frgt-successful-message-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56px" height="56px" viewBox="0 0 56 56" version="1.1">
+                                <defs/>
+                                <g id="LOGIN-&amp;-SIGNUP-PAGES" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="Forgot-Password" transform="translate(-367.000000, -245.000000)" fill-rule="nonzero" fill="#3DE00E">
+                                        <g id="tick" transform="translate(367.000000, 245.000000)">
+                                            <polygon id="Shape" points="16.7125 23.275 14.175 25.6375 26.075 38.4125 53.9875 10.4125 51.5375 7.9625 26.075 33.425"/>
+                                            <path d="M0.525,28 C0.525,43.225 12.8625,55.475 28,55.475 C43.1375,55.475 55.475,43.225 55.475,28 L51.975,28 C51.975,41.2125 41.2125,51.975 28,51.975 C14.7875,51.975 4.025,41.2125 4.025,28 C4.025,14.7875 14.7875,4.025 28,4.025 L28,0.525 C12.8625,0.525 0.525,12.8625 0.525,28 Z" id="Shape"/>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                    </div>
+                    <div class="login-button-redirect-div">
+                        <button type="submit" id="login-redirect-button" class="km-signup-form-submit km-login-next-btn">Login</button>
+                    </div>
+                </div>
+                
+                <div class="group form-group forgot-button-form-group">
+                    <button type="submit" id="km-forgot-pass-btn" class="km-signup-form-submit km-login-next-btn" >Submit</button>           
+                    <button type="submit" id="km-forgot-pass-back-btn" class="km-signup-form-submit km-login-back-btn">Back</button>            
+                </div>
+            </div>
+
+            <div class="col-lg-6 km-login-div">
+                <h1 class="signup-heading">Login</h1>
+                <h3 class="signup-sub-heading">Sign in to your account</h3>
+                <div id="km-form-error1" class="km-form-error1 hidden-vis">
                       There is some problem with your request. Please try again after some time.
                   </div>
                    <div class="group form-group email-form-group">
-                        <input type="email" id="km-signup-userId" name="userId" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$" placeholder=" " required autofocus onfocus="this.removeAttribute('readonly');" readonly autocomplete="off" >
+                        <input type="email" id="km-login-userId" name="userId" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$" placeholder=" " required autofocus onfocus="this.removeAttribute('readonly');" readonly autocomplete="off" onkeypress="onEnterKeyPress1(event)" >
                         <label class="label-for-input email-label">Email Id</label>
                     </div>
-                    <div class="group form-group email-form-group">
-                        <input type="password" id="km-signup-userPassword" name="userPassword" pattern=".{6,}" placeholder=" " required onfocus="this.removeAttribute('readonly');" readonly autocomplete="nope">
-                        <label class="label-for-input email-label">Create Password</label>
-                        <label class="label-for-input2 email-label">Your password must have a minimum of 6 characters</label>
+                   
+                    <div class="group form-group password-form-group  hide">
+                        <input type="password" id="km-login-userPassword" name="userPassword" pattern=".{6,}" placeholder=" " required onfocus="this.removeAttribute('readonly');" readonly autocomplete="nope" onkeypress="onEnterKeyPress2(event)">
+                        <label class="label-for-input email-label">Password</label>
+<!--                        <label class="label-for-input2 email-label">Your password must have a minimum of 6 characters</label>-->
                     </div>
-                    <div class="group form-group button-form-group">
-                        <button type="submit" id="km-signup-form-submit" class="km-signup-form-submit">Create Account</button>
+                    <div class="group form-group login-button-form-group">
+                        <button type="submit" id="km-login-next-btn" class="km-signup-form-submit km-login-next-btn" >Next</button>
+                        <button type="submit" id="km-login-pass-next-btn" class="km-signup-form-submit km-login-next-btn km-login-pass-next-btn hide">Next</button>
+                        <button type="submit" id="km-login-back-btn" class="km-signup-form-submit km-login-back-btn hide">Back</button>           
                     </div>
-                </form>
+                    <div class="forgot-password-link hide">
+                        <a id="km-forgot-pass-link" class="km-signup-form-submit km-forgot-pass-btn" >Forgot Password?</a>
+                    </div>
+            </div>
+            <div class="col-lg-6 text-center km-register-now">
+                <h1 class="signup-heading">Sign Up</h1>
+                <h3 class="signup-sub-heading">Sign in to your account</h3>
+                <div class="group form-group button-form-group">
+                        <button type="submit" id="km-register-now-btn" class="km-signup-form-submit km-register-now-btn">Register Now</button>
+                </div>
             </div>
         </div>
     </div>
 </section>
+<script>
+
+    function onEnterKeyPress1(event) {
+        if (event.charCode == 13 || event.keyCode == 13) {
+            document.getElementById('km-login-next-btn').click();
+        }
+    }
+    function onEnterKeyPress2(event) {
+        if (event.charCode == 13 || event.keyCode == 13) {
+            document.getElementById('km-login-pass-next-btn').click();
+        }
+    }
+    function onEnterKeyPress3(event) {
+        if (event.charCode == 13 || event.keyCode == 13) {
+            document.getElementById('km-forgot-pass-btn').click();
+        }
+    }
+
+    $(".forgot-password-link a").click(function() {
+        $(".km-login-div").removeClass('show').addClass('hide');
+        $(".km-forgot-password-div").removeClass('hide').addClass('show');
+    });
+
+    $("#km-forgot-pass-back-btn").click(function() {
+        $(".km-login-div").removeClass('hide').addClass('show');
+        $(".km-forgot-password-div").removeClass('show').addClass('hide');
+    });
+
+    $("#login-redirect-button").click(function() {
+        $(".km-forgot-password-div").addClass('hide').removeClass('show');
+        $(".km-login-div").addClass('show').removeClass('hide');
+        $("#frgt-successful-message-div").removeClass('show').addClass('hide');
+        $(".km-forgot-password-div .signup-heading").removeClass('hide').addClass('show');
+        $(".km-forgot-password-div .signup-sub-heading").removeClass('hide').addClass('show');
+        $(".forgot-button-form-group").removeClass('hide').addClass('show');
+        $("#km-login-userId").focus();
+        $("#km-login-userId").val("");
+    });
+
+    $("#km-register-now-btn").click(function() {
+        window.location.assign("/signup/");
+    });
+</script>
