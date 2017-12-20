@@ -30,6 +30,10 @@ class Register extends Component {
     /*const isInvited = params.get('invite');*/
 
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
+    const email = CommonUtils.getUrlParameter(search, 'email');
+    if (email) {
+      this.setState({email:email});
+    }
 
    if(isInvited){
      this.state.isInvite=true;
@@ -121,13 +125,15 @@ class Register extends Component {
                 <div className="card-block p-4">
                   <h1>Register</h1>
                   <p className="text-muted">Sign Up</p>
+                  <input type="hidden" value="something"/>
+
                    <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
                    <input autofocus type="text" className="form-control" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
                   </div>
                   <div className="input-group mb-3">
                     <span className="input-group-addon">@</span>
-                    <input id = "input-email" type="text" className="form-control" placeholder="Email" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email}/>
+                    <input id = "input-email" type="text" className="form-control" autoComplete="off" placeholder="Email" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email}/>
                   </div>
                   <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-lock"></i></span>
