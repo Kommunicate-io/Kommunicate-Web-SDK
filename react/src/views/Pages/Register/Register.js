@@ -125,7 +125,6 @@ class Register extends Component {
                 <div className="card-block p-4">
                   <h1>Register</h1>
                   <p className="text-muted">Sign Up</p>
-                  <input type="hidden" value="something"/>
 
                    <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
