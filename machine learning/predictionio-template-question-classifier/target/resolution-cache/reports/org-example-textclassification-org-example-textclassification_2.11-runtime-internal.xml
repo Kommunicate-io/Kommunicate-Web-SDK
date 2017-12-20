@@ -7,15 +7,15 @@
 		revision="0.1-SNAPSHOT"
 		conf="runtime-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
-		date="20171215172035"/>
+		date="20171217011358"/>
 	<dependencies>
 		<module organisation="org.apache.lucene" name="lucene-core">
-			<revision name="6.5.1" status="release" pubdate="20170426233401" resolver="public" artresolver="public" homepage="" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="1">
+			<revision name="6.5.1" status="release" pubdate="20170426233401" resolver="sbt-chain" artresolver="sbt-chain" homepage="" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
 				<license name="Apache 2" url="http://www.apache.org/licenses/LICENSE-2.0.txt"/>
-				<metadata-artifact status="successful" details="" size="3035" time="1148" location="/Users/devashish/.ivy2/cache/org.apache.lucene/lucene-core/ivy-6.5.1.xml" searched="true" original-local-location="/Users/devashish/.ivy2/cache/org.apache.lucene/lucene-core/ivy-6.5.1.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/lucene/lucene-core/6.5.1/lucene-core-6.5.1.pom"/>
+				<metadata-artifact status="no" details="" size="525151" time="0" location="/Users/devashish/.ivy2/cache/org.apache.lucene/lucene-core/ivy-6.5.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/apache/lucene/lucene-core/6.5.1/lucene-core-6.5.1.pom"/>
 				<caller organisation="org-example-textclassification" name="org-example-textclassification_2.11" conf="compile, runtime-internal, runtime, optional" rev="6.5.1" rev-constraint-default="6.5.1" rev-constraint-dynamic="6.5.1" callerrev="0.1-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="lucene-core" type="jar" ext="jar" status="successful" details="" size="2776125" time="2089" location="/Users/devashish/.ivy2/cache/org.apache.lucene/lucene-core/jars/lucene-core-6.5.1.jar">
+					<artifact name="lucene-core" type="jar" ext="jar" status="no" details="" size="2776125" time="0" location="/Users/devashish/.ivy2/cache/org.apache.lucene/lucene-core/jars/lucene-core-6.5.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/apache/lucene/lucene-core/6.5.1/lucene-core-6.5.1.jar"/>
 					</artifact>
 				</artifacts>

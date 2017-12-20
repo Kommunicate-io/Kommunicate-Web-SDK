@@ -4,7 +4,7 @@
 		module="org-example-textclassification_2.11"
 		revision="0.1-SNAPSHOT"
 		status="integration"
-		publication="20171215172035"
+		publication="20171217011358"
 	>
 		<description>
 		org.example.textclassification
