@@ -18,7 +18,7 @@ $(document).ready(function(){
         if($currentUrl.indexOf($queryString) != -1) {
             $DashboardApiUrl = "https://api-test.kommunicate.io";
             $DashboardApplozicApiUrl = "https://apps-test.applozic.com";
-            $DashboardUrl = "https://dashboard-test.applozic.com";
+            $DashboardUrl = "https://dashboard-test.kommunicate.com";
         } else {
             $DashboardApiUrl = "https://api.kommunicate.io";
             $DashboardApplozicApiUrl = "https://chat.kommunicate.io";
