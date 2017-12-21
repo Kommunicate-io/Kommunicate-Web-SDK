@@ -19,10 +19,11 @@ Kommunicate.attachEvents = function($applozic){
 Kommunicate.richMsgEventHandler ={
     initializeSlick:function($cardMessageContainer){
         //console.log("initializing slick");
-       // var cardMessageContainer = $applozic('.km-card-message-container');
+        //var cardMessageContainer = $applozic('.km-card-message-container');
         //console.log("selected by class",cardMessageContainer);
+        //.not('.slick-initialized')
         
-            $cardMessageContainer.not('.slick-initialized').slick({
+            $cardMessageContainer.slick({
                     dots: false,
                     infinite: false,
                     speed: 300,
