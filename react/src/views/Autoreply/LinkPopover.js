@@ -39,7 +39,7 @@ class LinkPopover extends Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div>
         <button className="welcome-msg-textarea-button" ref="target" onClick={this.handleClick.bind(this)}><i className="icon-link icons"></i> Insert Link </button>

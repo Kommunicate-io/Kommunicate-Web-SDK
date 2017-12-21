@@ -9022,6 +9022,7 @@ hr.transparent {
 
 .you-can-update-status .text-style-2 {
   color: #4997f3;
+  cursor: pointer;
 }
 
 .start-solving-your-user {
@@ -9199,4 +9200,67 @@ hr.transparent {
   height: 50px;
   width: 100%;
 }
+
+.full-screen-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.84);
+    z-index: 2;
+    cursor: block;
+}
+
+.show-full-screen-overlay {
+  display: block;
+}
+
+.hide-full-screen-overlay {
+  display: none;
+}
+
+.full-screen-overlay  p{
+    position: absolute;
+    top: 36%;
+    left: 54%;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 0.9px;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+.curved-arrow {
+  border: 5px solid transparent;
+  border-bottom-color: #e5dfdf;
+  /*border-right-color: #e5dfdf;*/
+  height: 200px;
+  width: 350px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0%;
+  left: 65%;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  margin:30px auto;
+}
+
+/*.curved-arrow:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  height: 0;
+  width: 0;
+  border-left: 30px solid #e5dfdf;
+  border-top: 30px solid #e5dfdf;
+  border-bottom: 30px solid #e5dfdf;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}*/
 
