@@ -37,8 +37,6 @@ function ApplozicSidebox() {
     }, {
             "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
 
-    },{
-        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }, {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
 
@@ -57,6 +55,8 @@ function ApplozicSidebox() {
 
     }, {
           "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
+    }, {
+        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     } ];
     this.load = function() {
         try {
