@@ -46,6 +46,8 @@ function ApplozicSidebox() {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
+    }, {
+            "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }];
     var mck_script_loader2 = [ {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
@@ -55,8 +57,6 @@ function ApplozicSidebox() {
 
     }, {
           "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
-    }, {
-        "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     } ];
     this.load = function() {
         try {
