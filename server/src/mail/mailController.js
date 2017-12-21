@@ -100,11 +100,11 @@ const getEmailFormat=(options,custInfo)=>{
 
                 case "INVITE_TEAM_MAIL":
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
-                templateReplacement[":adminName"] = custInfo.companyName!=='' && null!==custInfo.companyName?options.adminName+" from "+custInfo.companyName:options.adminName,
+                templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.adminName+" from "+custInfo.companyName:options.adminName,
                 templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
-                options.subject =  custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
+                options.subject =  custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
                 options.bcc = "hello@kommunicate.io";
                 break;
 
