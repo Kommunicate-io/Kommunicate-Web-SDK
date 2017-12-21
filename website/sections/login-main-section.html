@@ -59,13 +59,18 @@
                     </g>
                   </svg>
             </div>
+            <div class="link-container">
+                <p>
+                    New user? <a href="/signup/">Sign Up!</a>
+                </p> 
+            </div>
         </div>
     </header>
 
     <div class="container">
         <div class="row form-row">
 
-            <div class="col-lg-6 km-forgot-password-div hide">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 km-forgot-password-div hide">
                 <h1 class="signup-heading">Resetting Password</h1>
                 <h3 class="signup-sub-heading">Please enter your registered email ID, your password reset link will be sent there.</h3>
                 <div id="km-form-error2" class="km-form-error1 hidden-vis">
@@ -101,36 +106,43 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 km-login-div">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 km-login-div">
                 <h1 class="signup-heading">Login</h1>
                 <h3 class="signup-sub-heading">Sign in to your account</h3>
                 <div id="km-form-error1" class="km-form-error1 hidden-vis">
                       There is some problem with your request. Please try again after some time.
-                  </div>
+                </div>
                    <div class="group form-group email-form-group">
                         <input type="email" id="km-login-userId" name="userId" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,10}$" placeholder=" " required autofocus onfocus="this.removeAttribute('readonly');" readonly autocomplete="off" onkeypress="onEnterKeyPress1(event)" >
                         <label class="label-for-input email-label">Email Id</label>
                     </div>
-                   
-                    <div class="group form-group password-form-group  hide">
+                    <div class="group form-group login-button-form-group">
+                        <button type="submit" id="km-login-next-btn" class="km-signup-form-submit km-login-next-btn" >Next</button>         
+                    </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 km-login-pass-div hide">
+                    <h1 class="signup-heading">Password</h1>
+                    <h3 class="signup-sub-heading">Enter password to continue</h3>
+                    <div id="km-form-error3" class="km-form-error1 hidden-vis">
+                          There is some problem with your request. Please try again after some time.
+                    </div>
+                    <div class="group form-group password-form-group">
                         <input type="password" id="km-login-userPassword" name="userPassword" pattern=".{6,}" placeholder=" " required onfocus="this.removeAttribute('readonly');" readonly autocomplete="nope" onkeypress="onEnterKeyPress2(event)">
                         <label class="label-for-input email-label">Password</label>
-<!--                        <label class="label-for-input2 email-label">Your password must have a minimum of 6 characters</label>-->
                     </div>
-                    <div class="group form-group login-button-form-group">
-                        <button type="submit" id="km-login-next-btn" class="km-signup-form-submit km-login-next-btn" >Next</button>
-                        <button type="submit" id="km-login-pass-next-btn" class="km-signup-form-submit km-login-next-btn km-login-pass-next-btn hide">Next</button>
-                        <button type="submit" id="km-login-back-btn" class="km-signup-form-submit km-login-back-btn hide">Back</button>           
+                    <div class="group form-group login-pass-button-form-group ">
+                        <button type="submit" id="km-login-pass-next-btn" class="km-signup-form-submit km-login-next-btn km-login-pass-next-btn">Next</button>
+                        <button type="submit" id="km-login-back-btn" class="km-signup-form-submit km-login-back-btn">Back</button>           
                     </div>
-                    <div class="forgot-password-link hide">
+                    <div class="forgot-password-link">
                         <a id="km-forgot-pass-link" class="km-signup-form-submit km-forgot-pass-btn" >Forgot Password?</a>
                     </div>
             </div>
-            <div class="col-lg-6 text-center km-register-now">
+            <div class="col-lg-6 col-md-6 col-sm-6 text-center km-register-now">
                 <h1 class="signup-heading">Sign Up</h1>
-                <h3 class="signup-sub-heading">Sign in to your account</h3>
+                <h3 class="signup-sub-heading">New user? Sign up now!</h3>
                 <div class="group form-group button-form-group">
-                        <button type="submit" id="km-register-now-btn" class="km-signup-form-submit km-register-now-btn">Register Now</button>
+                    <button type="submit" id="km-register-now-btn" class="km-signup-form-submit km-register-now-btn">Register Now</button>
                 </div>
             </div>
         </div>
@@ -156,23 +168,20 @@
 
     $(".forgot-password-link a").click(function() {
         $(".km-login-div").removeClass('show').addClass('hide');
+        $(".km-login-pass-div").removeClass('show').addClass('hide');
         $(".km-forgot-password-div").removeClass('hide').addClass('show');
     });
 
     $("#km-forgot-pass-back-btn").click(function() {
         $(".km-login-div").removeClass('hide').addClass('show');
+        $("#km-login-userId").focus();
+        $("#km-login-userId").val("");
+        $(".km-login-pass-div").removeClass('show').addClass('hide');
         $(".km-forgot-password-div").removeClass('show').addClass('hide');
     });
 
     $("#login-redirect-button").click(function() {
-        $(".km-forgot-password-div").addClass('hide').removeClass('show');
-        $(".km-login-div").addClass('show').removeClass('hide');
-        $("#frgt-successful-message-div").removeClass('show').addClass('hide');
-        $(".km-forgot-password-div .signup-heading").removeClass('hide').addClass('show');
-        $(".km-forgot-password-div .signup-sub-heading").removeClass('hide').addClass('show');
-        $(".forgot-button-form-group").removeClass('hide').addClass('show');
-        $("#km-login-userId").focus();
-        $("#km-login-userId").val("");
+        window.location.assign("/login/");
     });
 
     $("#km-register-now-btn").click(function() {

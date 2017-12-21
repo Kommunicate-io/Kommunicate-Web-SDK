@@ -5,6 +5,7 @@ $(document).ready(function(){
         $kmSignupSubmitBtn = $("#km-signup-form-submit"),
         $kmErrorMessage1 = $("#km-form-error1"),
         $kmErrorMessage2 = $("#km-form-error2"),
+        $kmErrorMessage3 = $("#km-form-error3"),
         $kmLoginNextBtn = $("#km-login-next-btn"),
         $kmLoginPassNextBtn = $("#km-login-pass-next-btn"),
         $kmLoginBackBtn = $("#km-login-back-btn"),
@@ -28,9 +29,7 @@ $(document).ready(function(){
     
 
 /* ***** Signup Form AJAX Call ***** */
-        $kmSignupForm.submit(function(e) {
-//            $kmSignupSubmitBtn.attr('disabled', true);
-            
+        $kmSignupForm.submit(function(e) {            
             var user = new Object();
             user.userName = $("#km-signup-userId").val();
             user.password = $("#km-signup-userPassword").val();
@@ -44,14 +43,13 @@ $(document).ready(function(){
                 
                 success: function(data) {
                     if(data.code == "SUCCESS") {
-                        console.log("SUCCESS", data);
+                        $kmSignupSubmitBtn.attr('disabled', true);
+                        // console.log("SUCCESS", data);
                         window.location = $DashboardUrl + "/setUpPage";
                     } else if(data.code == "USER_ALREADY_EXISTS") {
-                        console.log("User Already Exist", data);
-                        $kmErrorMessage1.html("User already exist. Please login.");
+                        // console.log("User Already Exist", data);
+                        $kmErrorMessage1.html("User already exist. Please login.<br><br>");
                         $kmErrorMessage1.removeClass('hidden-vis').addClass('shown-vis');
-                    } else {
-                        
                     }
                 },
                 error: function(data) {
@@ -80,13 +78,14 @@ $(document).ready(function(){
 
             var userLogin = $.ajax({
                 url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+                // url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
                 type: "get",
                 contentType: "application/json",
                 success: function(data) {
                     var numOfApp=Object.keys(data).length;
-                        // console.log(numOfApp);
-                        var applicationIds=Object.keys(data)[0];
-                        // console.log(applicationIds);
+                    // console.log(numOfApp);
+                    var applicationIds=Object.keys(data)[0];
+                    // console.log(applicationIds);
 
                     if(numOfApp < 1) {
                         // console.log("User not found", data);
@@ -96,38 +95,25 @@ $(document).ready(function(){
 
                     } else if(numOfApp === 1) {
                         // console.log("User Found", data);  
-                        $(".km-login-div .signup-heading").html("Password");
-                        $(".km-login-div .signup-sub-heading").html("Enter password to continue");
-                        $(".password-form-group").removeClass('hide').addClass('show');
-                        $(".email-form-group").addClass('hide').removeClass('show');
-                        $kmLoginBackBtn.addClass('show').removeClass('hide');
-                        $kmLoginNextBtn.addClass('hide').removeClass('show');
-                        $kmLoginPassNextBtn.addClass('show').removeClass('hide');
+                        $(".km-login-pass-div").removeClass('hide').addClass('show');
+                        $(".km-login-div").addClass('hide').removeClass('show');
                         $("#km-login-userPassword").focus();
-                        $(".forgot-password-link").addClass('show').removeClass('hide');
                         
                         $kmLoginBackBtn.click(function() {
-                            $(".password-form-group").removeClass('show').addClass('hide');
-                            $(".email-form-group").addClass('show').removeClass('hide');
-                            $(".km-login-div .signup-heading").html("Login");
-                            $(".km-login-div .signup-sub-heading").html("Sign in to your account");
-                            $kmLoginBackBtn.addClass('hide').removeClass('show');
-                            $kmLoginNextBtn.addClass('show').removeClass('hide');
-                            $kmLoginPassNextBtn.addClass('hide').removeClass('show');
-                            $(".forgot-password-link").addClass('hide').removeClass('show');
+                            $(".km-login-pass-div").removeClass('show').addClass('hide');
+                            $(".km-login-div").addClass('show').removeClass('hide');
                             $("#km-login-userId").focus();
                             $("#km-login-userId").val("");
-                            
                         });
 
                         $kmLoginPassNextBtn.click(function() {
 
                             if($("#km-login-userPassword").val() == "") {
-                                $kmErrorMessage1.html("Password is required. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
-                                window.setTimeout("$('#km-form-error1').removeClass('shown-vis').addClass('hidden-vis')", 3000);
-                            } else if(!$("#km-login-userPassword").val().match($passformat) ) {
-                                $kmErrorMessage1.html("Password must be minimum of 6 characters. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
-                                window.setTimeout("$('#km-form-error1').removeClass('shown-vis').addClass('hidden-vis')", 3000);
+                                $kmErrorMessage3.html("Password is required. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
+                                window.setTimeout("$('#km-form-error3').removeClass('shown-vis').addClass('hidden-vis')", 3000);
+                            } else if(!$("#km-login-userPassword").val().match($passformat)) {
+                                $kmErrorMessage3.html("Password must be minimum of 6 characters. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
+                                window.setTimeout("$('#km-form-error3').removeClass('shown-vis').addClass('hidden-vis')", 3000);
                             } else {
                             // console.log("Password's Next Button Clicked.");
                             var $loginUserPassword = $("#km-login-userPassword").val();
@@ -138,14 +124,15 @@ $(document).ready(function(){
                             
                             var userLogins = $.ajax({
                                 url: $DashboardApiUrl + "/login",
+                                // url: "https://api-test.kommunicate.io/login",
                                 type: "post",
                                 contentType: "application/json",
                                 data: JSON.stringify(loginUserDetails),
                                 success: function(data) {
                                     if(data.code == "INVALID_CREDENTIALS") {
                                         // console.log(data, data.code);
-                                        $kmErrorMessage1.html("Entered password is incorrect.<br><br>");
-                                        $kmErrorMessage1.removeClass('hidden-vis').addClass('shown-vis');
+                                        $kmErrorMessage3.html("Entered password is incorrect.<br><br>");
+                                        $kmErrorMessage3.removeClass('hidden-vis').addClass('shown-vis');
                                     } else {
                                         $kmLoginPassNextBtn.attr('disabled', true);
                                         // console.log("Login Successful", data);
@@ -154,8 +141,8 @@ $(document).ready(function(){
                                 },
                                 error: function(data) {
                                     // console.log(data);
-                                    $kmErrorMessage1.html("Unable to process your request please try again later.");
-                                        $kmErrorMessage1.removeClass('hidden-vis').addClass('shown-vis');
+                                    $kmErrorMessage3.html("Unable to process your request please try again later.");
+                                        $kmErrorMessage3.removeClass('hidden-vis').addClass('shown-vis');
                                 }
                             });
                         }
@@ -174,7 +161,8 @@ $(document).ready(function(){
     
     /* *********** Forgot Password AJAX Call *********** */
     $kmForgotPassBtn.click(function() {
-
+        $kmForgotPassBtn.attr("disabled", true);
+        $kmForgotPassBtn.html("Submitting...", true);
         if($("#km-forgot-pass-userId").val() == "") {
             $kmErrorMessage2.html("Email Id is required. <br><br>").removeClass('hidden-vis').addClass('shown-vis');
             window.setTimeout("$('#km-form-error2').removeClass('shown-vis').addClass('hidden-vis')", 3000);
@@ -186,17 +174,19 @@ $(document).ready(function(){
             var loginIdOriginal = $("#km-forgot-pass-userId").val();
 
         var forgotPassword = $.ajax({
+            
             url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+            // url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
             type: "get",
             contentType: "application/json",
             success: function(data) {
                 var numOfApp=Object.keys(data).length;
-                console.log(numOfApp);
+                // console.log(numOfApp);
                 var applicationIds=Object.keys(data)[0];
-                console.log(applicationIds);
+                // console.log(applicationIds);
 
                 if(numOfApp < 1) {
-                    console.log("User not found", data);
+                    // console.log("User not found", data);
                     $kmErrorMessage2.html("User not found. Please Sign Up.<br><br>");
                     $kmErrorMessage2.removeClass('hidden-vis').addClass('shown-vis');
                     window.setTimeout("$('#km-form-error2').removeClass('shown-vis').addClass('hidden-vis')", 3000);
@@ -207,13 +197,14 @@ $(document).ready(function(){
                     frgtPassObj.applicationId = applicationIds; 
                     var userLogins = $.ajax({
                         url: $DashboardApiUrl + "/users/password-reset",
+                        // url: "https://api-test.kommunicate.io/users/password-reset",
                         type: "post",
                         contentType: "application/json",
                         data: JSON.stringify(frgtPassObj),
                         success: function(data) {
                             if(data.code == "SUCCESS") {
                                 
-                                console.log("Password Reset Link Sent Successfully", data);
+                                // console.log("Password Reset Link Sent Successfully", data);
                                 $(".forgot-pass-form-group").addClass('hide').removeClass('show');
                                 $("#frgt-successful-message-div").removeClass('hide').addClass('show');
                                 $(".km-forgot-password-div .signup-heading").removeClass('show').addClass('hide');
@@ -221,13 +212,13 @@ $(document).ready(function(){
                                 $(".forgot-button-form-group").removeClass('show').addClass('hide');
                                 $kmErrorMessage2.removeClass('show').addClass('hide');
                             } else {
-                                console.log(data.code, data);
+                                // console.log(data.code, data);
                                 $kmErrorMessage2.html("There is some problem with your request.<br><br>");
                                 $kmErrorMessage2.removeClass('hidden-vis').addClass('shown-vis');
                             }
                         },
                         error: function(data) {
-                            console.log(data);
+                            // console.log(data);
                             $kmErrorMessage2.html("Unable to process your request please try again later.");
                             $kmErrorMessage2.removeClass('hidden-vis').addClass('shown-vis');
                         }
@@ -235,7 +226,7 @@ $(document).ready(function(){
                 }
             },
             error: function(data) {
-                console.log(data);
+                // console.log(data);
                 $kmErrorMessage2.html("Unable to process your request please try again later.");
                 $kmErrorMessage2.removeClass('hidden-vis').addClass('shown-vis');
             }
