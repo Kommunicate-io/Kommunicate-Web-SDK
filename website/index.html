@@ -37,8 +37,6 @@ layout:
     <script type='text/javascript' src='/assets/resources/js/gsap/TimelineMax.min.js'></script>
     <script type='text/javascript' src='/assets/resources/js/gsap/TweenMax.min.js'></script>
     <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
-
-    </script>
     <script>
         var previewImage = document.getElementsByClassName("preview-image");
         var timeline = new TimelineMax();
@@ -72,44 +70,7 @@ layout:
             // });
     </script>
 
-    <!-- <script type="text/javascript">
-      $(document).ready(function($){
-        var $form_signin_modal = $('#SigninModal'),
-        $forgot_password_modal = $('#ForgotPassworModal'),
-        $forgot_password_link = $('#forgot-password'),
-        $back_to_login_link = $forgot_password_modal.find('.back-to-singin a');
-
-        //show forgot-password form
-    	$forgot_password_link.on('click', function(event){
-    		event.preventDefault();
-    		forgot_password_selected();
-    	});
-
-    	//back to login from the forgot-password form
-    	$back_to_login_link.on('click', function(event){
-    		event.preventDefault();
-    		back_to_login_selected();
-    	});
-
-      function back_to_login_selected(){
-    		$('#SigninModal').modal("show");
-        $('#ForgotPassworModal').modal("hide");
-    	}
-
-    	function forgot_password_selected(){
-        $('#SigninModal').modal("hide");
-        $('#ForgotPassworModal').modal("show");
-    	}
-      });
-    </script> -->
 <script>
-// $(".hero-section-icon-link").click(function() {
-//     $('html,body').animate({
-//         scrollTop: $("#homepage-beta-features-section").offset().top},
-//         'slow');
-//         // $('#smart-campaigns').addClass('shake');
-// });
-
 //Select all links with hashes
 $('a[href*="#"]')
   // Remove links that don't actually link to anything
@@ -147,6 +108,52 @@ $('a[href*="#"]')
     }
   });
 
+
+  //Signup Form Variables 
+  var $newSignupForm = $(".pre-signup-form"),
+          $newSignupEmailId = $("input[name=email]"),
+          $newSignupSubmitButton = $("button[name=submit-btn]"),
+          $successMsg = $(".signup-success-msg-div"),
+          $errorMsg1 = $(".signup-error-msg-div1"),
+          $errorMsg2 = $(".signup-error-msg-div2");
+          $newSignupForm.submit(function(e) {
+            var formm = $(this);
+            var user = new Object();
+            user.userName = formm.find("input[name=email]").val();
+            user.email = formm.find("input[name=email]").val();
+            user.namwe = formm.find("input[name=email]").val();
+            formm.find("button[name=submit-btn]").attr('disabled', true);
+            formm.find("button[name=submit-btn]").html('Submitting...');
+            var newUserSignup = $.ajax({
+              contentType: "application/json",
+              dataType: "json",
+              url: "https://api.kommunicate.io/customers?preSignUp=true",
+              type: "post",
+              data: JSON.stringify(user),
+              success: function(data) {
+                if (data.code === "SUCCESS") {
+                  // console.log("Registration Successful", data);
+                  $successMsg.removeClass('hide').addClass('show');
+                  $newSignupEmailId.addClass('hide');
+                  $newSignupSubmitButton.addClass('hide');
+                }
+                else {
+                  // console.log("User Already Exist", data);
+                  $errorMsg1.removeClass('hide').addClass('show');
+                  $newSignupEmailId.addClass('hide');
+                  $newSignupSubmitButton.addClass('hide');
+                }
+              },
+              error: function(data) {
+              // console.log(data);
+              $errorMsg2.removeClass('hide').addClass('show');
+              $newSignupSubmitButton.attr('disabled', false);
+              $newSignupSubmitButton.html('Get me in');
+              }
+            });
+            return false;
+          });
+
 </script>
 
     <script type="text/javascript">
@@ -166,8 +173,10 @@ $('a[href*="#"]')
              window.kommunicate = m;
              m._globals = o;
            })(document, window.kommunicate || {});
-            
-             $("form").attr("action", "https://dashboard-test.kommunicate.io/register");
+
+
+          //  $("form").attr("action", "https://test.kommunicate.io/signup/");
+
         }
         else {
             (function(d, m){
@@ -181,8 +190,10 @@ $('a[href*="#"]')
              window.kommunicate = m;
              m._globals = o;
            })(document, window.kommunicate || {});
-            
-            $("form").attr("action", "https://dashboard.kommunicate.io/register");
+
+
+          //  $("form").attr("action", "https://kommunicate.io/signup/");
+
         }
 
 
