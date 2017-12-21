@@ -20,7 +20,7 @@ class UserPopover extends Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props);
     return (
       <div>
         <p className="welcome-user-message" ref="target" onClick={this.handleClick.bind(this)}> {this.props.title} <i className="fa fa-info-circle fa-sm" ></i></p>

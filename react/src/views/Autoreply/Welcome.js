@@ -15,7 +15,8 @@ class Welcome extends Component{
     super(props);
 
     this.state = {
-     msg:''
+     msg:'',
+     showOverlay: false
     };
 this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
 
@@ -49,6 +50,19 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
        })
 
 	}
+
+  toggleOverlay = (e) => {
+
+    e.preventDefault();
+    console.log("hello");
+    if(this.state.showOverlay === false){
+      this.setState({showOverlay: true})
+    }else {
+      this.setState({showOverlay: false})
+    }
+
+  }
+
 render(){
   return (
 <div className="animated fadeIn">
@@ -70,7 +84,9 @@ render(){
                 <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
               </div>
               <div className="row">
-                <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. <span className="you-can-update-status text-style-2">Show me where</span></p>
+                <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. 
+                <span className="you-can-update-status text-style-2" onClick={this.toggleOverlay}>Show me where</span></p>
+                
               </div>
             </div>
           </div>
@@ -79,9 +95,12 @@ render(){
           <hr />
           <WhenYouAreOffline />
         </div>
-        <div className="card-footer">
-          <button type="button" className="btn btn-primary px-4" onClick={this.submitWelcomeMessage}>Save</button>
-          <button type="reset" className="btn btn-danger px-4">Cancel</button>
+        <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay": "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
+          <p>You can update your status
+          as offline or online from here</p>
+          {
+            <div className="curved-arrow"></div>
+          }
         </div>
       </div>
     </div>
