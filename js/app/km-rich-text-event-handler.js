@@ -23,7 +23,7 @@ Kommunicate.richMsgEventHandler ={
         //console.log("selected by class",cardMessageContainer);
         //.not('.slick-initialized')
         
-            $cardMessageContainer.slick({
+            /*$cardMessageContainer.slick({
                     dots: false,
                     infinite: false,
                     speed: 300,
@@ -32,7 +32,7 @@ Kommunicate.richMsgEventHandler ={
                     variableWidth: true,
                     prevArrow: false,
                     nextArrow: false
-                });
+                });*/
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
