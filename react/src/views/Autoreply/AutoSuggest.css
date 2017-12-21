@@ -1,0 +1,157 @@
+body{
+    font-family:'OpenSans', sans-serif;
+}
+.message-shortcuts-title {
+    
+    font-size: 18px;
+    letter-spacing: 1.3px;
+    text-align: left;
+    color: #515050;
+    font-weight: 100;
+}
+.message-shortcuts-title-wrapper {
+    padding: 20px;
+}
+.message-shortcuts-description {
+    font-family: OpenSans;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #515050;
+}
+.create-message-shortcut-button{
+    border: 0;
+    padding: 5px 17px;
+    margin-left: 30px;
+    margin-top: 9px;
+    margin-bottom: 20px;
+}
+.sign-box {
+    width: 28px;
+    padding: 7px;
+    background-color: #d8d8d8;
+    text-align: center;
+    border-radius: 4px 0 0 4px;
+}
+.shortcut-field-group{
+    display: flex
+}
+.field-title{
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #777474;
+    padding: 5px 0;
+}
+.shortcut-field {
+    opacity: 0.63;
+    border-radius: 0 4px 4px 0;
+    border: solid 1px #9cb3de;
+}
+.message-field {
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+}
+.shortcut-field-wrapper{
+    margin-left: 15px;
+    padding: 5px 0px 12px 0px;
+}
+.field-header{
+    margin-left: 15px;
+}
+.shortcut-button-group {
+    margin-top: 15px;
+}
+.shorcut-cancel-button{
+    margin-left: 25px;
+}
+.shorcut-save-button{
+    width: 55px;
+    height: 25px;
+    border-radius: 2px;
+    background-color: #5c5aa7;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    color: #ffffff;
+}
+.shorcut-cancel-button {
+    width: 55px;
+    height: 25px;
+    border-radius: 2px;
+    border: solid 1px #9c9ca2;
+    font-size: 11px;
+    letter-spacing: 0.9px;
+    color: #656060;
+}
+.shortcut-col {
+    padding-right: 0;
+}
+.message-col {
+    padding-left: 0;
+}
+.btn-col {
+    padding-left: 0;
+}
+.input-link {
+    background-color: #c1cfeb;
+    height: 2px;
+    opacity: 0.5;
+    border: solid 1px #c1cfeb;
+    margin-top: 17px;
+}
+.tooltip {
+    width: 93.2px;
+    height: 75px;
+    background-color: #ffffff;
+    box-shadow: 1px 2px 4px 1px rgba(64, 63, 63, 0.5);
+}
+.tooltip-menu {
+    list-style-type:none;
+    width: 93.2px;
+    height: 75px;
+    background-color: #ffffff;
+    box-shadow: 1px 2px 4px 1px rgba(64, 63, 63, 0.5);
+    padding: 10px;
+    position: absolute;
+    z-index: 9999;
+}
+/*
+.tooltip-menu::after {
+    border-bottom: 9px solid rgba(0,0,0,.2);
+    display: inline-block;
+    position: absolute;
+    top: -8px;
+} 
+ 
+.tooltip-menu::before {
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    content: "";
+    left: 30px;
+} */
+.tooltip-menu-list {
+    font-size: 12px;
+    letter-spacing: 0.9px;
+    color: #515050;
+    font-family:'OpenSans', sans-serif;
+}
+
+.list-divider {
+    margin-top: 11px;
+    margin-bottom: 11px;
+}
+.tooltip-btn{
+    padding-top: 33px;
+    margin-bottom: 0;
+}
+.arrow-up {
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    background-color: white;
+    border-bottom: 5px solid rgb(145, 122, 122);
+  }

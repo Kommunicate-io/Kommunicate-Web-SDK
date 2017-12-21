@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 import validator from 'validator';
-
+import './AutoSuggest.css'
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions }  from '../../utils/kommunicateClient'
-
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById }  from '../../utils/kommunicateClient'
 
 class AutoSuggest extends Component{
 
 	state = {
 		category: '',
+		shortcut: '',
 		name: '',
 		content: '',
+		message:'',
 		autoSuggestions: [],
 		viewAllSuggestions: false,
-		categories: []
+		categories: [],
+		userShortcuts:[],
+		activeTextField: -1,
+		activeMenu: -1,
+		visible: false,
+		enableTextFiled: -1		
+	
 	}
 
 	componentDidMount () {
@@ -26,9 +33,26 @@ class AutoSuggest extends Component{
 
 		getSuggestionsByAppId(localStorage.getItem("applicationId"))
 			.then(autoSuggestions => {
+				let userShortcuts = [];
+				
+				autoSuggestions.forEach(item => {
+					userShortcuts.push({
+						shortcutField: item.category,
+						messageField: item.content,
+						suggestionId: item.suggestionId
+					})
+				})
+			
+				this.setState({
+					userShortcuts: userShortcuts
+				})
+
 				this.setState({autoSuggestions: autoSuggestions})
+				
 				// console.log(this.state.autoSuggestions)
 				// console.log(this.state.categories)
+			}).catch(err => {
+				console.log(err)
 			})
 	}
 
@@ -42,16 +66,62 @@ class AutoSuggest extends Component{
 			})
 	}
 
-	_createSuggestion = () => {
-		if(validator.isEmpty(this.state.category) || validator.isEmpty(this.state.name) || validator.isEmpty(this.state.content)){
-			Notification.info(" All fields are mandatory !!");
+	// _createSuggestion = (e) => {
+	// 	e.preventDefault();
+	// 	//if(validator.isEmpty(this.state.category) || validator.isEmpty(this.state.name) || validator.isEmpty(this.state.content)){
+	// 	if(validator.isEmpty(this.state.shortcut) || validator.isEmpty(this.state.message)){	
+	// 	  Notification.info(" All fields are mandatory !!");
+	// 	}else{
+			
+	// 		const suggestion = {
+	// 			applicationId: localStorage.getItem("applicationId"),
+	// 			userName: localStorage.getItem("loggedinUser"),
+	// 		//	category: this.state.category,
+	// 		  name: "jithin",
+	// 			category: this.state.shortcut,
+	// 			content: this.state.message,
+	// 		//	content: this.state.content
+	// 		}
+
+	// 		createSuggestions(suggestion)
+	// 			.then(response => {
+	// 				console.log(response)
+	// 				if(response.status === 200 && response.data.code === "SUGESSTION_CREATED"){
+	// 					Notification.info("Suggestion Created")
+
+	// 					// Refresh the list with the new suggestion
+	// 					this.setState((prevState) => {
+	// 						autoSuggestions: prevState.autoSuggestions.push(suggestion)
+	// 					})
+
+	// 					// Reset the form
+	// 					this.resetForm()
+	// 				}else{
+	// 					Notification.info("There was problem in creating the suggestion.");
+	// 				}
+	// 			})
+	// 			.catch(err => {
+	// 				console.log(err)
+	// 			})
+	// 	}
+	// }
+
+	_createSuggestion = (e) => {
+		let index = this.state.activeTextField;
+		e.preventDefault();
+		//if(validator.isEmpty(this.state.category) || validator.isEmpty(this.state.name) || validator.isEmpty(this.state.content)){
+		if(validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)){	
+		  Notification.info(" All fields are mandatory !!");
 		}else{
+			
 			const suggestion = {
 				applicationId: localStorage.getItem("applicationId"),
 				userName: localStorage.getItem("loggedinUser"),
-				category: this.state.category,
-				name: this.state.name,
-				content: this.state.content
+			//	category: this.state.category,
+			  	name: "blank",
+				category: this.state.userShortcuts[index].shortcutField,
+				content: this.state.userShortcuts[index].messageField
+			//	content: this.state.content
 			}
 
 			createSuggestions(suggestion)
@@ -65,8 +135,8 @@ class AutoSuggest extends Component{
 							autoSuggestions: prevState.autoSuggestions.push(suggestion)
 						})
 
-						// Reset the form
-						this.resetForm()
+						
+						
 					}else{
 						Notification.info("There was problem in creating the suggestion.");
 					}
@@ -74,21 +144,196 @@ class AutoSuggest extends Component{
 				.catch(err => {
 					console.log(err)
 				})
+				
 		}
+		this.setState({ enableTextFiled : true })
+		
 	}
+	/*
+	deleteSuggestion = (id) => {
+		const deleteId = {
+		
+		}
+		//const deleteId = { this.setState({id : this.state.userShortcuts[index].suggestionId })} ;
+		deleteSuggestionsById(deleteId)
+		.then(response => {
+			console.log(response)
+			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
+				Notification.info("Suggestion Deleted")
+
+			}else{
+				Notification.info("There was problem in deleting the suggestion.");
+			}
+		})
+		.catch(err => {
+			console.log(err)
+		})
+	}
+	*/
 
 	resetForm = () => {
 		this.setState({
 			category: '',
+			shortcut: '',
 			name: '',
 			content: ''
 		})
 	}
+	
+
+	appendShorcutFields = () => {
+
+		let fieldGroup = this.state.userShortcuts;
+
+		let fields = {
+			shortcutField: '',
+			messageFeild: '',
+		};
+
+		fieldGroup.push(fields)
+
+		let activeTextField = this.state.userShortcuts.length;
+		let enableTextFiled = (this.state.userShortcuts.length-1) ;
+
+		this.setState({
+			userShortcuts: fieldGroup,
+			activeTextField: activeTextField,
+			enableTextFiled : enableTextFiled
+		})
+		
+		
+
+		console.log("elements in the array" +this.state.userShortcuts[this.state.index])
+
+	}
+	
+
 
 	render(){
+		
+	 const textFields = this.state.userShortcuts.map((shorcut, index) =>
+	 
+			<form key={index}>
+				<div className="shortcut-field-wrapper">
+					<div className="row">
+						<div className="col-md-3 shortcut-col">
+							<div className="shortcut-field-group">
+								<div className="sign-box">/</div>
+								<input type="text" disabled={ this.state.enableTextFiled !== index } className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField} 
+								onChange={(e) => {
+									let userShortcuts = this.state.userShortcuts;
+									userShortcuts[index].shortcutField = e.target.value;
+									this.setState({userShortcuts: userShortcuts})
+								}} onFocus={() => this.setState({activeTextField: index})} placeholder="" /> 
+							 {/* <input type="text" className="form-control shortcut-field" id="shortcut-field" value={this.state.shortcut} onChange={this.handleChange} placeholder="" /> */}
+							</div>
+						</div>
+						<div className="col-md-1 input-link"></div>
+					 <div className="col-md-4 message-col">
+						 {/*<div className="field-title">Full Message</div> */}
+						 
+						 <input type="text" disabled={ this.state.enableTextFiled !== index } className="form-control message-field" id="message-field" value={this.state.userShortcuts[index].messageField}
+							 onChange={(e) => {
+								 let userShortcuts = this.state.userShortcuts;
+								 userShortcuts[index].messageField = e.target.value;
+								 this.setState({ userShortcuts: userShortcuts })
+							 }} onFocus={() => this.setState({activeTextField: index})} placeholder="" />
+						 
 
+						 {
+							 this.state.activeTextField === index && (this.state.userShortcuts[index].shorcutField || this.state.userShortcuts[index].messageField) &&
+							 <div className="shortcut-button-group">
+								 <button type="submit" autoFocus={false} className="btn btn-sm shorcut-save-button" id="shorcut-save-button" onClick={this._createSuggestion}> Save</button>
+								{/* <button type="submit" autoFocus={false} className="btn btn-sm shorcut-cancel-button" id="shorcut-cancel-button" >Cancel</button> */}
+							 </div>
+						 }
+						 
+					 </div>
+					 {/* 
+					 <div className="col-md-1">
+					 	 <div className="arrow-up"></div> 
+						 <p className="tooltip-btn"><i className="fa fa-ellipsis-h" onClick={()=> this.setState({activeMenu: index,visible: !this.state.visible})} ></i></p>
+						{
+							 this.state.activeMenu === index  && this.state.visible == true &&
+						 
+						 <ul className="tooltip-menu">
+							 <li className="tooltip-menu-list" onClick={() => this.setState({activeTextField: index})}>Edit</li>
+							 <hr className="list-divider" />
+							 <li className="tooltip-menu-list" onClick={ this.deleteSuggestion }  >Delete</li>
+						 </ul>
+						 
+						}
+					 </div>
+					*/} 
+				 </div>
+			 </div>
+		 </form>
+
+		); 
+		
 		return(
+
 	      <div className="animated fadeIn">
+					<div className="row">
+						<div className="col-sm-12 col-md-8">
+							<div className="message-shortcuts-title-wrapper">
+								<div className="message-shortcuts-title">Save your time by setting up shortcuts for common responses</div>
+								<div className="message-shortcuts-description">(Press / before typing the shortcut term during a conversation to get the full message)</div>							
+							</div>
+							<hr/>
+						</div>
+					</div>
+					<div className="row">
+						<div classNamae="col-md-12">
+						<button autoFocus={false} className="btn-primary create-message-shortcut-button" onClick={this.appendShorcutFields} >+ Create Shortcut</button>
+						</div>
+					</div>
+					
+				<div className="field-header">
+					<div className="row">
+						<div className="col-md-3">
+						{ this.state.userShortcuts.length > 0 &&
+							<div className="field-title">Shortcut</div>
+						}
+						</div>
+						<div className="col-md-1"></div>
+						<div className="col-md-4 message-col">
+						{	this.state.userShortcuts.length > 0 &&
+							<div className="field-title">Full Message</div>
+						}
+						</div>
+					</div>
+				</div>	
+				
+					{textFields} 
+				  {/* 
+					<div className="shortcut-field-wrapper">
+						<div className="row">
+							<div className="col-md-3">
+							<div className="field-title">Shortcut</div>
+									<div className="shortcut-field-group">
+										<div className="sign-box">/</div>
+										<input type="text" className="form-control shortcut-field" value={this.state.shortcut} onChange={(e) => {this.setState({shortcut: e.target.value})}} placeholder="" />
+									</div>				
+							</div>						
+							<div className="col-md-1"><div classNAme="input-link"></div></div>					
+							<div className="col-md-4">
+								<div className="field-title">Full Message</div>				
+									<input type="text" className="form-control message-field" value={this.state.message} onChange={(e) => {this.setState({message:e.target.value})}}  placeholder="" />			
+								</div>
+						</div>
+						<div className="row">
+							<div className="col-md-4"></div>
+							<div className="col-md-4">
+								<div className="shortcut-button-group"> 
+									<button type="submit" autoFocus={false} className="btn btn-sm shorcut-save-button" className="btn btn-sm shorcut-save-button" id="shorcut-save-button" onClick={this._createSuggestion} id="shorcut-save-button" > Save</button>
+              		<button type="submit" autoFocus={false} className="btn btn-sm shorcut-cancel-button" id="shorcut-cancel-button" >Cancel</button>
+								</div>
+							</div>						
+							
+						</div>
+					</div> */}
+					{/* 
 	        <div className="row">
 	          <div className="col-sm-12 col-md-12">
 	            <div className="card">
@@ -153,7 +398,9 @@ class AutoSuggest extends Component{
 	              </div>
 	            </div>
 	          </div>
-	        </div>
+					</div>
+					*/}
+				 	
 	      </div>
 	    )
 	}
