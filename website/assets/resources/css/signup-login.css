@@ -274,17 +274,20 @@ input:focus ~ .label-for-input2 {
   visibility: hidden;
 }
 @media (max-width:1199px) and (min-width:992px) {
-  .login-main-section .form-row {
+  .login-main-section .form-row,  {
     width: 90% !important;
+  }
+  .signup-main-section .form-row {
+    width: 70% !important;
   }
 }
 @media (max-width:991px) and (min-width:768px) {
-  .login-main-section .form-row {
+  .login-main-section .form-row, .signup-main-section .form-row {
     width: 90% !important;
   }
 }
 @media (max-width:767px) {
-  .login-main-section .form-row {
+  .login-main-section .form-row, .signup-main-section .form-row {
     width: 100% !important;
   }
   .km-register-now {
