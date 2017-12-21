@@ -21,7 +21,7 @@ Kommunicate.richMsgEventHandler ={
         //console.log("initializing slick");
        // var cardMessageContainer = $applozic('.km-card-message-container');
         //console.log("selected by class",cardMessageContainer);
-        
+        /*
             $cardMessageContainer.not('.slick-initialized').slick({
                     dots: false,
                     infinite: false,
@@ -31,7 +31,7 @@ Kommunicate.richMsgEventHandler ={
                     variableWidth: true,
                     prevArrow: false,
                     nextArrow: false
-                });
+                }); */
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
