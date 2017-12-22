@@ -9,7 +9,7 @@ import {SplitButton, MenuItem} from 'react-bootstrap';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import AutoSuggest from './AutoSuggest'
-import Welcome from './Welcome'
+import Welcome from './Welcome/Welcome'
 
 //using moment-timezone to get a list of all the timezones...
 import moment from 'moment-timezone';
