@@ -10,6 +10,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import AutoSuggest from './AutoSuggest'
 import Welcome from './Welcome/Welcome'
+import Autoreplies from './AutoReplies/AutoReplies'
 
 //using moment-timezone to get a list of all the timezones...
 import moment from 'moment-timezone';
@@ -26,7 +27,7 @@ class Autoreply extends Component {
 
     this.state = {
      days:'',
-     activeTab: '2',
+     activeTab: '1',
      mon:false,
      tue:false,
      wed:false,
@@ -187,10 +188,11 @@ class Autoreply extends Component {
           <div className="col-md-12 mb-8">
             <Nav tabs>
               <NavItem >
-                <NavLink style ={{display:"none"}}
+                <NavLink
                   className={classnames({ active: this.state.activeTab === '1' })}
-                  onClick={() => { this.toggle('1'); }}>
-                  OFF HOURS
+                  onClick={() => { this.toggle('1'); }}
+                >
+                  AUTO REPLIES
                 </NavLink>
               </NavItem>
               <NavItem hidden= {false} >
@@ -211,7 +213,7 @@ class Autoreply extends Component {
               </NavItem>
             </Nav>
             <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId="1">
+              <TabPane tabId="0">
                 <div className="animated fadeIn">
                   <div className="row">
                     <form onSubmit={this.handleSubmit}>
@@ -283,8 +285,11 @@ class Autoreply extends Component {
                   </div>
                 </div>
               </TabPane>
+              <TabPane tabId="1">
+                <Autoreplies />
+              </TabPane>
               <TabPane tabId="2">
-                <Welcome/>
+                <Welcome />
               </TabPane>
               <TabPane tabId="3">
                 <AutoSuggest />
