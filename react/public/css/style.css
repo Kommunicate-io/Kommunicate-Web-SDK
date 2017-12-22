@@ -8986,6 +8986,10 @@ hr.transparent {
   pointer-events: none;
 }
 
+.welcome-message-container {
+  background-color: #fff;
+}
+
 .enable-automatic-welcome {
   width: 326px;
   height: 23px;
@@ -9018,6 +9022,7 @@ hr.transparent {
 
 .you-can-update-status .text-style-2 {
   color: #4997f3;
+  cursor: pointer;
 }
 
 .start-solving-your-user {
@@ -9027,6 +9032,20 @@ hr.transparent {
   letter-spacing: 0.7px;
   text-align: left;
   color: #87898b;
+}
+
+.when-you-are-online-heading {
+  font-size: 14px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #5e6061;
+}
+
+.welcome-preview {
+  font-size: 17px;
+  letter-spacing: 1.2px;
+  text-align: left;
+  color: #515050;
 }
 
 .ask-your-user-to {
@@ -9040,6 +9059,66 @@ hr.transparent {
 
 .cursor-is-pointer {
   cursor: pointer;
+}
+
+.welcome-buttons {
+  height: 21px;
+  border-radius: 13px;
+  background-color: #5c5aa7;
+  font-size: 8px;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.welcome-user-message {
+  font-size: 10px;
+  letter-spacing: 0.9px;
+  text-align: left;
+  color: #515050;
+}
+
+.welcome-user-button {
+  height: 35px;
+}
+
+.welcome-anonymous-user-button {
+  background-color: #ffffff;
+  border: solid 1px #979797;
+  border-radius: 2px 0 0 2px;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #000000;
+}
+
+.welcome-known-user-button {
+  background-color: #f3efef;
+  border: solid 1px #979797;
+  border-radius: 0 2px 2px 0;
+  font-size: 13px;
+  letter-spacing: 1.3px;
+  color: #afabab;
+}
+
+.welcome-msg-textarea-btn-container {
+  border-radius: 2px;
+  border: solid 1px #5c5aa7;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+.welcome-message-textarea {
+  border: 0px;
+  margin: 0;
+  resize: none;
+}
+
+.welcome-msg-textarea-button {
+  width: 100%;
+  height: 23px;
+  opacity: 0.69;
+  background-color: #e1dddd;
+  border: solid 1px #c1bcbc;
+  text-align: left;
 }
 
 .header-user-name {
@@ -9070,6 +9149,118 @@ hr.transparent {
   text-align: left;
   color: #696464;
 }
+
 .instruction-page-setup{
   margin-top: 3.75%;
 }
+
+.switch-enable-automatic > .switch-input:checked ~ .switch-label {
+  background: #5c5aa7 !important;
+  border-color: #5c5aa7;
+}
+
+.online-indicator {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #1cde14;
+}
+
+.offline-indicator {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #d2d7d2;
+}
+
+.online-indicator-profile-pic {
+  position: absolute;
+  left: 35px;
+  bottom: 0;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50em;
+  color: #fff;
+  background-color: #1cde14;
+}
+
+.user-chat-preview {
+  border-radius: 0 0 10px 10px;
+  width: 256px;
+  height: 177px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+.user-reply-section {
+  height: 50px;
+  width: 100%;
+}
+
+.full-screen-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.84);
+    z-index: 2;
+    cursor: block;
+}
+
+.show-full-screen-overlay {
+  display: block;
+}
+
+.hide-full-screen-overlay {
+  display: none;
+}
+
+.full-screen-overlay  p{
+    position: absolute;
+    top: 36%;
+    left: 54%;
+    font-size: 18px;
+    color: white;
+    letter-spacing: 0.9px;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+
+.curved-arrow {
+  border: 5px solid transparent;
+  border-bottom-color: #e5dfdf;
+  /*border-right-color: #e5dfdf;*/
+  height: 200px;
+  width: 350px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0%;
+  left: 65%;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  margin:30px auto;
+}
+
+/*.curved-arrow:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 65%;
+  height: 0;
+  width: 0;
+  border-left: 30px solid #e5dfdf;
+  border-top: 30px solid #e5dfdf;
+  border-bottom: 30px solid #e5dfdf;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}*/
+

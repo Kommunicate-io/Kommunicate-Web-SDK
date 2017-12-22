@@ -7,10 +7,13 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-sass": "^2.3.2",
+    "prop-types": "^15.6.0",
+    "react-overlays": "^0.8.3",
     "react-scripts": "1.0.6"
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.5.0",
     "form-data": "^2.3.1",
     "history": "^4.6.1",
@@ -26,6 +29,7 @@
     "react-dropdown": "^1.2.5",
     "react-modal": "3.1.6",
     "react-notifications": "^1.4.3",
+    "react-popover": "^0.5.4",
     "react-router-dom": "4.1.1",
     "react-select": "1.0.1",
     "reactstrap": "4.6.2",

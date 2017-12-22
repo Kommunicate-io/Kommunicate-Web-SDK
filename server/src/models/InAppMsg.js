@@ -12,12 +12,13 @@ module.exports = function(sequelize, DataTypes) {
       field : "customer_id"
     },
     eventId: {
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      field: "event_id"
     },
     message: {
       type: DataTypes.TEXT,
       allowNull: false,
-      field: "event_id"
+      field: "message"
     },
     status: {
       type: DataTypes.INTEGER,
