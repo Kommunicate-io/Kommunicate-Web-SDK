@@ -198,7 +198,7 @@ class Autoreply extends Component {
                   className={classnames({ active: this.state.activeTab === '2' })}
                   onClick={() => { this.toggle('2'); }}
                 >
-                  WELCOME MESSAGE
+                  Welcome Message
                 </NavLink>
               </NavItem>
               <NavItem>
@@ -206,7 +206,7 @@ class Autoreply extends Component {
                   className={classnames({ active: this.state.activeTab === '3' })}
                   onClick={() => { this.toggle('3'); }}
                 >
-                  AUTO SUGGEST
+                  Message Shortcuts
                 </NavLink>
               </NavItem>
             </Nav>

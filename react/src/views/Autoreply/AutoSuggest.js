@@ -34,7 +34,6 @@ class AutoSuggest extends Component{
 		getSuggestionsByAppId(localStorage.getItem("applicationId"))
 			.then(autoSuggestions => {
 				let userShortcuts = [];
-				
 				autoSuggestions.forEach(item => {
 					userShortcuts.push({
 						shortcutField: item.category,
@@ -128,7 +127,7 @@ class AutoSuggest extends Component{
 				.then(response => {
 					console.log(response)
 					if(response.status === 200 && response.data.code === "SUGESSTION_CREATED"){
-						Notification.info("Suggestion Created")
+						Notification.info("Shortcut created")
 
 						// Refresh the list with the new suggestion
 						this.setState((prevState) => {
