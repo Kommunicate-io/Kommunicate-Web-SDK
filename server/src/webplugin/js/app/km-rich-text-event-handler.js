@@ -18,11 +18,17 @@ Kommunicate.attachEvents = function($applozic){
  */
 Kommunicate.richMsgEventHandler ={
     initializeSlick:function($cardMessageContainer){
-        //console.log("initializing slick");
-        //var cardMessageContainer = $applozic('.km-card-message-container');
-        //console.log("selected by class",cardMessageContainer);
-        //.not('.slick-initialized')
-        
+        if ($cardMessageContainer.length > 0) {
+            console.log($cardMessageContainer[0]);
+            var slider = tns({
+                container: $cardMessageContainer[0],
+                items: 2,
+                slideBy: 'page',
+                "mouseDrag": true,
+                "arrowKeys": true
+              });
+        }
+
             /*$cardMessageContainer.slick({
                     dots: false,
                     infinite: false,

@@ -3921,25 +3921,24 @@ cursor: pointer;
 }
 
 .mck-msg-box-rich-text-container{
-	width: 93%;
-    border-radius: 10px;
-    background-color: #fff;
-    margin: 5px 0px 0px 7px;
-    float: left;
-    padding: 10px;
+	/* width: 93%; */
+	border-radius: 10px;
+	background-color: #fff;
+	margin: 5px 0px 0px 7px;
+	float: left;
+	padding: 10px;
 	top: 0;
-	
 }
 
 .km-card-message-container {
-    width: 104%;
+   /* width: 90%; */
     display: flex;
     overflow-x: hidden;
-    margin-right: 0px;
+    /* margin-right: 0px; */
     margin: 0;
-    /* width: 315px; */
+    width: 315px;
     padding-left: 0;
-    max-width: 105%;
+    max-width: 100%;
     transform: translateX(-10px);
 }
 .km-next-card-btn, .km-previous-card-btn {
@@ -3965,8 +3964,8 @@ cursor: pointer;
     left: 0px;
 }
 .km-single-card-message {
-    width: 285px;
-    margin-left: 15px;
+    width: 300px !important;
+    margin-left: 2px;
     margin-bottom: 10px;
     border-radius: 8px;
     background-color: #fff;
@@ -3985,8 +3984,8 @@ cursor: pointer;
     height: 100px;
     background-image: url('/images/card-message-img-1.jpg');
     background-size: cover;
-	background-position-y: 30%;
-	object-fit: cover;
+    background-position-y: 30%;
+    object-fit: cover;
 }
 .km-image-card-2 {
     background-image: url('/images/card-message-img-2.jpg');
@@ -4183,3 +4182,11 @@ cursor: pointer;
 }
 
 /* slick css ends here*/
+
+.tns-nav {
+	display: none;
+}
+
+.tns-controls {
+	padding-bottom: 8px;
+}

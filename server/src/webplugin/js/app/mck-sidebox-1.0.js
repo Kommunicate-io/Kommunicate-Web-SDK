@@ -4483,8 +4483,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
-                Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .blk-lg-12 > .km-card-message-container"));
-
                 if (msg.contentType === 23) {
 
                     if (msg.metadata.msg_type === "BUTTON") {
@@ -4610,6 +4608,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         target: '_blank'
                     });
                 }
+
+                Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+
                 if (msg.fileMeta) {
                     $applozic("." + replyId + " .mck-file-text a:first").trigger('click');
                     $applozic("." + replyId + " .mck-file-text").removeClass('n-vis').addClass('vis');
