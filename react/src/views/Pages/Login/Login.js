@@ -95,7 +95,7 @@ submitForm = ()=>{
           localStorage.setItem("loggedinUser", userName);
           localStorage.setItem("isAdmin", response.data.result.isAdmin || false);
           localStorage.setItem("authorization", response.data.result.authorization);
-          localStorage.setItem("statusOnlineOffline", response.data.result.statusOnlineOffline);
+          localStorage.setItem("availability_status", response.data.result.availability_status);
           if (response.data.result.apzToken) {
             localStorage.setItem("apzToken", response.data.result.apzToken);
           } else {
