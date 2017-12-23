@@ -88,9 +88,9 @@ module.exports = function(sequelize, DataTypes) {
       unique: true,
       field: 'user_key'
     },
-    statusOnlineOffline: {
+    availabilty_status: {
       type: DataTypes.INTEGER(),
-      field: 'status_online_offline',
+      field: 'availability_status',
       defaultValue: 1
     }
   }, {

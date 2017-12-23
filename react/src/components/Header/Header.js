@@ -12,7 +12,7 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       changeStatusLabel: "Go Away",
-      status: localStorage.getItem("statusOnlineOffline"),
+      status: localStorage.getItem("availabilty_status"),
       dropdownOpen: false,
       //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
@@ -67,19 +67,19 @@ return imageLink;
   toggleStatus = () => {
 
     if(this.state.status === "1"){
-      // localStorage.setItem("statusOnlineOffline", 0);
+      // localStorage.setItem("availabilty_status", 0);
       goAway(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
         console.log(response);
         this.setState({
-          status: localStorage.getItem("statusOnlineOffline"),
+          status: localStorage.getItem("availabilty_status"),
           changeStatusLabel: "Go Online"
         });
       });
     }else{
-      // localStorage.setItem("statusOnlineOffline", 1);
+      // localStorage.setItem("availabilty_status", 1);
       goOnline(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
         this.setState({
-          status: localStorage.getItem("statusOnlineOffline"),
+          status: localStorage.getItem("availabilty_status"),
           changeStatusLabel: "Go Away"
         });
       });
@@ -106,7 +106,7 @@ return imageLink;
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <div style={{display: "inline-block"}}>
                   <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
-                  <span className={localStorage.getItem("statusOnlineOffline") === "1" ? "online-indicator-profile-pic": null}></span>
+                  <span className={localStorage.getItem("availabilty_status") === "1" ? "online-indicator-profile-pic": null}></span>
                 </div>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
@@ -114,7 +114,7 @@ return imageLink;
                 <DropdownItem>
                   <p className="header-user-name">{this.state.displayName}</p>
                   <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
-                  <span className="header-user-online"> {localStorage.getItem("statusOnlineOffline") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
+                  <span className="header-user-online"> {localStorage.getItem("availabilty_status") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
                 </DropdownItem>
                 <DropdownItem onClick={this.toggleStatus}> {this.state.changeStatusLabel} </DropdownItem>
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
