@@ -26,6 +26,8 @@ class LinkPopover extends Component {
     this.state = {
       open: false
     };
+    this.handleClick = this.handleClick.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   handleClick(e) {
@@ -39,16 +41,15 @@ class LinkPopover extends Component {
   }
 
   render() {
-    // console.log(this.props);
     return (
       <div>
-        <button className="welcome-msg-textarea-button" ref="target" onClick={this.handleClick.bind(this)}><i className="icon-link icons"></i> Insert Link </button>
+        <button className="welcome-msg-textarea-button" ref="target" onClick={this.handleClick}><i className="icon-link icons"></i> Insert Link </button>
         <Popover
           placement='right'
           container={this}
           target={this.refs.target}
           show={this.state.open}
-          onHide={this.handleClose.bind(this)}
+          onHide={this.handleClose}
           containerStyle={{zIndex: 10000}}
           // style={{backgroundColor:"#e3e5e7", borderRadius: "3px", letterSpacing: "1px",color: "#4a4949"}}
           >
@@ -73,7 +74,7 @@ class LinkPopover extends Component {
               </Col>
             </FormGroup>
             <Button>OK</Button>
-            <Button onClick={this.handleClose.bind(this)}>CANCEL</Button>   
+            <Button onClick={this.handleClose}>CANCEL</Button>   
           </div>    
         </Popover>
       </div>
