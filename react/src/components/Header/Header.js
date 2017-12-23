@@ -117,7 +117,7 @@ return imageLink;
                   <span className="header-user-online"> {localStorage.getItem("statusOnlineOffline") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
                 </DropdownItem>
                 <DropdownItem onClick={this.toggleStatus}> {this.state.changeStatusLabel} </DropdownItem>
-                <DropdownItem> Profile </DropdownItem>
+                <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
             </Dropdown>
