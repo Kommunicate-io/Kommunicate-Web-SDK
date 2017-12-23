@@ -58,7 +58,7 @@ const saveToLocalStorage = (email, password, name,response) => {
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
     localStorage.setItem("password",password);
-    localStorage.setItem("availabilty_status", response.data.data.availabilty_status);
+    localStorage.setItem("availability_status", response.data.data.availability_status);
     localStorage.setItem("isAdmin",response.data.data.isAdmin||false);
     if(response.data.data.application){
       localStorage.setItem("application", JSON.stringify(response.data.data.application));
@@ -446,7 +446,7 @@ const goAway = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goAway/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
-    localStorage.setItem("availabilty_status", 0)
+    localStorage.setItem("availability_status", 0)
   })
 }
 
@@ -454,7 +454,7 @@ const goOnline = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goOnline/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
-    localStorage.setItem("availabilty_status", 1)
+    localStorage.setItem("availability_status", 1)
   })
 }
 
