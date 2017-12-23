@@ -14,12 +14,10 @@ class MessageSection extends Component {
 	}
 
 	handleChange = (e) => {
-		this.setState({msg: e.target.value})
-		this.props.getMessage(this.state.msg)
+		this.setState({msg: e.target.value}, () => {this.props.getMessage(this.state.msg)})
 	}
 
 	render() {
-		console.log(this.props);
 		return (
 			<div>
 				<div className="form-group row">
