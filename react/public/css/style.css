@@ -9264,3 +9264,11 @@ hr.transparent {
   transform: rotate(45deg);
 }*/
 
+.km-auto-replies-user-chat-preview {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 70%;
+  height: 250px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
