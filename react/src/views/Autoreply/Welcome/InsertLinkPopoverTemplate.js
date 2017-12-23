@@ -50,9 +50,6 @@ const PlacementStyles = {
 const PopoverContent = props => {
   const placementStyle = PlacementStyles[props.placement];
 
-  console.log(props);
-
-
   const {
     style,
     innerStyle,
@@ -60,11 +57,6 @@ const PopoverContent = props => {
     arrowOffsetTop: top = placementStyle.arrow.top,
     children
   } = props;
-
-  console.log(PopoverStyle);
-  console.log(placementStyle.tooltip);
-  console.log(style);
-
 
   return (
     <div style={{...PopoverStyle, ...placementStyle.tooltip, ...style, top: "50px"}}>
@@ -98,7 +90,7 @@ Popover.propTypes = {
   target: PropTypes.instanceOf(Node),
   style: PropTypes.object,
   containerStyle: PropTypes.object,
-  container: PropTypes.element,
+  container: PropTypes.object,
   hideWithOutsideClick: PropTypes.bool,
   children: PropTypes.element.isRequired
 };

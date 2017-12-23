@@ -104,8 +104,8 @@ class WhenYouAreOnline extends Component {
 	        	</div>
 	        </div>
 	        <div className="form-group row">
-	        	<div className="col-12">
-		        	<UserPopover 
+	        	<div className="col-md-4 col-sm-12">
+		        	<UserPopover
 	        			title="Message for anonymous users"
 	        			message="Users whose contact details are not available with you will be shown this message"
 	        		/>
@@ -132,7 +132,7 @@ class WhenYouAreOnline extends Component {
 		        </div>
 	        </div>
 	        <div className="form-group row">
-	        	<div className="col-12">
+	        	<div className="col-md-4 col-sm-12">
 	        		<UserPopover 
 	        			title="Message for known users"
 	        			message="Users whose email ID/Phone number are available with you will be shown this message"

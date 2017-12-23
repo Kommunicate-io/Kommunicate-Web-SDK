@@ -50,9 +50,6 @@ const PlacementStyles = {
 const PopoverContent = props => {
   const placementStyle = PlacementStyles[props.placement];
 
-  console.log(props);
-
-
   const {
     style,
     innerStyle,
@@ -93,7 +90,7 @@ Popover.propTypes = {
   target: PropTypes.instanceOf(Node),
   style: PropTypes.object,
   containerStyle: PropTypes.object,
-  container: PropTypes.element,
+  container: PropTypes.object,
   hideWithOutsideClick: PropTypes.bool,
   children: PropTypes.element.isRequired
 };
