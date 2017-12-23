@@ -66,27 +66,27 @@ class WhenYouAreOnline extends Component {
 
 	addMessageToChatPreview = (e) => {
 		e.preventDefault();
-		if(this.state.unknownMessageSections.length < 3){
+		if(this.state.unknownMessageSections.length <= 3 && this.state.unknownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
 					unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([this.state.unknownMessage]),
-					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}])
+					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}]),
+					unknownMessage: ''
 				}
 			});
 		}
 	}
 
 	render(){
-		console.log(this.state);
 		return (
 			<div className="cursor-is-pointer">
-        <div className="row">
+        <div className="row" onClick={this.methodToShowPrefs}>
           <div className="col-6">
             <h4 className="when-you-are-online-heading"> When you are online <span className="online-indicator"></span></h4>
             	<p className="start-solving-your-user">Start solving your users’ issues with this message </p>
           </div>
-          <div className="col-6" onClick={this.methodToShowPrefs}>
+          <div className="col-6">
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>

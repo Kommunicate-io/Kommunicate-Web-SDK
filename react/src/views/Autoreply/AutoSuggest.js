@@ -284,7 +284,7 @@ class AutoSuggest extends Component{
 						</div>
 					</div>
 					<div className="row">
-						<div classNamae="col-md-12">
+						<div className="col-md-12">
 						<button autoFocus={false} className="btn-primary create-message-shortcut-button" onClick={this.appendShorcutFields} >+ Create Shortcut</button>
 						</div>
 					</div>

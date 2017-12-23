@@ -52,6 +52,7 @@ class LinkPopover extends Component {
           containerStyle={{zIndex: 10000}}
           // style={{backgroundColor:"#e3e5e7", borderRadius: "3px", letterSpacing: "1px",color: "#4a4949"}}
           >
+          <div>
             <h3>
               Insert Link
             </h3>
@@ -72,7 +73,8 @@ class LinkPopover extends Component {
               </Col>
             </FormGroup>
             <Button>OK</Button>
-            <Button>CANCEL</Button>       
+            <Button onClick={this.handleClose.bind(this)}>CANCEL</Button>   
+          </div>    
         </Popover>
       </div>
     );

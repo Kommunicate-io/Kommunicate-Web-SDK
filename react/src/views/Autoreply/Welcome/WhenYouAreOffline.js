@@ -8,10 +8,16 @@ import LeadGenerationTemplate from './LeadGenerationTemplate';
 
 class WhenYouAreOffline extends Component {
 
+  getMessageFunc = (msg) => {
+    this.setState({unknownMessage: msg});
+  }
+
 	state = {
     unknownChatComponents: [],
     knownUserComponents: [],
-    unknownMessageSections: [{component: <MessageSection />}],
+    unknownMessageSections: [{component: <MessageSection getMessage={this.getMessageFunc.bind(this)}/>}],
+    unknownMessageSectionMsgs: [],
+    unknownMessage: '',
 		showOfflinePrefs: false,
 		upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
 	}
@@ -33,14 +39,14 @@ class WhenYouAreOffline extends Component {
 
   addMessageSection = (e) => {
     e.preventDefault();
-    if(this.state.unknownMessageSections.length < 3){
+    if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
       this.setState((prevState) => {
-        return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection />}])}
+        return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection getMessage={this.getMessageFunc.bind(this)}/>}])}
       });
 
-      this.setState((prevState) => {
-        return {unknownChatComponents: prevState.unknownChatComponents.concat([{component: <MessageSection />}])}
-      });
+      // this.setState((prevState) => {
+      //   return {unknownChatComponents: prevState.unknownChatComponents.concat([{component: <MessageSection />}])}
+      // });
     }
   }
 
@@ -48,7 +54,7 @@ class WhenYouAreOffline extends Component {
     e.preventDefault();
     if(this.state.unknownMessageSections.length < 3){
       this.setState((prevState) => {
-        return {unknownMessageSections: prevState.MessageSections.concat([{component: <LeadGenerationTemplate />}])}
+        return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <LeadGenerationTemplate />}])}
       });
 
       this.setState((prevState) => {
@@ -57,15 +63,29 @@ class WhenYouAreOffline extends Component {
     }
   }
 
+  addMessageToChatPreview = (e) => {
+    e.preventDefault();
+    if(this.state.unknownMessageSections.length <= 3 && this.state.unknownMessage.trim().length > 0){
+
+      this.setState((prevState) => {
+        return {
+          unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([this.state.unknownMessage]),
+          unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}]),
+          unknownMessage: ''
+        }
+      });
+    }
+  }
+
 	render(){
 		return (
       <div className="cursor-is-pointer">
-        <div className="row">
+        <div className="row" onClick={this.methodToShowOfflinePrefs}>
           <div className="col-6">
             <h4 className="when-you-are-online-heading"> When you are offline <span className="offline-indicator"></span></h4>
             <p className="ask-your-user-to">Ask your user to leave a message so that you can get back to them later</p>
           </div>
-          <div className="col-6" onClick={this.methodToShowOfflinePrefs}>
+          <div className="col-6" >
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>
@@ -100,7 +120,7 @@ class WhenYouAreOffline extends Component {
           </div>
           <div className="form-group row">
             <div className="col-4">
-              <button className="welcome-buttons" onClick={this.addWelcomeMessage}>Add message</button>
+              <button className="welcome-buttons" onClick={this.addMessageToChatPreview}>Add message</button>
               <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
               <button className="welcome-buttons" onClick={this.addMessageSection}>Add another message</button>
             </div>
