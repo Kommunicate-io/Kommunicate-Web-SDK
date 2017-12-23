@@ -4434,6 +4434,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     olStatus = 'vis';
                 }
 
+                var richText = Kommunicate.isRichTextMessage(msg.metadata);
+
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
                     msgReplyTo: replyMsg ? replyTo + "\n" : '',
@@ -4476,8 +4478,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
-                    kmRichTextMarkupVisibility:Kommunicate.isRichTextMessage(msg.metadata)?'vis':'n-vis',
-                    kmRichTextMarkup: Kommunicate.isRichTextMessage(msg.metadata)?Kommunicate.getRichTextMessageTemplate(msg.metadata):""
+                    kmRichTextMarkupVisibility:richText?'vis':'n-vis',
+                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):""
                     //kmRichTextMarkup: '<div>hello</div>'                    
                 }];
                 
@@ -4609,7 +4611,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     });
                 }
 
-                Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+                if (richText) {
+                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+                }
 
                 if (msg.fileMeta) {
                     $applozic("." + replyId + " .mck-file-text a:first").trigger('click');

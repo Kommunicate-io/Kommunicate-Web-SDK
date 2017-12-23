@@ -19,7 +19,6 @@ Kommunicate.attachEvents = function($applozic){
 Kommunicate.richMsgEventHandler ={
     initializeSlick:function($cardMessageContainer){
         if ($cardMessageContainer.length > 0) {
-            console.log($cardMessageContainer[0]);
             var slider = tns({
                 container: $cardMessageContainer[0],
                 items: 2,
