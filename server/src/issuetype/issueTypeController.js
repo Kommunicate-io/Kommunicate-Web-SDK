@@ -3,14 +3,14 @@ const issueTypeService = require('./issueTypeService.js')
 
 exports.getIssueType = (req, res) => {
 
-    issueTypeService.getIssueType(req.param.customerID).then(issueTypes => {
-        if (!issueTypes) {
-            res.status(404).json({ code: "NO_ISSUE_FOUND" });
+    return Promise.resolve(issueTypeService.getIssueType(req.query)).then(result => {
+        if (!result) {
+            return res.status(200).json({ code: "NO_ISSUE_TYPE_FOUND" });
         } else {
-            res.status(200).json({ code: "GOT_ALL_ISSUE_TYPE", data: issueTypes });
+            return res.status(200).json({ code: "GOT_ALL_ISSUE_TYPE", data: result });
         }
     }).catch(err => {
-        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong!" })
+        return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong!" })
     });
 }
 

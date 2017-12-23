@@ -10,8 +10,20 @@ exports.getById = (issueTypeId) => {
 
 exports.getIssueType=(issueType)=>{
     let criteria={}
-    if(criteria.id){
+    if(issueType.id){
         criteria.id=issueType.id
+    }
+    if(issueType.issueName){
+        criteria.issueName = issueType.issueName
+    }
+    if(issueType.customerId){
+        criteria.customerId = issueType.customerId
+    }
+    if(issueType.createdBy){
+        criteria.createdBy =issueType.createdBy
+    }
+    if(issueType.status){
+        criteria.status = issueType.status
     }
     return Promise.resolve(issueTypeModel.findAll({where:criteria}));
 }

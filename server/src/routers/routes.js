@@ -113,6 +113,7 @@ groupRouter.post('/create',userController.createGroupOfAllAgents)
  * CRUD API's for 'IssueType' object
  */
 issueTypeRouter.post('/',validate(issueTypeValidation.createIssueType), issueTypeController.createIssueType)
+issueTypeRouter.get('/',issueTypeController.getIssueType)
 /**
  * CRUD API's for 'IssueTypeAutoReply' object
  */
