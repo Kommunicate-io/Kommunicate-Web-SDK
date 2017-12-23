@@ -114,6 +114,8 @@ groupRouter.post('/create',userController.createGroupOfAllAgents)
  */
 issueTypeRouter.post('/',validate(issueTypeValidation.createIssueType), issueTypeController.createIssueType)
 issueTypeRouter.get('/',issueTypeController.getIssueType)
+issueTypeRouter.patch('/:id', validate(issueTypeValidation.updateIssueType), issueTypeController.updateIssueType)
+issueTypeRouter.delete('/',validate(issueTypeValidation.deleteIssueType), issueTypeController.deleteIssueType)
 /**
  * CRUD API's for 'IssueTypeAutoReply' object
  */
