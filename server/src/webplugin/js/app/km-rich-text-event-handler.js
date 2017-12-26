@@ -56,7 +56,7 @@ Kommunicate.richMsgEventHandler ={
     addMoreRoom : function(e){
        var container = e.target.parentElement.parentElement.parentElement;
        var roomCount = Number(e.target.dataset.roomcount)+1;
-       e.target.setAttribute("roomcount",roomCount);
+       e.target.setAttribute("data-roomcount",roomCount);
        var roomInfoElem = document.createElement('div');
        roomInfoElem.innerHTML=Kommunicate.markup.getSingleRoomPaxInfo(roomCount);
        container.getElementsByClassName('km-room-person-selector-container')[0].appendChild(roomInfoElem);
