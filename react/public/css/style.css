@@ -9268,7 +9268,7 @@ hr.transparent {
   border: 1px solid #ccc;
   border-radius: 10px;
   width: 70%;
-  height: 250px;
+  min-height: 250px;
   box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
   margin: auto;
 }
@@ -9315,6 +9315,18 @@ hr.transparent {
     border-radius: 10px;
     color: white;
     margin: 0;
+}
+
+.km-auto-replies-left-msg-container span {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    width: 50%;
+}
+
+.km-auto-replies-left-msg-container input {
+    width: 50%;
 }
 
 

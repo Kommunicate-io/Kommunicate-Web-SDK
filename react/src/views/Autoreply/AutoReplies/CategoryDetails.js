@@ -8,7 +8,13 @@ class CategoryDetail extends Component {
 
 		this.state = {
 			showAutoReplyModal: false,
-			addAutoReply: false
+			addAutoReply: false,
+			showAddAutoReplyBtn :true,
+			autoReplyMsg: '',
+			autoReplyMsgChatPreview:'',
+			popoverOpen: false,
+			addPhoneInput: false,
+			addEmailInput: false 
 		}
 
 		this.toggleAutoReplyModal = this.toggleAutoReplyModal.bind(this)
@@ -23,9 +29,49 @@ class CategoryDetail extends Component {
 
 	showAutoReplySection = () => {
 		this.setState({
-			addAutoReply: true
+			addAutoReply: true,
+			showAddAutoReplyBtn: false
 		})
 	}
+
+	getAutoReplyMsg = (e) => {
+		e.preventDefault()
+		this.setState({
+				autoReplyMsg: e.target.value
+		})
+	}
+
+	addAutoReplyMsgToPreview = () => {
+		this.setState({
+			autoReplyMsgChatPreview: this.state.autoReplyMsg
+		})
+	}
+
+	deleteAutoReplyMsgFromPreview = () => {
+		this.setState({
+			autoReplyMsgChatPreview: ''
+		})
+	}
+
+	togglePopover = () => {
+    this.setState({
+      popoverOpen: !this.state.popoverOpen
+    });
+  }
+
+  addEmailInputToChatPreview = () => {
+  	console.log("addEmailInputToChatPreview");
+  	this.setState({
+      addEmailInput: true
+    });
+  }
+
+  addPhoneInputToChatPreview = () => {
+  	console.log("addPhoneInputToChatPreview");
+  	this.setState({
+      addPhoneInput: true
+    });
+  }
 
 	render(){
 		console.log(this.state)
@@ -33,28 +79,50 @@ class CategoryDetail extends Component {
 		return (
 			<div style={{textAlign: "center"}}>
 				<div className={this.props.show ? "":"n-vis"} >
-					<h3>{this.props.details.name}</h3>
-					<p>Edit your replies in the space below</p>
+					<h3 className="mt-4 mb-4">{this.props.details.name} <button className="btn btn-secondary" style={{border: "none"}}>
+									<i className="icon-pencil icons"></i>
+							</button>
+					</h3>
+					<p className="mt-4 mb-12">Edit your replies in the space below</p>
 					<div className="km-auto-replies-user-chat-preview">
-						<div style={{height: "210px"}}>
+						<div style={{minHeight: "210px"}} className="mt-4 mb-12">
 							<div className="input-group km-auto-replies-right-msg-container">
 								<p>{this.props.details.name}</p>
 							</div>
 							{
-							// <div className="input-group km-auto-replies-left-msg-container">
-							// 	<p>Hi Shyam</p>
-							// </div>
-							}
-			      	<div className={this.state.addAutoReply ? "input-group": "n-vis"}>
-								<input className="from-control" placeholder="Search.." />
+							<div className={this.state.autoReplyMsgChatPreview.length > 0 ? "input-group km-auto-replies-left-msg-container":"n-vis"}>
+								<span style={{marginRight: "2px"}}>{this.state.autoReplyMsgChatPreview}</span>
 								<button className="btn btn-primary" onClick={this.toggleAutoReplyModal}>
 									<i className="icon-pencil icons"></i>
 								</button>
-								<button className="btn btn-secondary"><i className="fa fa-trash-o fa-lg"></i></button>
+								<button className="btn btn-secondary" onClick={this.deleteAutoReplyMsgFromPreview}><i className="icon-trash icons"></i></button>
+							</div>
+							}
+							<div className={(this.state.autoReplyMsgChatPreview.length > 0 && this.state.addEmailInput) ? "input-group km-auto-replies-left-msg-container":"n-vis"}>
+								<input className="from-control" placeholder="Please enter your email..."/>
+								<button className="btn btn-primary" onClick={this.toggleAutoReplyModal}>
+									<i className="icon-pencil icons"></i>
+								</button>
+								<button className="btn btn-secondary" onClick={this.deleteAutoReplyMsgFromPreview}><i className="icon-trash icons"></i></button>
+							</div>
+							<div className={(this.state.autoReplyMsgChatPreview.length > 0 && this.state.addPhoneInput) ? "input-group km-auto-replies-left-msg-container":"n-vis"}>
+								<input className="from-control" placeholder="Please enter your phone no..."/>
+								<button className="btn btn-primary" onClick={this.toggleAutoReplyModal}>
+									<i className="icon-pencil icons"></i>
+								</button>
+								<button className="btn btn-secondary" onClick={this.deleteAutoReplyMsgFromPreview}><i className="icon-trash icons"></i></button>
+							</div>
+			      	<div className={this.state.addAutoReply ? "input-group": "n-vis"} style={{padding: "5px"}}>
+								<input className="from-control" placeholder="Type your reply here..." style={{width: "50%"}} />
+								<button className="btn btn-primary" onClick={this.toggleAutoReplyModal}>
+									<i className="icon-pencil icons"></i>
+								</button>
+								<button className="btn btn-secondary"><i className="icon-trash icons"></i></button>
+								<button className="btn btn-secondary"><i className="icon-plus icons"></i></button>
 							</div>
 						</div>
 						<div>
-							<button className="btn btn-primary km-auto-replies-user-chat-preview-bttm-btn" onClick={this.showAutoReplySection}>
+							<button className={this.state.showAddAutoReplyBtn ? "btn btn-primary km-auto-replies-user-chat-preview-bttm-btn":"n-vis"} onClick={this.showAutoReplySection}>
 								Click here to add a auto-reply
 							</button>
 						</div>
@@ -64,11 +132,26 @@ class CategoryDetail extends Component {
 			      <ModalBody>
 			        <div className="form-group">
 								<div className="input-group">
-									<button className="btn btn-secondary" onClick={this.addCategories}>
+									<button className="btn btn-secondary" id="Popover1" onClick={this.togglePopover}>
 										<i className="icon-plus icons font-4xl"></i>
 									</button>
-									<input className="form-control" placeholder="Type your issue category here..." onChange={this.getCategoryName} value={this.state.categoryName} />
-									<button className="btn btn-primary" onClick={this.addCategories}>
+									<Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.togglePopover}>
+          					<PopoverTitle>Popover Title</PopoverTitle>
+          					<PopoverContent>
+          							<div>
+	          							<button className="btn btn-secondary" style={{width: "100%"}} onClick={this.addEmailInputToChatPreview}>
+														<i className="icon-envelope icons font-2xl"></i> Add email field
+													</button>
+												</div>
+												<div>
+													<button className="btn btn-secondary" style={{width: "100%"}} onClick={this.addPhoneInputToChatPreview}>
+														<i className="icon-screen-smartphone icons font-2xl"></i> Add phone no. field
+													</button>
+												</div>
+          					</PopoverContent>
+        					</Popover>
+									<input className="form-control" placeholder="Type your issue category here..." onChange={this.getAutoReplyMsg} value={this.state.autoReplyMsg} />
+									<button className="btn btn-primary" onClick={this.addAutoReplyMsgToPreview}>
 										Enter
 									</button>
 								</div>
@@ -93,7 +176,7 @@ class CategoryDetails extends Component {
 	render(){
 		console.log(this.props)
 		return (
-			<div className="col-md-8" style={{borderLeft: "0.5px #a5b0bd dashed", minHeight: "300px"}}>
+			<div className="col-md-8" style={{borderLeft: "0.5px #a5b0bd dashed", minHeight: "400px"}}>
 				<p className={this.props.showBanner ? "":"n-vis"}style={{fontSize: "15px", color:"#808080", position: "absolute", top: "50%" ,left: "20%"}}>You can add Categories for the user to select their issues from.</p>
 				{
 					this.props.categories.map((category, i) => {
