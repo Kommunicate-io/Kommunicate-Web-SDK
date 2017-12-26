@@ -19,7 +19,8 @@ class AutoSuggest extends Component{
 		activeTextField: -1,
 		activeMenu: -1,
 		visible: false,
-		enableTextFiled: -1		
+		enableTextFiled: -1,	
+		createDisable:false	
 	
 	}
 
@@ -145,7 +146,10 @@ class AutoSuggest extends Component{
 				})
 				
 		}
-		this.setState({ enableTextFiled : true })
+		this.setState({ 
+			createDisable:false,
+			enableTextFiled : true 
+		})
 		
 	}
 	/*
@@ -186,15 +190,16 @@ class AutoSuggest extends Component{
 
 		let fields = {
 			shortcutField: '',
-			messageFeild: '',
+			messageFeild: ''
 		};
 
-		fieldGroup.push(fields)
+		fieldGroup.unshift(fields)
 
-		let activeTextField = this.state.userShortcuts.length;
-		let enableTextFiled = (this.state.userShortcuts.length-1) ;
+		let activeTextField = 0;
+		let enableTextFiled = 0 ;
 
 		this.setState({
+			createDisable:true,
 			userShortcuts: fieldGroup,
 			activeTextField: activeTextField,
 			enableTextFiled : enableTextFiled
@@ -242,7 +247,7 @@ class AutoSuggest extends Component{
 						 {
 							 this.state.activeTextField === index && (this.state.userShortcuts[index].shorcutField || this.state.userShortcuts[index].messageField) &&
 							 <div className="shortcut-button-group">
-								 <button type="submit" autoFocus={false} className="btn btn-sm shorcut-save-button" id="shorcut-save-button" onClick={this._createSuggestion}> Save</button>
+								 <button type="submit" autoFocus={false} className={this.state.createDisable ? "btn btn-sm shorcut-save-button":"n-vis"} id="shorcut-save-button" onClick={this._createSuggestion}> Save</button>
 								{/* <button type="submit" autoFocus={false} className="btn btn-sm shorcut-cancel-button" id="shorcut-cancel-button" >Cancel</button> */}
 							 </div>
 						 }
@@ -284,7 +289,7 @@ class AutoSuggest extends Component{
 					</div>
 					<div className="row">
 						<div className="col-md-12">
-						<button autoFocus={false} className="btn-primary create-message-shortcut-button" onClick={this.appendShorcutFields} >+ Create Shortcut</button>
+						<button disabled={this.state.createDisable} className="btn-primary create-message-shortcut-button" onClick={this.appendShorcutFields} >+ Create Shortcut</button>
 						</div>
 					</div>
 					
