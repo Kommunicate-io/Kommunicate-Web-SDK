@@ -27,7 +27,9 @@ class Step2 extends Component {
     super(props)
 
     this.state = {
+      name: '',
       role: '',
+      website_url: '',
       contact_no: '',
       company_name: '',
       company_size: '',
@@ -56,7 +58,9 @@ class Step2 extends Component {
 
     const customerInfo = {
       applicationId: localStorage.getItem('applicationId'),
+      name: this.state.name,
       role: this.state.role,
+      websiteUrl: this.website_url,
       contactNo: this.state.contact_no,
       companyName: this.state.company_name,
       companySize: this.state.company_size,
@@ -86,8 +90,15 @@ class Step2 extends Component {
 
   render() {
     return (
+
+      
+
+
       <form className="form-horizontal" onSubmit={this.finishSetUp}>
         <div className="animated fadeIn">
+
+        
+
 
           <div className="row">
 
@@ -95,10 +106,36 @@ class Step2 extends Component {
               <div className="card">
                 <div className="card-block">
                   <form className="form-horizontal">
+
+                  <div className="col-lg-12 text-center setup-profile-div">
+                <div className="step-number-div">
+                   2/2
+                </div>
+                <h1 className="setup-heading">Profile Setup</h1>
+                <h4 className="setup-sub-heading">Setting up your company name, profile photo, designation etc.</h4>
+
+                <div className="company-url-main-div flex text-center">
+                    <span className="url-http-text">https://</span>
+                    <div className="group form-group company-url-form-group">
+                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required value={this.state.website_url} onChange={(event) => { this.setState({ website_url: event.target.value }) }} />
+                        <label className="label-for-input email-label">www.mycompany.com</label>
+                    </div>
+                </div>
+
+                <h2 className="setup-integration-later-text">Rest of the profile can also be set up from <span>Settings > Profile</span> later</h2>
+
+                <div className="button-link-container">
+                    <a>
+                      <Link to="/dashboard" className=" skip-link"> Skip for now</Link>
+                    </a>
+                </div>
+                <hr></hr>
+      </div>
+
                     <div className="form-group row">
-                      <div className="col-md-2">
-                      </div>
-                      <div className="col-md-4">
+                      {/* <div className="col-md-2">
+                      </div> */}
+                      <div className="col-md-6 text-center pt-100">
                         <img src={this.state.imageFile} className="default-dp"></img><br />
                         <div className="edit-dp-btn">
                         <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
@@ -131,13 +168,37 @@ class Step2 extends Component {
                       <div className="col-md-4">
                         <div className="row">
                           <div className="col-md-12">
-                            <label className="form-control-label" htmlFor="role-input">Designation</label>
-                            <input type="text" id="role-input" name="role-input" className="form-control input-field" placeholder="Role within the organization" value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
-                            <label className="form-control-label" htmlFor="number-input">Contact No.</label>
-                            <input type="number" id="number-input" maxLength="20" name="number-input" className="form-control input-field" placeholder="Enter your contact number" value={this.state.contact_no} onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
-                            <label className="form-control-label" htmlFor="company-name">Company Name</label>
-                            <input type="text" id="company-name" name="company-name" className="form-control input-field" placeholder="Enter your company Name" value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
-                            <label className="form-control-label" htmlFor="industry">Industry Type</label>
+
+                            <div className="group form-group email-form-group">
+                              <input className="input" type="text" id="name-input" name="name-input" placeholder=" " required value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
+                              <label className="label-for-input email-label">Your Name</label>
+                            </div>
+
+                            {/* <label className="form-control-label" htmlFor="role-input">Designation</label>
+                            <input type="text" id="role-input" name="role-input" className="form-control input-field" placeholder="Role within the organization" value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} /> */}
+
+                            <div className="group form-group email-form-group">
+                              <input className="input" type="text" id="role-input" name="role-input" placeholder=" " required value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
+                              <label className="label-for-input email-label">Designation</label>
+                            </div>
+
+                            {/* <label className="form-control-label" htmlFor="number-input">Contact No.</label>
+                            <input type="number" id="number-input" maxLength="20" name="number-input" className="form-control input-field" placeholder="Enter your contact number" value={this.state.contact_no} onChange={(event) => { this.setState({ contact_no: event.target.value }) }} /> */}
+
+                            <div className="group form-group email-form-group">
+                              <input className="input" type="number" id="number-input" maxLength="20" name="number-input" placeholder=" " required value={this.state.contact_no} onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
+                              <label className="label-for-input email-label">Contact No.</label>
+                            </div>
+
+                            {/* <label className="form-control-label" htmlFor="company-name">Company Name</label>
+                            <input type="text" id="company-name" name="company-name" className="form-control input-field" placeholder="Enter your company Name" value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} /> */}
+
+                            <div className="group form-group email-form-group">
+                              <input className="input" type="text" id="company-name" name="company-name" placeholder=" " required value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
+                              <label className="label-for-input email-label">Company Name</label>
+                            </div>
+
+                            {/* <label className="form-control-label" htmlFor="industry">Industry Type</label>
                             <select id="industry" name="industry" className="form-control input-field" onChange={(event) => { this.setState({ industry: event.target.value }) }} value={this.state.industry}>
                               <option value="0">Please select</option>
                               <option value="E-commerce">E-commerce</option>
@@ -152,12 +213,37 @@ class Step2 extends Component {
                               <option value="Gaming"> Gaming</option>
                               <option value="Travel">Travel</option>
                               <option value="Other"> Any Other (Please specify)</option>
-                            </select>
-                            <div className={((this.state.industry === "Other") ? 'form-group' : 'n-vis')}>
-                              <label className="form-control-label" htmlFor="Otherindustry">Other Industry</label>
-                              <input type="text" id="industry-others" name="industry-others" onChange={(event) => this.setState({ industryOthers: event.target.value })} value={this.state.industryOthers} className="form-control input-field" placeholder="Enter your Industry" />
+                            </select> */}
+
+
+                            <div className="group form-group selectt">
+                              <select className="select" id="industry" name="industry" onChange={(event) => { this.setState({ industry: event.target.value }) }} value={this.state.industry}>
+                                <option value="0" >Please select</option>
+                                <option value="E-commerce">E-commerce</option>
+                                <option value="Marketplaces">Marketplaces</option>
+                                <option value="SaaS">SaaS</option>
+                                <option value="E-learning">E-learning</option>
+                                <option value="Healthcare"> Healthcare</option>
+                                <option value="On-Demand Services">On-Demand Services</option>
+                                <option value="Social">Social</option>
+                                <option value="Fin Tech">Fin Tech</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Gaming"> Gaming</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Other"> Any Other (Please specify)</option>
+                              </select>
+                              <label className="label-for-input email-label">Industry Type</label>
                             </div>
-                            <label className="form-control-label" htmlFor="company-size">Company-size</label>
+
+
+                            <div className={((this.state.industry === "Other") ? 'form-group group' : 'n-vis')}>
+                              {/* <label className="form-control-label" htmlFor="Otherindustry">Other Industry</label>
+                              <input type="text" id="industry-others" name="industry-others" onChange={(event) => this.setState({ industryOthers: event.target.value })} value={this.state.industryOthers} className="form-control input-field" placeholder="Enter your Industry" /> */}
+                              <input className="input" type="text" id="industry-others" name="industry-others" onChange={(event) => this.setState({ industryOthers: event.target.value })} value={this.state.industryOthers} placeholder=" "/>
+                              <label className="label-for-input email-label">Other Industry</label>
+                            </div>
+
+                            {/* <label className="form-control-label" htmlFor="company-size">Company-size</label>
                             <select id="company-size" name="company-size" className="form-control input-field" onChange={(event) => { this.setState({ company_size: event.target.value }) }} value={this.state.company_size}>
                               <option value="0">Please select</option>
                               <option value="10">10</option>
@@ -165,17 +251,36 @@ class Step2 extends Component {
                               <option value="50">50</option>
                               <option value="100">100</option>
                               <option value="500">500</option>
-                            </select>
+                            </select> */}
+
+
+                            <div className="group form-group selectt">
+                              <select className="select" id="company-size" name="company-size" onChange={(event) => { this.setState({ company_size: event.target.value }) }} value={this.state.company_size}>
+                              <option value="0">Please select</option>
+                              <option value="10">10</option>
+                              <option value="20">20</option>
+                              <option value="50">50</option>
+                              <option value="100">100</option>
+                              <option value="500">500</option>
+                              </select>
+                              <label className="label-for-input email-label">Company Size</label>
+                            </div>
+
 
                             <div className="form-group setup-btn-group">
-                              <div className="row">
+                              {/* <div className="row">
                                 <a>
                                   <Link to="/dashboard" className=" px-4"> Skip Setup</Link>
                                 </a>
                                 <div>
                                   <button className="btn btn-sm btn-primary px-4"> Finish Setup </button>
                                 </div>
-                              </div>
+                              </div> */}
+                              
+                                <div>
+                                  <button className="btn btn-sm btn-primary px-4 btn-primary-custom"> Finish Setup </button>
+                                </div>
+                              
                             </div>
                           </div>
                         </div>

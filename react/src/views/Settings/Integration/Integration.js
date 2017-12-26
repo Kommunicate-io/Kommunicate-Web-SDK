@@ -23,12 +23,14 @@ class Integration extends Component {
     subtitle:"Parameters used",
     content:`<p>Default parameters are pre populated. You can change them as you need.<p>
     Parameters: <br>
-        <b>appId -</b> your application Id.<br>
-        <b>isAnonymousChat -</b> allow your users to chat in Anonymous mode<br>
-        <b>email -</b> allow your users to register email id (optional)<br>
-        <b>groupName -</b> Conversation Title<br> 
-        <b>agentId -</b> Support agent Id(registered in Kommunicate) who will reply to the support queries<br>
-        <b>agentName -</b> Display name for agent(agentId is default display name)`};
+    <ul>
+      <li><strong>appId</strong> - your application Id.</li>
+      <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
+      <li><strong>email</strong> - allow your users to register email id (optional).</li>
+      <li><strong>groupName</strong> - Conversation Title.</li>
+      <li><strong>agentId</strong> - Support agent Id(registered in Kommunicate) who will reply to the support queries.</li>
+      <li><strong>agentName</strong> - Display name for agent(agentId is default display name).</li>
+    </ul>`};
   }
 
   componentDidMount(){
@@ -82,7 +84,7 @@ class Integration extends Component {
                   {document.queryCommandSupported("copy") && (
                           <button
                             type="button"
-                            className="btn btn-primary"
+                            className="btn btn-primary btn-primary-custom"
                             onClick={this.copyToClipboard}
                           >
                             {this.state.copySuccess}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { Link } from 'react-router-dom';
 import {getJsCode, getJsInstructions} from '../../../utils/customerSetUp';
 
 import Notification from '../../model/Notification';
@@ -45,14 +45,30 @@ class Step1 extends Component {
   render() {
     return (
       <form>
+        <div className="col-lg-12 text-center">
+          <div className="step-number-div">
+            1/2
+          </div>
+          <h1 className="setup-heading">{this.props.pageTitle}Integration</h1>
+          <h4 className="setup-sub-heading">Integrate Kommunicate to your product within <strong>2 minutes</strong></h4>
+          <h2 className="setup-integration-later-text">Integration instructions can also be found inside <span>Settings > Integrations</span> later</h2>
+          <div className="button-link-container">
+          <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+            <a  className="skip-link">
+            <Link to="/dashboard" className=" skip-link"> Skip for now</Link> 
+            </a>
+          </div>
+          <hr></hr>
+        </div>
         <div className="row justify-content-center">
           <div className="col-md-10">
             <Integration cardSize={12}/>
+            <div className="form-group">
+          <button className="btn btn-sm btn-primary px-4 ml-40 btn-primary-custom" onClick={this.props.changeStep} hidden={this.state.hideNextBtn}> Next </button>
+        </div>
           </div>
         </div>
-        <div className="form-group">
-          <button className="btn btn-sm btn-primary px-4" onClick={this.props.changeStep} hidden={this.state.hideNextBtn}> Next </button>
-        </div>
+        
       </form>
     )
   }

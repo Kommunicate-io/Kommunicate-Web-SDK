@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+@import url(https://fonts.googleapis.com/css?family=OpenSans:300,400,700);
 
 .title {
   color:#9b9797;
@@ -8,11 +8,11 @@
 
 .title-text {
   height: 30px;
-	font-family: OpenSans;
 	font-size: 16px;
 	letter-spacing: 0.7px;
 	text-align: left;
   color: #5e6061;
+  font-weight: 400;
 }
 
 .title:hover {
@@ -46,6 +46,11 @@
   overflow: auto;
   transition: all .2s ease-in;
 }
+.content-text ul {
+  list-style: none;
+  padding-left: 20px;
+  color: #5f6162;
+}
 
 .content-text-open {
   visibility: visible;
@@ -76,6 +81,7 @@
 .subtitle-text{
   color:#9b9797;
   font-size: 12px;
+  font-weight: 400;
 }
 .accordion{
   padding-left: 0px !important;

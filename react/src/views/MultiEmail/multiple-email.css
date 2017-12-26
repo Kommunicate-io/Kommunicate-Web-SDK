@@ -1,23 +1,43 @@
 .multiple-email-container{
 	background-color: #FFF;
-	border: 1px solid #C0C0C0;
+	/* border: 1px solid #C0C0C0; */
 	padding-left: 0;
+	width: 35%;
 }
-
+.multiple-email-container input{
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border: 1px solid #5C5AA7;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.flex-center {
+	display: flex;
+	justify-content: center;
+}
+.flex-center .group, .flex-center .form-group {
+	margin-bottom: 5px;
+}
+.br-custom {
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
 .single-email-container{
 	display: inline-block;
-	border: 2px solid #C0C0C0;
-	background-color: #20a8d8;
+	/* border: 2px solid #C0C0C0; */
+	background-color: #8c8787;
 	color: #FFF;
 	margin: 5px;
 	margin-top: 5px;
-	border-radius: 15px;
-	padding: 5px;
+	border-radius: 4px;
+	padding: 3px 6px;
 }
 
 .remove-email {
 	margin-left: 3px;
 	cursor: pointer;
+	vertical-align: sub;
+	line-height: 16px;
 }
 
 .input-email {

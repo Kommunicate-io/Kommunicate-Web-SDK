@@ -38,13 +38,16 @@
     width: 133px;
     height: 134px;
     border-radius: 65px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
+}
+.pt-100 {
+    padding-top: 100px;
 }
 .chevron-up-password {
     color: #dad8d8;
 }
 .edit-dp-btn {
-    position: absolute;
+    /* position: absolute; */
 }
 .default-dp-hide {
     visibility: hidden;
@@ -107,14 +110,14 @@
     background-color: white;
 }
 .about-dp{
-    width: 183px;
-    height: 14px;
-    font-family: OpenSans;
-    font-size: 10px;
+    /* width: 183px;
+    height: 14px; */
+    /* font-family: OpenSans; */
+    font-size: 12px;
     letter-spacing: 0.7px;
-    text-align: left;
+    /* text-align: left; */
     color: #87898b;
-    margin-left: 17px;
+    /* margin-left: 17px; */
 }
 .hidden-cropped-img{
     visibility: hidden;

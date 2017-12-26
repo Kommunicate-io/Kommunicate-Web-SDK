@@ -93,22 +93,22 @@ class MultiEmail extends Component {
             <div>
                 {<div className="form-group">
                     <button
-                        className={this.state.instructionButtonShow === true ?"btn btn-primary":"n-vis"}
+                        className={this.state.instructionButtonShow === true ?"btn btn-primary btn-primary-custom":"n-vis"}
                         onClick={this.showEmailInput}
                     >
                         {" "}
-                        Email instructions{" "}
+                        Send instructions to team{" "}
                     </button>
                 </div>}
                 <div className={
                     this.state.emailInstructions === true
-                        ? "form-group row"
+                        ? "form-group flex-center row"
                         : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
-                    <div className="form-group col-md-5 multiple-email-container">
+                    <div className="form-group group multiple-email-container">
                     <input
-                            className="input-email"
+                            className="input"
                             value={this.state.emailAddress}
                             onKeyDown={this.checkForSpace}
                             onChange={this.multipleEmailHandler}
@@ -123,21 +123,25 @@ class MultiEmail extends Component {
                                         this.removeEmail(email);
                                     }}
                                 >
-                                    | X
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="16" viewBox="0 0 24 24" width="16">
+                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                    </svg>
                               </span>
                             </div>
                         ))}
+                        <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div>
                     </div> 
-                    <div className="col-md-7">
+                    <div>
                         <button
-                            className="btn btn-primary px-5 m-t-1px"
+                            className="btn btn-primary px-5 btn-primary-custom br-custom"
                             onClick={this.sendMail}
                         >
                             {" "}
                             Send{" "}
                         </button>
                     </div>
-                    <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div>
+                    {/* <div className="tip-enter-m tip-text-style"><p>Tip: You can enter multiple email IDs, separated by Space </p></div> */}
                 </div>
             </div>
         );
