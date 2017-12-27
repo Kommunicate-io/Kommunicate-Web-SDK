@@ -5062,6 +5062,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					url : KM_BASE_URL + USER_DETAIL_URL + "?" + data,
 					type : 'get',
 					contentType : 'application/json',
+					async: (typeof params.async !== 'undefined') ? params.async : true,
 					success : function(data) {
 						if (data + '' === 'null') {
 							if (params.message) {
@@ -5376,6 +5377,13 @@ var KM_CLIENT_GROUP_MAP = [];
 					if (group.type === 10){
 						for(var i= 0;i<Object.keys(group.users).length;i++){
 							var userDetail=MCK_USER_DETAIL_MAP[(Object.values(group.users)[i]).userId];
+							if(!userDetail){
+								//mckMessageLayout.getTabDisplayName(contact.contactId, false)
+								var userIdArray = [];
+								userIdArray.push((Object.values(group.users)[i]).userId);
+								mckContactService.getUsersDetail(userIdArray,{async:false});
+							}
+
 							if(userDetail&&userDetail.roleType&&userDetail.roleType===3){
 								displayName =userDetail.userId;
 								//console.log("groupName",displayName);
