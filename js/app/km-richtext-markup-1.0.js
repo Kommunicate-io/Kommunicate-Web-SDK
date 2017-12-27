@@ -37,8 +37,9 @@ getHotelCardTemplate : function(options,sessionId){
             star["star"+(i+1)]="km-star-filled";
         }
    
-    }     
-    var price = options.Price.CurrencyCode + " " + options.Price.OfferedPrice;
+    }    
+    //Note: Setting price as 8%, modify it to change price calculation logic.
+    var price = options.Price.CurrencyCode + " " + (options.Price.OfferedPrice/100)*108;
     return `
     <div class="km-single-card-message">
         <div class="km-card-message-header">
