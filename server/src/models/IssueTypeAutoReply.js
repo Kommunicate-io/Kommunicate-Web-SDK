@@ -1,6 +1,6 @@
 
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define("issue_type_auto_repies", {
+    return sequelize.define("issue_type_auto_replies", {
       id: {
         type: DataTypes.INTEGER(11),
         autoIncrement: true,
