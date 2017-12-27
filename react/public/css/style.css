@@ -9508,6 +9508,15 @@ pointer-events: none;
     color: white;
     text-align: left; 
 }
+
+.km-auto-replies-left-msg-container p {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    text-align: left; 
+}
+
 .url-http-text::before {
   content: 'Your company URL:';
   position: absolute;
@@ -9516,6 +9525,16 @@ pointer-events: none;
   color: #5c5aa7;
   right: calc(100% + 15px);
   width: 150px;
+}
+
+.km-add-category button:hover {
+  background-color: #5C5AA7;
+  color: white;
+}
+
+.km-add-category button:active {
+  background-color: #5C5AA7;
+  color: white;
 }
 
 .company-url-form-group {
