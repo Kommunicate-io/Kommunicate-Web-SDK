@@ -331,7 +331,7 @@ exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)
 exports.updateApplication = (data) => {
   let apzToken = config.getProperties().kommunicateAdminApzToken
   let applicationId = config.getProperties().kommunicateParentKey
-  let url = config.getProperties().urls.applozicHostUrl + '/rest/ws/application/edit'
+  let url = config.getProperties().urls.applozicHostUrl + '/rest/ws/application/update'
   return Promise.resolve(axios.post(url, data, {
     headers: {
       "Content-Type": "application/json",
