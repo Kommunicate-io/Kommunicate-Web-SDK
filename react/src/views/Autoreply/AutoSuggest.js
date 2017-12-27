@@ -206,7 +206,7 @@ class AutoSuggest extends Component{
 			enableTextFiled : enableTextFiled
 		
 		})
-		this.componentDidMount
+		
 		//document.getElementById(frmObj.shortcut-field).focus();
 		//document.getElementById(frmObj.shortcut-field).select();
 
