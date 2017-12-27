@@ -74,13 +74,19 @@ exports.patchCustomer = (req,res)=>{
   const customer = req.body;
   const userId = req.params.userId;
   console.log("request recieved to update customer: ",userId, "body",customer);
+  if (customer.websiteUrl) {
+    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl }).catch(err => {
+      console.log('error while updating application')
+    })
+  }
+  
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     userService.getAdminUserByAppId(customer.applicationId).then(user=>{
       applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,{userId:userId, displayName:customer.name, email: customer.email}).then(response=>{
         console.log("Applozic update user response: " + response);
       }).catch(err=>{
         console.log("error while updating Applozic user");
-      })    
+      }) 
     });
     if(isUpdated){
       response.code="SUCCESS";

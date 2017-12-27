@@ -327,3 +327,20 @@ exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)
     throw err;
   });
 }
+
+exports.updateApplication = (data) => {
+  let apzToken = config.getProperties().kommunicateAdminApzToken
+  let applicationId = config.getProperties().kommunicateParentKey
+  let url = config.getProperties().urls.applozicHostUrl + '/rest/ws/application/edit'
+  return Promise.resolve(axios.post(url, data, {
+    headers: {
+      "Content-Type": "application/json",
+      "Apz-AppId": applicationId,
+      'Apz-Token': "Basic " + apzToken
+    }
+  })).then(response => {
+    console.log("received response from applozic", response.status);
+  }).catch(err => {
+    console.log('error  ', err)
+  })
+}
