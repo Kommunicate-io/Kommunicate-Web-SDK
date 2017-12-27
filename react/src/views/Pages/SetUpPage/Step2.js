@@ -6,7 +6,8 @@ import Notification from '../../model/Notification';
 import ImageUploader from '../../Admin/ImageUploader'
 import Modal from 'react-modal';
 import '../../Admin/Admin.css';
-import { getResource } from '../../../config/config.js'
+import { getResource } from '../../../config/config.js';
+import isURL from 'validator/lib/isURL';
 
 const customStyles = {
   content: {
@@ -27,9 +28,9 @@ class Step2 extends Component {
     super(props)
 
     this.state = {
+      website_url: '',
       name: '',
       role: '',
-      website_url: '',
       contact_no: '',
       company_name: '',
       company_size: '',
@@ -56,16 +57,25 @@ class Step2 extends Component {
 
     e.preventDefault();
 
-    const customerInfo = {
-      applicationId: localStorage.getItem('applicationId'),
-      name: this.state.name,
-      role: this.state.role,
-      websiteUrl: this.website_url,
-      contactNo: this.state.contact_no,
-      companyName: this.state.company_name,
-      companySize: this.state.company_size,
-      industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
-    }
+    var websiteURL = this.state.website_url;
+
+    if(!isURL(websiteURL)) {
+      Notification.warning("Invalid URL.");
+      return;
+    } else {
+      const customerInfo = {
+        applicationId: localStorage.getItem('applicationId'),
+        websiteUrl: this.state.website_url,
+        name: this.state.name,
+        role: this.state.role,
+        contactNo: this.state.contact_no,
+        companyName: this.state.company_name,
+        companySize: this.state.company_size,
+        industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
+      }
+    
+    
+    console.log(customerInfo);
 
     patchCustomerInfo(customerInfo, localStorage.getItem("loggedinUser"))
       .then(response => {
@@ -77,6 +87,7 @@ class Step2 extends Component {
       }).catch(err => { Notification.error(err) });
     // window.location = '/dashboard';
     this.props.history.push('/dashboard');
+    }
   }
   openModal() {
     this.setState({ modalIsOpen: true });
