@@ -6,6 +6,7 @@ import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSugg
 
 class AutoSuggest extends Component{
 
+
 	state = {
 		category: '',
 		shortcut: '',
@@ -23,7 +24,7 @@ class AutoSuggest extends Component{
 		createDisable:false	
 	
 	}
-
+	
 	componentDidMount () {
 		// getAllSuggestions()
 		// 	.then(autoSuggestions => {
@@ -118,7 +119,7 @@ class AutoSuggest extends Component{
 				applicationId: localStorage.getItem("applicationId"),
 				userName: localStorage.getItem("loggedinUser"),
 			//	category: this.state.category,
-			  	name: "blank",
+			  	name: " ",
 				category: this.state.userShortcuts[index].shortcutField,
 				content: this.state.userShortcuts[index].messageField
 			//	content: this.state.content
@@ -148,7 +149,7 @@ class AutoSuggest extends Component{
 		}
 		this.setState({ 
 			createDisable:false,
-			enableTextFiled : true 
+			enableTextFiled : true
 		})
 		
 	}
@@ -185,31 +186,34 @@ class AutoSuggest extends Component{
 	
 
 	appendShorcutFields = () => {
-
+		
 		let fieldGroup = this.state.userShortcuts;
 
 		let fields = {
 			shortcutField: '',
-			messageFeild: ''
+			messageField: ''
 		};
-
+		
 		fieldGroup.unshift(fields)
 
 		let activeTextField = 0;
 		let enableTextFiled = 0 ;
-
+		
 		this.setState({
 			createDisable:true,
 			userShortcuts: fieldGroup,
 			activeTextField: activeTextField,
 			enableTextFiled : enableTextFiled
+		
 		})
 		
-		
+		//document.getElementById(frmObj.shortcut-field).focus();
+		//document.getElementById(frmObj.shortcut-field).select();
 
 		console.log("elements in the array" +this.state.userShortcuts[this.state.index])
-
+		
 	}
+	
 	
 
 
@@ -223,7 +227,7 @@ class AutoSuggest extends Component{
 						<div className="col-md-3 shortcut-col">
 							<div className="shortcut-field-group">
 								<div className="sign-box">/</div>
-								<input type="text" disabled={ this.state.enableTextFiled !== index } className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField} 
+								<input type="text"  disabled={ this.state.enableTextFiled !== index } className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField} 
 								onChange={(e) => {
 									let userShortcuts = this.state.userShortcuts;
 									userShortcuts[index].shortcutField = e.target.value;
