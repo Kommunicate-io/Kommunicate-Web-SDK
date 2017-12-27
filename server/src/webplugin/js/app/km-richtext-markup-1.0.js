@@ -43,7 +43,7 @@ getHotelCardTemplate : function(options,sessionId){
     <div class="km-single-card-message">
         <div class="km-card-message-header">
             <div class="km-card-message-image-continer"><img class ="km-card-message-img" src =`+ options.HotelPicture+` />
-                    <div class="km-card-message-image-price-container">&#8377;`+ price +`</div>
+                    <div class="km-card-message-image-price-container">`+ price +`</div>
             </div>
         </div>
         <div class="km-card-message-body">
