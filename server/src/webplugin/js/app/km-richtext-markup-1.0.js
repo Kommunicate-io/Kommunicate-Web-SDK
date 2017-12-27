@@ -38,7 +38,7 @@ getHotelCardTemplate : function(options,sessionId){
         }
    
     }     
-    var price = options.Price.currencyCode + " " + options.Price.OfferedPrice;
+    var price = options.Price.CurrencyCode + " " + options.Price.OfferedPrice;
     return `
     <div class="km-single-card-message">
         <div class="km-card-message-header">
