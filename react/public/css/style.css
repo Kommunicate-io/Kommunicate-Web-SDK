@@ -9476,11 +9476,17 @@ pointer-events: none;
 }
 .flex {
   display: flex;
+  align-items: center;
+  justify-content: left;
+  /*width: 50%;*/
+  padding: 5px;
 }
+
 .company-url-main-div {
   justify-content: center;
   margin-top: 60px;
 }
+
 .url-http-text {
   background-color: #d8d8d8;
   outline: none;
@@ -9494,6 +9500,8 @@ pointer-events: none;
   position: relative;
   cursor: default;
 }
+
+
 .url-http-text::before {
   content: 'Your company URL:';
   position: absolute;
@@ -9503,10 +9511,22 @@ pointer-events: none;
   right: calc(100% + 15px);
   width: 150px;
 }
+
+.km-add-category button:hover {
+  background-color: #5C5AA7;
+  color: white;
+}
+
+.km-add-category button:active {
+  background-color: #5C5AA7;
+  color: white;
+}
+
 .company-url-form-group {
   width: 350px;
   position: relative;
 }
+
 .company-url-form-group::after {
   content: 'This field is required because your customers would need to know who is sending them e-mails.';
   position: absolute;
@@ -9518,4 +9538,76 @@ pointer-events: none;
 }
 .company-url-form-group input {
   border-left: transparent;
+}
+
+.km-auto-replies-user-chat-preview {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 70%;
+  min-height: 250px;
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+  margin: auto;
+}
+
+.km-auto-replies-user-chat-preview-bttm-btn {
+  height: 40px;
+  width: 100%;
+  border-radius: 0 0 10px 10px;
+}
+
+.km-auto-replies-modal-close-btn {
+  border: 0px;
+}
+
+.km-auto-replies-modal-footer {
+  justify-content: center;
+}
+
+.km-auto-replies-right-msg-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 5px;
+}
+
+.km-auto-replies-left-msg-container {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  /*width: 50%;*/
+  padding: 5px;
+}
+
+.km-auto-replies-right-msg-container p {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    margin: 0;
+}
+
+.km-auto-replies-left-msg-container p {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    text-align: left; 
+}
+
+.km-auto-replies-left-msg-container span {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    width: 50%;
+}
+
+.km-auto-replies-add-category button:hover {
+  background-color: #5C5AA7;
+  color: white;
+}
+
+.km-auto-replies-add-category button:active {
+  background-color: #5C5AA7;
+  color: white;
 }

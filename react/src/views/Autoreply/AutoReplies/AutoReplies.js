@@ -1,14 +1,7 @@
 import React, {Component} from 'react'
-import {Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardHeader, CardBody} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 import CategoryDetails from './CategoryDetails'
-
-import {
-  ButtonGroup,
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownItem,
-  DropdownMenu } from 'reactstrap';
 
 class AutoReplies extends Component {
 
@@ -67,9 +60,9 @@ class AutoReplies extends Component {
 		console.log(this.state);
 		return (
 			<div className="card">
-				<div className="form-group row">
+				<div className="row">
 					<div className="col-md-4">
-						<div className="form-group ml-4 mr-4 mt-4 mb-4" style={{border: "3px solid #808080", borderRadius: "5px", backgroundColor: "white"}}>
+						<div className="form-group ml-4 mr-4 mt-4 mb-4" style={{border: "1.5px solid #808080", borderRadius: "5px", backgroundColor: "white", padding: "2px"}}>
 							<div className="input-group">
 								<input className="from-control" placeholder="Search categories..." style={{width: "80%", border: "none"}} />
 								<button className="btn btn-secondary" style={{width: "20%", border: "none"}}>
@@ -85,9 +78,9 @@ class AutoReplies extends Component {
 							</div>
 						</div>
 						<div className="form-group ml-4 mr-4 mt-4 mb-4">
-							<table className="table table-striped">
+							<table className="table km-auto-replies-add-category">
 								<tbody>
-									{this.state.categories.map((category, i) => (<tr key={i}><td onClick={() => this.showThisCategory(category)} style={{cursor: "pointer", textAlign: "center"}}><button className="btn btn-secondary" style={{border: "none"}} >{category}</button></td></tr>))}
+									{this.state.categories.map((category, i) => (<tr key={i}><td onClick={() => this.showThisCategory(category)} style={{cursor: "pointer", textAlign: "center"}}><button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category}</button></td></tr>))}
 								</tbody>
 							</table>
 						</div>
