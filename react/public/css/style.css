@@ -9476,11 +9476,17 @@ pointer-events: none;
 }
 .flex {
   display: flex;
+  align-items: center;
+  justify-content: left;
+  /*width: 50%;*/
+  padding: 5px;
 }
+
 .company-url-main-div {
   justify-content: center;
   margin-top: 60px;
 }
+
 .url-http-text {
   background-color: #d8d8d8;
   outline: none;
@@ -9494,6 +9500,14 @@ pointer-events: none;
   position: relative;
   cursor: default;
 }
+
+.km-auto-replies-left-msg-container p {
+    background: #5C5AA7;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    text-align: left; 
+}
 .url-http-text::before {
   content: 'Your company URL:';
   position: absolute;
@@ -9503,10 +9517,22 @@ pointer-events: none;
   right: calc(100% + 15px);
   width: 150px;
 }
+
 .company-url-form-group {
   width: 350px;
   position: relative;
 }
+
+.km-add-category button:hover {
+  background-color: #5C5AA7;
+  color: white;
+}
+
+.km-add-category button:active {
+  background-color: #5C5AA7;
+  color: white;
+}
+
 .company-url-form-group::after {
   content: 'This field is required because your customers would need to know who is sending them e-mails.';
   position: absolute;
