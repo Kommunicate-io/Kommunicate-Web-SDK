@@ -78,7 +78,7 @@ class AutoReplies extends Component {
 							</div>
 						</div>
 						<div className="form-group ml-4 mr-4 mt-4 mb-4">
-							<table className="table km-add-category">
+							<table className="table km-auto-replies-add-category">
 								<tbody>
 									{this.state.categories.map((category, i) => (<tr key={i}><td onClick={() => this.showThisCategory(category)} style={{cursor: "pointer", textAlign: "center"}}><button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category}</button></td></tr>))}
 								</tbody>
