@@ -9298,6 +9298,7 @@ hr.transparent {
   display: flex;
   align-items: center;
   justify-content: left;
+  /*width: 50%;*/
   padding: 5px;
 }
 
@@ -9314,7 +9315,7 @@ hr.transparent {
     padding: 10px;
     border-radius: 10px;
     color: white;
-    margin: 0;
+    text-align: left; 
 }
 
 .km-auto-replies-left-msg-container span {
@@ -9325,8 +9326,14 @@ hr.transparent {
     width: 50%;
 }
 
-.km-auto-replies-left-msg-container input {
-    width: 50%;
+.km-add-category button:hover {
+  background-color: #5C5AA7;
+  color: white;
+}
+
+.km-add-category button:active {
+  background-color: #5C5AA7;
+  color: white;
 }
 
 
