@@ -140,18 +140,20 @@ class AutoReplies extends Component {
 											<td onClick={() => this.showThisCategory(category.name)} style={{cursor: "pointer", textAlign: "center"}}>
 												<button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category.name}</button>
 											</td>
-											<td className={category.status === 'active' ? "":"n-vis"}>
-												<span className="badge badge-success">Active</span>
-											</td>
-											<td className={category.status === 'pending' ? "":"n-vis"}>
-												<span className="badge badge-warning">Pending</span>
-											</td>
-											<td className={category.status === 'deleted' ? "":"n-vis"}>
-												<span className="badge badge-danger">Deleted</span>
-											</td>
-											<td className={category.status === 'deleted' ? "":"n-vis"}>
-												<span className="badge badge-danger">Deleted</span>
-											</td>
+											{
+											// <td className={category.status === 'active' ? "":"n-vis"}>
+											// 	<span className="badge badge-success">Active</span>
+											// </td>
+											// <td className={category.status === 'pending' ? "":"n-vis"}>
+											// 	<span className="badge badge-warning">Pending</span>
+											// </td>
+											// <td className={category.status === 'deleted' ? "":"n-vis"}>
+											// 	<span className="badge badge-danger">Deleted</span>
+											// </td>
+											// <td className={category.status === 'deleted' ? "":"n-vis"}>
+											// 	<span className="badge badge-danger">Deleted</span>
+											// </td>
+											}
 										</tr>
 									))
 									}
