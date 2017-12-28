@@ -2,30 +2,31 @@ import React, { Component } from 'react'
 import validator from 'validator';
 import './AutoSuggest.css'
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById }  from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById } from '../../utils/kommunicateClient'
 
-class AutoSuggest extends Component{
-
+class AutoSuggest extends Component {
+	componentDidMount() {
+		this.nameInput.focus();
+	}
 
 	state = {
 		category: '',
 		shortcut: '',
 		name: '',
 		content: '',
-		message:'',
+		message: '',
 		autoSuggestions: [],
 		viewAllSuggestions: false,
 		categories: [],
-		userShortcuts:[],
+		userShortcuts: [],
 		activeTextField: -1,
 		activeMenu: -1,
 		visible: false,
-		enableTextFiled: -1,	
-		createDisable:false	
-	
+		enableTextFiled: -1,
+		createDisable: false,
 	}
-	
-	componentDidMount () {
+
+	componentDidMount() {
 		// getAllSuggestions()
 		// 	.then(autoSuggestions => {
 		// 		this.setState({autoSuggestions: autoSuggestions})
@@ -43,13 +44,13 @@ class AutoSuggest extends Component{
 						suggestionId: item.suggestionId
 					})
 				})
-			
+
 				this.setState({
-					userShortcuts: userShortcuts
+					userShortcuts: userShortcuts.reverse()
 				})
 
-				this.setState({autoSuggestions: autoSuggestions})
-				
+				this.setState({ autoSuggestions: autoSuggestions })
+
 				// console.log(this.state.autoSuggestions)
 				// console.log(this.state.categories)
 			}).catch(err => {
@@ -58,10 +59,10 @@ class AutoSuggest extends Component{
 	}
 
 	viewAllSuggestions = () => {
-		this.setState({viewAllSuggestions: !this.state.viewAllSuggestions})
+		this.setState({ viewAllSuggestions: !this.state.viewAllSuggestions })
 		getSuggestionsByAppId(localStorage.getItem("applicationId"))
 			.then(autoSuggestions => {
-				this.setState({autoSuggestions: autoSuggestions})
+				this.setState({ autoSuggestions: autoSuggestions })
 				console.log(this.state.autoSuggestions)
 				console.log(this.state.categories)
 			})
@@ -73,7 +74,7 @@ class AutoSuggest extends Component{
 	// 	if(validator.isEmpty(this.state.shortcut) || validator.isEmpty(this.state.message)){	
 	// 	  Notification.info(" All fields are mandatory !!");
 	// 	}else{
-			
+
 	// 		const suggestion = {
 	// 			applicationId: localStorage.getItem("applicationId"),
 	// 			userName: localStorage.getItem("loggedinUser"),
@@ -111,24 +112,22 @@ class AutoSuggest extends Component{
 		let index = this.state.activeTextField;
 		e.preventDefault();
 		//if(validator.isEmpty(this.state.category) || validator.isEmpty(this.state.name) || validator.isEmpty(this.state.content)){
-		if(validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)){	
-		  Notification.info(" All fields are mandatory !!");
-		}else{
-			
+		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
+			Notification.info(" All fields are mandatory !!");
+		} else {
+
 			const suggestion = {
 				applicationId: localStorage.getItem("applicationId"),
 				userName: localStorage.getItem("loggedinUser"),
-			//	category: this.state.category,
-			  	name: " ",
+				name: " ",
 				category: this.state.userShortcuts[index].shortcutField,
 				content: this.state.userShortcuts[index].messageField
-			//	content: this.state.content
 			}
 
 			createSuggestions(suggestion)
 				.then(response => {
 					console.log(response)
-					if(response.status === 200 && response.data.code === "SUGESSTION_CREATED"){
+					if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
 						Notification.info("Shortcut created")
 
 						// Refresh the list with the new suggestion
@@ -136,22 +135,22 @@ class AutoSuggest extends Component{
 							autoSuggestions: prevState.autoSuggestions.push(suggestion)
 						})
 
-						
-						
-					}else{
+
+
+					} else {
 						Notification.info("There was problem in creating the suggestion.");
 					}
 				})
 				.catch(err => {
 					console.log(err)
 				})
-				
+
 		}
-		this.setState({ 
-			createDisable:false,
-			enableTextFiled : true
+		this.setState({
+			createDisable: false,
+			enableTextFiled: true
 		})
-		
+
 	}
 	/*
 	deleteSuggestion = (id) => {
@@ -175,89 +174,83 @@ class AutoSuggest extends Component{
 	}
 	*/
 
-	resetForm = () => {
-		this.setState({
-			category: '',
-			shortcut: '',
-			name: '',
-			content: ''
-		})
-	}
-	
 
 	appendShorcutFields = () => {
-		
+
 		let fieldGroup = this.state.userShortcuts;
 
 		let fields = {
 			shortcutField: '',
 			messageField: ''
 		};
-		
+
 		fieldGroup.unshift(fields)
 
 		let activeTextField = 0;
-		let enableTextFiled = 0 ;
-		
+		let enableTextFiled = 0;
+
+
 		this.setState({
-			createDisable:true,
+			createDisable: true,
 			userShortcuts: fieldGroup,
 			activeTextField: activeTextField,
-			enableTextFiled : enableTextFiled
-		
-		})
-		
+			enableTextFiled: enableTextFiled,
+
+		}, (e) => { this.refs.shortcut0.focus() })
+
 		//document.getElementById(frmObj.shortcut-field).focus();
 		//document.getElementById(frmObj.shortcut-field).select();
 
-		console.log("elements in the array" +this.state.userShortcuts[this.state.index])
-		
+		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
+
 	}
-	
-	
 
 
-	render(){
-		
-	 const textFields = this.state.userShortcuts.map((shorcut, index) =>
-	 
+
+
+	render() {
+
+		const textFields = this.state.userShortcuts.map((shorcut, index) =>
 			<form key={index}>
 				<div className="shortcut-field-wrapper">
 					<div className="row">
 						<div className="col-md-3 shortcut-col">
 							<div className="shortcut-field-group">
 								<div className="sign-box">/</div>
-								<input type="text"  disabled={ this.state.enableTextFiled !== index } className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField} 
-								onChange={(e) => {
-									let userShortcuts = this.state.userShortcuts;
-									userShortcuts[index].shortcutField = e.target.value;
-									this.setState({userShortcuts: userShortcuts})
-								}} onFocus={() => this.setState({activeTextField: index})} placeholder="" /> 
-							 {/* <input type="text" className="form-control shortcut-field" id="shortcut-field" value={this.state.shortcut} onChange={this.handleChange} placeholder="" /> */}
+
+								<input type="text" ref={"shortcut" + index} disabled={this.state.enableTextFiled !== index} className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField}
+									onChange={(e) => {
+										let userShortcuts = this.state.userShortcuts;
+										userShortcuts[index].shortcutField = e.target.value;
+										this.setState({ userShortcuts: userShortcuts })
+									}} onFocus={() => this.setState({ activeTextField: index })}
+									onKeyPress={(e) => { if (e.charCode === 13) { this.refs.message0.focus() } }} placeholder="" />
+								{/* <input type="text" className="form-control shortcut-field" id="shortcut-field" value={this.state.shortcut} onChange={this.handleChange} placeholder="" /> */}
 							</div>
 						</div>
 						<div className="col-md-1 input-link"></div>
-					 <div className="col-md-4 message-col">
-						 {/*<div className="field-title">Full Message</div> */}
-						 
-						 <input type="text" disabled={ this.state.enableTextFiled !== index } className="form-control message-field" id="message-field" value={this.state.userShortcuts[index].messageField}
-							 onChange={(e) => {
-								 let userShortcuts = this.state.userShortcuts;
-								 userShortcuts[index].messageField = e.target.value;
-								 this.setState({ userShortcuts: userShortcuts })
-							 }} onFocus={() => this.setState({activeTextField: index})} placeholder="" />
-						 
+						<div className="col-md-4 message-col">
+							{/*<div className="field-title">Full Message</div> */}
 
-						 {
-							 this.state.activeTextField === index && (this.state.userShortcuts[index].shorcutField || this.state.userShortcuts[index].messageField) &&
-							 <div className="shortcut-button-group">
-								 <button type="submit" autoFocus={false} className={this.state.createDisable ? "btn btn-sm shorcut-save-button":"n-vis"} id="shorcut-save-button" onClick={this._createSuggestion}> Save</button>
-								{/* <button type="submit" autoFocus={false} className="btn btn-sm shorcut-cancel-button" id="shorcut-cancel-button" >Cancel</button> */}
-							 </div>
-						 }
-						 
-					 </div>
-					 {/* 
+							<input type="text" ref={"message" + index} disabled={this.state.enableTextFiled !== index} className="form-control message-field" id="message-field" value={this.state.userShortcuts[index].messageField}
+								onChange={(e) => {
+									let userShortcuts = this.state.userShortcuts;
+									userShortcuts[index].messageField = e.target.value;
+									this.setState({ userShortcuts: userShortcuts })
+								}} onFocus={() => this.setState({ activeTextField: index })}
+								onKeyPress={(e) => { if (e.charCode === 13) { this.refs.save0.focus() } }} placeholder="" />
+
+
+							{
+								this.state.activeTextField === index && (this.state.userShortcuts[index].shorcutField || this.state.userShortcuts[index].messageField) &&
+								<div className="shortcut-button-group">
+									<button type="submit" ref={"save" + index} autoFocus={false} className={this.state.createDisable ? "btn btn-sm shorcut-save-button" : "n-vis"} id="shorcut-save-button" onClick={this._createSuggestion}> Save</button>
+									{/* <button type="submit" autoFocus={false} className="btn btn-sm shorcut-cancel-button" id="shorcut-cancel-button" >Cancel</button> */}
+								</div>
+							}
+
+						</div>
+						{/* 
 					 <div className="col-md-1">
 					 	 <div className="arrow-up"></div> 
 						 <p className="tooltip-btn"><i className="fa fa-ellipsis-h" onClick={()=> this.setState({activeMenu: index,visible: !this.state.visible})} ></i></p>
@@ -272,49 +265,50 @@ class AutoSuggest extends Component{
 						 
 						}
 					 </div>
-					*/} 
-				 </div>
-			 </div>
-		 </form>
-
-		); 
-		
-		return(
-
-	      <div className="animated fadeIn">
-					<div className="row">
-						<div className="col-sm-12 col-md-8">
-							<div className="message-shortcuts-title-wrapper">
-								<div className="message-shortcuts-title">Save your time by setting up shortcuts for common responses</div>
-								<div className="message-shortcuts-description">(Press / before typing the shortcut term during a conversation to get the full message)</div>							
-							</div>
-							<hr/>
-						</div>
+					*/}
 					</div>
-					<div className="row">
-						<div className="col-md-12">
+				</div>
+			</form>
+
+
+		);
+
+		return (
+
+			<div className="animated fadeIn">
+				<div className="row">
+					<div className="col-sm-12 col-md-8">
+						<div className="message-shortcuts-title-wrapper">
+							<div className="message-shortcuts-title">Save your time by setting up shortcuts for common responses</div>
+							<div className="message-shortcuts-description">(Press / before typing the shortcut term during a conversation to get the full message)</div>
+						</div>
+						<hr className="title-line" />
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-md-12">
 						<button disabled={this.state.createDisable} className="btn-primary create-message-shortcut-button" onClick={this.appendShorcutFields} >+ Create Shortcut</button>
-						</div>
 					</div>
-					
+				</div>
+
 				<div className="field-header">
 					<div className="row">
 						<div className="col-md-3">
-						{ this.state.userShortcuts.length > 0 &&
-							<div className="field-title">Shortcut</div>
-						}
+							{this.state.userShortcuts.length > 0 &&
+								<div className="field-title">Shortcut</div>
+							}
 						</div>
 						<div className="col-md-1"></div>
 						<div className="col-md-4 message-col">
-						{	this.state.userShortcuts.length > 0 &&
-							<div className="field-title">Full Message</div>
-						}
+							{this.state.userShortcuts.length > 0 &&
+								<div className="field-title">Full Message</div>
+							}
 						</div>
 					</div>
-				</div>	
-				
-					{textFields} 
-				  {/* 
+				</div>
+
+				{textFields}
+				{/* 
 					<div className="shortcut-field-wrapper">
 						<div className="row">
 							<div className="col-md-3">
@@ -341,7 +335,7 @@ class AutoSuggest extends Component{
 							
 						</div>
 					</div> */}
-					{/* 
+				{/* 
 	        <div className="row">
 	          <div className="col-sm-12 col-md-12">
 	            <div className="card">
@@ -408,9 +402,9 @@ class AutoSuggest extends Component{
 	          </div>
 					</div>
 					*/}
-				 	
-	      </div>
-	    )
+
+			</div>
+		)
 	}
 }
 
