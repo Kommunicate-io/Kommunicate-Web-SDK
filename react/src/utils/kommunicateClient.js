@@ -458,6 +458,43 @@ const goOnline = (userId, appId) => {
   })
 }
 
+const createIssueType = (data) => {
+
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    data: data
+  })).then((response) => {
+    return response
+  }).catch(err => {console.log("Error in creating issue")})
+}
+
+const getIssueTypes = (data) => {
+
+  let url = getConfig().kommunicateBaseUrl+"/issuetype";
+
+  return axios.get(url).then(response => {
+    console.log(response)
+    if(response.data.code === 'GOT_ALL_ISSUE_TYPE'){
+      return response.data.data
+    }
+  })
+}
+
+const getIssueTypeByCustIdAndCreatedBy = () => {
+
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+
+  return axios.get(url).then(response => {
+    console.log(response)
+    if(response.data.code === 'GOT_ALL_ISSUE_TYPE'){
+      return response.data.data
+    }
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -482,5 +519,8 @@ export {
   getUsersByType,
   changePassword,
   goAway,
-  goOnline
+  goOnline,
+  createIssueType,
+  getIssueTypes,
+  getIssueTypeByCustIdAndCreatedBy
 }

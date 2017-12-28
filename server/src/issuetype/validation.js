@@ -1,6 +1,10 @@
 const joi = require('joi');
 
 module.exports.createIssueType = {
+	params:{
+    	userName:joi.string().required(),
+    	appId:joi.string().required()
+  	},
 	body: {
 		issueName: joi.string(),
 		description: joi.string(),

@@ -28,11 +28,34 @@ exports.getIssueType = (issueType) => {
     return Promise.resolve(issueTypeModel.findAll({ where: criteria }));
 }
 
+exports.getIssueTypeByCustIdAndCreatedBy = (userName, appId) => {
 
-exports.createIssueType = (IssueType) => {
-    return Promise.resolve(issueTypeModel.create(IssueType)).catch(err => {
-        return { code: err.parent.code, message: err.parent.sqlMessage }
-    });
+    return userService.getByUserNameAndAppId(userName, appId)
+        .then(user=>{
+            return Promise.resolve(issueTypeModel.
+                findAll({ 
+                    where: { 
+                        customerId: user.customerId,
+                        createdBy: user.id
+                    }
+                }));
+        }).catch(err =>{
+            return { code: err.parent.code, message: err.parent.sqlMessage }
+        })
+
+    
+}
+
+
+exports.createIssueType = (userName, appId, IssueType) => {
+    return userService.getByUserNameAndAppId(userName, appId)
+        .then(user=>{
+            IssueType.createdBy = user.id;
+            IssueType.customerId = user.customerId;
+            return Promise.resolve(issueTypeModel.create(IssueType));
+        }).catch(err => {
+            return { code: err.parent.code, message: err.parent.sqlMessage }
+        });
 }
 
 exports.updateIssueType = (issueId, issueType) => {

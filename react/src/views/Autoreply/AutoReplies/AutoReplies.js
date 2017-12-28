@@ -3,12 +3,16 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 
 import CategoryDetails from './CategoryDetails'
 
+import {createIssueType, getIssueTypes, getIssueTypeByCustIdAndCreatedBy} from '../../../utils/kommunicateClient'
+import Notification from '../../model/Notification'
+
 class AutoReplies extends Component {
 
 	constructor(props){
 		super(props);
 
 		this.state = {
+			listOfIssueTypes: [],
 			categoryName: '',
 			categoryModal: false,
 			categories : [],
@@ -26,18 +30,33 @@ class AutoReplies extends Component {
 			this.setState((prevState) => {
 				return {
 					categories: prevState.categories.concat([this.state.categoryName]),
-			 		categoryName: '',
-			 		arrayOfCategoryDetails: prevState.arrayOfCategoryDetails.concat([{name: this.state.categoryName, showCategory: false}]),
+			 		arrayOfCategoryDetails: prevState.arrayOfCategoryDetails.concat([{name: this.state.categoryName, showCategory: false, status: "pending"}]),
 			 		arrayOfShowCategoryDetails: {...prevState.arrayOfShowCategoryDetails, [this.state.categoryName]: false},
 			 		initialShowCategoryDetails: {...prevState.initialShowCategoryDetails, [this.state.categoryName]: false},
+			 	}
+			}, () => {this._createIssueType()});
+		}
+	}
+
+	_addCategories = (issueName, status) => {
+
+		if(issueName.length > 0){
+			this.setState((prevState) => {
+				return {
+					categories: prevState.categories.concat([issueName]),
+			 		arrayOfCategoryDetails: prevState.arrayOfCategoryDetails.concat([{name: issueName, showCategory: false, status: status}]),
+			 		arrayOfShowCategoryDetails: {...prevState.arrayOfShowCategoryDetails, [issueName]: false},
+			 		initialShowCategoryDetails: {...prevState.initialShowCategoryDetails, [issueName]: false},
 			 	}
 			});
 		}
 	}
 
+
 	toggleCategoryModal = () => {
     	this.setState({
-      		categoryModal: !this.state.categoryModal
+      		categoryModal: !this.state.categoryModal,
+      		categoryName: ''
     	});
   	}
 
@@ -54,6 +73,41 @@ class AutoReplies extends Component {
 				showBanner: false
 			}
 		})
+	}
+
+	_createIssueType = () => {
+
+		let data = {	
+			"issueName": this.state.categoryName,
+			"description": this.state.categoryName,
+			// "customerId": 1,
+			"createdBy": 1,
+			"status": "pending"
+		}
+
+		createIssueType(data)
+			.then(response => {
+				if(response.data.code === 'CREATED_SUCCESSFULLY'){
+          			Notification.success('Issue Created Successfully');
+        		}else{
+          			Notification.success('Issue not created.');
+        		}
+        	})
+	}
+
+	componentDidMount(){
+
+		getIssueTypeByCustIdAndCreatedBy().then(response => {
+			console.log(response)
+
+			this.setState({
+				listOfIssueTypes: response
+			}, () => {this.state.listOfIssueTypes.map(issueType => {
+				console.log(issueType)
+				this._addCategories(issueType.issueName, issueType.status)
+			})})
+		})
+
 	}
 
 	render() {
@@ -77,10 +131,33 @@ class AutoReplies extends Component {
 								</button>
 							</div>
 						</div>
-						<div className="form-group ml-4 mr-4 mt-4 mb-4">
+						<div className="form-group ml-4 mr-4 mt-4 mb-4" style={{height: "250px", overflowY: "auto"}}>
 							<table className="table km-auto-replies-add-category">
 								<tbody>
-									{this.state.categories.map((category, i) => (<tr key={i}><td onClick={() => this.showThisCategory(category)} style={{cursor: "pointer", textAlign: "center"}}><button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category}</button></td></tr>))}
+									{
+									this.state.arrayOfCategoryDetails.map((category, i) => (
+										<tr key={i}>
+											<td onClick={() => this.showThisCategory(category.name)} style={{cursor: "pointer", textAlign: "center"}}>
+												<button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category.name}</button>
+											</td>
+											<td className={category.status === 'active' ? "":"n-vis"}>
+												<span className="badge badge-success">Active</span>
+											</td>
+											<td className={category.status === 'pending' ? "":"n-vis"}>
+												<span className="badge badge-warning">Pending</span>
+											</td>
+											<td className={category.status === 'deleted' ? "":"n-vis"}>
+												<span className="badge badge-danger">Deleted</span>
+											</td>
+											<td className={category.status === 'deleted' ? "":"n-vis"}>
+												<span className="badge badge-danger">Deleted</span>
+											</td>
+										</tr>
+									))
+									}
+									{
+										// this.state.listOfIssueTypes.map((category, i) => (<tr key={i}><td onClick={() => this.showThisCategory(category.issueName)} style={{cursor: "pointer", textAlign: "center"}}><button className="btn btn-secondary" style={{border: "none", width: "100%"}} >{category.issueName}</button></td></tr>))
+									}
 								</tbody>
 							</table>
 						</div>

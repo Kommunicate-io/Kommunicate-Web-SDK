@@ -14,8 +14,31 @@ exports.getIssueType = (req, res) => {
     });
 }
 
+exports.getIssueTypeByCustIdAndCreatedBy = (req, res) => {
+
+    const userName = req.params.userName
+    const appId = req.params.appId
+
+    return Promise.resolve(issueTypeService.getIssueTypeByCustIdAndCreatedBy(userName, appId)).then(result => {
+        if (result && result.length === 0) {
+            return res.status(200).json({ code: "RECORD_NOT_FOUND", message: 'records not found' });
+        } else {
+            return res.status(200).json({ code: "GOT_ALL_ISSUE_TYPE", data: result });
+        }
+    }).catch(err => {
+        return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong!" })
+    });
+}
+
+
+
 exports.createIssueType = (req, res) => {
-    return Promise.resolve(issueTypeService.createIssueType(req.body)).then(response => {
+
+    const userName = req.params.userName
+    const appId = req.params.appId
+
+    return Promise.resolve(issueTypeService.createIssueType(userName, appId, req.body)).then(response => {
+        console.log(response)
         if (response.code && response.code === 'ER_DUP_ENTRY') {
             return res.status(200).json(response)
         }
