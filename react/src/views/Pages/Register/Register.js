@@ -128,7 +128,7 @@ class Register extends Component {
 
                    <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
-                   <input autofocus type="text" className="form-control" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
+                   <input autoFocus type="text" className="form-control" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
                   </div>
                   <div className="input-group mb-3">
                     <span className="input-group-addon">@</span>
