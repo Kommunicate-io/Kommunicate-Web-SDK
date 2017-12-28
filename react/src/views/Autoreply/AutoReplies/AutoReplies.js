@@ -38,13 +38,13 @@ class AutoReplies extends Component {
 		}
 	}
 
-	_addCategories = (issueName, status) => {
+	_addCategories = (issueName, status, id) => {
 
 		if(issueName.length > 0){
 			this.setState((prevState) => {
 				return {
 					categories: prevState.categories.concat([issueName]),
-			 		arrayOfCategoryDetails: prevState.arrayOfCategoryDetails.concat([{name: issueName, showCategory: false, status: status}]),
+			 		arrayOfCategoryDetails: prevState.arrayOfCategoryDetails.concat([{name: issueName, showCategory: false, status: status, id: id}]),
 			 		arrayOfShowCategoryDetails: {...prevState.arrayOfShowCategoryDetails, [issueName]: false},
 			 		initialShowCategoryDetails: {...prevState.initialShowCategoryDetails, [issueName]: false},
 			 	}
@@ -99,13 +99,14 @@ class AutoReplies extends Component {
 
 		getIssueTypeByCustIdAndCreatedBy().then(response => {
 			console.log(response)
-
-			this.setState({
-				listOfIssueTypes: response
-			}, () => {this.state.listOfIssueTypes.map(issueType => {
-				console.log(issueType)
-				this._addCategories(issueType.issueName, issueType.status)
-			})})
+			if(response instanceof Array){
+				this.setState({
+					listOfIssueTypes: response
+				}, () => {this.state.listOfIssueTypes.map(issueType => {
+					console.log(issueType)
+					this._addCategories(issueType.issueName, issueType.status, issueType.id)
+				})})
+			}
 		})
 
 	}
