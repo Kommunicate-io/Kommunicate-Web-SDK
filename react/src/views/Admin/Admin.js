@@ -198,7 +198,7 @@ class Forms extends Component {
                     </div>
                   </div>
                 </div>
-                <form className="form-horizontal" autocomplete="off">
+                <form className="form-horizontal" autoComplete="off">
                   <div className="form-group row">
                     <div className="col-md-4 display-photo-wrapper">
 
