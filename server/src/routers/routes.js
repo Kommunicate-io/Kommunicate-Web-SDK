@@ -114,7 +114,8 @@ groupRouter.post('/create',userController.createGroupOfAllAgents)
 /**
  * CRUD API's for 'IssueType' object
  */
-issueTypeRouter.post('/',validate(issueTypeValidation.createIssueType), issueTypeController.createIssueType)
+issueTypeRouter.post('/:userName/:appId',validate(issueTypeValidation.createIssueType), issueTypeController.createIssueType)
+issueTypeRouter.get('/:userName/:appId',issueTypeController.getIssueTypeByCustIdAndCreatedBy)
 issueTypeRouter.get('/',issueTypeController.getIssueType)
 issueTypeRouter.patch('/:id', validate(issueTypeValidation.updateIssueType), issueTypeController.updateIssueType)
 issueTypeRouter.delete('/',validate(issueTypeValidation.deleteIssueType), issueTypeController.deleteIssueType)
