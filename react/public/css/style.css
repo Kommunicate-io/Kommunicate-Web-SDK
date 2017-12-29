@@ -9526,6 +9526,7 @@ pointer-events: none;
 .company-url-form-group {
   width: 350px;
   position: relative;
+  margin-bottom: 0px;
 }
 
 .company-url-form-group::after {
