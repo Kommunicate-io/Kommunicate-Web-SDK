@@ -64,7 +64,6 @@ exports.updateIssueType = (issueId, issueType) => {
             id: issueId
         }
     });
-
 }
 
 exports.deleteIssueTypeById = (issueTypeId) => {
