@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Bar, Line } from 'react-chartjs-2';
 import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import  {getConfig} from '../../config/config.js';
+import CommonUtils from '../../utils/CommonUtils';
 
 const brandPrimary =  '#20a8d8';
 const brandSuccess =  '#18A9B7';
@@ -97,7 +98,7 @@ class Dashboard extends Component {
 
   //  var env = getEnvironmentId();
     var getAppKeyUrl =getConfig().applozicPlugin.getAppKeyUrl;
-    var application = JSON.parse(localStorage.getItem('application'));
+    var application = CommonUtils.getUserSession().application;
     var that = this;
     var endTime = new Date().getTime();
     var startDate = new Date();

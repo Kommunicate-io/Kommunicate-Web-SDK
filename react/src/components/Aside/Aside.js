@@ -32,7 +32,7 @@ class Aside extends Component {
   }
 
   componentDidMount() {
-     if(localStorage.getItem("loggedinUser")===null){
+     if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
        return;
@@ -98,7 +98,7 @@ class Aside extends Component {
     }
 
     var userSession = CommonUtils.getUserSession();
-    if (assignee == localStorage.getItem('loggedinUser') && userSession.isAdmin) {
+    if (assignee == userSession.userName && userSession.isAdmin) {
       assignee = "agent";
     }
 

@@ -40,7 +40,7 @@ constructor(props){
 }
 
   componentWillMount() {
-    if (localStorage.getItem("loggedinUser")) {
+    if (CommonUtils.getUserSession()) {
       window.location = "/dashboard";
     }
   }
@@ -109,7 +109,6 @@ submitForm = ()=>{
           }
           localStorage.setItem("applicationId", _this.state.applicationId);
           localStorage.setItem("applicationName", _this.state.applicationName);
-          localStorage.setItem("application", JSON.stringify(response.data.result.application));
           localStorage.setItem("password", password);
           if (response.data.result.imageLink) {
             localStorage.setItem("imageLink", response.data.result.imageLink);
@@ -117,7 +116,7 @@ submitForm = ()=>{
           localStorage.setItem("name", response.data.result.name);
         }
 
-        if (window.$applozic && window.$applozic.fn.applozic("getLoggedInUser")) {
+        if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
           window.$applozic.fn.applozic('logout');
         }
 

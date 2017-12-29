@@ -19,6 +19,7 @@ import moment from 'moment-timezone';
 import jstz from 'jstz';
 
 import {postAutoReply} from '../../utils/kommunicateClient'
+import CommonUtils from '../../utils/CommonUtils';
 
 class Autoreply extends Component {
 
@@ -67,7 +68,7 @@ class Autoreply extends Component {
   handleSubmit(event) {
     event.preventDefault();
     var autoreplyUrl =getConfig().applozicPlugin.autoreplyUrl;
-    var username = localStorage.getItem("loggedinUser");
+    var username = CommonUtils.getUserSession().userName;
     var formdata =  {
       "applicationId": localStorage.getItem("applicationId"),
       "workingHours": [],

@@ -8,6 +8,8 @@ import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
 import {getUsersByType,createCustomerOrAgent} from '../../utils/kommunicateClient';
+import CommonUtils from '../../utils/CommonUtils';
+
 class Tabs extends Component {
 
   constructor(props) {
@@ -87,7 +89,7 @@ class Tabs extends Component {
              },
              headers: {
               "Apz-Product-App": true,
-              "Apz-Token": 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
+              "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+localStorage.getItem("password")).toString('base64'),
               "Content-Type": "application/json",
               "Apz-AppId":applicationId
              }

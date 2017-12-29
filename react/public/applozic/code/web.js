@@ -36,7 +36,7 @@ function initAutoSuggestions() {
   }
 
   function chatLogin() {
-    var userId = localStorage.getItem('loggedinUser'); //"debug2";
+    var userId = JSON.parse(localStorage.getItem('KM_USER_SESSION')).userName; //"debug2";
     var appId = localStorage.getItem('applicationId'); // "applozic-sample-app";
     var userPassword = localStorage.getItem('password'); // "debug2";
     var userContactNumber = "";

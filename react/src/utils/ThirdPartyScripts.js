@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { getConfig } from '../config/config';
+import CommonUtils from './CommonUtils';
 
 class ThirdPartyScripts extends Component {
     
       componentDidMount(){
           // support chat widget
-          let userId = localStorage.getItem('loggedinUser');
+          let userId = CommonUtils.getUserSession.userName;
 
           (function(d, m){
             let o = {};
             if (userId) {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "userId": localStorage.getItem('loggedinUser'), "accessToken": localStorage.getItem("password"),
+              "userId": userId, "accessToken": localStorage.getItem("password"),
               "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
             } else {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",

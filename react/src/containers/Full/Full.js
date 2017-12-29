@@ -16,6 +16,8 @@ import Admin from '../../views/Admin/'
 import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
+import CommonUtils from '../../utils/CommonUtils';
+
 class Full extends Component {
 
   

@@ -97,7 +97,7 @@ class Forms extends Component {
     var userSession = CommonUtils.getUserSession();
 
     if (userSession.isAdmin) {
-      patchCustomerInfo(customerInfo, localStorage.getItem("loggedinUser"))
+      patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -108,7 +108,7 @@ class Forms extends Component {
           alert(err);
         });
     } else {
-      patchUserInfo(customerInfo, localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId"))
+      patchUserInfo(customerInfo, CommonUtils.getUserSession().userName, localStorage.getItem("applicationId"))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -136,7 +136,7 @@ class Forms extends Component {
     var userSession = CommonUtils.getUserSession();
     if (userSession.isAdmin) {
       console.log("isAdmin")
-      getCustomerInfo(localStorage.getItem("loggedinUser"))
+      getCustomerInfo(CommonUtils.getUserSession().userName)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -158,7 +158,7 @@ class Forms extends Component {
     } else {
       console.log("isNotAdmin")
 
-      getUserInfo(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId"))
+      getUserInfo(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId"))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {

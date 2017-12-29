@@ -1,4 +1,5 @@
 import  {getConfig, getEnvironmentId} from '../config/config.js';
+import CommonUtils from '../utils/CommonUtils';
 
 const fs = require('fs');
 const path = require('path');
@@ -7,7 +8,7 @@ function getJsCode (){
   let options  = {};
   options.appId =localStorage.getItem("applicationId");
   options.isAnonymousChat=true;
-  options.agentId =localStorage.getItem("loggedinUser")||localStorage.getItem("agentId");
+  options.agentId =CommonUtils.getUserSession().userName||localStorage.getItem("agentId");
   if(localStorage.getItem("name")&& localStorage.getItem("name")!="undefined"&& localStorage.getItem("name")!="null"){
   options.agentName = localStorage.getItem("name");
   }else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){

@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import '../../Admin/Admin.css';
 import { getResource } from '../../../config/config.js';
 import isURL from 'validator/lib/isURL';
+import CommonUtils from '../../../utils/CommonUtils';
 
 const customStyles = {
   content: {
@@ -77,7 +78,7 @@ class Step2 extends Component {
     
     console.log(customerInfo);
 
-    patchCustomerInfo(customerInfo, localStorage.getItem("loggedinUser"))
+    patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
       .then(response => {
         if (response.data.code === 'SUCCESS') {
           // alert(response.data.message);

@@ -64,10 +64,9 @@ const saveToLocalStorage = (email, password, name,response) => {
     localStorage.setItem("availability_status", response.data.data.availability_status);
 
     if(response.data.data.application){
-      localStorage.setItem("application", JSON.stringify(response.data.data.application));
-      }else{
+    } else {
         throw {code:"APP_NOT_RECEIVED",message:"Successuflly Registered !! We are having some trouble to log u in, please retry login."}
-      }
+    }
     //window.chatLogin();
     console.debug("inside create customer 3")
     return {code:"SUCCESS"};
@@ -171,14 +170,14 @@ const callSendEmailAPI = (options) => {
   //const emailTemplate = getEmailTemplate(localStorage.getItem('loggedinUser'),localStorage.getItem('applicationId'),activateAccountUrl,logoUrl);
 
   const emails = [].concat(...[emailAddress])
-
+  let userId = CommonUtils.getUserSession().userName;
   return Promise.resolve(axios({
     method: 'post',
     url: getConfig().kommunicateApi.sendMail,
     data: {
       "to":[...emails],
       "templateName":options.templateName,
-      "from":localStorage.getItem('name') || localStorage.getItem('loggedinUser') +"<"+localStorage.getItem('loggedinUser')+">",
+      "from":localStorage.getItem('name') || userId +"<"+localStorage.getItem('loggedinUser')+">",
       "kommunicateScript":getJsCode(),
       "applicationId":localStorage.getItem('applicationId'),
       "adminName":localStorage.getItem('name') || localStorage.getItem('loggedinUser'),
@@ -212,7 +211,7 @@ const postAutoReply = (formData) => {
   }
 
   const autoreplyUrl = getConfig().applozicPlugin.autoreplyUrl;
-  const username = localStorage.getItem("loggedinUser");
+  const username = CommonUtils.getUserSession().userName;
 
   axios({
     method: 'post',
@@ -364,7 +363,7 @@ const updateApplozicUser = (userInfo) => {
   const headers = {
     'Content-Type':'application/json',
     'Apz-AppId':localStorage.getItem("applicationId"),
-    'Apz-Token': 'Basic ' + new Buffer(localStorage.getItem("loggedinUser")+':'+localStorage.getItem("password")).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+localStorage.getItem("password")).toString('base64'),
     'Apz-Product-App':'true'    
   }
   console.log(headers)
@@ -463,7 +462,7 @@ const goOnline = (userId, appId) => {
 
 const createIssueType = (data) => {
 
-  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
 
   return Promise.resolve(axios({
     method: 'post',
@@ -488,7 +487,7 @@ const getIssueTypes = (data) => {
 
 const getIssueTypeByCustIdAndCreatedBy = () => {
 
-  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
 
   return axios.get(url).then(response => {
     console.log(response)

@@ -3,6 +3,7 @@ import validator from 'validator';
 import './AutoSuggest.css'
 import Notification from '../model/Notification';
 import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById } from '../../utils/kommunicateClient'
+import CommonUtils from '../../utils/CommonUtils';
 
 class AutoSuggest extends Component {
 	componentDidMount() {
@@ -77,7 +78,7 @@ class AutoSuggest extends Component {
 
 	// 		const suggestion = {
 	// 			applicationId: localStorage.getItem("applicationId"),
-	// 			userName: localStorage.getItem("loggedinUser"),
+	// 			userName: CommonUtils.getUserSession().userName,
 	// 		//	category: this.state.category,
 	// 		  name: "jithin",
 	// 			category: this.state.shortcut,
@@ -118,7 +119,7 @@ class AutoSuggest extends Component {
 
 			const suggestion = {
 				applicationId: localStorage.getItem("applicationId"),
-				userName: localStorage.getItem("loggedinUser"),
+				userName: CommonUtils.getUserSession().userName,
 				name: " ",
 				category: this.state.userShortcuts[index].shortcutField,
 				content: this.state.userShortcuts[index].messageField

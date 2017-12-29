@@ -8,6 +8,7 @@ import  {getConfig,getEnvironmentId,get} from '../../../config/config.js';
 import { Label, Input } from 'reactstrap';
 import WhenYouAreOnline from './WhenYouAreOnline'
 import WhenYouAreOffline from './WhenYouAreOffline'
+import CommonUtils from '../../../utils/CommonUtils';
 
 
 class Welcome extends Component{
@@ -31,7 +32,7 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
   submitWelcomeMessage = () => {
     var _this =this;
      var applicationId =localStorage.getItem("applicationId");
-     var userId =localStorage.getItem("loggedinUser");
+     var userId =CommonUtils.getUserSession().userName;
      console.log(applicationId,userId);
      var setWelcomeMessageUrl = getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
      axios({

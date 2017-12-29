@@ -5,6 +5,7 @@ import './Admin.css';
 import AvatarEditor from 'react-avatar-editor'
 import Modal from 'react-modal';
 import { getResource, get } from '../../config/config.js'
+import CommonUtils from '../../utils/CommonUtils';
 
 
 class ImageUploader extends Component {
@@ -115,7 +116,7 @@ class ImageUploader extends Component {
     let file = blob
     let imageUrl = ''
     if (file) {
-      sendProfileImage(file, `${localStorage.getItem("applicationId")}-${localStorage.getItem("loggedinUser")}.${file.name.split('.').pop()}`)
+      sendProfileImage(file, `${localStorage.getItem("applicationId")}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {

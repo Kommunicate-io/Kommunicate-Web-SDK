@@ -3,6 +3,7 @@ import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom' ;
 
 import {goAway, goOnline} from '../../utils/kommunicateClient'
+import CommonUtils from '../../utils/CommonUtils';
 
 class Header extends Component {
 
@@ -15,7 +16,7 @@ class Header extends Component {
       status: localStorage.getItem("availability_status"),
       dropdownOpen: false,
       //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
-      displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):localStorage.getItem("loggedinUser")
+      displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):CommonUtils.getUserSession().userName
     };
   }
 
@@ -68,7 +69,7 @@ return imageLink;
 
     if(this.state.status === "1"){
       // localStorage.setItem("availability_status", 0);
-      goAway(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
+      goAway(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
         console.log(response);
         this.setState({
           status: localStorage.getItem("availability_status"),
@@ -77,7 +78,7 @@ return imageLink;
       });
     }else{
       // localStorage.setItem("availability_status", 1);
-      goOnline(localStorage.getItem("loggedinUser"), localStorage.getItem("applicationId")).then(response => {
+      goOnline(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
         this.setState({
           status: localStorage.getItem("availability_status"),
           changeStatusLabel: "Go Away"
@@ -113,7 +114,7 @@ return imageLink;
               <DropdownMenu className="dropdown-menu-right">
                 <DropdownItem>
                   <p className="header-user-name">{this.state.displayName}</p>
-                  <p className="header-user-email">{localStorage.getItem("loggedinUser")}</p>
+                  <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
                   <span className="header-user-online"> {localStorage.getItem("availability_status") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
                 </DropdownItem>
                 <DropdownItem onClick={this.toggleStatus}> {localStorage.getItem("availability_status") === "1" ? "Go Away" : "Go Online"} </DropdownItem>
