@@ -22,6 +22,9 @@ module.exports = function(sequelize, DataTypes) {
     },
     status: {
       type: DataTypes.INTEGER,
+    },
+    sequence: {
+      type: DataTypes.INTEGER
     }
   }, {
     underscored: true,
