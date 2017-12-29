@@ -31,6 +31,8 @@ class Forms extends Component {
   constructor(props) {
     super(props);
 
+    let imageLink = CommonUtils.getUserSession().imageLink;
+
     this.state = {
       name: '',
       role: '',
@@ -42,7 +44,7 @@ class Forms extends Component {
       industryOthers: '',
       modalIsOpen: false,
       scale: 1.2,
-      imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink")
+      imageFile: imageLink
      
     };
 

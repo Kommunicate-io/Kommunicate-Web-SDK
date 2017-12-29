@@ -24,8 +24,9 @@ class Full extends Component {
   constructor (props) {
     super(props)
      //_this =this;
+    let imageLink = CommonUtils.getUserSession().imageLink;
     this.state = { 
-      imageLink:localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink")
+      imageLink: imageLink
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
     console.log("profilePicUrl",this.state.imageLink)

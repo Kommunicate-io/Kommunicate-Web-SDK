@@ -23,7 +23,7 @@ class ImageUploader extends Component {
   constructor(props, defaultProps) {
     super(props, defaultProps);
     this.state = {
-      imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink"),
+      imageFile: CommonUtils.getUserSession().imageLink,
       file : getResource().defaultImageUrl,
       scale: 1.2,
       canvas: '',
@@ -120,7 +120,10 @@ class ImageUploader extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
-            localStorage.setItem("imageLink", response.data.profileImageUrl)
+            let userSession = CommonUtils.getUserSession();
+            userSession.imageLink = response.data.profileImageUrl;
+            CommonUtils.setUserSession(userSession);
+
             imageUrl = response.data.profileImageUrl
             updateApplozicUser({ imageLink: response.data.profileImageUrl })
               .then(response => {
@@ -210,7 +213,9 @@ class ImageUploader extends Component {
         console.log(response);
         this.props.updateProfilePicUrl(this.state.imageUrl);
         this.props.updateProfileImgUrl(this.state.imageUrl)
-        localStorage.setItem("imageLink", this.state.imageUrl);
+        let userSession = CommonUtils.getUserSession();
+        userSession.imageLink = this.state.imageUrl;
+        CommonUtils.setUserSession(userSession);
         Notification.info("Display Photo Removed..");
         this.props.handleClose();
       }

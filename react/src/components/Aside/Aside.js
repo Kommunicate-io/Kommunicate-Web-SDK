@@ -53,8 +53,11 @@ class Aside extends Component {
                   assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
               });
               if(sessionStorage.getItem("userProfileUrl")!=null){
-                that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"))
-                localStorage.setItem("imageLink", sessionStorage.getItem("userProfileUrl"))
+                that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
+                let userSession = CommonUtils.getUserSession();
+                userSession.imageLink = sessionStorage.getItem("userProfileUrl");
+                CommonUtils.setUserSession(userSession);
+                localStorage.setItem("imageLink", sessionStorage.getItem("userProfileUrl"));
               }
             }
          }

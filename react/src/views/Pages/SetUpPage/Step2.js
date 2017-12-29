@@ -40,7 +40,7 @@ class Step2 extends Component {
       imageFile: '',
       modalIsOpen: false,
       scale: 1.2,
-      imageFile: localStorage.getItem("imageLink") == null ? getResource().defaultImageUrl : localStorage.getItem("imageLink")
+      imageFile: CommonUtils.getUserSession().imageLink
 
     }
     this.openModal = this.openModal.bind(this);

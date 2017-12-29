@@ -16,7 +16,6 @@ class Header extends Component {
       changeStatusLabel: "Go Away",
       status: userSession.availability_status,
       dropdownOpen: false,
-      //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: userSession.displayName !=="undefined" ? userSession.displayName:CommonUtils.getUserSession().userName
     };
   }
@@ -47,10 +46,6 @@ class Header extends Component {
     document.body.classList.toggle('aside-menu-hidden');
   }
 
-/*  getImageLink(){
-var imageLink = localStorage.getitem("imageLink")==undefined?"/img/avatars/6.jpg":localStorage.getitem("imageLink");
-return imageLink;
-  }*/
   logout(e){
     window.logout();
     if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" && window.$kmApplozic.fn.applozic("getLoggedInUser")) {

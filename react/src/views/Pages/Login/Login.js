@@ -94,6 +94,10 @@ submitForm = ()=>{
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
 
+          if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
+            window.$applozic.fn.applozic('logout');
+          }
+
           if (response.data.result.apzToken) {
           } else {
             var apzToken = new Buffer(userName + ":" + password).toString('base64');
@@ -106,17 +110,8 @@ submitForm = ()=>{
           }
           response.data.result.application.applicationId = _this.state.applicationId;
 
-          localStorage.setItem("applicationName", _this.state.applicationName);
-          if (response.data.result.imageLink) {
-            localStorage.setItem("imageLink", response.data.result.imageLink);
-          }
-
           response.data.result.password = password;
           CommonUtils.setUserSession(response.data.result);
-        }
-
-        if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
-          window.$applozic.fn.applozic('logout');
         }
 
         if (window.$applozic) {
