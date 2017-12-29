@@ -108,7 +108,6 @@ class WhenYouAreOnline extends Component {
 		          			Notification.success('In app message saved successfully');
 		        		}else{
 		          			Notification.error('In app message not saved.');
-		          			Notification.success('In app message not saved.');
 		        		}
 		        	})
 			});
