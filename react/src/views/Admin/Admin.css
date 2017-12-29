@@ -38,7 +38,8 @@
     width: 133px;
     height: 134px;
     border-radius: 65px;
-    /* margin-left: 30px; */
+    margin-left: 25px;
+    
 }
 .pt-100 {
     padding-top: 100px;
@@ -56,10 +57,10 @@
     font-family: 'OpenSans', sans-serif;
     font-size: 14px;
     letter-spacing: 1.1px;
-    text-align: left;
     color: #0d77f2;
     margin: 0 auto;
-    text-align: center
+    margin-left: 25px;
+    
 }
 .user-dp-input{
     opacity: 0;
