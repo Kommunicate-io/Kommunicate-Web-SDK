@@ -294,7 +294,7 @@ const getSuggestionsByAppId = (applicationId) => {
     .then(response => response.data.data)
     .then(autoSuggestions_data => {
       const autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
-        prev.push({applicationId: curr.applicationId,category:curr.category, name:curr.name, content:curr.content})
+        prev.push({applicationId: curr.applicationId,id:curr.id, category:curr.category, name:curr.name, content:curr.content})
         return prev;
       }, [])
       return autoSuggestions
@@ -308,6 +308,13 @@ const createSuggestions = (suggestion) => {
 
   return Promise.resolve(axios.post(autoSuggestUrl, suggestion))
     .then(response => response)
+}
+
+const deleteSuggestionsById = (suggestionId) => {
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest;
+  return Promise.resolve(axios.delete(autoSuggestUrl, suggestionId,{}))
+    .then(response => response)
+    .catch(err => err);
 }
 
 const signUpWithApplozic = (data)=>{
@@ -542,6 +549,7 @@ export {
   checkUserInApplozic,
   getAllSuggestions,
   createSuggestions,
+  deleteSuggestionsById,
   getSuggestionsByAppId,
   signUpWithApplozic,
   sendProfileImage,

@@ -6,10 +6,7 @@ import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSugg
 import CommonUtils from '../../utils/CommonUtils';
 
 class AutoSuggest extends Component {
-	componentDidMount() {
-		this.nameInput.focus();
-	}
-
+	
 	state = {
 		category: '',
 		shortcut: '',
@@ -25,6 +22,7 @@ class AutoSuggest extends Component {
 		visible: false,
 		enableTextFiled: -1,
 		createDisable: false,
+		deleteSuggestionId:0
 	}
 
 	componentDidMount() {
@@ -43,7 +41,7 @@ class AutoSuggest extends Component {
 					userShortcuts.push({
 						shortcutField: item.category,
 						messageField: item.content,
-						suggestionId: item.suggestionId
+						suggestionId: item.id
 					})
 				})
 
@@ -139,9 +137,6 @@ class AutoSuggest extends Component {
 						this.setState((prevState) => {
 							autoSuggestions: prevState.autoSuggestions.push(suggestion)
 						})
-
-
-
 					} else {
 						Notification.info("There was problem in creating the suggestion.");
 					}
@@ -157,13 +152,14 @@ class AutoSuggest extends Component {
 		})
 
 	}
-	/*
-	deleteSuggestion = (id) => {
-		const deleteId = {
-		
-		}
+
+	deleteSuggestion = () => {
+		let index = this.state.activeMenu;
 		//const deleteId = { this.setState({id : this.state.userShortcuts[index].suggestionId })} ;
-		deleteSuggestionsById(deleteId)
+		
+		let userShortcuts = this.state.userShortcuts;
+		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId} };
+		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
 			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
@@ -175,9 +171,16 @@ class AutoSuggest extends Component {
 		})
 		.catch(err => {
 			console.log(err)
+		})		
+		userShortcuts.splice(index,1);
+
+		this.setState({
+			userShortcuts: userShortcuts,
+			visible: false
 		})
+		
+
 	}
-	*/
 
 
 	appendShorcutFields = () => {
@@ -202,10 +205,6 @@ class AutoSuggest extends Component {
 			enableTextFiled: enableTextFiled,
 
 		}, (e) => { this.refs.shortcut0.focus() })
-
-		//document.getElementById(frmObj.shortcut-field).focus();
-		//document.getElementById(frmObj.shortcut-field).select();
-
 		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
 
 	}
@@ -216,7 +215,7 @@ class AutoSuggest extends Component {
 	render() {
 
 		const textFields = this.state.userShortcuts.map((shorcut, index) =>
-			<form key={index}>
+			<form key={this.state.userShortcuts[index].suggestionId}>
 				<div className="shortcut-field-wrapper">
 					<div className="row">
 						<div className="col-md-3 shortcut-col">
@@ -255,9 +254,9 @@ class AutoSuggest extends Component {
 							}
 
 						</div>
-						{/* 
+						
 					 <div className="col-md-1">
-					 	 <div className="arrow-up"></div> 
+					 	{/* <div className="arrow-up"></div>  */}
 						 <p className="tooltip-btn"><i className="fa fa-ellipsis-h" onClick={()=> this.setState({activeMenu: index,visible: !this.state.visible})} ></i></p>
 						{
 							 this.state.activeMenu === index  && this.state.visible == true &&
@@ -265,12 +264,12 @@ class AutoSuggest extends Component {
 						 <ul className="tooltip-menu">
 							 <li className="tooltip-menu-list" onClick={() => this.setState({activeTextField: index})}>Edit</li>
 							 <hr className="list-divider" />
-							 <li className="tooltip-menu-list" onClick={ this.deleteSuggestion }  >Delete</li>
+							 <li className="tooltip-menu-list" onClick={this.deleteSuggestion}  >Delete</li>
 						 </ul>
 						 
 						}
 					 </div>
-					*/}
+					
 					</div>
 				</div>
 			</form>
