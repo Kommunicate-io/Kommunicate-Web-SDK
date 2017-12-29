@@ -93,7 +93,6 @@ submitForm = ()=>{
       } else if (response.status == 200 && response.data.code == 'SUCCESS') {
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
-          CommonUtils.setUserSession(response.data.result);
 
           localStorage.setItem("authorization", response.data.result.authorization);
           localStorage.setItem("availability_status", response.data.result.availability_status);
@@ -108,11 +107,12 @@ submitForm = ()=>{
           }
           localStorage.setItem("applicationId", _this.state.applicationId);
           localStorage.setItem("applicationName", _this.state.applicationName);
-          localStorage.setItem("password", password);
           if (response.data.result.imageLink) {
             localStorage.setItem("imageLink", response.data.result.imageLink);
           }
-          localStorage.setItem("name", response.data.result.name);
+
+          response.data.result.password = password;
+          CommonUtils.setUserSession(response.data.result);
         }
 
         if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {

@@ -98,7 +98,8 @@ class Dashboard extends Component {
 
   //  var env = getEnvironmentId();
     var getAppKeyUrl =getConfig().applozicPlugin.getAppKeyUrl;
-    var application = CommonUtils.getUserSession().application;
+    let userSession = CommonUtils.getUserSession();
+    var application = userSession.application;
     var that = this;
     var endTime = new Date().getTime();
     var startDate = new Date();
@@ -108,7 +109,7 @@ class Dashboard extends Component {
     const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
 
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
-    axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":localStorage.password,"Authorization":"Basic "+localStorage.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
+    axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+localStorage.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
           .then(function(response){
             if(response.status==200){
                 var data = response.data;

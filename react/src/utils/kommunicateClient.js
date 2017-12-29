@@ -59,6 +59,7 @@ const saveToLocalStorage = (email, password, name,response) => {
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
+
     localStorage.setItem("availability_status", response.data.data.availability_status);
 
     if(response.data.data.application){
@@ -431,7 +432,9 @@ const changePassword =(option)=>{
     if(response.data.code === 'SUCCESS')
     {
       Notification.success('Password Changed Successfully');
-      localStorage.setItem("password", option.newPassword);
+      let userSession = CommonUtils.getUserSession();
+      userSession.password = option.newPassword;
+      CommonUtils.setUserSession(userSession);
       return "SUCCESS";
     } 
     else {

@@ -36,9 +36,10 @@ function initAutoSuggestions() {
   }
 
   function chatLogin() {
-    var userId = JSON.parse(localStorage.getItem('KM_USER_SESSION')).userName; //"debug2";
-    var appId = localStorage.getItem('applicationId'); // "applozic-sample-app";
-    var userPassword = localStorage.getItem('password'); // "debug2";
+    var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+    var userId = userSession.userName;
+    var appId = localStorage.getItem('applicationId');
+    var userPassword = userSession.password;
     var userContactNumber = "";
     var topicBoxEnabled = true;
     var applozicBaseUrl = (window.location.origin=="http://localhost:3000"||window.location.origin=="https://dashboard-test.kommunicate.io")?"https://apps-test.applozic.com":"https://chat.kommunicate.io";
