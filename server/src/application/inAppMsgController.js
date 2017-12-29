@@ -1,5 +1,6 @@
 const inAppMsgService = require('./inAppMsgService');
 const registrationService =require('../register/registrationService');
+const userService = require("../users/userService");
 const applicationUtils = require('./utils');
 
 exports.saveWelcomeMessage=(req,res)=>{
@@ -16,7 +17,7 @@ exports.saveWelcomeMessage=(req,res)=>{
             res.status(200).json({code:"SUCCESS",message:"created"});
         }).catch(err=>{
             console.log("err while persisting welcome message in db",err);
-            res.status(500).json({code:"SUCCESS",message:"created"});
+            res.status(500).json({code:"ERROR",message:"created"});
         })
 
     })
@@ -25,19 +26,20 @@ exports.saveWelcomeMessage=(req,res)=>{
 exports.createInAppMsg = (req, res)=>{
 
     console.log("request received to create in app message");
-    const appId= req.params.appId;
+    const userName = req.params.userName;
+    const appId = req.params.appId;
 
-    registrationService.getCustomerByApplicationId(appId).then(customer=>{
-        if(!customer){
+    userService.getByUserNameAndAppId(userName, appId).then(user=>{
+        if(!user){
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.createInAppMsg(customer.id, req.body).then(response=>{
+        return inAppMsgService.createInAppMsg(user.id, user.customerId, req.body).then(response=>{
             console.log("in app message is saved successfully");
             res.status(200).json({code:"SUCCESS",message:"created", data: response});
         }).catch(err=>{
             console.log("err while persisting welcome message in db",err);
-            res.status(500).json({code:"SUCCESS",message:"created"});
+            res.status(500).json({code:"ERROR",message:"created"});
         })
 
     })
@@ -93,3 +95,47 @@ exports.processEvents=(req, res)=>{
     }
 
 }
+
+exports.disableInAppMessages=(req, res)=>{
+    const appId = req.params.appId;
+    const userName = req.params.userName;
+
+    console.log(req.params.userName)
+    console.log(userName)
+
+    userService.getByUserNameAndAppId(userName, appId).then(user=>{
+        if(!user){
+            res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
+            return;
+        }
+        return inAppMsgService.disableInAppMessages(user.id, user.customerId).then(response=>{
+            console.log("in app messages is disabled successfully");
+            res.status(200).json({code:"SUCCESS", message:"disabled", data: response});
+        }).catch(err=>{
+            console.log("err while diabling welcome message in db",err);
+            res.status(500).json({code:"ERROR",message:"created"});
+        })
+
+    })
+}
+
+exports.enableInAppMessages=(req, res)=>{
+    const appId = req.params.appId;
+    const userName = req.params.userName;
+
+    userService.getByUserNameAndAppId(userName, appId).then(user=>{
+        if(!user){
+            res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
+            return;
+        }
+        return inAppMsgService.enableInAppMessages(user.id, user.customerId).then(response=>{
+            console.log("in app messages is enabled successfully");
+            res.status(200).json({code:"SUCCESS", message:"enabled", data: response});
+        }).catch(err=>{
+            console.log("err while diabling welcome message in db",err);
+            res.status(500).json({code:"ERROR",message:"created"});
+        })
+
+    })
+}
+

@@ -32,18 +32,15 @@ exports.getIssueTypeByCustIdAndCreatedBy = (userName, appId) => {
 
     return userService.getByUserNameAndAppId(userName, appId)
         .then(user=>{
-            return Promise.resolve(issueTypeModel.
-                findAll({ 
-                    where: { 
-                        customerId: user.customerId,
-                        createdBy: user.id
-                    }
-                }));
+            return Promise.resolve(issueTypeModel.findAll({ 
+                where: { 
+                    customerId: user.customerId,
+                    createdBy: user.id
+                }
+            }));
         }).catch(err =>{
             return { code: err.parent.code, message: err.parent.sqlMessage }
         })
-
-    
 }
 
 
