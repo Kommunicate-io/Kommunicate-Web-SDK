@@ -49,25 +49,17 @@ const createCustomer = function(email,password,name) {
 
 const saveToLocalStorage = (email, password, name,response) => {
   if(typeof(Storage) === "undefined"){
-    //alert("Your browser does not support web storage. please upgrade you browser.");
     throw  {code:"BROWSER_ERROR",message:"Your browser does not support web storage. please upgrade you browser."};
   }
   if(response !== undefined){
     response.data.data.password = password;
-
     if(response.data.data.application){
     } else {
         throw {code:"APP_NOT_RECEIVED",message:"Successuflly Registered !! We are having some trouble to log u in, please retry login."}
     }
-    //window.chatLogin();
-    console.debug("inside create customer 3")
-
     CommonUtils.setUserSession(response.data.data);
-
     return {code:"SUCCESS"};
-
-    //window.location ="/#/setUpPage";
-  }else{
+  } else{
     throw {code:"NULL_RESPONSE",message:"received null response"};
   }
 }
