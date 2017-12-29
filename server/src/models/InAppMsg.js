@@ -22,7 +22,19 @@ module.exports = function(sequelize, DataTypes) {
     },
     status: {
       type: DataTypes.INTEGER,
-    }
+    },
+    sequence: {
+      type: DataTypes.INTEGER
+    },
+    createdBy: {
+      type: DataTypes.INTEGER,
+      field: 'created_by',
+      allowNull: true
+    },
+    metadata:{
+        type:DataTypes.JSON,
+        allowNull: true
+      },
   }, {
     underscored: true,
     paranoid: true,
