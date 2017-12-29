@@ -106,7 +106,7 @@ class Integration extends Component {
            <div className="card">
              <div className="card-block">
                  <label className="form-control-label invite-team" htmlFor="invite">Invite Your Team</label>
-                 <div className="col-md-9 form-group row">
+                 <div className="col-md-9 row email-field-wrapper ">
                  <div className="form-group col-md-5 multiple-email-container">
                    {this.state.multipleEmailAddress.map((email, i) => (
                      <div className="single-email-container" key={i}>
@@ -117,13 +117,12 @@ class Integration extends Component {
                    <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="you can enter multiple emails here"/>
                  </div>
                  </div>
-                 <div className="card-footer">
-                   <button type="button" onClick={this.sendMail} className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Invite</button>
-                 </div>
              </div>
-
-           </div>
-         </div>
+              <div className="card-block invite-btn-wrapper">
+                <button type="button" onClick={this.sendMail} className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Invite</button>
+              </div>
+           </div>   
+         </div>  
          <div className="col-md-12">
            <div className="card">
              <div className="card-block">

@@ -39,7 +39,13 @@
 	vertical-align: sub;
 	line-height: 16px;
 }
-
+.email-field-wrapper {
+	padding-left: 12px;
+}
+.invite-btn-wrapper {
+	padding-top: 0;
+    padding-bottom: 0;
+}
 .input-email {
 	border: 0;		
 	width: 100%;	
