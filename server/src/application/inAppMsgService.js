@@ -21,20 +21,6 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-exports.createInAppMsg=(customerId, body)=>{
-
-            inAppMessage = {
-                customerId:customerId,
-                eventId:body.eventId,
-                message:body.message,
-                status:body.status,
-                sequence: body.sequence,
-            }
-
-            return Promise.resolve(db.InAppMsg.create(inAppMessage))
-                .catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
-}
-
 const getInAppMessage=(customerId)=>{
     return db.InAppMsg.find({where:{customerId:customerId , eventId:appUtils.EVENTS.CONVERSATION_STARTED}});
 }
