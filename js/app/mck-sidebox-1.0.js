@@ -1883,7 +1883,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                     // mckMessageLayout.addContactsToContactSearchList();
                     mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, function (conversationId) {
-                        Kommunicate.triggerEvent("1", { groupId: conversationId, applicationId: MCK_APP_ID });
+                        //Kommunicate.triggerEvent("1", { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
 
                 });
@@ -2048,7 +2048,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 groupName: DEFAULT_GROUP_NAME,
                                 agentId: DEFAULT_AGENT_ID
                             }, function (groupId) {
-                                Kommunicate.triggerEvent("1", { "groupId": groupId, "applicationId": MCK_APP_ID })
+                               // Kommunicate.triggerEvent("1", { "groupId": groupId, "applicationId": MCK_APP_ID })
                             });
                         } else {
                             var $this = $applozic(this);
