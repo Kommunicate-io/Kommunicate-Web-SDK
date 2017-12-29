@@ -54,13 +54,10 @@ const saveToLocalStorage = (email, password, name,response) => {
   }
   if(response !== undefined){
     response.data.data.password = password;
-    CommonUtils.setUserSession(response.data.data);
 
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
-
-    localStorage.setItem("availability_status", response.data.data.availability_status);
 
     if(response.data.data.application){
     } else {
@@ -68,6 +65,9 @@ const saveToLocalStorage = (email, password, name,response) => {
     }
     //window.chatLogin();
     console.debug("inside create customer 3")
+
+    CommonUtils.setUserSession(response.data.data);
+
     return {code:"SUCCESS"};
 
     //window.location ="/#/setUpPage";
@@ -450,7 +450,7 @@ const goAway = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goAway/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
-    localStorage.setItem("availability_status", 0)
+    CommonUtils.updateAvailabilityStatus(0);
   })
 }
 
@@ -458,7 +458,7 @@ const goOnline = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goOnline/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
-    localStorage.setItem("availability_status", 1)
+    CommonUtils.updateAvailabilityStatus(1);
   })
 }
 

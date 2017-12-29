@@ -14,7 +14,7 @@ class Header extends Component {
     let userSession = CommonUtils.getUserSession();
     this.state = {
       changeStatusLabel: "Go Away",
-      status: localStorage.getItem("availability_status"),
+      status: userSession.availability_status,
       dropdownOpen: false,
       //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
       displayName: userSession.displayName !=="undefined" ? userSession.displayName:CommonUtils.getUserSession().userName
@@ -67,21 +67,19 @@ return imageLink;
 
 
   toggleStatus = () => {
-
+    let userSession = CommonUtils.getUserSession();
     if(this.state.status === "1"){
-      // localStorage.setItem("availability_status", 0);
       goAway(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
         console.log(response);
         this.setState({
-          status: localStorage.getItem("availability_status"),
+          status: userSession.availability_status,
           changeStatusLabel: "Go Online"
         });
       });
     }else{
-      // localStorage.setItem("availability_status", 1);
       goOnline(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
         this.setState({
-          status: localStorage.getItem("availability_status"),
+          status: userSession.availability_status,
           changeStatusLabel: "Go Away"
         });
       });
@@ -108,7 +106,7 @@ return imageLink;
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <div style={{display: "inline-block"}}>
                   <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
-                  <span className={localStorage.getItem("availability_status") === "1" ? "online-indicator-profile-pic": null}></span>
+                  <span className={CommonUtils.getUserSession().availability_status === "1" ? "online-indicator-profile-pic": null}></span>
                 </div>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
@@ -116,9 +114,9 @@ return imageLink;
                 <DropdownItem>
                   <p className="header-user-name">{this.state.displayName}</p>
                   <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
-                  <span className="header-user-online"> {localStorage.getItem("availability_status") === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
+                  <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
                 </DropdownItem>
-                <DropdownItem onClick={this.toggleStatus}> {localStorage.getItem("availability_status") === "1" ? "Go Away" : "Go Online"} </DropdownItem>
+                <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === "1" ? "Go Away" : "Go Online"} </DropdownItem>
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
