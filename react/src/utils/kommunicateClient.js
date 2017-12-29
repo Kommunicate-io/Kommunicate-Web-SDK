@@ -31,7 +31,7 @@ const createCustomer = function(email,password,name) {
   const signUpUrl = getConfig().kommunicateApi.signup;
   return Promise.resolve(axios.post(signUpUrl, { userName: email, password:password, name:name}))
     .then((response) => {
-        console.debug(response);
+        console.debug(response.data.data);
         if(response.status==200){
           if(response.data.code=="SUCCESS"){
             console.log(" successfully signed up");

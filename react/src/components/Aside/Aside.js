@@ -57,7 +57,6 @@ class Aside extends Component {
                 let userSession = CommonUtils.getUserSession();
                 userSession.imageLink = sessionStorage.getItem("userProfileUrl");
                 CommonUtils.setUserSession(userSession);
-                localStorage.setItem("imageLink", sessionStorage.getItem("userProfileUrl"));
               }
             }
          }
