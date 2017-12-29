@@ -94,11 +94,43 @@ class WhenYouAreOffline extends Component {
           message: this.state.unknownMessage,
           status: status,
           sequence: this.state.unknownMessageSectionMsgs.length,
+          metadata: null
         }
 
         addInAppMsg(data)
           .then(response => {
             this.setState({unknownMessage: ''})
+            if(response.data.code === 'SUCCESS'){
+                    Notification.success('In app message saved successfully');
+                }else{
+                    Notification.success('In app message not saved.');
+                }
+              })
+      });
+    }
+  }
+
+  known_addMessageToChatPreview = (eventId, status) => {
+    if(this.state.knownMessageSections.length <= 3 && this.state.knownMessage.trim().length > 0){
+
+      this.setState((prevState) => {
+        return {
+          knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([this.state.knownMessage]),
+          knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.knownMessage}</p>}])
+        }
+      }, () => {
+
+        let data = {
+          eventId: eventId,
+          message: this.state.knownMessage,
+          status: status,
+          sequence: this.state.knownMessageSectionMsgs.length,
+          metadata: null
+        }
+
+        addInAppMsg(data)
+          .then(response => {
+            this.setState({knownMessage: ''})
             if(response.data.code === 'SUCCESS'){
                     Notification.success('In app message saved successfully');
                 }else{
@@ -180,7 +212,8 @@ class WhenYouAreOffline extends Component {
           </div>
           <div className="form-group row">
             <div className="col-4">
-                  <button className="welcome-buttons">Add another message</button>
+                <button className="welcome-buttons" onClick={() => {this.known_addMessageToChatPreview(2, 1)}}>Add message</button>
+                <button className="welcome-buttons">Add another message</button>
             </div>
           </div>
 	  		</div>
