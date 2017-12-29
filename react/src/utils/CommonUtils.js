@@ -1,4 +1,11 @@
 const CommonUtils = {
+    setUserSession: function(userSession) {
+        userSession.isAdmin = userSession.isAdmin | false;
+        localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+    },
+    getUserSession: function() {
+        return JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+    },
     getUrlParameter: function(search, name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');

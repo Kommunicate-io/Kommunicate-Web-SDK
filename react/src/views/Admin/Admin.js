@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import AvatarEditor from 'react-avatar-editor'
 import PasswordAccordion from './PasswordAccordion';
 import { getResource } from '../../config/config.js'
+import CommonUtils from '../../utils/CommonUtils';
 
 
 
@@ -92,8 +93,10 @@ class Forms extends Component {
       "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry,
       "applicationId": localStorage.getItem('applicationId')
     }
+        
+    var userSession = CommonUtils.getUserSession();
 
-    if (localStorage.getItem("isAdmin") === 'true') {
+    if (userSession.isAdmin) {
       patchCustomerInfo(customerInfo, localStorage.getItem("loggedinUser"))
         .then(response => {
           console.log(response)
@@ -129,11 +132,9 @@ class Forms extends Component {
 
 
   componentWillMount() {
-
-    console.log("Admin will mount");
-    console.log(localStorage.getItem("isAdmin"))
-
-    if (localStorage.getItem("isAdmin") === 'true') {
+    
+    var userSession = CommonUtils.getUserSession();
+    if (userSession.isAdmin) {
       console.log("isAdmin")
       getCustomerInfo(localStorage.getItem("loggedinUser"))
         .then(response => {

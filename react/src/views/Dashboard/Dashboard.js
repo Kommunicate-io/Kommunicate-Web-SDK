@@ -145,9 +145,7 @@ class Dashboard extends Component {
                 }
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
-                console.log("messsgaeCount",obj.messageCount);
                 that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
-
               }
             }
 

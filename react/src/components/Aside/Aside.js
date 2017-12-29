@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
 import classnames from 'classnames';
 import classes from './Aside.css';
+import CommonUtils from '../../utils/CommonUtils';
 
 class Aside extends Component {
   constructor(props) {
@@ -96,7 +97,8 @@ class Aside extends Component {
       assignee = this.state.group.metadata.CONVERSATION_ASSIGNEE;
     }
 
-    if (assignee == localStorage.getItem('loggedinUser') && localStorage.isAdmin == "true") {
+    var userSession = CommonUtils.getUserSession();
+    if (assignee == localStorage.getItem('loggedinUser') && userSession.isAdmin) {
       assignee = "agent";
     }
 

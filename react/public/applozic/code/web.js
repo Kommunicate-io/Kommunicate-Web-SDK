@@ -66,8 +66,7 @@ function initAutoSuggestions() {
         window.Aside.loadAgents();
       }
     }
-    //var loginId =localStorage.isAdmin=="true"?"agent":userId;
-    //var uPassword = localStorage.isAdmin=="true"?"agent":userPassword;
+
     $kmApplozic.fn.applozic({
       baseUrl: applozicBaseUrl,
       notificationIconLink:

@@ -90,7 +90,9 @@ class Register extends Component {
       Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
        saveToLocalStorage(email, password,name, response);
         _this.setState({disableRegisterButton:false});
-       localStorage.isAdmin=="true"?window.location ="/setUpPage":window.location ="/dashboard";
+
+        var userSession = CommonUtils.getUserSession();
+        userSession.isAdmin ? window.location ="/setUpPage":window.location ="/dashboard";
         return;
       }).catch(err=>{
         _this.setState({disableRegisterButton:false});

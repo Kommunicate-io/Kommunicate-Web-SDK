@@ -8,6 +8,7 @@ import Dropdown from 'react-dropdown';
 import {SplitButton, MenuItem} from 'react-bootstrap';
 import {resetPassword} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
+import CommonUtils from '../../../utils/CommonUtils';
 
 
 
@@ -92,8 +93,9 @@ submitForm = ()=>{
       } else if (response.status == 200 && response.data.code == 'SUCCESS') {
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
+          CommonUtils.setUserSession(response.data.result);
+
           localStorage.setItem("loggedinUser", userName);
-          localStorage.setItem("isAdmin", response.data.result.isAdmin || false);
           localStorage.setItem("authorization", response.data.result.authorization);
           localStorage.setItem("availability_status", response.data.result.availability_status);
           if (response.data.result.apzToken) {

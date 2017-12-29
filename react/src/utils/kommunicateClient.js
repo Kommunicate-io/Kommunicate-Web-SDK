@@ -5,6 +5,7 @@ import isEmail from 'validator/lib/isEmail';
 import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
 import FormData from 'form-data'
+import CommonUtils from '../utils/CommonUtils';
 
 /**
  * Creates Customer /Bot/ Agent   
@@ -52,6 +53,8 @@ const saveToLocalStorage = (email, password, name,response) => {
     throw  {code:"BROWSER_ERROR",message:"Your browser does not support web storage. please upgrade you browser."};
   }
   if(response !== undefined){
+    CommonUtils.setUserSession(response.data.data);
+
     localStorage.setItem("loggedinUser", email);
     localStorage.setItem("name", name);
     localStorage.setItem("applicationKey", response.data.data.application.key);
@@ -59,7 +62,7 @@ const saveToLocalStorage = (email, password, name,response) => {
     localStorage.setItem("apzToken",response.data.data.apzToken);
     localStorage.setItem("password",password);
     localStorage.setItem("availability_status", response.data.data.availability_status);
-    localStorage.setItem("isAdmin",response.data.data.isAdmin||false);
+
     if(response.data.data.application){
       localStorage.setItem("application", JSON.stringify(response.data.data.application));
       }else{
