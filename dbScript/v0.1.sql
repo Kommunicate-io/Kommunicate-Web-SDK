@@ -24,3 +24,5 @@ INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `upd
 INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-004', 'conversation started by known user while agent is online', '1', NOW(), NOW());
 
 alter table in_app_msgs add column sequence int;
+alter table in_app_msgs add column created_by int;
+alter table in_app_msgs add column metadata json;
