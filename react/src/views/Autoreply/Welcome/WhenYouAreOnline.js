@@ -98,6 +98,7 @@ class WhenYouAreOnline extends Component {
 					message: this.state.unknownMessage,
 					status: status,
 					sequence: this.state.unknownMessageSectionMsgs.length,
+					metadata: null
 				}
 
 				addInAppMsg(data)
@@ -106,7 +107,7 @@ class WhenYouAreOnline extends Component {
 						if(response.data.code === 'SUCCESS'){
 		          			Notification.success('In app message saved successfully');
 		        		}else{
-		          			Notification.success('In app message not saved.');
+		          			Notification.error('In app message not saved.');
 		        		}
 		        	})
 			});
@@ -128,6 +129,7 @@ class WhenYouAreOnline extends Component {
 					message: this.state.knownMessage,
 					status: status,
 					sequence: this.state.knownMessageSectionMsgs.length,
+					metadata: null
 				}
 
 				addInAppMsg(data)
@@ -136,7 +138,7 @@ class WhenYouAreOnline extends Component {
 						if(response.data.code === 'SUCCESS'){
 		          			Notification.success('In app message saved successfully');
 		        		}else{
-		          			Notification.success('In app message not saved.');
+		          			Notification.error('In app message not saved.');
 		        		}
 		        	})
 			});

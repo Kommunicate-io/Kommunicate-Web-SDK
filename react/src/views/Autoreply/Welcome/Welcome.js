@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge }  from '../../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../../config/config.js';
 import { Label, Input } from 'reactstrap';
@@ -13,14 +13,14 @@ import WhenYouAreOffline from './WhenYouAreOffline'
 class Welcome extends Component{
   constructor(props){
     super(props);
-
     this.state = {
      msg:'',
-     showOverlay: false
+     showOverlay: false,
+     enableDisableCheckbox: true
     };
-this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
-
+    this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
   }
+
   componentDidMount(){
     getWelcomeMessge(localStorage.getItem("applicationId")).then(message=>{
       this.setState({msg:message});
@@ -28,6 +28,7 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
       console.log("error while fetching welcome message",err);
     })
   }
+
   submitWelcomeMessage = () => {
     var _this =this;
      var applicationId =localStorage.getItem("applicationId");
@@ -63,6 +64,24 @@ this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
 
   }
 
+  handleCheckboxChange = () => {
+
+    // make api call to disable all rows in in_app_msgs where createdBy = user.id 
+
+    this.setState({enableDisableCheckbox: !this.state.enableDisableCheckbox}, () => {
+      if(this.state.enableDisableCheckbox) {
+        enableInAppMsgs().then(result => {
+          Notification.success('Welcome Mesages Enabled')
+        })
+      }else{
+        disableInAppMsgs().then(result => {
+          Notification.error('Welcome Messages Disabled')
+        })
+        
+      }
+    }) 
+  }
+
 render(){
   return (
 <div className="animated fadeIn">
@@ -75,7 +94,7 @@ render(){
               <div  className="row">
                 <h4 className="enable-automatic-welcome">Enable automatic welcome message </h4>
                 <Label className="switch switch-3d switch-enable-automatic">
-                    <Input type="checkbox" className="switch-input" defaultChecked/>
+                    <Input type="checkbox" className="switch-input" onChange={this.handleCheckboxChange} checked={this.state.enableDisableCheckbox}/>
                     <span className="switch-label"></span>
                     <span className="switch-handle"></span>
                 </Label>

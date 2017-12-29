@@ -500,7 +500,7 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
 
 const addInAppMsg = (data) => {
 
-  let url = getConfig().kommunicateBaseUrl+"/applications/"+localStorage.getItem("applicationId")+"/createinappmsg";
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId")+"/createinappmsg";
 
   return Promise.resolve(axios({
     method: 'post',
@@ -509,6 +509,26 @@ const addInAppMsg = (data) => {
   })).then((response) => {
     return response
   }).catch(err => {console.log("Error in creating in app msg")})
+
+}
+
+const disableInAppMsgs = () => {
+  let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+
+  return Promise.resolve(axios.patch(url)).then(result => {
+    console.log(result);
+    return result;
+  })
+
+}
+
+const enableInAppMsgs = () => {
+  let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+
+  return Promise.resolve(axios.patch(url)).then(result => {
+    console.log(result);
+    return result;
+  })
 
 }
 
@@ -540,5 +560,7 @@ export {
   createIssueType,
   getIssueTypes,
   getIssueTypeByCustIdAndCreatedBy,
-  addInAppMsg
+  addInAppMsg,
+  disableInAppMsgs,
+  enableInAppMsgs,
 }
