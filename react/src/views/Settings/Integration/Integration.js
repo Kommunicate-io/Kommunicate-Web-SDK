@@ -3,6 +3,7 @@ import { getConfig } from "../../.../../../config/config.js";
 import MultiEmail from '../../MultiEmail/';
 import Accordion from './Accordion';
 import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
+import CommonUtils from "../../../utils/CommonUtils";
 
 
 const pluginBaseUrl = getConfig().kommunicateApi.pluginUrl;
@@ -12,7 +13,7 @@ class Integration extends Component {
   }
   constructor(props, defaultProps) {
     super(props, defaultProps);
-    this.applicationKey = localStorage.getItem("applicationId");
+    this.applicationKey = CommonUtils.getUserSession().applicationKey;
     this.state = {
       copySuccess: "Copy",
       cardSize:10

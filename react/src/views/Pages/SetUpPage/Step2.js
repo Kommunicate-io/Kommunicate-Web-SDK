@@ -59,13 +59,14 @@ class Step2 extends Component {
     e.preventDefault();
 
     var websiteURL = this.state.website_url;
+    let userSession = CommonUtils.getUserSession();
 
     if(!isURL(websiteURL)) {
       Notification.warning("Invalid URL.");
       return;
     } else {
       const customerInfo = {
-        applicationId: localStorage.getItem('applicationId'),
+        applicationId: userSession.application.applicationId,
         websiteUrl: this.state.website_url,
         name: this.state.name,
         role: this.state.role,

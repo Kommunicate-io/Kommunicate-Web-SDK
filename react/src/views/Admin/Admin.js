@@ -82,6 +82,7 @@ class Forms extends Component {
     e.preventDefault();
 
     console.log('handle submit')
+    let userSession = CommonUtils.getUserSession();
 
     const customerInfo = {
       "name": this.state.name,
@@ -91,11 +92,9 @@ class Forms extends Component {
       "companyName": this.state.companyname,
       "companySize": this.state.companysize,
       "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry,
-      "applicationId": localStorage.getItem('applicationId')
+      "applicationId": userSession.application.applicationId
     }
         
-    var userSession = CommonUtils.getUserSession();
-
     if (userSession.isAdmin) {
       patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
         .then(response => {
@@ -108,7 +107,7 @@ class Forms extends Component {
           alert(err);
         });
     } else {
-      patchUserInfo(customerInfo, CommonUtils.getUserSession().userName, localStorage.getItem("applicationId"))
+      patchUserInfo(customerInfo, CommonUtils.getUserSession().userName, userSession.application.applicationId)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -158,7 +157,7 @@ class Forms extends Component {
     } else {
       console.log("isNotAdmin")
 
-      getUserInfo(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId"))
+      getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {

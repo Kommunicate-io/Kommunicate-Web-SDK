@@ -100,10 +100,13 @@ submitForm = ()=>{
             var apzToken = new Buffer(userName + ":" + password).toString('base64');
             response.data.result.apzToken = apzToken;
           }
-          if (response.data.result.application && response.data.result.application.key) {
-            localStorage.setItem("applicationKey", response.data.result.application.key);
+
+          if (!response.data.result.application) {
+            console.log("response doesn't have application, create {}");
+            response.data.result.application = {};
           }
-          localStorage.setItem("applicationId", _this.state.applicationId);
+          response.data.result.application.applicationId = _this.state.applicationId;
+
           localStorage.setItem("applicationName", _this.state.applicationName);
           if (response.data.result.imageLink) {
             localStorage.setItem("imageLink", response.data.result.imageLink);

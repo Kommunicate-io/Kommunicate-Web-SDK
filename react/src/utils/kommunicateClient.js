@@ -55,9 +55,6 @@ const saveToLocalStorage = (email, password, name,response) => {
   if(response !== undefined){
     response.data.data.password = password;
 
-    localStorage.setItem("applicationKey", response.data.data.application.key);
-    localStorage.setItem("applicationId", response.data.data.application.applicationId);
-
     if(response.data.data.application){
     } else {
         throw {code:"APP_NOT_RECEIVED",message:"Successuflly Registered !! We are having some trouble to log u in, please retry login."}
@@ -178,7 +175,7 @@ const callSendEmailAPI = (options) => {
       "templateName":options.templateName,
       "from":userSession.displayName || userId +"<"+userId+">",
       "kommunicateScript":getJsCode(),
-      "applicationId":localStorage.getItem('applicationId'),
+      "applicationId":userSession.application.applicationId,
       "adminName":userSession.displayName || userId,
       "adminId": userId
     }
@@ -358,10 +355,11 @@ const sendProfileImage = (imageFile, imageFileName) => {
 }
 
 const updateApplozicUser = (userInfo) => {
+  let userSession = CommonUtils.getUserSession();
   const headers = {
     'Content-Type':'application/json',
-    'Apz-AppId':localStorage.getItem("applicationId"),
-    'Apz-Token': 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+    'Apz-AppId':userSession.application.applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName+':'+userSession.password).toString('base64'),
     'Apz-Product-App':'true'    
   }
   console.log(headers)
@@ -422,7 +420,7 @@ const changePassword =(option)=>{
     url: patchClientUrl,
     data: {
       "userName": userSession.userName,
-      "applicationId": localStorage.getItem('applicationId'),
+      "applicationId": userSession.application.applicationId,
       "oldPassword": option.oldPassword,
       "newPassword": option.newPassword
     }
@@ -462,8 +460,8 @@ const goOnline = (userId, appId) => {
 }
 
 const createIssueType = (data) => {
-
-  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+ userSession.userName+"/"+ userSession.application.applicationId;
 
   return Promise.resolve(axios({
     method: 'post',
@@ -487,8 +485,8 @@ const getIssueTypes = (data) => {
 }
 
 const getIssueTypeByCustIdAndCreatedBy = () => {
-
-  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl+"/issuetype/"+userSession.userName+"/"+ userSession.application.applicationId;
 
   return axios.get(url).then(response => {
     console.log(response)
@@ -499,8 +497,9 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
 }
 
 const addInAppMsg = (data) => {
+  let userSession = CommonUtils.getUserSession();
 
-  let url = getConfig().kommunicateBaseUrl+"/applications/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId")+"/createinappmsg";
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+userSession.userName+"/"+userSession.application.applicationId+"/createinappmsg";
 
   return Promise.resolve(axios({
     method: 'post',
@@ -513,7 +512,8 @@ const addInAppMsg = (data) => {
 }
 
 const disableInAppMsgs = () => {
-  let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+ userSession.userName+"/"+userSession.application.applicationId;
 
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
@@ -523,7 +523,9 @@ const disableInAppMsgs = () => {
 }
 
 const enableInAppMsgs = () => {
-  let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+userSession.application.applicationId;
 
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);

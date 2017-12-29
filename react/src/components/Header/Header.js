@@ -69,7 +69,7 @@ return imageLink;
   toggleStatus = () => {
     let userSession = CommonUtils.getUserSession();
     if(this.state.status === "1"){
-      goAway(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
+      goAway(userSession.userName, userSession.application.applicationId).then(response => {
         console.log(response);
         this.setState({
           status: userSession.availability_status,
@@ -77,7 +77,7 @@ return imageLink;
         });
       });
     }else{
-      goOnline(CommonUtils.getUserSession().userName, localStorage.getItem("applicationId")).then(response => {
+      goOnline(userSession.userName, userSession.application.applicationId).then(response => {
         this.setState({
           status: userSession.availability_status,
           changeStatusLabel: "Go Away"

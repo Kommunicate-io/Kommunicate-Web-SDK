@@ -68,9 +68,10 @@ class Autoreply extends Component {
   handleSubmit(event) {
     event.preventDefault();
     var autoreplyUrl =getConfig().applozicPlugin.autoreplyUrl;
-    var username = CommonUtils.getUserSession().userName;
+    let userSession = CommonUtils.getUserSession();
+    var username = userSession.userName;
     var formdata =  {
-      "applicationId": localStorage.getItem("applicationId"),
+      "applicationId": userSession.application.applicationId,
       "workingHours": [],
       "timezone": this.state.timezone,
       "offHoursMessage": this.state.msg

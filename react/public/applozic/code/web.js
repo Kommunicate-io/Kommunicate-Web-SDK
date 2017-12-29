@@ -38,7 +38,7 @@ function initAutoSuggestions() {
   function chatLogin() {
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     var userId = userSession.userName;
-    var appId = localStorage.getItem('applicationId');
+    var appId = userSession.application.applicationId;
     var userPassword = userSession.password;
     var userContactNumber = "";
     var topicBoxEnabled = true;
@@ -157,7 +157,6 @@ function getSuggestions(_urlAutoSuggest) {
     })
     .then(autoSuggestions_data => {
       console.log(autoSuggestions_data)
-      console.log(localStorage.getItem("applicationKey"))
       autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
           if(curr.category in prev){
             prev[curr.category].push({name:curr.name, content:curr.content})

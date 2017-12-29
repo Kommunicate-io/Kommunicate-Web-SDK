@@ -23,7 +23,8 @@ class Welcome extends Component{
   }
 
   componentDidMount(){
-    getWelcomeMessge(localStorage.getItem("applicationId")).then(message=>{
+    let userSession = CommonUtils.getUserSession();
+    getWelcomeMessge(userSession.application.applicationId).then(message=>{
       this.setState({msg:message});
     }).catch(err=>{
       console.log("error while fetching welcome message",err);
@@ -32,8 +33,9 @@ class Welcome extends Component{
 
   submitWelcomeMessage = () => {
     var _this =this;
-     var applicationId =localStorage.getItem("applicationId");
-     var userId =CommonUtils.getUserSession().userName;
+    let userSession = CommonUtils.getUserSession();
+     var applicationId = userSession.application.applicationId;
+     var userId = userSession.userName;
      console.log(applicationId,userId);
      var setWelcomeMessageUrl = getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
      axios({

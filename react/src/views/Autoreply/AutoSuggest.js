@@ -34,8 +34,9 @@ class AutoSuggest extends Component {
 		// 		console.log(this.state.autoSuggestions)
 		// 		console.log(this.state.categories)
 		// 	})
+		let userSession = CommonUtils.getUserSession();
 
-		getSuggestionsByAppId(localStorage.getItem("applicationId"))
+		getSuggestionsByAppId(userSession.application.applicationId)
 			.then(autoSuggestions => {
 				let userShortcuts = [];
 				autoSuggestions.forEach(item => {
@@ -60,8 +61,10 @@ class AutoSuggest extends Component {
 	}
 
 	viewAllSuggestions = () => {
+		let userSession = CommonUtils.getUserSession();
+
 		this.setState({ viewAllSuggestions: !this.state.viewAllSuggestions })
-		getSuggestionsByAppId(localStorage.getItem("applicationId"))
+		getSuggestionsByAppId(userSession.application.applicationId)
 			.then(autoSuggestions => {
 				this.setState({ autoSuggestions: autoSuggestions })
 				console.log(this.state.autoSuggestions)
@@ -116,10 +119,11 @@ class AutoSuggest extends Component {
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
 		} else {
+			let userSession = CommonUtils.getUserSession();
 
 			const suggestion = {
-				applicationId: localStorage.getItem("applicationId"),
-				userName: CommonUtils.getUserSession().userName,
+				applicationId: userSession.application.applicationId,
+				userName: userSession.userName,
 				name: " ",
 				category: this.state.userShortcuts[index].shortcutField,
 				content: this.state.userShortcuts[index].messageField

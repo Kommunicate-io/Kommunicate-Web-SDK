@@ -6,10 +6,11 @@ const path = require('path');
 
 function getJsCode (){
   let options  = {};
-  options.appId =localStorage.getItem("applicationId");
-  options.isAnonymousChat=true;
-  options.agentId =CommonUtils.getUserSession().userName||localStorage.getItem("agentId");
   let userSession = CommonUtils.getUserSession();
+
+  options.appId = userSession.application.applicationId;
+  options.isAnonymousChat=true;
+  options.agentId = userSession.userName||localStorage.getItem("agentId");
   
   if(userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
   options.agentName = userSession.displayName;

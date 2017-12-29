@@ -30,7 +30,8 @@ class Tabs extends Component {
       botOptionList:[],
      
     };
-  this.applicationId = localStorage.getItem("applicationId");
+  let userSession = CommonUtils.getUserSession();
+  this.applicationId = userSession.application.applicationId;
   
   this.handleSubmit = this.handleSubmit.bind(this);
   this.handleClick = this.handleClick.bind(this);
@@ -56,7 +57,8 @@ class Tabs extends Component {
      handleClick (event){
        var _this =this;
      event.preventDefault();
-     var applicationId =localStorage.getItem("applicationId");
+     let userSession = CommonUtils.getUserSession();
+     var applicationId = userSession.application.applicationId;
      var authorization =localStorage.getItem("authorization");
      var password = CommonUtils.getUserSession().password;
      var device = atob(authorization);
@@ -129,7 +131,8 @@ class Tabs extends Component {
          Notification.info("Please enter a password !!");
          return;
         }
-        var applicationId =localStorage.getItem("applicationId");
+        let userSession = CommonUtils.getUserSession();
+        var applicationId = userSession.application.applicationId;
         Promise.resolve(createCustomerOrAgent({userName:this.state.userid,type:2,applicationId:applicationId,password:this.state.password,name:this.state.username},"BOT"))
         .then(bot=>{
           Notification.info("Bot successfully created");

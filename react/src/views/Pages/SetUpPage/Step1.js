@@ -5,6 +5,7 @@ import {getJsCode, getJsInstructions} from '../../../utils/customerSetUp';
 import Notification from '../../model/Notification';
 import MultiEmail from '../../MultiEmail/';
 import Integration from '../../Settings/Integration/';
+import CommonUtils from '../../../utils/CommonUtils';
 
 class Step1 extends Component {
 
@@ -33,9 +34,17 @@ class Step1 extends Component {
         params[item[0]]=item[1];
       }
       console.log("search",params);
-       localStorage.setItem("applicationId",params.applicationId||"your _application_id");
        localStorage.setItem("agentId",params.agentId||"default_agent_id");
        localStorage.setItem("agentName",params.agentName||"agent_display_name");
+
+       let userSession = CommonUtils.getUserSession();
+       if (!userSession.application) {
+          console.log("application not found in user session, creating {}");
+          userSession.application = {};
+       }
+       userSession.application.applicationId = params.applicationId||"your _application_id";
+       CommonUtils.setUserSession(userSession);
+
        this.setState({
         hideNextBtn : true
        })

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Progress } from 'reactstrap';
 import { getConfig } from '../../config/config';
+import CommonUtils from '../../utils/CommonUtils';
 
 class Conversations extends Component {
 
   componentWillMount() {
     document.body.classList.toggle('aside-menu-hidden');
-    const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + localStorage.getItem("applicationId")
+    let userSession = CommonUtils.getUserSession();
+    const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userSession.application.applicationId
     window.getSuggestions(autoSuggestUrl);
 
     /*if (window.$kmApplozic(".left .person").length > 0 && window.$kmApplozic(".left .person.active").length === 0) {
