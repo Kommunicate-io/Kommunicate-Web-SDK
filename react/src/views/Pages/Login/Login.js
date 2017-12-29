@@ -95,12 +95,10 @@ submitForm = ()=>{
         if (typeof (Storage) !== "undefined") {
 
           localStorage.setItem("authorization", response.data.result.authorization);
-          localStorage.setItem("availability_status", response.data.result.availability_status);
           if (response.data.result.apzToken) {
-            localStorage.setItem("apzToken", response.data.result.apzToken);
           } else {
             var apzToken = new Buffer(userName + ":" + password).toString('base64');
-            localStorage.setItem("apzToken", apzToken);
+            response.data.result.apzToken = apzToken;
           }
           if (response.data.result.application && response.data.result.application.key) {
             localStorage.setItem("applicationKey", response.data.result.application.key);

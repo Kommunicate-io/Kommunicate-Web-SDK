@@ -57,7 +57,6 @@ const saveToLocalStorage = (email, password, name,response) => {
 
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
-    localStorage.setItem("apzToken",response.data.data.apzToken);
 
     if(response.data.data.application){
     } else {
