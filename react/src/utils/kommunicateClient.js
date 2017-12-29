@@ -498,6 +498,20 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
   })
 }
 
+const addInAppMsg = (data) => {
+
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+localStorage.getItem("applicationId")+"/createinappmsg";
+
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    data: data
+  })).then((response) => {
+    return response
+  }).catch(err => {console.log("Error in creating in app msg")})
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -525,5 +539,6 @@ export {
   goOnline,
   createIssueType,
   getIssueTypes,
-  getIssueTypeByCustIdAndCreatedBy
+  getIssueTypeByCustIdAndCreatedBy,
+  addInAppMsg
 }
