@@ -55,7 +55,6 @@ const saveToLocalStorage = (email, password, name,response) => {
   if(response !== undefined){
     CommonUtils.setUserSession(response.data.data);
 
-    localStorage.setItem("loggedinUser", email);
     localStorage.setItem("name", name);
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
@@ -500,7 +499,7 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
 
 const addInAppMsg = (data) => {
 
-  let url = getConfig().kommunicateBaseUrl+"/applications/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId")+"/createinappmsg";
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId")+"/createinappmsg";
 
   return Promise.resolve(axios({
     method: 'post',
@@ -513,7 +512,7 @@ const addInAppMsg = (data) => {
 }
 
 const disableInAppMsgs = () => {
-  let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+  let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
 
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
@@ -523,7 +522,7 @@ const disableInAppMsgs = () => {
 }
 
 const enableInAppMsgs = () => {
-  let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+localStorage.getItem("loggedinUser")+"/"+localStorage.getItem("applicationId");
+  let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+localStorage.getItem("applicationId");
 
   return Promise.resolve(axios.patch(url)).then(result => {
     console.log(result);
