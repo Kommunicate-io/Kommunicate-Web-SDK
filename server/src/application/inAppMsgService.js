@@ -21,20 +21,6 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-exports.createInAppMsg=(customerId, body)=>{
-
-            inAppMessage = {
-                customerId:customerId,
-                eventId:body.eventId,
-                message:body.message,
-                status:body.status,
-                sequence: body.sequence,
-            }
-
-            return Promise.resolve(db.InAppMsg.create(inAppMessage))
-                .catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
-}
-
 const getInAppMessage=(customerId)=>{
     return db.InAppMsg.find({where:{customerId:customerId , eventId:appUtils.EVENTS.CONVERSATION_STARTED}});
 }
@@ -54,6 +40,41 @@ exports.processConversationStartedEvent= (conversationId,customer)=>{
         })
     })
     
+}
+
+exports.createInAppMsg=(createdBy, customerId, body)=>{
+
+            inAppMessage = {
+                createdBy: createdBy,
+                customerId:customerId,
+                eventId:body.eventId,
+                message:body.message,
+                status:body.status,
+                sequence: body.sequence,
+                metadata: body.metadata
+            }
+
+            return Promise.resolve(db.InAppMsg.create(inAppMessage))
+                .catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+}
+
+exports.disableInAppMessages=(createdBy, customerId)=>{
+    return Promise.resolve(db.InAppMsg.update({status: 2}, {
+        where: {
+            createdBy: createdBy,
+            customerId: customerId
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+
+}
+
+exports.enableInAppMessages=(createdBy, customerId)=>{
+    return Promise.resolve(db.InAppMsg.update({status: 1}, {
+        where: {
+            createdBy: createdBy,
+            customerId: customerId
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
 exports.getInAppMessage=getInAppMessage;
