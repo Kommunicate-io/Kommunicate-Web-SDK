@@ -13,7 +13,7 @@ class Integration extends Component {
   }
   constructor(props, defaultProps) {
     super(props, defaultProps);
-    this.applicationKey = CommonUtils.getUserSession().applicationId;
+    this.applicationKey = CommonUtils.getUserSession().application.applicationId;
     this.state = {
       copySuccess: "Copy",
       cardSize:10
