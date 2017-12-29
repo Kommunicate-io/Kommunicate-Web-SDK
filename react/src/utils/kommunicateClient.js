@@ -53,12 +53,12 @@ const saveToLocalStorage = (email, password, name,response) => {
     throw  {code:"BROWSER_ERROR",message:"Your browser does not support web storage. please upgrade you browser."};
   }
   if(response !== undefined){
+    response.data.data.password = password;
     CommonUtils.setUserSession(response.data.data);
 
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
-    localStorage.setItem("password",password);
     localStorage.setItem("availability_status", response.data.data.availability_status);
 
     if(response.data.data.application){
@@ -361,7 +361,7 @@ const updateApplozicUser = (userInfo) => {
   const headers = {
     'Content-Type':'application/json',
     'Apz-AppId':localStorage.getItem("applicationId"),
-    'Apz-Token': 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+localStorage.getItem("password")).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
     'Apz-Product-App':'true'    
   }
   console.log(headers)

@@ -58,7 +58,7 @@ class Tabs extends Component {
      event.preventDefault();
      var applicationId =localStorage.getItem("applicationId");
      var authorization =localStorage.getItem("authorization");
-     var password = localStorage.getItem("password");
+     var password = CommonUtils.getUserSession().password;
      var device = atob(authorization);
      var devicekey = device.split(":")[1];
      var env = getEnvironmentId();
@@ -89,7 +89,7 @@ class Tabs extends Component {
              },
              headers: {
               "Apz-Product-App": true,
-              "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+localStorage.getItem("password")).toString('base64'),
+              "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
               "Content-Type": "application/json",
               "Apz-AppId":applicationId
              }

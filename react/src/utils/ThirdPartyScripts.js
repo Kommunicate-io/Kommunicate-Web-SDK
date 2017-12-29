@@ -12,7 +12,7 @@ class ThirdPartyScripts extends Component {
             let o = {};
             if (userId) {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "userId": userId, "accessToken": localStorage.getItem("password"),
+              "userId": userId, "accessToken": CommonUtils.getUserSession().password,
               "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
             } else {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
