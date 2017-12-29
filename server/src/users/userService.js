@@ -225,6 +225,12 @@ const getByUserNameAndAppId= (userName,appId)=>{
   if(stringUtils.isBlank(userName)||stringUtils.isBlank(appId)) {
     console.log("empty userName received");
     throw new Error("userName or application id is empty");
+  }else if(stringUtils.isBlank(userName)) {
+    console.log("empty userName received");
+    throw new Error("userName or application id is empty");
+  }else if(stringUtils.isBlank(appId)) {
+    console.log("empty appId received");
+    throw new Error("userName or application id is empty");
   }
   return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
     if(!customer) {
