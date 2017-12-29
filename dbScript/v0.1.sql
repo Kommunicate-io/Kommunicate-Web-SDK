@@ -17,3 +17,10 @@ alter table auto_suggests add application_id varchar(200);
 alter table users add column role varchar(50), add column industry varchar(50), add column contact_no varchar(20), add column company_name varchar(20), add column company_size varchar(20);
 
 alter table users add column availability_status int DEFAULT 1;
+
+INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-001', 'conversation started/new msg in existing conversation by anonymous user while agent is offline', '1', NOW(), NOW());
+INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-002', 'conversation started/new msg in existing conversation by known user while agent is offline', '1', NOW(), NOW());
+INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-003', 'conversation started by anonymous user while agent is online', '1', NOW(), NOW());
+INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-004', 'conversation started by known user while agent is online', '1', NOW(), NOW());
+
+alter table in_app_msgs add column sequence int;
