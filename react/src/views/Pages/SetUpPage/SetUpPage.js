@@ -6,6 +6,7 @@ import Header from '../../../components/Header/';
 import SelectStep from './SelectSteps'
 import Step1 from './Step1'
 import Step2 from './Step2'
+import './setup.css'
 
 
 
@@ -37,7 +38,7 @@ class SetUpPage extends Component {
 	
 	render() {
   	return (
-  		<div className="app">
+  		<div className="app setup-pages-bg">
 	  		<header className="app-header navbar">
         		<button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
 				

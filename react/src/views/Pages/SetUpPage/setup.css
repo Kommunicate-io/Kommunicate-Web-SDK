@@ -1,0 +1,16 @@
+#root {
+    position: relative;
+}
+.setup-pages-bg {
+    background-color: #fff;
+}
+.setup-pages-bg::after {
+    position: absolute;
+    content: '';
+    height: 100%;
+    z-index: -1;
+    width: 100%;
+    background-color: #fff;
+    bottom: -90px;
+    left: 0;
+}
