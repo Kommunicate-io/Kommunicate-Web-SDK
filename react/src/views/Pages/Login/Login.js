@@ -95,7 +95,6 @@ submitForm = ()=>{
         if (typeof (Storage) !== "undefined") {
           CommonUtils.setUserSession(response.data.result);
 
-          localStorage.setItem("loggedinUser", userName);
           localStorage.setItem("authorization", response.data.result.authorization);
           localStorage.setItem("availability_status", response.data.result.availability_status);
           if (response.data.result.apzToken) {

@@ -11,12 +11,13 @@ class Header extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    let userSession = CommonUtils.getUserSession();
     this.state = {
       changeStatusLabel: "Go Away",
       status: localStorage.getItem("availability_status"),
       dropdownOpen: false,
       //imageLink: localStorage.getItem("imageLink") == null ? "/img/avatars/default.png" : localStorage.getItem("imageLink"),
-      displayName: localStorage.getItem("name")!=="undefined"?localStorage.getItem("name"):CommonUtils.getUserSession().userName
+      displayName: userSession.displayName !=="undefined" ? userSession.displayName:CommonUtils.getUserSession().userName
     };
   }
 

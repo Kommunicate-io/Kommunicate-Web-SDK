@@ -55,7 +55,6 @@ const saveToLocalStorage = (email, password, name,response) => {
   if(response !== undefined){
     CommonUtils.setUserSession(response.data.data);
 
-    localStorage.setItem("name", name);
     localStorage.setItem("applicationKey", response.data.data.application.key);
     localStorage.setItem("applicationId", response.data.data.application.applicationId);
     localStorage.setItem("apzToken",response.data.data.apzToken);
@@ -169,19 +168,19 @@ const callSendEmailAPI = (options) => {
   //const emailTemplate = getEmailTemplate(localStorage.getItem('loggedinUser'),localStorage.getItem('applicationId'),activateAccountUrl,logoUrl);
 
   const emails = [].concat(...[emailAddress])
-  let userId = CommonUtils.getUserSession().userName;
+  let userSession = CommonUtils.getUserSession();
+  let userId = userSession.userName;
   return Promise.resolve(axios({
     method: 'post',
     url: getConfig().kommunicateApi.sendMail,
     data: {
       "to":[...emails],
       "templateName":options.templateName,
-      "from":localStorage.getItem('name') || userId +"<"+userId+">",
+      "from":userSession.displayName || userId +"<"+userId+">",
       "kommunicateScript":getJsCode(),
       "applicationId":localStorage.getItem('applicationId'),
-      "adminName":localStorage.getItem('name') || userId,
+      "adminName":userSession.displayName || userId,
       "adminId": userId
-
     }
   }))
   .then( (response) => {
