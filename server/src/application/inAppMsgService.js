@@ -31,7 +31,7 @@ const getInAppMessage=(customerId)=>{
     });
 }*/
 
-exports.processConversationStartedEvent= (conversationId,customer)=>{
+exports.processConversationStartedEvent= (conversationId,customer, agentName)=>{
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id)]).then(([bot,inAppMessage])=>{
 
        let  message = inAppMessage&&inAppMessage.dataValues?inAppMessage.dataValues.message:defaultMessage;

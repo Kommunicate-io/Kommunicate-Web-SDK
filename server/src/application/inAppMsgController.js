@@ -78,9 +78,10 @@ exports.processEvents=(req, res)=>{
     const eventType = req.query.type;
     const groupId = req.body.conversationId;
     const applicationId = req.body.applicationId;
+    const agentName = req.body.agentId;
     if(eventType == applicationUtils.EVENTS.CONVERSATION_STARTED){
         return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
-            return inAppMsgService.processConversationStartedEvent(groupId,customer).then(response=>{
+            return inAppMsgService.processConversationStartedEvent(groupId,customer, agentName).then(response=>{
                 console.log("message sent successfuly!");
                 res.status(200).json({code:"SUCCESS"});
             })
