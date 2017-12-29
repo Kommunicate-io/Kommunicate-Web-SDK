@@ -41,9 +41,7 @@ exports.createInAppMsg = (req, res)=>{
             console.log("err while persisting welcome message in db",err);
             res.status(500).json({code:"ERROR",message:"created"});
         })
-
     })
-
 }
 
 
