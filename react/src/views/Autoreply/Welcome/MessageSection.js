@@ -6,7 +6,6 @@ class MessageSection extends Component {
 
 	constructor(props) {
         super(props);
-        // console.log(props);
     }
 
 	state = {
