@@ -59,7 +59,7 @@ class Tabs extends Component {
      event.preventDefault();
      let userSession = CommonUtils.getUserSession();
      var applicationId = userSession.application.applicationId;
-     var authorization =localStorage.getItem("authorization");
+     var authorization = userSession.authorization;
      var password = CommonUtils.getUserSession().password;
      var device = atob(authorization);
      var devicekey = device.split(":")[1];

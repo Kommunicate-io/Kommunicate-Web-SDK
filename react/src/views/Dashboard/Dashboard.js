@@ -109,7 +109,7 @@ class Dashboard extends Component {
     const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
 
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
-    axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+localStorage.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
+    axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+userSession.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
           .then(function(response){
             if(response.status==200){
                 var data = response.data;
@@ -130,7 +130,7 @@ class Dashboard extends Component {
                }
           });
 
-    axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey",application.key) + "&startTime=" + startTime + "&endTime=" + endTime, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Content-Type":"application/json","Authorization":"Basic "+localStorage.authorization,"Apz-Product-App":true}})
+    axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey",application.key) + "&startTime=" + startTime + "&endTime=" + endTime, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Content-Type":"application/json","Authorization":"Basic "+userSession.authorization,"Apz-Product-App":true}})
       .then(function(response){
         if(response.status==200){
             var data = response.data;

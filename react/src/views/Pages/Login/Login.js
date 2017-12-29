@@ -94,7 +94,6 @@ submitForm = ()=>{
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
 
-          localStorage.setItem("authorization", response.data.result.authorization);
           if (response.data.result.apzToken) {
           } else {
             var apzToken = new Buffer(userName + ":" + password).toString('base64');
