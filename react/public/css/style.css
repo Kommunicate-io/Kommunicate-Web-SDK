@@ -8597,7 +8597,8 @@ app-root {
   flex-direction: column;
   min-height: 100vh;
   /* overflow-x: hidden; */
-  background-color: #fff; }
+  /* background-color: #fff;  */
+}
 
 .app-header {
   flex: 0 0 55px; }
