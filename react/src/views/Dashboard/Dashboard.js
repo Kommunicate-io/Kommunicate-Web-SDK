@@ -105,7 +105,7 @@ class Dashboard extends Component {
     var startDate = new Date();
     startDate.setDate(1);
     var startTime = startDate.getTime();
-    const apzToken = userSession.apzToken!="undefined"?userSession.apzToken:"ZGV2YXNoaXNoQGFwcGxvemljLmNvbTprbm93bGVkZ2UxMjM=";
+    const apzToken = userSession.apzToken;
     const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
 
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
