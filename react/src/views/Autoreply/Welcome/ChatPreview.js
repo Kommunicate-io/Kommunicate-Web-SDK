@@ -12,7 +12,7 @@ class ChatPreview extends Component {
 			<div className="user-chat-preview">
       	<div style={{height: "127px"}}>
                   {
-                        this.props.chatPreviewComponents.map((chatPreviewComponent, i) => (<div key={i}>{chatPreviewComponent.component}</div>))
+                    this.props.chatPreviewComponents.map((chatPreviewComponent, i) => (<div key={i}>{chatPreviewComponent.component}</div>))
                   }
       	</div>
       	<div className="user-reply-section">
