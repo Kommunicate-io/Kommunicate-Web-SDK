@@ -42,7 +42,7 @@ class Full extends Component {
   }
   componentDidMount() {
     
-    if(localStorage.loggedinUser != 'undefined'){
+    if(CommonUtils.getUserSession()){
       console.log("userloggedin initializng chat");
       window.chatLogin();
     }

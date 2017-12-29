@@ -177,11 +177,11 @@ const callSendEmailAPI = (options) => {
     data: {
       "to":[...emails],
       "templateName":options.templateName,
-      "from":localStorage.getItem('name') || userId +"<"+localStorage.getItem('loggedinUser')+">",
+      "from":localStorage.getItem('name') || userId +"<"+userId+">",
       "kommunicateScript":getJsCode(),
       "applicationId":localStorage.getItem('applicationId'),
-      "adminName":localStorage.getItem('name') || localStorage.getItem('loggedinUser'),
-      "adminId": localStorage.getItem('loggedinUser')
+      "adminName":localStorage.getItem('name') || userId,
+      "adminId": userId
 
     }
   }))
@@ -418,11 +418,12 @@ const getUsersByType = (applicationId,userType)=>{
 const changePassword =(option)=>{
 
   const patchClientUrl = getConfig().kommunicateBaseUrl+"/users/password/update";
+  let userSession = CommonUtils.getUserSession();
   return Promise.resolve(axios({
     method: 'post',
     url: patchClientUrl,
     data: {
-      "userName": localStorage.getItem('loggedinUser'),
+      "userName": userSession.userName,
       "applicationId": localStorage.getItem('applicationId'),
       "oldPassword": option.oldPassword,
       "newPassword": option.newPassword
