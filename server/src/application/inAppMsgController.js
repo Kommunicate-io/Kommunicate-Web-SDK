@@ -1,6 +1,7 @@
 const inAppMsgService = require('./inAppMsgService');
 const registrationService =require('../register/registrationService');
 const applicationUtils = require('./utils');
+
 exports.saveWelcomeMessage=(req,res)=>{
     console.log("request received to post weelcome message");
     const appId= req.params.appId;
@@ -20,6 +21,30 @@ exports.saveWelcomeMessage=(req,res)=>{
 
     })
 }
+
+exports.createInAppMsg = (req, res)=>{
+
+    console.log("request received to create in app message");
+    const appId= req.params.appId;
+
+    registrationService.getCustomerByApplicationId(appId).then(customer=>{
+        if(!customer){
+            res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
+            return;
+        }
+        return inAppMsgService.createInAppMsg(customer.id, req.body).then(response=>{
+            console.log("in app message is saved successfully");
+            res.status(200).json({code:"SUCCESS",message:"created", data: response});
+        }).catch(err=>{
+            console.log("err while persisting welcome message in db",err);
+            res.status(500).json({code:"SUCCESS",message:"created"});
+        })
+
+    })
+
+}
+
+
 exports.sendWelcomeMessage=(message,bot)=>{
     if(message&&message.contentType==201 && message.metadata.event==applicationUtils.EVENTS.CONVERSATION_STARTED){
         return inAppMsgService.sendWelcomeMessage(message,bot).then(status=>{
