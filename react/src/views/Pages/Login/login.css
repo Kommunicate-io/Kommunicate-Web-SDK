@@ -1,0 +1,89 @@
+.login-signup-bg {
+    background-color: #e4e5e6;
+}
+.header-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-right: 20px;
+    padding-left: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .logo-container {
+    padding-top: 15px;
+  }
+  .logo-container svg {
+    width: auto;
+    height: 40px;
+  }
+  .link-container {
+    padding-top: 15px;
+  }
+  .km-logo-varient3-0 {
+    enable-background: new;
+  } 
+
+  .km-logo-varient3-1 {
+    fill: #5C5AA7;
+  }
+  .register-password-div {
+      margin-bottom: 30px !important;
+  }
+
+.dropdown.btn-group {
+    width: 100%;
+}
+
+#split-button-pull-right {
+    height: 48px;
+    background: transparent;
+    width: 100%;
+    font-size: 14px;
+    text-align: left;
+    border: 1px solid #979797;
+}
+#split-button-pull-right + .dropdown-menu{
+    width: 100%;
+    padding-left: 15px;
+    border: 1px solid #979797;
+}
+#split-button-pull-right + .dropdown-menu li{
+    padding: 3px 0px;
+}
+#split-button-pull-right + .dropdown-menu li>a{
+    color: #5C5AA7;
+}
+#split-button-pull-right + .dropdown-menu li>a:hover{
+    color: rgba(93, 90, 167, 0.699);
+}
+#split-button-pull-right.dropdown-toggle::after {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.3em;
+    /* vertical-align: middle; */
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-left: 0.3em solid transparent;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+  }
+
+  .btn-primary-custom--grey {
+      background-color: #CFD8DC;
+      color: #000000;
+  }
+  .btn-primary-custom--grey:hover {
+      color: #FFFFFF;
+  }
+  .btn-primary-custom--white:hover {
+      background-color: #FFFFFF;
+  }
