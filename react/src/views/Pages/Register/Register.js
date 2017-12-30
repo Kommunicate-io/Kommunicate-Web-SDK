@@ -47,9 +47,9 @@ class Register extends Component {
     //console.log("location",this.props.location);
   }
 
-  setUserName= (event)=>{
-  this.setState({name:event.target.value});
-  }
+  // setUserName= (event)=>{
+  // this.setState({name:event.target.value});
+  // }
   setPassword= (event)=>{
   this.setState({password:event.target.value});
   }
@@ -68,12 +68,12 @@ class Register extends Component {
     var email = this.state.email;
     var password =this.state.password;
     var repeatPassword =this.state.repeatPassword;
-    var name = this.state.name;
+    var name = this.state.email;
     var _this= this;
     if(!isEmail(email)){
       Notification.warning("Invalid Email !!");
       return;
-    }else if(validator.isEmpty(password)||validator.isEmpty(email)|| validator.isEmpty(name)){
+    }else if(validator.isEmpty(password)||validator.isEmpty(email)){
       Notification.warning(" All fields are mandatory !!");
     }else{
       // located in '../../../utils/kommunicateClient'
@@ -85,10 +85,10 @@ class Register extends Component {
       userInfo.type = userType=="AGENT"?1:3;
       userInfo.applicationId = this.state.applicationId;
       userInfo.password = password;
-      userInfo.name=name;
+      userInfo.name=email;
       this.setState({disableRegisterButton:true}); 
       Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
-       saveToLocalStorage(email, password,name, response);
+       saveToLocalStorage(email, password, name, response);
         _this.setState({disableRegisterButton:false});
 
         CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard";
@@ -127,21 +127,24 @@ class Register extends Component {
                   <h1>Register</h1>
                   <p className="text-muted">Sign Up</p>
 
-                   <div className="input-group mb-3">
+                   {/* <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
-                   <input autoFocus type="text" className="form-control" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
+                   <input autoFocus type="text" className="input" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
+                  </div> */}
+                  <div className="input-group mb-3">
+                    {/* <span className="input-group-addon">@</span> */}
+                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
+                    <label className="label-for-input email-label">Email</label>
                   </div>
                   <div className="input-group mb-3">
-                    <span className="input-group-addon">@</span>
-                    <input id = "input-email" type="text" className="form-control" autoComplete="off" placeholder="Email" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email}/>
-                  </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-addon"><i className="icon-lock"></i></span>
-                    <input id="input-password"type="password" className="form-control" placeholder="Password"  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} />
+                    {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
+                    <input id="input-password" type="password" className="input" placeholder=" "  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} required/>
+                    <label className="label-for-input email-label">Password</label>
                   </div>
                   <div className="input-group mb-4" hidden={true}>
-                    <span className="input-group-addon"><i className="icon-lock"></i></span>
-                    <input type="password" className="form-control" placeholder="Repeat password" onChange={ this.setRepeatPassword }/>
+                    {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
+                    <input type="password" className="input" placeholder=" " onChange={ this.setRepeatPassword } required/>
+                    <label className="label-for-input email-label">Repeat password</label>
                   </div>
                   <div className="row">
                     <div className="col-6 text-right">

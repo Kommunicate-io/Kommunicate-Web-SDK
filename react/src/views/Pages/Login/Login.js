@@ -224,8 +224,9 @@ register=(event)=>{
                     <h1>{this.state.loginFormText}</h1>
                     <p className="text-muted">{this.state.loginFormSubText}</p>
                     <div className="input-group mb-3" hidden ={this.state.hideUserNameInputbox}>
-                      <span className="input-group-addon"><i className="icon-user"></i></span>
-                       <input autoFocus type="text" className="form-control" placeholder="Username"  onChange = { this.setUserName } value={ this.state.userName } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress}/>
+                      {/* <span className="input-group-addon"><i className="icon-user"></i></span> */}
+                       <input autoFocus type="text" className="input" placeholder=" "  onChange = { this.setUserName } value={ this.state.userName } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress} required/>
+                       <label className="label-for-input email-label">Username</label>
 
                     </div>
                     <div className="input-group mb-4" hidden ={this.state.hideAppListDropdown}>
@@ -245,8 +246,9 @@ register=(event)=>{
                       </SplitButton>
                     </div>
                     <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox}>
-                      <span className="input-group-addon"><i className="icon-lock"></i></span>
-                      <input type="password" className="form-control" placeholder="Password"  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress}/>
+                      {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
+                      <input type="password" className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} required/>
+                      <label className="label-for-input email-label">Password</label>
                     </div>
 
                     <div className="row">
