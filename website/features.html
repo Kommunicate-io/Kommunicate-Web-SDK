@@ -12,10 +12,10 @@ layout:
     <meta name="author" content="">
     <meta http-equiv=”content-language” content=”en-us”>
 
-    <title>Kommunicate.io</title>
- 
+    <title>Features | Kommunicate.io</title>
     {% include headtag.html %}
-    <link rel="stylesheet" href="/assets/resources/css/homepage-beta.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/resources/css/features.css" type="text/css">
 
 
 </head>
@@ -24,92 +24,19 @@ layout:
     <div class="show">
       {% include nav-header.html %}
     </div>
-    {% include_relative /sections/homepage-beta-landing-page.html %}
-    {% include_relative /sections/homepage-beta-trust-section.html %}
-    {% include_relative /sections/homepage-beta-features-section.html %}
-    {% include_relative /sections/homepage-beta-reasons-invite-list-section.html %}
-    {% include_relative /sections/homepage-beta-latest-section.html %}
-    {% include_relative /sections/homepage-beta-cta-section.html %}
+    {% include_relative /sections/features-landing-page.html %}
+    {% include_relative /sections/features-message-shortcut-section.html %}
+    {% include_relative /sections/features-welcome-message-section.html %}
+    {% include_relative /sections/features-bot-integration-section.html %}
+    {% include_relative /sections/features-conversation-section.html %}
+    {% include_relative /sections/features-dashboard-section.html %}
+    {% include_relative /sections/features-cta-section.html %}
+    
     {% include footer-section.html %}
 
-
-    <script type='text/javascript' src='/assets/resources/js/gsap/TimelineMax.min.js'></script>
-    <script type='text/javascript' src='/assets/resources/js/gsap/TweenMax.min.js'></script>
     <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
-    <script>
-        var previewImage = document.getElementsByClassName("preview-image");
-        var timeline = new TimelineMax();
-        timeline
-        // from(previewImage, 2, {
-        //         x: "100%",
-        //         opacity: 0
-        //     })
-            .from(".hero-section .hero-text, .hero-section .hero-subtext", 1.5, {
-                x: -100,
-                opacity: 0
-            })
-            // .from("#intro h1, #intro p", 1, {
-            //     opacity: 0
-            // })
-            .from("#form-container", 1.5, {
-                x: 100,
-                opacity: 0
-            }, '-=1.5')
-            .from("#intro form, #intro h6", 1, {
-                y: 100,
-                opacity: 0
-            })
-            .from(".mck-sidebox-launcher", 1, {
-                x: 100,
-                opacity: 0
-            })
-            // .from("#intro h6", 1, {
-            //     y: 100,
-            //     opacity: 0
-            // });
-    </script>
 
-<script>
-//Select all links with hashes
-$('a[href*="#"]')
-  // Remove links that don't actually link to anything
-  .not('[href="#"]')
-  .not('[href="#0"]')
-  .click(function(event) {
-    // On-page links
-    if (
-      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-      &&
-      location.hostname == this.hostname
-    ) {
-      // Figure out element to scroll to
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      // Does a scroll target exist?
-      if (target.length) {
-        // Only prevent default if animation is actually gonna happen
-        event.preventDefault();
-        $('html, body').animate({
-          scrollTop: target.offset().top
-        }, 1000, function() {
-          // Callback after animation
-          // Must change focus!
-          var $target = $(target);
-          $target.focus();
-          if ($target.is(":focus")) { // Checking if the target was focused
-            return false;
-          } else {
-            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
-            $target.focus(); // Set focus again
-          };
-        });
-      }
-    }
-  });
-
-</script>
-
-    <script type="text/javascript">
+  <script type="text/javascript">
 
     var QUERYSTRING = 'test',
         CURRENTURL = window.location.href;
@@ -161,7 +88,8 @@ $('a[href*="#"]')
   //    window.kommunicate = m;
   //    m._globals = o;
   //  })(document, window.kommunicate || {});
-</script>
+  
+  </script>
 
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>

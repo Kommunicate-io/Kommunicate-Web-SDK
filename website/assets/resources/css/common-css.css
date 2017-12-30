@@ -1,0 +1,204 @@
+.navigation-header {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    right: 0;
+    z-index: 500;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1170px;
+    padding: 0px 15px;
+    margin: 0 auto;
+}
+.page-links-ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.page-links-ul li {
+    list-style: none;
+    display: inline;
+
+}
+.page-links-ul li>a {
+    font-size: 16px;
+  font-weight: 600;
+  color: #fdfdfd;
+  padding: 0px 25px;
+  transition: color 0.3s ease;
+}
+.page-links-ul li>a:hover {
+  color: #fdfdfd81;
+}
+.nav-signup-button {
+    color: #fff;
+    border-radius: 21px;
+    border: solid 1.4px #ffffff;
+    height: 36px;
+    line-height: 32px;
+    width: 150px;
+    text-align: center;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+.nav-signup-button:hover {
+    color: #5C5AA7;
+    border: solid 1.4px #ffffff;
+    background-color: #ffffff;
+}
+.nav-kommunicate-logo {
+    height: 45px;
+    width: auto;
+}
+.km-logo-varient3-1 {
+    fill: #fff;
+}
+.km-logo-home-page {
+    display: none;
+}
+.menu-mobile {
+    display: none;
+}
+.menu-mobile ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu-btn-icon {
+    fill: #fff;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}
+.popup {
+    width: calc(100% - 20px);
+    height: auto;
+    display: none;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    -ms-flex-pack: end;
+    justify-content:center;
+    z-index: 600;
+}
+.popup-container {
+    background: #fff;
+    box-shadow: 0 50px 100px rgba(50,50,93,.1), 0 15px 35px rgba(50,50,93,.15), 0 5px 15px rgba(0,0,0,.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    font-size: 17px;
+    padding-top: 50px;
+    padding-bottom: 30px;
+}
+.popup-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.popup-container ul li {
+    padding: 10px;
+}
+.popup-container ul li>a {
+    font-size: 18px;
+    color: #5C5AA7;
+    transition: color .1s ease;
+}
+.popup-container ul li>a:hover {
+    color: rgb(67, 65, 122);
+}
+.close-btn {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 12.5px;
+}
+.close-btn-icon {
+    fill: #5C5AA7;
+    width: 30px;
+    height: 30px;
+}
+.nav-signup-mobile-button {
+    color: #5C5AA7;
+    border-radius: 21px;
+    border: solid 1.4px #5C5AA7;
+    padding: 5px 15px;
+    text-align: center;
+    font-size: 16px;
+    transition: all .3s ease;
+}
+.nav-signup-mobile-button:hover {
+    color: #fff !important;
+    border: solid 1.4px #5C5AA7;background-color: #5C5AA7;
+}
+@media(max-width:650px) {
+    .page-links-ul, .nav-signup-button {
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+    }
+}
+
+
+
+
+.footer-section {
+    position: relative;
+    padding: 0px 0px 80px 0px;
+    text-align: center;
+    background-color: #f6f7fc;
+}
+.footer-section .img-container svg {
+    width: auto;
+    height: 60px;
+    margin: 0 auto;
+    filter: opacity(0.2);
+}
+.address-container {
+    margin-top: 15px;
+}
+
+.address {
+    font-size: 16px;
+    color: #4e4e4e;
+    line-height: 28px;
+    margin-top: 30px;
+}
+
+.address a {
+    color: #3a3a3a;
+}
+
+.address a:hover {
+    color: #1f1f1f;
+}
+.love {
+    margin-top: 50px;
+}
+.love span {
+    vertical-align: sub;
+}
+.footer-hr {
+    display: block;
+    margin-top: 2.3em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    height: 3px;
+    width:10%;
+    background: rgb(200,109,215); /* Old browsers */
+    background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 ); /* IE6-9 */
+}
+

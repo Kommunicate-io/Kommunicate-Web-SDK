@@ -1,0 +1,229 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+::selection {
+    background-color: #747ffc;
+    color: #ffffff;
+}
+
+html * {
+    font-family: 'Open Sans',sans-serif !important;
+  }
+
+body {
+    -webkit-font-smoothing: antialiased;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+}
+
+.about-us-landing-page-section {
+    padding: 100px 0px 80px;
+    position: relative;
+}
+.title {
+    font-size: 34px;
+    font-weight: bold;
+    color: #5C5AA7;
+    letter-spacing: -0.1px;
+}
+.description {
+    font-size: 18px;
+    color: #4a4a4a;
+    line-height: 1.5;
+}
+.description + img {
+    margin-top: 50px;
+}
+.hr {
+    border-top: 2px solid #4a4a4a;
+    width: 20%;
+}
+.m-center {
+    margin: 0 auto;
+}
+.rectangle1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 126px);
+    background-color: #fff;
+    transform: skewY(-17deg);
+    transform-origin: top left;
+    z-index: -1;
+}
+.rectangle2 {
+    position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 400px;
+  background-color: #e6ebf3;
+  transform: skewY(-6deg);
+  transform-origin: bottom left;
+  z-index: -2;
+}
+.about-us-team-section {
+    padding: 50px 0px;
+    background: url("/assets/resources/images/teamwork-bg.png") no-repeat;
+    background-position-x: 50%;
+    /* background-size: cover; */
+}
+.team-details-container {
+    margin-top: 50px;
+}
+.team-photo-container {
+    width: 111px;
+    height: 111px;
+    border-radius: 50%;
+    background-color: #9b9b9b;
+    margin: 0 auto;
+}
+.team-description-title {
+    font-weight: 600;
+    color: #4a4a4a;
+    margin-bottom: 5px;
+}
+.team-description-designation {
+    font-weight: 400;
+    color: #5C5AA7;
+    margin-bottom: 5px;
+}
+.team-social-icons-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+.about-us-address-section {
+    padding: 50px 0px;
+    background-color: #f6f7fc;
+}
+.address-location {
+    color: #5C5AA7;
+    font-weight: bold;
+}
+.addresss {
+    line-height: 1.4;
+    color: #4a4a4a;
+}
+.contact-number span, .mail-id span {
+    vertical-align: sub;
+}
+.contact-number a , .mail-id a {
+    color: #5c5aa7;
+}
+.contact-number svg , .mail-id svg {
+    fill: #5c5aa7;
+}
+
+.about-us-cta-section {
+    padding: 50px 0px;
+    background-color: #f6f7fc;
+}
+.about-us-cta-section .row {
+    margin: 0px;
+    padding: 40px 0px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+}
+.sub-title {
+    font-size: 22px;
+    color: #5C5AA7;
+    font-weight: bold;
+}
+.contact-us-description{
+    margin-top: 10px;
+    font-weight: 600;
+}
+.contact-us-description a{
+    color: #5C5AA7;
+    font-weight: 600;
+}
+.km-launcher-icon-about-us {
+    width: auto;
+    height: 78px;
+}
+
+
+@media (min-width: 1200px) {
+    .about-us-landing-page-section .container {
+        width: 900px;
+    }
+}
+@media (max-width:767px) {
+    .about-us-team-section {
+        background-repeat: repeat-y;
+    }
+}
+
+.km-logo-varient3-1 {
+    fill: #5C5AA7;
+}
+.page-links-ul li>a {
+    color: #5C5AA7;
+}
+.page-links-ul li>a:hover {
+    color: rgba(93, 90, 167, 0.5);
+}
+.nav-signup-button {
+    color: #5C5AA7;
+    border: 1.4px solid #5c5aa7;
+    font-weight: 600
+}
+.nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #5C5AA7;
+    border: 1.4px solid #5c5aa7;
+    font-weight: 600
+}
+.menu-btn-icon {
+    fill: #5C5AA7;
+}
+
+
+
+.al-km-team-anand, .al-km-team-anshul, .al-km-team-ardarsh, .al-km-team-ashish, .al-km-team-devashish, 
+.al-km-team-devraj, .al-km-team-jithin, .al-km-team-kusum, .al-km-team-mihir, .al-km-team-mukesh, 
+.al-km-team-parth, .al-km-team-prateek, .al-km-team-priya, .al-km-team-priyanka, .al-km-team-purananga, 
+.al-km-team-ranjeet, .al-km-team-satadeep, .al-km-team-sunil, .al-km-team-suraj, .al-km-team-vibhor
+{ display: inline-block; background: url('/assets/resources/images/avatars/al-km-team-sprite.jpg') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }
+
+.al-km-team-anand { background-position: -1px -0px; width: 111px; height: 111px; }
+
+.al-km-team-anshul { background-position: -113px -0px; width: 111px; height: 111px; }
+.al-km-team-ardarsh { background-position: -225px -0px; width: 111px; height: 111px; }
+.al-km-team-ashish { background-position: -337px -0px; width: 111px; height: 111px; }
+.al-km-team-devashish { background-position: -1px -112px; width: 111px; height: 111px; }
+.al-km-team-devraj { background-position: -113px -112px; width: 111px; height: 111px; }
+.al-km-team-jithin { background-position: -225px -112px; width: 111px; height: 111px; }
+.al-km-team-kusum { background-position: -337px -112px; width: 111px; height: 111px; }
+.al-km-team-mihir { background-position: -1px -224px; width: 111px; height: 111px; }
+.al-km-team-mukesh { background-position: -113px -224px; width: 111px; height: 111px; }
+.al-km-team-parth { background-position: -225px -224px; width: 111px; height: 111px; }
+.al-km-team-prateek { background-position: -337px -224px; width: 111px; height: 111px; }
+.al-km-team-priya { background-position: -1px -336px; width: 111px; height: 111px; }
+.al-km-team-priyanka { background-position: -113px -336px; width: 111px; height: 111px; }
+.al-km-team-purananga { background-position: -225px -336px; width: 111px; height: 111px; }
+.al-km-team-ranjeet { background-position: -337px -336px; width: 111px; height: 111px; }
+.al-km-team-satadeep { background-position: -1px -448px; width: 111px; height: 111px; }
+.al-km-team-sunil { background-position: -113px -448px; width: 111px; height: 111px; }
+.al-km-team-suraj { background-position: -225px -448px; width: 111px; height: 111px; }
+.al-km-team-vibhor { background-position: -337px -448px; width: 111px; height: 111px; }
+.al-km-team-vipin {
+    background: url('/assets/resources/images/avatars/vipin.jpg') no-repeat; 
+}
+
+.desig br {
+    display: none;
+}
+@media(max-width:767px) {
+    .desig br {
+        display: block;
+    }
+}
