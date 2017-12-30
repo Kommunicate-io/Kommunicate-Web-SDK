@@ -181,8 +181,8 @@ class Register extends Component {
             <div className="col-md-6">
               <div className="card mx-4">
                 <div className="card-block p-4">
-                  <h1>Register</h1>
-                  <p className="text-muted">Sign Up</p>
+                  <h1 className="login-signup-heading">Sign Up</h1>
+                  <p className="text-muted login-signup-sub-heading">Your account information</p>
 
                    {/* <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>
@@ -208,9 +208,9 @@ class Register extends Component {
                     <div className="col-6">
                       <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
                     </div>
-                    <div className="col-6 text-right">
+                    {/* <div className="col-6 text-right">
                       <button type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.backToLogin } hidden ={this.state.isBackBtnHidden}>Back</button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 </div>

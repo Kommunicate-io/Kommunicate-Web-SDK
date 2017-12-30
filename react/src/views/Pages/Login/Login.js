@@ -180,7 +180,7 @@ login = (event)=>{
       if(_this.state.loginButtonAction=="passwordReset"){
         _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
       }else{
-      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'you are registered in multiple application. please select one Application and enter password to  login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:true});
+      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:true});
     }
   }else{
     Notification.info("You are not a registered user. Please sign up!!!");
@@ -274,8 +274,8 @@ register=(event)=>{
               <div className="card-group mb-0">
                 <div className="card p-4">
                   <div className="card-block">
-                    <h1>{this.state.loginFormText}</h1>
-                    <p className="text-muted">{this.state.loginFormSubText}</p>
+                    <h1 className="login-signup-heading">{this.state.loginFormText}</h1>
+                    <p className="text-muted login-signup-sub-heading">{this.state.loginFormSubText}</p>
                     <div className="input-group mb-3" hidden ={this.state.hideUserNameInputbox}>
                       {/* <span className="input-group-addon"><i className="icon-user"></i></span> */}
                        <input autoFocus type="text" className="input" placeholder=" "  onChange = { this.setUserName } value={ this.state.userName } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress} required/>
@@ -321,11 +321,11 @@ register=(event)=>{
                     </div>
                   </div>
                 </div>
-                <div className="card card-inverse card-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
+                <div className="card card-inverse card-primary py-5 d-md-down-none signup-blue-card" style={{ width: 44 + '%' }}>
                   <div className="card-block text-center">
                     <div>
-                      <h2>Sign up</h2>
-                      <p>New User? Sign up! </p>
+                      <h2 className="login-signup-heading">Sign up</h2>
+                      <p className="login-signup-sub-heading">New User? Sign up now!</p>
                       <button type="button" className="btn btn-primary active mt-3 btn-primary-custom btn-primary-custom--white" onClick ={ this.register }>Register Now!</button>
                     </div>
                   </div>

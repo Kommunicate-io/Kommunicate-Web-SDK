@@ -87,3 +87,18 @@
   .btn-primary-custom--white:hover {
       background-color: #FFFFFF;
   }
+
+
+  .login-signup-heading {
+      font-size: 24px;
+  }
+  .login-signup-sub-heading {
+    font-size: 14px;
+    color: #717174;
+}
+.signup-blue-card {
+    padding-top: 24px !important;
+}
+.signup-blue-card .login-signup-sub-heading {
+    color: #dddde1;
+}
