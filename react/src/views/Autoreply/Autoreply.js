@@ -28,7 +28,7 @@ class Autoreply extends Component {
 
     this.state = {
      days:'',
-     activeTab: '1',
+     activeTab: '2',
      mon:false,
      tue:false,
      wed:false,
@@ -189,14 +189,14 @@ class Autoreply extends Component {
         <div className="row">
           <div className="col-md-12 mb-8">
             <Nav tabs>
-              <NavItem >
+              {/*<NavItem >
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '1' })}
                   onClick={() => { this.toggle('1'); }}
                 >
                   AUTO REPLIES
                 </NavLink>
-              </NavItem>
+              </NavItem>*/}
               <NavItem hidden= {false} >
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}

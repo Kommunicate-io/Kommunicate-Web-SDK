@@ -102,20 +102,22 @@ render(){
                     <span className="switch-handle"></span>
                 </Label>
               </div>
-              <div className="row">
+              <div className="row" style={{'display':'none'}}> {/*remove style for display*/}
                 <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
               </div>
-              <div className="row">
+             <div className="row">
                 <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. 
                 <span className="you-can-update-status text-style-2" onClick={this.toggleOverlay}>Show me where</span></p>
                 
               </div>
             </div>
           </div>
+          <div style={{'display':'none'}} >{/*remove this div for display*/}
           <hr />
           <WhenYouAreOnline />
           <hr />
           <WhenYouAreOffline />
+          </div>
         </div>
         <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay": "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
           <p>You can update your status
