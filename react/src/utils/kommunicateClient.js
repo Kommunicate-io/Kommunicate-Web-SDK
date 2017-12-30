@@ -303,9 +303,7 @@ const getSuggestionsByAppId = (applicationId) => {
 }
 
 const createSuggestions = (suggestion) => {
-
   const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest
-
   return Promise.resolve(axios.post(autoSuggestUrl, suggestion))
     .then(response => response)
 }

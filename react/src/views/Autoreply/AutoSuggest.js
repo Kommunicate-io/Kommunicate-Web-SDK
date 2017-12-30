@@ -255,20 +255,22 @@ class AutoSuggest extends Component {
 
 						</div>
 						
-					 <div className="col-md-1">
-					 	{/* <div className="arrow-up"></div>  */}
-						 <p className="tooltip-btn"><i className="fa fa-ellipsis-h" onClick={()=> this.setState({activeMenu: index,visible: !this.state.visible})} ></i></p>
-						{
-							 this.state.activeMenu === index  && this.state.visible == true &&
-						 
-						 <ul className="tooltip-menu">
-							 <li className="tooltip-menu-list" onClick={() => this.setState({activeTextField: index})}>Edit</li>
-							 <hr className="list-divider" />
-							 <li className="tooltip-menu-list" onClick={this.deleteSuggestion}  >Delete</li>
-						 </ul>
-						 
-						}
-					 </div>
+						<div className="col-md-2 tooltip-wrapper">
+							{/* <div className="arrow-up"></div>  */}
+							<p className="tooltip-btn"><div className="ellipsis" onClick={() => this.setState({ activeMenu: index, visible: !this.state.visible })}></div><div className="ellipsis" onClick={() => this.setState({ activeMenu: index, visible: !this.state.visible })}></div><div className="ellipsis" onClick={() => this.setState({ activeMenu: index, visible: !this.state.visible })}></div></p>
+
+							{
+								this.state.activeMenu === index && this.state.visible == true &&
+
+								<ul className="tooltip-menu ">
+									<li className="tooltip-menu-list" onClick={this.deleteSuggestion}  >Delete</li>
+									{/* <li className="tooltip-menu-list" onClick={() => this.setState({activeTextField: index})}>Edit</li> */}
+									{/* <hr className="list-divider" /> */}
+
+								</ul>
+
+							}
+						</div>
 					
 					</div>
 				</div>

@@ -226,8 +226,6 @@ class Forms extends Component {
                           contentLabel="Example Modal"
 
                         >
-
-                          <div className="change-courser close-icon pull-right" onClick={this.closeModal}>X</div>
                           
                           <div /*className="row"*/>
                             <ImageUploader

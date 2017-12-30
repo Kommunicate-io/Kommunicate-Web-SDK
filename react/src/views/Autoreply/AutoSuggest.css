@@ -111,32 +111,48 @@ body{
 .tooltip-menu {
     list-style-type:none;
     width: 93.2px;
-    height: 75px;
+    height: 38px;
     background-color: #ffffff;
     box-shadow: 1px 2px 4px 1px rgba(64, 63, 63, 0.5);
     padding: 10px;
     position: absolute;
     z-index: 9999;
+    margin-left: -35px;
+    margin-top: 11px;
 }
-/*
+
 .tooltip-menu::after {
+    border-bottom: 8px solid rgb(255, 255, 255);
+    display: inline-block;
+    position: absolute;
+    top: -7px;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    content: "";
+    left: 50%;
+    transform: translateX(-50%);
+} 
+ 
+.tooltip-menu::before {
     border-bottom: 9px solid rgba(0,0,0,.2);
     display: inline-block;
     position: absolute;
     top: -8px;
-} 
- 
-.tooltip-menu::before {
     border-left: 9px solid transparent;
     border-right: 9px solid transparent;
     content: "";
-    left: 30px;
-} */
+    left: 50%;
+    transform: translateX(-50%);
+} 
 .tooltip-menu-list {
     font-size: 12px;
     letter-spacing: 0.9px;
     color: #515050;
     font-family:'OpenSans', sans-serif;
+    cursor: pointer;
+}
+.tooltip-wrapper{
+    margin-left: 9px;
 }
 
 .list-divider {
@@ -144,8 +160,11 @@ body{
     margin-bottom: 11px;
 }
 .tooltip-btn{
-    padding-top: 5px;
+    padding-top: 14px;
     margin-bottom: 0;
+    display: flex;
+    margin-left: 3px;
+    cursor: pointer;
 }
 .arrow-up {
     width: 0; 
@@ -157,4 +176,12 @@ body{
 }
 .title-line {
     margin-left: 20px;
+}
+.ellipsis{
+    width: 4.8px;
+    height: 4.8px;
+    opacity: 0.4;
+    background-color: #000000;
+    border-radius: 5px;
+    margin-left: 1px;
 }
