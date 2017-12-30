@@ -103,23 +103,13 @@ class Step2 extends Component {
 
   render() {
     return (
-
-      
-
-
       <form className="form-horizontal" onSubmit={this.finishSetUp}>
         <div className="animated fadeIn">
-
-        
-
-
           <div className="row">
-
             <div className="col-md-12">
               <div className="card">
                 <div className="card-block">
                   <form className="form-horizontal">
-
                   <div className="col-lg-12 text-center setup-profile-div">
                 <div className="step-number-div">
                    2/2
@@ -134,7 +124,6 @@ class Step2 extends Component {
                         <label className="label-for-input email-label">www.mycompany.com</label>
                     </div>
                 </div>
-
                 <h2 className="setup-integration-later-text">Rest of the profile can also be set up from <span>Settings > Profile</span> later</h2>
 
                 <div className="button-link-container">
@@ -143,11 +132,10 @@ class Step2 extends Component {
                     </a>
                 </div>
                 <hr></hr>
-      </div>
+              </div>
 
                     <div className="form-group row">
-                      {/* <div className="col-md-2">
-                      </div> */}
+                     
                       <div className="col-md-6 text-center pt-100">
                         <img src={this.state.imageFile} className="default-dp"></img><br />
                         <div className="edit-dp-btn">
@@ -161,9 +149,6 @@ class Step2 extends Component {
                             contentLabel="Example Modal"
 
                           >
-
-                            <div className="change-courser close-icon pull-right" onClick={this.closeModal}>X</div>
-
                             <div className="row">
                               <ImageUploader
                                 handleImageFiles={this.handleImageFiles}
@@ -175,13 +160,10 @@ class Step2 extends Component {
                             </div>
                           </Modal>
                         </div>
-
                       </div>
-
                       <div className="col-md-4">
                         <div className="row">
                           <div className="col-md-12">
-
                             <div className="group form-group email-form-group">
                               <input className="input" type="text" id="name-input" name="name-input" placeholder=" " required value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
                               <label className="label-for-input email-label">Your Name</label>
