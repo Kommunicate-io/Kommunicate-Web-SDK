@@ -176,7 +176,8 @@ class AutoSuggest extends Component {
 
 		this.setState({
 			userShortcuts: userShortcuts,
-			visible: false
+			visible: false,
+			createDisable: false
 		})
 		
 
