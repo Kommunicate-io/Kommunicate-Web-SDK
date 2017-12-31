@@ -9153,6 +9153,7 @@ hr.transparent {
   letter-spacing: 0.7px;
   text-align: left;
   color: #696464;
+  display:none;
 }
 
 .instruction-page-setup{
