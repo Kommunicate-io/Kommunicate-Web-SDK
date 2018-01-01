@@ -30,6 +30,10 @@ a, a:hover, a:focus, a:active {
     line-height: normal;
     color: #5C5AA7;
 }
+.pricing-title span {
+    vertical-align: super;
+    font-size: 20px;
+}
 
 .pricing-subtitle {
     font-size: 20px;
@@ -166,9 +170,80 @@ transform: scale(.6);
     margin-top: 20px;
 }
 
-.form-container-div {
-    padding-top: 65px;
+.pricing-subtitle.features {
+    padding-left: 25px;
 }
+.features-list {
+    margin-top: 25px;
+    line-height: 1.5em;
+    font-size: 16px;
+    padding-left: 60px;
+    list-style-image: url("/assets/resources/images/Ellipse-1.svg");
+}
+.features-list li {
+    padding: 5px 0px 5px 5px;
+}
+
+
+.pricing-cta-section {
+    background: #f6f7fc;
+    height: 260px;
+    padding: 0px 0px;
+    position: relative;
+    margin-bottom: 70px;
+    padding-top: 60;
+}
+.pricing-cta-section::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150%;
+    content: '';
+    /* -webkit-transform: skewY(5deg);
+    -ms-transform: skewY(5deg);
+    transform: skewY(5deg); */
+    background-color: #f6f7fc;
+}
+.pricing-cta-section .row {
+    margin: 0px;
+    padding: 40px 0px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+}
+
+.cta-section-text {
+    background: -webkit-linear-gradient(left, rgb(200,109,215) 31%,rgb(48,35,174) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 300;
+    font-size: 32px;
+    margin-bottom: 60px;
+    margin-top: 0px;
+    line-height: 1.3;
+}
+
+.cta-section-cta-btn {
+    border-radius: 96px;
+    width: 234px;
+    height: 49px;
+    background: rgba(116, 127, 252, 1);
+    color: #fff;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    padding: 15px 25px;
+}
+
+.cta-section-cta-btn:hover, .cta-section-cta-btn:active, .cta-section-cta-btn:focus {
+    background: rgba(73, 83, 227, 1);
+    box-shadow: none;
+    color: #fff;
+}
+
 .pre-signup-form {
     /*background-color: white;*/
     border-radius: 100px;
@@ -178,7 +253,7 @@ transform: scale(.6);
     padding-right: 0px;
     display: flex;
     /*border: 2px solid #007fff;*/
-    width: 100%;
+    width: 70%;
     margin: 0 auto;
 }
 .pre-signup-form br {
@@ -229,7 +304,7 @@ transform: scale(.6);
     flex: 1 0 auto;
     box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
 }
-.cta-email-pre-signup {
+.pricing-cta-section .cta-email-pre-signup {
     background: transparent;
     width: 50%;
     color: #000;
@@ -275,7 +350,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .form-submit-btn:focus {
     outline: none;
 }
-.form-submit-btn {
+.pricing-cta-section .form-submit-btn {
     color: rgba(255, 255, 255, 1);
     background: rgb(200,109,215); /* Old browsers */
     background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%); /* FF3.6-15 */
@@ -284,43 +359,50 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 ); /* IE6-9 */
 }
 
-
-@media (min-width:768px) and (max-width:991px) {
-    .form-container-div {
-        padding-top: 35px;
-    }
-    .pre-signup-form {
-        width: 100%;
-        flex-wrap: wrap;
-    }
-    .form-submit-btn, .cta-email-pre-signup {
-        width: 100%;
-        border-radius: 26px;
-    }
-    .form-submit-btn {
-        margin-top: 15px;
-    }
-    .pre-signup-form br {
-        display: block;
+@media (max-width:350px) {
+    .pricing-cta-section {
+        margin-bottom: 130px;
     }
 }
-@media (max-width:410px) {
-    .form-container-div {
-        padding-top: 35px;
+@media only screen and (max-width: 568px) {
+    .pre-signup-form br {
+        display: block;
     }
+    .form-submit-btn {
+        font-size: 16px;
+        width: 100%;
+    }
+    .cta-email-pre-signup {
+        width: 100% !important;
+    }
+}
+@media (max-width:560px) {
+    .cta-email-pre-signup {
+        border-radius: 26px;
+    }
+     .pricing-cta-section .cta-email-pre-signup {
+        border-radius: 26px;
+    }
+    .form-submit-btn {
+        flex: 0 0 100%;
+        margin-top: 15px;
+        border-radius: 26px;
+    }
+}
+@media (max-width:767px) {
     .pre-signup-form {
         width: 100%;
         flex-wrap: wrap;
     }
-    .form-submit-btn, .cta-email-pre-signup {
-        width: 100%;
-        border-radius: 26px;
+    .pricing-cta-section {
+        height: 350px;
+        position: relative;
     }
-    .form-submit-btn {
-        margin-top: 15px;
-    }
-    .pre-signup-form br {
-        display: block;
+}
+
+@media (min-width:768px) and (max-width:991px) {
+    .pricing-cta-section .pre-signup-form {
+        width: 75%;
     }
 }
 @media (min-width: 1200px) {
