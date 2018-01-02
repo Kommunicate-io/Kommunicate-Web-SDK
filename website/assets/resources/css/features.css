@@ -326,3 +326,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     }
 
 }
+
+.page-links-ul li:first-child>a {
+    font-weight: bold;
+}

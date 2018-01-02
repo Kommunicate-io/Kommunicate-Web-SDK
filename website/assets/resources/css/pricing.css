@@ -296,3 +296,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .menu-btn-icon {
     fill: #5C5AA7;
 }
+
+.page-links-ul li:nth-child(2)>a {
+    font-weight: bold;
+}

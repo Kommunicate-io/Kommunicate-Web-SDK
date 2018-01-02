@@ -227,3 +227,7 @@ a, a:hover, a:focus, a:active {
         display: block;
     }
 }
+
+.page-links-ul li:last-child>a {
+    font-weight: bold;
+}
