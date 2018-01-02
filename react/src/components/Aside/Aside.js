@@ -48,6 +48,8 @@ class Aside extends Component {
       window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
         if(response.status === 'success') {
               var assign = window.$kmApplozic("#assign");
+              console.log("#agents: ");
+              console.log(response.response.users);
               that.setState({agents: response.response.users});
               window.$kmApplozic.each(response.response.users, function() {
                   assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
