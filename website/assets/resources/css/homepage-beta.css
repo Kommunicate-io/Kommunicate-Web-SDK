@@ -1387,3 +1387,10 @@ input:-ms-input-placeholder {
         fill: #5C5AA7;
     }
 }
+#chat-widget-copy-10 {
+    fill: #5C5AA7;
+    transition: all 0.1s ease;
+}
+.page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
+    fill: #5d5aa786 !important;
+}

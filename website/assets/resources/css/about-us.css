@@ -231,3 +231,6 @@ a, a:hover, a:focus, a:active {
 .page-links-ul li:last-child>a {
     font-weight: bold;
 }
+.page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
+    fill: #5d5aa786 !important;
+}
