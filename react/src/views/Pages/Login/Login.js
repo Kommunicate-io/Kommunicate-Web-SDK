@@ -34,7 +34,7 @@ constructor(props){
     dropDownBoxTitle:"Select Application.......",
     hideBackButton:true,
     loginButtonDisabled:false,
-    isForgotPwdHidden:false
+    isForgotPwdHidden:true
   }
   this.state=Object.assign({},this.initialState);
   this.submitForm = this.submitForm.bind(this);
@@ -173,14 +173,14 @@ login = (event)=>{
           resetPassword({userName:_this.state.userName,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
           return;
         }
-        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:true});
+        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
     }else if(numOfApp>1){
       //popUpApplicationList(numOfApp,response.data);
         _this.state.appIdList= response.data;
       if(_this.state.loginButtonAction=="passwordReset"){
         _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
       }else{
-      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:true});
+      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
     }
   }else{
     Notification.info("You are not a registered user. Please sign up!!!");
@@ -202,7 +202,7 @@ register=(event)=>{
   this.setState({"loginFormText":"Email",
   "loginFormSubText":'Enter your registered Email to get the password reset link.',
   loginButtonText:'Submit',
-  loginButtonAction:'passwordReset',hideBackButton:false});
+  loginButtonAction:'passwordReset',hideBackButton:false,hidePasswordInputbox:true,hideAppListDropdown:true,hideUserNameInputbox:false});
   //this.login(event);
   //const resetPasswordUrl= getConfig().kommunicateApi.passwordResetUrl.replace(":userName",this.state.userName);
   /*axios.get(resetPasswordUrl)
