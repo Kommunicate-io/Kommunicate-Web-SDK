@@ -4979,8 +4979,6 @@ var KM_CLIENT_GROUP_MAP = [];
 					type : 'get',
 					global : false,
 					success : function(response) {
-						console.log("#response for fetch contacts");
-						console.log(response);
 						if (params.callback) {
 							params.callback(response);
 						}
