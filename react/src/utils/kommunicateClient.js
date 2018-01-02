@@ -531,6 +531,20 @@ const enableInAppMsgs = () => {
 
 }
 
+const getInAppMessages = () => {
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+CommonUtils.getUserSession().userName+"/"+userSession.application.applicationId+"/getInAppMessages";
+
+  return axios.get(url).then(response => {
+    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
+      if(response.data.data instanceof Array){
+        return response.data.data
+      }
+    }
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -563,4 +577,5 @@ export {
   addInAppMsg,
   disableInAppMsgs,
   enableInAppMsgs,
+  getInAppMessages
 }
