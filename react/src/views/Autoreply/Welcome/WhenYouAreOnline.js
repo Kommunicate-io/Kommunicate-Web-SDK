@@ -26,14 +26,14 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
-		unknownMessageSections: [{component: <MessageSection getMessage={this.getMessageFunc.bind(this)}/>}],
+		unknownMessageSections: [{component: <MessageSection getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
 
 	knownUser = {
 		knownChatComponents: [],
-		knownMessageSections: [{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)}/>}],
+		knownMessageSections: [{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
 	}
@@ -64,7 +64,7 @@ class WhenYouAreOnline extends Component {
 		e.preventDefault();
 		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
 			this.setState((prevState) => {
-				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection getMessage={this.getMessageFunc.bind(this)}/>}])}
+				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}])}
 			});
 		}
 	}
@@ -149,7 +149,7 @@ class WhenYouAreOnline extends Component {
 		e.preventDefault();
 		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length > 0){
 			this.setState((prevState) => {
-				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)}/>}])}
+				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(4, 1)}}/>}])}
 			});
 		}
 	}
@@ -215,9 +215,11 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-4">
-	        		<button className="welcome-buttons" onClick={() => {this.addMessageToChatPreview(3, 1)}}>Add message</button>
+	        	{
+	        		// <button className="welcome-buttons" onClick={() => {this.addMessageToChatPreview(3, 1)}}>Add message</button>
+	        	}
+	        		<button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
 	        		<button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
-	        		<button className="welcome-buttons" onClick={this.addMessageSection}>Add another message</button>
 	        	</div>
 	        </div>
 	        <div className="form-group row">
@@ -243,8 +245,10 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-4">
-	        		<button className="welcome-buttons" onClick={() => {this.known_addMessageToChatPreview(4, 1)}}>Add message</button>
-              		<button className="welcome-buttons" onClick={this.known_addMessageSection}>Add another message</button>
+	        	{
+	        		// <button className="welcome-buttons" onClick={() => {this.known_addMessageToChatPreview(4, 1)}}>Add message</button>
+	        	}
+	        		<button className="welcome-buttons" onClick={this.known_addMessageSection}>Add another message</button>
 	        	</div>
 	        </div>
 	  		</div>

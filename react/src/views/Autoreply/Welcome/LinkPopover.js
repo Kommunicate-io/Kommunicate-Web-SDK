@@ -43,7 +43,7 @@ class LinkPopover extends Component {
   render() {
     return (
       <div>
-        <button className="welcome-msg-textarea-button" ref="target" onClick={this.handleClick}><i className="icon-link icons"></i> Insert Link </button>
+        <button className="welcome-msg-textarea-insert-link-btn" ref="target" onClick={this.handleClick}><i className="icon-link icons"></i> Insert Link </button>
         <Popover
           placement='right'
           container={this}
