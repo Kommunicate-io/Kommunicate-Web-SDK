@@ -9007,7 +9007,7 @@ hr.transparent {
 .welcome-message-will {
   width: 353px;
   height: 28px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.9px;
   text-align: left;
   color: #515050;
@@ -9016,7 +9016,7 @@ hr.transparent {
 .you-can-update-status {
   width: 449px;
   height: 30px;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.9px;
   color: #515050;
 }
@@ -9033,7 +9033,7 @@ hr.transparent {
 .start-solving-your-user {
   width: 265px;
   height: 14px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.7px;
   text-align: left;
   color: #87898b;
@@ -9056,7 +9056,7 @@ hr.transparent {
 .ask-your-user-to {
   width: 381px;
   height: 14px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.7px;
   text-align: left;
   color: #87898b;
@@ -9070,14 +9070,14 @@ hr.transparent {
   height: 21px;
   border-radius: 13px;
   background-color: #5c5aa7;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 0.8px;
   text-align: left;
   color: #ffffff;
 }
 
 .welcome-user-message {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.9px;
   text-align: left;
   color: #515050;
@@ -9091,7 +9091,7 @@ hr.transparent {
   background-color: #ffffff;
   border: solid 1px #979797;
   border-radius: 2px 0 0 2px;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   color: #000000;
 }
@@ -9100,7 +9100,7 @@ hr.transparent {
   background-color: #f3efef;
   border: solid 1px #979797;
   border-radius: 0 2px 2px 0;
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   color: #afabab;
 }
@@ -9124,6 +9124,26 @@ hr.transparent {
   background-color: #e1dddd;
   border: solid 1px #c1bcbc;
   text-align: left;
+}
+
+.welcome-msg-textarea-save-btn {
+  width: 100%;
+  height: 23px;
+  opacity: 0.69;
+  background-color: #e1dddd;
+  border: solid 1px #c1bcbc;
+  text-align: left;
+  color: #5c5aa7;
+}
+
+.welcome-msg-textarea-insert-link-btn {
+  width: 100%;
+  height: 23px;
+  opacity: 0.69;
+  background-color: #fff;
+  border: none;
+  text-align: left;
+  color: #5c5aa7;
 }
 
 .header-user-name {
