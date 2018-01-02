@@ -189,14 +189,16 @@ class Autoreply extends Component {
         <div className="row">
           <div className="col-md-12 mb-8">
             <Nav tabs>
-              {/*<NavItem >
-                <NavLink
-                  className={classnames({ active: this.state.activeTab === '1' })}
-                  onClick={() => { this.toggle('1'); }}
-                >
-                  AUTO REPLIES
-                </NavLink>
-              </NavItem>*/}
+              {
+                // <NavItem >
+                //   <NavLink
+                //     className={classnames({ active: this.state.activeTab === '1' })}
+                //     onClick={() => { this.toggle('1'); }}
+                //   >
+                //     AUTO REPLIES
+                //   </NavLink>
+                // </NavItem>
+              }
               <NavItem hidden= {false} >
                 <NavLink
                   className={classnames({ active: this.state.activeTab === '2' })}

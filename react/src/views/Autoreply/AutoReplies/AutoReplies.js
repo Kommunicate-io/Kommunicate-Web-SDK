@@ -98,12 +98,12 @@ class AutoReplies extends Component {
 	componentDidMount(){
 
 		getIssueTypeByCustIdAndCreatedBy().then(response => {
-			console.log(response)
+			// console.log(response)
 			if(response instanceof Array){
 				this.setState({
 					listOfIssueTypes: response
 				}, () => {this.state.listOfIssueTypes.map(issueType => {
-					console.log(issueType)
+					// console.log(issueType)
 					this._addCategories(issueType.issueName, issueType.status, issueType.id)
 				})})
 			}

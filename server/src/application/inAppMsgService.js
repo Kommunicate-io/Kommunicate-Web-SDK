@@ -42,20 +42,38 @@ exports.processConversationStartedEvent= (conversationId,customer, agentName)=>{
     
 }
 
+const countEnableRecordsInAppMsgs = (createdBy, customerId, eventId) => {
+
+    return Promise.resolve(db.InAppMsg.count({where: {
+            createdBy: createdBy,
+            customerId:customerId,
+            eventId:eventId,
+            status: 1
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+
+
+}
+
 exports.createInAppMsg=(createdBy, customerId, body)=>{
 
-            inAppMessage = {
-                createdBy: createdBy,
-                customerId:customerId,
-                eventId:body.eventId,
-                message:body.message,
-                status:body.status,
-                sequence: body.sequence,
-                metadata: body.metadata
-            }
+  inAppMessage = {
+      createdBy: createdBy,
+      customerId:customerId,
+      eventId:body.eventId,
+      message:body.message,
+      status:body.status,
+      sequence: body.sequence,
+      metadata: body.metadata
+  }
 
-            return Promise.resolve(db.InAppMsg.create(inAppMessage))
-                .catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+  return countEnableRecordsInAppMsgs(createdBy, customerId, body.eventId)
+      .then(countRecords => {
+          console.log(countRecords)
+          if(countRecords  <  3){
+              return Promise.resolve(db.InAppMsg.create(inAppMessage))
+          }
+      }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
 exports.disableInAppMessages=(createdBy, customerId)=>{
@@ -70,6 +88,15 @@ exports.disableInAppMessages=(createdBy, customerId)=>{
 
 exports.enableInAppMessages=(createdBy, customerId)=>{
     return Promise.resolve(db.InAppMsg.update({status: 1}, {
+        where: {
+            createdBy: createdBy,
+            customerId: customerId
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+}
+
+exports.getInAppMessages2=(createdBy, customerId)=>{
+    return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
             customerId: customerId

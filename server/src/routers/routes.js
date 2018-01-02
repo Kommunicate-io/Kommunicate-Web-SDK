@@ -109,9 +109,11 @@ applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.p
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
 applicationRouter.post('/events',inAppMsgController.processEvents);
 applicationRouter.get('/all/events',inAppEventController.getAllInAppEvents)
-applicationRouter.post('/:userName/:appId/createinappmsg',validate(applicationValidation.postWelcomeMessage),inAppMsgController.createInAppMsg);
+applicationRouter.post('/:userName/:appId/createinappmsg',validate(applicationValidation.createInAppMsg),inAppMsgController.createInAppMsg);
 applicationRouter.patch('/disableInAppMsgs/:userName/:appId',inAppMsgController.disableInAppMessages);
 applicationRouter.patch('/enableInAppMsgs/:userName/:appId',inAppMsgController.enableInAppMessages);
+applicationRouter.get('/:userName/:appId/getInAppMessages',validate(applicationValidation.getInAppMessages),inAppMsgController.getInAppMessages2);
+
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)
 /**

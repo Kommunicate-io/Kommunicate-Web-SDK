@@ -28,10 +28,10 @@ class MessageSection extends Component {
 		                	onChange={this.handleChange}
 		                	rows="5"
 		            	/>
+		            	<LinkPopover />
 			            {
-			          	 // <button className="welcome-msg-textarea-button"><i className="icon-link icons"></i> Insert Link </button>
+			          	 <button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button>
 		        		}
-			    			<LinkPopover />
 		    			</div>
 					</div>
 					<div className="col-1">
