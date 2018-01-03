@@ -102,3 +102,18 @@
 .signup-blue-card .login-signup-sub-heading {
     color: #dddde1;
 }
+
+.forgot-password-div {
+    /* padding-left: 0px; */
+    margin-top: 10px;
+}
+.show-paasword-btn {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-40%);
+}
+.svg-container {
+    margin-top: 20px;
+    margin-bottom: 15px;
+}

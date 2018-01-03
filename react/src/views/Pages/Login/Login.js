@@ -34,9 +34,12 @@ constructor(props){
     dropDownBoxTitle:"Select Application.......",
     hideBackButton:true,
     loginButtonDisabled:false,
-    isForgotPwdHidden:true
+    isForgotPwdHidden:true,
+    isLoginFrgtPassHidden: false,
+    frgtPassSuccessConfirmation: true
   }
-  this.state=Object.assign({},this.initialState);
+  this.showHide = this.showHide.bind(this);
+  this.state=Object.assign({type: 'password'},this.initialState);
   this.submitForm = this.submitForm.bind(this);
 }
 
@@ -53,6 +56,15 @@ constructor(props){
     }
   }
 
+  showHide(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      type: this.state.type === 'password' ? 'input' : 'password'
+    })  
+  }
+
+
 setUserName=(event)=>{
 this.setState({userName:event.target.value});
 }
@@ -65,9 +77,10 @@ backToLogin = ()=>{
   this.props.history.push('/login');
 }
 handlePasswordResetResponse=(response)=>{
-  Notification.info("Password reset link has been sent on your mail!");
+  this.setState({"loginFormSubText":'Password reset link has been sent', isLoginFrgtPassHidden:true, frgtPassSuccessConfirmation:false});
+  // Notification.info("Password reset link has been sent on your mail!");
   console.log("response",response);
-  !response.err?this.backToLogin():null;
+  // !response.err?this.backToLogin():null;
 }
 handlePasswordResetError=(response)=>{
   var err =(response.response&&response.response.data)?response.response.data.message:"Somethimg went wrong! ";
@@ -95,7 +108,7 @@ submitForm = ()=>{
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
 
-          if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic && window.$applozic.fn.applozic("getLoggedInUser")) {
+          if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
             window.$applozic.fn.applozic('logout');
           }
 
@@ -193,16 +206,16 @@ login = (event)=>{
 }
 }
 register=(event)=>{
-  this.props.history.push("/register");
+  this.props.history.push("/signup");
 
 }
 
  initiateForgotPassword = (event)=>{
   this.state.loginButtonAction="passwordReset";
-  this.setState({"loginFormText":"Email",
-  "loginFormSubText":'Enter your registered Email to get the password reset link.',
+  this.setState({"loginFormText":"Resetting Password",
+  "loginFormSubText":'Please enter your registered email ID, your password reset link will be sent there.',
   loginButtonText:'Submit',
-  loginButtonAction:'passwordReset',hideBackButton:false,hidePasswordInputbox:true,hideAppListDropdown:true,hideUserNameInputbox:false});
+  loginButtonAction:'passwordReset',hideBackButton:false,hidePasswordInputbox:true,hideAppListDropdown:true,hideUserNameInputbox:false,isForgotPwdHidden:true});
   //this.login(event);
   //const resetPasswordUrl= getConfig().kommunicateApi.passwordResetUrl.replace(":userName",this.state.userName);
   /*axios.get(resetPasswordUrl)
@@ -274,6 +287,7 @@ register=(event)=>{
               <div className="card-group mb-0">
                 <div className="card p-4">
                   <div className="card-block">
+                    <div className="card-block-login-frgtpass-container" hidden={this.state.isLoginFrgtPassHidden}>
                     <h1 className="login-signup-heading">{this.state.loginFormText}</h1>
                     <p className="text-muted login-signup-sub-heading">{this.state.loginFormSubText}</p>
                     <div className="input-group mb-3" hidden ={this.state.hideUserNameInputbox}>
@@ -300,8 +314,18 @@ register=(event)=>{
                     </div>
                     <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox}>
                       {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
-                      <input type="password" className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} required/>
+                      <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} required/>
                       <label className="label-for-input email-label">Password</label>
+                      <span className="show-paasword-btn" onClick={this.showHide}>
+                      {this.state.type === 'input' ? <svg fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+                          <path d="M0 0h24v24H0z" fill="none"/>
+                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg> :     <svg xmlns="http://www.w3.org/2000/svg" fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+                          <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none"/>
+                          <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+                        </svg>}
+                        
+                      </span>
                     </div>
 
                     <div className="row">
@@ -315,9 +339,28 @@ register=(event)=>{
                         :null
                       }
                       </div>
-                      <div className="col-6 text-right">
+                    </div>
+                    <div className="row">
+                      <div className="col-6 text-left forgot-password-div">
                         <button type="button" id ="btn-forgot-password" className="btn btn-link px-0" hidden={this.state.isForgotPwdHidden}  onClick= { this.initiateForgotPassword }>Forgot password?</button>
                       </div>
+                    </div>
+                    </div>
+                    <div className="frgtpass-success-confirmation text-center" hidden={this.state.frgtPassSuccessConfirmation}>
+                      <p className="text-muted login-signup-sub-heading">{this.state.loginFormSubText}</p>
+                      <div className="svg-container">
+                      <svg width="56px" height="56px" viewBox="0 0 56 56" version="1.1">
+                        <g id="LOGIN-&amp;-SIGNUP-PAGES" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <g id="Forgot-Password" transform="translate(-367.000000, -245.000000)" fill-rule="nonzero" fill="#3DE00E">
+                            <g id="tick" transform="translate(367.000000, 245.000000)">
+                              <polygon id="Shape" points="16.7125 23.275 14.175 25.6375 26.075 38.4125 53.9875 10.4125 51.5375 7.9625 26.075 33.425"/>
+                              <path d="M0.525,28 C0.525,43.225 12.8625,55.475 28,55.475 C43.1375,55.475 55.475,43.225 55.475,28 L51.975,28 C51.975,41.2125 41.2125,51.975 28,51.975 C14.7875,51.975 4.025,41.2125 4.025,28 C4.025,14.7875 14.7875,4.025 28,4.025 L28,0.525 C12.8625,0.525 0.525,12.8625 0.525,28 Z" id="Shape"/>
+                            </g>
+                          </g>
+                        </g>
+                      </svg>
+                      </div>
+                      <button type="button" className="btn btn-primary px-3 km-login-btn btn-primary-custom " onClick ={ this.backToLogin }>Login</button>
                     </div>
                   </div>
                 </div>
