@@ -16,7 +16,7 @@ class Header extends Component {
       changeStatusLabel: "Go Away",
       status: userSession.availability_status,
       dropdownOpen: false,
-      displayName: userSession.displayName !=="undefined" ? userSession.name:userSession.userName
+      displayName: userSession.name !=="undefined" ? userSession.name:userSession.userName
     };
   }
 
