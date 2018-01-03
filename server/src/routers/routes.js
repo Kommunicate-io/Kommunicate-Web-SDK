@@ -113,6 +113,7 @@ applicationRouter.post('/:userName/:appId/createinappmsg',validate(applicationVa
 applicationRouter.patch('/disableInAppMsgs/:userName/:appId',inAppMsgController.disableInAppMessages);
 applicationRouter.patch('/enableInAppMsgs/:userName/:appId',inAppMsgController.enableInAppMessages);
 applicationRouter.get('/:userName/:appId/getInAppMessages',validate(applicationValidation.getInAppMessages),inAppMsgController.getInAppMessages2);
+applicationRouter.get('/:userName/:appId/:eventId/getInAppMessagesByEventId',validate(applicationValidation.getInAppMessagesByEventId),inAppMsgController.getInAppMessagesByEventId);
 
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)

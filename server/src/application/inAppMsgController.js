@@ -36,7 +36,7 @@ exports.createInAppMsg = (req, res)=>{
         }
         return inAppMsgService.createInAppMsg(user.id, user.customerId, req.body).then(response=>{
             console.log("in app message is saved successfully");
-            res.status(200).json({code:"SUCCESS",message:"created", data: response});
+            res.status(200).json({code:"SUCCESS",message:response.message, data: response});
         }).catch(err=>{
             console.log("err while persisting welcome message in db",err);
             res.status(500).json({code:"ERROR",message:"created"});
@@ -151,6 +151,26 @@ exports.getInAppMessages2 =(req,res)=>{
         inAppMsgService.getInAppMessages2(user.id, user.customerId)
             .then(inAppMessages=>{
                 res.status(200).json({code:'SUCCESS', message:"Got in app messages", data:inAppMessages});
+            })
+        }).catch(err=>{
+            res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});
+        });
+}
+
+exports.getInAppMessagesByEventId =(req,res)=>{
+    const appId = req.params.appId;
+    const userName = req.params.userName;
+    const eventId = req.params.eventId;
+    console.log("request received to get in app messages for appId and userName: ", appId, userName);
+    userService.getByUserNameAndAppId(userName, appId)
+        .then(user=>{
+            if(!user){
+                res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
+                return;
+            }
+        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, eventId)
+            .then(inAppMessages=>{
+                res.status(200).json({code:'SUCCESS', message:"Got in app messages by event id", data:inAppMessages});
             })
         }).catch(err=>{
             res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});

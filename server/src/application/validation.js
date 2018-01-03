@@ -42,3 +42,10 @@ exports.createInAppMsg ={
         sequence: joi.number().required().min(1).max(3),
     }
 }
+exports.getInAppMessagesByEventId ={
+    param:{
+        userName:joi.string().required(),
+        appId:joi.string().required(),
+        eventId:joi.number().required().min(1).max(4)
+    }
+}

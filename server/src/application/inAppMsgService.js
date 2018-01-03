@@ -71,7 +71,18 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
       .then(countRecords => {
           console.log(countRecords)
           if(countRecords  <  3){
-              return Promise.resolve(db.InAppMsg.create(inAppMessage))
+              return Promise.resolve(db.InAppMsg.create(inAppMessage)
+                .then(response => {
+                  console.log(response);
+                  response.message = "Created"
+                  response.countOfRecords =  countRecords;
+                  return response;    
+                }))
+          }else{
+            let response = {};
+            response.message = "Limit reached"
+            response.countOfRecords =  countRecords;
+            return response;
           }
       }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
@@ -100,6 +111,16 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
         where: {
             createdBy: createdBy,
             customerId: customerId
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+}
+
+exports.getInAppMessagesByEventId=(createdBy, customerId, eventId)=>{
+    return Promise.resolve(db.InAppMsg.findAll({
+        where: {
+            createdBy: createdBy,
+            customerId: customerId,
+            eventId: eventId
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
