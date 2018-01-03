@@ -13,7 +13,7 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
     let userSession = CommonUtils.getUserSession();
     this.state = {
-      changeStatusLabel: "Go Away",
+      changeStatusLabel: userSession.availability_status === 1 ? "Go Away": "Go Online",
       status: userSession.availability_status,
       dropdownOpen: false,
       displayName: userSession.displayName !=="undefined" ? userSession.name:userSession.userName
@@ -63,9 +63,10 @@ class Header extends Component {
 
   toggleStatus = () => {
     let userSession = CommonUtils.getUserSession();
-    if(this.state.status === "1"){
+    if(this.state.status === 1){
       goAway(userSession.userName, userSession.application.applicationId).then(response => {
         console.log(response);
+        userSession.availability_status = 0
         this.setState({
           status: userSession.availability_status,
           changeStatusLabel: "Go Online"
@@ -73,6 +74,7 @@ class Header extends Component {
       });
     }else{
       goOnline(userSession.userName, userSession.application.applicationId).then(response => {
+        userSession.availability_status = 1
         this.setState({
           status: userSession.availability_status,
           changeStatusLabel: "Go Away"
@@ -101,7 +103,7 @@ class Header extends Component {
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <div style={{display: "inline-block"}}>
                   <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
-                  <span className={CommonUtils.getUserSession().availability_status === "1" ? "online-indicator-profile-pic": null}></span>
+                  <span className={CommonUtils.getUserSession().availability_status === 1 ? "online-indicator-profile-pic": null}></span>
                 </div>
                 <span className="d-md-down-none">{this.state.displayName}</span>
               </button>
@@ -109,9 +111,10 @@ class Header extends Component {
                 <DropdownItem>
                   <p className="header-user-name">{this.state.displayName}</p>
                   <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
-                  <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === "1" ? "You are online" : "You are away"} <span className={this.state.status === "1" ? "online-indicator": null }></span></span>
+                  <p><span className="header-user-online"> You are online</span></p>
+                  <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator": null }></span>
                 </DropdownItem>
-                <DropdownItem style={{'display':'none'}} onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === "1" ? "Go Away" : "Go Online"} </DropdownItem>
+                <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
