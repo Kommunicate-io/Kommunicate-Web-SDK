@@ -201,7 +201,7 @@
           <h4 class="modal-title">Sign in</h4>
         </div>
         <div class="modal-body">
-          <form action="javascript:void(0);" method="post" class="signin-form" id="signin-form">
+          <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="post" class="signin-form" id="signin-form">
             <div id="error-message-div-signin" class="error-message text-center hide">
               <p class="error-message-text">Sorry! Looks like wrong Email/Password combination. Please try again.</p>
             </div>
@@ -385,7 +385,7 @@
           <div id="success-message-div-forgotpass" class="success-message text-center hide">
             <p class="success-message-text">We've sent password reset instructions to your email address.</p>
           </div>
-          <form action="javascript:void(0);" method="post" class="signin-form" id="signin-form">
+          <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="post" class="signin-form" id="signin-form">
             <div id="error-message-div-forgotpass" class="error-message text-center hide">
               <p class="error-message-text">Oops, looks like you haven't registered up with this email address.</p>
             </div>

@@ -28,63 +28,6 @@ layout:
 
     <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
 
-  <script type="text/javascript">
-
-    var QUERYSTRING = 'test',
-        CURRENTURL = window.location.href;
-    
-        if(CURRENTURL.indexOf(QUERYSTRING) != -1) {
-            (function(d, m){
-             let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Kommunicate Support","baseUrl":"https://apps-test.applozic.com"};
-             let s = document.createElement("script");
-             s.type = "text/javascript";
-             s.async = true;
-             s.src = "https://api-test.kommunicate.io/kommunicate.app";
-             let h = document.getElementsByTagName("head")[0];
-             h.appendChild(s);
-             window.kommunicate = m;
-             m._globals = o;
-           })(document, window.kommunicate || {});
-
-
-          //  $(".nav-signup-button, .nav-signup-mobile-button").attr("href", "https://dashboard-test.kommunicate.io/signup/");
-          // $(".nav-login-button, .nav-login-mobile-button").attr("href", "https://dashboard-test.kommunicate.io/login/");
-
-        }
-        else {
-            (function(d, m){
-             let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Kommunicate Support","baseUrl":"https://chat.kommunicate.io"};
-             let s = document.createElement("script");
-             s.type = "text/javascript";
-             s.async = true;
-             s.src = "https://api.kommunicate.io/kommunicate.app";
-             let h = document.getElementsByTagName("head")[0];
-             h.appendChild(s);
-             window.kommunicate = m;
-             m._globals = o;
-           })(document, window.kommunicate || {});
-
-
-          //  $(".nav-signup-button, .nav-signup-mobile-button").attr("href", "https://dashboard.kommunicate.io/signup/");
-          // $(".nav-login-button, .nav-login-mobile-button").attr("href", "https://dashboard.kommunicate.io/login/");
-
-        }
-
-
-  //   (function(d, m){
-  //    let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Kommunicate Support","baseUrl":"https://apps-test.applozic.com"};
-  //    let s = document.createElement("script");
-  //    s.type = "text/javascript";
-  //    s.async = true;
-  //    s.src = "https://api-test.kommunicate.io/kommunicate.app";
-  //    let h = document.getElementsByTagName("head")[0];
-  //    h.appendChild(s);
-  //    window.kommunicate = m;
-  //    m._globals = o;
-  //  })(document, window.kommunicate || {});
-  
-  </script>
-
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
 <!-- End of HubSpot Embed Code -->

@@ -12,7 +12,7 @@
                 <p class="why-kommunicate-content-description">Your agents can receive messages from leads and customers from wherever they are and respond to all queries
                     from one single place.</p>
                 <p class="excited-text">Excited?</p>
-                <form action="javascript:void(0);" method="get" id="pre-signup-form2" class="pre-signup-form">
+                <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form2" class="pre-signup-form">
                     <div class="signup-success-msg-div hide">
                         <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
                     </div>
@@ -438,7 +438,7 @@
                 <h1 class="why-kommunicate-content-heading">Improve Agent Efficiency with Chatbots.</h1>
                 <p class="why-kommunicate-content-description">Bots can do the simple tasks, so your agents can focus on things that only humans can do.</p>
                 <p class="excited-text">Have we wow’ed you yet?</p>
-                <form action="javascript:void(0);" method="get" id="pre-signup-form3" class="pre-signup-form">
+                <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form3" class="pre-signup-form">
                     <div class="signup-success-msg-div hide">
                         <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
                     </div>
@@ -630,7 +630,7 @@
                 <p class="why-kommunicate-content-description">Onboard and train new users or re-engage and retain lapsing customers by sending the right message at the
                     right time.</p>
                 <p class="excited-text">Ready to save your time and money?</p>
-                <form action="javascript:void(0);" method="get" id="pre-signup-form4" class="pre-signup-form">
+                <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form4" class="pre-signup-form">
                     <div class="signup-success-msg-div hide">
                         <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
                     </div>
@@ -1314,7 +1314,7 @@
                 <p class="why-kommunicate-content-description">Build a knowledge base that grows with your business. Find keywords that people have searched to decide what
                     to include in FAQs.</p>
                 <p class="excited-text">Thinking about what we can achieve together?</p>
-                <form action="javascript:void(0);" method="get" id="pre-signup-form5" class="pre-signup-form">
+                <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form5" class="pre-signup-form">
                     <div class="signup-success-msg-div hide">
                         <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
                     </div>

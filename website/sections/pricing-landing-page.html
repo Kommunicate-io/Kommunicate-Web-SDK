@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-div">
-                <form action="javascript:void(0);" method="get" id="pre-signup-form6" class="pre-signup-form">
+                <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form6" class="pre-signup-form">
                     <div class="signup-success-msg-div hide">
                         <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
                     </div>
