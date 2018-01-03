@@ -125,5 +125,14 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, eventId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
+exports.softDeleteInAppMsg=(id)=>{
+  return Promise.resolve(db.InAppMsg.update({status: 3}, {
+        where: {
+            id: id
+        }
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+
+}
+
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

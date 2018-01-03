@@ -559,6 +559,20 @@ const getInAppMessagesByEventId = (eventId) => {
   })
 }
 
+const deleteInAppMsg = (id) => {
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+id+"/deleteInAppMsg";
+
+  return axios.get(url).then(response => {
+    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
+      if(response.data.data instanceof Array){
+        return response.data.data
+      }
+    }
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -592,5 +606,6 @@ export {
   disableInAppMsgs,
   enableInAppMsgs,
   getInAppMessages,
-  getInAppMessagesByEventId
+  getInAppMessagesByEventId,
+  deleteInAppMsg
 }
