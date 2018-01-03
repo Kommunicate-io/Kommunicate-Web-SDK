@@ -62,7 +62,7 @@ a, a:hover, a:focus, a:active {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 400px;
+  height: 100%;
   background-color: #e6ebf3;
   transform: skewY(-6deg);
   transform-origin: bottom left;
