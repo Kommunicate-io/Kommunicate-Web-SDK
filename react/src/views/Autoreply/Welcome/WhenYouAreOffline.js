@@ -97,11 +97,11 @@ class WhenYouAreOffline extends Component {
             this.setState({unknownMessage: ''})
             this.setState({knownMessage: ''})
             if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'created'){
-                    Notification.success('In app message saved successfully');
+                  Notification.success('In app message saved successfully');
                 }else if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'limit reached'){
                   Notification.warning('Not created, limit of 3 in app messages reached');  
                 }else{
-                    Notification.error('In app message not saved.');
+                  Notification.error('In app message not saved.');
                 }
               })
   }
@@ -139,7 +139,7 @@ class WhenYouAreOffline extends Component {
   }
 
   addMessageToChatPreview = (eventId, status) => {
-    if(this.state.unknownMessageSections.length <= 3 && this.state.unknownMessage.trim().length > 0){
+    if(this.state.unknownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
@@ -158,19 +158,13 @@ class WhenYouAreOffline extends Component {
 
         this._callApiCreateInAppMsg(data)
       });
+    }else{
+      Notification.warning('Limit of 3 messages reached.');
     }
   }
 
   known_addMessageToChatPreview = (eventId, status) => {
-    console.log("known_addMessageToChatPreview")
-    console.log(this.state.knownMessageSections.length)
-    console.log(this.state.knownMessage)
-
-    if(this.state.knownMessageSections.length <= 3 && this.state.knownMessage.trim().length > 0){
-
-      console.log("known_addMessageToChatPreview")
-      console.log(this.state.knownMessageSections.length)
-      console.log(this.state.knownMessage)
+    if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
@@ -189,11 +183,13 @@ class WhenYouAreOffline extends Component {
 
         this._callApiCreateInAppMsg(data)
       });
+    }else{
+      Notification.warning('Limit of 3 messages reached.');
     }
   }
 
 	render(){
-    console.log(this.state)
+    // console.log(this.state)
 		return (
       <div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowOfflinePrefs}>

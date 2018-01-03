@@ -6,7 +6,7 @@ import UserPopover from './UserPopover';
 import MessageSection from './MessageSection';
 import LeadGenerationTemplate from './LeadGenerationTemplate';
 
-import {addInAppMsg, getInAppMessagesByEventId} from '../../../utils/kommunicateClient'
+import {addInAppMsg, getInAppMessagesByEventId, deleteInAppMsg} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification'
 
 
@@ -26,7 +26,7 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
-		unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}],
+		unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
@@ -47,36 +47,55 @@ class WhenYouAreOnline extends Component {
 
 	componentDidMount(){
 
-    // eventId id 1 when agent is online and user is anonymous
-    getInAppMessagesByEventId(3).then(response => {
-      console.log(response)
-      response.map(message => {
-      	if(message.status === 1){
-	        this.setState(prevState =>{
-	          return {
-	          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
-	            unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
-	          }
-	        })
-	    }
-      })
-    })
+	    // eventId id 1 when agent is online and user is anonymous
+	    getInAppMessagesByEventId(3).then(response => {
+	      console.log(response)
+	      response.map(message => {
+	      	if(message.status === 1){
+		        this.setState(prevState =>{
+		          return {
+		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
+		            unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		          }
+		        }, () => {
+		        	this.setState((prevState) => {
+						return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message}/>}])}
+					});
+		        })
+		    }
+	      })
+	    })
 
-    // eventId id 2 when agent is online and user is known
-    getInAppMessagesByEventId(4).then(response => {
-      console.log(response)
-      response.map(message => {
-      	if(message.status === 1){
-	        this.setState(prevState =>{
-	          return {
-	          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
-	            knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
-	          }
-	        })
-    	}
-      })
-    })
-  }
+	    // eventId id 2 when agent is online and user is known
+	    getInAppMessagesByEventId(4).then(response => {
+	      console.log(response)
+	      response.map(message => {
+	      	if(message.status === 1){
+		        this.setState(prevState =>{
+		          return {
+		          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
+		            knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		          }
+		        }, () => {
+		        	this.setState((prevState) => {
+						return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message}/>}])}
+					});
+		        })
+	    	}
+	      })
+	    })
+  	}
+
+
+  	_deleteInAppMsg = (id) => {
+  		deleteInAppMsg(id).then(response =>{
+  			if(response){
+  				Notification.success('Successfully deleted');
+  			}else {
+  				Notification.danger('Not deleted');
+  			}
+  		})
+  	}
 
 	methodToShowPrefs = (e) => {
 	  	e.preventDefault();
@@ -99,20 +118,22 @@ class WhenYouAreOnline extends Component {
 					.then(response => {
 						this.setState({unknownMessage: ''})
 						this.setState({knownMessage: ''})
-						if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'created'){
-		          			Notification.success('In app message saved successfully');
-		        		}else if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'limit reached'){
-		        			Notification.warning('Not created, limit of 3 in app messages reached');	
-		        		}else{
-		          			Notification.error('In app message not saved.');
-		        		}
+						if(response !== undefined && response.status === 200 ){
+							if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'created'){
+		          				Notification.success('In app message saved successfully');
+		        			}else if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'limit reached'){
+		        				Notification.warning('Not created, limit of 3 in app messages reached');	
+		        			}else{
+		          				Notification.error('In app message not saved.');
+		        			}
+						}
 		        	})
 
 	}
 
 	addMessageSection = (e) => {
 		e.preventDefault();
-		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
+		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0 && this.state.unknownMessageSectionMsgs.length < 4){
 			this.setState((prevState) => {
 				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}])}
 			});
@@ -121,7 +142,7 @@ class WhenYouAreOnline extends Component {
 
 	known_addMessageSection = (e) => {
 		e.preventDefault();
-		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length > 0){
+		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length > 0 && this.state.knownMessageSectionMsgs.length < 4){
 			this.setState((prevState) => {
 				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}}/>}])}
 			});
@@ -142,7 +163,7 @@ class WhenYouAreOnline extends Component {
 	}
 
 	addMessageToChatPreview = (eventId, status) => {
-		if(this.state.unknownMessageSections.length <= 3 && this.state.unknownMessage.trim().length > 0){
+		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -162,17 +183,14 @@ class WhenYouAreOnline extends Component {
 				this._callApiCreateInAppMsg(data)
 
 			});
-		}
+		}else{
+      		Notification.warning('Limit of 3 messages reached.');
+    	}
 	}
 
 
 	known_addMessageToChatPreview = (eventId, status) => {
-		console.log("known_addMessageToChatPreview")
-		console.log(this.state.knownMessageSections.length)
-		console.log(this.state.knownMessage)
-		if(this.state.knownMessageSections.length <= 3 && this.state.knownMessage.trim().length > 0){
-
-			
+		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -192,7 +210,9 @@ class WhenYouAreOnline extends Component {
 				this._callApiCreateInAppMsg(data)
 
 			});
-		}
+		}else{
+     		Notification.warning('Limit of 3 messages reached.');
+    	}
 	}
 
 	_addMessageToChatPreview = () => {
@@ -214,6 +234,7 @@ class WhenYouAreOnline extends Component {
 	}
 
 	render(){
+		console.log(this.state)
 		return (
 			<div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowPrefs}>
