@@ -486,7 +486,7 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
   let url = getConfig().kommunicateBaseUrl+"/issuetype/"+userSession.userName+"/"+ userSession.application.applicationId;
 
   return axios.get(url).then(response => {
-    console.log(response)
+    // console.log(response)
     if(response.data.code === 'GOT_ALL_ISSUE_TYPE'){
       return response.data.data
     }
@@ -545,6 +545,20 @@ const getInAppMessages = () => {
   })
 }
 
+const getInAppMessagesByEventId = (eventId) => {
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/applications/"+CommonUtils.getUserSession().userName+"/"+userSession.application.applicationId+"/"+eventId+"/getInAppMessagesByEventId";
+
+  return axios.get(url).then(response => {
+    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
+      if(response.data.data instanceof Array){
+        return response.data.data
+      }
+    }
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -577,5 +591,6 @@ export {
   addInAppMsg,
   disableInAppMsgs,
   enableInAppMsgs,
-  getInAppMessages
+  getInAppMessages,
+  getInAppMessagesByEventId
 }

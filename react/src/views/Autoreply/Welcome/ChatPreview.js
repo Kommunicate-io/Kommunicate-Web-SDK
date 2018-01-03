@@ -10,7 +10,7 @@ class ChatPreview extends Component {
 	render() {
 		return (
 			<div className="user-chat-preview">
-      	<div style={{height: "127px"}}>
+      	<div style={{minHeight: "127px"}}>
                   {
                     this.props.chatPreviewComponents.map((chatPreviewComponent, i) => (<div key={i}>{chatPreviewComponent.component}</div>))
                   }

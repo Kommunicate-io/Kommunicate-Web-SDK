@@ -61,14 +61,14 @@ class CategoryDetail extends Component {
   }
 
   addEmailInputToChatPreview = () => {
-  	console.log("addEmailInputToChatPreview");
+  	// console.log("addEmailInputToChatPreview");
   	this.setState({
       addEmailInput: true
     });
   }
 
   addPhoneInputToChatPreview = () => {
-  	console.log("addPhoneInputToChatPreview");
+  	// console.log("addPhoneInputToChatPreview");
   	this.setState({
       addPhoneInput: true
     });
@@ -192,7 +192,7 @@ class CategoryDetails extends Component {
 	}
 
 	render(){
-		console.log(this.props)
+		// console.log(this.props)
 		return (
 			<div className="col-md-8" style={{borderLeft: "0.5px #a5b0bd solid", minHeight: "400px"}}>
 				<p className={this.props.showBanner ? "":"n-vis"}style={{fontSize: "15px", color:"#808080", position: "absolute", top: "50%" ,left: "20%"}}>You can add Categories for the user to select their issues from.</p>
