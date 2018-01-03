@@ -1376,8 +1376,8 @@ input:-ms-input-placeholder {
     font-weight: 600
 }
 
-@media(max-width:768px) {
-    .page-links-ul, .nav-signup-button {
+@media(max-width:885px) {
+    .page-links-ul, .nav-signup-button, .nav-login-button {
         display: none;
     }
     .menu-mobile {
