@@ -3741,9 +3741,9 @@ var KM_CLIENT_GROUP_MAP = [];
 			};
 			_this.getContactImageLink = function(contact, displayName) {
 				var imgsrctag = '';
-				if(contact.members && contact.type==10){
+				/*if(contact.members && contact.type==10){
 					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
-                } else if (contact.isGroup) {
+                } else */ if (contact.isGroup) {
 					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
 				} else {
 					if (typeof (MCK_GETUSERIMAGE) === "function") {
@@ -5374,7 +5374,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					if (!displayName && group.type === 5) {
 						displayName = 'Broadcast';
 					}
-					if (group.type === 10){
+					/*if (group.type === 10){
 						for(var i= 0;i<Object.keys(group.users).length;i++){
 							var userDetail=MCK_USER_DETAIL_MAP[(Object.values(group.users)[i]).userId];
 							if(!userDetail){
@@ -5390,7 +5390,7 @@ var KM_CLIENT_GROUP_MAP = [];
 								break;
 							}
 						}
-					}
+					}*/
 					if (!displayName) {
 						displayName = group.contactId;
 					}
