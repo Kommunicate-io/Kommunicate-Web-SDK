@@ -9563,7 +9563,7 @@ pointer-events: none;
   left: calc(100% + 18px);
   width: 210px;
 }
-.company-url-form-group input {
+.company-url-form-group input, .company-url-form-group input:focus {
   border-left: transparent;
 }
 
