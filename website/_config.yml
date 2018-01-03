@@ -30,6 +30,10 @@ staticPath: /assets/resources
 dashboard: 
   dashboardPathProd: https://dashboard.kommunicate.io
   dashboardPathTest: https://dashboard-test.kommunicate.io
+  supportChatBaseUrlTest: https://apps-test.applozic.com
+  supportChatBaseUrlProd: https://chat.kommunicate.io
+  supportSourceUrlProd: https://api.kommunicate.io/kommunicate.app
+  supportSourceUrlTest: https://api-test.kommunicate.io/kommunicate.app
 # Build settings
 permalink: pretty
 markdown: kramdown
