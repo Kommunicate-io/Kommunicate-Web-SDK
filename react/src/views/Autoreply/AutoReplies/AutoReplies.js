@@ -112,7 +112,7 @@ class AutoReplies extends Component {
 	}
 
 	render() {
-		console.log(this.state);
+		// console.log(this.state);
 		return (
 			<div className="card">
 				<div className="row">

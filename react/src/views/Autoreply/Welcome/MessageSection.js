@@ -22,19 +22,19 @@ class MessageSection extends Component {
 				<div className="form-group row">
 					<div className="col-11">
 						<div className="form-group welcome-msg-textarea-btn-container">
-		    			<textarea
-		                	className="form-group script-text-area welcome-message-textarea"
-		                	value={this.state.msg}
-		                	onChange={this.handleChange}
-		                	rows="5"
-		            	/>
-		            	<LinkPopover />
-			            {
-			          	 <button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button>
-		        		}
+			    			<textarea
+			                	className="form-group script-text-area welcome-message-textarea"
+			                	value={this.state.msg}
+			                	onChange={this.handleChange}
+			                	rows="5"
+			            	/>
+			            	<LinkPopover />
+				            {
+				          	 <button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button>
+			        		}
 		    			</div>
 					</div>
-					<div className="col-1">
+					<div className={this.props.showDeleteBtn ? "col-1":"n-vis"}>
 	      				<button><i className="fa fa-trash-o fa-lg"></i></button>
 	      			</div>
 	      		</div>

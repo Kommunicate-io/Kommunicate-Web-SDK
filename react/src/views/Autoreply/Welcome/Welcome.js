@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs, getInAppMessages }  from '../../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../../config/config.js';
 import { Label, Input } from 'reactstrap';
@@ -17,7 +17,11 @@ class Welcome extends Component{
     this.state = {
      msg:'',
      showOverlay: false,
-     enableDisableCheckbox: true
+     enableDisableCheckbox: true,
+     onlineKnownUserMsgs: [],
+     onlineUnknownUserMsgs: [],
+     offlineKnownUserMsgs: [],
+     offlineUnknownUserMsgs: [],
     };
     this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
   }
@@ -28,10 +32,6 @@ class Welcome extends Component{
       this.setState({msg:message});
     }).catch(err=>{
       console.log("error while fetching welcome message",err);
-    })
-
-    getInAppMessages().then(response => {
-      console.log(response);
     })
   }
 
@@ -116,7 +116,7 @@ render(){
               </div>
             </div>
           </div>
-          <div style={{'display':'none'}}>{/*  remove this div for display*/}
+          <div >{/* style={{'display':'none'}} remove this div for display*/}
           <hr />
           <WhenYouAreOnline />
           <hr />

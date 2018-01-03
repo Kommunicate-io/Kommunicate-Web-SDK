@@ -6,7 +6,7 @@ import UserPopover from './UserPopover';
 import MessageSection from './MessageSection';
 import LeadGenerationTemplate from './LeadGenerationTemplate';
 
-import {addInAppMsg} from '../../../utils/kommunicateClient'
+import {addInAppMsg, getInAppMessagesByEventId} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification'
 
 
@@ -26,14 +26,14 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
-		unknownMessageSections: [{component: <MessageSection getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
+		unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
 
 	knownUser = {
 		knownChatComponents: [],
-		knownMessageSections: [{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
+		knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
 	}
@@ -44,6 +44,39 @@ class WhenYouAreOnline extends Component {
 		showPrefs: false,
 		upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
 	}
+
+	componentDidMount(){
+
+    // eventId id 1 when agent is online and user is anonymous
+    getInAppMessagesByEventId(3).then(response => {
+      console.log(response)
+      response.map(message => {
+      	if(message.status === 1){
+	        this.setState(prevState =>{
+	          return {
+	          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
+	            unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+	          }
+	        })
+	    }
+      })
+    })
+
+    // eventId id 2 when agent is online and user is known
+    getInAppMessagesByEventId(4).then(response => {
+      console.log(response)
+      response.map(message => {
+      	if(message.status === 1){
+	        this.setState(prevState =>{
+	          return {
+	          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
+	            knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+	          }
+	        })
+    	}
+      })
+    })
+  }
 
 	methodToShowPrefs = (e) => {
 	  	e.preventDefault();
@@ -60,11 +93,37 @@ class WhenYouAreOnline extends Component {
 	  	}
 	}
 
+	_callApiCreateInAppMsg = (data) => {
+
+		addInAppMsg(data)
+					.then(response => {
+						this.setState({unknownMessage: ''})
+						this.setState({knownMessage: ''})
+						if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'created'){
+		          			Notification.success('In app message saved successfully');
+		        		}else if(response.data.code === 'SUCCESS' && response.data.message.toLowerCase() === 'limit reached'){
+		        			Notification.warning('Not created, limit of 3 in app messages reached');	
+		        		}else{
+		          			Notification.error('In app message not saved.');
+		        		}
+		        	})
+
+	}
+
 	addMessageSection = (e) => {
 		e.preventDefault();
 		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
 			this.setState((prevState) => {
-				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}])}
+				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}])}
+			});
+		}
+	}
+
+	known_addMessageSection = (e) => {
+		e.preventDefault();
+		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length > 0){
+			this.setState((prevState) => {
+				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}}/>}])}
 			});
 		}
 	}
@@ -89,7 +148,6 @@ class WhenYouAreOnline extends Component {
 				return {
 					unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([this.state.unknownMessage]),
 					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}]),
-					// unknownMessage: ''
 				}
 			}, () => {
 
@@ -101,21 +159,20 @@ class WhenYouAreOnline extends Component {
 					metadata: null
 				}
 
-				addInAppMsg(data)
-					.then(response => {
-						this.setState({unknownMessage: ''})
-						if(response.data.code === 'SUCCESS'){
-		          			Notification.success('In app message saved successfully');
-		        		}else{
-		          			Notification.error('In app message not saved.');
-		        		}
-		        	})
+				this._callApiCreateInAppMsg(data)
+
 			});
 		}
 	}
 
+
 	known_addMessageToChatPreview = (eventId, status) => {
+		console.log("known_addMessageToChatPreview")
+		console.log(this.state.knownMessageSections.length)
+		console.log(this.state.knownMessage)
 		if(this.state.knownMessageSections.length <= 3 && this.state.knownMessage.trim().length > 0){
+
+			
 
 			this.setState((prevState) => {
 				return {
@@ -132,24 +189,8 @@ class WhenYouAreOnline extends Component {
 					metadata: null
 				}
 
-				addInAppMsg(data)
-					.then(response => {
-						this.setState({knownMessage: ''})
-						if(response.data.code === 'SUCCESS'){
-		          			Notification.success('In app message saved successfully');
-		        		}else{
-		          			Notification.error('In app message not saved.');
-		        		}
-		        	})
-			});
-		}
-	}
+				this._callApiCreateInAppMsg(data)
 
-	known_addMessageSection = (e) => {
-		e.preventDefault();
-		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length > 0){
-			this.setState((prevState) => {
-				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(4, 1)}}/>}])}
 			});
 		}
 	}
@@ -223,8 +264,9 @@ class WhenYouAreOnline extends Component {
 	        	</div>
 	        </div>
 	        <div className="form-group row">
-		        <div className="col-4">
-		        	<span><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+		        <div className="col-5">
+		        	<span className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+              		<span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
 		        </div>
 	        </div>
 	        <div className="form-group row">
