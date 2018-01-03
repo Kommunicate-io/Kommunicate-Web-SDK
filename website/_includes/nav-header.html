@@ -107,8 +107,8 @@
 		</ul>
 		<!-- <button></button> -->
 		<div>
-			<a href="/login" class="nav-login-button">Login</a>
-			<a href="/signup" class="nav-signup-button">Get early access</a>
+			<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %}  class="nav-login-button">Login</a>
+			<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-button">Get early access</a>
 		</div>
 		
 
@@ -134,8 +134,8 @@
 						<li><a href="/pricing">Pricing</a></li>
 						<li><a href="https://blog.kommunicate.io/" target="_blank">Blog</a></li>
 						<li><a href="/about">About Us</a></li>
-						<li><a href="/login" class="nav-login-mobile-button">Login</a></li>
-						<li><a href="/signup" class="nav-signup-mobile-button">Get early access</a></li>
+						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %} class="nav-login-mobile-button">Login</a></li>
+						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Get early access</a></li>
 					</ul>
 		</div>
 	</div>

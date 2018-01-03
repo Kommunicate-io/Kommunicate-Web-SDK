@@ -23,10 +23,21 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://www.kommunicate.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
+
+environment: production
+
 staticPath: /assets/resources
+dashboard: 
+  dashboardPathProd: https://dashboard.kommunicate.io
+  dashboardPathTest: https://dashboard-test.kommunicate.io
 # Build settings
+permalink: pretty
 markdown: kramdown
 theme: minima
+
+livereload: true     # You no longer need to include --livereload
+reload_port: 6000    # If you don't want to use the default port
+
 gems:
   - jekyll-feed
   - jemoji

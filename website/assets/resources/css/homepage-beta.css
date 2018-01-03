@@ -390,10 +390,6 @@ background-clip: text;
     border: none;
 }
 
-.why-kommunicate-agent-chatbot-section .mobile-view, .why-kommunicate-reduce-ticket-section .mobile-view  {
-    display: none;
-}
-
 
 
 
@@ -1070,6 +1066,14 @@ label {
             transform: translate(0, 0); } }
 
 
+@media(min-width:768px) {
+    .why-kommunicate-agent-chatbot-section,
+    .why-kommunicate-reduce-ticket-section {
+        display: flex;
+        flex-flow: row-reverse;
+    }
+}
+
 @media (max-width:767px) {
     .homepage-beta-landing-page-section {
         height: auto;
@@ -1112,13 +1116,6 @@ label {
     }
     .why-kommunicate-delight-customers-section {
         padding: 3em 0em;
-    }
-
-    .why-kommunicate-agent-chatbot-section .desktop-view, .why-kommunicate-reduce-ticket-section .desktop-view  {
-        display: none;
-    }
-    .why-kommunicate-agent-chatbot-section .mobile-view, .why-kommunicate-reduce-ticket-section .mobile-view  {
-        display: block;
     }
     .why-kommunicate-reduce-ticket-section .mobile-view {
         margin-top: 20px;
