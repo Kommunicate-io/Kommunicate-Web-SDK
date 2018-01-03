@@ -5,7 +5,7 @@
           <h1 class="cta-section-text">
             You will do great things with Kommunicate.
           </h1>
-          <form action='{% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %}' method="get" id="pre-signup-form6" class="pre-signup-form">
+          <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form6" class="pre-signup-form">
               <div class="signup-success-msg-div hide">
                   <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
               </div>
