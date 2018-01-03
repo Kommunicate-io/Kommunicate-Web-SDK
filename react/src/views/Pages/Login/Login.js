@@ -112,8 +112,6 @@ submitForm = ()=>{
           response.data.result.application.applicationId = _this.state.applicationId;
 
           response.data.result.password = password;
-          console.log("###login:");
-          console.log(response.data.result);
           CommonUtils.setUserSession(response.data.result);
         }
 
