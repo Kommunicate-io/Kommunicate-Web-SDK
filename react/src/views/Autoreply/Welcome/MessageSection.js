@@ -9,7 +9,7 @@ class MessageSection extends Component {
     }
 
 	state = {
-		msg: this.props.messageValue
+		msg: this.props.messageValue ? this.props.messageValue: ''
 	}
 
 	handleChange = (e) => {
