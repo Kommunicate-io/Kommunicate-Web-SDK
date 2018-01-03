@@ -114,6 +114,7 @@ applicationRouter.patch('/disableInAppMsgs/:userName/:appId',inAppMsgController.
 applicationRouter.patch('/enableInAppMsgs/:userName/:appId',inAppMsgController.enableInAppMessages);
 applicationRouter.get('/:userName/:appId/getInAppMessages',validate(applicationValidation.getInAppMessages),inAppMsgController.getInAppMessages2);
 applicationRouter.get('/:userName/:appId/:eventId/getInAppMessagesByEventId',validate(applicationValidation.getInAppMessagesByEventId),inAppMsgController.getInAppMessagesByEventId);
+applicationRouter.patch('/:id/deleteInAppMsg',inAppMsgController.softDeleteInAppMsg);
 
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)

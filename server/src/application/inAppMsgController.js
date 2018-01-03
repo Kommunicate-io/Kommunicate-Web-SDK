@@ -177,3 +177,13 @@ exports.getInAppMessagesByEventId =(req,res)=>{
         });
 }
 
+exports.softDeleteInAppMsg=(req, res)=>{
+    console.log("request received to soft delete in app messages for id", id);
+    return inAppMsgService.softDeleteInAppMsg(req.params.id)
+            .then(inAppMessage=>{
+                res.status(200).json({code:'SUCCESS', message:"Soft deleted the message", data:inAppMessage});
+            }).catch(err=>{
+                res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});
+            });
+}
+
