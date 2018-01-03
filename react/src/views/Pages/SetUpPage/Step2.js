@@ -33,16 +33,18 @@ class Step2 extends Component {
       name: '',
       role: '',
       contact_no: '',
-      company_name: '',
+      // company_name: '',
       company_size: '',
       industry: '',
       industryOthers: '',
       imageFile: '',
       modalIsOpen: false,
       scale: 1.2,
-      imageFile: CommonUtils.getUserSession().imageLink
+      imageFile: CommonUtils.getUserSession().imageLink,
+      isCompanyUrlError:true
 
     }
+    this.submitCompanyUrlOnly = this.submitCompanyUrlOnly.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateProfileImgUrl  = this.updateProfileImgUrl.bind(this);
@@ -71,7 +73,7 @@ class Step2 extends Component {
         name: this.state.name,
         role: this.state.role,
         contactNo: this.state.contact_no,
-        companyName: this.state.company_name,
+        // companyName: this.state.company_name,
         companySize: this.state.company_size,
         industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
       }
@@ -101,15 +103,59 @@ class Step2 extends Component {
     this.setState({ modalIsOpen: false });
   }
 
+  submitCompanyUrlOnly() {
+    var websiteURL = this.state.website_url;
+    let userSession = CommonUtils.getUserSession();
+
+    if(!websiteURL) {
+      this.setState({isCompanyUrlError:false});
+    } else if(!isURL(websiteURL)) {
+      Notification.warning("Invalid URL.");
+    } else {
+      const customerInfo = {
+        applicationId: userSession.application.applicationId,
+        websiteUrl: this.state.website_url,
+        name: this.state.name,
+        role: this.state.role,
+        contactNo: this.state.contact_no,
+        // companyName: this.state.company_name,
+        companySize: this.state.company_size,
+        industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
+      }
+      console.log(customerInfo);
+      patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
+      .then(response => {
+        if (response.data.code === 'SUCCESS') {
+          // alert(response.data.message);
+          Notification.info("Setup completed successfully");
+          // window.location = '/dashboard'
+        }
+      }).catch(err => { Notification.error(err) });
+    // window.location = '/dashboard';
+    this.props.history.push('/dashboard');
+  }
+}
+
+
   render() {
     return (
+
+      
+
+
       <form className="form-horizontal" onSubmit={this.finishSetUp}>
         <div className="animated fadeIn">
+
+        
+
+
           <div className="row">
+
             <div className="col-md-12">
               <div className="card">
                 <div className="card-block">
                   <form className="form-horizontal">
+
                   <div className="col-lg-12 text-center setup-profile-div">
                 <div className="step-number-div">
                    2/2
@@ -124,18 +170,19 @@ class Step2 extends Component {
                         <label className="label-for-input email-label">www.mycompany.com</label>
                     </div>
                 </div>
+
                 <h2 className="setup-integration-later-text">Rest of the profile can also be set up from <span>Settings > Profile</span> later</h2>
 
                 <div className="button-link-container">
-                    <a>
-                      <Link to="/dashboard" className=" skip-link"> Skip for now</Link>
-                    </a>
+                    <a className="skip-link" onClick={this.submitCompanyUrlOnly}>Skip for now</a>
+                    <p className="company-url-error" hidden={this.state.isCompanyUrlError}>Please enter your company URL above to continue</p>
                 </div>
                 <hr></hr>
-              </div>
+      </div>
 
                     <div className="form-group row">
-                     
+                      {/* <div className="col-md-2">
+                      </div> */}
                       <div className="col-md-6 text-center pt-100">
                         <img src={this.state.imageFile} className="default-dp"></img><br />
                         <div className="edit-dp-btn">
@@ -149,6 +196,9 @@ class Step2 extends Component {
                             contentLabel="Example Modal"
 
                           >
+
+                            <div className="change-courser close-icon pull-right" onClick={this.closeModal}>X</div>
+
                             <div className="row">
                               <ImageUploader
                                 handleImageFiles={this.handleImageFiles}
@@ -160,10 +210,13 @@ class Step2 extends Component {
                             </div>
                           </Modal>
                         </div>
+
                       </div>
+
                       <div className="col-md-4">
                         <div className="row">
                           <div className="col-md-12">
+
                             <div className="group form-group email-form-group">
                               <input className="input" type="text" id="name-input" name="name-input" placeholder=" " required value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
                               <label className="label-for-input email-label">Your Name</label>
@@ -188,10 +241,10 @@ class Step2 extends Component {
                             {/* <label className="form-control-label" htmlFor="company-name">Company Name</label>
                             <input type="text" id="company-name" name="company-name" className="form-control input-field" placeholder="Enter your company Name" value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} /> */}
 
-                            <div className="group form-group email-form-group">
+                            {/* <div className="group form-group email-form-group">
                               <input className="input" type="text" id="company-name" name="company-name" placeholder=" " required value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
                               <label className="label-for-input email-label">Company Name</label>
-                            </div>
+                            </div> */}
 
                             {/* <label className="form-control-label" htmlFor="industry">Industry Type</label>
                             <select id="industry" name="industry" className="form-control input-field" onChange={(event) => { this.setState({ industry: event.target.value }) }} value={this.state.industry}>

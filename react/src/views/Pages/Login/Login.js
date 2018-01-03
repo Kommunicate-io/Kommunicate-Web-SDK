@@ -95,7 +95,7 @@ submitForm = ()=>{
   const loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
   if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
-    Notification.warning("username or password can't be empty!");
+    Notification.warning("Email Id or Password can't be empty!");
   }else{
     console.log("inside submit form");
     this.setState({loginButtonDisabled:true});
@@ -293,7 +293,7 @@ register=(event)=>{
                     <div className="input-group mb-3" hidden ={this.state.hideUserNameInputbox}>
                       {/* <span className="input-group-addon"><i className="icon-user"></i></span> */}
                        <input autoFocus type="text" className="input" placeholder=" "  onChange = { this.setUserName } value={ this.state.userName } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress} required/>
-                       <label className="label-for-input email-label">Username</label>
+                       <label className="label-for-input email-label">Email Id</label>
 
                     </div>
                     <div className="input-group mb-4" hidden ={this.state.hideAppListDropdown}>

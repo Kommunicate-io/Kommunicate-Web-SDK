@@ -63,8 +63,8 @@ class Step1 extends Component {
           <h2 className="setup-integration-later-text">Integration instructions can also be found inside <span>Settings > Integrations</span> later</h2>
           <div className="button-link-container">
           <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-            <a  className="skip-link">
-            <Link to="/dashboard" className=" skip-link"> Skip for now</Link> 
+            <a className="skip-link" onClick={this.props.changeStep}>
+             Skip for now
             </a>
           </div>
           <hr></hr>

@@ -200,7 +200,7 @@ class Register extends Component {
                   <div className="input-group mb-3">
                     {/* <span className="input-group-addon">@</span> */}
                     <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
-                    <label className="label-for-input email-label">Email</label>
+                    <label className="label-for-input email-label">Email Id</label>
                   </div>
                   <div className="input-group mb-3 register-password-div">
                     {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}

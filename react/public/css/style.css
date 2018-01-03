@@ -9382,7 +9382,11 @@ hr.transparent {
 .skip-link {
   font-size: 14px;
   letter-spacing: 0.5px;
-  color: #5c5aa7;
+  color: #5c5aa7 !important;
+  cursor: pointer;
+}
+.skip-link:hover {
+  text-decoration: underline !important;
 }
 .floating-abs-right {
   position: absolute;
@@ -9633,4 +9637,10 @@ pointer-events: none;
 .km-auto-replies-add-category button:active {
   background-color: #5C5AA7;
   color: white;
+}
+.company-url-error {
+  position: absolute;
+  left: 57%;
+  color: rgba(255, 0, 0, 0.7);
+  top: 0;
 }
