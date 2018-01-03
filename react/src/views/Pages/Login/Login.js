@@ -228,7 +228,7 @@ register=(event)=>{
 
   render() {
     return (
-      <div className="app flex-row align-items-center">
+      <div className="app flex-row align-items-center login-app-div">
       <header>
         <div className="header-container">
             <div className="logo-container">

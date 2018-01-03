@@ -127,7 +127,7 @@ class Register extends Component {
   render() {
     console.log("invite",this.state.invitedUserEmail);
     return (
-      <div className="app flex-row align-items-center">
+      <div className="app flex-row align-items-center signup-app-div">
         <header>
         <div className="header-container">
             <div className="logo-container">
@@ -189,9 +189,9 @@ class Register extends Component {
           <div className="row justify-content-center">
             <div className="col-md-6">
               <div className="card mx-4">
-                <div className="card-block p-4">
-                  <h1 className="login-signup-heading">Sign Up</h1>
-                  <p className="text-muted login-signup-sub-heading">Your account information</p>
+                <div className="card-block p-4 signup-card-block">
+                  <h1 className="login-signup-heading text-center">Sign Up</h1>
+                  <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
 
                    {/* <div className="input-group mb-3">
                     <span className="input-group-addon"><i className="icon-user"></i></span>

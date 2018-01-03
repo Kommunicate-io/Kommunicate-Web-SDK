@@ -117,3 +117,13 @@
     margin-top: 20px;
     margin-bottom: 15px;
 }
+
+.signup-app-div, .login-app-div {
+    background: #F4F0F0;
+}
+.signup-card-block {
+    padding: 45px 55px !important;
+}
+.signup-card-block .login-signup-sub-heading {
+    margin-bottom: 45px;
+}
