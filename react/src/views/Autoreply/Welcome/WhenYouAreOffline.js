@@ -6,7 +6,7 @@ import UserPopover from './UserPopover';
 import MessageSection from './MessageSection';
 import LeadGenerationTemplate from './LeadGenerationTemplate';
 
-import {addInAppMsg, getInAppMessagesByEventId} from '../../../utils/kommunicateClient'
+import {addInAppMsg, getInAppMessagesByEventId, deleteInAppMsg} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification'
 
 class WhenYouAreOffline extends Component {
@@ -23,6 +23,7 @@ class WhenYouAreOffline extends Component {
 
   unknownUser = {
     unknownChatComponents: [],
+    // unknownMessageSections: [],
     unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}],
     unknownMessageSectionMsgs: [],
     unknownMessage: '',
@@ -30,6 +31,7 @@ class WhenYouAreOffline extends Component {
 
   knownUser = {
     knownChatComponents: [],
+    // knownMessageSections: [],
     knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}],
     knownMessageSectionMsgs: [],
     knownMessage: '',
@@ -39,7 +41,7 @@ class WhenYouAreOffline extends Component {
     ...this.unknownUser,
     ...this.knownUser,
 		showOfflinePrefs: false,
-		upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
+		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
 	}
 
   componentDidMount(){
@@ -47,13 +49,23 @@ class WhenYouAreOffline extends Component {
     // eventId id 1 when agent is offline and user is anonymous
     getInAppMessagesByEventId(1).then(response => {
       console.log(response)
+
+      if(response.length < 1){
+        this.setState({unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
+      }
+
       response.map(message => {
         if(message.status === 1){
           this.setState(prevState =>{
             return {
               unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
-              unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
             }
+          }, () => {
+              this.setState((prevState) => {
+                let messageId = message.id
+                return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+            });
           })
         }
       })
@@ -62,30 +74,58 @@ class WhenYouAreOffline extends Component {
     // eventId id 2 when agent is offline and user is known
     getInAppMessagesByEventId(2).then(response => {
       console.log(response)
+      if(response.length < 1){
+        this.setState({knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
+      }
       response.map(message => {
         if(message.status === 1){
           this.setState(prevState =>{
             return {
               knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
-              knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+              knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
             }
+          }, () => {
+              this.setState((prevState) => {
+                let messageId = message.id
+                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+              });
           })
         }
       })
     })
   }
 
+  _deleteInAppMsg = (id) => {
+      console.log(id)
+      deleteInAppMsg(id).then(response =>{
+
+        this.setState((prevState) => {
+          return {
+            unknownMessageSections: prevState.unknownMessageSections.filter(message => message.id !== id),
+            unknownChatComponents: prevState.unknownChatComponents.filter(message => message.id !== id),
+            knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
+            knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
+          }
+        })
+        if(response){
+          Notification.success('Successfully deleted');
+        }else {
+          Notification.danger('Not deleted');
+        }
+      })
+    }
+
   methodToShowOfflinePrefs = (e) => {
   	e.preventDefault();
   	if(this.state.showOfflinePrefs){
   		this.setState({
   			showOfflinePrefs: false,
-  			upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
+  			upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
   		})
   	}else{
   		this.setState({
   			showOfflinePrefs: true,
-  			upDownIcon: "icon-arrow-up icons font-2xl d-block mt-4 text-right"
+  			upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
   		})
   	}
   }
@@ -139,7 +179,7 @@ class WhenYouAreOffline extends Component {
   }
 
   addMessageToChatPreview = (eventId, status) => {
-    if(this.state.unknownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
+    if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
@@ -159,12 +199,12 @@ class WhenYouAreOffline extends Component {
         this._callApiCreateInAppMsg(data)
       });
     }else{
-      Notification.warning('Limit of 3 messages reached.');
+      Notification.warning('Not able to create message.');
     }
   }
 
   known_addMessageToChatPreview = (eventId, status) => {
-    if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
+    if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
@@ -184,7 +224,7 @@ class WhenYouAreOffline extends Component {
         this._callApiCreateInAppMsg(data)
       });
     }else{
-      Notification.warning('Limit of 3 messages reached.');
+      Notification.warning('Not able to create message.');
     }
   }
 
@@ -193,11 +233,11 @@ class WhenYouAreOffline extends Component {
 		return (
       <div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowOfflinePrefs}>
-          <div className="col-6">
+          <div className="col-5">
             <h4 className="when-you-are-online-heading"> When you are offline <span className="offline-indicator"></span></h4>
             <p className="ask-your-user-to">Ask your user to leave a message so that you can get back to them later</p>
           </div>
-          <div className="col-6" >
+          <div className="col-5" >
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>
@@ -208,10 +248,10 @@ class WhenYouAreOffline extends Component {
 	    		}
 	        style={{ marginLeft: "0" }}>
           <div className="form-group row">
-            <div className="col-6">
-              <h3 className="welcome-preview text-right">Preview:</h3>
+            <div className="col-5">
             </div>
-            <div className="col-6">
+            <div className="col-7">
+              <h3 className="welcome-preview text-left">Preview:</h3>
             </div>
           </div>
           <div className="form-group row">

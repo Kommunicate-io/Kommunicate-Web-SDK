@@ -9067,7 +9067,7 @@ hr.transparent {
 }
 
 .welcome-buttons {
-  height: 21px;
+  height: 24px;
   border-radius: 13px;
   background-color: #5c5aa7;
   font-size: 12px;
@@ -9106,15 +9106,19 @@ hr.transparent {
 }
 
 .welcome-msg-textarea-btn-container {
+/*  width: 265px;
+  height: 110px;*/
   border-radius: 2px;
   border: solid 1px #5c5aa7;
-  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+  /*box-shadow: 0 10px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;*/
 }
 
 .welcome-message-textarea {
   border: 0px;
   margin: 0;
+  width: 100%;
   resize: none;
+  padding: 5px;
 }
 
 .welcome-msg-textarea-button {
@@ -9643,4 +9647,10 @@ pointer-events: none;
   left: 57%;
   color: rgba(255, 0, 0, 0.7);
   top: 0;
+}
+
+.km-welcome-hr {
+    width: 85%;
+    margin-left: 0;
+    margin-right: 0;
 }
