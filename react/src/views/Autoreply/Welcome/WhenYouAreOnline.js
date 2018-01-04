@@ -49,7 +49,7 @@ class WhenYouAreOnline extends Component {
 
 	componentDidMount(){
 
-	    // eventId id 1 when agent is online and user is anonymous
+	    // eventId id 3 when agent is online and user is anonymous
 	    getInAppMessagesByEventId(3).then(response => {
 	      console.log(response)
 	      if(response.length < 1){
@@ -73,7 +73,7 @@ class WhenYouAreOnline extends Component {
 	      })
 	    })
 
-	    // eventId id 2 when agent is online and user is known
+	    // eventId id 4 when agent is online and user is known
 	    getInAppMessagesByEventId(4).then(response => {
 	      console.log(response)
 
@@ -299,9 +299,6 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-4">
-	        	{
-	        		// <button className="welcome-buttons" onClick={() => {this.addMessageToChatPreview(3, 1)}}>Add message</button>
-	        	}
 	        		<button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
 	        		<button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
 	        	</div>
@@ -330,9 +327,6 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-4">
-	        	{
-	        		// <button className="welcome-buttons" onClick={() => {this.known_addMessageToChatPreview(4, 1)}}>Add message</button>
-	        	}
 	        		<button className="welcome-buttons" onClick={this.known_addMessageSection}>Add another message</button>
 	        	</div>
 	        </div>

@@ -272,9 +272,6 @@ class WhenYouAreOffline extends Component {
           </div>
           <div className="form-group row">
             <div className="col-4">
-              {
-                // <button className="welcome-buttons" onClick={() => {this.addMessageToChatPreview(1, 1)}}>Add message</button>
-              }
               <button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
               <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
             </div>
@@ -303,9 +300,6 @@ class WhenYouAreOffline extends Component {
           </div>
           <div className="form-group row">
             <div className="col-4">
-            {
-                // <button className="welcome-buttons" onClick={() => {this.known_addMessageToChatPreview(2, 1)}}>Add message</button>
-            }
               <button className="welcome-buttons" onClick={this.known_addMessageSection}>Add another message</button>
             </div>
           </div>
