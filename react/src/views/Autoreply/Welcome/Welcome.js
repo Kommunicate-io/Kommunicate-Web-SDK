@@ -109,7 +109,7 @@ render(){
               <div className="row">
                 <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
               </div>
-             <div className="row" style={{'display':'none'}}> {/*remove style for display*/}
+             <div className="row"> {/* style={{'display':'none'}} remove style for display*/}
                 <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. 
                 <span className="you-can-update-status text-style-2" onClick={this.toggleOverlay}>Show me where</span></p>
                 
