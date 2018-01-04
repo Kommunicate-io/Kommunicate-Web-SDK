@@ -178,7 +178,7 @@ exports.getInAppMessagesByEventId =(req,res)=>{
 }
 
 exports.softDeleteInAppMsg=(req, res)=>{
-    console.log("request received to soft delete in app messages for id", id);
+    console.log("request received to soft delete in app messages for id", req.params.id);
     return inAppMsgService.softDeleteInAppMsg(req.params.id)
             .then(inAppMessage=>{
                 res.status(200).json({code:'SUCCESS', message:"Soft deleted the message", data:inAppMessage});

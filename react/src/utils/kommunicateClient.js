@@ -564,7 +564,8 @@ const deleteInAppMsg = (id) => {
 
   let url = getConfig().kommunicateBaseUrl+"/applications/"+id+"/deleteInAppMsg";
 
-  return axios.get(url).then(response => {
+  return Promise.resolve(axios.patch(url)).then(response => {
+    console.log(response)
     if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
       if(response.data.data instanceof Array){
         return response.data.data
