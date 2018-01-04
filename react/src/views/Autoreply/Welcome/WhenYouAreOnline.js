@@ -26,6 +26,7 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
+		// unknownMessageSections: [],
 		unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
@@ -33,6 +34,7 @@ class WhenYouAreOnline extends Component {
 
 	knownUser = {
 		knownChatComponents: [],
+		// knownMessageSections: [],
 		knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
@@ -42,7 +44,7 @@ class WhenYouAreOnline extends Component {
 		...this.unknownUser,
 		...this.knownUser,
 		showPrefs: false,
-		upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
+		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
 	}
 
 	componentDidMount(){
@@ -50,16 +52,21 @@ class WhenYouAreOnline extends Component {
 	    // eventId id 1 when agent is online and user is anonymous
 	    getInAppMessagesByEventId(3).then(response => {
 	      console.log(response)
+	      if(response.length < 1){
+	      	this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+      	  }
+
 	      response.map(message => {
 	      	if(message.status === 1){
 		        this.setState(prevState =>{
 		          return {
 		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
-		            unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		            unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
 		          }
 		        }, () => {
 		        	this.setState((prevState) => {
-						return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message}/>}])}
+		        		let messageId = message.id
+						return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
 					});
 		        })
 		    }
@@ -69,16 +76,21 @@ class WhenYouAreOnline extends Component {
 	    // eventId id 2 when agent is online and user is known
 	    getInAppMessagesByEventId(4).then(response => {
 	      console.log(response)
+
+	      if(response.length < 1){
+	      	this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
+	      }
+
 	      response.map(message => {
 	      	if(message.status === 1){
 		        this.setState(prevState =>{
 		          return {
 		          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
-		            knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		            knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
 		          }
 		        }, () => {
 		        	this.setState((prevState) => {
-						return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message}/>}])}
+						return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
 					});
 		        })
 	    	}
@@ -88,7 +100,17 @@ class WhenYouAreOnline extends Component {
 
 
   	_deleteInAppMsg = (id) => {
+  		console.log(id)
   		deleteInAppMsg(id).then(response =>{
+
+  			this.setState((prevState) => {
+  				return {
+  					unknownMessageSections: prevState.unknownMessageSections.filter(message => message.id !== id),
+  					unknownChatComponents: prevState.unknownChatComponents.filter(message => message.id !== id),
+  					knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
+  					knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
+  				}
+  			})
   			if(response){
   				Notification.success('Successfully deleted');
   			}else {
@@ -102,12 +124,12 @@ class WhenYouAreOnline extends Component {
 	  	if(this.state.showPrefs) {
 	  		this.setState({
 	  			showPrefs: false,
-	  			upDownIcon: "icon-arrow-down icons font-2xl d-block mt-4 text-right"
+	  			upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
 	  		})
 	  	}else {
 	  		this.setState({
 	  			showPrefs: true,
-	  			upDownIcon: "icon-arrow-up icons font-2xl d-block mt-4 text-right"
+	  			upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
 	  		})
 	  	}
 	}
@@ -163,7 +185,7 @@ class WhenYouAreOnline extends Component {
 	}
 
 	addMessageToChatPreview = (eventId, status) => {
-		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
+		if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -190,7 +212,7 @@ class WhenYouAreOnline extends Component {
 
 
 	known_addMessageToChatPreview = (eventId, status) => {
-		if(this.state.knownMessageSections.length < 3 && this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
+		if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -238,11 +260,11 @@ class WhenYouAreOnline extends Component {
 		return (
 			<div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowPrefs}>
-          <div className="col-6">
+          <div className="col-5">
             <h4 className="when-you-are-online-heading"> When you are online <span className="online-indicator"></span></h4>
             	<p className="start-solving-your-user">Start solving your users’ issues with this message </p>
           </div>
-          <div className="col-6">
+          <div className="col-5">
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>
@@ -253,10 +275,10 @@ class WhenYouAreOnline extends Component {
 	    		}
 	        style={{ marginLeft: "0" }}>
 	        <div className="form-group row">
-	        	<div className="col-6">
-	        		<h3 className="welcome-preview text-right">Preview:</h3>
+	        	<div className="col-5">
 	        	</div>
-	        	<div className="col-6">
+	        	<div className="col-7">
+	        		<h3 className="welcome-preview text-left">Preview:</h3>
 	        	</div>
 	        </div>
 	        <div className="form-group row">

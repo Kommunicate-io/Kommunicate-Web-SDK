@@ -17,13 +17,14 @@ class MessageSection extends Component {
 	}
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<div className="form-group row">
-					<div className="col-11">
+					<div className="col-9">
 						<div className="form-group welcome-msg-textarea-btn-container">
 			    			<textarea
-			                	className="form-group script-text-area welcome-message-textarea"
+			                	className="form-group welcome-message-textarea"
 			                	value={this.state.msg}
 			                	onChange={this.handleChange}
 			                	rows="5"
@@ -34,8 +35,8 @@ class MessageSection extends Component {
 			        		}
 		    			</div>
 					</div>
-					<div className={this.props.showDeleteBtn ? "col-1":"n-vis"}>
-	      				<button><i className="fa fa-trash-o fa-lg"></i></button>
+					<div className={this.props.showDeleteBtn ? "col-3":"n-vis"}>
+	      				<button onClick={this.props.deleteInAppMsg}><i className="fa fa-trash-o fa-lg"></i></button>
 	      			</div>
 	      		</div>
 			</div>	

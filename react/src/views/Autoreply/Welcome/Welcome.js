@@ -117,9 +117,9 @@ render(){
             </div>
           </div>
           <div >{/* style={{'display':'none'}} remove this div for display*/}
-          <hr />
+          <hr className="km-welcome-hr" />
           <WhenYouAreOnline />
-          <hr />
+          <hr className="km-welcome-hr" />
           <WhenYouAreOffline />
           </div>
         </div>
