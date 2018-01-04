@@ -91,7 +91,8 @@ exports.disableInAppMessages=(createdBy, customerId)=>{
     return Promise.resolve(db.InAppMsg.update({status: 2}, {
         where: {
             createdBy: createdBy,
-            customerId: customerId
+            customerId: customerId,
+            status: 1
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 
@@ -101,7 +102,8 @@ exports.enableInAppMessages=(createdBy, customerId)=>{
     return Promise.resolve(db.InAppMsg.update({status: 1}, {
         where: {
             createdBy: createdBy,
-            customerId: customerId
+            customerId: customerId,
+            status: 2
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
