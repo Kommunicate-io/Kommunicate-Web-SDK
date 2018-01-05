@@ -96,7 +96,7 @@ getHotelCardTemplate : function(options,sessionId){
     </div>`;
 
 },
-getButtonTemplate=function(){
+getButtonTemplate:function(){
     return '';
 }
 };
