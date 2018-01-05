@@ -8995,6 +8995,7 @@ hr.transparent {
 
 .welcome-message-container {
   background-color: #fff;
+  display: none; /*Todo: Remove this in next release*/
 }
 
 .enable-automatic-welcome {
