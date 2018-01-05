@@ -55,7 +55,7 @@ class WhenYouAreOffline extends Component {
       }
 
       response.map(message => {
-        if(message.status === 1){
+        if(message.status === 1 && message.metadata === null){
           this.setState(prevState =>{
             return {
               unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
@@ -66,6 +66,15 @@ class WhenYouAreOffline extends Component {
                 let messageId = message.id
                 return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
             });
+          })
+        }else if(message.status === 1 && message.metadata !== null){
+          this.setState(prevState =>{
+            let messageId = message.id
+            return {
+              unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat(["Lead Generation template added"]),
+              unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}} />}]),
+              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={false} />}])
+            }
           })
         }
       })
@@ -167,13 +176,32 @@ class WhenYouAreOffline extends Component {
 
   addLeadGenerationTemplate = (e) => {
     e.preventDefault();
-    if(this.state.unknownMessageSections.length < 3){
+    if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
       this.setState((prevState) => {
-        return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <LeadGenerationTemplate />}])}
-      });
+        return {
+          unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat(["Lead Generation template"]),
+          unknownMessageSections: prevState.unknownMessageSections.concat([{component: <LeadGenerationTemplate showDeleteBtn={true} />}]),
+          unknownChatComponents: prevState.unknownChatComponents.concat([{component: <LeadGenerationTemplate showDeleteBtn={false} />}])
+        }
+      }, () => {
 
-      this.setState((prevState) => {
-        return {unknownChatComponents: prevState.unknownChatComponents.concat([{component: <LeadGenerationTemplate />}])}
+        const metadata = {
+          "msg_type": "INPUT",
+          "scroll": "HORIZONTAL",
+          "hidden": false,
+          "payload": "[{\"title\":\"Submit\", \"hidden\":false, \"type\":\"input\"} ]"
+        }
+
+        let data = {
+          eventId: 1,
+          message: "Please enter the details...",
+          status: 1,
+          sequence: this.state.unknownMessageSectionMsgs.length,
+          metadata: metadata
+        }
+
+        this._callApiCreateInAppMsg(data)
+
       });
     }
   }

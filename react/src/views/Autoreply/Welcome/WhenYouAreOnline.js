@@ -27,7 +27,7 @@ class WhenYouAreOnline extends Component {
 	unknownUser = {
 		unknownChatComponents: [],
 		// unknownMessageSections: [],
-		unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
+		unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
@@ -35,7 +35,7 @@ class WhenYouAreOnline extends Component {
 	knownUser = {
 		knownChatComponents: [],
 		// knownMessageSections: [],
-		knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
+		knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
 	}
@@ -57,7 +57,7 @@ class WhenYouAreOnline extends Component {
       	  }
 
 	      response.map(message => {
-	      	if(message.status === 1){
+	      	if(message.status === 1 && message.metadata === null){
 		        this.setState(prevState =>{
 		          return {
 		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
@@ -68,6 +68,15 @@ class WhenYouAreOnline extends Component {
 		        		let messageId = message.id
 						return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
 					});
+		        })
+		    }else if(message.status === 1 && message.metadata !== null){
+		        this.setState(prevState =>{
+		          let messageId = message.id
+		          return {
+		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat(["Lead Generation template added"]),
+					unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}} />}]),
+					unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={false} />}])
+		          }
 		        })
 		    }
 	      })
@@ -110,7 +119,7 @@ class WhenYouAreOnline extends Component {
   					knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
   					knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
   				}
-  			})
+  			}, () => {console.log(this.state)})
   			if(response){
   				Notification.success('Successfully deleted');
   			}else {
@@ -175,11 +184,30 @@ class WhenYouAreOnline extends Component {
 		e.preventDefault();
 		if(this.state.unknownMessageSections.length < 3 && this.state.unknownMessageSectionMsgs.length > 0){
 			this.setState((prevState) => {
-				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <LeadGenerationTemplate />}])}
-			});
+				return {
+					unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat(["Lead Generation template"]),
+					unknownMessageSections: prevState.unknownMessageSections.concat([{component: <LeadGenerationTemplate showDeleteBtn={true} />}]),
+					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <LeadGenerationTemplate showDeleteBtn={false} />}])
+				}
+			}, () => {
 
-			this.setState((prevState) => {
-				return {unknownChatComponents: prevState.unknownChatComponents.concat([{component: <LeadGenerationTemplate />}])}
+				const metadata = {
+					"msg_type": "INPUT",
+					"scroll": "HORIZONTAL",
+					"hidden": false,
+					"payload": "[{\"title\":\"Submit\", \"hidden\":false, \"type\":\"input\"} ]"
+				}
+
+				let data = {
+					eventId: 3,
+					message: "Please enter the details...",
+					status: 1,
+					sequence: this.state.unknownMessageSectionMsgs.length,
+					metadata: metadata
+				}
+
+				this._callApiCreateInAppMsg(data)
+
 			});
 		}
 	}
@@ -190,7 +218,7 @@ class WhenYouAreOnline extends Component {
 			this.setState((prevState) => {
 				return {
 					unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([this.state.unknownMessage]),
-					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}]),
+					unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p dangerouslySetInnerHTML={{__html: this.state.unknownMessage}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 				}
 			}, () => {
 
