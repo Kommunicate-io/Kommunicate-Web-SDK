@@ -5,7 +5,7 @@ const path = require("path");
 const registrationService = require('../register/registrationService')
 
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/register?invite=true&applicationId=:applicationId"
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
     if(!req.body.text && !req.body.html && !req.body.templateName){
