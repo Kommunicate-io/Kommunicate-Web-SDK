@@ -16,6 +16,13 @@ class MessageSection extends Component {
 		this.setState({msg: e.target.value}, () => {this.props.getMessage(this.state.msg)})
 	}
 
+	insertLink = (textWithLink) => {
+
+		this.setState(prevState => {
+			return {msg: prevState.msg + " " + textWithLink}
+		}, () => {this.props.getMessage(this.state.msg)})
+	}
+
 	render() {
 		console.log(this.props)
 		return (
@@ -29,7 +36,7 @@ class MessageSection extends Component {
 			                	onChange={this.handleChange}
 			                	rows="5"
 			            	/>
-			            	<LinkPopover />
+			            	<LinkPopover insertLink={this.insertLink}/>
 				            {
 				          	 <button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button>
 			        		}

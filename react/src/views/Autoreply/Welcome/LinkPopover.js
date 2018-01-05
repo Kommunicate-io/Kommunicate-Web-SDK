@@ -24,7 +24,9 @@ class LinkPopover extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      text: '',
+      url: ''
     };
     this.handleClick = this.handleClick.bind(this)
     this.handleClose = this.handleClose.bind(this)
@@ -39,6 +41,22 @@ class LinkPopover extends Component {
     e.preventDefault();
     this.setState({open: false});
   }
+
+  getText = (e) => {
+    this.setState({text: e.target.value})
+  }
+
+  getUrl = (e) => {
+    this.setState({url: e.target.value})
+  }
+
+  makeLink = () => {
+     let link = "<a href='" + this.state.url + "'>" + this.state.text + "</a>"
+
+     this.props.insertLink(link)
+     console.log(link)
+  }
+
 
   render() {
     return (
@@ -62,7 +80,7 @@ class LinkPopover extends Component {
                 <Label htmlFor="text-input">Text to display</Label>
               </Col>
               <Col xs="12" md="8">
-                <Input type="text" id="text-input" name="text-input" placeholder="Text to display"/>
+                <Input type="text" id="text-input" name="text-input" placeholder="Text to display" value={this.state.text} onChange={this.getText}/>
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -70,10 +88,10 @@ class LinkPopover extends Component {
                 <Label htmlFor="email-input">URL</Label>
               </Col>
               <Col xs="12" md="8">
-                <Input type="email" id="email-input" name="email-input" placeholder="URL"/>
+                <Input type="email" id="email-input" name="email-input" placeholder="URL" value={this.state.url} onChange={this.getUrl}/>
               </Col>
             </FormGroup>
-            <Button>OK</Button>
+            <Button onClick={this.makeLink}>OK</Button>
             <Button onClick={this.handleClose}>CANCEL</Button>   
           </div>    
         </Popover>

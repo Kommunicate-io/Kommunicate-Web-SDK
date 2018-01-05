@@ -15,7 +15,7 @@ class LeadGenerationTemplate extends Component {
 	render() {
 		return (
       <div className="form-group row">
-        <div className="col-11">
+        <div className="col-9">
     			<FormGroup className="welcome-msg-textarea-btn-container">
             <div className="controls">
               <InputGroup>
@@ -26,6 +26,9 @@ class LeadGenerationTemplate extends Component {
               </InputGroup>
             </div>
           </FormGroup>
+        </div>
+        <div className={this.props.showDeleteBtn ? "col-3":"n-vis"}>
+          <button onClick={this.props.deleteInAppMsg}><i className="fa fa-trash-o fa-lg"></i></button>
         </div>
       </div>
 		)
