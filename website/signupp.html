@@ -1,0 +1,57 @@
+---
+layout:
+title: SignUp
+---
+<html> 
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="android chat sdk, iOS chat sdk, android messaging sdk, iOS messaging sdk, query chat plugin, javascript chat plugin, real time communication, chat server, mqtt chat server, mqtt android library, mqtt iOS library, open source chat, Download and Integrate SDK, Retain more engaged and satisfied users, Messaging integration in android apps, Messaging SDK for Android and ios, IOS & Android Mobile Chat SDK, mobile and web messaging, IP mssaging, In-App messaging, messaging backend server">
+    <meta name="description" content="Superpowers for customer support agents. Modern messaging software for real-time, proactive and personalised support.">
+    <meta name="author" content="">
+    <meta http-equiv=”content-language” content=”en-us”>
+
+    <title>Signup | Kommunicate.io</title>
+    
+    {% include headtag.html %}
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/resources/css/signup-login.css" type="text/css">
+
+  </head>
+
+  <body id="page-top">
+
+    {% include_relative /sections/signup-main-section.html %}
+
+    <script type="text/javascript" src="/assets/resources/js/classie.js"></script>
+  </body>
+
+  <script>
+  // Function to capture only Email Id from URL
+  function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+    var newEmailValueFronURL = getQueryVariable("email");
+
+    if (newEmailValueFronURL == false) {
+        //        console.log("No Email Id found in the URL");
+        var emailInputField = document.getElementById("km-signup-userId").value = '';
+    } else {
+        var updatedNewEmailValueFronURL = newEmailValueFronURL.replace('%40', '@').replace('%2B', '+');
+        //        console.log(updatedNewEmailValueFronURL);
+        var emailInputField = document.getElementById("km-signup-userId").value = updatedNewEmailValueFronURL;
+    }
+  </script>
+
+</html>

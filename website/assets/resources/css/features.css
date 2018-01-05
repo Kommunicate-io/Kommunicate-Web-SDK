@@ -327,6 +327,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 
 }
 
+.km-logo-final-logo-0 {
+    fill: #ffffff !important;
+}
 .page-links-ul li:first-child>a {
     font-weight: bold;
 }
