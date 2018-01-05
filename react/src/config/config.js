@@ -23,6 +23,7 @@ var config = {
       homeUrl:baseurl.prod.baseUrl,
       kommunicateBaseUrl : baseurl.prod.kommunicateAPI,
       kommunicateDashboardUrl:"https://dashboard.kommunicate.io",
+      kommunicateWebsiteUrl: "https://www.kommunicate.io",
       applozicPlugin:{
       applozicHosturl:baseurl.prod.baseUrl,
       baseUrl:baseurl.prod.baseUrl+"/kommunicate.app",
@@ -95,6 +96,7 @@ var config = {
      homeUrl:baseurl.test.baseUrl,
      kommunicateBaseUrl : baseurl.test.kommunicateAPI,
      kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
+     kommunicateWebsiteUrl: "https://test.kommunicate.io",
      applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"https://apps-test.applozic.com/kommunicate.app",
@@ -132,6 +134,7 @@ var config = {
     homeUrl:baseurl.default.baseUrl,
     kommunicateBaseUrl : baseurl.default.kommunicateAPI,
     kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
+    kommunicateWebsiteUrl: "https://test.kommunicate.io",
     applozicPlugin:{
       applozicHosturl:"https://apps-test.applozic.com/",
       baseUrl:"http://api-test.kommunicate.io/kommunicate.app",
