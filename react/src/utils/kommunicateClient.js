@@ -310,7 +310,13 @@ const createSuggestions = (suggestion) => {
 
 const deleteSuggestionsById = (suggestionId) => {
   const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest;
-  return Promise.resolve(axios.delete(autoSuggestUrl, suggestionId,{}))
+  return Promise.resolve(axios.delete(autoSuggestUrl, suggestionId))
+    .then(response => response)
+    .catch(err => err);
+}
+const updateSuggestionsById = (updatedSuggestion) => {
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest;
+  return Promise.resolve(axios.patch(autoSuggestUrl, updatedSuggestion))
     .then(response => response)
     .catch(err => err);
 }
@@ -592,6 +598,7 @@ export {
   createSuggestions,
   deleteSuggestionsById,
   getSuggestionsByAppId,
+  updateSuggestionsById,
   signUpWithApplozic,
   sendProfileImage,
   updateApplozicUser,

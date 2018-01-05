@@ -13,7 +13,6 @@ body{
     padding: 20px;
 }
 .message-shortcuts-description {
-    font-family: OpenSans;
     font-size: 12px;
     letter-spacing: 1px;
     text-align: left;
@@ -111,7 +110,7 @@ body{
 .tooltip-menu {
     list-style-type:none;
     width: 93.2px;
-    height: 38px;
+    height: 77px;
     background-color: #ffffff;
     box-shadow: 1px 2px 4px 1px rgba(64, 63, 63, 0.5);
     padding: 10px;
@@ -166,14 +165,7 @@ body{
     margin-left: 3px;
     cursor: pointer;
 }
-.arrow-up {
-    width: 0; 
-    height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    background-color: white;
-    border-bottom: 5px solid rgb(145, 122, 122);
-}
+
 .title-line {
     margin-left: 20px;
 }
@@ -184,4 +176,14 @@ body{
     background-color: #000000;
     border-radius: 5px;
     margin-left: 1px;
+}
+.edit-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #4398d1;
+    margin-top: 8px;
+}
+.tab-content {
+    padding-bottom: 55px;
 }
