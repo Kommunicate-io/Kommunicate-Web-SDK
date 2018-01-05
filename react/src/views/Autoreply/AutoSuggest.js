@@ -315,8 +315,8 @@ class AutoSuggest extends Component {
 						{this.state.activeMenu === index && this.state.visibleMenu == true &&
 
 							<ul className="tooltip-menu ">
-								<li className="tooltip-menu-list" onClick={this.editSuggestion}>Edit</li> 
-								<hr className="list-divider" />
+								<li className="tooltip-menu-list n-vis" onClick={this.editSuggestion}>Edit</li> 
+								<hr className="list-divider n-vis" />
 								<li className="tooltip-menu-list" onClick={this.deleteSuggestion}>Delete</li>
 							   
 							</ul>
