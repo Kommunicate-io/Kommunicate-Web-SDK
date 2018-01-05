@@ -2099,10 +2099,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	bottom: 45px;
 	right: 35px;
 	-webkit-transform: translateZ(0);
-	height: 50px;
-	width: 50px;
-	border-radius: 25px;
-	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+	height: 56px;
+	width: 56px;
+	border-radius: 50%;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
 	
 }
 .mck-sidebox-launcher *{
