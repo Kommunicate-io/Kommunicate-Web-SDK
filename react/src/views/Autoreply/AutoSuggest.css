@@ -110,7 +110,7 @@ body{
 .tooltip-menu {
     list-style-type:none;
     width: 93.2px;
-    height: 77px;
+    /*height: 77px;*/
     background-color: #ffffff;
     box-shadow: 1px 2px 4px 1px rgba(64, 63, 63, 0.5);
     padding: 10px;

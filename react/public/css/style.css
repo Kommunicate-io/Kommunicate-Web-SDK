@@ -8987,7 +8987,7 @@ hr.transparent {
 }
 .a-undecorated svg {
   width:auto;
-  height:45px;
+  height:40px;
 }
 .a-unclickable{
   pointer-events: none;
@@ -8995,6 +8995,7 @@ hr.transparent {
 
 .welcome-message-container {
   background-color: #fff;
+  display: none; /*Todo: Remove this in next release*/
 }
 
 .enable-automatic-welcome {
@@ -9056,7 +9057,7 @@ hr.transparent {
 }
 
 .ask-your-user-to {
-  width: 381px;
+  width: 434px;
   height: 14px;
   font-size: 12px;
   letter-spacing: 0.7px;
@@ -9665,4 +9666,10 @@ pointer-events: none;
 }
 .km-logo-final-logo-beta-3 {
   fill:#FFFFFF;
+}
+.beta-text {
+  font-size: 14px;
+    color: #1bca1b;
+    font-style: italic;
+    padding-left: 3px;
 }

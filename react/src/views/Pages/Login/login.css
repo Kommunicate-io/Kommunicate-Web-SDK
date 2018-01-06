@@ -130,3 +130,21 @@
 .km-logo-final-full-0, .km-logo-final-full-1 {
     fill:#5C5AA7;
 }
+
+@media(max-width:576px) {
+    .signup-card-block {
+        padding:20px !important;
+    }
+    .signup-app-div {
+        background: #F4F0F0;
+        display: block;
+        padding-top: 120px;
+    }
+    .link-container {
+        padding-top: 5px;
+    }
+    .mx-4 {
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+    }
+}

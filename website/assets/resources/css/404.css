@@ -48,6 +48,8 @@ a, a:hover, a:focus, a:active {
 }
 .m-z-a {
     margin: 0 auto;
+    width: auto;
+    height: 350px;
 }
 .footer-section {
     padding-top: 80px;
@@ -59,3 +61,15 @@ a, a:hover, a:focus, a:active {
 .page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
     fill: rgba(255, 255, 255, 0.5) !important;
 }
+.km-logo-final-logo-0 {
+    fill: #ffffff !important;
+}
+.nav-login-button {
+    color: #ffffff;
+}
+.nav-login-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+.sticky {
+    background-color: #654df7;
+  }

@@ -8,15 +8,18 @@ function getJsCode (){
   let options  = {};
   let userSession = CommonUtils.getUserSession();
 
-  options.appId = userSession.application.applicationId;
-  options.isAnonymousChat=true;
-  options.agentId = userSession.userName||localStorage.getItem("agentId");
-  
-  if(userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
-  options.agentName = userSession.displayName;
-  }else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
-    options.agentName = localStorage.getItem("agentName");
+  if (userSession) {
+    options.appId = userSession.application.applicationId;
+    options.isAnonymousChat=true;
+    options.agentId = userSession.userName||localStorage.getItem("agentId");
+    
+    if (userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
+      options.agentName = userSession.displayName;
+    } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
+      options.agentName = localStorage.getItem("agentName");
+    }
   }
+  
   options.groupName=options.agentName||options.agentId;
   var env = getEnvironmentId();
   

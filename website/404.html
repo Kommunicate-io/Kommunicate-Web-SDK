@@ -1,5 +1,5 @@
 ---
-layout:
+permalink: /404.html
 ---
 <html>
 
@@ -23,10 +23,62 @@ layout:
       {% include nav-header.html %}
     </div>
     {% include_relative /sections/404-not-found.html %}
-    
-    {% include footer-section.html %}
 
     <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
+
+
+      <script>
+        $(".menu-btn").click(function() {
+          $(".popup").fadeIn(300);
+          $(".menu-btn").fadeOut(300);
+        });
+        $(".close-btn").click(function() {
+          $(".popup").fadeOut(300);
+          $(".menu-btn").fadeIn(300);
+        });
+      
+      window.onscroll = function() {
+        myScrollFunction()
+      };
+      var header = document.getElementById("nav-main-header");
+      var sticky = header.offsetTop;
+      function myScrollFunction() {
+        if (window.pageYOffset > sticky) {
+          header.classList.add("sticky");
+        } else {
+          header.classList.remove("sticky");
+        }
+      }
+      </script>
+      
+      <script type="text/javascript">
+        var trackcmp_email = '';
+        var trackcmp = document.createElement("script");
+        trackcmp.async = true;
+        trackcmp.type = 'text/javascript';
+        trackcmp.src = '//trackcmp.net/visit?actid=66105982&e='+encodeURIComponent(trackcmp_email)+'&r='+encodeURIComponent(document.referrer)+'&u='+encodeURIComponent(window.location.href);
+        var trackcmp_s = document.getElementsByTagName("script");
+        if (trackcmp_s.length) {
+        trackcmp_s[0].parentNode.appendChild(trackcmp);
+        } else {
+        var trackcmp_h = document.getElementsByTagName("head");
+        trackcmp_h.length && trackcmp_h[0].appendChild(trackcmp);
+        }
+        </script>
+      
+      <script type="text/javascript">
+        (function(d, m){
+             let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Kommunicate Support","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
+             let s = document.createElement("script");
+             s.type = "text/javascript";
+             s.async = true;
+             s.src = '{% if jekyll.environment == "production" %} {{site.dashboard.supportSourceUrlProd}}{% else %}{{site.dashboard.supportSourceUrlTest}}{% endif %}';
+             let h = document.getElementsByTagName("head")[0];
+             h.appendChild(s);
+             window.kommunicate = m;
+             m._globals = o;
+           })(document, window.kommunicate || {});
+      </script>
 
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>

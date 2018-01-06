@@ -26,16 +26,16 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
-		// unknownMessageSections: [],
-		unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
+		unknownMessageSections: [],
+		// unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
 
 	knownUser = {
 		knownChatComponents: [],
-		// knownMessageSections: [],
-		knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
+		knownMessageSections: [],
+		// knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
 	}
@@ -80,6 +80,10 @@ class WhenYouAreOnline extends Component {
 		        })
 		    }
 	      })
+
+	      if(this.state.unknownMessageSections.length < 1){
+        	this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+      	  }
 	    })
 
 	    // eventId id 4 when agent is online and user is known
@@ -104,6 +108,10 @@ class WhenYouAreOnline extends Component {
 		        })
 	    	}
 	      })
+
+	      if(this.state.knownMessageSections.length < 1){
+	      	this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
+	  	  }
 	    })
   	}
 
@@ -119,7 +127,15 @@ class WhenYouAreOnline extends Component {
   					knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
   					knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
   				}
-  			}, () => {console.log(this.state)})
+  			}, () => {
+  				if(this.state.unknownMessageSections.length < 1){
+  					this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+  				}
+
+  				if(this.state.knownMessageSections.length < 1){
+  					this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
+  				}
+  			})
   			if(response){
   				Notification.success('Successfully deleted');
   			}else {
@@ -213,7 +229,10 @@ class WhenYouAreOnline extends Component {
 	}
 
 	addMessageToChatPreview = (eventId, status) => {
-		if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
+
+		if(this.state.unknownMessage.trim().length <= 0){
+			Notification.warning('Please enter a message.');
+		}else if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -240,12 +259,15 @@ class WhenYouAreOnline extends Component {
 
 
 	known_addMessageToChatPreview = (eventId, status) => {
-		if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
+
+		if(this.state.knownMessage.trim().length <= 0){
+			Notification.warning('Please enter a message.');
+		}else if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
 					knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([this.state.knownMessage]),
-					knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.knownMessage}</p>}])
+					knownChatComponents: prevState.knownChatComponents.concat([{component: <p dangerouslySetInnerHTML={{__html: this.state.knownMessage}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 				}
 			}, () => {
 
