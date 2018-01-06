@@ -5649,7 +5649,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.isValidMetaData = function (message) {
                 if (!message.metadata) {
                     return true;
-                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE') {
+                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE'||message.metadata.hide=="true") {
                     return false;
                 } else {
                     return true;
