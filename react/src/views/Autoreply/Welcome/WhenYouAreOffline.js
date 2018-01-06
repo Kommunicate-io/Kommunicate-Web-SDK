@@ -23,16 +23,16 @@ class WhenYouAreOffline extends Component {
 
   unknownUser = {
     unknownChatComponents: [],
-    // unknownMessageSections: [],
-    unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}],
+    unknownMessageSections: [],
+    // unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}],
     unknownMessageSectionMsgs: [],
     unknownMessage: '',
   }
 
   knownUser = {
     knownChatComponents: [],
-    // knownMessageSections: [],
-    knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}],
+    knownMessageSections: [],
+    // knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}],
     knownMessageSectionMsgs: [],
     knownMessage: '',
   }
@@ -51,7 +51,7 @@ class WhenYouAreOffline extends Component {
       console.log(response)
 
       if(response.length < 1){
-        this.setState({unknownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
+        this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
       }
 
       response.map(message => {
@@ -77,14 +77,23 @@ class WhenYouAreOffline extends Component {
             }
           })
         }
+      }, () =>{
+        if(this.state.unknownMessageSections.length < 1){
+          this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
+        }
       })
+
+      if(this.state.unknownMessageSections.length < 1){
+        this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
+      }
+
     })
 
     // eventId id 2 when agent is offline and user is known
     getInAppMessagesByEventId(2).then(response => {
       console.log(response)
       if(response.length < 1){
-        this.setState({knownMessageSections: [{component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
+        this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
       }
       response.map(message => {
         if(message.status === 1){
@@ -100,7 +109,16 @@ class WhenYouAreOffline extends Component {
               });
           })
         }
+      }, () => {
+        if(this.state.knownMessageSections.length < 1){
+          this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
+        }
       })
+
+      if(this.state.knownMessageSections.length < 1){
+          this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
+      }
+
     })
   }
 
@@ -114,6 +132,14 @@ class WhenYouAreOffline extends Component {
             unknownChatComponents: prevState.unknownChatComponents.filter(message => message.id !== id),
             knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
             knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
+          }
+        }, () => {
+          if(this.state.unknownMessageSections.length < 1){
+            this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+          }
+
+          if(this.state.knownMessageSections.length < 1){
+            this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
           }
         })
         if(response){
@@ -207,12 +233,14 @@ class WhenYouAreOffline extends Component {
   }
 
   addMessageToChatPreview = (eventId, status) => {
-    if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
+    if(this.state.unknownMessage.trim().length <= 0){
+      Notification.warning('Please enter a message.');
+    }else if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
           unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([this.state.unknownMessage]),
-          unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.unknownMessage}</p>}])
+          unknownChatComponents: prevState.unknownChatComponents.concat([{component: <p dangerouslySetInnerHTML={{__html: this.state.unknownMessage}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
         }
       }, () => {
 
@@ -232,12 +260,14 @@ class WhenYouAreOffline extends Component {
   }
 
   known_addMessageToChatPreview = (eventId, status) => {
-    if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
+    if(this.state.knownMessage.trim().length <= 0){
+      Notification.warning('Please enter a message.');
+    }else if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
       this.setState((prevState) => {
         return {
           knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([this.state.knownMessage]),
-          knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.knownMessage}</p>}])
+          knownChatComponents: prevState.knownChatComponents.concat([{component: <p dangerouslySetInnerHTML={{__html: this.state.knownMessage}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
         }
       }, () => {
 
@@ -305,7 +335,7 @@ class WhenYouAreOffline extends Component {
             </div>
           </div>
           <div className="form-group row">
-            <div className="col-4">
+            <div className="col-5">
               <span className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
               <span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
             </div>
