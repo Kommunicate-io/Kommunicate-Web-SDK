@@ -97,7 +97,7 @@ getHotelCardTemplate : function(options,sessionId){
 
 },
 getButtonTemplate:function(){
-    return '';
+    return '<div class="km-cta-multi-button-container">    <button class="km-cta-button km-add-more-rooms">Book Now</button>    <button class="km-cta-button km-add-more-rooms">Book Now</button>    <button class="km-cta-button km-add-more-rooms">Book Now</button> </div>';
 }
 };
 

@@ -4190,3 +4190,11 @@ cursor: pointer;
 .tns-controls {
 	padding-bottom: 8px;
 }
+.km-cta-multi-button-container {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+}
+.km-cta-button-container .km-cta-button {
+    margin-top: 10px
+}

@@ -92,7 +92,7 @@ Kommunicate ={
                     
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
                 break;
-                case 3: 
+                case "3": 
                 return Kommunicate.markup.getButtonTemplate(); 
                 default:
                 return "";
