@@ -39,7 +39,7 @@ exports.createCustomer = (req,res)=>{
           registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err);
           });
-          activeCampaignClient.addContact({"email":email}).catch(error =>{
+          activeCampaignClient.addContact({"email": email}).catch(error =>{
             console.log("Error while sending Email to activeCampaign",error);
           });
             response.code="SUCCESS";
