@@ -18,7 +18,6 @@ exports.addContact = (options) => {
         };
         request(option,function (error, response, data) {
             //if (error) throw new Error(error);
-            //response.send(body);
             if (error) {
                 logger.error("error ",error);
                 return reject(error);
