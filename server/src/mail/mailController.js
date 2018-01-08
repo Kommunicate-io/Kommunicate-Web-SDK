@@ -5,6 +5,7 @@ const path = require("path");
 const registrationService = require('../register/registrationService')
 
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
+const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
 let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
@@ -89,6 +90,7 @@ const getEmailFormat=(options,custInfo)=>{
                 let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+options.applicationId+"&agentId="+options.adminId+"&agentName="+options.adminName;
                 templatePath = path.join(__dirname,"/emailInstructionTemplate.html");
                 templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
+                templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
                 templateReplacement[":adminName"] =options.from;
                 templateReplacement[":kommunicateScript"] =options.kommunicateScript;
                 templateReplacement[":installationInstructions"]=installationInstruction;
