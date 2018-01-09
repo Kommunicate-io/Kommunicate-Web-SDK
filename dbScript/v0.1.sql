@@ -26,3 +26,4 @@ INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `upd
 alter table in_app_msgs add column sequence int;
 alter table in_app_msgs add column created_by int;
 alter table in_app_msgs add column metadata json;
+alter table in_app_msgs add column category  int not null;
