@@ -59,7 +59,7 @@ class WhenYouAreOffline extends Component {
           this.setState(prevState =>{
             return {
               unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
-              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
             }
           }, () => {
               this.setState((prevState) => {
@@ -100,7 +100,7 @@ class WhenYouAreOffline extends Component {
           this.setState(prevState =>{
             return {
               knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
-              knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+              knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
             }
           }, () => {
               this.setState((prevState) => {
@@ -222,6 +222,7 @@ class WhenYouAreOffline extends Component {
           eventId: 1,
           message: "Please enter the details...",
           status: 1,
+          category: 1,
           sequence: this.state.unknownMessageSectionMsgs.length,
           metadata: metadata
         }
@@ -248,6 +249,7 @@ class WhenYouAreOffline extends Component {
           eventId: eventId,
           message: this.state.unknownMessage,
           status: status,
+          category: 1,
           sequence: this.state.unknownMessageSectionMsgs.length,
           metadata: null
         }
@@ -275,6 +277,7 @@ class WhenYouAreOffline extends Component {
           eventId: eventId,
           message: this.state.knownMessage,
           status: status,
+          category: 1,
           sequence: this.state.knownMessageSectionMsgs.length,
           metadata: null
         }
