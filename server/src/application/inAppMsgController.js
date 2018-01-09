@@ -87,7 +87,7 @@ exports.processEvents=(req, res)=>{
                 res.status(200).json({code:"SUCCESS"});
             })
         }).catch(err=>{
-            console.log("err while sending welcome messgae");
+            console.log("err while sending welcome messgae",err);
             res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
         })
     }else{
