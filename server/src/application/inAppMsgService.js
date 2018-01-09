@@ -35,7 +35,7 @@ exports.processConversationStartedEvent= (conversationId,customer, agentName)=>{
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id)]).then(([bot,inAppMessage])=>{
 
        let  message = inAppMessage&&inAppMessage.dataValues?inAppMessage.dataValues.message:defaultMessage;
-        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId).then(respons=>{
+        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken,{"ARCHIVE":true}).toString('base64'),customer.applicationId).then(respons=>{
             return "success";
         })
     })
