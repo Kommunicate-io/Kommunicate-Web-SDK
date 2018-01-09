@@ -49,7 +49,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
         inAppMessages.map(inAppMessage => {
           let  message = inAppMessage && inAppMessage.dataValues ? inAppMessage.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId).then(response=>{
+          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true}).then(response=>{
             if(response.status == 200){
               return "success";
             }
