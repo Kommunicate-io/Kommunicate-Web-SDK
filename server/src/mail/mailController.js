@@ -103,6 +103,7 @@ const getEmailFormat=(options,custInfo)=>{
                 case "INVITE_TEAM_MAIL":
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
                 templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.adminName+" from "+custInfo.companyName:options.adminName,
+                templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
                 templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
