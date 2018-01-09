@@ -514,23 +514,35 @@ const addInAppMsg = (data) => {
 
 }
 
-const disableInAppMsgs = () => {
+const disableInAppMsgs = (obj) => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl+"/applications/disableInAppMsgs/"+ userSession.userName+"/"+userSession.application.applicationId;
 
-  return Promise.resolve(axios.patch(url)).then(result => {
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+    data: {
+      category: obj.category
+    }
+  })).then(result => {
     console.log(result);
     return result;
   })
 
 }
 
-const enableInAppMsgs = () => {
+const enableInAppMsgs = (obj) => {
   let userSession = CommonUtils.getUserSession();
 
   let url = getConfig().kommunicateBaseUrl+"/applications/enableInAppMsgs/"+CommonUtils.getUserSession().userName+"/"+userSession.application.applicationId;
 
-  return Promise.resolve(axios.patch(url)).then(result => {
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+    data: {
+      category: obj.category
+    }
+  })).then(result => {
     console.log(result);
     return result;
   })

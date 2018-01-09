@@ -35,6 +35,10 @@ module.exports = function(sequelize, DataTypes) {
         type:DataTypes.JSON,
         allowNull: true
       },
+    category:{
+      type:DataTypes.INTEGER,
+      allowNull: false
+    }
   }, {
     underscored: true,
     paranoid: true,
