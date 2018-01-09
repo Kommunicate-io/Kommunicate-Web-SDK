@@ -53,6 +53,7 @@ function initAutoSuggestions() {
     if (userId == 'applozic' || userId == 'applozic-premium') {
         $("#km-individual-tab-title .km-tab-title").click(function () {
             clearbit($(this).text());
+            //activeCampaign($(this).text());
         });
     }
 
@@ -108,6 +109,16 @@ function initAutoSuggestions() {
     return false;
   //});
   }
+
+function activeCampaign(email) {
+  $.ajax({
+    url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_view&api_key=aa87aefccdb0f33344e88fc6c8764df8512427a3a84fc0431c3fed9691dab83cac9394b3&api_output=json&id=autoforosyurii@gmail.com',
+    type: 'GET',
+    success: function(response) {
+        console.log(response);
+    }
+  });
+}
 
 function clearbit(email) {
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba

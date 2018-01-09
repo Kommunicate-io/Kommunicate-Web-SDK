@@ -19,9 +19,10 @@ class Footer extends Component {
   render() {
     return (
       <footer className="app-footer">
-        <div className="center">
+        {/*<div className="center">
           <input type="button" className="user-report btn btn-sm btn-success" onClick={this.openUserReport} value="Ask for a feature" />
         </div>
+    */}
       </footer>
     )
   }

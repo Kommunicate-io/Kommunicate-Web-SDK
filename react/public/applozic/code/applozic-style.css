@@ -43,7 +43,8 @@ body {
 	background-color: #fff;
 	display: flex;
 	position: relative;
-	overflow: hidden;
+	/*overflow: hidden;*/
+	overflow: scroll;
 }
 
 .panel-content {
