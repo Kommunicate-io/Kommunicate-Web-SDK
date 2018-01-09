@@ -66,6 +66,7 @@ $(document).ready(function() {
 
                         if (typeof user.email !== "undefined") {
                             clearbit(user.email);
+                            //activeCampaign(user.email);
                         }
                     }
                 }

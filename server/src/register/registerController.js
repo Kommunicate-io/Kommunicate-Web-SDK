@@ -4,6 +4,7 @@ const joi = require("joi");
 const randomString  = require('randomstring');
 const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
+const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
 //const logger =require("../utils/logger");
 
 exports.createCustomer = (req,res)=>{
@@ -37,6 +38,9 @@ exports.createCustomer = (req,res)=>{
           });
           registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err);
+          });
+          activeCampaignClient.addContact({"email":email}).catch(error =>{
+            console.log("Error while sending Email to activeCampaign",error);
           });
             response.code="SUCCESS";
               // replacing user Id with user name. can't delete userId from system for backward compatibility.

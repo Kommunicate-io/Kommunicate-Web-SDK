@@ -1737,9 +1737,12 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 				});
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
-				$mck_contacts_inner.bind('scroll', function() {
-					if ($mck_contacts_inner.scrollTop() + $mck_contacts_inner.innerHeight() >= $mck_contacts_inner[0].scrollHeight) {
-						var startTime = $mck_contacts_inner.data('datetime');
+				var $kmMessageInner = $kmApplozic(".km-message-inner");
+				//km-contacts-inner 
+				//km-message-inner
+				$kmMessageInner.bind('scroll', function() {
+					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
+						var startTime = $kmApplozic(".km-contacts-inner").data('datetime');
 						if (startTime > 0 && !CONTACT_SYNCING) {
 							mckMessageService.loadMessageList({
 								'tabId' : '',
