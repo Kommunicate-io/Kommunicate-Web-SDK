@@ -196,7 +196,13 @@ exports.getInAppMessagesByEventId =(req,res)=>{
             }
         inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, eventId)
             .then(inAppMessages=>{
-                res.status(200).json({code:'SUCCESS', message:"Got in app messages by event id", data:inAppMessages});
+                let message = "Not able to get in app messages"
+                if(inAppMessages instanceof Array && inAppMessages.length > 1){
+                    message = "Got in app messages by event id"
+                }else if(inAppMessages instanceof Array && inAppMessages.length < 1){
+                    message = "No in app messages"
+                }
+                res.status(200).json({code:'SUCCESS', message:message, data:inAppMessages});
             })
         }).catch(err=>{
             res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});

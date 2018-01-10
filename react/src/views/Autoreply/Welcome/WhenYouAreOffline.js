@@ -50,7 +50,7 @@ class WhenYouAreOffline extends Component {
     getInAppMessagesByEventId(1).then(response => {
       console.log(response)
 
-      if(response.length < 1){
+      if(response instanceof Array && response.length < 1){
         this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
       }
 
@@ -92,7 +92,7 @@ class WhenYouAreOffline extends Component {
     // eventId id 2 when agent is offline and user is known
     getInAppMessagesByEventId(2).then(response => {
       console.log(response)
-      if(response.length < 1){
+      if(response instanceof Array && response.length < 1){
         this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
       }
       response.map(message => {
@@ -312,7 +312,7 @@ class WhenYouAreOffline extends Component {
             <div className="col-5">
             </div>
             <div className="col-7">
-              <h3 className="welcome-preview text-left">Preview:</h3>
+              <h3 className="welcome-preview text-left"  style={{display: "none"}}>Preview:</h3>
             </div>
           </div>
           <div className="form-group row">
@@ -328,18 +328,22 @@ class WhenYouAreOffline extends Component {
               {this.state.unknownMessageSections.map((MessageSection, i) => (<div key={i}>{MessageSection.component}</div>))}
             </div>
             <div className="col-4">
-                <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+                {
+                // <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+                }
             </div>
           </div>
           <div className="form-group row">
             <div className="col-4">
               <button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
-              <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+              {
+              // <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+              }
             </div>
           </div>
           <div className="form-group row">
             <div className="col-5">
-              <span className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+              <span style={{display: "none"}} className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"} ><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
               <span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
             </div>
           </div>
@@ -356,7 +360,9 @@ class WhenYouAreOffline extends Component {
               {this.state.knownMessageSections.map((knownMessageSection, i) => (<div key={i}>{knownMessageSection.component}</div>))}
             </div>
             <div className="col-4">
-                <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+              {
+                // <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+              }
             </div>
           </div>
           <div className="form-group row">

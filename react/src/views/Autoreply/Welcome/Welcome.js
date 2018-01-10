@@ -78,13 +78,16 @@ class Welcome extends Component{
     this.setState({enableDisableCheckbox: !this.state.enableDisableCheckbox}, () => {
       if(this.state.enableDisableCheckbox) {
         enableInAppMsgs({category: 1}).then(result => {
-          Notification.success('Welcome Mesages Enabled')
+          if(result !== undefined){
+            Notification.success('Welcome Mesages Enabled')
+          }
         })
       }else{
         disableInAppMsgs({category: 1}).then(result => {
-          Notification.error('Welcome Messages Disabled')
+          if(result !== undefined){
+            Notification.error('Welcome Messages Disabled')
+          }
         })
-        
       }
     }) 
   }
