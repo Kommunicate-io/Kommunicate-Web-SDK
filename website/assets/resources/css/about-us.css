@@ -188,36 +188,35 @@ a, a:hover, a:focus, a:active {
 
 
 
-.al-km-team-anand, .al-km-team-anshul, .al-km-team-ardarsh, .al-km-team-ashish, .al-km-team-devashish, 
-.al-km-team-devraj, .al-km-team-jithin, .al-km-team-kusum, .al-km-team-mihir, .al-km-team-mukesh, 
-.al-km-team-parth, .al-km-team-prateek, .al-km-team-priya, .al-km-team-priyanka, .al-km-team-purananga, 
-.al-km-team-ranjeet, .al-km-team-satadeep, .al-km-team-sunil, .al-km-team-suraj, .al-km-team-vibhor
+.al-km-team-abhinav, .al-km-team-anand, .al-km-team-anshul, .al-km-team-ardarsh, .al-km-team-ashish, 
+.al-km-team-ayush, .al-km-team-devashish, .al-km-team-devraj, .al-km-team-jithin, .al-km-team-kusum, 
+.al-km-team-mihir, .al-km-team-mukesh, .al-km-team-parth, .al-km-team-prateek, .al-km-team-priya, 
+.al-km-team-purananga, .al-km-team-ranjeet, .al-km-team-satadeep, .al-km-team-sunil, .al-km-team-suraj, 
+.al-km-team-vibhor, .al-km-team-vipin
 { display: inline-block; background: url('/assets/resources/images/avatars/al-km-team-sprite.jpg') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }
 
-.al-km-team-anand { background-position: -1px -0px; width: 111px; height: 111px; }
-
-.al-km-team-anshul { background-position: -113px -0px; width: 111px; height: 111px; }
-.al-km-team-ardarsh { background-position: -225px -0px; width: 111px; height: 111px; }
-.al-km-team-ashish { background-position: -337px -0px; width: 111px; height: 111px; }
-.al-km-team-devashish { background-position: -1px -112px; width: 111px; height: 111px; }
-.al-km-team-devraj { background-position: -113px -112px; width: 111px; height: 111px; }
-.al-km-team-jithin { background-position: -225px -112px; width: 111px; height: 111px; }
-.al-km-team-kusum { background-position: -337px -112px; width: 111px; height: 111px; }
-.al-km-team-mihir { background-position: -1px -224px; width: 111px; height: 111px; }
-.al-km-team-mukesh { background-position: -113px -224px; width: 111px; height: 111px; }
-.al-km-team-parth { background-position: -225px -224px; width: 111px; height: 111px; }
-.al-km-team-prateek { background-position: -337px -224px; width: 111px; height: 111px; }
-.al-km-team-priya { background-position: -1px -336px; width: 111px; height: 111px; }
-.al-km-team-priyanka { background-position: -113px -336px; width: 111px; height: 111px; }
-.al-km-team-purananga { background-position: -225px -336px; width: 111px; height: 111px; }
-.al-km-team-ranjeet { background-position: -337px -336px; width: 111px; height: 111px; }
-.al-km-team-satadeep { background-position: -1px -448px; width: 111px; height: 111px; }
-.al-km-team-sunil { background-position: -113px -448px; width: 111px; height: 111px; }
-.al-km-team-suraj { background-position: -225px -448px; width: 111px; height: 111px; }
-.al-km-team-vibhor { background-position: -337px -448px; width: 111px; height: 111px; }
-.al-km-team-vipin {
-    background: url('/assets/resources/images/avatars/vipin.jpg') no-repeat; 
-}
+.al-km-team-abhinav { background-position: -1px -0px; width: 111px; height: 111px; }
+.al-km-team-anand { background-position: -113px -0px; width: 111px; height: 111px; }
+.al-km-team-anshul { background-position: -225px -0px; width: 111px; height: 111px; }
+.al-km-team-ardarsh { background-position: -337px -0px; width: 111px; height: 111px; }
+.al-km-team-ashish { background-position: -1px -112px; width: 111px; height: 111px; }
+.al-km-team-ayush { background-position: -113px -112px; width: 111px; height: 111px; }
+.al-km-team-devashish { background-position: -225px -112px; width: 111px; height: 111px; }
+.al-km-team-devraj { background-position: -337px -112px; width: 111px; height: 111px; }
+.al-km-team-jithin { background-position: -1px -224px; width: 111px; height: 111px; }
+.al-km-team-kusum { background-position: -113px -224px; width: 111px; height: 111px; }
+.al-km-team-mihir { background-position: -225px -224px; width: 111px; height: 111px; }
+.al-km-team-mukesh { background-position: -337px -224px; width: 111px; height: 111px; }
+.al-km-team-parth { background-position: -1px -336px; width: 111px; height: 111px; }
+.al-km-team-prateek { background-position: -113px -336px; width: 111px; height: 111px; }
+.al-km-team-priya { background-position: -225px -336px; width: 111px; height: 111px; }
+.al-km-team-purananga { background-position: -337px -336px; width: 111px; height: 111px; }
+.al-km-team-ranjeet { background-position: -1px -448px; width: 111px; height: 111px; }
+.al-km-team-satadeep { background-position: -113px -448px; width: 111px; height: 111px; }
+.al-km-team-sunil { background-position: -225px -448px; width: 111px; height: 111px; }
+.al-km-team-suraj { background-position: -337px -448px; width: 111px; height: 111px; }
+.al-km-team-vibhor { background-position: -1px -560px; width: 111px; height: 111px; }
+.al-km-team-vipin { background-position: -113px -560px; width: 111px; height: 111px; }
 
 .desig br {
     display: none;
