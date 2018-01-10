@@ -80,6 +80,9 @@ Kommunicate ={
         // contentType should be 300 for rich text message in metadata
         return metadata&&metadata.contentType==300;
     },
+    processPaymentRequest:function(options){
+
+    },
     getRichTextMessageTemplate: function(metadata){
         if (metadata){
             switch(metadata.templateId){
@@ -93,7 +96,7 @@ Kommunicate ={
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
                 break;
                 case "3": 
-                return Kommunicate.markup.getButtonTemplate(); 
+                return Kommunicate.markup.buttonContainerTemplate(metadata); 
                 default:
                 return "";
                 break;
