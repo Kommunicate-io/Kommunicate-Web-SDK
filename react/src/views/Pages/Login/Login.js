@@ -273,7 +273,7 @@ websiteUrl = (e)=> {
     </header>
         <div className="container">
           <div className="row justify-content-center">
-            <div className="col-md-8">
+            <div className="col-md-9">
               <div className="card-group mb-0">
                 <div className="card p-4">
                   <div className="card-block">
@@ -354,7 +354,7 @@ websiteUrl = (e)=> {
                     </div>
                   </div>
                 </div>
-                <div className="card card-inverse card-primary py-5 d-md-down-none signup-blue-card" style={{ width: 44 + '%' }}>
+                <div className="card card-inverse card-primary py-5 d-md-down-none signup-blue-card p-4" style={{ width: 44 + '%' }}>
                   <div className="card-block text-center">
                     <div>
                       <h2 className="login-signup-heading">Sign up</h2>

@@ -95,6 +95,7 @@
   .login-signup-sub-heading {
     font-size: 14px;
     color: #717174;
+    margin-bottom: 45px;
 }
 .signup-blue-card {
     padding-top: 24px !important;
@@ -119,7 +120,20 @@
 }
 
 .signup-app-div, .login-app-div {
+    background: transparent;
+}
+.signup-app-div::after, .login-app-div::after {
+    content: '';
     background: #F4F0F0;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    opacity: 0.8;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
 }
 .signup-card-block {
     padding: 45px 55px !important;
@@ -147,4 +161,13 @@
         margin-left: 0px !important;
         margin-right: 0px !important;
     }
+}
+.card {
+    margin-bottom: 0px;
+}
+.p-4 {
+    padding: 50px !important;
+}
+.card-block {
+    padding: 0px;
 }
