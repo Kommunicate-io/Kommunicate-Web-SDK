@@ -135,9 +135,7 @@
     position: absolute;
     z-index: -1;
 }
-.signup-card-block {
-    padding: 45px 55px !important;
-}
+
 .signup-card-block .login-signup-sub-heading {
     margin-bottom: 45px;
 }
@@ -170,4 +168,17 @@
 }
 .card-block {
     padding: 0px;
+}
+.mx-4 {
+    margin-right: 3.5rem !important;
+    margin-left: 3.5rem !important;
+}
+.signup-card-block {
+    padding: 50px 35px !important;
+}
+.signup-card-block .login-signup-heading {
+    margin-top: 20px;
+}
+.signup-button-row {
+    margin-bottom: 30px;
 }

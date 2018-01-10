@@ -204,7 +204,7 @@ class Register extends Component {
                     <input type="password" className="input" placeholder=" " onChange={ this.setRepeatPassword } required/>
                     <label className="label-for-input email-label">Repeat password</label>
                   </div>
-                  <div className="row">
+                  <div className="row signup-button-row">
                     <div className="col-6">
                       <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
                     </div>
