@@ -312,7 +312,7 @@ class WhenYouAreOffline extends Component {
             <div className="col-5">
             </div>
             <div className="col-7">
-              <h3 className="welcome-preview text-left">Preview:</h3>
+              <h3 className="welcome-preview text-left"  style={{display: "none"}}>Preview:</h3>
             </div>
           </div>
           <div className="form-group row">
@@ -328,13 +328,17 @@ class WhenYouAreOffline extends Component {
               {this.state.unknownMessageSections.map((MessageSection, i) => (<div key={i}>{MessageSection.component}</div>))}
             </div>
             <div className="col-4">
-                <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+                {
+                // <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+                }
             </div>
           </div>
           <div className="form-group row">
             <div className="col-4">
               <button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
-              <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+              {
+              // <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+              }
             </div>
           </div>
           <div className="form-group row">
@@ -356,7 +360,9 @@ class WhenYouAreOffline extends Component {
               {this.state.knownMessageSections.map((knownMessageSection, i) => (<div key={i}>{knownMessageSection.component}</div>))}
             </div>
             <div className="col-4">
-                <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+              {
+                // <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+              }
             </div>
           </div>
           <div className="form-group row">
