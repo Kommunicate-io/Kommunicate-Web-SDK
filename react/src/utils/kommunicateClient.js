@@ -496,7 +496,7 @@ const getIssueTypeByCustIdAndCreatedBy = () => {
     if(response.data.code === 'GOT_ALL_ISSUE_TYPE'){
       return response.data.data
     }
-  })
+  }).catch(err => {console.log("Error in getIssueTypeByCustIdAndCreatedBy", err)})
 }
 
 const addInAppMsg = (data) => {
@@ -527,7 +527,7 @@ const disableInAppMsgs = (obj) => {
   })).then(result => {
     console.log(result);
     return result;
-  })
+  }).catch(err => {console.log("Error in disableInAppMsgs", err)})
 
 }
 
@@ -545,7 +545,7 @@ const enableInAppMsgs = (obj) => {
   })).then(result => {
     console.log(result);
     return result;
-  })
+  }).catch(err => {console.log("Error in enableInAppMsgs", err)})
 
 }
 
@@ -560,7 +560,7 @@ const getInAppMessages = () => {
         return response.data.data
       }
     }
-  })
+  }).catch(err => {console.log("Error in getInAppMessages", err)})
 }
 
 const getInAppMessagesByEventId = (eventId) => {
@@ -573,7 +573,12 @@ const getInAppMessagesByEventId = (eventId) => {
       if(response.data.data instanceof Array){
         return response.data.data
       }
+    }else if(response === undefined){
+      return [];
     }
+  }).catch(err => {
+    console.log("Error in getInAppMessagesByEventId", err)
+    return [];
   })
 }
 
@@ -589,7 +594,7 @@ const deleteInAppMsg = (id) => {
         return response.data.data
       }
     }
-  })
+  }).catch(err => {console.log("Error in deleteInAppMsg", err)})
 }
 
 export {

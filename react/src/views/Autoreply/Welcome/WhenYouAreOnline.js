@@ -52,7 +52,7 @@ class WhenYouAreOnline extends Component {
 	    // eventId id 3 when agent is online and user is anonymous
 	    getInAppMessagesByEventId(3).then(response => {
 	      console.log(response)
-	      if(response.length < 1){
+	      if(response instanceof Array &&  response.length < 1){
 	      	this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
       	  }
 
@@ -90,7 +90,7 @@ class WhenYouAreOnline extends Component {
 	    getInAppMessagesByEventId(4).then(response => {
 	      console.log(response)
 
-	      if(response.length < 1){
+	      if(response instanceof Array && response.length < 1){
 	      	this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
 	      }
 

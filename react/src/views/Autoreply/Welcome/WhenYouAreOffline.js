@@ -50,7 +50,7 @@ class WhenYouAreOffline extends Component {
     getInAppMessagesByEventId(1).then(response => {
       console.log(response)
 
-      if(response.length < 1){
+      if(response instanceof Array && response.length < 1){
         this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
       }
 
@@ -92,7 +92,7 @@ class WhenYouAreOffline extends Component {
     // eventId id 2 when agent is offline and user is known
     getInAppMessagesByEventId(2).then(response => {
       console.log(response)
-      if(response.length < 1){
+      if(response instanceof Array && response.length < 1){
         this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} />}]})
       }
       response.map(message => {
