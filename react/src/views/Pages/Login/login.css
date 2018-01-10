@@ -32,7 +32,7 @@
     fill: #5C5AA7;
   }
   .register-password-div {
-      margin-bottom: 30px !important;
+      margin-bottom: 40px !important;
   }
 
 .dropdown.btn-group {
@@ -174,11 +174,14 @@
     margin-left: 3.5rem !important;
 }
 .signup-card-block {
-    padding: 50px 35px !important;
+    padding: 50px !important;
 }
-.signup-card-block .login-signup-heading {
-    margin-top: 20px;
+.signup-button-row p {
+    margin-top: 50px;
+    font-size: 16px;
 }
-.signup-button-row {
-    margin-bottom: 30px;
+.signup-card-block .btn-primary-custom {
+    width: 100%;
+    letter-spacing: 0.4px;
+    font-size: 16px;
 }

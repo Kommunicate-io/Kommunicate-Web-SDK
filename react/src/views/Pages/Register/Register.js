@@ -160,10 +160,7 @@ class Register extends Component {
             </g>
         </svg>
             </div>
-            <div className="link-container">
-                <p>
-                    Already have an account? <a href="/login/">Sign In</a>
-                </p> 
+            <div className="link-container"> 
             </div>
         </div>
     </header>
@@ -205,8 +202,12 @@ class Register extends Component {
                     <label className="label-for-input email-label">Repeat password</label>
                   </div>
                   <div className="row signup-button-row">
-                    <div className="col-6">
-                      <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
+                    <div className="col-lg-12 text-center">
+                      <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
+
+                      <p>
+                        Already have an account? <a href="/login/">Sign In</a>
+                      </p>
                     </div>
                     {/* <div className="col-6 text-right">
                       <button type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.backToLogin } hidden ={this.state.isBackBtnHidden}>Back</button>
