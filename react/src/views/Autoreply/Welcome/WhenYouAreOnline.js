@@ -362,7 +362,7 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 		        <div className="col-5">
-		        	<span className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+		        	<span style={{display: "none"}} className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
               		<span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
 		        </div>
 	        </div>
