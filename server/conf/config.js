@@ -51,6 +51,8 @@ const config ={
       defaultOffhoursMessage: "Thanks for your message. will call you back in our business hours.",
       // this property define how often Off business hours notification will be sent to user. value in minute
       offBussinessHoursMessageInterval: 5,
+      activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+      activeCampaignEnabled: true
 
   },
   test: {
@@ -103,6 +105,8 @@ const config ={
     defaultOffhoursMessage: "Thanks for your message. will call you back in our business hours.",
     // this property define how often Off business hours notification will be sent to user. value in minute
     offBussinessHoursMessageInterval: 1,
+    activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+    activeCampaignEnabled: false
   },
   default: {
     port: 3999,
@@ -155,6 +159,8 @@ const config ={
     defaultOffhoursMessage: "Thanks for your message. will call you back in our business hours.",
     // this property define how often Off business hours notification will be sent to user. value in minute
     offBussinessHoursMessageInterval: 1,
+    activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+    activeCampaignEnabled: false
 
   },
   dashboard: {
@@ -208,6 +214,8 @@ const config ={
       defaultOffhoursMessage: "Thanks for your message. will call you back in our business hours.",
       // this property define how often Off business hours notification will be sent to user. value in minute
       offBussinessHoursMessageInterval: 5,
+      activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+      activeCampaignEnabled: false
 
   },
   commonProperties: {
