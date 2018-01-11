@@ -22,7 +22,8 @@ INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `upd
 INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-002', 'conversation started/new msg in existing conversation by known user while agent is offline', '1', NOW(), NOW());
 INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-003', 'conversation started by anonymous user while agent is online', '1', NOW(), NOW());
 INSERT INTO in_app_events (`name`, `description`, `category`, `created_at`, `updated_at`) VALUES ('KM-004', 'conversation started by known user while agent is online', '1', NOW(), NOW());
-
+/*added column in customers, "active_campaign_id" KM-485 */
+alter table customers add column active_campaign_id int
 alter table in_app_msgs add column sequence int;
 alter table in_app_msgs add column created_by int;
 alter table in_app_msgs add column metadata json;

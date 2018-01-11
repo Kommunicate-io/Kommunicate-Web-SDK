@@ -47,7 +47,12 @@ module.exports = function(sequelize, DataTypes) {
     }, apzToken: {
         type: DataTypes.STRING(200),
         field: 'apz_token'
-      },
+    },
+    activeCampaignId:{
+      type: DataTypes.INTEGER,
+      field: 'active_campaign_id'
+      
+    }
   }, {
     underscored: true,
     paranoid: true

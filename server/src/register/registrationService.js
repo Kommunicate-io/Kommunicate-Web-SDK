@@ -82,27 +82,27 @@ const getResponse = (customer,application)=>{
     return response;
 };
 
-exports.updateCustomer = (userId,customer)=>{
-  return Promise.resolve(customerModel.update(customer,{where: {"userName": userId}})).then(result=>{
-    console.log("successfully updated user",result[0]);
+exports.updateCustomer = (userId, customer) => {
+  return Promise.resolve(customerModel.update(customer, { where: { "userName": userId } })).then(result => {
+    console.log("successfully updated user", result[0]);
     return result[0];
-  }).catch(err=>{
-    console.log("error while updating user",err);
+  }).catch(err => {
+    console.log("error while updating user", err);
     throw err;
   });
 };
 
-  exports.getCustomerByApplicationId = appId=>{
-    console.log("getting application by application Id",appId);
-    return Promise.resolve(customerModel.findOne({where: {applicationId: appId}}))
-     .then(customer => {
-        console.log("found data for customer : ",customer==null?null:customer.dataValues);
-          return customer!==null?customer.dataValues:null;
-      }).catch(err=>{
-        console.log("err while getting customer by application Id",err);
-        throw err;
-      });
-    };
+exports.getCustomerByApplicationId = appId => {
+  console.log("getting application by application Id", appId);
+  return Promise.resolve(customerModel.findOne({ where: { applicationId: appId } }))
+    .then(customer => {
+      console.log("found data for customer : ", customer == null ? null : customer.dataValues);
+      return customer !== null ? customer.dataValues : null;
+    }).catch(err => {
+      console.log("err while getting customer by application Id", err);
+      throw err;
+    });
+};
 
 const getFromApplozicUser= (applozicUser,customer,type)=>{
   let userObject = {};
@@ -124,7 +124,7 @@ const getFromApplozicUser= (applozicUser,customer,type)=>{
 exports.getCustomerByUserName = userName=>{
   console.log("getting customer by UserName",userName);
   return Promise.resolve(db.customer.findOne({where: {userName: userName}}));
-};
+}; 
 
 exports.isAdmin = (userName)=>{
   console.log("checkig if user is an admin", userName);
