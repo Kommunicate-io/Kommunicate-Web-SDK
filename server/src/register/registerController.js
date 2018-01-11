@@ -6,7 +6,6 @@ const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
 //const logger =require("../utils/logger");
-
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName?req.body.userName:req.body.userId;
@@ -15,7 +14,6 @@ exports.createCustomer = (req,res)=>{
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
-
   let response={};
 
   console.log("userName:", userName, password,isPreSignUp);
@@ -37,9 +35,13 @@ exports.createCustomer = (req,res)=>{
             console.log("err while storing welcome message in db");
           });
           registrationService.sendWelcomeMail(email, name||email).catch(err=>{
-            console.log("Error while sending welcom mail to user",err);
-          });
-          activeCampaignClient.addContact({"email":email}).catch(error =>{
+            console.log("Error while sending welcom mail to user",err)  
+          });   
+          activeCampaignClient.addContact({"email":email})
+          .then(subscriberId => {
+            return registrationService.updateCustomer(userName,{activeCampaignId:subscriberId});
+          })
+          .catch(error =>{
             console.log("Error while sending Email to activeCampaign",error);
           });
             response.code="SUCCESS";
@@ -76,13 +78,31 @@ exports.patchCustomer = (req,res)=>{
   let response ={};
   let status;
   const customer = req.body;
-  const userId = req.params.userId;
+  const userId = req.params.userId; 
   console.log("request recieved to update customer: ",userId, "body",customer);
   if (customer.websiteUrl) {
     applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl }).catch(err => {
       console.log('error while updating application')
-    })
+    })  
   }
+  registrationService.getCustomerByUserName(userId).then(user => {
+    console.log("got the user from db", user);
+    return activeCampaignClient.updateActiveCampaign({
+      "email": userId,
+      "subscriberId": user.dataValues.activeCampaignId,
+      "name": customer.name,
+      "role": customer.role,
+      "companyUrl": customer.websiteUrl,
+      "contactNo": customer.contactNo,
+      "industry": customer.industry,
+      "companySize": customer.companySize
+    })
+      .catch(error => {
+        console.log("Error while updating company URL to activeCampaign", error);
+      });
+  }).catch(error => {
+    console.log("Error while getting customer by userId", error);
+  });
   
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     userService.getAdminUserByAppId(customer.applicationId).then(user=>{
