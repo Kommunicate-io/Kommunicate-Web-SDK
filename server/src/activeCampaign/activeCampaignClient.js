@@ -1,6 +1,8 @@
 const logger = require("../utils/logger");
 const axios = require("axios");
 var request = require("request");
+const config = require("../../conf/config");
+const apiKey = config.getProperties().activeCampaignApiKey;
 exports.addContact = (options) => {
     return new Promise(function (resolve, reject) {
         var option = {
@@ -9,7 +11,7 @@ exports.addContact = (options) => {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             form: {
                 api_action: 'contact_add',
-                api_key: '79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e',
+                api_key: apiKey,
                 api_output: 'json',
                 email: options.email,
                 'p[1]': '7',
@@ -45,7 +47,7 @@ exports.updateActiveCampaign = (options) => {
             headers: { 'content-type': 'application/x-www-form-urlencoded' },
             form: {
                 api_action: 'contact_edit',
-                api_key: '79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e',
+                api_key: apiKey,
                 api_output: 'json',
                 id: options.subscriberId,
                 email: options.email,

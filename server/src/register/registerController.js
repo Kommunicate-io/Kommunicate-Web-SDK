@@ -5,6 +5,8 @@ const randomString  = require('randomstring');
 const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
+const config = require("../../conf/config");
+const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 //const logger =require("../utils/logger");
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
@@ -36,14 +38,17 @@ exports.createCustomer = (req,res)=>{
           });
           registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err)  
-          });   
-          activeCampaignClient.addContact({"email":email})
-          .then(subscriberId => {
-            return registrationService.updateCustomer(userName,{activeCampaignId:subscriberId});
-          })
-          .catch(error =>{
-            console.log("Error while sending Email to activeCampaign",error);
           });
+          if (activeCampaignEnable == true) {
+            activeCampaignClient.addContact({ "email": email })
+              .then(subscriberId => {
+                return registrationService.updateCustomer(userName, { activeCampaignId: subscriberId });
+              })
+              .catch(error => {
+                console.log("Error while sending Email to activeCampaign", error);
+              });
+          }   
+          
             response.code="SUCCESS";
               // replacing user Id with user name. can't delete userId from system for backward compatibility.
               delete result.userId;
@@ -85,24 +90,27 @@ exports.patchCustomer = (req,res)=>{
       console.log('error while updating application')
     })  
   }
-  registrationService.getCustomerByUserName(userId).then(user => {
-    console.log("got the user from db", user);
-    return activeCampaignClient.updateActiveCampaign({
-      "email": userId,
-      "subscriberId": user.dataValues.activeCampaignId,
-      "name": customer.name,
-      "role": customer.role,
-      "companyUrl": customer.websiteUrl,
-      "contactNo": customer.contactNo,
-      "industry": customer.industry,
-      "companySize": customer.companySize
-    })
-      .catch(error => {
-        console.log("Error while updating company URL to activeCampaign", error);
-      });
-  }).catch(error => {
-    console.log("Error while getting customer by userId", error);
-  });
+  if (activeCampaignEnable == true) {
+    registrationService.getCustomerByUserName(userId).then(user => {
+      console.log("got the user from db", user);
+      return activeCampaignClient.updateActiveCampaign({
+        "email": userId,
+        "subscriberId": user.dataValues.activeCampaignId,
+        "name": customer.name,
+        "role": customer.role,
+        "companyUrl": customer.websiteUrl,
+        "contactNo": customer.contactNo,
+        "industry": customer.industry,
+        "companySize": customer.companySize
+      })
+        .catch(error => {
+          console.log("Error while updating company URL to activeCampaign", error);
+        });
+    }).catch(error => {
+      console.log("Error while getting customer by userId", error);
+    });
+  }
+  
   
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     userService.getAdminUserByAppId(customer.applicationId).then(user=>{
