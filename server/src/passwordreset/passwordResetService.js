@@ -15,6 +15,7 @@ const bcrypt = require('bcrypt');
 
 const facebookLogoUrl = config.getProperties().urls.hostUrl+"/img/facebook-round32.png";
 const twitterLogourl = config.getProperties().urls.hostUrl + "/img/twitter-round32.png";
+const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
 exports.processPasswordResetRequest = (user, applicationId)=>{
   console.log("processing password reset request of user",user.userName);
   return Promise.resolve(getPendingRequestOfUser(user,applicationId)).then(passwordResetRequest=>{
@@ -37,7 +38,8 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     ":KommunicateLogoUrl": kommunicateLogoUrl, 
     ":passwordResetUrl":prUrl,
     ":facebookLogoUrl":facebookLogoUrl,
-    ":twitterLogourl":twitterLogourl
+    ":twitterLogourl":twitterLogourl,
+    ":kmWebsiteLogoUrl":kmWebsiteLogoUrl
   }
   return fileService.readFile(path.join(__dirname,"/passwordResetTemplate.html"),"utf8").then(data=>{
     template= data.replace(new RegExp(Object.keys(templateValues).join("|"),"gi"),function(matched){
