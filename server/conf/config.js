@@ -129,6 +129,7 @@ const config ={
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
+      kmWebsiteUrl: "https://test.kommunicate.io",
       updatePasswordPage : "http://localhost:3000/password/update?code=:code",
       passwordResetUrl : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
       dashboardHostUrl:"http://localhost:3000",
