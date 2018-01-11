@@ -79,6 +79,7 @@ exports.processEvents=(req, res)=>{
     const groupId = req.body.conversationId;
     const applicationId = req.body.applicationId;
     const agentName = req.body.agentId;
+    console.log(req.body)
     if(eventType == applicationUtils.EVENTS.CONVERSATION_STARTED){
         return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
             return inAppMsgService.processConversationStartedEvent(groupId,customer, agentName).then(response=>{
@@ -86,7 +87,7 @@ exports.processEvents=(req, res)=>{
                 res.status(200).json({code:"SUCCESS"});
             })
         }).catch(err=>{
-            console.log("err while sending welcome messgae");
+            console.log("err while sending welcome messgae",err);
             res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
         })
     }else{
@@ -95,19 +96,43 @@ exports.processEvents=(req, res)=>{
 
 }
 
+exports.processEvents2=(req, res)=>{
+    const eventType = req.query.type;
+    const groupId = req.body.conversationId;
+    const applicationId = req.body.applicationId;
+    const agentName = req.body.agentId;
+
+    return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+        return inAppMsgService.processEventWrapper(eventType, groupId, customer, agentName).then(response=>{
+            console.log(response);
+            if(response === "success"){
+                res.status(200).json({code:"SUCCESS"});
+            }else{
+                res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
+            }  
+        })
+    }).catch(err=>{
+        console.log("err while sending welcome messgae",err);
+        res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
+    })
+
+}
+
 exports.disableInAppMessages=(req, res)=>{
     const appId = req.params.appId;
     const userName = req.params.userName;
+    const category = req.body.category
 
     console.log(req.params.userName)
     console.log(userName)
+    console.log(req.body.category)
 
     userService.getByUserNameAndAppId(userName, appId).then(user=>{
         if(!user){
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.disableInAppMessages(user.id, user.customerId).then(response=>{
+        return inAppMsgService.disableInAppMessages(user.id, user.customerId, category).then(response=>{
             console.log("in app messages is disabled successfully");
             res.status(200).json({code:"SUCCESS", message:"disabled", data: response});
         }).catch(err=>{
@@ -121,13 +146,14 @@ exports.disableInAppMessages=(req, res)=>{
 exports.enableInAppMessages=(req, res)=>{
     const appId = req.params.appId;
     const userName = req.params.userName;
+    const category = req.body.category
 
     userService.getByUserNameAndAppId(userName, appId).then(user=>{
         if(!user){
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.enableInAppMessages(user.id, user.customerId).then(response=>{
+        return inAppMsgService.enableInAppMessages(user.id, user.customerId, category).then(response=>{
             console.log("in app messages is enabled successfully");
             res.status(200).json({code:"SUCCESS", message:"enabled", data: response});
         }).catch(err=>{
@@ -170,7 +196,13 @@ exports.getInAppMessagesByEventId =(req,res)=>{
             }
         inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, eventId)
             .then(inAppMessages=>{
-                res.status(200).json({code:'SUCCESS', message:"Got in app messages by event id", data:inAppMessages});
+                let message = "Not able to get in app messages"
+                if(inAppMessages instanceof Array && inAppMessages.length > 1){
+                    message = "Got in app messages by event id"
+                }else if(inAppMessages instanceof Array && inAppMessages.length < 1){
+                    message = "No in app messages"
+                }
+                res.status(200).json({code:'SUCCESS', message:message, data:inAppMessages});
             })
         }).catch(err=>{
             res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});

@@ -8,6 +8,8 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
+    $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+   
 }
 
 
@@ -122,6 +124,19 @@ Kommunicate.richMsgEventHandler ={
             }
        $applozic.fn.applozic('sendGroupMessage',messagePxy);
 
+
+    },
+    handlleRichButtonClick:function(e){
+        console.log("event generated: ",e);
+        var  target = e.target || e.srcElement;
+        var eventHandlerId = target.dataset.eventhandlerid;
+        if(eventHandlerId=="km-eh-001"){
+            //var buttonContainer = target.parentElement;
+            var form  = target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
+            // handling paymet gateway button callback
+            form.submit();
+
+        }
 
     }
 

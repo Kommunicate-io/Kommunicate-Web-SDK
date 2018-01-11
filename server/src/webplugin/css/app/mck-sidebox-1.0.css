@@ -2099,10 +2099,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	bottom: 45px;
 	right: 35px;
 	-webkit-transform: translateZ(0);
-	height: 50px;
-	width: 50px;
-	border-radius: 25px;
-	box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
+	height: 56px;
+	width: 56px;
+	border-radius: 50%;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.22), 0 4px 8px rgba(0, 0, 0, 0.31);
 	
 }
 .mck-sidebox-launcher *{
@@ -3855,10 +3855,17 @@ fill:white;
 /*css for ask number of rooms in hotel booking */
 .km-room-person-selector-text {
 border-bottom-left-radius: 4px;
+
 }
 .km-room-person-selector-container {
 margin-top: 3px;
 border-top-left-radius: 4px;
+
+}
+.km-rich-text-default-container{
+	border-radius: 10px;
+	background-color: #fff;
+	padding: 10px;
 }
 .km-room-person-selector-container .km-room-title-text {
 margin-top: 5px;
@@ -3921,13 +3928,11 @@ cursor: pointer;
 }
 
 .mck-msg-box-rich-text-container{
-	/* width: 93%; */
-	border-radius: 10px;
-	background-color: #fff;
-	margin: 5px 0px 0px 7px;
-	float: left;
-	padding: 10px;
 	top: 0;
+	float: left;
+	margin: 5px 0px 0px 7px;
+	width:100%;
+	color:#7766B5;
 }
 
 .km-card-message-container {
@@ -4189,4 +4194,29 @@ cursor: pointer;
 
 .tns-controls {
 	padding-bottom: 8px;
+}
+.km-cta-multi-button-container {
+    display: flex;
+    flex-flow: row;
+	justify-content: center;
+	flex-wrap: wrap;
+
+}
+.km-cta-multi-button-container .km-cta-button-many {
+	margin-top: 10px
+}
+.km-cta-multi-button-container .km-cta-button-1{
+	margin-top: 10px;
+	width:50%;
+}
+.km-cta-multi-button-container .km-cta-button-2{
+	margin-top: 10px;
+	width:33%;
+}
+.km-cta-button {
+	color: #7766B5;
+    border: 1px solid #7766B5;
+}
+.km-undecorated-link{
+	text-decoration:none;
 }

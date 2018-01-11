@@ -29,7 +29,7 @@ getHotelCardTemplate : function(options,sessionId){
     star3:"km-star-empty",
     star4:"km-star-empty",
     star5:"km-star-empty"
-   
+
     };
     if(options.StarRating){
         //populate the star rating
@@ -95,12 +95,39 @@ getHotelCardTemplate : function(options,sessionId){
         </div>
     </div>`;
 
+},
+getButtonTemplate:function(options,elemWidthClass){
+    if(options.type=="link"){
+    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+    }else{
+    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
+    }
 }
 };
 
+Kommunicate.markup.buttonContainerTemplate= function(options){
+    var containerMarkup = '<div class="km-cta-multi-button-container">';
+    var payload = JSON.parse(options.payload);
+    var formData= JSON.parse(options.formData||"{}");
+    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+    for(var i = 0;i<payload.length;i++){
+        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
+    }
+    if(formData){
+        containerMarkup+="<form method ='post' class= km-btn-hidden-form action ="+options.formAction+">";
+        for (var key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
+            }
+        } 
+    }
+    containerMarkup+='</form></div>';
+    return containerMarkup;
+}
+
 Kommunicate.markup.getHotelRoomPaxInfoTemplate= function(roomCount){
 
-return `<div>
+return `<div class = "km-rich-text-default-container">
             <div class="km-room-person-selector-container">`+Kommunicate.markup.getSingleRoomPaxInfo(roomCount)+`</div>
             <hr>
             <div class="km-add-room-button-container">
@@ -115,7 +142,7 @@ var hotelListMarkup ="";
 for(var i= 0;i<hotelList.length;i++){
     hotelListMarkup= hotelListMarkup+Kommunicate.markup.getHotelCardTemplate(hotelList[i],sessionId);
 }
-    return `<div class="km-card-message-container">`+hotelListMarkup+`</div>`
+    return `<div class="km-card-message-container  km-div-slider">`+hotelListMarkup+`</div>`
 }
 
 

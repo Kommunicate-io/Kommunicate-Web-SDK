@@ -5,7 +5,8 @@ const path = require("path");
 const registrationService = require('../register/registrationService')
 
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/register?invite=true&applicationId=:applicationId"
+const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
     if(!req.body.text && !req.body.html && !req.body.templateName){
@@ -89,6 +90,7 @@ const getEmailFormat=(options,custInfo)=>{
                 let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+options.applicationId+"&agentId="+options.adminId+"&agentName="+options.adminName;
                 templatePath = path.join(__dirname,"/emailInstructionTemplate.html");
                 templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
+                templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
                 templateReplacement[":adminName"] =options.from;
                 templateReplacement[":kommunicateScript"] =options.kommunicateScript;
                 templateReplacement[":installationInstructions"]=installationInstruction;
@@ -101,6 +103,7 @@ const getEmailFormat=(options,custInfo)=>{
                 case "INVITE_TEAM_MAIL":
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
                 templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.adminName+" from "+custInfo.companyName:options.adminName,
+                templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
                 templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;

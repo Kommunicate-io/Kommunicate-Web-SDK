@@ -48,10 +48,10 @@ class Header extends Component {
 
   logout(e){
     window.logout();
-    if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
+    if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" &&typeof window.$kmApplozic.fn.applozic!=="undefined"&& window.$kmApplozic.fn.applozic("getLoggedInUser")) {
       window.$kmApplozic.fn.applozic('logout');           
     }
-    if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && window.$applozic.fn.applozic("getLoggedInUser")) {
+    if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" &&typeof window.$applozic.fn.applozic!=="undefined"&& window.$applozic.fn.applozic("getLoggedInUser")) {
       window.$applozic.fn.applozic('logout');       
     }
     sessionStorage.clear();
@@ -88,11 +88,11 @@ class Header extends Component {
       <header className="app-header navbar">
         <button className="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button" onClick={this.mobileSidebarToggle}>&#9776;</button>
         <Link className="a-undecorated" to ="/dashboard">
-          {
-            // <a href ="" target="_blank" className = "a-undecorated a-unclickable"/>
-          }
-          <img src="/img/logo01.svg" height="50" width="50"></img>
-          <span className= "brand-name">KOMMUNICATE</span>
+        <svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 352.7 316.7'>
+    <path className='km-logo-final-logo-beta-0' d='M348.5,302.2V121.2c0-65.4-53-118.3-118.3-118.3H122.5C57.1,2.8,4.1,55.8,4.1,121.2 c0,65.4,53,118.4,118.4,118.4H239c0,0,9.5,0.6,15.2,2.6c5.5,2,11.5,6.8,11.5,6.8l72,59.3c0,0,6.5,5.6,8.9,4.5 C349,311.5,348.5,302.2,348.5,302.2z M125.8,145.3c0,7.9-6.9,14.3-15.4,14.3S95,153.2,95,145.3V94.5c0-7.9,6.9-14.3,15.4-14.3 s15.4,6.4,15.4,14.3V145.3z M191.7,169.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V70.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V169.3z M257.6,145.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V94.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V145.3z'
+    />
+</svg>
+        		<span className="beta-text">Beta</span>
         </Link>
         <ul className="nav navbar-nav ml-auto">
           <li className="nav-item d-md-down-none">
@@ -114,7 +114,9 @@ class Header extends Component {
                   <p><span className="header-user-online"> You are online</span></p>
                   <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator": null }></span>
                 </DropdownItem>
+                {/*
                 <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
+                */}
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>

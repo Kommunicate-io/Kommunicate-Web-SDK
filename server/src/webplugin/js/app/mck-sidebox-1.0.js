@@ -1216,25 +1216,24 @@ var MCK_CLIENT_GROUP_MAP = [];
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
                 return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 416 430" style="enable-background:new 0 0 416 430;" xml:space="preserve">
+              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
               <style type="text/css">
-                  .st0{fill:#5C5AA7;}
-                  .st1{fill:#FFFFFF;}
+                  .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
+                  .km-launcher-logo-1{fill:#FFFFFF;}
               </style>
-              <title>New-KM-Logo-Final</title>
-              <path class="st0" d="M381.6,320.5l19,108.3l-99.1-36.2c-28.1,14.3-59.8,22.3-93.5,22.3C93.8,414.9,1.2,322.3,1.2,208.1  S93.8,1.2,208,1.2S414.8,93.8,414.8,208C414.8,249.5,402.6,288.1,381.6,320.5z"/>
-              <g id="Layer_2_1_">
+              <g>
+                  <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
+                      <stop offset="0" style="stop-color:#3A3C80"/>
+                      <stop offset="0.1658" style="stop-color:#4B4C93"/>
+                      <stop offset="0.3516" style="stop-color:#5858A2"/>
+                      <stop offset="0.5063" style="stop-color:#5C5CA7"/>
+                      <stop offset="0.6795" style="stop-color:#53549D"/>
+                      <stop offset="0.9706" style="stop-color:#3D3E83"/>
+                      <stop offset="1" style="stop-color:#3A3C80"/>
+                  </linearGradient>
+                  <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
                   <g>
-                      <g>
-                          <ellipse class="st1" cx="146.4" cy="213.1" rx="20.9" ry="20.9"/>
-                          <ellipse class="st1" cx="208.8" cy="213.1" rx="20.9" ry="20.9"/>
-                          <circle class="st1" cx="265.7" cy="213.1" r="20.9"/>
-                      </g>
-                      <g>
-                          <path class="st1" d="M207.2,65.8c-4.3-7.2-12.3-12-21.3-12c-11.8,0-21.6,8.2-24.2,19.2c-44.6,14.5-79.8,49.8-94.2,94.4     c-11.2,2.5-19.5,12.4-19.5,24.3c0,9.2,5,17.3,12.5,21.6c3.6,2.1,7.8,3.3,12.3,3.3c4.9,0,9.3-1.4,13.2-3.9     c7-4.4,11.7-12.1,11.7-21c0-6.2-2.2-11.8-6-16.1c11.8-37,40.9-66.2,77.8-78.2c4.3,3.9,10,6.1,16.4,6.1c9,0,16.9-4.8,21.3-12     c2.3-3.7,3.6-8.2,3.6-12.9C210.7,73.9,209.4,69.5,207.2,65.8z"/>
-                          <path class="st1" d="M346.4,167.7c-11.4-36.1-36.4-66.1-69.2-84c-0.9-12.9-11.7-23-24.8-23c-7,0-13.4,2.9-18,7.7     c-4.2,4.4-6.9,10.5-6.9,17.2c0,2.7,0.5,5.4,1.3,7.8c3.3,9.8,12.6,16.9,23.6,16.9c4.8,0,9.2-1.4,13.1-3.7     c26.2,14.6,46.4,38.7,55.8,67.6c-4.3,4.4-7,10.6-7,17.3c0,9.5,5.3,17.6,13.1,21.8c3.5,1.9,7.5,2.9,11.7,2.9c5.1,0,10-1.6,14-4.3     c6.5-4.4,10.9-12,10.9-20.4C364.1,180.4,356.6,170.9,346.4,167.7z"/>
-                          <path class="st1" d="M350.2,241.9c-4.6-5.3-11.2-8.5-18.7-8.5c-2.1,0-4,0.2-6,0.7c-10.9,2.7-18.9,12.5-18.9,24.1     c0,5.4,1.8,10.4,4.7,14.5c-20.9,36-59.9,60.2-104.4,60.2c-44.6,0-83.5-24.2-104.4-60.2c2.9-4.1,4.7-9.1,4.7-14.5     c0-11.7-8.1-21.5-19-24.2c-1.9-0.5-3.9-0.7-5.8-0.7c-7.5,0-14.1,3.3-18.7,8.4c-3.9,4.3-6.2,10.2-6.2,16.4     c0,12.5,9.2,22.9,21.4,24.5c24.9,45.1,73,75.7,128.2,75.7s103.3-30.6,128.2-75.7c12-1.8,21.1-12.1,21.1-24.5     C356.2,252,354,246.2,350.2,241.9z"/>
-                      </g>
+                      <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
                   </g>
               </g>
               </svg>`
@@ -4612,7 +4611,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
 
                 if (richText) {
-                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-div-slider"));
                 }
 
                 if (msg.fileMeta) {
@@ -5650,7 +5649,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.isValidMetaData = function (message) {
                 if (!message.metadata) {
                     return true;
-                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE') {
+                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE'||message.metadata.hide=="true") {
                     return false;
                 } else {
                     return true;

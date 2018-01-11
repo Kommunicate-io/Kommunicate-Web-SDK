@@ -8622,9 +8622,11 @@ app-root {
     flex: 0 0 250px; }
 
 .header-fixed .app-header {
-  position: fixed;
-  z-index: 1020;
-  width: 100%; }
+      position: fixed;
+      z-index: 1020;
+      width: 100%; 
+      box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 8px rgba(0,0,0,.28);
+}
 
 .header-fixed .app-body {
   margin-top: 55px; }
@@ -8976,16 +8978,16 @@ hr.transparent {
  .a-undecorated{
   text-decoration:none !important;
   margin-left:10px !important;
- 
+ padding-top: 5px;
 }
 @media(max-width: 991px) {
   .a-undecorated {
-       margin-left: 60px;
+       margin-left: 60px !important;
   }
 }
-.a-undecorated img {
-  width:35px;
-  height:auto;
+.a-undecorated svg {
+  width:auto;
+  height:40px;
 }
 .a-unclickable{
   pointer-events: none;
@@ -8993,6 +8995,7 @@ hr.transparent {
 
 .welcome-message-container {
   background-color: #fff;
+  /*display: none; Todo: Remove this in next release*/
 }
 
 .enable-automatic-welcome {
@@ -9054,7 +9057,7 @@ hr.transparent {
 }
 
 .ask-your-user-to {
-  width: 381px;
+  width: 434px;
   height: 14px;
   font-size: 12px;
   letter-spacing: 0.7px;
@@ -9653,4 +9656,20 @@ pointer-events: none;
     width: 85%;
     margin-left: 0;
     margin-right: 0;
+}
+
+.km-logo-final-logo-beta-0 {
+  fill:#5C5AA7;
+}
+.km-logo-final-logo-beta-2 {
+  fill:#97322F;
+}
+.km-logo-final-logo-beta-3 {
+  fill:#FFFFFF;
+}
+.beta-text {
+  font-size: 14px;
+    color: #1bca1b;
+    font-style: italic;
+    padding-left: 3px;
 }

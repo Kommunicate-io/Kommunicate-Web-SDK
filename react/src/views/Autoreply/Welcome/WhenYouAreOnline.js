@@ -26,16 +26,16 @@ class WhenYouAreOnline extends Component {
 
 	unknownUser = {
 		unknownChatComponents: [],
-		// unknownMessageSections: [],
-		unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
+		unknownMessageSections: [],
+		// unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}],
 		unknownMessageSectionMsgs: [],
 		unknownMessage: '',
 	}
 
 	knownUser = {
 		knownChatComponents: [],
-		// knownMessageSections: [],
-		knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
+		knownMessageSections: [],
+		// knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}],
 		knownMessageSectionMsgs: [],
 		knownMessage: '',
 	}
@@ -52,7 +52,7 @@ class WhenYouAreOnline extends Component {
 	    // eventId id 3 when agent is online and user is anonymous
 	    getInAppMessagesByEventId(3).then(response => {
 	      console.log(response)
-	      if(response.length < 1){
+	      if(response instanceof Array &&  response.length < 1){
 	      	this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
       	  }
 
@@ -61,7 +61,7 @@ class WhenYouAreOnline extends Component {
 		        this.setState(prevState =>{
 		          return {
 		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([message.message]),
-		            unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		            unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 		          }
 		        }, () => {
 		        	this.setState((prevState) => {
@@ -80,13 +80,17 @@ class WhenYouAreOnline extends Component {
 		        })
 		    }
 	      })
+
+	      if(this.state.unknownMessageSections.length < 1){
+        	this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+      	  }
 	    })
 
 	    // eventId id 4 when agent is online and user is known
 	    getInAppMessagesByEventId(4).then(response => {
 	      console.log(response)
 
-	      if(response.length < 1){
+	      if(response instanceof Array && response.length < 1){
 	      	this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
 	      }
 
@@ -95,7 +99,7 @@ class WhenYouAreOnline extends Component {
 		        this.setState(prevState =>{
 		          return {
 		          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([message.message]),
-		            knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{message.message}</p>}])
+		            knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 		          }
 		        }, () => {
 		        	this.setState((prevState) => {
@@ -104,6 +108,10 @@ class WhenYouAreOnline extends Component {
 		        })
 	    	}
 	      })
+
+	      if(this.state.knownMessageSections.length < 1){
+	      	this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
+	  	  }
 	    })
   	}
 
@@ -119,7 +127,15 @@ class WhenYouAreOnline extends Component {
   					knownMessageSections: prevState.knownMessageSections.filter(message => message.id !== id),
   					knownChatComponents: prevState.knownChatComponents.filter(message => message.id !== id)
   				}
-  			}, () => {console.log(this.state)})
+  			}, () => {
+  				if(this.state.unknownMessageSections.length < 1){
+  					this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} />}]})
+  				}
+
+  				if(this.state.knownMessageSections.length < 1){
+  					this.setState({knownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} />}]})
+  				}
+  			})
   			if(response){
   				Notification.success('Successfully deleted');
   			}else {
@@ -202,6 +218,7 @@ class WhenYouAreOnline extends Component {
 					eventId: 3,
 					message: "Please enter the details...",
 					status: 1,
+					category: 1,
 					sequence: this.state.unknownMessageSectionMsgs.length,
 					metadata: metadata
 				}
@@ -213,7 +230,10 @@ class WhenYouAreOnline extends Component {
 	}
 
 	addMessageToChatPreview = (eventId, status) => {
-		if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
+
+		if(this.state.unknownMessage.trim().length <= 0){
+			Notification.warning('Please enter a message.');
+		}else if(this.state.unknownMessageSectionMsgs.length < 3 && this.state.unknownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
@@ -226,6 +246,7 @@ class WhenYouAreOnline extends Component {
 					eventId: eventId,
 					message: this.state.unknownMessage,
 					status: status,
+					category: 1,
 					sequence: this.state.unknownMessageSectionMsgs.length,
 					metadata: null
 				}
@@ -240,12 +261,15 @@ class WhenYouAreOnline extends Component {
 
 
 	known_addMessageToChatPreview = (eventId, status) => {
-		if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
+
+		if(this.state.knownMessage.trim().length <= 0){
+			Notification.warning('Please enter a message.');
+		}else if(this.state.knownMessageSectionMsgs.length < 3 && this.state.knownMessage.trim().length > 0){
 
 			this.setState((prevState) => {
 				return {
 					knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([this.state.knownMessage]),
-					knownChatComponents: prevState.knownChatComponents.concat([{component: <p style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}>{this.state.knownMessage}</p>}])
+					knownChatComponents: prevState.knownChatComponents.concat([{component: <p dangerouslySetInnerHTML={{__html: this.state.knownMessage}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 				}
 			}, () => {
 
@@ -253,6 +277,7 @@ class WhenYouAreOnline extends Component {
 					eventId: eventId,
 					message: this.state.knownMessage,
 					status: status,
+					category: 1,
 					sequence: this.state.knownMessageSectionMsgs.length,
 					metadata: null
 				}
@@ -306,7 +331,7 @@ class WhenYouAreOnline extends Component {
 	        	<div className="col-5">
 	        	</div>
 	        	<div className="col-7">
-	        		<h3 className="welcome-preview text-left">Preview:</h3>
+	        		<h3 className="welcome-preview text-left" style={{display: "none"}}>Preview:</h3>
 	        	</div>
 	        </div>
 	        <div className="form-group row">
@@ -322,18 +347,22 @@ class WhenYouAreOnline extends Component {
 	        		{this.state.unknownMessageSections.map((unknownMessageSection, i) => (<div key={i}>{unknownMessageSection.component}</div>))}
 	        	</div>
 	        	<div className="col-4">
-		            <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+		            {
+		           	// <ChatPreview chatPreviewComponents={this.state.unknownChatComponents}/>
+		            }
 	        	</div>
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-4">
 	        		<button className="welcome-buttons mb-2" onClick={this.addMessageSection}>Add another message</button>
-	        		<button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+	        		{
+	        			// <button className="welcome-buttons" onClick={this.addLeadGenerationTemplate}>Add lead generation template</button>
+	        		}
 	        	</div>
 	        </div>
 	        <div className="form-group row">
 		        <div className="col-5">
-		        	<span className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+		        	<span style={{display: "none"}} className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
               		<span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
 		        </div>
 	        </div>
@@ -350,7 +379,9 @@ class WhenYouAreOnline extends Component {
 	        		{this.state.knownMessageSections.map((knownMessageSection, i) => (<div key={i}>{knownMessageSection.component}</div>))}
 	        	</div>
 	        	<div className="col-4">
-		            <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+	        		{
+		            // <ChatPreview chatPreviewComponents={this.state.knownChatComponents}/>
+	        		}
 	        	</div>
 	        </div>
 	        <div className="form-group row">
