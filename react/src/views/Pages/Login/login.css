@@ -166,7 +166,7 @@
 .p-4 {
     padding: 50px !important;
 }
-.card-block {
+.signup-app-div .card-block, .login-app-div .card-block {
     padding: 0px;
 }
 .mx-4 {
