@@ -44,67 +44,66 @@ const getInAppMessage=(customerId, eventType)=>{
 exports.processEventWrapper = (eventType, conversationId, customer, agentName) => {
 
     if(eventType == 1 || eventType == 2 || eventType == 3 || eventType == 4){
-      // check if user is online/offline, we need agentId
       let anonymous = true
       let offline = true
       let eventType = 1
-      //get the group info
       return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,customer.apzToken))
         .then(groupInfo => {
-            console.log("groupInfo");
-            console.log("groupInfo");
-            console.log("groupInfo");
-            console.log(groupInfo);
-            console.log(groupInfo.groupUsers[2].userId)
-            let groupUser = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3)
-            return groupUser[0].userId
-          }
-        ).then( userId => {
-
-        return applozicClient.getUserDetails(userId,customer.applicationId,customer.apzToken)
-          .then(userInfo => {
-            console.log(userInfo)
-            if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
-              anonymous = false;
-            }
-            return "success"
-          }).then(response => {
-            if(offline && anonymous){
-              console.log(1);
-              return Promise.all([processConversationStartedEvent(1, conversationId, customer, agentName)]).then(([response]) => {
-                console.log(response);
-                return "success";
+            console.log("groupInfo")
+            let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3)
+            let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1)
+            return {userId: groupUserRole3[0].userId, agentId: groupUserRole2[0].userId}
+        }).then( groupUser => {
+            console.log("groupUser")
+            userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
+            .then(res => {
+              console.log(res)
+              console.log(res.availability_status)
+              if(res.availability_status == 1){
+                offline = false
+              }
+              return groupUser.userId
+            }).then( userId => {
+              console.log("userId")
+              return applozicClient.getUserDetails(userId,customer.applicationId,customer.apzToken)
+              .then(userInfo => {
+                console.log(userInfo)
+                if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
+                  anonymous = false;
+                }
+                return "success"
+              }).then(response => {
+                if(offline && anonymous){
+                  console.log(1);
+                  return Promise.all([processConversationStartedEvent(1, conversationId, customer, agentName)]).then(([response]) => {
+                    console.log(response);
+                    return "success";
+                  })
+                }else if(offline && !anonymous){
+                  console.log(2);
+                  eventType = 2
+                  return Promise.all([processConversationStartedEvent(2, conversationId, customer, agentName)]).then(([response]) => {
+                    console.log(response);
+                    return "success";
+                  })
+                }else if(!offline && anonymous){
+                  eventType = 3
+                  console.log(3);
+                  return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName)]).then(([response]) => {
+                    console.log(response);
+                    return "success";
+                  })
+                }else if(!offline && !anonymous){
+                  eventType = 4
+                  return Promise.all([processConversationStartedEvent(4, conversationId, customer, agentName)]).then(([response]) => {
+                    console.log(response);
+                    return "success";
+                  })
+                }
               })
-            }else if(offline && !anonymous){
-              console.log(2);
-              eventType = 2
-              return Promise.all([processConversationStartedEvent(2, conversationId, customer, agentName)]).then(([response]) => {
-                console.log(response);
-                return "success";
-              })
-            }else if(!offline && anonymous){
-              eventType = 3
-              console.log(3);
-              return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName)]).then(([response]) => {
-                console.log(response);
-                return "success";
-              })
-            }else if(!offline && !anonymous){
-              eventType = 4
-              return Promise.all([processConversationStartedEvent(4, conversationId, customer, agentName)]).then(([response]) => {
-                console.log(response);
-                return "success";
-              })
-            }
           })
-      }).catch(err => {console.log(err)})
-
-      // from the group info get groupInfo.name
-      // use it to get the user details
-      // check for email field
-      //
-      
-    }else{
+    }).catch(err => {console.log(err)})
+      }else{
       return "EVENT_NOT_SUPPORTED"
     }
 }
