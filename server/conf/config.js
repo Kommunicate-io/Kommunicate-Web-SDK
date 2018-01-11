@@ -26,8 +26,8 @@ const config ={
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",
         passwordResetUrl : "https://chat.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
         dashboardHostUrl:"https://dashboard.kommunicate.io",
-        applozicHostUrl : "https://chat.kommunicate.io"
-
+        applozicHostUrl : "https://chat.kommunicate.io",
+        getUserInfo: "https://chat.kommunicate.io/rest/ws/user/v2/detail"
       },
       cache: {
         hazelCache: {
@@ -80,7 +80,8 @@ const config ={
       updatePasswordPage : "https://dashboard-test.kommunicate.io/password/update?code=:code",
       passwordResetUrl : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
       dashboardHostUrl:"https://dashboard-test.kommunicate.io",
-      applozicHostUrl : "https://apps-test.applozic.com"
+      applozicHostUrl : "https://apps-test.applozic.com",
+      getUserInfo: "https://apps-test.applozic.com/rest/ws/user/v2/detail"
       
     },cache: {
       hazelCache: {
@@ -109,7 +110,7 @@ const config ={
   default: {
     port: 3999,
     db: {
-      //url: "mysql://root:@localhost:3306/kommunicate_test",
+      // url: "mysql://root:password@localhost:3306/kommunicate_test",
       url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
@@ -132,8 +133,8 @@ const config ={
       updatePasswordPage : "http://localhost:3000/password/update?code=:code",
       passwordResetUrl : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
       dashboardHostUrl:"http://localhost:3000",
-      applozicHostUrl : "https://apps-test.applozic.com"
-      
+      applozicHostUrl : "https://apps-test.applozic.com",
+      getUserInfo: "https://apps-test.applozic.com/rest/ws/user/v2/detail"
     },cache: {
       hazelCache: {
         url: "localhost",
@@ -185,7 +186,8 @@ const config ={
         updatePasswordPage : "http://dashboard.kommunicate.io/password/update?code=:code",
         passwordResetUrl : "https://dashboard.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
         dashboardHostUrl:"https://dashboard.kommunicate.io",
-        applozicHostUrl : "https://dashboard.applozic.com"
+        applozicHostUrl : "https://dashboard.applozic.com",
+        getUserInfo: "https://dashboard.applozic.com/rest/ws/user/v2/detail"
 
       },
       cache: {
