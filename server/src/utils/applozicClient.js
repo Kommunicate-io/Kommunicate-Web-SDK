@@ -344,3 +344,23 @@ exports.updateApplication = (data) => {
     console.log('error  ', err)
   })
 }
+
+exports.getUserDetails = (userName,applicationId,apzToken) => {
+  let url = config.getProperties().urls.getUserInfo
+  console.log("getting user info from applozic url : ", url);
+  console.log(userName)
+  let userNameArray = [userName]
+  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameArray}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+    console.log("got response from Applozic user info api :", response.status);
+    if(response&&response.status==200&&response.data.status=="success") {
+      return response.data.response;
+    }else if(response&&response.status==200&&response.data.status=="error") {
+      console.log("ERROR FROM APPLOZIC: ",esponse.data.errorResponse.description);
+      return null;
+    }
+  }).catch(err=>{
+    console.log("error while getting group info from Applozic" ,err);
+    throw err;
+  });
+
+}
