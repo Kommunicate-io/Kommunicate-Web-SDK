@@ -121,10 +121,16 @@ class AutoSuggest extends Component {
 				})
 
 		}
+		if (index == 0 && this.state.userShortcuts[index].shortcutField == '' && this.state.userShortcuts[index].shortcutField == '') {
+			this.setState({
+				visibleButtons: true
+			})
+		}
 		this.setState({
-			visibleButtons: false,
-			activeTextField: !index		
+			//visibleButtons: false,
+			activeTextField: !index
 		})
+
 
 	}
 	editSuggestion =() => {
@@ -189,6 +195,7 @@ class AutoSuggest extends Component {
 	deleteSuggestion = () => {
 		let index = this.state.activeMenu;
 		let userShortcuts = this.state.userShortcuts;	
+		let usershortcutsCopy = this.state.usershortcutsCopy;
 		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId} };
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
@@ -204,12 +211,16 @@ class AutoSuggest extends Component {
 			console.log(err)
 		})		
 		userShortcuts.splice(index, 1);
+		usershortcutsCopy.splice(index,1)
 
 		this.setState({
 			userShortcuts: userShortcuts,
+			usershortcutsCopy : usershortcutsCopy,
 			visibleMenu: false,
 			visibleButtons: false
+
 		})	
+			
 	}
 	cancelSuggestion = () =>{
 		let index = this.state.activeTextField;
@@ -217,11 +228,19 @@ class AutoSuggest extends Component {
 		let messageRef = "message" + index;
 		let userShortcuts = this.state.userShortcuts;
 		let usershortcutsCopy = this.state.usershortcutsCopy;
-		userShortcuts[index] = Object.assign([],usershortcutsCopy[index])
-		this.setState({
-			userShortcuts: userShortcuts
-		})
 		
+		if(index == 0 && userShortcuts[index].shortcutField == '' && userShortcuts[index].shortcutField == '' ){
+			this.setState({
+				userShortcuts: userShortcuts
+			})
+			userShortcuts.splice(index, 1);
+		}
+		else {
+			userShortcuts[index] = Object.assign([],usershortcutsCopy[index])
+			this.setState({
+				userShortcuts: userShortcuts
+			})
+		}
 
 		if(this.refs[shortcutRef].focus == true){
 			this.refs[shortcutRef].blur();
@@ -250,9 +269,10 @@ class AutoSuggest extends Component {
 		let activeTextField = 0;
 		this.setState({
 			visibleButtons: true,
+			visibleMenu : false,
 			userShortcuts: fieldGroup,
 			activeTextField: activeTextField,	
-		}, (e) => { this.refs.shortcut0.focus() })
+		}, (e) => { this.refs.shortcut0.focus()})
 		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
 
 	}
@@ -264,6 +284,7 @@ class AutoSuggest extends Component {
 			let shortcutRef = "shortcut" + index;
 			let messageRef = "message" + index;
 			let saveRef = "save" + index;
+			let ellipsisMenu = "ellipsis" + index;
 			return <div key={this.state.userShortcuts[index].suggestionId}>
 			<div className="shortcut-field-wrapper">
 				<div className="row">
@@ -310,16 +331,21 @@ class AutoSuggest extends Component {
 						<p className="edit-tag" >Editing</p>
 						}	
 						{  this.state.activeTextField !== index &&
-						<p className="tooltip-btn" ><div className="ellipsis" onClick={() => this.setState({activeMenu:index, visibleMenu: !this.state.visibleMenu})}></div><div className= "ellipsis" onClick={() => this.setState({activeMenu:index, visibleMenu: !this.state.visibleMenu })}></div><div className="ellipsis" onClick={() => this.setState({activeMenu:index,  visibleMenu: !this.state.visibleMenu })}></div></p>
+								<div className="tooltip-btn" onClick={() => {this.setState({ activeMenu: index, visibleMenu: !this.state.visibleMenu }); /*this.refs[ellipsisMenu].focus()  ; */ }}>
+									<div className="ellipsis" ></div>
+									<div className="ellipsis"></div>
+									<div className="ellipsis" ></div>
+								</div>
 						}
 						{this.state.activeMenu === index && this.state.visibleMenu == true &&
+							<div tabIndex={0} ref={ellipsisMenu} onBlur={() => { this.setState({ activeMenu: -1 }); console.log('Blurred') }} onFocus={() => console.log('FOCUS IS ON ELLIPSIS MENU')}  >
+								<ul className="tooltip-menu" >
+									<li className="tooltip-menu-list" onClick={this.editSuggestion}>Edit</li>
+									<hr className="list-divider" />
+									<li className="tooltip-menu-list" onClick={this.deleteSuggestion}>Delete</li>
+								</ul>
+							</div>
 
-							<ul className="tooltip-menu ">
-								<li className="tooltip-menu-list" onClick={this.editSuggestion}>Edit</li> 
-								<hr className="list-divider" />
-								<li className="tooltip-menu-list" onClick={this.deleteSuggestion}>Delete</li>
-							   
-							</ul>
 						}
 					</div>
 				

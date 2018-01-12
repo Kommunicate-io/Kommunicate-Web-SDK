@@ -117,7 +117,7 @@ body{
     position: absolute;
     z-index: 9999;
     margin-left: -35px;
-    margin-top: 11px;
+    
 }
 
 .tooltip-menu::after {
@@ -164,6 +164,8 @@ body{
     display: flex;
     margin-left: 3px;
     cursor: pointer;
+    width: 40px;
+    height: 35px;
 }
 
 .title-line {
