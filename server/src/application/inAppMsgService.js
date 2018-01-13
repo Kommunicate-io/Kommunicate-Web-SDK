@@ -115,19 +115,19 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
@@ -143,7 +143,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
             })
       }else{
         let  message = defaultMessage;
-        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true}).then(response=>{
+        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"}).then(response=>{
             return "success";
           })
       }
