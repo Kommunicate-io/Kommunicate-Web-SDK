@@ -6,6 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import  {createCustomer, saveToLocalStorage,createCustomerOrAgent} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
+import ApplozicClient from '../../../utils/applozicClient';
 
 class Register extends Component {
   constructor(props){
@@ -19,7 +20,8 @@ class Register extends Component {
       isInvited:false,
       isEmailReadonly:false,
       isBackBtnHidden:false,
-      applicationId:null
+      applicationId:null,
+      token:null
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -36,13 +38,13 @@ class Register extends Component {
     }
 
    if(isInvited){
-     this.state.isInvite=true;
+     this.state.isInvited=true;
      //this.state.invitedUserEmail=invitedUserEmail;
      //this.state.email = invitedUserEmail;
      this.state.isEmailReadonly =false;
      this.state.isBackBtnHidden =true;
-     this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId');
-
+     this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
+     this.state.token = CommonUtils.getUrlParameter(search, 'token');
    }
     //console.log("location",this.props.location);
   }
@@ -73,6 +75,51 @@ class Register extends Component {
     //window.location="/login";
     this.props.history.push('/login');
   }
+  createAccountWithUserId=(_this)=>{
+
+    var email = this.state.email;
+    var password =this.state.password;
+    var repeatPassword =this.state.repeatPassword;
+    var name = this.state.email;
+
+   // creating user
+    let userType = this.state.isInvited?"AGENT":"CUSTOMER";
+    let userInfo={};
+    userInfo.userName=_this.state.userName||email;
+    userInfo.email= email;
+    userInfo.type = userType=="AGENT"?1:3;
+    userInfo.applicationId = this.state.applicationId;
+    userInfo.password = password;
+    userInfo.name=email;
+    this.setState({disableRegisterButton:true}); 
+    //Promise.resolve(applozic)
+    Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
+     saveToLocalStorage(email, password, name, response);
+      _this.setState({disableRegisterButton:false});
+
+      CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard";
+      return;
+    }).catch(err=>{
+      _this.setState({disableRegisterButton:false});
+
+      let msg = err.code?err.message:"Something went wrong ";
+      if(err.response&&err.response.code==="BAD_REQUEST"){
+        msg = "Invalid Application Id.";
+      }else if(err.response&&err.response.code =="USER_ALREADY_EXISTS"){
+        msg = " A user already exists with this email!"
+      }else if(err.code=="USER_ALREADY_EXISTS_PWD_INVALID"){
+        Notification.warning("This Email id already associated with another account. Please enter the correct password!", 3000);
+        return;
+      }
+      else if(err.code=="APP_NOT_RECEIVED"){
+        Notification.error(msg);
+        window.location ="/login";
+        return;
+      }
+      Notification.error(msg);
+    });
+
+  }
   createAccount=(event)=>{
     var email = this.state.email;
     var password =this.state.password;
@@ -86,41 +133,17 @@ class Register extends Component {
       Notification.warning(" All fields are mandatory !!");
     }else{
       // located in '../../../utils/kommunicateClient'
-      // creating user
-      let userType = this.state.isInvite?"AGENT":"CUSTOMER";
-      let userInfo={};
-      userInfo.userName=email;
-      userInfo.email= email;
-      userInfo.type = userType=="AGENT"?1:3;
-      userInfo.applicationId = this.state.applicationId;
-      userInfo.password = password;
-      userInfo.name=email;
-      this.setState({disableRegisterButton:true}); 
-      Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
-       saveToLocalStorage(email, password, name, response);
-        _this.setState({disableRegisterButton:false});
-
-        CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard";
-        return;
-      }).catch(err=>{
-        _this.setState({disableRegisterButton:false});
-
-        let msg = err.code?err.message:"Something went wrong ";
-        if(err.response&&err.response.code==="BAD_REQUEST"){
-          msg = "Invalid Application Id.";
-        }else if(err.response&&err.response.code =="USER_ALREADY_EXISTS"){
-          msg = " A user already exists with this email!"
-        }else if(err.code=="USER_ALREADY_EXISTS_PWD_INVALID"){
-          Notification.warning("This Email id already associated with another account. Please enter the correct password!", 3000);
-          return;
-        }
-        else if(err.code=="APP_NOT_RECEIVED"){
-          Notification.error(msg);
-          window.location ="/login";
-          return;
-        }
-        Notification.error(msg);
-      });
+      if(this.state.isInvited){
+        ApplozicClient.getUserInfoByEmail({"email":email,"applicationId":this.state.applicationId,"token": this.state.token})
+        .then(userDetail=>{
+          if(userDetail){
+            _this.state.userName= userDetail.userId;
+          }
+          return _this.createAccountWithUserId(_this);
+        })
+      }else{
+        return _this.createAccountWithUserId(_this);
+      }
     }
   }
 
