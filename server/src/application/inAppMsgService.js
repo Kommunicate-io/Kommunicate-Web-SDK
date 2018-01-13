@@ -143,7 +143,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
             })
       }else{
         let  message = defaultMessage;
-        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId).then(response=>{
+        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true}).then(response=>{
             return "success";
           })
       }
