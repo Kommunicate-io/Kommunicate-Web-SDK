@@ -10,6 +10,9 @@ import {resetPassword} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
 import './login.css';
+import ApplozicClient   from '../../../utils/applozicClient';
+import ValidationUtils from  '../../../utils/validationUtils';
+
 
 class Login extends Component {
 
@@ -17,6 +20,7 @@ constructor(props){
   super(props);
   this.initialState = {
     userName:'',
+    email:'',
     password:'',
     applicationId:'',
     applicationName:'',
@@ -63,6 +67,9 @@ constructor(props){
     })  
   }
 
+  setEmail =(e)=>{
+    this.setState({email:e.target.value});
+  }
 
 setUserName=(event)=>{
 this.setState({userName:event.target.value});
@@ -150,58 +157,66 @@ submitForm = ()=>{
 login = (event)=>{
   var _this= this;
   if(this.state.loginButtonAction==="Login"){
-    this.submitForm();
+    Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+      _this.state.userName=data.userId||_this.state.email;
+    return this.submitForm();
+    });
   }else if(this.state.loginButtonAction==="passwordResetAppSected" ){
     if(this.state.applicationId){
+      Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+        _this.state.userName=data.userId||_this.state.email;
       resetPassword({userName:this.state.userName,applicationId:this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
       return;
+      });
     }else{
       Notification.info("Please select your application");
       return;
     }
   }else{
     console.log(this.state.loginButtonAction);
-    if(!this.state.userName && this.state.loginButtonAction ==="getAppList"){
+    if(!this.state.email && this.state.loginButtonAction ==="getAppList"){
      //alert("please enter user name to login");
      Notification.info("please enter user name to login");
       return;
     }
-    var urlEncodedName = encodeURIComponent(this.state.userName);
-    //console.log("name",urlEncodedName);
-  const getApplistUrl = getConfig().applozicPlugin.applicationList.replace(":userId",urlEncodedName);
-  var _this=this;
-   axios.get(getApplistUrl)
-  .then(function(response){
-    console.log("response",response);
-    if(response.status=200 && response.data!=="Invalid userId or EmailId"){
-      const numOfApp=Object.keys(response.data).length;
-      console.log("number of app",numOfApp);
-      if(numOfApp===1){
-        _this.state.applicationId=Object.keys(response.data)[0];
-        _this.state.applicationName=response.data[_this.state.applicationId];
-        _this.state.appIdList= response.data;
-        console.log("got one application for user, appId : ",_this.state.applicationId);
+   let param = ValidationUtils.isValidEmail(this.state.email)?"emailId":"userId";
+      var urlEncodedName = ValidationUtils.isValidEmail(this.state.email)?encodeURIComponent(this.state.email):encodeURIComponent(this.state.userName);
+
+      //console.log("name",urlEncodedName);
+    const getApplistUrl = getConfig().applozicPlugin.applicationList+"&"+param+"="+urlEncodedName;
+    var _this=this;
+    return  axios.get(getApplistUrl)
+    .then(function(response){
+      console.log("response",response);
+      if(response.status=200 && response.data!=="Invalid userId or EmailId"){
+        const numOfApp=Object.keys(response.data).length;
+        console.log("number of app",numOfApp);
+        if(numOfApp===1){
+          _this.state.applicationId=Object.keys(response.data)[0];
+          _this.state.applicationName=response.data[_this.state.applicationId];
+          _this.state.appIdList= response.data;
+          console.log("got one application for user, appId : ",_this.state.applicationId);
+          if(_this.state.loginButtonAction=="passwordReset"){
+            resetPassword({userName:_this.state.userName,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+            return;
+          }
+          _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
+      }else if(numOfApp>1){
+        //popUpApplicationList(numOfApp,response.data);
+          _this.state.appIdList= response.data;
         if(_this.state.loginButtonAction=="passwordReset"){
-          resetPassword({userName:_this.state.userName,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
-          return;
-        }
-        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
-    }else if(numOfApp>1){
-      //popUpApplicationList(numOfApp,response.data);
-        _this.state.appIdList= response.data;
-      if(_this.state.loginButtonAction=="passwordReset"){
-        _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
-      }else{
-      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
+          _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
+        }else{
+        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
+      }
+    }else{
+      Notification.info("You are not a registered user. Please sign up!!!");
     }
-  }else{
-    Notification.info("You are not a registered user. Please sign up!!!");
-  }
-  }else{
-      console.log("err while getting application list, status : ",response.status);
-      Notification.error(response.message);
-    }
- });
+    }else{
+        console.log("err while getting application list, status : ",response.status);
+        Notification.error(response.message);
+      }
+   });
 }
 }
 register=(event)=>{
@@ -282,7 +297,7 @@ websiteUrl = (e)=> {
                     <p className="text-muted login-signup-sub-heading">{this.state.loginFormSubText}</p>
                     <div className="input-group mb-3" hidden ={this.state.hideUserNameInputbox}>
                       {/* <span className="input-group-addon"><i className="icon-user"></i></span> */}
-                       <input autoFocus type="text" className="input" placeholder=" "  onChange = { this.setUserName } value={ this.state.userName } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress} required/>
+                       <input autoFocus type="text" className="input" placeholder=" "  onChange = { this.setEmail } value={ this.state.email } onBlur ={this.state.handleUserNameBlur} onKeyPress={this.onKeyPress} required/>
                        <label className="label-for-input email-label">Email Id</label>
 
                     </div>

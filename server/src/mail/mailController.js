@@ -2,11 +2,12 @@
 const mailService = require('../utils/mailService');
 const config = require("../../conf/config");
 const path = require("path");
-const registrationService = require('../register/registrationService')
+const registrationService = require('../register/registrationService');
+const userService = require("../users/userService");
 
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId"
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId&token=:token"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
     if(!req.body.text && !req.body.html && !req.body.templateName){
@@ -67,8 +68,8 @@ exports.sendMail =(req,res)=>{
     }
     let options = req.body;
     return Promise.resolve(
-        options.templateName==='INVITE_TEAM_MAIL'? registrationService.getCustomerByUserName(options.adminId):'').then(customer=>{
-            options=getEmailFormat(options, customer);
+        options.templateName==='INVITE_TEAM_MAIL'? userService.getByUserNameAndAppId(options.agentId,options.applicationId):'').then(agent=>{
+            options=getEmailFormat(options, agent);
         return mailService.sendMail(options).then(response=>{
             res.status(200).json({code:"SUCCESS","message": "mail sent successfully to user "+req.body.to});
         })
@@ -87,7 +88,7 @@ const getEmailFormat=(options,custInfo)=>{
         if(!html){
             switch(options.templateName){
                 case "SEND_KOMMUNICATE_SCRIPT":
-                let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+options.applicationId+"&agentId="+options.adminId+"&agentName="+options.adminName;
+                let installationInstruction = config.getProperties().urls.dashboardHostUrl+"/installation?applicationId="+options.applicationId+"&agentId="+options.agentId+"&agentName="+options.agentName;
                 templatePath = path.join(__dirname,"/emailInstructionTemplate.html");
                 templateReplacement[":kommunicateLogoUrl"] = kommunicateLogoUrl;
                 templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl;
@@ -102,13 +103,13 @@ const getEmailFormat=(options,custInfo)=>{
 
                 case "INVITE_TEAM_MAIL":
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
-                templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.adminName+" from "+custInfo.companyName:options.adminName,
+                templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.agentName+" from "+custInfo.companyName:options.agentName,
                 templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
-                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId),
+                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId).replace(":token",custInfo.apzToken),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
                 options.subject =  custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
-                options.bcc = "hello@kommunicate.io";
+                options.bcc = "support@kommunicate.io";
                 break;
 
             }

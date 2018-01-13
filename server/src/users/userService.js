@@ -74,7 +74,7 @@ const createUser =user=>{
       }
     }))
     .then(applozicUser=>{
-      console.log("created user in applozic db",applozicUser.userName);
+      console.log("created user in applozic db",applozicUser.userId);
       user.customerId=customer.id;
       user.apzToken=new Buffer(user.userName+":"+user.password).toString('base64');
       user.authorization = new Buffer(user.userId+":"+applozicUser.deviceKey).toString('base64');

@@ -168,8 +168,8 @@ const callSendEmailAPI = (options) => {
       "from":userSession.displayName || userId +"<"+userId+">",
       "kommunicateScript":getJsCode(),
       "applicationId":userSession.application.applicationId,
-      "adminName":userSession.displayName || userId,
-      "adminId": userId
+      "agentName":userSession.displayName || userId,
+      "agentId": userId
     }
   }))
   .then( (response) => {

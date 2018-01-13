@@ -12,7 +12,8 @@ var baseurl ={
    kommunicateAPI: "https://api-test.kommunicate.io"
   },
   default:{
-   baseUrl: "https://apps-test.applozic.com",
+   //baseUrl: "https://apps-test.applozic.com",
+   baseUrl: "http://localhost:9090/applozic",
    kommunicateAPI: "http://localhost:3999"
   //kommunicateAPI: "https://api-test.kommunicate.io"
 
@@ -32,7 +33,7 @@ var config = {
       userDetailUrl:baseurl.prod.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
       registerClientUrl: baseurl.prod.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots.applozic.com/bot',
-      applicationList:baseurl.prod.baseUrl+'/rest/ws/user/getlist?userId=:userId&roleNameList=APPLICATION_WEB_ADMIN',
+      applicationList:baseurl.prod.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:baseurl.prod.baseUrl+"/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.prod.baseUrl+"/rest/ws/invite/dev",
       statsUrl:baseurl.prod.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
@@ -68,7 +69,7 @@ var config = {
       userDetailUrl:baseurl.dashboard.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
       registerClientUrl: baseurl.dashboard.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots.applozic.com/bot',
-      applicationList:baseurl.dashboard.baseUrl+'/rest/ws/user/getlist?userId=:userId&roleNameList=APPLICATION_WEB_ADMIN',
+      applicationList:baseurl.dashboard.baseUrl+'/rest/ws/user/getlist?&roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:baseurl.dashboard.baseUrl+"/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.dashboard.baseUrl+"/rest/ws/invite/dev",
       statsUrl:baseurl.dashboard.baseUrl+'/rest/ws/stats/get?appKey=:appKey',
@@ -106,7 +107,7 @@ var config = {
       registerClientUrl: baseurl.test.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots-test.applozic.com/bot',
       statsUrl:'https://apps-test.applozic.com/rest/ws/stats/get?appKey=:appKey',
-      applicationList:baseurl.test.baseUrl+'/rest/ws/user/getlist?userId=:userId&roleNameList=APPLICATION_WEB_ADMIN',
+      applicationList:baseurl.test.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:"https://apps-test.applozic.com/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.test.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
@@ -122,7 +123,7 @@ var config = {
       createUser:baseurl.test.kommunicateAPI+"/users",
       logo:baseurl.test.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:"https://dashboard-test.kommunicate.io/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
+      sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.test.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.test.kommunicateAPI+"/profileImage"
@@ -136,7 +137,7 @@ var config = {
     kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
     kommunicateWebsiteUrl: "https://test.kommunicate.io",
     applozicPlugin:{
-      applozicHosturl:"https://apps-test.applozic.com/",
+      applozicHosturl:"http://localhost:9090/applozic/",
       baseUrl:"http://api-test.kommunicate.io/kommunicate.app",
       sendMessageUrl:baseurl.default.baseUrl+"/rest/ws/message/v2/send",
       sendMailUrl: "https://apps-test.applozic.com/applozic/rest/ws/mail/send",
@@ -144,7 +145,7 @@ var config = {
       registerClientUrl: baseurl.default.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots-test.applozic.com/bot',
       statsUrl:'https://apps-test.applozic.com/rest/ws/stats/get?appKey=:appKey',
-      applicationList:baseurl.default.baseUrl+'/rest/ws/user/getlist?userId=:userId&roleNameList=APPLICATION_WEB_ADMIN',
+      applicationList:baseurl.default.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:"https://apps-test.applozic.com/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.default.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
