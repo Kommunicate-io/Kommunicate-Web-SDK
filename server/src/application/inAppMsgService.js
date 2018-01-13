@@ -111,15 +111,36 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
 const processConversationStartedEvent= (eventType, conversationId, customer, agentName)=>{
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
-        inAppMessages.map(inAppMessage => {
-          let  message = inAppMessage && inAppMessage.dataValues ? inAppMessage.dataValues.message:defaultMessage;
+        // inAppMessages.map(inAppMessage => {
+          let message1 = inAppMessages[0]
+          let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"}).then(response=>{
-            if(response.status == 200){
-              return "success";
-            }
-          })
-        })
+          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+            .then(response => {
+              if(response.status == 200){
+                if(inAppMessages[1]){
+                  let message2 = inAppMessages[1]
+                  let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
+                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+                    .then(response => {
+                      if(response.status == 200){
+                        if(inAppMessages[2]){
+                          let message3 = inAppMessages[2]
+                          let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
+                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"ARCHIVE":true})
+                            .then(response => {
+                              if(response.status == 200){
+                                return "succcess"
+                              }
+                            })
+                        }
+                        return "success";
+                      }
+                    })
+                }
+                return "success";
+              }
+            })
       }else{
         let  message = defaultMessage;
         return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId).then(response=>{
@@ -127,7 +148,6 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
           })
       }
     })
-    
 }
 
 const countEnableRecordsInAppMsgs = (createdBy, customerId, eventId) => {
