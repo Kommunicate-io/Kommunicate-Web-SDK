@@ -237,7 +237,7 @@ const config ={
     },
     groupMetadata:{
       ADD_MEMBER_MESSAGE:"",
-      CREATE_GROUP_MESSAGE:"",
+      CREATE_GROUP_MESSAGE:"Conversation started",
       DELETED_GROUP_MESSAGE:"",
       GROUP_LEFT_MESSAGE:"",
       GROUP_META_DATA_UPDATED_MESSAGE:"",
