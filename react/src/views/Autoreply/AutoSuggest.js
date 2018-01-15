@@ -20,7 +20,7 @@ class AutoSuggest extends Component {
 		activeTextField: -1,
 		activeMenu: -1,
 		visibleMenu: false,
-		visibleButtons: false,
+		visibleButtons: false
 	}
 
 	componentDidMount() {
@@ -88,7 +88,6 @@ class AutoSuggest extends Component {
 	}
 	_createSuggestion = (e) => {
 		let index = this.state.activeTextField;
-
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
 		} else {
@@ -136,6 +135,7 @@ class AutoSuggest extends Component {
 	editSuggestion =() => {
 		let index = this.state.activeMenu;
 		let shortcutRef ="shortcut"+index;
+		let ellipsisMenu = "ellipsisMenu"+index
 		this.refs[shortcutRef].focus();
 		this.setState ({
 			visibleMenu:false,
@@ -143,7 +143,14 @@ class AutoSuggest extends Component {
 		})
 	}
 	
-	
+	focusEllipsisDropdownMenu = (_this) => {
+		let index = this.state.activeMenu;
+		let ellipsisMenu = "ellipsis" + index;
+		setTimeout(function () {
+			_this.refs[ellipsisMenu].focus();
+		}, 1);
+		
+	}
 	
 	updateSuggestion = (index) => {
 		let userShortcuts = this.state.userShortcuts;
@@ -331,19 +338,20 @@ class AutoSuggest extends Component {
 						<p className="edit-tag" >Editing</p>
 						}	
 						{  this.state.activeTextField !== index &&
-								<div className="tooltip-btn" onClick={() => {this.setState({ activeMenu: index, visibleMenu: !this.state.visibleMenu }); /*this.refs[ellipsisMenu].focus()  ; */ }}>
+								<div className="tooltip-btn" onClick={() => {this.setState({ activeMenu: index, visibleMenu: !this.state.visibleMenu})}}>
 									<div className="ellipsis" ></div>
 									<div className="ellipsis"></div>
 									<div className="ellipsis" ></div>
 								</div>
 						}
 						{this.state.activeMenu === index && this.state.visibleMenu == true &&
-							<div tabIndex={0} ref={ellipsisMenu} onBlur={() => { this.setState({ activeMenu: -1 }); console.log('Blurred') }} onFocus={() => console.log('FOCUS IS ON ELLIPSIS MENU')}  >
+							<div tabIndex ={index} ref={ellipsisMenu} onBlur={() => { this.setState({visibleMenu: !this.state.visibleMenu})}} >
 								<ul className="tooltip-menu" >
 									<li className="tooltip-menu-list" onClick={this.editSuggestion}>Edit</li>
 									<hr className="list-divider" />
 									<li className="tooltip-menu-list" onClick={this.deleteSuggestion}>Delete</li>
 								</ul>
+								{this.focusEllipsisDropdownMenu(this)}
 							</div>
 
 						}
