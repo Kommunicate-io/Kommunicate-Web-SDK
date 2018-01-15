@@ -53,11 +53,12 @@ exports.addMemberIntoConversation = (data) => {
                     users.forEach(function (user) {
                         if(user.type===2){
                             header.apzToken=user.apzToken
-                        }
+                        } else {
+                            groupInfo.userIds.push(user.userName);
+                        } 
                         if(user.type===3){
                             header.ofUserId=user.userName
                         }
-                            groupInfo.userIds.push(user.userName);
                         
                     });
                     logger.info('group info:',groupInfo, 'applicationId: ',customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
