@@ -65,7 +65,7 @@ let handleCreateUserError =(user,customer,err)=>{
 const createUser =user=>{
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
     let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";
-    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role)
+    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role,user.email,user.name)
     .catch(err=>{
       if(user.type===registrationService.USER_TYPE.AGENT){
       return handleCreateUserError(user,customer,err);
