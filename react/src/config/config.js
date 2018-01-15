@@ -123,7 +123,7 @@ var config = {
       createUser:baseurl.test.kommunicateAPI+"/users",
       logo:baseurl.test.kommunicateAPI+"/img/logo1.png",
       activateAccountUrl:"https://dashboard-test.kommunicate.io/register?invite=true&applicationId=:applicationId",
-      sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
+      sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.test.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.test.kommunicateAPI+"/profileImage"
