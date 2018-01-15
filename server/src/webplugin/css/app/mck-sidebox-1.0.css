@@ -2221,7 +2221,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	display: table !important;
 }
 
-.mck-box input {
+/*.mck-box input {
 	height: 32px;
 	padding: 0 5px;
 	width: calc(100% - 35px);
@@ -2238,7 +2238,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	float: left;
 	margin-bottom: 0;
 	display: table-cell;
-}
+}*/
 
 .mck-box .mck-sidebox-search input {
 	background-color: #fff;
@@ -3938,7 +3938,7 @@ cursor: pointer;
 .km-card-message-container {
    /* width: 90%; */
     display: flex;
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
     /* margin-right: 0px; */
     margin: 0;
     width: 315px;
@@ -4220,3 +4220,88 @@ cursor: pointer;
 .km-undecorated-link{
 	text-decoration:none;
 }
+
+/********** Guest Details Form Starts Here ***********/
+
+.km-guest-detail-form {
+    border-bottom: 1px solid#eee;
+}
+.km-title-select {
+		-webkit-appearance: none;
+		margin-top: 10px;
+		display: inline;
+		width: 41.5%;
+		font-size: 16px !important;
+		border-radius: 18px;
+		padding: 6px 5px 6px 10px;
+		outline: none;
+		border: 1px solid rgba(0, 0, 0, 0.5);
+		position: relative;
+		}
+		.km-select-title {
+		position: relative;
+		display: inline;
+		
+		}
+		.km-select-title::after {
+		position: absolute;
+		top: 50%;
+		right: 15px;
+		transform: translateY(-50%);
+		width: 0;
+		height: 0;
+		padding: 0;
+		content: '';
+		border-left: 4px solid transparent;
+		border-right: 4px solid transparent;
+		border-top: 4px solid #333333;
+		pointer-events: none;
+		}
+
+.km-guest-details-container input{
+	width: 91.5%;
+    border-radius: 18px;
+    outline: none ;
+    border: 1px solid rgba(0, 0, 0, 0.5) ;
+    margin-top: 8px ;
+    font-size: 16px ;
+    padding: 6.5px 10px ;
+}
+
+/*.km-input {
+    width: 91.5% !important;
+    border-radius: 18px !important;
+    outline: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.5) !important;
+    margin-top: 8px !important;
+    font-size: 16px !important;
+    padding: 6.5px 10px !important;
+}*/
+.km-input:last-child {
+    margin-bottom: 15px !important;
+}
+.km-age-input {
+    display: inline !important;
+    width: 43% !important;
+    margin-left: 5px !important;
+}
+.km-guest-button-container {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+/*.km-add-more-rooms {
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border: 1px solid #00b0ff;
+    background-color: #fff;
+    color: #00b0ff;
+    border-radius: 18px;
+    font-size: 14px;
+    padding: 5px 10px;
+    cursor: pointer;
+}*/
+.km-done-button {
+    float: right;
+}
+/********** Guest Details Form Ends Here ***********/
