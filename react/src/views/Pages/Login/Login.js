@@ -182,7 +182,7 @@ login = (event)=>{
       return;
     }
    let param = ValidationUtils.isValidEmail(this.state.email)?"emailId":"userId";
-      var urlEncodedName = ValidationUtils.isValidEmail(this.state.email)?encodeURIComponent(this.state.email):encodeURIComponent(this.state.userName);
+      var urlEncodedName = encodeURIComponent(this.state.email);
 
       //console.log("name",urlEncodedName);
     const getApplistUrl = getConfig().applozicPlugin.applicationList+"&"+param+"="+urlEncodedName;
