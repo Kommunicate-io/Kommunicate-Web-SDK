@@ -158,7 +158,7 @@ login = (event)=>{
   var _this= this;
   if(this.state.loginButtonAction==="Login"){
     Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
-      _this.state.userName=data.userId||_this.state.email;
+      data?_this.state.userName=data.userId:_this.state.userName=_this.state.email;
     return this.submitForm();
     });
   }else if(this.state.loginButtonAction==="passwordResetAppSected" ){
