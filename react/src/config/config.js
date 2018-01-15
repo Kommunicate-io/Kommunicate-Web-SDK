@@ -113,7 +113,7 @@ var config = {
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
       getTimeZoneUrl:'https://api-test.kommunicate.io/misc/tz',
       createApplozicUser: baseurl.test.baseUrl+'/rest/ws/user/v2/create',
-      updateApplozicUser: baseurl.default.baseUrl+'/rest/ws/user/update',
+      updateApplozicUser: baseurl.test.baseUrl+'/rest/ws/user/update',
     },kommunicateApi:{
       login:"https://api-test.kommunicate.io/login",
       signup:"https://api-test.kommunicate.io/customers",
