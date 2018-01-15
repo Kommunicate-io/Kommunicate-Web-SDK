@@ -323,7 +323,7 @@ exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)
       throw new Error("ERROR: received response from applozic" + response.status);
     }
   }).catch(err => {
-    console.log("error while sending message ", err);
+    console.log("error while adding user into group", err);
     throw err;
   });
 }

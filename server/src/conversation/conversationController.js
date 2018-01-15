@@ -2,6 +2,7 @@
 
 const conversationService = require('./conversationService');
 const dbUtils =require("../utils/dbUtils.js");
+const logger = require('../utils/logger');
 /**
  * returns conversation list of given participent_user_Id
  * 
@@ -40,10 +41,11 @@ exports.createConversation= (req,res)=>{
 
 exports.addMemberIntoConversation = (req, res) => {
     conversationService.addMemberIntoConversation(req.body).then(response=>{
-        console.log('response', response)
+        logger.info('response', response)
         res.status(201).json({code:"SUCCESS", data:'success'});
     }).catch(err => {
-        console.log("error while creating conversation ", err);
+        logger.info("error while adding member into conversation ", err);
+        res.status(204).json({code:"SUCCESS", data:'add member error'});
     });
 
 }
