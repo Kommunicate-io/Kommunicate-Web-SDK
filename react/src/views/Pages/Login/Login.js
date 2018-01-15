@@ -12,6 +12,7 @@ import CommonUtils from '../../../utils/CommonUtils';
 import './login.css';
 import ApplozicClient   from '../../../utils/applozicClient';
 import ValidationUtils from  '../../../utils/validationUtils';
+import { Buffer } from 'buffer';
 
 
 class Login extends Component {
