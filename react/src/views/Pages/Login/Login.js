@@ -12,6 +12,7 @@ import CommonUtils from '../../../utils/CommonUtils';
 import './login.css';
 import ApplozicClient   from '../../../utils/applozicClient';
 import ValidationUtils from  '../../../utils/validationUtils';
+import { Buffer } from 'buffer';
 
 
 class Login extends Component {
@@ -157,7 +158,8 @@ submitForm = ()=>{
 login = (event)=>{
   var _this= this;
   if(this.state.loginButtonAction==="Login"){
-    Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+    let apzToken = 'Basic '+ new Buffer(this.state.email+':'+this.state.password).toString('base64');
+    Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId, 'apzToken':apzToken})).then(data=>{
       _this.state.userName=data.userId||_this.state.email;
     return this.submitForm();
     });
