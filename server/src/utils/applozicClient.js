@@ -7,7 +7,7 @@ const apzToken = config.getProperties().kommunicateAdminApzToken;
 /*
 this method register a user in applozic db with given parameters.
 */
-exports.createApplozicClient = (userId,password,applicationId,gcmKey,role)=>{
+const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,displayName)=>{
   console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role);
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
@@ -52,6 +52,13 @@ exports.createApplozicClient = (userId,password,applicationId,gcmKey,role)=>{
     throw err;
   });
 };
+exports.createApplozicClient =createApplozicClient;
+
+exports.createUserInApplozic = (options)=>{
+
+  return  Promise.resolve(createApplozicClient(options.userId,options.password,options.applicationId,options.gcmKey,options.role,options.email,options.name));
+
+}
 
 
 /*
@@ -135,7 +142,7 @@ exports.getApplication=(customer)=>{
     });
   };
 
-exports.applozicLogin =(userName,password,applicationId,role)=>{
+exports.applozicLogin =(userName,password,applicationId,role,email)=>{
   let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1};
   if (role){
     data.role= role;
