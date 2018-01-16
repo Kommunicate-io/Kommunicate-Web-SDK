@@ -17,8 +17,6 @@ import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
-import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
-
 
 class Full extends Component {
 
@@ -52,16 +50,11 @@ class Full extends Component {
   }
 
   render() {
-
-    const currentPath = window.location.pathname;
-
     return (
       <div className="app"> 
         <Header profilePicUrl={this.state.imageLink}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('autoreply')) ? <SettingsSidebar {...this.props}/> : null}
-          
           <main className="main">
             <Breadcrumb />
             <div className="container-fluid">
@@ -77,9 +70,6 @@ class Full extends Component {
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/settings/integration" name="Integration" component={Integration}/>
-                }}/> 
-                  
-                
                 <Redirect from="/" to="/dashboard"/>
 
               </Switch>
