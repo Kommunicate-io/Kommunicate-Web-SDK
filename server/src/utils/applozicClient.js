@@ -56,7 +56,7 @@ exports.createApplozicClient =createApplozicClient;
 
 exports.createUserInApplozic = (options)=>{
 
-  return  Promise.resolve(createApplozicClient(options.userId,options.password,options.applicationId,options.gcmKey,options.role,options.email,options.name));
+  return  Promise.resolve(createApplozicClient(options.userName,options.password,options.applicationId,options.gcmKey,options.role,options.email,options.name));
 
 }
 
