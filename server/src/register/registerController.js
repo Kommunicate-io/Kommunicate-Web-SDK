@@ -114,7 +114,11 @@ exports.patchCustomer = (req,res)=>{
   
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     userService.getAdminUserByAppId(customer.applicationId).then(user=>{
-      applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,{userId:userId, displayName:customer.name, email: customer.email}).then(response=>{
+      let userobj =  {};
+      userId?userobj.userId=userId:"";
+      customer.name? userobj.displayName = customer.name:"";
+      customer.email?userobj.email =customer.email:"";
+      applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,userobj).then(response=>{
         console.log("Applozic update user response: " + response);
       }).catch(err=>{
         console.log("error while updating Applozic user");
