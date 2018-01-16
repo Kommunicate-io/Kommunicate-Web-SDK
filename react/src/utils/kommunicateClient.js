@@ -24,12 +24,12 @@ const createCustomerOrAgent = (userInfo, userType)=>{
     case "BOT":
       return createAgent(userInfo);
     default:
-    return createCustomer(userInfo.email,userInfo.password,userInfo.name);
+    return createCustomer(userInfo.email,userInfo.password,userInfo.name,userInfo.userName);
   }
 }
-const createCustomer = function(email,password,name) {
+const createCustomer = function(email,password,name,userName) {
   const signUpUrl = getConfig().kommunicateApi.signup;
-  return Promise.resolve(axios.post(signUpUrl, { userName: email, password:password, name:name}))
+  return Promise.resolve(axios.post(signUpUrl, { userName: userName, password:password, name:name,email:email}))
     .then((response) => {
         console.debug(response.data.data);
         if(response.status==200){
