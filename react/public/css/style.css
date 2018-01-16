@@ -7700,7 +7700,7 @@ iframe#crowd-shortcut {
     overflow-x: hidden;
     overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    width: 200px; }
+    width: 60px; }
     .sidebar .sidebar-nav::-webkit-scrollbar {
       position: absolute;
       width: 10px;
@@ -7718,7 +7718,7 @@ iframe#crowd-shortcut {
       border-style: solid;
       border-width: 1px 2px; }
   .sidebar .nav {
-    width: 200px;
+    width: 60px;
     flex-direction: column !important; }
     .sidebar .nav .nav-title {
       padding: 0.75rem 1rem;
@@ -8636,13 +8636,13 @@ app-root {
 
 .sidebar-fixed .sidebar {
   position: fixed;
-  width: 200px;
+  width: 60px;
   height: 100%; }
   .sidebar-fixed .sidebar .sidebar-nav {
     height: calc(100vh - 55px); }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
-  margin-left: 200px; }
+  margin-left: 60px; }
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
