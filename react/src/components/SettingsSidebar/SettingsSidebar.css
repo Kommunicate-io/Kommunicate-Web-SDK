@@ -79,4 +79,8 @@
 
 .aside-menu {
     width: calc(100% - 60px);
+    z-index: 1;
+}
+.aside-menu-hidden .aside-menu {
+    margin-right: calc(60px - 100%);
 }
