@@ -19,11 +19,23 @@ function initAutoSuggestions() {
     $('#km-text-box').atwho({
       at: `/${autoSuggest}`,
       insertTpl: '${content}',
-      displayTpl: '<li>${name} <small>${content}</small></li>',
-      data: autoSuggestions[autoSuggest]
-    })  
+      displayTpl: '<li data-suggestionId="${suggestionId}">${name} <small>${content}</small></li>',
+      data: autoSuggestions[autoSuggest],
+      callbacks: {
+        beforeInsert: function(value, $li, e) {
+          var machineInput = {"text": $(".active-chat .km-msg-left .km-msg-content div").last().html(), "label": $li.attr('data-suggestionId')};
+          $('#km-text-box').data("metadata", encodeURIComponent(JSON.stringify(machineInput)));
+          return value;
+        },
+        beforeReposition: function(offset) {
+          return offset;
+        },
+        afterMatchFailed: function(at, el) {
+
+        }
+      }  
+    });
   }
-  
 }
 
 
@@ -169,10 +181,11 @@ function getSuggestions(_urlAutoSuggest) {
     .then(autoSuggestions_data => {
       console.log(autoSuggestions_data)
       autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
+          console.log(curr);
           if(curr.category in prev){
-            prev[curr.category].push({name:curr.name, content:curr.content})
+            prev[curr.category].push({suggestionId: curr.id, name:curr.name, content:curr.content})
           }else{
-            prev[curr.category] = [{name:curr.name, content:curr.content}]
+            prev[curr.category] = [{suggestionId: curr.id, name:curr.name, content:curr.content}]
           }
         return prev;
       }, {});

@@ -1958,6 +1958,11 @@ var KM_CLIENT_GROUP_MAP = [];
 						"contentType" : 0,
 						"message" : message
 					};
+
+					if ($mck_text_box.data('metadata')) {
+						messagePxy.metadata = {'KM_ML_01' : decodeURIComponent($mck_text_box.data('metadata'))};
+						$mck_text_box.data("metadata", null);
+					}
 					var conversationId = $mck_msg_inner.data('km-conversationid');
 					var topicId = $mck_msg_inner.data('km-topicid');
 					if (conversationId) {
@@ -1977,6 +1982,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					} else {
 						messagePxy.to = $mck_msg_to.val();
 					}
+
 					$mck_msg_sbmt.attr('disabled', true);
 					$mck_msg_error.removeClass('vis').addClass('n-vis');
 					$mck_msg_error.html("");
@@ -3201,6 +3207,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				$kmApplozic('.chat').removeClass('active-chat');
 				$kmApplozic('.left .person').removeClass('active');
 				if (params.tabId) {
+					$mck_text_box.data("metadata", null);
 					if ($kmApplozic('.person[data-km-id ="' + params.tabId + '"][data-isgroup ="' + params.isGroup + '"]').length == 0) {
 						_this.updateRecentConversationList(params.isGroup ? kmGroupUtils.getGroup(params.tabId) : _this.fetchContact(params.tabId), undefined, true, params.prepend);
 					}
