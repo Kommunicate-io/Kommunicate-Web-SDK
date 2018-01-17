@@ -846,9 +846,9 @@ class Aside extends Component {
                               <li className="bio n-vis"></li>
                               <li className="title n-vis"></li>
                               <li className="company n-vis"></li>
-                              <li className="domain n-vis"><a className="domain-url" href="" target="_blank"></a></li>
+                              <li className="domain n-vis">Website: <a className="domain-url" href="" target="_blank"></a></li>
                               <li className="location n-vis"></li>
-                              <li className="profile-linkedin n-vis"><a className="linkedin" href="" target="_blank"></a></li>
+                              <li className="profile-linkedin n-vis">linkedin: <a className="linkedin" href="" target="_blank"></a></li>
                             </ul>
                           </div>
                         </div>
