@@ -174,7 +174,7 @@ class WhenYouAreOffline extends Component {
         if(response){
           Notification.success('Successfully deleted');
         }else {
-          Notification.danger('Not deleted');
+          Notification.warning('Not deleted');
         }
       })
     }
