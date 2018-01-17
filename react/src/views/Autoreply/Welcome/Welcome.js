@@ -18,10 +18,8 @@ class Welcome extends Component{
      msg:'',
      showOverlay: false,
      enableDisableCheckbox: true,
-     onlineKnownUserMsgs: [],
-     onlineUnknownUserMsgs: [],
-     offlineKnownUserMsgs: [],
-     offlineUnknownUserMsgs: [],
+     showOfflinePrefs: false,
+     showOnlinePrefs: false,
     };
     this.submitWelcomeMessage = this.submitWelcomeMessage.bind(this);
   }
@@ -69,6 +67,32 @@ class Welcome extends Component{
       this.setState({showOverlay: false})
     }
 
+  }
+
+  toggleOnlinePrefs = (showPref) => {
+    if(showPref){
+      this.setState({
+        showOnlinePrefs: true,
+        showOfflinePrefs: false
+      })
+    }else{
+      this.setState({
+        showOnlinePrefs: false
+      })
+    }
+  }
+
+  toggleOfflinePrefs = (showPref) => {
+    if(showPref){
+      this.setState({
+        showOfflinePrefs: true,
+        showOnlinePrefs: false
+      })
+    }else{
+      this.setState({
+        showOfflinePrefs: false
+      })
+    }
   }
 
   handleCheckboxChange = () => {
@@ -121,9 +145,9 @@ render(){
           </div>
           <div >{/* style={{'display':'none'}} remove this div for display*/}
           <hr className="km-welcome-hr" />
-          <WhenYouAreOnline />
+          <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} />
           <hr className="km-welcome-hr" />
-          <WhenYouAreOffline />
+          <WhenYouAreOffline showOfflinePrefs={this.state.showOfflinePrefs} toggleOfflinePrefs={this.toggleOfflinePrefs} />
           </div>
         </div>
         <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay": "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
