@@ -31,10 +31,13 @@ class MessageSection extends Component {
 		editInAppMsg(this.props.id, this.state.msg)
 			.then(response => {
 				if(response){
-  					Notification.success('Successfully edited');
+  					Notification.success('Saved edited changes');
 	  			}else {
-	  				Notification.danger('Not deleted');
+	  				Notification.warning('Edited message not saved');
 	  			}
+			}).catch(err => {
+				console.log(err);
+				Notification.warning('Edited message not saved');
 			})
 	}
 
