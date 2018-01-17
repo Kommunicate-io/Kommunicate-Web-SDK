@@ -383,6 +383,17 @@ class AutoSuggest extends Component {
 
 				<div className="field-header">
 					<div className="row">
+					{this.state.userShortcuts.length == 0 && 
+							<div className="empty-state-message-shortcuts-div text-center col-lg-9">
+								<img src="img/empty-message-shortcuts.png" alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
+								<p className="empty-state-message-shortcuts-first-text">
+									Why don't you create<br></br>your first shortcut here!
+								</p>
+								<p className="empty-state-message-shortcuts-second-text">
+									Save your time by setting up shortcuts<br></br>for common responses
+								</p>
+							</div>
+						}
 						<div className="col-md-3">
 							{this.state.userShortcuts.length > 0 &&
 								<div className="field-title">Shortcut</div>

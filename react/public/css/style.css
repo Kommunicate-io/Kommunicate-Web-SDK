@@ -9673,3 +9673,23 @@ pointer-events: none;
     font-style: italic;
     padding-left: 3px;
 }
+
+.empty-state-message-shortcuts-img, .empty-state-customers-img {
+  width: auto;
+  height: 200px;
+}
+.empty-state-message-shortcuts-first-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a5a5a5;
+  margin-bottom: 0px;
+  margin-top: 15px;
+}
+.empty-state-message-shortcuts-second-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #a5a5a5;
+}
+.empty-state-customers-div {
+  margin-top: 20px;
+}
