@@ -154,26 +154,30 @@ function clearbit(email, userId) {
 function displayCustInfo(clearbitData) {
   var person = clearbitData.person;
   var company = clearbitData.company;
-            var info = "";
+  var info = "";
   var userInfo = {};
-            if (typeof person !== "undefined" && person != null && person != "null") {
-                info = person.bio + " " + person.location;
+  if (typeof person !== "undefined" && person != null && person != "null") {
+    info = person.bio + " " + person.location;
+    $("#km-user-info-list .bio").removeClass('n-vis');
     $("#km-user-info-list .bio").html(person.bio + " " + person.location);
-                var employment = person.employment;
-                if (typeof employment !== "undefined" && employment != null && employment != "null") {
-                    info = info + " " + person.employment.title;
+    var employment = person.employment;
+    if (typeof employment !== "undefined" && employment != null && employment != "null") {
+      info = info + " " + person.employment.title;
+      $("#km-user-info-list .title").removeClass('n-vis');
       $("#km-user-info-list .title").html(person.employment.title);
-                }
-                var linkedin = person.linkedin;
-                if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
-                    info = info + " " + linkedin.handle;
+    }
+    var linkedin = person.linkedin;
+    if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
+      info = info + " " + linkedin.handle;
+      $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
       $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
-                }
-            }
-            if (typeof company !== "undefined" && company != null && company != "null") {
-                info = info + " " + company.domain;
-    $("#km-user-info-list .domain").attr('href', 'https://www.'+company.domain);
-        }
+    }
+  }
+  if (typeof company !== "undefined" && company != null && company != "null") {
+    info = info + " " + company.domain;
+    $("#km-user-info-list .domain").removeClass('n-vis');
+    $("#km-user-info-list .domain").attr('href', 'https://www.' + company.domain);
+  }
   console.log(info)
 }
 
