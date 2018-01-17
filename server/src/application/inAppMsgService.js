@@ -250,5 +250,19 @@ exports.softDeleteInAppMsg=(id)=>{
 
 }
 
+exports.editInAppMsg=(body)=>{
+
+  logger.info(body);
+  return Promise.resolve(db.InAppMsg.update({message:body.message}, {
+    where : {
+      id: body.id
+    }}).then(response => {
+        logger.info("response is...");
+        logger.info(response);
+        response.message = "Edited"
+        return response;    
+      })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+}
+
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

@@ -49,3 +49,9 @@ exports.getInAppMessagesByEventId ={
         eventId:joi.number().required().min(1).max(4)
     }
 }
+exports.editInAppMessages ={
+    body:{
+        id:joi.number().required(),
+        message:joi.string().required(),
+    }
+}
