@@ -43,7 +43,7 @@ class WhenYouAreOnline extends Component {
 	state = {
 		...this.unknownUser,
 		...this.knownUser,
-		showPrefs: false,
+		showPrefs: this.props.showOnlinePrefs,
 		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
 	}
 
@@ -64,10 +64,17 @@ class WhenYouAreOnline extends Component {
 		            unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 		          }
 		        }, () => {
-		        	this.setState((prevState) => {
-		        		let messageId = message.id
-						return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
-					});
+		        	if(this.state.unknownMessageSections.length < 1){
+		        		this.setState((prevState) => {
+			        		let messageId = message.id
+							return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+						});
+		        	}else{
+		        		this.setState((prevState) => {
+			        		let messageId = message.id
+							return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+						});
+		        	}
 		        })
 		    }else if(message.status === 1 && message.metadata !== null){
 		        this.setState(prevState =>{
@@ -102,9 +109,15 @@ class WhenYouAreOnline extends Component {
 		            knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
 		          }
 		        }, () => {
-		        	this.setState((prevState) => {
-						return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
-					});
+		        	if(this.state.knownMessageSections.length < 1){
+		        		this.setState((prevState) => {
+							return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
+						});
+		        	}else{
+		        		this.setState((prevState) => {
+							return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
+						});
+		        	}
 		        })
 	    	}
 	      })
@@ -115,9 +128,21 @@ class WhenYouAreOnline extends Component {
 	    })
   	}
 
+  	componentWillReceiveProps(nextProps) {
+  		if(nextProps.showOnlinePrefs){
+  			this.setState({
+	    		showPrefs: true,
+	    		upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
+	    	})
+  		}else{
+  			this.setState({
+	    		showPrefs: false,
+	    		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
+	    	})
+  		}
+  	}
 
   	_deleteInAppMsg = (id) => {
-  		console.log(id)
   		deleteInAppMsg(id).then(response =>{
 
   			this.setState((prevState) => {
@@ -150,12 +175,12 @@ class WhenYouAreOnline extends Component {
 	  		this.setState({
 	  			showPrefs: false,
 	  			upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
-	  		})
+	  		}, () => {this.props.toggleOnlinePrefs(false)})
 	  	}else {
 	  		this.setState({
 	  			showPrefs: true,
 	  			upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
-	  		})
+	  		}, () => {this.props.toggleOnlinePrefs(true)})
 	  	}
 	}
 
@@ -184,7 +209,9 @@ class WhenYouAreOnline extends Component {
 			this.setState((prevState) => {
 				return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}}/>}])}
 			});
-		}
+		}else if(this.state.unknownMessageSections.length > 2){
+      		Notification.warning('Limit of 3 in app messages reached');
+    	}
 	}
 
 	known_addMessageSection = (e) => {
@@ -193,7 +220,9 @@ class WhenYouAreOnline extends Component {
 			this.setState((prevState) => {
 				return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}}/>}])}
 			});
-		}
+		}else if(this.state.knownMessageSections.length > 2){
+      		Notification.warning('Limit of 3 in app messages reached');
+    	}
 	}
 
 	addLeadGenerationTemplate = (e) => {
@@ -309,7 +338,6 @@ class WhenYouAreOnline extends Component {
 	}
 
 	render(){
-		console.log(this.state)
 		return (
 			<div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowPrefs}>
