@@ -9693,3 +9693,13 @@ pointer-events: none;
 .empty-state-customers-div {
   margin-top: 20px;
 }
+.breadcrumb {
+  text-align: center;
+}
+.breadcrumb-item {
+  float: none;
+}
+.breadcrumb-item.active {
+  color: #515050;
+  font-size: 18px;
+}
