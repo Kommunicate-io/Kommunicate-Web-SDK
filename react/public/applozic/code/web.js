@@ -135,9 +135,6 @@ function activeCampaign(email) {
 function clearbit(email, userId) {
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
-    $("#km-user-info-list .bio, #km-user-info-list .title").html("");
-    $("#km-user-info-list .domain-url").attr("href", "");
-    $("#km-user-info-list .linkedin").attr("href", "");
     $.ajax({
         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
         type: 'GET',

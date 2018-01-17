@@ -51,8 +51,9 @@ $(document).ready(function() {
         if (typeof contactId == "undefined" || typeof contactId == "") {
             contactId = $("#km-msg-to").val();
         }
-        $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {
-                    console.log(user);
+        $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
+            resetCustomerInfoArea();     
+            console.log(user);
                     if (typeof user !== "undefined") {
                         $("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
@@ -93,15 +94,21 @@ $(document).ready(function() {
 
 });
 
+function resetCustomerInfoArea(){
+    $("#km-user-info-list .bio, #km-user-info-list .title").html("");
+    $("#km-user-info-list .domain-url").attr("href", "");
+    $("#km-user-info-list .domain-url").text('');
+    $("#km-user-info-list .linkedin").attr("href", "");
+    $("#km-user-info-list .linkedin").text('');
+    $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain, #km-user-info-list .profile-linkedin").addClass('n-vis');
+}
+
 function clearbit(email, userId) {
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
 
     //sk_1c765b25f7e53c661ae995b148cb7863
     //sk_6aadb3d2a8cb824acc0334f7da36c2ee
-
-    $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain").html("");
-    $("#km-user-info-list .linkedin").attr("href", "");
 
     $.ajax({
         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
