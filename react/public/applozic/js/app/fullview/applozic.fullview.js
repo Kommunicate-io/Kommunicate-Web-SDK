@@ -2359,6 +2359,8 @@ var KM_CLIENT_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
+							$('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
 							var messageFeeds = new Array();
@@ -2426,11 +2428,15 @@ var KM_CLIENT_GROUP_MAP = [];
 						if (CONTACT_SYNCING && !params.startTime) {
 							_this.initSearch();
 						}
+						if(data.message.length === 0) {
+							$('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+						}
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						if (individual) {
 							if (typeof currTabId === "undefined" || (params.tabId === currTabId && ('' + isGroupTab === '' + params.isGroup))) {
 								if (data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
+									
 									isMessages = false;
 									if (individual) {
 										if (params.startTime) {
