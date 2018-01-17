@@ -9674,7 +9674,7 @@ pointer-events: none;
     padding-left: 3px;
 }
 
-.empty-state-message-shortcuts-img, .empty-state-customers-img {
+.empty-state-message-shortcuts-img, .empty-state-customers-img, .empty-state-conversations-img {
   width: auto;
   height: 200px;
 }
@@ -9693,6 +9693,15 @@ pointer-events: none;
 .empty-state-customers-div {
   margin-top: 20px;
 }
+.empty-state-conversations-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.empty-state-conversations-div .empty-state-message-shortcuts-second-text {
+  margin-top: 10px;
+}
 .breadcrumb {
   text-align: center;
 }
@@ -9702,4 +9711,10 @@ pointer-events: none;
 .breadcrumb-item.active {
   color: #515050;
   font-size: 18px;
+}
+/* .hide {
+  display: none;
+} */
+.message-shortcut-div {
+  background-color: #fff;
 }

@@ -365,7 +365,7 @@ class AutoSuggest extends Component {
 
 		return (
 
-			<div className="animated fadeIn">
+			<div className="animated fadeIn message-shortcut-div">
 				<div className="row">
 					<div className="col-sm-12 col-md-8">
 						<div className="message-shortcuts-title-wrapper">
