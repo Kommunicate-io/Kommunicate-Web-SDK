@@ -5,9 +5,9 @@
     margin-right: -60px;
 }
 .settings-title {
-    font-size: 16px;
-    margin-top: 11px;
-    margin-bottom: 10px;
+    font-size: 18px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     color: #666464;
 }
 .ss-nav {
@@ -67,6 +67,10 @@
     vertical-align: middle;
     width: 24px;
     height: 24px;
+}
+
+.integrations-link, .profile-link {
+    margin-top: 20px;
 }
 
 /* .bot-icon-svg {
