@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
+import {updateApplozicUser} from '../../utils/kommunicateClient'
 
 class Aside extends Component {
   constructor(props) {
@@ -243,6 +244,10 @@ class Aside extends Component {
   updateUserContactDetail(userId, params){
     var data={'contacts':userId};
     window.$kmApplozic.fn.applozic('loadContacts', data.contacts );
+  }
+
+  updateApplozicUser(userInfo){
+    updateApplozicUser(userInfo);
   }
 
   render() {
@@ -838,11 +843,12 @@ class Aside extends Component {
                             <ul id="km-user-info-list"
                               className="km-user-info-list km-nav km-nav-tabs km-nav-stacked">
                               <li className="email"></li>
-                              <li className="bio"></li>
-                              <li className="title"></li>
-                              <li className="company"></li>
-                              <li className="location"></li>
-                              <li className="profile-linkedin"><a className="linkedin" href=""></a></li>
+                              <li className="bio n-vis"></li>
+                              <li className="title n-vis"></li>
+                              <li className="company n-vis"></li>
+                              <li className="domain n-vis"><a className="domain-url" href="" target="_blank"></a></li>
+                              <li className="location n-vis"></li>
+                              <li className="profile-linkedin n-vis"><a className="linkedin" href="" target="_blank"></a></li>
                             </ul>
                           </div>
                         </div>

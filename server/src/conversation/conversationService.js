@@ -61,7 +61,7 @@ exports.addMemberIntoConversation = (data) => {
                         }
                         
                     });
-                    logger.info('group info:',groupInfo, 'applicationId: ',customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                    logger.info('addMemberIntoConversation - group info:',groupInfo, 'applicationId: ',customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                     return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
                         return response.data;
                     });
