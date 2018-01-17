@@ -135,6 +135,9 @@ function activeCampaign(email) {
 function clearbit(email, userId) {
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
+    $("#km-user-info-list .bio, #km-user-info-list .title").html("");
+    $("#km-user-info-list .domain-url").attr("href", "");
+    $("#km-user-info-list .linkedin").attr("href", "");
     $.ajax({
         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
         type: 'GET',
@@ -158,26 +161,29 @@ function displayCustInfo(clearbitData) {
   var userInfo = {};
   if (typeof person !== "undefined" && person != null && person != "null") {
     info = person.bio + " " + person.location;
-    $("#km-user-info-list .bio").removeClass('n-vis');
     $("#km-user-info-list .bio").html(person.bio + " " + person.location);
+    $("#km-user-info-list .bio").removeClass('n-vis');
     var employment = person.employment;
     if (typeof employment !== "undefined" && employment != null && employment != "null") {
-      info = info + " " + person.employment.title;
-      $("#km-user-info-list .title").removeClass('n-vis');
-      $("#km-user-info-list .title").html(person.employment.title);
+        info = info + " " + person.employment.title;
+        $("#km-user-info-list .title").html(person.employment.title);
+        $("#km-user-info-list .title").removeClass('n-vis');
     }
     var linkedin = person.linkedin;
     if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
-      info = info + " " + linkedin.handle;
-      $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
-      $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
+        info = info + " " + linkedin.handle;
+        $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
+        $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
+        $("#km-user-info-list .linkedin").text('https://linkedin.com/'+ linkedin.handle);
     }
-  }
-  if (typeof company !== "undefined" && company != null && company != "null") {
+}
+if (typeof company !== "undefined" && company != null && company != "null") {
     info = info + " " + company.domain;
     $("#km-user-info-list .domain").removeClass('n-vis');
-    $("#km-user-info-list .domain").attr('href', 'https://www.' + company.domain);
-  }
+    $("#km-user-info-list .domain-url").attr('href', 'https://www.'+company.domain);
+    $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
+    
+}
   console.log(info)
 }
 

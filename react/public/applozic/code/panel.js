@@ -142,7 +142,7 @@ function displayCustomerInfo(clearbitData) {
             info = info + " " + linkedin.handle;
             $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
             $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
-            $("#km-user-info-list .linkedin").text('https://linkedin.com/');
+            $("#km-user-info-list .linkedin").text('https://linkedin.com/'+ linkedin.handle);
         }
     }
     if (typeof company !== "undefined" && company != null && company != "null") {
