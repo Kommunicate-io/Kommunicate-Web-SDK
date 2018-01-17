@@ -597,6 +597,26 @@ const deleteInAppMsg = (id) => {
   }).catch(err => {console.log("Error in deleteInAppMsg", err)})
 }
 
+const editInAppMsg = (id, message) => {
+  let url = getConfig().kommunicateBaseUrl+"/applications/editInAppMsg";
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+    data: {
+      id: id,
+      message: message
+    }
+  })).then(response => {
+    console.log(response)
+    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
+      if(response.data.data instanceof Array){
+        return response.data.data
+      }
+    }
+  }).catch(err => {console.log("Error editInAppMsg", err)})
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -632,5 +652,6 @@ export {
   enableInAppMsgs,
   getInAppMessages,
   getInAppMessagesByEventId,
-  deleteInAppMsg
+  deleteInAppMsg,
+  editInAppMsg
 }
