@@ -226,7 +226,7 @@ exports.editInAppMsg = (req, res)=>{
     logger.info(req.body);
     return inAppMsgService.editInAppMsg(req.body)
     .then(response=>{
-        logger.info("response is...", reponse);
+        logger.info("response is...", response);
         logger.info("in app message is edited successfully");
         res.status(200).json({code:"SUCCESS",message:response.message, data: response});
     }).catch(err=>{
