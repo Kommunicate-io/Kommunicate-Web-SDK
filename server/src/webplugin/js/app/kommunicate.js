@@ -80,6 +80,22 @@ Kommunicate ={
         // contentType should be 300 for rich text message in metadata
         return metadata&&metadata.contentType==300;
     },
+    getConatainerTypeForRichMessage : function(metadata){
+        if(metadata){
+            switch(metadata.templateId){
+                // add template Id to enable slick effsect
+                // 2 for get room pax info template
+                case "2":
+                    return "km-slick-container";
+                    break;
+                default:
+                    return "km-fixed-container";
+                    break;
+
+            }
+        }
+
+    },
     processPaymentRequest:function(options){
 
     },
@@ -89,14 +105,19 @@ Kommunicate ={
                 // 1 for get room pax info template
                 case "1":
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
-                break;
+                    break;
                 //2 for hotel card template
                 case "2":
                     
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
-                break;
+                    break;
+                // 3 for button container
                 case "3": 
-                return Kommunicate.markup.buttonContainerTemplate(metadata); 
+                    return Kommunicate.markup.buttonContainerTemplate(metadata); 
+                    break;
+                case "4":
+                    return Kommunicate.markup.getPassangerDetail();
+                    break; 
                 default:
                 return "";
                 break;
