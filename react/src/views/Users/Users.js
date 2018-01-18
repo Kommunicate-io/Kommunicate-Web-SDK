@@ -10,7 +10,7 @@ class Users extends Component {
 
     this.state = {
       result: [],
-      showEmptyStateImage: false
+      showEmptyStateImage: true
     };
   }
 
@@ -21,8 +21,10 @@ class Users extends Component {
         // if(response&&response.response){
         // _this.setState({result: response.response.users});
         // }
-        if(response && (response.response.users.length > 0)) {
-          _this.setState({result: response.response.users, showEmptyStateImage: true});
+        if(response && response.response && (response.response.users.length > 0)) {
+          _this.setState({result: response.response.users,showEmptyStateImage: true});
+        } else if(response.response.users.length == 0) {
+          _this.setState({showEmptyStateImage: false});
         }
         console.log(response.response.users.length);
       }

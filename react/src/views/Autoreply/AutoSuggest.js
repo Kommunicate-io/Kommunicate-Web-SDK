@@ -20,7 +20,8 @@ class AutoSuggest extends Component {
 		activeTextField: -1,
 		activeMenu: -1,
 		visibleMenu: false,
-		visibleButtons: false
+		visibleButtons: false,
+		showEmptyState: true
 	}
 
 	componentDidMount() {
@@ -52,6 +53,10 @@ class AutoSuggest extends Component {
 				this.setState({ 
 					autoSuggestions: autoSuggestions, 
 				})
+
+				if (userShortcuts.length == 0) {
+					this.setState({showEmptyState: false});
+				}
 
 			}).catch(err => {
 				console.log(err)
@@ -224,7 +229,8 @@ class AutoSuggest extends Component {
 			userShortcuts: userShortcuts,
 			usershortcutsCopy : usershortcutsCopy,
 			visibleMenu: false,
-			visibleButtons: false
+			visibleButtons: false,
+			showEmptyState: false
 
 		})	
 			
@@ -257,7 +263,8 @@ class AutoSuggest extends Component {
 		}
 		this.setState({
 			visibleButtons: false,
-			activeTextField: !index
+			activeTextField: !index,
+			showEmptyState: false
 		})
 		
 	}
@@ -278,7 +285,8 @@ class AutoSuggest extends Component {
 			visibleButtons: true,
 			visibleMenu : false,
 			userShortcuts: fieldGroup,
-			activeTextField: activeTextField,	
+			activeTextField: activeTextField,
+			showEmptyState: true	
 		}, (e) => { this.refs.shortcut0.focus()})
 		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
 
@@ -382,9 +390,8 @@ class AutoSuggest extends Component {
 				</div>
 
 				<div className="field-header">
-					<div className="row">
-					{this.state.userShortcuts.length == 0 && 
-							<div className="empty-state-message-shortcuts-div text-center col-lg-9">
+					<div className="row"> 
+							<div className="empty-state-message-shortcuts-div text-center col-lg-9" hidden={this.state.showEmptyState}>
 								<img src="img/empty-message-shortcuts.png" alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
 								<p className="empty-state-message-shortcuts-first-text">
 									Why don't you create<br></br>your first shortcut here!
@@ -393,7 +400,6 @@ class AutoSuggest extends Component {
 									Save your time by setting up shortcuts<br></br>for common responses
 								</p>
 							</div>
-						}
 						<div className="col-md-3">
 							{this.state.userShortcuts.length > 0 &&
 								<div className="field-title">Shortcut</div>
