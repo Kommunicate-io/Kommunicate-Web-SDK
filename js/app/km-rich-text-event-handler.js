@@ -9,6 +9,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
     $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+    $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
    
 }
 
@@ -26,20 +27,15 @@ Kommunicate.richMsgEventHandler ={
                 items: 2,
                 slideBy: 'page',
                 "mouseDrag": true,
-                "arrowKeys": true
+                "arrowKeys": true,
+                onInit : function(){
+                    console.log("tiny-slider initilized");
+                   document.querySelector(".km-slick-container .tns-controls button:first-child").innerHTML='<';
+                   document.querySelector(".km-slick-container .tns-controls button:last-child").innerHTML='>';
+
+                }
               });
         }
-
-            /*$cardMessageContainer.slick({
-                    dots: false,
-                    infinite: false,
-                    speed: 300,
-                    slidesToShow: 1,
-                    centerMode: false,
-                    variableWidth: true,
-                    prevArrow: false,
-                    nextArrow: false
-                });*/
     },
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
@@ -138,6 +134,14 @@ Kommunicate.richMsgEventHandler ={
 
         }
 
+    },
+    handlleSubmitPersonDetail:function(){
+        var  target = e.target || e.srcElement;
+        var sessionId = target.dataset.sessionid;
+
+       /* var title = target.parentElement.getElementsByClassName("km-age-input").value;
+        var  first-name-input
+        last-name-input*/
     }
 
 }
