@@ -6740,6 +6740,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
+				if($('#empty-state-conversations-div').hasClass('vis')) {
+					$('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);
