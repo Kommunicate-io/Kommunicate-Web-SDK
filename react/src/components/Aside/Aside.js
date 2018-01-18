@@ -102,7 +102,7 @@ class Aside extends Component {
 
     var userSession = CommonUtils.getUserSession();
     if (assignee == userSession.userName && userSession.isAdmin) {
-      assignee = "agent";
+      //assignee = "agent";
     }
 
     window.$kmApplozic("#assign").val(assignee);
