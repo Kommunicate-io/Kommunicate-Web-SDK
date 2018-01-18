@@ -225,12 +225,15 @@ class AutoSuggest extends Component {
 		userShortcuts.splice(index, 1);
 		usershortcutsCopy.splice(index,1)
 
+		if (userShortcuts.length == 0) {
+			this.setState({showEmptyState: false});
+		}
 		this.setState({
 			userShortcuts: userShortcuts,
 			usershortcutsCopy : usershortcutsCopy,
 			visibleMenu: false,
-			visibleButtons: false,
-			showEmptyState: false
+			visibleButtons: false
+			// showEmptyState: false
 
 		})	
 			
@@ -261,10 +264,13 @@ class AutoSuggest extends Component {
 		else {
 			this.refs[messageRef].blur();
 		}
+		if (userShortcuts.length == 0) {
+			this.setState({showEmptyState: false});
+		}
 		this.setState({
 			visibleButtons: false,
-			activeTextField: !index,
-			showEmptyState: false
+			activeTextField: !index
+			// showEmptyState: false
 		})
 		
 	}
