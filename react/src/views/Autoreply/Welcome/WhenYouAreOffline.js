@@ -40,7 +40,7 @@ class WhenYouAreOffline extends Component {
 	state = {
     ...this.unknownUser,
     ...this.knownUser,
-		showOfflinePrefs: false,
+		showOfflinePrefs: this.props.showOfflinePrefs,
 		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
 	}
 
@@ -51,7 +51,7 @@ class WhenYouAreOffline extends Component {
       console.log(response)
 
       if(response instanceof Array && response.length < 1){
-        this.setState({unknownMessageSections: [{id: null, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
+        this.setState({unknownMessageSections: [{id: null, component: <MessageSection id={null} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
       }
 
       response.map(message => {
@@ -62,11 +62,18 @@ class WhenYouAreOffline extends Component {
               unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
             }
           }, () => {
-              this.setState((prevState) => {
-                let messageId = message.id
-                return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
-            });
-          })
+              if(this.state.unknownMessageSections.length < 1){
+                this.setState((prevState) => {
+                  let messageId = message.id
+                  return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+                })
+              }else{
+                this.setState((prevState) => {
+                  let messageId = message.id
+                  return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+                })
+              }
+            })
         }else if(message.status === 1 && message.metadata !== null){
           this.setState(prevState =>{
             let messageId = message.id
@@ -103,10 +110,18 @@ class WhenYouAreOffline extends Component {
               knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
             }
           }, () => {
+            if(this.state.knownMessageSections.length < 1){
               this.setState((prevState) => {
                 let messageId = message.id
-                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
               });
+            }else{
+              this.setState((prevState) => {
+                let messageId = message.id
+                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+              });
+            }
+              
           })
         }
       }, () => {
@@ -121,6 +136,20 @@ class WhenYouAreOffline extends Component {
 
     })
   }
+
+  componentWillReceiveProps(nextProps) {
+      if(nextProps.showOfflinePrefs){
+        this.setState({
+          showOfflinePrefs: true,
+          upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
+        })
+      }else{
+        this.setState({
+          showOfflinePrefs: false,
+          upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
+        })
+      }
+    }
 
   _deleteInAppMsg = (id) => {
       console.log(id)
@@ -145,7 +174,7 @@ class WhenYouAreOffline extends Component {
         if(response){
           Notification.success('Successfully deleted');
         }else {
-          Notification.danger('Not deleted');
+          Notification.warning('Not deleted');
         }
       })
     }
@@ -156,12 +185,12 @@ class WhenYouAreOffline extends Component {
   		this.setState({
   			showOfflinePrefs: false,
   			upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
-  		})
+  		}, () => {this.props.toggleOfflinePrefs(false)})
   	}else{
   		this.setState({
   			showOfflinePrefs: true,
   			upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
-  		})
+  		}, () => {this.props.toggleOfflinePrefs(true)})
   	}
   }
 
@@ -187,6 +216,8 @@ class WhenYouAreOffline extends Component {
       this.setState((prevState) => {
         return {unknownMessageSections: prevState.unknownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}}/>}])}
       });
+    }else if(this.state.unknownMessageSections.length > 2){
+      Notification.warning('Limit of 3 in app messages reached');
     }
   }
 
@@ -197,6 +228,8 @@ class WhenYouAreOffline extends Component {
       this.setState((prevState) => {
         return {knownMessageSections: prevState.knownMessageSections.concat([{component: <MessageSection showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}}/>}])}
       });
+    }else if(this.state.knownMessageSections.length > 2){
+      Notification.warning('Limit of 3 in app messages reached');
     }
   }
 
@@ -290,7 +323,6 @@ class WhenYouAreOffline extends Component {
   }
 
 	render(){
-    // console.log(this.state)
 		return (
       <div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowOfflinePrefs}>

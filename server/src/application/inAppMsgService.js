@@ -3,6 +3,7 @@ const registrationService = require('../register/registrationService');
 const appUtils = require('./utils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require('../users/userService');
+const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 
 exports.postWelcomeMsg=(options)=>{
@@ -248,6 +249,20 @@ exports.softDeleteInAppMsg=(id)=>{
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 
+}
+
+exports.editInAppMsg=(body)=>{
+
+  logger.info(body);
+  return Promise.resolve(db.InAppMsg.update({message:body.message}, {
+    where : {
+      id: body.id
+    }}).then(response => {
+        logger.info("response is...");
+        logger.info(response);
+        response.message = "Edited"
+        return response;    
+      })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
 exports.getInAppMessage=getInAppMessage;

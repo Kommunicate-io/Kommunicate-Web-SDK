@@ -75,7 +75,7 @@ class Sidebar extends Component {
               <NavLink to={'/users'} className="nav-link" activeClassName="active"><i className="icon-user"></i> Customers</NavLink>
             </li> */}
             <li className="nav-item">
-              <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Users" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 45.8 34.6'>
+              <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Customers" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 45.8 34.6'>
     <path className='cls-1' d='M12.1,33.5c4.5-1.3,6.1-2.6,6.5-3.1V27.9l-.5-.4a5.7,5.7,0,0,1-1.4-3.6A3.6,3.6,0,0,1,15.2,22a4.5,4.5,0,0,1,.3-3.2,10.6,10.6,0,0,1-.8-3.2,9.3,9.3,0,0,1,1.1-5.2,5.3,5.3,0,0,0-3-.1,6.5,6.5,0,0,0-3.1,1.8,7,7,0,0,0-2,5.4A8.4,8.4,0,0,0,8.4,20a3.3,3.3,0,0,0-.3,2.3,2.5,2.5,0,0,0,1.1,1.4,4.2,4.2,0,0,0,1,2.7l.5.4v2.2c-.3.3-1.4,1.5-5.3,2.6a6.9,6.9,0,0,0-3.6,3.1,6.4,6.4,0,0,0-.7,2.1.8.8,0,0,0,.2.6.8.8,0,0,0,.6.3H7.1v-.2A9.2,9.2,0,0,1,12.1,33.5Z'
     transform='translate(-1.1 -6.7)' />
     <path className='cls-1' d='M46.9,36.9a6.4,6.4,0,0,0-.7-2.1,6.8,6.8,0,0,0-3.7-3.1c-3.9-1.2-5-2.3-5.3-2.6v-2l.4-.4a4.4,4.4,0,0,0,1.1-2.8,2.2,2.2,0,0,0,1.4-1.7,2.9,2.9,0,0,0-.6-2.4c1-3,1-4.9-.1-6.4a3.7,3.7,0,0,0-2.3-1.4h-.5a6,6,0,0,0-4.3-1.7c1.4,2,1.4,4.5.2,8.3a4.2,4.2,0,0,1,.7,3.2,3.3,3.3,0,0,1-1.8,2.4A6.1,6.1,0,0,1,30,27.7l-.4.4v2.1c.5.5,2.1,1.8,6.5,3.1a9.2,9.2,0,0,1,5,4.2v.2h4.9a.9.9,0,0,0,.8-.9Z'
@@ -109,7 +109,7 @@ class Sidebar extends Component {
               <NavLink to={'/settings/integration'} className="nav-link" activeClassName="active"><i className="fa fa-gear"></i> Integration</NavLink>
             </li> */}
                   <li className="nav-item">
-                    <NavLink to={'/settings/integration'} className={(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('autoreply')) ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 46 46'>
+                    <NavLink to={'/welcome-message'} className={(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('autoreply')) ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 46 46'>
                       <path className='cls-1' d='M41,28.9a15.9,15.9,0,0,1-1.5,3.7l2.5,6-3.3,3.3-6-2.5A16,16,0,0,1,28.9,41l-2.6,6H21.6l-2.5-6a15.9,15.9,0,0,1-3.7-1.5l-6,2.5L6.1,38.6l2.5-6A15.9,15.9,0,0,1,7,28.9L1,26.4V21.6l6-2.5a15.9,15.9,0,0,1,1.5-3.7l-2.5-6L9.4,6.1l6,2.5A15.9,15.9,0,0,1,19.1,7l2.6-6h4.7l2.5,6a15.9,15.9,0,0,1,3.7,1.5l6-2.5,3.3,3.3-2.5,6A15.9,15.9,0,0,1,41,19.1l6,2.6v4.7ZM31.1,24A7.1,7.1,0,1,0,24,31.1,7.1,7.1,0,0,0,31.1,24Z'
     transform='translate(-1 -1)' />
                     </svg></NavLink>

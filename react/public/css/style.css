@@ -7754,7 +7754,7 @@ iframe#crowd-shortcut {
             color: #fff !important; }
         .sidebar .nav .nav-item .nav-link.active, .sidebar .nav .nav-item .navbar .active.dropdown-toggle, .navbar .sidebar .nav .nav-item .active.dropdown-toggle {
           color: #fff;
-          background: #18A9B7; }
+          background: #1cabe2; }
           .sidebar .nav .nav-item .nav-link.active i, .sidebar .nav .nav-item .navbar .active.dropdown-toggle i, .navbar .sidebar .nav .nav-item .active.dropdown-toggle i {
           /* color: #20a8d8; */}
         .sidebar .nav .nav-item .nav-link [class^="icon-"], .sidebar .nav .nav-item .navbar .dropdown-toggle [class^="icon-"], .navbar .sidebar .nav .nav-item .dropdown-toggle [class^="icon-"], .sidebar .nav .nav-item .nav-link [class*=" icon-"], .sidebar .nav .nav-item .navbar .dropdown-toggle [class*=" icon-"], .navbar .sidebar .nav .nav-item .dropdown-toggle [class*=" icon-"] {
@@ -9672,4 +9672,49 @@ pointer-events: none;
     color: #1bca1b;
     font-style: italic;
     padding-left: 3px;
+}
+
+.empty-state-message-shortcuts-img, .empty-state-customers-img, .empty-state-conversations-img {
+  width: auto;
+  height: 200px;
+}
+.empty-state-message-shortcuts-first-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #a5a5a5;
+  margin-bottom: 0px;
+  margin-top: 15px;
+}
+.empty-state-message-shortcuts-second-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #a5a5a5;
+}
+.empty-state-customers-div {
+  margin-top: 20px;
+}
+.empty-state-conversations-div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.empty-state-conversations-div .empty-state-message-shortcuts-second-text {
+  margin-top: 10px;
+}
+.breadcrumb {
+  text-align: center;
+}
+.breadcrumb-item {
+  float: none;
+}
+.breadcrumb-item.active {
+  color: #515050;
+  font-size: 18px;
+}
+/* .hide {
+  display: none;
+} */
+.message-shortcut-div {
+  background-color: #fff;
 }

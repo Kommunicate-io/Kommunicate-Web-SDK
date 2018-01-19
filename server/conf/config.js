@@ -43,6 +43,11 @@ const config ={
         serviceEmail:"noreply@kommunicate.io",
         serviceProvider:"2" 
       },
+      s3Access: {
+        accessKeyId: 'AKIAJ7QAZU7R2GPBCXGQ',
+        secretAccessKey: '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',
+        region: 'ap-south-1'
+      },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
       kommunicateAdminPassword: "techdisrupt",
@@ -99,6 +104,11 @@ const config ={
       serviceEmail:"noreply@kommunicate.io",
       serviceProvider:"2" 
     },
+    s3Access: {
+      accessKeyId: 'AKIAI67YDIHOPJVDVQHA',
+      secretAccessKey: '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',
+      region: 'ap-south-1'
+    },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateAdminId: "suraj@applozic.com",
     kommunicateAdminPassword: "1234567890",
@@ -153,6 +163,11 @@ const config ={
       accessPassword:"knowledge123", 
       serviceEmail:"noreply@kommunicate.io",
       serviceProvider:"2" 
+    },
+    s3Access: {
+      accessKeyId: 'AKIAI67YDIHOPJVDVQHA',
+      secretAccessKey: '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',
+      region: 'ap-south-1'
     },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateParentAppName: "suraj",
@@ -210,6 +225,11 @@ const config ={
         accessPassword:"knowledge123", 
         serviceEmail:"noreply@kommunicate.io",
         serviceProvider:"2" 
+      },
+      s3Access: {
+        accessKeyId: 'AKIAJ7QAZU7R2GPBCXGQ',
+        secretAccessKey: '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',
+        region: 'ap-south-1'
       },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",

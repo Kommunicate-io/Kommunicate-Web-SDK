@@ -260,3 +260,8 @@ ul#km-group-search-list li {
 #takeover-from-bot {
     display: none;
 }
+#km-user-info-list a{
+    position: relative;
+    padding: 10px 15px;
+    display: initial;
+}

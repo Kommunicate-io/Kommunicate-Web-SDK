@@ -2359,6 +2359,8 @@ var KM_CLIENT_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
 							var messageFeeds = new Array();
@@ -2426,11 +2428,15 @@ var KM_CLIENT_GROUP_MAP = [];
 						if (CONTACT_SYNCING && !params.startTime) {
 							_this.initSearch();
 						}
+						if(data.message.length === 0) {
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+						}
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						if (individual) {
 							if (typeof currTabId === "undefined" || (params.tabId === currTabId && ('' + isGroupTab === '' + params.isGroup))) {
 								if (data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
+									
 									isMessages = false;
 									if (individual) {
 										if (params.startTime) {
@@ -3754,7 +3760,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				/*if(contact.members && contact.type==10){
 					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
                 } else */ if (contact.isGroup) {
-					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
+					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl, displayName);
 				} else {
 					if (typeof (MCK_GETUSERIMAGE) === "function") {
 						var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
@@ -5409,8 +5415,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					return groupId;
 				}
 			};
-			_this.getGroupImage = function(imageSrc) {
-				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
+			_this.getGroupImage = function(imageSrc, displayName) {
+				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : mckMessageLayout.getContactImageByAlphabet(displayName); // '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
 			};
 			_this.addMemberToGroup = function(group, userId) {
 				if (typeof group.members === 'object') {
@@ -5623,7 +5629,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, displayName));
 						}
 						$mck_group_title.html(group.displayName);
 					}
@@ -5836,7 +5842,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_group_member_List.html('');
 					var group = kmGroupUtils.getGroup(params.groupId);
 					if (typeof group === 'object') {
-						$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+						var resp = _this.getGroupImage(group.imageUrl, group.displayName);
+						resp=resp.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
+						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
 						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
@@ -6734,6 +6742,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
+				if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+					$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);

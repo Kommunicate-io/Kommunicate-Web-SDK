@@ -20,7 +20,8 @@ class AutoSuggest extends Component {
 		activeTextField: -1,
 		activeMenu: -1,
 		visibleMenu: false,
-		visibleButtons: false
+		visibleButtons: false,
+		showEmptyState: true
 	}
 
 	componentDidMount() {
@@ -52,6 +53,10 @@ class AutoSuggest extends Component {
 				this.setState({ 
 					autoSuggestions: autoSuggestions, 
 				})
+
+				if (userShortcuts.length == 0) {
+					this.setState({showEmptyState: false});
+				}
 
 			}).catch(err => {
 				console.log(err)
@@ -220,11 +225,15 @@ class AutoSuggest extends Component {
 		userShortcuts.splice(index, 1);
 		usershortcutsCopy.splice(index,1)
 
+		if (userShortcuts.length == 0) {
+			this.setState({showEmptyState: false});
+		}
 		this.setState({
 			userShortcuts: userShortcuts,
 			usershortcutsCopy : usershortcutsCopy,
 			visibleMenu: false,
 			visibleButtons: false
+			// showEmptyState: false
 
 		})	
 			
@@ -255,9 +264,13 @@ class AutoSuggest extends Component {
 		else {
 			this.refs[messageRef].blur();
 		}
+		if (userShortcuts.length == 0) {
+			this.setState({showEmptyState: false});
+		}
 		this.setState({
 			visibleButtons: false,
 			activeTextField: !index
+			// showEmptyState: false
 		})
 		
 	}
@@ -278,7 +291,8 @@ class AutoSuggest extends Component {
 			visibleButtons: true,
 			visibleMenu : false,
 			userShortcuts: fieldGroup,
-			activeTextField: activeTextField,	
+			activeTextField: activeTextField,
+			showEmptyState: true	
 		}, (e) => { this.refs.shortcut0.focus()})
 		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
 
@@ -365,7 +379,7 @@ class AutoSuggest extends Component {
 
 		return (
 
-			<div className="animated fadeIn">
+			<div className="animated fadeIn message-shortcut-div">
 				<div className="row">
 					<div className="col-sm-12 col-md-8">
 						<div className="message-shortcuts-title-wrapper">
@@ -382,7 +396,16 @@ class AutoSuggest extends Component {
 				</div>
 
 				<div className="field-header">
-					<div className="row">
+					<div className="row"> 
+							<div className="empty-state-message-shortcuts-div text-center col-lg-9" hidden={this.state.showEmptyState}>
+								<img src="img/empty-message-shortcuts.png" alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
+								<p className="empty-state-message-shortcuts-first-text">
+									Why don't you create<br></br>your first shortcut here!
+								</p>
+								<p className="empty-state-message-shortcuts-second-text">
+									Save your time by setting up shortcuts<br></br>for common responses
+								</p>
+							</div>
 						<div className="col-md-3">
 							{this.state.userShortcuts.length > 0 &&
 								<div className="field-title">Shortcut</div>
