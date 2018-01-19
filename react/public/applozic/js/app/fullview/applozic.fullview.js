@@ -2359,7 +2359,7 @@ var KM_CLIENT_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
-							$('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
 							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
@@ -2429,7 +2429,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							_this.initSearch();
 						}
 						if(data.message.length === 0) {
-							$('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
 						}
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
@@ -6742,8 +6742,8 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
-				if($('#empty-state-conversations-div').hasClass('vis')) {
-					$('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+				if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+					$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
 				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
