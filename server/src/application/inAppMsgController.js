@@ -68,8 +68,9 @@ exports.getInAppMessages=(req,res)=>{
             return;
         }
     inAppMsgService.getInAppMessage(customer.id).then(inAppMessages=>{
-        res.status(200).json({code:'success',data:{message:inAppMessages&&inAppMessages.dataValues?inAppMessages.dataValues.message:""}});
+        res.status(200).json({code:'success',data:{message:(inAppMessages.length>0) ? inAppMessages[0].message : ""}});
     }).catch(err=>{
+        logger.info('error while getting welcome message', err)
         res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});
     });
 });

@@ -23,13 +23,14 @@ exports.postWelcomeMsg=(options)=>{
 }
 
 const getInAppMessage=(customerId, eventType)=>{
+  console.log('geting data for', customerId)
+  let criteria ={ customerId: customerId , status: appUtils.EVENT_STATUS.ENABLED};
+  if (eventType){
+    criteria.eventId=eventType
+  }
     return db.InAppMsg.findAll(
       {
-        where:{
-          customerId:customerId ,
-          eventId:eventType,
-          status: appUtils.EVENT_STATUS.ENABLED
-        },
+        where:criteria,
         order:[
           ['id', 'ASC']
         ]
