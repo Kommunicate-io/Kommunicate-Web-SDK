@@ -5842,14 +5842,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_group_member_List.html('');
 					var group = kmGroupUtils.getGroup(params.groupId);
 					if (typeof group === 'object') {
-						if(group.imageUrl){
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, group.displayName));
-						} else {
-							var resp = _this.getGroupImage(group.imageUrl, group.displayName);
-							resp=resp.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
-							$mck_group_info_icon.html(resp);
-						}
-						
+						var resp = _this.getGroupImage(group.imageUrl, group.displayName);
+						resp=resp.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
+						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
 						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
