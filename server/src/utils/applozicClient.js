@@ -186,7 +186,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
   let url = config.getProperties().urls.groupInfoUrl.replace(":groupId",groupId);
   console.log("getting group info from applozic url : ",url);
   console.log("applicationId", applicationId);
-  return Promise.resolve(axios.get(url,{headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+  return Promise.resolve(axios.get(url,{headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true, "Content-Type": "application/json"}})).then(response=>{
     console.log("got response from Applozic group Api. code :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
