@@ -99,6 +99,18 @@ Kommunicate ={
     processPaymentRequest:function(options){
 
     },
+    sendMessage: function(messagePxy){
+        var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
+        var $mck_msg_to=  $applozic("#mck-msg-to");
+ 
+         if ($mck_msg_inner.data("isgroup") === true) {
+             messagePxy.groupId = $mck_msg_to.val();
+             } else {
+             messagePxy.to = $mck_msg_to.val();
+             }
+        $applozic.fn.applozic('sendGroupMessage',messagePxy);
+
+    },
     getRichTextMessageTemplate: function(metadata){
         if (metadata){
             switch(metadata.templateId){
@@ -116,7 +128,7 @@ Kommunicate ={
                     return Kommunicate.markup.buttonContainerTemplate(metadata); 
                     break;
                 case "4":
-                    return Kommunicate.markup.getPassangerDetail();
+                    return Kommunicate.markup.getPassangerDetail(metadata);
                     break; 
                 default:
                 return "";

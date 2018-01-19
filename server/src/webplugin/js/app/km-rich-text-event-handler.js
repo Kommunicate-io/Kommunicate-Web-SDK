@@ -85,15 +85,7 @@ Kommunicate.richMsgEventHandler ={
 
             }
         };
-       var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
-       var $mck_msg_to=  $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-            } else {
-            messagePxy.to = $mck_msg_to.val();
-            }
-       $applozic.fn.applozic('sendGroupMessage',messagePxy);
+        Kommunicate.sendMessage(messagePxy);
     },
     processHotelBookClick: function(e){
         var  target = e.target || e.srcElement;
@@ -110,17 +102,7 @@ Kommunicate.richMsgEventHandler ={
                 skipBot:true
             }
         };
-       var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
-       var $mck_msg_to=  $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-            } else {
-            messagePxy.to = $mck_msg_to.val();
-            }
-       $applozic.fn.applozic('sendGroupMessage',messagePxy);
-
-
+        Kommunicate.sendMessage(messagePxy);
     },
     handlleRichButtonClick:function(e){
         console.log("event generated: ",e);
@@ -138,10 +120,9 @@ Kommunicate.richMsgEventHandler ={
     handlleSubmitPersonDetail:function(){
         var  target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
-
-       /* var title = target.parentElement.getElementsByClassName("km-age-input").value;
-        var  first-name-input
-        last-name-input*/
+        var messagePxy={message:"Passenger detail submitted",metadata:{sessionId: sessionId}};
+        Kommunicate.sendMessage(messagePxy);
+        console.log("passenger detail submitted");
     }
 
 }

@@ -104,6 +104,9 @@ getButtonTemplate:function(options,elemWidthClass){
     }
 },
 getPassangerDetail : function(options){
+    if(!options.SessionId){
+       console.log("sessionId not present in message..") 
+    }
     return `  <div class="km-guest-details-container km-rich-text-default-container">
     <div class="km-guest-detail-form">
     <div class= "km-select-title">    
@@ -119,10 +122,10 @@ getPassangerDetail : function(options){
         <input type="text" name="middle-name"  class="km-input middle-name-input" placeholder="Middle Name (optional)">
         <input type="text" name="last-name"  class="km-input last-name-" placeholder="Last Name">
         <input type="email" name="email"  class="km-input" placeholder="Email Id">
-        <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number"> -->
+        <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number">
     </div>
     <div class="km-guest-button-container">
-        <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+options.SessionId+`>Submit</button>
+        <button class="km-add-more-rooms km-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
     </div>
 </div>`
 }
