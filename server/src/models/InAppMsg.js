@@ -37,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
       },
     category:{
       type:DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   }, {
     underscored: true,
