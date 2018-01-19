@@ -3760,7 +3760,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				/*if(contact.members && contact.type==10){
 					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
                 } else */ if (contact.isGroup) {
-					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
+					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl, displayName);
 				} else {
 					if (typeof (MCK_GETUSERIMAGE) === "function") {
 						var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
@@ -5415,8 +5415,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					return groupId;
 				}
 			};
-			_this.getGroupImage = function(imageSrc) {
-				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
+			_this.getGroupImage = function(imageSrc, displayName) {
+				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : mckMessageLayout.getContactImageByAlphabet(displayName); // '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
 			};
 			_this.addMemberToGroup = function(group, userId) {
 				if (typeof group.members === 'object') {
@@ -5629,7 +5629,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, displayName));
 						}
 						$mck_group_title.html(group.displayName);
 					}
@@ -5842,7 +5842,14 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_group_member_List.html('');
 					var group = kmGroupUtils.getGroup(params.groupId);
 					if (typeof group === 'object') {
-						$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+						if(group.imageUrl){
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, group.displayName));
+						} else {
+							var resp = _this.getGroupImage(group.imageUrl, group.displayName);
+							resp=resp.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
+							$mck_group_info_icon.html(resp);
+						}
+						
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
 						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');

@@ -1710,6 +1710,17 @@ ol, ul {
 	line-height: 43px;
 	display: block;
 }
+.km-alpha-group-contact-image {
+	height: 120px;
+	max-width: 120px;
+	margin-right: 0;
+	line-height: 120px !important;
+	font-size: 50px !important;
+}
+.km-group-contact-icon{
+	display: block;
+	text-align: center;
+}
 
 .alpha_D .km-contact-icon {
 	top: -1px;
