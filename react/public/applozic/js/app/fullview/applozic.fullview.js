@@ -2288,6 +2288,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							reqData += "&conversationReq=true";
 						}
 					}
+					
 				} else {
 					if (params.startTime) {
 						reqData += "&endTime=" + params.startTime;
@@ -2445,6 +2446,10 @@ var KM_CLIENT_GROUP_MAP = [];
 												$mck_show_more_icon.removeClass('vis').addClass('n-vis');
 											});
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").data('datetime', "");
+
+											if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+												$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+											}
 										} else if ($kmApplozic("#km-message-cell .km-message-inner-right div[name='message']").length === 0) {
 											$mck_tab_message_option.removeClass('vis').addClass('n-vis');
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").html('<div class="km-no-data-text km-text-muted">No messages yet!</div>');
