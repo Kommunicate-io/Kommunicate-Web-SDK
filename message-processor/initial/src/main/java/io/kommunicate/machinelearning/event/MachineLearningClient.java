@@ -14,21 +14,24 @@ import io.kommunicate.machinelearning.event.Properties;
 import com.applozic.message.MessagePxy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.kommunicate.machinelearning.Receiver;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class MachineLearningClient {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(MachineLearningClient.class.getName());
 
     private static final String EVENT_SERVER_URL = "https://machine.kommunicate.io/events/events.json?accessKey=vE5gvXzmCpBEvp1Rcbr0pukECUZpJMbCeRStber1PsiuRdSjIzyizi7HiqHKcPts";
 
@@ -49,21 +52,21 @@ public class MachineLearningClient {
             Event event = new Event();
             //Todo: check why messagPxy.getUserKey() is failing.
             event.setEntityId("" + messagePxy.getUserKey().hashCode());
-            System.out.println("####Sender: " + messagePxy.getUserKey());
+            LOG.debug("Sender: " + messagePxy.getUserKey());
             //Todo: set event params
             event.setProperties(properties);
             
             return post(objectMapper.writeValueAsString(event));
         } catch (JsonProcessingException ex) {
-            Logger.getLogger(MachineLearningClient.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("JsonProcessingException during sending event.", ex);
         } catch (IOException ex) {
-            Logger.getLogger(MachineLearningClient.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("IOException during sending event.", ex);
         }
         return "error";
     }
     
     public String post(String data) {
-        System.out.println("###Sending data to machine learning server: " + data);
+        LOG.info("Sending data to machine learning server: " + data);
         HttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(EVENT_SERVER_URL);
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
@@ -74,11 +77,9 @@ public class MachineLearningClient {
             httpPost.setHeader("Content-Type", "application/json");
             responseHandler = new BasicResponseHandler();
             responseBody = httpClient.execute(httpPost, responseHandler);
-            System.out.println("###response from event server: " + responseBody);
-        } catch (IOException e) {
-            e.printStackTrace();
-            //log.error("IOException from " + url + " with " + object , e);
-            //throw e;
+            LOG.info("Response from event server: " + responseBody);
+        } catch (IOException ex) {
+            LOG.error("IOException from " + EVENT_SERVER_URL + " with " + data, ex);
         } finally {
             httpClient.getConnectionManager().shutdown();
         }

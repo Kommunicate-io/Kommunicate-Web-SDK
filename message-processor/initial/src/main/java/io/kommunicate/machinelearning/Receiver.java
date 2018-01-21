@@ -12,12 +12,15 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Receiver {
+    
+    private static final Logger LOG = LoggerFactory.getLogger(Receiver.class.getName());
 
     private CountDownLatch latch = new CountDownLatch(1);
     
@@ -28,7 +31,6 @@ public class Receiver {
     private MachineLearningClient machineLearningClient;
     
     public Receiver() {
-        //objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
     }
      
     public void receiveMessage(byte[] bytes) {
@@ -40,26 +42,23 @@ public class Receiver {
                 if (InstantMessage.NOTIFICATION_TYPE.MESSAGE_SENT.getValue().equals(instantMessage.getType())) {
                     
                     MessagePxy messagePxy = objectMapper.readValue(objectMapper.writeValueAsString(instantMessage.getMessage()), MessagePxy.class); 
-                    //System.out.println("###messagePxy: " + messagePxy);
+                    LOG.debug("messagePxy: " + messagePxy);
                     
                     Map<String, String> metadata = messagePxy.getMetadata();
                     
                     if (metadata != null && !metadata.isEmpty() && metadata.containsKey("KM_ML_01")) {
-                        System.out.println("#Found machine learning data: " + metadata.get("KM_ML_01"));
-                        //Todo: call event server from here.
+                        LOG.info("Found machine learning data: " + metadata.get("KM_ML_01"));
                         machineLearningClient.sendEvent(messagePxy);
                     }
                 }
             }
         } catch (IOException ex) {
-            Logger.getLogger(Receiver.class.getName()).log(Level.SEVERE, null, ex);
+            LOG.error("Exception while processing message", ex);
         }
      }
 
     public void receiveMessage(Object message) {
-        //System.out.println(message.getClass().toString());
-        //System.out.println("Received <" + message + ">");
-
+        LOG.debug("Receive <" + message + ">");
         latch.countDown();
     }
 
