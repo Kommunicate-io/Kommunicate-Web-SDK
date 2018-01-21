@@ -11,7 +11,6 @@ import io.kommunicate.machinelearning.event.MachineLearningClient;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

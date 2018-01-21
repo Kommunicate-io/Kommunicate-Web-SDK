@@ -1,20 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.kommunicate.machinelearning.event;
 
 /**
  *
  * @author devashish
  */
-import io.kommunicate.machinelearning.event.Event;
-import io.kommunicate.machinelearning.event.Properties;
 import com.applozic.message.MessagePxy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.kommunicate.machinelearning.Receiver;
 import java.io.IOException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -53,7 +45,6 @@ public class MachineLearningClient {
             //Todo: check why messagPxy.getUserKey() is failing.
             event.setEntityId("" + messagePxy.getUserKey().hashCode());
             LOG.debug("Sender: " + messagePxy.getUserKey());
-            //Todo: set event params
             event.setProperties(properties);
             
             return post(objectMapper.writeValueAsString(event));

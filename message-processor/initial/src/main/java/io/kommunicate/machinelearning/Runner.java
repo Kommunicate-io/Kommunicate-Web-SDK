@@ -1,6 +1,5 @@
 package io.kommunicate.machinelearning;
 
-import io.kommunicate.machinelearning.Application;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
