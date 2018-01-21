@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MachineLearningClient {
 
-    private static String EVENT_SERVER_URL = "https://machine.kommunicate.io/events/events.json?accessKey=vE5gvXzmCpBEvp1Rcbr0pukECUZpJMbCeRStber1PsiuRdSjIzyizi7HiqHKcPts";
+    private static final String EVENT_SERVER_URL = "https://machine.kommunicate.io/events/events.json?accessKey=vE5gvXzmCpBEvp1Rcbr0pukECUZpJMbCeRStber1PsiuRdSjIzyizi7HiqHKcPts";
 
     @Autowired
     private ObjectMapper objectMapper;
