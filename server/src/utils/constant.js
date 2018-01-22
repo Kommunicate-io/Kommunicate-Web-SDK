@@ -1,0 +1,1 @@
+exports.GROUP_ROLE ={ADMIN:"1",MODERATOR:"2",MEMBER:"3"};

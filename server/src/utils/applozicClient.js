@@ -3,6 +3,7 @@ const axios =require("axios");
 const adminUserId = config.getProperties().kommunicateAdminId;
 const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
+const constant =require('./constant');
 
 /*
 this method register a user in applozic db with given parameters.
@@ -313,7 +314,7 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
 }
 
 exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)=>{
-  let url = config.getProperties().urls.addMemberIntoConversation;
+  let url = config.getProperties().urls.addMemberIntoConversation.replace(":role", constant.GROUP_ROLE.ADMIN);;
   return Promise.resolve(axios.post(url, groupInfo, {
     headers: {
       "Content-Type": "application/json",
