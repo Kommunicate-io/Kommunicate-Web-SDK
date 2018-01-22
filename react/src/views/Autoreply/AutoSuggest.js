@@ -16,7 +16,7 @@ class AutoSuggest extends Component {
 		viewAllSuggestions: false,
 		categories: [],
 		userShortcuts: [],
-		usershortcutsCopy: [],
+		userShortcutsCopy: [],
 		activeTextField: -1,
 		activeMenu: -1,
 		visibleMenu: false,
@@ -25,11 +25,15 @@ class AutoSuggest extends Component {
 	}
 
 	componentDidMount() {
+		this.getSuggestions();
+	}
+	
+	getSuggestions = () => {
 		let userSession = CommonUtils.getUserSession();
 		getSuggestionsByAppId(userSession.application.applicationId)
 			.then(autoSuggestions => {
 				let userShortcuts = [];
-				let usershortcutsCopy =[];
+				let userShortcutsCopy =[];
 				autoSuggestions.forEach(item => {
 					userShortcuts.push({
 						shortcutField: item.category,
@@ -37,24 +41,23 @@ class AutoSuggest extends Component {
 						suggestionId: item.id
 					})
 					
-					usershortcutsCopy.push({
+					userShortcutsCopy.push({
 						shortcutField: item.category,
 						messageField: item.content,
 						suggestionId: item.id
 					}) 
 					
 				})
-				usershortcutsCopy = Object.assign([],usershortcutsCopy);
 				this.setState({
 					userShortcuts: userShortcuts.reverse(),
-					usershortcutsCopy: usershortcutsCopy.reverse()	
+					userShortcutsCopy: userShortcutsCopy.reverse()	
 				})
 
 				this.setState({ 
-					autoSuggestions: autoSuggestions, 
+					autoSuggestions: autoSuggestions 
 				})
 
-				if (userShortcuts.length == 0) {
+				if (userShortcuts.length === 0) {
 					this.setState({showEmptyState: false});
 				}
 
@@ -79,22 +82,24 @@ class AutoSuggest extends Component {
 	suggestionMethod =(e) => {
 		e.preventDefault();
 		let index = this.state.activeTextField;
-		let userShortcuts = this.state.userShortcuts;
 		var suggestionId = this.state.userShortcuts[index].suggestionId;
 		this.setState({
 			visibleButtons: false
 		})
-		if(suggestionId === undefined){	
-			this._createSuggestion();
+		if(this.state.userShortcuts[index] && this.state.userShortcuts[index].suggestionId){	
+			this.updateSuggestion(index);
 		}
 		else{	
-		    this.updateSuggestion(index);
+			this._createSuggestion();
 		}
 	}
 	_createSuggestion = (e) => {
 		let index = this.state.activeTextField;
+		let shortcutRef ="shortcut"+index;
+		let messageRef = "message" + index;
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
+			this.setState({	visibleButtons: true })
 		} else {
 			let userSession = CommonUtils.getUserSession();
 
@@ -102,8 +107,8 @@ class AutoSuggest extends Component {
 				applicationId: userSession.application.applicationId,
 				userName: userSession.userName,
 				name: " ",
-				category: this.state.userShortcuts[index].shortcutField,
-				content: this.state.userShortcuts[index].messageField
+				category: this.state.userShortcuts[0].shortcutField,
+				content: this.state.userShortcuts[0].messageField
 			}
 
 			createSuggestions(suggestion)
@@ -111,10 +116,12 @@ class AutoSuggest extends Component {
 					console.log(response)
 					if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
 						Notification.info("Shortcut created")
-						// Refresh the list with the new suggestion
-						this.setState((prevState) => {
-							autoSuggestions: prevState.autoSuggestions.push(suggestion)
-							
+						this.refs[shortcutRef].blur();	
+						this.refs[messageRef].blur();	
+						this.getSuggestions();
+						this.setState({
+							visibleButtons: false,
+							activeTextField: -1
 						})
 					} else {
 						Notification.info("There was problem in creating the suggestion.");
@@ -124,28 +131,16 @@ class AutoSuggest extends Component {
 					console.log(err)
 				})
 
-		}
-		if (index == 0 && this.state.userShortcuts[index].shortcutField == '' && this.state.userShortcuts[index].shortcutField == '') {
-			this.setState({
-				visibleButtons: true
-			})
-		}
-		this.setState({
-			//visibleButtons: false,
-			activeTextField: !index
-		})
-
+		}	
 
 	}
 	editSuggestion =() => {
 		let index = this.state.activeMenu;
 		let shortcutRef ="shortcut"+index;
-		let ellipsisMenu = "ellipsisMenu"+index
+		let ellipsisMenu = "ellipsisMenu"+index;
+		let userShortcuts = Object.assign([], this.state.userShortcuts);
 		this.refs[shortcutRef].focus();
-		this.setState ({
-			visibleMenu:false,
-			activeTextField : index
-		})
+	
 	}
 	
 	focusEllipsisDropdownMenu = (_this) => {
@@ -158,8 +153,10 @@ class AutoSuggest extends Component {
 	}
 	
 	updateSuggestion = (index) => {
-		let userShortcuts = this.state.userShortcuts;
-		let usershortcutsCopy = this.state.usershortcutsCopy;
+		let shortcutRef ="shortcut"+index;
+		let messageRef = "message" + index;
+		let userShortcuts = Object.assign([],userShortcuts);
+		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
 		} 
@@ -170,50 +167,46 @@ class AutoSuggest extends Component {
 				content: this.state.userShortcuts[index].messageField,
 				name: " ",
 				
-			}
-			const updatedSuggestionCopy = {
-				suggestionId:this.state.userShortcuts[index].suggestionId,
-				shortcutField:this.state.userShortcuts[index].shortcutField,
-				messageField: this.state.userShortcuts[index].messageField,
-				name: " "
-			}
+			}	
 			updateSuggestionsById(updatedSuggestion)
 			.then(response => {
 				console.log(response)
 				if(response.status === 200 && response.data.code === "SUGESSTION_UPDATED_SUCCESSFULLY"){
 					Notification.info("Suggestion updated")
-	
+					this.getSuggestions();
+					this.setState({
+						visibleButtons: false,
+						activeTextField: -1
+					})
+					this.refs[shortcutRef].blur();	
+					this.refs[messageRef].blur();
+						
+					
 				}else{
 					Notification.info("There was problem in updating the suggestion.");
 				}
 			})
 			.catch(err => {
 				console.log(err)
-			})
-			userShortcuts[index] = Object.assign({},updatedSuggestionCopy)
-			usershortcutsCopy[index] = Object.assign({},updatedSuggestionCopy)
-			this.setState({
-				userShortcuts : userShortcuts,
-				usershortcutsCopy : usershortcutsCopy
-			})		
-		}
-		this.setState({
-			activeTextField: !index
-		})
-		
-	
+			})					
+		}				
 	}
 
 	deleteSuggestion = () => {
 		let index = this.state.activeMenu;
-		let userShortcuts = this.state.userShortcuts;	
-		let usershortcutsCopy = this.state.usershortcutsCopy;
+		let userShortcuts = Object.assign([], this.state.userShortcuts);	
+		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId} };
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
 			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
-				Notification.info("Suggestion deleted")
+				Notification.info("Suggestion deleted")		
+				this.getSuggestions();
+				this.setState({			
+					visibleMenu: false,
+					visibleButtons: false		
+				})	
 
 			}else{
 				Notification.info("There was problem in deleting the suggestion.");
@@ -222,43 +215,29 @@ class AutoSuggest extends Component {
 		.catch(err => {
 			console.log(err)
 		})		
-		userShortcuts.splice(index, 1);
-		usershortcutsCopy.splice(index,1)
-
-		if (userShortcuts.length == 0) {
-			this.setState({showEmptyState: false});
-		}
-		this.setState({
-			userShortcuts: userShortcuts,
-			usershortcutsCopy : usershortcutsCopy,
-			visibleMenu: false,
-			visibleButtons: false
-			// showEmptyState: false
-
-		})	
 			
 	}
 	cancelSuggestion = () =>{
 		let index = this.state.activeTextField;
 		let shortcutRef ="shortcut"+index;
 		let messageRef = "message" + index;
-		let userShortcuts = this.state.userShortcuts;
-		let usershortcutsCopy = this.state.usershortcutsCopy;
+		let userShortcuts = Object.assign([], this.state.userShortcuts);
+		let userShortcutsCopy = Object.assign([],this.state.userShortcutsCopy);
 		
-		if(index == 0 && userShortcuts[index].shortcutField == '' && userShortcuts[index].shortcutField == '' ){
+		if(index === 0 && this.state.userShortcuts.length > this.state.userShortcutsCopy.length){
+			userShortcuts.splice(0, 1);
 			this.setState({
 				userShortcuts: userShortcuts
 			})
-			userShortcuts.splice(index, 1);
 		}
 		else {
-			userShortcuts[index] = Object.assign([],usershortcutsCopy[index])
+			userShortcuts[index] = Object.assign({},userShortcutsCopy[index]);
 			this.setState({
 				userShortcuts: userShortcuts
 			})
 		}
 
-		if(this.refs[shortcutRef].focus == true){
+		if(this.refs[shortcutRef].focus){
 			this.refs[shortcutRef].blur();
 		}
 		else {
@@ -269,15 +248,31 @@ class AutoSuggest extends Component {
 		}
 		this.setState({
 			visibleButtons: false,
-			activeTextField: !index
+			activeTextField: -1
 			// showEmptyState: false
 		})
 		
 	}
+	removeEmptyInputField = () => {
+		let index = this.state.activeTextField;
+		let userShortcuts = Object.assign([], this.state.userShortcuts);
+		if(this.state.userShortcuts.length > this.state.userShortcutsCopy.length && index !== 0){
+			if(validator.isEmpty(userShortcuts[0].shortcutField) && validator.isEmpty(userShortcuts[0].messageField)){
+				userShortcuts.splice(0, 1);
+				this.setState({
+					userShortcuts: userShortcuts
+				})
+			}
+			else {
+				this.refs["shortcut0"].focus();
+				Notification.info("Please save your changes");
+			}
+		}		
+	}
 	
 	appendShorcutFields = () => {
 
-		let fieldGroup = this.state.userShortcuts;
+		let fieldGroup = Object.assign([], this.state.userShortcuts);
 
 		let fields = {
 			shortcutField: '',
@@ -306,7 +301,7 @@ class AutoSuggest extends Component {
 			let messageRef = "message" + index;
 			let saveRef = "save" + index;
 			let ellipsisMenu = "ellipsis" + index;
-			return <div key={this.state.userShortcuts[index].suggestionId}>
+			return <div key={index}>
 			<div className="shortcut-field-wrapper">
 				<div className="row">
 					<div className="col-md-3 shortcut-col">
@@ -315,12 +310,13 @@ class AutoSuggest extends Component {
 
 							<input type="text" ref={shortcutRef} className="form-control shortcut-field" id="shortcut-field" value={this.state.userShortcuts[index].shortcutField}
 								onChange={(e) => {
-									let userShortcuts = this.state.userShortcuts;
+									let userShortcuts = Object.assign([], this.state.userShortcuts);
 									userShortcuts[index].shortcutField = e.target.value;
 									this.setState({ userShortcuts: userShortcuts, visibleButtons:true  })
 								}} onFocus={(e) => {
-									this.setState({ activeTextField: index, visibleButtons:true})}
-								}	
+									this.setState({ activeTextField: index, visibleButtons:true},this.removeEmptyInputField)
+								}}
+									
 								onKeyPress={(e) => {
 									if (e.charCode === 13) { this.refs[messageRef].focus() }}} placeholder="" />
 							
@@ -330,11 +326,14 @@ class AutoSuggest extends Component {
 					<div className="col-md-4 message-col">
 						<input type="text" ref={messageRef} className="form-control message-field" id="message-field" value={this.state.userShortcuts[index].messageField}
 							onChange={(e) => {
-								let userShortcuts = this.state.userShortcuts;
+								let userShortcuts = Object.assign([], this.state.userShortcuts);
 								userShortcuts[index].messageField = e.target.value;
 								this.setState({ userShortcuts: userShortcuts, visibleButtons:true })
-							}} onFocus={() => this.setState({ activeTextField: index, visibleButtons:true })}
-							onKeyPress={(e) => { if (e.charCode === 13) { this.refs[saveRef].focus() } this.setState({visibleButtons:true}) }} placeholder="" />
+							}} onFocus={(e) =>{
+								this.setState({ activeTextField: index, visibleButtons:true },this.removeEmptyInputField)
+								
+							} }
+							onKeyPress={(e) => { if (e.charCode === 13) { this.suggestionMethod(e); } this.setState({visibleButtons:true}) }} placeholder="" />
 
 
 						{
