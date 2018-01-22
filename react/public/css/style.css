@@ -282,7 +282,7 @@ html {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.875rem;
   font-weight: normal;
   line-height: 1.5;
@@ -537,22 +537,22 @@ h1, h2, h3, h4, h5, h6,
   color: inherit; }
 
 h1, .h1 {
-  font-size: 2.5rem; }
-
-h2, .h2 {
   font-size: 2rem; }
 
-h3, .h3 {
-  font-size: 1.75rem; }
-
-h4, .h4 {
+h2, .h2 {
   font-size: 1.5rem; }
 
+h3, .h3 {
+  font-size: 1.17rem; }
+
+h4, .h4 {
+  font-size: 1rem; }
+
 h5, .h5 {
-  font-size: 1.25rem; }
+  font-size: 0.85rem; }
 
 h6, .h6 {
-  font-size: 1rem; }
+  font-size: 0.67rem; }
 
 .lead {
   font-size: 1.25rem;
@@ -2333,7 +2333,7 @@ tbody.collapse.show {
 
 .input-group {
   position: relative;
-  display: flex;
+  /* display: flex; */
   width: 100%; }
   .input-group .form-control {
     position: relative;
@@ -8187,12 +8187,12 @@ iframe#crowd-shortcut {
   .switch.switch-3d .switch-label {
     position: relative;
     display: block;
-    height: inherit;
+    height: 22px;
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
-    background-color: #eceff1;
-    border: 1px solid #cfd8dc;
+    background-color: #e8edf9;
+    border: 1px solid #e8edf9;
     border-radius: 2px;
     transition: opacity background .15s ease-out; }
   .switch.switch-3d .switch-input:checked ~ .switch-label::before {
@@ -8201,18 +8201,18 @@ iframe#crowd-shortcut {
     opacity: 1; }
   .switch.switch-3d .switch-handle {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 24px;
-    height: 24px;
+    top: 2px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
     background: #fff;
-    border: 1px solid #cfd8dc;
+    border: 1px solid #e8edf9;
     border-radius: 1px;
     transition: left .15s ease-out;
     border: 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); }
   .switch.switch-3d .switch-input:checked ~ .switch-handle {
-    left: 16px; }
+    left: 19px; }
   .switch.switch-3d.switch-lg {
     width: 48px;
     height: 28px; }
@@ -9408,12 +9408,13 @@ hr.transparent {
 }
 .input, .select {
   font-size: 16px;
-  padding: 12px 10px 10px;
-  display: block;
-  width: 100%;
-  border: 1px solid #979797;
-  opacity: 0.9;
-  background-color: #fff;
+    padding: 10px 10px 8px;
+    display: block;
+    width: 100%;
+    border: solid 1px #a1a1a1;
+    border-radius: 4px;
+    opacity: 0.9;
+    background-color: #fff;
 }
 .select {
   appearance: none;
@@ -9435,24 +9436,24 @@ pointer-events: none;
 }
 .input:focus, .select:focus {
   outline: none;
-  border: 1px solid #979797;
+  border: solid 1px #5c5aa7;
 }
 .label-for-input {
   color: #5e5b5b;
-  opacity: 0.62;
-  font-size: 18px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  width: 100% !important;
-  left: 9px;
-  border: none;
-  top: 10px;
-  text-align: left;
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
-  -ms-transition: 0.2s ease all;
+    opacity: 0.62;
+    font-size: 16px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    width: auto;
+    left: 9px;
+    border: none;
+    top: 10px;
+    text-align: left;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+    -ms-transition: 0.2s ease all;
 }
 .multi-email-form-group .label-for-input {
   top: 7px;
@@ -9491,9 +9492,9 @@ pointer-events: none;
 .select:valid ~ .label-for-input,
 .input:valid ~ .label-for-input,
 .input:not(:placeholder-shown) ~ .label-for-input {
-  top: -8px;
+  top: -9px;
   font-size: 12px;
-  color: #5c5aa7;
+  color: #354052;
   opacity: 1;
   background-color: #fff;
   width: auto!important;
@@ -9506,6 +9507,16 @@ pointer-events: none;
   font-size: 13px;
   z-index: 0;
   color: rgba(140, 137, 137, 1);
+}
+.input-error-div {
+  display: flex;
+  margin-top: 5px;
+}
+.input-error-message {
+  color: #ed1c24;
+  font-size: 12px;
+  margin-bottom: 0px;
+  padding-left: 5px;
 }
 .flex {
   display: flex;
@@ -9524,11 +9535,12 @@ pointer-events: none;
   background-color: #d8d8d8;
   outline: none;
   border: none;
-  border-bottom: 1px solid #979797;
-  border-top: 1px solid #979797;
-  border-left: 1px solid #979797;
-  height: 48px;
-  line-height: 48px;
+  border-radius: 4px 0px 0px 4px;
+  border-bottom: 1px solid #a1a1a1;
+  border-top: 1px solid #a1a1a1;
+  border-left: 1px solid #a1a1a1;
+  height: 44px;
+  line-height: 44px;
   padding: 0px 10px;
   position: relative;
   cursor: default;
@@ -9572,6 +9584,7 @@ pointer-events: none;
 }
 .company-url-form-group input, .company-url-form-group input:focus {
   border-left: transparent;
+  border-radius: 0px 4px 4px 0px;
 }
 
 .km-auto-replies-user-chat-preview {
@@ -9718,3 +9731,63 @@ pointer-events: none;
 .message-shortcut-div {
   background-color: #fff;
 }
+
+/****** New Design System Code ******/
+.km-button {
+  border-radius: 3px;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  height: 36px;
+  padding: 0px 16px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  min-width: 70px;
+  transition: all 0.3s ease-out;
+}
+.km-button:focus {
+  outline: none;
+}
+.km-button:hover {
+  outline: none;
+  border: none;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+}
+.km-button--primary {
+  background-color: #5C5AA7;
+  color: #FFFFFF;
+}
+.km-button--primary:hover {
+  background-color: #3c3b7b;
+  color: #FFFFFF;
+}
+.km-button--secondary {
+  border: solid 1px #5c5aa7;
+  background-color: #FFFFFF;
+  color: #5c5aa7;
+}
+.km-button--secondary:hover {
+  border: solid 1px #5c5aa7;
+  background-color: #F5F5F5;
+  color: #5c5aa7;
+}
+.km-button--primary:disabled {
+  background-color: #d4d9e0;
+  color: #FFFFFF;
+  cursor: default;
+}
+.km-button--secondary:disabled {
+  background-color: #ffffff;
+  color: #c4c6c8;
+  border: solid 1px #d4d9e0;
+  cursor: default;
+}
+.km-button--primary:disabled:hover, .km-button--secondary:disabled:hover {
+  box-shadow: none;
+}
+
+/****** New Design System Code Ends Here ******/
