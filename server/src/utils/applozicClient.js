@@ -313,7 +313,7 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
 }
 
 exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)=>{
-  let url = config.getProperties().urls.addMemberIntoConversation;
+  let url = config.getProperties().urls.addMemberIntoConversation+'?role=1';
   return Promise.resolve(axios.post(url, groupInfo, {
     headers: {
       "Content-Type": "application/json",
