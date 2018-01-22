@@ -158,7 +158,7 @@ render(){
           }
         </div>
       </div>
-      <div className="card">
+      <div className="card" style={{'display':'none'}}>
         <div className="card-header">
           <div className="card-block">
             <div className="form-group row form-control-label">
