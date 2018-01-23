@@ -101,8 +101,8 @@ class LinkPopover extends Component {
                 <Input type="email" id="email-input" name="email-input" placeholder="URL" value={this.state.url} onChange={this.getUrl}/>
               </Col>
             </FormGroup>
-            <Button onClick={this.makeLink}>OK</Button>
-            <Button onClick={this.handleClose}>CANCEL</Button>   
+                <Button onClick={this.makeLink}>Ok</Button>
+                <Button onClick={this.handleClose} style={{marginLeft: "5px"}}>Cancel</Button>
           </div>    
         </Popover>
       </div>
