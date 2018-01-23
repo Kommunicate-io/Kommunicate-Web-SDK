@@ -17,6 +17,9 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
     "password": password,
     "roleName": role,
     "authenticationTypeId": 1,
+    "email":email,
+    "displayName":displayName,
+    "gcmKey":gcmKey
   })).then(response=>{
     let err = {};
     console.log("Applozic server returned : ",response.status);
@@ -144,7 +147,7 @@ exports.getApplication=(customer)=>{
   };
 
 exports.applozicLogin =(userName,password,applicationId,role,email)=>{
-  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1};
+  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1,"email":email};
   if (role){
     data.role= role;
   }
