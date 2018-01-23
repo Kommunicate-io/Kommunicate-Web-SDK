@@ -107,10 +107,9 @@ class AutoSuggest extends Component {
 				applicationId: userSession.application.applicationId,
 				userName: userSession.userName,
 				name: " ",
-				category: this.state.userShortcuts[0].shortcutField,
+				category: this.state.userShortcuts[0].shortcutField.trim(),
 				content: this.state.userShortcuts[0].messageField
 			}
-
 			createSuggestions(suggestion)
 				.then(response => {
 					console.log(response)
@@ -137,8 +136,6 @@ class AutoSuggest extends Component {
 	editSuggestion =() => {
 		let index = this.state.activeMenu;
 		let shortcutRef ="shortcut"+index;
-		let ellipsisMenu = "ellipsisMenu"+index;
-		let userShortcuts = Object.assign([], this.state.userShortcuts);
 		this.refs[shortcutRef].focus();
 	
 	}
@@ -260,7 +257,7 @@ class AutoSuggest extends Component {
 			if(validator.isEmpty(userShortcuts[0].shortcutField) && validator.isEmpty(userShortcuts[0].messageField)){
 				userShortcuts.splice(0, 1);
 				this.setState({
-					userShortcuts: userShortcuts
+				 	userShortcuts: userShortcuts				
 				})
 			}
 			else {
@@ -289,7 +286,7 @@ class AutoSuggest extends Component {
 			activeTextField: activeTextField,
 			showEmptyState: true	
 		}, (e) => { this.refs.shortcut0.focus()})
-		console.log("elements in the array" + this.state.userShortcuts[this.state.index])
+	
 
 	}
 
