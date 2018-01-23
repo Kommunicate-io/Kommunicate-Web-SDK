@@ -158,7 +158,7 @@ function displayCustInfo(clearbitData) {
   var userInfo = {};
   if (typeof person !== "undefined" && person != null && person != "null") {
     info = person.bio + " " + person.location;
-    $("#km-user-info-list .bio").html(person.bio + " " + person.location);
+    $("#km-user-info-list .bio").html(person.bio !== null ? person.bio : '' + " " + person.location !== null ? person.location : '');
     $("#km-user-info-list .bio").removeClass('n-vis');
     var employment = person.employment;
     if (typeof employment !== "undefined" && employment != null && employment != "null") {
