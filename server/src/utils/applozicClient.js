@@ -9,7 +9,7 @@ const constant =require('./constant');
 this method register a user in applozic db with given parameters.
 */
 const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,displayName)=>{
-  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role);
+  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role,"email",email);
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
     "userId": userId,
@@ -88,16 +88,16 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
       })).then(response=>{
         let err = {};
         if (response.status == 200) {
+          console.log(" applozic response :",response.data);
           if (response.data.status != "error") {
-            console.log("applicationCreated SuccessFully..");
             return response.data;
           } else {
-            console.error("application already exists with name : ", applicationName);
+            console.error("applozic error response : ", applicationName);
             err.code = "APPLICATION_ALREADY_EXISTS";
             throw err;
           }
         } else {
-          console.error("received error code: ", response.status, " while creating application");
+          console.error("received error code: ",response );
           err.code = "APPLOZIC_ERROR";
           throw err;
         }
@@ -129,7 +129,7 @@ exports.getApplication=(customer)=>{
           console.log("got application detail..status code :", response.status);
           return response.data;
         } else {
-          console.log("application not exists with Id :", applicationId);
+          console.log("get application API response :", response.data);
           err.code = "APPLICATION_NOT_EXISTS";
           throw err;
         }
