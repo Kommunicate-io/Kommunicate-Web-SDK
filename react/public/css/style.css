@@ -537,22 +537,22 @@ h1, h2, h3, h4, h5, h6,
   color: inherit; }
 
 h1, .h1 {
-  font-size: 2rem; }
+  font-size: 36px; }
 
 h2, .h2 {
-  font-size: 1.5rem; }
+  font-size: 30px; }
 
 h3, .h3 {
-  font-size: 1.17rem; }
+  font-size: 24px; }
 
 h4, .h4 {
-  font-size: 1rem; }
+  font-size: 20px; }
 
 h5, .h5 {
-  font-size: 0.85rem; }
+  font-size: 18px; }
 
 h6, .h6 {
-  font-size: 0.67rem; }
+  font-size: 16px; }
 
 .lead {
   font-size: 1.25rem;
@@ -8747,19 +8747,27 @@ app-root {
     margin-left: -220px; }
     .sidebar .sidebar-nav,
     .sidebar .nav {
-      width: 220px !important; }
+      width: 60px !important; }
   .main, .app-footer {
     margin-left: 0 !important; }
   .aside-menu {
-    margin-right: -250px; }
+    margin-right: -0px; }
   .sidebar-mobile-show .sidebar {
-    width: 220px;
+    width: 60px;
     margin-left: 0; }
     .sidebar-mobile-show .sidebar .sidebar-nav {
       height: calc(100vh - 55px); }
   .sidebar-mobile-show .main {
-    margin-right: -220px !important;
-    margin-left: 220px !important; } }
+    margin-right: 0px !important;
+    margin-left: 60px !important; }
+    .settings-sidebar {
+      width: 150px;
+    }
+  .ss-nav-link {
+    padding: 5px 14px;
+  }
+  
+  }
 
 hr.transparent {
   border-top: 1px solid transparent; }
@@ -9164,7 +9172,7 @@ hr.transparent {
 }
 
 .header-user-email {
-  width: 87px;
+  /* width: 87px; */
   height: 11px;
   font-size: 11px;
   letter-spacing: 0.7px;
