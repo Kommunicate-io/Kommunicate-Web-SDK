@@ -53,6 +53,8 @@ exports.createCustomer = (req,res)=>{
               // replacing user Id with user name. can't delete userId from system for backward compatibility.
               delete result.userId;
               result.isAdmin=true;
+              result.adminUserName = userName;
+              result.adminDisplayName = name;
               response.data=result;
               res.status(200).json(response);
             }).catch(err=>{
@@ -199,6 +201,8 @@ exports.signUpWithAplozic= (req,res)=>{
               // replacing user Id with user name. can't delete userId from system for backward compatibility.
               delete result.userId;
               result.isAdmin=true;
+              result.adminUserName = userName;
+              result.adminDisplayName = userName;
               response.data=result;
               res.status(200).json(response);
             }).catch(err=>{
