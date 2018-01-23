@@ -5,6 +5,7 @@ const applozicClient = require("../utils/applozicClient");
 const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
+const Sequelize = require("sequelize");
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
@@ -230,7 +231,27 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.getInAppMessagesByEventId=(createdBy, customerId, eventId)=>{
+exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventId)=>{
+
+  logger.info("createdBy", createdBy)
+  logger.info("cusotmerId", customerId)
+  logger.info("type", type)
+  logger.info("eventId", eventId)
+  // type = 3 for admin user include messages where createdBy is null
+  if(type == 3){
+    return Promise.resolve(db.InAppMsg.findAll({
+        where: {
+            createdBy:{
+              [Sequelize.Op.or]: [null, createdBy]
+            },
+            customerId: customerId,
+            eventId: eventId
+        },
+        order: [
+            ['id', 'ASC']
+        ],
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+  }else{
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
@@ -241,6 +262,7 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, eventId)=>{
             ['id', 'ASC']
         ],
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+  }
 }
 
 exports.softDeleteInAppMsg=(id)=>{
