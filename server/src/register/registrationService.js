@@ -191,7 +191,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
       "name": applozicBot.userId,
       "key": applozicBot.userKey,
       "brokerUrl": applozicBot.brokerUrl,
-      "accessToken": applozicBot.accessToken,
+      "accessToken": applozicBot.userId,
       "applicationKey": application.applicationId,
       "authorization":new Buffer(applozicBot.userId+":"+applozicBot.deviceKey).toString('base64'),
       "type": "KOMMUNICATE_SUPPORT",
