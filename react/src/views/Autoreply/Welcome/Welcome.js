@@ -121,7 +121,7 @@ render(){
 <div className="animated fadeIn">
   <div className="row">
     <div className="col-sm-12 col-md-12">
-      <div className="card welcome-message-container">
+      <div className="card welcome-message-container" style={{'display':'none'}}>
         <div className="card-block">
           <div>
             <div className="col-6">
