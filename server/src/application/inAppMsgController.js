@@ -107,11 +107,7 @@ exports.processEvents2=(req, res)=>{
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
         return inAppMsgService.processEventWrapper(eventType, groupId, customer, agentName).then(response=>{
             logger.info(response);
-            if(response === "success"){
                 res.status(200).json({code:"SUCCESS"});
-            }else{
-                res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
-            }  
         })
     }).catch(err=>{
         logger.info("err while sending welcome messgae",err);
