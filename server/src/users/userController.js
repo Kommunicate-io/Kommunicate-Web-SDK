@@ -100,6 +100,8 @@ exports.createUser = function(req,res) {
             registrationService.sendWelcomeMail(user.email, user.name , true, user.companyName);
           }
           user.application = application;
+          user.adminUserName = customer.userName;
+          user.adminDisplayName = customer.name;
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;
         });
