@@ -32,29 +32,35 @@ class Welcome extends Component{
       console.log("error while fetching welcome message",err);
     })
   }
-
+  
   submitWelcomeMessage = () => {
-    var _this =this;
-    let userSession = CommonUtils.getUserSession();
-     var applicationId = userSession.application.applicationId;
-     var userId = userSession.userName;
-     console.log(applicationId,userId);
-     var setWelcomeMessageUrl = getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
-     axios({
-      method: 'post',
-      url:setWelcomeMessageUrl,
-      data:{
-            "applicationId" : applicationId,
-            "message" : this.state.msg
-          }
-       }).then(function(response){
-         console.log("message successfully send");
-         Notification.info("welcome message configured successfully");
-         //_this.setState({msg:""});
-       }).catch(err=>{
-        Notification.error("something went wrong!");
-       })
-
+    if(this.state.msg !== ""){
+      var _this =this;
+      let userSession = CommonUtils.getUserSession();
+       var applicationId = userSession.application.applicationId;
+       var userId = userSession.userName;
+       console.log(applicationId,userId);
+       var setWelcomeMessageUrl = getConfig().kommunicateBaseUrl+"/applications/"+applicationId+"/welcomemessage";
+       axios({
+        method: 'post',
+        url:setWelcomeMessageUrl,
+        data:{
+              "applicationId" : applicationId,
+              "message" : this.state.msg
+            }
+         }).then(function(response){
+           console.log("message successfully send");
+           Notification.info("welcome message configured successfully");
+           //_this.setState({msg:""});
+         }).catch(err=>{
+          Notification.error("something went wrong!");
+         })
+  
+    }
+    else{
+      Notification.error("Can't update empty message")
+    }
+    
 	}
 
   toggleOverlay = (e) => {
