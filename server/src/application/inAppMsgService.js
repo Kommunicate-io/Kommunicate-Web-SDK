@@ -14,7 +14,8 @@ exports.postWelcomeMsg=(options)=>{
                 customerId:options.customer.id,
                 eventId:appUtils.EVENTS.CONVERSATION_STARTED,
                 message:options.message,
-                status:appUtils.EVENT_STATUS.ENABLED
+                status:appUtils.EVENT_STATUS.ENABLED,
+               category:appUtils.IN_APP_MESSAGE_CETAGORY.WELCOME_MESSAGE 
             }
             return db.InAppMsg.create(inAppMessage);
         }else{
@@ -115,6 +116,10 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         // inAppMessages.map(inAppMessage => {
+          // hard coding event type to fix the welcome messag eissue. 
+    // remove this once react changes goes to prod
+   // only supporting event type =1;
+    eventType =1;
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
