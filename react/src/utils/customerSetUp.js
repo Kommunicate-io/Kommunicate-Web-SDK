@@ -11,10 +11,10 @@ function getJsCode (){
   if (userSession) {
     options.appId = userSession.application.applicationId;
     options.isAnonymousChat=true;
-    options.agentId = userSession.userName||localStorage.getItem("agentId");
+    options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
     
     if (userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
-      options.agentName = userSession.displayName;
+      options.agentName = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
       options.agentName = localStorage.getItem("agentName");
     }

@@ -12,6 +12,8 @@ exports.login = (userName,password,applicationName, applicationId,callback) => {
         // valid user credentials
           return Promise.resolve(userService.getCustomerInfoByApplicationId(applicationId)).then(customer=>{
             user.isAdmin = customer.userName==user.userName;
+            user.adminUserName=customer.userName;
+            user.adminDisplayName = customer.name;
             return prepareResponse(user,application);
           });
       }else{
