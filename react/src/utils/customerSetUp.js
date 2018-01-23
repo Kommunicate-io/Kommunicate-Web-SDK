@@ -31,6 +31,8 @@ function getJsCode (){
 
 var jsScript= `<script type="text/javascript">
     (function(d, m){
+      // you can change the below values to customize conversations. 
+      // see the complete list of options in "More instructions Tab" 
       let o = ${JSON.stringify(options)};
       let s = document.createElement("script");
       s.type = "text/javascript";

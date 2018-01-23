@@ -29,6 +29,7 @@ class Integration extends Component {
       <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
       <li><strong>email</strong> - allow your users to register email id (optional).</li>
       <li><strong>groupName</strong> - Conversation Title.</li>
+      <li><strong>userName</strong> - Display name of the user. Agents will know users by Display name</li> 
       <li><strong>agentId</strong> - Support agent Id(registered in Kommunicate) who will reply to the support queries.</li>
       <li><strong>agentName</strong> - Display name for agent(agentId is default display name).</li>
     </ul>`};
