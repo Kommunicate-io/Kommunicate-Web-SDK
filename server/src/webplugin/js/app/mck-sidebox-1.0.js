@@ -1772,6 +1772,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         DELETED_GROUP_MESSAGE:"",
                         GROUP_USER_ROLE_UPDATED_MESSAGE:"",
                         GROUP_META_DATA_UPDATED_MESSAGE: "",
+                        CONVERSATION_ASSIGNEE: params.agentId,
                         //ALERT: "false",
                         HIDE: "true"
                     },
