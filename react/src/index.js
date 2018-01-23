@@ -22,6 +22,10 @@ import CommonUtils from './utils/CommonUtils';
 // const history = createBrowserHistory();
 
 class App extends Component {
+  static defaultProps ={ hideSkip : false }
+  constructor(props,defaultProps){
+    super(props,defaultProps)
+  }
 
   render() {
     return (
@@ -32,7 +36,7 @@ class App extends Component {
           <Route exact path="/login" name="Login Page" component={Login}/>
           <Route exact path="/signup" name="Register Page" component={Register}/>
           <Route exact path="/setUpPage" name="SetUpPage" render={ ({history}) => CommonUtils.getUserSession() ? <SetUpPage history={history}/>: <Redirect to={{pathname: '/signup'}}/> }/>
-          <Route exact path="/installation" name="Installation" component ={SetUpPage} />
+          <Route exact path="/installation" name="Installation" render={() => <SetUpPage hideSkipForNow={this.props.hideSkip} />} />
           <Route exact path="/404" name="Page 404" component={Page404}/>
           <Route exact path="/500" name="Page 500" component={Page500}/>
           <Route exact path="/password/update" name = "Update Password" component = {PasswordReset}/>

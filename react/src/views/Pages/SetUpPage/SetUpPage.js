@@ -51,7 +51,7 @@ class SetUpPage extends Component {
   			<div className="row justify-content-center">
 	        	<div className="col-md-11 card">
 		  			<SelectStep step={this.state.step} location={this.props.location}/>
-		  			{this.state.step === 1 ? <Step1 changeStep={this.changeStep} location= {this.props.location}/> : <Step2 history={this.props.history}/>}
+		  			{this.state.step === 1 ? <Step1 hideSkipForNow ={this.props.hideSkipForNow} changeStep={this.changeStep} location= {this.props.location}/> : <Step2 history={this.props.history}/>}
 	  			</div>
   			</div>
   		</div>
