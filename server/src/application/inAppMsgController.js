@@ -196,7 +196,7 @@ exports.getInAppMessagesByEventId =(req,res)=>{
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, eventId)
+        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, user.type, eventId)
             .then(inAppMessages=>{
                 let message = "Not able to get in app messages"
                 if(inAppMessages instanceof Array && inAppMessages.length > 1){
