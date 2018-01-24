@@ -209,7 +209,7 @@ exports.processOffBusinessHours=(req,res)=>{
                 const key = userBusinessHours[0].user_name+"-"+userBusinessHours[0].application_id;
                 const mapPrifix = config.getEnvId()+"-businessHoursMessageSentMap";
                 Promise.resolve(cacheClient.setDataIntoMap(mapPrifix,key,new Date().getTime())).then(oldValue=>{
-                  console.debug("last message sent time updated in cache");
+                  logger.info("last message sent time updated in cache");
                 }).catch(err=>{
                   logger.error("err while updating last message sent time in cache",err);
                 });
