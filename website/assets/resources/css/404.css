@@ -70,6 +70,32 @@ a, a:hover, a:focus, a:active {
 .nav-login-button:hover {
     color: rgba(255, 255, 255, 0.5);
 }
-.sticky {
-    background-color: #654df7;
-  }
+
+.nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #4a4a4a;
+    font-weight: 600
+}
+.sticky .nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #4a4a4a;
+    font-weight: 600;
+}
+.nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #4a4a4a;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.sticky .nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #4a4a4a;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}

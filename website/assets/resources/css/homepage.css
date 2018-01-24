@@ -378,7 +378,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 }
 
 .why-kommunicate-delight-customers-section, .why-kommunicate-reduce-churn-section, .why-kommunicate-agent-chatbot-section, .why-kommunicate-reduce-ticket-section {
-  border-bottom: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   padding: 6em 0em;
 }
 .why-kommunicate-reduce-ticket-section {
@@ -407,10 +407,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   font-size: 17px;
   color: #1B1B1B;
   max-width: 300px;
+  margin: 0 auto;
 }
 .img-icon-container {
   width: 70px !important;
   height: 70px;
+  margin: 0 auto;
 }
 .img-icon-container svg {
   width: 70px;
@@ -489,8 +491,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 
 .homepage-beta-latest-section {
   position: relative;
-  padding: 120px 15px 0px 15px;
-  margin-bottom: 70px;
+  padding: 30px 15px 0px 15px;
+  /* margin-bottom: 70px; */
+  background-color: #f5f7fa;
 }
 .homepage-beta-latest-section .section-heading {
   color: #5C5AA7;
@@ -498,7 +501,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   color: #5b5b5b;
 }
 .homepage-beta-latest-section::before {
-  content: "";
+  /* content: ""; */
   position: absolute;
   z-index: -1;
   width: 100%;
@@ -656,7 +659,7 @@ transform: scale(.6);
 
 .homepage-beta-reasons-invite-list-section {
   padding-top: 70px;
-  /* padding-bottom: 80px; */
+  padding-bottom: 80px;
   background-color: #fff;
 }
 .reason-invite-main-heading {
@@ -800,7 +803,7 @@ margin-top: 15px;
 }
 
 .homepage-beta-cta-section {
-  background: rgba(255, 255, 255, 0);
+  background: #f5f7fa;
   /* background-image: url(/assets/resources/images/kommunicate-cta-section-bg.jpg); */
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -809,24 +812,14 @@ margin-top: 15px;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  height: 260px;
+  /* height: 100vh; */
+  display: flex;
+  align-items: center;
   padding: 0px 0px;
   position: relative;
-  margin-bottom: 70px;
+  /* margin-bottom: 70px; */
 }
-.homepage-beta-cta-section::before {
-  position: absolute;
-  z-index: -1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 150%;
-  content: '';
-  -webkit-transform: skewY(5deg);
-  -ms-transform: skewY(5deg);
-  transform: skewY(5deg);
-  background-color: #f6f7fc;
-}
+
 .homepage-beta-cta-section .row {
   margin: 0px;
   padding: 40px 0px;
@@ -1018,6 +1011,9 @@ label {
   .why-kommunicate-reduce-ticket-section {
       display: flex;
       flex-flow: row-reverse;
+  }
+  .homepage-beta-cta-section {
+    height: 100vh;
   }
 }
 
@@ -1377,4 +1373,39 @@ input:-ms-input-placeholder {
 
 .km-logo-home-page .km-logo-final-full-0, .km-logo-home-page .km-logo-final-full-1 {
   fill: #FFFFFF !important;
+}
+
+.km-launcher-logo-0 {
+  fill: #ffffff !important;
+} .km-launcher-logo-1 {
+  fill: #5C5AA7 !important;
+}
+
+.nav-signup-button {
+  color: #FFFFFF;
+  border: none;
+  background-color: #4a4a4a;
+  font-weight: 600
+}
+.sticky .nav-signup-button {
+  color: #FFFFFF;
+  border: none;
+  background-color: #4a4a4a;
+  font-weight: 600;
+}
+.nav-signup-button:hover {
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  border: none;
+  font-weight: 600;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.sticky .nav-signup-button:hover {
+  color: #FFFFFF;
+  background-color: #4a4a4a;
+  border: none;
+  font-weight: 600;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
