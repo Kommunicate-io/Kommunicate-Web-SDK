@@ -424,6 +424,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .homepage-beta-features-section .row {
   margin-bottom: 5%;
 }
+.homepage-beta-features-section .rows {
+  margin-bottom: 30px;
+}
 
 
 .Grid {
