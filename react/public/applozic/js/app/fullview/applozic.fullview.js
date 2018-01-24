@@ -3668,6 +3668,11 @@ var KM_CLIENT_GROUP_MAP = [];
 						target : '_blank'
 					});
 				}
+
+				if (richText) {
+                    Kommunicate.richMsgEventHandler.initializeSlick($kmApplozic("div[data-msgkey='" + msg.key + "'] .km-div-slider"));
+                }
+
 				if (msg.fileMeta) {
 					$kmApplozic("." + replyId + " .km-file-text a").trigger('click');
 					$kmApplozic("." + replyId + " .km-file-text").removeClass('n-vis').addClass('vis');

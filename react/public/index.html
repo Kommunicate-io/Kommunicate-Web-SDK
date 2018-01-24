@@ -37,6 +37,11 @@
 
   <link href="%PUBLIC_URL%/applozic/code/applozic-style.css" rel="stylesheet">
 
+  <link href="%PUBLIC_URL%/css/tiny-slider.css" rel="stylesheet">
+  <link href="%PUBLIC_URL%/css/mck-sidebox-1.0.css" rel="stylesheet">
+
+  
+
   <style>
 
   </style>
@@ -56,6 +61,9 @@
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/panel.js"></script>
 
   <script type="text/javascript" src="%PUBLIC_URL%/js/heapAnalytics.js"></script>
+
+  <script type="text/javascript" src="%PUBLIC_URL%/js/tinySlider.js"></script>
+  
 
   </head>
 
@@ -111,8 +119,22 @@
 
 
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/applozic.common.js"></script>
-  <script type="text/javascript"
-    src="%PUBLIC_URL%/applozic/js/app/fullview/applozic.fullview.js"></script>
+
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/applozic.fullview.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/kommunicate.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/km-rich-text-event-handler.js"></script>
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/km-richtext-markup-1.0.js"></script>
+  <!-- Hotel Slider (Tiny Slider) -->
+  <script>
+    var slider = tns({
+                container: '.km-div-slider',
+                items: 10,
+                slideBy: 'page',
+                "mouseDrag": true,
+                "arrowKeys": true
+              });
+  </script>
+
   <script type="text/javascript">
     var oModal = "";
     if (typeof $original !== 'undefined') {
@@ -131,6 +153,7 @@
   </script>
 
   <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
+  
 
   </body>
 </html>
