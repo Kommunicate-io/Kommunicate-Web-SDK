@@ -1086,7 +1086,7 @@ label {
       font-size: 21px;
   }
   .homepage-beta-cta-section {
-      margin-bottom: 130px;
+     /* margin-bottom: 130px;*/
   }
 }
 @media (max-width:560px) {
