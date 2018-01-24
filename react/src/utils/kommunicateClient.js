@@ -347,6 +347,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
     }
   }))
   .then(response => {
+        
     window.$applozic.fn.applozic('updateUser', {data: {'imageLink': response.data.profileImageUrl}, success: function(response) {
         console.log(response);
       }, error: function(error) {
@@ -363,7 +364,8 @@ const updateApplozicUser = (userInfo) => {
     'Content-Type':'application/json',
     'Apz-AppId':userSession.application.applicationId,
     'Apz-Token': 'Basic ' + new Buffer(userSession.userName+':'+userSession.password).toString('base64'),
-    'Apz-Product-App':'true'    
+    'Apz-Product-App':'true',
+    'Of-User-Id':   userSession.userName 
   }
   console.log(headers)
 
