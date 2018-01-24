@@ -21,7 +21,7 @@ function getJsCode (){
   } else {
     const search = this.props.location.search;
     options.appId = CommonUtils.getUrlParameter(search, "applicationId");
-    options.agentId = CommonUtils.getUrlParameter(search, "agentName");
+    options.agentId = CommonUtils.getUrlParameter(search, "agentId");
   }
   
   options.groupName=options.agentName||options.agentId;
