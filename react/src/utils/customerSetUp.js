@@ -18,6 +18,9 @@ function getJsCode (){
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
       options.agentName = localStorage.getItem("agentName");
     }
+  } else {
+    options.appId = CommonUtils.getUrlParameter("applicationId");
+    options.agentId = CommonUtils.getUrlParameter("agentName");
   }
   
   options.groupName=options.agentName||options.agentId;
