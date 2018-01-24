@@ -208,7 +208,7 @@ login = (event)=>{
           _this.state.appIdList= response.data;
           console.log("got one application for user, appId : ",_this.state.applicationId);
           if(_this.state.loginButtonAction=="passwordReset"){
-            resetPassword({userName:_this.state.userName,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+            resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
             return;
           }
           _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
