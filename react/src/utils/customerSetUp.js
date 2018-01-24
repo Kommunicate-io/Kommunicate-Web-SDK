@@ -19,8 +19,9 @@ function getJsCode (){
       options.agentName = localStorage.getItem("agentName");
     }
   } else {
-    options.appId = CommonUtils.getUrlParameter("applicationId");
-    options.agentId = CommonUtils.getUrlParameter("agentName");
+    const search = this.props.location.search;
+    options.appId = CommonUtils.getUrlParameter(search, "applicationId");
+    options.agentId = CommonUtils.getUrlParameter(search, "agentName");
   }
   
   options.groupName=options.agentName||options.agentId;
