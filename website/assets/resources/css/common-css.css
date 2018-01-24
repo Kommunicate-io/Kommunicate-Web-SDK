@@ -197,6 +197,9 @@
 /* .links-div:not(:first-child){
     margin-left: 20px;
 } */
+.links-div:last-child>a {
+    font-weight: 600;
+}
 .links {
     color: #ffffff;
     font-size: 18px;

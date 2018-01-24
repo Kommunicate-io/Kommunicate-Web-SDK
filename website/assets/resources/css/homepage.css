@@ -1014,7 +1014,7 @@ label {
       flex-flow: row-reverse;
   }
   .homepage-beta-cta-section {
-    height: 100vh;
+    height: 550px;
   }
 }
 
@@ -1051,8 +1051,10 @@ label {
       padding-right: 0em;
   }*/
   .homepage-beta-cta-section {
-      height: 350px;
-      position: relative;
+         /* height: 350px; */
+    padding-top: 40px;
+    position: relative;
+    padding-bottom: 60px;
   }
   .pre-signup-form {
       width: 100%;
