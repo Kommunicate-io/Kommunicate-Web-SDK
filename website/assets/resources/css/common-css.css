@@ -3,7 +3,6 @@
     position: absolute;
     top: 0;
     height: 65px;
-    transition: all 0.3s ease-out;
 }
 .navigation-header {
     position: absolute;
@@ -18,7 +17,6 @@
     max-width: 1170px;
     padding: 0px 15px;
     margin: 0 auto;
-    transition: all 0.3s ease-out;
 }
 .page-links-ul {
     list-style: none;
@@ -231,5 +229,4 @@
     background-color: #fff;
     box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
     z-index: 1005;
-    transition: all 0.3s ease;
   }

@@ -35,8 +35,8 @@ $(document).ready(function(){
             user.password = $("#km-signup-userPassword").val();
             
             var userCreate = $.ajax({
-            //    url: $DashboardApiUrl + "/customers",
-                url: "https://api-test.kommunicate.io/customers",
+               url: $DashboardApiUrl + "/customers",
+                // url: "https://api-test.kommunicate.io/customers",
                 type: "post",
                 contentType: "application/json",
                 data: JSON.stringify(user),
@@ -77,8 +77,8 @@ $(document).ready(function(){
             // console.log(loginIdOriginal);
 
             var userLogin = $.ajax({
-                // url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
-                url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+                url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+                // url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
                 type: "get",
                 contentType: "application/json",
                 success: function(data) {
@@ -123,8 +123,8 @@ $(document).ready(function(){
                             loginUserDetails.applicationId = applicationIds;
                             
                             var userLogins = $.ajax({
-                                // url: $DashboardApiUrl + "/login",
-                                url: "https://api-test.kommunicate.io/login",
+                                url: $DashboardApiUrl + "/login",
+                                // url: "https://api-test.kommunicate.io/login",
                                 type: "post",
                                 contentType: "application/json",
                                 data: JSON.stringify(loginUserDetails),
@@ -175,8 +175,8 @@ $(document).ready(function(){
 
         var forgotPassword = $.ajax({
             
-            // url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
-            url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+            url: $DashboardApplozicApiUrl + "/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
+            // url: "https://apps-test.applozic.com/rest/ws/user/getlist?userId=" + loginId +"&roleNameList=APPLICATION_WEB_ADMIN",
             type: "get",
             contentType: "application/json",
             success: function(data) {
@@ -196,8 +196,8 @@ $(document).ready(function(){
                     frgtPassObj.userName = loginIdOriginal;
                     frgtPassObj.applicationId = applicationIds; 
                     var userLogins = $.ajax({
-                        // url: $DashboardApiUrl + "/users/password-reset",
-                        url: "https://api-test.kommunicate.io/users/password-reset",
+                        url: $DashboardApiUrl + "/users/password-reset",
+                        // url: "https://api-test.kommunicate.io/users/password-reset",
                         type: "post",
                         contentType: "application/json",
                         data: JSON.stringify(frgtPassObj),
