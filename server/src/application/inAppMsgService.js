@@ -59,7 +59,7 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
             return {userId: groupUserRole3[0].userId, agentId: groupUserRole2[0].userId}
         }).then( groupUser => {
             console.log("groupUser")
-            userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
+            return userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
             .then(res => {
               console.log(res)
               console.log(res.availability_status)
@@ -81,27 +81,27 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
                   console.log(1);
                   return Promise.all([processConversationStartedEvent(1, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(offline && !anonymous){
                   console.log(2);
                   eventType = 2
                   return Promise.all([processConversationStartedEvent(2, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(!offline && anonymous){
                   eventType = 3
                   console.log(3);
                   return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(!offline && !anonymous){
                   eventType = 4
                   return Promise.all([processConversationStartedEvent(4, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }
               })
@@ -151,10 +151,12 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
               }
             })
       }else{
+        /*remove this to send default welcome message
         let  message = defaultMessage;
         return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"}).then(response=>{
             return "success";
-          })
+          })*/
+          return "no_message";
       }
     })
 }

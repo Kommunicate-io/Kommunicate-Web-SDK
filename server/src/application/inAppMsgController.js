@@ -107,7 +107,11 @@ exports.processEvents2=(req, res)=>{
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
         return inAppMsgService.processEventWrapper(eventType, groupId, customer, agentName).then(response=>{
             logger.info(response);
+            if(response =="success"){
                 res.status(200).json({code:"SUCCESS"});
+            }else if(response =="no_message"){
+                res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
+            }
         })
     }).catch(err=>{
         logger.info("err while sending welcome messgae",err);
