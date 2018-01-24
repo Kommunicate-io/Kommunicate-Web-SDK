@@ -228,7 +228,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #fff;
+    background: linear-gradient(to left, #4daab7, #2475bb 41%, #5c5aa7);
     box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
     z-index: 1005;
     transition: all 0.3s ease;
