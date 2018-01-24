@@ -190,7 +190,7 @@ class Register extends Component {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-md-6">
-              <div className="card mx-4">
+              <div className="card">
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign Up</h1>
                   <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
