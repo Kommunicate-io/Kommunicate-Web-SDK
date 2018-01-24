@@ -256,6 +256,7 @@ exports.updateApplozicClient = (userName, accessToken,applicationId,user,options
     "Apz-Token":"Basic "+ apzToken,
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,
+    'Of-User-Id':user.userId,
     'Apz-Product-App': 'true'
    }})
    .then(response=>{
