@@ -266,7 +266,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
     }
 }
 @media (min-width: 1200px) {
-    .container {
+    .pricing-landing-page-section .container {
         width: 900px;
     }
 }

@@ -716,6 +716,7 @@ margin-top: 15px;
 
 .love {
   margin-top: 50px;
+  color: #ffffff;
 }
 .fa-heart {
   color: #ff0000;
@@ -894,17 +895,17 @@ margin-top: 15px;
 
 .address {
   font-size: 16px;
-  color: #4e4e4e;
+  color: #FFFFFF;
   line-height: 28px;
   margin-top: 30px;
 }
 
 .address a {
-  color: #3a3a3a;
+  color: #FFFFFF;
 }
 
 .address a:hover {
-  color: #1f1f1f;
+  color: #ffffff85;
 }
 
 label {
