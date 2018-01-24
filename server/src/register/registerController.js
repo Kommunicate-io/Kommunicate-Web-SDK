@@ -32,10 +32,10 @@ exports.createCustomer = (req,res)=>{
       }else{
         return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name})
         .then(result=>{
-          inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
+         /* inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
           .catch(err=>{
             console.log("err while storing welcome message in db");
-          });
+          });*/
           registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err)  
           });
@@ -189,10 +189,10 @@ exports.signUpWithAplozic= (req,res)=>{
       }else{
         return registrationService.signUpWithApplozic({"userName":userName,"password":password,"email":email,"applicationId":applicationId}).then(result=>{
           try{
-            inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
+            /*inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
             .catch(err=>{
               console.log("err while storing welcome message in db");
-            });
+            });*/
            registrationService.sendWelcomeMail(email, userName, false,'');
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
