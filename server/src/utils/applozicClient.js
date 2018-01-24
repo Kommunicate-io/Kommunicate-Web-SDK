@@ -149,7 +149,7 @@ exports.getApplication=(customer)=>{
 exports.applozicLogin =(userName,password,applicationId,role,email)=>{
   let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1,"email":email};
   if (role){
-    data.role= role;
+    data.roleName= role;
   }
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, data))
   .then(response=>{
@@ -279,7 +279,7 @@ exports.createGroup = (options)=>{
 
 exports.sendGroupMessageByBot = (groupId,message,authorization,applicationId,metadata)=>{
   console.log("sending message to group ",groupId);
-  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,":apz-token:",apzToken,"applicationId",applicationId,"metadata",metadata );
+  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,"applicationId",applicationId,"metadata",metadata );
   let url = config.getProperties().urls.sendMessageUrl;
   return Promise.resolve(axios.post(url,{"groupId": groupId,"message": message,"metadata": metadata},
   {headers: {"Application-Key": applicationId,"Authorization": "Basic "+authorization,"Content-Type":"application/json"}})).then(response=>{
