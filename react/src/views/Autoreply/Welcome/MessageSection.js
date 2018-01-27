@@ -55,7 +55,7 @@ class MessageSection extends Component {
 			                	rows="5"
 			            	/>
                 {
-                  <LinkPopover insertLink={this.insertLink}/>
+                  // <LinkPopover insertLink={this.insertLink}/>
              	  }
 		            {
 		            	!this.props.editInAppMsg ? 
