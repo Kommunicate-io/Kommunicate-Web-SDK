@@ -54,12 +54,14 @@ class MessageSection extends Component {
 			                	onChange={this.handleChange}
 			                	rows="5"
 			            	/>
-			            	<LinkPopover insertLink={this.insertLink}/>
-				            {
-				            	!this.props.editInAppMsg ? 
-				            		<button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button> :
-				            		<button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this._editInAppMsg}> Save Changes </button>
-			        		}
+                {
+                  // <LinkPopover insertLink={this.insertLink}/>
+             	  }
+		            {
+		            	!this.props.editInAppMsg ? 
+		            		<button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this.props.addMessageToChatPreview}> Save Changes </button> :
+		            		<button className="welcome-msg-textarea-save-btn" style={{textAlign: "center"}} onClick={this._editInAppMsg}> Save Changes </button>
+	        		  }
 		    			</div>
 					</div>
 					<div className={this.props.showDeleteBtn ? "col-3":"n-vis"}>
