@@ -174,9 +174,9 @@
 
 .footer-section {
     position: relative;
-    padding: 50px 0px 80px 0px;
+    padding: 50px 0px 20px 0px;
     text-align: center;
-    background-color: #2475bb;
+    background-color: #5C5AA7;
 }
 .footer-section .img-container svg {
     width: auto;
