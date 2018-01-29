@@ -128,7 +128,7 @@ a, a:hover, a:focus, a:active {
 
 .why-kommunicate-section {
   padding-top: 40px;
-  background-color: #2475bb;
+  background-color: #5C5AA7;
 }
 
 .homepage-beta-features-section:focus, .why-kommunicate-section:focus {
@@ -616,7 +616,7 @@ text-transform: uppercase
   font-size: 18px;
   border-radius: 26px;
   padding: 10px 20px;
-  background: #4a4a4a ;
+  background: #5C5AA7 ;
   box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -685,7 +685,8 @@ transform: scale(.6);
 }
 .reasons-invite-img-container, .reasons-invite-img-container svg {
   width: auto;
-  height: 90px;
+  height: 70px;
+  margin: 0 auto;
 }
 .mobile {
 width: 49px;
@@ -713,7 +714,7 @@ margin-top: 15px;
 
 .homepage-beta-cta-section .form-submit-btn {
   color: #fff;
-  background-color: #4a4a4a;
+  background-color: #5C5AA7;
 }
 
 
@@ -981,7 +982,7 @@ label {
 .scroll-down .fa-angle-down {
   font-size: 40px;
   color: #FFFFFF;
-  margin-top: 70px;
+  margin-top: 35px;
   -webkit-animation: bounce 2s infinite  ease-in-out;
   animation: bounce 2s infinite  ease-in-out;
 }
@@ -1031,6 +1032,12 @@ label {
   .hero-text, .hero-subtext {
       text-align: center;
   }
+  .hero-section {
+    margin-top: 25px;
+}
+.landing-page-main-image {
+  margin-top: 0px;
+}
   .hero-text {
       font-size: 32px;
   }
@@ -1085,7 +1092,7 @@ label {
   .kommunicate-logo-text {
       font-size: 21px;
   }
-  .homepage-beta-cta-section {
+  .homepage-beta-cta-section { 
      /* margin-bottom: 130px;*/
   }
 }
