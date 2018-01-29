@@ -143,7 +143,7 @@ a, a:hover, a:focus, a:active {
     font-size: 16px;
     padding: 15px 16px 15px 14px;
     margin: 0;
-    border-radius: 26px 0px 0px 26px;
+    border-radius: 6px 0px 0px 26px;
     outline: none;
     height: 47px;
     box-shadow: none;
@@ -204,16 +204,16 @@ a, a:hover, a:focus, a:active {
 }
 @media (max-width:560px) {
     .cta-email-pre-signup {
-        border-radius: 26px;
+        border-radius: 6px;
         border: 1px solid #7B7979;
     }
      .pricing-cta-section .cta-email-pre-signup {
-        border-radius: 26px;
+        border-radius: 6px;
     }
     .form-submit-btn {
         flex: 0 0 100%;
         margin-top: 15px;
-        border-radius: 26px;
+        border-radius: 6px;
     }
     .pre-signup-form {
         background-color: transparent;
