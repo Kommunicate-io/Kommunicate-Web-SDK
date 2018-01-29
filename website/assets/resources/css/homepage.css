@@ -199,7 +199,12 @@ animation-timing-function: linear;
   border: none;
   flex: 0 1 auto;
   background-color: #2dd35c;
-}
+  }
+.form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
 .form-submit-btn:focus {
   outline: none;
 }
@@ -270,6 +275,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   border: none;
   flex: 1 0 auto;
 }
+
+
+.homepage-beta-cta-section .form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
 
 .pre-signup-form {
   background-color: white;
@@ -521,7 +533,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .section-heading {
   font-size: 34px;
   font-weight: 300;
-  color: #363c50;
+  color: #5C5AA7;
   margin-top: 50px;
 }
 .section-subheading {
@@ -717,7 +729,7 @@ margin-top: 15px;
 
 .homepage-beta-cta-section .form-submit-btn {
   color: #fff;
-  background-color: #5C5AA7;
+  background-color: #2dd35c;
 }
 
 

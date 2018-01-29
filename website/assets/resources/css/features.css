@@ -99,6 +99,11 @@ a, a:hover, a:focus, a:active {
     flex: 0 1 auto;
     background-color: #2dd35c;
   }
+.form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
   .form-submit-btn:focus {
     outline: none;
   }
@@ -135,7 +140,12 @@ a, a:hover, a:focus, a:active {
   }
   .homepage-beta-cta-section .form-submit-btn {
     color: #fff;
-    background-color: #5C5AA7;
+    background-color: #2dd35c;
+  }
+  .homepage-beta-cta-section .form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   }
   .homepage-beta-cta-section {
     background: #f5f7fa;
