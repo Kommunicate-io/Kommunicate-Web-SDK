@@ -685,7 +685,7 @@
           </svg>
         </div>
         <div class="col-lg-12 text-center">
-          <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form" class="pre-signup-form" style="padding-top: 0px;">
+          <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form" class="pre-signup-form">
             <div class="signup-success-msg-div hide">
               <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
             </div>
@@ -695,23 +695,25 @@
             <div class="signup-error-msg-div2 hide">
               <h1 class="signup-error-msg-text1">Unable to process your request. Please try again after sometime.</h1>
             </div>
-            <input type="email" name="email" id="email-pre-signup" placeholder="Enter your email" autocomplete="off" class="cta-email-pre-signup"
+            <input type="email" name="email" id="email-pre-signup" placeholder="Your email address" autocomplete="off" class="cta-email-pre-signup"
               required>
             <br>
             <br>
             <button type="submit"   class="form-submit-btn" id="get-me-in-btn">Create Free Account</button>
           </form>
         </div>
-        <div class="col-lg-12 text-center hide">
-          <h1 class="early-bird-offer-text">78 earlybird offers left!</h1>
+        <div class="col-lg-12 text-center">
+          <p style="margin-top: 5px; font-size:16px; color:#ffffff;">
+            Set up takes a few seconds, No credit card required.
+          </p>
         </div>
       </div>
 
-      <div class="row text-center">
+      <!-- <div class="row text-center">
         <a href="#homepage-beta-features-section" class="scroll-down">
           <i class="fa fa-angle-down" aria-hidden="true"></i>
         </a>
-      </div>
+      </div> -->
     </div>
 
   </div>

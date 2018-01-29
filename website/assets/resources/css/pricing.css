@@ -104,49 +104,21 @@ a, a:hover, a:focus, a:active {
 }
 
 .pre-signup-form {
-    /*background-color: white;*/
-    border-radius: 100px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 0px;
+    background-color: white;
+    border-radius: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
     margin-left: 26px;
-    padding-right: 0px;
+    padding-right: 3px;
     display: flex;
     /*border: 2px solid #007fff;*/
     width: 65%;
     margin: 0 auto;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3), 0px -2px 8px 0 rgba(0, 0, 0, 0.3);
 }
 .pre-signup-form br {
     display: none;
-}
-.signup-success-msg-div, .signup-error-msg-div1 {
-    background-color: white;
-    text-align: center;
-    width: 100%;
-    border-radius: 26px;
-    /*border: 1px solid #5d5ba8;*/
-}
-.signup-error-msg-div2 {
-    text-align: center;
-    width: 100%;
-    border-radius: 26px;
-}
-.signup-error-msg-div2 .signup-error-msg-text1 {
-    font-size: 18px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    color: #2CA23C;
-}
-.signup-success-msg-text {
-    font-size: 18px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-}
-.signup-error-msg-text1 {
-    font-size: 18px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    color: #2CA23C;
 }
 .cta-email-pre-signup {
     background: #fff;
@@ -155,14 +127,14 @@ a, a:hover, a:focus, a:active {
     font-size: 18px;
     padding: 12px 16px 15px 14px;
     margin: 0;
-    border-radius: 26px 0px 0px 26px;
+    border-radius: 6px;
     outline: none;
     height: 47px;
     box-shadow: none;
     /*margin-right: 5px;*/
-    border: 1px solid #7B7979;
+    border: none;
     flex: 1 0 auto;
-    box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
+    /* box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04); */
 }
 .pricing-cta-section .cta-email-pre-signup {
     background: transparent;
@@ -182,41 +154,30 @@ a, a:hover, a:focus, a:active {
 .form-submit-btn {
     display: inline-block;
     padding: 14px 20px;
-    /*    border: 2px solid #fff;*/
-    /*    text-transform: uppercase;*/
     letter-spacing: 0.015em;
     font-size: 18px;
-    /* background-color: #fff; */
     font-weight: 500;
-    line-height: 1.1;
-    color: rgb(255, 255, 255);
+    line-height: 1;
+    color: #ffffff;
     text-decoration: none;
     -webkit-transition: all 0.4s;
     -moz-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
-    border-radius: 0px 26px 26px 0px;
+    border-radius: 6px;
     -webkit-appearance: none;
     text-decoration: none;
     border: none;
     flex: 0 1 auto;
-    background: #5C5AA7;
-background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%);
-background: -webkit-linear-gradient(left, rgb(200,109,215) 0%,rgb(48,35,174) 100%);
-background: linear-gradient(to right, rgb(200,109,215) 0%,rgb(48,35,174) 100%); 
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 );
-    box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
-}
-.form-submit-btn:focus {
+    background-color: #5C5AA7;
+  }
+  .form-submit-btn:focus {
     outline: none;
-}
+  }
+  
 .pricing-cta-section .form-submit-btn {
     color: rgba(255, 255, 255, 1);
-    background: rgb(200,109,215); /* Old browsers */
-    background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(left, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to right, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 ); /* IE6-9 */
+    background:#5C5AA7; /* IE6-9 */
 }
 
 @media (max-width:350px) {
@@ -239,6 +200,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 @media (max-width:560px) {
     .cta-email-pre-signup {
         border-radius: 26px;
+        border: 1px solid #7B7979;
     }
      .pricing-cta-section .cta-email-pre-signup {
         border-radius: 26px;
@@ -247,6 +209,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
         flex: 0 0 100%;
         margin-top: 15px;
         border-radius: 26px;
+    }
+    .pre-signup-form {
+        background-color: transparent;
+        box-shadow: none;
     }
 }
 @media (max-width:767px) {
@@ -297,18 +263,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .nav-signup-button {
     color: #FFFFFF;
     border: none;
-    background-color: #4a4a4a;
+    background-color: #2dd35c;
     font-weight: 600
 }
 .sticky .nav-signup-button {
     color: #FFFFFF;
     border: none;
-    background-color: #4a4a4a;
+    background-color: #2dd35c;
     font-weight: 600;
 }
 .nav-signup-button:hover {
     color: #FFFFFF;
-    background-color: #4a4a4a;
+    background-color: #1aaa42;
     border: none;
     font-weight: 600;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -316,7 +282,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 }
 .sticky .nav-signup-button:hover {
     color: #FFFFFF;
-    background-color: #4a4a4a;
+    background-color: #1aaa42;
     border: none;
     font-weight: 600;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
