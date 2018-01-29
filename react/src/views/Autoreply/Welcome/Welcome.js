@@ -127,7 +127,7 @@ render(){
 <div className="animated fadeIn">
   <div className="row">
     <div className="col-sm-12 col-md-12">
-      <div className="card welcome-message-container" style={{'display':'none'}}>
+      <div className="card welcome-message-container" >
         <div className="card-block">
           <div>
             <div className="col-6">
@@ -149,7 +149,7 @@ render(){
               </div>
             </div>
           </div>
-          <div style={{'display':'none'}}>{/* style={{'display':'none'}} remove this div for display*/}
+          <div >{/* style={{'display':'none'}} remove this div for display*/}
           <hr className="km-welcome-hr" />
           <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} />
           <hr className="km-welcome-hr" />

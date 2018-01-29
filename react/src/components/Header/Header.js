@@ -115,7 +115,7 @@ class Header extends Component {
                   <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator": null }></span>
                 </DropdownItem>
                 {
-                <DropdownItem  style={{'display':'none'}} onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
+                <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
                 }
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
