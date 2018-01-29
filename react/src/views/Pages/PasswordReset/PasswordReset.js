@@ -74,13 +74,13 @@ class PasswordReset extends React.Component{
                   <div className="card-block">
                     <h1>{this.state.headerText}</h1>
                     <p className="text-muted">{this.state.subText}</p>
-                    <div className="input-group mb-3" >
+                    <div className="input-group mb-3 reset-password-input" >
                       <span className="input-group-addon"><i className="icon-lock"></i></span>
                        <input type="password" className="form-control" placeholder="Enter New Password"  onChange = { this.setNewPassword } value={ this.state.newPassword } onBlur ={this.state.handleUserNameBlur}/>
                     </div>
 
 
-                    <div className="input-group mb-3" >
+                    <div className="input-group mb-3 reset-password-input" >
                       <span className="input-group-addon"><i className="icon-lock"></i></span>
                        <input type="password" className="form-control" placeholder="Confirm Password"  onChange = { this.setConfirmPassword } value={ this.state.confirmPassword } onBlur ={this.state.handleUserNameBlur}/>
                     </div>

@@ -107,11 +107,11 @@ exports.processEvents2=(req, res)=>{
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
         return inAppMsgService.processEventWrapper(eventType, groupId, customer, agentName).then(response=>{
             logger.info(response);
-            if(response === "success"){
+            if(response =="success"){
                 res.status(200).json({code:"SUCCESS"});
-            }else{
-                res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
-            }  
+            }else if(response =="no_message"){
+                res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
+            }
         })
     }).catch(err=>{
         logger.info("err while sending welcome messgae",err);
@@ -196,7 +196,7 @@ exports.getInAppMessagesByEventId =(req,res)=>{
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, eventId)
+        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, user.type, eventId)
             .then(inAppMessages=>{
                 let message = "Not able to get in app messages"
                 if(inAppMessages instanceof Array && inAppMessages.length > 1){

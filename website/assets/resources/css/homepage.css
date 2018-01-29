@@ -1092,8 +1092,8 @@ label {
   .kommunicate-logo-text {
       font-size: 21px;
   }
-  .homepage-beta-cta-section {
-      /* margin-bottom: 130px; */
+  .homepage-beta-cta-section { 
+     /* margin-bottom: 130px;*/
   }
 }
 @media (max-width:560px) {

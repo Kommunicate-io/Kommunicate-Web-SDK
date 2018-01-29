@@ -1,5 +1,6 @@
 import Popover from './InsertLinkPopoverTemplate';
 import React, { Component } from 'react';
+import Notification from '../../model/Notification'
 
 import {
   Row,
@@ -37,8 +38,8 @@ class LinkPopover extends Component {
     this.setState({open: !this.state.open});
   }
 
-  handleClose(e) {
-    e.preventDefault();
+  handleClose() {
+    // e.preventDefault();
     this.setState({open: false});
   }
 
@@ -51,10 +52,19 @@ class LinkPopover extends Component {
   }
 
   makeLink = () => {
-     let link = "<a href='" + this.state.url + "'>" + this.state.text + "</a>"
 
-     this.props.insertLink(link)
-     console.log(link)
+      if(this.state.url.trim().length > 0 && this.state.url.trim().length > 0){
+        let link = "<a href='" + this.state.url + "'>" + this.state.text + "</a>"
+        this.props.insertLink(link)
+        this.handleClose()
+        console.log(link)
+      }else{
+        Notification.warning("Text/url is empty")
+      }
+     
+
+     
+     
   }
 
 
@@ -91,8 +101,8 @@ class LinkPopover extends Component {
                 <Input type="email" id="email-input" name="email-input" placeholder="URL" value={this.state.url} onChange={this.getUrl}/>
               </Col>
             </FormGroup>
-            <Button onClick={this.makeLink}>OK</Button>
-            <Button onClick={this.handleClose}>CANCEL</Button>   
+                <Button onClick={this.makeLink}>Ok</Button>
+                <Button onClick={this.handleClose} style={{marginLeft: "5px"}}>Cancel</Button>
           </div>    
         </Popover>
       </div>

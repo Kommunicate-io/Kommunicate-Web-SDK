@@ -13,7 +13,6 @@ class Integration extends Component {
   }
   constructor(props, defaultProps) {
     super(props, defaultProps);
-    this.applicationKey = CommonUtils.getUserSession().application.applicationId;
     this.state = {
       copySuccess: "Copy",
       cardSize:10
@@ -26,11 +25,12 @@ class Integration extends Component {
     Parameters: <br>
     <ul>
       <li><strong>appId</strong> - your application Id.</li>
-      <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
-      <li><strong>email</strong> - allow your users to register email id (optional).</li>
-      <li><strong>groupName</strong> - Conversation Title.</li>
       <li><strong>agentId</strong> - Support agent Id(registered in Kommunicate) who will reply to the support queries.</li>
-      <li><strong>agentName</strong> - Display name for agent(agentId is default display name).</li>
+      <li><strong>groupName</strong> - Conversation Title.</li>
+      <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
+      <li><strong>userId</strong> - Unique Id for user.</li>
+      <li><strong>userName</strong> - Display name of the user. Agents will know users by Display name</li> 
+      <li><strong>email</strong> - allow your users to register email id (optional).</li>
     </ul>`};
   }
 

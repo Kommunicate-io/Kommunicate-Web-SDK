@@ -1320,7 +1320,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 }
-
+#mck-message-cell .li {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
 .mck-gm-search-box .mck-box-body .mck-tab-cell {
 	height: 300px;
 }

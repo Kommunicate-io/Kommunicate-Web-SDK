@@ -1559,7 +1559,7 @@ pre {
 
 .form-control {
   display: block;
-  width: 100%;
+  width: 100% ! important;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
   line-height: 1.25;
@@ -9918,7 +9918,9 @@ pointer-events: none;
     transform: translate3d(0,-7px,0) rotate(45deg);
   }
 }
-
+.reset-password-input{
+  display:flex;
+}
 
 /****** New Design System Code Ends Here ******/
 
