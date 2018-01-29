@@ -147,9 +147,9 @@
     height: 30px;
 }
 .nav-signup-mobile-button {
-    color: #5C5AA7;
-    border-radius: 4;
-    border: solid 1.4px #5C5AA7;
+    color: #2dd35c !important;
+    border-radius: 6px;
+    border: solid 1.4px #2dd35c;
     padding: 5px 15px;
     text-align: center;
     font-size: 16px;
@@ -157,7 +157,7 @@
 }
 .nav-signup-mobile-button:hover {
     color: #fff !important;
-    border: solid 1.4px #5C5AA7;background-color: #5C5AA7;
+    border: solid 1.4px #2dd35c;background-color: #2dd35c;
 }
 @media(max-width:767px) {
     .page-links-ul, .nav-signup-button,

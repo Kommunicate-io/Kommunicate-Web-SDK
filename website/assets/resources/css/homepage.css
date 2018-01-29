@@ -323,13 +323,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   background-color: white;
   text-align: center;
   width: 100%;
-  border-radius: 26px;
+  border-radius: 6px;
   /*border: 1px solid #5d5ba8;*/
 }
 .signup-error-msg-div2 {
   text-align: center;
   width: 100%;
-  border-radius: 26px;
+  border-radius: 6px;
 }
 .signup-error-msg-div2 .signup-error-msg-text1 {
   font-size: 18px;
@@ -1116,18 +1116,18 @@ label {
 }
 @media (max-width:560px) {
   .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .homepage-beta-cta-section .pre-signup-form {
     box-shadow:none;
@@ -1184,12 +1184,12 @@ label {
       flex-wrap: wrap;
   }
   .why-kommunicate-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .icons-row-landing {
       margin-bottom: 40px;
@@ -1220,12 +1220,12 @@ label {
       flex-wrap: wrap;
   }
   .why-kommunicate-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .homepage-beta-landing-page-section {
       height: auto;

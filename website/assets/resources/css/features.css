@@ -222,18 +222,18 @@ a, a:hover, a:focus, a:active {
 }
 @media (max-width:560px) {
     .cta-email-pre-signup {
-        border-radius: 26px;
+        border-radius: 6px;
     }
      .features-cta-section .cta-email-pre-signup {
-        border-radius: 26px;
+        border-radius: 6px;
     }
     .form-submit-btn {
         flex: 0 0 100%;
         margin-top: 15px;
-        border-radius: 26px;
+        border-radius: 6px;
     }
     .homepage-beta-cta-section .cta-email-pre-signup {
-        border-radius: 26px;
+        border-radius: 6px;
     }
     .homepage-beta-cta-section .pre-signup-form {
         box-shadow:none;
