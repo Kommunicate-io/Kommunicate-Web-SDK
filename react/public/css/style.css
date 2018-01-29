@@ -9506,6 +9506,16 @@ pointer-events: none;
 .km-login-div .label-for-input2 {
   left: 1px;
 }
+.input:focus ~ .label-for-input, .input:valid ~ .label-for-input {
+  top: -9px;
+  font-size: 12px;
+  color: #354052;
+  opacity: 1;
+  background-color: #fff;
+  width: auto!important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 .input:focus ~ .label-for-input,
 .select:focus ~ .label-for-input,
 .select:valid ~ .label-for-input,
@@ -9911,3 +9921,7 @@ pointer-events: none;
 
 
 /****** New Design System Code Ends Here ******/
+
+input:required {
+  box-shadow: none;
+}
