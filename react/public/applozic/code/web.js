@@ -95,6 +95,7 @@ function initAutoSuggestions() {
       swNotification: true,
       messageBubbleAvator: true,
       olStatus: true,
+      // awsS3Server :true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
             window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
