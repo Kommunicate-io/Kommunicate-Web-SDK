@@ -68,7 +68,7 @@ constructor(props){
   }
 
   blurHandler(){
-    this.setState({handleUserNameBlur:true})
+    //this.setState({handleUserNameBlur:true})
   }
 
   showHide(e){
