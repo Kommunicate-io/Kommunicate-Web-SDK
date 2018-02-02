@@ -96,6 +96,37 @@ getHotelCardTemplate : function(options,sessionId){
     </div>`;
 
 },
+
+getRoomDetailTemplate: function (options) {
+
+    return `<div class="km-single-card-message">
+                <div class="message received km-blocked-room">
+                    <div class="km-blocked-room-details">
+                        <div class="km-blocked-room-image-container"><img src=`+ imagesrc+`></div>
+                        <div class="km-blocked-room-text-container">
+                            <div class="km-blocked-room-room-type">
+                                <span>ROOM TYPE: </span> <span> `+ options.RoomTypeName + `</span>
+                            </div>
+                            <div class="km-blocked-room-guests">
+                                <span>GUESTS:</span><span>`+ options.RoomTypeName + ` </span>
+                            </div>
+                            <div class="km-blocked-room-price">
+                                <p>Price:<br><span>(Per Room Per Night)</span></p>
+                                <span>`+ options.Price.CurrencyCode + " " + options.Price.RoomPrice + `</span>
+                            </div>
+                            <div class="km-blocked-room-sub-total">
+                                <p>Sub Total:<br><span>(1 Room for 5 Nights)</span></p>
+                                <span> `+ options.Price.CurrencyCode + " " +5 * options.Price.RoomPrice + ` </span>
+                            </div>
+                        </div>
+                        <div class="km-blocked-room-button-container">
+                            <button data-resultindex= `+options.RoomIndex+`>Book</button>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+},
+
 getButtonTemplate:function(options,elemWidthClass){
     if(options.type=="link"){
     return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
@@ -145,4 +176,38 @@ for(var i= 0;i<hotelList.length;i++){
     return `<div class="km-card-message-container  km-div-slider">`+hotelListMarkup+`</div>`
 }
 
-
+Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
+    let roomDetails=roomList.HotelRoomsDetails;
+    var roomListMarkup = "";
+    for (var i = 0; i < roomDetails.length; i++) {
+        roomListMarkup = roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
+    }
+    return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
+}
+/*{"HotelRoomsDetails":[{
+    "ChildCount":0,
+    "RequireAllPaxDetails":true,
+    "RoomIndex":1,
+    "RoomTypeCode":"001:DEL:3834:S3807:4259:16538|1",
+    "RoomTypeName":"Standard Twin",
+    "RatePlanCode":"001:DEL:3834:S3807:4259:16538|1",
+    "CancellationPolicy":"Standard Twin#^#INR 476.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 1904.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#",
+    "Price":{"CurrencyCode":"INR",
+        "RoomPrice":1903.5,
+        "Tax":0,
+        "ExtraGuestCharge":0,
+        "ChildCharge":0,
+        "OtherCharges":0,
+        "Discount":0,
+        "PublishedPrice":1903.5,
+        "PublishedPriceRoundedOff":1904,
+        "OfferedPrice":1903.5,
+        "OfferedPriceRoundedOff":1904,
+        "AgentCommission":0,
+        "AgentMarkUp":0,
+        "ServiceTax":114.21,
+        "TDS":0
+        }
+    },
+    {"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":2,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16528|1","RoomTypeName":"Deluxe Twin","RatePlanCode":"001:DEL1:3834:S3807:4259:16528|1","CancellationPolicy":"Deluxe Twin#^#INR 588.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2350.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2350,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2350,"PublishedPriceRoundedOff":2350,"OfferedPrice":2350,"OfferedPriceRoundedOff":2350,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":141,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":3,"RoomTypeCode":"001:DEL:3834:S3807:4259:16533|1","RoomTypeName":"Standard Triple","RatePlanCode":"001:DEL:3834:S3807:4259:16533|1","CancellationPolicy":"Standard Triple#^#INR 711.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2844.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2843.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2843.5,"PublishedPriceRoundedOff":2844,"OfferedPrice":2843.5,"OfferedPriceRoundedOff":2844,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":170.61,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":4,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16527|1","RoomTypeName":"Deluxe Triple","RatePlanCode":"001:DEL1:3834:S3807:4259:16527|1","CancellationPolicy":"Deluxe Triple#^#INR 817.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 3267.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":3266.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":3266.5,"PublishedPriceRoundedOff":3267,"OfferedPrice":3266.5,"OfferedPriceRoundedOff":3267,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":195.99,"TDS":0}}]}
+*/
