@@ -19,7 +19,7 @@ a, a:hover, a:focus, a:active {
 
 .pricing-landing-page-section {
     padding: 100px 0px;
-    background: url("/assets/resources/images/pricingbg.svg") repeat;
+    /* background: url("/assets/resources/images/pricingbg.svg") repeat; */
 }
 
 .pricing-title {
@@ -80,6 +80,82 @@ a, a:hover, a:focus, a:active {
 .features-list li {
     padding: 5px 0px 5px 5px;
 }
+
+
+.pricing-table {
+
+}
+.pricing-table-container {
+    border-radius: 5px;
+    padding: 15px 9px 25px;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+    box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+    min-height: 630px;
+}
+.pricing-table-header {
+    border-bottom: 1px solid #dddcff;;
+}
+.pricing-table-plan-title {
+    font-size: 22px;
+    color: #888;
+    font-weight: 600;
+    /* letter-spacing: 1px; */
+}
+.price-image-container svg {
+    width: auto;
+    height: 150px;
+}
+.price-mau h4 {
+    font-weight: 600;
+    font-size: 18px;
+}
+.pricing-table-body {
+
+}
+.pricing-table-body-header {
+
+}
+.pricing-value h2 {
+    color: #5C5AA7;
+}
+.pricing-table-body-footer {
+    padding-left: 5px;
+}
+.pricing-table-body-footer p {
+    font-style: italic;
+    font-weight: 600;
+}
+.pricing-table-body-footer ul {
+    text-align: left;
+    margin: 20px 0px;
+    padding: 0;
+    list-style-image: url(/assets/resources/images/checkmark.svg);
+}
+.pricing-table-body-footer ul li {
+    margin-left: 25px;
+    line-height: 25px;
+    margin-bottom: 12px;
+}
+.pricing-table-footer {
+
+}
+.pricing-footer-signup-btn {
+    font-size: 16px !important;
+    transition: all 0.3s ease-out;
+}
+.pricing-footer-signup-btn:hover {
+    color: #fff;
+}   
+
+
+
+
+
+
+
+
+
 
 
 .form-div {
@@ -238,7 +314,7 @@ a, a:hover, a:focus, a:active {
 }
 @media (min-width: 1200px) {
     .pricing-landing-page-section .container {
-        width: 900px;
+        width: 1150px;
     }
 }
 
