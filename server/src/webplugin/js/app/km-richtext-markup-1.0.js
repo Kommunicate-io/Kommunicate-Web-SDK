@@ -97,12 +97,12 @@ getHotelCardTemplate : function(options,sessionId){
 
 },
 
-getRoomDetailTemplate: function (options) {
+getRoomDetailTemplate: function (options, sessionId) {
 
     return `<div class="km-single-card-message">
                 <div class="message received km-blocked-room">
                     <div class="km-blocked-room-details">
-                        <div class="km-blocked-room-image-container"><img src=`+ imagesrc+`></div>
+                    <div class="km-card-message-image-continer"><img class ="km-card-message-img" src=`+ options.HotelPicture +` alt=`+options.HotelName+`></div>
                         <div class="km-blocked-room-text-container">
                             <div class="km-blocked-room-room-type">
                                 <span>ROOM TYPE: </span> <span> `+ options.RoomTypeName + `</span>
@@ -115,12 +115,12 @@ getRoomDetailTemplate: function (options) {
                                 <span>`+ options.Price.CurrencyCode + " " + options.Price.RoomPrice + `</span>
                             </div>
                             <div class="km-blocked-room-sub-total">
-                                <p>Sub Total:<br><span>(1 Room for 5 Nights)</span></p>
-                                <span> `+ options.Price.CurrencyCode + " " +5 * options.Price.RoomPrice + ` </span>
+                                <p>Sub Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
+                                <span> `+ options.Price.CurrencyCode + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
                             </div>
                         </div>
                         <div class="km-blocked-room-button-container">
-                            <button data-resultindex= `+options.RoomIndex+`>Book</button>
+                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+`>Book</button>
                         </div>
                     </div>
                 </div>
