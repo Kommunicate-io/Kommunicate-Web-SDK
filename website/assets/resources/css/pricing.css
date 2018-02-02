@@ -29,6 +29,7 @@ a, a:hover, a:focus, a:active {
     font-stretch: normal;
     line-height: normal;
     color: #5C5AA7;
+    margin-bottom: 60px;
 }
 .pricing-title span {
     vertical-align: super;
@@ -94,7 +95,7 @@ a, a:hover, a:focus, a:active {
     min-height: 630px;
 }
 .pricing-table-header {
-    border-bottom: 1px solid #dddcff;;
+    /* border-bottom: 1px solid #dddcff;; */
 }
 .pricing-table-plan-title {
     font-size: 22px;
@@ -114,13 +115,17 @@ a, a:hover, a:focus, a:active {
 
 }
 .pricing-table-body-header {
-
+    background-color: #dddcff;
+    margin: 0px -10px 10px;
+    padding: 10px 0px;
 }
 .pricing-value h2 {
     color: #5C5AA7;
+    margin-top: 10px;
 }
 .pricing-table-body-footer {
     padding-left: 5px;
+    
 }
 .pricing-table-body-footer p {
     font-style: italic;
@@ -393,4 +398,43 @@ a, a:hover, a:focus, a:active {
 }
 .page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
     fill: #5d5aa786 !important;
+}
+
+@media (min-width:992px) {
+    .pricing-table-container {
+        min-height: 695px;
+    }
+    .launch .pricing-table-footer {
+        padding-top: 24px;
+    }
+    .growth .pricing-table-footer {
+        padding-top: 74px;
+    }
+    .enterprise .pricing-table-footer {
+        padding-top: 185px;
+    }
+}
+@media (min-width:992px) and (max-width:1199px) {
+    .pricing-table-container {
+        min-height: 695px;
+    }
+    .launch .pricing-table-footer {
+        padding-top: 24px;
+    }
+    .growth .pricing-table-footer {
+        padding-top: 99px;
+    }
+    .enterprise .pricing-table-footer {
+        padding-top: 210px;
+    }
+}
+@media (max-width: 991px){
+    .pricing-table-container {
+        width: 300px;
+        margin: 0 auto;
+        min-height: auto;
+    }
+    .pricing-table {
+        margin-bottom: 40px;
+    }
 }
