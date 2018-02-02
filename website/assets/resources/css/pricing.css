@@ -411,7 +411,7 @@ a, a:hover, a:focus, a:active {
         padding-top: 74px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 185px;
+        padding-top: 61px;
     }
 }
 @media (min-width:992px) and (max-width:1199px) {
@@ -425,7 +425,7 @@ a, a:hover, a:focus, a:active {
         padding-top: 99px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 210px;
+        padding-top: 61px;
     }
 }
 @media (max-width: 991px){
