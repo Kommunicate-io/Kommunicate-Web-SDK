@@ -4,7 +4,7 @@ const config = require("../../conf/config");
 const path = require("path");
 const registrationService = require('../register/registrationService');
 const userService = require("../users/userService");
-
+const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
 let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId&token=:token"
@@ -110,6 +110,16 @@ const getEmailFormat=(options,custInfo)=>{
                 options.templateReplacement = templateReplacement;
                 options.subject =  custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
                 options.bcc = "support@kommunicate.io";
+                break;
+
+                case "BOT_USE_CASE_EMAIL":
+                    logger.info("BOT_USE_CASE_EMAIL");
+                    templatePath = path.join(__dirname,"/botUseCaseTemplate.html");
+                    options.templatePath=path.join(__dirname,"/botUseCaseTemplate.html");
+                    options.templateReplacement = {":USER_NAME" : options.userName, ":BOT_USE_CASE": options.botUseCase};
+                    options.to = [...options.to];
+                    options.cc = [...options.cc, "support@kommunicate.io"]
+                    options.bcc = "techdisrupt@applozic.com";
                 break;
 
             }
