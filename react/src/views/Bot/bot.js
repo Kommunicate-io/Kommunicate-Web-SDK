@@ -46,7 +46,10 @@ class Tabs extends Component {
       showOldBot: true,
       botUseCaseText: '',
       otherPlatformText: '',
-      botName: ''
+      botName: '',
+      dialogFlowIntegrated: false,
+      microsoftIntegrated: false,
+      amazonIntegrated: false,
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -98,7 +101,7 @@ class Tabs extends Component {
             "clientToken" : this.state.ctoken,
             "devToken" : this.state.dtoken,
             "aiPlatform" : this.state.platform,
-            "botname":this.state.bot.value
+            "botname": this.state.bot.value
         }
 
         axios({
@@ -264,78 +267,83 @@ class Tabs extends Component {
     console.log(this.state.devToken);
     console.log(this.state.clientToken);
 
-    if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
-      this.toggleDialogFlowModal()
-      this.toggleBotProfileModal()
+    if(!this.state.botName){
+      Notification.info("Bot name missing");
+      return;
+    }else if(!this.state.clientToken){
+      Notification.info("Client token missing");
+      return;
+    }else if(!this.state.devToken){
+      Notification.info("Dev Token missing");
+      return;
     }
 
-    // var _this =this;
+    let _this =this;
 
-    // var data = {
-    //   "clientToken" : this.state.clientToken,
-    //   "devToken" : this.state.devToken,
-    //   "aiPlatform" : aiPlatform,
-    //   "botname":this.state.bot.value
-    // }
+    let data = {
+      clientToken : this.state.clientToken,
+      devToken : this.state.devToken,
+      aiPlatform : aiPlatform,
+      botName:this.state.botName,
+    }
 
-    // let userSession = CommonUtils.getUserSession();
-    // var applicationId = userSession.application.applicationId;
-    // var authorization = userSession.authorization;
-    // var password = CommonUtils.getUserSession().password;
-    // var device = atob(authorization);
-    // var devicekey = device.split(":")[1];
-    // var env = getEnvironmentId();
-    // var userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
+    let userSession = CommonUtils.getUserSession();
+    let applicationId = userSession.application.applicationId;
+    let authorization = userSession.authorization;
+    let password = CommonUtils.getUserSession().password;
+    let device = atob(authorization);
+    let devicekey = device.split(":")[1];
+    let env = getEnvironmentId();
+    let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
+    let userIdList = {"userIdList" : [this.state.botName]}
 
-    // if(!this.state.bot){
-    //   Notification.info("Please select a bot!!");
-    //   return;
-    // }else if(!this.state.ctoken){
-    //   Notification.info("Please enter the client token!!");
-    //   return;
-    // }else if(!this.state.dtoken){
-    //   Notification.info("Please select a developer token!!");
-    //   return;
-    // }
+    axios({
+      method: 'post',
+      url:userDetailUrl,
+      data: userIdList,
+      headers: {
+        "Apz-Product-App": true,
+        "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+        "Content-Type": "application/json",
+        "Apz-AppId":applicationId
+      }}).then(function(response) {
+       if(response.status==200 ){
+          console.log(response);
+          console.log("success");
+          axios({
+            method: 'post',
+            url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
+            data:JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            }
+          }).then(function(response){
+            if(response.status==200 ){
+              _this.clearBotForm();
+              Notification.info("Bot integrated successfully");
+              if(aiPlatform === "api.ai"){
+                this.setState({dialogFlowIntegrated: true})
+              }else if( aiPlatform === "microsoft"){
+                this.setState({microsoftIntegrated: true})
+              }else{
 
-    // axios({
-    //   method: 'post',
-    //   url:userDetailUrl,
-    //   data:{
-    //        "userIdList" : [data.botname]
-    //      },
-    //   headers: {
-    //     "Apz-Product-App": true,
-    //     "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
-    //     "Content-Type": "application/json",
-    //     "Apz-AppId":applicationId
-    //   }})
-    //   .then(function(response){
-    //    if(response.status==200 ){
-    //       console.log("success");
-    //        axios({
-    //      method: 'post',
-    //      url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
-    //      data:JSON.stringify(data),
-    //      headers: {
-    //       "Content-Type": "application/json",
-    //      }
-    //       })
-    //   .then(function(response){
-    //    if(response.status==200 ){
-    //     _this.clearBotForm();
-    //       Notification.info("Bot configured successfully");
-         
-    //       }
-    //    });
-    //       }
-    //    });
+              }
+          }});
+          }
+      });
   }
 
   toggleOtherPlatformModal = () => {
     this.setState({
       otherPlatformModal: !this.state.otherPlatformModal
     })
+  }
+
+  openBotProfileModal = () => {
+    if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
+      this.toggleDialogFlowModal()
+      this.toggleBotProfileModal()
+    }
   }
 
   render() {
@@ -512,7 +520,25 @@ class Tabs extends Component {
                 </div>
               </div>
               <div className="row mt-4">
+                <div className="col-sm-3" style={{textAlign: "center"}}>
+                  <p className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                </div>
+                <div style={{textAlign: "center", width:"12.5%"}}>
+                  <p></p>
+                </div>
+                <div className="col-sm-3" style={{textAlign: "center"}}>
+                  <p className={this.state.microsoftIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                </div>
+                <div style={{textAlign: "center", width:"12.5%"}}>
+                  <p></p>
+                </div>
+                <div className="col-sm-3" style={{textAlign: "center"}}>
+                  <p className={this.state.amazonIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                </div>
+              </div>
+              <div className="row">
                 <div className="col-sm-3 km-bot-integration-logo-container" style={{textAlign: "center"}}>
+                  <div className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-dialogflow-text">Dialogflow <br />(Api.ai)</p>
                   <p onClick={this.toggleDialogFlowModal} style={{cursor: "pointer", color: "#5c5aa7"}}>Settings</p>
@@ -521,6 +547,7 @@ class Tabs extends Component {
                   <p></p>
                 </div>
                 <div className="col-sm-3 km-bot-integration-logo-container" style={{textAlign: "center"}}>
+                  <div className={this.state.microsoftIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Microsoft} className="km-bot-integration-microsoft-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-microsoft-text">Microsoft Bot <br />Framework</p>
                   <p className="km-bot-integration-coming-soon">Coming Soon</p>
@@ -529,6 +556,7 @@ class Tabs extends Component {
                   <p></p>
                 </div>
                 <div className="col-sm-3 km-bot-integration-logo-container" style={{textAlign: "center"}}>
+                  <div className={this.state.amazonIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Amazon} className="km-bot-integration-amazon-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-amazon-text">Amazon Lex</p>
                   <p className="km-bot-integration-coming-soon">Coming Soon</p>
@@ -615,7 +643,7 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={() => {this.integrateBot("api.ai")}}>
+                <button className="btn btn-primary" onClick={this.openBotProfileModal}>
                   Next
                 </button>
               </div>  
@@ -642,7 +670,7 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" onClick={() => {this.integrateBot("api.ai")}}>
                   Integrate and Setup Bot Profile
                 </button>
               </div>  
