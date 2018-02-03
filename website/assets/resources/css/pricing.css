@@ -506,11 +506,27 @@ position: relative;
         margin: 0 auto;
         min-height: auto;
     }
+    .pricing-most-popular-text {
+        width: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .pricing-table {
         margin-bottom: 40px;
     }
 }
-
+@media(max-width:350px) {
+    .pricing-table-container {
+        width: auto;
+        margin: 0 auto;
+        min-height: auto;
+    }
+    .pricing-most-popular-text {
+        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
 
 
 /* Pricing Toggle */
