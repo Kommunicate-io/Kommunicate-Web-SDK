@@ -43,13 +43,15 @@ class Tabs extends Component {
       clientToken: '',
       devToken: '',
       showNewBot: true,
-      showOldBot: true,
+      showOldBot: false,
       botUseCaseText: '',
       otherPlatformText: '',
       botName: '',
       dialogFlowIntegrated: false,
       microsoftIntegrated: false,
       amazonIntegrated: false,
+      botNameAlreadyExists: false,
+      disableIntegrateBotButton: false,
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -209,7 +211,7 @@ class Tabs extends Component {
       });
     }
 
-  submitUseCase = (type) => {
+  submitEmail = (type) => {
 
     if(type === "USE_CASE_REQUEST" && this.state.botUseCaseText.trim().length > 0){
 
@@ -246,6 +248,8 @@ class Tabs extends Component {
           this.setState({otherPlatformText: ''})
         }
       });
+    }else if(this.state.botUseCaseText.trim().length < 1 || this.state.otherPlatformText.trim().length < 1 ){
+      Notification.info("Please enter the text");
     }
   }
 
@@ -262,10 +266,6 @@ class Tabs extends Component {
   }
 
   integrateBot = (aiPlatform) => {
-
-    console.log(aiPlatform);
-    console.log(this.state.devToken);
-    console.log(this.state.clientToken);
 
     if(!this.state.botName){
       Notification.info("Bot name missing");
@@ -297,7 +297,10 @@ class Tabs extends Component {
     let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
     let userIdList = {"userIdList" : [this.state.botName]}
 
-    axios({
+    this.setState({disableIntegrateBotButton: true})
+
+    this.checkBotNameAvailability().then( bot => {
+      axios({
       method: 'post',
       url:userDetailUrl,
       data: userIdList,
@@ -321,16 +324,27 @@ class Tabs extends Component {
             if(response.status==200 ){
               _this.clearBotForm();
               Notification.info("Bot integrated successfully");
+              this.setState({disableIntegrateBotButton: false}) 
               if(aiPlatform === "api.ai"){
-                this.setState({dialogFlowIntegrated: true})
+                _this.setState({dialogFlowIntegrated: true})
               }else if( aiPlatform === "microsoft"){
-                this.setState({microsoftIntegrated: true})
+                _this.setState({microsoftIntegrated: true})
               }else{
 
               }
           }});
           }
       });
+    }).catch( err => {
+      if(err.code=="USER_ALREADY_EXISTS"){
+        // _this.setState({botNameAlreadyExists:true})
+        Notification.info("Bot name taken. Try again.");
+        this.setState({disableIntegrateBotButton: false})
+      }else{
+        Notification.error("Something went wrong");
+        console.log("Error creating bot", err);
+      }
+    })
   }
 
   toggleOtherPlatformModal = () => {
@@ -340,10 +354,39 @@ class Tabs extends Component {
   }
 
   openBotProfileModal = () => {
-    if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
+    if(this.state.clientToken.trim().length < 1){
+      Notification.info("Client Token is empty");
+      return;
+    }else if(this.state.devToken.trim().length < 1){
+      Notification.info("Dev Token is empty");
+      return;
+    }else if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
       this.toggleDialogFlowModal()
       this.toggleBotProfileModal()
     }
+  }
+
+  checkBotNameAvailability() {
+
+    if(!this.state.botName){
+      Notification.info("Please enter a bot name !!");
+      return;
+    }
+
+    let userSession = CommonUtils.getUserSession();
+    let applicationId = userSession.application.applicationId;
+
+    return Promise.resolve(
+      createCustomerOrAgent({
+        userName:this.state.botName,
+        type:2,
+        applicationId:applicationId,
+        password:this.state.botName,
+        name:this.state.botName
+      },"BOT")).then( bot => {
+        Notification.info("Bot successfully created");
+        return bot;
+      })
   }
 
   render() {
@@ -587,7 +630,7 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitUseCase("USE_CASE_REQUEST")} }>
+                <button className="btn btn-primary" onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
                   Submit Usecase
                 </button>
               </div>  
@@ -611,7 +654,7 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={ () => {this.submitUseCase("BOT_PLATFORM_REQUEST")}}>
+                <button className="btn btn-primary" onClick={ () => {this.submitEmail("BOT_PLATFORM_REQUEST")}}>
                   Submit Platform Request
                 </button>
               </div>
@@ -663,14 +706,20 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "75px"}}>
               <label className="col-sm-3" htmlFor="hf-password">Bot Name:</label>
-              <div className="col-sm-9">
+              <div className="col-sm-6">
                 <input type="text" onChange = {(event) => this.setState({botName:event.target.value})} value ={this.state.botName} name="hf-password" className="form-control input-field" placeholder="Example: Alex, Bot " />
-                <span className="help-block">The name you select here will be seen by your customers</span>
+              </div>
+            </div>
+            <div className="row" style={{marginTop: "0px"}}>
+              <label className="col-sm-3" htmlFor="hf-password"></label>
+              <div className="col-sm-7">
+                <span className={this.state.botNameAlreadyExists ? "n-vis":"help-block km-bot-profile-modal-text"}>The name you select here will be seen <br /> by your customers</span>
+                <span className={this.state.botNameAlreadyExists ? "help-block":"n-vis"} style={{color: "red"}}>Bot name is taken. Try again.</span>
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={() => {this.integrateBot("api.ai")}}>
+                <button className="btn btn-primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
                   Integrate and Setup Bot Profile
                 </button>
               </div>  
@@ -681,5 +730,18 @@ class Tabs extends Component {
     )
   }
 }
+
+// "key" : "0376d7e9-dfad-4121-8632-e3e29c532573",
+// "name" : "bot",
+// "applicationKey" : "31ac5a02baeb4dce22eb06a0abf3b1fa7",
+// "accessToken" : "bot", //password
+// "authorization" : "Ym90OjgyNGRiNmNmLWFiYjgtNDkzZS04MDk1LTdjYjAxMDRmNDAzNw==", //base64(userName:password)
+// "brokerUrl" : "tcp://apps.applozic.com:8080",
+// "platform" : "aiPlatform",
+// "clientToken": "4372f06b2a214580a8dc20d782c4e29c", // get from user
+// "devToken": "0662feba0ad84bfb9455cb0205afb66f",  // get from user
+// "deleted" : false,
+// "type" : "KOMMUNICATE_SUPPORT",
+// // "handlerModule": "DEFAULT_KOMMUNICATE_SUPPORT_BOT" // 
 
 export default Tabs;
