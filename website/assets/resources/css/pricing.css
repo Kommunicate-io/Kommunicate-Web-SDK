@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 html * {
-    font-family: 'Open Sans',sans-serif !important;
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 body {
     -webkit-font-smoothing: antialiased;
@@ -98,9 +98,11 @@ a, a:hover, a:focus, a:active {
     /* border-bottom: 1px solid #dddcff;; */
 }
 .pricing-table-plan-title {
-    font-size: 22px;
-    color: #888;
-    font-weight: 600;
+    margin-top: 0;
+    color: #6772e5;
+    font-size: 24px;
+    line-height: 34px;
+    font-weight: 500;
     /* letter-spacing: 1px; */
 }
 .price-image-container svg {
@@ -109,19 +111,25 @@ a, a:hover, a:focus, a:active {
 }
 .price-mau h4 {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
 }
 .pricing-table-body {
 
 }
 .pricing-table-body-header {
-    background-color: #dddcff;
+    /* background-color: #dddcff; */
     margin: 0px -10px 10px;
-    padding: 10px 0px;
+    padding: 10px 0px 20px;
 }
 .pricing-value h2 {
     color: #5C5AA7;
     margin-top: 10px;
+}
+.per-month-span {
+    margin-bottom: 4px;
+    color: #5c5aa7;
+    font-size: 12px;
+    line-height: 16px;
 }
 .pricing-table-body-footer {
     padding-left: 5px;
@@ -129,7 +137,7 @@ a, a:hover, a:focus, a:active {
 }
 .pricing-table-body-footer p {
     font-style: italic;
-    font-weight: 600;
+    font-weight: 400;
 }
 .pricing-table-body-footer ul {
     text-align: left;
@@ -152,7 +160,19 @@ a, a:hover, a:focus, a:active {
 .pricing-footer-signup-btn:hover {
     color: #fff;
 }   
-
+.pricing-table-container.growth {
+    border: 2px solid #EE6352;
+    background-color: #fffcfc;
+}
+.growth .pricing-table-plan-title, .growth .pricing-value h2, .growth .per-month-span{
+    color: #EE6352;
+}
+.growth .pricing-table-footer .pricing-footer-signup-btn {
+    background-color: #EE6352;
+}
+.growth .pricing-table-footer .pricing-footer-signup-btn:hover {
+    background-color: #ff3e57;
+}
 
 
 
@@ -408,7 +428,7 @@ a, a:hover, a:focus, a:active {
         padding-top: 24px;
     }
     .growth .pricing-table-footer {
-        padding-top: 74px;
+        padding-top: 72px;
     }
     .enterprise .pricing-table-footer {
         padding-top: 61px;
@@ -422,10 +442,10 @@ a, a:hover, a:focus, a:active {
         padding-top: 24px;
     }
     .growth .pricing-table-footer {
-        padding-top: 99px;
+        padding-top: 97px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 61px;
+        padding-top: 85px;
     }
 }
 @media (max-width: 991px){

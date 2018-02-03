@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 html * {
-    font-family: 'Open Sans',sans-serif !important;
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 body {
     -webkit-font-smoothing: antialiased;
