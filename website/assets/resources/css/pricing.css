@@ -133,6 +133,7 @@ a, a:hover, a:focus, a:active {
 }
 .pricing-table-body-footer {
     padding-left: 5px;
+    padding-right: 5px;
     
 }
 .pricing-table-body-footer p {
@@ -151,9 +152,11 @@ a, a:hover, a:focus, a:active {
     margin-bottom: 12px;
 }
 .pricing-table-footer {
-
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .pricing-footer-signup-btn {
+    display: block !important;
     font-size: 16px !important;
     transition: all 0.3s ease-out;
 }
@@ -173,7 +176,14 @@ a, a:hover, a:focus, a:active {
 .growth .pricing-table-footer .pricing-footer-signup-btn:hover {
     background-color: #ff3e57;
 }
-
+.schedule-demo-links {
+    margin-top: 10px;
+    display: block;
+    font-size: 15px;
+    color: #5c5aa7;
+    font-weight: 400;
+    text-decoration: none;
+}
 
 
 
