@@ -133,6 +133,7 @@ Kommunicate.richMsgEventHandler = {
         var RoomIndex = target.dataset.roomindex;
         var NoOfRooms = target.dataset.noofrooms;
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
+        var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
             'message': "Book " +HotelName ,
             'metadata': {
@@ -140,7 +141,8 @@ Kommunicate.richMsgEventHandler = {
                 RoomIndex: RoomIndex,
                 NoOfRooms: NoOfRooms,
                 blockHotelRoom: true,
-                skipBot: true
+                skipBot: true,
+                HotelResultIndex:HotelResultIndex
             }
         };
         var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
