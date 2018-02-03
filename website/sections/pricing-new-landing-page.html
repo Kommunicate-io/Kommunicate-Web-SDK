@@ -59,7 +59,7 @@
                                     <h2>FREE FOREVER</h2>
                                 </div>
                                 <div class="price-mau">
-                                    <h4>250 Chat MAU</h4>
+                                    <h4>250 Chat users /mo</h4>
                                     <h6>Unlimited Agents</h6>
                                 </div>                              
                             </div>
@@ -76,7 +76,8 @@
                             </div>
                         </div>
                         <div class="pricing-table-footer">
-                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn">START FREE TRIAL</a>
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
                         </div>
                     </div>
                 </div>
@@ -143,10 +144,10 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>$49<span style="font-size:14px;">/MO</span></h2>
+                                    <h2>$49<span class="per-month-span">/MO</span></h2>
                                 </div>
                                 <div class="price-mau">
-                                    <h4>1000 Chat MAU</h4>
+                                    <h4>1000 Chat users /mo</h4>
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
@@ -161,7 +162,8 @@
                             </div>
                         </div>
                         <div class="pricing-table-footer">
-                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn">START FREE TRIAL</a>
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialLaunch',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestLaunch',1,{'nonInteraction': true});">Schedule a demo</a>
                         </div>
                     </div>
                 </div>
@@ -176,7 +178,7 @@
                                     <defs>
                                       <style>
                                         .growth-plan-icon-1, .growth-plan-icon-2, .growth-plan-icon-3, .growth-plan-icon-4 {
-                                          fill: #5c5aa7;
+                                          fill: #EE6352;
                                         }
                                   
                                         .growth-plan-icon-1 {
@@ -192,7 +194,7 @@
                                         }
                                   
                                         .growth-plan-icon-3, .growth-plan-icon-4 {
-                                          stroke: #5c5aa7;
+                                          stroke: #EE6352;
                                           stroke-miterlimit: 10;
                                         }
                                   
@@ -238,10 +240,10 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>$199<span style="font-size:14px;">/MO</span></h2>
+                                    <h2>$199<span class="per-month-span">/MO</span></h2>
                                 </div>
                                 <div class="price-mau">
-                                    <h4>20,000 Chat MAU</h4>
+                                    <h4>20,000 Chat users /mo</h4>
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
@@ -256,7 +258,8 @@
                             </div>
                         </div>
                         <div class="pricing-table-footer">
-                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn">START FREE TRIAL</a>
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialGrowth',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestGrowth',1,{'nonInteraction': true});">Schedule a demo</a>
                         </div>
                     </div>
                 </div>
@@ -344,7 +347,7 @@
                                     <h2>CUSTOM</h2>
                                 </div>
                                 <div class="price-mau">
-                                    <h4>Unlimited MAU</h4>
+                                    <h4>Unlimited Chat users /mo</h4>
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
@@ -358,7 +361,8 @@
                             </div>
                         </div>
                         <div class="pricing-table-footer">
-                            <a href="https://calendly.com/kommunicate/15min" class="pricing-footer-signup-btn form-submit-btn">CONTACT US</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','Contact','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});">Contact us</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});" style="visibility:hidden;">Schedule a demo</a>
                         </div>
                     </div>
                 </div>
