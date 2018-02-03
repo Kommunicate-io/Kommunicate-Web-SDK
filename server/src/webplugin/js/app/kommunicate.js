@@ -97,6 +97,12 @@ Kommunicate ={
                 break;
                 case "3": 
                 return Kommunicate.markup.buttonContainerTemplate(metadata); 
+                break;
+
+                case "4":
+                return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
+                break;
+                
                 default:
                 return "";
                 break;
