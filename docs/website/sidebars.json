@@ -2,7 +2,8 @@
   "docs": {
     "Docusaurus": ["doc1"],
     "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Second Category": ["doc3"],
+    "Java Script": ["installation"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

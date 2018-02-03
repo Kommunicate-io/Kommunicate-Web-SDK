@@ -114,7 +114,7 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
     }
     if(formData){
-        containerMarkup+="<form method ='post' class= km-btn-hidden-form action ="+options.formAction+">";
+        containerMarkup+="<form method ='post'  target='_blank' class= km-btn-hidden-form action ="+options.formAction+">";
         for (var key in formData) {
             if (formData.hasOwnProperty(key)) {
                 containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
