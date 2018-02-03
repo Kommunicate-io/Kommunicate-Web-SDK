@@ -120,7 +120,7 @@ getRoomDetailTemplate: function (options, sessionId) {
                             </div>
                         </div>
                         <div class="km-blocked-room-button-container">
-                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+`>Book</button>
+                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+` data-HotelResultIndex=`+options.HotelResultIndex+`>Book</button>
                         </div>
                     </div>
                 </div>
