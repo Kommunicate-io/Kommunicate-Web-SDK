@@ -607,7 +607,7 @@ class Tabs extends Component {
               </div>
               <div className="row mt-4">
                 <div className="col-sm-12" style={{textAlign: "center"}}>
-                  <a className="btn km-bot-integration-other-pltform" onClick={this.toggleOtherPlatformModal}>Have some other platform in mind? Let us know</a>
+                  <a className="btn km-bot-integration-other-pltform km-bot-cursor-pointer" onClick={this.toggleOtherPlatformModal}>Have some other platform in mind? Let us know</a>
                 </div>
               </div>
             </div>
