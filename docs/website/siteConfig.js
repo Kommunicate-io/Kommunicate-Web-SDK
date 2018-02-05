@@ -17,15 +17,17 @@ const users = [
 
 const siteConfig = {
   title: '' /* title for your website */,
-  tagline: 'A website for testing',
+  tagline: 'Smart messaging software|kommunication',
   url: 'https://docs.kommunicate.io' /* your website url */,
   baseUrl: '/' /* base url for your project */,
   projectName: '',
   headerLinks: [
-    {doc: 'doc1', label: 'Docs'},
-    {doc: 'doc4', label: 'API'},
-    {page: 'help', label: 'Help'},
+    {doc: 'installation', label: 'Docs'},
+   
+   {/*{doc: 'doc4', label: 'API'},
+   {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
+  */}
   ],
   users,
   /* path to images for header/footer */
@@ -41,7 +43,7 @@ const siteConfig = {
   copyright:
     'Copyright © ' +
     new Date().getFullYear() +
-    ' Kommunicate',
+    'Kommunicate',
   // organizationName: 'deltice', // or set an env variable ORGANIZATION_NAME
   // projectName: 'test-site', // or set an env variable PROJECT_NAME
   highlight: {
