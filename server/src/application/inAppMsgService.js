@@ -117,7 +117,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   // hard coding event type to fix the welcome messag eissue. 
   // remove this once react changes goes to prod
   // only supporting event type =1;
-   eventType =1;
+   //eventType =1;
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
