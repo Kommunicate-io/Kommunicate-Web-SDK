@@ -310,7 +310,7 @@ class Tabs extends Component {
         "Content-Type": "application/json",
         "Apz-AppId":applicationId
       }}).then(function(response) {
-       if(response.status==200 ){
+        if(response.status==200 ){
           console.log(response);
           console.log("success");
           axios({
@@ -324,26 +324,28 @@ class Tabs extends Component {
             if(response.status==200 ){
               _this.clearBotForm();
               Notification.info("Bot integrated successfully");
-              this.setState({disableIntegrateBotButton: false}) 
-              if(aiPlatform === "api.ai"){
+              _this.setState({disableIntegrateBotButton: false}) 
+              if(aiPlatform === "dialogflow"){
                 _this.setState({dialogFlowIntegrated: true})
               }else if( aiPlatform === "microsoft"){
                 _this.setState({microsoftIntegrated: true})
               }else{
 
               }
-          }});
-          }
+              _this.toggleBotProfileModal()
+            }
+          });
+        }
       });
     }).catch( err => {
       if(err.code=="USER_ALREADY_EXISTS"){
         // _this.setState({botNameAlreadyExists:true})
         Notification.info("Bot name taken. Try again.");
-        this.setState({disableIntegrateBotButton: false})
       }else{
         Notification.error("Something went wrong");
         console.log("Error creating bot", err);
       }
+      this.setState({disableIntegrateBotButton: false})
     })
   }
 
