@@ -105,14 +105,17 @@ exports.processEvents2=(req, res)=>{
     const agentName = req.body.agentId;
 
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
-        return inAppMsgService.processEventWrapper(eventType, groupId, customer, agentName).then(response=>{
-            logger.info(response);
-            if(response =="success"){
-                res.status(200).json({code:"SUCCESS"});
-            }else if(response =="no_message"){
-                res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
-            }
+        return userService.getAdminUserByAppId(applicationId).then(adminUser=>{
+            return inAppMsgService.processEventWrapper(eventType, groupId, customer,adminUser, agentName).then(response=>{
+                logger.info(response);
+                if(response =="success"){
+                    res.status(200).json({code:"SUCCESS"});
+                }else if(response =="no_message"){
+                    res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
+                }
+            })
         })
+       
     }).catch(err=>{
         logger.info("err while sending welcome messgae",err);
         res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
