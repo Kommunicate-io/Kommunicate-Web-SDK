@@ -9922,6 +9922,55 @@ pointer-events: none;
   display:flex;
 }
 
+/* Notification Design */
+.notification-container {
+  width: auto !important;
+  max-width: 420px !important;
+}
+.notification {
+  margin-bottom: 7px !important;
+    box-shadow: 0 0px 4px 0 rgba(84, 82, 82, 0.1), 0 2px 4px 0 rgba(84, 82, 82, 0.5) !important;
+    padding: 16px 58px 16px 16px !important;
+    opacity: 1 !important;
+    border-radius: 3px !important;
+}
+.notification:before {
+  left: calc(100% - 40px)!important;
+  font-size: 32px !important;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 21px !important;
+}
+.notification .title {
+  display: none !important;
+}
+.notification-info {
+  background-color: #1cabe2 !important;
+  color: #FFFFFF !important;
+  font-size: 16px !important;
+}
+.notification-success {
+  background-color: #2dd35c !important;
+  color: #FFFFFF !important;
+  font-size: 16px !important;
+}
+.notification-error {
+  background-color: #ed222a !important;
+  color: #FFFFFF !important;
+  font-size: 16px !important;
+}
+.notification-warning {
+  background-color: #ffc107 !important;
+  color: #000000 !important;
+  font-size: 16px !important;
+}
+.notification-info:before, .notification-error:before, .notification-success:before, .notification-warning:before {
+  content: "\00d7" !important;
+  font-weight: bold;
+}
+
+
+
 /****** New Design System Code Ends Here ******/
 
 input:required {
