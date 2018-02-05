@@ -9927,3 +9927,344 @@ pointer-events: none;
 input:required {
   box-shadow: none;
 }
+
+.km-bot-integration-cato {
+  width: 177px;
+  height: 190px;
+}
+
+.km-bot-integration-second-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.km-bot-integration-second-container-text-container {
+  margin-top: 40px;
+  margin-left: 15px;
+  height: 223px;
+}
+
+.km-bot-integration-second-container-text-container p:first-child {
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #868889;
+}
+
+.km-bot-integration-second-container-text-container p:nth-child(2) {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #87898b;
+}
+
+.km-bot-integration-second-container-text-container p:nth-child(3) {
+  margin-top: 41px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #5c5aa7;
+  cursor: pointer;
+}
+
+.km-bot-integration-second-container-cato-container {
+  margin-top: 14px;
+  margin-bottom: 19px;
+}
+
+.km-bot-integration-second-container-text-container {
+  margin-top: 40px;
+  margin-left: 15px;
+}
+
+.km-bot-integration-second-container-text-container p:first-child {
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #868889;
+}
+
+.km-bot-integration-second-container-text-container p:nth-child(2) {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #87898b;
+}
+
+.km-bot-integration-second-container-text-container p:nth-child(3) {
+  margin-top: 41px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #5c5aa7;
+  cursor: pointer;
+}
+
+.km-bot-integration-second-container-cato-container {
+  margin-top: 14px;
+  margin-bottom: 19px;
+}
+
+.km-bot-integration-third-container {
+  height: 39px;
+  background-color: #cce7f8 ;
+  display: table; 
+}
+
+.km-bot-integration-third-container p{ 
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 39px;
+  letter-spacing: 0.7px;
+  color: #868889;
+  margin-bottom: 0;
+  margin-top: 0;
+  text-align:center; 
+  vertical-align: middle;
+
+}
+
+.km-bot-integration-logo-container {
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+}
+
+.km-bot-integration-amazon-icon {
+  margin-top: 13px;
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.km-bot-integration-dialogflow-icon {
+  margin-top: 9px;
+  width: 52px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.km-bot-integration-microsoft-icon {
+  margin-top: 13px;
+  width: 41px;
+  height: 41px;
+  object-fit: contain;
+}
+
+.km-bot-integration-amazon-text {
+  margin-top: 9px;
+  margin-bottom: 17px;
+}
+
+.km-bot-integration-dialogflow-text {
+/*  margin-top: 13px;*/
+  margin-bottom: 12px;
+}
+
+.km-bot-integration-microsoft-text {
+  margin-top: 5px;
+  margin-bottom: 6px;
+}
+
+.km-bot-integration-icon-margin {
+  /*margin: 10px*/
+}
+
+.km-bot-integration-heading {
+  font-family: OpenSans;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1.3px;
+  text-align: left;
+  color: #515050;
+  text-align: justify;
+}
+
+.km-bot-integration-coming-soon {
+  width: 94px;
+  height: 21px;
+  opacity: 0.52;
+  background-color: #94d0f7;
+  margin: auto; 
+}
+
+.km-bot-integration-use-case-modal-text {
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #7d7f81;
+}
+
+.km-bot-integration-tick-icon {
+  width: 55px;
+  height: 55px;
+}
+
+.km-bot-integration-use-case-sbmt-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  height: 223px;
+}
+
+.km-bot-integration-tick-container {
+  margin-top: 24px;
+  margin-left: 12px;
+}
+
+.km-bot-integration-use-case-sbmt-text-container {
+ margin-top: 24px;
+ margin-left: 23px;
+}
+
+.km-bot-integration-use-case-sbmt-text-container p:first-child {
+  height: 41px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #7d7f81;
+
+}
+
+.km-bot-integration-use-case-sbmt-text-container p:nth-child(2) {
+  height: 41px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #7d7f81;
+
+}
+
+.km-bot-integration-use-case-sbmt-text-container a:first-child {
+  margin-top: 17px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+}
+
+.schedule-call-btn {
+  width: 216px;
+  height: 50px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+  color: #5c5aa7;
+  line-height: 34px;
+}
+
+.km-bot-integration-other-pltform {
+  width: 343px;
+  height: 50px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+  color: #5c5aa7;
+  line-height: 34px;
+}
+
+.km-bot-integration-use-case-sbmt-text-container p:first-child {
+  height: 41px;
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #7d7f81;
+
+}
+
+.km-bot-integration-use-case-sbmt-text-container p:nth-child(2) {
+  height: 41px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-align: left;
+  color: #7d7f81;
+
+}
+
+.km-bot-integration-use-case-sbmt-text-container a:first-child {
+  margin-top: 17px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+}
+
+.schedule-call-btn {
+  width: 216px;
+  height: 50px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+  color: #5c5aa7;
+  line-height: 34px;
+}
+
+.km-bot-integration-other-pltform {
+  width: 343px;
+  height: 50px;
+  border-radius: 6px;
+  border: solid 1px #5c5aa7;
+  color: #5c5aa7;
+  line-height: 34px;
+}
+
+.km-bot-profile-modal-text {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #9b9ea1;
+}
+
+.km-bot-cursor-pointer {
+  cursor: pointer;
+}
