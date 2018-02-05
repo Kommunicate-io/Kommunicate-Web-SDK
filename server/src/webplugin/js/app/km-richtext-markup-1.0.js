@@ -91,13 +91,14 @@ getHotelCardTemplate : function(options,sessionId){
             </div>
         </div>
         <div class="km-card-message-footer">
-            <button class="km-card-message-footer-button" data-resultindex= `+options.ResultIndex +` data-sessionid= `+ sessionId+` data-name=`+ options.HotelName+`>Book Now</button>
+            <button class="km-card-message-footer-button" data-resultindex= `+options.ResultIndex +` data-sessionid= `+ sessionId+` data-name=`+ options.HotelName+`>ROOM DETAIL</button>
         </div>
     </div>`;
 
 },
 
 getRoomDetailTemplate: function (options, sessionId) {
+    let guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
 
     return `<div class="km-single-card-message">
                 <div class="message received km-blocked-room">
@@ -108,7 +109,7 @@ getRoomDetailTemplate: function (options, sessionId) {
                                 <span>ROOM TYPE: </span> <span> `+ options.RoomTypeName + `</span>
                             </div>
                             <div class="km-blocked-room-guests">
-                                <span>GUESTS:</span><span>`+ options.RoomTypeName + ` </span>
+                                <span>GUESTS:</span><span>`+ guest + ` </span>
                             </div>
                             <div class="km-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
