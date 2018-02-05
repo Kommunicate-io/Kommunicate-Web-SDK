@@ -45,18 +45,21 @@ const getInAppMessage=(customerId, eventType)=>{
     });
 }*/
 
-exports.processEventWrapper = (eventType, conversationId, customer, agentName) => {
+exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
 
     if(eventType == 1 || eventType == 2 || eventType == 3 || eventType == 4){
       let anonymous = true
       let offline = true
       let eventType = 1
-      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,customer.apzToken))
+      let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
+      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
         .then(groupInfo => {
             console.log("groupInfo")
-            let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3)
-            let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1)
-            return {userId: groupUserRole3[0].userId, agentId: groupUserRole2[0].userId}
+            
+            let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
+            let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1);
+            let conversationAssignee = groupInfo.metadata?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
+            return {userId: groupUserRole3[0].userId, agentId: conversationAssignee}
         }).then( groupUser => {
             console.log("groupUser")
             return userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
@@ -69,7 +72,7 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
               return groupUser.userId
             }).then( userId => {
               console.log("userId")
-              return applozicClient.getUserDetails(userId,customer.applicationId,customer.apzToken)
+              return applozicClient.getUserDetails(userId,customer.applicationId,apzToken)
               .then(userInfo => {
                 console.log(userInfo)
                 if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
@@ -117,7 +120,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   // hard coding event type to fix the welcome messag eissue. 
   // remove this once react changes goes to prod
   // only supporting event type =1;
-   eventType =1;
+   //eventType =1;
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
@@ -273,7 +276,8 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
 }
 
 exports.softDeleteInAppMsg=(id)=>{
-  return Promise.resolve(db.InAppMsg.update({status: 3}, {
+  //TODO : remove hard coded status
+  return Promise.resolve(db.InAppMsg.update({status: 3,deleted_at:new Date()}, {
         where: {
             id: id
         }

@@ -29,7 +29,7 @@ a, a:hover, a:focus, a:active {
     font-stretch: normal;
     line-height: normal;
     color: #5C5AA7;
-    margin-bottom: 60px;
+    /* margin-bottom: 60px; */
 }
 .pricing-title span {
     vertical-align: super;
@@ -43,7 +43,8 @@ a, a:hover, a:focus, a:active {
     font-stretch: normal;
     line-height: normal;
     color: #4a4a4a;
-    margin-top: 30px;
+    margin-top: 20px;
+    margin-bottom: 65px;
 }
 .pricing-subtitle.beta-text {
     /* margin-top: 60px; */
@@ -84,14 +85,16 @@ a, a:hover, a:focus, a:active {
 
 
 .pricing-table {
-
+position: relative;
 }
 .pricing-table-container {
     border-radius: 5px;
     padding: 15px 9px 25px;
     background-color: #ffffff;
-    -webkit-box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
-    box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+    -webkit-box-shadow: 1px 1px 6px 0 rgba(74,74,74,.2);
+    box-shadow: 1px 1px 6px 0 rgba(74,74,74,.2);
+    /* -webkit-box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+    box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02); */
     min-height: 630px;
 }
 .pricing-table-header {
@@ -124,6 +127,13 @@ a, a:hover, a:focus, a:active {
 .pricing-value h2 {
     color: #5C5AA7;
     margin-top: 10px;
+    font-size: 25px;
+    /* font-weight: 400; */
+}
+.pricing-value .yearly-pricing {
+    color: #5C5AA7;
+    margin-top: 10px;
+    font-size: 42px;
 }
 .per-month-span {
     margin-bottom: 4px;
@@ -146,6 +156,9 @@ a, a:hover, a:focus, a:active {
     padding: 0;
     list-style-image: url(/assets/resources/images/checkmark.svg);
 }
+.growth .pricing-table-body-footer ul {
+    list-style-image: url(/assets/resources/images/checkmark2.svg);
+}
 .pricing-table-body-footer ul li {
     margin-left: 25px;
     line-height: 25px;
@@ -156,25 +169,30 @@ a, a:hover, a:focus, a:active {
     padding-right: 10px;
 }
 .pricing-footer-signup-btn {
+    border-radius: 4px !important;
     display: block !important;
     font-size: 16px !important;
+    background-color: #5C5AA7 !important;
     transition: all 0.3s ease-out;
 }
 .pricing-footer-signup-btn:hover {
     color: #fff;
 }   
 .pricing-table-container.growth {
-    border: 2px solid #EE6352;
-    background-color: #fffcfc;
+    border-radius: 0px 0px 5px 5px;
+    border: 2px solid #2dd35c;
+    /* background-color: #f9fffb; */
+    -webkit-box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
+    box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
 }
 .growth .pricing-table-plan-title, .growth .pricing-value h2, .growth .per-month-span{
-    color: #EE6352;
+    color: #2dd35c;
 }
 .growth .pricing-table-footer .pricing-footer-signup-btn {
-    background-color: #EE6352;
+    background-color: #2dd35c !important;
 }
 .growth .pricing-table-footer .pricing-footer-signup-btn:hover {
-    background-color: #ff3e57;
+    background-color: #2dd35c;
 }
 .schedule-demo-links {
     margin-top: 10px;
@@ -184,7 +202,31 @@ a, a:hover, a:focus, a:active {
     font-weight: 400;
     text-decoration: none;
 }
-
+.pricing-most-popular {
+    position: absolute;
+    top: -66px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    /* height: 50px; */
+    /* margin: 0 auto; */
+    z-index: -1;
+}
+.pricing-most-popular-text {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    top: -30px;
+    left: 0;
+    color: #ffffff;
+    background-color: #2dd35c;
+    border-radius: 5px 5px 0px 0px;
+    font-weight: 500;
+    line-height: 30px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-align: center;
+}
 
 
 
@@ -435,7 +477,7 @@ a, a:hover, a:focus, a:active {
         min-height: 695px;
     }
     .launch .pricing-table-footer {
-        padding-top: 24px;
+        padding-top: 49px;
     }
     .growth .pricing-table-footer {
         padding-top: 72px;
@@ -449,7 +491,7 @@ a, a:hover, a:focus, a:active {
         min-height: 695px;
     }
     .launch .pricing-table-footer {
-        padding-top: 24px;
+        padding-top: 51px;
     }
     .growth .pricing-table-footer {
         padding-top: 97px;
@@ -464,7 +506,113 @@ a, a:hover, a:focus, a:active {
         margin: 0 auto;
         min-height: auto;
     }
+    .pricing-most-popular-text {
+        width: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .pricing-table {
         margin-bottom: 40px;
     }
+}
+@media(max-width:350px) {
+    .pricing-table-container {
+        width: auto;
+        margin: 0 auto;
+        min-height: auto;
+    }
+    .pricing-most-popular-text {
+        width: 100% ;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+
+/* Pricing Toggle */
+.pricing-toggle {
+    margin-bottom: 100px;
+}
+.toggle,
+.toggler {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
+}
+.toggler {
+  color: #ddd;
+  transition: .2s;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+.toggler--is-active {
+  color: #5C5AA7;
+}
+.b {
+  display: block;
+}
+.toggle {
+  position: relative;
+  width: 80px;
+  height: 35px;
+  border-radius: 100px;
+  background-color: #5C5AA7;
+  overflow: hidden;
+  box-shadow: inset 0 0 2px 1px rgba(0, 0, 0, 0.05);
+}
+.check {
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 6;
+}
+.check:checked ~ .switch {
+  right: 2px;
+  left: 57.5%;
+  transition: 0.25s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  transition-property: left, right;
+  transition-delay: .08s, 0s;
+}
+.switch {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  bottom: 2px;
+  right: 57.5%;
+  background-color: #fff;
+  border-radius: 36px;
+  z-index: 0;
+  transition: 0.25s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+  transition-property: left, right;
+  transition-delay: 0s, .08s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* FAQ Section */
+.pricing-new-faq-section h2{
+    margin-bottom: 45px;
+}
+.support-page-header-text {
+    color: #555564;
+    font-weight: 600;
+}
+.support-page-header-text, .support-page-para-text-sm1 {
+    width: 95%;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+}
+.support-page-para-text-sm1 {
+    margin-bottom: 30px;
+    color: #555;
+    font-weight: 300;
+    letter-spacing: .5px;
+    margin-top: 0;
+    padding-top: 10px;
 }

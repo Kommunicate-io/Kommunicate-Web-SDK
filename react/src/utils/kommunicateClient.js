@@ -159,10 +159,18 @@ const callSendEmailAPI = (options) => {
   const emails = [].concat(...[emailAddress])
   let userSession = CommonUtils.getUserSession();
   let userId = userSession.userName;
-  return Promise.resolve(axios({
-    method: 'post',
-    url: getConfig().kommunicateApi.sendMail,
-    data: {
+  let data = {}
+
+  if(options.templateName === "BOT_USE_CASE_EMAIL"){
+    data = {
+      to: [userSession.email],
+      from:"hello@kommunicate.io",
+      cc: [],
+      userName:userSession.displayName || userId,
+      ...options
+    }
+  }else{
+    data = {
       "to":[...emails],
       "templateName":options.templateName,
       "from":userSession.displayName || userId +"<"+userId+">",
@@ -171,6 +179,12 @@ const callSendEmailAPI = (options) => {
       "agentName":userSession.displayName || userId,
       "agentId": userId
     }
+  }
+
+  return Promise.resolve(axios({
+    method: 'post',
+    url: getConfig().kommunicateApi.sendMail,
+    data: {...data}
   }))
   .then( (response) => {
     if(response.status === 200 && response.data.code === 'SUCCESS'){

@@ -35,7 +35,7 @@ class Users extends React.Component {
             <a
               href="https://github.com/facebook/docusaurus/edit/master/website/siteConfig.js"
               className="button">
-              Add your company
+              Komm
             </a>
           </div>
         </Container>

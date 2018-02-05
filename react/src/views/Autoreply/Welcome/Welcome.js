@@ -157,25 +157,32 @@ class Welcome extends Component{
                       <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above.
                 <span className="you-can-update-status text-style-2" onClick={this.toggleOverlay}>Show me where</span></p>
 
-                    </div>
-                  </div>
-                </div>
-                <div>{/* style={{'display':'none'}} remove this div for display*/}
-                  <hr className="km-welcome-hr" />
-                  <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs}
-                    updateUserStatus={this.updateUserStatus} />
-                  <hr className="km-welcome-hr" />
-                  <WhenYouAreOffline showOfflinePrefs={this.state.showOfflinePrefs} toggleOfflinePrefs={this.toggleOfflinePrefs}
-                    updateUserStatus={this.updateUserStatus} />
-                </div>
               </div>
-              <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay" : "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
-                <p>You can update your status
-                  as offline or online from here</p>
-                {
-                  <div className="curved-arrow"></div>
-                }
-              </div>
+            </div>
+          </div>
+
+          <div>{/* style={{'display':'none'}} remove this div for display*/}
+
+          <hr className="km-welcome-hr" />
+          <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} />
+          <hr className="km-welcome-hr" />
+          <WhenYouAreOffline showOfflinePrefs={this.state.showOfflinePrefs} toggleOfflinePrefs={this.toggleOfflinePrefs} />
+          </div>
+        </div>
+        <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay": "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
+          <p>You can update your status
+          as offline or online from here</p>
+          {
+            <div className="curved-arrow"></div>
+          }
+        </div>
+      </div>
+      <div className="card" style={{'display':'none'}}>
+        <div className="card-header">
+          <div className="card-block">
+            <div className="form-group row form-control-label">
+              Message
+
             </div>
             <div className="card" style={{ 'display': 'none' }}>
               <div className="card-header">

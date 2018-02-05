@@ -2,10 +2,22 @@
     <div class="container pricing-container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1 class="pricing-title">Plans and Pricing</h1>
+                <h1 class="pricing-title">Incredible Plans and Simple Pricing</h1>
+                <h3 class="pricing-subtitle">Try all plans free for 30 days, no credit card required.</h3>
             </div>
         </div>
         <div class="row text-center">
+
+            <!-- Pricing Toggle -->
+            <div class="pricing-toggle">
+                <label class="toggler" id="filt-monthly">Monthly</label>
+                <div class="toggle">
+                    <input type="checkbox" id="switcher" class="check" checked>
+                    <b class="b switch"></b>
+                </div>
+                <label class="toggler toggler--is-active" id="filt-yearly">Yearly</label>
+            </div>
+
             <div class="col-lg-3 col-md-3 col-xs-12">
                 <div class="pricing-table">
                     <div class="pricing-table-container">
@@ -56,7 +68,9 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>FREE FOREVER</h2>
+                                    <h2>FREE FOREVER
+                                    <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p>
+                                    </h2>
                                 </div>
                                 <div class="price-mau">
                                     <h4>250 Chat users /mo</h4>
@@ -144,7 +158,10 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>$49<span class="per-month-span">/MO</span></h2>
+                                    <h2 id="launch-pricing-monthly" class="a hide">$49<span class="per-month-span">/MO</span>
+                                    <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p></h2>
+                                    <h2 id="launch-pricing-yearly" class="a ">$39<span class="per-month-span">/MO</span>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p></h2>
                                 </div>
                                 <div class="price-mau">
                                     <h4>1000 Chat users /mo</h4>
@@ -155,7 +172,7 @@
                                     <p>All in Startup</p>
                                 <ul>
                                     <li>Unlimited bots</li>
-                                    <li>Advanced reporting (eg: team reporting)</li>
+                                    <li>Advanced reporting</li>
                                     <li>White label (removed powered by Kommunicate)</li>
                                     <li>Data retention: Forever</li>
                                 </ul>
@@ -170,6 +187,9 @@
             </div>
             <div class="col-lg-3 col-md-3 col-xs-12">
                 <div class="pricing-table">
+                    <div class="pricing-most-popular-text">
+                        <p>Most Popular</p>
+                    </div>
                     <div class="pricing-table-container growth">
                         <div class="pricing-table-header">
                             <h2 class="pricing-table-plan-title">Growth</h2>
@@ -178,7 +198,7 @@
                                     <defs>
                                       <style>
                                         .growth-plan-icon-1, .growth-plan-icon-2, .growth-plan-icon-3, .growth-plan-icon-4 {
-                                          fill: #EE6352;
+                                          fill: #2dd35c;
                                         }
                                   
                                         .growth-plan-icon-1 {
@@ -194,7 +214,7 @@
                                         }
                                   
                                         .growth-plan-icon-3, .growth-plan-icon-4 {
-                                          stroke: #EE6352;
+                                          stroke: #2dd35c;
                                           stroke-miterlimit: 10;
                                         }
                                   
@@ -240,7 +260,10 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>$199<span class="per-month-span">/MO</span></h2>
+                                    <h2 id="growth-pricing-monthly" class="a hide">$199<span class="per-month-span">/MO</span>
+                                        <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p></h2>
+                                    <h2 id="growth-pricing-yearly" class="a ">$149<span class="per-month-span">/MO</span>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p></h2>
                                 </div>
                                 <div class="price-mau">
                                     <h4>20,000 Chat users /mo</h4>
@@ -344,7 +367,9 @@
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
-                                    <h2>CUSTOM</h2>
+                                    <h2>CUSTOM
+                                    <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:10px;">(Billed Annually)</p>
+                                    </h2>
                                 </div>
                                 <div class="price-mau">
                                     <h4>Unlimited Chat users /mo</h4>
@@ -370,3 +395,42 @@
         </div>
     </div>
 </section>
+<script>
+
+          var filtMonthly = document.getElementById("filt-monthly"),
+          filtYearly = document.getElementById("filt-yearly"),
+          switcher = document.getElementById("switcher"),
+          launchPricingMonthly = document.getElementById("launch-pricing-monthly"),
+          launchPricingYearly = document.getElementById("launch-pricing-yearly"),
+          growthPricingMonthly = document.getElementById("growth-pricing-monthly"),
+          growthPricingYearly = document.getElementById("growth-pricing-yearly");
+        
+        filtMonthly.addEventListener("click", function(){
+        switcher.checked = false;
+        filtMonthly.classList.add("toggler--is-active");
+        filtYearly.classList.remove("toggler--is-active");
+        launchPricingMonthly.classList.remove("hide");
+        launchPricingYearly.classList.add("hide");
+        growthPricingMonthly.classList.remove("hide");
+        growthPricingYearly.classList.add("hide");
+        });
+        
+        filtYearly.addEventListener("click", function(){
+        switcher.checked = true;
+        filtYearly.classList.add("toggler--is-active");
+        filtMonthly.classList.remove("toggler--is-active");
+        launchPricingMonthly.classList.add("hide");
+        launchPricingYearly.classList.remove("hide");
+        growthPricingMonthly.classList.add("hide");
+        growthPricingYearly.classList.remove("hide");
+        });
+        
+        switcher.addEventListener("click", function(){
+          filtYearly.classList.toggle("toggler--is-active");
+          filtMonthly.classList.toggle("toggler--is-active");
+          launchPricingMonthly.classList.toggle("hide");
+          launchPricingYearly.classList.toggle("hide");
+          growthPricingMonthly.classList.toggle("hide");
+          growthPricingYearly.classList.toggle("hide");
+        });
+        </script>
