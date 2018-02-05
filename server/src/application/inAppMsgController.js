@@ -186,17 +186,18 @@ exports.getInAppMessages2 =(req,res)=>{
 }
 
 exports.getInAppMessagesByEventId =(req,res)=>{
-    const appId = req.params.appId;
-    const userName = req.params.userName;
-    const eventId = req.params.eventId;
-    logger.info("request received to get in app messages for appId and userName: ", appId, userName);
+    let  params =req.params; 
+    const appId = req.query.appId;
+    const userName = req.query.userName;
+    const eventIds = req.query.eventIds;
+    logger.info("request received to get in app messages for appId and userName: ", appId, userName,eventIds);
     userService.getByUserNameAndAppId(userName, appId)
         .then(user=>{
             if(!user){
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, user.type, eventId)
+        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, user.type, eventIds)
             .then(inAppMessages=>{
                 let message = "Not able to get in app messages"
                 if(inAppMessages instanceof Array && inAppMessages.length > 1){
@@ -204,7 +205,49 @@ exports.getInAppMessagesByEventId =(req,res)=>{
                 }else if(inAppMessages instanceof Array && inAppMessages.length < 1){
                     message = "No in app messages"
                 }
-                res.status(200).json({code:'SUCCESS', message:message, data:inAppMessages});
+                
+                let messages =[];
+                inAppMessages.forEach(item => {
+                    messages.push(
+                        {"eventId":item.eventId,
+                        "messages":[{"id":item.id,
+                                    "customerId":item.customerId,
+                                    "message":item.message,
+                                    "metadata":item.metadata,
+                                    "status":item.status,
+                                    "sequence":item.status,
+                                    "category":item.category,
+                                    "created_at":item.created_at,
+                                    "createdBy":item.createdBy,
+                                    "deleted_at":item.deleted_at,
+                                    "updated_at":item.updated_at
+                                    }]}
+                    )
+                });
+                let eventId1Messages = [];
+                let eventId2Messages = [];
+                let eventId3Messages = [];
+                let eventId4Messages = [];
+          
+                 eventId1Messages = messages.filter(function (msg) {
+                          return msg.eventId == 1;
+                     });
+                 eventId2Messages = messages.filter(function (msg) {
+                          return msg.eventId == 2;
+                     });
+                 eventId3Messages = messages.filter(function (msg) {
+                          return msg.eventId == 3;
+                     });
+                 eventId4Messages = messages.filter(function (msg) {
+                          return msg.eventId == 4;
+                     });
+                let welcomeMessages = {
+                    "eventId1Messages": eventId1Messages,
+                    "eventId2Messages": eventId2Messages,
+                    "eventId3Messages": eventId3Messages,
+                    "eventId4Messages": eventId4Messages
+                }
+                res.status(200).json({code:'SUCCESS', message:message, data:welcomeMessages});
             })
         }).catch(err=>{
             res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong!"});

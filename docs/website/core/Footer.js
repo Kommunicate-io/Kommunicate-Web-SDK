@@ -35,7 +35,7 @@ class Footer extends React.Component {
           </a>
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('doc1.html', this.props.language)}>
+            <a href={this.docUrl('installation.html', this.props.language)}>
               Getting Started (or other categories)
             </a>
             <a href={this.docUrl('doc2.html', this.props.language)}>
@@ -82,14 +82,14 @@ class Footer extends React.Component {
           target="_blank"
           className="fbOpenSource">
           <img
-            src={this.props.config.baseUrl + 'img/oss_logo.png'}
+            src={this.props.config.baseUrl + 'img/km-logos.svg'}
             alt="Facebook Open Source"
             width="170"
             height="45"
           />
         </a>
         <section className="copyright">
-          Copyright &copy; {currentYear} Facebook Inc.
+          Copyright &copy; {currentYear} Kommunicate.Io.
         </section>
       </footer>
     );

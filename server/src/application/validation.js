@@ -43,10 +43,11 @@ exports.createInAppMsg ={
     }
 }
 exports.getInAppMessagesByEventId ={
-    param:{
-        userName:joi.string().required(),
-        appId:joi.string().required(),
-        eventId:joi.number().required().min(1).max(4)
+    query: {
+        userName: joi.string().required(),
+        customerId: joi.string().required(),
+        appId: joi.string().required(),
+        eventId: joi.array().items(joi.number().min(1).max(4).required())
     }
 }
 exports.editInAppMessages ={

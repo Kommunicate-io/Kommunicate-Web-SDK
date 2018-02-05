@@ -117,7 +117,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   // hard coding event type to fix the welcome messag eissue. 
   // remove this once react changes goes to prod
   // only supporting event type =1;
-   eventType =1;
+   //eventType =1;
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
@@ -239,12 +239,12 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventId)=>{
+exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
 
   logger.info("createdBy", createdBy)
   logger.info("cusotmerId", customerId)
   logger.info("type", type)
-  logger.info("eventId", eventId)
+  logger.info("eventIds", eventIds)
   // type = 3 for admin user include messages where createdBy is null
   if(type == 3){
     return Promise.resolve(db.InAppMsg.findAll({
@@ -253,7 +253,7 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventId)=>{
               [Sequelize.Op.or]: [null, createdBy]
             },
             customerId: customerId,
-            eventId: eventId
+            eventId:{ $in:eventIds}
         },
         order: [
             ['id', 'ASC']
@@ -264,7 +264,6 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventId)=>{
         where: {
             createdBy: createdBy,
             customerId: customerId,
-            eventId: eventId
         },
         order: [
             ['id', 'ASC']
