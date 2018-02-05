@@ -164,9 +164,9 @@ class Welcome extends Component{
           <div>{/* style={{'display':'none'}} remove this div for display*/}
 
           <hr className="km-welcome-hr" />
-          <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} />
+          <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} updateUserStatus ={this.updateUserStatus} />
           <hr className="km-welcome-hr" />
-          <WhenYouAreOffline showOfflinePrefs={this.state.showOfflinePrefs} toggleOfflinePrefs={this.toggleOfflinePrefs} />
+          <WhenYouAreOffline showOfflinePrefs={this.state.showOfflinePrefs} toggleOfflinePrefs={this.toggleOfflinePrefs} updateUserStatus ={this.updateUserStatus} />
           </div>
         </div>
         <div className={this.state.showOverlay ? "full-screen-overlay show-full-screen-overlay": "full-screen-overlay hide-full-screen-overlay"} onClick={this.toggleOverlay}>
