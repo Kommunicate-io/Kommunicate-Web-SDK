@@ -4354,7 +4354,9 @@ cursor: pointer;
 }
 .km-blocked-room-room-type, .km-blocked-room-guests, .km-blocked-room-price, .km-blocked-room-sub-total {
     border-bottom: 1px solid rgba(0, 0, 0, 0.24);
-    padding: 7px 12px;
+	padding: 7px 12px;
+	display: flex;
+	justify-content: space-between;
 }
 .km-blocked-room-room-type span:first-child, .km-blocked-room-guests span:first-child  {
     font-size: 14px;
@@ -4366,7 +4368,11 @@ cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     color: rgb(0, 0, 0);
-    float: right;
+	display: inline-block;
+   	width: 122px;
+   	overflow: hidden;
+	text-align: right;
+	word-wrap: break-word;	
 }
 .km-blocked-room-sub-total span:last-child {
     font-size: 20px;

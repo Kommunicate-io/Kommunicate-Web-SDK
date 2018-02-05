@@ -405,8 +405,9 @@ exports.updatePassword=(newPassword,user)=>{
     return Promise.all([registrationService.getCustomerById (user.customerId),bcrypt.hash(newPassword,10)])
     .then(([customer,hash])=>{
       return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:customer.applicationId,userName:user.userName}),
-        db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t})])
-        .then(([res1,res2])=>{
+        db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t}), 
+        db.customer.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{userName:user.id},transaction:t})])
+        .then(([res1,res2,res3])=>{
             console.log("password updated successfully in all dbs for agent", user.userName);
             return {"code":"SUCCESS"}
         });
