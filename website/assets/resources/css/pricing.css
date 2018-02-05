@@ -477,7 +477,7 @@ position: relative;
         min-height: 695px;
     }
     .launch .pricing-table-footer {
-        padding-top: 24px;
+        padding-top: 49px;
     }
     .growth .pricing-table-footer {
         padding-top: 72px;
@@ -491,7 +491,7 @@ position: relative;
         min-height: 695px;
     }
     .launch .pricing-table-footer {
-        padding-top: 24px;
+        padding-top: 51px;
     }
     .growth .pricing-table-footer {
         padding-top: 97px;
@@ -522,7 +522,7 @@ position: relative;
         min-height: auto;
     }
     .pricing-most-popular-text {
-        width: 100%;
+        width: 100% ;
         left: 50%;
         transform: translateX(-50%);
     }
