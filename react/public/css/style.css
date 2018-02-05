@@ -10055,6 +10055,9 @@ input:required {
   border-radius: 4px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
 }
 
 .km-bot-integration-amazon-icon {
@@ -10249,4 +10252,19 @@ input:required {
   border: solid 1px #5c5aa7;
   color: #5c5aa7;
   line-height: 34px;
+}
+
+.km-bot-profile-modal-text {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #9b9ea1;
+}
+
+.km-bot-cursor-pointer {
+  cursor: pointer;
 }
