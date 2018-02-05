@@ -44,10 +44,12 @@ class WhenYouAreOffline extends Component {
     let eventIds = [1, 2, 3, 4];
     return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(welcomeMessages => {
       console.log("When you are Offline msg API response", welcomeMessages)
+      
       // eventId id 1 when agent is offline and user is anonymous users
       if (welcomeMessages.eventId1Messages instanceof Array && welcomeMessages.eventId1Messages.length < 1) {
         this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection id={-1} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-1) }} /> }] })
       }
+      
       welcomeMessages.eventId1Messages.map(item => {
         item.messages.map(message => {
           if (message.status === 1 && message.metadata === null) {
@@ -127,6 +129,10 @@ class WhenYouAreOffline extends Component {
       if (this.state.knownMessageSections.length < 1) {
         this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
       }
+      if(welcomeMessages.eventId1Messages[0].messages[0].status === 2 || welcomeMessages.eventId2Messages[0].messages[0].status ===2 || 
+        welcomeMessages.eventId1Messages[0].messages[0].status === 3 || welcomeMessages.eventId2Messages[0].messages[0].status === 3 ){
+          this.props.updateUserStatus(false);
+        }
 
     }).catch(err => {
 			console.log("Error while fetching welcome messages for WhenYouAreOffline ", err)
