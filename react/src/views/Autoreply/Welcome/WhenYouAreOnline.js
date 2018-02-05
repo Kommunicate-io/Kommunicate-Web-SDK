@@ -42,95 +42,102 @@ class WhenYouAreOnline extends Component {
 		...this.unknownUser,
 		...this.knownUser,
 		showPrefs: this.props.showOnlinePrefs,
-		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
+		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right",
+		
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 
-	    // eventId id 3 when agent is online and user is anonymous
-	    getInAppMessagesByEventId(3).then(response => {
-	      console.log(response)
-	      if(response instanceof Array &&  response.length < 1){
-	      	this.setState({unknownMessageSections: [{id: -1, component: <MessageSection id={-1} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-1)}}/>}]})
+		let eventIds = [1, 2, 3, 4];
+		return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(welcomeMessages => {
+		console.log("When you are Online msg API response", welcomeMessages)
+		if (welcomeMessages.eventId3Messages instanceof Array && welcomeMessages.eventId3Messages.length < 1) {
+			this.setState({ unknownMessageSections: [] })
       	  }
-
-	      response.map(message => {
-	      	if(message.status === 1 && message.metadata === null){
-		        this.setState(prevState =>{
+		// eventId id 3 when agent is online and user is anonymous users
+		welcomeMessages.eventId3Messages.map(msg => {
+			msg.messages.map(item => {
+				if (item.status === 1 && item.metadata === null) {
+					this.setState(prevState => {
 		          return {
-		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{id: message.id, message: message.message}]),
-		            unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
+							unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{ id: item.id, message: item.message }]),
+							unknownChatComponents: prevState.unknownChatComponents.concat([{ id: item.id, component: <p dangerouslySetInnerHTML={{ __html: item.message }} style={{ width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px" }}></p> }])
 		          }
 		        }, () => {
-		        	if(this.state.unknownMessageSections.length < 1){
+						if (this.state.unknownMessageSections.length < 1) {
 		        		this.setState((prevState) => {
-			        		let messageId = message.id
-							return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+								let messageId = item.id
+								return { unknownMessageSections: prevState.unknownMessageSections.concat([{ id: item.id, component: <MessageSection id={item.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(3, 1) }} messageValue={item.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
 						});
-		        	}else{
+						} else {
 		        		this.setState((prevState) => {
-			        		let messageId = message.id
-							return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+								let messageId = item.id
+								return { unknownMessageSections: prevState.unknownMessageSections.concat([{ id: item.id, component: <MessageSection id={item.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(3, 1) }} messageValue={item.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
 						});
 		        	}
 		        })
-		    }else if(message.status === 1 && message.metadata !== null){
-		        this.setState(prevState =>{
-		          let messageId = message.id
+				} else if (item.status === 1 && item.metadata !== null) {
+					this.setState(prevState => {
+						let messageId = item.id
 		          return {
-		          	unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{id: message.id, message: "Lead Generation template added"}]),
-					unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}} />}]),
-					unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={false} />}])
+							unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{ id: item.id, message: "Lead Generation template added" }]),
+							unknownMessageSections: prevState.unknownMessageSections.concat([{ id: item.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]),
+							unknownChatComponents: prevState.unknownChatComponents.concat([{ id: item.id, component: <LeadGenerationTemplate showDeleteBtn={false} /> }])
 		          }
 		        })
 		    }
 	      })
+		})
 
-	      if(this.state.unknownMessageSections.length < 1){
-        	this.setState({unknownMessageSections: [{id: -1, component: <MessageSection id={null} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(3, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-1)}} />}]})
+		if (this.state.unknownMessageSections.length < 1) {
+			this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection id={null} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(3, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-1) }} /> }] })
       	  }
-	    })
-
 	    // eventId id 4 when agent is online and user is known
-	    getInAppMessagesByEventId(4).then(response => {
-	      // console.log(response)
 
-	      if(response instanceof Array && response.length < 1){
-	      	this.setState({knownMessageSections: [{id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-101)}} />}]})
+		if (welcomeMessages.eventId4Messages instanceof Array && welcomeMessages.eventId4Messages.length < 1) {
+			this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
 	      }
 
-	      response.map(message => {
-	      	if(message.status === 1){
-		        this.setState(prevState =>{
+		welcomeMessages.eventId4Messages.map(msg => {
+			msg.messages.map(item => {
+				if (item.status === 1) {
+					this.setState(prevState => {
 		          return {
-		          	knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([{id: message.id, message: message.message}]),
-		            knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
+							knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([{ id: item.id, message: item.message }]),
+							knownChatComponents: prevState.knownChatComponents.concat([{ id: item.id, component: <p dangerouslySetInnerHTML={{ __html: item.message }} style={{ width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px" }}></p> }])
 		          }
 		        }, () => {
-		        	if(this.state.knownMessageSections.length < 1){
+						if (this.state.knownMessageSections.length < 1) {
 		        		this.setState((prevState) => {
-							return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
+								return { knownMessageSections: prevState.knownMessageSections.concat([{ id: item.id, component: <MessageSection id={item.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} messageValue={item.message} deleteInAppMsg={() => { this._deleteInAppMsg(item.id) }} /> }]) }
 						});
-		        	}else{
+						} else {
 		        		this.setState((prevState) => {
-							return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(message.id)}}/>}])}
+								return { knownMessageSections: prevState.knownMessageSections.concat([{ id: item.id, component: <MessageSection id={item.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} messageValue={item.message} deleteInAppMsg={() => { this._deleteInAppMsg(item.id) }} /> }]) }
 						});
 		        	}
 		        })
 	    	}
 	      })
+		})
 
-	      if(this.state.knownMessageSections.length < 1){
-	      	this.setState({knownMessageSections: [{id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(4, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-101)}} />}]})
-	  	  }
+		if (this.state.knownMessageSections.length < 1) {
+			this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })		}			
+
+	}).catch(err => {
+			console.log("Error while fetching welcome messages for WhenYouAreOnline ", err)
+
 	    })
+			
   	}
+
 
   	componentWillReceiveProps(nextProps) {
   		if(nextProps.showOnlinePrefs){
   			this.setState({
 	    		showPrefs: true,
-	    		upDownIcon: "icon-arrow-up icons font-2xl d-block text-right"
+				upDownIcon: "icon-arrow-up icons font-2xl d-block text-right",
+				
 	    	})
   		}else{
   			this.setState({
@@ -139,6 +146,10 @@ class WhenYouAreOnline extends Component {
 	    	})
   		}
   	}
+
+	
+
+	
 
   	_deleteInAppMsg = (id) => {
 
@@ -364,8 +375,9 @@ class WhenYouAreOnline extends Component {
 	}
 
 	render(){
-		console.log(this.state)
+		
 		return (
+			
 			<div className="cursor-is-pointer">
         <div className="row" onClick={this.methodToShowPrefs}>
           <div className="col-5">
@@ -376,7 +388,7 @@ class WhenYouAreOnline extends Component {
             <i className={this.state.upDownIcon}></i>
           </div>
         </div>
-				<div className = {
+				<div className={
 	        this.state.showPrefs === true
 	          ? null
 	          : "n-vis"
@@ -386,7 +398,7 @@ class WhenYouAreOnline extends Component {
 	        	<div className="col-5">
 	        	</div>
 	        	<div className="col-7">
-	        		<h3 className="welcome-preview text-left" style={{display: "none"}}>Preview:</h3>
+							<h3 className="welcome-preview text-left" style={{ display: "none" }}>Preview:</h3>
 	        	</div>
 	        </div>
 	        <div className="form-group row">
@@ -399,7 +411,9 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-5">
+						
 	        		{this.state.unknownMessageSections.map((unknownMessageSection, i) => (<div key={i}>{unknownMessageSection.component}</div>))}
+
 	        	</div>
 	        	<div className="col-4">
 		            {
@@ -417,8 +431,8 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 		        <div className="col-5">
-		        	<span style={{display: "none"}} className={this.state.unknownMessageSectionMsgs.length < 2 ? null:"n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
-              		<span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null:"n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
+							<span style={{ display: "none" }} className={this.state.unknownMessageSectionMsgs.length < 2 ? null : "n-vis"}><strong>Tip:</strong> You can use the lead generation template to collect customer contact information</span>
+							<span className={this.state.unknownMessageSectionMsgs.length >= 2 ? null : "n-vis"}> You can only show a maximum of 3 welcomemessages. </span>
 		        </div>
 	        </div>
 	        <div className="form-group row">
@@ -431,6 +445,7 @@ class WhenYouAreOnline extends Component {
 	        </div>
 	        <div className="form-group row">
 	        	<div className="col-5">
+							{/* {messagefield} */}
 	        		{this.state.knownMessageSections.map((knownMessageSection, i) => (<div key={i}>{knownMessageSection.component}</div>))}
 	        	</div>
 	        	<div className="col-4">
