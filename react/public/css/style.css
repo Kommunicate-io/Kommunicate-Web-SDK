@@ -9977,6 +9977,19 @@ input:required {
   box-shadow: none;
 }
 
+.app #root:empty {
+  position: relative;
+  height: 100vh;
+}
+.loader:empty {
+  content: url(../img/km-loading-animation.svg);
+  position: absolute;
+  top: calc(50% - 4em);
+  left: calc(50% - 4em);
+  width: 6em;
+  height: 6em;
+}
+
 .km-bot-integration-cato {
   width: 177px;
   height: 190px;
