@@ -36,9 +36,9 @@ exports.createCustomer = (req,res)=>{
           .catch(err=>{
             console.log("err while storing welcome message in db");
           });*/
-          registrationService.sendWelcomeMail(email, name||email).catch(err=>{
+         /* registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err)  
-          });
+          });*/
           if (activeCampaignEnable == true) {
             activeCampaignClient.addContact({ "email": email })
               .then(subscriberId => {
@@ -193,7 +193,7 @@ exports.signUpWithAplozic= (req,res)=>{
             .catch(err=>{
               console.log("err while storing welcome message in db");
             });*/
-           registrationService.sendWelcomeMail(email, userName, false,'');
+           //registrationService.sendWelcomeMail(email, userName, false,'');
           }catch(err){
             console.log("Error while sending welcom mail to user  ",err);
           }
