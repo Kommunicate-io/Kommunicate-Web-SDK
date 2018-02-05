@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import ChatPreview from './ChatPreview';
 import UserPopover from './UserPopover';
 
@@ -10,7 +9,6 @@ import {addInAppMsg, getInAppMessagesByEventId, deleteInAppMsg} from '../../../u
 import Notification from '../../model/Notification'
 
 class WhenYouAreOffline extends Component {
-
   getMessageFunc = (msg) => {
     this.setState({unknownMessage: msg});
   }
@@ -39,100 +37,101 @@ class WhenYouAreOffline extends Component {
     ...this.unknownUser,
     ...this.knownUser,
 		showOfflinePrefs: this.props.showOfflinePrefs,
-		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right"
+    upDownIcon: "icon-arrow-down icons font-2xl d-block text-right",
+    
 	}
-
-  componentDidMount(){
-
-    // eventId id 1 when agent is offline and user is anonymous
-    getInAppMessagesByEventId(1).then(response => {
-      console.log(response)
-
-      if(response instanceof Array && response.length < 1){
-        this.setState({unknownMessageSections: [{id: -1, component: <MessageSection id={-1} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-1)}} />}]})
+  componentDidMount() {
+    let eventIds = [1, 2, 3, 4];
+    return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(welcomeMessages => {
+      console.log("When you are Offline msg API response", welcomeMessages)
+      // eventId id 1 when agent is offline and user is anonymous users
+      if (welcomeMessages.eventId1Messages instanceof Array && welcomeMessages.eventId1Messages.length < 1) {
+        this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection id={-1} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-1) }} /> }] })
       }
-
-      response.map(message => {
-        if(message.status === 1 && message.metadata === null){
-          this.setState(prevState =>{
-            return {
-              unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{id: message.id, message: message.message}]),
-              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
-            }
-          }, () => {
-              if(this.state.unknownMessageSections.length < 1){
+      welcomeMessages.eventId1Messages.map(item => {
+        item.messages.map(message => {
+          if (message.status === 1 && message.metadata === null) {
+            this.setState(prevState => {
+              return {
+                unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{ id: message.id, message: message.message }]),
+                unknownChatComponents: prevState.unknownChatComponents.concat([{ id: message.id, component: <p dangerouslySetInnerHTML={{ __html: message.message }} style={{ width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px" }}></p> }])
+              }
+            }, () => {
+              if (this.state.unknownMessageSections.length < 1) {
                 this.setState((prevState) => {
                   let messageId = message.id
-                  return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+                  return { unknownMessageSections: prevState.unknownMessageSections.concat([{ id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} messageValue={message.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
                 })
-              }else{
+              } else {
                 this.setState((prevState) => {
                   let messageId = message.id
-                  return {unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
+                  return { unknownMessageSections: prevState.unknownMessageSections.concat([{ id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} messageValue={message.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
                 })
               }
             })
-        }else if(message.status === 1 && message.metadata !== null){
-          this.setState(prevState =>{
-            let messageId = message.id
-            return {
-              unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{id: message.id, message: "Lead Generation template added"}]),
-              unknownMessageSections: prevState.unknownMessageSections.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}} />}]),
-              unknownChatComponents: prevState.unknownChatComponents.concat([{id: message.id, component: <LeadGenerationTemplate showDeleteBtn={false} />}])
-            }
-          })
+          } else if (message.status === 1 && message.metadata !== null) {
+            this.setState(prevState => {
+              let messageId = message.id
+              return {
+                unknownMessageSectionMsgs: prevState.unknownMessageSectionMsgs.concat([{ id: message.id, message: "Lead Generation template added" }]),
+                unknownMessageSections: prevState.unknownMessageSections.concat([{ id: message.id, component: <LeadGenerationTemplate showDeleteBtn={true} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]),
+                unknownChatComponents: prevState.unknownChatComponents.concat([{ id: message.id, component: <LeadGenerationTemplate showDeleteBtn={false} /> }])
+              }
+            })
+          }
+        }, () => {
+          if (this.state.unknownMessageSections.length < 1) {
+            this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} /> }] })
+          }
+        })
+
+        if (this.state.unknownMessageSections.length < 1) {
+          this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(1, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-1) }} /> }] })
         }
-      }, () =>{
-        if(this.state.unknownMessageSections.length < 1){
-          this.setState({unknownMessageSections: [{id: -1, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} />}]})
-        }
+
       })
 
-      if(this.state.unknownMessageSections.length < 1){
-        this.setState({unknownMessageSections: [{id: -1, component: <MessageSection showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.addMessageToChatPreview(1, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-1)}} />}]})
+      // eventId id 2 when agent is offline and user is known
+      if (welcomeMessages.eventId2Messages instanceof Array && welcomeMessages.eventId2Messages.length < 1) {
+        this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
       }
+      welcomeMessages.eventId2Messages.map(item => {
+        item.messages.map(message => {
+          if (message.status === 1) {
+            this.setState(prevState => {
+              return {
+                knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([{ id: message.id, message: message.message }]),
+                knownChatComponents: prevState.knownChatComponents.concat([{ id: message.id, component: <p dangerouslySetInnerHTML={{ __html: message.message }} style={{ width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px" }}></p> }])
+              }
+            }, () => {
+              if (this.state.knownMessageSections.length < 1) {
+                this.setState((prevState) => {
+                  let messageId = message.id
+                  return { knownMessageSections: prevState.knownMessageSections.concat([{ id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} messageValue={message.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
+                });
+              } else {
+                this.setState((prevState) => {
+                  let messageId = message.id
+                  return { knownMessageSections: prevState.knownMessageSections.concat([{ id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} messageValue={message.message} deleteInAppMsg={() => { this._deleteInAppMsg(messageId) }} /> }]) }
+                });
+              }
 
-    })
-
-    // eventId id 2 when agent is offline and user is known
-    getInAppMessagesByEventId(2).then(response => {
-      console.log(response)
-      if(response instanceof Array && response.length < 1){
-        this.setState({knownMessageSections: [{id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-101)}} />}]})
-      }
-      response.map(message => {
-        if(message.status === 1){
-          this.setState(prevState =>{
-            return {
-              knownMessageSectionMsgs: prevState.knownMessageSectionMsgs.concat([{id: message.id, message: message.message}]),
-              knownChatComponents: prevState.knownChatComponents.concat([{id: message.id, component: <p dangerouslySetInnerHTML={{__html: message.message}} style={{width: "70%", margin: "5px", backgroundColor: "#5c5aa7", color: "#fff", border: "1px solid black", borderRadius: "3px", padding: "3px"}}></p>}])
-            }
-          }, () => {
-            if(this.state.knownMessageSections.length < 1){
-              this.setState((prevState) => {
-                let messageId = message.id
-                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
-              });
-            }else{
-              this.setState((prevState) => {
-                let messageId = message.id
-                return {knownMessageSections: prevState.knownMessageSections.concat([{id: message.id, component: <MessageSection id={message.id} editInAppMsg={true} showDeleteBtn={true} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} messageValue={message.message} deleteInAppMsg={() => {this._deleteInAppMsg(messageId)}}/>}])}
-              });
-            }
-              
-          })
-        }
-      }, () => {
-        if(this.state.knownMessageSections.length < 1){
-          this.setState({knownMessageSections: [{id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-101)}}/>}]})
-        }
+            })
+          }
+        }, () => {
+          if (this.state.knownMessageSections.length < 1) {
+            this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
+          }
+        })
       })
-
-      if(this.state.knownMessageSections.length < 1){
-          this.setState({knownMessageSections: [{id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => {this.known_addMessageToChatPreview(2, 1)}} deleteInAppMsg={() => {this._deleteInAppMsg(-101)}} />}]})
+      if (this.state.knownMessageSections.length < 1) {
+        this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(2, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
       }
 
-    })
+    }).catch(err => {
+			console.log("Error while fetching welcome messages for WhenYouAreOffline ", err)
+
+	})		
   }
 
   componentWillReceiveProps(nextProps) {
@@ -348,6 +347,7 @@ class WhenYouAreOffline extends Component {
   }
 
 	render(){
+    //console.log("Offline events", this.props.apiResponse )
     console.log(this.state)
 		return (
       <div className="cursor-is-pointer">

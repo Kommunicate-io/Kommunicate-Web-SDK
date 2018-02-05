@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 
 import Notification from '../../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs }  from '../../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../../config/config.js';
 import { Label, Input } from 'reactstrap';
@@ -25,12 +25,15 @@ class Welcome extends Component{
   }
 
   componentDidMount(){
-    let userSession = CommonUtils.getUserSession();
-    getWelcomeMessge(userSession.application.applicationId).then(message=>{
-      this.setState({msg:message});
-    }).catch(err=>{
-      console.log("error while fetching welcome message",err);
-    })
+    // API Resposne for old welcome message design
+    
+    // let userSession = CommonUtils.getUserSession();
+    // getWelcomeMessge(userSession.application.applicationId).then(message=>{
+    //   this.setState({msg:message});
+    // }).catch(err=>{
+    //   console.log("error while fetching welcome message",err);
+    // })
+    
   }
   
   submitWelcomeMessage = () => {
@@ -127,7 +130,9 @@ render(){
 <div className="animated fadeIn">
   <div className="row">
     <div className="col-sm-12 col-md-12">
-      <div className="card welcome-message-container" style={{'display':'none'}}>
+
+      <div className="card welcome-message-container" /* style={{'display':'none'}} */ >
+
         <div className="card-block">
           <div>
             <div className="col-6">
@@ -142,14 +147,16 @@ render(){
               <div className="row" >
                 <p className="welcome-message-will">(welcome message will be automatically shown to the user on opening the chat box)</p>
               </div>
-             <div className="row" style={{'display':'none'}}> {/* style={{'display':'none'}} remove style for display*/}
+             <div className="row"> {/* style={{'display':'none'}} remove style for display*/}
                 <p className="you-can-update-status">You can update status as <span className="you-can-update-status text-style-1">offline</span> or <span className="you-can-update-status text-style-1">online</span> manually from the header above. 
                 <span className="you-can-update-status text-style-2" onClick={this.toggleOverlay}>Show me where</span></p>
                 
               </div>
             </div>
           </div>
-          <div style={{'display':'none'}}>{/* style={{'display':'none'}} remove this div for display*/}
+
+          <div>{/* style={{'display':'none'}} remove this div for display*/}
+
           <hr className="km-welcome-hr" />
           <WhenYouAreOnline showOnlinePrefs={this.state.showOnlinePrefs} toggleOnlinePrefs={this.toggleOnlinePrefs} />
           <hr className="km-welcome-hr" />
@@ -164,7 +171,7 @@ render(){
           }
         </div>
       </div>
-      <div className="card">
+      <div className="card" style={{'display':'none'}}>
         <div className="card-header">
           <div className="card-block">
             <div className="form-group row form-control-label">
