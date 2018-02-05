@@ -672,6 +672,7 @@ class Tabs extends Component {
             <div className="row">
               <div className="col-sm-12">
                 <p className="km-bot-integration-use-case-modal-text">Instructions:</p>
+                <BotDescription />
               </div>
             </div>
             <div className="row">
