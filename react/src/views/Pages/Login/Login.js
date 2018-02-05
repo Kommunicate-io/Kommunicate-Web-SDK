@@ -45,7 +45,8 @@ constructor(props){
     errorMessageText: "Please enter user name to login",
     errorInputColor:'',
     errorMessageTextPassword:'',
-    hideErrorMessagePassword: true
+    hideErrorMessagePassword: true,
+    handleUserNameBlur:false
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -64,6 +65,10 @@ constructor(props){
       var login = document.getElementById('login-button');
       login.click();
     }
+  }
+
+  blurHandler(){
+    //this.setState({handleUserNameBlur:true})
   }
 
   showHide(e){
@@ -336,7 +341,7 @@ websiteUrl = (e)=> {
                                   errorMessage={this.state.errorMessageText}
                                   hideErrorMessage={this.state.hideErrorMessage}
                                   required={'required'}
-                                  blurFunc ={this.state.handleUserNameBlur} keyPressFunc={this.onKeyPress}
+                                  blurFunc ={this.blurHandler} keyPressFunc={this.onKeyPress}
                                   style={{borderColor: this.state.errorInputColor}}/>
                     </div>
                    

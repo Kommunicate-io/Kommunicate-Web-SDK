@@ -231,8 +231,8 @@ class Dashboard extends Component {
               </div>
               */}
             </div>
-            <div className="chart-wrapper" style={{height: 300 + 'px', marginTop: 40 + 'px'}}>
-              <Line data={this.state.mainChart} options={this.mainChartOpts} height={300}/>
+            <div className="chart-wrapper" style={{height: 200 + 'px', marginTop: 40 + 'px'}}>
+              <Line data={this.state.mainChart} options={this.mainChartOpts} height={200}/>
             </div>
           </div>
           {/*

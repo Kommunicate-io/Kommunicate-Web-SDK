@@ -10,7 +10,7 @@
 }
 
 html * {
-    font-family: 'Open Sans',sans-serif !important;
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
   }
 
 body {
@@ -183,18 +183,18 @@ a, a:hover, a:focus, a:active {
 .nav-signup-button {
     color: #FFFFFF;
     border: none;
-    background-color: #4a4a4a;
+    background-color: #2dd35c;
     font-weight: 600
 }
 .sticky .nav-signup-button {
     color: #FFFFFF;
     border: none;
-    background-color: #4a4a4a;
+    background-color: #2dd35c;
     font-weight: 600;
 }
 .nav-signup-button:hover {
     color: #FFFFFF;
-    background-color: #4a4a4a;
+    background-color: #1aaa42;
     border: none;
     font-weight: 600;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -202,7 +202,7 @@ a, a:hover, a:focus, a:active {
 }
 .sticky .nav-signup-button:hover {
     color: #FFFFFF;
-    background-color: #4a4a4a;
+    background-color: #1aaa42;
     border: none;
     font-weight: 600;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);

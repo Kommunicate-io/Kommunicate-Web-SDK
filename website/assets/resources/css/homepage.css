@@ -80,7 +80,7 @@ a, a:hover, a:focus, a:active {
 
 .hero-subtext {
   font-size: 22px;
-  color: #ffffff9d;
+  color: rgba(255, 255, 255, 0.6);;
   font-weight: 400;
   font-style: normal;
 }
@@ -128,7 +128,7 @@ a, a:hover, a:focus, a:active {
 
 .why-kommunicate-section {
   padding-top: 40px;
-  background-color: #2475bb;
+  background-color: #5C5AA7;
 }
 
 .homepage-beta-features-section:focus, .why-kommunicate-section:focus {
@@ -187,19 +187,24 @@ animation-timing-function: linear;
   font-size: 18px;
   font-weight: 500;
   line-height: 1;
-  color: rgb(255, 255, 255);
+  color: #ffffff;
   text-decoration: none;
   -webkit-transition: all 0.4s;
   -moz-transition: all 0.4s;
   -o-transition: all 0.4s;
   transition: all 0.4s;
-  border-radius: 0px 26px 26px 0px;
+  border-radius: 6px;
   -webkit-appearance: none;
   text-decoration: none;
   border: none;
   flex: 0 1 auto;
-  background-color: #4a4a4a;
-}
+  background-color: #2dd35c;
+  }
+.form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
 .form-submit-btn:focus {
   outline: none;
 }
@@ -241,19 +246,19 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 
 .cta-email-pre-signup {
   background: #fff;
-  width: 50%;
-  color: #5c5aa7;
-  font-size: 18px;
-  padding: 15px 16px 15px 14px;
-  margin: 0;
-  border-radius: 26px 0px 0px 26px;
-  outline: none;
-  height: 47px;
-  box-shadow: none;
-  /*margin-right: 5px;*/
-  border: 1px solid #7B7979;
-  flex: 1 0 auto;
-  box-shadow: 0 3px 6px rgba(36,129,215,.05),0 2px 3px rgba(36,129,215,.04);
+    width: 50%;
+    color: #5c5aa7;
+    font-size: 18px;
+    padding: 15px 16px 15px 14px;
+    margin: 0;
+    border-radius: 6px 0px 0px 6px;
+    outline: none;
+    height: 47px;
+    box-shadow: none;
+    /* margin-right: 5px; */
+    border: none;
+    flex: 1 0 auto;
+    box-shadow: 0 3px 6px rgba(36,129,215,.05), 0 2px 3px rgba(36,129,215,.04);
 }
 .why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
   background: transparent;
@@ -262,26 +267,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   font-size: 16px;
   padding: 15px 16px 15px 14px;
   margin: 0;
-  border-radius: 26px 0px 0px 26px;
+  border-radius: 6px;
   outline: none;
   height: 47px;
   box-shadow: none;
-  /*margin-right: 5px;*/
-  border: 1px solid #7B7979;
+  /* margin-right: 5px; */
+  border: none;
   flex: 1 0 auto;
 }
 
+
+.homepage-beta-cta-section .form-submit-btn:hover {
+    background-color: #1aaa42;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
 .pre-signup-form {
-  /*background-color: white;*/
-  border-radius: 100px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 0px;
-  padding-right: 0px;
-  display: flex;
-  /*border: 2px solid #007fff;*/
-  width: 50%;
-  margin: 0 auto;
+  background-color: white;
+    border-radius: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    display: flex;
+    /* border: 2px solid #007fff; */
+    width: 50%;
+    margin: 0 auto;
+}
+.homepage-beta-cta-section .pre-signup-form {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3), 0px -2px 8px 0 rgba(0, 0, 0, 0.3);
 }
 .why-kommunicate-section .pre-signup-form {
   /*background-color: white;*/
@@ -308,13 +323,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
   background-color: white;
   text-align: center;
   width: 100%;
-  border-radius: 26px;
+  border-radius: 6px;
   /*border: 1px solid #5d5ba8;*/
 }
 .signup-error-msg-div2 {
   text-align: center;
   width: 100%;
-  border-radius: 26px;
+  border-radius: 6px;
 }
 .signup-error-msg-div2 .signup-error-msg-text1 {
   font-size: 18px;
@@ -518,7 +533,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .section-heading {
   font-size: 34px;
   font-weight: 300;
-  color: #363c50;
+  color: #5C5AA7;
   margin-top: 50px;
 }
 .section-subheading {
@@ -616,7 +631,7 @@ text-transform: uppercase
   font-size: 18px;
   border-radius: 26px;
   padding: 10px 20px;
-  background: #4a4a4a ;
+  background: #5C5AA7 ;
   box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.5);
 }
 
@@ -685,7 +700,8 @@ transform: scale(.6);
 }
 .reasons-invite-img-container, .reasons-invite-img-container svg {
   width: auto;
-  height: 90px;
+  height: 70px;
+  margin: 0 auto;
 }
 .mobile {
 width: 49px;
@@ -713,7 +729,7 @@ margin-top: 15px;
 
 .homepage-beta-cta-section .form-submit-btn {
   color: #fff;
-  background-color: #4a4a4a;
+  background-color: #2dd35c;
 }
 
 
@@ -981,7 +997,7 @@ label {
 .scroll-down .fa-angle-down {
   font-size: 40px;
   color: #FFFFFF;
-  margin-top: 70px;
+  margin-top: 35px;
   -webkit-animation: bounce 2s infinite  ease-in-out;
   animation: bounce 2s infinite  ease-in-out;
 }
@@ -1031,6 +1047,12 @@ label {
   .hero-text, .hero-subtext {
       text-align: center;
   }
+  .hero-section {
+    margin-top: 25px;
+}
+.landing-page-main-image {
+  margin-top: 0px;
+}
   .hero-text {
       font-size: 32px;
   }
@@ -1062,6 +1084,7 @@ label {
   .pre-signup-form {
       width: 100%;
       flex-wrap: wrap;
+      background-color: transparent;
   }
   .why-kommunicate-delight-customers-section {
       padding: 3em 0em;
@@ -1069,6 +1092,8 @@ label {
   .why-kommunicate-reduce-ticket-section .mobile-view {
       margin-top: 20px;
   }
+
+
 
 }
 @media (max-width:350px) {
@@ -1086,24 +1111,30 @@ label {
       font-size: 21px;
   }
   .homepage-beta-cta-section {
-     /* margin-bottom: 130px;*/
+      /* margin-bottom: 130px; */
   }
 }
 @media (max-width:560px) {
   .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
-      border-radius: 26px;
+      border-radius: 6px;
   }
+  .homepage-beta-cta-section .pre-signup-form {
+    box-shadow:none;
+}
+.why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
+  border: 1px solid #7B7979;
+}
 }
 @media (max-width:850px) {
   .homepage-beta-features-section .section-heading {
@@ -1153,12 +1184,12 @@ label {
       flex-wrap: wrap;
   }
   .why-kommunicate-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .icons-row-landing {
       margin-bottom: 40px;
@@ -1189,12 +1220,12 @@ label {
       flex-wrap: wrap;
   }
   .why-kommunicate-section .cta-email-pre-signup {
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .why-kommunicate-section .form-submit-btn {
       flex: 0 0 100%;
       margin-top: 15px;
-      border-radius: 26px;
+      border-radius: 6px;
   }
   .homepage-beta-landing-page-section {
       height: auto;
@@ -1390,18 +1421,18 @@ input:-ms-input-placeholder {
 .nav-signup-button {
   color: #FFFFFF;
   border: none;
-  background-color: #4a4a4a;
+  background-color: #2dd35c;
   font-weight: 600
 }
 .sticky .nav-signup-button {
   color: #FFFFFF;
   border: none;
-  background-color: #4a4a4a;
+  background-color: #2dd35c;
   font-weight: 600;
 }
 .nav-signup-button:hover {
   color: #FFFFFF;
-  background-color: #4a4a4a;
+  background-color: #1aaa42;
   border: none;
   font-weight: 600;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
@@ -1409,7 +1440,7 @@ input:-ms-input-placeholder {
 }
 .sticky .nav-signup-button:hover {
   color: #FFFFFF;
-  background-color: #4a4a4a;
+  background-color: #1aaa42;
   border: none;
   font-weight: 600;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);

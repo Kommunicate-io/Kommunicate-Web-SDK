@@ -1,0 +1,372 @@
+<section class="pricing-landing-page-section">
+    <div class="container pricing-container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="pricing-title">Plans and Pricing</h1>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">Startup</h2>
+                            <div class="price-image-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 250 250">
+                                    <defs>
+                                      <style>
+                                        .startup-plan-icon-1, .startup-plan-icon-2, .startup-plan-icon-3 {
+                                          fill: #5c5aa7;
+                                        }
+                                  
+                                        .startup-plan-icon-1 {
+                                          opacity: 0.03;
+                                        }
+                                  
+                                        .startup-plan-icon-1, .startup-plan-icon-2 {
+                                          isolation: isolate;
+                                        }
+                                  
+                                        .startup-plan-icon-2 {
+                                          opacity: 0.05;
+                                        }
+                                  
+                                        .startup-plan-icon-3 {
+                                          stroke: #5c5aa7;
+                                          stroke-linecap: round;
+                                          stroke-linejoin: round;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <title>Startup-plan-icon</title>
+                                    <circle class="startup-plan-icon-1" cx="125" cy="125" r="110"/>
+                                    <circle class="startup-plan-icon-2" cx="125" cy="125" r="65"/>
+                                    <g>
+                                      <path class="startup-plan-icon-3" d="M163.9,170.4H127.6l-2.5-73.9L123,170.4H86a8,8,0,0,1-7.5-10.6l.5-1.1,38.9-88.8a8,8,0,0,1,14.1-.2l.6,1.3,38.9,88.8a8,8,0,0,1-7.5,10.7Zm-35.1-1.3h35.1a6.6,6.6,0,0,0,6.2-8.9l-.4-.9-39-89.1a6.6,6.6,0,0,0-11.7.2l-.3.8-39,89A6.6,6.6,0,0,0,86,169h35.6l2.6-94.5h1.3Z"/>
+                                      <path class="startup-plan-icon-3" d="M125.3,184.5h-.7c-2.4-.4-4.1-2.9-4.2-3l-9.2-12.3h10.5l2.6-94.5h1.3l3.2,94.5h10.5l-9.2,12.3c-.1.1-1.8,2.6-4.2,3h-.6Zm-11.4-14,7.6,10.2s1.8,2.5,3.8,2.5h0c2,0,3.7-2.5,3.8-2.5l7.6-10.2h-9.1l-2.5-73.9L123,170.4Z"/>
+                                      <path class="startup-plan-icon-3" d="M151.3,128.5a.7.7,0,0,1-.6-.4L136.3,94.5a.7.7,0,1,1,1.2-.5L152,127.5a.7.7,0,0,1-.4.9Z"/>
+                                      <path class="startup-plan-icon-3" d="M134.9,90.3a.7.7,0,0,1-.6-.4l-4-9.4a.7.7,0,1,1,1.2-.5l4,9.4a.7.7,0,0,1-.4.9Z"/>
+                                      <path class="startup-plan-icon-3" d="M108.7,165.3H91.2c-2.9,0-4.9-.9-5.9-2.5s.1-6.6.2-6.8l16.2-36.8a.7.7,0,1,1,1.2.5L86.7,156.6c0,.1-1.6,3.4-.3,5.5s2.4,1.8,4.8,1.9h17.5a.7.7,0,0,1,0,1.3Z"/>
+                                      <path class="startup-plan-icon-3" d="M104.5,115.2h-.3a.7.7,0,0,1-.3-.9l4.2-9.5a.7.7,0,0,1,1.2.5l-4.2,9.5A.7.7,0,0,1,104.5,115.2Z"/>
+                                    </g>
+                                  </svg>
+                            </div>
+                            
+                        </div>
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-body-header">
+                                <div class="pricing-value">
+                                    <h2>FREE FOREVER</h2>
+                                </div>
+                                <div class="price-mau">
+                                    <h4>250 Chat users /mo</h4>
+                                    <h6>Unlimited Agents</h6>
+                                </div>                              
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                <p style="opacity:0;">Includes...</p>
+                                <ul>
+                                    <li>Messenger</li>
+                                    <li>Team Inbox</li>
+                                    <li>Auto Reply</li>
+                                    <li>Android &amp; iOS Agent app</li>
+                                    <li>1 Bot integration supported</li>
+                                    <li>Data retention: 3 months</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="pricing-table-footer">
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container launch">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">Launch</h2>
+                            <div class="price-image-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 250 250">
+                                    <defs>
+                                      <style>
+                                        .launch-plan-icon-1, .launch-plan-icon-2, .launch-plan-icon-3, .launch-plan-icon-4 {
+                                          fill: #5c5aa7;
+                                        }
+                                  
+                                        .launch-plan-icon-1 {
+                                          opacity: 0.03;
+                                        }
+                                  
+                                        .launch-plan-icon-1, .launch-plan-icon-2 {
+                                          isolation: isolate;
+                                        }
+                                  
+                                        .launch-plan-icon-2 {
+                                          opacity: 0.05;
+                                        }
+                                  
+                                        .launch-plan-icon-3, .launch-plan-icon-4 {
+                                          stroke: #5c5aa7;
+                                          stroke-miterlimit: 10;
+                                        }
+                                  
+                                        .launch-plan-icon-4 {
+                                          stroke-width: 0.96px;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <title>Launch-plan-icon</title>
+                                    <circle class="launch-plan-icon-1" cx="125" cy="125" r="110"/>
+                                    <circle class="launch-plan-icon-2" cx="125" cy="125" r="65"/>
+                                    <g>
+                                      <path class="launch-plan-icon-3" d="M121.8,166.2c0-.1-2.4-10.2-3.4-15.8-.3-1.9-.8-4.9-1.4-8-1.2-6.7-2.5-14.2-2.8-17.4s-1.6-16.4-1.7-22.7v-.2c-.2-6.4-.4-14.4,2.1-23.6s6.5-11.3,6.7-11.4H125V68h-3.5c-.5.3-3.9,2.5-6.1,10.7s-2.2,17-2,23.4v.2c.2,6.3,1.3,17.9,1.7,22.7.3,3.2,1.7,11,2.8,17.4.6,3.2,1.1,6.1,1.4,8.1.9,5.6,3.3,15.7,3.3,15.8Z"/>
+                                      <path class="launch-plan-icon-3" d="M117.2,166.3c-.1-.2-9.3-20.6-12.2-30.6-3.5-11.8-7.1-24.9-7.4-32.1v-1.8c-.3-6.9-.6-13.5,1-18.4,3.7-11.1,11.3-16.7,22.8-16.5v.9h-.5c-16.2,0-20.2,11.9-21.5,15.9s-1.3,11.2-1,18v1.8c.3,7.2,3.9,20.1,7.3,31.9,2.9,10,12.1,30.3,12.2,30.5Z"/>
+                                      <path class="launch-plan-icon-3" d="M115.5,166.4c-.1-.2-10.9-17.6-15.2-25.6l-.4-.7c-4.2-7.8-9-16.7-11.5-23.6a43.8,43.8,0,0,1-2.7-14.6c0-2,.5-10.4,2-13.8l.2-.5C93,75.5,103,68.7,117.7,67.3V68c-14.1,1.4-23.9,8-28.8,19.8l-.2.6c-1.3,3-1.9,10.9-1.9,13.4a42.9,42.9,0,0,0,2.6,14.3c2.4,6.8,7.2,15.7,11.4,23.5l.4.7c4.3,8,15.1,25.4,15.2,25.6Z"/>
+                                      <path class="launch-plan-icon-3" d="M128.2,166.2l-.9-.2c0-.1,2.4-10.1,3.3-15.8.3-1.9.8-4.9,1.4-8.1,1.1-6.3,2.5-14.2,2.8-17.4s1.6-16.4,1.7-22.7v-.2c.2-6.3.4-14.2-2-23.4S129,68,128.4,67.7H125v-.9h3.8c.2.1,4.2,1.9,6.7,11.4s2.2,17.2,2.1,23.6v.2c-.2,6.3-1.3,18-1.7,22.7-.3,3.2-1.7,10.8-2.8,17.4-.6,3.2-1.1,6.1-1.4,8C130.6,156,128.2,166.1,128.2,166.2Z"/>
+                                      <path class="launch-plan-icon-3" d="M132.8,166.3l-.9-.4c.1-.2,9.3-20.5,12.2-30.5,3.5-11.8,7-24.8,7.3-31.9v-1.8c.3-6.8.6-13.3-1-18s-5.2-15.9-21.5-15.9h-.5v-.9c11.5-.2,19.2,5.4,22.8,16.5,1.6,4.9,1.3,11.5,1,18.4v1.8c-.3,7.3-3.9,20.3-7.4,32.1C142,145.7,132.8,166.1,132.8,166.3Z"/>
+                                      <path class="launch-plan-icon-3" d="M134.5,166.4l-.8-.5c.1-.2,10.8-17.5,15.2-25.6l.4-.7c4.2-7.8,9-16.7,11.4-23.5a42.9,42.9,0,0,0,2.6-14.3c0-2.5-.6-10.4-1.9-13.4l-.2-.6C156.2,76,146.4,69.4,132,68v-.9c14.7,1.4,24.8,8.3,29.8,20.3l.2.5c1.5,3.4,2,11.9,2,13.8a43.8,43.8,0,0,1-2.7,14.6c-2.4,6.9-7.2,15.8-11.5,23.6l-.4.7C145.3,148.8,134.6,166.2,134.5,166.4Z"/>
+                                      <path class="launch-plan-icon-3" d="M134.4,173.5H115.5v-7.9h18.9Zm-18-.9h17.1v-6H116.4Z"/>
+                                      <path class="launch-plan-icon-3" d="M131.1,183.1H118.9a4.3,4.3,0,0,1-4.5-4.1v-6.4h20.9v6.5a4,4,0,0,1-4,4Zm-15.7-9.6v5.2c0,3.3,3.4,3.4,3.5,3.4H131a3.1,3.1,0,0,0,3.4-3.1v-5.6Z"/>
+                                      <rect class="launch-plan-icon-3" x="121" y="166.1" width="0.9" height="6.97"/>
+                                      <rect class="launch-plan-icon-3" x="128.1" y="166.1" width="0.9" height="6.97"/>
+                                      <path class="launch-plan-icon-4" d="M131.3,180.5H120.1a3.1,3.1,0,0,1-3.2-3.1q0-.2,0-.3a.5.5,0,0,1,.2-.7.4.4,0,0,1,.6.2.5.5,0,0,1,0,.4,2.3,2.3,0,0,0,2.2,2.4h11.4a.5.5,0,0,1,.2.7l-.2.2Z"/>
+                                      <path class="launch-plan-icon-3" d="M103,116.3a.5.5,0,0,1-.5-.4,71.1,71.1,0,0,1-1.4-7.2.5.5,0,0,1,.6-.3l.3.2c.5,3.1,1.1,5.5,1.4,7.2a.5.5,0,0,1-.4.6h0Z"/>
+                                      <path class="launch-plan-icon-3" d="M101,104.3a.5.5,0,0,1-.5-.4,73.4,73.4,0,0,1,.1-14.4c1.3-12.2,7.9-16.3,8.2-16.5a.5.5,0,0,1,.5.8c-.1,0-6.6,4.1-7.8,15.8a72.3,72.3,0,0,0-.1,14.2A.5.5,0,0,1,101,104.3Z"/>
+                                      <path class="launch-plan-icon-3" d="M141.4,137.5h-.1a.5.5,0,0,1-.3-.6c5.8-18.9,7-29.9,7.2-33.8a.5.5,0,1,1,.9.1c-.3,3.9-1.5,15-7.3,34A.5.5,0,0,1,141.4,137.5Z"/>
+                                      <path class="launch-plan-icon-3" d="M135.8,154.2h-.2a.5.5,0,0,1-.3-.6c1.4-4,2.8-7.9,4-11.7a.5.5,0,0,1,.9.3c-1.2,3.8-2.6,7.7-4,11.7A.5.5,0,0,1,135.8,154.2Z"/>
+                                    </g>
+                                  </svg>
+                            </div>
+                            
+                        </div>
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-body-header">
+                                <div class="pricing-value">
+                                    <h2>$49<span class="per-month-span">/MO</span></h2>
+                                </div>
+                                <div class="price-mau">
+                                    <h4>1000 Chat users /mo</h4>
+                                    <h6>Unlimited Agents</h6>
+                                </div>
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                    <p>All in Startup</p>
+                                <ul>
+                                    <li>Unlimited bots</li>
+                                    <li>Advanced reporting (eg: team reporting)</li>
+                                    <li>White label (removed powered by Kommunicate)</li>
+                                    <li>Data retention: Forever</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="pricing-table-footer">
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialLaunch',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestLaunch',1,{'nonInteraction': true});">Schedule a demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container growth">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">Growth</h2>
+                            <div class="price-image-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 250 250">
+                                    <defs>
+                                      <style>
+                                        .growth-plan-icon-1, .growth-plan-icon-2, .growth-plan-icon-3, .growth-plan-icon-4 {
+                                          fill: #EE6352;
+                                        }
+                                  
+                                        .growth-plan-icon-1 {
+                                          opacity: 0.03;
+                                        }
+                                  
+                                        .growth-plan-icon-1, .growth-plan-icon-2 {
+                                          isolation: isolate;
+                                        }
+                                  
+                                        .growth-plan-icon-2 {
+                                          opacity: 0.05;
+                                        }
+                                  
+                                        .growth-plan-icon-3, .growth-plan-icon-4 {
+                                          stroke: #EE6352;
+                                          stroke-miterlimit: 10;
+                                        }
+                                  
+                                        .growth-plan-icon-4 {
+                                          stroke-width: 0.99px;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <title>Growth-plan-icon</title>
+                                    <circle class="growth-plan-icon-1" cx="125" cy="125" r="110"/>
+                                    <circle class="growth-plan-icon-2" cx="125" cy="125" r="65"/>
+                                    <path class="growth-plan-icon-3" d="M55.3,105.3a.6.6,0,0,1-.6-.6v-3.3c.2-3,4-3.7,4.2-3.7L103.5,95a.5.5,0,0,1,.6.4h0a.6.6,0,0,1-.5.6L59,98.8h0s-3,.5-3.2,2.6v3.3A.6.6,0,0,1,55.3,105.3Z"/>
+                                    <path class="growth-plan-icon-3" d="M86.5,118.5h0l-3-.2a.6.6,0,0,1,.1-1.1l3,.2a.6.6,0,0,1,.3.8l-.3.3Z"/>
+                                    <path class="growth-plan-icon-4" d="M105.4,119.9h-.3c-3.1-.1-10-.6-15.2-1a.6.6,0,0,1,.1-1.1c5.2.4,12.1.9,15.2,1s3.5-.6,3.9-1.1a1.3,1.3,0,0,0,.4-1V105.4a.6.6,0,0,1,.8-.3l.3.3v11.2a2.4,2.4,0,0,1-.6,1.8C109.1,119.4,107.5,119.9,105.4,119.9Z"/>
+                                    <path class="growth-plan-icon-3" d="M78.1,119.9a.6.6,0,0,1-.6-.6v-5.7a3.2,3.2,0,0,0-3-3.4H61.7a3.3,3.3,0,0,0-3.5,2.8v4.5a.6.6,0,1,1-1.1,0v-4.6a4.5,4.5,0,0,1,4.6-3.8H74.6a4.3,4.3,0,0,1,4.1,4.5h0v5.7A.6.6,0,0,1,78.1,119.9Z"/>
+                                    <path class="growth-plan-icon-3" d="M105.9,166.6a.6.6,0,0,1-.2-1.1L117,161a.6.6,0,1,1,.9.8l-.5.2-11.3,4.5Z"/>
+                                    <path class="growth-plan-icon-3" d="M122.3,179H104.2c-5.4,0-5.7-4-5.7-4v-4.5c0-4.7,2.9-6.4,3.1-6.5l16.8-6.6a.6.6,0,0,1,.4,1L102,165s-2.4,1.5-2.4,5.5V175c0,.1.3,3,4.6,3h18.1a.6.6,0,0,1,.3.8l-.3.3Z"/>
+                                    <path class="growth-plan-icon-3" d="M110.6,179a.6.6,0,0,1-.6-.6h0v-6.3a.6.6,0,0,1,.8-.3l.3.3v6.3A.6.6,0,0,1,110.6,179Z"/>
+                                    <path class="growth-plan-icon-3" d="M117.2,179a.6.6,0,0,1-.6-.6h0v-4.5a.6.6,0,0,1,.8-.3l.3.3v4.5A.6.6,0,0,1,117.2,179Z"/>
+                                    <path class="growth-plan-icon-3" d="M124.7,182.9a2.5,2.5,0,0,1-1.9-.6c-1.1-1.1-1.1-3.1-1.1-5.4a26.5,26.5,0,0,0-.1-3.6c-.2-1.7-1.2-5.6-2.4-10.1-1.6-6.5-3.7-14.5-4.4-19.8-1.1-7.7-1.8-17.5-1.9-19.8L58.6,119s-6.2-.1-6.4-8,0-10.6,0-10.6a4.8,4.8,0,0,1,1.3-3.2c1.4-1.6,3.8-2.4,7-2.6,8-.3,51.8-3.1,52.2-3.1a.5.5,0,0,1,.6.4h0a.6.6,0,0,1-.5.6c-.4,0-44.3,2.8-52.2,3.1s-7.3,4.5-7.3,4.6-.2,3.3,0,10.6,5.2,6.9,5.4,6.9l55.3,4.7v.5c0,.1.8,11.5,1.9,20.2a188.3,188.3,0,0,0,4.4,19.6c1.2,4.5,2.1,8.5,2.4,10.2a27.7,27.7,0,0,1,.1,3.8c0,2,0,3.9.7,4.6a1.6,1.6,0,0,0,1.2.4h.3a1.6,1.6,0,0,0,1.2-.4c.8-.8.8-2.6.7-4.6a27.6,27.6,0,0,1,.1-3.8c.2-1.7,1.2-5.7,2.4-10.2,1.6-6.5,3.7-14.5,4.4-19.6,1.2-8.7,1.9-20,1.9-20.2v-.5l55.2-4.7c.3,0,5.3-.1,5.4-6.9s0-10.5,0-10.5.1-4.4-7.3-4.7-51.3-3.1-51.7-3.1a.6.6,0,1,1,.1-1.1c.4,0,43.8,2.8,51.7,3.1,3.2.1,5.6,1,7,2.6a4.8,4.8,0,0,1,1.3,3.2h0s.2,3.2,0,10.5-6.4,8-6.5,8l-54.2,4.6c-.2,2.3-.9,12.1-1.9,19.8-.7,5.2-2.8,13.3-4.4,19.8-1.1,4.5-2.1,8.4-2.4,10.1a26.8,26.8,0,0,0-.1,3.6c0,2.3,0,4.4-1.1,5.4a2.7,2.7,0,0,1-2,.7h-.1Z"/>
+                                    <path class="growth-plan-icon-3" d="M136.7,121.4h0a.6.6,0,0,1-.5-.6c0-.1.9-13,.8-18.3v-.6c-.1-5.8-.2-19.3-1.4-23.7s-4.5-3.6-6.5-3.7h-1.3V73.4h2c3.6,0,14.5.1,15.6-.9s-2.7-1.4-2.7-1.4H127.5v-.5a2.5,2.5,0,0,0-5,0v.5H107.6s-2.5.2-2.7,1.4,12,1,15.6.9h2v1.1H121c-2,.1-5.7.7-6.5,3.7s-1.4,17.9-1.4,23.7v.6c-.1,5.3.8,18.2.8,18.3a.6.6,0,1,1-1.1.1c0-.1-.9-13-.8-18.4v-.6c.1-5.8.2-19.5,1.5-24a5.3,5.3,0,0,1,2.8-3.4c-6.9,0-11.3-.3-12.3-1.4a1,1,0,0,1-.3-.7c.2-2.3,3.6-2.5,3.8-2.5h13.9a3.6,3.6,0,0,1,7.1,0h13.9c.2,0,3.6.2,3.8,2.5a1,1,0,0,1-.3.7c-1,1-5.4,1.3-12.3,1.4a5.3,5.3,0,0,1,2.8,3.4c1.2,4.5,1.4,18.1,1.5,24v.6c.1,5.4-.8,18.3-.8,18.4A.6.6,0,0,1,136.7,121.4Z"/>
+                                    <path class="growth-plan-icon-3" d="M140.5,110.4a.6.6,0,0,1-.6-.6h0V99.7a4.3,4.3,0,0,1,1.4-3.3c2-1.8,5.4-1.4,5.6-1.4l44.5,2.7a.6.6,0,0,1,.5.6.5.5,0,0,1-.5.5h-.1l-44.6-2.7c-.1,0-3.1-.3-4.7,1.1a3.2,3.2,0,0,0-1,2.5v10.1A.6.6,0,0,1,140.5,110.4Z"/>
+                                    <path class="growth-plan-icon-3" d="M163.5,118.5a.6.6,0,0,1-.3-.8l.3-.3,3-.2a.6.6,0,0,1,.4.8l-.3.3-3,.2Z"/>
+                                    <path class="growth-plan-icon-3" d="M171.9,120.2a.6.6,0,0,1-.6-.6h0v-5.7a4.3,4.3,0,0,1,4-4.5h12.9a4.5,4.5,0,0,1,4.6,3.7v4.7a.6.6,0,1,1-1.1,0v-4.6a3.4,3.4,0,0,0-3.5-2.7H175.4a3.2,3.2,0,0,0-3,3.4h0v5.7A.6.6,0,0,1,171.9,120.2Z"/>
+                                    <path class="growth-plan-icon-3" d="M144.1,166.6h-.2L132.6,162a.6.6,0,0,1,0-.8l.4-.2,11.3,4.5a.6.6,0,0,1,.2.8Z"/>
+                                    <path class="growth-plan-icon-3" d="M145.8,179H127.7a.6.6,0,0,1-.3-.8l.3-.3h18.1c4.3,0,4.6-2.9,4.6-3v-4.4c0-4.1-2.5-5.5-2.5-5.5l-16.7-6.5a.6.6,0,0,1,0-.8l.4-.2,16.7,6.5c.2.1,3.1,1.8,3.1,6.5V175C151.6,175,151.2,179,145.8,179Z"/>
+                                    <path class="growth-plan-icon-3" d="M139.4,179a.6.6,0,0,1-.6-.6h0v-6.3a.6.6,0,0,1,.8-.3l.3.3v6.3A.6.6,0,0,1,139.4,179Z"/>
+                                    <path class="growth-plan-icon-3" d="M132.8,179a.6.6,0,0,1-.6-.6h0v-4.5a.6.6,0,1,1,1.1,0v4.5A.6.6,0,0,1,132.8,179Z"/>
+                                    <path class="growth-plan-icon-3" d="M131.7,143.6H117.9a.6.6,0,1,1-.5-1.1h14.3a.6.6,0,1,1,.5,1.1Z"/>
+                                    <path class="growth-plan-icon-3" d="M132.3,140.1h-15v-1.9a.6.6,0,0,1,.8-.3l.3.3v.8h12.7v-.8a.6.6,0,0,1,.8-.3l.3.3Z"/>
+                                    <path class="growth-plan-icon-3" d="M125.5,128.3a9.2,9.2,0,0,1-9.2-9.2v-13a9.2,9.2,0,1,1,18.4,0h0v13A9.2,9.2,0,0,1,125.5,128.3Zm0-30.3a8.1,8.1,0,0,0-8.1,8.1v13a8.1,8.1,0,1,0,16.2,0h0v-13a8.1,8.1,0,0,0-8.1-8.1Z"/>
+                                    <path class="growth-plan-icon-3" d="M134.2,112.5H116.9a.6.6,0,0,1-.3-.8l.3-.3h17.3a.6.6,0,0,1,.3.8Z"/>
+                                    <path class="growth-plan-icon-3" d="M133.7,122.4H117.3a.6.6,0,0,1-.3-.8l.3-.3h16.4a.6.6,0,1,1,.5,1.1Z"/>
+                                    <path class="growth-plan-icon-3" d="M125.5,128.3h0a.6.6,0,0,1-.6-.6v-5.8a.6.6,0,0,1,.6-.6h0a.6.6,0,0,1,.6.6v5.8A.6.6,0,0,1,125.5,128.3Z"/>
+                                    <path class="growth-plan-icon-3" d="M124.1,85.9a25.9,25.9,0,0,1-8.4-1.2.6.6,0,1,1-.1-1.2l.5.2c.1,0,6.9,2.5,17.2,0a.6.6,0,1,1,.7,1h-.4A39.4,39.4,0,0,1,124.1,85.9Z"/>
+                                    <path class="growth-plan-icon-3" d="M124.1,89.2a25.9,25.9,0,0,1-8.4-1.2.6.6,0,1,1-.1-1.2l.5.2c.1,0,6.9,2.5,17.2,0a.6.6,0,1,1,.7,1h-.4A39.4,39.4,0,0,1,124.1,89.2Z"/>
+                                    <path class="growth-plan-icon-3" d="M124.1,92.6a25.9,25.9,0,0,1-8.4-1.2.6.6,0,1,1-.1-1.2l.5.2c.1,0,6.9,2.5,17.2,0a.6.6,0,1,1,.7,1h-.4A39.4,39.4,0,0,1,124.1,92.6Z"/>
+                                    <path class="growth-plan-icon-3" d="M124.1,79.2a25.9,25.9,0,0,1-8.4-1.2.6.6,0,1,1-.1-1.2l.5.2c.1,0,6.9,2.5,17.2,0a.6.6,0,1,1,.7,1h-.4A39.4,39.4,0,0,1,124.1,79.2Z"/>
+                                  </svg>
+                            </div>
+                            
+                        </div>
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-body-header">
+                                <div class="pricing-value">
+                                    <h2>$199<span class="per-month-span">/MO</span></h2>
+                                </div>
+                                <div class="price-mau">
+                                    <h4>20,000 Chat users /mo</h4>
+                                    <h6>Unlimited Agents</h6>
+                                </div>
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                <p>All in Launch</p>
+                                <ul>
+                                    <li>Custom bot integrations</li>
+                                    <li>Priority Support</li>
+                                    <li>CRM integration</li>
+                                    <li>Data retention: Forever</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="pricing-table-footer">
+                            <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialGrowth',1,{'nonInteraction': true});">Start Free Trial</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestGrowth',1,{'nonInteraction': true});">Schedule a demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container enterprise">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">Enterprise</h2>
+                            <div class="price-image-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 250 250">
+                                    <defs>
+                                      <style>
+                                        .enterprise-plan-icon-1, .enterprise-plan-icon-2, .enterprise-plan-icon-4 {
+                                          fill: #5c5aa7;
+                                        }
+                                  
+                                        .enterprise-plan-icon-1 {
+                                          opacity: 0.03;
+                                        }
+                                  
+                                        .enterprise-plan-icon-1, .enterprise-plan-icon-2 {
+                                          isolation: isolate;
+                                        }
+                                  
+                                        .enterprise-plan-icon-2 {
+                                          opacity: 0.05;
+                                        }
+                                  
+                                        .enterprise-plan-icon-3, .enterprise-plan-icon-5, .enterprise-plan-icon-6 {
+                                          fill: none;
+                                          stroke: #5c5aa7;
+                                          stroke-width: 1.69px;
+                                        }
+                                  
+                                        .enterprise-plan-icon-3, .enterprise-plan-icon-5 {
+                                          stroke-linecap: round;
+                                        }
+                                  
+                                        .enterprise-plan-icon-3, .enterprise-plan-icon-6 {
+                                          stroke-miterlimit: 10;
+                                        }
+                                  
+                                        .enterprise-plan-icon-5 {
+                                          stroke-linejoin: round;
+                                        }
+                                      </style>
+                                    </defs>
+                                    <title>Enterprise-plan-icon</title>
+                                    <circle class="enterprise-plan-icon-1" cx="125" cy="125" r="110"/>
+                                    <circle class="enterprise-plan-icon-2" cx="125" cy="125" r="65"/>
+                                    <g>
+                                      <line class="enterprise-plan-icon-3" x1="125" y1="92.6" x2="125" y2="95.6"/>
+                                      <path class="enterprise-plan-icon-3" d="M111.3,138.8s0,13,.5,18,.8,7.3.8,7.3"/>
+                                      <path class="enterprise-plan-icon-3" d="M122.9,152.6a20.8,20.8,0,0,0-7,1.4"/>
+                                      <path class="enterprise-plan-icon-3" d="M114.1,171a33.6,33.6,0,0,1,9.8-1.9"/>
+                                      <path class="enterprise-plan-icon-3" d="M125,76.7s3-.6,4.9,7.4,6.3,29.6,7.9,39c0,0,1.7,11.5,7.2,16.4s14.3,13.6,15.2,15.3,1.3,8.1-1,9.5-20.1,4.1-20.1,4.1-3.3.8-3.4,3.9-2.6,3.4-4.3,3.9-4.9,1.7-4.9,1.7.4,3.1-1.3,3.1-1.3-3.1-1.3-3.1-3.2-1.3-4.9-1.7-4.2-.8-4.3-3.9-3.4-3.9-3.4-3.9-17.8-2.7-20.1-4.1-1.9-7.8-1-9.5,9.7-10.4,15.2-15.3,7.2-16.4,7.2-16.4c1.6-9.4,5.9-31,7.9-39S125,76.7,125,76.7Z"/>
+                                      <path class="enterprise-plan-icon-4" d="M125,104.7a1.9,1.9,0,0,1,1,.3l1.3,1.2a1.3,1.3,0,0,0,1.9.3c.8-.7,0-2.1,0-2.1a24,24,0,0,0-1.9-2.1,3.7,3.7,0,0,0-2.3-.8h0a3.7,3.7,0,0,0-2.3.8,24.4,24.4,0,0,0-1.9,2.1s-.8,1.5,0,2.1a1.3,1.3,0,0,0,1.9-.3l1.3-1.2a1.9,1.9,0,0,1,1-.3Z"/>
+                                      <path class="enterprise-plan-icon-3" d="M138.7,138.8s0,13-.5,18-.8,7.3-.8,7.3"/>
+                                      <path class="enterprise-plan-icon-3" d="M127.1,152.6a20.8,20.8,0,0,1,7,1.4"/>
+                                      <polyline class="enterprise-plan-icon-5" points="126.3 177.9 125 126.6 125 126.6 123.7 177.9"/>
+                                      <path class="enterprise-plan-icon-3" d="M135.9,171a33.6,33.6,0,0,0-9.8-1.9"/>
+                                      <path class="enterprise-plan-icon-4" d="M120,84.5H130a21.4,21.4,0,0,0-2.5-6.2c-1.6-2.1-4.4-1.2-5.7,1.2A17.5,17.5,0,0,0,120,84.5Z"/>
+                                      <line class="enterprise-plan-icon-6" x1="109.4" y1="174" x2="109.4" y2="183.2"/>
+                                      <path class="enterprise-plan-icon-6" d="M104.3,174h10.5v5.6a3.6,3.6,0,0,1-3.1,3.6h-3.8c-3.5,0-4-3.7-4-3.7V167.3"/>
+                                      <line class="enterprise-plan-icon-6" x1="140.9" y1="174" x2="140.9" y2="183.2"/>
+                                      <path class="enterprise-plan-icon-6" d="M146,174H135.5v5.6a3.6,3.6,0,0,0,3.1,3.6h3.8c3.5,0,4-3.7,4-3.7V167.3"/>
+                                      <path class="enterprise-plan-icon-6" d="M104,140.5V101.9s1.1-9.8,5.3-9.8,5.1,9.5,5.1,10.4.1,8.7.1,8.7"/>
+                                      <line class="enterprise-plan-icon-3" x1="104" y1="103.7" x2="114.4" y2="103.7"/>
+                                      <polygon class="enterprise-plan-icon-4" points="113.8 114.3 104 114.3 104 117 112.9 117 113.8 114.3"/>
+                                      <path class="enterprise-plan-icon-3" d="M145.5,140V101.9s-1.1-9.8-5.3-9.8-5.1,9.5-5.1,10.4-.1,6-.1,6"/>
+                                      <line class="enterprise-plan-icon-3" x1="145.5" y1="103.7" x2="135.1" y2="103.7"/>
+                                      <polygon class="enterprise-plan-icon-4" points="135.7 114.3 145.5 114.3 145.5 117 136.6 117 135.7 114.3"/>
+                                      <line class="enterprise-plan-icon-3" x1="114.3" y1="81.3" x2="120.7" y2="81.3"/>
+                                      <path class="enterprise-plan-icon-6" d="M135.3,101.6V81.3s-1.7-14.5-10.7-14.5h.4c-9,0-10.7,14.5-10.7,14.5v20.3"/>
+                                      <line class="enterprise-plan-icon-3" x1="135.3" y1="81.3" x2="128.9" y2="81.3"/>
+                                    </g>
+                                  </svg>
+                            </div>
+                            
+                        </div>
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-body-header">
+                                <div class="pricing-value">
+                                    <h2>CUSTOM</h2>
+                                </div>
+                                <div class="price-mau">
+                                    <h4>Unlimited Chat users /mo</h4>
+                                    <h6>Unlimited Agents</h6>
+                                </div>
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                <p>All in Growth</p>
+                                <ul>
+                                    <li>Customised solution for your specific needs</li>
+                                    <li>Custom bot development</li>
+                                    <li>Personalized support on Phone &amp; Skype</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="pricing-table-footer">
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','Contact','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});">Contact us</a>
+                            <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});" style="visibility:hidden;">Schedule a demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
