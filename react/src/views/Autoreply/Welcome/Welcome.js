@@ -177,13 +177,7 @@ class Welcome extends Component{
           }
         </div>
       </div>
-      <div className="card" style={{'display':'none'}}>
-        <div className="card-header">
-          <div className="card-block">
-            <div className="form-group row form-control-label">
-              Message
-
-            </div>
+      
             <div className="card" style={{ 'display': 'none' }}>
               <div className="card-header">
                 <div className="card-block">
@@ -203,6 +197,7 @@ class Welcome extends Component{
           </div>
         </div>
       </div>
+      
     )
   }
 }
