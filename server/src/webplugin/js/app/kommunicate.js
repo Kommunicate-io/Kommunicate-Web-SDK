@@ -80,7 +80,35 @@ Kommunicate ={
         // contentType should be 300 for rich text message in metadata
         return metadata&&metadata.contentType==300;
     },
+    getConatainerTypeForRichMessage : function(metadata){
+        if(metadata){
+            switch(metadata.templateId){
+                // add template Id to enable slick effsect
+                // 2 for get room pax info template
+                case "2":
+                    return "km-slick-container";
+                    break;
+                default:
+                    return "km-fixed-container";
+                    break;
+
+            }
+        }
+
+    },
     processPaymentRequest:function(options){
+
+    },
+    sendMessage: function(messagePxy){
+        var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
+        var $mck_msg_to=  $applozic("#mck-msg-to");
+ 
+         if ($mck_msg_inner.data("isgroup") === true) {
+             messagePxy.groupId = $mck_msg_to.val();
+             } else {
+             messagePxy.to = $mck_msg_to.val();
+             }
+        $applozic.fn.applozic('sendGroupMessage',messagePxy);
 
     },
     getRichTextMessageTemplate: function(metadata){
@@ -89,20 +117,22 @@ Kommunicate ={
                 // 1 for get room pax info template
                 case "1":
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
-                break;
+                    break;
                 //2 for hotel card template
                 case "2":
                     
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
-                break;
+                    break;
+                // 3 for button container
                 case "3": 
-                return Kommunicate.markup.buttonContainerTemplate(metadata); 
-                break;
-
+                    return Kommunicate.markup.buttonContainerTemplate(metadata); 
+                    break;
+                case "5":
+                    return Kommunicate.markup.getPassangerDetail(metadata);
+                    break;
                 case "4":
                 return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
                 break;
-                
                 default:
                 return "";
                 break;

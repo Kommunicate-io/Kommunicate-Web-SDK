@@ -2,14 +2,17 @@
 /**
  * Attach all event listeners.
  */
-Kommunicate.attachEvents = function ($applozic) {
-    $applozic("#mck-message-cell").on('click', '.km-increment-guest-count', Kommunicate.richMsgEventHandler.incrementGuestCount);
-    $applozic("#mck-message-cell").on('click', '.km-decrement-guest-count', Kommunicate.richMsgEventHandler.decrementGuestCount);//
-    $applozic("#mck-message-cell").on('click', '.km-btn-add-more-rooms', Kommunicate.richMsgEventHandler.addMoreRoom);//
-    $applozic("#mck-message-cell").on('click', '.km-done-button', Kommunicate.richMsgEventHandler.processSelectedRoom);
-    $applozic("#mck-message-cell").on('click', '.km-card-message-footer-button', Kommunicate.richMsgEventHandler.processHotelBookClick);
-    $applozic("#mck-message-cell").on('click', '.km-cta-button', Kommunicate.richMsgEventHandler.handlleRichButtonClick);
-    $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
+
+Kommunicate.attachEvents = function($applozic){
+    $applozic("#mck-message-cell").on('click','.km-increment-guest-count',Kommunicate.richMsgEventHandler.incrementGuestCount);
+    $applozic("#mck-message-cell").on('click','.km-decrement-guest-count',Kommunicate.richMsgEventHandler.decrementGuestCount);//
+    $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
+    $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
+    $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
+    $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+    $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
+  $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
+  
 }
 
 
@@ -26,20 +29,16 @@ Kommunicate.richMsgEventHandler = {
                 items: 2,
                 slideBy: 'page',
                 "mouseDrag": true,
-                "arrowKeys": true
-            });
+                "arrowKeys": true,
+                onInit : function(){
+                    console.log("tiny-slider initilized");
+                   document.querySelector(".km-slick-container .tns-controls button:first-child").innerHTML='<';
+                   document.querySelector(".km-slick-container .tns-controls button:last-child").innerHTML='>';
+
+                }
+              });
         }
 
-        /*$cardMessageContainer.slick({
-                dots: false,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 1,
-                centerMode: false,
-                variableWidth: true,
-                prevArrow: false,
-                nextArrow: false
-            });*/
     },
     decrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
@@ -89,6 +88,8 @@ Kommunicate.richMsgEventHandler = {
 
             }
         };
+
+        Kommunicate.sendMessage(messagePxy);
         var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
         var $mck_msg_to = $applozic("#mck-msg-to");
 
@@ -114,6 +115,8 @@ Kommunicate.richMsgEventHandler = {
                 skipBot: true
             }
         };
+
+        Kommunicate.sendMessage(messagePxy);
         var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
         var $mck_msg_to = $applozic("#mck-msg-to");
 
@@ -170,6 +173,13 @@ Kommunicate.richMsgEventHandler = {
 
         }
 
+    },
+    handlleSubmitPersonDetail:function(){
+        var  target = e.target || e.srcElement;
+        var sessionId = target.dataset.sessionid;
+        var messagePxy={message:"Passenger detail submitted",metadata:{sessionId: sessionId}};
+        Kommunicate.sendMessage(messagePxy);
+        console.log("passenger detail submitted");
     }
 
 }

@@ -3953,7 +3953,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility}" >'+
+                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}" >'+
                 '{{html kmRichTextMarkup}}</div>'+
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
                 '</div>' +
@@ -4481,8 +4481,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
                     kmRichTextMarkupVisibility:richText?'vis':'n-vis',
-                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):""
-                    //kmRichTextMarkup: '<div>hello</div>'                    
+                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):"",
+                    containerType: Kommunicate.getConatainerTypeForRichMessage(msg.metadata)
+                               
                 }];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
@@ -4614,7 +4615,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
 
                 if (richText) {
-                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-div-slider"));
+                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
                 }
 
                 if (msg.fileMeta) {

@@ -134,14 +134,41 @@ getButtonTemplate:function(options,elemWidthClass){
     }else{
     return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
     }
+},
+getPassangerDetail : function(options){
+    if(!options.SessionId){
+       console.log("sessionId not present in message..") 
+    }
+    return `  <div class="km-guest-details-container km-rich-text-default-container">
+    <div class="km-guest-detail-form">
+    <div class= "km-select-title">    
+    <select name="title" class="km-title-select">
+            <option value="0" disabled selected>Title</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Mrs.">Mrs.</option>
+        </select>
+        </div>
+        <input type="number" name="age"  class="km-input km-age-input" placeholder="Age" min="0" max="150">
+        <input type="text" name="first-name"  class="km-input first-name-input" placeholder="First Name">
+        <input type="text" name="middle-name"  class="km-input middle-name-input" placeholder="Middle Name (optional)">
+        <input type="text" name="last-name"  class="km-input last-name-" placeholder="Last Name">
+        <input type="email" name="email"  class="km-input" placeholder="Email Id">
+        <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number">
+    </div>
+    <div class="km-guest-button-container">
+        <button class="km-add-more-rooms km-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
+    </div>
+</div>`
 }
 };
 
 Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
-    var formData= JSON.parse(options.formData||"{}");
+    //var formData= payload?JSON.parse(options.formData||"{}");
     var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+
     for(var i = 0;i<payload.length;i++){
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
     }
