@@ -4615,7 +4615,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
 
                 if (richText) {
-                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+                    Kommunicate.richMsgEventHandler.initializeSlick($applozic("div[data-msgkey='" + msg.key + "'] .km-div-slider"));
                 }
 
                 if (msg.fileMeta) {

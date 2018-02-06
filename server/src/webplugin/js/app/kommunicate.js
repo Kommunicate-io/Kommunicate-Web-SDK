@@ -81,13 +81,16 @@ Kommunicate ={
         return metadata&&metadata.contentType==300;
     },
     getConatainerTypeForRichMessage : function(metadata){
+        // this method is obsolete, not in use. use km-div-slider to get slide effect
         if(metadata){
             switch(metadata.templateId){
-                // add template Id to enable slick effsect
+                // add template Id to enable slick effect
                 // 2 for get room pax info template
                 case "2":
+                case "4" : 
                     return "km-slick-container";
                     break;
+
                 default:
                     return "km-fixed-container";
                     break;
