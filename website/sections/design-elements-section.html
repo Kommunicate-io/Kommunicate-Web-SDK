@@ -1,0 +1,162 @@
+<section class="design-elements-main-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-xs-12 text-center">
+                <h1 class="page-title">
+                    UI Library
+                </h1>
+                <p class="page-sub-title note">
+                    Note: More elements and components will be added accordingly
+                </p>
+            </div>
+        </div>
+        <div class="row typography">
+          <div class="col-lg-6">
+            <h1>Typography</h1>
+            <p>Font Family Roboto</p>
+
+            <h1 class="h1">Heading 1</h1>
+            <h2 class="h2">Heading 2</h2>
+            <h3 class="h3">Heading 3</h3>
+            <h4 class="h4">Heading 4</h4>
+            <h5 class="h5">Heading 5</h5>
+            <h6 class="h6">Heading 6</h6>
+          </div>
+          <div class="col-lg-6">
+            <h3>Related classes</h3>
+            <p class="css-classes-text">.h1<br> .h2 <br>.h3 <br>.h4 <br>.h5<br>.h6 </p>
+          </div>
+        </div>
+        <div class="row buttons-row">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <h1>Buttons</h1>
+            <div class="col-sm-6" style="margin-top: 20px">
+                <p class="css-classes-text">km-button<br>km-button--primary</p>
+                <button class="km-button km-button--primary">Button</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 20px">
+                <p class="css-classes-text">km-button<br>km-button--secondary</p>
+                <button class="km-button km-button--secondary">Button</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 20px">
+                <p class="css-classes-text">km-button<br>km-button--primary:disabled</p>
+                <button class="km-button km-button--primary" disabled>Button</button>
+            </div>
+            <div class="col-sm-6" style="margin-top: 20px">
+                <p class="css-classes-text">km-button<br>km-button--secondary:disabled</p>
+                <button class="km-button km-button--secondary" disabled>Button</button>
+            </div>
+            
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12"  style="margin-top: 80px">
+              <div class="code-div">
+                  <pre>
+                      <code class="language-markup">
+&lt;button className="km-button km-button--primary"&gt;Button&lt;/button&gt;<br><br>
+&lt;button className="km-button km-button--secondary"&gt;Button&lt;/button&gt;<br><br>
+&lt;button className="km-button km-button--primary" disabled&gt;Button&lt;/button&gt;<br><br>
+&lt;button className="km-button km-button--secondary" disabled&gt;Button&lt;/button&gt;
+                      </code>
+                  </pre>
+
+          </div>
+          </div>
+        </div>
+        <div class="row input-row" style="margin-top: 60px;">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <h1>Input Field</h1>
+            <br>
+            <div class="input-group mb-3">
+                 <input type="text" class="input" placeholder=" "required style="border-color: #ed1c24"/>
+                 <label class="label-for-input email-label">Email Id</label>
+                 <div class="input-error-div">
+                  <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
+                    <g id='Page-1' fill='none' fill-rule='evenodd'>
+                        <g id='Framework' transform='translate(-77 -805)' fill='#ED1C24'>
+                            <g id='Wrong-Value-with-Notification' transform='translate(77 763)'>
+                                <g id='Error-Notification' transform='translate(0 40)'>
+                                    <path d='M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z'
+                                    id='Error-Icon' />
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                  </svg>
+                  <p class="input-error-message">Error message here</p>
+                 </div>
+              </div>
+              <br><br>
+              <p><strong>Note:</strong></p>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+              <div class="code-div">
+                  <pre>
+                      <code class="language-jsx">
+import InputField from '../../../components/InputField/InputField';
+
+&lt;div&gt;<br>
+    &lt;InputField inputType={'email'} <br> 
+                   title={'Email Id'} <br>
+                   name={'email'} <br>controlFunc={this.setEmail} <br>
+                   content={this.state.email} <br>
+                   errorMessage={this.state.errorMessageText} <br>
+                   hideErrorMessage={this.state.hideErrorMessage} <br>
+                   required={'required'} <br>
+                   blurFunc ={this.state.handleUserNameBlur} <br>
+                   keyPressFunc={this.onKeyPress} /&gt; <br>
+&lt;/div&gt;
+                      </code>
+                  </pre>
+            </div>
+          </div>
+        </div>
+        <div class="row toggle-button">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <h1>Toggle button</h1>
+              <br>
+              <label class="switch switch-3d switch-enable-automatic">
+                  <input type="checkbox" class="switch-input" checked/>
+                  <span class="switch-label"></span>
+                  <span class="switch-handle"></span>
+              </label>
+              <br>
+              <p><strong>Note:</strong> Replace the "yourCustomToggleMethod" and "yourCustomMethod" with your own methods to handle toggle of slider (which takes boolean value) and onChange event.</p>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+              <div class="code-div">
+                  <pre>
+                      <code class="language-jsx">
+import SliderToggle from '../../../components/SliderToggle/SliderToggle';
+
+&lt;SliderToggle checked={this.state.yourCustomToggleMethod}<br>
+                         handleOnChange={this.yourCustomMethod}/&gt;
+                      </code>
+                  </pre>
+            </div>
+          </div>
+        </div>
+        <div class="row checkbox-button">
+          <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+              <h1>Checkbox</h1>
+              <br>
+              <input id='one' type='checkbox' class="checkbox-input" />
+  <label for='one' class="checkbox-label">
+    <span></span>
+    Off with your head
+    <ins><i>Off with your head</i></ins>
+  </label>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+              <div class="code-div">
+                  <pre>
+                      <code class="language-jsx">
+import Checkbox from '../../../components/Checkbox/Checkbox';
+
+&lt;Checkbox idCheckbox={'some-checkbox'} label={'Some Text'} /&gt;
+                      </code>
+                  </pre>
+            </div>
+          </div>
+        </div>
+    </div>
+</section>

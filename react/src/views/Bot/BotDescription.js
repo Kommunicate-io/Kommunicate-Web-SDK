@@ -16,41 +16,22 @@ function getDescription(type){
     }
 }
 
-class BotDiscription extends Component{
+
+
+class BotDescription extends Component{
 
     constructor(props){
         super(props);
-        this.state={
-            descriptionType: props.type,
-            description :getDescription(props.type)
-        }
-    }
-    componentWillReceiveProps(nextProps){
-        console.log("received props",nextProps);
-        this.setState({description:getDescription(nextProps.type)});
     }
     render(){
-        return(<div>
-            <div className="card">
-              <div className="row">
-                <h4 className="instruction-heading">
-                 Looking for bot Integration? 
-                </h4>
-              </div>
-              <div className="card-header"><h5>{this.props.header}</h5>
-                  <div>
-                      <div className="row">
-                        <div className="form-group col-md-12 description-text-area">
-                           {this.state.description}
-                        </div>
-                      </div>
-                    
-                  </div>
-                </div>
-              </div>
-
-        </div>);
+        return(<p>
+            1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br /> 
+         2. Select your Agent from dropdown in left panel.<br />
+         3. Click on setting button. It will open a setting page for agent.<br />
+         4. Inside general tab search for <b>API KEYS</b>.<br />
+         5. Copy <b>Client access token</b> and <b>Developer access token</b> and paste here .<br />
+        </p>);
     }
 }
 
-export default BotDiscription;
+export default BotDescription;

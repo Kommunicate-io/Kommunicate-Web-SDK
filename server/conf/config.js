@@ -17,7 +17,7 @@ const config ={
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
         groupInfoUrl: "https://chat.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
-        addMemberIntoConversation:'https://chat.kommunicate.io/rest/ws/group/add/users',
+        addMemberIntoConversation:'https://chat.kommunicate.io/rest/ws/group/add/users?role=:role',
         createGroup:"https://chat.kommunicate.io/rest/ws/group/v2.1/create",
         createBotUrl: "https://bots.applozic.com/bot",
         sendMessageUrl: "https://chat.kommunicate.io/rest/ws/message/v2/send",
@@ -42,6 +42,11 @@ const config ={
         accessPassword:"knowledge123", 
         serviceEmail:"noreply@kommunicate.io",
         serviceProvider:"2" 
+      },
+      s3Access: {
+        accessKeyId: 'AKIAJ7QAZU7R2GPBCXGQ',
+        secretAccessKey: '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',
+        region: 'ap-south-1'
       },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
@@ -73,7 +78,7 @@ const config ={
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
-      addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users',
+      addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
       createBotUrl: "https://bots-test.applozic.com/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
@@ -98,6 +103,11 @@ const config ={
       accessPassword:"knowledge123", 
       serviceEmail:"noreply@kommunicate.io",
       serviceProvider:"2" 
+    },
+    s3Access: {
+      accessKeyId: 'AKIAI67YDIHOPJVDVQHA',
+      secretAccessKey: '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',
+      region: 'ap-south-1'
     },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateAdminId: "suraj@applozic.com",
@@ -129,7 +139,7 @@ const config ={
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
-      addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users',
+      addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
@@ -153,6 +163,11 @@ const config ={
       accessPassword:"knowledge123", 
       serviceEmail:"noreply@kommunicate.io",
       serviceProvider:"2" 
+    },
+    s3Access: {
+      accessKeyId: 'AKIAI67YDIHOPJVDVQHA',
+      secretAccessKey: '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',
+      region: 'ap-south-1'
     },
     kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
     kommunicateParentAppName: "suraj",
@@ -184,7 +199,7 @@ const config ={
         createApplozicClient: "https://dashboard.applozic.com/rest/ws/register/client",
         createApplication: "https://dashboard.applozic.com/rest/ws/application/add",
         groupInfoUrl: "https://dashboard.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
-        addMemberIntoConversation:'https://dashboard.applozic.com/rest/ws/group/add/users',
+        addMemberIntoConversation:'https://dashboard.applozic.com/rest/ws/group/add/users?role=:role',
         createGroup:"https://dashboard.applozic.com/rest/ws/group/v2.1/create",
         createBotUrl: "http://topioslibraries.com/bot",
         sendMessageUrl: "https://dashboard.applozic.com/rest/ws/message/v2/send",
@@ -210,6 +225,11 @@ const config ={
         accessPassword:"knowledge123", 
         serviceEmail:"noreply@kommunicate.io",
         serviceProvider:"2" 
+      },
+      s3Access: {
+        accessKeyId: 'AKIAJ7QAZU7R2GPBCXGQ',
+        secretAccessKey: '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',
+        region: 'ap-south-1'
       },
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
@@ -237,7 +257,7 @@ const config ={
     },
     groupMetadata:{
       ADD_MEMBER_MESSAGE:"",
-      CREATE_GROUP_MESSAGE:"",
+      CREATE_GROUP_MESSAGE:"Conversation started",
       DELETED_GROUP_MESSAGE:"",
       GROUP_LEFT_MESSAGE:"",
       GROUP_META_DATA_UPDATED_MESSAGE:"",

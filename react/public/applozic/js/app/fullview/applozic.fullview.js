@@ -335,6 +335,7 @@ var KM_CLIENT_GROUP_MAP = [];
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
 		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+		var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
 		var IS_SW_NOTIFICATION_ENABLED = (typeof appOptions.swNotification === "boolean") ? appOptions.swNotification : false;
 		var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
 		var MCK_USER_ID = (IS_MCK_VISITOR) ? "guest" : $kmApplozic.trim(appOptions.userId);
@@ -1958,6 +1959,11 @@ var KM_CLIENT_GROUP_MAP = [];
 						"contentType" : 0,
 						"message" : message
 					};
+
+					if ($mck_text_box.data('metadata')) {
+						messagePxy.metadata = {'KM_ML_01' : decodeURIComponent($mck_text_box.data('metadata'))};
+						$mck_text_box.data("metadata", null);
+					}
 					var conversationId = $mck_msg_inner.data('km-conversationid');
 					var topicId = $mck_msg_inner.data('km-topicid');
 					if (conversationId) {
@@ -1977,6 +1983,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					} else {
 						messagePxy.to = $mck_msg_to.val();
 					}
+
 					$mck_msg_sbmt.attr('disabled', true);
 					$mck_msg_error.removeClass('vis').addClass('n-vis');
 					$mck_msg_error.html("");
@@ -2282,6 +2289,7 @@ var KM_CLIENT_GROUP_MAP = [];
 							reqData += "&conversationReq=true";
 						}
 					}
+					
 				} else {
 					if (params.startTime) {
 						reqData += "&endTime=" + params.startTime;
@@ -2353,6 +2361,8 @@ var KM_CLIENT_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
 							var messageFeeds = new Array();
@@ -2420,11 +2430,15 @@ var KM_CLIENT_GROUP_MAP = [];
 						if (CONTACT_SYNCING && !params.startTime) {
 							_this.initSearch();
 						}
+						if(data.message.length === 0) {
+							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+						}
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						if (individual) {
 							if (typeof currTabId === "undefined" || (params.tabId === currTabId && ('' + isGroupTab === '' + params.isGroup))) {
 								if (data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
+									
 									isMessages = false;
 									if (individual) {
 										if (params.startTime) {
@@ -2433,9 +2447,17 @@ var KM_CLIENT_GROUP_MAP = [];
 												$mck_show_more_icon.removeClass('vis').addClass('n-vis');
 											});
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").data('datetime', "");
+
+											if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+												$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+											}
 										} else if ($kmApplozic("#km-message-cell .km-message-inner-right div[name='message']").length === 0) {
 											$mck_tab_message_option.removeClass('vis').addClass('n-vis');
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").html('<div class="km-no-data-text km-text-muted">No messages yet!</div>');
+											if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+												$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+											}
+
 										}
 									} else {
 									}
@@ -3201,6 +3223,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				$kmApplozic('.chat').removeClass('active-chat');
 				$kmApplozic('.left .person').removeClass('active');
 				if (params.tabId) {
+					$mck_text_box.data("metadata", null);
 					if ($kmApplozic('.person[data-km-id ="' + params.tabId + '"][data-isgroup ="' + params.isGroup + '"]').length == 0) {
 						_this.updateRecentConversationList(params.isGroup ? kmGroupUtils.getGroup(params.tabId) : _this.fetchContact(params.tabId), undefined, true, params.prepend);
 					}
@@ -3747,7 +3770,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				/*if(contact.members && contact.type==10){
 					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
                 } else */ if (contact.isGroup) {
-					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl);
+					imgsrctag = mckGroupLayout.getGroupImage(contact.imageUrl, displayName);
 				} else {
 					if (typeof (MCK_GETUSERIMAGE) === "function") {
 						var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
@@ -5402,8 +5425,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					return groupId;
 				}
 			};
-			_this.getGroupImage = function(imageSrc) {
-				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
+			_this.getGroupImage = function(imageSrc, displayName) {
+				return (imageSrc) ? '<img src="' + imageSrc + '"/>' : mckMessageLayout.getContactImageByAlphabet(displayName); // '<img src="' + KM_BASE_URL + '/resources/sidebox/css/app/images/mck-icon-group.png"/>';
 			};
 			_this.addMemberToGroup = function(group, userId) {
 				if (typeof group.members === 'object') {
@@ -5616,7 +5639,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, displayName));
 						}
 						$mck_group_title.html(group.displayName);
 					}
@@ -5829,7 +5852,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_group_member_List.html('');
 					var group = kmGroupUtils.getGroup(params.groupId);
 					if (typeof group === 'object') {
-						$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl));
+						var resp = _this.getGroupImage(group.imageUrl, group.displayName);
+						resp=resp.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
+						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
 						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
@@ -6110,6 +6135,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			var $mck_group_create_icon = $kmApplozic("#km-group-create-icon-box .km-group-icon");
 			var $mck_group_create_overlay_label = $kmApplozic("#km-group-create-icon-box .km-overlay-label");
 			var FILE_PREVIEW_URL = "/rest/ws/aws/file";
+			var ATTACHMENT_UPLOAD_URL = "/rest/ws/upload/image";
 			var FILE_UPLOAD_URL = "/rest/ws/aws/file/url";
 			var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
 			var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
@@ -6130,9 +6156,116 @@ var KM_CLIENT_GROUP_MAP = [];
 					return false;
 				});
 				$mck_file_input.on('change', function() {
+					var file = $applozic(this)[0].files[0];
+                    var params = {};
+                    params.file = file;
+                    params.name = file.name;
+                    (MCK_AWS_S3_SERVER === true) ?_this.uploadAttachment2AWS(params) : _this.uploadFile(params)
+				});
+				_this.uploadFile = function (params) {
+				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
+				var data = new Object();
+				var file = params.file;
+				var uploadErrors = [];
+				if (typeof file === 'undefined') {
+					return;
+				}
+				if ($kmApplozic(".km-file-box").length > 4) {
+					uploadErrors.push("Can't upload more than 5 files at a time");
+				}
+				if (file['size'] > (MCK_FILEMAXSIZE * ONE_MB)) {
+					uploadErrors.push("file size can not be more than " + MCK_FILEMAXSIZE + " MB");
+				}
+				if (uploadErrors.length > 0) {
+					alert(uploadErrors.toString());
+				} else {
+					var randomId = kmUtils.randomId();
+					var fileboxList = [ {
+						fileIdExpr : randomId,
+						fileName : file.name,
+						fileNameExpr : '<a href="#">' + file.name + '</a>',
+						fileSizeExpr : _this.getFilePreviewSize(file.size)
+					} ];
+					$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
+					var $fileContainer = $kmApplozic(".km-file-box." + randomId);
+					var $file_name = $kmApplozic(".km-file-box." + randomId + " .km-file-lb");
+					var $file_progressbar = $kmApplozic(".km-file-box." + randomId + " .progress .bar");
+					var $file_progress = $kmApplozic(".km-file-box." + randomId + " .progress");
+					var $file_remove = $kmApplozic(".km-file-box." + randomId + " .km-remove-file");
+					$file_progressbar.css('width', '0%');
+					$file_progress.removeClass('n-vis').addClass('vis');
+					$file_remove.attr("disabled", true);
+					$mck_file_upload.attr("disabled", true);
+					$file_box.removeClass('n-vis').addClass('vis');
+					if (file.name === $kmApplozic(".km-file-box." + randomId + " .km-file-lb a").html()) {
+						var currTab = $mck_msg_inner.data('km-id');
+						var uniqueId = file.name + file.size;
+						TAB_FILE_DRAFT[uniqueId] = currTab;
+						$mck_msg_sbmt.attr('disabled', true);
+						data.files = [];
+						data.files.push(file);
+						var xhr = new XMLHttpRequest();
+						(xhr.upload || xhr).addEventListener('progress', function(e) {
+							var progress = parseInt(e.loaded / e.total * 100, 10);
+							$file_progressbar.css('width', progress + '%');
+						});
+						xhr.addEventListener('load', function(e) {
+							var responseJson = $kmApplozic.parseJSON(this.responseText);
+							if (typeof responseJson.fileMeta === "object") {
+								var file_meta = responseJson.fileMeta;
+								var fileExpr = _this.getFilePreviewPath(file_meta);
+								var name = file_meta.name;
+								var size = file_meta.size;
+								var currTabId = $mck_msg_inner.data('km-id');
+								var uniqueId = name + size;
+								var fileTabId = TAB_FILE_DRAFT[uniqueId];
+								if (currTab !== currTabId) {
+									mckMessageLayout.updateDraftMessage(fileTabId, file_meta);
+									delete TAB_FILE_DRAFT[uniqueId];
+									return;
+								}
+								$file_remove.attr("disabled", false);
+								$mck_file_upload.attr("disabled", false);
+								$mck_msg_sbmt.attr('disabled', false);
+								delete TAB_FILE_DRAFT[uniqueId];
+								$file_name.html(fileExpr);
+								$file_progress.removeClass('vis').addClass('n-vis');
+								$kmApplozic(".km-file-box .progress").removeClass('vis').addClass('n-vis');
+								$mck_text_box.removeAttr('required');
+								FILE_META.push(file_meta);
+								$fileContainer.data('kmfile', file_meta);
+								$mck_file_upload.children('input').val("");
+								return false;
+							} else {
+								$file_remove.attr("disabled", false);
+								$mck_msg_sbmt.attr('disabled', false);
+								// FILE_META
+								// = "";
+								$file_remove.trigger('click');
+							}
+						});
+						kmUtils.ajax({
+							type : "GET",
+							url : MCK_FILE_URL + FILE_UPLOAD_URL,
+							global : false,
+							data : "data=" + new Date().getTime(),
+							crosDomain : true,
+							success : function(result) {
+								var fd = new FormData();
+								fd.append('files[]', file);
+								xhr.open("POST", result, true);
+								xhr.send(fd);
+							},
+							error : function() {}
+						});
+					}
+					return false;
+				}
+			};
+				_this.uploadAttachment2AWS = function (params) {
 					$mck_msg_inner = mckMessageLayout.getMckMessageInner();
-					var data = new Object();
-					var file = $kmApplozic(this)[0].files[0];
+					var data = new FormData();
+					var file = params.file;
 					var uploadErrors = [];
 					if (typeof file === 'undefined') {
 						return;
@@ -6147,12 +6280,12 @@ var KM_CLIENT_GROUP_MAP = [];
 						alert(uploadErrors.toString());
 					} else {
 						var randomId = kmUtils.randomId();
-						var fileboxList = [ {
-							fileIdExpr : randomId,
-							fileName : file.name,
-							fileNameExpr : '<a href="#">' + file.name + '</a>',
-							fileSizeExpr : _this.getFilePreviewSize(file.size)
-						} ];
+						var fileboxList = [{
+							fileIdExpr: randomId,
+							fileName: file.name,
+							fileNameExpr: '<a href="#">' + file.name + '</a>',
+							fileSizeExpr: _this.getFilePreviewSize(file.size)
+						}];
 						$kmApplozic.tmpl("KMfileboxTemplate", fileboxList).appendTo('#km-file-box');
 						var $fileContainer = $kmApplozic(".km-file-box." + randomId);
 						var $file_name = $kmApplozic(".km-file-box." + randomId + " .km-file-lb");
@@ -6169,18 +6302,17 @@ var KM_CLIENT_GROUP_MAP = [];
 							var uniqueId = file.name + file.size;
 							TAB_FILE_DRAFT[uniqueId] = currTab;
 							$mck_msg_sbmt.attr('disabled', true);
-							data.files = [];
-							data.files.push(file);
+							data.append('file', file);
 							var xhr = new XMLHttpRequest();
-							(xhr.upload || xhr).addEventListener('progress', function(e) {
+							(xhr.upload || xhr).addEventListener('progress', function (e) {
 								var progress = parseInt(e.loaded / e.total * 100, 10);
 								$file_progressbar.css('width', progress + '%');
 							});
-							xhr.addEventListener('load', function(e) {
+							xhr.addEventListener('load', function (e) {
 								var responseJson = $kmApplozic.parseJSON(this.responseText);
-								if (typeof responseJson.fileMeta === "object") {
-									var file_meta = responseJson.fileMeta;
-									var fileExpr = _this.getFilePreviewPath(file_meta);
+								if (typeof responseJson === "object") {
+									var file_meta = responseJson;
+									var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
 									var name = file_meta.name;
 									var size = file_meta.size;
 									var currTabId = $mck_msg_inner.data('km-id');
@@ -6206,29 +6338,22 @@ var KM_CLIENT_GROUP_MAP = [];
 								} else {
 									$file_remove.attr("disabled", false);
 									$mck_msg_sbmt.attr('disabled', false);
-									// FILE_META
-									// = "";
 									$file_remove.trigger('click');
 								}
 							});
-							kmUtils.ajax({
-								type : "GET",
-								url : MCK_FILE_URL + FILE_UPLOAD_URL,
-								global : false,
-								data : "data=" + new Date().getTime(),
-								crosDomain : true,
-								success : function(result) {
-									var fd = new FormData();
-									fd.append('files[]', file);
-									xhr.open("POST", result, true);
-									xhr.send(fd);
-								},
-								error : function() {}
-							});
+							xhr.open('post', MCK_BASE_URL + ATTACHMENT_UPLOAD_URL, true);
+							xhr.setRequestHeader("UserId-Enabled", true);
+							xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
+							xhr.setRequestHeader("Application-Key", MCK_APP_ID);
+							xhr.setRequestHeader("Device-Key", USER_DEVICE_KEY);
+							if (MCK_ACCESS_TOKEN) {
+								xhr.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
+							}
+							xhr.send(data);
 						}
 						return false;
 					}
-				});
+				};
 				_this.uplaodFileToAWS = function(file, medium) {
 					var data = new FormData();
 					var uploadErrors = [];
@@ -6727,6 +6852,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
+				if($kmApplozic('#empty-state-conversations-div').hasClass('vis')) {
+					$kmApplozic('#empty-state-conversations-div').addClass('n-vis').removeClass('vis');
+				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);

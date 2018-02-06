@@ -127,9 +127,12 @@ Kommunicate ={
                 case "3": 
                     return Kommunicate.markup.buttonContainerTemplate(metadata); 
                     break;
-                case "4":
+                case "5":
                     return Kommunicate.markup.getPassangerDetail(metadata);
-                    break; 
+                    break;
+                case "4":
+                return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
+                break;
                 default:
                 return "";
                 break;

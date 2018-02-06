@@ -1,0 +1,25 @@
+-------------------------------------------------------------------------------
+Test set: hello.ApplicationTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 4.958 sec <<< FAILURE! - in hello.ApplicationTest
+test(hello.ApplicationTest)  Time elapsed: 0.071 sec  <<< ERROR!
+org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.rabbitmq.client.impl.SocketFrameHandlerFactory.create(SocketFrameHandlerFactory.java:50)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:907)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:859)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:799)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:352)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createConnection(CachingConnectionFactory.java:573)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.doExecute(RabbitTemplate.java:1430)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:1411)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.send(RabbitTemplate.java:712)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.convertAndSend(RabbitTemplate.java:780)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.convertAndSend(RabbitTemplate.java:767)
+	at hello.ApplicationTest.test(ApplicationTest.java:44)
+

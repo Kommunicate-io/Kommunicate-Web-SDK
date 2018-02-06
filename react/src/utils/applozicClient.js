@@ -4,7 +4,7 @@ import {getConfig} from '../config/config';
 const ApplozicClient ={
 
     getUserInfoByEmail: (options)=>{
-        let url = getConfig().applozicPlugin.applozicHosturl+"rest/ws/user/data?email="+encodeURIComponent(options.email)+"&applicationId="+options.applicationId;
+        let url = getConfig().applozicPlugin.applozicHosturl+"/rest/ws/user/data?email="+encodeURIComponent(options.email)+"&applicationId="+options.applicationId;
         return Promise.resolve(axios.get(url))
         .then(response=>{
             let status = response.data&&response.data.status;

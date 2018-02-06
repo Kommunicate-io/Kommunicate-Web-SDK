@@ -7,7 +7,7 @@ body{
     letter-spacing: 1.3px;
     text-align: left;
     color: #515050;
-    font-weight: 100;
+    /* font-weight: 100; */
 }
 .message-shortcuts-title-wrapper {
     padding: 20px;

@@ -3,12 +3,13 @@ const axios =require("axios");
 const adminUserId = config.getProperties().kommunicateAdminId;
 const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
+const constant =require('./constant');
 
 /*
 this method register a user in applozic db with given parameters.
 */
 const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,displayName)=>{
-  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role);
+  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role,"email",email);
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
     "userId": userId,
@@ -16,6 +17,9 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
     "password": password,
     "roleName": role,
     "authenticationTypeId": 1,
+    "email":email,
+    "displayName":displayName,
+    "gcmKey":gcmKey
   })).then(response=>{
     let err = {};
     console.log("Applozic server returned : ",response.status);
@@ -84,16 +88,16 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
       })).then(response=>{
         let err = {};
         if (response.status == 200) {
+          console.log(" applozic response :",response.data);
           if (response.data.status != "error") {
-            console.log("applicationCreated SuccessFully..");
             return response.data;
           } else {
-            console.error("application already exists with name : ", applicationName);
+            console.error("applozic error response : ", applicationName);
             err.code = "APPLICATION_ALREADY_EXISTS";
             throw err;
           }
         } else {
-          console.error("received error code: ", response.status, " while creating application");
+          console.error("received error code: ",response );
           err.code = "APPLOZIC_ERROR";
           throw err;
         }
@@ -125,7 +129,7 @@ exports.getApplication=(customer)=>{
           console.log("got application detail..status code :", response.status);
           return response.data;
         } else {
-          console.log("application not exists with Id :", applicationId);
+          console.log("get application API response :", response.data);
           err.code = "APPLICATION_NOT_EXISTS";
           throw err;
         }
@@ -143,9 +147,9 @@ exports.getApplication=(customer)=>{
   };
 
 exports.applozicLogin =(userName,password,applicationId,role,email)=>{
-  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1};
+  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1,"email":email};
   if (role){
-    data.role= role;
+    data.roleName= role;
   }
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, data))
   .then(response=>{
@@ -186,7 +190,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
   let url = config.getProperties().urls.groupInfoUrl.replace(":groupId",groupId);
   console.log("getting group info from applozic url : ",url);
   console.log("applicationId", applicationId);
-  return Promise.resolve(axios.get(url,{headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+  return Promise.resolve(axios.get(url,{headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true, "Content-Type": "application/json"}})).then(response=>{
     console.log("got response from Applozic group Api. code :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
@@ -248,11 +252,12 @@ exports.updatePassword = (options)=>{
  */
 exports.updateApplozicClient = (userName, accessToken,applicationId,user,options)=>{
   let apzToken = options&&options.apzToken?options.apzToken:new Buffer(userName+":"+accessToken).toString('base64');
-  return axios.post(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/v2/update",user,{headers:{
+  return axios.patch(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update?userId="+user.userId, user, {headers:{
     "Apz-Token":"Basic "+ apzToken,
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,
-    "Of-User-Id":user.userId
+    'Of-User-Id':user.userId,
+    'Apz-Product-App': 'true'
    }})
    .then(response=>{
     if(response.data&&response.data.status ==="success"){
@@ -275,7 +280,7 @@ exports.createGroup = (options)=>{
 
 exports.sendGroupMessageByBot = (groupId,message,authorization,applicationId,metadata)=>{
   console.log("sending message to group ",groupId);
-  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,":apz-token:",apzToken,"applicationId",applicationId,"metadata",metadata );
+  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,"applicationId",applicationId,"metadata",metadata );
   let url = config.getProperties().urls.sendMessageUrl;
   return Promise.resolve(axios.post(url,{"groupId": groupId,"message": message,"metadata": metadata},
   {headers: {"Application-Key": applicationId,"Authorization": "Basic "+authorization,"Content-Type":"application/json"}})).then(response=>{
@@ -313,7 +318,7 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
 }
 
 exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)=>{
-  let url = config.getProperties().urls.addMemberIntoConversation;
+  let url = config.getProperties().urls.addMemberIntoConversation.replace(":role", constant.GROUP_ROLE.ADMIN);;
   return Promise.resolve(axios.post(url, groupInfo, {
     headers: {
       "Content-Type": "application/json",
@@ -330,7 +335,7 @@ exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)
       throw new Error("ERROR: received response from applozic" + response.status);
     }
   }).catch(err => {
-    console.log("error while sending message ", err);
+    console.log("error while adding user into group", err);
     throw err;
   });
 }

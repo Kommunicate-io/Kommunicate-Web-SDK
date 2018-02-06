@@ -159,10 +159,18 @@ const callSendEmailAPI = (options) => {
   const emails = [].concat(...[emailAddress])
   let userSession = CommonUtils.getUserSession();
   let userId = userSession.userName;
-  return Promise.resolve(axios({
-    method: 'post',
-    url: getConfig().kommunicateApi.sendMail,
-    data: {
+  let data = {}
+
+  if(options.templateName === "BOT_USE_CASE_EMAIL"){
+    data = {
+      to: [userSession.email],
+      from:"hello@kommunicate.io",
+      cc: [],
+      userName:userSession.displayName || userId,
+      ...options
+    }
+  }else{
+    data = {
       "to":[...emails],
       "templateName":options.templateName,
       "from":userSession.displayName || userId +"<"+userId+">",
@@ -171,6 +179,12 @@ const callSendEmailAPI = (options) => {
       "agentName":userSession.displayName || userId,
       "agentId": userId
     }
+  }
+
+  return Promise.resolve(axios({
+    method: 'post',
+    url: getConfig().kommunicateApi.sendMail,
+    data: {...data}
   }))
   .then( (response) => {
     if(response.status === 200 && response.data.code === 'SUCCESS'){
@@ -347,6 +361,7 @@ const sendProfileImage = (imageFile, imageFileName) => {
     }
   }))
   .then(response => {
+        
     window.$applozic.fn.applozic('updateUser', {data: {'imageLink': response.data.profileImageUrl}, success: function(response) {
         console.log(response);
       }, error: function(error) {
@@ -363,7 +378,8 @@ const updateApplozicUser = (userInfo) => {
     'Content-Type':'application/json',
     'Apz-AppId':userSession.application.applicationId,
     'Apz-Token': 'Basic ' + new Buffer(userSession.userName+':'+userSession.password).toString('base64'),
-    'Apz-Product-App':'true'    
+    'Apz-Product-App':'true',
+    'Of-User-Id':   userSession.userName 
   }
   console.log(headers)
 
@@ -563,17 +579,21 @@ const getInAppMessages = () => {
   }).catch(err => {console.log("Error in getInAppMessages", err)})
 }
 
-const getInAppMessagesByEventId = (eventId) => {
+const getInAppMessagesByEventId = (eventIds) => {
   let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl+"/applications/"+CommonUtils.getUserSession().userName+"/"+userSession.application.applicationId+"/"+eventId+"/getInAppMessagesByEventId";
-
-  return axios.get(url).then(response => {
-    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
-      if(response.data.data instanceof Array){
+  let userInfo = {
+    userName: userSession.userName,
+    customerId: userSession.customerId,
+    appId: userSession.application.applicationId,
+    eventIds: eventIds
+  }
+  let url = getConfig().kommunicateBaseUrl + "/applications/events"
+  return Promise.resolve(axios.get(url, { params: userInfo })).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      if (response.data.data instanceof Object) {
         return response.data.data
       }
-    }else if(response === undefined){
+    } else if (response === undefined) {
       return [];
     }
   }).catch(err => {
@@ -595,6 +615,26 @@ const deleteInAppMsg = (id) => {
       }
     }
   }).catch(err => {console.log("Error in deleteInAppMsg", err)})
+}
+
+const editInAppMsg = (id, message) => {
+  let url = getConfig().kommunicateBaseUrl+"/applications/editInAppMsg";
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+    data: {
+      id: id,
+      message: message
+    }
+  })).then(response => {
+    console.log(response)
+    if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
+      if(response.data.data instanceof Array){
+        return response.data.data
+      }
+    }
+  }).catch(err => {console.log("Error editInAppMsg", err)})
 }
 
 export {
@@ -632,5 +672,6 @@ export {
   enableInAppMsgs,
   getInAppMessages,
   getInAppMessagesByEventId,
-  deleteInAppMsg
+  deleteInAppMsg,
+  editInAppMsg
 }

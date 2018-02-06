@@ -1391,3 +1391,6 @@ input:-ms-input-placeholder {
 .page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
     fill: #5d5aa786 !important;
 }
+.sticky {
+    background: #FFFFFF !important;
+}

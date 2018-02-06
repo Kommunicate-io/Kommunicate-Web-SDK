@@ -21,8 +21,8 @@ exports.createCustomer = customer=>{
   // default application name : a unique name
   return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID,KOMMUNICATE_ADMIN_PASSWORD,"km-"+customer.userName+"-"+Math.floor(new Date().valueOf() * Math.random()))).then(application=>{
     console.log("successfully created ApplicationId: ",application.applicationId," creating applozic client");
-
-    return Promise.all([applozicClient.createUserInApplozic({"userName":customer.userName,"password":customer.password,"applicationId":application.applicationId,"role":"APPLICATION_WEB_ADMIN","name":customer.name}),
+  
+    return Promise.all([applozicClient.createUserInApplozic({"userName":customer.userName,"password":customer.password,"applicationId":application.applicationId,"role":"APPLICATION_WEB_ADMIN","name":customer.name,"email":customer.email}),
                    /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
                    applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"BOT")
     ]).then(([applozicCustomer,/*agent,*/bot])=>{
@@ -191,7 +191,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
       "name": applozicBot.userId,
       "key": applozicBot.userKey,
       "brokerUrl": applozicBot.brokerUrl,
-      "accessToken": applozicBot.accessToken,
+      "accessToken": applozicBot.userId,
       "applicationKey": application.applicationId,
       "authorization":new Buffer(applozicBot.userId+":"+applozicBot.deviceKey).toString('base64'),
       "type": "KOMMUNICATE_SUPPORT",

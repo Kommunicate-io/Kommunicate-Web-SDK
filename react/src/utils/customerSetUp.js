@@ -11,13 +11,17 @@ function getJsCode (){
   if (userSession) {
     options.appId = userSession.application.applicationId;
     options.isAnonymousChat=true;
-    options.agentId = userSession.userName||localStorage.getItem("agentId");
+    options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
     
     if (userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
-      options.agentName = userSession.displayName;
+      options.agentName = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
       options.agentName = localStorage.getItem("agentName");
     }
+  } else {
+    const search = window.location.href;
+    options.appId = CommonUtils.getUrlParameter(search, "applicationId");
+    options.agentId = CommonUtils.getUrlParameter(search, "agentId");
   }
   
   options.groupName=options.agentName||options.agentId;
@@ -31,6 +35,8 @@ function getJsCode (){
 
 var jsScript= `<script type="text/javascript">
     (function(d, m){
+      // you can change the below values to customize conversations. 
+      // see the complete list of options in "More instructions Tab" 
       let o = ${JSON.stringify(options)};
       let s = document.createElement("script");
       s.type = "text/javascript";

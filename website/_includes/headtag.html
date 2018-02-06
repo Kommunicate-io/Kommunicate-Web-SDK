@@ -6,6 +6,7 @@
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="theme-color" content="#5d5ca8">
 
+<script src="//cdn.optimizely.com/js/10196233858.js"></script>
 <!-- Custom Fonts -->
 
 <!-- Plugin CSS -->
@@ -57,6 +58,7 @@ var QUERYSTRING = 'test',
 CURRENTURL = window.location.href;
 if(CURRENTURL.indexOf(QUERYSTRING) != -1) {
   //No Heap Analytics code here
+  console.log("No Heap Analytics code here");
 }
 else {
   window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
@@ -77,6 +79,27 @@ else {
   fbq('init', '282023555639912');
   fbq('track', 'PageView');
 </script>
+<!-- Facebook Pixel Code -->
+<script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+     fbq('init', '138723013484771'); 
+    fbq('track', 'PageView');
+    fbq('track', 'Lead');
+    fbq('track', 'CompleteRegistration');
+    </script>
+    <noscript>
+     <img height="1" width="1" 
+    src="https://www.facebook.com/tr?id=138723013484771&ev=PageView
+    &noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
 <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=282023555639912&ev=PageView&noscript=1"
 /></noscript>

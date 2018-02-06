@@ -22,6 +22,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         mode: 'standard',
         visitor: false,
         olStatus: false,
+        awsS3Server :false,  
         groupUserCount: false,
         desktopNotification: true,
         locShare: false,
@@ -381,6 +382,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
         var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+        var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.getBaseUrl()+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
         var MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? appOptions.googleApiKey : 'NO_ACCESS';
@@ -1772,6 +1774,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         DELETED_GROUP_MESSAGE:"",
                         GROUP_USER_ROLE_UPDATED_MESSAGE:"",
                         GROUP_META_DATA_UPDATED_MESSAGE: "",
+                        CONVERSATION_ASSIGNEE: params.agentId,
                         //ALERT: "false",
                         HIDE: "true"
                     },
@@ -7596,6 +7599,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_gc_overlay_label = $applozic("#mck-gc-overlay-label");
             var FILE_PREVIEW_URL = "/rest/ws/aws/file";
             var FILE_UPLOAD_URL = "/rest/ws/aws/file/url";
+            var ATTACHMENT_UPLOAD_URL = "/rest/ws/upload/image";
             var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
             var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
             var mck_filebox_tmpl = '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' + '<div class="mck-file-expr">' + '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="mck-file-sz">${fileSizeExpr}</span></span>' + '<span class="progress progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar progress-bar-success bar" stye></span></span>' + '<span class="move-right">' + '<button type="button" class="mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' + '</span></div></div>';
@@ -7622,7 +7626,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var params = {};
                     params.file = file;
                     params.name = file.name;
-                    _this.uploadFile(params);
+                    (MCK_AWS_S3_SERVER === true) ?_this.uploadAttachment2AWS(params) : _this.uploadFile(params)
                 });
                 $applozic(d).on("click", '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
@@ -7841,6 +7845,100 @@ var MCK_CLIENT_GROUP_MAP = [];
                             },
                             error: function () { }
                         });
+                    }
+                    return false;
+                }
+            };
+            _this.uploadAttachment2AWS = function (params) {
+                var file = params.file;
+                var data = new FormData();
+                var uploadErrors = [];
+                if (typeof file === 'undefined') {
+                    return;
+                }
+                if ($applozic(".mck-file-box").length > 4) {
+                    uploadErrors.push("Can't upload more than 5 files at a time");
+                }
+                if (file['size'] > (MCK_FILEMAXSIZE * ONE_MB)) {
+                    uploadErrors.push("file size can not be more than " + MCK_FILEMAXSIZE + " MB");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.toString());
+                } else {
+                    var randomId = mckUtils.randomId();
+                    var fileboxList = [{
+                        fileIdExpr: randomId,
+                        fileName: params.name,
+                        fileNameExpr: '<a href="#" target="_self" >' + params.name + '</a>',
+                        fileSizeExpr: _this.getFilePreviewSize(file.size)
+                    }];
+                    $applozic.tmpl("fileboxTemplate", fileboxList).appendTo('#mck-file-box');
+                    var $fileContainer = $applozic(".mck-file-box." + randomId);
+                    var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
+                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .progress .bar");
+                    var $file_progress = $applozic(".mck-file-box." + randomId + " .progress");
+                    var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
+                    $file_progressbar.css('width', '0%');
+                    $file_progress.removeClass('n-vis').addClass('vis');
+                    $file_remove.attr("disabled", true);
+                    $mck_file_upload.attr("disabled", true);
+                    $file_box.removeClass('n-vis').addClass('vis');
+                    if (params.name === $applozic(".mck-file-box." + randomId + " .mck-file-lb a").html()) {
+                        var currTab = $mck_msg_inner.data('mck-id');
+                        var uniqueId = params.name + file.size;
+                        TAB_FILE_DRAFT[uniqueId] = currTab;
+                        $mck_msg_sbmt.attr('disabled', true);
+                        data.append('file', file);
+                        var xhr = new XMLHttpRequest();
+                        (xhr.upload || xhr).addEventListener('progress', function (e) {
+                            var progress = parseInt(e.loaded / e.total * 100, 10);
+                            $file_progressbar.css('width', progress + '%');
+                        });
+                        xhr.addEventListener('load', function (e) {
+                            var responseJson = $applozic.parseJSON(this.responseText);
+                            if (typeof responseJson === "object") {
+                                var file_meta = responseJson;
+                                var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
+                                var name = file_meta.name;
+                                var size = file_meta.size;
+                                var currTabId = $mck_msg_inner.data('mck-id');
+                                var uniqueId = name + size;
+                                var fileTabId = TAB_FILE_DRAFT[uniqueId];
+                                if (currTab !== currTabId) {
+                                    mckMessageLayout.updateDraftMessage(fileTabId, file_meta);
+                                    delete TAB_FILE_DRAFT[uniqueId];
+                                    return;
+                                }
+                                $file_remove.attr('disabled', false);
+                                $mck_file_upload.attr('disabled', false);
+                                $mck_msg_sbmt.attr('disabled', false);
+                                delete TAB_FILE_DRAFT[uniqueId];
+                                $file_name.html(fileExpr);
+                                $file_progress.removeClass('vis').addClass('n-vis');
+                                $applozic(".mck-file-box .progress").removeClass('vis').addClass('n-vis');
+                                $mck_text_box.removeAttr('required');
+                                FILE_META.push(file_meta);
+                                $fileContainer.data('mckfile', file_meta);
+                                $mck_file_upload.children('input').val('');
+                                return false;
+                            } else {
+                                $file_remove.attr("disabled", false);
+                                $mck_msg_sbmt.attr('disabled', false);
+                                // FILE_META
+                                // = '';
+                                $file_remove.trigger('click');
+                            }
+                        });
+
+                        xhr.open('post', MCK_BASE_URL + ATTACHMENT_UPLOAD_URL, true);
+                        xhr.setRequestHeader("UserId-Enabled", true);
+                        xhr.setRequestHeader("Authorization", "Basic " + AUTH_CODE);
+                        xhr.setRequestHeader("Application-Key", MCK_APP_ID);
+                        xhr.setRequestHeader("Device-Key", USER_DEVICE_KEY);
+                        if (MCK_ACCESS_TOKEN) {
+                            xhr.setRequestHeader("Access-Token", MCK_ACCESS_TOKEN);
+                        }
+                        xhr.send(data);
                     }
                     return false;
                 }

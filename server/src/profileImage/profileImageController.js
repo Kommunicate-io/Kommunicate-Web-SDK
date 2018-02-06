@@ -1,5 +1,6 @@
 const uploadProfileImageService = require('./profileImageService')
-
+var path = require("path");
+var fs = require('fs');
 exports.uploadImageToS3 = (req, res) => {
 
 	if(!req.file){
@@ -12,6 +13,7 @@ exports.uploadImageToS3 = (req, res) => {
 	uploadProfileImageService.uploadImageToS3(req.file)
 	.then(response => {
 		console.log(response) 
+		
 		if(response.code === 'SUCCESSFUL_UPLOAD_TO_S3'){
 			res.status(200).json({
 				code: response.code,
@@ -24,6 +26,10 @@ exports.uploadImageToS3 = (req, res) => {
 				message:'Failed to upload'
 			})	
 		}
+		var filePath=path.join(__dirname,'../../../uploads/'+req.file.filename)
+		fs.unlink(filePath);
+	}).catch(err=>{
+		console.log('uploading error',err)
 	});
 
 }

@@ -3,6 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
+import {updateApplozicUser} from '../../utils/kommunicateClient'
 
 class Aside extends Component {
   constructor(props) {
@@ -101,7 +102,7 @@ class Aside extends Component {
 
     var userSession = CommonUtils.getUserSession();
     if (assignee == userSession.userName && userSession.isAdmin) {
-      assignee = "agent";
+      //assignee = "agent";
     }
 
     window.$kmApplozic("#assign").val(assignee);
@@ -243,6 +244,10 @@ class Aside extends Component {
   updateUserContactDetail(userId, params){
     var data={'contacts':userId};
     window.$kmApplozic.fn.applozic('loadContacts', data.contacts );
+  }
+
+  updateApplozicUser(userInfo){
+    updateApplozicUser(userInfo);
   }
 
   render() {
@@ -553,6 +558,11 @@ class Aside extends Component {
                             </div>
                           </div>
                         </div>
+                        <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
+                            <img src="img/empty-conversations.png" alt="Conversations Empty State" className="empty-state-conversations-img"/>
+                            <p className="empty-state-message-shortcuts-first-text">No message notification</p>
+                            <p className="empty-state-message-shortcuts-second-text">Add chat widget yo your webpage to<br></br>engage more with your users</p>
+                        </div>
                       </div>
                       <div className="write">
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
@@ -838,11 +848,12 @@ class Aside extends Component {
                             <ul id="km-user-info-list"
                               className="km-user-info-list km-nav km-nav-tabs km-nav-stacked">
                               <li className="email"></li>
-                              <li className="bio"></li>
-                              <li className="title"></li>
-                              <li className="company"></li>
-                              <li className="location"></li>
-                              <li className="profile-linkedin"><a className="linkedin" href=""></a></li>
+                              <li className="bio n-vis"></li>
+                              <li className="title n-vis"></li>
+                              <li className="company n-vis"></li>
+                              <li className="domain n-vis">Website: <a className="domain-url" href="" target="_blank"></a></li>
+                              <li className="location n-vis"></li>
+                              <li className="profile-linkedin n-vis">Linkedin: <a className="linkedin" href="" target="_blank"></a></li>
                             </ul>
                           </div>
                         </div>

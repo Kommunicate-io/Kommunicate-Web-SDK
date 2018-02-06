@@ -1,0 +1,13 @@
+com/applozic/message/MessageType.class
+io/kommunicate/machinelearning/Runner.class
+com/applozic/message/InstantMessage$TYPE.class
+io/kommunicate/machinelearning/Application.class
+io/kommunicate/machinelearning/event/MachineLearningClient.class
+com/applozic/message/MessagePxy.class
+io/kommunicate/machinelearning/Receiver.class
+com/applozic/message/InstantMessage.class
+com/applozic/message/StatusType.class
+com/applozic/message/InstantMessage$NOTIFICATION_TYPE.class
+io/kommunicate/machinelearning/event/Event.class
+com/applozic/message/InstantMessage$REQUEST_SOURCE.class
+io/kommunicate/machinelearning/event/Properties.class

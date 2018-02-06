@@ -5,12 +5,14 @@ const routes = {
   '/conversations': 'Conversations',
   '/components': 'Components',
   '/reports': 'Reports',
-  '/bot': 'Bot',
+  '/bot': 'Bot Integration',
   '/settings/integration': 'Integration',
   '/team': 'Team',
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
-  '/admin': "Profile"
+  '/admin': "Profile",
+  '/message-shortcuts': 'Message Shortcuts',
+  '/welcome-message': 'Welcome Message'
 };
 
 export default routes;

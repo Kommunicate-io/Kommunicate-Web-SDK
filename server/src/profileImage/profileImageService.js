@@ -1,20 +1,22 @@
-var AWS = require('aws-sdk')
+const config = require('../../conf/config.js')
+const logger = require('../utils/logger');
 
-var s3 = new AWS.S3({
-	accessKeyId: 'AKIAIWQE377PPIAEXITQ',
-	secretAccessKey: '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', 
-	region: 'ap-south-1'
-});
+var AWS = require('aws-sdk');
+var accessKeyId=config.getProperties().s3Access.accessKeyId;
+var secretAccessKey=config.getProperties().s3Access.secretAccessKey;
+var region=config.getProperties().s3Access.region;
+AWS.config.update({accessKeyId: accessKeyId, secretAccessKey: secretAccessKey, region: region});
+var s3 = new AWS.S3();
 
 const checkIfBucketExists = () => {
-	console.log("checkIfBucketExists");
+	console.log("checkIfBucketExists", s3);
 	s3.headBucket({Bucket: "kommunicate"}, function(err, data) {
    		if (err) {
       		console.log("Error", err);
       		if(err.code === 'NotFound') {
 				return false;
       		} else{
-      			console.log("Error different from NotFound");
+				logger.info("Error different from NotFound");
       			return false;
       		}
    		} else {
@@ -25,19 +27,19 @@ const checkIfBucketExists = () => {
 }
 
 const createBucket = () => {
-	console.log("createBucket");
+	logger.info("createBucket");
 	// Call S3 to create the bucket
 	s3.createBucket({Bucket:'kommunicate'}, function(err, data) {
 	   if (err) {
-	      console.log("Error", err);
+		logger.info("Error", err);
 	   } else {
-	      console.log("Success", data.Location);
+		logger.info("Success", data.Location);
 	   }
 	});
 }
 
 const uploadImageToS3 = (imageFile) => {
-	console.log("uploadImageToS3");
+	logger.info("uploadImageToS3");
 
 	// call S3 to retrieve upload file to specified bucket
 	var uploadParams = {
@@ -50,7 +52,7 @@ const uploadImageToS3 = (imageFile) => {
 	var fs = require('fs');
 	var fileStream = fs.createReadStream(imageFile.path);
 	fileStream.on('error', function(err) {
-	  console.log('File Error', err);
+		logger.info('File Error', err);
 	});
 
 	uploadParams.Body = fileStream;
@@ -62,12 +64,12 @@ const uploadImageToS3 = (imageFile) => {
 }
 
 exports.uploadImageToS3 = (imageFile) => {
-	console.log("uploadImageToS3");
-	console.log(imageFile.originalname);
+	logger.info("uploadImageToS3");
+	logger.info(imageFile.originalname);
 
 	if (checkIfBucketExists) {
 		return uploadImageToS3(imageFile)
 	} else {
-		console.log('Bucket do not exist') 
+		logger.info('Bucket do not exist') 
 	}
 }

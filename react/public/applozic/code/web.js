@@ -19,11 +19,23 @@ function initAutoSuggestions() {
     $('#km-text-box').atwho({
       at: `/${autoSuggest}`,
       insertTpl: '${content}',
-      displayTpl: '<li>${name} <small>${content}</small></li>',
-      data: autoSuggestions[autoSuggest]
-    })  
+      displayTpl: '<li data-suggestionId="${suggestionId}">${name} <small>${content}</small></li>',
+      data: autoSuggestions[autoSuggest],
+      callbacks: {
+        beforeInsert: function(value, $li, e) {
+          var machineInput = {"text": $(".active-chat .km-msg-left .km-msg-content div").last().html(), "label": $li.attr('data-suggestionId')};
+          $('#km-text-box').data("metadata", encodeURIComponent(JSON.stringify(machineInput)));
+          return value;
+        },
+        beforeReposition: function(offset) {
+          return offset;
+        },
+        afterMatchFailed: function(at, el) {
+
+        }
+      }  
+    });
   }
-  
 }
 
 
@@ -83,6 +95,7 @@ function initAutoSuggestions() {
       swNotification: true,
       messageBubbleAvator: true,
       olStatus: true,
+      // awsS3Server :true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
             window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
@@ -120,7 +133,7 @@ function activeCampaign(email) {
   });
 }
 
-function clearbit(email) {
+function clearbit(email, userId) {
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
     $.ajax({
@@ -130,32 +143,46 @@ function clearbit(email) {
             "Authorization":"Bearer sk_8235cd13e90bd6b84260902b98c64aba"
         },
         success: function(response) {
+            displayCustInfo(response)
             console.log(response);
-            var person = response.person;
-            var company = response.company;
-            var info = "";
-            if (typeof person !== "undefined" && person != null && person != "null") {
-                info = person.bio + " " + person.location;
-                $("#cust-info .bio").html(person.bio + " " + person.location);
-                var employment = person.employment;
-                if (typeof employment !== "undefined" && employment != null && employment != "null") {
-                    info = info + " " + person.employment.title;
-                    $("#cust-info .title").html(person.employment.title);
-                }
-                var linkedin = person.linkedin;
-                if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
-                    info = info + " " + linkedin.handle;
-                    $("#cust-info .linkedin").attr('href','https://linkedin.com/' + linkedin.handle);
-                }
-            }
-            if (typeof company !== "undefined" && company != null && company != "null") {
-                info = info + " " + company.domain;
-                $("#cust-info .domain").attr('href', company.domain);
-            }
-            console.log(info);
+            var user={'userId':userId,'metadata': {'kmClearbitData' : JSON.stringify(response)}}
+            window.Aside.updateApplozicUser(user);
         }
     });
 
+}
+
+function displayCustInfo(clearbitData) {
+  var person = clearbitData.person;
+  var company = clearbitData.company;
+  var info = "";
+  var userInfo = {};
+  if (typeof person !== "undefined" && person != null && person != "null") {
+    info = person.bio + " " + person.location;
+    $("#km-user-info-list .bio").html(person.bio !== null ? person.bio : '' + " " + person.location !== null ? person.location : '');
+    $("#km-user-info-list .bio").removeClass('n-vis');
+    var employment = person.employment;
+    if (typeof employment !== "undefined" && employment != null && employment != "null") {
+        info = info + " " + person.employment.title;
+        $("#km-user-info-list .title").html(person.employment.title);
+        $("#km-user-info-list .title").removeClass('n-vis');
+    }
+    var linkedin = person.linkedin;
+    if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
+        info = info + " " + linkedin.handle;
+        $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
+        $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
+        $("#km-user-info-list .linkedin").text('https://linkedin.com/'+ linkedin.handle);
+    }
+}
+if (typeof company !== "undefined" && company != null && company != "null") {
+    info = info + " " + company.domain;
+    $("#km-user-info-list .domain").removeClass('n-vis');
+    $("#km-user-info-list .domain-url").attr('href', 'https://www.'+company.domain);
+    $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
+    
+}
+  console.log(info)
 }
 
 function getSuggestions(_urlAutoSuggest) {
@@ -169,10 +196,11 @@ function getSuggestions(_urlAutoSuggest) {
     .then(autoSuggestions_data => {
       console.log(autoSuggestions_data)
       autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
+          console.log(curr);
           if(curr.category in prev){
-            prev[curr.category].push({name:curr.name, content:curr.content})
+            prev[curr.category].push({suggestionId: curr.id, name:curr.name, content:curr.content})
           }else{
-            prev[curr.category] = [{name:curr.name, content:curr.content}]
+            prev[curr.category] = [{suggestionId: curr.id, name:curr.name, content:curr.content}]
           }
         return prev;
       }, {});

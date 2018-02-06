@@ -12,7 +12,7 @@ const userService = require("../users/userService");
 const kommunicateLogoUrl =config.getProperties().urls.hostUrl+"/img/logo1.png";
 const passwordResetUrl =config.getProperties().urls.updatePasswordPage;
 const bcrypt = require('bcrypt');
-
+const logger = require("../utils/logger");
 const facebookLogoUrl = config.getProperties().urls.hostUrl+"/img/facebook-round32.png";
 const twitterLogourl = config.getProperties().urls.hostUrl + "/img/twitter-round32.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
@@ -43,7 +43,7 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
   }
   return fileService.readFile(path.join(__dirname,"/passwordResetTemplate.html"),"utf8").then(data=>{
     template= data.replace(new RegExp(Object.keys(templateValues).join("|"),"gi"),function(matched){
-      console.debug("matched: ",matched, "replaced with: ",templateValues[matched]);
+      logger.info("matched: ",matched, "replaced with: ",templateValues[matched]);
       return templateValues[matched];
     });
     //console.log(template);

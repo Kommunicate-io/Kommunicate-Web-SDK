@@ -51,7 +51,7 @@ class ApplozicUserSignUp extends Component {
       'Content-Type' :'application/json',
       'Apz-AppId': this.state.applicationId,
       'Apz-Token': 'Basic ' + new Buffer(this.state.userName+':'+this.state.password).toString('base64')
-      // 'Apz-Token': 'Basic c3VyYWorMTIzNEBhcHBsb3ppYy5jb206c3VyYWoxMjM='
+      
     }
 
     const data = {

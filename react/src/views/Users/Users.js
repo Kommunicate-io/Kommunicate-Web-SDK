@@ -9,17 +9,24 @@ class Users extends Component {
     super(props);
 
     this.state = {
-      result: []
+      result: [],
+      showEmptyStateImage: true
     };
   }
 
   componentWillMount() {
     var _this = this;
     window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback': function(response) {
-        console.log(response);
-        if(response&&response.response){
-        _this.setState({result: response.response.users});
+        console.log("User Response", response);
+        // if(response&&response.response){
+        // _this.setState({result: response.response.users});
+        // }
+        if(response && response.response && (response.response.users.length > 0)) {
+          _this.setState({result: response.response.users,showEmptyStateImage: true});
+        } else if(response.response.users.length == 0) {
+          _this.setState({showEmptyStateImage: false});
         }
+        console.log(response.response.users.length);
       }
     });
   }
@@ -58,6 +65,11 @@ class Users extends Component {
                     {result}
                   </tbody>
                 </table>
+                <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
+                  <img src="img/empty-customers.png"  alt="Customers Empty State" className="empty-state-customers-img" />
+                  <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>
+                  <p className="empty-state-message-shortcuts-second-text">There are no customers to show</p>
+                </div>
               </div>
             </div>
           </div>

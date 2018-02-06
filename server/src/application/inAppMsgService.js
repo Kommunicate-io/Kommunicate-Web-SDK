@@ -3,7 +3,9 @@ const registrationService = require('../register/registrationService');
 const appUtils = require('./utils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require('../users/userService');
+const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
+const Sequelize = require("sequelize");
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
@@ -12,7 +14,8 @@ exports.postWelcomeMsg=(options)=>{
                 customerId:options.customer.id,
                 eventId:appUtils.EVENTS.CONVERSATION_STARTED,
                 message:options.message,
-                status:appUtils.EVENT_STATUS.ENABLED
+                status:appUtils.EVENT_STATUS.ENABLED,
+               category:appUtils.IN_APP_MESSAGE_CETAGORY.WELCOME_MESSAGE 
             }
             return db.InAppMsg.create(inAppMessage);
         }else{
@@ -22,13 +25,14 @@ exports.postWelcomeMsg=(options)=>{
 }
 
 const getInAppMessage=(customerId, eventType)=>{
+  console.log('geting data for', customerId)
+  let criteria ={ customerId: customerId , status: appUtils.EVENT_STATUS.ENABLED};
+  if (eventType){
+    criteria.eventId=eventType
+  }
     return db.InAppMsg.findAll(
       {
-        where:{
-          customerId:customerId ,
-          eventId:eventType,
-          status: appUtils.EVENT_STATUS.ENABLED
-        },
+        where:criteria,
         order:[
           ['id', 'ASC']
         ]
@@ -41,21 +45,24 @@ const getInAppMessage=(customerId, eventType)=>{
     });
 }*/
 
-exports.processEventWrapper = (eventType, conversationId, customer, agentName) => {
+exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
 
     if(eventType == 1 || eventType == 2 || eventType == 3 || eventType == 4){
       let anonymous = true
       let offline = true
       let eventType = 1
-      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,customer.apzToken))
+      let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
+      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
         .then(groupInfo => {
             console.log("groupInfo")
-            let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3)
-            let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1)
-            return {userId: groupUserRole3[0].userId, agentId: groupUserRole2[0].userId}
+            
+            let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
+            let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1);
+            let conversationAssignee = groupInfo.metadata?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
+            return {userId: groupUserRole3[0].userId, agentId: conversationAssignee}
         }).then( groupUser => {
             console.log("groupUser")
-            userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
+            return userService.getByUserNameAndAppId(groupUser.agentId,customer.applicationId)
             .then(res => {
               console.log(res)
               console.log(res.availability_status)
@@ -65,7 +72,7 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
               return groupUser.userId
             }).then( userId => {
               console.log("userId")
-              return applozicClient.getUserDetails(userId,customer.applicationId,customer.apzToken)
+              return applozicClient.getUserDetails(userId,customer.applicationId,apzToken)
               .then(userInfo => {
                 console.log(userInfo)
                 if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
@@ -77,27 +84,27 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
                   console.log(1);
                   return Promise.all([processConversationStartedEvent(1, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(offline && !anonymous){
                   console.log(2);
                   eventType = 2
                   return Promise.all([processConversationStartedEvent(2, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(!offline && anonymous){
                   eventType = 3
                   console.log(3);
                   return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }else if(!offline && !anonymous){
                   eventType = 4
                   return Promise.all([processConversationStartedEvent(4, conversationId, customer, agentName)]).then(([response]) => {
                     console.log(response);
-                    return "success";
+                    return response;
                   })
                 }
               })
@@ -109,9 +116,14 @@ exports.processEventWrapper = (eventType, conversationId, customer, agentName) =
 }
 
 const processConversationStartedEvent= (eventType, conversationId, customer, agentName)=>{
+  // inAppMessages.map(inAppMessage => {
+  // hard coding event type to fix the welcome messag eissue. 
+  // remove this once react changes goes to prod
+  // only supporting event type =1;
+   //eventType =1;
     return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([bot,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
-        // inAppMessages.map(inAppMessage => {
+        
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
@@ -142,10 +154,12 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
               }
             })
       }else{
+        /*remove this to send default welcome message
         let  message = defaultMessage;
         return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"}).then(response=>{
             return "success";
-          })
+          })*/
+          return "no_message";
       }
     })
 }
@@ -228,26 +242,61 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.getInAppMessagesByEventId=(createdBy, customerId, eventId)=>{
+exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
+
+  logger.info("createdBy", createdBy)
+  logger.info("cusotmerId", customerId)
+  logger.info("type", type)
+  logger.info("eventIds", eventIds)
+  // type = 3 for admin user include messages where createdBy is null
+  if(type == 3){
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
-            createdBy: createdBy,
+            createdBy:{
+              [Sequelize.Op.or]: [null, createdBy]
+            },
             customerId: customerId,
-            eventId: eventId
+            eventId:{ $in:eventIds}
         },
         order: [
             ['id', 'ASC']
         ],
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+  }else{
+    return Promise.resolve(db.InAppMsg.findAll({
+        where: {
+            createdBy: createdBy,
+            customerId: customerId,
+        },
+        order: [
+            ['id', 'ASC']
+        ],
+    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+  }
 }
 
 exports.softDeleteInAppMsg=(id)=>{
-  return Promise.resolve(db.InAppMsg.update({status: 3}, {
+  //TODO : remove hard coded status
+  return Promise.resolve(db.InAppMsg.update({status: 3,deleted_at:new Date()}, {
         where: {
             id: id
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 
+}
+
+exports.editInAppMsg=(body)=>{
+
+  logger.info(body);
+  return Promise.resolve(db.InAppMsg.update({message:body.message}, {
+    where : {
+      id: body.id
+    }}).then(response => {
+        logger.info("response is...");
+        logger.info(response);
+        response.message = "Edited"
+        return response;    
+      })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
 exports.getInAppMessage=getInAppMessage;
