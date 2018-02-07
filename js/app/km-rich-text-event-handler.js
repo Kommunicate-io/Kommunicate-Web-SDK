@@ -118,7 +118,7 @@ Kommunicate.richMsgEventHandler = {
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
         var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
-            'message': "Book " +HotelName ,
+            'message': "Get room detail of " +HotelName ,
             'metadata': {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
