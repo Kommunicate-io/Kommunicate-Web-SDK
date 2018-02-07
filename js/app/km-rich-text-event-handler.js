@@ -90,15 +90,6 @@ Kommunicate.richMsgEventHandler = {
         };
 
         Kommunicate.sendMessage(messagePxy);
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
     processHotelBookClick: function (e) {
         var target = e.target || e.srcElement;
@@ -117,17 +108,6 @@ Kommunicate.richMsgEventHandler = {
         };
 
         Kommunicate.sendMessage(messagePxy);
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
-
-
     },
 
     processBookRoomClick: function (e) {
