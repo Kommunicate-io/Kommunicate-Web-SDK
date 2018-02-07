@@ -8083,6 +8083,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
             };
             _this.notifyUser = function (message) {
+                if (message.alert === false) {
+					return;
+				}
                 if (message.type === 7) {
                     return;
                 }
