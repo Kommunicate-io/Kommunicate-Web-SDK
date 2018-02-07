@@ -6525,6 +6525,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_preview_file_content = $kmApplozic("#km-msg-preview .km-preview-file-content");
 			};
 			_this.notifyUser = function(message) {
+				if (message.alert === false) {
+					return;
+				}
 				if (message.type === 7) {
 					return;
 				}
