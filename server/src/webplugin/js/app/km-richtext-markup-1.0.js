@@ -143,18 +143,18 @@ getPassangerDetail : function(options){
                 <div class="km-guest-detail-form">
                     <div class= "km-select-title">    
                         <select name="title" class="km-title-select">
-                            <option value="0" disabled selected>Title</option>
+                            <option value="0" disabled selected>Title *</option>
                             <option value="Mr.">Mr.</option>
                             <option value="Ms.">Ms.</option>
                             <option value="Mrs.">Mrs.</option>
                         </select>
                     </div>
-                    <input type="number" name="age"  class="km-input km-age-input" placeholder="Age" min="0" max="150">
-                    <input type="text" name="first-name"  class="km-input first-name-input" placeholder="First Name">
-                    <input type="text" name="middle-name"  class="km-input middle-name-input" placeholder="Middle Name (optional)">
-                    <input type="text" name="last-name"  class="km-input last-name-input" placeholder="Last Name">
-                    <input type="email" name="email"  class="km-input e-mail-input" placeholder="Email Id">
-                    <input type="number" name="contact-no"  class="km-input number-input" placeholder="Contact Number">
+                    <input type="number" name="age"  class="km-input km-age-input" placeholder="Age *" min="0" max="150">
+                    <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-left" placeholder="First Name *">
+                    <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
+                    <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-right" placeholder="Last Name *">
+                    <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-left" placeholder="Email Id *">
+                    <input type="number" name="contact-no"  class="km-input number-input km-pxinfo-btn-right" placeholder="Contact Number ">
                 </div>
                 <div class="km-guest-button-container">
                     <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>

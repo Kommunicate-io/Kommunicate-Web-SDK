@@ -4431,5 +4431,13 @@ cursor: pointer;
     color: #000000;
     display: inline-block;
 }
-
+.km-pxinfo-btn-left{
+	display: inline !important;
+	width: 41.5% !important;
+  }
+  .km-pxinfo-btn-right{
+	display: inline !important;
+	width: 43% !important;
+	margin-left: 5px !important;
+  }
 /********** Guest Details Form Ends Here ***********/
