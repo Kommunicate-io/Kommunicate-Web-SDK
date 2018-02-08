@@ -23,7 +23,7 @@ class SettingsSidebar extends Component {
                             <NavLink to={'/welcome-message'} className="ss-nav-link" activeClassName="active">Welcome Message</NavLink>
                         </li>
                         <li className="ss-nav-item message-shortcut-link">
-                            <NavLink to={'/message-shortcuts'} className="ss-nav-link" activeClassName="active">Message Shortcuts</NavLink>
+                            <NavLink to={'/message-shortcuts'} className="ss-nav-link" activeClassName="active">Quick Replies</NavLink>
                         </li>
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/settings/integration'} className="ss-nav-link" activeClassName="active">Install</NavLink>

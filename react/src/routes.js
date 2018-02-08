@@ -11,7 +11,7 @@ const routes = {
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
   '/admin': "Profile",
-  '/message-shortcuts': 'Message Shortcuts',
+  '/message-shortcuts': 'Quick Replies',
   '/welcome-message': 'Welcome Message'
 };
 

@@ -9162,7 +9162,7 @@ hr.transparent {
 }
 
 .header-user-name {
-  width: 104px;
+  /* width: 104px; */
   height: 20px;
   font-size: 15px;
   letter-spacing: 1.1px;

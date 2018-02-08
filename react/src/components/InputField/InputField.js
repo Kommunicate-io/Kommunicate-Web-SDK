@@ -7,12 +7,13 @@ const InputField = (props) => (
         <div className="input-label-div">
             <Input
                 className="input"
+                id={props.id}
                 name={props.name}
                 type={props.inputType}
-                value={props.content}
-                onChange={props.controlFunc}
-                onKeyPress={props.keyPressFunc}
-                onBlur={props.blurFunc}
+                value={props.value}
+                onChange={props.onChange}
+                onKeyPress={props.onKeyPress}
+                onBlur={props.onBlur}
                 placeholder=" "
                 required={props.required} />
             <Label className="label-for-input">{props.title}</Label>
@@ -28,12 +29,13 @@ const InputField = (props) => (
 
 InputField.propTypes = {
     inputType: React.PropTypes.oneOf(['text', 'number', 'email', 'url', 'password']).isRequired,
+    id: React.PropTypes.string.isRequired,
     title: React.PropTypes.string.isRequired,
 	name: React.PropTypes.string.isRequired,
-	controlFunc: React.PropTypes.func.isRequired,
-	keyPressFunc: React.PropTypes.func.isRequired,
-	blurFunc: React.PropTypes.func.isRequired,
-	content: React.PropTypes.oneOfType([
+	onChange: React.PropTypes.func.isRequired,
+	onKeyPress: React.PropTypes.func.isRequired,
+	onBlur: React.PropTypes.func.isRequired,
+	value: React.PropTypes.oneOfType([
 		React.PropTypes.string,
         React.PropTypes.number,
 	]).isRequired,

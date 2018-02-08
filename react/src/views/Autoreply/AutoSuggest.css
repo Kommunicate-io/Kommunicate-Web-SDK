@@ -4,19 +4,27 @@ body{
 .message-shortcuts-title {
     
     font-size: 18px;
-    letter-spacing: 1.3px;
-    text-align: left;
-    color: #515050;
-    /* font-weight: 100; */
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  /* letter-spacing: 1.3px; */
+  text-align: left;
+  color: #354052;
 }
 .message-shortcuts-title-wrapper {
     padding: 20px;
 }
 .message-shortcuts-description {
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-align: left;
-    color: #515050;
+    font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  /* letter-spacing: 0.8px; */
+  text-align: left;
+  color: #a1a1a1;
+  margin-top: 15px;
 }
 .create-message-shortcut-button{
     border: 0;
@@ -36,9 +44,9 @@ body{
     display: flex
 }
 .field-title{
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 500;
+    /* letter-spacing: 1px; */
     text-align: left;
     color: #777474;
     padding: 5px 0;
