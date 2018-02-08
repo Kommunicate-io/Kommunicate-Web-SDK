@@ -6,7 +6,7 @@ const routes = {
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot Integration',
-  '/settings/integration': 'Integration',
+  '/settings/integration': 'Install',
   '/team': 'Team',
   '/configuration':"Configuration",
   '/autoreply':"Configuration",

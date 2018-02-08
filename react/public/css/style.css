@@ -8597,7 +8597,7 @@ app-root {
   flex-direction: column;
   min-height: 100vh;
   /* overflow-x: hidden; */
-  /* background-color: #fff;  */
+  background-color: #fff; 
 }
 
 .app-header {
@@ -10329,4 +10329,8 @@ input:required {
 
 .km-bot-cursor-pointer {
   cursor: pointer;
+}
+
+.km-container {
+  height: calc(100% - 55px) !important;
 }

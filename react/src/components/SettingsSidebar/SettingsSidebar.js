@@ -26,7 +26,7 @@ class SettingsSidebar extends Component {
                             <NavLink to={'/message-shortcuts'} className="ss-nav-link" activeClassName="active">Message Shortcuts</NavLink>
                         </li>
                         <li className="ss-nav-item integrations-link">
-                            <NavLink to={'/settings/integration'} className="ss-nav-link" activeClassName="active">Integrations</NavLink>
+                            <NavLink to={'/settings/integration'} className="ss-nav-link" activeClassName="active">Install</NavLink>
                         </li>
                         <li className="ss-nav-item team-link">
                             <NavLink to={'/team'} className="ss-nav-link" activeClassName="active">Team</NavLink>

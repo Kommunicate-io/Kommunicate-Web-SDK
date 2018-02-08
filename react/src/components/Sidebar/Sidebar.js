@@ -93,7 +93,7 @@ class Sidebar extends Component {
               <NavLink to={'/bot'} className="nav-link" activeClassName="active"><i className="icon-magic-wand"></i> Bot <span className="badge badge-info n-vis">NEW</span></NavLink>
             </li> */}
             <li className="nav-item">
-              <NavLink to={'/bot'} className="nav-link" activeClassName="active"  data-tip="Bot" data-effect="solid" data-place="right"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 42 46.4" className="bot-icon-svg">
+              <NavLink to={'/bot'} className="nav-link" activeClassName="active"  data-tip="Bot Integration" data-effect="solid" data-place="right"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" viewBox="0 0 42 46.4" className="bot-icon-svg">
     <path className="cls-1" d="M40,18.6A18.8,18.8,0,0,0,25,9.3V6.2a2.8,2.8,0,1,0-2.3,0V9.3A18.8,18.8,0,0,0,7.4,18.9,11.5,11.5,0,0,0,7.4,37l.5.8a6.8,6.8,0,0,1-.2,5.8c-1.5,3.2-2.8,3.5-2.8,3.5s6.9.8,11.8-1.7h0a18.8,18.8,0,0,0,23.4-8A11.5,11.5,0,0,0,40,18.6ZM32.4,37.3H15.6a9.4,9.4,0,0,1,0-18.7H32.4a9.4,9.4,0,0,1,0,18.7Z"
     transform="translate(-3 -.8)" />
     <circle className="cls-1" cx="12.4" cy="27.1" r="2.5" />
