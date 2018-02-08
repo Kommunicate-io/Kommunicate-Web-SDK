@@ -3743,7 +3743,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                         return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
                     } else {
-                        return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
+						return '<a href="' + _this.getFileurl(msg) + '"  role="link" class="file-preview-link" target="_blank"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span</a>';
                     }
                 }
                 return '';
