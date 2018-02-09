@@ -94,6 +94,9 @@ class Register extends Component {
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
+      if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
+        window.Kommunicate.updateUserIdentity(userInfo.userName);
+      }
      saveToLocalStorage(email, password, name, response);
       _this.setState({disableRegisterButton:false});
 

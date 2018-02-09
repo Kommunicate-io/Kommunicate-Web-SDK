@@ -70,11 +70,18 @@ Kommunicate ={
         });
     },
     updateUserIdentity:function(newUserId){
-        $applozic.fn.applozic('updateUserIdentity', 
-                                {'newUserId':newUserId,
-                                'callback':function(response){
-                                    console.log("callback response :", response);
-                                }});
+        window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
+                                    console.log('update user name response', response)
+                                    window.Cookies.set('kommunicate-id', newUserId)
+                                    //console.log('response#####', response)
+                                    if(response=='success'){
+                                        var options = {
+                                            userId : userId
+                                            //appId :'kommunicate-support'
+                                        }
+                                        window.$applozic.fn.applozic('reInitialize', optipns);   
+                                    }
+                                }});                                         
     },
     isRichTextMessage:function(metadata){
         // contentType should be 300 for rich text message in metadata
