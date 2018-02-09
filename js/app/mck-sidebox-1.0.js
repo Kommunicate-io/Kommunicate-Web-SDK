@@ -6119,7 +6119,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
             var CONTACT_LIST_URL = "/rest/ws/user/filter";
             var USER_STATUS_URL = "/rest/ws/user/chat/status";
-            var USER_IDENTITY_UPDATE_URL = "rest/ws/user/change/identifier";
+            var USER_IDENTITY_UPDATE_URL = "/rest/ws/user/change/identifier";
 
             _this.getContactDisplayName = function (userIdArray) {
                 var mckContactNameArray = [];
@@ -6347,30 +6347,27 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (params.newUserId === null || params.newUserId === "") {
                     return;
                 }
-                var data = { 'newUserId': params.newUserId }
+                var data = 'newUserId='+ params.newUserId ;
                 mckUtils.ajax({
                     url: MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
                     type: 'get',
                     data: data,
-                    success: function (data) {
-                        if (typeof data === 'object') {
-                            if (data.status === 'success') {
-                                console.log(data);
-                                MCK_USER_ID = params.newUserId;
-                                var mckAppHeaders=  mckStorage.getAppHeaders(data);
-                                mckAppHeaders.userId=MCK_USER_ID;
-                                mckStorage.setAppHeaders(mckAppHeaders);
-                                AUTH_CODE = btoa(mckAppHeaders.userId + ':' + mckAppHeaders.deviceKey);
+                    contentType : 'application/json',
+                    success: function (res) {
+                        if (typeof res === 'object') {
+                            console.log(res);
+                            if (res.status === 'success') {
                                 if (params.callback) {
                                     //update access token here
-                                    params.callback(data);
+                                    params.callback(res);
                                 }
                             }
                         }
+                        return;
                     },
-                    error: function (data) {
+                    error: function (res) {
                         if (params.callback) {
-                            params.callback(data);
+                            params.callback({response:'error'});
                         }
                     }
                 });
