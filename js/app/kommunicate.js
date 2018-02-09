@@ -71,15 +71,9 @@ Kommunicate ={
     },
     updateUserIdentity:function(newUserId){
         window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
-                                    console.log('update user name response', response)
                                     window.Cookies.set('kommunicate-id', newUserId)
-                                    //console.log('response#####', response)
                                     if(response=='success'){
-                                        var options = {
-                                            userId : userId
-                                            //appId :'kommunicate-support'
-                                        }
-                                        window.$applozic.fn.applozic('reInitialize', optipns);   
+                                        window.$applozic.fn.applozic('reInitialize', {userId:newUserId});   
                                     }
                                 }});                                         
     },
