@@ -16,11 +16,14 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'Customer Communication Software | Kommunicate' /* title for your website */,
+  title: 'Kommunicate' /* title for your website */,
   tagline: 'Customer Communication Software | Kommunicate',
   url: 'https://docs.kommunicate.io' /* your website url */,
   baseUrl: '/' /* base url for your project */,
-  projectName: '',
+  organizationName: 'Kommunicate',
+  projectName: 'Kommunicate Docs',
+  cname: 'kommunicate.io',
+  noIndex: false,
   headerLinks: [
     {doc: 'installation', label: 'Docs'},
    
@@ -42,15 +45,12 @@ const siteConfig = {
     secondaryColor: '#312f6f',
   },
   // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
-  copyright:
-    'Copyright © ' +
-    new Date().getFullYear() +
-    'Kommunicate',
+  copyright: 'Copyright © ' + new Date().getFullYear() + ' Kommunicate',
   // organizationName: 'deltice', // or set an env variable ORGANIZATION_NAME
   // projectName: 'test-site', // or set an env variable PROJECT_NAME
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
-    theme: 'default',
+    theme: 'vs2015',
   },
   scripts: ['https://buttons.github.io/buttons.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
