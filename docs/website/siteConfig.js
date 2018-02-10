@@ -16,7 +16,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'Kommunicate' /* title for your website */,
+  title: '' /* title for your website */,
   tagline: 'Customer Communication Software | Kommunicate',
   url: 'https://docs.kommunicate.io' /* your website url */,
   baseUrl: '/' /* base url for your project */,
