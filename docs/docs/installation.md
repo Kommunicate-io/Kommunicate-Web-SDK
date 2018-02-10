@@ -1,7 +1,7 @@
 ---
 id: installation
 title: Install Javascript Chat Plugin on Website
-sidebar_label: java script
+sidebar_label: Javascript
 ---
 
 

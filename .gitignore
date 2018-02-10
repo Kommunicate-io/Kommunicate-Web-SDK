@@ -67,3 +67,4 @@ Storage/build/*
 .DS_Store/*
 .DS_Store
 docs/website/package-lock.json
+docs/website/i18n/en.json

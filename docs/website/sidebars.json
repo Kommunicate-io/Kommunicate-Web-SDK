@@ -1,8 +1,7 @@
 {
   "docs": {
-    "Java Script": ["installation"],
-    "Kommunicate-Android-SDK": ["Kommunicate-Android-Chat-SDK-Customer-Support"],
-    "Testing": ["testing"]
+    "Web": ["installation"],
+    "Android": ["Kommunicate-Android-Chat-SDK-Customer-Support"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
