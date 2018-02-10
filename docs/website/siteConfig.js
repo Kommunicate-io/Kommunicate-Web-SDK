@@ -16,8 +16,8 @@ const users = [
 ];
 
 const siteConfig = {
-  title: '' /* title for your website */,
-  tagline: 'Smart messaging software|kommunication',
+  title: 'Customer Communication Software | Kommunicate' /* title for your website */,
+  tagline: 'Customer Communication Software | Kommunicate',
   url: 'https://docs.kommunicate.io' /* your website url */,
   baseUrl: '/' /* base url for your project */,
   projectName: '',
@@ -27,7 +27,9 @@ const siteConfig = {
    {/*{doc: 'doc4', label: 'API'},
    {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
-  */}
+  */},
+    // Determines search bar position among links
+    { search: true }
   ],
   users,
   /* path to images for header/footer */
@@ -36,8 +38,8 @@ const siteConfig = {
   favicon: 'img/favicon.png',
   /* colors for website */
   colors: {
-    primaryColor: '#2E8555',
-    secondaryColor: '#205C3B',
+    primaryColor: '#5C5AA7',
+    secondaryColor: '#312f6f',
   },
   // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
   copyright:
