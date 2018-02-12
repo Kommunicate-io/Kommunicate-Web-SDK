@@ -34,18 +34,12 @@ function getJsCode (){
   console.log(options);
 
 var jsScript= `<script type="text/javascript">
-    (function(d, m){
-      // you can change the below values to customize conversations. 
-      // see the complete list of options in "More instructions Tab" 
+    (function(d, m){ 
       let o = ${JSON.stringify(options)};
-      let s = document.createElement("script");
-      s.type = "text/javascript";
-      s.async = true;
+      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
       s.src = "${getConfig().kommunicateApi.pluginUrl}";
-      let h = document.getElementsByTagName("head")[0];
-      h.appendChild(s);
-      window.kommunicate = m;
-      m._globals = o;
+      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = o;
     })(document, window.kommunicate || {});
 </script>`;
 console.log(jsScript);

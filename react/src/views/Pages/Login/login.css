@@ -119,10 +119,10 @@
     margin-bottom: 15px;
 }
 
-.signup-app-div, .login-app-div {
+.signup-app-div, .login-app-div, .applozic-user-signup {
     background: transparent;
 }
-.signup-app-div::after, .login-app-div::after {
+.signup-app-div::after, .login-app-div::after, .applozic-user-signup::after {
     content: '';
     background: #F4F0F0;
     background-repeat: repeat;
@@ -160,11 +160,11 @@
 .signup-card-block {
     padding: 50px !important;
 }
-.signup-button-row p {
+.signup-button-row p, .applozic-user-signup-btn-row p {
     margin-top: 50px;
     font-size: 16px;
 }
-.signup-card-block .btn-primary-custom {
+.signup-card-block .btn-primary-custom, .applozic-user-signup .btn-primary-custom {
     width: 100%;
     letter-spacing: 0.4px;
     font-size: 16px;
@@ -174,7 +174,7 @@
     .signup-card-block {
         padding:20px !important;
     }
-    .signup-app-div {
+    .signup-app-div, .applozic-user-signup  {
         background: #F4F0F0;
         display: block;
         padding-top: 120px;
@@ -185,5 +185,11 @@
     .mx-4 {
         margin-left: 0px !important;
         margin-right: 0px !important;
+    }
+}
+
+@media(min-width:768px) and (max-width:991px) {
+    .signup-app-div .col-md-6, .applozic-user-signup .col-md-6 {
+        width: 100%;
     }
 }

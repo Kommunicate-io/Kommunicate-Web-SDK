@@ -1,5 +1,3 @@
-
-
 Kommunicate ={
     getBaseUrl: function(){
         switch(MCK_BASE_URL){
@@ -70,28 +68,20 @@ Kommunicate ={
         });
     },
     updateUserIdentity:function(newUserId){
-        window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
-                                    window.Cookies.set('kommunicate-id', newUserId)
-                                    if(response=='success'){
-                                        window.$applozic.fn.applozic('reInitialize', {userId:newUserId});   
-                                    }
-                                }});                                         
-    },
-    isRichTextMessage:function(metadata){
-        // contentType should be 300 for rich text message in metadata
-        return metadata&&metadata.contentType==300;
+        $applozic.fn.applozic('updateUserIdentity', 
+                                {'newUserId':newUserId,
+                                'callback':function(response){
+                                    console.log("callback response :", response);
+                                }});
     },
     getConatainerTypeForRichMessage : function(metadata){
-        // this method is obsolete, not in use. use km-div-slider to get slide effect
         if(metadata){
             switch(metadata.templateId){
-                // add template Id to enable slick effect
+                // add template Id to enable slick effsect
                 // 2 for get room pax info template
                 case "2":
-                case "4" : 
                     return "km-slick-container";
                     break;
-
                 default:
                     return "km-fixed-container";
                     break;
@@ -100,19 +90,11 @@ Kommunicate ={
         }
 
     },
-    processPaymentRequest:function(options){
-
+    isRichTextMessage:function(metadata){
+        // contentType should be 300 for rich text message in metadata
+        return metadata&&metadata.contentType==300;
     },
-    sendMessage: function(messagePxy){
-        var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to=  $applozic("#mck-msg-to");
- 
-         if ($mck_msg_inner.data("isgroup") === true) {
-             messagePxy.groupId = $mck_msg_to.val();
-             } else {
-             messagePxy.to = $mck_msg_to.val();
-             }
-        $applozic.fn.applozic('sendGroupMessage',messagePxy);
+    processPaymentRequest:function(options){
 
     },
     getRichTextMessageTemplate: function(metadata){
@@ -121,22 +103,13 @@ Kommunicate ={
                 // 1 for get room pax info template
                 case "1":
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
-                    break;
+                break;
                 //2 for hotel card template
                 case "2":
-                    
                     return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
-                    break;
-                // 3 for button container
-                case "3": 
-                    return Kommunicate.markup.buttonContainerTemplate(metadata); 
-                    break;
-                case "5":
-                    return Kommunicate.markup.getPassangerDetail(metadata);
-                    break;
-                case "4":
-                return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
                 break;
+                case "3": 
+                return Kommunicate.markup.buttonContainerTemplate(metadata); 
                 default:
                 return "";
                 break;

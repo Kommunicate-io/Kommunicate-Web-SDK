@@ -54,8 +54,11 @@ exports.addMemberIntoConversation = (data) => {
                         if(user.type===2){
                             if (user.userName === 'bot') { 
                                 header.apzToken = user.apzToken 
-                            }   
-                        } else{
+                            }if(user.allConversations==1){
+                                groupInfo.userIds.push(user.userName);
+                            }
+                        }
+                         else{
                             groupInfo.userIds.push(user.userName);
                         } 
                         if(user.type===3){

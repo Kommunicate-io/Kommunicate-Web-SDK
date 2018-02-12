@@ -1,6 +1,9 @@
 {
   "docs": {
-    "Java Script": ["installation"]
+    "Chat SDK":["installations","authentication","installation-ios","installation-android"],
+    "Web": ["web-docs"]
+    
+    
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

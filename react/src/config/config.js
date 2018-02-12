@@ -13,9 +13,9 @@ var baseurl ={
   },
   default:{
    //baseUrl: "https://apps-test.applozic.com",
-   baseUrl: "http://localhost:9090/applozic",
-   kommunicateAPI: "http://localhost:3999"
-  //kommunicateAPI: "https://api-test.kommunicate.io"
+  baseUrl: "http://localhost:9090/applozic",
+  kommunicateAPI: "http://localhost:3999"
+  // kommunicateAPI: "https://api-test.kommunicate.io"
 
   }
 }

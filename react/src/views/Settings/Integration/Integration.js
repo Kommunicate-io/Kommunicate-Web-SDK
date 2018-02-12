@@ -4,6 +4,7 @@ import MultiEmail from '../../MultiEmail/';
 import Accordion from './Accordion';
 import {getJsCode,getJsInstructions} from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
+import Notification from '../../model/Notification';
 
 
 const pluginBaseUrl = getConfig().kommunicateApi.pluginUrl;
@@ -15,7 +16,8 @@ class Integration extends Component {
     super(props, defaultProps);
     this.state = {
       copySuccess: "Copy",
-      cardSize:10
+      cardSize:10,
+      displayInstructions: true
     };
 
     this.script = getJsCode();
@@ -35,7 +37,7 @@ class Integration extends Component {
   }
 
   componentDidMount(){
-    document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
+    // document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
   }
   
   copyToClipboard = e => {
@@ -43,7 +45,17 @@ class Integration extends Component {
     this.textArea.select();
     document.execCommand("copy");
     e.target.focus();
-    this.setState({ copySuccess: "Copied!" });
+    this.setState({ copySuccess: "Copy" });
+    Notification.info("Code copied successfully!");
+  };
+
+  hideInstructions = e => {
+    e.preventDefault();
+    this.setState({displayInstructions: true});
+  };
+  showInstructions = e => {
+    e.preventDefault();
+    this.setState({displayInstructions: false});
   };
 
   render() {
@@ -54,43 +66,49 @@ class Integration extends Component {
             <div className="card">
               <div className="intgration-card-header">
                 <h5>
-                Follow the steps below to add Kommunicate Chat in your product
+                Follow the steps below to install Kommunicate Chat in your website
                 </h5>
               </div>
-              <div className="card-main">
-                  <div>
-                    <h6>1. Locate the header or body tags in your code</h6>
-                  </div>
-                  <div className="outer-box col-md-10 integration-font"> 
-                    <p>Find the <b>&lt;head &gt; &lt;/head&gt;</b> or the <b>&lt;body&gt; &lt;/body&gt;</b> tags in your code.</p>
-                    <p>You will be required to paste the code within either of these tags.</p>
-                    <div id="instruction-display-area"/>
-                    </div>
-                  
-                  <div>
-                    <h6>2. Copy the code from below and paste it as explained in point 1</h6>
-                  </div>
+              <div className="card-main">                  
                   <div className="outer-box col-md-10 integration-font">
-                    <p> Paste the Kommunicate code just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags.</p>
+                    <p style={{fontSize:"16px", color:"#878585", letterSpacing:"normal"}}>Copy the code from below and paste it just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags tags on every page you want the chat widget to appear.</p>
                     <div>
                           <textarea
                             className="script-text-area"
                             ref={textarea => (this.textArea = textarea)}
-                            rows="16"
+                            rows="12"
                             value={this.script}
                             readOnly
                           />
                     </div>
-                  <div>
+                  <div className="copy-code-button-div">
                   {document.queryCommandSupported("copy") && (
                           <button
                             type="button"
-                            className="btn btn-primary btn-primary-custom"
+                            className="copy-code-btn km-button km-button--primary"
                             onClick={this.copyToClipboard}
                           >
                             {this.state.copySuccess}
                           </button>
                       )}
+                  </div>
+                  <div className="instructions-link-div">
+                      <a href="#/" onClick={this.showInstructions}>How to <span><strong>Identify your users</strong></span> or allow them to <span><strong>Chat anonymously?</strong></span></a>
+                      <div id="show-instructions" className="show-instructions animated fadeIn" hidden={this.state.displayInstructions}>
+                        <p><strong>Default parameters are pre populated. You can change them as you need.</strong></p>
+                        <p>Parameters:</p>
+                        <ul>
+                          <li><strong>appId</strong> - your application Id.</li>
+                          <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
+                        </ul>
+                        <div style={{marginTop:"25px"}}>
+                          <button
+                            type="button"
+                            className="km-button km-button--secondary"
+                            onClick={this.hideInstructions}
+                          >Close</button>
+                        </div>
+                      </div>
                   </div>
                   </div>
                   <div id="outer">
@@ -108,7 +126,7 @@ class Integration extends Component {
         
                       <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                      
-                    <Accordion data={this.data}/>
+                    {/* <Accordion data={this.data}/> */}
                 </div>
             </div>
           </div>
