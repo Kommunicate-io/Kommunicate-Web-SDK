@@ -205,7 +205,7 @@ class Dashboard extends Component {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card" style={{borderRight: "1px solid #979797", borderLeft: "1px solid #979797", borderBottom: "1px solid #979797"}}>
           <div className="card-block">
             <div className="row">
               <div className="col-sm-5">

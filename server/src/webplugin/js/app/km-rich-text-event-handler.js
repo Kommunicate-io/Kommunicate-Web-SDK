@@ -11,7 +11,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
     $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
     $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
-  $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
+    $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
   
 }
 
@@ -90,15 +90,6 @@ Kommunicate.richMsgEventHandler = {
         };
 
         Kommunicate.sendMessage(messagePxy);
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
     },
     processHotelBookClick: function (e) {
         var target = e.target || e.srcElement;
@@ -107,7 +98,7 @@ Kommunicate.richMsgEventHandler = {
         var hotelName = target.dataset.name;
 
         var messagePxy = {
-            'message': "Book " + hotelName, //message to send 
+            'message': "Get room detail of " +hotelName , //message to send 
             'metadata': {
                 hotelSelected: true,
                 sessionId: sessionId,
@@ -117,17 +108,6 @@ Kommunicate.richMsgEventHandler = {
         };
 
         Kommunicate.sendMessage(messagePxy);
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
-
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
-
-
     },
 
     processBookRoomClick: function (e) {
@@ -138,7 +118,7 @@ Kommunicate.richMsgEventHandler = {
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
         var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
-            'message': "Book " +HotelName ,
+            'message': "Book " + HotelName,
             'metadata': {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
@@ -174,10 +154,39 @@ Kommunicate.richMsgEventHandler = {
         }
 
     },
-    handlleSubmitPersonDetail:function(){
-        var  target = e.target || e.srcElement;
+   
+    handlleSubmitPersonDetail: function (e) {
+        var title = $(e.target).closest('.km-guest-details-container').find(".km-title-select option:selected").text();
+        var age = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.km-age-input");
+        var fname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input");
+        var mname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
+        var lname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
+        var email = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
+        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input").val();
+        if(fname[0].value==""){
+            $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
+            return;
+        }
+        var personDetail = {
+            Title: title === 'title' ? "" : title,
+            Age: age[0].value,
+            FirstName: fname[0].value,
+            MiddleName: mname[0].value,
+            LastName: lname[0].value,
+            EmailId: email[0].value,
+            PhoneNo: phone
+        }
+        var target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
-        var messagePxy={message:"Passenger detail submitted",metadata:{sessionId: sessionId}};
+        var messagePxy = { 
+                        message: "Your detail submitted",
+                        metadata: { 
+                                sessionId: sessionId, 
+                                guestDetail: true, 
+                                skipBot: true, 
+                                personInfo: JSON.stringify(personDetail) 
+                                } 
+                            };
         Kommunicate.sendMessage(messagePxy);
         console.log("passenger detail submitted");
     }

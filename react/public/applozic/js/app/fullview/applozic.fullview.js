@@ -3182,8 +3182,11 @@ var KM_CLIENT_GROUP_MAP = [];
 			var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
 			var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
+
+      
 			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}}</div>' + '<div class="km-msg-text km-msg-content"></div>' + '</div></div>' + '<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>'+
 			'<div class="km-msg-box-rich-text-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>';
+
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
 			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
@@ -3610,6 +3613,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					selfDestructTimeExpr : msg.timeToLive,
 					fileMetaKeyExpr : msg.fileMetaKey,
 					fileExpr : _this.getFilePath(msg),
+					fileUrlExpr: _this.getFileurl(msg),
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize,
 					kmRichTextMarkupVisibility:richText?'vis':'n-vis',
@@ -3713,38 +3717,51 @@ var KM_CLIENT_GROUP_MAP = [];
 					});
 				}
 			};
-			_this.getFilePath = function(msg) {
-				if (msg.contentType === 2) {
-					try {
-						var geoLoc = $kmApplozic.parseJSON(msg.message);
-						if (geoLoc.lat && geoLoc.lon) {
-							return '<a href="http://maps.google.com/maps?&z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '&key='+MCK_MAP_STATIC_API_KEY+'"/></a>';
-						}
-					} catch (ex) {
-						if (msg.message.indexOf(",") !== -1) {
-							return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message +'&key='+MCK_MAP_STATIC_API_KEY+'" /></a>';
-						}
+			_this.getFileurl = function(msg) {
+                if (typeof msg.fileMeta === "object") {
+					if(msg.fileMeta.url){
+						return msg.fileMeta.url;
+					}else{
+					return MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey;
 					}
-				}
-				if (typeof msg.fileMeta === "object") {
-					if (msg.fileMeta.contentType.indexOf("image") !== -1) {
-						if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
-						} else if (msg.contentType === 5) {
-							return '<a href="#" role="link" class="km-km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
-						} else {
-							return '<a href="#" role="link" class="km-file-preview-link kmfancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
-						}
-					} else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
-					    return '<video controls class="km-video-player">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/mp4">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="video/ogg">Your browser does not support the video tag.</video>';
-					} else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
-						return '<audio controls class="km-audio-player">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="audio/ogg">' + '<source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="audio/mpeg">Audio element not supported.</audio>' + '<p class="km-file-tag"><span class="file-name">' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></p>';
-					} else {
-						return '<a href="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" role="link" class="km-file-preview-link" target="_blank"><span class="file-detail"><span class="km-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
-					}
-				}
-				return "";
-			};
+                }
+                return '';
+            };
+
+		
+            _this.getFilePath = function (msg) {
+                if (msg.contentType === 2) {
+                    try {
+                        var geoLoc = $applozic.parseJSON(msg.message);
+                        if (geoLoc.lat && geoLoc.lon) {
+                            return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '&key=' + MCK_MAP_STATIC_API_KEY + '"/></a>';
+                        }
+                    } catch (ex) {
+                        if (msg.message.indexOf(',') !== -1) {
+                            return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + msg.message + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + msg.message + '&maptype=roadmap&markers=color:red|' + msg.message + '&key=' + MCK_MAP_STATIC_API_KEY + '" /></a>';
+                        }
+                    }
+                }
+                if (typeof msg.fileMeta === "object") {
+                    if (msg.fileMeta.contentType.indexOf("image") !== -1) {
+                        if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.getFileurl(msg) + '" area-hidden="true"></img></a>';
+                        } else if (msg.contentType === 5) {
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                        } else {
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                        }
+                    } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
+                        return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + _this.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + _this.getFileurl(msg) + '" type="video/ogg"></video></a>';
+                        //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+                    } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
+                        return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
+                    } else {
+						return '<a href="' + _this.getFileurl(msg) + '"  role="link" class="file-preview-link" target="_blank"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span</a>';
+                    }
+                }
+                return '';
+            };
 			_this.getFileIcon = function(msg) {
 				if (msg.fileMetaKey && typeof msg.fileMeta === 'object') {
 					if (msg.fileMeta.contentType.indexOf('image') !== -1) {
@@ -6527,6 +6544,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				$mck_preview_file_content = $kmApplozic("#km-msg-preview .km-preview-file-content");
 			};
 			_this.notifyUser = function(message) {
+				if (message.alert === false) {
+					return;
+				}
 				if (message.type === 7) {
 					return;
 				}

@@ -70,24 +70,28 @@ Kommunicate ={
         });
     },
     updateUserIdentity:function(newUserId){
-        $applozic.fn.applozic('updateUserIdentity', 
-                                {'newUserId':newUserId,
-                                'callback':function(response){
-                                    console.log("callback response :", response);
-                                }});
+        window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
+                                    window.Cookies.set('kommunicate-id', newUserId)
+                                    if(response=='success'){
+                                        window.$applozic.fn.applozic('reInitialize', {userId:newUserId});   
+                                    }
+                                }});                                         
     },
     isRichTextMessage:function(metadata){
         // contentType should be 300 for rich text message in metadata
         return metadata&&metadata.contentType==300;
     },
     getConatainerTypeForRichMessage : function(metadata){
+        // this method is obsolete, not in use. use km-div-slider to get slide effect
         if(metadata){
             switch(metadata.templateId){
-                // add template Id to enable slick effsect
+                // add template Id to enable slick effect
                 // 2 for get room pax info template
                 case "2":
+                case "4" : 
                     return "km-slick-container";
                     break;
+
                 default:
                     return "km-fixed-container";
                     break;
