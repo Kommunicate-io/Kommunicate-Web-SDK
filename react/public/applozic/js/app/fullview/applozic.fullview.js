@@ -6192,7 +6192,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					return false;
 				});
 				$mck_file_input.on('change', function() {
-					var file = $KmApplozic(this)[0].files[0];
+					var file = $kmApplozic(this)[0].files[0];
                     var params = {};
                     params.file = file;
                     params.name = file.name;
