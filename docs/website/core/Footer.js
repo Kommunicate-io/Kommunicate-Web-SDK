@@ -1,8 +1,5 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * Copyright (c) 2018-present, Kommunicate, Inc.
  */
 
 const React = require('react');
@@ -23,7 +20,7 @@ class Footer extends React.Component {
     return (
       <footer className="nav-footer" id="footer">
         <section className="sitemap">
-          <a href={this.props.config.baseUrl} className="nav-home">
+          {/* <a href={this.props.config.baseUrl} className="nav-home">
             {this.props.config.footerIcon && (
               <img
                 src={this.props.config.baseUrl + this.props.config.footerIcon}
@@ -32,39 +29,39 @@ class Footer extends React.Component {
                 height="58"
               />
             )}
-          </a>
+          </a> */}
           <div>
             <h5>Docs</h5>
             <a href={this.docUrl('installation.html', this.props.language)}>
-              Getting Started (or other categories)
+              Web
             </a>
-            <a href={this.docUrl('doc2.html', this.props.language)}>
-              Guides (or other categories)
+            <a href={this.docUrl('Kommunicate-Android-Chat-SDK-Customer-Support.html', this.props.language)}>
+              Android
             </a>
-            <a href={this.docUrl('doc3.html', this.props.language)}>
-              API Reference (or other categories)
+            <a href="https://docs.applozic.com/docs/ios-chat-sdk" target="_blank">
+              iOS
+            </a>
+            <a href="https://docs.applozic.com/docs/ionic-phonegap-cordova-chat-sdk" target="_blank">
+            Ionic/Phonegap
+            </a>
+            <a href="https://docs.applozic.com/docs/xamarin-chat-sdk" target="_blank">
+            Xamarin
             </a>
           </div>
           <div>
-            <h5>Community</h5>
-            <a href={this.pageUrl('users.html', this.props.language)}>
+            <h5>Product</h5>
+            {/* <a href={this.pageUrl('users.html', this.props.language)}>
               User Showcase
-            </a>
-            <a
-              href="http://stackoverflow.com/questions/tagged/"
-              target="_blank">
-              Stack Overflow
-            </a>
-            <a href="https://discordapp.com/">Project Chat</a>
-            <a href="https://twitter.com/" target="_blank">
-              Twitter
-            </a>
+            </a> */}
+            <a href="https://www.kommunicate.io/pricing" className="footer-pricing">Pricing and FAQs</a>
+            <a href="https://calendly.com/kommunicate/15min" target="_blank">Request Demo</a>
           </div>
           <div>
-            <h5>More</h5>
-            <a href={this.props.config.baseUrl + 'blog'}>Blog</a>
-            <a href="https://github.com/">GitHub</a>
-            <a
+            <h5>Social</h5>
+            <a href="https://facebook.com/kommunicateio" target="_blank">Facebook</a>
+            <a href="https://twitter.com/kommunicateio" target="_blank">Twitter</a>
+            <a href="https://www.linkedin.com/company/13623163/" target="_blank">Linkedin</a>
+            {/* <a
               className="github-button"
               href={this.props.config.repoUrl}
               data-icon="octicon-star"
@@ -73,12 +70,12 @@ class Footer extends React.Component {
               data-count-aria-label="# stargazers on GitHub"
               aria-label="Star this project on GitHub">
               Star
-            </a>
+            </a> */}
           </div>
         </section>
 
         <a
-          href="https://code.facebook.com/projects/"
+          href="https://kommunicate.io"
           target="_blank"
           className="fbOpenSource">
           <img
