@@ -9,8 +9,7 @@ Kommunicate.attachEvents = function($kmApplozic){
     $kmApplozic("#km-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
     $kmApplozic("#km-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
     $kmApplozic("#km-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
-   // $kmApplozic("#km-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.initializeSlick);
-   
+ 
 }
 
 
@@ -21,41 +20,25 @@ Kommunicate.attachEvents = function($kmApplozic){
  */
 Kommunicate.richMsgEventHandler ={
     initializeSlick:function($cardMessageContainer){
-        if ($cardMessageContainer.length >= 0) {
+            if ($cardMessageContainer.length >= 0) {
             var slider = tns({
-                container: '.km-div-slider',
-                items: 10,
-                slideBy: 'page',
+               // container: $cardMessageContainer[0],
+                container:".km-card-message-container",
+                items: 1,
+                slideBy: 1,
                 "mouseDrag": true,
-                "arrowKeys": true
+                "arrowKeys": true,
+                onInit : function(){
+                    console.log("tiny-slider initilized");
+                   document.querySelector(".km-msg-box-rich-text-container .tns-controls button:first-child").innerHTML='<';
+                   document.querySelector(".km-msg-box-rich-text-container .tns-controls button:last-child").innerHTML='>';
+
+                 }
               });
         }
-
-            /*$cardMessageContainer.slick({
-                    dots: false,
-                    infinite: false,
-                    speed: 300,
-                    slidesToShow: 1,
-                    centerMode: false,
-                    variableWidth: true,
-                    prevArrow: false,
-                    nextArrow: false
-                }); */
-    },
-    changeSlider: function() {
-        slider.getInfo();
         
-        document.querySelector('.next-button').onclick = function () {
-          // get slider info
-          var info = slider.getInfo(),
-              indexPrev = info.indexCached;
-              indexCurrent = info.index;
-        
-          // update style based on index
-          info.slideItems[indexPrev].classList.remove('active');
-          info.slideItems[indexCurrent].classList.add('active');
-        };
     },
+    
     decrementGuestCount: function(e) {
         var  target = e.target || e.srcElement;
         target.parentElement.getElementsByClassName('km-room-number-field')[0].stepDown();
@@ -129,7 +112,9 @@ Kommunicate.richMsgEventHandler ={
                 skipBot:true
             }
         };
+
        var $mck_msg_inner= $kmApplozic("#km-message-cell .km-message-inner");
+
        var $mck_msg_to=  $kmApplozic("#km-msg-to");
 
         if ($mck_msg_inner.data("isgroup") === true) {
@@ -137,7 +122,9 @@ Kommunicate.richMsgEventHandler ={
             } else {
             messagePxy.to = $mck_msg_to.val();
             }
+
        $kmApplozic.fn.applozic ('sendGroupMessage',messagePxy);
+
 
 
     },
@@ -152,6 +139,7 @@ Kommunicate.richMsgEventHandler ={
             form.submit();
 
         }
+
 
     },
     handlleHotelSlider:function(e){
@@ -168,6 +156,7 @@ Kommunicate.richMsgEventHandler ={
           info.slideItems[indexPrev].classList.remove('active');
           info.slideItems[indexCurrent].classList.add('active');
         };
+
     }
 
 }

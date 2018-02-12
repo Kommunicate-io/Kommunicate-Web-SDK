@@ -1320,7 +1320,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	overflow: auto;
 	-webkit-overflow-scrolling: touch;
 }
-
+#mck-message-cell .li {
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+}
 .mck-gm-search-box .mck-box-body .mck-tab-cell {
 	height: 300px;
 }
@@ -3931,7 +3934,6 @@ cursor: pointer;
 	top: 0;
 	float: left;
 	margin: 5px 0px 0px 7px;
-	width:100%;
 	color:#7766B5;
 }
 
@@ -4192,9 +4194,6 @@ cursor: pointer;
 	display: none;
 }
 
-.tns-controls {
-	padding-bottom: 8px;
-}
 .km-cta-multi-button-container {
     display: flex;
     flex-flow: row;
@@ -4304,4 +4303,132 @@ cursor: pointer;
 .km-done-button {
     float: right;
 }
+
+/********** Guest Details Form Ends Here ***********/
+/******* Tiny Silder **********/
+.tns-outer .tns-outer .tns-controls button {
+	display: none;
+} 
+.km-fixed-container{
+	width:100%;
+}
+.km-msg-box-rich-text-container .tns-outer {
+	position: relative;
+}
+
+.km-msg-box-rich-text-container .tns-outer .tns-controls button{
+    position: absolute;
+    padding: 0;
+    top: 50%; 
+    background-color: #ffffff;
+    width: 30px;
+    height: 30px;
+    border-radius: 44px;
+    box-shadow: 1px 2px 4px 1px rgba(0,0,0,.12);
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    z-index: 5;
+    transform: translateY(-50%);
+}
+.km-msg-box-rich-text-container .tns-outer .tns-controls button:first-child{
+	left :-12px;
+}
+.km-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
+	margin-left: 830px;
+}
+/*** Tiny Slider ends here ***/
+/* Room Details after Blocking Room */
+.km-card-room-detail-container {
+	/* width: 90%; */
+	 /*overflow-x: hidden;*/
+	 /* margin-right: 0px; */
+	 margin: 0;
+	 width: 315px;
+	 padding-left: 0;
+	 max-width: 100%;
+	 transform: translateX(-10px);
+ }
+.message.km-blocked-room {
+    padding: 0;
+    width: 100%;
+}
+.km-blocked-room-details {
+    padding: 0px;;
+}
+.km-blocked-room-image-container {
+    border-radius: 8px 8px 0px 0px;
+    width: 100%;
+    height: 100px;
+   /* background-image: url('/images/card-message-img-1.jpg');*/
+    background-size: cover;
+    background-position-y: 30%;
+}
+.km-blocked-room-text-container {
+    padding-top: 5px;
+}
+.km-blocked-room-button-container{
+    width: 100%;
+    height: 35px;
+}
+.km-blocked-room-button-container button{
+    width: 100%;
+    outline: none;
+    border: none;
+    background: transparent;
+    height: 100%;
+    color: #00b0ff;
+    font-size: 15px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.km-blocked-room-room-type, .km-blocked-room-guests, .km-blocked-room-price, .km-blocked-room-sub-total {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.24);
+	padding: 7px 12px;
+	display: flex;
+	justify-content: space-between;
+}
+.km-blocked-room-room-type span:first-child, .km-blocked-room-guests span:first-child  {
+    font-size: 14px;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.km-blocked-room-room-type span:last-child, .km-blocked-room-guests span:last-child, .km-blocked-room-price span:last-child, .km-blocked-room-sub-total span:last-child {
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+	display: inline-block;
+   	width: 122px;
+   	overflow: hidden;
+	text-align: right;
+	word-wrap: break-word;	
+}
+.km-blocked-room-sub-total span:last-child {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00b0ff;
+    float: right;
+}
+.km-blocked-room-price p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px 0px 5px;
+    display: inline-block;
+}
+.km-blocked-room-price p>span, .km-blocked-room-sub-total p>span {
+    font-size: 12px !important;
+    font-weight: normal !important;
+    color: rgba(0, 0, 0, 0.5) !important;
+}
+.km-blocked-room-sub-total p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0px 0px 5px;
+    color: #000000;
+    display: inline-block;
+}
+
 /********** Guest Details Form Ends Here ***********/

@@ -1,5 +1,3 @@
-
-
 Kommunicate ={
     getBaseUrl: function(){
         switch(MCK_BASE_URL){
@@ -75,6 +73,22 @@ Kommunicate ={
                                 'callback':function(response){
                                     console.log("callback response :", response);
                                 }});
+    },
+    getConatainerTypeForRichMessage : function(metadata){
+        if(metadata){
+            switch(metadata.templateId){
+                // add template Id to enable slick effsect
+                // 2 for get room pax info template
+                case "2":
+                    return "km-slick-container";
+                    break;
+                default:
+                    return "km-fixed-container";
+                    break;
+
+            }
+        }
+
     },
     isRichTextMessage:function(metadata){
         // contentType should be 300 for rich text message in metadata
