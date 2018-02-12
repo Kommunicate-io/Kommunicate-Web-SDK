@@ -1,6 +1,6 @@
 ---
 id: installations
-title:
+title: Installation
 sidebar_label: Installation
 ---
 

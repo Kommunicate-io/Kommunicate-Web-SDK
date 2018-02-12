@@ -1,7 +1,7 @@
 ---
 id: installation-android
 title: installation-android
-sidebar_label: android
+sidebar_label: installation-android
 ---
 
 Kommunicate-Android-Chat-SDK-Customer-Support

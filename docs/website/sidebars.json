@@ -1,7 +1,8 @@
 {
   "docs": {
-    "Chat SDK":["installations","authentication"],
+    "Chat SDK":["installations","authentication","installation-ios","installation-android"],
     "Web": ["web-docs"]
+    
     
   },
   "docs-other": {
