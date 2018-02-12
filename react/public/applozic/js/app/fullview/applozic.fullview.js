@@ -3756,11 +3756,11 @@ var KM_CLIENT_GROUP_MAP = [];
                         }
                     } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
                         return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + _this.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + _this.getFileurl(msg) + '" type="video/ogg"></video></a>';
-                        //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+                        //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
                     } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                         return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
                     } else {
-						return '<a href="' + _this.getFileurl(msg) + '"  role="link" class="file-preview-link" target="_blank"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span</a>';
+						return '<a href="' + _this.getFileurl(msg) + '"  role="link" class="file-preview-link" target="_blank"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span</a>';
                     }
                 }
                 return '';
@@ -6175,16 +6175,8 @@ var KM_CLIENT_GROUP_MAP = [];
 			_this.init = function() {
 				//ataching events for rich msh templates
                 Kommunicate.attachEvents ($kmApplozic);
-                $mck_file_upload.on('click', function () {
-                    $mck_file_input.trigger('click');
-				}); 
 				$mck_file_upload.on('click', function() {
 					$mck_file_input.trigger('click');
-				});
-				$mck_group_icon_upload.on('change', function() {
-					var file = $kmApplozic(this)[0].files[0];
-					_this.uplaodFileToAWS(file, UPLOAD_VIA[0]);
-					return false;
 				});
 				$mck_group_icon_change.on('change', function() {
 					var file = $kmApplozic(this)[0].files[0];
