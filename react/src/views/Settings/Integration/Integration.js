@@ -54,8 +54,12 @@ class Integration extends Component {
     this.setState({displayInstructions: true});
   };
   showInstructions = e => {
+    const instructionDiv = document.getElementById("show-instructions");
     e.preventDefault();
     this.setState({displayInstructions: false});
+    // window.scrollTo(instructionDiv.scrollHeight, instructionDiv.offsetTop);
+    // instructionDiv.focus();
+    // window.scrollTo(500, instructionDiv.offsetTop);
   };
 
   render() {
@@ -99,7 +103,12 @@ class Integration extends Component {
                         <p>Parameters:</p>
                         <ul>
                           <li><strong>appId</strong> - your application Id.</li>
+                          <li><strong>agentId</strong> - Support agent Id(registered in Kommunicate) who will reply to the support queries.</li>
+                          <li><strong>groupName</strong> - Conversation Title.</li>
                           <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
+                          <li><strong>userId</strong> - Unique Id for user.</li>
+                          <li><strong>userName</strong> - Display name of the user. Agents will know users by Display name</li>
+                          <li><strong>email</strong> - allow your users to register email id (optional).</li>
                         </ul>
                         <div style={{marginTop:"25px"}}>
                           <button
