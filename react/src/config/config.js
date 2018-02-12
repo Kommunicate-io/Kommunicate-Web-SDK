@@ -12,8 +12,8 @@ var baseurl ={
    kommunicateAPI: "https://api-test.kommunicate.io"
   },
   default:{
-   //baseUrl: "https://apps-test.applozic.com",
-   baseUrl: "http://localhost:9090/applozic",
+   baseUrl: "https://apps-test.applozic.com",
+   //baseUrl: "http://localhost:9090/applozic",
    kommunicateAPI: "http://localhost:3999"
   //kommunicateAPI: "https://api-test.kommunicate.io"
 
@@ -137,7 +137,7 @@ var config = {
     kommunicateDashboardUrl:"https://dashboard-test.kommunicate.io",
     kommunicateWebsiteUrl: "https://test.kommunicate.io",
     applozicPlugin:{
-      applozicHosturl:"http://localhost:9090/applozic/",
+      applozicHosturl:baseurl.default.baseUrl,
       baseUrl:"http://api-test.kommunicate.io/kommunicate.app",
       sendMessageUrl:baseurl.default.baseUrl+"/rest/ws/message/v2/send",
       sendMailUrl: "https://apps-test.applozic.com/applozic/rest/ws/mail/send",
