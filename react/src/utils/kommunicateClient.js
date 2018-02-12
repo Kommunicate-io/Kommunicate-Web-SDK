@@ -637,6 +637,18 @@ const editInAppMsg = (id, message) => {
   }).catch(err => {console.log("Error editInAppMsg", err)})
 }
 
+const getIntegratedBots = () => {
+
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+
+  // Get the bots stored in users table
+  return getUsersByType(appId, 2);
+
+  //Include the api end point to get bots from mongoDb
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -673,5 +685,6 @@ export {
   getInAppMessages,
   getInAppMessagesByEventId,
   deleteInAppMsg,
-  editInAppMsg
+  editInAppMsg,
+  getIntegratedBots,
 }
