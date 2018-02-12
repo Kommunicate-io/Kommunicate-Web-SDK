@@ -7,7 +7,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
-import {getUsersByType,createCustomerOrAgent, callSendEmailAPI} from '../../utils/kommunicateClient';
+import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
@@ -39,6 +39,8 @@ class Tabs extends Component {
       dialogFlowModal: false,
       botProfileModal: false,
       otherPlatformModal: false,
+      editBotIntegrationModal: false,
+      deleteBotIntegrationModal: false,
       useCaseSubmitted: false,
       clientToken: '',
       devToken: '',
@@ -52,12 +54,11 @@ class Tabs extends Component {
       amazonIntegrated: false,
       botNameAlreadyExists: false,
       disableIntegrateBotButton: false,
+      listOfIntegratedBots: [],
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
-  
-  this.handleSubmit = this.handleSubmit.bind(this);
-  this.handleClick = this.handleClick.bind(this);
+
   this.toggle = this.toggle.bind(this);
    };
    componentWillMount =()=>{
@@ -65,6 +66,13 @@ class Tabs extends Component {
    }
   componentDidMount=()=>{
     //console.log("options",this.state.botListInnerHtml);
+
+    getIntegratedBots().then(response => {
+      console.log(response);
+      this.setState({
+        listOfIntegratedBots: response
+      })
+    });
   
   }
 
@@ -77,99 +85,6 @@ class Tabs extends Component {
     this.setState({dtoken:""});
    }
    
-     handleClick (event){
-       var _this =this;
-     event.preventDefault();
-     let userSession = CommonUtils.getUserSession();
-     var applicationId = userSession.application.applicationId;
-     var authorization = userSession.authorization;
-     var password = CommonUtils.getUserSession().password;
-     var device = atob(authorization);
-     var devicekey = device.split(":")[1];
-     var env = getEnvironmentId();
-     var userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
-
-     if(!this.state.bot){
-       Notification.info("Please select a bot!!");
-       return;
-     }else if(!this.state.ctoken){
-      Notification.info("Please enter the client token!!");
-      return;
-     }else if(!this.state.dtoken){
-      Notification.info("Please select a developer token!!");
-      return;
-     }
-     var data = {
-            "clientToken" : this.state.ctoken,
-            "devToken" : this.state.dtoken,
-            "aiPlatform" : this.state.platform,
-            "botname": this.state.bot.value
-        }
-
-        axios({
-         method: 'post',
-         url:userDetailUrl,
-         data:{
-               "userIdList" : [data.botname]
-             },
-             headers: {
-              "Apz-Product-App": true,
-              "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
-              "Content-Type": "application/json",
-              "Apz-AppId":applicationId
-             }
-          })
-      .then(function(response){
-       if(response.status==200 ){
-          console.log("success");
-           axios({
-         method: 'post',
-         url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
-         data:JSON.stringify(data),
-         headers: {
-          "Content-Type": "application/json",
-         }
-          })
-      .then(function(response){
-       if(response.status==200 ){
-        _this.clearBotForm();
-          Notification.info("Bot configured successfully");
-         
-          }
-       });
-          }
-       });
-     }
-     // creating bot
-    handleSubmit(event) {
-        var _this=this;
-
-        if(!this.state.userid){
-          Notification.info("Please enter a Bot Id !!");
-          return;
-        }else if(!this.state.username){
-          Notification.info("Please select display name of the bot!!");
-          return;
-         }else if(!this.state.password){
-         Notification.info("Please enter a password !!");
-         return;
-        }
-        let userSession = CommonUtils.getUserSession();
-        var applicationId = userSession.application.applicationId;
-        Promise.resolve(createCustomerOrAgent({userName:this.state.userid,type:2,applicationId:applicationId,password:this.state.password,name:this.state.username},"BOT"))
-        .then(bot=>{
-          Notification.info("Bot successfully created");
-          _this.clearBotForm();
-         }).catch(err=>{
-           if(err.code=="USER_ALREADY_EXISTS"){
-            Notification.info("Bot Id is already taken. try again.");
-            return;
-           }
-          Notification.error("Something went wrong");
-          console.log("err creating bot",err);
-         })
-  }
-
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -391,139 +306,21 @@ class Tabs extends Component {
       })
   }
 
+  toggleEditBotIntegrationModal = () => {
+    this.setState({
+      editBotIntegrationModal: !this.state.editBotIntegrationModal
+    })
+  }
+
+  toggleDeleteBotIntegrationModal = () => {
+    this.setState({
+      deleteBotIntegrationModal: !this.state.deleteBotIntegrationModal
+    })
+  }
+
   render() {
     return (
       <div className="animated fadeIn" >
-        {/* Change showOldBot to false to hide old bot section*/}
-        <div className="row" style={{display: this.state.showOldBot ? null:"none"} }>
-          <div className="col-md-6 mb-4">
-            <Nav tabs>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: this.state.activeTab === '1' })}
-                  onClick={() => { this.toggle('1'); this.state.descriptionType = "ADD_BOT",this.state.descriptionHeader="Step 1"}}
-                >
-                  Add Bot
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink
-                  className={classnames({ active: this.state.activeTab === '2' })}
-                  onClick={this.handleClickOnConfigureTab}
-                >
-                  Configure Bot
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <TabContent activeTab={this.state.activeTab}>
-              <TabPane tabId="1">
-                <div className="animated fadeIn">
-        <div className="row">
-        <div className="col-md-12">
-            <div className="card">
-              <div className="card-block">
-                <form className="form-horizontal">
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Bot Id</label>
-                    <div className="col-md-9">
-                      <input type="text" id="hf-userid" name="hf-userid" 
-                        onChange = {this.handleOnChangeforBotId} value={this.state.userid} className="form-control" placeholder="Enter unique bot id"/>
-                      <span className="help-block">Please enter unique bot id</span>
-                    </div>
-                  </div>
-                   <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-userid">Display Name</label>
-                    <div className="col-md-9">
-                      <input type="text" id="hf-username" onChange = {(event) => this.setState({username:event.target.value})} value={this.state.username} name="hf-username" className="form-control" placeholder="Enter Username"/>
-                      <span className="help-block">Please enter your username</span>
-                    </div>
-                  </div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-password">Password</label>
-                    <div className="col-md-9">
-                      <input type="password" id="hf-password"  onChange = {(event) => this.setState({password:event.target.value})} value ={this.state.password} name="hf-password" className="form-control" placeholder="Enter Password.."/>
-                      <span className="help-block">Please enter your password</span>
-                    </div>
-                  </div>
-                  <div className="form-group row" hidden>
-                    <label className="col-md-3 form-control-label" htmlFor="hf-role">Role</label>
-                    <div className="col-md-9">
-                      <input type="text" id="hf-role" name="hf-role" onChange = {(event) => this.setState({role:event.target.value})} value = {this.state.role} className="form-control" placeholder="Enter Role"/>
-                      <span className="help-block">Please enter your role</span>
-                    </div>
-                  </div>
-                </form>
-              </div>
-               <div className="card-footer">
-                <button type="submit" className="btn btn-sm btn-primary" onClick ={this.handleSubmit}><i className="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" className="btn btn-sm btn-danger n-vis"><i className="fa fa-ban"></i> Reset</button>
-              </div>
-              </div>
-              </div>
-              </div>
-            </div>
-              </TabPane>
-              <TabPane tabId="2">
-                 <div className="animated fadeIn">
-       <form>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="card">
-              <div className="card-block">
-                <form action="" method="post" className="form-horizontal">
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="bot">Select Bot</label>
-                    <div className="col-md-9">
-                    <Select
-                      name="km-bot-id"
-                      value={this.state.bot}
-                      onChange={(value) => this.setState({bot:value})}
-                      options={this.state.botOptionList}/>
-                    </div>
-                  </div>
-              <div hidden>
-                  <select id="platform" onChange = {(event) => this.setState({platform:event.target.value})} value ={this.state.platform} >
-                  <option selected="" >Api.ai</option>
-                  <option value="Api.ai" >Api.ai</option>
-                  <option value="Message.ai">Message.ai</option>
-                  </select>
-             </div>
-             <div></div>
-              <div></div>
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="ctoken">Client Token</label>
-                    <div className="col-md-9">
-                      <input type="text" id="ctoken" name="ctoken"  onChange = {(event) => this.setState({ctoken:event.target.value})} value ={this.state.ctoken} className="form-control" placeholder="Enter Client Token.."/>
-
-                    </div>
-                  </div>
-
-                  <div className="form-group row">
-                    <label className="col-md-3 form-control-label" htmlFor="hf-dtoken">Dev Token</label>
-                    <div className="col-md-9">
-                      <input type="text" value={this.state.dtoken} onChange = {(event) => this.setState({dtoken:event.target.value})} value ={this.state.dtoken} id="hf-dtoken" name="hf-dtoken" className="form-control"
-                  placeholder="Enter Dev.."/>
-
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className="card-footer">
-                <button type="submit" className="btn btn-sm btn-primary" onClick={(event) => this.handleClick(event)}><i className="fa fa-dot-circle-o"></i> Submit</button>
-                <button type="reset" className="btn btn-sm btn-danger n-vis"><i className="fa fa-ban"></i> Reset</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        </form>
-      </div>
-              </TabPane>
-            </TabContent>
-          </div>
-          <div className="col-md-6 mb-4">
-            <BotDescription type ={this.state.descriptionType} header={this.state.descriptionHeader} />
-          </div>
-        </div>
       {/* Change showNewBot to false to hide new bot section*/}
         <div className="card" style={{display: this.state.showNewBot ? null:"none"} }>
           <div className="card-block">
@@ -531,6 +328,38 @@ class Tabs extends Component {
               <div className="row">
                 <div className="col-sm-12 km-bot-integration-heading">
                   <p>Integrating a bot will allow you to send answers to some customer <br />queries automatically</p>
+                </div>
+              </div>
+              <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
+                <div style={{height:"4px", backgroundColor: "#5C5AA7"}}></div>
+                <div style={{padding: "10px"}}>
+                  <h3>My Integrated Bots</h3>
+                  <hr />
+                </div>
+                <div className="km-bot-list-of-integrated-bots-container">
+                  {this.state.listOfIntegratedBots.map(bot => (
+                    <div>
+                      <div className="row col-sm-12" key={bot.id}>
+                        <div className="row col-sm-6">
+                          <div className="col-sm-2">
+                            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
+                          </div>
+                          <div className="col-sm-2">
+                            <span>{"DialogFlow"}<br />{bot.name}</span>
+                          </div> 
+                        </div>
+                        <div className="col-sm-3">
+                          <p>Enabled</p>
+                        </div>
+                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                          <button className="btn btn-primary" onClick={this.toggleEditBotIntegrationModal}>
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                      <hr />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className={!this.state.useCaseSubmitted ? "row mt-4 km-bot-integration-second-container":"n-vis"}>
@@ -725,6 +554,78 @@ class Tabs extends Component {
                 <button className="btn btn-primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
                   Integrate and Setup Bot Profile
                 </button>
+              </div>  
+            </div>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog">
+          <ModalHeader toggle={this.toggleEditBotIntegrationModal}>
+            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
+            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Edit Bot Profile</span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="row">
+              <label className="col-sm-3">Client Token:</label>
+              <div className="col-sm-6">
+                <input type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
+              </div>
+            </div>
+            <div className="row mt-4">
+              <label className="col-md-3">Dev Token:</label>
+              <div className="col-md-6">
+                <input type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
+              </div>
+            </div>
+            <div className="row mt-4">
+              <label className="col-sm-3">Bot Name:</label>
+              <div className="col-sm-6">
+                <input type="text" onChange = {(event) => this.setState({botName:event.target.value})} value ={this.state.botName} name="hf-password" className="form-control input-field" placeholder="Example: Alex, Bot " />
+              </div>
+            </div>
+            <div className="row" style={{marginTop: "66px"}}>
+              <div className="col-sm-6">
+              </div> 
+              <div className="row col-sm-6 text-right">
+                <div className="row col-sm-6">
+                  <button className="btn btn-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal(); this.toggleEditBotIntegrationModal();}}>
+                    Delete Integration
+                  </button>
+                </div>
+                <div className="row col-sm-6">
+                  <button className="btn btn-primary" >
+                    Save Changes
+                  </button>
+                </div>
+              </div>  
+            </div>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={this.state.deleteBotIntegrationModal} toggle={this.toggleDeleteBotIntegrationModal} className="modal-dialog">
+          <ModalHeader toggle={this.toggleDeleteBotIntegrationModal}>
+            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Delete Integration</span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="row">
+              <div className="col-sm-12">
+                <p className="km-bot-integration-use-case-modal-text">Are you sure you want to delete this integration? </p>
+              </div>
+            </div>
+            <div className="row" style={{marginTop: "75px"}}>
+            </div>
+            <div className="row" style={{marginTop: "66px"}}>
+              <div className="col-sm-6">
+              </div> 
+              <div className="row col-sm-6 text-right">
+                <div className="row col-sm-6 text-right">
+                  <button className="btn btn-primary" >
+                    Cancel
+                  </button>
+                </div>
+                <div className="row col-sm-6 text-right">
+                  <button className="btn btn-primary" >
+                    Delete
+                  </button>
+                </div>
               </div>  
             </div>
           </ModalBody>
