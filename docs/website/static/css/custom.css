@@ -1,12 +1,12 @@
 /* your custom css */
 
-<<<<<<< HEAD
+
 
 
 /* .navGroup .navListItem:last-child,.navGroup .navListItem:nth-child(3) {
     display:none;
 } */
-=======
+
 .fixedHeaderContainer header h2 {
     display: none;
 }
@@ -20,7 +20,7 @@ footer .sitemap div {
 footer .sitemap div .footer-pricing {
     width: 130px;
 }
->>>>>>> ada6f6b1759bd35dd19448baaacbc2361bec225d
+
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
