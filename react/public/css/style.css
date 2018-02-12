@@ -10335,3 +10335,17 @@ input:required {
 /* .km-container {
   height: calc(100% - 55px) !important;
 } */
+
+.km-bot-integrated-bots-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.km-bot-list-of-integrated-bots-container {
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
