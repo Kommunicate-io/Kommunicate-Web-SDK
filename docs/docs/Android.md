@@ -1,8 +1,9 @@
 ---
-id: Kommunicate-Android-Chat-SDK-Customer-Support
-title: Kommunicate.io Android Chat SDK for Customer Support
-sidebar_label: Install Chat on Android
+id: installation-android
+title: installation-android
+sidebar_label: installation-android
 ---
+
 Kommunicate-Android-Chat-SDK-Customer-Support
 Kommunicate.io Android Chat SDK for Customer Support
 

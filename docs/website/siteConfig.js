@@ -1,8 +1,5 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * Copyright (c) 2017-present, Kommunicate, Inc.
  */
 
 /* List of projects/orgs using your project for the users page  /test-site */
@@ -10,14 +7,14 @@ const users = [
   {
     caption: 'User1',
     image: '/img/km-logos.svg',
-    infoLink: 'https://www.facebook.com',
+    infoLink: 'https://www.kommunicate.io',
     pinned: true,
   },
 ];
 
 const siteConfig = {
-  title: '' /* title for your website */,
-  tagline: 'Customer Communication Software | Kommunicate',
+  title: 'Help Docs' /* title for your website */,
+  tagline: "Configure Kommunicate's support platform for your product or site. Find integration and implementation guide along with code samples.",
   url: 'https://docs.kommunicate.io' /* your website url */,
   baseUrl: '/' /* base url for your project */,
   organizationName: 'Kommunicate',
@@ -25,14 +22,14 @@ const siteConfig = {
   cname: 'kommunicate.io',
   noIndex: false,
   headerLinks: [
-    {doc: 'installation', label: 'Docs'},
+    {doc: 'installations', label: 'Docs'},
+    // Determines search bar position among links
+    { search: true },
    
    {/*{doc: 'doc4', label: 'API'},
    {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
-  */},
-    // Determines search bar position among links
-    { search: true }
+  */}
   ],
   users,
   /* path to images for header/footer */
@@ -40,6 +37,11 @@ const siteConfig = {
   footerIcon: 'img/km-logos.svg',
   favicon: 'img/favicon.png',
   /* colors for website */
+  algolia: {
+    apiKey: 'ea8d43f94ab17ce061d7507938f3433f',
+    indexName: 'kommunicate',
+    debug: 'true',
+  },
   colors: {
     primaryColor: '#5C5AA7',
     secondaryColor: '#312f6f',
@@ -52,9 +54,9 @@ const siteConfig = {
     // Highlight.js theme to use for syntax highlighting in code blocks
     theme: 'vs2015',
   },
-  scripts: ['https://buttons.github.io/buttons.js'],
+  // scripts: ['https://buttons.github.io/buttons.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
-  repoUrl: 'https://github.com/facebook/test-site',
+  // repoUrl: 'https://github.com/facebook/test-site',
 };
 
 module.exports = siteConfig;
