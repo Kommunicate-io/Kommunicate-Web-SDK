@@ -1,5 +1,19 @@
 /* your custom css */
 
+.fixedHeaderContainer header h2 {
+    display: none;
+}
+
+footer .sitemap {
+    justify-content: space-evenly;
+}
+footer .sitemap div {
+    flex: 0;
+}
+footer .sitemap div .footer-pricing {
+    width: 130px;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
