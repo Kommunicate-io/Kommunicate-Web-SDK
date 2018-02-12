@@ -136,37 +136,38 @@ getButtonTemplate:function(options,elemWidthClass){
     }
 },
 getPassangerDetail : function(options){
-    if(!options.SessionId){
+    if(!options.sessionId){
        console.log("sessionId not present in message..") 
     }
     return `  <div class="km-guest-details-container km-rich-text-default-container">
-    <div class="km-guest-detail-form">
-    <div class= "km-select-title">    
-    <select name="title" class="km-title-select">
-            <option value="0" disabled selected>Title</option>
-            <option value="Mr.">Mr.</option>
-            <option value="Ms.">Ms.</option>
-            <option value="Mrs.">Mrs.</option>
-        </select>
-        </div>
-        <input type="number" name="age"  class="km-input km-age-input" placeholder="Age" min="0" max="150">
-        <input type="text" name="first-name"  class="km-input first-name-input" placeholder="First Name">
-        <input type="text" name="middle-name"  class="km-input middle-name-input" placeholder="Middle Name (optional)">
-        <input type="text" name="last-name"  class="km-input last-name-" placeholder="Last Name">
-        <input type="email" name="email"  class="km-input" placeholder="Email Id">
-        <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number">
-    </div>
-    <div class="km-guest-button-container">
-        <button class="km-add-more-rooms km-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
-    </div>
-</div>`
+                <div class="km-guest-detail-form">
+                    <div class= "km-select-title">    
+                        <select name="title" class="km-title-select">
+                            <option value="0" disabled selected>Title *</option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Ms.">Ms.</option>
+                            <option value="Mrs.">Mrs.</option>
+                        </select>
+                    </div>
+                    <input type="number" name="age"  class="km-input km-age-input" placeholder="Age *" min="0" max="150">
+                    <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-left" placeholder="First Name *">
+                    <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
+                    <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-right" placeholder="Last Name *">
+                    <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-left" placeholder="Email Id *">
+                    <input type="number" name="contact-no"  class="km-input number-input km-pxinfo-btn-right" placeholder="Contact Number ">
+                </div>
+                <div class="km-guest-button-container">
+                    <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>
+                </div>
+            </div>
+            `
 }
 };
 
 Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
-    //var formData= payload?JSON.parse(options.formData||"{}");
+    var formData= payload? JSON.parse(options.formData||"{}"):"";
     var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
 
     for(var i = 0;i<payload.length;i++){
@@ -212,30 +213,3 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     }
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
-/*{"HotelRoomsDetails":[{
-    "ChildCount":0,
-    "RequireAllPaxDetails":true,
-    "RoomIndex":1,
-    "RoomTypeCode":"001:DEL:3834:S3807:4259:16538|1",
-    "RoomTypeName":"Standard Twin",
-    "RatePlanCode":"001:DEL:3834:S3807:4259:16538|1",
-    "CancellationPolicy":"Standard Twin#^#INR 476.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 1904.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#",
-    "Price":{"CurrencyCode":"INR",
-        "RoomPrice":1903.5,
-        "Tax":0,
-        "ExtraGuestCharge":0,
-        "ChildCharge":0,
-        "OtherCharges":0,
-        "Discount":0,
-        "PublishedPrice":1903.5,
-        "PublishedPriceRoundedOff":1904,
-        "OfferedPrice":1903.5,
-        "OfferedPriceRoundedOff":1904,
-        "AgentCommission":0,
-        "AgentMarkUp":0,
-        "ServiceTax":114.21,
-        "TDS":0
-        }
-    },
-    {"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":2,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16528|1","RoomTypeName":"Deluxe Twin","RatePlanCode":"001:DEL1:3834:S3807:4259:16528|1","CancellationPolicy":"Deluxe Twin#^#INR 588.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2350.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2350,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2350,"PublishedPriceRoundedOff":2350,"OfferedPrice":2350,"OfferedPriceRoundedOff":2350,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":141,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":3,"RoomTypeCode":"001:DEL:3834:S3807:4259:16533|1","RoomTypeName":"Standard Triple","RatePlanCode":"001:DEL:3834:S3807:4259:16533|1","CancellationPolicy":"Standard Triple#^#INR 711.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2844.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2843.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2843.5,"PublishedPriceRoundedOff":2844,"OfferedPrice":2843.5,"OfferedPriceRoundedOff":2844,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":170.61,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":4,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16527|1","RoomTypeName":"Deluxe Triple","RatePlanCode":"001:DEL1:3834:S3807:4259:16527|1","CancellationPolicy":"Deluxe Triple#^#INR 817.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 3267.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":3266.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":3266.5,"PublishedPriceRoundedOff":3267,"OfferedPrice":3266.5,"OfferedPriceRoundedOff":3267,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":195.99,"TDS":0}}]}
-*/

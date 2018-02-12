@@ -336,12 +336,12 @@ websiteUrl = (e)=> {
                       inputType={'email'}
                                   title={'Email Id'}
                                   name={'email'}
-                                  controlFunc={this.setEmail}
-                                  content={this.state.email}
+                                  onChange={this.setEmail}
+                                  value={this.state.email}
                                   errorMessage={this.state.errorMessageText}
                                   hideErrorMessage={this.state.hideErrorMessage}
                                   required={'required'}
-                                  blurFunc ={this.blurHandler} keyPressFunc={this.onKeyPress}
+                                  onBlur ={this.blurHandler} onKeyPress={this.onKeyPress}
                                   style={{borderColor: this.state.errorInputColor}}/>
                     </div>
                    

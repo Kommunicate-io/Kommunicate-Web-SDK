@@ -6,12 +6,12 @@ const routes = {
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot Integration',
-  '/settings/integration': 'Integration',
+  '/settings/integration': 'Install',
   '/team': 'Team',
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
   '/admin': "Profile",
-  '/message-shortcuts': 'Message Shortcuts',
+  '/message-shortcuts': 'Quick Replies',
   '/welcome-message': 'Welcome Message'
 };
 
