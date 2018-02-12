@@ -1,7 +1,8 @@
 {
   "docs": {
-    "Web": ["installation"],
-    "Android": ["Kommunicate-Android-Chat-SDK-Customer-Support"]
+    "Chat SDK":["installations","authentication"],
+    "Web": ["web-docs"]
+    
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

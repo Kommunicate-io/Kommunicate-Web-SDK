@@ -25,7 +25,7 @@ const siteConfig = {
   cname: 'kommunicate.io',
   noIndex: false,
   headerLinks: [
-    {doc: 'installation', label: 'Docs'},
+    {doc: 'installations', label: 'Docs'},
    
    {/*{doc: 'doc4', label: 'API'},
    {page: 'help', label: 'Help'},
