@@ -906,7 +906,10 @@ var KM_CLIENT_GROUP_MAP = [];
             var messagePxy = {
                 'type': params.messageType,
                 'contentType': params.type,
-                'message': message
+				'message': message,
+				'metadata':{
+					'skipBot':true
+				}
             };
             if (params.groupId) {
                 messagePxy.groupId = $kmApplozic.trim(params.groupId);

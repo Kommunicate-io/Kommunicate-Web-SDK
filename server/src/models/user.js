@@ -92,6 +92,10 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER(),
       field: 'availability_status',
       defaultValue: 1
+    },allConversations: {
+      type: DataTypes.INTEGER(),
+      field: 'all_conversations',
+      defaultValue: 0
     }
   }, {
     underscored: true,
