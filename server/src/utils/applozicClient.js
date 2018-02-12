@@ -279,6 +279,8 @@ exports.createGroup = (options)=>{
 
 
 exports.sendGroupMessageByBot = (groupId,message,authorization,applicationId,metadata)=>{
+  let additionalMetadata = {skipBot:true};
+  metadata = Object.assign(metadata,additionalMetadata);
   console.log("sending message to group ",groupId);
   console.log("calling send Message API with info , groupId: ",groupId,"message :",message,"applicationId",applicationId,"metadata",metadata );
   let url = config.getProperties().urls.sendMessageUrl;
