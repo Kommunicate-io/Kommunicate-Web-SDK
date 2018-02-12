@@ -3820,6 +3820,9 @@ fill:white;
 #mck-vid-receive-btn, #mck-vid-reject-btn{
 	width:40%;
 }
+.launchershadow{
+box-shadow: none!important;
+}
 .mck-vid-scr-controls{
 	width:60%;
 	display:inline-block;
