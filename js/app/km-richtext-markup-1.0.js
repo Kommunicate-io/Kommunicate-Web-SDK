@@ -91,7 +91,7 @@ getHotelCardTemplate : function(options,sessionId){
             </div>
         </div>
         <div class="km-card-message-footer">
-            <button class="km-card-message-footer-button" data-resultindex= `+options.ResultIndex +` data-sessionid= `+ sessionId+` data-name=`+ options.HotelName+`>ROOM DETAIL</button>
+            <button class="km-card-message-footer-button" data-resultindex= `+ options.ResultIndex +` data-sessionid= `+ sessionId+` data-name= `+(options.HotelName).replace(' ', '_')+` ROOM DETAIL</button>
         </div>
     </div>`;
 
@@ -113,15 +113,15 @@ getRoomDetailTemplate: function (options, sessionId) {
                             </div>
                             <div class="km-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
-                                <span>`+ options.Price.CurrencyCode + " " + options.Price.RoomPrice + `</span>
+                                <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + options.Price.RoomPrice + `</span>
                             </div>
                             <div class="km-blocked-room-sub-total">
                                 <p>Sub Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
-                                <span> `+ options.Price.CurrencyCode + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
+                                <span> `+ (options.Price.CurrencyCode=="INR"?'&#x20B9;': options.Price.CurrencyCode ) + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
                             </div>
                         </div>
                         <div class="km-blocked-room-button-container">
-                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+` data-HotelResultIndex=`+options.HotelResultIndex+`>Book</button>
+                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName= `+(options.HotelName).replace(' ', '_')+ ` data-HotelResultIndex= `+options.HotelResultIndex+` >Book</button>
                         </div>
                     </div>
                 </div>
