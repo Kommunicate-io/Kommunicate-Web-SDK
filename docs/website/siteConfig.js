@@ -22,7 +22,7 @@ const siteConfig = {
   cname: 'kommunicate.io',
   noIndex: false,
   headerLinks: [
-    {doc: 'installations', label: 'Docs'},
+    {doc: 'web-installation', label: 'Docs'},
     // Determines search bar position among links
     { search: true },
    
