@@ -39,7 +39,7 @@ getHotelCardTemplate : function(options,sessionId){
    
     }    
     //Note: Setting price as 8%, modify it to change price calculation logic.
-    var price = options.Price.CurrencyCode + " " + (options.Price.OfferedPrice * 1).toFixed(2);
+    var price = options.Price.CurrencyCode + " " + Math.ceil(options.Price.OfferedPrice * 1);
     return `
     <div class="km-single-card-message">
         <div class="km-card-message-header">
