@@ -26,7 +26,7 @@ Kommunicate.richMsgEventHandler = {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
                 container: $cardMessageContainer[0],
-                items: 2,
+                items: 1,
                 slideBy: 'page',
                 "mouseDrag": true,
                 "arrowKeys": true,
@@ -98,7 +98,7 @@ Kommunicate.richMsgEventHandler = {
         var hotelName = target.dataset.name;
 
         var messagePxy = {
-            'message': "Get room detail of " +hotelName , //message to send 
+            'message': "Get room detail of " +hotelName.replace('_', ' ') , //message to send 
             'metadata': {
                 hotelSelected: true,
                 sessionId: sessionId,
@@ -118,7 +118,7 @@ Kommunicate.richMsgEventHandler = {
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
         var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
-            'message': "Book " + HotelName,
+            'message': "Book " + HotelName.replace('_', ' '),
             'metadata': {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
