@@ -91,7 +91,7 @@ getHotelCardTemplate : function(options,sessionId){
             </div>
         </div>
         <div class="km-card-message-footer">
-            <button class="km-card-message-footer-button" data-resultindex= `+ options.ResultIndex +` data-sessionid= `+ sessionId+` data-name= `+(options.HotelName).replace(' ', '_')+` ROOM DETAIL</button>
+            <button class="km-card-message-footer-button" data-resultindex= `+ options.ResultIndex +` data-sessionid= `+ sessionId+` data-name= `+(options.HotelName).replace(' ', '_')+` > ROOM DETAIL</button>
         </div>
     </div>`;
 
