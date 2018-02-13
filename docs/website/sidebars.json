@@ -1,7 +1,9 @@
 {
   "docs": {
-    "Chat SDK":["installations","authentication","installation-ios","installation-android"],
-    "Web": ["web-docs"]
+    "Web":["web-installation","web-authentication","web-conversation","web-pushnotification","web-logout"],
+    "Android": ["android-installation","android-authentication","android-conversation","android-pushnotification","android-logout"],
+    "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"]
+
     
     
   },
