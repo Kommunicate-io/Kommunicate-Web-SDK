@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Kommunicate-Agent</string>
+    <string name="login_page_message">Smart messaging software for customer support</string>
+    <string name="signup_info">"Don’t have an account?\nSign up at <a href='https://www.kommunicate.io/'>Kommunicate.io</a> now!</string>
+    <string name="km_forgot_password_text">Enter your registered email below to \nreceive password reset instructions</string>
+    <string name="km_reset_password_confirmation">Password reset link has been sent \nto your email</string>
+</resources>
