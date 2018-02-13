@@ -637,15 +637,39 @@ const editInAppMsg = (id, message) => {
   }).catch(err => {console.log("Error editInAppMsg", err)})
 }
 
+
 const getIntegratedBots = () => {
 
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
 
-  // Get the bots stored in users table
-  return getUsersByType(appId, 2);
+  let url = "http://localhost:5454/bot/" + appId;
+  // let url = getConfig().applozicPlugin.addBotUrl + "/" + appId;
 
-  //Include the api end point to get bots from mongoDb
+  return Promise.all([axios.get(url), getUsersByType(appId, 2)])
+    .then( ([mongoBots, sqlBots])=> {
+
+      console.log(mongoBots.data);
+      console.log(sqlBots);
+
+      let bots = []
+
+      for(let i= 0; i < sqlBots.length; i++){
+        for(let j = 0; j < mongoBots.data.length; j++ ){
+          if(sqlBots[i].name !== "bot" && sqlBots[i].name === mongoBots.data[i].name){
+            let bot1 = sqlBots[i];
+            let bot2 = mongoBots.data[i];
+            bots[i] = {...bot1, ...bot2};
+            break;
+          }
+        }
+      }
+
+      console.log(bots);
+
+      return bots;
+
+    }).catch(err => {console.log(err)})
 
 }
 
