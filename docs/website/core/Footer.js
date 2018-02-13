@@ -7,7 +7,8 @@ const React = require('react');
 class Footer extends React.Component {
   docUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
-    return baseUrl + 'docs/' + (language ? language + '/' : '') + doc;
+   // return baseUrl + 'docs/' + (language ? language + '/' : '') + doc;
+   return baseUrl + 'docs/' +  doc;
   }
 
   pageUrl(doc, language) {
@@ -32,10 +33,10 @@ class Footer extends React.Component {
           </a> */}
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('installation.html', this.props.language)}>
+            <a href={this.docUrl('web-installation.html', this.props.language)}>
               Web
             </a>
-            <a href={this.docUrl('Kommunicate-Android-Chat-SDK-Customer-Support.html', this.props.language)}>
+            <a href={this.docUrl('android-installation.html', this.props.language)}>
               Android
             </a>
             <a href="https://docs.applozic.com/docs/ios-chat-sdk" target="_blank">
