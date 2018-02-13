@@ -55,6 +55,8 @@ class Tabs extends Component {
       botNameAlreadyExists: false,
       disableIntegrateBotButton: false,
       listOfIntegratedBots: [],
+      botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon"},
+      editBotIntegrationModalHeader: 'Edit Bot Profile', 
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -70,19 +72,18 @@ class Tabs extends Component {
     getIntegratedBots().then(response => {
       console.log(response);
       this.setState({
-        listOfIntegratedBots: response
+        listOfIntegratedBots: response ? response: []
       })
     });
   
   }
 
-  clearBotForm = ()=>{
-    this.state.userid="";
-    this.state.username="";
-    this.state.password="";
-    this.state.bot="";
-    this.state.ctoken="";
-    this.setState({dtoken:""});
+  clearBotDetails = ()=>{
+    this.setState({
+      devToken: '',
+      clientToken: '',
+      botName: ''
+    });
    }
    
   toggle(tab) {
@@ -237,7 +238,7 @@ class Tabs extends Component {
             }
           }).then(function(response){
             if(response.status==200 ){
-              _this.clearBotForm();
+              _this.clearBotDetails();
               Notification.info("Bot integrated successfully");
               _this.setState({disableIntegrateBotButton: false}) 
               if(aiPlatform === "dialogflow"){
@@ -307,14 +308,25 @@ class Tabs extends Component {
   }
 
   toggleEditBotIntegrationModal = () => {
+    // this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
     })
   }
 
   toggleDeleteBotIntegrationModal = () => {
+    // this.clearBotDetails();
     this.setState({
       deleteBotIntegrationModal: !this.state.deleteBotIntegrationModal
+    })
+  }
+
+  setEditBotIntegrationDetails = (botName, clientToken, devToken) => {
+    this.setState({
+      editBotIntegrationModalHeader: botName,
+      botName,
+      clientToken,
+      devToken,
     })
   }
 
@@ -345,14 +357,14 @@ class Tabs extends Component {
                             <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                           </div>
                           <div className="col-sm-2">
-                            <span>{"DialogFlow"}<br />{bot.name}</span>
+                            <span>{this.state.botAiPlatform[bot.aiPlatform.toLowerCase()]}<br />{bot.name}</span>
                           </div> 
                         </div>
                         <div className="col-sm-3">
-                          <p>Enabled</p>
+                          <span className="badge badge-success">Enabled</span>
                         </div>
                         <div className="col-sm-3" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" onClick={this.toggleEditBotIntegrationModal}>
+                          <button className="btn btn-primary" onClick={() => {this.toggleEditBotIntegrationModal(); this.setEditBotIntegrationDetails(bot.name, bot.token, bot.devToken)}}>
                             Edit
                           </button>
                         </div>
@@ -395,19 +407,19 @@ class Tabs extends Component {
               </div>
               <div className="row mt-4">
                 <div className="col-sm-3" style={{textAlign: "center"}}>
-                  <p className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                  <p className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>INTEGRATED</p>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
                   <p></p>
                 </div>
                 <div className="col-sm-3" style={{textAlign: "center"}}>
-                  <p className={this.state.microsoftIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                  <p className={this.state.microsoftIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>INTEGRATED</p>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
                   <p></p>
                 </div>
                 <div className="col-sm-3" style={{textAlign: "center"}}>
-                  <p className={this.state.amazonIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>Integrated</p>
+                  <p className={this.state.amazonIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>INTEGRATED</p>
                 </div>
               </div>
               <div className="row">
@@ -415,7 +427,7 @@ class Tabs extends Component {
                   <div className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-dialogflow-text">Dialogflow <br />(Api.ai)</p>
-                  <p onClick={this.toggleDialogFlowModal} style={{cursor: "pointer", color: "#5c5aa7"}}>Settings</p>
+                  <p onClick={this.toggleDialogFlowModal} style={{cursor: "pointer", color: "#5c5aa7"}}>SETTINGS</p>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
                   <p></p>
@@ -561,7 +573,7 @@ class Tabs extends Component {
         <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleEditBotIntegrationModal}>
             <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
-            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Edit Bot Profile</span>
+            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>{this.state.editBotIntegrationModalHeader}</span>
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -607,10 +619,25 @@ class Tabs extends Component {
           <ModalBody>
             <div className="row">
               <div className="col-sm-12">
-                <p className="km-bot-integration-use-case-modal-text">Are you sure you want to delete this integration? </p>
+                <p className="km-bot-integration-use-case-modal-text">Are you sure you want to delete this integration? You may add it as a new<br />integration later on if needed.  </p>
               </div>
             </div>
             <div className="row" style={{marginTop: "75px"}}>
+            </div>
+            <div className="row col-sm-12" style={{borderRadius: "6px", border: "solid 1px #979797"}}>
+              <div className="row col-sm-7">
+                <div className="col-sm-3">
+                  <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
+                </div>
+                <div className="col-sm-4">
+                  <span>{this.state.botAiPlatform['dialogflow']}<br />{this.state.botName}</span>
+                </div> 
+              </div>
+              <div className="col-sm-2" style={{textAlign: "left"}}>
+                <span className="badge badge-success">Enabled</span>
+              </div>
+              <div className="col-sm-3" style={{textAlign: "right"}}>
+              </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-6">
@@ -634,18 +661,5 @@ class Tabs extends Component {
     )
   }
 }
-
-// "key" : "0376d7e9-dfad-4121-8632-e3e29c532573",
-// "name" : "bot",
-// "applicationKey" : "31ac5a02baeb4dce22eb06a0abf3b1fa7",
-// "accessToken" : "bot", //password
-// "authorization" : "Ym90OjgyNGRiNmNmLWFiYjgtNDkzZS04MDk1LTdjYjAxMDRmNDAzNw==", //base64(userName:password)
-// "brokerUrl" : "tcp://apps.applozic.com:8080",
-// "platform" : "aiPlatform",
-// "clientToken": "4372f06b2a214580a8dc20d782c4e29c", // get from user
-// "devToken": "0662feba0ad84bfb9455cb0205afb66f",  // get from user
-// "deleted" : false,
-// "type" : "KOMMUNICATE_SUPPORT",
-// // "handlerModule": "DEFAULT_KOMMUNICATE_SUPPORT_BOT" // 
 
 export default Tabs;
