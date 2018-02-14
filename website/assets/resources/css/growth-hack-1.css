@@ -1,0 +1,682 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  ::selection {
+    background-color: #5C5AA7;
+    color: #ffffff;
+  }
+  
+  html * {
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a, a:hover, a:focus, a:active {
+    text-decoration: none;
+  }
+
+.customer-support-standards-section {
+    padding: 90px 0px;
+    /* background-color: #4a90e2; */
+    color: #ffffff;
+}
+.welcome-message-section {
+    padding: 50px 0px;
+    background-color: #eee;
+    color: #ffffff;
+}
+.customer-support-standards-section h1, .welcome-message-section h1 {
+  margin-bottom: 60px;
+  margin-top: 40px;
+  color: #5c5aa7;
+}
+.nav-signup-button, .signup-mobile, .page-links-ul, .nav-login-button  {
+  display: none;
+}
+.nav-signup-button.try-kommunicate {
+  display: block;
+  width: 160px;
+}
+.try-kommunicate-mobile {
+  display: block
+}
+.nav-main-header {
+  background: #ffffff;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+}
+
+
+
+
+
+
+
+
+.km-logo-home-page {
+    display: block;
+    height: 40px;
+    fill: #5C5AA7;
+  }
+  .km-logo-varient3-1 {
+    fill: #5C5AA7;
+  }
+  .km-logo-rest-pages {
+    display: none;
+  }
+  .nav-login-button {
+    color: rgb(255, 255, 255);
+  }
+  .nav-login-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .nav-signup-button {
+    color: #FFFFFF;
+    border: 1.4px solid #FFFFFF;
+    font-weight: 600
+  }
+  .nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #4A4A4A;
+    border: 1.4px solid #4A4A4A;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
+.sticky {
+    background: #FFFFFF;
+  }
+/* .km-logo-home-page .km-logo-final-full-0, .km-logo-home-page .km-logo-final-full-1 {
+    fill: #FFFFFF !important;
+  } */
+  
+  .km-launcher-logo-0 {
+    fill: #ffffff !important;
+  } .km-launcher-logo-1 {
+    fill: #5C5AA7 !important;
+  }
+  
+  .nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #2dd35c;
+    font-weight: 600
+  }
+  .sticky .nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #2dd35c;
+    font-weight: 600;
+  }
+  .nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #1aaa42;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+  .sticky .nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #1aaa42;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  @media(max-width:767px) {
+    .page-links-ul, .nav-signup-button, .nav-login-button {
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+    }
+    .menu-btn-icon {
+        fill: #5c5aa7;
+    }
+  }
+
+
+
+
+
+
+
+  /* Card Flip Design */
+  .card-container {
+    width: 350px;
+    height: 240px;
+    position: relative;
+    -webkit-perspective: 800px;
+    -ms-perspective: 800px;
+    perspective: 800px;
+    border-radius: 0px;
+  }
+  .card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), -webkit-transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); */
+    border-radius: 0px;
+    /* -webkit-box-shadow: 0 6px 16px rgba(0,0,0,0.15); */
+    /* box-shadow: 0 6px 16px rgba(0,0,0,0.15); */
+    cursor: pointer;
+  }
+  .card div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    padding: 10px 25px  ;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 0px;
+    /* background: #fff; */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: box;
+    display: flex;
+    -webkit-box-pack: center;
+    -o-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -o-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font: 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    /* color: #47525d; */
+  }
+  
+
+  .grid {
+    /* background: pink; */
+    position: relative;
+    /* -webkit-perspective: 800px; */
+    /* -ms-perspective: 800px; */
+    /* perspective: 800px; */
+  }
+  
+  .grid_item {
+    background: #ebebeb;
+    display: block;
+    float: left;
+    position: relative;
+    -moz-transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    /* -moz-transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+     -webkit-transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);  */
+  }
+  
+  .grid_link {
+    display: block;
+    color: inherit;
+    position: relative;
+    text-decoration: none;
+    /* overflow: hidden; */
+    /* border: 4px solid #FFF; */
+  }
+  .grid_link:hover, .grid_link:active, .grid_link:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .grid_link p, .grid_link ul {
+    line-height: 1.58;
+    letter-spacing: -.003em;
+    margin-bottom: 0px;
+  }
+  .grid_link ul {
+    padding-left: 15px;
+  }
+  .paynes-grey .grid_link p {
+    padding-right: 20px;
+  }
+  .welcome-message-section .grid_link ul>li {
+    padding-bottom: 15px;
+  }
+  
+  .tile {
+    font-size: 14px;
+    font-family: "Segoe UI";
+    line-height: 18px;
+    padding: 12px;
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    -webkit-transform: translate(0%, 0%);
+    -ms-transform: translate(0%, 0%);
+    transform: translate(0%, 0%);
+    width: 100%;
+  }
+
+
+  .span__1 {
+    width: 25%;
+    height: auto;
+  }
+  .span__1 .grid_link {
+    padding-bottom: 100%;
+  }
+
+  .span__2 {
+    width: 50%;
+    height: auto;
+  }
+  .span__2 .grid_link {
+    padding-bottom: 50%;
+  }
+
+  .span__4 {
+    width: 100%;
+    height: auto;
+  }
+  .span__4 .grid_link {
+    padding-bottom: 25%;
+  }
+
+
+
+
+  .front h2 {
+    font-weight: 300;
+    
+  }
+  
+  .jelly-bean {
+    background: #db504a;
+  }
+  
+  .vivid-amber {
+    background: #CEA500;
+  }
+  
+  .cadet-blue {
+    background: #56a3a6;
+  }
+  
+  .paynes-grey {
+    background: #4f6d7a;
+  }
+  
+  .orange-crayola {
+    background: #FF7733;
+  }
+  
+  .red-orange {
+    background: #ff5252;
+  }
+
+  .green-ryb {
+    background: #72ca27;
+  }
+  
+  .eagle-green {
+    background: #084C61;
+    color: #FFFFFF;
+  }
+  .dark-sky-blue {
+    background: #86bbd8;
+    color: #4A4A4A;
+  }
+  .davys-grey {
+    background: #4C5454;
+  }
+  .vermilion {
+    background: #DC493A;
+  }
+  .space-cadet {
+    background: #2E294E;
+  }
+  .tulip {
+    background: #ff8c8c;
+  }
+
+
+  .table {
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 0;
+    color: #ffffff;
+}
+
+
+  .grid_item.card .back {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+  .grid_item.card.flipped {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+  }
+  
+@media all and (max-width:1024px) {
+  .span__1 {
+    width: 50%;
+    height: auto;
+  }
+  .span__1 .grid_link {
+    padding-bottom: 50%;
+  }
+}
+
+
+  @media all and (max-width: 550px) {
+    .span__1,
+    .span__2,
+    .span__4 {
+      width: 100%;
+      height: auto;
+    }
+    .span__1 .grid_link,
+    .span__2 .grid_link,
+    .span__4 .grid_link {
+      padding-bottom: 100%;
+    }
+  }
+  @media all and (min-width: 551px) and (max-width: 1024px) {
+    .span__1, .span__2, .span__4 {
+      width: 100%;
+      height: auto;
+    }
+    .span__1 .grid_link, .span__2 .grid_link, .span__4 .grid_link {
+      padding-bottom: 50%;
+    }
+  }
+  /* @media all and (min-width: 481px) {
+    .span__1 {
+      width: 25%;
+      height: auto;
+    }
+    .span__1 .grid_link {
+      padding-bottom: 100%;
+    }
+  
+    .span__2 {
+      width: 50%;
+      height: auto;
+    }
+    .span__2 .grid_link {
+      padding-bottom: 50%;
+    }
+  
+    .span__4 {
+      width: 100%;
+      height: auto;
+    }
+    .span__4 .grid_link {
+      padding-bottom: 25%;
+    }
+  } */
+
+
+  @media all and (max-width:640px) {
+    .card div {
+      flex-wrap: wrap;
+    }
+    .paynes-grey .grid_link p {
+      margin-bottom: 20px;
+    }
+    .span__4.paynes-grey .grid_link {
+      padding-bottom: 75%;
+    }
+  }
+  @media all and (max-width:390px) {
+    .table {
+      margin-left: -40px;
+    }
+  }
+  @media all and (max-width:500px) {
+    .span__1, .span__2, .span__4 {
+      height: 85%;
+    }
+    .span__1 .grid_link, .span__2 .grid_link, .span__4 .grid_link {
+      padding-bottom: 100%;
+    }
+    .card div {
+      top: 50%;
+    }
+    .card.paynes-grey .back {
+      top: 0;
+    }
+  }
+
+  .container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .row {
+    margin: 0;
+  }
+  .grid {
+    margin-left: -40px;
+  }
+
+  .footer-section {
+    background-color: #eee;
+    padding-bottom: 50px !important;
+  }
+
+  /******CTA Section Code*******/
+
+.form-submit-btn {
+  display: inline-block;
+  padding: 14px 20px;
+  letter-spacing: 0.015em;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  color: #ffffff;
+  text-decoration: none;
+  -webkit-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  transition: all 0.4s;
+  border-radius: 6px;
+  -webkit-appearance: none;
+  text-decoration: none;
+  border: none;
+  flex: 0 1 auto;
+  background-color: #2dd35c;
+}
+.form-submit-btn:hover {
+  background-color: #1aaa42;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.form-submit-btn:focus {
+  outline: none;
+}
+.homepage-beta-cta-section .cta-email-pre-signup {
+  background: #FFFFFF;;
+  width: 50%;
+  color: #000;
+  font-size: 16px;
+  padding: 15px 16px 15px 14px;
+  margin: 0;
+  border-radius: 6px;
+  outline: none;
+  height: 47px;
+  box-shadow: none;
+  /* margin-right: 5px; */
+  border: none;
+  flex: 1 0 auto;
+}
+
+.pre-signup-form {
+  background-color: white;
+    border-radius: 6px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    padding-right: 3px;
+    display: flex;
+    /* border: 2px solid #007fff; */
+    width: 50%;
+    margin: 0 auto;
+}
+.homepage-beta-cta-section .pre-signup-form {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.3), 0px -2px 8px 0 rgba(0, 0, 0, 0.3);
+  background: #FFFFFF;
+}
+.homepage-beta-cta-section .form-submit-btn {
+  color: #fff;
+  background-color: #2dd35c;
+}
+.homepage-beta-cta-section .form-submit-btn:hover {
+  background-color: #1aaa42;
+  -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.homepage-beta-cta-section {
+  /* background: #f5f7fa; */
+  /* background-image: url(/assets/resources/images/kommunicate-cta-section-bg.jpg); */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  /* height: 100vh; */
+  display: flex;
+  align-items: center;
+  padding: 0px 0px;
+  position: relative;
+  /* margin-bottom: 70px; */
+}
+
+.homepage-beta-cta-section .row {
+  margin: 0px;
+  padding: 40px 0px;
+  /* background-color: #fff; */
+  /* border-radius: 4px; */
+  /* box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07); */
+}
+
+.cta-section-text {
+  color: #5C5AA7;
+  font-weight: 300;
+  font-size: 32px;
+  margin-bottom: 30px;
+  margin-top: 0px;
+}
+
+.cta-section-cta-btn {
+  border-radius: 96px;
+  width: 234px;
+  height: 49px;
+  background: rgba(116, 127, 252, 1);
+  color: #fff;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  padding: 15px 25px;
+}
+
+.cta-section-cta-btn:hover, .cta-section-cta-btn:active, .cta-section-cta-btn:focus {
+  background: rgba(73, 83, 227, 1);
+  box-shadow: none;
+  color: #fff;
+}
+
+@media (max-width:350px) {
+  .features-cta-section {
+      margin-bottom: 130px;
+  }
+}
+@media only screen and (max-width: 568px) {
+  .pre-signup-form br {
+      display: block;
+  }
+  .form-submit-btn {
+      font-size: 16px;
+      width: 100%;
+  }
+  .cta-email-pre-signup {
+      width: 100% !important;
+  }
+}
+@media (max-width:560px) {
+  .cta-email-pre-signup {
+      border-radius: 6px;
+  }
+   .features-cta-section .cta-email-pre-signup {
+      border-radius: 6px;
+  }
+  .form-submit-btn {
+      flex: 0 0 100%;
+      margin-top: 15px;
+      border-radius: 6px;
+  }
+  .homepage-beta-cta-section .cta-email-pre-signup {
+      border-radius: 6px;
+  }
+  .homepage-beta-cta-section .pre-signup-form {
+      box-shadow:none;
+  }
+  .why-kommunicate-section .cta-email-pre-signup, .homepage-beta-cta-section .cta-email-pre-signup {
+    border: 1px solid #7B7979;
+  }
+  .homepage-beta-cta-section .cta-email-pre-signup {
+    background: #FFFFFF;
+  }
+  .homepage-beta-cta-section .pre-signup-form {
+    background: transparent;
+  }
+}
+@media (max-width:767px) {
+  .pre-signup-form {
+      width: 100%;
+      flex-wrap: wrap;
+  }
+  .homepage-beta-cta-section {
+      /* height: 350px; */
+ padding-top: 40px;
+ position: relative;
+ padding-bottom: 60px;
+}
+.pre-signup-form {
+   width: 100%;
+   flex-wrap: wrap;
+   background-color: transparent;
+}
+
+}
+@media (min-width:768px) {
+  .homepage-beta-cta-section {
+      /* height: 550px; */
+    }
+}
+@media (min-width:768px) and (max-width:991px) {
+  .features-cta-section .pre-signup-form {
+      width: 75%;
+  }
+  .homepage-beta-cta-section .pre-signup-form {
+      width: 75%;
+  }
+
+}
+.logo-footer svg {
+  width: auto;
+  height: 35px;
+  opacity: 0.3;
+  fill: #000;
+}

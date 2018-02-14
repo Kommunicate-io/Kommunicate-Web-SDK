@@ -53,8 +53,8 @@
     transition: all 0.3s ease;
     font-weight: 600;
 }
-.nav-signup-button:hover {
-    color: #5C5AA7;
+.nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
+    color: #FFFFFF;
     border: solid 1.4px #2dd35c;
     background-color: #2dd35c;
 }
@@ -161,8 +161,8 @@
 }
 @media(max-width:767px) {
     .page-links-ul, .nav-signup-button,
-    .nav-login-button {
-        display: none;
+    .nav-login-button, .nav-signup-button.try-kommunicate {
+        display: none !important;
     }
     .menu-mobile {
         display: block;
@@ -281,4 +281,11 @@
       .links-div {
           margin-top: 15px;
       }
+  }
+
+  .nav-signup-button.try-kommunicate {
+      display: none;
+  }
+  .try-kommunicate-mobile {
+      display: none;
   }
