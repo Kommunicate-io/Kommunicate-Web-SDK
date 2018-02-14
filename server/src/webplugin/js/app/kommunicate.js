@@ -183,11 +183,14 @@ Kommunicate ={
                     return Kommunicate.markup.getPassangerDetail(metadata);
                     break;
                 case "4":
-                return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
-                break;
+                    return Kommunicate.markup.getRoomDetailsContainerTemplate(JSON.parse(metadata.hotelRoomDetail || "[]"), metadata.sessionId)
+                    break;
+                case "6":
+                    return Kommunicate.markup.quickRepliesContainerTemplate(metadata);
+                    break;
                 default:
-                return "";
-                break;
+                    return "";
+                    break;
             }
         }else{
             return "";
