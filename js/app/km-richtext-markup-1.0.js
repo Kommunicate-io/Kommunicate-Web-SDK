@@ -91,7 +91,7 @@ getHotelCardTemplate : function(options,sessionId){
             </div>
         </div>
         <div class="km-card-message-footer">
-            <button class="km-card-message-footer-button" data-resultindex= `+ options.ResultIndex +` data-sessionid= `+ sessionId+` data-name= `+(options.HotelName).replace(' ', '_')+` > ROOM DETAIL</button>
+            <button class="km-card-message-footer-button" data-resultindex= `+ options.ResultIndex +` data-sessionid= `+ sessionId+` data-name= `+(options.HotelName).replace(' ', '_')+` > Get Room Details</button>
         </div>
     </div>`;
 
@@ -106,17 +106,17 @@ getRoomDetailTemplate: function (options, sessionId) {
                     <div class="km-card-message-image-continer"><img class ="km-card-message-img" src=`+ options.HotelPicture +` alt=`+options.HotelName+`></div>
                         <div class="km-blocked-room-text-container">
                             <div class="km-blocked-room-room-type">
-                                <span>ROOM TYPE: </span> <span> `+ options.RoomTypeName + `</span>
+                                <span>Room Type: </span> <span> `+ options.RoomTypeName + `</span>
                             </div>
                             <div class="km-blocked-room-guests">
-                                <span>GUESTS:</span><span>`+ guest + ` </span>
+                                <span>Guests:</span><span>`+ guest + ` </span>
                             </div>
                             <div class="km-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
                                 <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + options.Price.RoomPrice + `</span>
                             </div>
                             <div class="km-blocked-room-sub-total">
-                                <p>Sub Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
+                                <p>Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
                                 <span> `+ (options.Price.CurrencyCode=="INR"?'&#x20B9;': options.Price.CurrencyCode ) + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
                             </div>
                         </div>
@@ -154,7 +154,7 @@ getPassangerDetail : function(options){
                     <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
                     <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-right" placeholder="Last Name *">
                     <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-left" placeholder="Email Id *">
-                    <input type="number" name="contact-no"  class="km-input number-input km-pxinfo-btn-right" placeholder="Contact Number ">
+                    <input type="text" name="contact-no"  class="km-input number-input km-pxinfo-btn-right" placeholder="Contact Number ">
                 </div>
                 <div class="km-guest-button-container">
                     <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>

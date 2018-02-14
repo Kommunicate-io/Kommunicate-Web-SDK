@@ -162,7 +162,7 @@ Kommunicate.richMsgEventHandler = {
         var mname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
         var lname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
         var email = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
-        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input").val();
+        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
         if(fname[0].value==""){
             $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
             return;
@@ -174,7 +174,7 @@ Kommunicate.richMsgEventHandler = {
             MiddleName: mname[0].value,
             LastName: lname[0].value,
             EmailId: email[0].value,
-            PhoneNo: phone
+            PhoneNo: phone[0].value
         }
         var target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
