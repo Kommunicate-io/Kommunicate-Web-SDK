@@ -135,6 +135,9 @@ getButtonTemplate:function(options,elemWidthClass){
     return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
     }
 },
+getQuickRepliesTemplate:function(options,elemWidthClass){
+    return'<button title="'+options.message+'" class="km-cta-button km-add-more-rooms km-quick-replies '+elemWidthClass+'">'+options.title+'</button>';
+},
 getPassangerDetail : function(options){
     if(!options.sessionId){
        console.log("sessionId not present in message..") 
@@ -180,8 +183,21 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
                 containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
             }
         } 
+        containerMarkup+='</form>';
     }
-    containerMarkup+='</form></div>';
+    containerMarkup+='</div>';
+    return containerMarkup;
+}
+Kommunicate.markup.quickRepliesContainerTemplate= function(options){
+    var containerMarkup = '<div class="km-cta-multi-button-container">';
+    var payload = JSON.parse(options.payload);
+    //var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+
+    for(var i = 0;i<payload.length;i++){
+        containerMarkup+=  Kommunicate.markup.getQuickRepliesTemplate(payload[i],elemWidthClass)
+    }
+    containerMarkup+='</div>';
     return containerMarkup;
 }
 
