@@ -3,7 +3,22 @@ id: web-installation
 title: Installation
 sidebar_label: Installation
 ---
-Replace appId with your applicationId
+
+Parameters:
+
+appId - your application Id.
+
+agentId - Support agent Id(registered in Kommunicate) who will reply to the support queries.
+
+groupName - Conversation Title.
+
+isAnonymousChat - allow your users to chat in Anonymous mode.
+
+userId - Unique Id for user.
+
+userName - Display name of the user. Agents will know users by Display name
+
+email - allow your users to register email id (optional).
 ```
 <script type="text/javascript">
     (function(d, m){
