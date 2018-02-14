@@ -4,6 +4,7 @@ title: Installation
 sidebar_label: Installation
 ---
 Replace appId with your applicationId
+```
 <script type="text/javascript">
     (function(d, m){
       // you can change the below values to customize conversations. 
@@ -19,3 +20,5 @@ Replace appId with your applicationId
       m._globals = o;
     })(document, window.kommunicate || {});
 </script>
+
+```
