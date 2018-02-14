@@ -149,7 +149,7 @@ getPassangerDetail : function(options){
                             <option value="Mrs.">Mrs.</option>
                         </select>
                     </div>
-                    <input type="number" name="age"  class="km-input km-age-input" placeholder="Age *" min="0" max="150">
+                    <input type="number" name="age"  class="km-input km-age-input n-vis" placeholder="Age *" min="0" max="150">
                     <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-left" placeholder="First Name *">
                     <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
                     <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-right" placeholder="Last Name *">
