@@ -29,6 +29,54 @@ Kommunicate ={
             }
         });
      },
+     startNewConversation: function(params, callback) {
+        $applozic.fn.applozic("createGroup", {
+            groupName: params.groupName,
+            type: 10,
+            admin: params.agentId,
+            users: [
+                {
+                    userId: "bot",
+                    groupRole: 2
+                },
+                {
+                    userId: params.agentId,
+                    groupRole: 1
+                }
+            ],
+            metadata: {
+                CREATE_GROUP_MESSAGE: "",
+                REMOVE_MEMBER_MESSAGE:"",
+                ADD_MEMBER_MESSAGE:"",
+                JOIN_MEMBER_MESSAGE: "",
+                GROUP_NAME_CHANGE_MESSAGE:"",
+                GROUP_ICON_CHANGE_MESSAGE:"",
+                GROUP_LEFT_MESSAGE: "",
+                DELETED_GROUP_MESSAGE:"",
+                GROUP_USER_ROLE_UPDATED_MESSAGE:"",
+                GROUP_META_DATA_UPDATED_MESSAGE: "",
+                CONVERSATION_ASSIGNEE: params.agentId,
+                //ALERT: "false",
+                HIDE: "true"
+            },
+            callback: function (response) {
+                console.log("response", response);
+                if (response.status === 'success' && response.data.clientGroupId) {
+                    Kommunicate.createNewConversation({
+                        "groupId": response.data.clientGroupId,
+                        "participentUserId": MCK_USER_ID,
+                        "defaultAgentId": DEFAULT_AGENT_ID,
+                        "applicationId": MCK_APP_ID
+                    }, function (err, result) {
+                        console.log(err, result);
+                        if (!err) {
+                            callback(response.data.clientGroupId);
+                        }
+                    })
+                }
+            }
+        });
+    },
     createNewConversation:function(options,callback){
         if(typeof(callback)!=='function'){
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
