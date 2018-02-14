@@ -6,14 +6,17 @@ const registrationService = require("../register/registrationService");
 exports.login = (userName,password,applicationName, applicationId,callback) => {
   console.log("userId from controller",userName);
 
-  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),userService.getByUserNameAndAppId(userName,applicationId)]).then(([application,user])=>{
-    if(user) {
-      if(bcrypt.compareSync(password, user.password)) {
+  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),
+    userService.getByUserNameAndAppId(userName,applicationId),
+    applozicClient.applozicLogin(userName,password,applicationId)]).then(([application,user,applozicUser])=>{
+
+      if(user && bcrypt.compareSync(password, user.password)) {
         // valid user credentials
           return Promise.resolve(userService.getCustomerInfoByApplicationId(applicationId)).then(customer=>{
             user.isAdmin = customer.userName==user.userName;
             user.adminUserName=customer.userName;
             user.adminDisplayName = customer.name;
+            user.applozicUser=applozicUser;
             return prepareResponse(user,application);
           });
       }else{
@@ -21,8 +24,7 @@ exports.login = (userName,password,applicationName, applicationId,callback) => {
         let err= {};
         err.code= "INVALID_CREDENTIALS";
         throw err;
-      }
-    } else{
+      }/*else{
         console.log("user not belongs to kommunicate..login by applozic");
         return applozicClient.applozicLogin(userName,password,applicationId).then(user=>{
           user.userName=user.userId;
@@ -30,7 +32,7 @@ exports.login = (userName,password,applicationName, applicationId,callback) => {
           user.authorization = new Buffer(user.userId+":"+user.deviceKey).toString('base64');
           return prepareResponse(user,application);
         });
-      }
+      }*/
     }).catch(err=>{
       console.log("err while login",err);
       throw err;
