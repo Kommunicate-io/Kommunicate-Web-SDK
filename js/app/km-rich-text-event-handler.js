@@ -12,7 +12,8 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
     $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
     $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
-  
+    $applozic("#mck-message-cell").on('click', '.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies);
+     
 }
 
 
@@ -189,6 +190,18 @@ Kommunicate.richMsgEventHandler = {
                             };
         Kommunicate.sendMessage(messagePxy);
         console.log("passenger detail submitted");
+    },
+    processQuickReplies : function(e){
+       var message = e.target.title;
+        var messagePxy = {
+            'message': message, //message to send 
+            'metadata': {
+
+            }
+        };
+
+        Kommunicate.sendMessage(messagePxy);
+
     }
 
 }
