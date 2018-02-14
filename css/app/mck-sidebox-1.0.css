@@ -4057,7 +4057,6 @@ cursor: pointer;
     height: 35px;
     color: #7766B5 !important;
     font-size: 15px !important;
-    text-transform: uppercase !important;
     cursor: pointer !important;
 }
 .km-card-message-img{
@@ -4382,7 +4381,6 @@ cursor: pointer;
     height: 100%;
     color: #00b0ff;
     font-size: 15px;
-    text-transform: uppercase;
     cursor: pointer;
 }
 .km-blocked-room-room-type, .km-blocked-room-guests, .km-blocked-room-price, .km-blocked-room-sub-total {
