@@ -64,9 +64,9 @@ Kommunicate ={
                 if (response.status === 'success' && response.data.clientGroupId) {
                     Kommunicate.createNewConversation({
                         "groupId": response.data.clientGroupId,
-                        "participentUserId": MCK_USER_ID,
-                        "defaultAgentId": DEFAULT_AGENT_ID,
-                        "applicationId": MCK_APP_ID
+                        "participentUserId": kommunicate._globals.userId,
+                        "defaultAgentId": params.agentId,
+                        "applicationId": kommunicate._globals.appId
                     }, function (err, result) {
                         console.log(err, result);
                         if (!err) {
@@ -76,6 +76,12 @@ Kommunicate ={
                 }
             }
         });
+    },
+    openConversation:function(){
+        window.$applozic.fn.applozic('loadTab', '');
+    },
+    openParticularConversation:function(groupId){
+        window.$applozic.fn.applozic('loadGroupTab', groupId);
     },
     createNewConversation:function(options,callback){
         if(typeof(callback)!=='function'){
