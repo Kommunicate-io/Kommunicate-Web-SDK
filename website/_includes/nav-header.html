@@ -84,6 +84,7 @@
 		<div>
 			<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %}  class="nav-login-button">Login</a>
 			<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-button">Create Free Account</a>
+			<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-button try-kommunicate">Try Kommunicate</a>
 		</div>
 		
 
@@ -110,7 +111,8 @@
 						<li><a href="https://blog.kommunicate.io/" target="_blank">Blog</a></li>
 						<li><a href="/about">About Us</a></li>
 						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %} class="nav-login-mobile-button">Login</a></li>
-						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Create Free Account</a></li>
+						<li class="signup-mobile"><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Create Free Account</a></li>
+						<li class="try-kommunicate-mobile"><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Try Kommunicate</a></li>
 					</ul>
 		</div>
 	</div>
