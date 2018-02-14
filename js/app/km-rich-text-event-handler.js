@@ -27,7 +27,7 @@ Kommunicate.richMsgEventHandler = {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
                 container: $cardMessageContainer[0],
-                items: 2,
+                items: 1,
                 slideBy: 'page',
                 "mouseDrag": true,
                 "arrowKeys": true,
@@ -99,7 +99,7 @@ Kommunicate.richMsgEventHandler = {
         var hotelName = target.dataset.name;
 
         var messagePxy = {
-            'message': "Get room detail of " +hotelName , //message to send 
+            'message': "Get room detail of " +hotelName.replace('_', ' ') , //message to send 
             'metadata': {
                 hotelSelected: true,
                 sessionId: sessionId,
@@ -119,7 +119,7 @@ Kommunicate.richMsgEventHandler = {
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
         var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
-            'message': "Book " + HotelName,
+            'message': "Book " + HotelName.replace('_', ' '),
             'metadata': {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
@@ -163,7 +163,7 @@ Kommunicate.richMsgEventHandler = {
         var mname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
         var lname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
         var email = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
-        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input").val();
+        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
         if(fname[0].value==""){
             $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
             return;
@@ -175,7 +175,7 @@ Kommunicate.richMsgEventHandler = {
             MiddleName: mname[0].value,
             LastName: lname[0].value,
             EmailId: email[0].value,
-            PhoneNo: phone
+            PhoneNo: phone[0].value
         }
         var target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
