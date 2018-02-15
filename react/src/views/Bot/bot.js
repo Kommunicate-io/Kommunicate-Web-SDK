@@ -72,20 +72,13 @@ class Tabs extends Component {
 
   this.toggle = this.toggle.bind(this);
    };
+
    componentWillMount =()=>{
     //this.populateBotOptions();
    }
-  componentDidMount=()=>{
-    //console.log("options",this.state.botListInnerHtml);
 
-    getIntegratedBots().then(response => {
-      console.log(response);
-      this.setState({
-        listOfIntegratedBots: (response && response.allBots) ? response.allBots: [],
-        dialogFlowBots: (response && response.dialogFlowBots) ? response.dialogFlowBots: [],
-      })
-    });
-  
+  componentDidMount=()=>{
+    this.getIntegratedBotsWrapper()
   }
 
   clearBotDetails = ()=>{
@@ -188,9 +181,10 @@ class Tabs extends Component {
   }
 
   toggleDialogFlowModal = () => {
-      this.setState({
-          dialogFlowModal: !this.state.dialogFlowModal
-      });
+    this.clearBotDetails()
+    this.setState({
+      dialogFlowModal: !this.state.dialogFlowModal
+    });
   }
 
   toggleBotProfileModal = () => {
@@ -389,7 +383,8 @@ class Tabs extends Component {
       devToken: this.state.editedDevToken,
     }
 
-    let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
+    // let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
+    let url = getConfig().applozicPlugin.addBotUrl+"/"+this.state.botKey+'/configure'
 
     console.log(this.state.botName.toLowerCase());
     console.log(this.state.editedBotName.toLowerCase());
@@ -401,12 +396,7 @@ class Tabs extends Component {
           if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
             Notification.info("Changes Saved successfully")
           }
-          getIntegratedBots().then(response => {
-            console.log(response);
-            this.setState({
-              listOfIntegratedBots: response ? response: []
-            })
-          });
+          this.getIntegratedBotsWrapper()
         }).catch(err => {console.log(err)})
     }else{
       Notification.info("No Changes to be saved successfully")
@@ -416,6 +406,16 @@ class Tabs extends Component {
   toggleListOfDialogFlowModal = () => {
     this.setState({
       listOfDialogFlowModal: !this.state.listOfDialogFlowModal
+    });
+  }
+
+  getIntegratedBotsWrapper = () => {
+    getIntegratedBots().then(response => {
+      console.log(response);
+      this.setState({
+        listOfIntegratedBots: (response && response.allBots) ? response.allBots: [],
+        dialogFlowBots: (response && response.dialogFlowBots) ? response.dialogFlowBots: [],
+      })
     });
   }
 
