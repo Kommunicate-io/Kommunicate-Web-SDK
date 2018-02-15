@@ -8637,7 +8637,8 @@ app-root {
 .sidebar-fixed .sidebar {
   position: fixed;
   width: 60px;
-  height: 100%; }
+  height: 100%;
+padding-top: 15px; }
   .sidebar-fixed .sidebar .sidebar-nav {
     height: calc(100vh - 55px); }
 
@@ -10333,4 +10334,39 @@ input:required {
 
 .km-container {
   height: calc(100% - 55px) !important;
+}
+
+.integration-invited-team-div {
+  margin-top: 55px;
+  background: #1cabe2;
+  height: 40px;
+  line-height: 40px;
+  color: #ffffff;
+  position: relative;
+}
+.integration-invited-team-div span, .integration-invited-team-div a {
+  color: #ffffff;
+  font-weight: 600;
+}
+.integration-invited-team-div a {
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.integration-invited-team-div a:hover, .integration-invited-team-div a:focus, .integration-invited-team-div a:active {
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.dismiss-icon {
+  top: 4px;
+  right: 10px;
+  font-size: 25px !important;
+  width: 32px !important;
+  height: 32px !important;
+  position: absolute;
+  color: #FFFFFF;
+  cursor: pointer;
+  line-height: 32px;
 }
