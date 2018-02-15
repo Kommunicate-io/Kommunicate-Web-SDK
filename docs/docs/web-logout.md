@@ -4,7 +4,7 @@ title: Logout
 sidebar_label: Logout
 ---
 
-Call the following code when a user logs out from kommunicate:
+Call the following code when a user logout from Kommunicate:
 
 ```
 Kommunicate.logout();
