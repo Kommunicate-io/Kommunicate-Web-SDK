@@ -7,7 +7,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
-import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots} from '../../utils/kommunicateClient';
+import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
@@ -16,6 +16,7 @@ import Microsoft from './images/microsoft-icon.png'
 import Tick from './images/tick-icon.png'
 import KmIcon from './images/km-icon.png'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import uuid from 'uuid/v1';
 
 class Tabs extends Component {
 
@@ -41,6 +42,7 @@ class Tabs extends Component {
       otherPlatformModal: false,
       editBotIntegrationModal: false,
       deleteBotIntegrationModal: false,
+      listOfDialogFlowModal: false,
       useCaseSubmitted: false,
       clientToken: '',
       devToken: '',
@@ -56,7 +58,14 @@ class Tabs extends Component {
       disableIntegrateBotButton: false,
       listOfIntegratedBots: [],
       botAiPlatform: {"api.ai": "DialogFlow", "dialogflow": "DialogFlow", "microsoft": "microsoft", "amazon": "amazon"},
-      editBotIntegrationModalHeader: 'Edit Bot Profile', 
+      editBotIntegrationModalHeader: 'Edit Bot Profile',
+      botIdInUserTable: '',
+      botKey: '',
+      editedBotName: '',
+      editedClientToken: '',
+      editedDevToken: '',
+      botUserName: '',
+      dialogFlowBots: [],
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -72,7 +81,8 @@ class Tabs extends Component {
     getIntegratedBots().then(response => {
       console.log(response);
       this.setState({
-        listOfIntegratedBots: response ? response: []
+        listOfIntegratedBots: (response && response.allBots) ? response.allBots: [],
+        dialogFlowBots: (response && response.dialogFlowBots) ? response.dialogFlowBots: [],
       })
     });
   
@@ -169,11 +179,19 @@ class Tabs extends Component {
     }
   }
 
+  toggleDialogFlowModalWrapper = () => {
+    if(this.state.dialogFlowBots.length < 1){
+      this.toggleDialogFlowModal()
+    }else{
+      this.toggleListOfDialogFlowModal()
+    }
+  }
+
   toggleDialogFlowModal = () => {
       this.setState({
           dialogFlowModal: !this.state.dialogFlowModal
       });
-    }
+  }
 
   toggleBotProfileModal = () => {
     this.setState({
@@ -200,8 +218,12 @@ class Tabs extends Component {
       clientToken : this.state.clientToken,
       devToken : this.state.devToken,
       aiPlatform : aiPlatform,
-      botName:this.state.botName,
+      botName : this.state.botName,
     }
+
+    let uuid_holder = uuid();
+
+    // this.setState({uuid: uuid_holder})
 
     let userSession = CommonUtils.getUserSession();
     let applicationId = userSession.application.applicationId;
@@ -211,11 +233,11 @@ class Tabs extends Component {
     let devicekey = device.split(":")[1];
     let env = getEnvironmentId();
     let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
-    let userIdList = {"userIdList" : [this.state.botName]}
+    let userIdList = {"userIdList" : [uuid_holder]}
 
     this.setState({disableIntegrateBotButton: true})
 
-    this.checkBotNameAvailability().then( bot => {
+    this.checkBotNameAvailability(uuid_holder).then( bot => {
       axios({
       method: 'post',
       url:userDetailUrl,
@@ -226,12 +248,13 @@ class Tabs extends Component {
         "Content-Type": "application/json",
         "Apz-AppId":applicationId
       }}).then(function(response) {
-        if(response.status==200 ){
+        if(response.status==200 && response.data.response[0]){
           console.log(response);
           console.log("success");
           axios({
             method: 'post',
             url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
+            // url:"http://localhost:5454/bot/"+response.data.response[0].id+'/configure', 
             data:JSON.stringify(data),
             headers: {
               "Content-Type": "application/json",
@@ -284,7 +307,7 @@ class Tabs extends Component {
     }
   }
 
-  checkBotNameAvailability() {
+  checkBotNameAvailability(uuid_holder) {
 
     if(!this.state.botName){
       Notification.info("Please enter a bot name !!");
@@ -294,9 +317,10 @@ class Tabs extends Component {
     let userSession = CommonUtils.getUserSession();
     let applicationId = userSession.application.applicationId;
 
+
     return Promise.resolve(
       createCustomerOrAgent({
-        userName:this.state.botName,
+        userName: uuid_holder, //this.state.botName,
         type:2,
         applicationId:applicationId,
         password:this.state.botName,
@@ -307,11 +331,22 @@ class Tabs extends Component {
       })
   }
 
-  toggleEditBotIntegrationModal = () => {
+  toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken) => {
     // this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
     })
+
+    if(botIdInUserTable && botKey){
+      this.setState({
+        botIdInUserTable,
+        botKey
+    }, () => {this.editBotDetails()})
+
+    }
+    if(botName && botUserName && botToken && botDevToken){
+      this.setEditBotIntegrationDetails(botName, botUserName, botToken, botDevToken)
+    }
   }
 
   toggleDeleteBotIntegrationModal = () => {
@@ -321,13 +356,67 @@ class Tabs extends Component {
     })
   }
 
-  setEditBotIntegrationDetails = (botName, clientToken, devToken) => {
+  setEditBotIntegrationDetails = (botName, botUserName, clientToken, devToken) => {
     this.setState({
       editBotIntegrationModalHeader: botName,
+      editedBotName: botName,
+      editedClientToken: clientToken,
+      editedDevToken: devToken,
+      botUserName,
       botName,
       clientToken,
       devToken,
     })
+  }
+
+  editBotDetails = () => {
+
+    console.log(this.state.botIdInUserTable)
+    console.log(this.state.botKey)
+
+  }
+
+  saveNewBotDetails = () => {
+
+    let patchUserData = {
+      name: this.state.editedBotName,
+    }
+
+    let axiosPostData = {
+      botName: this.state.editedBotName,
+      aiPlatform: "dialogflow",
+      clientToken: this.state.editedClientToken,
+      devToken: this.state.editedDevToken,
+    }
+
+    let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
+
+    console.log(this.state.botName.toLowerCase());
+    console.log(this.state.editedBotName.toLowerCase());
+
+    if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() ){
+
+      Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
+        .then(([patchUserInfoResponse, axiosPostResponse]) => {
+          if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
+            Notification.info("Changes Saved successfully")
+          }
+          getIntegratedBots().then(response => {
+            console.log(response);
+            this.setState({
+              listOfIntegratedBots: response ? response: []
+            })
+          });
+        }).catch(err => {console.log(err)})
+    }else{
+      Notification.info("No Changes to be saved successfully")
+    }
+  }
+
+  toggleListOfDialogFlowModal = () => {
+    this.setState({
+      listOfDialogFlowModal: !this.state.listOfDialogFlowModal
+    });
   }
 
   render() {
@@ -350,8 +439,8 @@ class Tabs extends Component {
                 </div>
                 <div className="km-bot-list-of-integrated-bots-container">
                   {this.state.listOfIntegratedBots.map(bot => (
-                    <div>
-                      <div className="row col-sm-12" key={bot.id}>
+                    <div key={bot.id}>
+                      <div className="row col-sm-12">
                         <div className="row col-sm-6">
                           <div className="col-sm-2">
                             <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
@@ -364,7 +453,7 @@ class Tabs extends Component {
                           <span className="badge badge-success">Enabled</span>
                         </div>
                         <div className="col-sm-3" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" onClick={() => {this.toggleEditBotIntegrationModal(); this.setEditBotIntegrationDetails(bot.name, bot.token, bot.devToken)}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
                             Edit
                           </button>
                         </div>
@@ -427,7 +516,7 @@ class Tabs extends Component {
                   <div className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-dialogflow-text">Dialogflow <br />(Api.ai)</p>
-                  <p onClick={this.toggleDialogFlowModal} style={{cursor: "pointer", color: "#5c5aa7"}}>SETTINGS</p>
+                  <p onClick={this.toggleDialogFlowModalWrapper} style={{cursor: "pointer", color: "#5c5aa7"}}>SETTINGS</p>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
                   <p></p>
@@ -579,19 +668,19 @@ class Tabs extends Component {
             <div className="row">
               <label className="col-sm-3">Client Token:</label>
               <div className="col-sm-6">
-                <input type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
+                <input type="text" onChange = {(event) => this.setState({editedClientToken:event.target.value})} value ={this.state.editedClientToken} name="hf-password" className="form-control input-field"/>
               </div>
             </div>
             <div className="row mt-4">
               <label className="col-md-3">Dev Token:</label>
               <div className="col-md-6">
-                <input type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
+                <input type="text" onChange = {(event) => this.setState({editedDevToken:event.target.value})} value ={this.state.editedDevToken} name="hf-password" className="form-control input-field"/>
               </div>
             </div>
             <div className="row mt-4">
               <label className="col-sm-3">Bot Name:</label>
               <div className="col-sm-6">
-                <input type="text" onChange = {(event) => this.setState({botName:event.target.value})} value ={this.state.botName} name="hf-password" className="form-control input-field" placeholder="Example: Alex, Bot " />
+                <input type="text" onChange = {(event) => this.setState({editedBotName:event.target.value})} value={this.state.editedBotName} className="form-control input-field" />
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
@@ -604,7 +693,7 @@ class Tabs extends Component {
                   </button>
                 </div>
                 <div className="row col-sm-6">
-                  <button className="btn btn-primary" >
+                  <button className="btn btn-primary" onClick={this.saveNewBotDetails}>
                     Save Changes
                   </button>
                 </div>
@@ -653,6 +742,47 @@ class Tabs extends Component {
                     Delete
                   </button>
                 </div>
+              </div>  
+            </div>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={this.state.listOfDialogFlowModal} toggle={this.toggleListOfDialogFlowModal} className="modal-dialog">
+          <ModalHeader toggle={this.toggleListOfDialogFlowModal}>
+            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
+            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Your Dialogflow integrations</span>
+          </ModalHeader>
+          <ModalBody>
+            <div className="km-bot-list-of-dialogflow-bots-container">
+                  {this.state.dialogFlowBots.map(bot => (
+                    <div key={bot.id}>
+                      <div className="row col-sm-12">
+                        <div className="row col-sm-6">
+                          <div className="col-sm-2">
+                            <span>{bot.name}</span>
+                          </div> 
+                        </div>
+                        <div className="col-sm-3">
+                          <span className="badge badge-success">Enabled</span>
+                        </div>
+                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
+                            Edit
+                          </button>
+                        </div>
+                      </div>
+                      <hr />
+                    </div>
+                  ))}
+                </div>
+            <div className="row">
+            </div>
+            <div className="row" style={{marginTop: "66px"}}>
+              <div className="col-sm-6">
+              </div> 
+              <div className="col-sm-6 text-right">
+                <button className="btn btn-primary" onClick={() => {this.toggleDialogFlowModal(); this.toggleListOfDialogFlowModal()}}>
+                  New Integration
+                </button>
               </div>  
             </div>
           </ModalBody>
