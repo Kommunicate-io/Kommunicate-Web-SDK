@@ -10421,3 +10421,9 @@ input:required {
   overflow-y: auto;
   padding: 10px;
 }
+
+.km-bot-list-of-dialogflow-bots-container {
+  height: 208px;
+  overflow-y: auto;
+  background-color: #f3f3f3;
+}
