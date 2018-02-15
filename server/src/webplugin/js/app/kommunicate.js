@@ -110,7 +110,6 @@ Kommunicate ={
         });
     },
     logout:function(event,options){
-        window.logout();
         if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" &&typeof window.$kmApplozic.fn.applozic!=="undefined"&& window.$kmApplozic.fn.applozic("getLoggedInUser")) {
           window.$kmApplozic.fn.applozic('logout');           
         }
@@ -119,7 +118,6 @@ Kommunicate ={
         }
         sessionStorage.clear();
         localStorage.clear();
-        window.appHistory.replace('/login');
     },
     triggerEvent:function(event,options){
         $applozic.ajax({
