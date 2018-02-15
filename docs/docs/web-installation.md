@@ -4,25 +4,10 @@ title: Installation
 sidebar_label: Installation
 ---
 
-Parameters:
-
-appId - your application Id.
-
-agentId - Support agent Id(registered in Kommunicate) who will reply to the support queries.
-
-groupName - Conversation Title.
-
-isAnonymousChat - allow your users to chat in Anonymous mode.
-
-userId - Unique Id for user.
-
-userName - Display name of the user. Agents will know users by Display name
-
-email - allow your users to register email id (optional).
 ```
 <script type="text/javascript">
     (function(d, m){
-      let o = {"appId":"applozic-sample-app","isAnonymousChat":true,"agentId":null,"groupName":null,"email":""};
+      let o = {"appId":"applicationId","isAnonymousChat":true,"agentId":null,"groupName":null,"email":""};
       let s = document.createElement("script");
       s.type = "text/javascript";
       s.async = true;
@@ -35,3 +20,18 @@ email - allow your users to register email id (optional).
 </script>
 
 ```
+You can change below parameters according to your need.
+
+appId - your application Id. 
+
+agentId - Support agent Id(registered in Kommunicate) who will reply to the support queries.
+
+groupName - Conversation Title.
+
+isAnonymousChat - allow your users to chat in Anonymous mode.
+
+userId - Unique Id for user.
+
+userName - Display name of the user. Agents will know users by Display name
+
+email - allow your users to register email id .
