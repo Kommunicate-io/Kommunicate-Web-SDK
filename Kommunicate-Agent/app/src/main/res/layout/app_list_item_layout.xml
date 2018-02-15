@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/applicationListLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/applicationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:singleLine="true"
+        android:layout_marginLeft="5dp"
+        android:text="Application 1" />
+
+    <TextView
+        android:id="@+id/applicationKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/applicationName"
+        android:layout_marginLeft="5dp"
+        android:text="344987934n3fddf8934ud979u34nfe7834nfe8793u" />
+
+</RelativeLayout>

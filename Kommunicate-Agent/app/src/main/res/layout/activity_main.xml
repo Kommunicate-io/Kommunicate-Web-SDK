@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/password_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="30dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="56dp"
+            android:src="@drawable/km_main_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="9.4dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.04"
+            android:text="@string/login_page_message"
+            android:textColor="#545457"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="39dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="39dp"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="66dp">
+
+            <EditText
+                android:id="@+id/userId_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="39dp"
+            android:layout_marginLeft="37dp"
+            android:layout_marginRight="39dp"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="24dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/showPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="0.04"
+                android:text="Show"
+                android:textColor="#ff828080"
+                android:textSize="12sp" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="37dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.04"
+            android:text="Forgot Password?"
+            android:textColor="@color/applozic_theme_color_primary"
+            android:textSize="14sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_login"
+            android:layout_width="93dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="41dp"
+            android:background="@color/applozic_theme_color_primary"
+            android:text="Login"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/singupInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/signup_info"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#5e5d60"
+            android:layout_marginTop="61dp"
+            android:letterSpacing="0.04"
+            android:gravity="center_horizontal"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <LinearLayout
+            android:id="@+id/footerSnack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="vertical"
+            android:visibility="gone" />
+    </LinearLayout>
+</ScrollView>
+
