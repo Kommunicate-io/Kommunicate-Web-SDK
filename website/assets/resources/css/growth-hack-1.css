@@ -131,7 +131,13 @@
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   }
 
-  @media(max-width:767px) {
+  .nav-signup-button.try-kommunicate {
+    display: block !important;
+  }
+  .menu-mobile {
+    display: none;
+}
+  @media(max-width:550px) {
     .page-links-ul, .nav-signup-button, .nav-login-button {
         display: none;
     }
@@ -141,9 +147,15 @@
     .menu-btn-icon {
         fill: #5c5aa7;
     }
+    .mobile-nav-links li:not(:last-child) {
+      display: none;
+    }
+    .nav-signup-button.try-kommunicate {
+      display: none !important;
+    }
   }
 
-
+  
 
 
 
