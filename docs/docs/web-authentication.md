@@ -16,8 +16,9 @@ email - email id of logged in user
 ```
 <script type="text/javascript">
     (function(d, m){ 
-      let o = {"appId":"applicationId","isAnonymousChat":true,"userId":"uniqueId id","agentId":null,"userName":"userName","groupName":null,"email":""};
-      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      let o = {"appId":"applicationId","isAnonymousChat":true,"userId":"uniqueId id","agentId":"agentId","userName":"userName","groupName":"groupName","email":"email"};
+      let s = document.createElement("script");
+      s.type = "text/javascript"; s.async = true;
       s.src = "https://api.kommunicate.io/kommunicate.app";
       let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
       window.kommunicate = m; m._globals = o;
