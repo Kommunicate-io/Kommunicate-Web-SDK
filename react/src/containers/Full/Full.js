@@ -31,7 +31,8 @@ class Full extends Component {
      //_this =this;
     let imageLink = CommonUtils.getUserSession().imageLink;
     this.state = { 
-      imageLink: imageLink
+      imageLink: imageLink,
+      hideInvitedMemberBar: true
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
     console.log("profilePicUrl",this.state.imageLink)
@@ -54,6 +55,11 @@ class Full extends Component {
     }
   }
 
+  closeInvitedMemberBar = e => {
+    this.setState({hideInvitedMemberBar:true});
+  }
+
+
   render() {
 
     const currentPath = window.location.pathname;
@@ -61,6 +67,10 @@ class Full extends Component {
     return (
       <div className="app" suppressContentEditableWarning={true}> 
         <Header profilePicUrl={this.state.imageLink}/>
+        <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
+          <p>Yoou were invited by <span>Email Id</span>. You may start with <Link to="/settings/integration">Kommunicate Installation</Link> or set up your <Link to="/admin">Profile</Link></p>
+          <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
+        </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
           {(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts')) ? <SettingsSidebar {...this.props}/> : null}
