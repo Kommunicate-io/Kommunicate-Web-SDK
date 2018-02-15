@@ -3,7 +3,8 @@ id: web-authentication
 title: Authentication
 sidebar_label: Authentication
 ---
-## To initate chat with particular user add below parameter in script
+
+## To initiate chat by a particular userId add below parameter in script
 
 userId - Unique Id for user.
 
