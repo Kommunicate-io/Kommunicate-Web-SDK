@@ -653,6 +653,7 @@ const getIntegratedBots = () => {
       console.log(sqlBots);
 
       let bots = []
+      let dialogFlowBots = []
 
       for(let i= 0; i < sqlBots.length; i++){
         for(let j = 0; j < mongoBots.data.length; j++ ){
@@ -660,14 +661,16 @@ const getIntegratedBots = () => {
             let bot1 = sqlBots[i];
             let bot2 = mongoBots.data[i];
             bots[i] = {...bot1, ...bot2};
+
+            if(bots[i].aiPlatform && bots[i].aiPlatform.toLowerCase() === 'dialogflow'){
+              dialogFlowBots.push(bots[i]);
+            }
             break;
           }
         }
       }
 
-      console.log(bots);
-
-      return bots;
+      return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
 
     }).catch(err => {console.log(err)})
 
