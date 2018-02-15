@@ -7,7 +7,7 @@ sidebar_label: Installation
 ```
 <script type="text/javascript">
     (function(d, m){
-      let o = {"appId":"applicationId","isAnonymousChat":true,"agentId":"agentId","groupName":"groupName","email":""};
+      let o = {"appId":"applicationId","isAnonymousChat":true,"agentId":"agentId","groupName":"groupName","email":"email id"};
       let s = document.createElement("script");
       s.type = "text/javascript";
       s.async = true;
