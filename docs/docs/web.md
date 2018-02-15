@@ -1,7 +1,7 @@
 ---
-id: installation
+id: web-docs
 title: Install Javascript Chat Plugin on Website
-sidebar_label: Sample App
+sidebar_label: Javascript
 ---
 
 

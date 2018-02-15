@@ -43,7 +43,7 @@ class WhenYouAreOnline extends Component {
 		...this.knownUser,
 		showPrefs: this.props.showOnlinePrefs,
 		upDownIcon: "icon-arrow-down icons font-2xl d-block text-right",
-		
+				
 	}
 
 	componentDidMount() {
@@ -51,9 +51,11 @@ class WhenYouAreOnline extends Component {
 		let eventIds = [1, 2, 3, 4];
 		return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(welcomeMessages => {
 		console.log("When you are Online msg API response", welcomeMessages)
+		
 		if (welcomeMessages.eventId3Messages instanceof Array && welcomeMessages.eventId3Messages.length < 1) {
 			this.setState({ unknownMessageSections: [] })
-      	  }
+			}
+		
 		// eventId id 3 when agent is online and user is anonymous users
 		welcomeMessages.eventId3Messages.map(msg => {
 			msg.messages.map(item => {
@@ -88,7 +90,7 @@ class WhenYouAreOnline extends Component {
 		    }
 	      })
 		})
-
+		
 		if (this.state.unknownMessageSections.length < 1) {
 			this.setState({ unknownMessageSections: [{ id: -1, component: <MessageSection id={null} showDeleteBtn={false} getMessage={this.getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.addMessageToChatPreview(3, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-1) }} /> }] })
       	  }
@@ -122,8 +124,13 @@ class WhenYouAreOnline extends Component {
 		})
 
 		if (this.state.knownMessageSections.length < 1) {
-			this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })		}			
-
+				this.setState({ knownMessageSections: [{ id: -101, component: <MessageSection id={-101} showDeleteBtn={false} getMessage={this.known_getMessageFunc.bind(this)} addMessageToChatPreview={() => { this.known_addMessageToChatPreview(4, 1) }} deleteInAppMsg={() => { this._deleteInAppMsg(-101) }} /> }] })
+		}
+		if (welcomeMessages.eventId3Messages[0].messages[0].status === 2 || welcomeMessages.eventId4Messages[0].messages[0].status === 2 ||
+			welcomeMessages.eventId3Messages[0].messages[0].status === 3 || welcomeMessages.eventId4Messages[0].messages[0].status === 3) {
+			this.props.updateUserStatus(false);
+		}	
+			
 	}).catch(err => {
 			console.log("Error while fetching welcome messages for WhenYouAreOnline ", err)
 

@@ -10332,9 +10332,10 @@ input:required {
   cursor: pointer;
 }
 
-.km-container {
+/* .km-container {
   height: calc(100% - 55px) !important;
 }
+*/
 
 .integration-invited-team-div {
   margin-top: 55px;

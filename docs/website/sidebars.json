@@ -1,6 +1,11 @@
 {
   "docs": {
-    "Java Script": ["installation"]
+    "Web":["web-installation","web-authentication","web-conversation","web-pushnotification","web-logout"],
+    "Android": ["android-installation","android-authentication","android-conversation","android-pushnotification","android-logout"],
+    "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"]
+
+    
+    
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

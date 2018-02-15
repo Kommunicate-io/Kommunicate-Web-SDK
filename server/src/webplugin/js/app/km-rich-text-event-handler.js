@@ -2,14 +2,18 @@
 /**
  * Attach all event listeners.
  */
-Kommunicate.attachEvents = function ($applozic) {
-    $applozic("#mck-message-cell").on('click', '.km-increment-guest-count', Kommunicate.richMsgEventHandler.incrementGuestCount);
-    $applozic("#mck-message-cell").on('click', '.km-decrement-guest-count', Kommunicate.richMsgEventHandler.decrementGuestCount);//
-    $applozic("#mck-message-cell").on('click', '.km-btn-add-more-rooms', Kommunicate.richMsgEventHandler.addMoreRoom);//
-    $applozic("#mck-message-cell").on('click', '.km-done-button', Kommunicate.richMsgEventHandler.processSelectedRoom);
-    $applozic("#mck-message-cell").on('click', '.km-card-message-footer-button', Kommunicate.richMsgEventHandler.processHotelBookClick);
-    $applozic("#mck-message-cell").on('click', '.km-cta-button', Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+
+Kommunicate.attachEvents = function($applozic){
+    $applozic("#mck-message-cell").on('click','.km-increment-guest-count',Kommunicate.richMsgEventHandler.incrementGuestCount);
+    $applozic("#mck-message-cell").on('click','.km-decrement-guest-count',Kommunicate.richMsgEventHandler.decrementGuestCount);//
+    $applozic("#mck-message-cell").on('click','.km-btn-add-more-rooms',Kommunicate.richMsgEventHandler.addMoreRoom);//
+    $applozic("#mck-message-cell").on('click','.km-done-button',Kommunicate.richMsgEventHandler.processSelectedRoom);
+    $applozic("#mck-message-cell").on('click','.km-card-message-footer-button',Kommunicate.richMsgEventHandler.processHotelBookClick);
+    $applozic("#mck-message-cell").on('click','.km-cta-button',Kommunicate.richMsgEventHandler.handlleRichButtonClick);
+    $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
     $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
+    $applozic("#mck-message-cell").on('click', '.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies);
+     
 }
 
 
@@ -23,23 +27,19 @@ Kommunicate.richMsgEventHandler = {
         if ($cardMessageContainer.length > 0) {
             var slider = tns({
                 container: $cardMessageContainer[0],
-                items: 2,
+                items: 1,
                 slideBy: 'page',
                 "mouseDrag": true,
-                "arrowKeys": true
-            });
+                "arrowKeys": true,
+                onInit : function(){
+                    console.log("tiny-slider initilized");
+                   document.querySelector(".km-slick-container .tns-controls button:first-child").innerHTML='<';
+                   document.querySelector(".km-slick-container .tns-controls button:last-child").innerHTML='>';
+
+                }
+              });
         }
 
-        /*$cardMessageContainer.slick({
-                dots: false,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 1,
-                centerMode: false,
-                variableWidth: true,
-                prevArrow: false,
-                nextArrow: false
-            });*/
     },
     decrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
@@ -89,15 +89,8 @@ Kommunicate.richMsgEventHandler = {
 
             }
         };
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
 
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
+        Kommunicate.sendMessage(messagePxy);
     },
     processHotelBookClick: function (e) {
         var target = e.target || e.srcElement;
@@ -106,7 +99,7 @@ Kommunicate.richMsgEventHandler = {
         var hotelName = target.dataset.name;
 
         var messagePxy = {
-            'message': "Book " + hotelName, //message to send 
+            'message': "Get room detail of " +hotelName.replace('_', ' ') , //message to send 
             'metadata': {
                 hotelSelected: true,
                 sessionId: sessionId,
@@ -114,17 +107,8 @@ Kommunicate.richMsgEventHandler = {
                 skipBot: true
             }
         };
-        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to = $applozic("#mck-msg-to");
 
-        if ($mck_msg_inner.data("isgroup") === true) {
-            messagePxy.groupId = $mck_msg_to.val();
-        } else {
-            messagePxy.to = $mck_msg_to.val();
-        }
-        $applozic.fn.applozic('sendGroupMessage', messagePxy);
-
-
+        Kommunicate.sendMessage(messagePxy);
     },
 
     processBookRoomClick: function (e) {
@@ -135,7 +119,7 @@ Kommunicate.richMsgEventHandler = {
         var HotelName = target.dataset.hotelname=="undefined" ? "" : target.dataset.hotelname;
         var HotelResultIndex =target.dataset.hotelresultindex;
         var messagePxy = {
-            'message': "Book " +HotelName ,
+            'message': "Book " + HotelName.replace('_', ' '),
             'metadata': {
                 sessionId: sessionId,
                 RoomIndex: RoomIndex,
@@ -169,6 +153,54 @@ Kommunicate.richMsgEventHandler = {
             form.submit();
 
         }
+
+    },
+   
+    handlleSubmitPersonDetail: function (e) {
+        var title = $(e.target).closest('.km-guest-details-container').find(".km-title-select option:selected").text();
+        var age = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.km-age-input");
+        var fname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input");
+        var mname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
+        var lname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
+        var email = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
+        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
+        if(fname[0].value==""){
+            $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
+            return;
+        }
+        var personDetail = {
+            Title: title === 'title' ? "" : title,
+            Age: age[0].value,
+            FirstName: fname[0].value,
+            MiddleName: mname[0].value,
+            LastName: lname[0].value,
+            EmailId: email[0].value,
+            PhoneNo: phone[0].value
+        }
+        var target = e.target || e.srcElement;
+        var sessionId = target.dataset.sessionid;
+        var messagePxy = { 
+                        message: "Your detail submitted",
+                        metadata: { 
+                                sessionId: sessionId, 
+                                guestDetail: true, 
+                                skipBot: true, 
+                                personInfo: JSON.stringify(personDetail) 
+                                } 
+                            };
+        Kommunicate.sendMessage(messagePxy);
+        console.log("passenger detail submitted");
+    },
+    processQuickReplies : function(e){
+       var message = e.target.title;
+        var messagePxy = {
+            'message': message, //message to send 
+            'metadata': {
+
+            }
+        };
+
+        Kommunicate.sendMessage(messagePxy);
 
     }
 

@@ -1,8 +1,5 @@
 /**
- * Copyright (c) 2017-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
+ * Copyright (c) 2018-present, Kommunicate, Inc.
  */
 
 const React = require('react');
@@ -58,8 +55,12 @@ const Logo = props => (
 
 const ProjectTitle = props => (
   <h2 className="projectTitle">
-    {siteConfig.title}
-    <small>{siteConfig.tagline}</small>
+    {/* {siteConfig.title} */}
+    Help and Documentation 
+    <small>
+    {/* {siteConfig.tagline} */}
+    Get familiar with the Kommunicate features and integrate them easily
+    </small>
   </h2>
 );
 
@@ -76,14 +77,14 @@ class HomeSplash extends React.Component {
     let language = this.props.language || '';
     return (
       <SplashContainer>
-       {/*<Logo img_src={imgUrl('km-logos.svg')} />*/}
+       {/* <Logo img_src={imgUrl('km-logos.svg')} /> */}
         <div className="inner">
           <ProjectTitle />
           <PromoSection>
-           {/* <Button href="#try">Try It Out</Button>
-            <Button href={docUrl('doc1.html', language)}>Example Link</Button>
-            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button>
-    */}
+           <Button href={docUrl('web-installation.html', language)}>Get Started</Button>
+            {/* <Button href={docUrl('doc1.html', language)}>Example Link</Button>
+            <Button href={docUrl('doc2.html', language)}>Example Link 2</Button> */}
+   
           </PromoSection>
         </div>
       </SplashContainer>
@@ -105,13 +106,13 @@ const Features = props => (
     {[
       {
         content: 'This is the content of my feature',
-        image: imgUrl('km-logos.svg'),
+        //image: imgUrl('km-logos.svg'),
         imageAlign: 'top',
         title: 'Feature One',
       },
       {
         content: 'The content of my second feature',
-        image: imgUrl('km-logos.svg'),
+       // image: imgUrl('km-logos.svg'),
         imageAlign: 'top',
         title: 'Feature Two',
       },
@@ -133,7 +134,7 @@ const LearnHow = props => (
     {[
       {
         content: 'Talk about learning how to use this',
-        image: imgUrl('km-logos.svg'),
+        // image: imgUrl('km-logos.svg'),
         imageAlign: 'right',
         title: 'Learn How',
       },
@@ -146,7 +147,7 @@ const TryOut = props => (
     {[
       {
         content: 'Talk about trying this out',
-        image: imgUrl('km-logos.svg'),
+       // image: imgUrl('km-logos.svg'),
         imageAlign: 'left',
         title: 'Try it Out',
       },
@@ -159,7 +160,7 @@ const Description = props => (
     {[
       {
         content: 'This is another description of how this project is useful',
-        image: imgUrl('km-logos.svg'),
+        //image: imgUrl('km-logos.svg'),
         imageAlign: 'right',
         title: 'Description',
       },
@@ -205,12 +206,12 @@ class Index extends React.Component {
       <div>
         <HomeSplash language={language} />
         <div className="mainContainer">
-          <Features />
-          <FeatureCallout />
-          <LearnHow />
-          <TryOut />
-          <Description />
-          <Showcase language={language} />
+          {/* <Features /> */}
+          {/* <FeatureCallout /> */}
+          {/* <LearnHow /> */}
+          {/* <TryOut /> */}
+          {/* <Description /> */}
+          {/* <Showcase language={language} /> */}
         </div>
       </div>
     );

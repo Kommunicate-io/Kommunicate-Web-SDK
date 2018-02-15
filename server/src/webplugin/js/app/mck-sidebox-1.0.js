@@ -382,6 +382,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
         var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
         var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+        var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.getBaseUrl()+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
@@ -1217,6 +1218,9 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
+                if(CUSTOM_CHAT_LAUNCHER){
+            		return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+CUSTOM_CHAT_LAUNCHER+'</a></div>';
+            	}else{	
                 return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
               `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
               <style type="text/css">
@@ -1241,7 +1245,7 @@ var MCK_CLIENT_GROUP_MAP = [];
               </svg>`
              +'</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
         
-                //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+                 } //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
             };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -3953,7 +3957,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility}" >'+
+                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}" >'+
                 '{{html kmRichTextMarkup}}</div>'+
                 '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>' +
                 '</div>' +
@@ -4481,8 +4485,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
                     kmRichTextMarkupVisibility:richText?'vis':'n-vis',
-                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):""
-                    //kmRichTextMarkup: '<div>hello</div>'                    
+                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):"",
+                    containerType: Kommunicate.getConatainerTypeForRichMessage(msg.metadata)
+                               
                 }];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
@@ -6118,7 +6123,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
             var CONTACT_LIST_URL = "/rest/ws/user/filter";
             var USER_STATUS_URL = "/rest/ws/user/chat/status";
-            var USER_IDENTITY_UPDATE_URL = "rest/ws/user/change/identifier";
+            var USER_IDENTITY_UPDATE_URL = "/rest/ws/user/change/identifier";
 
             _this.getContactDisplayName = function (userIdArray) {
                 var mckContactNameArray = [];
@@ -6346,30 +6351,27 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (params.newUserId === null || params.newUserId === "") {
                     return;
                 }
-                var data = { 'newUserId': params.newUserId }
+                var data = 'newUserId='+ params.newUserId ;
                 mckUtils.ajax({
                     url: MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
                     type: 'get',
                     data: data,
-                    success: function (data) {
-                        if (typeof data === 'object') {
-                            if (data.status === 'success') {
-                                console.log(data);
-                                MCK_USER_ID = params.newUserId;
-                                var mckAppHeaders=  mckStorage.getAppHeaders(data);
-                                mckAppHeaders.userId=MCK_USER_ID;
-                                mckStorage.setAppHeaders(mckAppHeaders);
-                                AUTH_CODE = btoa(mckAppHeaders.userId + ':' + mckAppHeaders.deviceKey);
+                    contentType : 'application/json',
+                    success: function (res) {
+                        if (typeof res === 'object') {
+                            console.log(res);
+                            if (res.status === 'success') {
                                 if (params.callback) {
                                     //update access token here
-                                    params.callback(data);
+                                    params.callback(res);
                                 }
                             }
                         }
+                        return;
                     },
-                    error: function (data) {
+                    error: function (res) {
                         if (params.callback) {
-                            params.callback(data);
+                            params.callback({response:'error'});
                         }
                     }
                 });
@@ -8083,6 +8085,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
             };
             _this.notifyUser = function (message) {
+                if (message.alert === false) {
+					return;
+				}
                 if (message.type === 7) {
                     return;
                 }
