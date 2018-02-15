@@ -109,6 +109,9 @@ Kommunicate ={
             }
         });
     },
+    logout:function(event,options){
+        $kmApplozic.fn.applozic("logout");
+    },
     triggerEvent:function(event,options){
         $applozic.ajax({
             url: Kommunicate.getBaseUrl() + "/applications/events?type="+event,
