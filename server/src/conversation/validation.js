@@ -29,7 +29,7 @@ module.exports.getConversationList= {
 
   module.exports.addMemberIntoConversation= {
     body:{
-        groupId:joi.number().integer().required(),
-        userId:joi.string().required(),
+        groupId:joi.string().required(),
+        userId:joi.string().required()
     }
   }
