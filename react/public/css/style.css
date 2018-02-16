@@ -10334,11 +10334,11 @@ input:required {
 
 /* .km-container {
   height: calc(100% - 55px) !important;
-}
-*/
+} */
 
 .integration-invited-team-div {
   margin-top: 55px;
+  margin-bottom:-55px;
   background: #1cabe2;
   height: 40px;
   line-height: 40px;
