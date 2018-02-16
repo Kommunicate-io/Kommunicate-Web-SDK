@@ -3904,7 +3904,7 @@ cursor: pointer;
 float: right;
 }
 
-.km-room-person-selector-container .km-room-selector .km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector #km-person-number-field:disabled {
+.km-room-person-selector-container .km-room-selector .km-room-number-field:disabled, .km-room-person-selector-container .km-person-selector .km-person-number-field:disabled {
 background-color: transparent;
 border: none;
 color: #000;
@@ -3938,6 +3938,14 @@ cursor: pointer;
 	float: left;
 	margin: 5px 0px 0px 7px;
 	color:#7766B5;
+}
+.km-guest-text-lable .km-children-text-lable{
+	width:30 px;
+}
+.km-children-text-lable span{
+display: block;
+font-size:12px; 
+color: rgba(0,0,0,0.5);
 }
 
 .km-card-message-container {

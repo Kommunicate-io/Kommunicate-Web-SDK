@@ -7,17 +7,17 @@ Kommunicate.markup = {
     <div class="km-room-selector">
         <div>Guest :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
         <div id= "">
-            <input class ="km-decrement-guest-count" type="button" value="-">
+            <input class ="km-decrement-guest-count" type="button" value="-" data-type="guest">
             <input type="number" min="1" max="5" value="1" class="km-room-number-field" maxlength="1" disabled>
-            <input class ="km-increment-guest-count" type="button" value="+">
+            <input class ="km-increment-guest-count" type="button" value="+" data-type="guest">
         </div>
     </div>
-    <div class="km-person-selector hide">
-        <div>Children <span style="font-size:12px; color: rgba(0,0,0,0.5)">(1-12 yrs)</span> :</div>
+    <div class="km-person-selector">
+        <div class="km-children-text-lable">Children :<span>(1-12 yrs)</span></div>
         <div>
-            <input type="button" value="-" onclick="decrement2()">
-            <input type="number" min="1" max="6" value="1" id="km-person-number-field" maxlength="1" disabled>
-            <input type="button" value="+" onclick="increment2()">
+            <input class ="km-decrement-guest-count" type="button" value="-" data-type="children">
+            <input type="number" min="0" max="2" value="0" class="km-person-number-field" maxlength="1" disabled >
+            <input class ="km-increment-guest-count" type="button" value="+" data-type="children">
         </div> 
     </div>
 </div>`
@@ -153,11 +153,11 @@ getPassangerDetail : function(options){
                         </select>
                     </div>
                     <input type="number" name="age"  class="km-input km-age-input n-vis" placeholder="Age *" min="0" max="150">
-                    <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-left" placeholder="First Name *">
+                    <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-right" placeholder="First Name *">
                     <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
-                    <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-right" placeholder="Last Name *">
-                    <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-left" placeholder="Email Id *">
-                    <input type="text" name="contact-no"  class="km-input number-input km-pxinfo-btn-right" placeholder="Contact Number ">
+                    <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-left" placeholder="Last Name *">
+                    <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-right" placeholder="Email Id *">
+                    <input type="text" name="contact-no"  class="km-input number-input km-pxinfo-btn-left" placeholder="Contact Number ">
                 </div>
                 <div class="km-guest-button-container">
                     <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>
