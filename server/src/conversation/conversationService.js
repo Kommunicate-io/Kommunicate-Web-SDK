@@ -68,15 +68,16 @@ exports.addMemberIntoConversation = (data) => {
                     });
                     logger.info('addMemberIntoConversation - group info:',groupInfo, 'applicationId: ',customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                     return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
-                        return response.data;
+                        logger.info('response', response.data)
+                        return {code:"SUCCESS", data:'success'};
                     });
                 }
             })
         }else{
-            return 0;
+            return {code:"SUCCESS", data:'customer not found'};
         }
     }).catch(err => {
         logger.info("error during creating group", err)
-        return "error during adding member into conversation";
+        return {code:"ERROR", data:'error during adding member into conversation'};
     });
 }
