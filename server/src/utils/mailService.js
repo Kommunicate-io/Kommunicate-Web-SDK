@@ -13,7 +13,7 @@ let passwordResetMailTransporter = nodemailer.createTransport({
     });
 
 exports.sendPasswordResetMail = (mailOptions)=>{
-  console.log("sending mail to user", mailOptions);
+  console.log("sending mail to user", mailOptions.to);
   /*let mailOptions = {
         from: '"Suraj" <srjkhanduri@gmail.com>', // sender address
         to: 'suraj@applozic.com', // list of receivers
