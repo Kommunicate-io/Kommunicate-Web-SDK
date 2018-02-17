@@ -54,6 +54,21 @@ $(document).ready(function() {
         $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
             resetCustomerInfoArea();     
             console.log(user);
+            var ul = document.getElementById("km-user-info-list");
+           
+            for (key in user.metadata) {
+                var li = document.createElement("li");
+                var div1 = document.createElement('div');
+                var div2 = document.createElement('div');
+                div1.appendChild(document.createTextNode(key +":"));
+                div2.appendChild(document.createTextNode(user.metadata[key]));
+                li.setAttribute("class","customli");
+                div1.setAttribute("class","km-userinfo-keydiv");
+                div2.setAttribute("class","km-userinfo-valuediv");
+                li.appendChild(div1);
+                li.appendChild(div2);
+                ul.appendChild(li);
+                }
                     if (typeof user !== "undefined") {
                         $("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
@@ -101,6 +116,7 @@ function resetCustomerInfoArea(){
     $("#km-user-info-list .linkedin").attr("href", "");
     $("#km-user-info-list .linkedin").text('');
     $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain, #km-user-info-list .profile-linkedin").addClass('n-vis');
+    $(".customli").remove();
 }
 
 function clearbit(email, userId) {
