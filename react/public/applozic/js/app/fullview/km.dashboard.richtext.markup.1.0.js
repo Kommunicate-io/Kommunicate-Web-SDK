@@ -1,16 +1,16 @@
 
 //Kommunicate = $applozic.extends(true,Kommunicate||{})
-Kommunicate.markup = {
+kommunicateDashboard.markup = {
     getSingleRoomPaxInfo: function(roomCount){
          roomCount= roomCount||"1";
      return `<div class = "km-single-pax-info">
     <div class="km-room-title-text">ROOM `+roomCount+`</div>
     <div class="km-dashboard-room-selector">
-        <div style="margin-right:15px;">Guest:</div>
+        <div style="margin-right:20px;">Guest:</div>
         <div id= "">
-            <input class ="km-decrement-guest-count" type="button" value="-">
-            <input type="number" min="1" max="5" value="1" class="km-room-number-field" maxlength="1" disabled>
-            <input class ="km-increment-guest-count" type="button" value="+">
+            <input class ="km-dashboard-decrement-guest-count" type="button" value="-">
+            <input type="number" min="1" max="5" value="1" class="km-dashboard-room-number-field" maxlength="1" disabled>
+            <input class ="km-dashboard-increment-guest-count" type="button" value="+">
         </div>
     </div>
     <div class="km-dashboard-person-selector">
@@ -25,32 +25,32 @@ Kommunicate.markup = {
 },
 getHotelCardTemplate : function(options,sessionId){
    var star={
-    star1:"km-star-empty",
-    star2:"km-star-empty",
-    star3:"km-star-empty",
-    star4:"km-star-empty",
-    star5:"km-star-empty"
+    star1:"km-dashboard-star-empty",
+    star2:"km-dashboard-star-empty",
+    star3:"km-dashboard-star-empty",
+    star4:"km-dashboard-star-empty",
+    star5:"km-dashboard-star-empty"
 
     };
     if(options.StarRating){
         //populate the star rating
         for(var i = 0;i<options.StarRating;i++){
-            star["star"+(i+1)]="km-star-filled";
+            star["star"+(i+1)]="km-dashboard-star-filled";
         }
    
     }    
     //Note: Setting price as 8%, modify it to change price calculation logic.
     var price = options.Price.CurrencyCode + " " + (options.Price.OfferedPrice/100)*108;
     return `
-    <div class="km-single-card-message">
-        <div class="km-card-message-header">
-            <div class="km-card-message-image-continer"><img class ="km-card-message-img" src =`+ options.HotelPicture+` />
-                    <div class="km-card-message-image-price-container">`+ price +`</div>
+    <div class="km-dashboard-single-card-message">
+        <div class="km-dashboard-card-message-header">
+            <div class="km-dashboard-card-message-image-continer"><img class ="km-dashboard-card-message-img" src =`+ options.HotelPicture+` />
+                    <div class="km-dashboard-card-message-image-price-container">`+ price +`</div>
             </div>
         </div>
-        <div class="km-card-message-body">
-            <h1 class="km-card-message-body-title">`+ options.HotelName+`</h1>
-            <div class="km-card-message-body-ratings">
+        <div class="km-dashboard-card-message-body">
+            <h1 class="km-dashboard-card-message-body-title">`+ options.HotelName+`</h1>
+            <div class="km-dashboard-card-message-body-ratings">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24" class="`+star.star1+`">
                         <path d="M0 0h24v24H0z" fill="none"/>
@@ -82,8 +82,8 @@ getHotelCardTemplate : function(options,sessionId){
                     </svg>
                 </span>
             </div>
-            <div class="km-card-message-body-address">
-                <span class="km-card-message-body-address-icon">
+            <div class="km-dashboard-card-message-body-address">
+                <span class="km-dashboard-card-message-body-address-icon">
                     <svg xmlns="http://www.w3.org/2000/svg"  height="24" viewBox="0 0 24 24" width="24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                         <path d="M0 0h24v24H0z" fill="none"/>
@@ -91,8 +91,8 @@ getHotelCardTemplate : function(options,sessionId){
                 </span>`+ options.HotelAddress +`
             </div>
         </div>
-        <div class="km-card-message-footer">
-            <button class="km-card-message-footer-button" data-resultindex= `+options.ResultIndex +` data-sessionid= `+ sessionId+` data-name=`+ options.HotelName+`>ROOM DETAIL</button>
+        <div class="km-dashboard-card-message-footer">
+            <button class="km-dashboard-card-message-footer-button" data-resultindex= `+options.ResultIndex +` data-sessionid= `+ sessionId+` data-name=`+ options.HotelName+`>ROOM DETAIL</button>
         </div>
     </div>`;
 
@@ -101,28 +101,28 @@ getHotelCardTemplate : function(options,sessionId){
 getRoomDetailTemplate: function (options, sessionId) {
     let guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
 
-    return `<div class="km-single-card-message">
-                <div class="message received km-blocked-room">
-                    <div class="km-blocked-room-details">
-                    <div class="km-card-message-image-continer"><img class ="km-card-message-img" src=`+ options.HotelPicture +` alt=`+options.HotelName+`></div>
-                        <div class="km-blocked-room-text-container">
-                            <div class="km-blocked-room-room-type">
+    return `<div class="km-dashboard-single-card-message">
+                <div class="message received km-dashboard-blocked-room">
+                    <div class="km-dashboard-blocked-room-details">
+                    <div class="km-dashboard-card-message-image-continer"><img class ="km-dashboard-card-message-img" src=`+ options.HotelPicture +` alt=`+options.HotelName+`></div>
+                        <div class="km-dashboard-blocked-room-text-container">
+                            <div class="km-dashboard-blocked-room-room-type">
                                 <span>ROOM TYPE: </span> <span> `+ options.RoomTypeName + `</span>
                             </div>
-                            <div class="km-blocked-room-guests">
+                            <div class="km-dashboard-blocked-room-guests">
                                 <span>GUESTS:</span><span>`+ guest + ` </span>
                             </div>
-                            <div class="km-blocked-room-price">
+                            <div class="km-dashboard-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
                                 <span>`+ options.Price.CurrencyCode + " " + options.Price.RoomPrice + `</span>
                             </div>
-                            <div class="km-blocked-room-sub-total">
+                            <div class="km-dashboard-blocked-room-sub-total">
                                 <p>Sub Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
                                 <span> `+ options.Price.CurrencyCode + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
                             </div>
                         </div>
-                        <div class="km-blocked-room-button-container">
-                            <button class="km-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+` data-HotelResultIndex=`+options.HotelResultIndex+`>Book</button>
+                        <div class="km-dashboard-blocked-room-button-container">
+                            <button class="km-dashboard-block-room-button" data-sessionId= `+ sessionId  +` data-roomIndex=`+options.RoomIndex+` data-NoOfRooms=`+options.NoOfRooms+` data-NoOfNights=`+options.NoOfNights+` data-HotelName=`+options.HotelName+` data-HotelResultIndex=`+options.HotelResultIndex+`>Book</button>
                         </div>
                     </div>
                 </div>
@@ -131,19 +131,24 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,elemWidthClass){
     if(options.type=="link"){
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-dashboard-cta-button km-dashboard-add-more-rooms km-dashboard-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
     }else{
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
+    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-dashboard-cta-button km-dashboard-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
     }
 },
+
+getQuickRepliesTemplate:function(options,elemWidthClass){
+    return'<button title="'+options.message+'" class="km-dashboard-cta-button km-dashboard-add-more-rooms km-dashboard-quick-replies '+elemWidthClass+'">'+options.title+'</button>';
+},
+
 getPassangerDetail : function(options){
     if(!options.SessionId){
        console.log("sessionId not present in message..") 
     }
-    return `  <div class="km-guest-details-container km-rich-text-default-container">
+    return `  <div class="km-dashboard-guest-details-container km-rich-text-default-container">
     <div class="km-guest-detail-form">
     <div class= "km-select-title">    
-    <select name="title" class="km-title-select">
+    <select name="title" class="km-dashboard-title-select">
             <option value="0" disabled selected>Title</option>
             <option value="Mr.">Mr.</option>
             <option value="Ms.">Ms.</option>
@@ -158,20 +163,20 @@ getPassangerDetail : function(options){
         <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number">
     </div>
     <div class="km-guest-button-container">
-        <button class="km-add-more-rooms km-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
+        <button class="km-dashboard-add-more-rooms km-dashboard-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
     </div>
 </div>`
 }
 };
 
-Kommunicate.markup.buttonContainerTemplate= function(options){
-    var containerMarkup = '<div class="km-cta-multi-button-container">';
+kommunicateDashboard.markup.buttonContainerTemplate= function(options){
+    var containerMarkup = '<div class="km-dashboard-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
     var formData= JSON.parse(options.formData||"{}");
-    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+    var elemWidthClass = payload.length==1?"km-dashboard-cta-button-1":(payload.length==2?"km-dashboard-cta-button-2":"km-dashboard-cta-button-many");
 
     for(var i = 0;i<payload.length;i++){
-        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
+        containerMarkup+=  kommunicateDashboard.markup.getButtonTemplate(payload[i],elemWidthClass)
     }
     if(formData){
         containerMarkup+="<form method ='post'  target='_blank' class= km-btn-hidden-form action ="+options.formAction+">";
@@ -184,34 +189,46 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     containerMarkup+='</form></div>';
     return containerMarkup;
 }
+kommunicateDashboard.markup.quickRepliesContainerTemplate= function(options){
+    var containerMarkup = '<div class="km-dashboard-cta-multi-button-container">';
+    var payload = JSON.parse(options.payload);
+    //var formData= payload? JSON.parse(options.formData||"{}"):"";
+    var elemWidthClass = payload.length==1?"km-dashboard-cta-button-1":(payload.length==2?"km-dashboard-cta-button-2":"km-dashboard-cta-button-many");
 
-Kommunicate.markup.getHotelRoomPaxInfoTemplate= function(roomCount){
+    for(var i = 0;i<payload.length;i++){
+        containerMarkup+=  kommunicateDashboard.markup.getQuickRepliesTemplate(payload[i],elemWidthClass)
+    }
+    containerMarkup+='</div>';
+    return containerMarkup;
+}
 
-return `<div class = "km-rich-text-default-container">
-            <div class="km-room-person-selector-container">`+Kommunicate.markup.getSingleRoomPaxInfo(roomCount)+`</div>
+kommunicateDashboard.markup.getHotelRoomPaxInfoTemplate= function(roomCount){
+
+return `<div class = "km-dashboard-rich-text-default-container">
+            <div class="km-dashboard-room-person-selector-container">`+kommunicateDashboard.markup.getSingleRoomPaxInfo(roomCount)+`</div>
             <hr>
-            <div class="km-add-room-button-container">
-                <button  class="km-add-more-rooms km-btn-add-more-rooms" data-roomcount=1>ADD ROOM</button>
-                <button class=" km-add-more-rooms km-done-button">DONE</button>
+            <div class="km-dashboard-add-room-button-container">
+                <button  class="km-dashboard-add-more-rooms km-dashboard-btn-add-more-rooms" data-roomcount=1>ADD ROOM</button>
+                <button class=" km-dashboard-add-more-rooms km-dashboard-done-button">DONE</button>
             </div>
         </div>`;
 }
 
-Kommunicate.markup.getHotelCardContainerTemplate= function(hotelList,sessionId){
+kommunicateDashboard.markup.getHotelCardContainerTemplate= function(hotelList,sessionId){
 var hotelListMarkup ="";
 for(var i= 0;i<hotelList.length;i++){
-    hotelListMarkup= hotelListMarkup+Kommunicate.markup.getHotelCardTemplate(hotelList[i],sessionId);
+    hotelListMarkup= hotelListMarkup+kommunicateDashboard.markup.getHotelCardTemplate(hotelList[i],sessionId);
     }
-    return `<div class="km-card-message-container  km-div-slider">`+hotelListMarkup+`</div>`
+    return `<div class="km-dashboard-card-message-container  km-div-slider">`+hotelListMarkup+`</div>`
 }
 
-Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
+kommunicateDashboard.markup.getRoomDetailsContainerTemplate = function (roomList, sessionId) {
     let roomDetails=roomList.HotelRoomsDetails;
     var roomListMarkup = "";
     for (var i = 0; i < roomDetails.length; i++) {
-        roomListMarkup = roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
+        roomListMarkup = roomListMarkup + kommunicateDashboard.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
     }
-    return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
+    return `<div class="km-dashboard-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
 /*{"HotelRoomsDetails":[{
     "ChildCount":0,
