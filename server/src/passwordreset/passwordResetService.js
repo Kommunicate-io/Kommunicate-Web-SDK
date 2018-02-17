@@ -42,7 +42,7 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     ":twitterLogourl":twitterLogourl,
     ":kmWebsiteLogoUrl":kmWebsiteLogoUrl,
     ":kmWebsiteLogoIconUrl":kmWebsiteLogoIconUrl,
-    ":kmUserName": getUserDisplayName(user),
+    ":kmUserName": userService.getUserDisplayName(user),
   }
   return fileService.readFile(path.join(__dirname,"/passwordResetTemplate.html"),"utf8").then(data=>{
     template= data.replace(new RegExp(Object.keys(templateValues).join("|"),"gi"),function(matched){
@@ -60,16 +60,6 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     };
     return mailService.sendPasswordResetMail(mailOptions);
   });
-}
-
-const getUserDisplayName=(user)=>{
-  if(user.name){
-    return user.name;
-  } else if (user.userName){
-    return userInfo.userName;
-  }else {
-    return user.email;
-  }
 }
 
 const createPasswordResetRequest = (user,applicationId)=>{
