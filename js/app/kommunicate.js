@@ -83,6 +83,9 @@ Kommunicate ={
     openParticularConversation:function(groupId){
         window.$applozic.fn.applozic('loadGroupTab', groupId);
     },
+    openChatWithParticularUserId:function(userId){
+        window.$applozic.fn.applozic('loadTab', userId);
+    },
     createNewConversation:function(options,callback){
         if(typeof(callback)!=='function'){
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
@@ -132,6 +135,8 @@ Kommunicate ={
                 console.log("err while starting Conversation");
             }
         });
+    }, updateUser:function(options){
+        window.$applozic.fn.applozic('updateUser',options);
     },
     updateUserIdentity:function(newUserId){
         window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
