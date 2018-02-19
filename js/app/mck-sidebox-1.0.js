@@ -1783,7 +1783,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                         HIDE: "true"
                     },
                     callback: function (response) {
-                        console.log("response", response);
                         if (response.status === 'success' && response.data.clientGroupId) {
                             Kommunicate.createNewConversation({
                                 "groupId": response.data.clientGroupId,
@@ -4293,7 +4292,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.sendUserEmail = function() {
-                    console.log(document.getElementById('input-for-email').value)
                     if( document.getElementById('input-for-email').value.length > 1 ) {
                         var email = document.getElementById('input-for-email').value;
                         mckContactService.updateUser({data: {'email': email}, success: function(response) {
@@ -4328,8 +4326,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
             }
             _this.addMessage = function(msg, contact, append, scroll, appendContextMenu) {
-                console.log(msg.contentType);
-                console.log(msg);
                 var metadatarepiledto = '';
                 var replymessage = '';
                 var replyMsg = '';
@@ -6359,7 +6355,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                     contentType : 'application/json',
                     success: function (res) {
                         if (typeof res === 'object') {
-                            console.log(res);
                             if (res.status === 'success') {
                                 if (params.callback) {
                                     //update access token here
@@ -6378,7 +6373,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
 
             _this.updateUser = function(options) {
-                console.log(options.data);
                 mckUtils.ajax({
                     type: "POST",
                     url: MCK_BASE_URL + "/rest/ws/user/update",
@@ -8528,8 +8522,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
             };
             _this.onMessage = function (obj) {
-                console.log("This is onMessage");
-                console.log(obj);
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
                     var messageType = resp.type;
@@ -8554,7 +8546,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                             'messageKey': resp.message.split(",")[0]
                         };
                         (isGroup) ? eventResponse['groupId'] = tabId : eventResponse['userKey'] = tabId;
-                        console.log(eventResponse);
                         events.onMessageDeleted(eventResponse);
                     } else if (messageType === 'APPLOZIC_27') {
                         var userId = resp.message.split(",")[0];
