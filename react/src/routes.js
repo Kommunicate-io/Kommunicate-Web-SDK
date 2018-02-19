@@ -12,7 +12,8 @@ const routes = {
   '/autoreply':"Configuration",
   '/admin': "Profile",
   '/message-shortcuts': 'Quick Replies',
-  '/welcome-message': 'Welcome Message'
+  '/welcome-message': 'Welcome Message',
+  '/download': 'Agent App'
 };
 
 export default routes;

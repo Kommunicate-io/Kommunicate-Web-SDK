@@ -1,0 +1,28 @@
+.download-link-image-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.download-link-container, .download-image-container {
+    width: 50%;
+    align-content: center;
+}
+.download-link-container h1 {
+    font-size: 28px;
+    color: #4e4e4f;
+}
+.download-link-container p {
+    font-size: 18px;
+    color: #8a8c90;
+    letter-spacing: 1.3px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}
+/* .download-link-container a:last-child {
+    margin-left: 35px;
+} */
+.android-screenshot {
+    width: 300px;
+    height: auto;
+}

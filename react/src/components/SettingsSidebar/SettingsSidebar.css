@@ -21,6 +21,14 @@
     color: #666464;
     transition: all .3s;
 }
+.ss-nav-title {
+    text-align: left;
+    padding: 3px 10px;
+    color: #666464;
+  }
+.ss-nav-title:not(:first-child) {
+    margin-top: 20px;
+  }
 .ss-nav-link {
     display: block;
     font-size: 14px;
@@ -69,9 +77,9 @@
     height: 24px;
 }
 
-.integrations-link, .profile-link {
+/* .integrations-link, .profile-link {
     margin-top: 20px;
-}
+} */
 
 /* .bot-icon-svg {
     height: 30px;

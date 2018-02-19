@@ -17,6 +17,7 @@ import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
 import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
+import Download from '../../views/Download/Download.js'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -73,7 +74,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('download')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
@@ -92,6 +93,7 @@ class Full extends Component {
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
                 <Route exact path="/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
                 <Route exact path="/settings/integration" name="Integration" component={Integration}/>
+                <Route exact path="/download" name="Download" component={Download}/>
                 }}/> 
                   
                 
