@@ -42,7 +42,7 @@ const sendPasswordResetRequestInMail = (passwordResetRequest,user)=>{
     ":twitterLogourl":twitterLogourl,
     ":kmWebsiteLogoUrl":kmWebsiteLogoUrl,
     ":kmWebsiteLogoIconUrl":kmWebsiteLogoIconUrl,
-    ":kmUserName":user.userName,
+    ":kmUserName": userService.getUserDisplayName(user),
   }
   return fileService.readFile(path.join(__dirname,"/passwordResetTemplate.html"),"utf8").then(data=>{
     template= data.replace(new RegExp(Object.keys(templateValues).join("|"),"gi"),function(matched){
