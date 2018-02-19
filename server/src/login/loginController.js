@@ -4,10 +4,10 @@ const kommunicateApplicationId = require('../../conf/config').getProperties().ko
 exports.login = function(req, res) {
   const userName= req.body.userName;
   const password = req.body.password;
-  const applicationName =req.body.applicationName?req.body.applicationName:kommunicateApplicationName;
-  const applicationId =req.body.applicationId?req.body.applicationId:kommunicateApplicationId;
+  //const applicationName =req.body.applicationName?req.body.applicationName:kommunicateApplicationName;
+  const applicationId =req.body.applicationId;
   console.log("request received to login : ", userName, "applicationName : ", applicationId);
-  Promise.resolve(loginService.login(userName, password,applicationName, applicationId)).then(result=>{
+  Promise.resolve(loginService.login(req.body)).then(result=>{
     let response={};
     console.log("status success");
     response.code="SUCCESS";
@@ -38,6 +38,8 @@ exports.login = function(req, res) {
 });
 };
 
+/* obsolete code. not in use. 
+ *
 exports.signUpWithApplozic = function(req, res) {
   const userName= req.body.userName;
   const password = req.body.password;
@@ -74,3 +76,4 @@ exports.signUpWithApplozic = function(req, res) {
     res.status(status).json(response);
   });
 }
+*/

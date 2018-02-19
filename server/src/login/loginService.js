@@ -3,12 +3,14 @@ const bcrypt = require('bcrypt');
 const config = require("../../conf/config");
 const applozicClient = require("../utils/applozicClient");
 const registrationService = require("../register/registrationService");
-exports.login = (userName,password,applicationName, applicationId,callback) => {
-  console.log("userId from controller",userName);
+exports.login = (userDetail) => {
+  const userName= userDetail.userName;
+  const password = userDetail.password;
+  const applicationId =userDetail.applicationId;
 
   return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),
     userService.getByUserNameAndAppId(userName,applicationId),
-    applozicClient.applozicLogin(userName,password,applicationId)]).then(([application,user,applozicUser])=>{
+    applozicClient.applozicLogin(userDetail)]).then(([application,user,applozicUser])=>{
 
       if(user && bcrypt.compareSync(password, user.password)) {
         // valid user credentials
@@ -39,6 +41,7 @@ exports.login = (userName,password,applicationName, applicationId,callback) => {
     });
   };
 
+/*
 exports.signUpWithApplozic = (userName, password, applicationName, applicationId, callback) => {
 
   console.log("userId from controller", userName);
@@ -113,7 +116,7 @@ exports.signUpWithApplozic = (userName, password, applicationName, applicationId
       console.log("err while login",err);
       throw err;
     });
-};
+};*/
 
 // prepare respone
 function prepareResponse(user,application) {

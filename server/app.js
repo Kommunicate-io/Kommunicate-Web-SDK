@@ -60,7 +60,8 @@ app.use('/login',routes.login);
 app.use('/customers',routes.customers);
 app.use('/misc',routes.misc);
 app.use('/autosuggest/message',routes.autoSuggest);
-app.use('/signUpWithApplozic',routes.signUpWithApplozic);
+//not in use. customer/applozic is being used for applozic signup.
+//app.use('/signUpWithApplozic',routes.signUpWithApplozic);
 app.use('/chat',routes.chat);
 app.use('/profileImage',routes.profileImage);
 app.use('/conversations',routes.conversation);
