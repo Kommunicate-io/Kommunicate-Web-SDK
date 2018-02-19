@@ -6,10 +6,10 @@ class ThirdPartyScripts extends Component {
     
       componentDidMount(){
           // support chat widget
-          let userId = CommonUtils.getUserSession.userName;
+          var userId = CommonUtils.getUserSession.userName;
 
           (function(d, m){
-            let o = {};
+            var o = {};
             if (userId) {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
               "userId": userId, "accessToken": CommonUtils.getUserSession().password,
@@ -18,11 +18,11 @@ class ThirdPartyScripts extends Component {
               o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
               "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
             }
-            let s = document.createElement("script");
+            var s = document.createElement("script");
             s.type = "text/javascript";
             s.async = true;
             s.src = getConfig().kommunicateApi.pluginUrl;
-            let h = document.getElementsByTagName("head")[0];
+            var h = document.getElementsByTagName("head")[0];
             h.appendChild(s);
             window.kommunicate = m;
             m._globals = o;

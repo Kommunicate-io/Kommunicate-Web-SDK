@@ -1731,6 +1731,11 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
 					mckInitializeChannel.unsubscibeToTypingChannel();
 				});
+				$kmApplozic(d).on("click", "#km-user-info-close", function(e) {
+					e.preventDefault();
+					$kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
+					$kmApplozic("#km-group-info-tab").removeClass('n-vis').addClass('vis');
+				});
 				$kmApplozic(d).on("click", ".km-price-submit", function(e) {
 					e.preventDefault();
 					_this.sendPriceMessage();
