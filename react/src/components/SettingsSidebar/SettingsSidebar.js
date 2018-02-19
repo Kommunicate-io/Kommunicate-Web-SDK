@@ -20,7 +20,7 @@ class SettingsSidebar extends Component {
                             PERSONAL
                         </li>
                         <li className="ss-nav-item profile-link">
-                            <NavLink to={'/admin'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
+                            <NavLink to={'/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>
                         {/* <li className="ss-nav-item autoreply-link">
                             <NavLink to={'/autoreply'} className="ss-nav-link" activeClassName="active">Auto replies</NavLink>
@@ -41,13 +41,13 @@ class SettingsSidebar extends Component {
                             CONFIGURATION
                         </li>
                         <li className="ss-nav-item integrations-link">
-                            <NavLink to={'/settings/integration'} className="ss-nav-link" activeClassName="active">Install</NavLink>
+                            <NavLink to={'/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
                         </li>
                         <li className="ss-nav-title">
                             DOWNLOAD
                         </li>
                         <li className="ss-nav-item agent-app-link">
-                            <NavLink to={'/download'} className="ss-nav-link" activeClassName="active">Agent app</NavLink>
+                            <NavLink to={'/agent-app'} className="ss-nav-link" activeClassName="active">Agent app</NavLink>
                         </li>
                     </ul>
                 </div>

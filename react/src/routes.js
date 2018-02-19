@@ -6,14 +6,14 @@ const routes = {
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot Integration',
-  '/settings/integration': 'Install',
+  '/install': 'Install',
   '/team': 'Team',
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
-  '/admin': "Profile",
+  '/profile': "Profile",
   '/message-shortcuts': 'Quick Replies',
   '/welcome-message': 'Welcome Message',
-  '/download': 'Agent App'
+  '/agent-app': 'Agent App'
 };
 
 export default routes;
