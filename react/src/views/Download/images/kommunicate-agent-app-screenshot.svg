@@ -1,0 +1,165 @@
+<svg id="Group_15" data-name="Group 15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 386 770">
+  <defs>
+    <clipPath id="clip-path" transform="translate(-75 -57)">
+      <rect id="nasa-63032" x="88" y="122" width="360" height="640" rx="24" ry="24" fill="none"/>
+    </clipPath>
+    <clipPath id="clip-path-2" transform="translate(-75 -57)">
+      <circle id="path-3" cx="120" cy="246" r="15" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="137.43" y1="585.29" x2="138.33" y2="585.29" gradientTransform="matrix(68, 0, 0, -770, -9257, 451119)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.48" stop-color="#fff" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="148.57" y1="583.71" x2="149.48" y2="583.71" gradientTransform="matrix(-68, 0, 0, 770, 10551, -449011)" xlink:href="#linear-gradient"/>
+  </defs>
+  <title>kommunicate-agent-app-screenshot</title>
+  <rect id="Rectangle_1-2" data-name="Rectangle 1-2" width="386" height="770" rx="68" ry="68" fill="#333"/>
+  <rect id="Rectangle_11" data-name="Rectangle 11" x="3" y="10" width="380" height="750" rx="68" ry="68" fill="#1a1a1a"/>
+  <g clip-path="url(#clip-path)">
+    <g id="Mobile-screen-chat-design">
+      <g id="Google-play-store-2">
+        <rect x="14" y="65" width="360" height="640" fill="#fff"/>
+        <g id="app-bar">
+          <g id="app-bar-bg">
+            <polygon id="path-1" points="374 66 14 66 14 146 374 146 374 66"/>
+            <polygon id="path-1-2" data-name="path-1" points="374 66 14 66 14 146 374 146 374 66" fill="#5c5aa7"/>
+          </g>
+          <g id="James-Drake" style="isolation: isolate">
+            <g style="isolation: isolate">
+              <text transform="translate(86 113)" font-size="20" fill="#fff" font-family="Roboto-Medium, Roboto">James D<tspan x="78.4" y="0" letter-spacing="-0.01em">r</tspan><tspan x="85.2" y="0">a</tspan><tspan x="96" y="0" letter-spacing="-0.01em">k</tspan><tspan x="106.2" y="0">e</tspan></text>
+            </g>
+          </g>
+          <g id="You_-Bot-_-James-Dra" data-name="You,-Bot-,-James-Dra" style="isolation: isolate">
+            <g style="isolation: isolate">
+              <text transform="translate(86 132)" font-size="14" fill="#ede7e7" font-family="Roboto-Regular, Roboto"><tspan letter-spacing="-0.03em">Y</tspan><tspan x="8" y="0">ou, Bot , James D</tspan><tspan x="115.7" y="0" letter-spacing="-0.02em">r</tspan><tspan x="120.2" y="0">a</tspan><tspan x="127.8" y="0" letter-spacing="-0.01em">k</tspan><tspan x="134.8" y="0">e</tspan></text>
+            </g>
+          </g>
+        </g>
+        <rect id="Rectangle-6" x="72" y="264" width="271" height="40" rx="5" ry="5" fill="#5c5aa7"/>
+        <rect id="Rectangle-6-Copy" x="68" y="170" width="253" height="40" rx="5" ry="5" fill="#e6e5ec"/>
+        <g clip-path="url(#clip-path-2)">
+          <image width="275" height="275" transform="translate(30 173) scale(0.11 0.11)" xlink:href="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAUAAD/4QOPaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzEzOCA3OS4xNTk4MjQsIDIwMTYvMDkvMTQtMDE6MDk6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6NzNkMDIwZTItZGMwNC03NTQ4LTkwZjktMWE0NGJhMWI2MjM1IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjc4NUU3NDUwMTU0NjExRThBRThERDVBMTQ3OUMzODQ5IiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjc4NUU3NDRGMTU0NjExRThBRThERDVBMTQ3OUMzODQ5IiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIElsbHVzdHJhdG9yIENDIDIwMTcgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6M2VkNjk0ZWItZjEwNy1lMTQyLTg2OGItMTU1ODBkZDE5YjhlIiBzdFJlZjpkb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6YzU4Nzc3OTctMTU0NS0xMWU4LTlmNDQtZjBjNDE0NTQwNTkwIi8+IDwv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"/>
+        </g>
+        <g id="Hi_-what-are-your-pr" data-name="Hi,-what-are-your-pr" style="isolation: isolate">
+          <text transform="translate(77 191)" font-size="14" fill="#646262" font-family="Roboto-Regular, Roboto" letter-spacing="0.04em" style="isolation: isolate">Hi, what a<tspan x="66.3" y="0" letter-spacing="0.03em">r</tspan><tspan x="71.4" y="0" letter-spacing="0.04em">e </tspan><tspan x="83.3" y="0" letter-spacing="0.03em">y</tspan><tspan x="90.4" y="0">our pricing plans?</tspan></text>
+        </g>
+        <g id="May-I-know-your-expe" style="isolation: isolate">
+          <text transform="translate(81 285)" font-size="14" fill="#fff" font-family="Roboto-Regular, Roboto" letter-spacing="0.04em" style="isolation: isolate">M<tspan x="12.7" y="0" letter-spacing="0.03em">a</tspan><tspan x="20.8" y="0">y I know </tspan><tspan x="79.6" y="0" letter-spacing="0.03em">y</tspan><tspan x="86.6" y="0">our expected chat users?</tspan></text>
+        </g>
+        <rect id="status-bar-bg" x="14" y="65" width="360" height="24" fill="#27256d"/>
+        <g id="time" opacity="0.9">
+          <g id="_12:30" data-name="12:30" style="isolation: isolate">
+            <text transform="translate(322.5 82)" font-size="14" fill="#fff" font-family="Roboto-Medium, Roboto" style="isolation: isolate">12:30</text>
+          </g>
+        </g>
+        <g id="battery">
+          <polygon id="bounds" points="303 69 319 69 319 85 303 85 303 69" fill="none"/>
+          <polygon id="Shape" points="312 70.9 312 70 309 70 309 70.9 306 70.9 306 84 315 84 315 70.9 312 70.9" fill="#fff"/>
+        </g>
+        <g id="cellular">
+          <polygon id="bounds-2" data-name="bounds" points="283 69 299 69 299 85 283 85 283 69" fill="none"/>
+          <polygon id="Shape-2" data-name="Shape" points="283 84 297 84 297 70 283 84" fill="#fff"/>
+        </g>
+        <g id="wifi">
+          <polygon id="bounds-3" data-name="bounds" points="264 69 280 69 280 85 264 85 264 69" fill="none"/>
+          <path id="Shape-3" data-name="Shape" d="M338,130a15,15,0,0,1,18,0l-9,11Z" transform="translate(-75 -57)" fill="#fff"/>
+        </g>
+        <g id="Material_Icons-white_arrow-back" data-name="Material/Icons-white/arrow-back">
+          <polygon id="Shape-4" data-name="Shape" points="49.7 116 37.5 116 43.1 110.4 41.7 109 33.7 117 41.7 125 43.1 123.6 37.5 118 49.7 118 49.7 116" fill="#fff"/>
+        </g>
+        <rect id="Rectangle" x="14" y="617" width="360" height="88" fill="#f2f0f0"/>
+        <path id="Line" d="M88.5,673.5h360" transform="translate(-75 -57)" fill="none" stroke="#5c5aa7" stroke-linecap="square" opacity="0.51" style="isolation: isolate"/>
+        <g id="Type-your-message_" data-name="Type-your-message…" style="isolation: isolate">
+          <text transform="translate(30 647)" font-size="14" fill="#8f8b8b" font-family="Roboto-Regular, Roboto" letter-spacing="0em" style="isolation: isolate">T<tspan x="8.4" y="0" letter-spacing="0.04em">ype </tspan><tspan x="35.8" y="0" letter-spacing="0.03em">y</tspan><tspan x="42.9" y="0" letter-spacing="0.04em">our message…</tspan></text>
+        </g>
+        <g id="smiley">
+          <g id="Group">
+            <path id="Shape-5" data-name="Shape" d="M114,750.9A8.9,8.9,0,1,1,123,742,9,9,0,0,1,114,750.9Zm0-17.2a8.2,8.2,0,1,0,8.2,8.2A8.3,8.3,0,0,0,114,733.8Z" transform="translate(-75 -57)" fill="#3b3939"/>
+            <path id="Shape-6" data-name="Shape" d="M113.8,747.2a7.6,7.6,0,0,1-5.3-2.1l.5-.5a6.9,6.9,0,0,0,9.8-.2l.5.5A7.6,7.6,0,0,1,113.8,747.2Z" transform="translate(-75 -57)" fill="#3b3939"/>
+            <g>
+              <circle id="Oval" cx="35.8" cy="682.4" r="1" fill="#3b3939"/>
+              <path id="Shape-7" data-name="Shape" d="M110.8,740.1a.7.7,0,1,1,.7-.7A.7.7,0,0,1,110.8,740.1Zm0-1a.3.3,0,1,0,.3.3A.3.3,0,0,0,110.8,739.1Z" transform="translate(-75 -57)" fill="#3b3939"/>
+            </g>
+            <g>
+              <circle id="Oval-2" data-name="Oval" cx="42" cy="682.4" r="1" fill="#3b3939"/>
+              <path id="Shape-8" data-name="Shape" d="M117,740.1a.7.7,0,1,1,.7-.7A.7.7,0,0,1,117,740.1Zm0-1a.3.3,0,1,0,.3.3A.3.3,0,0,0,117,739.1Z" transform="translate(-75 -57)" fill="#3b3939"/>
+            </g>
+          </g>
+        </g>
+        <g id="attachment">
+          <path id="Shape-9" data-name="Shape" d="M206.1,751.3a4,4,0,0,1-2.8-1.3c-2.8-2.7-.4-5.5.4-6.2l9.2-8.9a3.4,3.4,0,0,1,1.7-.9,2.7,2.7,0,0,1,2.5.8,2.6,2.6,0,0,1,.9,2.4,3.2,3.2,0,0,1-.9,1.7l-9.2,9a2.3,2.3,0,0,1-1.5.8h0a1.7,1.7,0,0,1-1.2-.6c-.7-.7-.6-1.6.3-2.5l9.2-9,.4.4-9.2,9c-1,1-.5,1.5-.3,1.7a1.2,1.2,0,0,0,.8.4h0a1.7,1.7,0,0,0,1.1-.6l9.2-9a2.6,2.6,0,0,0,.7-1.4,2.1,2.1,0,0,0-.7-1.9,2.1,2.1,0,0,0-1.9-.6,2.8,2.8,0,0,0-1.4.7l-9.2,8.9c-1.1,1.1-2.6,3.2-.4,5.4s4.3.6,5.5-.4l7.9-7.8.4.4-7.9,7.8A5.2,5.2,0,0,1,206.1,751.3Z" transform="translate(-75 -57)" fill="#3b3939"/>
+        </g>
+        <g id="send">
+          <path id="Shape-10" data-name="Shape" d="M429.5,691.5A11.9,11.9,0,1,0,433,700,11.9,11.9,0,0,0,429.5,691.5Zm-1.8,8.6a.5.5,0,0,1-.3.4l-5.6,2.8-5.1,2.6h-.5a.6.6,0,0,1-.4-.8l.7-1.9.7-2h.2l6.3-1.1h-.6l-4.2-.7-1.6-.2h-.2l-1.5-3.9a.5.5,0,0,1,.1-.6.7.7,0,0,1,.7-.2h.2l10.6,5.3C427.7,699.5,427.8,699.8,427.7,700.1Z" transform="translate(-75 -57)" fill="#5c5aa7"/>
+        </g>
+        <g id="locaiton">
+          <g id="Group-2" data-name="Group">
+            <path id="Shape-11" data-name="Shape" d="M252.8,733.1A5.8,5.8,0,0,0,247,739a7.2,7.2,0,0,0,.5,2.3l5.1,10.6a.2.2,0,0,0,.4,0l5.1-10.6a7.2,7.2,0,0,0,.5-2.3,5.8,5.8,0,0,0-5.8-5.9Zm0,.5a5.4,5.4,0,0,1,5.3,5.4,8.2,8.2,0,0,1-.4,2.2l-4.9,10.2-4.9-10.2a8.6,8.6,0,0,1-.4-2.2A5.4,5.4,0,0,1,252.8,733.5Zm0,2.3a3.2,3.2,0,1,0,3.1,3.2A3.1,3.1,0,0,0,252.8,735.8Zm0,.5a2.7,2.7,0,1,1-2.7,2.7A2.7,2.7,0,0,1,252.8,736.2Z" transform="translate(-75 -57)" fill="#3b3939"/>
+          </g>
+        </g>
+        <g id="camera">
+          <path id="Shape-12" data-name="Shape" d="M164.4,734.7a1.5,1.5,0,0,1,1.5,1.5v.9h3.9a1.5,1.5,0,0,1,1.5,1.5v8.5a1.5,1.5,0,0,1-1.5,1.5H154.2a1.5,1.5,0,0,1-1.5-1.5v-8.5a1.5,1.5,0,0,1,1.5-1.5h3.7v-.9a1.5,1.5,0,0,1,1.5-1.5h5Zm-2.5,12.2a4.1,4.1,0,1,0-4.1-4.1,4.1,4.1,0,0,0,4.1,4.1Zm2.5-12.9h-5a2.2,2.2,0,0,0-2.2,2.2v.2h-3a2.2,2.2,0,0,0-2.1,2.2v8.5a2.2,2.2,0,0,0,2.1,2.2h15.7a2.2,2.2,0,0,0,2.1-2.2v-8.5a2.2,2.2,0,0,0-2.1-2.2h-3.3v-.2a2.2,2.2,0,0,0-2.2-2.2Zm-2.5,12.2a3.5,3.5,0,1,1,3.4-3.5,3.4,3.4,0,0,1-3.4,3.5Z" transform="translate(-75 -57)" fill="#3b3939"/>
+        </g>
+        <g id="_1:53-PM" data-name="1:53-PM" style="isolation: isolate">
+          <text transform="translate(280 204)" font-size="10" fill="#8a8686" font-family="Roboto-Regular, Roboto" letter-spacing="-0.01em" style="isolation: isolate">1:53 PM</text>
+        </g>
+        <g id="_1:53-PM-Copy" data-name="1:53-PM-Copy" style="isolation: isolate">
+          <text transform="translate(302 299)" font-size="10" fill="#ede6e6" font-family="Roboto-Regular, Roboto" letter-spacing="-0.01em" style="isolation: isolate">1:53 PM</text>
+        </g>
+        <rect id="Rectangle-6-Copy-2" x="267" y="220" width="76" height="40" rx="5" ry="5" fill="#5c5aa7"/>
+        <g id="Hi-Copy" style="isolation: isolate">
+          <text transform="translate(276 241)" font-size="14" fill="#fff" font-family="Roboto-Regular, Roboto" letter-spacing="0.04em" style="isolation: isolate">Hi</text>
+        </g>
+        <g id="_1:53-PM-Copy-3" data-name="1:53-PM-Copy-3" style="isolation: isolate">
+          <text transform="translate(302 255)" font-size="10" fill="#ede6e6" font-family="Roboto-Regular, Roboto" letter-spacing="-0.01em" style="isolation: isolate">1:53 PM</text>
+        </g>
+        <g id="Group-6">
+          <g id="single-tick">
+            <g id="Group-3">
+              <g id="tick-copy-2">
+                <g id="Group-3-2" data-name="Group">
+                  <g id="Group-2-2" data-name="Group-2">
+                    <circle id="Oval-2-2" data-name="Oval-2" cx="353.2" cy="299.1" r="5.1" fill="none" stroke="#5c5aa7"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g id="_2-copy" data-name="2-copy">
+            <polygon id="Shape-13" data-name="Shape" points="348.8 294.7 357.6 294.7 357.6 303.5 348.8 303.5 348.8 294.7" fill="none"/>
+            <path id="Shape-14" data-name="Shape" d="M430.4,354.3l-.5-.5-2.3,2.3.5.5Zm1.6-.5-3.9,3.9-1.5-1.5-.5.5,2,2,4.4-4.4Zm-8,2.9,2,2,.5-.5-2-2Z" transform="translate(-75 -57)" fill="#5c5aa7"/>
+          </g>
+        </g>
+        <g id="Group-7">
+          <g id="single-tick-copy">
+            <g id="Group-3-3" data-name="Group-3">
+              <g id="tick-copy-2-2" data-name="tick-copy-2">
+                <g id="Group-4" data-name="Group">
+                  <g id="Group-2-3" data-name="Group-2">
+                    <circle id="Oval-2-3" data-name="Oval-2" cx="353.2" cy="255.1" r="5.1" fill="#5c5aa7" stroke="#5c5aa7"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+          <g id="_2" data-name="2">
+            <polygon id="Shape-15" data-name="Shape" points="348.8 250.7 357.6 250.7 357.6 259.5 348.8 259.5 348.8 250.7" fill="none"/>
+            <path id="Shape-16" data-name="Shape" d="M430.4,310.3l-.5-.5-2.3,2.3.5.5Zm1.6-.5-3.9,3.9-1.5-1.5-.5.5,2,2,4.4-4.4Zm-8,2.9,2,2,.5-.5-2-2Z" transform="translate(-75 -57)" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <rect id="IMG_3653" data-name="IMG 3653" x="301" y="760" width="20" height="10" fill="#4d4d4d"/>
+  <rect id="IMG_3653-2" data-name="IMG 3653-2" x="65" y="760" width="20" height="10" fill="#4d4d4d"/>
+  <rect id="IMG_3653-3" data-name="IMG 3653-3" x="301" width="20" height="10" fill="#4d4d4d"/>
+  <rect id="IMG_3653-4" data-name="IMG 3653-4" x="65" width="20" height="10" fill="#4d4d4d"/>
+  <circle id="Ellipse_1" data-name="Ellipse 1" cx="147" cy="38" r="6"/>
+  <circle id="Ellipse_11" data-name="Ellipse 11" cx="243" cy="38" r="6"/>
+  <circle id="Ellipse_10" data-name="Ellipse 10" cx="130" cy="38" r="7" fill="#151515"/>
+  <circle id="Ellipse_12" data-name="Ellipse 12" cx="262" cy="38" r="7" fill="#151515"/>
+  <path id="Rectangle_3" data-name="Rectangle 3" d="M239,90h62a5,5,0,0,1,5,5h0a5,5,0,0,1-5,5H239a5,5,0,0,1-5-5h0A5,5,0,0,1,239,90Z" transform="translate(-75 -57)"/>
+  <path id="Intersection_5" data-name="Intersection 5" d="M143,827a67.9,67.9,0,0,1-55-28V85a67.9,67.9,0,0,1,55-28h13V827Z" transform="translate(-75 -57)" fill="url(#linear-gradient)"/>
+  <path id="Intersection_6" data-name="Intersection 6" d="M393,57a67.9,67.9,0,0,1,55,28V799a67.9,67.9,0,0,1-55,28H380V57Z" transform="translate(-75 -57)" fill="url(#linear-gradient-2)"/>
+</svg>
