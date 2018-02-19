@@ -74,7 +74,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('integration') || currentPath.includes('admin') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('download')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
@@ -85,15 +85,15 @@ class Full extends Component {
                 <Route exact path="/conversations" name="Conversations" component={Conversations}/>
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
-                <Route exact path="/admin" name="Admin" render={()=>{
+                <Route exact path="/profile" name="Admin" render={()=>{
                    return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink}/>
                 }}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
                 <Route exact path="/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
-                <Route exact path="/settings/integration" name="Integration" component={Integration}/>
-                <Route exact path="/download" name="Download" component={Download}/>
+                <Route exact path="/install" name="Integration" component={Integration}/>
+                <Route exact path="/agent-app" name="Download" component={Download}/>
                 }}/> 
                   
                 
