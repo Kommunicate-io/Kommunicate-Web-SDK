@@ -93,11 +93,11 @@ exports.patchCustomer = (req,res)=>{
     })  
   }
   if (activeCampaignEnable == true) {
-    registrationService.getCustomerByUserName(userId).then(user => {
-      console.log("got the user from db", user);
+    registrationService.getCustomerByUserName(userId).then(dbCostomer => {
+      console.log("got the user from db", dbCostomer);
       return activeCampaignClient.updateActiveCampaign({
         "email": userId,
-        "subscriberId": user.dataValues.activeCampaignId,
+        "subscriberId": dbCostomer.dataValues.activeCampaignId,
         "name": customer.name,
         "role": customer.role,
         "companyUrl": customer.websiteUrl,
