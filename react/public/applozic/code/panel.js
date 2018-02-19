@@ -53,7 +53,6 @@ $(document).ready(function() {
         }
         $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
             resetCustomerInfoArea();     
-            console.log(user);
             var ul = document.getElementById("km-user-info-list");
            
             for (key in user.metadata) {
@@ -100,7 +99,6 @@ $(document).ready(function() {
             return;
         }
         var tab = $this.data('tab');
-        console.log(tab);
         $(".side-nav li").removeClass('active');
         $this.parent().addClass('active');
         $(".tabs").removeClass('show').addClass('hide');
@@ -133,9 +131,7 @@ function clearbit(email, userId) {
             "Authorization": "Bearer sk_6aadb3d2a8cb824acc0334f7da36c2ee"
         },
         success: function (response) {
-            console.log(response);
             displayCustomerInfo(response)
-            console.log(response);
             var metadata = JSON.stringify(response);
             var obj = JSON.parse(metadata)
             var user = { 'userId': userId, 'metadata': { 'kmClearbitData': JSON.stringify(response) } }
@@ -175,5 +171,4 @@ function displayCustomerInfo(clearbitData) {
         $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
         
     }
-    console.log(info);
 }

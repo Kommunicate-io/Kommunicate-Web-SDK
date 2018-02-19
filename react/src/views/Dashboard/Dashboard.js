@@ -113,7 +113,6 @@ class Dashboard extends Component {
           .then(function(response){
             if(response.status==200){
                 var data = response.data;
-                console.log(data);
                 if (data.length > 0) {
                   var stat = data[data.length - 1];
                   that.setState({
@@ -134,7 +133,6 @@ class Dashboard extends Component {
       .then(function(response){
         if(response.status==200){
             var data = response.data;
-            console.log(data);
             var messageData = [];
             var userData = [];
             if (data.length > 0) {

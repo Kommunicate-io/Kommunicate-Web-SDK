@@ -55,7 +55,6 @@ function initAutoSuggestions() {
     var userContactNumber = "";
     var topicBoxEnabled = true;
     var applozicBaseUrl = (window.location.origin=="http://localhost:3000"||window.location.origin=="https://dashboard-test.kommunicate.io")?"https://apps-test.applozic.com":"https://chat.kommunicate.io";
-    console.log("base url",applozicBaseUrl);
     /*var displayName = '';
     displayName = '${param.displayName}';*/
     if (typeof userId === "undefined" || userId == null) {
@@ -128,7 +127,6 @@ function activeCampaign(email) {
     url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_view&api_key=aa87aefccdb0f33344e88fc6c8764df8512427a3a84fc0431c3fed9691dab83cac9394b3&api_output=json&id=autoforosyurii@gmail.com',
     type: 'GET',
     success: function(response) {
-        console.log(response);
     }
   });
 }
@@ -144,7 +142,6 @@ function clearbit(email, userId) {
         },
         success: function(response) {
             displayCustInfo(response)
-            console.log(response);
             var user={'userId':userId,'metadata': {'kmClearbitData' : JSON.stringify(response)}}
             window.Aside.updateApplozicUser(user);
         }
@@ -182,7 +179,6 @@ if (typeof company !== "undefined" && company != null && company != "null") {
     $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
     
 }
-  console.log(info)
 }
 
 function getSuggestions(_urlAutoSuggest) {
@@ -194,9 +190,7 @@ function getSuggestions(_urlAutoSuggest) {
       return autoSuggestions_data;
     })
     .then(autoSuggestions_data => {
-      console.log(autoSuggestions_data)
       autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
-          console.log(curr);
           if(curr.category in prev){
             prev[curr.category].push({suggestionId: curr.id, name:curr.name, content:curr.content})
           }else{

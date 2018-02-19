@@ -35,14 +35,12 @@ class Full extends Component {
       hideInvitedMemberBar: true
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
-    console.log("profilePicUrl",this.state.imageLink)
   }
 
   updateProfilePic(url) { 
     this.setState({
       imageLink: url==null ? "/img/avatars/default.png": url
     });
-    console.log("profilePicUrl updated",this.state.imageLink)
    }
   componentWillMount(){
     window.appHistory = this.props.history;
@@ -50,7 +48,6 @@ class Full extends Component {
   componentDidMount() {
     
     if(CommonUtils.getUserSession()){
-      console.log("userloggedin initializng chat");
       window.chatLogin();
     }
   }
