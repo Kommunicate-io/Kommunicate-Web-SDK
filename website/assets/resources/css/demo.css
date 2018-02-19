@@ -1,0 +1,190 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+::selection {
+    background-color: #747ffc;
+    color: #ffffff;
+}
+html * {
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;s
+}
+body {
+    -webkit-font-smoothing: antialiased;
+}
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+}
+
+
+.km-logo-final-logo-0 {
+    fill: #ffffff !important;
+}
+.page-links-ul li:first-child>a {
+    font-weight: bold;
+}
+#chat-widget-copy-10 {
+    fill: #FFFFFF !important;
+}
+.page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
+    fill: rgba(255, 255, 255, 0.5) !important;
+}
+.nav-main-header {
+    background: linear-gradient(to left, #4daab7, #2475bb 41%, #5c5aa7);
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+}
+
+.nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #2dd35c;
+    font-weight: 600
+}
+.sticky .nav-signup-button {
+    color: #FFFFFF;
+    border: none;
+    background-color: #2dd35c;
+    font-weight: 600;
+}
+.nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #1aaa42;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.sticky .nav-signup-button:hover {
+    color: #FFFFFF;
+    background-color: #1aaa42;
+    border: none;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.nav-login-button {
+    color: #ffffff;
+}
+.nav-login-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+
+.demo-section {
+    padding: 100px 0px 50px;
+}
+.section-heading {
+    font-size: 36px;
+    font-weight: 400;
+    color: #5c5aa7;
+}
+.section-login-details {
+    font-weight: 400;
+    color: #535353;
+}
+.section-login-details span {
+    font-weight: 600;
+    color: #535353;
+}
+
+.km-launcher-logo-0 {
+    fill: #ffffff !important;
+  } .km-launcher-logo-1 {
+    fill: #5C5AA7 !important;
+  }
+
+/* footer section */
+.footer-section {
+    position: relative;
+    padding: 50px 0px 20px 0px;
+    text-align: center;
+    background-color: #5C5AA7;
+}
+.footer-section .img-container svg {
+    width: auto;
+    height: 40px;
+    margin: 0 auto;
+    /* filter: opacity(0.2); */
+}
+
+.links-container {
+    margin-top: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-flow: row; */
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+/* .links-div:not(:first-child){
+    margin-left: 20px;
+} */
+.links-div:last-child>a {
+    font-weight: 600;
+}
+.links {
+    color: #ffffff;
+    font-size: 18px;
+    transition: all 0.3s ease-out;
+}
+.links:hover, .links:focus {
+    color: #ffffff86;
+}
+.social-icons-container {
+    margin-top: 55px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    align-content: center; 
+}
+.social-icons-div:nth-child(2), .social-icons-div:last-child {
+    margin-left: 20px;
+}
+
+.address-container {
+    margin-top: 15px;
+}
+.address {
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 28px;
+    margin-top: 30px;
+}
+
+.address a {
+    color: #ffffff;
+}
+
+.address a:hover {
+    color: #ffffff8a;
+}
+.love {
+    margin-top: 50px;
+    color: #ffffff;
+}
+.love span {
+    vertical-align: sub;
+}
+.copyright {
+    color: #e9e3e3;
+}
+.footer-hr {
+    display: block;
+    margin-top: 2.3em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+    height: 3px;
+    width:10%;
+    background: rgb(200,109,215); /* Old browsers */
+    background: -moz-linear-gradient(left, rgb(200,109,215) 0%, rgb(48,35,174) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 ); /* IE6-9 */
+}
