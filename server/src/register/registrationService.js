@@ -22,7 +22,9 @@ exports.createCustomer = customer=>{
   return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID,KOMMUNICATE_ADMIN_PASSWORD,"km-"+customer.userName+"-"+Math.floor(new Date().valueOf() * Math.random()))).then(application=>{
     console.log("successfully created ApplicationId: ",application.applicationId," creating applozic client");
   
-    return Promise.all([applozicClient.createUserInApplozic({"userName":customer.userName,"password":customer.password,"applicationId":application.applicationId,"role":"APPLICATION_WEB_ADMIN","name":customer.name,"email":customer.email}),
+    customer.applicationId=application.applicationId;
+    customer.role="APPLICATION_WEB_ADMIN";
+    return Promise.all([applozicClient.createUserInApplozic(customer),
                    /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
                    applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"BOT")
     ]).then(([applozicCustomer,/*agent,*/bot])=>{
@@ -213,9 +215,10 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 }
 
 exports.signUpWithApplozic = (options)=>{
-  return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
-    return Promise.all([applozicClient.applozicLogin(options.userName,options.password,options.applicationId,"APPLICATION_WEB_ADMIN",options.email),
-    applozicClient.applozicLogin("bot","bot",options.applicationId,"BOT")])
+    
+  return applozicClient.getApplication({"userName":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
+    return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
+    applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"})])
     .then(([customer,bot])=>{
       return applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})
       .then(updatedUser=>{
