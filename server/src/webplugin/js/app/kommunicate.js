@@ -83,7 +83,7 @@ Kommunicate ={
     openParticularConversation:function(groupId){
         window.$applozic.fn.applozic('loadGroupTab', groupId);
     },
-    openChatWithParticularUserId:function(userId){
+    openDirectConversation:function(userId){
         window.$applozic.fn.applozic('loadTab', userId);
     },
     createNewConversation:function(options,callback){
