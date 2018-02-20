@@ -47,7 +47,7 @@ exports.addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
     let groupInfo = { userIds: [], clientGroupIds:[data.groupId] }
     let header={}
-    return Promise.resolve(registrationService.getCustomerByUserName(data.userId)).then(customer => {
+    return Promise.resolve(registrationService.getCustomerByAgentUserKey(data.userId)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getAllUsersOfCustomer(customer,undefined)).then(users => {
                 if (users) {
