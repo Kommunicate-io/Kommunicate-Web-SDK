@@ -188,3 +188,41 @@ a, a:hover, a:focus, a:active {
     background: linear-gradient(to right, rgb(200,109,215) 0%,rgb(48,35,174) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', endColorstr='#3023ae',GradientType=1 ); /* IE6-9 */
 }
+
+.launch-chat-button {
+    color: #fff;
+    border-radius: 4px;
+    border: solid 1.4px #2dd35c;
+    /* height: 36px; */
+    /* line-height: 34px; */
+    background-color: #2dd35c;
+    padding: 10.5px 14.5px;
+    width: 150px;
+    text-align: center;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+.launch-chat-button:hover {
+    color: #FFFFFF;
+    background-color: #1aaa42;
+    border: solid 1.4px #1aaa42;
+    font-weight: 600;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+}
+.launch-chat-button:focus, .launch-chat-button:active {
+    outline: none;
+    padding: 10.5px 14.5px;
+}
+
+.launch-chat-button:disabled {
+    background-color: #535353;
+    border: solid 1.4px #535353;
+    opacity: 0.5;
+}
+.launch-chat-button:disabled:hover {
+    background-color: #535353;
+    border: solid 1.4px #535353;
+    box-shadow: none;
+}
