@@ -205,10 +205,10 @@ class Register extends Component {
 
                   <div className="input-group mb-3">
                     {/* <span className="input-group-addon">@</span> */}
-                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-name").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
+                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById(this.state.isInvited?"input-name":"input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
                     <label className="label-for-input email-label">Email Id</label>
                   </div>
-                  <div className="input-group mb-3">
+                  <div className={this.state.isInvited?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
                    <input id = "input-name"type="text" className="input" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} required/>
                   </div> 
