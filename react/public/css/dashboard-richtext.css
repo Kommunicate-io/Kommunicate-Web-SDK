@@ -2109,7 +2109,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	
 }
 .mck-sidebox-launcher *{
-	font-family: 'sans-serif','OpenSans','Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+	font-family: 'sans-serif','Roboto','Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
 } 
 
 .mck-sidebox-launcher-with-preview {
@@ -2127,7 +2127,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	
 }
 .mck-launcher-text{
-	font-family: OpenSans;
 	font-size: 14px;
 	letter-spacing: 2.1px;
 	text-align: left;

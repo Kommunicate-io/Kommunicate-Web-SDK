@@ -1,6 +1,5 @@
 .form-control-label{
     padding: 0;
-    font-family: 'OpenSans', sans-serif;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.8px;
@@ -11,7 +10,6 @@
     color: #b8babb;
 }
 .brand-header > h5 {
-    font-family: 'OpenSans', sans-serif;
     font-size: 18px;
     letter-spacing: 1.5px;
     text-align: left;
@@ -19,7 +17,6 @@
     margin-bottom: 25px;
 }
 #cancel-button{
-    font-family: 'OpenSans', sans-serif;
     width: 66px;
     height: 26px;
     border-radius: 2px;
@@ -54,7 +51,6 @@
     visibility: hidden;
 }
 .edit-dp-btn > h5 {
-    font-family: 'OpenSans', sans-serif;
     font-size: 14px;
     letter-spacing: 1.1px;
     color: #0d77f2;
@@ -66,7 +62,6 @@
     opacity: 0;
 }
 .password-wrapper-header{
-    font-family: 'OpenSans', sans-serif;
     font-size: 14px;
     letter-spacing: 0.7px;
     text-align: left;
@@ -79,7 +74,6 @@
     border-radius: 2px;
     background-color: #ffffff;
     border: solid 1px #dcdbe0;
-    font-family: 'OpenSans', sans-serif;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 0.8px;
@@ -96,7 +90,6 @@
     cursor:pointer;
 }
 .about-password-text {
-    font-family: 'OpenSans', sans-serif;
     font-size: 10px;
     letter-spacing: 0.7px;
     text-align: left;
@@ -113,7 +106,6 @@
 .about-dp{
     /* width: 183px;
     height: 14px; */
-    /* font-family: OpenSans; */
     font-size: 12px;
     letter-spacing: 0.7px;
     /* text-align: left; */
@@ -148,7 +140,6 @@ canvas {
 #image-input-button {
     margin-left: 4px;
     background-color: #5c5aa7;
-    font-family: 'OpenSans', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.9px;

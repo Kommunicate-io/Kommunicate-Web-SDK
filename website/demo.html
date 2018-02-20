@@ -46,6 +46,17 @@ layout:
     })(document, window.kommunicate || {});
       </script>
 
+      <script>
+        window.onload = function()  {
+          var element = document.getElementById("launch-chat-button");
+          element.disabled=false;
+        } 
+        function launchSideboxChat() {
+          Kommunicate.openConversation();
+        }
+        document.getElementById("launch-chat-button").addEventListener("click", launchSideboxChat);
+      </script>
+
 </body>
 
 </html>

@@ -6,8 +6,11 @@
  * @license MIT
  */
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
+
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 html {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%; }
@@ -10164,7 +10167,6 @@ input:required {
 }
 
 .km-bot-integration-heading {
-  font-family: OpenSans;
   font-size: 18px;
   font-weight: normal;
   font-style: normal;
