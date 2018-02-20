@@ -13,6 +13,7 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID =config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPassword;
 const USER_TYPE={"AGENT": 1,"BOT": 2,"ADMIN": 3};
+const logger = require("../utils/logger");
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -231,6 +232,17 @@ exports.signUpWithApplozic = (options)=>{
     console.log("err",e);
     throw e;
   })
+}
+
+exports.getCustomerByAgentUserKey= (userKey) =>{
+  logger.info("getting user detail from userKey : ",userKey);
+  return userModel.findOne({where:{userKey:userKey}}).then(user=>{
+    if(user){
+      return customerModel.findOne({where:{id:user.customerId}});
+    }else{
+     throw new Error("User Not found");
+    }
+  });
 }
 
 
