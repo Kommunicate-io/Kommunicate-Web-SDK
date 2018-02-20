@@ -57,9 +57,10 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
   });
 };
 const createApplozicClientV1 = (options)=>{
-  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role,"email",email);
+  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",options.userId,"applicationId",options.applicationId,"role","email",options.email);
   options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
   options.roleName = options.roleName?options.roleName:options.role;
+  options.userId =options.userName;
     return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
       let err = {};
       console.log("Applozic server returned : ",response.status);
