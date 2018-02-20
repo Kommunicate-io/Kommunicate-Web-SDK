@@ -75,7 +75,7 @@ class Integration extends Component {
               </div>
               <div className="card-main">                  
                   <div className="outer-box col-md-10 integration-font">
-                    <p style={{fontSize:"16px", color:"#878585", letterSpacing:"normal"}}>Copy the code from below and paste it just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags tags on every page you want the chat widget to appear.</p>
+                    <p style={{fontSize:"16px", color:"#878585", letterSpacing:"normal"}}>Copy the code from below and paste it just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags on every page you want the chat widget to appear.</p>
                     <div>
                           <textarea
                             className="script-text-area"
