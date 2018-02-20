@@ -193,3 +193,9 @@
         width: 100%;
     }
 }
+.display-invitee-email{
+    padding: 6px !important;
+    border-bottom: 0px !important; 
+    margin-bottom: 0 !important;
+    background-color: #E6E1E0;
+}

@@ -21,7 +21,9 @@ class Register extends Component {
       isEmailReadonly:false,
       isBackBtnHidden:false,
       applicationId:null,
-      token:null
+      token:null,
+      invitedBy:'',
+      signupButtonTxt:'Create Account'
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -41,10 +43,12 @@ class Register extends Component {
      this.state.isInvited=true;
      //this.state.invitedUserEmail=invitedUserEmail;
      //this.state.email = invitedUserEmail;
+     this.state.signupButtonTxt='Join Team';
      this.state.isEmailReadonly =false;
      this.state.isBackBtnHidden =true;
      this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
      this.state.token = CommonUtils.getUrlParameter(search, 'token');
+    this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
    }
     //console.log("location",this.props.location);
   }
@@ -58,9 +62,9 @@ class Register extends Component {
     })  
   }
 
-  // setUserName= (event)=>{
-  // this.setState({name:event.target.value});
-  // }
+  setUserName= (event)=>{
+   this.setState({name:event.target.value});
+ }
   setPassword= (event)=>{
   this.setState({password:event.target.value});
   }
@@ -80,7 +84,7 @@ class Register extends Component {
     var email = this.state.email;
     var password =this.state.password;
     var repeatPassword =this.state.repeatPassword;
-    var name = this.state.email;
+    var name = this.state.name;
 
    // creating user
     let userType = this.state.isInvited?"AGENT":"CUSTOMER";
@@ -90,7 +94,7 @@ class Register extends Component {
     userInfo.type = userType=="AGENT"?1:3;
     userInfo.applicationId = this.state.applicationId;
     userInfo.password = password;
-    userInfo.name=email;
+    userInfo.name=_this.state.name;
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
@@ -127,7 +131,7 @@ class Register extends Component {
     var email = this.state.email;
     var password =this.state.password;
     var repeatPassword =this.state.repeatPassword;
-    var name = this.state.email;
+    var name = this.state.name;
     var _this= this;
     if(!isEmail(email)){
       Notification.warning("Invalid Email !!");
@@ -194,19 +198,21 @@ class Register extends Component {
           <div className="row justify-content-center">
             <div className="col-md-6">
               <div className="card mx-4">
+              <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign Up</h1>
                   <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
 
-                   {/* <div className="input-group mb-3">
-                    <span className="input-group-addon"><i className="icon-user"></i></span>
-                   <input autoFocus type="text" className="input" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-email").focus()}}} onChange= {this.setUserName} required/>
-                  </div> */}
                   <div className="input-group mb-3">
                     {/* <span className="input-group-addon">@</span> */}
-                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
+                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-name").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
                     <label className="label-for-input email-label">Email Id</label>
                   </div>
+                  <div className="input-group mb-3">
+                  {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
+                   <input id = "input-name"type="text" className="input" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} required/>
+                  </div> 
+
                   <div className="input-group mb-3 register-password-div">
                     {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
                     <input id="input-password" type={this.state.type} className="input" placeholder=" "  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} required/>
@@ -229,7 +235,7 @@ class Register extends Component {
                   </div>
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
-                      <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>Create Account</button>
+                      <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
 
                       <p>
                         Already have an account? <a href="/login/">Sign In</a>
