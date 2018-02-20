@@ -87,6 +87,7 @@ const getResponse = (customer,application)=>{
 exports.updateCustomer = (userId, customer) => {
   return Promise.resolve(customerModel.update(customer, { where: { "userName": userId } })).then(result => {
     console.log("successfully updated user", result[0]);
+    userService.updateUser(userId, customer.applicationId, {name:customer.name, email:customer.email,companyName:customer.companyName})
     return result[0];
   }).catch(err => {
     console.log("error while updating user", err);
