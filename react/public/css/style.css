@@ -9174,7 +9174,10 @@ hr.transparent {
   color: #515050;
   
 }
-
+.header-profile {
+  color: #263238;
+  text-decoration: none!important;
+}
 .header-user-email {
   /* width: 87px; */
   height: 11px;
