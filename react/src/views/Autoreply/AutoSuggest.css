@@ -1,5 +1,5 @@
 body{
-    font-family:'OpenSans', sans-serif;
+    font-family:'Roboto', sans-serif;
 }
 .message-shortcuts-title {
     
@@ -155,7 +155,6 @@ body{
     font-size: 12px;
     letter-spacing: 0.9px;
     color: #515050;
-    font-family:'OpenSans', sans-serif;
     cursor: pointer;
 }
 .tooltip-wrapper{
