@@ -9478,6 +9478,12 @@ pointer-events: none;
     -webkit-transition: 0.2s ease all;
     -ms-transition: 0.2s ease all;
 }
+.input:disabled {
+  background-color: #e6e1e0;
+}
+.input:disabled ~ .label-for-input, .input:disabled ~ .label-for-input2 {
+  display: none;
+}
 .multi-email-form-group .label-for-input {
   top: 7px;
   width: 80% !important;
@@ -9607,7 +9613,7 @@ pointer-events: none;
 }
 
 .company-url-form-group::after {
-  content: 'This field is required because your customers would need to know who is sending them e-mails.';
+  content: '* required information';
   position: absolute;
   font-size: 13px;
   color: #adadb1;

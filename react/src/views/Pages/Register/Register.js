@@ -30,11 +30,8 @@ class Register extends Component {
   }
   componentWillMount(){
     const search = this.props.location.search;
-    //const params = new URLSearchParams(search);
-    /*const isInvited = params.get('invite');*/
-
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
-    const email = CommonUtils.getUrlParameter(search, 'email');
+    const email = CommonUtils.getUrlParameterWithoutReplace(search, 'email');
     if (email) {
       this.setState({email:email});
     }
@@ -48,7 +45,7 @@ class Register extends Component {
      this.state.isBackBtnHidden =true;
      this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
      this.state.token = CommonUtils.getUrlParameter(search, 'token');
-    this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
+    this.state.invitedBy = CommonUtils.getUrlParameterWithoutReplace(search, 'referer')
    }
     //console.log("location",this.props.location);
   }
@@ -205,12 +202,13 @@ class Register extends Component {
 
                   <div className="input-group mb-3">
                     {/* <span className="input-group-addon">@</span> */}
-                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById(this.state.isInvited?"input-name":"input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required/>
+                    <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById(this.state.isInvited?"input-name":"input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required disabled={this.state.isInvited}/>
                     <label className="label-for-input email-label">Email Id</label>
                   </div>
                   <div className={this.state.isInvited?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
-                   <input id = "input-name"type="text" className="input" placeholder="name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} required/>
+                   <input id = "input-name"type="text" className="input" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} required/>
+                   <label className="label-for-input name-label">Name</label>
                   </div> 
 
                   <div className="input-group mb-3 register-password-div">
@@ -229,7 +227,6 @@ class Register extends Component {
                       </span>
                   </div>
                   <div className="input-group mb-4" hidden={true}>
-                    {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
                     <input type="password" className="input" placeholder=" " onChange={ this.setRepeatPassword } required/>
                     <label className="label-for-input email-label">Repeat password</label>
                   </div>
@@ -241,22 +238,9 @@ class Register extends Component {
                         Already have an account? <a href="/login/">Sign In</a>
                       </p>
                     </div>
-                    {/* <div className="col-6 text-right">
-                      <button type="button" className="btn btn-primary px-4 btn-primary-custom" onClick= { this.backToLogin } hidden ={this.state.isBackBtnHidden}>Back</button>
-                    </div> */}
                   </div>
                 </div>
                 </div>
-               {/* <div className="card-footer p-4">
-                  <div className="row">
-                    <div className="col-6">
-                      <button className="btn btn-block btn-facebook" type="button"><span>facebook</span></button>
-                    </div>
-                    <div className="col-6">
-                   <button className="btn btn-block btn-twitter" type="button"><span>twitter</span></button> 
-                    </div>
-                  </div>
-                </div>*/}
               </div>
             </div>
           </div>
