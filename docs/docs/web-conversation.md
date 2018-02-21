@@ -15,7 +15,7 @@ Kommunicate.openConversationList();
 You can create a new conversation as below :
 ```
 var conversationDetail = {
-    agentId: DEFAULT_AGENT_ID,
+    agentId: AGENT_ID,
     botIds: ['BOTID1', 'BOTID2'] //optional
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
