@@ -2,7 +2,7 @@
 id: ios-logout
 title: Logout
 sidebar_label: Logout
-
+---
 
 Call the following code when a user logs out from your app:
 
