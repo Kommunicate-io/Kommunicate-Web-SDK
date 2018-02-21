@@ -120,22 +120,8 @@ class Integration extends Component {
                       </div>
                   </div>
                   </div>
-                  <div id="outer">
-                    {/*<div className="inner">
-                      {document.queryCommandSupported("copy") && (
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={this.copyToClipboard}
-                          >
-                            {this.state.copySuccess}
-                          </button>
-                      )}
-                    </div>*/}
-        
-                      <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-                     
-                    {/* <Accordion data={this.data}/> */}
+                  <div id="outer">   
+                    <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                 </div>
             </div>
           </div>

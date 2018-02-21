@@ -91,7 +91,7 @@ class Register extends Component {
     userInfo.type = userType=="AGENT"?1:3;
     userInfo.applicationId = this.state.applicationId;
     userInfo.password = password;
-    userInfo.name=_this.state.name;
+    userInfo.name=_this.state.name || _this.state.userName;
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
