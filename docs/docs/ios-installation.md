@@ -34,3 +34,25 @@ Expand Embedded frameworks and add applozic framework.
 ![dashboard-blank-content](https://raw.githubusercontent.com/AppLozic/Applozic-Chat-SDK-Documentation/master/Resized-adding-applozic-framework.png)        
 
 
+### Permissions
+
+Add permission for camera, photo library, Micro phone, contacts and location. </br>
+In your info.plist add these permission for diffrent type of attachments.
+
+```
+
+<key>NSCameraUsageDescription</key>
+<string>Allow Camera</string>
+<key>NSContactsUsageDescription</key>
+<string>Allow Contacts</string>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Allow location sharing!!</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>Allow MicroPhone</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Allow Photos</string>
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Allow write access</string>
+
+ ````
+
