@@ -75,7 +75,6 @@ class Step2 extends Component {
           console.log("Setup completed successfully");
         }
       }).catch(err => { console.log('userInfo not saved') });
-      userSession.displayName = customerInfo.name;
       userSession.name = customerInfo.name;
       userSession.adminDisplayName = customerInfo.name;
       CommonUtils.setUserSession(userSession)

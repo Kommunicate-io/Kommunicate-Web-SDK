@@ -13,7 +13,7 @@ function getJsCode (){
     options.isAnonymousChat=true;
     options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
     
-    if (userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
+    if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){
       options.agentName = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
       options.agentName = localStorage.getItem("agentName");

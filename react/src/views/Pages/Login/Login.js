@@ -145,6 +145,7 @@ submitForm = ()=>{
           response.data.result.application.applicationId = _this.state.applicationId;
 
           response.data.result.password = password;
+          response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
         }
 

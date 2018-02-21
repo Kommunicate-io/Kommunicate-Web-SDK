@@ -166,17 +166,17 @@ const callSendEmailAPI = (options) => {
       to: [userSession.email],
       from:"hello@kommunicate.io",
       cc: [],
-      userName:userSession.displayName || userId,
+      userName:userSession.name || userId,
       ...options
     }
   }else{
     data = {
       "to":[...emails],
       "templateName":options.templateName,
-      "from":userSession.displayName || userId +"<"+userId+">",
+      "from":userSession.name || userId +"<"+userId+">",
       "kommunicateScript":getJsCode(),
       "applicationId":userSession.application.applicationId,
-      "agentName":userSession.displayName || userId,
+      "agentName":userSession.name || userSession.name || userId,
       "agentId": userId
     }
   }

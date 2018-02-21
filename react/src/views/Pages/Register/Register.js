@@ -98,6 +98,7 @@ class Register extends Component {
       if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
         window.Kommunicate.updateUserIdentity(userInfo.userName);
       }
+      response.data.data.displayName=response.data.data.name;
      saveToLocalStorage(email, password, name, response);
       _this.setState({disableRegisterButton:false});
 
