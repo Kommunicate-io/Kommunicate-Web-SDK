@@ -9339,6 +9339,7 @@ hr.transparent {
   letter-spacing: 0.5px;
   color: #717174;
   font-weight: 400;
+  margin-bottom: 50px;
 }
 .setup-integration-later-text {
   font-size: 16px;
@@ -9406,6 +9407,13 @@ hr.transparent {
   letter-spacing: 0.5px;
   color: #5c5aa7 !important;
   cursor: pointer;
+}
+.step2-skip-link {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #5c5aa7 !important;
+  cursor: pointer;
+  padding-left: 15px;
 }
 .skip-link:hover {
   text-decoration: underline !important;
@@ -9480,6 +9488,12 @@ pointer-events: none;
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
     -ms-transition: 0.2s ease all;
+}
+.input:disabled {
+  background-color: #e6e1e0;
+}
+.input:disabled ~ .label-for-input, .input:disabled ~ .label-for-input2 {
+  display: none;
 }
 .multi-email-form-group .label-for-input {
   top: 7px;
@@ -9592,6 +9606,14 @@ pointer-events: none;
   right: calc(100% + 15px);
   width: 150px;
 }
+.form-group-user-name::before {
+  content: 'Your Name:';
+  position: absolute;
+  font-size: 16px;
+  color: #5c5aa7;
+  right: calc(100% + 15px);
+  width: 100px;
+}
 
 .km-add-category button:hover {
   background-color: #5C5AA7;
@@ -9608,9 +9630,14 @@ pointer-events: none;
   position: relative;
   margin-bottom: 0px;
 }
+.form-group-user-name {
+  width: 410px;
+  position: relative;
+  margin-bottom: 0px;
+}
 
-.company-url-form-group::after {
-  content: 'This field is required because your customers would need to know who is sending them e-mails.';
+.company-url-form-group::after, .form-group-user-name::after {
+  content: '* required information';
   position: absolute;
   font-size: 13px;
   color: #adadb1;
@@ -9622,6 +9649,9 @@ pointer-events: none;
   border-left: transparent;
   border-radius: 0px 4px 4px 0px;
 }
+.form-group-user-name  input, .form-group-user-name input:focus{
+  border-radius: 0px 4px 4px 0px;
+} 
 
 .km-auto-replies-user-chat-preview {
   border: 1px solid #ccc;

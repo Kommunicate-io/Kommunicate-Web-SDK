@@ -1,86 +1,57 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import {getJsCode, getJsInstructions} from '../../../utils/customerSetUp';
-
+import isURL from 'validator/lib/isURL';
 import Notification from '../../model/Notification';
-import MultiEmail from '../../MultiEmail/';
-import Integration from '../../Settings/Integration/';
-import CommonUtils from '../../../utils/CommonUtils';
-
 class Step1 extends Component {
- static defaultProps ={ hideSkipForNow : true }
-	constructor(props) {
-		super(props);
-
-    this.state = {
-      hideNextBtn:false
+    
+    constructor(props) {
+        super(props)
+        this.state={
+            websiteUrl:'',
+            name:'',
+            isCompanyUrlError:'',
+            nextStep:2
+        }
+    this.submitCompanyUrlOnly = this.submitCompanyUrlOnly.bind(this);
+    }
+    submitCompanyUrlOnly(e){
+        let that=this;
+        e.preventDefault();
+        if(!isURL(this.state.websiteUrl)) {
+            Notification.warning("Invalid URL.");
+            return;
+        }
+        let data={websiteUrl:that.state.websiteUrl,
+            name:that.state.name};
+            that.props.moveToNextStep(data,
+            that.state.nextStep);
     }
 
-    this.jsScript = getJsCode();
-    this.jsInstructions = getJsInstructions();
-	}
-
-  componentDidMount(){
-		//document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
-  }
-
-  componentWillMount(){
-    if(this.props.location && this.props.location.pathname ==="/installation" &&this.props.location.search){
-      //const search = encodeURIComponent(this.props.location.search);
-      let paramArray = this.props.location.search.substr(1).split("&");
-      let params = {};
-      for(var i=0;i<paramArray.length;i++){
-        var item = paramArray[i].split("=");
-        params[item[0]]=item[1];
-      }
-      console.log("search",params);
-       localStorage.setItem("agentId",params.agentId||"default_agent_id");
-       localStorage.setItem("agentName",params.agentName||"agent_display_name");
-
-       let userSession = CommonUtils.getUserSession();
-       if (!userSession.application) {
-          console.log("application not found in user session, creating {}");
-          userSession.application = {};
-       }
-       userSession.application.applicationId = params.applicationId||"your _application_id";
-       CommonUtils.setUserSession(userSession);
-
-       this.setState({
-        hideNextBtn : true
-       })
-       }
-  }
-
-  render() {
-    return (
-      <form>
-        <div className="col-lg-12 text-center">
-          <div className={this.props.hideSkipForNow? "step-number-div" : "n-vis"}>
-            1/2
-          </div>
-          <h1 className="setup-heading">{this.props.pageTitle}Integration</h1>
-          <h4 className="setup-sub-heading">Integrate Kommunicate to your product within <strong>2 minutes</strong></h4>
-          <h2 className="setup-integration-later-text">Integration instructions can also be found inside <span>Settings > Integrations</span> later</h2>
-          <div className="button-link-container">
-          <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-            <a className={this.props.hideSkipForNow? "skip-link":'n-vis'} onClick={this.props.changeStep}>
-             Skip for now
-            </a>
-          </div>
-          <hr></hr>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-md-10">
-            <Integration cardSize={12}/>
-            <div className="form-group">
-          <button className={this.props.hideSkipForNow? "btn btn-sm btn-primary px-4 ml-40 btn-primary-custom" : "n-vis"} onClick={this.props.changeStep} hidden={this.state.hideNextBtn}> Next </button>
-        </div>
-          </div>
-        </div>
-        
-      </form>
-    )
-  }
+    render() {
+        return (
+            <form onSubmit={this.submitCompanyUrlOnly} >
+            <div className="col-lg-12 text-center setup-profile-div">
+                <div className="step-number-div">1/3</div>
+                <h1 className="setup-heading">Profile Setup</h1>
+                <h4 className="setup-sub-heading">Setting up your name and website URL so that your customers know who they are talking to</h4>
+                <div className="company-url-main-div flex text-center">
+                    <span className="url-http-text">https://</span>
+                    <div className="group form-group company-url-form-group">
+                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
+                        <label className="label-for-input email-label">www.mycompany.com</label>
+                    </div>
+                </div>
+                <div className="company-url-main-div flex text-center">
+                    <div className="group form-group form-group-user-name">
+                        <input className="input customer-name" type="text" id="customer-name" name="name" placeholder=" " required value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
+                        <label className="label-for-input email-label">Your Name</label>
+                    </div>
+                </div>
+                <div className="company-url-main-div flex text-center">
+                    <button className="btn btn-sm btn-primary px-4 btn-primary-custom"> Save and continue </button>
+                </div>
+            </div>
+        </form>
+        )
+    }
 }
-
 export default Step1
