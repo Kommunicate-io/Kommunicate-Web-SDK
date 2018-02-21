@@ -136,8 +136,8 @@ Kommunicate = {
             }
         });
     }, updateUser: function (options) {
-        console.log(options);
-        window.$applozic.fn.applozic('updateUser', options);
+        var data ={data:options};
+        window.$applozic.fn.applozic('updateUser', data);
     },
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
