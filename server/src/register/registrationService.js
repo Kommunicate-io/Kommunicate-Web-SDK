@@ -13,6 +13,7 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID =config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPassword;
 const USER_TYPE={"AGENT": 1,"BOT": 2,"ADMIN": 3};
+const logger = require("../utils/logger");
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -87,6 +88,7 @@ const getResponse = (customer,application)=>{
 exports.updateCustomer = (userId, customer) => {
   return Promise.resolve(customerModel.update(customer, { where: { "userName": userId } })).then(result => {
     console.log("successfully updated user", result[0]);
+    userService.updateUser(userId, customer.applicationId, {name:customer.name, email:customer.email,companyName:customer.companyName})
     return result[0];
   }).catch(err => {
     console.log("error while updating user", err);
@@ -216,7 +218,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 
 exports.signUpWithApplozic = (options)=>{
     
-  return applozicClient.getApplication({"userName":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
+  return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
     applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"})])
     .then(([customer,bot])=>{
@@ -231,6 +233,17 @@ exports.signUpWithApplozic = (options)=>{
     console.log("err",e);
     throw e;
   })
+}
+
+exports.getCustomerByAgentUserKey= (userKey) =>{
+  logger.info("getting user detail from userKey : ",userKey);
+  return userModel.findOne({where:{userKey:userKey}}).then(user=>{
+    if(user){
+      return customerModel.findOne({where:{id:user.customerId}});
+    }else{
+     throw new Error("User Not found");
+    }
+  });
 }
 
 

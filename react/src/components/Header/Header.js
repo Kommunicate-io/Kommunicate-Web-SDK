@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom' ;
-
+import { NavLink } from 'react-router-dom';
 import {goAway, goOnline} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 
@@ -117,6 +117,7 @@ class Header extends Component {
                 {
                 <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
                 }
+
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/profile"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
