@@ -19,7 +19,7 @@ class Step1 extends Component {
             Notification.warning("Invalid URL.");
             return;
         }
-        let data={websiteUrl:'https://'+this.state.websiteUrl,
+        let data={websiteUrl:this.state.websiteUrl,
             name:this.state.name};
             this.props.moveToNextStep(data,
             this.state.nextStep);
