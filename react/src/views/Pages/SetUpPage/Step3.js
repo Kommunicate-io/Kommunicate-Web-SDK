@@ -59,7 +59,7 @@ class Step3 extends Component {
     return (
       <form>
         <div className="col-lg-12 text-center">
-          <div className={this.props.hideSkipForNow? "step-number-div" : "n-vis"}>
+          <div className={this.props.hideSkipForNow? "n-vis" : "step-number-div" }>
             3/3
           </div>
           <h1 className="setup-heading">{this.props.pageTitle}Integration</h1>
