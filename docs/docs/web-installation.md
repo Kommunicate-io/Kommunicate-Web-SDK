@@ -6,9 +6,9 @@ sidebar_label: Installation
 Kommunicate allows you to add the smart messaging in your website for your customer support.<br>
 Installing Kommunicate takes adding few lines of code in your website and you can start answering your support queries within few minutes.
 
-```
-Step 1- Get the customized plugin script from Kommunicate dashboard.
-```
+**Step 1- Get the customized plugin script from Kommunicate dashboard.**
+<hr>
+
 First, Create your Kommunicate account if not already created, else login to your account.
 Go to `configuration -> install` section and copy the script.
 
@@ -32,9 +32,9 @@ You can copy below script and replace required parameters mannually.
 
 ```
 
-```
-Step 2- Add the customized Kommunicate plugin in your website 
-```
+
+**Step 2- Add the customized Kommunicate plugin in your website**
+<hr>
 We recommend adding it to your website template so that it automatically goes into each page of your site. 
 place Kommunicate plugin code before the closing Body tag `(</body>)`.
 
