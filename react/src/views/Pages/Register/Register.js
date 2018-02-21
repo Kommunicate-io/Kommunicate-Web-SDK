@@ -31,7 +31,7 @@ class Register extends Component {
   componentWillMount(){
     const search = this.props.location.search;
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
-    const email = CommonUtils.getUrlParameterWithoutReplace(search, 'email');
+    const email = CommonUtils.getUrlParameter(search, 'email');
     if (email) {
       this.setState({email:email});
     }
@@ -45,7 +45,7 @@ class Register extends Component {
      this.state.isBackBtnHidden =true;
      this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
      this.state.token = CommonUtils.getUrlParameter(search, 'token');
-    this.state.invitedBy = CommonUtils.getUrlParameterWithoutReplace(search, 'referer')
+    this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
    }
     //console.log("location",this.props.location);
   }
