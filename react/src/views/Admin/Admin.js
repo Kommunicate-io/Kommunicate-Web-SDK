@@ -100,6 +100,7 @@ class Forms extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
+            userSession.adminDisplayName=this.state.name;
             Notification.info(response.data.message)
           }
         }).catch(err => {
@@ -118,6 +119,10 @@ class Forms extends Component {
           alert(err);
         });
     }
+    userSession.name=this.state.name;
+    userSession.email=this.state.email;
+    CommonUtils.setUserSession(userSession);
+    this.props.updateUserDisplay(this.state.name);
   }
 
   handleReset(e) {
