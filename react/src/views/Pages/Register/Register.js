@@ -101,7 +101,7 @@ class Register extends Component {
      saveToLocalStorage(email, password, name, response);
       _this.setState({disableRegisterButton:false});
 
-      CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard";
+      CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard?referer="+this.state.invitedBy;
       return;
     }).catch(err=>{
       _this.setState({disableRegisterButton:false});
