@@ -14,16 +14,15 @@ class Step1 extends Component {
     this.submitCompanyUrlOnly = this.submitCompanyUrlOnly.bind(this);
     }
     submitCompanyUrlOnly(e){
-        let that=this;
         e.preventDefault();
         if(!isURL(this.state.websiteUrl)) {
             Notification.warning("Invalid URL.");
             return;
         }
-        let data={websiteUrl:that.state.websiteUrl,
-            name:that.state.name};
-            that.props.moveToNextStep(data,
-            that.state.nextStep);
+        let data={websiteUrl:'https://'+this.state.websiteUrl,
+            name:this.state.name};
+            this.props.moveToNextStep(data,
+            this.state.nextStep);
     }
 
     render() {
