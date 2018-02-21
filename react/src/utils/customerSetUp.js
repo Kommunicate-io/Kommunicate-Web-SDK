@@ -22,6 +22,7 @@ function getJsCode (){
     const search = window.location.href;
     options.appId = CommonUtils.getUrlParameter(search, "applicationId");
     options.agentId = CommonUtils.getUrlParameter(search, "agentId");
+    options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
   
   options.groupName=options.agentName||options.agentId;
