@@ -43,10 +43,10 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
                         </li>
-                        <li className="ss-nav-title">
+                        <li className="ss-nav-title" style={{"display":"none"}}>
                             DOWNLOAD
                         </li>
-                        <li className="ss-nav-item agent-app-link">
+                        <li className="ss-nav-item agent-app-link"style={{"display":"none"}}>
                             <NavLink to={'/agent-app'} className="ss-nav-link" activeClassName="active">Agent app</NavLink>
                         </li>
                     </ul>
