@@ -5,20 +5,20 @@ Kommunicate.markup = {
          roomCount= roomCount||"1";
      return `<div class = "km-single-pax-info">
     <div class="km-room-title-text">ROOM `+roomCount+`</div>
-    <div class="km-room-selector">
-        <div>Guest :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <div class="km-dashboard-room-selector">
+        <div style="margin-right:15px;">Guest:</div>
         <div id= "">
             <input class ="km-decrement-guest-count" type="button" value="-">
             <input type="number" min="1" max="5" value="1" class="km-room-number-field" maxlength="1" disabled>
             <input class ="km-increment-guest-count" type="button" value="+">
         </div>
     </div>
-    <div class="km-person-selector hide">
-        <div>Children <span style="font-size:12px; color: rgba(0,0,0,0.5)">(1-12 yrs)</span> :</div>
-        <div>
-            <input type="button" value="-" onclick="decrement2()">
-            <input type="number" min="1" max="6" value="1" id="km-person-number-field" maxlength="1" disabled>
-            <input type="button" value="+" onclick="increment2()">
+    <div class="km-dashboard-person-selector">
+        <div>Children: <span style="font-size:12px; color: rgba(0,0,0,0.5); display: block;">(1-12 yrs)</span> :</div>
+        <div style="margin-bottom:30px">
+            <input type="button" value="-" class ="km-dashboard-decrement-children-count" >
+            <input type="number" min="0" max="6" value="0" id="km-dashboard-person-number-field" class="km-dashboard-person-number-field" maxlength="1" disabled>
+            <input type="button" value="+" class ="km-dashboard-increment-children-count" >
         </div> 
     </div>
 </div>`

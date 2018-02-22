@@ -4335,17 +4335,20 @@ cursor: pointer;
 .km-msg-box-rich-text-container .tns-outer .tns-controls button:first-child{
 	left :-12px;
 }
-.km-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
-	margin-left: 830px;
+.km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
+    /* margin-left: 830px; */
+    margin-left: 900px;
 }
 /*** Tiny Slider ends here ***/
 /* Room Details after Blocking Room */
-.km-card-room-detail-container {
+.km-dashboard-card-room-detail-container {
+    display: flex;
+
 	/* width: 90%; */
 	 /*overflow-x: hidden;*/
 	 /* margin-right: 0px; */
 	 margin: 0;
-	 width: 315px;
+	 /* width: 315px; */
 	 padding-left: 0;
 	 max-width: 100%;
 	 transform: translateX(-10px);

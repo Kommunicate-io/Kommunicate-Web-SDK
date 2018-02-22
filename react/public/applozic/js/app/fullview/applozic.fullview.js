@@ -907,9 +907,11 @@ var KM_CLIENT_GROUP_MAP = [];
                 'type': params.messageType,
                 'contentType': params.type,
 				'message': message,
-				'metadata':{
-					'skipBot':true
-				}
+				// 'metadata':{
+				// 	'skipBot':true
+				// }
+				'metadata':params.metadata
+				
             };
             if (params.groupId) {
                 messagePxy.groupId = $kmApplozic.trim(params.groupId);
@@ -6179,7 +6181,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			$kmApplozic.template("KMfileboxTemplate", mck_filebox_tmpl);
 			_this.init = function() {
 				//ataching events for rich msh templates
-                Kommunicate.attachEvents ($kmApplozic);
+                kommunicateDashboard.attachEvents ($kmApplozic);
 				$mck_file_upload.on('click', function() {
 					$mck_file_input.trigger('click');
 				});
