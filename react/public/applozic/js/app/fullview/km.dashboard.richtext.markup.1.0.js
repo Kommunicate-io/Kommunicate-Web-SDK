@@ -6,7 +6,7 @@ kommunicateDashboard.markup = {
      return `<div class = "km-single-pax-info">
     <div class="km-room-title-text">ROOM `+roomCount+`</div>
     <div class="km-dashboard-room-selector">
-        <div style="margin-right:20px;">Guest:</div>
+        <div style="margin-right:15px;">Guest:</div>
         <div id= "">
             <input class ="km-dashboard-decrement-guest-count" type="button" value="-">
             <input type="number" min="1" max="5" value="1" class="km-dashboard-room-number-field" maxlength="1" disabled>
@@ -145,27 +145,28 @@ getPassangerDetail : function(options){
     if(!options.SessionId){
        console.log("sessionId not present in message..") 
     }
-    return `  <div class="km-dashboard-guest-details-container km-rich-text-default-container">
+    return `  <div class="km-guest-details-container km-rich-text-default-container">
     <div class="km-guest-detail-form">
-    <div class= "km-select-title">    
-    <select name="title" class="km-dashboard-title-select">
-            <option value="0" disabled selected>Title</option>
-            <option value="Mr.">Mr.</option>
-            <option value="Ms.">Ms.</option>
-            <option value="Mrs.">Mrs.</option>
-        </select>
+        <div class= "km-select-title">    
+            <select name="title" class="km-title-select">
+                <option value="0" disabled selected>Title *</option>
+                <option value="Mr.">Mr.</option>
+                <option value="Ms.">Ms.</option>
+                <option value="Mrs.">Mrs.</option>
+            </select>
         </div>
-        <input type="number" name="age"  class="km-input km-age-input" placeholder="Age" min="0" max="150">
-        <input type="text" name="first-name"  class="km-input first-name-input" placeholder="First Name">
-        <input type="text" name="middle-name"  class="km-input middle-name-input" placeholder="Middle Name (optional)">
-        <input type="text" name="last-name"  class="km-input last-name-" placeholder="Last Name">
-        <input type="email" name="email"  class="km-input" placeholder="Email Id">
-        <input type="number" name="contact-no"  class="km-input" placeholder="Contact Number">
+        <input type="number" name="age"  class="km-input km-age-input n-vis" placeholder="Age *" min="0" max="150">
+        <input type="text" name="first-name"  class="km-input first-name-input km-pxinfo-btn-right" placeholder="First Name *">
+        <input type="text" name="middle-name"  class="km-input middle-name-input n-vis" placeholder="Middle Name (optional) ">
+        <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-left" placeholder="Last Name *">
+        <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-right" placeholder="Email Id *">
+        <input type="text" name="contact-no"  class="km-input number-input km-pxinfo-btn-left" placeholder="Contact Number ">
     </div>
     <div class="km-guest-button-container">
-        <button class="km-dashboard-add-more-rooms km-dashboard-submit-person-detail"`+ (options.SessionId?`data-sessionid= `+options.SessionId : "")+`>Submit</button>
+        <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>
     </div>
-</div>`
+</div>
+`
 }
 };
 
