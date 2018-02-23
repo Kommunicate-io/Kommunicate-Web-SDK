@@ -55,7 +55,7 @@ class Integration extends Component {
   };
   showInstructions = e => {
     const instructionDiv = document.getElementById("show-instructions");
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({displayInstructions: false});
     // window.scrollTo(instructionDiv.scrollHeight, instructionDiv.offsetTop);
     // instructionDiv.focus();
@@ -75,7 +75,7 @@ class Integration extends Component {
               </div>
               <div className="card-main">                  
                   <div className="outer-box col-md-10 integration-font">
-                    <p style={{fontSize:"16px", color:"#878585", letterSpacing:"normal"}}>Copy the code from below and paste it just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags tags on every page you want the chat widget to appear.</p>
+                    <p style={{fontSize:"16px", color:"#878585", letterSpacing:"normal"}}>Copy the code from below and paste it just above the <b>&lt;/head&gt;</b> or <b> &lt;/body&gt;</b> tags on every page you want the chat widget to appear.</p>
                     <div>
                           <textarea
                             className="script-text-area"
@@ -97,7 +97,7 @@ class Integration extends Component {
                       )}
                   </div>
                   <div className="instructions-link-div">
-                      <a href="#/" onClick={this.showInstructions}>How to <span><strong>Identify your users</strong></span> or allow them to <span><strong>Chat anonymously?</strong></span></a>
+                      <a href="#show-instructions" onClick={this.showInstructions}>How to <span><strong>Identify your users</strong></span> or allow them to <span><strong>Chat anonymously?</strong></span></a>
                       <div id="show-instructions" className="show-instructions animated fadeIn" hidden={this.state.displayInstructions}>
                         <p><strong>Default parameters are pre populated. You can change them as you need.</strong></p>
                         <p>Parameters:</p>
@@ -120,22 +120,8 @@ class Integration extends Component {
                       </div>
                   </div>
                   </div>
-                  <div id="outer">
-                    {/*<div className="inner">
-                      {document.queryCommandSupported("copy") && (
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={this.copyToClipboard}
-                          >
-                            {this.state.copySuccess}
-                          </button>
-                      )}
-                    </div>*/}
-        
-                      <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-                     
-                    {/* <Accordion data={this.data}/> */}
+                  <div id="outer">   
+                    <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                 </div>
             </div>
           </div>
