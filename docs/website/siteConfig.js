@@ -35,7 +35,7 @@ const siteConfig = {
   /* path to images for header/footer */
   headerIcon: 'img/km-logos.svg',
   footerIcon: 'img/km-logos.svg',
-  favicon: 'img/favicon.png',
+  favicon: 'img/favicon/favicon.ico',
   /* colors for website */
   algolia: {
     apiKey: 'ea8d43f94ab17ce061d7507938f3433f',
