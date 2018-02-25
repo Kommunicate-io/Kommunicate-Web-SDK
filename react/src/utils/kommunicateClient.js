@@ -642,8 +642,8 @@ const getIntegratedBots = () => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
 
-  let url = "http://localhost:5454/bot/" + appId;
-  // let url = getConfig().applozicPlugin.addBotUrl + "/" + appId;
+  // let url = "http://localhost:5454/bot/" + appId;
+  let url = getConfig().applozicPlugin.addBotUrl + "/" + appId;
 
   return Promise.all([axios.get(url), getUsersByType(appId, 2)])
     .then( ([mongoBots, sqlBots])=> {
