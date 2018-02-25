@@ -181,7 +181,7 @@ class Tabs extends Component {
   }
 
   toggleDialogFlowModal = () => {
-    this.clearBotDetails()
+    // this.clearBotDetails()
     this.setState({
       dialogFlowModal: !this.state.dialogFlowModal
     });
@@ -266,6 +266,7 @@ class Tabs extends Component {
 
               }
               _this.toggleBotProfileModal()
+              _this.getIntegratedBotsWrapper()
             }
           });
         }
@@ -370,7 +371,7 @@ class Tabs extends Component {
 
   }
 
-  saveNewBotDetails = () => {
+  saveEditedBotDetails = () => {
 
     let patchUserData = {
       name: this.state.editedBotName,
@@ -389,7 +390,7 @@ class Tabs extends Component {
     console.log(this.state.botName.toLowerCase());
     console.log(this.state.editedBotName.toLowerCase());
 
-    if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() ){
+    if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
 
       Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
         .then(([patchUserInfoResponse, axiosPostResponse]) => {
@@ -434,25 +435,25 @@ class Tabs extends Component {
               <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
                 <div style={{height:"4px", backgroundColor: "#5C5AA7"}}></div>
                 <div style={{padding: "10px"}}>
-                  <h3>My Integrated Bots</h3>
+                  <span className="km-bot-integrated-bots-container-heading">My Integrated Bots:</span>
                   <hr />
                 </div>
                 <div className="km-bot-list-of-integrated-bots-container">
                   {this.state.listOfIntegratedBots.map(bot => (
                     <div key={bot.id}>
                       <div className="row col-sm-12">
-                        <div className="row col-sm-6">
-                          <div className="col-sm-2">
-                            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
+                        <div className="row col-sm-5">
+                          <div className="col-sm-2" style={{marginRight: "13px"}}>
+                            <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                           </div>
                           <div className="col-sm-2">
-                            <span>{this.state.botAiPlatform[bot.aiPlatform.toLowerCase()]}<br />{bot.name}</span>
+                            <span><span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[bot.aiPlatform.toLowerCase()]}</span><br /><span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span></span>
                           </div> 
                         </div>
                         <div className="col-sm-3">
-                          <span className="badge badge-success">Enabled</span>
+                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
                         </div>
-                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                        <div className="col-sm-4" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
                             Edit
                           </button>
@@ -495,8 +496,11 @@ class Tabs extends Component {
                 </div>
               </div>
               <div className="row mt-4">
-                <div className="col-sm-3" style={{textAlign: "center"}}>
-                  <p className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{"color": "#22d674"}}>INTEGRATED</p>
+                <div className="col-sm-3">
+                  <div className="row" style={{textAlign: "center"}}>
+                    <p className={(this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{"backgroundColor": "#22d674", color: "white", borderRadius: "50%", width: "23px", height: "22px", padding: "0px", marginLeft: "23%"}}>{this.state.dialogFlowBots.length}</p>
+                    <p className={(this.state.dialogFlowIntegrated || this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{"color": "#22d674", marginLeft: "5px"}}>INTEGRATED</p>
+                  </div>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
                   <p></p>
@@ -513,7 +517,7 @@ class Tabs extends Component {
               </div>
               <div className="row">
                 <div className="col-sm-3 km-bot-integration-logo-container" style={{textAlign: "center"}}>
-                  <div className={this.state.dialogFlowIntegrated ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
+                  <div className={(this.state.dialogFlowIntegrated || this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{height:"4px", backgroundColor: "#22d674"}}></div>
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                   <p className="km-bot-integration-dialogflow-text">Dialogflow <br />(Api.ai)</p>
                   <p onClick={this.toggleDialogFlowModalWrapper} style={{cursor: "pointer", color: "#5c5aa7"}}>SETTINGS</p>
@@ -659,7 +663,7 @@ class Tabs extends Component {
             </div>
           </ModalBody>
         </Modal>
-        <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog">
+        <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog" style={{width: "700px"}}>
           <ModalHeader toggle={this.toggleEditBotIntegrationModal}>
             <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
             <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>{this.state.editBotIntegrationModalHeader}</span>
@@ -684,20 +688,18 @@ class Tabs extends Component {
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
-              <div className="col-sm-6">
+              <div className="col-sm-4">
               </div> 
-              <div className="row col-sm-6 text-right">
-                <div className="row col-sm-6">
-                  <button className="btn btn-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal(); this.toggleEditBotIntegrationModal();}}>
-                    Delete Integration
-                  </button>
-                </div>
-                <div className="row col-sm-6">
-                  <button className="btn btn-primary" onClick={this.saveNewBotDetails}>
-                    Save Changes
-                  </button>
-                </div>
-              </div>  
+              <div className="col-sm-4 text-right">
+                <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal(); this.toggleEditBotIntegrationModal();}}>
+                  Delete Integration
+                </button>
+              </div>
+              <div className="col-sm-3 text-right">
+                <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
+                  Save Changes
+                </button>
+              </div> 
             </div>
           </ModalBody>
         </Modal>
@@ -751,20 +753,18 @@ class Tabs extends Component {
             <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
             <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Your Dialogflow integrations</span>
           </ModalHeader>
-          <ModalBody>
+          <ModalBody style={{padding: "0px"}}>
             <div className="km-bot-list-of-dialogflow-bots-container">
                   {this.state.dialogFlowBots.map(bot => (
-                    <div key={bot.id}>
-                      <div className="row col-sm-12">
-                        <div className="row col-sm-6">
-                          <div className="col-sm-2">
-                            <span>{bot.name}</span>
-                          </div> 
+                    <div style={{marginTop: "1em", marginBottom: "1em"}} key={bot.id}>
+                      <div className="row col-sm-12" style={{marginLeft: "10px"}}>
+                        <div className="row col-sm-5">
+                            <p className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</p>
                         </div>
                         <div className="col-sm-3">
-                          <span className="badge badge-success">Enabled</span>
+                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
                         </div>
-                        <div className="col-sm-3" style={{textAlign: "right"}}>
+                        <div className="col-sm-4" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
                             Edit
                           </button>
