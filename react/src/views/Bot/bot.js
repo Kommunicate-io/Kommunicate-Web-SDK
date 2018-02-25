@@ -327,7 +327,7 @@ class Tabs extends Component {
   }
 
   toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken) => {
-    // this.clearBotDetails();
+    this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
     })
@@ -776,7 +776,7 @@ class Tabs extends Component {
                 </div>
             <div className="row">
             </div>
-            <div className="row" style={{marginTop: "66px"}}>
+            <div className="row" style={{marginTop: "66px", padding: "10px"}}>
               <div className="col-sm-6">
               </div> 
               <div className="col-sm-6 text-right">
