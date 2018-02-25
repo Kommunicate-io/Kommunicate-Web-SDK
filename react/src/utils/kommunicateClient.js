@@ -637,6 +637,44 @@ const editInAppMsg = (id, message) => {
   }).catch(err => {console.log("Error editInAppMsg", err)})
 }
 
+const getIntegratedBots = () => {
+
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+
+  // let url = "http://localhost:5454/bot/" + appId;
+  let url = getConfig().applozicPlugin.addBotUrl + "/" + appId;
+
+  return Promise.all([axios.get(url), getUsersByType(appId, 2)])
+    .then( ([mongoBots, sqlBots])=> {
+
+      console.log(mongoBots.data);
+      console.log(sqlBots);
+
+      let bots = []
+      let dialogFlowBots = []
+
+      for(let i= 0; i < sqlBots.length; i++){
+        for(let j = 0; j < mongoBots.data.length; j++ ){
+          if(sqlBots[i].name !== "bot" && sqlBots[i].name === mongoBots.data[i].name){
+            let bot1 = sqlBots[i];
+            let bot2 = mongoBots.data[i];
+            bots[i] = {...bot1, ...bot2};
+
+            if(bots[i].aiPlatform && bots[i].aiPlatform.toLowerCase() === 'dialogflow'){
+              dialogFlowBots.push(bots[i]);
+            }
+            break;
+          }
+        }
+      }
+
+      return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
+
+    }).catch(err => {console.log(err)})
+
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -673,5 +711,6 @@ export {
   getInAppMessages,
   getInAppMessagesByEventId,
   deleteInAppMsg,
-  editInAppMsg
+  editInAppMsg,
+  getIntegratedBots,
 }
