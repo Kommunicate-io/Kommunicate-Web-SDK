@@ -72,7 +72,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 .docs-cards {
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     display: inline-flex;
     flex-direction: row;
@@ -82,8 +82,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     display: inline-block;
     width: 170px;
     height: 160px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px auto;
 }
 .cards-link {
     display: inline-block;
