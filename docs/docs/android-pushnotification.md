@@ -46,7 +46,6 @@ if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
 If you already have GCM enabled in your app, add the below code in Kommunicate.login onSuccess() method and pass the GCM registration token as below:
 ```java
 if(MobiComUserPreference.getInstance(context).isRegistered()) {
-
     PushNotificationTask pushNotificationTask = null;         
     PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {                  
         @Override           

@@ -17,7 +17,10 @@ exports.createCustomer = (req,res)=>{
   const name = req.body.name;
   const email=req.body.email||userName;
   let response={};
-
+  let userDetail =Object.assign({},req.body);
+  userDetail.email=email;
+  userDetail.password = password;
+  userDetail.userName=userName;
   console.log("userName:", userName, password,isPreSignUp);
   if(userName&&(isPreSignUp||password)){
     console.log("request received for pre sign up, EmailId : ",userName);
@@ -30,7 +33,7 @@ exports.createCustomer = (req,res)=>{
         res.status(200).json(response);
         return;
       }else{
-        return registrationService.createCustomer({"userName":userName,"password":password,"email":email,"name":name})
+        return registrationService.createCustomer(userDetail)
         .then(result=>{
          /* inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
           .catch(err=>{
@@ -93,11 +96,11 @@ exports.patchCustomer = (req,res)=>{
     })  
   }
   if (activeCampaignEnable == true) {
-    registrationService.getCustomerByUserName(userId).then(user => {
-      console.log("got the user from db", user);
+    registrationService.getCustomerByUserName(userId).then(dbCostomer => {
+      console.log("got the user from db", dbCostomer);
       return activeCampaignClient.updateActiveCampaign({
         "email": userId,
-        "subscriberId": user.dataValues.activeCampaignId,
+        "subscriberId": dbCostomer.dataValues.activeCampaignId,
         "name": customer.name,
         "role": customer.role,
         "companyUrl": customer.websiteUrl,
@@ -187,7 +190,7 @@ exports.signUpWithAplozic= (req,res)=>{
         res.status(200).json(response);
         return;
       }else{
-        return registrationService.signUpWithApplozic({"userName":userName,"password":password,"email":email,"applicationId":applicationId}).then(result=>{
+        return registrationService.signUpWithApplozic(req.body).then(result=>{
           try{
             /*inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
             .catch(err=>{

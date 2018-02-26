@@ -43,12 +43,24 @@ Kommunicate.richMsgEventHandler = {
     },
     decrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
-        target.parentElement.getElementsByClassName('km-room-number-field')[0].stepDown();
+        var type = target.dataset.type;
+        if (type == 'guest') {
+            target.parentElement.getElementsByClassName('km-room-number-field')[0].stepDown();
+        } else if (type == 'children') {
+            target.parentElement.getElementsByClassName('km-person-number-field')[0].stepDown();
+        }
     },
+
     incrementGuestCount: function (e) {
         var target = e.target || e.srcElement;
-        target.parentElement.getElementsByClassName('km-room-number-field')[0].stepUp();
+        var type = target.dataset.type;
+        if (type == 'guest') {
+            target.parentElement.getElementsByClassName('km-room-number-field')[0].stepUp();
+        } else if (type == 'children') {
+            target.parentElement.getElementsByClassName('km-person-number-field')[0].stepUp();
+        }
     },
+
     decrementPersonCount: function () {
         document.getElementById('km-person-number-field').stepDown();
     },
@@ -65,17 +77,16 @@ Kommunicate.richMsgEventHandler = {
     },
     processSelectedRoom: function (e) {
         //TODO : handle multiple room select  
-        // TODO: number of rooms should not greater than entered erlier.
-        // var roomInfoContainer = e.target.parentElement.parentElement;
-        // $(e.target).closest('mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field')
         var roomGuestJson = [];
-        //var roomGuest= document.querySelectorAll(".km-room-person-selector-container input.km-room-number-field");
         var roomGuest = $(e.target).closest('.mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-room-number-field');
-
+        var NoOfChild = $(e.target).closest('.mck-msg-box-rich-text-container').find('.km-room-person-selector-container input.km-person-number-field');
         // TODO: process number of child if required
+
         var message = ""
         for (var i = 0; i < roomGuest.length; i++) {
-            roomGuestJson.push({ "NoOfAdults": roomGuest[i].value, "NoOfChild": 0, "ChildAge": [] });
+            let noOfChild = NoOfChild[i].value;
+            let arr = Array(noOfChild * 1).fill(10)
+            roomGuestJson.push({ "NoOfAdults": roomGuest[i].value, "NoOfChild": noOfChild, "ChildAge": arr });
             message += "Room " + (i + 1) + " Guest " + roomGuest[i].value + "\n";
         }
         //send message to group

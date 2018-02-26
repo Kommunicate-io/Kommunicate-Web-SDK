@@ -33,27 +33,48 @@ class Full extends Component {
     let imageLink = CommonUtils.getUserSession().imageLink;
     this.state = { 
       imageLink: imageLink,
-      hideInvitedMemberBar: true
+      hideInvitedMemberBar: true,
+      invitedBy: '',
+      displayName: ''
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
-    console.log("profilePicUrl",this.state.imageLink)
+    this.updateUserDisplay  = this.updateUserDisplay.bind(this);
   }
 
   updateProfilePic(url) { 
     this.setState({
       imageLink: url==null ? "/img/avatars/default.png": url
     });
-    console.log("profilePicUrl updated",this.state.imageLink)
    }
   componentWillMount(){
     window.appHistory = this.props.history;
+    const search = window.location.href;
+    let invitedBy = CommonUtils.getUrlParameter(search, 'referer');
+    if (invitedBy && invitedBy !== "" && invitedBy !== "undefined") {
+      this.setState({
+        hideInvitedMemberBar: false,
+        invitedBy: invitedBy
+      })
+    }
+    let userSession = CommonUtils.getUserSession()
+    if(userSession){
+      this.setState(
+        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName}
+      )
+      
+    }
+    
   }
   componentDidMount() {
     
     if(CommonUtils.getUserSession()){
-      console.log("userloggedin initializng chat");
       window.chatLogin();
     }
+  }
+  updateUserDisplay(name){
+    this.setState(
+      {displayName:name}
+    )
   }
 
   closeInvitedMemberBar = e => {
@@ -67,9 +88,9 @@ class Full extends Component {
 
     return (
       <div className="app" suppressContentEditableWarning={true}> 
-        <Header profilePicUrl={this.state.imageLink}/>
+        <Header profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
         <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
-          <p>Yoou were invited by <span>Email Id</span>. You may start with <Link to="/settings/integration">Kommunicate Installation</Link> or set up your <Link to="/admin">Profile</Link></p>
+          <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/install">Kommunicate Installation</Link> or set up your <Link to="/profile">Profile</Link></p>
           <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
         </div>
         <div className="app-body">
@@ -86,7 +107,7 @@ class Full extends Component {
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
                 <Route exact path="/profile" name="Admin" render={()=>{
-                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink}/>
+                   return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>

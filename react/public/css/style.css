@@ -434,8 +434,8 @@ label {
   margin-bottom: .5rem; }
 
 button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color; }
+  outline: none;
+  outline: none; }
 
 input,
 button,
@@ -1965,24 +1965,24 @@ fieldset[disabled] a.btn {
     border-color: #f53231; }
 
 .btn-outline-primary {
-  color: #20a8d8;
+  color: #5C5AA7;
   background-color: transparent;
   background-image: none;
-  border-color: #20a8d8; }
+  border-color: #5C5AA7; }
   .btn-outline-primary:hover {
     color: #fff;
-    background-color: #20a8d8;
-    border-color: #20a8d8; }
+    background-color: #5C5AA7;
+    border-color: #5C5AA7; }
   .btn-outline-primary:focus, .btn-outline-primary.focus {
     box-shadow: 0 0 0 2px rgba(32, 168, 216, 0.5); }
   .btn-outline-primary.disabled, .btn-outline-primary:disabled {
-    color: #20a8d8;
+    color: #5C5AA7;
     background-color: transparent; }
   .btn-outline-primary:active, .btn-outline-primary.active,
   .show > .btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #20a8d8;
-    border-color: #20a8d8; }
+    background-color: #5C5AA7;
+    border-color: #5C5AA7; }
 
 .btn-outline-secondary {
   color: #ccc;
@@ -9174,7 +9174,10 @@ hr.transparent {
   color: #515050;
   
 }
-
+.header-profile {
+  color: #263238;
+  text-decoration: none!important;
+}
 .header-user-email {
   /* width: 87px; */
   height: 11px;
@@ -9336,6 +9339,7 @@ hr.transparent {
   letter-spacing: 0.5px;
   color: #717174;
   font-weight: 400;
+  margin-bottom: 50px;
 }
 .setup-integration-later-text {
   font-size: 16px;
@@ -9403,6 +9407,13 @@ hr.transparent {
   letter-spacing: 0.5px;
   color: #5c5aa7 !important;
   cursor: pointer;
+}
+.step2-skip-link {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  color: #5c5aa7 !important;
+  cursor: pointer;
+  padding-left: 15px;
 }
 .skip-link:hover {
   text-decoration: underline !important;
@@ -9477,6 +9488,12 @@ pointer-events: none;
     -moz-transition: 0.2s ease all;
     -webkit-transition: 0.2s ease all;
     -ms-transition: 0.2s ease all;
+}
+.input:disabled {
+  background-color: #e6e1e0;
+}
+.input:disabled ~ .label-for-input, .input:disabled ~ .label-for-input2 {
+  display: none;
 }
 .multi-email-form-group .label-for-input {
   top: 7px;
@@ -9589,6 +9606,14 @@ pointer-events: none;
   right: calc(100% + 15px);
   width: 150px;
 }
+.form-group-user-name::before {
+  content: 'Your Name:';
+  position: absolute;
+  font-size: 16px;
+  color: #5c5aa7;
+  right: calc(100% + 15px);
+  width: 100px;
+}
 
 .km-add-category button:hover {
   background-color: #5C5AA7;
@@ -9605,9 +9630,14 @@ pointer-events: none;
   position: relative;
   margin-bottom: 0px;
 }
+.form-group-user-name {
+  width: 410px;
+  position: relative;
+  margin-bottom: 0px;
+}
 
-.company-url-form-group::after {
-  content: 'This field is required because your customers would need to know who is sending them e-mails.';
+.company-url-form-group::after, .form-group-user-name::after {
+  content: '* required information';
   position: absolute;
   font-size: 13px;
   color: #adadb1;
@@ -9619,6 +9649,9 @@ pointer-events: none;
   border-left: transparent;
   border-radius: 0px 4px 4px 0px;
 }
+.form-group-user-name  input, .form-group-user-name input:focus{
+  border-radius: 0px 4px 4px 0px;
+} 
 
 .km-auto-replies-user-chat-preview {
   border: 1px solid #ccc;
@@ -10003,6 +10036,7 @@ input:required {
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  height: 223px;
 }
 
 .km-bot-integration-second-container-text-container {
@@ -10334,6 +10368,7 @@ input:required {
   cursor: pointer;
 }
 
+
 /* .km-container {
   height: calc(100% - 55px) !important;
 } */
@@ -10373,3 +10408,94 @@ input:required {
   cursor: pointer;
   line-height: 32px;
 }
+
+.km-bot-integrated-bots-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.km-bot-integrated-bots-container-heading {
+  width: 140px;
+  height: 19px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #5c5f5f;
+}
+
+.km-bot-list-of-integrated-bots-container {
+  height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.km-bot-list-of-integrated-bots-bot-name {
+  width: 37px;
+  height: 16px;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #868889;
+  white-space: nowrap;
+}
+
+.km-bot-list-of-integrated-bots-ai-platform-name {
+  width: 80px;
+  height: 19px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #868889;
+  white-space: nowrap;
+}
+
+.km-bot-list-of-integrated-bots-badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  width: 69px;
+  height: 23px;
+  border-radius: 2px;
+}
+
+.badge-enabled {
+  color: #4dbd74;
+  border: solid 1px #4dbd74;
+}
+
+.badge-disabled {
+  color: #ed222a;
+  border: solid 1px ##ed222a;
+}
+
+
+
+.km-bot-list-of-dialogflow-bots-container {
+  height: 208px;
+  overflow-y: auto;
+  background-color: #f3f3f3;
+}
+

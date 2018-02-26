@@ -41,11 +41,10 @@ exports.createConversation= (req,res)=>{
 
 exports.addMemberIntoConversation = (req, res) => {
     conversationService.addMemberIntoConversation(req.body).then(response=>{
-        logger.info('response', response)
-        res.status(201).json({code:"SUCCESS", data:'success'});
+        res.status(201).json(response);
     }).catch(err => {
         logger.info("error while adding member into conversation ", err);
-        res.status(204).json({code:"SUCCESS", data:'add member error'});
+        res.status(204).json(response);
     });
 
 }

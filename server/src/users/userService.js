@@ -414,7 +414,17 @@ exports.updatePassword=(newPassword,user)=>{
       })
   });
 }
+const getUserDisplayName=(user)=>{
+  if(user.name){
+    return user.name;
+  } else if (user.userName){
+    return userInfo.userName;
+  }else {
+    return user.email;
+  }
+}
 
+exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
 exports.createUser=createUser;

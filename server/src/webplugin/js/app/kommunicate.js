@@ -1,8 +1,8 @@
 
 
-Kommunicate ={
-    getBaseUrl: function(){
-        switch(MCK_BASE_URL){
+Kommunicate = {
+    getBaseUrl: function () {
+        switch (MCK_BASE_URL) {
             case "https://apps-test.applozic.com/":
             case "https://apps-test.applozic.com":
                 return "https://api-test.kommunicate.io";
@@ -10,50 +10,50 @@ Kommunicate ={
                 return "https://api.kommunicate.io";
         }
     },
-    setDefaultAgent :function(agentName){
+    setDefaultAgent: function (agentName) {
         //kommunicate.defaultAgent  = agentName;
         throw new Error("not implemented");
-     },
-     getConversationOfParticipent:function(options, callback){
-        if(typeof(callback)!=='function'){
+    },
+    getConversationOfParticipent: function (options, callback) {
+        if (typeof (callback) !== 'function') {
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
         }
         $applozic.ajax({
-            url: Kommunicate.getBaseUrl()+ "/conversations/participent/"+options.userId,
+            url: Kommunicate.getBaseUrl() + "/conversations/participent/" + options.userId,
             type: "get",
-            success: function(result) {
-                callback(null,result);
+            success: function (result) {
+                callback(null, result);
             },
-            error: function(err){
+            error: function (err) {
                 callback(err);
             }
         });
-     },
-     startNewConversation: function(params, callback) {
+    },
+    startConversation: function (params, callback) {
+        var user=[];
+        user.push({"userId":params.agentId,"groupRole":1});
+        user.push({"userId":"bot","groupRole":2});
+        if(params.botIds){
+            console.log(params.botIds);
+            for (var i = 0; i < params.botIds.length; i++) {
+                user.push({"userId":params.botIds[i],"groupRole":2});
+            }
+        }
         $applozic.fn.applozic("createGroup", {
-            groupName: params.groupName,
+            groupName: params.groupName ? params.groupName : params.agentId,
             type: 10,
             admin: params.agentId,
-            users: [
-                {
-                    userId: "bot",
-                    groupRole: 2
-                },
-                {
-                    userId: params.agentId,
-                    groupRole: 1
-                }
-            ],
+            users: user,
             metadata: {
                 CREATE_GROUP_MESSAGE: "",
-                REMOVE_MEMBER_MESSAGE:"",
-                ADD_MEMBER_MESSAGE:"",
+                REMOVE_MEMBER_MESSAGE: "",
+                ADD_MEMBER_MESSAGE: "",
                 JOIN_MEMBER_MESSAGE: "",
-                GROUP_NAME_CHANGE_MESSAGE:"",
-                GROUP_ICON_CHANGE_MESSAGE:"",
+                GROUP_NAME_CHANGE_MESSAGE: "",
+                GROUP_ICON_CHANGE_MESSAGE: "",
                 GROUP_LEFT_MESSAGE: "",
-                DELETED_GROUP_MESSAGE:"",
-                GROUP_USER_ROLE_UPDATED_MESSAGE:"",
+                DELETED_GROUP_MESSAGE: "",
+                GROUP_USER_ROLE_UPDATED_MESSAGE: "",
                 GROUP_META_DATA_UPDATED_MESSAGE: "",
                 CONVERSATION_ASSIGNEE: params.agentId,
                 //ALERT: "false",
@@ -77,84 +77,90 @@ Kommunicate ={
             }
         });
     },
-    openConversation:function(){
+    openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
     },
-    openParticularConversation:function(groupId){
+    openConversation: function (groupId) {
         window.$applozic.fn.applozic('loadGroupTab', groupId);
     },
-    createNewConversation:function(options,callback){
-        if(typeof(callback)!=='function'){
+    openDirectConversation: function (userId) {
+        window.$applozic.fn.applozic('loadTab', userId);
+    },
+    createNewConversation: function (options, callback) {
+        if (typeof (callback) !== 'function') {
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
         }
-        let data ={
-                "groupId": options.groupId,
-                "participentUserId": options.participentUserId,
-                "createdBy": options.participentUserId,
-                "defaultAgentId":options.defaultAgentId,
-                "applicationId":options.applicationId,
+        let data = {
+            "groupId": options.groupId,
+            "participentUserId": options.participentUserId,
+            "createdBy": options.participentUserId,
+            "defaultAgentId": options.defaultAgentId,
+            "applicationId": options.applicationId,
         }
-       $applozic.ajax({
-            url: Kommunicate.getBaseUrl()+ "/conversations",
+        $applozic.ajax({
+            url: Kommunicate.getBaseUrl() + "/conversations",
             type: "post",
             data: JSON.stringify(data),
             contentType: "application/json",
-            success: function(result) {
+            success: function (result) {
                 console.log("conversation started successfully");
-                callback(null,result);
+                callback(null, result);
             },
-            error: function(err){
+            error: function (err) {
                 console.log("err while starting Conversation");
                 callback(err);
             }
         });
     },
-    logout:function(event,options){
-        window.logout();
-        if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" &&typeof window.$kmApplozic.fn.applozic!=="undefined"&& window.$kmApplozic.fn.applozic("getLoggedInUser")) {
-          window.$kmApplozic.fn.applozic('logout');           
+    logout: function (event, options) {
+        if (typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.fn !== "undefined" && typeof window.$kmApplozic.fn.applozic !== "undefined" && window.$kmApplozic.fn.applozic("getLoggedInUser")) {
+            window.$kmApplozic.fn.applozic('logout');
         }
-        if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" &&typeof window.$applozic.fn.applozic!=="undefined"&& window.$applozic.fn.applozic("getLoggedInUser")) {
-          window.$applozic.fn.applozic('logout');       
+        if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" && typeof window.$applozic.fn.applozic !== "undefined" && window.$applozic.fn.applozic("getLoggedInUser")) {
+            window.$applozic.fn.applozic('logout');
         }
         sessionStorage.clear();
         localStorage.clear();
-        window.appHistory.replace('/login');
     },
-    triggerEvent:function(event,options){
+    triggerEvent: function (event, options) {
         $applozic.ajax({
-            url: Kommunicate.getBaseUrl() + "/applications/events?type="+event,
+            url: Kommunicate.getBaseUrl() + "/applications/events?type=" + event,
             type: "post",
-            data: JSON.stringify({"conversationId":options.groupId,"applicationId":options.applicationId}),
+            data: JSON.stringify({ "conversationId": options.groupId, "applicationId": options.applicationId }),
             contentType: "application/json",
-            success: function(result) {
+            success: function (result) {
                 console.log("conversation triggering event");
             },
-            error: function(err){
+            error: function (err) {
                 console.log("err while starting Conversation");
             }
         });
+    }, updateUser: function (options) {
+        var data ={data:options};
+        window.$applozic.fn.applozic('updateUser', data);
     },
-    updateUserIdentity:function(newUserId){
-        window.$applozic.fn.applozic('updateUserIdentity', {newUserId: newUserId,callback: function(response){
-                                    window.Cookies.set('kommunicate-id', newUserId)
-                                    if(response=='success'){
-                                        window.$applozic.fn.applozic('reInitialize', {userId:newUserId});   
-                                    }
-                                }});                                         
+    updateUserIdentity: function (newUserId) {
+        window.$applozic.fn.applozic('updateUserIdentity', {
+            newUserId: newUserId, callback: function (response) {
+                window.Cookies.set('kommunicate-id', newUserId)
+                if (response == 'success') {
+                    window.$applozic.fn.applozic('reInitialize', { userId: newUserId });
+                }
+            }
+        });
     },
-    isRichTextMessage:function(metadata){
+    isRichTextMessage: function (metadata) {
         // contentType should be 300 for rich text message in metadata
-        return metadata&&metadata.contentType==300;
+        return metadata && metadata.contentType == 300;
     },
-    getConatainerTypeForRichMessage : function(metadata){
+    getConatainerTypeForRichMessage: function (metadata) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
-        if(metadata){
-            switch(metadata.templateId){
+        if (metadata) {
+            switch (metadata.templateId) {
                 // add template Id to enable slick effect
                 // 2 for get room pax info template
                 case "2":
-                case "4" : 
+                case "4":
                     return "km-slick-container";
                     break;
 
@@ -166,36 +172,36 @@ Kommunicate ={
         }
 
     },
-    processPaymentRequest:function(options){
+    processPaymentRequest: function (options) {
 
     },
-    sendMessage: function(messagePxy){
-        var $mck_msg_inner= $applozic("#mck-message-cell .mck-message-inner");
-        var $mck_msg_to=  $applozic("#mck-msg-to");
- 
-         if ($mck_msg_inner.data("isgroup") === true) {
-             messagePxy.groupId = $mck_msg_to.val();
-             } else {
-             messagePxy.to = $mck_msg_to.val();
-             }
-        $applozic.fn.applozic('sendGroupMessage',messagePxy);
+    sendMessage: function (messagePxy) {
+        var $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
+        var $mck_msg_to = $applozic("#mck-msg-to");
+
+        if ($mck_msg_inner.data("isgroup") === true) {
+            messagePxy.groupId = $mck_msg_to.val();
+        } else {
+            messagePxy.to = $mck_msg_to.val();
+        }
+        $applozic.fn.applozic('sendGroupMessage', messagePxy);
 
     },
-    getRichTextMessageTemplate: function(metadata){
-        if (metadata){
-            switch(metadata.templateId){
+    getRichTextMessageTemplate: function (metadata) {
+        if (metadata) {
+            switch (metadata.templateId) {
                 // 1 for get room pax info template
                 case "1":
                     return Kommunicate.markup.getHotelRoomPaxInfoTemplate();
                     break;
                 //2 for hotel card template
                 case "2":
-                    
-                    return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList||"[]"),metadata.sessionId);
+
+                    return Kommunicate.markup.getHotelCardContainerTemplate(JSON.parse(metadata.hotelList || "[]"), metadata.sessionId);
                     break;
                 // 3 for button container
-                case "3": 
-                    return Kommunicate.markup.buttonContainerTemplate(metadata); 
+                case "3":
+                    return Kommunicate.markup.buttonContainerTemplate(metadata);
                     break;
                 case "5":
                     return Kommunicate.markup.getPassangerDetail(metadata);
@@ -210,13 +216,13 @@ Kommunicate ={
                     return "";
                     break;
             }
-        }else{
+        } else {
             return "";
         }
     }
-   
+
 }
-function KommunicateClient(){
+function KommunicateClient() {
     //groupName:DEFAULT_GROUP_NAME,
     //agentId:DEFAULT_AGENT_ID
 

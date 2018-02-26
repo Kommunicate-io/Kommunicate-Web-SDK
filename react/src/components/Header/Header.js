@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom' ;
-
+import { NavLink } from 'react-router-dom';
 import {goAway, goOnline} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 
 class Header extends Component {
-
+  static defaultProps={
+    displayName: ''
+  }
   constructor(props) {
     super(props);
 
@@ -16,7 +18,6 @@ class Header extends Component {
       changeStatusLabel: userSession.availability_status === 1 ? "Go Away": "Go Online",
       status: userSession.availability_status,
       dropdownOpen: false,
-      displayName: userSession.name !=="undefined" ? userSession.name:userSession.userName
     };
   }
 
@@ -102,14 +103,14 @@ class Header extends Component {
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
               <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                 <div style={{display: "inline-block"}}>
-                  <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.state.displayName}/>
+                  <img src= { this.props.profilePicUrl } className="img-avatar" alt={this.props.displayName}/>
                   <span className={CommonUtils.getUserSession().availability_status === 1 ? "online-indicator-profile-pic": null}></span>
                 </div>
-                <span className="d-md-down-none">{this.state.displayName}</span>
+                <span className="d-md-down-none">{this.props.displayName}</span>
               </button>
               <DropdownMenu className="dropdown-menu-right">
                 <DropdownItem>
-                  <p className="header-user-name">{this.state.displayName}</p>
+                  <p className="header-user-name">{this.props.displayName}</p>
                   <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
                   <p><span className="header-user-online"> You are online</span></p>
                   <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator": null }></span>
@@ -117,7 +118,8 @@ class Header extends Component {
                 {
                 <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
                 }
-                <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/admin"> Profile</Link></DropdownItem>
+
+                <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/profile"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
             </Dropdown>

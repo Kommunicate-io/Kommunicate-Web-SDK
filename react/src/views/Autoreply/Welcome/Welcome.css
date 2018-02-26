@@ -1,0 +1,85 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.welcome-message-wrapper{
+    margin-left: 25px;
+}
+.welcome-message-title {
+    font-size: 18px;
+    letter-spacing: 1.3px;
+    text-align: left;
+    color: #354052;
+}
+.welcome-message-description{
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    text-align: left;
+    color: #a1a1a1;
+}
+.card-header {
+    width: 60%;
+    background-color: #f4f5f7;
+    border: solid 1px #ddd7d7;
+}
+.message-wrapper {
+    margin-left: 15px;
+}
+.discard-btn{
+    margin-left: 15px;
+}
+.add-new-msg-btn{
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    text-align: left;
+    color: #5c5aa7;
+    padding-top: 5px;
+    cursor: pointer;
+    border: 0;
+    background: none; 
+    display: block;
+    margin-bottom: 10px;
+}
+.message-title{
+    font-size: 16px;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #878585;
+    margin-bottom: 15px;
+    margin-top: 5px;
+}
+.slider-toggle {
+    margin-left: 10px;
+}
+.text-area-wrapper{
+     margin-left: 0; 
+     margin-bottom: 3px;
+}
+.trash-wrapper {
+    position: relative;
+}
+.trash-btn{
+    right: 10px;
+    border: 1px solid grey;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    position: absolute;
+    bottom: 12px;
+    text-align: center;
+    cursor: pointer;
+}
+textarea::-webkit-input-placeholder {
+    color: rgb(202, 206, 207);
+    }
+    
+    textarea:-moz-placeholder { /* Firefox 18- */
+    color: rgb(202, 206, 207); 
+    }
+    
+    textarea::-moz-placeholder {  /* Firefox 19+ */
+    color:rgb(202, 206, 207);  
+    }
+    
+    textarea:-ms-input-placeholder {
+    color:rgb(202, 206, 207); 
+    }

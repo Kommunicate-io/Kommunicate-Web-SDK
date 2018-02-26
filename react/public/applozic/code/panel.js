@@ -53,7 +53,21 @@ $(document).ready(function() {
         }
         $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
             resetCustomerInfoArea();     
-            console.log(user);
+            var ul = document.getElementById("km-user-info-list");
+           
+            for (key in user.metadata) {
+                var li = document.createElement("li");
+                var div1 = document.createElement('div');
+                var div2 = document.createElement('div');
+                div1.appendChild(document.createTextNode(key +":"));
+                div2.appendChild(document.createTextNode(user.metadata[key]));
+                li.setAttribute("class","customli");
+                div1.setAttribute("class","km-userinfo-keydiv");
+                div2.setAttribute("class","km-userinfo-valuediv");
+                li.appendChild(div1);
+                li.appendChild(div2);
+                ul.appendChild(li);
+                }
                     if (typeof user !== "undefined") {
                         $("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
@@ -85,7 +99,6 @@ $(document).ready(function() {
             return;
         }
         var tab = $this.data('tab');
-        console.log(tab);
         $(".side-nav li").removeClass('active');
         $this.parent().addClass('active');
         $(".tabs").removeClass('show').addClass('hide');
@@ -101,6 +114,7 @@ function resetCustomerInfoArea(){
     $("#km-user-info-list .linkedin").attr("href", "");
     $("#km-user-info-list .linkedin").text('');
     $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain, #km-user-info-list .profile-linkedin").addClass('n-vis');
+    $(".customli").remove();
 }
 
 function clearbit(email, userId) {
@@ -117,9 +131,7 @@ function clearbit(email, userId) {
             "Authorization": "Bearer sk_6aadb3d2a8cb824acc0334f7da36c2ee"
         },
         success: function (response) {
-            console.log(response);
             displayCustomerInfo(response)
-            console.log(response);
             var metadata = JSON.stringify(response);
             var obj = JSON.parse(metadata)
             var user = { 'userId': userId, 'metadata': { 'kmClearbitData': JSON.stringify(response) } }
@@ -159,5 +171,4 @@ function displayCustomerInfo(clearbitData) {
         $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
         
     }
-    console.log(info);
 }

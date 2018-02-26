@@ -7,7 +7,7 @@ const userService = require("../users/userService");
 const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId&token=:token"
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId&token=:token?referer=:referer&email=:email"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
     if(!req.body.text && !req.body.html && !req.body.templateName){
@@ -105,7 +105,7 @@ const getEmailFormat=(options,custInfo)=>{
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
                 templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.agentName+" from "+custInfo.companyName:options.agentName,
                 templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
-                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId).replace(":token",custInfo.apzToken),
+                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId).replace(":token",custInfo.apzToken).replace(":referer",options.agentId).replace(":email", options.to),
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
                 options.subject =  custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";

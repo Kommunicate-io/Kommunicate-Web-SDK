@@ -5,7 +5,6 @@ sidebar_label: Authentication
 ---
 
 ## Identify your users
-
 Whenever users come to your website, they are assigned with a unique and random ID by default. This behavior is best suited for anonymous users. If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them. You can pass these details either in options object in plugin script or after the plugin is initialized.
 
 **1. Options in plugin script**

@@ -5,8 +5,6 @@ sidebar_label: Logout
 ---
 
 Call the following code when a user logs out from your app to log out the user from Kommunicate:
-
-
 ```java
 Kommunicate.logout(context, new KMLogoutHandler() {
     @Override

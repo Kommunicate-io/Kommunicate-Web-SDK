@@ -13,7 +13,7 @@ function getJsCode (){
     options.isAnonymousChat=true;
     options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
     
-    if (userSession.displayName && userSession.displayName!="undefined"&& userSession.displayName!="null"){
+    if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){
       options.agentName = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
       options.agentName = localStorage.getItem("agentName");
@@ -22,6 +22,7 @@ function getJsCode (){
     const search = window.location.href;
     options.appId = CommonUtils.getUrlParameter(search, "applicationId");
     options.agentId = CommonUtils.getUrlParameter(search, "agentId");
+    options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
   
   options.groupName=options.agentName||options.agentId;
@@ -35,10 +36,10 @@ function getJsCode (){
 
 var jsScript= `<script type="text/javascript">
     (function(d, m){ 
-      let o = ${JSON.stringify(options)};
-      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      var o = ${JSON.stringify(options)};
+      var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
       s.src = "${getConfig().kommunicateApi.pluginUrl}";
-      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
       window.kommunicate = m; m._globals = o;
     })(document, window.kommunicate || {});
 </script>`;

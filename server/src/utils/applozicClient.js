@@ -56,11 +56,53 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
     throw err;
   });
 };
+const createApplozicClientV1 = (options)=>{
+  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",options.userId,"applicationId",options.applicationId,"role","email",options.email);
+  options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
+  options.roleName = options.roleName?options.roleName:options.role;
+  options.userId =options.userName;
+    return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
+      let err = {};
+      console.log("Applozic server returned : ",response.status);
+      if (response.status == 200) {
+        if (response.data.message == "INVALID_PARAMETER") {
+          console.log("INVALID_PARAMETER received from applozic Server");
+          err.code = "INVALID_PARAMETER";
+          throw err;
+        } else if (response.data.message == "REGISTERED.WITHOUTREGISTRATIONID") {
+          console.log("received status 200, user created successfully ");
+          return response.data;
+        } else if (response.data.message == "INVALID_APPLICATIONID") {
+          console.log("invalid application Id");
+          err.code = "NVALID_APPLICATIONID";
+          throw err;
+        } else if(response.data.message == "UPDATED"){
+          console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
+          err.code = "USER_ALREADY_EXISTS";
+          err.data = response.data;
+          throw err;
+        }else if(response.data.message == "PASSWORD_INVALID"){
+          console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
+          err.code = "USER_ALREADY_EXISTS_PWD_INVALID";
+          err.data = response.data;
+          throw err;
+        }
+      } else {
+        console.log("received error code  : ", response.status, "from applozic serevr");
+        err.code = "APPLOZIC_ERROR";
+        throw err;
+      }
+    }).catch(err=>{
+      console.log(err);
+      throw err;
+    });
+
+}
 exports.createApplozicClient =createApplozicClient;
 
 exports.createUserInApplozic = (options)=>{
 
-  return  Promise.resolve(createApplozicClient(options.userName,options.password,options.applicationId,options.gcmKey,options.role,options.email,options.name));
+  return  Promise.resolve(createApplozicClientV1(options));
 
 }
 
@@ -146,12 +188,16 @@ exports.getApplication=(customer)=>{
     });
   };
 
-exports.applozicLogin =(userName,password,applicationId,role,email)=>{
-  let data ={"userId": userName, "applicationId": applicationId,"password": password,"authenticationTypeId": 1,"email":email};
-  if (role){
-    data.roleName= role;
+exports.applozicLogin =(userDetail)=>{
+      //userName,password,applicationId,role,email
+  //let data ={"userId": userDetail.userName, "applicationId": userDetail.applicationId,"password": userDetail.password,"authenticationTypeId": 1,"email":userDetail.email};
+  userDetail.userId=userDetail.userName;
+  userDetail.authenticationTypeId=userDetail.authenticationTypeId?userDetail.authenticationTypeId:1;
+
+  if (userDetail.role){
+    userDetail.roleName= userDetail.role;
   }
-  return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, data))
+  return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, userDetail))
   .then(response=>{
     let err={};
     if(response.status==200) {

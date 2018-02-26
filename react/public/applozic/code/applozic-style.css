@@ -33,6 +33,16 @@ body {
 	min-width: 800px;
 	height: calc(100% - 100px);
 }
+.km-userinfo-keydiv{
+	position: relative;
+	padding: 2px 2px;
+    display: initial;
+}
+.km-userinfo-valuediv{
+	position: relative;
+    padding: 35px 35px;
+    display: initial;
+}
 
 .km-container .left {
 	float: left;
