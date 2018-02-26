@@ -20,18 +20,34 @@ class Footer extends React.Component {
     const currentYear = new Date().getFullYear();
     return (
       <footer className="nav-footer" id="footer">
+      
         <section className="sitemap">
-          {/* <a href={this.props.config.baseUrl} className="nav-home">
-            {this.props.config.footerIcon && (
-              <img
-                src={this.props.config.baseUrl + this.props.config.footerIcon}
-                alt={this.props.config.title}
-                width="66"
-                height="58"
-              />
-            )}
-          </a> */}
-          <div>
+        <div className="col-lg-6 no-flex">
+      <a
+          href="https://kommunicate.io"
+          target="_blank"
+          className="kmLogoFooter">
+          <img
+            src={this.props.config.baseUrl + 'img/km-logos.svg'}
+            alt="Facebook Open Source"
+            width="170"
+            height="45"
+          />
+        </a>
+        <div className="km-address">
+          <p>
+            #897, 4th Floor,<br/>
+            80 Feet Main Road,<br/>
+            6th Block, Koramangala,<br/>
+            Bengaluru, Karnataka 560095<br/><br/>
+
+            <a href="tel:+919740570196">(+91) 974-057-0196</a><br/>
+            <a href="mailto:hello@kommunicate.io">hello@kommunicate.io</a><br/>
+          </p>
+        </div>
+      </div>
+      <div className="col-lg-6">
+      <div>
             <h5>Docs</h5>
             <a href={this.docUrl('web-installation.html', this.props.language)}>
               Web
@@ -73,19 +89,8 @@ class Footer extends React.Component {
               Star
             </a> */}
           </div>
+      </div>
         </section>
-
-        <a
-          href="https://kommunicate.io"
-          target="_blank"
-          className="fbOpenSource">
-          <img
-            src={this.props.config.baseUrl + 'img/km-logos.svg'}
-            alt="Facebook Open Source"
-            width="170"
-            height="45"
-          />
-        </a>
         <section className="copyright">
           Copyright &copy; {currentYear} Kommunicate.io.
         </section>
