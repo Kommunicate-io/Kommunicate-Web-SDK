@@ -27,7 +27,7 @@ body {
 .discard-btn{
     margin-left: 15px;
 }
-.add-new-msg-link{
+.add-new-msg-btn{
     font-size: 14px;
     letter-spacing: 0.6px;
     text-align: left;
@@ -66,4 +66,20 @@ body {
     position: absolute;
     bottom: 12px;
     text-align: center;
+    cursor: pointer;
 }
+textarea::-webkit-input-placeholder {
+    color: rgb(202, 206, 207);
+    }
+    
+    textarea:-moz-placeholder { /* Firefox 18- */
+    color: rgb(202, 206, 207); 
+    }
+    
+    textarea::-moz-placeholder {  /* Firefox 19+ */
+    color:rgb(202, 206, 207);  
+    }
+    
+    textarea:-ms-input-placeholder {
+    color:rgb(202, 206, 207); 
+    }
