@@ -101,6 +101,7 @@ class Forms extends Component {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
             userSession.adminDisplayName=this.state.name;
+            CommonUtils.setUserSession(userSession);
             Notification.info(response.data.message)
           }
         }).catch(err => {
