@@ -244,7 +244,17 @@ footer .copyright {
     }
 }
 
-
+@media only screen and (max-width: 400px) {
+    .logo {
+        display: block;
+        width: auto;
+        height: 25px !important;
+    }
+    .fixedHeaderContainer header>a::after {
+        content: '' !important;
+        width: 0px;
+    }
+}
 
 @media only screen and (min-width: 1024px) {
 }
