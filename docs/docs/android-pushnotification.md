@@ -29,51 +29,50 @@ if(MobiComUserPreference.getInstance(context).isRegistered()) {
 In your FcmInstanceIDListenerService onTokenRefresh() method add the below code:
 
 ```java
- if (MobiComUserPreference.getInstance(this).isRegistered()) {
-       new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
- }
+if (MobiComUserPreference.getInstance(this).isRegistered()) {
+    new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
+}
 ```
 
 For Receiving FCM Notifications in your app, Add the following code in your FcmListenerService in onMessageReceived(RemoteMessage remoteMessage) method:
 ```java
- if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
-       MobiComPushReceiver.processMessageAsync(this, remoteMessage.getData());
-       return;
- }
+if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
+    MobiComPushReceiver.processMessageAsync(this, remoteMessage.getData());
+    return;
+}
 ```
 ### GCM
 
 If you already have GCM enabled in your app, add the below code in Kommunicate.login onSuccess() method and pass the GCM registration token as below:
 ```java
 if(MobiComUserPreference.getInstance(context).isRegistered()) {
+    PushNotificationTask pushNotificationTask = null;         
+    PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {                  
+        @Override           
+        public void onSuccess(RegistrationResponse registrationResponse) {   
 
-      PushNotificationTask pushNotificationTask = null;         
-      PushNotificationTask.TaskListener listener = new PushNotificationTask.TaskListener() {                  
-            @Override           
-            public void onSuccess(RegistrationResponse registrationResponse) {   
+        }            
+        @Override          
+        public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
 
-            }            
-            @Override          
-            public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
+        } 
+    };                    
 
-            } 
-      };                    
-
-      pushNotificationTask = new PushNotificationTask(registrationToken, listener, mActivity);            
-      pushNotificationTask.execute((Void) null);  
+    pushNotificationTask = new PushNotificationTask(registrationToken, listener, mActivity);            
+    pushNotificationTask.execute((Void) null);  
 }
 ```
 At the place where you are getting the GCM registration token, add below code:
 ```java
- if (MobiComUserPreference.getInstance(this).isRegistered()) {
-      new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
- }
+if (MobiComUserPreference.getInstance(this).isRegistered()) {
+    new RegisterUserClientService(this).updatePushNotificationId(registrationToken);
+}
 ```
 For Receiving GCM Notifications in app, add the following code in your GcmListenerService in onMessageReceived method
 ```java
 if(MobiComPushReceiver.isMobiComPushNotification(data)) {            
-      MobiComPushReceiver.processMessageAsync(this, data);               
-      return;          
+    MobiComPushReceiver.processMessageAsync(this, data);               
+    return;          
 }
 ```
 
@@ -85,33 +84,33 @@ if you don't have the existing FCM related code, then copy the push notification
 
 ```xml
 <service android:name="<CLASS_PACKAGE>.FcmListenerService">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
+    <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+    </intent-filter>
 </service>
 
 <service android:name="<CLASS_PACKAGE>.FcmInstanceIDListenerService"
        android:exported="false">
-       <intent-filter>
-           <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-       </intent-filter>
+    <intent-filter>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+    </intent-filter>
 </service>
 ```
 Now Setup the PushNotificationTask by adding the below lines of code in onSuccess() method of Kommunicate.login
 ```java
- PushNotificationTask pushNotificationTask = null;
- PushNotificationTask.TaskListener listener=  new PushNotificationTask.TaskListener() {
-     @Override
-     public void onSuccess(RegistrationResponse registrationResponse) {
+PushNotificationTask pushNotificationTask = null;
+PushNotificationTask.TaskListener listener=  new PushNotificationTask.TaskListener() {
+    @Override
+    public void onSuccess(RegistrationResponse registrationResponse) {
 
-     }
-     @Override
-     public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
+    }
+    @Override
+    public void onFailure(RegistrationResponse registrationResponse, Exception exception) {
 
-     }
- };
- pushNotificationTask = new PushNotificationTask(Applozic.getInstance(context).getDeviceRegistrationId(),listener,context);
- pushNotificationTask.execute((Void)null);
+    }
+};
+pushNotificationTask = new PushNotificationTask(Applozic.getInstance(context).getDeviceRegistrationId(),listener,context);
+pushNotificationTask.execute((Void)null);
 ```
 
 ### Custom UI
@@ -123,8 +122,8 @@ You can refer to [this](https://github.com/AppLozic/Applozic-Android-SDK/blob/ma
 Don't forget to register the service in your manifest:
 ```xml
 <service android:exported="false" android:name="com.applozic.mobicomkit.uiwidgets.notification.PushNotificationJobService">
-     <intent-filter>
+    <intent-filter>
         <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-     </intent-filter>
+    </intent-filter>
 </service>
 ```

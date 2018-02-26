@@ -4,8 +4,7 @@ title: Logout
 sidebar_label: Logout
 ---
 
-When User logout from your website use `Kommunicate.logout()` method to logout user from Kommunicate.
-
+When the user logs out of your website use `Kommunicate.logout()` method to log out the user from Kommunicate.
 ```
 Kommunicate.logout();
 ```

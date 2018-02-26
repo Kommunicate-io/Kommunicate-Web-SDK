@@ -5,20 +5,18 @@ sidebar_label: Authentication
 ---
 
 ## Identify your users
+Whenever users come to your website, they are assigned with a unique and random ID by default. This behavior is best suited for anonymous users. If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them. You can pass these details either in options object in plugin script or after the plugin is initialized.
 
-When users come to your website, by default Kommunicate assign them an unique random id. This behaviour best suits for anonymous users. If your website asks login details from user, pass this details to Kommunicate so that your agents could identify the user while chatting with them.
-You can pass this detail either in options in plugin script or after plugin is initialized.
-
-**1. options in plugin script**
-here are the parameters you can pass in initalization script 
+**1. Options in plugin script**
+here are the parameters you can pass in initialization script: 
 
 |parameters | description|
 |---    |---    |
-|userId | Unique Id for user|
-|userName | Display name of the user. Agents will know users by Display name|
-|email | email id of logged in user|
-|password | user's password|
-|imageLink | image will be seen |
+|userId | Unique ID for the user|
+|userName | Display name of the user. Agents will identify users by this display name|
+|email | Email ID of logged in user|
+|password | User's password|
+|imageLink | This image will be visible to the user |
 
 ### Example:
 ```javascript
@@ -55,7 +53,7 @@ Kommunicate.updateUser(userdetail);
 ```
 |parameters | description|
 |---    |---    |
-|email| email id to be updated|
-|displayName | Display name of the user. Agents will know users by Display name|
-|imageLink | image will be seen |
-|metadata | it's the extra information about user. you can pass information like user's company name, designameion etc. This information will be visible to agent in kommunicate dashboard |
+|email| Email ID to be updated|
+|displayName | Display name of the user. Agents will identify users by this display name|
+|imageLink | This image will be visible to the user |
+|metadata | It is the extra information about the user. You can pass information such as user's company name and designation. This information will be visible to the agents in Kommunicate dashboard |

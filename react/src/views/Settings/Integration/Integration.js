@@ -55,7 +55,7 @@ class Integration extends Component {
   };
   showInstructions = e => {
     const instructionDiv = document.getElementById("show-instructions");
-    e.preventDefault();
+    // e.preventDefault();
     this.setState({displayInstructions: false});
     // window.scrollTo(instructionDiv.scrollHeight, instructionDiv.offsetTop);
     // instructionDiv.focus();
@@ -97,7 +97,7 @@ class Integration extends Component {
                       )}
                   </div>
                   <div className="instructions-link-div">
-                      <a href="#/" onClick={this.showInstructions}>How to <span><strong>Identify your users</strong></span> or allow them to <span><strong>Chat anonymously?</strong></span></a>
+                      <a href="#show-instructions" onClick={this.showInstructions}>How to <span><strong>Identify your users</strong></span> or allow them to <span><strong>Chat anonymously?</strong></span></a>
                       <div id="show-instructions" className="show-instructions animated fadeIn" hidden={this.state.displayInstructions}>
                         <p><strong>Default parameters are pre populated. You can change them as you need.</strong></p>
                         <p>Parameters:</p>
