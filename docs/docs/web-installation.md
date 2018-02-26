@@ -39,7 +39,7 @@ You can customize the plugin by passing below parameter in option object. Visit 
 
 |parameters|Descriptions|
 |---	   |---	    |
-|appId |An unique application id assigned to your Kommunicate account| 
+|appId |A unique application ID assigned to your Kommunicate account| 
 |agentId |This agent will be the default support agent. Default agent is registered when you sign up for Kommunicate|
 |groupName |All conversation will have this title|
 |isAnonymousChat| Allow your users to chat in Anonymous mode. User will be asked to enter email when he/she starts a conversation|
