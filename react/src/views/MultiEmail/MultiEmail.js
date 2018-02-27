@@ -89,21 +89,25 @@ class MultiEmail extends Component {
     };
 
     render() {
+        const currentPath = window.location.pathname;
         return (
             <div>
-                {<div className="form-group">
-                    <button
-                        className={this.state.instructionButtonShow === true ?"btn btn-primary btn-primary-custom":"n-vis"}
+                {<div className="form-group multi-email-install-link">
+                {(currentPath.includes('install'))?<a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
+                        onClick={this.showEmailInput}>Send instructions to team </a> : <button
+                        className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
                         onClick={this.showEmailInput}
                     >
                         {" "}
                         Send instructions to team{" "}
-                    </button>
+                    </button>}
+                    
+                    
                 </div>}
                 <div className={
-                    this.state.emailInstructions === true
-                        ? "form-group flex-center row"
-                        : "n-vis"
+                    ((this.state.emailInstructions === true) && (currentPath.includes('install')))
+                        ? "form-group m-top-10 row" : ((this.state.emailInstructions === true) && (currentPath.includes('setUpPage')))
+                        ? "form-group flex-center row" : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
                     <div className="form-group group multiple-email-container">

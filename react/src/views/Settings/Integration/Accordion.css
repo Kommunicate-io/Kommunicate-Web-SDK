@@ -84,3 +84,121 @@
 .accordion{
   padding-left: 0px !important;
 }
+.code-container {
+  border-radius: 3px;
+  background-color: #f4f5f7;
+  margin-bottom: 10px;
+  border: 1px solid #e4e4e4;
+}
+.javascript-card {
+  cursor: pointer;
+  display: block;
+  text-decoration: none;
+  margin-bottom: 0;
+  border-bottom: 0;
+  border: 0;
+  margin-top: 0;
+  border-radius: 2px;
+  z-index: 1;
+  float: none;
+  background-color: #f4f5f7;
+}
+.javascript-card:hover, .javascript-card:focus, .javascript-card:active {
+  text-decoration: none;
+}
+.code-div {
+  background-color: #f4f5f7;
+  z-index: 1;
+  padding-bottom: 25px;
+  margin-top: -20px;
+}
+.identify-users {
+  padding-left: 20px;
+  font-size: 15px;
+  letter-spacing: 0.6px;
+  color: #424244;
+}
+.identify-users a {
+  font-size: 15px;
+  letter-spacing: 0.6px;
+  font-weight: 600;
+  color: #5c5aa7;
+}
+.card-heading {
+	display: flex;
+	align-items: center;
+	/* margin-bottom: 20px; */
+}
+.card-heading svg {
+	width: 45px;
+	height: 45px;
+	margin-right: 20px;
+}
+.card-heading span {
+	font-size: 16px;
+  	font-weight: 500;
+  	letter-spacing: 0.7px;
+  	color: #5c5aa7;
+}
+.app-id-container {
+  margin: 20px 0px 20px;
+}
+.app-id-div {
+  border-radius: 2px;
+  background-color: #cce7f8;
+  max-width: 410px;
+  padding: 10px 15px;
+}
+.app-id-sub-text {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  color: #7d7f81;
+}
+.app-id-main-text {
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #4a4b4d;
+  padding-left: 10px;
+}
+.see-docs-links {
+  padding: 10px 16px 9.5px;
+  margin-right: 30px;
+  text-decoration: none;
+}
+.see-docs-links:hover, .see-docs-links:focus, .see-docs-links:active {
+  text-decoration: none;
+}
+.docs-instructions {
+  border-radius: 3px;
+  background-color: #FFF;
+  padding: 25px;
+  margin-top: 25px;
+  border: 1px solid #dad6d6;
+}
+.docs-instructions span {
+  background-color: rgb(212, 212, 212);
+  padding: 3px 5px;
+  font-style: italic;
+  border-radius: 2px;
+}
+.code-snippet {
+  border-radius: 4px;
+  background-color: #181717;
+  padding: 15px;
+  color: #fff;
+}
+.multi-email-span-container>div {
+  display: inline;
+}
+.m-top-10 {
+  margin-top: 10px;
+}

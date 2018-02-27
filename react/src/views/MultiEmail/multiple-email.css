@@ -8,8 +8,8 @@
 	padding-top: 7px;
 	padding-bottom: 7px;
 	border: 1px solid #5C5AA7;
-	border-top-left-radius: 3px;
-	border-bottom-left-radius: 3px;
+	border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 .flex-center {
 	display: flex;
@@ -69,6 +69,7 @@
 	resize: none;
 	outline: none;
 	border-bottom: none;
+	color: #87888a;
 }
 .copy-code-button-div {
 	margin-top: -6px;
@@ -115,8 +116,18 @@
 	text-align: left;
 	font-weight: 600;
 	background-color: white;
-	padding:8px;
-	margin-left: 36px;
+	/* padding:8px; */
+	/* margin-left: 36px; */
+  }
+.intgration-card-header h3 {
+	font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #a1a1a1;
   }
   .integration-font{
 	font-size: 14px;
@@ -173,4 +184,25 @@
 	color:rgb(0, 0, 0);
 	padding: 6px;
 	margin-bottom: 8px;
+}
+
+.multi-email-install-link {
+	display: inline;
+}
+.multiemail-button-link {
+  background: transparent;
+  color: #5c5aa7;
+  font-size: 15px;
+  font-weight: 600;
+}
+.multiemail-button-link:hover, .multiemail-button-link:focus {
+  background: transparent;
+  color: rgba(93, 90, 167, 0.8);
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: none;
+  text-decoration: uderline;
+}
+.ml-20 {
+	margin-left: 21px;
 }
