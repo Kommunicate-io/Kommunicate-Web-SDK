@@ -691,7 +691,7 @@ class Tabs extends Component {
               <div className="col-sm-4">
               </div> 
               <div className="col-sm-4 text-right">
-                <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal(); this.toggleEditBotIntegrationModal();}}>
+                <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal();}}>
                   Delete Integration
                 </button>
               </div>
@@ -705,45 +705,43 @@ class Tabs extends Component {
         </Modal>
         <Modal isOpen={this.state.deleteBotIntegrationModal} toggle={this.toggleDeleteBotIntegrationModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleDeleteBotIntegrationModal}>
-            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Delete Integration</span>
+            <span className="km-bot-delete-bot-modal-heading">Delete Integration</span>
           </ModalHeader>
           <ModalBody>
             <div className="row">
               <div className="col-sm-12">
-                <p className="km-bot-integration-use-case-modal-text">Are you sure you want to delete this integration? You may add it as a new<br />integration later on if needed.  </p>
+                <p className="km-bot-integration-use-case-modal-text">Are you sure you want to delete this integration? You may add it as a new integration later on if needed.  </p>
               </div>
             </div>
             <div className="row" style={{marginTop: "75px"}}>
             </div>
-            <div className="row col-sm-12" style={{borderRadius: "6px", border: "solid 1px #979797"}}>
+            <div className="row" style={{borderRadius: "6px", border: "solid 1px #979797", margin: "-1px", padding: "12px 5px"}}>
               <div className="row col-sm-7">
                 <div className="col-sm-3">
-                  <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
+                  <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" style={{marginTop: "0px"}}/>
                 </div>
                 <div className="col-sm-4">
                   <span>{this.state.botAiPlatform['dialogflow']}<br />{this.state.botName}</span>
                 </div> 
               </div>
               <div className="col-sm-2" style={{textAlign: "left"}}>
-                <span className="badge badge-success">Enabled</span>
+                <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
               </div>
               <div className="col-sm-3" style={{textAlign: "right"}}>
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-6">
-              </div> 
-              <div className="row col-sm-6 text-right">
-                <div className="row col-sm-6 text-right">
-                  <button className="btn btn-primary" >
-                    Cancel
-                  </button>
-                </div>
-                <div className="row col-sm-6 text-right">
-                  <button className="btn btn-primary" >
-                    Delete
-                  </button>
-                </div>
+              </div>
+              <div className="col-sm-3 text-right">
+                <button className="btn btn-primary">
+                  Cancel
+                </button>
+              </div>
+              <div className="col-sm-3 text-right">
+                <button className="btn btn-primary">
+                  Delete
+                </button>
               </div>  
             </div>
           </ModalBody>

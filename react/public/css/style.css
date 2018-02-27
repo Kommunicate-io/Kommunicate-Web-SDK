@@ -10499,3 +10499,15 @@ input:required {
   background-color: #f3f3f3;
 }
 
+.km-bot-delete-bot-modal-heading {
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #6c6a6a;
+}
+
