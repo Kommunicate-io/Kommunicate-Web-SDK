@@ -36,12 +36,11 @@ class Footer extends React.Component {
         </a>
         <div className="km-address">
           <p>
-            #897, 4th Floor,<br/>
-            80 Feet Main Road,<br/>
-            6th Block, Koramangala,<br/>
-            Bengaluru, Karnataka 560095<br/><br/>
+            Stanford Financial Square,<br/>
+            2600 El Camino Real, Suite 415,<br/>
+            Palo Alto, CA 94306<br/><br/>
 
-            <a href="tel:+919740570196">(+91) 974-057-0196</a><br/>
+            <a href="tel:+13109097458">(+1) (310) 909-7458 </a><br/>
             <a href="mailto:hello@kommunicate.io">hello@kommunicate.io</a><br/>
           </p>
         </div>

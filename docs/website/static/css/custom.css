@@ -24,10 +24,10 @@ transform: translateY(-57%);
 }
 .projectTitle {
     font-size: 36px;
-  font-weight: 300;
+  font-weight: 200;
   text-align: center;
   color: #616161;
-  margin-bottom: 50px;
+  margin-bottom: 35px;
 }
 .projectSubtexts {
     font-size: 20px;
@@ -67,12 +67,12 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .docs-cards-container {
-    padding: 50px;
+    padding: 0px 15px 50px;
     background-color: #ffffff;
 }
 .docs-cards {
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     display: inline-flex;
     flex-direction: row;
@@ -82,8 +82,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     display: inline-block;
     width: 170px;
     height: 160px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin: 20px auto;
 }
 .cards-link {
     display: inline-block;
@@ -167,7 +166,7 @@ footer .sitemap div .footer-pricing {
     display: block !important;
 }
 .homeContainer .homeWrapper {
-    padding: 3em 10px;
+    padding: 3em 15px 1.5em;
 }
 .navPusher {
     height: auto;
@@ -208,6 +207,7 @@ footer .copyright {
     max-width: 1080px;
     text-align: left;
     margin: 0 auto;
+    padding: 0px 15px;
 }
 
 
@@ -232,7 +232,7 @@ footer .copyright {
     }
     .reactNavSearchWrapper input#search_input_react:focus, .reactNavSearchWrapper input#search_input_react:active {
         background-color: #FFF;
-        color: #fff;
+        color: #000;
         width: 130px;
     }
     .col-lg-6 {
@@ -244,7 +244,17 @@ footer .copyright {
     }
 }
 
-
+@media only screen and (max-width: 400px) {
+    .logo {
+        display: block;
+        width: auto;
+        height: 25px !important;
+    }
+    .fixedHeaderContainer header>a::after {
+        content: '' !important;
+        width: 0px;
+    }
+}
 
 @media only screen and (min-width: 1024px) {
 }
