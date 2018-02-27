@@ -24,7 +24,7 @@ transform: translateY(-57%);
 }
 .projectTitle {
     font-size: 36px;
-  font-weight: 300;
+  font-weight: 200;
   text-align: center;
   color: #616161;
   margin-bottom: 35px;
@@ -232,7 +232,7 @@ footer .copyright {
     }
     .reactNavSearchWrapper input#search_input_react:focus, .reactNavSearchWrapper input#search_input_react:active {
         background-color: #FFF;
-        color: #fff;
+        color: #000;
         width: 130px;
     }
     .col-lg-6 {
