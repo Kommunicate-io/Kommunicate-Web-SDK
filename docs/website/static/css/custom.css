@@ -27,7 +27,7 @@ transform: translateY(-57%);
   font-weight: 300;
   text-align: center;
   color: #616161;
-  margin-bottom: 50px;
+  margin-bottom: 35px;
 }
 .projectSubtexts {
     font-size: 20px;
@@ -67,7 +67,7 @@ box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
 }
 
 .docs-cards-container {
-    padding: 50px;
+    padding: 0px 15px 50px;
     background-color: #ffffff;
 }
 .docs-cards {
@@ -166,7 +166,7 @@ footer .sitemap div .footer-pricing {
     display: block !important;
 }
 .homeContainer .homeWrapper {
-    padding: 3em 10px;
+    padding: 3em 15px 1.5em;
 }
 .navPusher {
     height: auto;
@@ -207,6 +207,7 @@ footer .copyright {
     max-width: 1080px;
     text-align: left;
     margin: 0 auto;
+    padding: 0px 15px;
 }
 
 
