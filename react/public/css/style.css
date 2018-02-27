@@ -9650,7 +9650,7 @@ pointer-events: none;
   border-radius: 0px 4px 4px 0px;
 }
 .form-group-user-name  input, .form-group-user-name input:focus{
-  border-radius: 0px 4px 4px 0px;
+  /* border-radius: 0px 4px 4px 0px; */
 } 
 
 .km-auto-replies-user-chat-preview {

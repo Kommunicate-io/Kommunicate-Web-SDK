@@ -43,8 +43,12 @@ var jsScript= `<script type="text/javascript">
       window.kommunicate = m; m._globals = o;
     })(document, window.kommunicate || {});
 </script>`;
+
+var yourAppId = options.appId;
+
 console.log(jsScript);
-return jsScript;
+console.log(yourAppId);
+return [jsScript, yourAppId];
 }
 
 const getJsInstructions = () => {

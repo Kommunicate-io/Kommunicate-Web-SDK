@@ -74,7 +74,7 @@ class Step3 extends Component {
           <div className="col-md-10">
             <Integration customerInfo={this.props.customerInfo}cardSize={12}/>
             <div className="form-group">
-          <button className={this.props.hideSkipForNow? "n-vis" : "btn btn-sm btn-primary px-4 ml-40 btn-primary-custom"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}> Finish setup</button>
+          <button className={this.props.hideSkipForNow? "n-vis" : "km-button km-button--primary ml-20"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}> Finish setup</button>
         </div>
           </div>
         </div>
