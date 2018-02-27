@@ -5,7 +5,7 @@ sidebar_label: Customization
 ---
 
 ## Chat icon:
-customize the chat icon by passing html into 'chatLauncherHtml' parameter.
+Customize the chat icon by passing html into 'chatLauncherHtml' parameter.
 
 ```
 <script type="text/javascript">
