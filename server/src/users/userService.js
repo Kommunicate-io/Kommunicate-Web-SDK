@@ -250,7 +250,7 @@ const processOffBusinessHours = (message, todaysBusinessHours)=>{
     throw new Error("messsage or userBusinessHoursConfig cant be empty");
   }
   let metadata = {from: "KOMMUNICATE_AGENT"};
-  return Promise.resolve(applozicClient.sendGroupMessage(groupId,todaysBusinessHours.off_hours_message,todaysBusinessHours.apz_token,todaysBusinessHours.application_id,todaysBusinessHours.user_name,metadata)).then(message=>{
+  return Promise.resolve(applozicClient.sendGroupMessage(groupId,todaysBusinessHours.off_hours_message,todaysBusinessHours.apz_token,todaysBusinessHours.application_id,metadata)).then(message=>{
         if(message.status==200) {
           console.log("message sent..");
           return;
