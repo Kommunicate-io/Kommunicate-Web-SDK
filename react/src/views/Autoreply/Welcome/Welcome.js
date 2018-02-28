@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import validator from 'validator';
 import './Welcome.css';
+import { EVENT_ID, CATEGORY, STATUS } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
@@ -11,7 +12,7 @@ class Welcome extends Component{
     super(props);
     this.state = {
      enableDisableCheckbox: false,
-     status:2,
+     status:STATUS.DISABLE,
      welcomeMessages:[{messageField:''}],
      welcomeMessagesCopy:[],
      enableAddMsgLink: false,
@@ -135,7 +136,7 @@ class Welcome extends Component{
     if (id !== '') {
       deleteInAppMsg(id).then(response => {
         if (response) {
-          Notification.success('Successfully deleted');
+          Notification.success('Welcome message deleted');
           this.getWelcomeMessges()
           this.setState({
             disableButton: true,
@@ -161,10 +162,10 @@ class Welcome extends Component{
   }
   createWelcomeMessage = (index) => {
     let data = {
-      eventId: 3, // Event ID 3 for welcome message
+      eventId: EVENT_ID.WELCOME_MESSAGE, // Event ID 3 for welcome message
       message: this.state.welcomeMessages[index].messageField,
       status: this.state.status, // disabled intially
-      category: 1, // disabling and enabling welcome message based on category,for welcome category is 1
+      category: CATEGORY.WELCOME_MESSAGE, // disabling and enabling welcome message based on category,for welcome category is 1
       sequence: index+1  //sequence is an order, to display welcome message. user can create 3 different welcome messages 
     }
     addInAppMsg(data)
@@ -224,10 +225,9 @@ class Welcome extends Component{
   }
   
   render() {
-    const textArea = this.state.welcomeMessages.map((message, index) => {
+    const welcomeMsgTextArea = this.state.welcomeMessages.map((message, index) => {
       return <div key = {index}>
         <div className = "row text-area-wrapper">
-          <div className="trash-wrapper">
           <textarea rows="5" cols="60" className="welcome-msg-text-area" placeholder="Example: Hello there! Do you have any questions? We are there to help"
            value={this.state.welcomeMessages[index].messageField}
             onChange={(e) => {
@@ -256,7 +256,6 @@ class Welcome extends Component{
             </div>
           }     
         </div>
-      </div>
     </div>  
     });
     return (
@@ -283,9 +282,7 @@ class Welcome extends Component{
                   <div className="row">
                     <h5 className="message-title">Welcome message </h5>
                   </div>
-                  <div className="row">
-                    {textArea}                  
-                  </div>
+                  {welcomeMsgTextArea}                  
                 </div>
                 {  this.state.welcomeMessages.length <= 2 &&
                   <button className ="add-new-msg-btn" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</button>

@@ -17,7 +17,7 @@ body {
     color: #a1a1a1;
 }
 .welcome-msg-text-area{
-    width: 126%;
+    width: 100%;
     border: 1px solid #eaeaea;
     border-radius: 2px;
     padding: 7px;
@@ -60,23 +60,24 @@ body {
     margin-left: 10px;
 }
 .text-area-wrapper{
-     margin-left: 0; 
-     margin-bottom: 3px;
+    margin-right: 1px;
+    margin-bottom: 3px;
+    position: relative;
 }
 .trash-wrapper {
     position: relative;
 }
-.trash-btn{
-    /* right: 10px; */
-    right: -106px;
+.trash-btn {
+    right: 15px;
     border: 1px solid grey;
     border-radius: 50%;
     height: 22px;
     width: 22px;
     position: absolute;
-    bottom: 12px;
+    bottom: 4px;
     text-align: center;
     cursor: pointer;
+    
 }
 textarea::-webkit-input-placeholder {
     color: rgb(202, 206, 207);
