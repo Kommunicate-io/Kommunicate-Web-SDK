@@ -3,6 +3,7 @@ const registrationService =require('../register/registrationService');
 const userService = require("../users/userService");
 const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
+const constant = require('./utils')
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
@@ -188,11 +189,44 @@ exports.getInAppMessages2 =(req,res)=>{
         });
 }
 
+/*This API is for getting list of InAppMessage list of customer and user
+ *for this required parameters are appId, eventIds
+ *
+*/
+
+exports.getInAppMessagesByEventIds = (req, res) => {
+    var appId = req.query.appId;
+    var userName = req.query.userName;
+    var eventIds = req.query.eventIds;
+    logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
+    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+        if (constant.EVENT_ID.WELCOME_MESSAGE == eventIds[0]) {
+            userName = customer.userName;
+        }
+        return userService.getByUserNameAndAppId(userName, appId).then(user => {
+            if (!user) {
+                return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
+            }
+            return inAppMsgService.getInAppMessagesByEventIds(user.id, user.customerId, user.type, eventIds).then(inAppMessages => {
+                if (inAppMessages instanceof Array && inAppMessages.length > 0) {
+                    return res.status(200).json({ code: 'SUCCESS', message: "message list", data: inAppMessages });
+                }
+                return res.status(200).json({ code: 'SUCCESS', message: "No messege found" });
+            });
+
+        })
+
+    }).catch(err => {
+        logger.error("error while fatching massges", err)
+        return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
+    })
+}
+
 exports.getInAppMessagesByEventId =(req,res)=>{
-    let  params =req.params; 
-    const appId = req.query.appId;
-    const userName = req.query.userName;
-    const eventIds = req.query.eventIds;
+    var params =req.params; 
+    var appId = req.query.appId;
+    var userName = req.query.userName;
+    var eventIds = req.query.eventIds;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName,eventIds);
     userService.getByUserNameAndAppId(userName, appId)
         .then(user=>{
