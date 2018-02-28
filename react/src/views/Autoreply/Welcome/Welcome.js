@@ -11,6 +11,7 @@ class Welcome extends Component{
     super(props);
     this.state = {
      enableDisableCheckbox: false,
+     status:2,
      welcomeMessages:[{messageField:''}],
      welcomeMessagesCopy:[],
      enableAddMsgLink: false,
@@ -25,11 +26,12 @@ class Welcome extends Component{
        this.getWelcomeMessges();
   }
   getWelcomeMessges = () => {
-    let eventIds = [1, 2, 3, 4];
+    let eventIds = [3]; // Event ID 3 for welcome message
     let welcomeMessages = [];
     let welcomeMessagesCopy = [];
+    let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
+    hideTrashBtn.splice(0,2,false,false);
     return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response=>{
-      
       response.eventId3Messages.map(msg => {
         msg.messages.map(item => {
           welcomeMessages.push({
@@ -44,7 +46,8 @@ class Welcome extends Component{
           })
           this.setState({
             welcomeMessages:welcomeMessages,
-            welcomeMessagesCopy:welcomeMessagesCopy
+            welcomeMessagesCopy:welcomeMessagesCopy,
+            hideTrashBtn:hideTrashBtn
           },this.updateUserStatus);
         
         })
@@ -61,14 +64,20 @@ class Welcome extends Component{
     this.setState({enableDisableCheckbox: !this.state.enableDisableCheckbox}, () => {
       if(this.state.enableDisableCheckbox) {
         enableInAppMsgs({category: 1}).then(result => {
+          //enable category 1 messages, category 1 is welcome message
+          //changing the status 2 to 1 for all category 1 messages
           if(result !== undefined){
             Notification.success('Welcome Mesages Enabled')
+            this.setState({status: 1})
           }
         })
       }else{
+        //disable category 1 messages
+        //changing the status 1 to 2 for all category 1 messages
         disableInAppMsgs({category: 1}).then(result => {
           if(result !== undefined){
             Notification.error('Welcome Messages Disabled')
+            this.setState({status: 2})
           }
         })
       }
@@ -76,10 +85,16 @@ class Welcome extends Component{
   }
   updateUserStatus =() =>{
     if(this.state.welcomeMessages[0].status === 1){
-      this.setState({enableDisableCheckbox: true})
+      this.setState({
+        enableDisableCheckbox: true,
+        status: 1
+      })
     }
     else{
-      this.setState({enableDisableCheckbox: false})
+      this.setState({
+        enableDisableCheckbox: false,
+        status: 2
+      })
     }
     
   }
@@ -115,6 +130,7 @@ class Welcome extends Component{
   deleteWelcomeMessage = () => {
     let index = this.state.activeTextField;
     let welcomeMessages = Object.assign([], this.state.welcomeMessages);
+    let welcomeMessagesCopy = Object.assign([],this.state.welcomeMessagesCopy);
     let id = welcomeMessages[index].messageId;
     if (id !== '') {
       deleteInAppMsg(id).then(response => {
@@ -134,14 +150,22 @@ class Welcome extends Component{
       welcomeMessages.splice(index, 1)
       this.setState({ welcomeMessages: welcomeMessages })
     }
+    if(index == 0){
+      welcomeMessages.splice(0,1,{ messageField : '' })
+      welcomeMessagesCopy.splice(0,1,{ messageField : '' })
+      this.setState({
+        welcomeMessages:welcomeMessages,
+        welcomeMessagesCopy:welcomeMessagesCopy
+      })
+    }
   }
   createWelcomeMessage = (index) => {
     let data = {
-      eventId: 3,
+      eventId: 3, // Event ID 3 for welcome message
       message: this.state.welcomeMessages[index].messageField,
-      status: 2,
-      category: 1,
-      sequence: index+1
+      status: this.state.status, // disabled intially
+      category: 1, // disabling and enabling welcome message based on category,for welcome category is 1
+      sequence: index+1  //sequence is an order, to display welcome message. user can create 3 different welcome messages 
     }
     addInAppMsg(data)
       .then(response => {
@@ -179,7 +203,8 @@ class Welcome extends Component{
     if (this.state.welcomeMessages[this.state.welcomeMessages.length-1].messageField !== '' && this.state.welcomeMessages.length < 3) {
       
       if (this.state.welcomeMessages.length == this.state.welcomeMessagesCopy.length) {
-        this.state.hideTrashBtn.splice(0,2,false,false);
+        let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
+        hideTrashBtn.splice(0,2,false,false);
         let message = Object.assign([], this.state.welcomeMessages);
         let fields = {
           messageField: '',
@@ -187,7 +212,8 @@ class Welcome extends Component{
         }
         message.push(fields);
         this.setState({
-          welcomeMessages: message
+          welcomeMessages: message,
+          hideTrashBtn:hideTrashBtn
         })
       }
       else {
@@ -202,7 +228,7 @@ class Welcome extends Component{
       return <div key = {index}>
         <div className = "row text-area-wrapper">
           <div className="trash-wrapper">
-          <textarea rows="5" cols="60" placeholder="Hi, please leave your email ID and I will get back to you as soon as possible."
+          <textarea rows="5" cols="60" className="welcome-msg-text-area" placeholder="Example: Hello there! Do you have any questions? We are there to help"
            value={this.state.welcomeMessages[index].messageField}
             onChange={(e) => {
               let welcomeMessages = Object.assign([],this.state.welcomeMessages);
@@ -218,8 +244,10 @@ class Welcome extends Component{
           </textarea>
           { this.state.hideTrashBtn[index-1] == false &&
             <div className={index !== 0 ? "trash-btn" : "n-vis"} onClick={(e) => {
-              this.state.hideTrashBtn.splice(index-1,1,true);
+              let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
+              hideTrashBtn.splice(index-1,1,true);
               this.setState({
+                hideTrashBtn:hideTrashBtn,
                 activeTextField: index
               }, 
               this.deleteWelcomeMessage)
@@ -250,7 +278,7 @@ class Welcome extends Component{
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="card">
-              <div className="card-header">
+              <div className="card-header welcome-card-header">
                 <div className="message-wrapper">
                   <div className="row">
                     <h5 className="message-title">Welcome message </h5>
