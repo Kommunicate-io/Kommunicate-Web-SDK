@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import validator from 'validator';
 import './AwayMessage.css';
+import { EVENT_ID, CATEGORY, STATUS, SEQUENCE } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
@@ -12,7 +13,7 @@ class AwayMessage extends Component{
     super(props);
     this.state = {
      enableDisableCheckbox: false,
-     status:2,
+     status:STATUS.DISABLE,
      awayMessageKnownCustomers:[{messageField:''}],
      awayMessageAnonymousCustomers:[{messageField:''}],
      awayMessageCopyKnownCustomers:[{messageField:''}],
@@ -185,11 +186,11 @@ class AwayMessage extends Component{
   }
   createAwayMessageKnownCustomers = (index) => {
     let data = {
-      eventId: 2, //eventId id 2 when agent is offline and user is known
+      eventId: EVENT_ID.KNOWN_CUSTOMER_AWAY_MSG, //eventId id 2 when agent is offline and user is known
       message: this.state.awayMessageKnownCustomers[index].messageField,
       status: this.state.status, // disable(2) : intially away message disabled 
-      category: 2, //disabling and enabling away message based on category, away message category is 2 
-      sequence: 1 // sequence is for order for showing away message
+      category: CATEGORY.AWAY_MESSAGE, //disabling and enabling away message based on category, away message category is 2 
+      sequence: SEQUENCE.AWAY_MESSAGE //sequence is for order for showing away message
     }
     addInAppMsg(data)
       .then(response => {
@@ -278,11 +279,11 @@ class AwayMessage extends Component{
   }
   createAwayMessageAnonymousCustomers = (index) => {
     let data = {
-      eventId: 1, //eventId id 1 when agent is offline and user is anonymous users
+      eventId: EVENT_ID.ANONYMOUS_CUSTOMER_AWAY_MSG, //eventId id 1 when agent is offline and user is anonymous users
       message: this.state.awayMessageAnonymousCustomers[index].messageField,
-      status: this.state.status, // disable(2) : intially away message disabled
-      category: 2, //disabling and enabling away message based on category, away message category is 2
-      sequence: 1 // sequence is for order for showing away message
+      status: this.state.status, // disable:2 : intially away message disabled
+      category: CATEGORY.AWAY_MESSAGE, //disabling and enabling away message based on category, away message category is 2
+      sequence: SEQUENCE.AWAY_MESSAGE // sequence is for order for showing away message
     }
     addInAppMsg(data)
       .then(response => {
@@ -315,7 +316,6 @@ class AwayMessage extends Component{
     const textAreaForKnownCustomersMsg = this.state.awayMessageKnownCustomers.map((message, index) => {
       return <div key = {index}>
         <div className = "row away-text-area-wrapper">
-          <div className="trash-wrapper">
           <textarea rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave a message and I will get back to you as soon as possible."
            value={this.state.awayMessageKnownCustomers[index].messageField}
             onChange={(e) => {
@@ -330,7 +330,6 @@ class AwayMessage extends Component{
               this.setState({activeTextField: index}) 
             } }>
           </textarea>
-        </div>
       </div>
     </div>  
     });
@@ -338,7 +337,6 @@ class AwayMessage extends Component{
     const textAreaForAnonymousCustomersMsg = this.state.awayMessageAnonymousCustomers.map((message, index) => {
         return <div key = {index}>
           <div className = "row away-text-area-wrapper">
-            <div className="trash-wrapper">
             <textarea rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave your email ID and your message and I will get back to you as soon as possible."
              value={this.state.awayMessageAnonymousCustomers[index].messageField}
               onChange={(e) => {
@@ -353,7 +351,6 @@ class AwayMessage extends Component{
                 this.setState({activeTextField: index}) 
               } }>
             </textarea>
-          </div>
         </div>
       </div>  
       });
@@ -380,11 +377,9 @@ class AwayMessage extends Component{
               <div className="card-header away-card-header">
                 <div className="away-message-known-customers-wrapper">
                   <div className="row">
-                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> known </span>customers</h5>
+                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> known </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
                   </div>
-                  <div className="row">
-                    {textAreaForKnownCustomersMsg}                  
-                  </div>
+                  {textAreaForKnownCustomersMsg}                  
                 </div>            
                 <div className="btn-group">
                   <button disabled={this.state.disableButtonForKnownTextArea} className="km-button km-button--primary save-changes-btn"
@@ -412,14 +407,12 @@ class AwayMessage extends Component{
               <div className="card-header away-card-header anonymous-wrapper">
                 <div className="away-message-anonymous-customers-wrapper">
                   <div className="row">
-                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> Anonymous </span>customers</h5>
+                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> Anonymous </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
                   </div>
                   <div className="row n-vis">
                     <Checkbox idCheckbox={'some-checkbox'} label={'Collect email ID from customer'} />
                   </div>
-                  <div className="row">
-                    {textAreaForAnonymousCustomersMsg}                  
-                  </div>
+                  {textAreaForAnonymousCustomersMsg}                  
                 </div>            
                 <div className="btn-group">
                   <button disabled={this.state.disableButtonForAnonymousTextArea} className="km-button km-button--primary save-changes-btn"

@@ -17,7 +17,7 @@ body {
     color: #a1a1a1;
 }
 .away-msg-text-area{
-    width: 126%;
+    width: 100%;
     border: 1px solid #eaeaea;
     border-radius: 2px;
     padding: 7px;
@@ -47,8 +47,8 @@ body {
     margin-left: 10px;
 }
 .away-text-area-wrapper{
-     margin-left: 0; 
-     margin-bottom: 3px;
+    margin-right: 1px;
+    margin-bottom: 3px;
 }
 .customer-type{
     color: #3d3b3b;
@@ -59,6 +59,12 @@ body {
 .anonymous-wrapper{
     margin-top: 45px;
     margin-bottom: 45px;
+}
+.fa-info-circle{
+    color: #354052;
+}
+.info-icon{
+    margin-left: 10px;
 }
 .checkbox-input[type='checkbox']{
     display: flex
