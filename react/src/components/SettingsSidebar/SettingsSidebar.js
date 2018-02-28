@@ -19,6 +19,9 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-title">
                             PERSONAL
                         </li>
+                        <li className="ss-nav-item welcome-link">
+                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
+                        </li>
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>

@@ -13,6 +13,7 @@ const routes = {
   '/profile': "Profile",
   '/message-shortcuts': 'Quick Replies',
   '/welcome-message': 'Welcome Message',
+  '/away-message': 'Away Message',
   '/agent-app': 'Agent App'
 };
 
