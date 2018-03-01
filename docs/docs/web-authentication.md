@@ -5,10 +5,10 @@ sidebar_label: Authentication
 ---
 
 ## Identify your users
-Whenever users come to your website, they are assigned with a unique and random ID by default. This behavior is best suited for anonymous users. If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them. You can pass these details either in options object in plugin script or after the plugin is initialized.
+Whenever users come to your website, they are assigned with a random ID by default. This behavior is best suited for anonymous user. If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them. You can pass these details either in kommunicateSettings in plugin script.
 
-**1. Options in plugin script**
-here are the parameters you can pass in initialization script: 
+**1. kommunicateSettings in plugin script**
+here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
 
 |parameters | description|
 |---    |---    |
@@ -20,33 +20,32 @@ here are the parameters you can pass in initialization script:
 
 ### Example:
 ```javascript
-<script type="text/javascript">
-    (function(d, m){ 
-      let o = {"appId":"applicationId","isAnonymousChat":true,"userId":"uniqueId","agentId":"agentId","userName":"userName","groupName":"groupName","email":"email"};
-      let s = document.createElement("script");
-      s.type = "text/javascript"; s.async = true;
-      s.src = "https://api.kommunicate.io/kommunicate.app";
-      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
-      window.kommunicate = m; m._globals = o;
-    })(document, window.kommunicate || {});
-</script>
+
+    var kommunicateSettings = {"appId": applicationId,
+            "userId": userId,
+            "agentId": agentId,
+            "userName": userName,
+            "groupName":groupName,
+            "email": emailId
+            };
+   
 
 ```
 
 
-**2.Update user's identity after plugin initialized**
+**2. Update user's identity after plugin initialized**
 
-Once plugin is initialized use `Kommunicate.updateUser(userdetail)` method to update users identity.
+Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 
 ```
 var userdetail = {
-    "email":"user email",
-    "displayName":"user display name",
-    "imageLink":"User profile image url",
+    "email": email,
+    "displayName": displayName,
+    "imageLink": profileImageUrl,
     "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
-        "companyName": "value1",
-        "designation": "value2",
-        "linkedInProfile": "value3"
+        "companyName": value1 ,
+        "designation": value2 ,
+        "linkedInProfile": value3
     }
 };
 Kommunicate.updateUser(userdetail);

@@ -245,6 +245,22 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
+exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
+
+  let criteria={};
+  if(customerId){
+    criteria.customerId=customerId;
+  }
+  if(eventIds.length>0){
+    criteria.eventId={ $in:eventIds}
+  }
+  var order= [['id', 'ASC']];
+  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order})).catch(err=>{
+    return { code: err.parent.code, message: err.parent.sqlMessage }
+  });
+  
+}
+
 exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
 
   logger.info("createdBy", createdBy)
