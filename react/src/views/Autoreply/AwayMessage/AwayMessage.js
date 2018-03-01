@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import validator from 'validator';
 import './AwayMessage.css';
-import { EVENT_ID, CATEGORY, STATUS, SEQUENCE } from '../Constant'
+import { EVENT_ID, CATEGORY, STATUS, SEQUENCE, WELCOME_MSG_METADATA } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
@@ -13,7 +13,7 @@ class AwayMessage extends Component{
     super(props);
     this.state = {
      enableDisableCheckbox: false,
-     status:STATUS.DISABLE,
+     status:STATUS.ENABLE,
      awayMessageKnownCustomers:[{messageField:''}],
      awayMessageAnonymousCustomers:[{messageField:''}],
      awayMessageCopyKnownCustomers:[{messageField:''}],
@@ -33,52 +33,56 @@ class AwayMessage extends Component{
      // Event ID 1 : agent is offline and anonymous customer
      //Event ID 2 : agent is offline and customer is known   
     let eventIds = [1, 2];
+    let eventId2Messages = [];
+    let eventId1Messages =[];
     let awayMessageKnownCustomers = [];
     let awayMessageCopyKnownCustomers = [];
     let awayMessageAnonymousCustomers = [];
     let awayMessageCopyAnonymousCustomers =[];
       return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
         // eventId id 2 when agent is offline and customer is known
-        response.eventId2Messages.map(msg => {
-              msg.messages.map(item => {
-                  awayMessageKnownCustomers.push({
-                      messageField: item.message,
-                      messageId: item.id,
-                      status: item.status
-                  })
-                  awayMessageCopyKnownCustomers.push({
-                      messageField: item.message,
-                      messageId: item.id,
-                      status: item.status
-                  })
-                  this.setState({
-                      awayMessageKnownCustomers: awayMessageKnownCustomers,
-                      awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers
-                  },this.updateUserStatus);
-                 
-
-              })
+        eventId1Messages = response.filter(function (msg) {
+          return msg.eventId == 1;
+        });
+        eventId2Messages = response.filter(function (msg) {
+          return msg.eventId == 2;
+        });
+        
+        eventId2Messages.map(item => {
+          awayMessageKnownCustomers.push({
+            messageField: item.message,
+            messageId: item.id,
+            status: item.status
         })
+          awayMessageCopyKnownCustomers.push({
+            messageField: item.message,
+            messageId: item.id,
+            status: item.status
+         })
+        this.setState({
+            awayMessageKnownCustomers: awayMessageKnownCustomers,
+            awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers
+          }, this.updateUserStatus);
+        })
+        
         // eventId id 1 when agent is offline and user is anonymous customer
-        response.eventId1Messages.map(msg => {
-            msg.messages.map(item => {
-                awayMessageAnonymousCustomers.push({
-                    messageField: item.message,
-                    messageId: item.id,
+        eventId1Messages.map(item => {
+          awayMessageAnonymousCustomers.push({
+              messageField: item.message,
+              messageId: item.id,
+              status: item.status
+          })
+          awayMessageCopyAnonymousCustomers.push({
+              messageField: item.message,
+              messageId: item.id,
                     status: item.status
-                })
-                awayMessageCopyAnonymousCustomers.push({
-                    messageField: item.message,
-                    messageId: item.id,
-                    status: item.status
-                })
-                this.setState({
-                    awayMessageAnonymousCustomers: awayMessageAnonymousCustomers,
-                    awayMessageCopyAnonymousCustomers: awayMessageCopyAnonymousCustomers
-                },this.updateUserStatus);
+          })
+          this.setState({
+              awayMessageAnonymousCustomers: awayMessageAnonymousCustomers,
+              awayMessageCopyAnonymousCustomers: awayMessageCopyAnonymousCustomers
+            },this.updateUserStatus);
 
-            })
-        })
+          })     
 
       }).catch(err => {
           console.log("Error while fetching away message", err);
@@ -190,7 +194,8 @@ class AwayMessage extends Component{
       message: this.state.awayMessageKnownCustomers[index].messageField,
       status: this.state.status, // disable(2) : intially away message disabled 
       category: CATEGORY.AWAY_MESSAGE, //disabling and enabling away message based on category, away message category is 2 
-      sequence: SEQUENCE.AWAY_MESSAGE //sequence is for order for showing away message
+      sequence: SEQUENCE.AWAY_MESSAGE, //sequence is for order for showing away message
+      metadata: WELCOME_MSG_METADATA
     }
     addInAppMsg(data)
       .then(response => {
@@ -387,7 +392,7 @@ class AwayMessage extends Component{
                       this.setState({
                         disableButtonForKnownTextArea: true
                       }, this.awayMessageKnownCustomersMethod)
-                    }} >Save changes</button>
+                    }} >Save</button>
                   <button disabled = {this.state.disableButtonForKnownTextArea} className="km-button km-button--secondary discard-btn" 
                     onClick={(e) => {
                         this.setState({
@@ -420,7 +425,7 @@ class AwayMessage extends Component{
                       this.setState({
                         disableButtonForAnonymousTextArea: true
                       }, this.awayMessageAnonymousCustomersMethod)
-                    }} >Save changes</button>
+                    }} >Save</button>
                   <button disabled = {this.state.disableButtonForAnonymousTextArea} className="km-button km-button--secondary discard-btn" 
                     onClick={(e) => {
                         this.setState({
