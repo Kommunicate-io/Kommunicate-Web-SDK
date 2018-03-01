@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import validator from 'validator';
 import './Welcome.css';
-import { EVENT_ID, CATEGORY, STATUS } from '../Constant'
+import { EVENT_ID, CATEGORY, STATUS, WELCOME_MSG_METADATA } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
@@ -12,7 +12,7 @@ class Welcome extends Component{
     super(props);
     this.state = {
      enableDisableCheckbox: false,
-     status:STATUS.DISABLE,
+     status:STATUS.ENABLE,
      welcomeMessages:[{messageField:''}],
      welcomeMessagesCopy:[],
      enableAddMsgLink: false,
@@ -32,32 +32,28 @@ class Welcome extends Component{
     let welcomeMessagesCopy = [];
     let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
     hideTrashBtn.splice(0,2,false,false);
-    return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response=>{
-      response.eventId3Messages.map(msg => {
-        msg.messages.map(item => {
-          welcomeMessages.push({
-            messageField: item.message,
-            messageId: item.id,
-            status: item.status
-          })
-          welcomeMessagesCopy.push({
-            messageField: item.message,
-            messageId: item.id,
-            status:item.status
-          })
-          this.setState({
-            welcomeMessages:welcomeMessages,
-            welcomeMessagesCopy:welcomeMessagesCopy,
-            hideTrashBtn:hideTrashBtn
-          },this.updateUserStatus);
-        
+    return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
+      response.map(item => {
+        welcomeMessages.push({
+          messageField: item.message,
+          messageId: item.id,
+          status: item.status
         })
-      })    
-      
-    }).catch(err=>{
-      console.log("error while fetching welcome message",err);
-    })
+        welcomeMessagesCopy.push({
+          messageField: item.message,
+          messageId: item.id,
+          status: item.status
+        })
+        this.setState({
+          welcomeMessages: welcomeMessages,
+          welcomeMessagesCopy: welcomeMessagesCopy,
+          hideTrashBtn: hideTrashBtn
+        }, this.updateUserStatus);
 
+      })
+    }).catch(err => {
+      console.log("error while fetching welcome message", err);
+    })
   }
   handleCheckboxChange = () => {
 
@@ -166,7 +162,8 @@ class Welcome extends Component{
       message: this.state.welcomeMessages[index].messageField,
       status: this.state.status, // disabled intially
       category: CATEGORY.WELCOME_MESSAGE, // disabling and enabling welcome message based on category,for welcome category is 1
-      sequence: index+1  //sequence is an order, to display welcome message. user can create 3 different welcome messages 
+      sequence: index+1,  //sequence is an order, to display welcome message. user can create 3 different welcome messages 
+      metadata: WELCOME_MSG_METADATA
     }
     addInAppMsg(data)
       .then(response => {
@@ -293,7 +290,7 @@ class Welcome extends Component{
                       this.setState({
                         disableButton: true
                       }, this.welcomeMessagesMethod)
-                    }} >Save changes</button>
+                    }} >Save</button>
                   <button disabled = {this.state.disableButton} className="km-button km-button--secondary discard-btn" onClick={this.discardWelcomeMessage}>Discard</button>
                 </div>
               </div>

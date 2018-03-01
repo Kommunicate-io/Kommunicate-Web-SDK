@@ -14,3 +14,7 @@ export const STATUS = {
     ENABLE: 1,
     DISABLE: 2
 }
+export const WELCOME_MSG_METADATA = {
+    category: "ARCHIVE",
+    skipBot: true
+}
