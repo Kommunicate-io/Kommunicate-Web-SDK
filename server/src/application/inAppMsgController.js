@@ -3,7 +3,7 @@ const registrationService =require('../register/registrationService');
 const userService = require("../users/userService");
 const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
-const constant = require('./utils')
+const constant = require('./utils');
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");

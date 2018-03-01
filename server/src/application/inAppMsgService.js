@@ -6,6 +6,7 @@ const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 const Sequelize = require("sequelize");
+const constant = require('./utils')
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
@@ -250,6 +251,9 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   let criteria={};
   if(customerId){
     criteria.customerId=customerId;
+  }
+  if (constant.EVENT_ID.WELCOME_MESSAGE != eventIds[0]) {
+    criteria.createdBy = { [Sequelize.Op.or]: [null, createdBy] }
   }
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
