@@ -14,7 +14,7 @@ kommunicateDashboard.markup = {
         </div>
     </div>
     <div class="km-dashboard-person-selector">
-        <div>Children: <span style="font-size:12px; color: rgba(0,0,0,0.5); display: block;">(1-12 yrs)</span> :</div>
+        <div>Children: <span style="font-size:12px; color: rgba(0,0,0,0.5); display: block;">(1-12 yrs)</span> </div>
         <div style="margin-bottom:30px">
             <input type="button" value="-" class ="km-dashboard-decrement-children-count" >
             <input type="number" min="0" max="6" value="0" id="km-dashboard-person-number-field" class="km-dashboard-person-number-field" maxlength="1" disabled>
