@@ -4,6 +4,7 @@
 */
 
 /*css for ask number of rooms in hotel booking */
+
 .km-dashboard-msg-box-rich-text-container{
 	top: 0;
 	float: left;
@@ -25,6 +26,8 @@ border-top-left-radius: 4px;
 
 }
 .km-dashboard-rich-text-default-container{
+    /* width: 30%; */
+    margin-left: 45px;
 	border-radius: 10px;
 	background-color: #fff;
 	padding: 10px;
@@ -355,6 +358,7 @@ cursor: pointer;
 }
 
 .km-dashboard-cta-multi-button-container {
+    width: 100%;
     display: flex;
     flex-flow: row;
 	justify-content: center;
@@ -501,7 +505,7 @@ cursor: pointer;
 }
 .km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
     /* margin-left: 830px; */
-    margin-left: 900px;
+    margin-left: 878px;
 }
 /*** Tiny Slider ends here ***/
 /* Room Details after Blocking Room */
