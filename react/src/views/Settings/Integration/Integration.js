@@ -93,8 +93,8 @@ class Integration extends Component {
                     Follow the steps below to install Kommunicate Chat in your product
                   </h5>
                   {
-                    (currentPath.includes('install')) ?  <h3>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-                    </span> </h3> : " "
+                    (currentPath.includes('installation')) ? " " : <h3>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+                    </span> </h3>
                   }
                 </div>
                 <div className="app-id-container">

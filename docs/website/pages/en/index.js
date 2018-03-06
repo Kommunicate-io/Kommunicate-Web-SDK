@@ -66,6 +66,7 @@ const ProjectTitle = props => (
     <p className="projectSubtexts">
       Kommunicate brings a hybrid chatbots + human powered customer messaging solution for proactive and delightful customer support.
 </p>
+<DocsCards />
     <p className="projectSubtexts">
       Installing a free live chat on your website is easy. You can create a free account by <a className="link-para" href="https://dashboard.kommunicate.io/signup">signing up</a> for Kommunicate.
 </p>
@@ -293,7 +294,6 @@ class Index extends React.Component {
           {/* <Description /> */}
           {/* <Showcase language={language} /> */}
         </div>
-        <DocsCards />
       </div>
     );
   }

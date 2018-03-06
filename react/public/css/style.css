@@ -10488,11 +10488,8 @@ input:required {
 
 .badge-disabled {
   color: #ed222a;
-  border: solid 1px ##ed222a;
+  border: solid 1px #ed222a;
 }
-
-
-
 .km-bot-list-of-dialogflow-bots-container {
   height: 208px;
   overflow-y: auto;
@@ -10511,3 +10508,9 @@ input:required {
   color: #6c6a6a;
 }
 
+.invite-team {
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  line-height: 1.1 !important;
+  color: rgb(95, 97, 98) !important;
+}
