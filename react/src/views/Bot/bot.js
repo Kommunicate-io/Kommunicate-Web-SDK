@@ -399,6 +399,7 @@ class Tabs extends Component {
           if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
             Notification.info("Changes Saved successfully")
             this.toggleEditBotIntegrationModal()
+            this.getIntegratedBotsWrapper()
           }
           this.getIntegratedBotsWrapper()
         }).catch(err => {console.log(err)})
@@ -426,6 +427,22 @@ class Tabs extends Component {
   toggleBotAvailability = () => {
     this.setState({
       botAvailable: !this.state.botAvailable
+    })
+  }
+
+  deleteBot = () => {
+
+    let patchUserData = {
+      deleted_at:new Date()
+    }
+
+    patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
+      if(response.data.code === 'SUCCESS'){
+        Notification.info("Deleted successfully")
+        this.toggleDeleteBotIntegrationModal()
+        this.toggleEditBotIntegrationModal()
+        this.getIntegratedBotsWrapper()
+      }
     })
   }
 
@@ -737,7 +754,7 @@ class Tabs extends Component {
                   <img src={Diaglflow} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" style={{marginTop: "0px"}}/>
                 </div>
                 <div className="col-sm-4">
-                  <span>{this.state.botAiPlatform['dialogflow']}<br />{this.state.botName}</span>
+                  <span style={{whiteSpace: "nowrap"}}>{this.state.botAiPlatform['dialogflow']}<br />{this.state.botName}</span>
                 </div> 
               </div>
               <div className="col-sm-2" style={{textAlign: "left"}}>
@@ -755,7 +772,7 @@ class Tabs extends Component {
                 </button>
               </div>
               <div className="col-sm-3 text-right">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" onClick={this.deleteBot}>
                   Delete
                 </button>
               </div>  
