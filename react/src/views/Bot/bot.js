@@ -473,7 +473,7 @@ class Tabs extends Component {
                             <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                           </div>
                           <div className="col-sm-2">
-                            <span><span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[bot.aiPlatform.toLowerCase()]}</span><br /><span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span></span>
+                            <span><span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[(bot.aiPlatform) ? bot.aiPlatform.toLowerCase() : '']}</span><br /><span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span></span>
                           </div> 
                         </div>
                         <div className="col-sm-3">
