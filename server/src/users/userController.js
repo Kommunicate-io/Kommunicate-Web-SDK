@@ -102,6 +102,7 @@ exports.createUser = function(req,res) {
           user.application = application;
           user.adminUserName = customer.userName;
           user.adminDisplayName = customer.name;
+          user.routingState = customer.agentRouting;
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;
         });
