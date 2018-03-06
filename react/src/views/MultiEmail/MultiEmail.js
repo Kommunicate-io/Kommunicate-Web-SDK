@@ -93,14 +93,14 @@ class MultiEmail extends Component {
         return (
             <div>
                 {<div className="form-group multi-email-install-link">
-                {(currentPath.includes('install'))?<a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
-                        onClick={this.showEmailInput}>Send instructions to team </a> : <button
+                {((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ?  <button
                         className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
                         onClick={this.showEmailInput}
                     >
                         {" "}
                         Send instructions to team{" "}
-                    </button>}
+                    </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
+                        onClick={this.showEmailInput}>Send instructions to team </a>}
                     
                     
                 </div>}

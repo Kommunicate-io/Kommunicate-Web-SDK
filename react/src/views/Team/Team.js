@@ -114,7 +114,7 @@ class Integration extends Component {
                        <span className="remove-email" onClick={() => {this.removeEmail(email)}}>| X</span>
                      </div>
                    ))}
-                   <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="you can enter multiple emails here"/>
+                   <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="You can enter multiple emails here" style={{paddingLeft: "10px"}}/>
                  </div>
                  </div>
              </div>
@@ -126,7 +126,7 @@ class Integration extends Component {
          <div className="col-md-12">
            <div className="card">
              <div className="card-block">
-               <label className="col-md-3 form-control-label" htmlFor="invite">Team</label>
+               <label className="col-md-3 form-control-label invite-team" htmlFor="invite">Team</label>
                <table className="table table-hover table-outline mb-0 hidden-sm-down">
                  <thead className="thead-default">
                    <tr>
