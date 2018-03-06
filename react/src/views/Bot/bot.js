@@ -17,6 +17,7 @@ import Tick from './images/tick-icon.png'
 import KmIcon from './images/km-icon.png'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
+import SliderToggle from '../../components/SliderToggle/SliderToggle';
 
 class Tabs extends Component {
 
@@ -66,6 +67,7 @@ class Tabs extends Component {
       editedDevToken: '',
       botUserName: '',
       dialogFlowBots: [],
+      botAvailable: true
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -421,6 +423,12 @@ class Tabs extends Component {
     });
   }
 
+  toggleBotAvailability = () => {
+    this.setState({
+      botAvailable: !this.state.botAvailable
+    })
+  }
+
   render() {
     return (
       <div className="animated fadeIn" >
@@ -666,8 +674,15 @@ class Tabs extends Component {
         </Modal>
         <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog" style={{width: "700px"}}>
           <ModalHeader toggle={this.toggleEditBotIntegrationModal}>
-            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
-            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>{this.state.editBotIntegrationModalHeader}</span>
+            <div className="row">
+              <div>
+                <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
+                <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>{this.state.editBotIntegrationModalHeader}</span>
+              </div>
+              <div style={{marginTop: "20px", marginLeft: "200px"}}>
+                <SliderToggle checked={this.state.botAvailable} handleOnChange={this.toggleBotAvailability} />
+              </div>
+            </div>
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -735,7 +750,7 @@ class Tabs extends Component {
               <div className="col-sm-6">
               </div>
               <div className="col-sm-3 text-right">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" onClick={this.toggleDeleteBotIntegrationModal}>
                   Cancel
                 </button>
               </div>
