@@ -177,7 +177,10 @@ class Aside extends Component {
                                         }
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : groupId,
-                                            'message' : "Assigned to " + displayName
+                                            'message' : "Assigned to " + displayName,
+                                            'metadata':{
+                                              'skipBot':true
+                                            }
                                           });
                                       }
                                     });

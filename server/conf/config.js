@@ -38,9 +38,9 @@ const config ={
         }
       },
       mailProvider:{
-        accessKey:"support@kommunicate.io", 
-        accessPassword:"knowledge123", 
-        serviceEmail:"noreply@kommunicate.io",
+        accessKey:"AKIAIDIQARZR6CEWS57Q", 
+        accessPassword:"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+        serviceEmail:"support@kommunicatemail.io",
         serviceProvider:"2" 
       },
       s3Access: {
@@ -99,9 +99,9 @@ const config ={
       }
     },
     mailProvider:{
-      accessKey:"support@kommunicate.io", 
-      accessPassword:"knowledge123", 
-      serviceEmail:"noreply@kommunicate.io",
+      accessKey:"AKIAIDIQARZR6CEWS57Q", 
+      accessPassword:"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+      serviceEmail:"support@kommunicatemail.io",
       serviceProvider:"2" 
     },
     s3Access: {
@@ -159,9 +159,9 @@ const config ={
       }
     },
     mailProvider:{
-      accessKey:"support@kommunicate.io", 
-      accessPassword:"knowledge123", 
-      serviceEmail:"noreply@kommunicate.io",
+      accessKey:"AKIAIDIQARZR6CEWS57Q", 
+      accessPassword:"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+      serviceEmail:"support@kommunicatemail.io",
       serviceProvider:"2" 
     },
     s3Access: {
@@ -221,9 +221,9 @@ const config ={
         }
       },
       mailProvider:{
-        accessKey:"support@kommunicate.io", 
-        accessPassword:"knowledge123", 
-        serviceEmail:"noreply@kommunicate.io",
+        accessKey:"AKIAIDIQARZR6CEWS57Q", 
+        accessPassword:"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+        serviceEmail:"support@kommunicatemail.io",
         serviceProvider:"2" 
       },
       s3Access: {

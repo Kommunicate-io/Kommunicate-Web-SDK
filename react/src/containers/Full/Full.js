@@ -16,6 +16,7 @@ import Admin from '../../views/Admin/'
 import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
 import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
+import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
 
@@ -95,7 +96,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
@@ -112,6 +113,7 @@ class Full extends Component {
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
+                <Route exact path="/away-message" name="AwayMessage" component={AwayMessage}/>
                 <Route exact path="/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
                 <Route exact path="/install" name="Integration" component={Integration}/>
                 <Route exact path="/agent-app" name="Download" component={Download}/>

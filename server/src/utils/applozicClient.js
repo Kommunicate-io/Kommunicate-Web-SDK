@@ -250,7 +250,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
   });
 };
 
-exports.sendGroupMessage = (groupId,message,apzToken,applicationId,user_name,metadata)=>{
+exports.sendGroupMessage = (groupId,message,apzToken,applicationId,metadata)=>{
   console.log("sending message to group ",groupId);
   console.log("calling send Message API with info , groupId: ",groupId,"message :",message,":apz-token:",apzToken,"applicationId",applicationId,"metadata",metadata );
   let url = config.getProperties().urls.sendMessageUrl;

@@ -41,11 +41,7 @@ class Users extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="card">
-              <div className="card-header">
-                Customers
-              </div>
               <div className="card-block">
-
                 <table className="table table-hover table-outline mb-0 hidden-sm-down">
                   <thead className="thead-default">
                     <tr>

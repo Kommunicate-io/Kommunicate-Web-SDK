@@ -19,6 +19,9 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-title">
                             PERSONAL
                         </li>
+                        <li className="ss-nav-item welcome-link">
+                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
+                        </li>
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>
@@ -43,10 +46,10 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
                         </li>
-                        <li className="ss-nav-title" style={{"display":"none"}}>
+                        <li className="ss-nav-title">
                             DOWNLOAD
                         </li>
-                        <li className="ss-nav-item agent-app-link"style={{"display":"none"}}>
+                        <li className="ss-nav-item agent-app-link">
                             <NavLink to={'/agent-app'} className="ss-nav-link" activeClassName="active">Agent app</NavLink>
                         </li>
                     </ul>

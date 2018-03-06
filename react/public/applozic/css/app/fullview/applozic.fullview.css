@@ -1602,6 +1602,7 @@ ol, ul {
 }
 
 .km-msg-left-muted {
+	width:100%;
 	float: left;
 	margin-left: 15px;
 }
@@ -3184,17 +3185,6 @@ ol, ul {
 	background-position: -10px -796px;
 	width: 16px;
 	height: 16px;
-}
-.km-msg-box-rich-text-container{
-	top: 0;
-	float: left;
-	margin: 5px 0px 0px 7px;
-    /* width:100%;  */
-	color:#7766B5;
-	overflow-x:hidden;
-}
-.km-container .right .chat.active-chat {
-	overflow-x: hidden !important;
 }
 
 @media ( min-width : 620px) {

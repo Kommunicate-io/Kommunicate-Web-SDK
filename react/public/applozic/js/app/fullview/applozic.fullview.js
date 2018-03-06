@@ -907,9 +907,11 @@ var KM_CLIENT_GROUP_MAP = [];
                 'type': params.messageType,
                 'contentType': params.type,
 				'message': message,
-				'metadata':{
-					'skipBot':true
-				}
+				// 'metadata':{
+				// 	'skipBot':true
+				// }
+				'metadata':params.metadata
+				
             };
             if (params.groupId) {
                 messagePxy.groupId = $kmApplozic.trim(params.groupId);
@@ -3192,8 +3194,13 @@ var KM_CLIENT_GROUP_MAP = [];
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
 
       
-			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}}</div>' + '<div class="km-msg-text km-msg-content"></div>' + '</div></div>' + '<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>'+
-			'<div class="km-msg-box-rich-text-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>';
+			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + 
+			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}}</div>' + 
+			'<div class="km-msg-text km-msg-content"></div>' + 
+			'</div></div>' + 
+			'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>'+
+			'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
+			
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
 			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
@@ -3594,7 +3601,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileName = msg.fileMeta.name;
 					fileSize = msg.fileMeta.size;
 				}
-				var richText = Kommunicate.isRichTextMessage(msg.metadata);
+				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata);
 				
 				var msgList = [ {
 					msgKeyExpr : msg.key,
@@ -3625,8 +3632,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize,
 					kmRichTextMarkupVisibility:richText?'vis':'n-vis',
-					kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):"",
-					containerType: Kommunicate.getConatainerTypeForRichMessage(msg.metadata)
+					kmRichTextMarkup: richText?kommunicateDashboard.getRichTextMessageTemplate(msg.metadata):"",
+					containerType: kommunicateDashboard.getConatainerTypeForRichMessage(msg.metadata)
 				} ];
 				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
 				append ? $kmApplozic.tmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.tmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
@@ -3688,8 +3695,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				
 				if (richText) {
-                    Kommunicate.richMsgEventHandler.initializeSlick($kmApplozic("div[data-msgkey='" + msg.key + "'] .km-card-message-container"));
+                    kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic("div[data-msgkey='" + msg.key + "'] .km-dashboard-card-message-container"));
                 }
+				
 
 				if (msg.fileMeta) {
 					$kmApplozic("." + replyId + " .km-file-text a").trigger('click');
@@ -6179,7 +6187,7 @@ var KM_CLIENT_GROUP_MAP = [];
 			$kmApplozic.template("KMfileboxTemplate", mck_filebox_tmpl);
 			_this.init = function() {
 				//ataching events for rich msh templates
-                Kommunicate.attachEvents ($kmApplozic);
+                kommunicateDashboard.attachEvents ($kmApplozic);
 				$mck_file_upload.on('click', function() {
 					$mck_file_input.trigger('click');
 				});

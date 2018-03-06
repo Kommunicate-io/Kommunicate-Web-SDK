@@ -30,3 +30,5 @@ alter table in_app_msgs add column created_by int;
 alter table in_app_msgs add column metadata json;
 alter table in_app_msgs add column category int;
 
+alter table users add column bot_availability_status int DEFAULT 1;
+

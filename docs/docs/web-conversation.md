@@ -3,8 +3,8 @@ id: web-conversation
 title: Conversation
 sidebar_label: Conversation
 ---
-## Launching the chat screen:
-You can launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:
+## Launch conversation list:
+To launch the conversation list use the following method.
 
 ```
 Kommunicate.openConversationList();
@@ -16,7 +16,7 @@ You can create a new conversation as described below:
 ```
 var conversationDetail = {
     agentId: AGENT_ID,
-    botIds: ['BOTID1', 'BOTID2'] //optional
+    botIds: [BOTID1, BOTID2] //optional
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");

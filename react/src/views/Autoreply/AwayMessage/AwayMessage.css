@@ -1,54 +1,41 @@
 body {
     font-family: 'Roboto', sans-serif;
 }
-.welcome-message-wrapper{
+.away-message-wrapper{
     margin-left: 25px;
 }
-.welcome-message-title {
+.away-message-title {
     font-size: 18px;
     letter-spacing: 1.3px;
     text-align: left;
     color: #354052;
 }
-.welcome-message-description{
+.away-message-description{
     font-size: 16px;
     letter-spacing: 0.8px;
     text-align: left;
     color: #a1a1a1;
 }
-.welcome-msg-text-area{
+.away-msg-text-area{
     width: 100%;
     border: 1px solid #eaeaea;
     border-radius: 2px;
     padding: 7px;
 
 }
-.welcome-card-header {
-    border-radius: 2px;
+.away-card-header {
     width: 60%;
+    border-radius: 2px;
     background-color: #f4f5f7;
     border: solid 1px #ddd7d7;
 }
-.message-wrapper {
+.away-message-known-customers-wrapper, .away-message-anonymous-customers-wrapper {
     margin-left: 15px;
 }
 .discard-btn{
     margin-left: 15px;
 }
-.add-new-msg-btn{
-    padding-left: 0;
-    font-size: 14px;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #5c5aa7;
-    padding-top: 5px;
-    cursor: pointer;
-    border: 0;
-    background: none; 
-    display: block;
-    margin-bottom: 10px;
-}
-.message-title{
+.customers-message-title{
     font-size: 16px;
     letter-spacing: 1.2px;
     text-align: left;
@@ -59,39 +46,41 @@ body {
 .slider-toggle {
     margin-left: 10px;
 }
-.text-area-wrapper{
+.away-text-area-wrapper{
     margin-right: 1px;
     margin-bottom: 3px;
-    position: relative;
 }
-.trash-wrapper {
-    position: relative;
+.customer-type{
+    color: #3d3b3b;
 }
-.trash-btn {
-    right: 15px;
-    border: 1px solid grey;
-    border-radius: 50%;
-    height: 22px;
-    width: 22px;
-    position: absolute;
-    bottom: 4px;
-    text-align: center;
-    cursor: pointer;
-    
+.btn-group {
+    margin-top: 10px;
+}
+.anonymous-wrapper{
+    margin-top: 45px;
+    margin-bottom: 45px;
+}
+.fa-info-circle{
+    color: #354052;
+}
+.info-icon{
+    margin-left: 10px;
+}
+.checkbox-input[type='checkbox']{
+    display: flex
 }
 textarea::-webkit-input-placeholder {
     color: rgb(202, 206, 207);
     }
     
     textarea:-moz-placeholder { /* Firefox 18- */
-    color: rgb(202, 206, 207);
+    color: rgb(202, 206, 207); 
     }
     
     textarea::-moz-placeholder {  /* Firefox 19+ */
-    color:rgb(202, 206, 207);
+    color:rgb(202, 206, 207);  
     }
     
     textarea:-ms-input-placeholder {
-    color:rgb(202, 206, 207);
-
+    color:rgb(202, 206, 207); 
     }

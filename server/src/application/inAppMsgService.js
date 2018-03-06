@@ -6,6 +6,7 @@ const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 const Sequelize = require("sequelize");
+const constant = require('./utils')
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
@@ -121,25 +122,28 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   // remove this once react changes goes to prod
   // only supporting event type =1;
    //eventType =1;
-    return Promise.all([userService.getByUserNameAndAppId("bot",customer.applicationId), getInAppMessage(agentId, eventType)]).then(([bot,inAppMessages])=>{
+  if (!agentName) {
+    agentName = customer.userName;
+  }
+    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(agentId, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
+          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
+                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"})
+                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
@@ -240,6 +244,25 @@ exports.getInAppMessages2=(createdBy, customerId)=>{
             customerId: customerId
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+}
+
+exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
+
+  let criteria={};
+  if(customerId){
+    criteria.customerId=customerId;
+  }
+  if (constant.EVENT_ID.WELCOME_MESSAGE != eventIds[0]) {
+    criteria.createdBy = { [Sequelize.Op.or]: [null, createdBy] }
+  }
+  if(eventIds.length>0){
+    criteria.eventId={ $in:eventIds}
+  }
+  var order= [['id', 'ASC']];
+  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order})).catch(err=>{
+    return { code: err.parent.code, message: err.parent.sqlMessage }
+  });
+  
 }
 
 exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
