@@ -396,6 +396,7 @@ class Tabs extends Component {
         .then(([patchUserInfoResponse, axiosPostResponse]) => {
           if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
             Notification.info("Changes Saved successfully")
+            this.toggleEditBotIntegrationModal()
           }
           this.getIntegratedBotsWrapper()
         }).catch(err => {console.log(err)})
