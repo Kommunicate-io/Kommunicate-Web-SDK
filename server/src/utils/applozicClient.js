@@ -241,7 +241,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",esponse.data.errorResponse.description);
+      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
       return null;
     }
   }).catch(err=>{
