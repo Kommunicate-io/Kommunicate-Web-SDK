@@ -16,3 +16,11 @@ module.exports.patchCustomer={
         applicationId:joi.string().required()
   }
 }
+
+module.exports.updateRoutingState={
+  params:{
+        appId:joi.string().required(),
+        routingState:joi.string().required()
+
+  }
+}
