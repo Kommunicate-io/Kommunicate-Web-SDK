@@ -105,9 +105,9 @@ class MultiEmail extends Component {
                     
                 </div>}
                 <div className={
-                    ((this.state.emailInstructions === true) && (currentPath.includes('install')))
-                        ? "form-group m-top-10 row" : ((this.state.emailInstructions === true) && (currentPath.includes('setUpPage')))
-                        ? "form-group flex-center row" : "n-vis"
+                    ((this.state.emailInstructions === true) && ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))))
+                        ? "form-group flex-center row" : ((this.state.emailInstructions === true))
+                        ? "form-group m-top-10 row" : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
                     <div className="form-group group multiple-email-container">
