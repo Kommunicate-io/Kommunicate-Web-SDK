@@ -260,7 +260,7 @@ class Tabs extends Component {
               _this.clearBotDetails();
               Notification.info("Bot integrated successfully");
               _this.setState({disableIntegrateBotButton: false}) 
-              if(aiPlatform === "dialogflow"){
+              if(aiPlatform === "api.ai"){
                 _this.setState({dialogFlowIntegrated: true})
               }else if( aiPlatform === "microsoft"){
                 _this.setState({microsoftIntegrated: true})
@@ -682,7 +682,7 @@ class Tabs extends Component {
             </div>
             <div className="row" style={{marginTop: "66px"}}>
               <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
+                <button className="btn btn-primary" onClick={() => {this.integrateBot("api.ai")}} disabled={this.state.disableIntegrateBotButton}>
                   Integrate and Setup Bot Profile
                 </button>
               </div>  
