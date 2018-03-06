@@ -32,3 +32,5 @@ alter table in_app_msgs add column category int;
 
 alter table users add column bot_availability_status int DEFAULT 1;
 
+alter table customers add column agent_routing int default 0;
+
