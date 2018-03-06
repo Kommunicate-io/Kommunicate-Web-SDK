@@ -656,9 +656,9 @@ const getIntegratedBots = () => {
 
       for(let i= 0; i < sqlBots.length; i++){
         for(let j = 0; j < mongoBots.data.length; j++ ){
-          if(sqlBots[i].name !== "bot" && sqlBots[i].name === mongoBots.data[i].name){
+          if(sqlBots[i].name !== "bot" && sqlBots[i].name === mongoBots.data[j].name){
             let bot1 = sqlBots[i];
-            let bot2 = mongoBots.data[i];
+            let bot2 = mongoBots.data[j];
             bots[i] = {...bot1, ...bot2};
 
             if(bots[i].aiPlatform && bots[i].aiPlatform.toLowerCase() === 'dialogflow'){
