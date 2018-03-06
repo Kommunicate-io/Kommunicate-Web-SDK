@@ -52,7 +52,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       field: 'active_campaign_id'
       
-    }
+    },
+    agentRouting:{
+      type: DataTypes.INTEGER,
+      field: "agent_routing"
+    },
   }, {
     underscored: true,
     paranoid: true

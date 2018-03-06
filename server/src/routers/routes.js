@@ -91,6 +91,7 @@ customerRouter.get('/:userName',registerController.getCustomerInformation);
 customerRouter.post('/applozic',function(req,res){
                           console.log("called sign up with Applozic");
                           registerController.signUpWithAplozic(req,res);});
+customerRouter.patch('/:appId/routing/:routingState', validate(customerValidation.updateRoutingState), registerController.updateAgentRoutingState)
 miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);

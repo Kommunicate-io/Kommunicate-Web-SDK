@@ -246,6 +246,14 @@ exports.getCustomerByAgentUserKey= (userKey) =>{
   });
 }
 
+exports.updateAgentRoutingState = (applicationId, routingState) =>{
+  return customerModel.update({agentRouting:routingState}, {where: {applicationId: applicationId}}).then(res=>{
+    return {message: "successfully updated"};
+  }).catch(err=>{
+    return {message: "routing update error "}
+  });
+}
+
 
 
 
