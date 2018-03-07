@@ -433,7 +433,7 @@ exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId) => {
       headers: {
         "Content-Type": "application/json",
         "Application-Key": applicationId,
-        Authorization: "Basic " + apzToken,
+        "Authorization": "Basic " + apzToken,
         "Of-User-Id": ofUserId,
         "Apz-Product-App": "true"
       }
