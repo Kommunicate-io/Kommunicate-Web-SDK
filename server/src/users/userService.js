@@ -324,20 +324,25 @@ if(!response) {
   return null;
 };
 
-exports.updateUser = (userId, appId, user)=>{
-    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
-      if(!customer) {
-        console.log("No customer in customer table with appId", appId);
-        return null;
-      }else {
-        return Promise.resolve(userModel.update(user,{where: {"userName": userId, customerId: customer.id}})).then(result=>{
-          console.log("successfully updated user",result[0]);
-          return result[0];
-        }).catch(err=>{
-          console.log("error while updating user",err);
-          throw err;
-        });
+exports.updateUser = (userId, appId, userInfo) => {
+  return Promise.resolve(getByUserNameAndAppId(userId, appId))
+    .then(user => {
+      if (user == null) {
+        throw new Error("No customer in customer table with appId", appId);
       }
+      let userDetail={userId:userId, displayName:userInfo.name, email:userInfo.email,phoneNumber:userInfo.contactNo};
+      applozicClient
+        .updateApplozicClient(user.userName, user.accessToken, appId, userDetail)
+        .then(response => {
+          console.log("Applozic update user response: " + response);
+        });
+      return userModel.update(userInfo, {
+        where: { userName: userId, customerId: user.customerId }
+      });
+    })
+    .catch(err => {
+      console.log("error while updating user", err);
+      throw err;
     });
 };
 
