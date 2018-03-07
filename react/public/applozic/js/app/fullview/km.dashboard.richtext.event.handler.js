@@ -4,17 +4,17 @@
  */
 
 kommunicateDashboard.attachEvents = function($kmApplozic){
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-increment-guest-count',kommunicateDashboard.richMsgEventHandler.incrementGuestCount);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-decrement-guest-count',kommunicateDashboard.richMsgEventHandler.decrementGuestCount);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-increment-children-count',kommunicateDashboard.richMsgEventHandler.incrementChildrenCount);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-decrement-children-count',kommunicateDashboard.richMsgEventHandler.decrementChildrenCount);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-btn-add-more-rooms',kommunicateDashboard.richMsgEventHandler.addMoreRoom);//
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-done-button',kommunicateDashboard.richMsgEventHandler.processSelectedRoom);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-card-message-footer-button',kommunicateDashboard.richMsgEventHandler.processHotelBookClick);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-cta-button',kommunicateDashboard.richMsgEventHandler.handlleRichButtonClick);
-    $kmApplozic("#km-message-cell").on('click','.km-dashboard-submit-person-detail',kommunicateDashboard.richMsgEventHandler.handlleSubmitPersonDetail);
-    $kmApplozic("#km-message-cell").on('click', '.km-dashboard-block-room-button', kommunicateDashboard.richMsgEventHandler.processBookRoomClick);
-    $kmApplozic("#km-message-cell").on('click', '.km-dashboard-quick-replies', kommunicateDashboard.richMsgEventHandler.processQuickReplies);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-increment-guest-count',kommunicateDashboard.richMsgEventHandler.incrementGuestCount);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-decrement-guest-count',kommunicateDashboard.richMsgEventHandler.decrementGuestCount);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-increment-children-count',kommunicateDashboard.richMsgEventHandler.incrementChildrenCount);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-decrement-children-count',kommunicateDashboard.richMsgEventHandler.decrementChildrenCount);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-btn-add-more-rooms',kommunicateDashboard.richMsgEventHandler.addMoreRoom);//
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-done-button',kommunicateDashboard.richMsgEventHandler.processSelectedRoom);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-card-message-footer-button',kommunicateDashboard.richMsgEventHandler.processHotelBookClick);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-cta-button',kommunicateDashboard.richMsgEventHandler.handlleRichButtonClick);
+    // $kmApplozic("#km-message-cell").on('click','.km-dashboard-submit-person-detail',kommunicateDashboard.richMsgEventHandler.handlleSubmitPersonDetail);
+    // $kmApplozic("#km-message-cell").on('click', '.km-dashboard-block-room-button', kommunicateDashboard.richMsgEventHandler.processBookRoomClick);
+    // $kmApplozic("#km-message-cell").on('click', '.km-dashboard-quick-replies', kommunicateDashboard.richMsgEventHandler.processQuickReplies);
      
 
 }
