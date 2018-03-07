@@ -424,3 +424,28 @@ exports.getUserDetails = (userName,applicationId,apzToken) => {
   });
 
 }
+
+exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId) => {
+  let url =
+    config.getProperties().urls.applozicHostUrl + "/rest/ws/group/update";
+  return Promise.resolve(
+    axios.post(url, groupInfo, {
+      headers: {
+        "Content-Type": "application/json",
+        "Application-Key": applicationId,
+        Authorization: "Basic " + apzToken,
+        "Of-User-Id": ofUserId,
+        "Apz-Product-App": "true"
+      }
+    })
+  )
+    .then(response => {
+      console.log("received response from applozic", response.status);
+      if (response.status == 200) {
+        return response;
+      }
+    })
+    .catch(err => {
+      console.log("error while assign to user", err);
+    });
+};
