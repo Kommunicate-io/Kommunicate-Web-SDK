@@ -2116,7 +2116,8 @@ var KM_CLIENT_GROUP_MAP = [];
 					'storeOnDevice' : true,
 					'sent' : false,
 					'shared' : false,
-					'read' : true
+					'read' : true,
+					'metadata': (messagePxy.metadata) ? messagePxy.metadata : ''
 				};
 				message.type = (messagePxy.type) ? messagePxy.type : 5;
 				if (messagePxy.fileMeta) {
@@ -3540,6 +3541,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (msg.type === 6 || msg.type === 7) {
 					return;
 				}if(msg.contentType === 10 && msg.metadata.hide==="true"){
+					return;
+				}
+				if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
 					return;
 				}
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
