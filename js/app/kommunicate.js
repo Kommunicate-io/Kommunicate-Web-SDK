@@ -43,7 +43,7 @@ Kommunicate = {
                 group.push(params.botIds[i]);
             }
         }
-        var groupName = group.sort().join().replace(/,/g, "_").substring(0, 250);
+        var groupName = Kommunicate.createGroupName(group);
         $applozic.fn.applozic("createGroup", {
             groupName: groupName,
             type: 10,
@@ -91,6 +91,9 @@ Kommunicate = {
     openDirectConversation: function (userId) {
         window.$applozic.fn.applozic('loadTab', userId);
     },
+    createGroupName: function(group){
+        group.sort().join().replace(/,/g, "_").substring(0, 250);
+    },
     openLastConversation: function (params) {
         var conversationDetail = params;
         var user = [];
@@ -106,12 +109,12 @@ Kommunicate = {
                 group.push(params.botIds[i]);
             }
         }
-        var groupName = group.sort().join().replace(/,/g, "_").substring(0, 250);
+        var groupName = Kommunicate.createGroupName(group);
         var groupDetail = {};
         groupDetail.groupName = groupName;
         groupDetail.callback = function (response) {
             if(response.data.groups.length > 0){
-              console.log("already existing user");
+              console.log("already have a group");
               Kommunicate.openConversation(response.data.groups[0].id);
             }else{
               console.log("new user");

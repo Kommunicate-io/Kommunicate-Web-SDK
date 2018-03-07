@@ -457,7 +457,6 @@ function MckGroupService() {
     var GROUP_REMOVE_MEMBER_URL = "/rest/ws/group/remove/member";
     var GET_GROUP_BYFILTER_URL ="/rest/ws/group/filter";
     _this.getGroupByFilter = function(params) {
-        console.log("testt");
         var response = new Object();
         url = params.groupName ? MCK_BASE_URL + GET_GROUP_BYFILTER_URL+"?groupName="+params.groupName+"&pageSize=1" : MCK_BASE_URL + GET_GROUP_BYFILTER_URL
         mckUtils.ajax({
