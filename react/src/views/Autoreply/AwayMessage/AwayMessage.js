@@ -369,8 +369,7 @@ class AwayMessage extends Component{
                 <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
               </div>
               <div className="row" >
-                <p className="away-message-description">The away message will be shown to your customers if and when they send you a message while you are away.
-                 Away messages are personal and each agent can set their own away message.</p>
+                <p className="away-message-description">The away message will be shown to your customers if and when they send you a message while you are away.</p>
               </div>
             </div>
           </div>
