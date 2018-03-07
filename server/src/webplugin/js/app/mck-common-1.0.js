@@ -455,6 +455,28 @@ function MckGroupService() {
     var GROUP_UPDATE_INFO_URL = "/rest/ws/group/update";
     var GROUP_ADD_MEMBER_URL = "/rest/ws/group/add/member";
     var GROUP_REMOVE_MEMBER_URL = "/rest/ws/group/remove/member";
+    var GET_GROUP_BYFILTER_URL ="/rest/ws/group/filter";
+    _this.getGroupByFilter = function(params) {
+        var response = new Object();
+        url = params.groupName ? MCK_BASE_URL + GET_GROUP_BYFILTER_URL+"?groupName="+params.groupName+"&pageSize=1" : MCK_BASE_URL + GET_GROUP_BYFILTER_URL
+        mckUtils.ajax({
+            url: url,
+            type: 'get',
+            global: false,
+            success: function(data) {
+                if (data.status === 'success') {
+                    response.status = 'success';
+                    response.data = data.response;
+                    if (params.callback) {
+                        params.callback(response);
+                    }
+                } else {
+                    response.status = 'error';
+                }
+               
+            },
+        });
+    };
     _this.loadGroups = function(params) {
         var response = new Object();
         mckUtils.ajax({

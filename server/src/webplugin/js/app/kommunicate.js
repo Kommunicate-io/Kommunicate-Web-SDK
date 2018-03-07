@@ -31,16 +31,21 @@ Kommunicate = {
     },
     startConversation: function (params, callback) {
         var user=[];
+        var group = [];
+        group.push(params.agentId);
+        group.push(kommunicate._globals.userId);
         user.push({"userId":params.agentId,"groupRole":1});
         user.push({"userId":"bot","groupRole":2});
         if(params.botIds){
             console.log(params.botIds);
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({"userId":params.botIds[i],"groupRole":2});
+                group.push(params.botIds[i]);
             }
         }
+        var groupName = Kommunicate.createGroupName(group);
         $applozic.fn.applozic("createGroup", {
-            groupName: params.groupName ? params.groupName : params.agentId,
+            groupName: groupName,
             type: 10,
             admin: params.agentId,
             users: user,
@@ -85,6 +90,39 @@ Kommunicate = {
     },
     openDirectConversation: function (userId) {
         window.$applozic.fn.applozic('loadTab', userId);
+    },
+    createGroupName: function(group){
+        group.sort().join().replace(/,/g, "_").substring(0, 250);
+    },
+    openLastConversation: function (params) {
+        var conversationDetail = params;
+        var user = [];
+        var group = [];
+        group.push(params.agentId);
+        group.push(kommunicate._globals.userId);
+        user.push({ "userId": params.agentId, "groupRole": 1 });
+        user.push({ "userId": "bot", "groupRole": 2 });
+        if (params.botIds) {
+            console.log(params.botIds);
+            for (var i = 0; i < params.botIds.length; i++) {
+                user.push({ "userId": params.botIds[i], "groupRole": 2 });
+                group.push(params.botIds[i]);
+            }
+        }
+        var groupName = Kommunicate.createGroupName(group);
+        var groupDetail = {};
+        groupDetail.groupName = groupName;
+        groupDetail.callback = function (response) {
+            if(response.data.groups.length > 0){
+              console.log("already have a group");
+              Kommunicate.openConversation(response.data.groups[0].id);
+            }else{
+              console.log("new user");
+            Kommunicate.startConversation(conversationDetail, function (response) {
+            });
+            }
+        }
+        window.$applozic.fn.applozic('getGroupListByFilter', groupDetail);
     },
     createNewConversation: function (options, callback) {
         if (typeof (callback) !== 'function') {
