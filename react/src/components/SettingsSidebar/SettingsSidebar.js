@@ -19,9 +19,6 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-title">
                             PERSONAL
                         </li>
-                        <li className="ss-nav-item welcome-link">
-                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
-                        </li>
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>
@@ -33,6 +30,9 @@ class SettingsSidebar extends Component {
                         </li>
                         <li className="ss-nav-item welcome-link">
                             <NavLink to={'/welcome-message'} className="ss-nav-link" activeClassName="active">Welcome Message</NavLink>
+                        </li>
+                        <li className="ss-nav-item welcome-link">
+                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
                         </li>
                         <li className="ss-nav-item message-shortcut-link">
                             <NavLink to={'/message-shortcuts'} className="ss-nav-link" activeClassName="active">Quick Replies</NavLink>

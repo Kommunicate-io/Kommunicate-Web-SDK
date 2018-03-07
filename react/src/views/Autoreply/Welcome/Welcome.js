@@ -11,7 +11,7 @@ class Welcome extends Component{
   constructor(props){
     super(props);
     this.state = {
-     enableDisableCheckbox: false,
+     enableDisableCheckbox: true,
      status:STATUS.ENABLE,
      welcomeMessages:[{messageField:''}],
      welcomeMessagesCopy:[],

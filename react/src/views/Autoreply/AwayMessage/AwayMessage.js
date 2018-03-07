@@ -12,7 +12,7 @@ class AwayMessage extends Component{
   constructor(props){
     super(props);
     this.state = {
-     enableDisableCheckbox: false,
+     enableDisableCheckbox: true,
      status:STATUS.ENABLE,
      awayMessageKnownCustomers:[{messageField:''}],
      awayMessageAnonymousCustomers:[{messageField:''}],
