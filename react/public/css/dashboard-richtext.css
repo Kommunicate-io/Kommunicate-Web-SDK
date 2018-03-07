@@ -480,7 +480,7 @@ cursor: pointer;
 	width:100%;
 }
 .km-dashboard-msg-box-rich-text-container .tns-outer {
-	position: relative;
+	/* position: relative; */
 }
 
 .km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button{
@@ -504,8 +504,7 @@ cursor: pointer;
 	left :-12px;
 }
 .km-dashboard-msg-box-rich-text-container .tns-outer .tns-controls button:last-child{
-    /* margin-left: 830px; */
-    margin-left: 878px;
+    right: 1px;
 }
 /*** Tiny Slider ends here ***/
 /* Room Details after Blocking Room */
