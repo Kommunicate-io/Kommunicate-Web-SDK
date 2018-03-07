@@ -250,6 +250,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'updateUser':
                         return oInstance.updateUser(params);
                         break;
+                    case 'getGroupListByFilter':
+                        return oInstance.getGroupListByFilter(params);
+                        break;
 
                 }
             } else if ($applozic.type(appOptions) === 'object') {
@@ -1022,6 +1025,11 @@ var MCK_CLIENT_GROUP_MAP = [];
         _this.updateUser = function (options) {
             mckContactService.updateUser(options)
         };
+        _this.getGroupListByFilter = function (options) {
+            mckGroupService.getGroupByFilter(options)
+                
+        };
+        
         _this.sendGroupMessage = function (params) {
             if (typeof params === 'object') {
                 params = $applozic.extend(true, {}, message_default_options, params);
