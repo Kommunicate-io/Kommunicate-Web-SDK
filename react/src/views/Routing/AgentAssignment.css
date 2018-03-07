@@ -1,0 +1,59 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.agent-assignment-wrapper{
+    margin-left: -7px;
+}
+.agent-assignment-title{  
+    font-size: 18px;
+    margin-bottom: 27px;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1.3px;
+    text-align: left;
+    color: #354052;
+}
+.options-wrapper{
+    width: 100%;
+    border-radius: 2px;
+    padding-top: 20px;
+    padding-left: 15px;
+    background-color: #f4f5f7;
+    border: 1px solid #ddd7d7;
+}
+.options-wrapper-title{
+    margin-bottom:25px;
+    font-size: 16px;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #878585;
+}
+.options-title{
+    margin-top: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-align: left;
+    color: #656161;
+}
+.notify-everybody-sub-title{
+    font-size: 12px;
+    color: #7f7b7b;
+    font-weight: normal;
+}
+.option-description{
+    font-size: 14px;
+    letter-spacing: 0.6px;
+    text-align: left;
+    color: #656161;
+}
+.active-agent-routing{
+    margin-right: 1px;
+    margin-bottom: 25px;
+    border-radius: 3px;
+    background-color: rgba(92, 90, 167, 0.13);
+    border: solid 1px #5c5aa7;
+}
+.col-radio-btn{
+    width: 3%!important
+}
