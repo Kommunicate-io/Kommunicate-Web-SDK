@@ -4370,6 +4370,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if ((msg.metadata && msg.metadata.category === 'HIDDEN') || msg.contentType === 102) {
                     return;
                 }
+                if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
+					return;
+				}
                 if (msg.contentType === 10 && (msg.metadata && msg.metadata.hide === 'true')) {
                     return;
                 }
