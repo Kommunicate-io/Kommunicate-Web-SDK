@@ -201,7 +201,6 @@ class AutoSuggest extends Component {
 				Notification.info("Suggestion deleted")		
 				this.getSuggestions();
 				this.setState({			
-					visibleMenu: false,
 					visibleButtons: false		
 				})	
 
@@ -252,6 +251,7 @@ class AutoSuggest extends Component {
 	}
 	removeEmptyInputField = () => {
 		let index = this.state.activeTextField;
+		let shortcutRef ="shortcut"+(index-1);
 		let userShortcuts = Object.assign([], this.state.userShortcuts);
 		if(this.state.userShortcuts.length > this.state.userShortcutsCopy.length && index !== 0){
 			if(validator.isEmpty(userShortcuts[0].shortcutField) && validator.isEmpty(userShortcuts[0].messageField)){
@@ -259,6 +259,7 @@ class AutoSuggest extends Component {
 				this.setState({
 				 	userShortcuts: userShortcuts				
 				})
+				this.refs[shortcutRef].focus();
 			}
 			else {
 				this.refs["shortcut0"].focus();
@@ -330,7 +331,7 @@ class AutoSuggest extends Component {
 								this.setState({ activeTextField: index, visibleButtons:true },this.removeEmptyInputField)
 								
 							} }
-							onKeyPress={(e) => { if (e.charCode === 13) { this.suggestionMethod(e); } this.setState({visibleButtons:true}) }} placeholder="" />
+							onKeyPress={(e) => { if (e.charCode === 13) { this.suggestionMethod(e); this.refs[messageRef].blur(); } this.setState({visibleButtons:true}) }} placeholder="" />
 
 
 						{
@@ -359,7 +360,7 @@ class AutoSuggest extends Component {
 								<ul className="tooltip-menu" >
 									<li className="tooltip-menu-list" onClick={this.editSuggestion}>Edit</li>
 									<hr className="list-divider" />
-									<li className="tooltip-menu-list" onClick={this.deleteSuggestion}>Delete</li>
+									<li className="tooltip-menu-list" onClick={ () =>{ this.setState({visibleMenu: false},this.deleteSuggestion)}}>Delete</li>
 								</ul>
 								{this.focusEllipsisDropdownMenu(this)}
 							</div>
