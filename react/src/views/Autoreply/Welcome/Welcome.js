@@ -33,7 +33,7 @@ class Welcome extends Component{
     let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
     hideTrashBtn.splice(0,2,false,false);
     return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
-      response.map(item => {
+      response.forEach(item => {
         welcomeMessages.push({
           messageField: item.message,
           messageId: item.id,
@@ -44,13 +44,12 @@ class Welcome extends Component{
           messageId: item.id,
           status: item.status
         })
-        this.setState({
-          welcomeMessages: welcomeMessages,
-          welcomeMessagesCopy: welcomeMessagesCopy,
-          hideTrashBtn: hideTrashBtn
-        }, this.updateUserStatus);
-
       })
+      this.setState({
+        welcomeMessages: welcomeMessages,
+        welcomeMessagesCopy: welcomeMessagesCopy,
+        hideTrashBtn: hideTrashBtn
+      }, this.updateUserStatus);
     }).catch(err => {
       console.log("error while fetching welcome message", err);
     })
@@ -223,7 +222,8 @@ class Welcome extends Component{
   
   render() {
     const welcomeMsgTextArea = this.state.welcomeMessages.map((message, index) => {
-      return <div key = {index}>
+      if(index < 3) {
+        return <div key = {index}>
         <div className = "row text-area-wrapper">
           <textarea rows="5" cols="60" className="welcome-msg-text-area" placeholder="Example: Hello there! Do you have any questions? We are there to help"
            value={this.state.welcomeMessages[index].messageField}
@@ -254,6 +254,7 @@ class Welcome extends Component{
           }     
         </div>
     </div>  
+      }
     });
     return (
       <div className="welcome-message-wrapper">
