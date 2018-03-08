@@ -818,7 +818,9 @@ class Tabs extends Component {
                 </div> 
               </div>
               <div className="col-sm-2" style={{textAlign: "left"}}>
-                <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                { 
+                  this.state.botAvailable ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                }
               </div>
               <div className="col-sm-3" style={{textAlign: "right"}}>
               </div>
@@ -854,7 +856,9 @@ class Tabs extends Component {
                             <p className="km-bot-list-of-integrated-bots-bot-name">{bot.userName}</p>
                         </div>
                         <div className="col-sm-3">
-                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                          { 
+                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                          }
                         </div>
                         <div className="col-sm-4" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
