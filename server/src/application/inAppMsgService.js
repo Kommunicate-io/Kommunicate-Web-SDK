@@ -258,7 +258,7 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }
-  var order= [['id', 'ASC']];
+  var order= [['id', 'DESC']];
   return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
     return { code: err.parent.code, message: err.parent.sqlMessage }
   });
