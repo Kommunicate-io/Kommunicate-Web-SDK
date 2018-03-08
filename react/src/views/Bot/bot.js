@@ -394,6 +394,7 @@ class Tabs extends Component {
     let axiosPostData = {
       botName: this.state.editedBotName,
       aiPlatform: "dialogflow",
+      type:"CUSTOM_BOT",
       clientToken: this.state.editedClientToken,
       devToken: this.state.editedDevToken,
     }
