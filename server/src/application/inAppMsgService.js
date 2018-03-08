@@ -27,7 +27,7 @@ exports.postWelcomeMsg=(options)=>{
 
 const getInAppMessage=(agentId, eventType)=>{
   console.log('geting data for', agentId);
-  let criteria ={ createdBy: agentId , status: appUtils.EVENT_STATUS.ENABLED};
+  let criteria ={ customerId: agentId , status: appUtils.EVENT_STATUS.ENABLED};
   if (eventType){
     criteria.eventId=eventType
   }
@@ -35,7 +35,7 @@ const getInAppMessage=(agentId, eventType)=>{
       {
         where:criteria,
         order:[
-          ['sequence', 'ASC'],['updated_at', 'DESC']
+          ['id', 'ASC']
         ]
       });
 }
@@ -125,7 +125,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   if (!agentName) {
     agentName = customer.userName;
   }
-    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(agentId, eventType)]).then(([user,inAppMessages])=>{
+    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
@@ -258,7 +258,7 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }
-  var order= [ ['sequence', 'ASC'],['updated_at', 'DESC']];
+  var order= [ ['id', 'ASC']];
   return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
     return { code: err.parent.code, message: err.parent.sqlMessage }
   });
