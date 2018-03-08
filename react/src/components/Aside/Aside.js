@@ -162,7 +162,7 @@ class Aside extends Component {
                                     {
                                       'groupId': this.state.group.groupId,
                                       'metadata': {
-                                                'CONVERSATION_ASSIGNEE' : userId
+                                                'CONVERSATION_ASSIGNEE' : userId,
                                       },
                                       'callback': function(response) {
                                         var displayName = "";
@@ -179,7 +179,8 @@ class Aside extends Component {
                                             'groupId' : groupId,
                                             'message' : "Assigned to " + displayName,
                                             'metadata':{
-                                              'skipBot':true
+                                              'skipBot':true,
+                                              'KM_ASSIGN' :userId
                                             }
                                           });
                                       }
@@ -238,7 +239,10 @@ class Aside extends Component {
                                       'callback': function(response) {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : that.state.group.groupId,
-                                            'message' : "Status changed to " + that.state.statuses[status]
+                                            'message' : "Status changed to " + that.state.statuses[status],
+                                            'metadata':{
+                                              'KM_STATUS' :that.state.statuses[status]
+                                            }
                                           });
                                       }
                                     });
