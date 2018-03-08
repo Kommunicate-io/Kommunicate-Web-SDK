@@ -330,7 +330,8 @@ class Tabs extends Component {
       })
   }
 
-  toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken) => {
+  toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable) => {
+    console.log("toggleEditBotIntegrationModal")
     this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
@@ -346,6 +347,15 @@ class Tabs extends Component {
     if(botName && botUserName && botToken && botDevToken){
       this.setEditBotIntegrationDetails(botName, botUserName, botToken, botDevToken)
     }
+
+    console.log(botAvailable);
+    console.log(botName);
+    console.log(botUserName);
+    console.log(botToken);
+
+      this.setState({
+        botAvailable: botAvailable == 1 ? true:false
+      }, () => {console.log(this.state.botAvailable)})
   }
 
   toggleDeleteBotIntegrationModal = () => {
@@ -429,6 +439,12 @@ class Tabs extends Component {
   toggleBotAvailability = () => {
     this.setState({
       botAvailable: !this.state.botAvailable
+    }, () => {
+      if(this.state.botAvailable){
+        this.enableBot()
+      }else{
+        this.disableBot()
+      }
     })
   }
 
@@ -446,6 +462,40 @@ class Tabs extends Component {
         this.getIntegratedBotsWrapper()
       }
     })
+  }
+
+  disableBot = () => {
+
+    let patchUserData = {
+      bot_availability_status: 0
+    }
+
+    patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
+      if(response.data.code === 'SUCCESS'){
+        Notification.info("Disabled successfully")
+        // this.toggleDeleteBotIntegrationModal()
+        // this.toggleEditBotIntegrationModal()
+        this.getIntegratedBotsWrapper()
+      }
+    })
+
+  }
+
+  enableBot = () => {
+
+    let patchUserData = {
+      bot_availability_status: 1
+    }
+
+    patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
+      if(response.data.code === 'SUCCESS'){
+        Notification.info("Enabled successfully")
+        // this.toggleDeleteBotIntegrationModal()
+        // this.toggleEditBotIntegrationModal()
+        this.getIntegratedBotsWrapper()
+      }
+    })
+
   }
 
   render() {
@@ -485,10 +535,12 @@ class Tabs extends Component {
                           </div> 
                         </div>
                         <div className="col-sm-3">
-                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                          { 
+                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                          }
                         </div>
                         <div className="col-sm-4" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>
                         </div>
@@ -766,7 +818,9 @@ class Tabs extends Component {
                 </div> 
               </div>
               <div className="col-sm-2" style={{textAlign: "left"}}>
-                <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                { 
+                  this.state.botAvailable ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                }
               </div>
               <div className="col-sm-3" style={{textAlign: "right"}}>
               </div>
@@ -802,10 +856,12 @@ class Tabs extends Component {
                             <p className="km-bot-list-of-integrated-bots-bot-name">{bot.userName}</p>
                         </div>
                         <div className="col-sm-3">
-                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                          { 
+                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                          }
                         </div>
                         <div className="col-sm-4" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>
                         </div>
