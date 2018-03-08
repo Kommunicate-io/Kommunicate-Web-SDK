@@ -3196,7 +3196,7 @@ var KM_CLIENT_GROUP_MAP = [];
 
       
 			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + 
-			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}}</div>' + 
+			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}} {{html downloadMediaUrlExpr}}</div>' + 
 			'<div class="km-msg-text km-msg-content"></div>' + 
 			'</div></div>' + 
 			'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>'+
@@ -3633,6 +3633,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileMetaKeyExpr : msg.fileMetaKey,
 					fileExpr : _this.getFilePath(msg),
 					fileUrlExpr: _this.getFileurl(msg),
+					downloadMediaUrlExpr: _this.getFileAttachment(msg),
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize,
 					kmRichTextMarkupVisibility:richText?'vis':'n-vis',
@@ -3746,7 +3747,18 @@ var KM_CLIENT_GROUP_MAP = [];
 					}
                 }
                 return '';
-            };
+			};
+			
+			_this.getFileAttachment = function (msg) {
+				if (typeof msg.fileMeta === 'object') {
+					if (msg.fileMeta.contentType.indexOf("image") !== -1 || (msg.fileMeta.contentType.indexOf("audio") !== -1) || (msg.fileMeta.contentType.indexOf("video") !== -1)) {
+						return '<a href="' + _this.getFileurl(msg) + '" role="link" target="_self"  class="file-preview-link"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+					} else {
+						return '<a href="' + _this.getFileurl(msg) + '" role="link" target="_self"  class="file-preview-link"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+					}
+					return '';
+				}
+			};
 
 		
             _this.getFilePath = function (msg) {
