@@ -35,7 +35,7 @@ const getInAppMessage=(agentId, eventType)=>{
       {
         where:criteria,
         order:[
-          ['sequence', 'ASC'],['updated_at', 'DESC']
+          ['id', 'ASC']
         ]
       });
 }
@@ -258,7 +258,7 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }
-  var order= [ ['sequence', 'ASC'],['updated_at', 'DESC']];
+  var order= [ ['id', 'ASC']];
   return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
     return { code: err.parent.code, message: err.parent.sqlMessage }
   });
