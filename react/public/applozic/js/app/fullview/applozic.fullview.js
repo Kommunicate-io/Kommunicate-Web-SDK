@@ -3196,7 +3196,8 @@ var KM_CLIENT_GROUP_MAP = [];
 
       
 			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + 
-			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div><div class="km-file-text notranslate km-attachment n-vis" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}">{{html fileExpr}} {{html downloadMediaUrlExpr}}</div>' + 
+			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>'+
+			'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' + 
 			'<div class="km-msg-text km-msg-content"></div>' + 
 			'</div></div>' + 
 			'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>'+
@@ -3543,9 +3544,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}if(msg.contentType === 10 && msg.metadata.hide==="true"){
 					return;
 				}
-				if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
-					return;
-				}
+
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
@@ -3553,6 +3552,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
 				var contactExpr = "vis";
+				var downloadIconVisible = "n-vis";
 				if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
 					floatWhere = "km-msg-left";
 				}
@@ -3571,6 +3571,11 @@ var KM_CLIENT_GROUP_MAP = [];
 					showNameExpr = "vis";
 					nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
 				}
+				if (typeof msg.fileMeta === "object") {
+                    if (msg.fileMeta.contentType.indexOf("audio") || (msg.fileMeta.contentType.indexOf("image")) || (msg.fileMeta.contentType.indexOf("video"))) {
+                        downloadIconVisible = 'vis';
+                    }
+                }
 				displayName = _this.getTabDisplayName(msg.to, false);
 				if (MESSAGE_BUBBLE_AVATOR_ENABLED) {
 					msgAvatorClassExpr = "km-msg-avator-bubble";
@@ -3634,6 +3639,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					fileExpr : _this.getFilePath(msg),
 					fileUrlExpr: _this.getFileurl(msg),
 					downloadMediaUrlExpr: _this.getFileAttachment(msg),
+					downloadIconVisibleExpr: downloadIconVisible,
 					fileNameExpr : fileName,
 					fileSizeExpr : fileSize,
 					kmRichTextMarkupVisibility:richText?'vis':'n-vis',
@@ -3789,7 +3795,7 @@ var KM_CLIENT_GROUP_MAP = [];
                     } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                         return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + _this.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
                     } else {
-						return '<a href="' + _this.getFileurl(msg) + '"  role="link" class="file-preview-link" target="_blank"><span class="file-detail mck-image-download"><span class="mck-file-name"><span class="km-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + mckFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span</a>';
+						return '<a href="#" role="link" class="file-preview-link" target="_blank"></a>';
                     }
                 }
                 return '';
