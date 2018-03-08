@@ -215,6 +215,7 @@ class Tabs extends Component {
       devToken : this.state.devToken,
       aiPlatform : aiPlatform,
       botName : this.state.botName,
+      type:'CUSTOM_BOT'
     }
 
     // let uuid_holder = uuid();
