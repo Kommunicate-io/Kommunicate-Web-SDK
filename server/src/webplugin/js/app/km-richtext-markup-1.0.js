@@ -12,7 +12,7 @@ Kommunicate.markup = {
             <input class ="km-increment-guest-count" type="button" value="+" data-type="guest">
         </div>
     </div>
-    <div class="km-person-selector">
+    <div class="km-person-selector n-vis">
         <div class="km-children-text-lable">Children :<span>(1-12 yrs)</span></div>
         <div>
             <input class ="km-decrement-guest-count" type="button" value="-" data-type="children">
