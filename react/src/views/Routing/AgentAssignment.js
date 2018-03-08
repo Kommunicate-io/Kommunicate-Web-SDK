@@ -13,31 +13,48 @@ class AgentAssignemnt extends Component{
     };
     
   }
-  handleRadioButton = () => {
-      this.setState({
-        checked:!this.state.checked
-      })
-  }
+handleRadioButton = () => {
+    this.setState({
+            checked: !this.state.checked
+    })
+    if (this.state.checked === 1) {
+        // enableNotifyEveryBody({checked:this.state.checked}).then(result => {
+        //     if(result == ){
+        //       Notification.success('Away Mesages Enabled');
+        //       this.setState({status: 1});
+        //     }
+        //   })
+    }
+    else {
+        // enableAutomaticAssignment({checked:this.state.checked}).then(result => {
+        //     if(result == ){
+        //       Notification.success('Away Mesages Enabled');
+        //       this.setState({status: 1});
+        //     }
+        //   })
+    }
+
+}
   render() {
       const notifyEverybodyContainer = (
-          <div className="row notify-everybody-wrapper active-agent-routing ">
+          <div className={this.state.checked ? "row notify-everybody-wrapper active-agent-routing" : "row notify-everybody-wrapper non-active-agent-routing"}>
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
               <div className="col-md-11 col-lg-11">
-                  <h4 className="options-title">Notify everybody <span className="notify-everybody-sub-title">(recommended for small teams)</span></h4>
-                  <p className="option-description">Message notification will be sent to the entire team and whoever acts on it first is assigned the conversation</p>
+                  <h4 className="routing-title">Notify everybody <span className="notify-everybody-sub-title">(recommended for small teams)</span></h4>
+                  <p className="routing-description">Message notification will be sent to the entire team and whoever acts on it first is assigned the conversation</p>
               </div>
           </div>
       )
       const automaticAssignmentContainer = (
-        <div className="row automatic-assignment-wrapper ">
-            <div className="col-radio-btn col-md-1 col-lg-1">
-            </div>
-            <div className="col-md-11 col-lg-11">
-                <h4 className="options-title">Automatic assignment </h4>
-                <p className="option-description">Conversation will be automatically assigned to each agent on a round robin basis </p>
-            </div>
-        </div>
+          <div className={!this.state.checked ? "row notify-everybody-wrapper active-agent-routing" : "row notify-everybody-wrapper non-active-agent-routing"}>
+              <div className="col-radio-btn col-md-1 col-lg-1">
+              </div>
+              <div className="col-md-11 col-lg-11">
+                  <h4 className="routing-title">Automatic assignment </h4>
+                  <p className="routing-description">All new conversations will be automatically assigned to each agent on a round robin basis.</p>
+              </div>
+          </div>
     )
 
     return (

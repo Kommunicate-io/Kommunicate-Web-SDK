@@ -28,7 +28,7 @@ body {
     text-align: left;
     color: #878585;
 }
-.options-title{
+.routing-title{
     margin-top: 15px;
     font-size: 14px;
     font-weight: 600;
@@ -41,19 +41,28 @@ body {
     color: #7f7b7b;
     font-weight: normal;
 }
-.option-description{
+.routing-description{
     font-size: 14px;
     letter-spacing: 0.6px;
     text-align: left;
     color: #656161;
+    margin: 0;
+    margin-bottom: 15px;
 }
 .active-agent-routing{
-    margin-right: 1px;
-    margin-bottom: 25px;
+    margin-left: -5px;
+    width: 99%;
     border-radius: 3px;
     background-color: rgba(92, 90, 167, 0.13);
     border: solid 1px #5c5aa7;
 }
+.non-active-agent-routing{
+    margin-left: -5px;
+    width: 99%;
+}
 .col-radio-btn{
     width: 3%!important
+}
+.checkmark {
+    left: 9px;
 }
