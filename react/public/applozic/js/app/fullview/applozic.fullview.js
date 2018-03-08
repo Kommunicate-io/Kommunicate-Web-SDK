@@ -3706,7 +3706,7 @@ var KM_CLIENT_GROUP_MAP = [];
 				}
 				
 				if (richText) {
-                    kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic("div[data-msgkey='" + msg.key + "'] .km-dashboard-card-message-container"));
+                    kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic(".km-container div[data-msgkey='" + msg.key + "'] .km-div-slider"));
                 }
 				
 

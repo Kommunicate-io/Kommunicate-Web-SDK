@@ -29,8 +29,7 @@ kommunicateDashboard.richMsgEventHandler ={
     initializeSlick:function($cardMessageContainer){
         if ($cardMessageContainer.length >= 0) {
             var slider = tns({
-                //container: $cardMessageContainer[0],
-                container: ".km-div-slider",
+                container: $cardMessageContainer[0],
                 items: 1,
                 slideBy: 1,
                 "mouseDrag": true,
