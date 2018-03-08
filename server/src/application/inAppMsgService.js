@@ -25,9 +25,10 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-const getInAppMessage=(agentId, eventType)=>{
-  console.log('geting data for', agentId);
-  let criteria ={ customerId: agentId , status: appUtils.EVENT_STATUS.ENABLED};
+const getInAppMessage=(customerId, eventType)=>{
+  console.log('geting data for', customerId );
+  let criteria ={ customerId:customerId, status: appUtils.EVENT_STATUS.ENABLED};
+
   if (eventType){
     criteria.eventId=eventType
   }
