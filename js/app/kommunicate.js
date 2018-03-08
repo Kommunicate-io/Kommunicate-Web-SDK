@@ -92,7 +92,7 @@ Kommunicate = {
         window.$applozic.fn.applozic('loadTab', userId);
     },
     createGroupName: function(group){
-        group.sort().join().replace(/,/g, "_").substring(0, 250);
+       return group.sort().join().replace(/,/g, "_").substring(0, 250);
     },
     openLastConversation: function (params) {
         var conversationDetail = params;
