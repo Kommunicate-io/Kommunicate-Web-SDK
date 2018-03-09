@@ -216,26 +216,24 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
 }
 
 exports.disableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 2}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 1,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 1, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 
 }
 
 exports.enableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 1}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 2,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 2, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 }
 
 exports.getInAppMessages2=(createdBy, customerId)=>{
