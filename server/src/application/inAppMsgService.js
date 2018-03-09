@@ -60,7 +60,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             
             let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
             let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1);
-            let conversationAssignee = groupInfo.metadata?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
+            let conversationAssignee = groupInfo.metadata&&groupInfo.metadata.CONVERSATION_ASSIGNEE&&groupInfo.metadata.CONVERSATION_ASSIGNEE!=""?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
             return {userId: groupUserRole3[0].userId, agentUserName: conversationAssignee}
         }).then( groupUser => {
             console.log("groupUser")
@@ -126,25 +126,25 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   if (!agentName) {
     agentName = customer.userName;
   }
-    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
+    return Promise.all([userService.getByUserNameAndAppId('bot',customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
