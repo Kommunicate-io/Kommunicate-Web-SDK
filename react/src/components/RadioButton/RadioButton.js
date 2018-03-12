@@ -7,19 +7,6 @@ class RadioButton extends Component {
         checked: false,
         disabled: false,
     };
-    // constructor(props) {
-    //     super(props);
-    //     this.state = {
-    //         checked: props.checked,
-    //     };
-    // };
-
-    // _handleChange = () => {
-    //     this.setState({
-    //         checked: !this.state.checked,
-    //     });
-    // };
-
     render() {
 
         const { disabled } = this.props;
@@ -40,13 +27,12 @@ class RadioButton extends Component {
     }
 }
 
-RadioButton.propTypes = {
-    checked: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    idCheckbox: React.PropTypes.string.isRequired,
-    label: React.PropTypes.string.isRequired,
-    handleOnChange: React.PropTypes.func.isRequired,
+// RadioButton.propTypes = {
+//     checked: React.PropTypes.boolean,
+//     disabled: React.PropTypes.boolean,
+//     label: React.PropTypes.isRequired,
+//     handleOnChange: React.PropTypes.func.isRequired,
 
-};
+// };
 
 export default RadioButton;
