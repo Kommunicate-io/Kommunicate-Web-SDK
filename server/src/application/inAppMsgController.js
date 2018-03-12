@@ -106,13 +106,26 @@ exports.processEvents2=(req, res)=>{
     const agentName = req.body.agentId;
 
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+        if(eventType==constant.EVENT_ID.WELCOME_MESSAGE){
+            return  inAppMsgService.sendWelcomeMessage(groupId,customer).then(response=>{
+                logger.info(response);
+                if(response =="success"){
+                    res.status(200).json({code:"SUCCESS"});
+                }else if(response =="no_message"){
+                    res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
+                }
+            })
+        }
+
         return userService.getAdminUserByAppId(applicationId).then(adminUser=>{
             return inAppMsgService.processEventWrapper(eventType, groupId, customer,adminUser, agentName).then(response=>{
                 logger.info(response);
                 if(response =="success"){
                     res.status(200).json({code:"SUCCESS"});
                 }else if(response =="no_message"){
-                    res.status(200).json({code:"SUCCESS",message:"Welcome message not configured"});
+                    res.status(200).json({code:"SUCCESS",message:"welcome message not configured"});
+                }else{
+                    res.status(200).json({code:"SUCCESS",message:response});
                 }
             })
         })

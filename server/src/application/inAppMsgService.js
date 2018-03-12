@@ -41,11 +41,12 @@ const getInAppMessage=(customerId, eventType)=>{
       });
 }
 
-/*exports.sendWelcomeMessage=(message,bot)=>{
-    return db.InAppMsg.find({where:{customerId:bot.customerId}}).then(inAppMessage=>{
-        //return applozicClient.sendGroupMessage
-    });
-}*/
+exports.sendWelcomeMessage=(conversationId, customer)=>{
+  return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer)).then(response => {
+    console.log(response);
+    return response;
+  })
+}
 
 exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
 
@@ -95,7 +96,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }else if(!offline && anonymous){
+                } /*else if(!offline && anonymous || !offline && !anonymous){
                   eventType = 3
                   console.log(3);
                   return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName,groupUser.agentId)]).then(([response]) => {
@@ -108,7 +109,8 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }
+                }*/
+                return "EVENT_NOT_SUPPORTED";
           })
     }).catch(err => {console.log(err)})
       })
@@ -216,26 +218,24 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
 }
 
 exports.disableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 2}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 1,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 1, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 
 }
 
 exports.enableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 1}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 2,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 2, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 }
 
 exports.getInAppMessages2=(createdBy, customerId)=>{
