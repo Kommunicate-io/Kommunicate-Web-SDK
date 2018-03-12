@@ -193,20 +193,19 @@ class Integration extends Component {
                   </a>
                   <div id="ios-code-div" className="code-div col-md-12 animated fadeIn" hidden={this.state.displayiOSInstructions}>
                     <div className="docs-instructions">
-                    Download Kommunicate Chat latest framework here and add it to your project. <br/><br/>
-
-                    Note : Framework folder has two frameworks.
-                      
-                      <ol>
-                        <li>Universal framework: Complied for both simultor and real devices.</li>
-                        <li>Archive framework: Complied for real device only. When archiving your app, please use archive framework.</li>
-                      </ol>
+                    <strong>Prerequisites:</strong> <br/>
+                      <ul>
+                        <li>Apps using Kommunicate can target iOS 9 or later </li>
+                        <li>Xcode 8.0 or later required </li>
+                      </ul>
+                    <br/>
+                    <strong>Installation:</strong> <br/>
+                      Kommunicate is available through <a href="http://cocoapods.org/" target="_blank">CocoaPods</a>. To install it, simply add the following line to your Podfile:
                       <br/>
-                    <strong>Add framework to your project:</strong>
-                    <ol style={{listStyleType:"lower-roman"}}>
-                        <li>Paste Applozic framework to root folder of your project.</li>
-                        <li>Go to Build Phase.</li>
-                      </ol>
+
+                      <div className="code-snippet" style={{marginTop:"3px"}}>pod 'Kommunicate'</div>
+                      <br/>
+                      Then run <span style={{backgroundColor:"rgb(212, 212, 212)", padding: "3px 5px", borderRadius: "2px", fontStyle:"normal"}}>pod install</span>.
                     </div>
                     
                     <div style={{ marginTop: "25px" }}>
