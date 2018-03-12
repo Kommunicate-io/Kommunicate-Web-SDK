@@ -266,7 +266,8 @@ const config ={
       HIDE:"true",
       JOIN_MEMBER_MESSAGE:"",
       REMOVE_MEMBER_MESSAGE:""
-    }
+    },
+    kommunicatePricingPackage:101,
 }
 };
 exports.getProperties = function() {
