@@ -54,7 +54,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('android-installation.html', this.props.language)}>
               Android
             </a>
-            <a href="https://docs.applozic.com/docs/ios-chat-sdk" target="_blank">
+            <a href={this.docUrl('ios-installation.html', this.props.language)}>
               iOS
             </a>
             <a href="https://docs.applozic.com/docs/ionic-phonegap-cordova-chat-sdk" target="_blank">
