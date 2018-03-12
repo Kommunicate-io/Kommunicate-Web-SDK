@@ -763,6 +763,9 @@ class Tabs extends Component {
               </div>
             </div>
           </ModalHeader>
+          <div style={{width:"100%"}} className={this.state.botAvailable ? "n-vis":"km-bot-integration-third-container"}>
+            <p>Your bot will not reply to conversations in disabled state</p>
+          </div>
           <ModalBody>
             <div className="row">
               <label className="col-sm-3">Client Token:</label>
