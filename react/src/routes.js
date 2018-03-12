@@ -14,7 +14,8 @@ const routes = {
   '/message-shortcuts': 'Quick Replies',
   '/welcome-message': 'Welcome Message',
   '/away-message': 'Away Message',
-  '/agent-app': 'Agent App'
+  '/agent-app': 'Agent App',
+  '/agent-assignment':'Agent Assignment'
 };
 
 export default routes;

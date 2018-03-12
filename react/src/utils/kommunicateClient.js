@@ -674,7 +674,32 @@ const getIntegratedBots = () => {
     }).catch(err => {console.log(err)})
 
 }
+const enableNotifyEveryBody = (data) => {
+  let userSession = CommonUtils.getUserSession();
 
+  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/routing/"+data.routingState;
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => {console.log("Error while enable notify everybody", err)})
+}
+const enableAutomaticAssignment = (data) => {
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/routing/"+data.routingState;
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => {console.log("Error while enable automatic assignemnt", err)})
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -713,4 +738,6 @@ export {
   deleteInAppMsg,
   editInAppMsg,
   getIntegratedBots,
+  enableNotifyEveryBody,
+  enableAutomaticAssignment
 }
