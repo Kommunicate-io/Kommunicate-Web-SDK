@@ -1,6 +1,6 @@
 {
   "docs": {
-    "Web":["web-installation","web-authentication","web-conversation","web-customization","web-logout"],
+    "Web":["web-installation","web-authentication","web-conversation","web-customization","web-logout","web-botintegration"],
     "Android": ["android-installation","android-authentication","android-conversation","android-pushnotification","android-logout"],
     "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"]
 
