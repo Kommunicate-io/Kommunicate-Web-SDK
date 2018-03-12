@@ -41,11 +41,12 @@ const getInAppMessage=(customerId, eventType)=>{
       });
 }
 
-/*exports.sendWelcomeMessage=(message,bot)=>{
-    return db.InAppMsg.find({where:{customerId:bot.customerId}}).then(inAppMessage=>{
-        //return applozicClient.sendGroupMessage
-    });
-}*/
+exports.sendWelcomeMessage=(conversationId, customer)=>{
+  return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer)).then(response => {
+    console.log(response);
+    return response;
+  })
+}
 
 exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
 
@@ -95,7 +96,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }else if(!offline && anonymous){
+                } /*else if(!offline && anonymous || !offline && !anonymous){
                   eventType = 3
                   console.log(3);
                   return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName,groupUser.agentId)]).then(([response]) => {
@@ -108,7 +109,8 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }
+                }*/
+                return "EVENT_NOT_SUPPORTED";
           })
     }).catch(err => {console.log(err)})
       })
