@@ -59,7 +59,7 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 
 Your bot can send rich text messages to make conversations more interactive. Here is the list of [rich text message](https://docs.kommunicate.io/docs/actionable-messages.html) supported by Kommunicate.
 
-When setting a intent response in Dialogflow console click on `Add Response` under `DEFAULT` tab and choose `Custom Payload`.
+When setting a intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console click on `Add Response` under `DEFAULT` tab and choose `Custom Payload`.
 Set below JSON as the response of intent.
 ``JSON
 {
