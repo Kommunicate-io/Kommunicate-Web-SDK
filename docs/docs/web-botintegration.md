@@ -30,7 +30,8 @@ here is the list of supported platform :
   1. Login to Dialogflow console and select your agent from dropdown in left panel.
   2. Go to `settings->general` and copy `Client access token` and `Developer access token`. .
   3. Go to `kommunicate dashboard->bots` and click on `Dialogflow (settings)`.
-  4. Enter the required detail and submit. 
+  4. Enter the required detail and submit. 
+  
 On successfull integration bot will be given a ID(botId) and listed under the `My Integrated Bots` section. The botId  will be used to identify the bot Kommunicate system. 
 
 **Start Conversation with a bot**
