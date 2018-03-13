@@ -513,7 +513,7 @@ class Tabs extends Component {
                 </div>
               </div>
               <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
-                <div style={{height:"4px", backgroundColor: "#5C5AA7"}}></div>
+                <div style={{height:"4px", backgroundColor: "#5C5AA7", borderRadius: "15px 15px 0 0"}}></div>
                 <div style={{padding: "10px"}}>
                   <span className="km-bot-integrated-bots-container-heading">My Integrated Bots:</span>
                   <hr />
