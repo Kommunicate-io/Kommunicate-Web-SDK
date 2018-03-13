@@ -3,7 +3,6 @@ id: actionable-messages
 title: Actionable Messages
 sidebar_label: Actionable Message
 ---
-# Actionable Messages
 
 **Configure Actionable Messages in Kommunicate**
 
@@ -30,15 +29,10 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
 Here is a list of available Actionable Messages:
 
 * Buttons
-
     * Link Buttons
-
     * Submit Buttons
-
 * Quick Replies
-
 * Lists (coming soon)
-
 * Cards (coming soon)
 
 **Buttons** 

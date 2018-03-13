@@ -3,7 +3,6 @@ id: web-botintegration
 title: Integrate bot with kommunicate
 sidebar_label: Bot Integration
 ---
-# Integrating bots with Kommunicate
 
 **Integrate your bot with Kommunicate**
 
@@ -80,7 +79,7 @@ Once the bot is integrated, it can be added to any conversation in your chat plu
 
 Your bot is designed to send rich text messages to make conversations more interactive and useful. Here is a list of [rich text messages](https://docs.kommunicate.io/docs/actionable-messages.html) supported by Kommunicate.
 
-When setting an intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console, click on Add Response under DEFAULT tab and choose Custom Payload. Set below JSON as the response of the intent.
+When setting an intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console, click on Add Response under `DEFAULT` tab and choose Custom Payload. Set below JSON as the response of the intent.
 
 ``` javascript
 {
