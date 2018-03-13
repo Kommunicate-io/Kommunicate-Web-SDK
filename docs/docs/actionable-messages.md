@@ -1,10 +1,9 @@
 ---
 id: actionable-messages
-title: actionable messages in Kommunicate.
+title: Actionable Messages
 sidebar_label: Actionable Message
 ---
-
-## Actionable Messages
+**Actionable Message in Kommunicate**
 
 Text messages are not enough to make a conversation Interactive. Kommunicate allow you to add several other components like images, audio, video and a set of actionable message in the form of message templates, quick replies, buttons,cards,lists and more to make conversation more interactive.
 <br>
@@ -68,7 +67,7 @@ Add  any number of clickable buttons in conversation. There are two type of butt
 	}],
 	"formData": {
 		"name":"Tom Marvolo Riddle",
-                "nickName":Voldemort"
+                "nickName":"Voldemort"
 	},
 	"formAction": "https://example.com/users"
 }
