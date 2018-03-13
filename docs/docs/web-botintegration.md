@@ -61,7 +61,7 @@ Your bot can send rich text messages to make conversations more interactive. Her
 
 When setting a intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console click on `Add Response` under `DEFAULT` tab and choose `Custom Payload`.
 Set below JSON as the response of intent.
-``` JSON
+``` javascript
 {
   "platform": "kommunicate",
   "metadata": {
