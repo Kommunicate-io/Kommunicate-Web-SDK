@@ -11,7 +11,7 @@ Text messages are not enough to make a conversation Interactive. Kommunicate all
 Kommunicate renders a valid JSON into actionable message. Pass this JSON as `metadata` as described in below example. This example renders quick replies along with the message : 
 ``` JSON
   {
-  "message":"Do you want more updates?"
+  	"message":"Do you want more updates?"
 	"metadata": {
 		"contentType": "300",
 		"templateId": "6",
@@ -68,7 +68,7 @@ Add  any number of clickable buttons in conversation. There are two type of butt
 	}],
 	"formData": {
 		"name":"Tom Marvolo Riddle",
-    "nickName":Voldemort"
+                "nickName":Voldemort"
 	},
 	"formAction": "https://example.com/users"
 }
@@ -78,16 +78,17 @@ Add  any number of clickable buttons in conversation. There are two type of butt
 Quick replies provides a way to send messages on a click without typing them. Add any number of auto replies by using below `metadata`.
 
 ``` JSON
-"contentType": "300",
-		"templateId": "6",
-		"payload": [{
-			"title ": "Yes",
-			"message ": "Cool! send me more."
-		}, {
-			"title ": "No ",
-			"message": "Don't send it to me again"
-		}]
-	}
+{
+	"contentType": "300",
+	"templateId": "6",
+	"payload": [{
+		"title ": "Yes",
+		"message ": "Cool! send me more."
+	}, {
+		"title ": "No ",
+		"message": "Don't send it to me again"
+	}]
+}
 ```
 The appreance of the Auto replies and buttons will be adjusted automatically.
   
