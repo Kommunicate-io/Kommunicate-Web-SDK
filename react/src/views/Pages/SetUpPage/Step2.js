@@ -97,7 +97,7 @@ class Step2 extends Component {
             <div className="col-md-12">
               <div className="card">
                 <div className="card-block">
-                  <form className="form-horizontal">
+                  <div className="form-horizontal">
                     <div className="col-lg-12 text-center setup-profile-div">
                       <div className="step-number-div">2/3</div>
                       <h1 className="setup-heading">Profile Setup</h1>
@@ -193,7 +193,7 @@ class Step2 extends Component {
                         </div>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
