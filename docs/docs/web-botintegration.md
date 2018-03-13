@@ -36,25 +36,26 @@ On successfull integration bot will be given a ID(botId) and listed under the `M
 
 **Start Conversation with a bot**
 <hr>
-Once  bot is integrated, it can be added in any conversation. Conversation can be one to one or group conversation.
+ Once  bot is integrated, it can be added in any conversation. Conversation can be one to one or group conversation.
+<br>
 
- * **One to one conversation with bot**
- Get the bot ID from dashboard and pass it in `openDirectConversation(botId)` method.
- ``` javascript
- Kommunicate.openDirectConversation("botId");
- ```
-* **Group conversation with bot**
+  * **One to one conversation with bot**
+      Get the bot ID from dashboard and pass it in `openDirectConversation(botId)` method.
+      ``` javascript
+       Kommunicate.openDirectConversation("botId");
+      ```
+  * **Group conversation with bot**
 
-Start the group conversation with bot using `startConversation(conversationDetail, callback)`.  
-``` javascript
-var conversationDetail = {
-    agentId: AGENT_ID,
-    botIds: [BOTID1]
-};
-Kommunicate.startConversation(conversationDetail, function (response) {
-    console.log("new conversation created");
-}); 
-```
+     Start the group conversation with bot using `startConversation(conversationDetail, callback)`.  
+     ``` javascript
+     var conversationDetail = {
+      agentId: AGENT_ID,
+      botIds: [BOTID1]
+     };
+     Kommunicate.startConversation(conversationDetail, function (response) {
+      console.log("new conversation created");
+     }); 
+     ```
 
 **Use Actionable messages to make conversations interactive**
 <hr>
