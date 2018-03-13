@@ -86,7 +86,7 @@ When setting an intent [response](https://dialogflow.com/docs/intents#response) 
 {
   "platform": "kommunicate",
   "metadata": {
-  *// valid JSON for any type of Kommunicate's Actionable message.*
+  // valid JSON for any type of Kommunicate's Actionable message.
   }
 }
 ```
@@ -108,4 +108,5 @@ Pass any kind of Kommunicate supported [actionable messages](https://docs.kommun
            "message": "Don't send it to me again"
        }]
    }
-}```
+}
+```
