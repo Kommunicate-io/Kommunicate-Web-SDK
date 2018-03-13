@@ -135,19 +135,19 @@ class Step2 extends Component {
                           <div className="col-md-12">
                             <div className="group form-group email-form-group">
                               <input className="input" type="text" id="company-name" name="company-name" placeholder=" "  value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
-                              <label className="label-for-input email-label">Company</label>
+                              <label className="label-for-input email-label">Company <span>(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
                               <input className="input" type="text" id="role-input" name="role-input" placeholder=" "  value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
-                              <label className="label-for-input email-label">Designation</label>
+                              <label className="label-for-input email-label">Designation <span>(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
-                              <input className="input" type="number" id="number-input" maxLength="20" name="number-input" placeholder=" "  value={this.state.contact_no} onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
+                              <input className="input" type="tel" pattern="^\d{10}$" required id="number-input" name="number-input" placeholder=" "  value={this.state.contact_no}  onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
                               <label className="label-for-input email-label">Contact No.</label>
                             </div>
                             <div className="group form-group selectt">
                               <select className="select" id="industry" name="industry" onChange={(event) => { this.setState({ industry: event.target.value }) }} value={this.state.industry}>
-                                <option value="0" >Please select</option>
+                                <option value="0" ></option>
                                 <option value="E-commerce">E-commerce</option>
                                 <option value="Marketplaces">Marketplaces</option>
                                 <option value="SaaS">SaaS</option>
@@ -161,7 +161,8 @@ class Step2 extends Component {
                                 <option value="Travel">Travel</option>
                                 <option value="Other"> Any Other (Please specify)</option>
                               </select>
-                              <label className="label-for-input email-label">Industry Type</label>
+                              <label className="label-for-input email-label km-label1">Industry Type</label>
+                              <label className="label-for-input email-label km-label3">(Optional)</label>
                             </div>
 
 
@@ -171,19 +172,21 @@ class Step2 extends Component {
                             </div>
                             <div className="group form-group selectt">
                               <select className="select" id="company-size" name="company-size" onChange={(event) => { this.setState({ company_size: event.target.value }) }} value={this.state.company_size}>
-                                <option value="0">Please select</option>
+                                <option value="0"></option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                                 <option value="500">500</option>
                               </select>
-                              <label className="label-for-input email-label">Company Size</label>
+                              {/* <label className="label-for-input email-label">Company Size</label> */}
+                              <label className="label-for-input email-label km-label1">Company Size</label>
+                              <label className="label-for-input email-label km-label2">(Optional)</label>
                             </div>
                             <div className="form-group setup-btn-group">
                               <div>
                                 <button className="btn btn-sm btn-primary px-4 btn-primary-custom">Save and continue </button>                               
-                                <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a>
+                                {/* <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a> */}
                               </div>
                             </div>
                           </div>
