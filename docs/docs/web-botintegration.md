@@ -38,13 +38,13 @@ Once  bot is integrated, it can be added in any conversation. Conversation can b
 
  * **One to one conversation with bot**
  Get the bot ID from dashboard and pass it in `openDirectConversation(botId)` method.
- ``javascript
+ ``` javascript
  Kommunicate.openDirectConversation("botId");
- ``
+ ```
 * **Group conversation with bot**
 
 Start the group conversation with bot using `startConversation(conversationDetail, callback)`.  
-``javascript
+``` javascript
 var conversationDetail = {
     agentId: AGENT_ID,
     botIds: [BOTID1]
@@ -52,7 +52,7 @@ var conversationDetail = {
 Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");
 }); 
-``
+```
 
 **Use Actionable messages to make conversations interactive**
 <hr>
@@ -61,19 +61,19 @@ Your bot can send rich text messages to make conversations more interactive. Her
 
 When setting a intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console click on `Add Response` under `DEFAULT` tab and choose `Custom Payload`.
 Set below JSON as the response of intent.
-``JSON
+``` JSON
 {
   "platform": "kommunicate",
   "metadata": {
   // valid JSON for any type of Kommunicate's Actionable message.
   }
 }
-``
+```
 Inside metadata pass any kind of Kommunicate supported [actionable message](https://docs.kommunicate.io/docs/actionable-messages.html).
 
  * **Example : Sample JSON for Quick Replies**
  
- ``JSON
+ ``` JSON
   {
  	"platform": "kommunicate",
  	"metadata": {
@@ -88,4 +88,4 @@ Inside metadata pass any kind of Kommunicate supported [actionable message](http
  		}]
  	}
  }
- ``
+ ```
