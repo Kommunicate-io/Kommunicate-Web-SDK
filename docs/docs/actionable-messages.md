@@ -12,7 +12,7 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
 
  ``` JSON
  {
-    "message":"Do you want more updates?"
+    "message":"Do you want more updates?",
     "metadata": {
         "contentType": "300",
         "templateId": "6",
