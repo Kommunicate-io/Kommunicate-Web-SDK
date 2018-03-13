@@ -3,7 +3,7 @@ const axios =require("axios");
 
 const createZendeskTicket = (ticket) => {
   let url = zendesk.createTicketUrl.replace('[subdomain]', 'applozic'); //replace with customer's subdomain for zendesk 
-  let auth = "Basic " + new Buffer(zendesk.email + ":" + zendesk.password).toString('base64');
+  let auth = "Basic " + new Buffer(zendesk.email + "/token:" + zendesk.clientKey).toString('base64');
 
   return Promise.resolve(axios.post(url, ticket, {
     headers: {
@@ -22,7 +22,7 @@ const createZendeskTicket = (ticket) => {
 
 const updateTicket = (id, ticket)=>{
   let url = zendesk.updateTicketUrl.replace('[subdomain]', 'applozic').replace('[id]', id);
-  let auth = "Basic " + new Buffer(zendesk.email + ":" + zendesk.password).toString('base64');
+  let auth = "Basic " + new Buffer(zendesk.email + "/token:" + zendesk.clientKey).toString('base64');
   return Promise.resolve(axios.put(url, ticket, {
     headers: {
       "Content-Type": "application/json",

@@ -25,7 +25,9 @@ const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAut
 const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
 const inAppEventController = require('../appevent/InAppEventController');
 const zendeskController = require('../zendesk/zendeskController');
-const zendeskValidation = require('../zendesk/validation') 
+const zendeskValidation = require('../zendesk/validation') ;
+const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
+const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
 
 
 //router declaration
@@ -145,4 +147,5 @@ issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDel
 *zendesk APIs
 */
 zendeskRouter.post('/ticket/create', zendeskController.createZendeskTicket);
-zendeskRouter.put('/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket)
+zendeskRouter.put('/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.post('/:appId/insert/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
