@@ -4,7 +4,7 @@ import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import { enableNotifyEveryBody, enableAutomaticAssignment} from '../../utils/kommunicateClient'
 import axios from 'axios';
-import { ROUTING_STATE } from './Constants.js';
+import { ROUND_ROUBIN } from './Constants.js';
 import CommonUtils from '../../utils/CommonUtils';
 
 class AgentAssignemnt extends Component{
@@ -44,10 +44,10 @@ handleRadioBtnNotifyEverybody = () => {
         checkedAutomaticAssignemnt: 0
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
-        enableNotifyEveryBody({ routingState: ROUTING_STATE.DISABLE }).then(response => {
+        enableNotifyEveryBody({ routingState: ROUND_ROUBIN.DISABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUTING_STATE.DISABLE;
+                userSession.routingState = ROUND_ROUBIN.DISABLE;
                 CommonUtils.setUserSession(userSession)
                 Notification.success('Notify everybody is enabled');
                 this.setState({
@@ -64,10 +64,10 @@ handleRadioBtnAutomaticAssignment = () => {
         checkedAutomaticAssignemnt: 1,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
-        enableAutomaticAssignment({ routingState: ROUTING_STATE.ENABLE }).then(response => {
+        enableAutomaticAssignment({ routingState: ROUND_ROUBIN.ENABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUTING_STATE.ENABLE;
+                userSession.routingState = ROUND_ROUBIN.ENABLE;
                 CommonUtils.setUserSession(userSession);
                 Notification.success('Automatic assignment is enabled');
                 this.setState({
