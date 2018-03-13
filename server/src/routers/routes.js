@@ -23,7 +23,9 @@ const issueTypeController = require('../issuetype/issueTypeController');
 const issueTypeValidation = require('../issuetype/validation');
 const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController');
 const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
-const inAppEventController = require('../appevent/InAppEventController')
+const inAppEventController = require('../appevent/InAppEventController');
+const zendeskController = require('../zendesk/zendeskController');
+const zendeskValidation = require('../zendesk/validation') 
 
 
 //router declaration
@@ -41,6 +43,7 @@ const profileImageRouter = express.Router();
 const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
+const zendeskRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -57,6 +60,7 @@ exports.profileImage = profileImageRouter;
 exports.group = groupRouter;
 exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
+exports.zendesk = zendeskRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -135,3 +139,10 @@ issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueT
 issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
 issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
 issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.deleteIssueTypeAutoReply)
+
+
+/*
+*zendesk APIs
+*/
+zendeskRouter.post('/ticket/create', zendeskController.createZendeskTicket);
+zendeskRouter.put('/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket)
