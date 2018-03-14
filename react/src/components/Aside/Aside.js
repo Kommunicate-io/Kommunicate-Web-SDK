@@ -690,8 +690,8 @@ class Aside extends Component {
                                   <div className="km-label">Group Type</div>
                                 </div>
                                 <div className="blk-lg-12">
-                                  <select id="km-group-create-type" className="km-select">
-                                    <option value="2" selected>Public</option>
+                                  <select id="km-group-create-type" defaultValue ="2" className="km-select">
+                                    <option value="2">Public</option>
                                     <option value="1">Private</option>
                                     <option value="6">Open</option>
                                   </select>
