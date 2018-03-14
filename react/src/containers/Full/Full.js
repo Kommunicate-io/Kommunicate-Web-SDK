@@ -19,6 +19,7 @@ import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
 import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
+import Faq from '../../views/Faq/'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -111,6 +112,7 @@ class Full extends Component {
                 <Route exact path="/profile" name="Admin" render={()=>{
                    return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }}/>
+                <Route exact path="/faq" name="Faq" component={Faq}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
