@@ -57,6 +57,12 @@ class Step2 extends Component {
 
   finishSetUp = (e) => {
     e.preventDefault();
+    if(document.getElementById("number-input").value ===""|| document.getElementById("number-input").value === null){
+      document.getElementById("emptyerror").className = 'input-error-div vis';
+      document.getElementById("number-input").className = 'input';
+      return;
+    }
+    document.getElementById("emptyerror").className = 'n-vis';
     let userSession = CommonUtils.getUserSession();
     const customerInfo = {
       applicationId: userSession.application.applicationId,
@@ -80,8 +86,23 @@ class Step2 extends Component {
       CommonUtils.setUserSession(userSession)
      this.props.moveToNextStep(customerInfo,this.state.nextStep)
   }
-
-
+  onFocus (){
+    document.getElementById("emptyerror").className = 'n-vis';
+    document.getElementById("number-input").className = 'input';
+}
+  contactNumber(e) {
+    const re = /[0-9A-F:]+/g;
+    var num =this.state.contact_no;
+    if (re.test(e.key)) {
+      e.preventDefault();
+      if( this.state.contact_no ===""){
+        num =e.key
+      } else{
+      num=num+(e.key);
+     } this.setState({ contact_no: num })
+    }
+  }
+  
   openModal() {
     this.setState({ modalIsOpen: true });
   }
@@ -91,7 +112,7 @@ class Step2 extends Component {
   }
   render() {
     return (
-      <form className="form-horizontal" onSubmit={this.finishSetUp}>
+      <form className="form-horizontal">
         <div className="animated fadeIn">
           <div className="row">
             <div className="col-md-12">
@@ -134,20 +155,34 @@ class Step2 extends Component {
                         <div className="row">
                           <div className="col-md-12">
                             <div className="group form-group email-form-group">
-                              <input className="input" type="text" id="company-name" name="company-name" placeholder=" "  value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
-                              <label className="label-for-input email-label">Company <span>(Optional)</span></label>
+                              <input className="input" type="text" id="company-name" required name="company-name" placeholder=" " onFocus={this.onFocus} value={this.state.company_name} onChange={(event) => { this.setState({ company_name: event.target.value }) }} />
+                              <label className="label-for-input email-label">Company <span className="km-italic">(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
-                              <input className="input" type="text" id="role-input" name="role-input" placeholder=" "  value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
-                              <label className="label-for-input email-label">Designation <span>(Optional)</span></label>
+                              <input className="input" type="text" id="role-input" required name="role-input" placeholder=" " onFocus={this.onFocus} value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
+                              <label className="label-for-input email-label">Designation <span className="km-italic">(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
-                              <input className="input" type="tel" pattern="^\d{10}$" required id="number-input" name="number-input" placeholder=" "  value={this.state.contact_no}  onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
+                              <input className="input" type="tel" pattern="^\d{10}$" required id="number-input" name="number-input" placeholder=" "  onFocus={this.onFocus} value={this.state.contact_no}  onKeyPress={(event) => this.contactNumber(event)}/>
                               <label className="label-for-input email-label">Contact No.</label>
+                              <div id="emptyerror" className="input-error-div n-vis">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                <g id="Page-1" fill="none" fill-rule="evenodd">
+                                  <g id="Framework" transform="translate(-77 -805)" fill="#ED1C24">
+                                    <g id="Wrong-Value-with-Notification" transform="translate(77 763)">
+                                      <g id="Error-Notification" transform="translate(0 40)">
+                                        <path d="M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z" id="Error-Icon"></path>
+                                      </g>
+                                    </g>
+                                  </g>
+                                </g>
+                              </svg>
+                              <span className="input-error-message">This field is mandatory</span>
+                            </div>
                             </div>
                             <div className="group form-group selectt">
-                              <select className="select" id="industry" name="industry" onChange={(event) => { this.setState({ industry: event.target.value }) }} value={this.state.industry}>
-                                <option value="0" ></option>
+                              <select className="select" id="industry" name="industry" onChange={(event) => { document.getElementById("km-industry1").className = 'n-vis'; document.getElementById("km-industry2").className = 'n-vis';this.setState({ industry: event.target.value }) }} value={this.state.industry}>
+                                <option value="0" >Please select a value</option>
                                 <option value="E-commerce">E-commerce</option>
                                 <option value="Marketplaces">Marketplaces</option>
                                 <option value="SaaS">SaaS</option>
@@ -161,8 +196,8 @@ class Step2 extends Component {
                                 <option value="Travel">Travel</option>
                                 <option value="Other"> Any Other (Please specify)</option>
                               </select>
-                              <label className="label-for-input email-label km-label1">Industry Type</label>
-                              <label className="label-for-input email-label km-label3">(Optional)</label>
+                              <label id="km-industry1"className="label-for-input email-label km-label1">Industry Type</label>
+                              <label id="km-industry2"className="label-for-input email-label km-label3">(Optional)</label>
                             </div>
 
 
@@ -171,8 +206,8 @@ class Step2 extends Component {
                               <label className="label-for-input email-label">Other Industry</label>
                             </div>
                             <div className="group form-group selectt">
-                              <select className="select" id="company-size" name="company-size" onChange={(event) => { this.setState({ company_size: event.target.value }) }} value={this.state.company_size}>
-                                <option value="0"></option>
+                              <select className="select" id="company-size" name="company-size" onChange={(event) => { document.getElementById("km-label1").className = 'n-vis'; document.getElementById("km-label2").className = 'n-vis';this.setState({ company_size: event.target.value }) }} value={this.state.company_size}>
+                                <option value="0">Please select a value</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
                                 <option value="50">50</option>
@@ -180,12 +215,12 @@ class Step2 extends Component {
                                 <option value="500">500</option>
                               </select>
                               {/* <label className="label-for-input email-label">Company Size</label> */}
-                              <label className="label-for-input email-label km-label1">Company Size</label>
-                              <label className="label-for-input email-label km-label2">(Optional)</label>
+                              <label id ="km-label1"className="label-for-input email-label km-label1">Company Size</label>
+                              <label id ="km-label2" className="label-for-input email-label km-label2">(Optional)</label>
                             </div>
                             <div className="form-group setup-btn-group">
                               <div>
-                                <button className="btn btn-sm btn-primary px-4 btn-primary-custom">Save and continue </button>                               
+                                <button className="btn btn-sm btn-primary px-4 btn-primary-custom"onClick={this.finishSetUp}>Save and continue </button>                               
                                 {/* <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a> */}
                               </div>
                             </div>
