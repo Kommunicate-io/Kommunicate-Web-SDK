@@ -59,7 +59,7 @@ class Step2 extends Component {
     e.preventDefault();
     if(document.getElementById("number-input").value ===""|| document.getElementById("number-input").value === null){
       document.getElementById("emptyerror").className = 'input-error-div vis';
-      document.getElementById("number-input").className = 'input';
+      document.getElementById("number-input").className = 'input km-error-input';
       return;
     }
     document.getElementById("emptyerror").className = 'n-vis';
