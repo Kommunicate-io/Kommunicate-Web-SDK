@@ -137,11 +137,10 @@ class Forms extends Component {
 
 
   componentWillMount() {
-    
     var userSession = CommonUtils.getUserSession();
     if (userSession.isAdmin) {
       console.log("isAdmin")
-      getCustomerInfo(CommonUtils.getUserSession().userName)
+      return Promise.resolve(getCustomerInfo(CommonUtils.getUserSession().userName))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -163,7 +162,7 @@ class Forms extends Component {
     } else {
       console.log("isNotAdmin")
 
-      getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId)
+      return Promise.resolve(getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -224,7 +223,7 @@ class Forms extends Component {
 
                         <Modal
                           isOpen={this.state.modalIsOpen}
-
+                          ariaHideApp={false}
                           onRequestClose={this.closeModal}
                           style={customStyles}
                           contentLabel="Example Modal"
