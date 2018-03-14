@@ -43,7 +43,15 @@ class Step1 extends Component {
         document.getElementById("customer-name").className = 'input customer-name';
   }
 
-
+  onBlur(websiteUrl) {
+    if (!isURL(websiteUrl)) {
+      document.getElementById("website-url").className = 'input km-error-input';
+      document.getElementById("url-http-text").className = 'url-http-text km-error-input';
+      document.getElementById('mySpan').innerHTML = 'Invalid URL.';
+      document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
+      return;
+    }
+  }
     render() {
         return (
             <form >
@@ -54,7 +62,7 @@ class Step1 extends Component {
                 <div className="company-url-main-div flex text-center">
                     <span id ="url-http-text"className="url-http-text">https://</span>
                     <div className="group form-group company-url-form-group">
-                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onFocus={this.onFocus} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
+                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onBlur={(event) => this.onBlur(event.target.value)} onFocus={this.onFocus} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
                         <label className="label-for-input email-label">www.mycompany.com</label>
                         <span id="emptyerror1" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -68,7 +76,7 @@ class Step1 extends Component {
                                   </g>
                                 </g>
                               </svg>
-                              <span className="input-error-message">This field is mandatory</span>
+                              <span id="mySpan"className="input-error-message">This field is mandatory</span>
                             </span>
                     </div>
                 </div>
