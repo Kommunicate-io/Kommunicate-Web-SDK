@@ -10514,3 +10514,10 @@ input:required {
   line-height: 1.1 !important;
   color: rgb(95, 97, 98) !important;
 }
+
+.km-bot-align-item-v-center {
+  display: flex;
+  align-items: center;
+}
+
+}
