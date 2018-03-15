@@ -74,6 +74,7 @@ app.use('/conversations',routes.conversation);
 app.use('/group',routes.group);
 app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
+app.use('/zendesk', routes.zendesk);
 
 function startApp() {
     app.listen(port, function () {

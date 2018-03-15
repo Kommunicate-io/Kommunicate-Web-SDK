@@ -24,3 +24,9 @@ module.exports.updateRoutingState={
 
   }
 }
+
+module.exports.searchCustomer={
+  query:{
+        applicationId:joi.string().required()
+  }
+}
