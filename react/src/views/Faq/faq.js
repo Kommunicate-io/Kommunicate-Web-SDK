@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import Notification from '../model/Notification';
-import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo} from '../../utils/kommunicateClient';
+import {createSuggestions, getSuggestionsByCriteria} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
@@ -26,13 +26,33 @@ class Tabs extends Component {
       botEnabled: false,
       faqTitle: "",
       faqContent: "",
-      showDeleteFaq: false
+      showDeleteFaq: false,
+      isDraft: true,
+      isPublished: false,
+      listOfFAQs: []
     };
 
     let userSession = CommonUtils.getUserSession();
     this.applicationId = userSession.application.applicationId;
 
     this.toggle = this.toggle.bind(this);
+
+  }
+
+  componentDidMount=()=>{
+
+    getSuggestionsByCriteria(this.applicationId, 'type', 'faq').then(response => {
+      console.log(response)
+
+      if(response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
+        this.setState({
+          listOfFAQs :  response.data ? response.data : []
+        }, () => {
+          console.log(this.state.listOfFAQs)
+        })
+      }
+
+    });
 
   }
 
@@ -44,6 +64,14 @@ class Tabs extends Component {
     }
   }
 
+  clearFAQDetails = () => {
+    this.setState({
+      faqContent: '',
+      faqTitle: ''
+    })
+
+  }
+
   toggleBotAvailability = () => {
     this.setState({
       botEnabled: !this.state.botEnabled
@@ -52,8 +80,38 @@ class Tabs extends Component {
 
   toggleFaqModal = () => {
     this.setState({
-      faqModal: !this.state.faqModal
+      faqModal: !this.state.faqModal,
+      showDeleteFaq: false
     })
+  }
+
+  createFAQ = () => {
+
+    let userSession = CommonUtils.getUserSession();
+
+    const suggestion = {
+      applicationId: userSession.application.applicationId,
+      userName: userSession.userName,
+      name: this.state.faqTitle,
+      content: this.state.faqContent,
+      category: 'faq',
+      type: 'faq',
+      status: this.state.isDraft ? 'draft':'published'
+    }
+
+    createSuggestions(suggestion)
+      .then(response => {
+        console.log(response)
+        if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
+          Notification.info("FAQ created")
+        } else {
+          Notification.info("There was problem in creating the faq.");
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
   }
 
   render() {
@@ -99,7 +157,7 @@ class Tabs extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <input type="text" name="faq-title" className="form-control input-field" value={this.state.faqTitle} onChange={(e) => {this.setState({faqTitle:e.target.value})}}/>
+                <input type="text" name="faq-title" className="form-control input-field" placeholder="Enter your FAQ title here" value={this.state.faqTitle} onChange={(e) => {this.setState({faqTitle:e.target.value})}}/>
               </div>
             </div>
             <div className="row mt-4">
@@ -107,7 +165,7 @@ class Tabs extends Component {
             </div>
             <div className="row">
               <div className="col-md-12">
-                <textarea rows="10" style={{"borderRadius": "4px"}} type="text" name="faq-content" className="form-control" value={this.state.faqContent} onChange={(e) => {this.setState({faqContent:e.target.value})}}/>
+                <textarea rows="10" style={{"borderRadius": "4px"}} type="text" name="faq-content" placeholder="Enter your FAQ content here" className="form-control" value={this.state.faqContent} onChange={(e) => {this.setState({faqContent:e.target.value})}}/>
               </div>
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
@@ -118,10 +176,10 @@ class Tabs extends Component {
                 <span>Status : </span>
                 <FormGroup check className="form-check-inline">
                   <Label check htmlFor="inline-radio1">
-                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1"/> Draft
+                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> Draft
                   </Label>
                   <Label check htmlFor="inline-radio2">
-                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2"/> Published
+                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> Published
                   </Label>
                 </FormGroup>
               </div> 
@@ -131,7 +189,7 @@ class Tabs extends Component {
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
+                <button className="btn btn-primary" onClick={this.createFAQ}>
                   Save
                 </button>
               </div> 
@@ -147,7 +205,7 @@ class Tabs extends Component {
               </div>
               <div className="col-sm-2 text-right">
                 <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
-                  Save
+                  No
                 </button>
               </div> 
             </div>
