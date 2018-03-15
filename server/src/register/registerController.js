@@ -251,8 +251,8 @@ return registrationService.updateAgentRoutingState(appId, routingState).then(res
   return res.status(500).json({code:"ERROR",message:"internal server error"});
 })
 }
-exports.getRoutingState = (req, res) => {
-  let appId = req.params.appId;
+exports.getCustomerByApplicationId = (req, res) => {
+  let appId = req.query.applicationId;
   return registrationService.getCustomerByApplicationId(appId).then(customer => {
     if (!customer) {
       res.status(200).json({ code: "SUCCESS", message: "customer not found for this application id" });
