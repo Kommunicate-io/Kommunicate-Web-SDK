@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import { enableNotifyEveryBody, enableAutomaticAssignment} from '../../utils/kommunicateClient'
+import { enableNotifyEveryBody, enableAutomaticAssignment, getCustomerByApplicationId} from '../../utils/kommunicateClient'
 import axios from 'axios';
 import { ROUND_ROUBIN } from './Constants.js';
 import CommonUtils from '../../utils/CommonUtils';
@@ -19,24 +19,30 @@ class AgentAssignemnt extends Component{
         };
 
     }
-componentDidMount (){
-    let userSession = CommonUtils.getUserSession();
-    if (userSession.routingState === 1) {
-        this.setState({
-            checkedNotifyEverybody: 0,
-            checkedAutomaticAssignemnt: 1,
-            preventMultiCallAutoAssignment: true,
-            preventMultiCallNotifyEverybody: false
-        })
-    }
-    else {
-        this.setState({
-            checkedNotifyEverybody: 1,
-            checkedAutomaticAssignemnt: 0,
-            preventMultiCallNotifyEverybody: true,
-            preventMultiCallAutoAssignment: false
-        })
-    }
+componentWillMount (){
+    this.getRoutingState();
+}
+getRoutingState = () => {
+    return Promise.resolve(getCustomerByApplicationId()).then(response => {
+        if (response.data.data.agentRouting === 1) {
+            this.setState({
+                checkedNotifyEverybody: 0,
+                checkedAutomaticAssignemnt: 1,
+                preventMultiCallAutoAssignment: true,
+                preventMultiCallNotifyEverybody: false
+            })
+        }
+        else {
+            this.setState({
+                checkedNotifyEverybody: 1,
+                checkedAutomaticAssignemnt: 0,
+                preventMultiCallNotifyEverybody: true,
+                preventMultiCallAutoAssignment: false
+            })
+        }
+    }).catch(err => {
+        console.log("error while fetching routing state/round roubin state", err);
+    })
 }
 handleRadioBtnNotifyEverybody = () => {
     this.setState({
