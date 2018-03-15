@@ -700,6 +700,21 @@ const enableAutomaticAssignment = (data) => {
     return result;
   }).catch(err => {console.log("Error while enable automatic assignemnt", err)})
 }
+
+const getSuggestionsByCriteria = (applicationId, criteria, value) => {
+
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId
+
+  return Promise.resolve(axios.get(autoSuggestUrl, {
+      params: {
+        criteria: criteria,
+        value: value
+      }
+    }))
+    .then(response => response.data)
+    .catch(err => err);
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -739,5 +754,6 @@ export {
   editInAppMsg,
   getIntegratedBots,
   enableNotifyEveryBody,
-  enableAutomaticAssignment
+  enableAutomaticAssignment,
+  getSuggestionsByCriteria
 }
