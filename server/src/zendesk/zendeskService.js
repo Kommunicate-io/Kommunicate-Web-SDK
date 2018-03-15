@@ -1,9 +1,9 @@
-const zendesk = require('../utils/test').zendeskConfig;
-const axios =require("axios");
+const zendesk = require('../../conf/config').getCommonProperties().zendesk;
+const axios = require("axios");
 
-const createZendeskTicket = (ticket) => {
-  let url = zendesk.createTicketUrl.replace('[subdomain]', 'applozic'); //replace with customer's subdomain for zendesk 
-  let auth = "Basic " + new Buffer(zendesk.email + "/token:" + zendesk.clientKey).toString('base64');
+const createZendeskTicket = (ticket, settings) => {
+  let url = zendesk.createTicketUrl.replace('[subdomain]', settings.domain);  
+  let auth = "Basic " + new Buffer(settings.accessKey + "/token:" + settings.accessToken).toString('base64');
 
   return Promise.resolve(axios.post(url, ticket, {
     headers: {
@@ -20,9 +20,9 @@ const createZendeskTicket = (ticket) => {
 
 }
 
-const updateTicket = (id, ticket)=>{
-  let url = zendesk.updateTicketUrl.replace('[subdomain]', 'applozic').replace('[id]', id);
-  let auth = "Basic " + new Buffer(zendesk.email + "/token:" + zendesk.clientKey).toString('base64');
+const updateTicket = (id, ticket, settings) => {
+  let url = zendesk.updateTicketUrl.replace('[subdomain]', settings.domain).replace('[id]', id);
+  let auth = "Basic " + new Buffer(settings.accessKey + "/token:" + settings.accessToken).toString('base64');
   return Promise.resolve(axios.put(url, ticket, {
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ const updateTicket = (id, ticket)=>{
 
 }
 
-module.exports={
-  createZendeskTicket:createZendeskTicket,
-  updateTicket:updateTicket
+module.exports = {
+  createZendeskTicket: createZendeskTicket,
+  updateTicket: updateTicket
 }
