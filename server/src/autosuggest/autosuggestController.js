@@ -28,15 +28,27 @@ exports.getAllSuggestions = (req, res) => {
 
 exports.getSuggestionsByAppId = (req, res) => {
 
-	autosuggestService.getSuggestionsByAppId(req.params.applicationId)
-		.then(suggestions => {
-			if(!suggestions){
-				res.status(404).json({code:"NO_SUGGESTIONS_FOUND"});
-			}else{
-				res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_APPLICATION_ID", data:suggestions});
-			}
-		})
-		.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
+	if(req.query.criteria){
+		autosuggestService.getSuggestionsByCriteria(req.query.criteria, req.query.value, req.params.applicationId)
+			.then(suggestions => {
+				if(!suggestions){
+					res.status(404).json({code:"NO_SUGGESTIONS_FOUND"});
+				}else{
+					res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_CRITERIA_" + req.query.criteria , data:suggestions});
+				}
+			})
+			.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
+	}else{
+		autosuggestService.getSuggestionsByAppId(req.params.applicationId)
+			.then(suggestions => {
+				if(!suggestions){
+					res.status(404).json({code:"NO_SUGGESTIONS_FOUND"});
+				}else{
+					res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_APPLICATION_ID", data:suggestions});
+				}
+			})
+			.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
+	}
 }
 
 exports.createSuggestion = (req, res) => {
@@ -48,7 +60,9 @@ exports.createSuggestion = (req, res) => {
 		userName:req.body.userName,
 		category: req.body.category,
 		name:req.body.name,
-		content: req.body.content
+		content: req.body.content,
+		type: req.body.type ? req.body.type:null,
+		status: req.body.status ? req.body.status:null,
 	}
 
 	autosuggestService.createSuggestion(suggestion)
