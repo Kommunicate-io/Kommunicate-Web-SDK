@@ -90,18 +90,6 @@ class Step2 extends Component {
     document.getElementById("emptyerror").className = 'n-vis';
     document.getElementById("number-input").className = 'input';
 }
-  contactNumber(e) {
-    const re = /[0-9A-F:]+/g;
-    var num =this.state.contact_no;
-    if (re.test(e.key)) {
-      e.preventDefault();
-      if( this.state.contact_no ===""){
-        num =e.key
-      } else{
-      num=num+(e.key);
-     } this.setState({ contact_no: num })
-    }
-  }
   
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -163,7 +151,7 @@ class Step2 extends Component {
                               <label className="label-for-input email-label">Designation <span className="km-italic">(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
-                              <input className="input" type="tel" pattern="^\d{10}$" required id="number-input" name="number-input" placeholder=" "  onFocus={this.onFocus} value={this.state.contact_no}  onKeyPress={(event) => this.contactNumber(event)}/>
+                            <input className="input" type="number" id="number-input" required maxLength="20" minLength="10" name="number-input" placeholder=" "  value={this.state.contact_no} onChange={(event) => { this.setState({ contact_no: event.target.value }) }} />
                               <label className="label-for-input email-label">Contact No.</label>
                               <div id="emptyerror" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
