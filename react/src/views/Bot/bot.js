@@ -520,28 +520,29 @@ class Tabs extends Component {
                 </div>
                 <div className="km-bot-list-of-integrated-bots-container">
                   {this.state.listOfIntegratedBots.map(bot => (
-                    <div key={bot.id}>
-                      <div className="row col-sm-12">
-                        <div className="row col-sm-5">
-                          <div className="col-sm-2" style={{marginRight: "13px"}}>
-                            <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
-                          </div>
-                          <div className="col-sm-2">
-                            <span>
-                              <span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[(bot.aiPlatform) ? bot.aiPlatform.toLowerCase() : '']}</span>
-                              <br />
-                              <span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span>
-                              <br />
-                              <span className="km-bot-list-of-integrated-bots-bot-name">{bot.userName}</span>
-                            </span>
-                          </div> 
-                        </div>
-                        <div className="col-sm-3">
+                    <div className="container" key={bot.id}>
+                      <div className="row">
+                        <div className="col-sm-2">
                           { 
                             bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
                           }
                         </div>
-                        <div className="col-sm-4" style={{textAlign: "right"}}>
+                        <div className="row col-sm-4">
+                          <div style={{marginRight: "8px"}}>
+                            <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
+                          </div>
+                          <div>
+                            <span>
+                              <span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[(bot.aiPlatform) ? bot.aiPlatform.toLowerCase() : '']}</span>
+                              <br />
+                              <span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span>
+                            </span>
+                          </div> 
+                        </div>
+                        <div className="col-sm-4">
+                          <span className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</span>
+                        </div>
+                        <div className="col-sm-2" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>
@@ -858,7 +859,7 @@ class Tabs extends Component {
                       <div className="row col-sm-12" style={{marginLeft: "10px"}}>
                         <div className="col-sm-5">
                             <p className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</p>
-                            <p className="km-bot-list-of-integrated-bots-bot-name">{bot.userName}</p>
+                            <p className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</p>
                         </div>
                         <div className="col-sm-3">
                           { 
