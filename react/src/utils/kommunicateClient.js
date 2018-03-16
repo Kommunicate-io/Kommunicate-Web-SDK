@@ -700,6 +700,21 @@ const enableAutomaticAssignment = (data) => {
     return result;
   }).catch(err => {console.log("Error while enable automatic assignemnt", err)})
 }
+
+const getSuggestionsByCriteria = (applicationId, criteria, value) => {
+
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId
+
+  return Promise.resolve(axios.get(autoSuggestUrl, {
+      params: {
+        criteria: criteria,
+        value: value
+      }
+    }))
+    .then(response => response.data)
+    .catch(err => err);
+}
+
 const getCustomerByApplicationId = () => {
   let userSession = CommonUtils.getUserSession();
   let url = getConfig().kommunicateBaseUrl+"/customers?applicationId="+userSession.application.applicationId;
@@ -712,6 +727,7 @@ const getCustomerByApplicationId = () => {
   }).catch(err => {console.log("Error while fetching customer by applicationId", err)})
 
 }
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -752,5 +768,6 @@ export {
   getIntegratedBots,
   enableNotifyEveryBody,
   enableAutomaticAssignment,
+  getSuggestionsByCriteria,
   getCustomerByApplicationId
 }
