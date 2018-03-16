@@ -268,6 +268,10 @@ const config ={
       REMOVE_MEMBER_MESSAGE:""
     },
     kommunicatePricingPackage:101,
+    zendesk:{
+    createTicketUrl:'https://[subdomain].zendesk.com/api/v2/tickets.json',
+    updateTicketUrl:"https://[subdomain].zendesk.com/api/v2/tickets/[id].json",
+    }
 }
 };
 exports.getProperties = function() {
