@@ -41,6 +41,25 @@ const getSuggestionsByAppId = (applicationId) => {
 		.catch(err => err);
 }
 
+const getSuggestionsByCriteria = (criteria, value, applicationId) => {
+
+	let criteriaObj = {};
+
+	criteriaObj[criteria] = value;
+
+	if(criteria == 'id'){
+		criteriaObj[criteria] = parseInt(value, 10);
+	}
+
+	criteriaObj.applicationId = applicationId;
+
+	return autoSuggestModel.findAll({
+		where: criteriaObj
+	}).then(suggestions => {
+		return suggestions
+	}).catch(err => err);
+}
+
 const createSuggestion = (suggestion) => {
 	return autoSuggestModel.create(suggestion)
 }
@@ -66,3 +85,4 @@ exports.createSuggestion = createSuggestion
 exports.getSuggestionsByAppId = getSuggestionsByAppId
 exports.updateSuggetion = updateSuggetion
 exports.deleteSuggetion = deleteSuggetion
+exports.getSuggestionsByCriteria = getSuggestionsByCriteria

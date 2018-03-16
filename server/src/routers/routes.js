@@ -23,7 +23,11 @@ const issueTypeController = require('../issuetype/issueTypeController');
 const issueTypeValidation = require('../issuetype/validation');
 const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAutoReplyController');
 const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
-const inAppEventController = require('../appevent/InAppEventController')
+const inAppEventController = require('../appevent/InAppEventController');
+const zendeskController = require('../zendesk/zendeskController');
+const zendeskValidation = require('../zendesk/validation') ;
+const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
+const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
 
 
 //router declaration
@@ -41,6 +45,7 @@ const profileImageRouter = express.Router();
 const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
+const zendeskRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -57,6 +62,7 @@ exports.profileImage = profileImageRouter;
 exports.group = groupRouter;
 exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
+exports.zendesk = zendeskRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -91,7 +97,8 @@ customerRouter.get('/:userName',registerController.getCustomerInformation);
 customerRouter.post('/applozic',function(req,res){
                           console.log("called sign up with Applozic");
                           registerController.signUpWithAplozic(req,res);});
-customerRouter.patch('/:appId/routing/:routingState', validate(customerValidation.updateRoutingState), registerController.updateAgentRoutingState)
+customerRouter.patch('/:appId/routing/:routingState', validate(customerValidation.updateRoutingState), registerController.updateAgentRoutingState);
+customerRouter.get('/',validate(customerValidation.searchCustomer), registerController.getCustomerByApplicationId)
 miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);
@@ -135,3 +142,11 @@ issueTypeReplyRouter.post('/',validate(issueTypeAutoReplyValidation.createIssueT
 issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
 issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
 issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.deleteIssueTypeAutoReply)
+
+
+/*
+*zendesk APIs
+*/
+zendeskRouter.post('/:appId/ticket/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
+zendeskRouter.put('/:appId/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.post('/:appId/insert/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)

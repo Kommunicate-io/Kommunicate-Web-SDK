@@ -458,7 +458,7 @@ function MckGroupService() {
     var GET_GROUP_BYFILTER_URL ="/rest/ws/group/filter";
     _this.getGroupByFilter = function(params) {
         var response = new Object();
-        url = params.groupName ? MCK_BASE_URL + GET_GROUP_BYFILTER_URL+"?groupName="+params.groupName+"&pageSize=1" : MCK_BASE_URL + GET_GROUP_BYFILTER_URL
+        url = params.groupName ? MCK_BASE_URL + GET_GROUP_BYFILTER_URL+"?groupName="+encodeURIComponent(params.groupName)+"&pageSize=1" : MCK_BASE_URL + GET_GROUP_BYFILTER_URL
         mckUtils.ajax({
             url: url,
             type: 'get',
