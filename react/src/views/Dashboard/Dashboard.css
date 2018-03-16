@@ -1,0 +1,99 @@
+.dashboard-card {
+    border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 0 3px 0 rgba(189, 184, 184, 0.5), 0 2px 4px 0 rgba(191, 189, 189, 0.5);
+  /* padding: 0px 20px 20px; */
+}
+.dashboard-card .row {
+    margin: 0;
+}
+.dashboard-card div[class^="col-"] {
+    padding: 0;
+}
+.graph-card {
+    padding: 20px;
+}
+.card-main-title {
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.1px;
+    color: #696b6b;
+    margin-bottom: 10px;
+}
+.card-stats-value {
+    font-size: 24px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.9px;
+    color: #5c5aa7;
+}
+.card-sub-title {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.1px;
+    color: #9da2a2;
+}
+.card-stats {
+    background-color: #fff;
+    position: relative;
+    transition: all .2s ease-in-out;
+}
+.card-stats:hover {
+    background-color: #fbfbfb;
+    cursor: pointer;
+}
+.card-stats.active {
+    border-top: 3px solid #5c5aa7;
+}
+.card-stats.active .card-main-title, .card-stats.active .card-sub-title  {
+    font-weight: 500;
+}
+.card-stats.card-stats--users {
+    border-top-left-radius: 4px;
+}
+.card-stats.card-stats--mau {
+    border-top-right-radius: 4px;
+}
+.vertical-line {
+    position: absolute;
+    width: 1px;
+    height: 80%;
+    top: 9%;
+    right: 0;
+    background-color: #cfcaca;
+}
+
+
+@media (max-width:991px) {
+    .card-stats--messages .vertical-line {
+        display: none;
+    }
+    .card-stats--messages {
+        border-top-right-radius: 4px;
+    }
+    .card-stats--mau {
+        border-top-right-radius: 0px;
+    }
+}
+@media (max-width:575px) {
+    .card-stats--users .vertical-line {
+        display: none;
+    }
+    .card-stats--messages {
+        border-top-right-radius: 0px;
+    }
+    .card-stats--users {
+        border-top-right-radius: 4px;
+    }
+    .card-stats {
+        border-bottom: 1px solid #cfcaca;
+    }
+}
