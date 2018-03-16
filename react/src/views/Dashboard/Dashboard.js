@@ -4,8 +4,9 @@ import { Bar, Line } from 'react-chartjs-2';
 import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import  {getConfig} from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils';
+import './Dashboard.css';
 
-const brandPrimary =  '#20a8d8';
+const brandPrimary =  '#5c5aa7';
 const brandSuccess =  '#18A9B7';
 const brandInfo =     '#D13351';
 const brandDanger =   '#f86c6b';
@@ -56,6 +57,16 @@ class Dashboard extends Component {
       }
     };
     this.mainChartOpts = {
+      // tooltips: {
+      //   backgroundColor: '#fff',
+      //   titleFontSize: 14,
+      //   titleFontColor: '#000',
+      //   bodyFontColor: '#000',
+      //   footerFontColor:'#000',
+
+      // },
+      responsive: true,
+      
       maintainAspectRatio: false,
       legend: {
         display: true
@@ -77,7 +88,9 @@ class Dashboard extends Component {
       },
       elements: {
         point: {
-          radius: 0,
+          backgroundColor: 'rgba(255,255,255,1)',
+          borderWidth: 3,
+          radius: 2,
           hitRadius: 10,
           hoverRadius: 4,
           hoverBorderWidth: 3,
@@ -162,14 +175,17 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className="animated fadeIn">
+      <div className="animated fadeIn dashboard-card">
         <div className="row">
-          <div className="col-sm-6 col-lg-4">
-            <div className="card card-inverse card-user">
+          <div className="col-sm-6 col-lg-4 text-center">
+            <div className="card card-inverse card-stats card-stats--users active">
               <div className="card-block pb-0">
-                <h4 className="mb-0">{this.state.newUsers}</h4>
-                <p>Users</p>
+                <p className="card-main-title">Users</p>
+                <h4 className="card-stats-value">{this.state.newUsers}</h4>
+{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
+                {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
+              <div className="vertical-line"></div>
             </div>
           </div>
 
@@ -184,32 +200,36 @@ class Dashboard extends Component {
           </div>
           */}
 
-          <div className="col-sm-6 col-lg-4">
-            <div className="card card-inverse card-warning">
+          <div className="col-sm-6 col-lg-4 text-center">
+            <div className="card card-inverse card-stats card-stats--messages">
               <div className="card-block pb-0">
-                <h4 className="mb-0">{this.state.messages}</h4>
-                <p>Messages</p>
+              <p className="card-main-title">Messages</p>
+                <h4 className="card-stats-value">{this.state.messages}</h4>
+                {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
+              <div className="vertical-line"></div>
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-4">
-            <div className="card card-inverse card-danger">
+          <div className="col-sm-6 col-lg-4 text-center">
+            <div className="card card-inverse card-stats card-stats--mau ">
               <div className="card-block pb-0">
-                <h4 className="mb-0">{this.state.active}</h4>
-                <p>Monthly Active Users</p>
+              <p className="card-main-title">Monthly Active Users</p>
+                <h4 className="card-stats-value">{this.state.active}</h4>
+                {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
+              
             </div>
           </div>
         </div>
 
-        <div className="card" style={{borderRight: "1px solid #979797", borderLeft: "1px solid #979797", borderBottom: "1px solid #979797"}}>
+        <div className="card">
           <div className="card-block">
             <div className="row">
-              <div className="col-sm-5">
+              {/* <div className="col-sm-5">
                 <h4 className="card-title mb-0">Traffic</h4>
                 <div className="small text-muted">This Month</div>
-              </div>
+              </div> */}
               {/*}
               <div className="col-sm-7 hidden-sm-down">
                 <button type="button" className="btn btn-primary float-right"><i className="icon-cloud-download"></i></button>
