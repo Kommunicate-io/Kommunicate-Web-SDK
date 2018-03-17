@@ -132,7 +132,9 @@ class ApplozicUserSignUp extends Component {
         Notification.info("Incorrect Application Id. Try again");
         return;
        }else if(response.data&& response.data.code==="SUCCESS"){
-       
+        if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
+          window.Kommunicate.updateUserIdentity(userInfo.userName);
+          }
         saveToLocalStorage(email, password, response.data.data.name, response);
         _this.setState({disableRegisterButton:false});
         this.props.history.push('/dashboard');
