@@ -99,7 +99,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('agent-assignment')|| currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('agent-assignment')|| currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app') || currentPath.includes('billing')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
