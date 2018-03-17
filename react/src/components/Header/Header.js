@@ -95,7 +95,9 @@ class Header extends Component {
 </svg>
         		{/* <span className="beta-text">Beta</span> */}
         </Link>
+ 
         <ul className="nav navbar-nav ml-auto">
+
           <li className="nav-item d-md-down-none">
             <Link className="nav-link" to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
           </li>

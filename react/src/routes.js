@@ -15,7 +15,8 @@ const routes = {
   '/welcome-message': 'Welcome Message',
   '/away-message': 'Away Message',
   '/agent-app': 'Agent App',
-  '/agent-assignment':'Agent Assignment'
+  '/agent-assignment':'Agent Assignment',
+  '/billing': 'Billing',
 };
 
 export default routes;
