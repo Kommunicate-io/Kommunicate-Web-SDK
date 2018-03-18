@@ -2,14 +2,24 @@ import React, { Component } from 'react';
 
 class Billing extends Component {
 
+    componentWillMount() {
+
+    }
+
     componentDidMount() {
-      let subscribeElems = document.getElementsByClassName("chargebee");
+
+      document.getElementById("portal").addEventListener("click", function(event){
+        if(event.target.classList.contains('n-vis')) {
+          event.target.classList.remove('n-vis');
+          return;
+        }
+      });
       
-      for (var i=0, max=subscribeElems.length; i < max; i++) {
-        //subscribeElems[i].click();
-      }
-      
-      document.getElementById("checkout").addEventListener("click", function(){
+      document.getElementById("checkout").addEventListener("click", function(event){
+        if(event.target.classList.contains('n-vis')) {
+          event.target.classList.remove('n-vis');
+          return;
+        }
         var cbInstance = window.Chargebee.getInstance();
         console.log(cbInstance);
   
@@ -30,8 +40,14 @@ class Billing extends Component {
                       console.log(value);
                   }
               }
-          });  
+          });
       });
+
+      let subscribeElems = document.getElementsByClassName("chargebee");
+      
+      for (var i=0, max=subscribeElems.length; i < max; i++) {
+        subscribeElems[i].click();
+      }
     }
 
     render() {
@@ -44,9 +60,9 @@ class Billing extends Component {
                                 <div className="download-link-image-container">
                                     <div className="download-link-container">
                                       Your plan details
-                                      <a id="checkout" className="chargebee" href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Subscribe</a>
+                                      <a id="checkout" className="chargebee n-vis" href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Subscribe</a>
 
-                                      <a className="chargebee" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
+                                      <a id="portal" className="" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
 
                                   </div>
                                 </div>
