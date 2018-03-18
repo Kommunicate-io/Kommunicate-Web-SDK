@@ -62,7 +62,7 @@ class Billing extends Component {
                                       Your plan details
                                       <a id="checkout" className="chargebee n-vis" href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Subscribe</a>
 
-                                      <a id="portal" className="" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
+                                      <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
 
                                   </div>
                                 </div>
