@@ -32,59 +32,78 @@ class Billing extends Component {
           return;
         }
       });
-      
-      document.getElementById("checkout").addEventListener("click", function(event){
-        if(event.target.classList.contains('n-vis')) {
-          event.target.classList.remove('n-vis');
-          return;
-        }
-        var cbInstance = window.Chargebee.getInstance();
-        console.log(cbInstance);
-  
-          cbInstance.setCheckoutCallbacks(function(cart) {
-              // you can define a custom callbacks based on cart object
-              return {
-                  loaded: function () {
-                      console.log("checkout opened");
-                  },
-                  close: function () {
-                      console.log("checkout closed");
-                  },
-                  success: function (hostedPageId) {
-                      console.log("success, hostedPageId: " + hostedPageId);
-                  },
-                  step: function (value) {
-                      // value -> which step in checkout
-                      console.log(value);
-                      if (value == "thankyou_screen") {
-                          that.updateSubscription(1); //Todo: pass value of the selected subscription plan
-                      }
-                  },
-                  visit: function (visit) {
-                      // Optional
-                      // called whenever the customer navigates different sections in portal
-                  },
-                  paymentSourceAdd: function () {
-                      // Optional
-                      // called whenever a new payment source is added in portal
-                  },
-                  paymentSourceUpdate: function () {
-                      // Optional
-                      // called whenever a payment source is updated in portal
-                  },
-                  paymentSourceRemove: function () {
-                      // Optional
-                      // called whenever a payment source is removed in portal.
-                  }
-              }
-          });
-      });
+
+
+      var checkouts = document.getElementsByClassName("checkout");
+
+      for (var i = 0; i < checkouts.length; i++) {
+        checkouts[i].addEventListener('click', function(event) {
+            that.checkoutSubscription(event, that);
+        }, false);
+      }
 
       let subscribeElems = document.getElementsByClassName("chargebee");
       
       for (var i=0, max=subscribeElems.length; i < max; i++) {
         subscribeElems[i].click();
       }
+    }
+
+    checkoutSubscription(event, that) {
+        if (event.target.classList.contains('n-vis')) {
+            event.target.classList.remove('n-vis');
+            return;
+        }
+
+        var checkouts = document.getElementsByClassName("checkout");
+
+        for (var i = 0; i < checkouts.length; i++) {
+          checkouts[i].classList.remove('active');
+        }
+        event.target.classList.add('active');
+
+        var cbInstance = window.Chargebee.getInstance();
+        console.log(cbInstance);
+
+        cbInstance.setCheckoutCallbacks(function (cart) {
+            // you can define a custom callbacks based on cart object
+            return {
+                loaded: function () {
+                    console.log("checkout opened");
+                },
+                close: function () {
+                    console.log("checkout closed");
+                },
+                success: function (hostedPageId) {
+                    console.log("success, hostedPageId: " + hostedPageId);
+                },
+                step: function (value) {
+                    // value -> which step in checkout
+                    console.log(value);
+                    if (value == "thankyou_screen") {
+                        let plans = document.getElementsByClassName('checkout active');
+                        that.updateSubscription(plans[0].getAttribute('data-subscription')); //Todo: pass value of the selected subscription plan
+                    }
+                },
+                visit: function (visit) {
+                    // Optional
+                    // called whenever the customer navigates different sections in portal
+                },
+                paymentSourceAdd: function () {
+                    // Optional
+                    // called whenever a new payment source is added in portal
+                },
+                paymentSourceUpdate: function () {
+                    // Optional
+                    // called whenever a payment source is updated in portal
+                },
+                paymentSourceRemove: function () {
+                    // Optional
+                    // called whenever a payment source is removed in portal.
+                }
+            }
+        });
+
     }
 
     updateSubscription(subscription) {
@@ -152,7 +171,8 @@ class Billing extends Component {
                                       Your plan details
                                     
                                       {this.subscriptionPlanStatus()} #
-                                      <a id="checkout" className="chargebee n-vis" href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Subscribe</a>
+                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Launch</a>
+                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Hustle</a>
 
                                       <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
 
