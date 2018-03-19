@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
+import {patchCustomerInfo, getCustomerInfo} from '../../utils/kommunicateClient'
+import Notification from '../model/Notification';
+import { getResource } from '../../config/config.js'
+import CommonUtils from '../../utils/CommonUtils';
 
 class Billing extends Component {
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+         'subscription': CommonUtils.getUserSession().subscription //Todo: store subscription in UserSession
+        };
+
+        this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
+    }    
 
     componentWillMount() {
 
@@ -50,6 +64,34 @@ class Billing extends Component {
       }
     }
 
+    updateSubscription(subscription) {
+        let that = this;
+        let userSession = CommonUtils.getUserSession();
+
+        const customerInfo = {
+            "subscription": subscription
+        }
+            
+        patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
+            .then(response => {
+                console.log(response)
+                if (response.data.code === 'SUCCESS') {
+                    userSession.subscription=subscription;
+                    CommonUtils.setUserSession(userSession);
+                    that.state.subscription = subscription;
+                    Notification.info(response.data.message);
+                }
+            }).catch(err => {
+                console.log(err);
+                alert(err);
+            });     
+    }
+
+    subscriptionPlanStatus() {
+        console.log("subscription: " + this.state.subscription);
+        return SUBSCRIPTION_PLANS[this.state.subscription];
+    }
+
     render() {
         return (
             <div className="animated fadeIn">
@@ -60,6 +102,8 @@ class Billing extends Component {
                                 <div className="download-link-image-container">
                                     <div className="download-link-container">
                                       Your plan details
+                                    
+                                      {this.subscriptionPlanStatus()} #
                                       <a id="checkout" className="chargebee n-vis" href="javascript:void(0)" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Subscribe</a>
 
                                       <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
@@ -74,5 +118,13 @@ class Billing extends Component {
         );
     }
 }
+
+const SUBSCRIPTION_PLANS = {
+    0: "Free",
+    1: "Launch",
+    2: "Growth",
+    3: "Enterprise",
+  };
+  
 
 export default Billing;
