@@ -13,14 +13,10 @@ class Billing extends Component {
         super(props);
     
         this.state = {
-         'subscription': CommonUtils.getUserSession().subscription
+            'subscription': CommonUtils.getUserSession().subscription
         };
 
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
-    }    
-
-    componentWillMount() {
-
     }
 
     componentDidMount() {
@@ -32,7 +28,6 @@ class Billing extends Component {
           return;
         }
       });
-
 
       var checkouts = document.getElementsByClassName("checkout");
 
@@ -194,5 +189,15 @@ const SUBSCRIPTION_PLANS = {
     3: "Enterprise",
   };
   
+
+const urlEncode = function(data) {
+  var str = [];
+  for (var p in data) {
+      if (data.hasOwnProperty(p) && (!(data[p] == undefined || data[p] == null))) {
+          str.push(encodeURIComponent(p) + "=" + (data[p] ? encodeURIComponent(data[p]) : ""));
+      }
+  }
+  return str.join("&");
+}
 
 export default Billing;
