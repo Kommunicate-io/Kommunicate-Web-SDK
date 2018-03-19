@@ -52,6 +52,14 @@ class Dashboard extends Component {
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
             data: []
+          },
+          {
+            label: 'Conversations Dataset',
+            backgroundColor: 'transparent',
+            borderColor: brandSuccess,
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 1,
+            data: []
           }
         ]
       }
@@ -74,7 +82,7 @@ class Dashboard extends Component {
       scales: {
         xAxes: [{
           gridLines: {
-            drawOnChartArea: false,
+            drawOnChartArea: true,
           }
         }],
         yAxes: [{
@@ -148,9 +156,11 @@ class Dashboard extends Component {
             var data = response.data;
             var messageData = [];
             var userData = [];
+            var channelData = [];
             if (data.length > 0) {
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
+                console.log(obj);
                 var datetime = new Date(obj.onDateTime);
                 for (var j = messageData.length; j< datetime.getDate(); j++) {
                   messageData.push(0);
@@ -158,6 +168,7 @@ class Dashboard extends Component {
                 }
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
+                channelData.push(obj.channelCount);
                 that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
               }
             }
@@ -165,6 +176,7 @@ class Dashboard extends Component {
             var mainChart = that.state.mainChart;
             mainChart.datasets[0].data = messageData;
             mainChart.datasets[1].data = userData;
+            mainChart.datasets[2].data = channelData;
             that.setState({
               'mainChart': mainChart
             });
