@@ -39,27 +39,35 @@ class Dashboard extends Component {
         datasets: [
           {
             label: 'Messages Dataset',
-            backgroundColor: 'transparent',
+           // backgroundColor: 'whitesmoke',
             borderColor: brandInfo,
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
-            data: []
+            data: [],
+            fillColor: "rgba(110,120,120,0.2)",
+          /*  strokeColor: "rgba(120,220,220,1)",
+            pointColor: "rgba(120,220,220,1)",
+            pointStrokeColor: "#f11",
+            pointHighlightFill: "#f11",
+            pointHighlightStroke: "rgba(120,220,220,1)",*/
           },
           {
             label: 'Users Dataset',
-            backgroundColor: 'transparent',
+           // backgroundColor: 'transparent',
             borderColor: brandSuccess,
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
-            data: []
+            data: [],
+            fillColor: "rgba(110,120,120,0.2)",
           },
           {
             label: 'Conversations Dataset',
-            backgroundColor: 'transparent',
+          //  backgroundColor: 'transparent',
             borderColor: brandSuccess,
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
-            data: []
+            data: [],
+            fillColor: "rgba(110,120,120,0.2)",
           }
         ]
       }
