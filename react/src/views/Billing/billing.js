@@ -13,14 +13,10 @@ class Billing extends Component {
         super(props);
     
         this.state = {
-         'subscription': CommonUtils.getUserSession().subscription
+            'subscription': CommonUtils.getUserSession().subscription
         };
 
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
-    }    
-
-    componentWillMount() {
-
     }
 
     componentDidMount() {
@@ -32,7 +28,6 @@ class Billing extends Component {
           return;
         }
       });
-
 
       var checkouts = document.getElementsByClassName("checkout");
 
@@ -171,8 +166,9 @@ class Billing extends Component {
                                       Your plan details
                                     
                                       {this.subscriptionPlanStatus()} #
+
                                       <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Launch</a>
-                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Hustle</a>
+                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Growth</a>
 
                                       <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
 
@@ -193,6 +189,5 @@ const SUBSCRIPTION_PLANS = {
     2: "Growth",
     3: "Enterprise",
   };
-  
 
 export default Billing;
