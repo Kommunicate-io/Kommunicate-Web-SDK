@@ -97,6 +97,13 @@ class Register extends Component {
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
       if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
         window.Kommunicate.updateUserIdentity(userInfo.userName);
+        let user = {'email': userInfo.email, 'displayName': userInfo.name};
+        window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
+            console.log(response);
+          }, error: function(error) {
+            console.log(error);
+          }
+        });
       }
       response.data.data.displayName=response.data.data.name;
      saveToLocalStorage(email, password, name, response);
