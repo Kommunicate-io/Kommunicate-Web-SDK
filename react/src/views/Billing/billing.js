@@ -10,7 +10,7 @@ class Billing extends Component {
         super(props);
     
         this.state = {
-         'subscription': CommonUtils.getUserSession().subscription //Todo: store subscription in UserSession
+         'subscription': CommonUtils.getUserSession().subscription
         };
 
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);

@@ -20,6 +20,7 @@ exports.login = (userDetail) => {
             user.adminDisplayName = customer.name;
             user.routingState = customer.agentRouting;
             user.applozicUser=applozicUser;
+            user.subsciption = customer.subsciption;
             return prepareResponse(user,application);
           });
       }else{

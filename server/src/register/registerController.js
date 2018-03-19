@@ -16,11 +16,13 @@ exports.createCustomer = (req,res)=>{
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
+  const subscription = req.body.subscription||0;
   let response={};
   let userDetail =Object.assign({},req.body);
   userDetail.email=email;
   userDetail.password = password;
   userDetail.userName=userName;
+  userDetail.subscription = subscription;
   console.log("userName:", userName, password,isPreSignUp);
   if(userName&&(isPreSignUp||password)){
     console.log("request received for pre sign up, EmailId : ",userName);
