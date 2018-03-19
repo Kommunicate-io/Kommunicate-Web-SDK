@@ -76,7 +76,7 @@ class Forms extends Component {
       return;
     }
   }
-  updateKommunicateSupport = (user) => {
+  updateKommunicateSupportUser = (user) => {
     //update name in applozic db for user created under kommunicate-support app
     window.$applozic.fn.applozic('updateUser', {
       data: user, success: function (response) {
@@ -116,7 +116,7 @@ class Forms extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
-            this.updateKommunicateSupport(user)
+            this.updateKommunicateSupportUser(user)
             userSession.adminDisplayName=this.state.name;
             CommonUtils.setUserSession(userSession);
             Notification.info(response.data.message)      
@@ -130,7 +130,7 @@ class Forms extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
-            this.updateKommunicateSupport(user)
+            this.updateKommunicateSupportUser(user)
             Notification.info(response.data.message)
           }
         }).catch(err => {
