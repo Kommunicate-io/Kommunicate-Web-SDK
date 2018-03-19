@@ -76,6 +76,16 @@ class Forms extends Component {
       return;
     }
   }
+  updateKommunicateSupport = (user) => {
+    //update name in applozic db for user created under kommunicate-support app
+    window.$applozic.fn.applozic('updateUser', {
+      data: user, success: function (response) {
+        console.log(response);
+      }, error: function (error) {
+        console.log(error);
+      }
+    });
+  }
 
   handleSubmit(e) {
 
@@ -94,15 +104,22 @@ class Forms extends Component {
       "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry,
       "applicationId": userSession.application.applicationId
     }
+    let user = {
+      'email': this.state.email, 
+      'displayName': this.state.name, 
+      'phoneNumber':this.state.contact
+    };
+
         
     if (userSession.isAdmin) {
       patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
+            this.updateKommunicateSupport(user)
             userSession.adminDisplayName=this.state.name;
             CommonUtils.setUserSession(userSession);
-            Notification.info(response.data.message)
+            Notification.info(response.data.message)      
           }
         }).catch(err => {
           console.log(err);
@@ -113,6 +130,7 @@ class Forms extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
+            this.updateKommunicateSupport(user)
             Notification.info(response.data.message)
           }
         }).catch(err => {
