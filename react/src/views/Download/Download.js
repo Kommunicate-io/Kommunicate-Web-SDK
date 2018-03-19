@@ -3,10 +3,11 @@ import './Download.css';
 import AndroidAppScreenshot from './images/kommunicate-agent-app-screenshot.svg';
 
 class Download extends Component {
+
     render() {
         return (
             <div className="animated fadeIn">
-                <div className="row">
+                       <div className="row">
                     <div className="col-md-12">
                         <div className="card">
                             <div className="card-block">

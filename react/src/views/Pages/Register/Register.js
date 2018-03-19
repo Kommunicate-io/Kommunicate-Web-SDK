@@ -23,7 +23,8 @@ class Register extends Component {
       applicationId:null,
       token:null,
       invitedBy:'',
-      signupButtonTxt:'Create Account'
+      signupButtonTxt:'Create Account',
+      subscription: 0
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -92,6 +93,8 @@ class Register extends Component {
     userInfo.applicationId = this.state.applicationId;
     userInfo.password = password;
     userInfo.name=_this.state.name || _this.state.userName;
+    userInfo.subscription = _this.state.subscription;
+
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {

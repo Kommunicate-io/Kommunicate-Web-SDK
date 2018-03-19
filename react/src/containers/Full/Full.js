@@ -20,6 +20,7 @@ import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
 import Faq from '../../views/Faq/'
+import Billing from '../../views/Billing/'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -98,7 +99,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('agent-assignment')|| currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('agent-assignment')|| currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app') || currentPath.includes('billing')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
@@ -121,6 +122,7 @@ class Full extends Component {
                 <Route exact path="/install" name="Integration" component={Integration}/>
                 <Route exact path="/agent-app" name="Download" component={Download}/>
                 <Route exact path="/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
+                <Route exact path="/billing" name="Billing" component={Billing}/>
                 }}/> 
                   
                 
