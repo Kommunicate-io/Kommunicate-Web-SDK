@@ -39,3 +39,5 @@ alter  table kommunicate_test.auto_suggests modify column `name` TEXT;
 
 alter table kommunicate_test.auto_suggests add column `status`  enum('draft', 'published') collate utf8mb4_unicode_ci default null;
 alter table kommunicate_test.auto_suggests add column `type`  enum('faq', 'shortcut') collate utf8mb4_unicode_ci default null;
+
+alter table customers add column subscription int default 0;
