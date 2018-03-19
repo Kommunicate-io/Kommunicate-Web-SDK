@@ -177,11 +177,34 @@ class Dashboard extends Component {
     return (
       <div className="animated fadeIn dashboard-card">
         <div className="row">
-          <div className="col-sm-6 col-lg-4 text-center">
+          <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--users active">
               <div className="card-block pb-0">
                 <p className="card-main-title">Users</p>
                 <h4 className="card-stats-value">{this.state.newUsers}</h4>
+{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
+                {/* <p className="card-sub-title">205 Users last month</p> */}
+              </div>
+              <div className="vertical-line"></div>
+            </div>
+          </div>
+
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--mau ">
+              <div className="card-block pb-0">
+              <p className="card-main-title">Monthly Active Users</p>
+                <h4 className="card-stats-value">{this.state.active}</h4>
+                {/* <p className="card-sub-title">205 Users last month</p> */}
+              </div>
+              
+            </div>
+          </div>
+
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--conversations">
+              <div className="card-block pb-0">
+                <p className="card-main-title">Conversations</p>
+                <h4 className="card-stats-value">{this.state.conversations}</h4>
 {/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
@@ -200,7 +223,7 @@ class Dashboard extends Component {
           </div>
           */}
 
-          <div className="col-sm-6 col-lg-4 text-center">
+          <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--messages">
               <div className="card-block pb-0">
               <p className="card-main-title">Messages</p>
@@ -211,16 +234,6 @@ class Dashboard extends Component {
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-4 text-center">
-            <div className="card card-inverse card-stats card-stats--mau ">
-              <div className="card-block pb-0">
-              <p className="card-main-title">Monthly Active Users</p>
-                <h4 className="card-stats-value">{this.state.active}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
-              </div>
-              
-            </div>
-          </div>
         </div>
 
         <div className="card">
