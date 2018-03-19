@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import {getConfig} from '../.../../../config/config.js';
 import {patchCustomerInfo, getCustomerInfo} from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
+
 
 class Billing extends Component {
 
@@ -21,6 +24,7 @@ class Billing extends Component {
     }
 
     componentDidMount() {
+      let that = this;
 
       document.getElementById("portal").addEventListener("click", function(event){
         if(event.target.classList.contains('n-vis')) {
@@ -40,18 +44,37 @@ class Billing extends Component {
           cbInstance.setCheckoutCallbacks(function(cart) {
               // you can define a custom callbacks based on cart object
               return {
-                  loaded: function() {
+                  loaded: function () {
                       console.log("checkout opened");
                   },
-                  close: function() {
+                  close: function () {
                       console.log("checkout closed");
                   },
-                  success: function(hostedPageId) {
-          
+                  success: function (hostedPageId) {
+                      console.log("success, hostedPageId: " + hostedPageId);
                   },
-                  step: function(value) {
+                  step: function (value) {
                       // value -> which step in checkout
                       console.log(value);
+                      if (value == "thankyou_screen") {
+                          that.updateSubscription(1); //Todo: pass value of the selected subscription plan
+                      }
+                  },
+                  visit: function (visit) {
+                      // Optional
+                      // called whenever the customer navigates different sections in portal
+                  },
+                  paymentSourceAdd: function () {
+                      // Optional
+                      // called whenever a new payment source is added in portal
+                  },
+                  paymentSourceUpdate: function () {
+                      // Optional
+                      // called whenever a payment source is updated in portal
+                  },
+                  paymentSourceRemove: function () {
+                      // Optional
+                      // called whenever a payment source is removed in portal.
                   }
               }
           });
@@ -69,10 +92,11 @@ class Billing extends Component {
         let userSession = CommonUtils.getUserSession();
 
         const customerInfo = {
-            "subscription": subscription
-        }
+            applicationId: userSession.application.applicationId,
+            subscription: subscription
+        };
             
-        patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
+        that.updateCustomerSubscription(customerInfo, CommonUtils.getUserSession().userName)
             .then(response => {
                 console.log(response)
                 if (response.data.code === 'SUCCESS') {
@@ -88,8 +112,32 @@ class Billing extends Component {
     }
 
     subscriptionPlanStatus() {
-        console.log("subscription: " + this.state.subscription);
-        return SUBSCRIPTION_PLANS[this.state.subscription];
+        return SUBSCRIPTION_PLANS[this.state.subscription || 0];
+    }
+
+    updateCustomerSubscription(customerInfo, customerName) {
+
+        const patchCustomerUrl = getConfig().kommunicateApi.signup + '/' + customerName;
+    
+        return Promise.resolve(axios({
+            method: 'patch',
+            url: patchCustomerUrl,
+            data: JSON.stringify(customerInfo),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })).then(function (response) {
+            if (response.status === 200 && response.data !== undefined) {
+                console.log(response);
+                return response;
+            }
+
+            if (response.status === 404 && response.data !== undefined) {
+                console.log(response)
+                return response;
+            }
+        });
+
     }
 
     render() {
