@@ -21,9 +21,6 @@ class Header extends Component {
     };
   }
 
-  componentWillMount() {
-   }
-
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen

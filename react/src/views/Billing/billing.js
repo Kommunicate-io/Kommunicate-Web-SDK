@@ -166,8 +166,9 @@ class Billing extends Component {
                                       Your plan details
                                     
                                       {this.subscriptionPlanStatus()} #
+
                                       <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Launch</a>
-                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="cbdemo_hustle">Hustle</a>
+                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Growth</a>
 
                                       <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
 
@@ -188,16 +189,5 @@ const SUBSCRIPTION_PLANS = {
     2: "Growth",
     3: "Enterprise",
   };
-  
-
-const urlEncode = function(data) {
-  var str = [];
-  for (var p in data) {
-      if (data.hasOwnProperty(p) && (!(data[p] == undefined || data[p] == null))) {
-          str.push(encodeURIComponent(p) + "=" + (data[p] ? encodeURIComponent(data[p]) : ""));
-      }
-  }
-  return str.join("&");
-}
 
 export default Billing;
