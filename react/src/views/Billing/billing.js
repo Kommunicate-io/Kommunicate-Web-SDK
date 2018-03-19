@@ -82,7 +82,7 @@ class Billing extends Component {
                     console.log(value);
                     if (value == "thankyou_screen") {
                         let plans = document.getElementsByClassName('checkout active');
-                        that.updateSubscription(plans[0].getAttribute('data-subscription')); //Todo: pass value of the selected subscription plan
+                        that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
                     }
                 },
                 visit: function (visit) {
