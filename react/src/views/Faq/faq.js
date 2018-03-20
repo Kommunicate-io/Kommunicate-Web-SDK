@@ -4,9 +4,9 @@ import 'react-select/dist/react-select.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';
 import axios from 'axios';
-import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
+import {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import Notification from '../model/Notification';
-import {createSuggestions, getSuggestionsByCriteria} from '../../utils/kommunicateClient';
+import {createSuggestions, getSuggestionsByCriteria, deleteSuggestionsById, updateSuggestionsById} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
@@ -29,7 +29,8 @@ class Tabs extends Component {
       showDeleteFaq: false,
       isDraft: true,
       isPublished: false,
-      listOfFAQs: []
+      listOfFAQs: [],
+      faqId: null
     };
 
     let userSession = CommonUtils.getUserSession();
@@ -41,9 +42,14 @@ class Tabs extends Component {
 
   componentDidMount=()=>{
 
+    this.getFaqsWrapper()
+
+  }
+
+  getFaqsWrapper = () => {
+
     getSuggestionsByCriteria(this.applicationId, 'type', 'faq').then(response => {
       console.log(response)
-
       if(response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
         this.setState({
           listOfFAQs :  response.data ? response.data : []
@@ -51,9 +57,7 @@ class Tabs extends Component {
           console.log(this.state.listOfFAQs)
         })
       }
-
-    });
-
+    }).catch(err => {console.log(err)});
   }
 
   toggle = (tab) =>  {
@@ -67,9 +71,20 @@ class Tabs extends Component {
   clearFAQDetails = () => {
     this.setState({
       faqContent: '',
-      faqTitle: ''
+      faqTitle: '',
+      faqId: null
     })
+  }
 
+  setFAQDetails = (title, content, status, id) => {
+    this.setState({
+      faqId: id,
+      faqContent: content,
+      faqTitle: title,
+      isDraft: status == "draft" ? true:false,
+      isPublished: status == "published" ? true:false,
+      faqModal: !this.state.faqModal,
+    }, () => {console.log(this.state)})
   }
 
   toggleBotAvailability = () => {
@@ -82,10 +97,18 @@ class Tabs extends Component {
     this.setState({
       faqModal: !this.state.faqModal,
       showDeleteFaq: false
-    })
+    }, this.clearFAQDetails)
   }
 
   createFAQ = () => {
+
+    if(this.state.faqTitle == "" || this.state.faqTitle.trim() == "" || !this.state.faqTitle){
+      Notification.info("Title is missing")
+      return
+    } else if (this.state.faqContent == "" || this.state.faqContent.trim() == "" || !this.state.faqContent){
+      Notification.info("Content is missing")
+      return
+    }
 
     let userSession = CommonUtils.getUserSession();
 
@@ -101,18 +124,83 @@ class Tabs extends Component {
 
     createSuggestions(suggestion)
       .then(response => {
-        console.log(response)
         if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
           Notification.info("FAQ created")
         } else {
           Notification.info("There was problem in creating the faq.");
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+        }}).then(response => {
+          this.getFaqsWrapper()
+        }).then(response => {
+          this.toggleFaqModal()
+        }).catch(err => {
+          console.log(err)
+        })
+  }
+
+  toggleDeleteFaq = () => {
+
+    if(this.state.faqId === null){
+      Notification.info("Nothing to delete");
+      return;
+    }
+
+    this.setState({
+      showDeleteFaq: !this.state.showDeleteFaq
+    })
+  }
+
+  deleteFaq = () => {
+
+    if(this.state.faqId === null){
+      Notification.info("Nothing to delete");
+      return;
+    }
+
+    let suggestion = {
+      data: {
+        id: parseInt(this.state.faqId)
+      }
+    }
+
+    deleteSuggestionsById(suggestion)
+      .then(response => {
+        Notification.info("Deleted successfully");
+      }).then(response => {
+        this.getFaqsWrapper()
+      }).then(response => {
+        this.toggleFaqModal()
+      }).catch(err => {console.log(err)})
+  }
+
+  updateFaq = () => {
+
+    if(!this.state.faqTitle){
+      Notification.info("Title is missing")
+      return
+    } else if (!this.state.faqContent){
+      Notification.info("Content is missing")
+      return
+    } 
+
+    let suggestion = {
+        id: parseInt(this.state.faqId),
+        name: this.state.faqTitle,
+        content: this.state.faqContent,
+        category: 'faq',
+        status: this.state.isDraft ? 'draft':'published'
+    }
+
+    updateSuggestionsById(suggestion).then(response => {
+      Notification.info("Updated successfully");
+    }).then(response => {
+      this.getFaqsWrapper()
+    }).then(response => {
+      this.toggleFaqModal()
+    }).catch(err => {console.log(err)})
 
   }
+
+
 
   render() {
     return (
@@ -133,7 +221,7 @@ class Tabs extends Component {
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
                   <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7"}}> Conversation Routing </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
+                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: 500}}> Conversation Routing </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
                   </p>
                 </div>
               </div>
@@ -142,8 +230,24 @@ class Tabs extends Component {
                   + Add a FAQ
                 </button>
               </div>
-              <div className="row mt-4 km-bot-integration-second-container">
-                
+              <div className="mt-4 km-bot-integrated-bots-container">
+                <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2"}}>
+                  <p>{"FAQs (" + this.state.listOfFAQs.length + ")"}</p>
+                </div>
+                <div className="km-bot-list-of-faqs-container">
+                  {this.state.listOfFAQs.map(faq => (
+                    <div key={faq.id} className="row km-bot-align-item-v-center" onClick={() => this.setFAQDetails(faq.name, faq.content, faq.status.toLowerCase(), faq.id)} style={{cursor: "pointer"}}>
+                      <div className="col-sm-2">
+                        { 
+                          faq.status.toLowerCase() == "published" ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">PUBLISHED</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">DRAFT</span>
+                        }
+                      </div>
+                      <div className="col-sm-10" style={{textAlign: "left"}}>
+                          {faq.name}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -157,7 +261,7 @@ class Tabs extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <input type="text" name="faq-title" className="form-control input-field" placeholder="Enter your FAQ title here" value={this.state.faqTitle} onChange={(e) => {this.setState({faqTitle:e.target.value})}}/>
+                <input type="text" name="faq-title" className="form-control input-field" placeholder="Enter your FAQ title here" value={this.state.faqTitle} onChange={(e) => {this.setState({faqTitle:e.target.value})}} />
               </div>
             </div>
             <div className="row mt-4">
@@ -165,46 +269,48 @@ class Tabs extends Component {
             </div>
             <div className="row">
               <div className="col-md-12">
-                <textarea rows="10" style={{"borderRadius": "4px"}} type="text" name="faq-content" placeholder="Enter your FAQ content here" className="form-control" value={this.state.faqContent} onChange={(e) => {this.setState({faqContent:e.target.value})}}/>
+                <textarea rows="10" style={{"borderRadius": "4px"}} type="text" name="faq-content" placeholder="Enter your FAQ content here" className="form-control" value={this.state.faqContent} onChange={(e) => {this.setState({faqContent:e.target.value})}} />
               </div>
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
-              <div className="col-sm-2">
-                <i className="icon-trash icons font-1xl d-block"></i>
+              <div className="col-sm-2 km-bot-align-item-v-center">
+                <div style={{border: "1px solid black", borderRadius: "50%", padding: "5px"}} onClick={this.toggleDeleteFaq}>
+                  <i className="icon-trash icons font-1xl d-block"></i>
+                </div>
               </div> 
-              <div className="col-sm-6 text-right">
+              <div className="col-sm-6 text-right km-bot-align-item-v-center">
                 <span>Status : </span>
-                <FormGroup check className="form-check-inline">
+                <div className="km-bot-align-item-v-center">
                   <Label check htmlFor="inline-radio1">
                     <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> Draft
                   </Label>
                   <Label check htmlFor="inline-radio2">
                     <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> Published
                   </Label>
-                </FormGroup>
+                </div>
               </div> 
               <div className="col-sm-2 text-right">
-                <button className="btn btn-outline-primary" onClick={ () => {this.setState({showDeleteFaq: !this.state.showDeleteFaq})}}>
-                  Delete
+                <button className="btn btn-outline-primary" onClick={this.toggleFaqModal}>
+                  Discard 
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="btn btn-primary" onClick={this.createFAQ}>
+                <button className="btn btn-primary" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
                   Save
                 </button>
               </div> 
             </div>
             <div className={this.state.showDeleteFaq ? "row mt-4":"n-vis"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}> 
-              <div className="col-sm-6 text-left">
+              <div className="col-sm-6 text-left km-bot-align-item-v-center">
                 <span>Do you want to delete this FAQ?</span>
               </div> 
               <div className="col-sm-4 text-right">
-                <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal();}}>
+                <button className="btn btn-outline-primary" onClick={ () => {this.deleteFaq();}}>
                   Yes, Delete
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
+                <button className="btn btn-primary" onClick={this.toggleDeleteFaq}>
                   No
                 </button>
               </div> 
