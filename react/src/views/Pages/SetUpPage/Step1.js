@@ -16,6 +16,31 @@ class Step1 extends Component {
     this.websiteUrlCheck = this.websiteUrlCheck.bind(this);
     
     }
+    handleKeyPress1 = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if(document.getElementById("website-url").value ===""|| document.getElementById("website-url").value === null){
+          this.comapnyUrlValidation();
+          return;
+        }
+        if (!isURL(document.getElementById("website-url").value)) {
+          this.websiteUrlCheck();
+        }else{
+        document.getElementById("customer-name").focus();
+        }
+      }
+    }
+    handleKeyPress2 = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if(document.getElementById("customer-name").value ===""|| document.getElementById("customer-name").value === null){
+          this.comapnyNameValidation(); 
+          return;
+        } else {
+          document.getElementById("submit-btn").click();
+        }
+      }
+    }
     websiteUrlCheck(){
       document.getElementById("website-url").className = 'input km-error-input';
       document.getElementById("url-http-text").className = 'url-http-text km-error-input';
@@ -96,7 +121,7 @@ class Step1 extends Component {
                 <div className="company-url-main-div flex text-center">
                     <span id ="url-http-text"className="url-http-text">https://</span>
                     <div className="group form-group company-url-form-group">
-                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onBlur={(event) => this.onBlur(event.target.value)} onFocus={this.hideAllErrors} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
+                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onKeyPress={this.handleKeyPress1} onBlur={(event) => this.onBlur(event.target.value)} onFocus={this.hideAllErrors} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
                         <label className="label-for-input email-label">www.mycompany.com</label>
                         <span id="emptyerror1" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -116,7 +141,7 @@ class Step1 extends Component {
                 </div>
                 <div className="company-url-main-div flex text-center">
                     <div className="group form-group form-group-user-name">
-                        <input className="input customer-name" type="text" id="customer-name" name="name" placeholder=" " required onBlur={(event) => this.onBlur(event.target.value)}  onkeypress="onenter()"onFocus={this.onFocusOfCompanyName} value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
+                        <input className="input customer-name" type="text" id="customer-name" name="name" placeholder=" " required onKeyPress={this.handleKeyPress2} onBlur={(event) => this.onBlur(event.target.value)}  onkeypress="onenter()"onFocus={this.onFocusOfCompanyName} value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
                         <label className="label-for-input email-label">Your Name</label>
                         <span id="emptyerror2" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -135,7 +160,7 @@ class Step1 extends Component {
                     </div>
                 </div>
                 <div className="company-url-main-div flex text-center">
-                    <button className="btn btn-sm btn-primary px-4 btn-primary-custom"onClick={this.submitCompanyUrlOnly}> Save and continue </button>
+                    <button id ="submit-btn"className="btn btn-sm btn-primary px-4 btn-primary-custom"onClick={this.submitCompanyUrlOnly}> Save and continue </button>
                 </div>
             </div>
         </form>
