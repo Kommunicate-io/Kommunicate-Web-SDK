@@ -164,7 +164,7 @@ class Step2 extends Component {
                               <label className="label-for-input email-label">Contact No.</label>
                               <div id="emptyerror" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                                <g id="Page-1" fill="none" ffillRule="evenodd">
+                                <g id="Page-1" fill="none" fillRule="evenodd">
                                   <g id="Framework" transform="translate(-77 -805)" fill="#ED1C24">
                                     <g id="Wrong-Value-with-Notification" transform="translate(77 763)">
                                       <g id="Error-Notification" transform="translate(0 40)">
