@@ -190,9 +190,26 @@ class Dashboard extends Component {
     e.preventDefault();
     console.log('The link was clicked.');
 
-    this.state.chart.labels = this.state.mainChart.labels;
-    this.state.chart.datasets.label = 'Users';
-    this.state.chart.datasets[0].data = this.state.mainChart.datasets[3].data;
+    var cards = document.getElementsByClassName("card-stats");
+
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('active');
+    }
+
+    let currentTarget = e.currentTarget;
+    currentTarget.classList.add('active');
+    let metric = currentTarget.getAttribute("data-metric");
+    console.log(metric);
+
+    if (metric == 1) {
+      this.state.chart.labels = this.state.chartMonthly.labels;
+      this.state.chart.datasets.label = 'MAU';
+      this.state.chart.datasets[0].data = this.state.chartMonthly.datasets[metric].data;
+    } else {
+      this.state.chart.labels = this.state.mainChart.labels;
+      this.state.chart.datasets.label = 'Users';
+      this.state.chart.datasets[0].data = this.state.mainChart.datasets[metric].data;
+    }
 
     this.setState({
       chart: this.state.chart
@@ -311,10 +328,10 @@ class Dashboard extends Component {
       <div className="animated fadeIn dashboard-card">
         <div className="row">
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--users active" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Users</p>
-                <h4 className="card-stats-value">{this.state.newUsers}</h4>
+                <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
 {/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
@@ -323,7 +340,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--mau" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Monthly Active Users</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
@@ -334,7 +351,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--conversations" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Conversations</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
@@ -357,7 +374,7 @@ class Dashboard extends Component {
           */}
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--messages" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Messages</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
