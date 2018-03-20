@@ -57,7 +57,7 @@ body {
     margin-top: 5px;
 }
 .km-error-input{
-	border-color: #ed1c24;
+	border-color: #ed1c24!important;
 }
 .input-error-message {
     color: #ed1c24;
