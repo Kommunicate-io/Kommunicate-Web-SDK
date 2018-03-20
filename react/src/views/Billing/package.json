@@ -1,0 +1,6 @@
+{
+  "name": "Billing",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./billing.js"
+}
