@@ -60,7 +60,7 @@ class Dashboard extends Component {
             data: [],
           },
           {
-            label: 'MAU',
+            label: 'Chat Users',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -335,7 +335,7 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-users active" data-metric="0" onClick={this.showChart}>
               <div className="card-block pb-0">
-                <p className="card-main-title">Users</p>
+                <p className="card-main-title">Users this month</p>
                 <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
 {/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
                 {/* <p className="card-sub-title">205 Users last month</p> */}
@@ -347,7 +347,7 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-mau" data-metric="1" onClick={this.showChart}>
               <div className="card-block pb-0">
-              <p className="card-main-title">Monthly Active Users</p>
+              <p className="card-main-title">Chat Users this month</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
@@ -358,7 +358,7 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-conversations" data-metric="2" onClick={this.showChart}>
               <div className="card-block pb-0">
-                <p className="card-main-title">Conversations</p>
+                <p className="card-main-title">Conversations this month</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
 {/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
                 {/* <p className="card-sub-title">205 Users last month</p> */}
@@ -381,7 +381,7 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-messages" data-metric="3" onClick={this.showChart}>
               <div className="card-block pb-0">
-              <p className="card-main-title">Messages</p>
+              <p className="card-main-title">Messages this month</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
