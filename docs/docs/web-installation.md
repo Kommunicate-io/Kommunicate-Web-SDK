@@ -53,4 +53,4 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |userId| This is your user’s/visiter's user ID. Kommunicate will generate a random Id if this is not defined|
 |userName | Display name of the user. Agents will identify users by this display name|
 |email | Email ID of the user. User will be notified on this email if not online|
-|chatLauncherHtml | pass html for customize chat icon|
+|chatLauncherHtml | Pass html for customize chat icon|

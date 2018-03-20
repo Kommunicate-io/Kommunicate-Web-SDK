@@ -241,7 +241,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",esponse.data.errorResponse.description);
+      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
       return null;
     }
   }).catch(err=>{
@@ -415,7 +415,7 @@ exports.getUserDetails = (userName,applicationId,apzToken) => {
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",esponse.data.errorResponse.description);
+      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
       return null;
     }
   }).catch(err=>{
@@ -424,3 +424,28 @@ exports.getUserDetails = (userName,applicationId,apzToken) => {
   });
 
 }
+
+exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId) => {
+  let url =
+    config.getProperties().urls.applozicHostUrl + "/rest/ws/group/update";
+  return Promise.resolve(
+    axios.post(url, groupInfo, {
+      headers: {
+        "Content-Type": "application/json",
+        "Application-Key": applicationId,
+        "Authorization": "Basic " + apzToken,
+        "Of-User-Id": ofUserId,
+        "Apz-Product-App": "true"
+      }
+    })
+  )
+    .then(response => {
+      console.log("received response from applozic", response.status);
+      if (response.status == 200) {
+        return response;
+      }
+    })
+    .catch(err => {
+      console.log("error while assign to user", err);
+    });
+};

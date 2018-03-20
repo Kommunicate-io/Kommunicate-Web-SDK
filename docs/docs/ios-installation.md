@@ -4,43 +4,34 @@ title: Installation
 sidebar_label: Installation
 ---
 
-
-
 ### Prerequisites
 
- * Apps using Applozic can target iOS 8 or later <br />
+ * Apps using Kommunicate can target iOS 9 or later <br />
  * Xcode 8.0 or later required
- 
-  
-### Add Framework Manually 
 
 
-Download Kommunicate Chat latest framework [**here**](https://github.com/AppLozic/Applozic-iOS-SDK/tree/groupCreate/Frameworks) and add it to your project.
+### Installation
 
-Note : Framework folder has two frameworks.
+Kommunicate is available through [CocoaPods](http://cocoapods.org). To install
+it, simply add the following line to your Podfile:
 
-1. Universal framework: Complied for both simultor and real devices.
-2. Archive framework: Complied for real device only. When archiving your app, please use archive framework.
+```ruby
+pod 'Kommunicate'
+```
 
-**Add framework to your project:**
+Then run `pod install`.
 
-i) Paste Applozic framework to root folder of your project. 
-
-ii) Go to Build Phase. 
-
-Expand Embedded frameworks and add applozic framework.         
-
-
-![dashboard-blank-content](https://raw.githubusercontent.com/AppLozic/Applozic-Chat-SDK-Documentation/master/Resized-adding-applozic-framework.png)        
+In any file you'd like to use Kommunicate in, don't forget to
+import the framework with `import Kommunicate`.
 
 
 ### Permissions
 
 Add permission for camera, photo library, Micro phone, contacts and location. </br>
-In your info.plist add these permission for diffrent type of attachments.
+
+In your app's Info.plist file add below listed permissions:
 
 ```
-
 <key>NSCameraUsageDescription</key>
 <string>Allow Camera</string>
 <key>NSContactsUsageDescription</key>
@@ -54,5 +45,4 @@ In your info.plist add these permission for diffrent type of attachments.
 <key>NSPhotoLibraryAddUsageDescription</key>
 <string>Allow write access</string>
 
- ````
-
+```

@@ -12,12 +12,18 @@ const cors =require("cors");
 const validate = require('express-validation');
 var compressor = require('node-minify');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
-
+//var concat = require('concat-files');
 app.use(cors());
 
+
+// concat(['./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/constant.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js'],
+// './src/webplugin/js/app/kommunicate-plugin-0.1.min.js', function(err) {
+//   if (err) throw err
+//   console.log('done');
+// });
 compressor.minify({
   compressor: 'gcc',
-  input: ['./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js'],
+  input: ['./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/constant.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js'],
   output: './src/webplugin/js/app/kommunicate-plugin-0.1.min.js',
   callback: function (err, min) {
     if(!err)
@@ -68,6 +74,7 @@ app.use('/conversations',routes.conversation);
 app.use('/group',routes.group);
 app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
+app.use('/zendesk', routes.zendesk);
 
 function startApp() {
     app.listen(port, function () {

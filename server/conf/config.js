@@ -266,6 +266,11 @@ const config ={
       HIDE:"true",
       JOIN_MEMBER_MESSAGE:"",
       REMOVE_MEMBER_MESSAGE:""
+    },
+    kommunicatePricingPackage:101,
+    zendesk:{
+    createTicketUrl:'https://[subdomain].zendesk.com/api/v2/tickets.json',
+    updateTicketUrl:"https://[subdomain].zendesk.com/api/v2/tickets/[id].json",
     }
 }
 };

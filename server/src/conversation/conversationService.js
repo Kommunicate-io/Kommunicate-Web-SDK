@@ -5,6 +5,7 @@ const userService= require("../users/userService");
 const registrationService = require("../register/registrationService");
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
+const cacheClient = require("../cache/hazelCacheClient");
 
 /**
  * returns conversation list of given participent_user_Id
@@ -51,6 +52,7 @@ exports.addMemberIntoConversation = (data) => {
         if (customer) {
             return Promise.resolve(userService.getAllUsersOfCustomer(customer,undefined)).then(users => {
                 if (users) {
+                    let userIds = [];
                     users.forEach(function (user) {
                         if(user.type===2){
                             if (user.userName === 'bot') { 
@@ -60,13 +62,18 @@ exports.addMemberIntoConversation = (data) => {
                             }
                         }
                          else{
-                            groupInfo.userIds.push(user.userName);
+                            userIds.push(user.userName);
+                           // groupInfo.userIds.push(user.userName);
                         } 
                         if(user.type===3){
                             header.ofUserId=user.userName
                         }
                         
                     });
+                    if(customer.agentRouting){
+                        assingConversationInRoundRobin( data.groupId, userIds, customer.applicationId,header);
+                    }
+                    groupInfo.userIds=userIds;
                     logger.info('addMemberIntoConversation - group info:',groupInfo, 'applicationId: ',customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                     return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
                         logger.info('response', response.data)
@@ -82,3 +89,38 @@ exports.addMemberIntoConversation = (data) => {
         return {code:"ERROR", data:'error during adding member into conversation'};
     });
 }
+
+const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
+  getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
+    let groupInfo = {
+      groupId: groupId,
+      metadata: { CONVERSATION_ASSIGNEE: assignTo }
+    };
+    applozicClient.updateGroup(
+      groupInfo,
+      appId,
+      header.apzToken,
+      header.ofUserId
+    );
+    return;
+  });
+};
+
+const getConversationAssigneeFromMap = (userIds, key) => {
+  //store map of appid and userids
+  let assignee = "";
+  var mapPrifix = "userRoutingMap";
+  return cacheClient.getDataFromMap(mapPrifix, key).then(value => {
+    if (value != null) {
+      let arr = value.userIds;
+      assignee = arr.shift();
+      arr.push(assignee);
+      userIds = arr;
+    } else {
+      assignee = userIds[0];
+    }
+
+    cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIds });
+    return assignee;
+  });
+};

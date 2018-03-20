@@ -22,14 +22,22 @@ module.exports = function(sequelize, DataTypes) {
       field: 'category'
     },
     name: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.TEXT,
       allowNull: false,
       field: 'name'
     },
     content: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.TEXT,
       allowNull: false,
       field: 'content'
+    },
+    type: {
+     type:DataTypes.ENUM,
+     values: ['faq', 'shortcut']
+    },
+    status: {
+     type:DataTypes.ENUM,
+     values: ['draft', 'published']
     }
   }, {
     underscored: true,

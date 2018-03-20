@@ -19,9 +19,6 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-title">
                             PERSONAL
                         </li>
-                        <li className="ss-nav-item welcome-link">
-                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
-                        </li>
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>
@@ -34,17 +31,26 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item welcome-link">
                             <NavLink to={'/welcome-message'} className="ss-nav-link" activeClassName="active">Welcome Message</NavLink>
                         </li>
+                        <li className="ss-nav-item welcome-link">
+                            <NavLink to={'/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
+                        </li>
                         <li className="ss-nav-item message-shortcut-link">
                             <NavLink to={'/message-shortcuts'} className="ss-nav-link" activeClassName="active">Quick Replies</NavLink>
                         </li>
                         <li className="ss-nav-item team-link">
                             <NavLink to={'/team'} className="ss-nav-link" activeClassName="active">Team</NavLink>
                         </li>
+                        <li className="ss-nav-item team-link">
+                            <NavLink to={'/agent-assignment'} className="ss-nav-link" activeClassName="active">Agent Assignment</NavLink>
+                        </li>
                         <li className="ss-nav-title">
                             CONFIGURATION
                         </li>
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
+                        </li>
+                        <li className="ss-nav-item integrations-link">
+                            <NavLink to={'/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
                         </li>
                         <li className="ss-nav-title">
                             DOWNLOAD

@@ -215,9 +215,12 @@ class Tabs extends Component {
       devToken : this.state.devToken,
       aiPlatform : aiPlatform,
       botName : this.state.botName,
+      type:'CUSTOM_BOT'
     }
 
-    let uuid_holder = uuid();
+    // let uuid_holder = uuid();
+
+    let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
 
     // this.setState({uuid: uuid_holder})
 
@@ -229,11 +232,11 @@ class Tabs extends Component {
     let devicekey = device.split(":")[1];
     let env = getEnvironmentId();
     let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
-    let userIdList = {"userIdList" : [uuid_holder]}
+    let userIdList = {"userIdList" : [userId]}
 
     this.setState({disableIntegrateBotButton: true})
 
-    this.checkBotNameAvailability(uuid_holder).then( bot => {
+    this.checkBotNameAvailability(userId).then( bot => {
       axios({
       method: 'post',
       url:userDetailUrl,
@@ -304,7 +307,7 @@ class Tabs extends Component {
     }
   }
 
-  checkBotNameAvailability(uuid_holder) {
+  checkBotNameAvailability(userId) {
 
     if(!this.state.botName){
       Notification.info("Please enter a bot name !!");
@@ -317,7 +320,7 @@ class Tabs extends Component {
 
     return Promise.resolve(
       createCustomerOrAgent({
-        userName: uuid_holder, //this.state.botName,
+        userName: userId,
         type:2,
         applicationId:applicationId,
         password:this.state.botName,
@@ -328,7 +331,8 @@ class Tabs extends Component {
       })
   }
 
-  toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken) => {
+  toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable) => {
+    console.log("toggleEditBotIntegrationModal")
     this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
@@ -344,6 +348,15 @@ class Tabs extends Component {
     if(botName && botUserName && botToken && botDevToken){
       this.setEditBotIntegrationDetails(botName, botUserName, botToken, botDevToken)
     }
+
+    console.log(botAvailable);
+    console.log(botName);
+    console.log(botUserName);
+    console.log(botToken);
+
+      this.setState({
+        botAvailable: botAvailable == 1 ? true:false
+      }, () => {console.log(this.state.botAvailable)})
   }
 
   toggleDeleteBotIntegrationModal = () => {
@@ -382,6 +395,7 @@ class Tabs extends Component {
     let axiosPostData = {
       botName: this.state.editedBotName,
       aiPlatform: "dialogflow",
+      type:"CUSTOM_BOT",
       clientToken: this.state.editedClientToken,
       devToken: this.state.editedDevToken,
     }
@@ -427,6 +441,12 @@ class Tabs extends Component {
   toggleBotAvailability = () => {
     this.setState({
       botAvailable: !this.state.botAvailable
+    }, () => {
+      if(this.state.botAvailable){
+        this.enableBot()
+      }else{
+        this.disableBot()
+      }
     })
   }
 
@@ -446,6 +466,40 @@ class Tabs extends Component {
     })
   }
 
+  disableBot = () => {
+
+    let patchUserData = {
+      bot_availability_status: 0
+    }
+
+    patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
+      if(response.data.code === 'SUCCESS'){
+        Notification.info("Disabled successfully")
+        // this.toggleDeleteBotIntegrationModal()
+        // this.toggleEditBotIntegrationModal()
+        this.getIntegratedBotsWrapper()
+      }
+    })
+
+  }
+
+  enableBot = () => {
+
+    let patchUserData = {
+      bot_availability_status: 1
+    }
+
+    patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
+      if(response.data.code === 'SUCCESS'){
+        Notification.info("Enabled successfully")
+        // this.toggleDeleteBotIntegrationModal()
+        // this.toggleEditBotIntegrationModal()
+        this.getIntegratedBotsWrapper()
+      }
+    })
+
+  }
+
   render() {
     return (
       <div className="animated fadeIn" >
@@ -459,28 +513,37 @@ class Tabs extends Component {
                 </div>
               </div>
               <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
-                <div style={{height:"4px", backgroundColor: "#5C5AA7"}}></div>
+                <div style={{height:"4px", backgroundColor: "#5C5AA7", borderRadius: "15px 15px 0 0"}}></div>
                 <div style={{padding: "10px"}}>
                   <span className="km-bot-integrated-bots-container-heading">My Integrated Bots:</span>
                   <hr />
                 </div>
                 <div className="km-bot-list-of-integrated-bots-container">
                   {this.state.listOfIntegratedBots.map(bot => (
-                    <div key={bot.id}>
-                      <div className="row col-sm-12">
-                        <div className="row col-sm-5">
-                          <div className="col-sm-2" style={{marginRight: "13px"}}>
+                    <div className="container" key={bot.id}>
+                      <div className="row">
+                        <div className="col-sm-2">
+                          { 
+                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                          }
+                        </div>
+                        <div className="row col-sm-4">
+                          <div style={{marginRight: "8px"}}>
                             <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                           </div>
-                          <div className="col-sm-2">
-                            <span><span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[bot.aiPlatform.toLowerCase()]}</span><br /><span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span></span>
+                          <div>
+                            <span>
+                              <span className="km-bot-list-of-integrated-bots-ai-platform-name">{this.state.botAiPlatform[(bot.aiPlatform) ? bot.aiPlatform.toLowerCase() : '']}</span>
+                              <br />
+                              <span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span>
+                            </span>
                           </div> 
                         </div>
-                        <div className="col-sm-3">
-                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                        <div className="col-sm-4">
+                          <span className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</span>
                         </div>
-                        <div className="col-sm-4" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
+                        <div className="col-sm-2" style={{textAlign: "right"}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>
                         </div>
@@ -701,6 +764,9 @@ class Tabs extends Component {
               </div>
             </div>
           </ModalHeader>
+          <div style={{width:"100%"}} className={this.state.botAvailable ? "n-vis":"km-bot-integration-third-container"}>
+            <p>Your bot will not reply to conversations in disabled state</p>
+          </div>
           <ModalBody>
             <div className="row">
               <label className="col-sm-3">Client Token:</label>
@@ -758,7 +824,9 @@ class Tabs extends Component {
                 </div> 
               </div>
               <div className="col-sm-2" style={{textAlign: "left"}}>
-                <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                { 
+                  this.state.botAvailable ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                }
               </div>
               <div className="col-sm-3" style={{textAlign: "right"}}>
               </div>
@@ -789,14 +857,17 @@ class Tabs extends Component {
                   {this.state.dialogFlowBots.map(bot => (
                     <div style={{marginTop: "1em", marginBottom: "1em"}} key={bot.id}>
                       <div className="row col-sm-12" style={{marginLeft: "10px"}}>
-                        <div className="row col-sm-5">
+                        <div className="col-sm-5">
                             <p className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</p>
+                            <p className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</p>
                         </div>
                         <div className="col-sm-3">
-                          <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>
+                          { 
+                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                          }
                         </div>
                         <div className="col-sm-4" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken)}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>
                         </div>

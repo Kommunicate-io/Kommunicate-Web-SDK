@@ -162,7 +162,7 @@ class Aside extends Component {
                                     {
                                       'groupId': this.state.group.groupId,
                                       'metadata': {
-                                                'CONVERSATION_ASSIGNEE' : userId
+                                                'CONVERSATION_ASSIGNEE' : userId,
                                       },
                                       'callback': function(response) {
                                         var displayName = "";
@@ -179,7 +179,8 @@ class Aside extends Component {
                                             'groupId' : groupId,
                                             'message' : "Assigned to " + displayName,
                                             'metadata':{
-                                              'skipBot':true
+                                              'skipBot':true,
+                                              'KM_ASSIGN' :userId
                                             }
                                           });
                                       }
@@ -238,7 +239,10 @@ class Aside extends Component {
                                       'callback': function(response) {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : that.state.group.groupId,
-                                            'message' : "Status changed to " + that.state.statuses[status]
+                                            'message' : "Status changed to " + that.state.statuses[status],
+                                            'metadata':{
+                                              'KM_STATUS' :that.state.statuses[status]
+                                            }
                                           });
                                       }
                                     });
@@ -612,7 +616,7 @@ class Aside extends Component {
                                 <a href="javascript:void(0)" id="km-file-up2" type="button"
                                   className="write-link attach n-vis km-file-upload km-btn-text-panel"
                                   title="Attach File"> </a> <span id="km-text-box"
-                                  contentEditable="true" className="km-text-box km-text required"></span>
+                                  contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required"></span>
 
                                 <a href="javascript:void(0)" type="button" id="km-btn-smiley"
                                   className="write-link smiley km-btn-smiley km-btn-text-panel"
@@ -675,7 +679,7 @@ class Aside extends Component {
                                 </div>
                                 <div className="blk-lg-12">
                                   <div id="km-group-create-title" className="km-group-create-title km-group-title"
-                                    contentEditable="true">Group title</div>
+                                    contentEditable="true" suppressContentEditableWarning="true">Group title</div>
                                 </div>
                               </div>
                             </div>
@@ -686,8 +690,8 @@ class Aside extends Component {
                                   <div className="km-label">Group Type</div>
                                 </div>
                                 <div className="blk-lg-12">
-                                  <select id="km-group-create-type" className="km-select">
-                                    <option value="2" selected>Public</option>
+                                  <select id="km-group-create-type" defaultValue ="2" className="km-select">
+                                    <option value="2">Public</option>
                                     <option value="1">Private</option>
                                     <option value="6">Open</option>
                                   </select>
@@ -748,7 +752,7 @@ class Aside extends Component {
                           <div id="km-group-name-box" className="km-row km-group-name-box">
                             <div className="blk-lg-9">
                               <div id="km-group-title" className="km-group-title"
-                                contentEditable="false">Group title</div>
+                                contentEditable="false" suppressContentEditableWarning="true">Group title</div>
                             </div>
                             <div className="blk-lg-3 km-group-name-edit-icon">
                               <a id="km-group-name-edit" href="javascript:void(0)" role="link"
@@ -840,7 +844,7 @@ class Aside extends Component {
                           <div id="km-user-name-box" className="km-row km-user-name-box">
                             <div className="blk-lg-9">
                               <div id="km-user-title" className="km-user-title"
-                                contentEditable="false">User title</div>
+                                contentEditable="false" suppressContentEditableWarning="true">User title</div>
                             </div>
                           </div>
                         </div>

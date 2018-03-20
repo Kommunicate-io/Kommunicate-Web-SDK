@@ -13,7 +13,7 @@ kommunicateDashboard.markup = {
             <input class ="km-dashboard-increment-guest-count" type="button" value="+">
         </div>
     </div>
-    <div class="km-dashboard-person-selector">
+    <div class="km-dashboard-person-selector n-vis">
         <div>Children: <span style="font-size:12px; color: rgba(0,0,0,0.5); display: block;">(1-12 yrs)</span> </div>
         <div style="margin-bottom:30px">
             <input type="button" value="-" class ="km-dashboard-decrement-children-count" >

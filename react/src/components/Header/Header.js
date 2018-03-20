@@ -95,7 +95,9 @@ class Header extends Component {
 </svg>
         		{/* <span className="beta-text">Beta</span> */}
         </Link>
+ 
         <ul className="nav navbar-nav ml-auto">
+
           <li className="nav-item d-md-down-none">
             <Link className="nav-link" to="/conversations"><i className="icon-bell"></i><span className="badge badge-pill badge-danger chat-launcher-icon">0</span></Link>
           </li>
@@ -115,9 +117,10 @@ class Header extends Component {
                   <p><span className="header-user-online"> You are online</span></p>
                   <span className="header-user-online"> {CommonUtils.getUserSession().availability_status === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator": null }></span>
                 </DropdownItem>
-                {
+                {/* Go Away/Go Online option is hided for temporary. uncomment it to make it visible */}
+                {/* { 
                 <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availability_status === 1 ? "Go Away" : "Go Online"} </DropdownItem>
-                }
+                } */}
 
                 <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/profile"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>

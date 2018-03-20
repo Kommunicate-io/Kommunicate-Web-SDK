@@ -79,7 +79,7 @@ exports.getByUserNameAndAppId = function(req, res) {
 }
 
 exports.createUser = function(req,res) {
-  logger.info("request received to create a user: ",req.body);
+logger.info("request received to create a user: ",req.body);
   if(!req.body.applicationId) {
     res.status(400).json({code: "BAD_REQUEST",message: "ApplicationId can't be Empty"});
     return;
@@ -102,6 +102,7 @@ exports.createUser = function(req,res) {
           user.application = application;
           user.adminUserName = customer.userName;
           user.adminDisplayName = customer.name;
+          user.routingState = customer.agentRouting;
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;
         });
@@ -115,6 +116,8 @@ exports.createUser = function(req,res) {
     logger.error("error while creating user",err);
     res.status(500).json(err).end();
     }
+  }).catch(err=>{
+    logger.error('user creation error', error)
   });
 };
 

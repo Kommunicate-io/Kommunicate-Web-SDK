@@ -76,6 +76,16 @@ class Forms extends Component {
       return;
     }
   }
+  updateKommunicateSupportUser = (user) => {
+    //update name in applozic db for user created under kommunicate-support app
+    window.$applozic.fn.applozic('updateUser', {
+      data: user, success: function (response) {
+        console.log(response);
+      }, error: function (error) {
+        console.log(error);
+      }
+    });
+  }
 
   handleSubmit(e) {
 
@@ -94,15 +104,22 @@ class Forms extends Component {
       "industry": this.state.industry === "Other" ? this.state.industryOthers : this.state.industry,
       "applicationId": userSession.application.applicationId
     }
+    let user = {
+      'email': this.state.email, 
+      'displayName': this.state.name, 
+      'phoneNumber':this.state.contact
+    };
+
         
     if (userSession.isAdmin) {
       patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
+            this.updateKommunicateSupportUser(user)
             userSession.adminDisplayName=this.state.name;
             CommonUtils.setUserSession(userSession);
-            Notification.info(response.data.message)
+            Notification.info(response.data.message)      
           }
         }).catch(err => {
           console.log(err);
@@ -113,6 +130,7 @@ class Forms extends Component {
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
+            this.updateKommunicateSupportUser(user)
             Notification.info(response.data.message)
           }
         }).catch(err => {
@@ -137,11 +155,10 @@ class Forms extends Component {
 
 
   componentWillMount() {
-    
     var userSession = CommonUtils.getUserSession();
     if (userSession.isAdmin) {
       console.log("isAdmin")
-      getCustomerInfo(CommonUtils.getUserSession().userName)
+      return Promise.resolve(getCustomerInfo(CommonUtils.getUserSession().userName))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -163,7 +180,7 @@ class Forms extends Component {
     } else {
       console.log("isNotAdmin")
 
-      getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId)
+      return Promise.resolve(getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId))
         .then(response => {
           console.log(response)
           if (response.data.code === 'SUCCESS') {
@@ -218,13 +235,13 @@ class Forms extends Component {
                       <img src={ this.props.profilePicUrl } className="default-dp" /><br /> 
               
                       <div className="edit-dp-btn">
-                        <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                        <br /><span className="change-courser" onClick={this.openModal}>Edit Display Photo</span>
                         <div className="about-dp">Your customers will see this photo</div>
                         
 
                         <Modal
                           isOpen={this.state.modalIsOpen}
-
+                          ariaHideApp={false}
                           onRequestClose={this.closeModal}
                           style={customStyles}
                           contentLabel="Example Modal"

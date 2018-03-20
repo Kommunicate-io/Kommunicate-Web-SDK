@@ -19,10 +19,13 @@ import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
 import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
+import Faq from '../../views/Faq/'
+import Billing from '../../views/Billing/'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
 import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
+import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 
 
 class Full extends Component {
@@ -96,7 +99,7 @@ class Full extends Component {
         </div>
         <div className="app-body">
           <Sidebar {...this.props}/>
-          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app')) ? <SettingsSidebar {...this.props}/> : null}
+          {(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('agent-assignment')|| currentPath.includes('away-message')|| currentPath.includes('welcome-message') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app') || currentPath.includes('billing')) ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">
             <Breadcrumb />
@@ -110,6 +113,7 @@ class Full extends Component {
                 <Route exact path="/profile" name="Admin" render={()=>{
                    return <Admin updateProfilePicUrl={this.updateProfilePic} profilePicUrl={this.state.imageLink} updateUserDisplay={this.updateUserDisplay} />
                 }}/>
+                <Route exact path="/faq" name="Faq" component={Faq}/>
                 <Route exact path="/team" name="Team" component={Team}/>
                 <Route exact path="/autoreply" name="Autoreply" component={Autoreply}/>
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
@@ -117,6 +121,8 @@ class Full extends Component {
                 <Route exact path="/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
                 <Route exact path="/install" name="Integration" component={Integration}/>
                 <Route exact path="/agent-app" name="Download" component={Download}/>
+                <Route exact path="/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
+                <Route exact path="/billing" name="Billing" component={Billing}/>
                 }}/> 
                   
                 

@@ -50,7 +50,7 @@
 .default-dp-hide {
     visibility: hidden;
 }
-.edit-dp-btn > h5 {
+.edit-dp-btn > span {
     font-size: 14px;
     letter-spacing: 1.1px;
     color: #0d77f2;
@@ -210,4 +210,14 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .display-photo-wrapper{
     padding: 35px;
    
+}
+/* For Firefox */
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

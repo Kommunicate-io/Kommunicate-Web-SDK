@@ -16,11 +16,13 @@ exports.createCustomer = (req,res)=>{
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
+  const subscription = req.body.subscription||0;
   let response={};
   let userDetail =Object.assign({},req.body);
   userDetail.email=email;
   userDetail.password = password;
   userDetail.userName=userName;
+  userDetail.subscription = subscription;
   console.log("userName:", userName, password,isPreSignUp);
   if(userName&&(isPreSignUp||password)){
     console.log("request received for pre sign up, EmailId : ",userName);
@@ -91,7 +93,7 @@ exports.patchCustomer = (req,res)=>{
   const userId = req.params.userId; 
   console.log("request recieved to update customer: ",userId, "body",customer);
   if (customer.websiteUrl) {
-    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl }).catch(err => {
+    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage }).catch(err => {
       console.log('error while updating application')
     })  
   }
@@ -238,4 +240,29 @@ exports.signUpWithAplozic= (req,res)=>{
 
 
 
+}
+
+exports.updateAgentRoutingState = (req, res)=>{
+let appId = req.params.appId;
+let routingState = req.params.routingState;
+
+return registrationService.updateAgentRoutingState(appId, routingState).then(response=>{
+  return res.status(200).json({code:"SUCCESS",message:response.message});
+}).catch(err=>{
+  console.log("error while updating customer", err);
+  return res.status(500).json({code:"ERROR",message:"internal server error"});
+})
+}
+exports.getCustomerByApplicationId = (req, res) => {
+  let appId = req.query.applicationId;
+  return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    if (!customer) {
+      res.status(200).json({ code: "SUCCESS", message: "customer not found for this application id" });
+    }
+    res.status(200).json({ code: "SUCCESS", message: 'success', data: customer });
+
+  }).catch(err => {
+    console.log("error while getting customer", err);
+    res.status(500).json({ code: "ERROR", message: "internal server error" });
+  });
 }

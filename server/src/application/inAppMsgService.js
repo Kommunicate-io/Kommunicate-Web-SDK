@@ -25,9 +25,10 @@ exports.postWelcomeMsg=(options)=>{
     })
 }
 
-const getInAppMessage=(agentId, eventType)=>{
-  console.log('geting data for', agentId);
-  let criteria ={ createdBy: agentId , status: appUtils.EVENT_STATUS.ENABLED};
+const getInAppMessage=(customerId, eventType)=>{
+  console.log('geting data for', customerId );
+  let criteria ={ customerId:customerId, status: appUtils.EVENT_STATUS.ENABLED};
+
   if (eventType){
     criteria.eventId=eventType
   }
@@ -40,11 +41,12 @@ const getInAppMessage=(agentId, eventType)=>{
       });
 }
 
-/*exports.sendWelcomeMessage=(message,bot)=>{
-    return db.InAppMsg.find({where:{customerId:bot.customerId}}).then(inAppMessage=>{
-        //return applozicClient.sendGroupMessage
-    });
-}*/
+exports.sendWelcomeMessage=(conversationId, customer)=>{
+  return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer)).then(response => {
+    console.log(response);
+    return response;
+  })
+}
 
 exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
 
@@ -59,7 +61,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             
             let groupUserRole3 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
             let groupUserRole2 = groupInfo.groupUsers.filter(groupUser => groupUser.role == 1);
-            let conversationAssignee = groupInfo.metadata?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
+            let conversationAssignee = groupInfo.metadata&&groupInfo.metadata.CONVERSATION_ASSIGNEE&&groupInfo.metadata.CONVERSATION_ASSIGNEE!=""?groupInfo.metadata.CONVERSATION_ASSIGNEE:groupUserRole2[0].userId;
             return {userId: groupUserRole3[0].userId, agentUserName: conversationAssignee}
         }).then( groupUser => {
             console.log("groupUser")
@@ -94,7 +96,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }else if(!offline && anonymous){
+                } /*else if(!offline && anonymous || !offline && !anonymous){
                   eventType = 3
                   console.log(3);
                   return Promise.all([processConversationStartedEvent(3, conversationId, customer, agentName,groupUser.agentId)]).then(([response]) => {
@@ -107,7 +109,8 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
                     console.log(response);
                     return response;
                   })
-                }
+                }*/
+                return "EVENT_NOT_SUPPORTED";
           })
     }).catch(err => {console.log(err)})
       })
@@ -125,25 +128,25 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   if (!agentName) {
     agentName = customer.userName;
   }
-    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(agentId, eventType)]).then(([user,inAppMessages])=>{
+    return Promise.all([userService.getByUserNameAndAppId('bot',customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+          return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                  applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                          applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
@@ -215,26 +218,24 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
 }
 
 exports.disableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 2}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 1,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 1, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 
 }
 
 exports.enableInAppMessages=(createdBy, customerId, category)=>{
-    return Promise.resolve(db.InAppMsg.update({status: 1}, {
-        where: {
-            createdBy: createdBy,
-            customerId: customerId,
-            status: 2,
-            category: category
-        }
-    })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
+    let criteria={customerId: customerId, status: 2, category: category};
+    if(constant.CATEGORY.AWAY_MESSAGE == category){
+      criteria.createdBy = createdBy
+    }
+    return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
+      return { code: err.parent.code, message: err.parent.sqlMessage }
+    });
 }
 
 exports.getInAppMessages2=(createdBy, customerId)=>{
@@ -258,8 +259,8 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }
-  var order= [['id', 'ASC']];
-  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order})).catch(err=>{
+  var order= [ ['id', 'ASC']];
+  return Promise.resolve(db.InAppMsg.findAll({where: criteria, order, limit:3})).catch(err=>{
     return { code: err.parent.code, message: err.parent.sqlMessage }
   });
   

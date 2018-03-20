@@ -40,7 +40,9 @@
   <link href="%PUBLIC_URL%/css/tiny-slider.css" rel="stylesheet">
   <link href="%PUBLIC_URL%/css/dashboard-richtext.css" rel="stylesheet">
 
-  
+  <!--
+  <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="kommunicate-test" ></script>
+  -->
 
   <style>
 
@@ -88,6 +90,7 @@
   -->
 
   <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
+    
     <div id="root" class="loader"></div>
     <!--
       This HTML file is a template.
@@ -140,8 +143,19 @@
     }
   </script>
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
-  
+  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>  
+
+  <script type="text/javascript">
+    var site = window.location.href;
+    var chargebeeScript = document.createElement("script");
+    chargebeeScript.src = "%PUBLIC_URL%/js/chargebee.js";
+    chargebeeScript.setAttribute("data-cb-site", /test|local/.test(window.location.href) ? "kommunicate-test":"kommunicate");
+    document.body.appendChild(chargebeeScript);
+  </script>
+
+<!--
+  <script type="text/javascript" src="%PUBLIC_URL%/js/chargebee.js" data-cb-site="kommunicate-test"></script>
+-->
 
   </body>
 </html>

@@ -250,6 +250,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'updateUser':
                         return oInstance.updateUser(params);
                         break;
+                    case 'getGroupListByFilter':
+                        return oInstance.getGroupListByFilter(params);
+                        break;
 
                 }
             } else if ($applozic.type(appOptions) === 'object') {
@@ -1022,6 +1025,11 @@ var MCK_CLIENT_GROUP_MAP = [];
         _this.updateUser = function (options) {
             mckContactService.updateUser(options)
         };
+        _this.getGroupListByFilter = function (options) {
+            mckGroupService.getGroupByFilter(options)
+                
+        };
+        
         _this.sendGroupMessage = function (params) {
             if (typeof params === 'object') {
                 params = $applozic.extend(true, {}, message_default_options, params);
@@ -1753,8 +1761,19 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
             _this.createNewConversation = function (params, callback) {
+                var group = [];
+                var groupName;
+                group.push(params.agentId);
+                group.push(kommunicate._globals.userId);
+                if(params.botIds){
+                    console.log(params.botIds);
+                    for (var i = 0; i < params.botIds.length; i++) {
+                        group.push(params.botIds[i]);
+                    }
+                }
+                groupName= group.sort().join().replace(/,/g, "_").substring(0, 250);
                 $applozic.fn.applozic("createGroup", {
-                    groupName: params.groupName,
+                    groupName: groupName,
                     type: 10,
                     admin: params.agentId,
                     users: [
@@ -1888,7 +1907,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                     // mckMessageLayout.addContactsToContactSearchList();
                     mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, function (conversationId) {
-                        Kommunicate.triggerEvent("1", { groupId: conversationId, applicationId: MCK_APP_ID });
+                        Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
 
                 });
@@ -2053,7 +2072,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 groupName: DEFAULT_GROUP_NAME,
                                 agentId: DEFAULT_AGENT_ID
                             }, function (groupId) {
-                               Kommunicate.triggerEvent("1", { "groupId": groupId, "applicationId": MCK_APP_ID })
+                               Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID })
                             });
                         } else {
                             var $this = $applozic(this);
@@ -4362,6 +4381,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if ((msg.metadata && msg.metadata.category === 'HIDDEN') || msg.contentType === 102) {
                     return;
                 }
+                if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
+					return;
+				}
                 if (msg.contentType === 10 && (msg.metadata && msg.metadata.hide === 'true')) {
                     return;
                 }

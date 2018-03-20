@@ -5,48 +5,38 @@ sidebar_label: Conversation
 ---
 
 
+### Open Conversation List
 
-### Launch chat screen
-
-
-You can launch the chat screen(Where all the conversations are listed in descending order of communication time) as below:
+To open a list of conversations use below method. Reference to current view controller needs to be passed.
 
 ```
-  ALChatManager * chatManager = [[ALChatManager alloc] init];
-  [chatManager launchChat:self];
-````
+  Kommunicate.showConversations(from: self)
+```
 
 
+### New Conversation
 
-### Create a new Conversation
+To create a new conversation use below method. You have to pass the userId, agentId and botIds are optional.
 
-You can create a new conversation as below.
+In the callback, clientChannelKey will be returned.
 
 
 ```
-    ALChatManager * chatManager = [[ALChatManager alloc] init];
-    [chatManager startNewConversation:@"Group name" withAgentId:<agentId here> withBotId:@"bot" withCompletion:^(ALChannel *alChannel, NSError *error) {
-        if(alChannel){
-            NSLog(@"Conversation created %@ ",alChannel.description);
-        }else{
-            NSLog(@"Error in start conversation");
-        }
-        
-    }];
+Kommunicate.createConversation(
+    userId: userId,
+    agentId: agentId,
+    botIds: [botId],
+    completion: { response in
+        guard !response.isEmpty else {return}
+        print("client channel key \(response)")
+})
  ```
- 
- 
-### Open a particular conversation
- 
- You can open a particular conversation if you have the group id of the conversation.
 
 
+### Open Conversation
+
+Open any particular conversation by passing the `clientChannelKey` and reference to current view controller.
+
  ```
- 
-     ALChatManager * chatManager = [[ALChatManager alloc] init];
-    [chatManager launchChatForUserWithDisplayName:nil
-                                      withGroupId:groupId // Pass the channel.key
-                               andwithDisplayName:nil
-                            andFromViewController:self ];
-                            
+Kommunicate.showConversationWith(groupId: clientChannelKey, from: self)
  ```

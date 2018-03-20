@@ -34,6 +34,10 @@ class Billing extends Component {
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
         // this.openModal = this.openModal.bind(this);
         // this.closeModal = this.closeModal.bind(this);
+            'subscription': CommonUtils.getUserSession().subscription
+        };
+
+        this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
     }
 
     componentDidMount() {
@@ -466,6 +470,7 @@ class Billing extends Component {
                                 </div>
                                 </div>
                             </Modal>
+
                         </div>
                     </div>
                 </div>
