@@ -77,7 +77,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             }).then( groupUser => {
               let userId=groupUser.userId;
               console.log("userId")
-              return applozicClient.getUserDetails(userId,customer.applicationId,apzToken)
+              return applozicClient.getUserDetails([userId],customer.applicationId,apzToken)
               .then(userInfo => {
                 console.log(userInfo);
                 if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
@@ -322,6 +322,37 @@ exports.editInAppMsg=(body)=>{
         return response;    
       })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
+/**
+ * return 1st online user. return undefined if no agents are online. 
+ */
+exports.checkOnlineAgents=(customer)=>{
+  return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]).then(userList=>{
+    let userIdList = userList.map(user=>user.userName);
+    let defaultAgent = userList.filter(user=> user.type==3);
+    logger.info("fetching detail of all agents from applozic");
+    return applozicClient.getUserDetails(userIdList,customer.applicationId, defaultAgent[0].apzToken);
+  }).then(agentsDetail=>{
+    logger.info("got agent detail from applozic. checking if any agent is online..");
+    return agentsDetail.find(agent=>agent.connected);
+  })
+}
 
+exports.isGroupUserAnonymous=(customer,conversationId)=>{
+logger.info("checking if group user is anonymous ");
+return userService.getAdminUserByAppId(customer.applicationId).then(adminUser=>{
+  let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
+  return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
+  .then(groupInfo => {
+      logger.info("successfully got groupInfo from applozic for conversationId : ",conversationId);
+      
+      let groupUser= groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
+      return applozicClient.getUserDetails([groupUser[0].userId],customer.applicationId,apzToken)
+      .then(userInfo => { 
+        logger.info("received group user info...");
+       return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+      })
+    })
+  })
+}
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

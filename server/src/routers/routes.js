@@ -115,7 +115,7 @@ conversationRouter.post('/member/add',validate(conversationValidation.addMemberI
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
-applicationRouter.post('/events',inAppMsgController.processEvents2);
+applicationRouter.post('/events',inAppMsgController.processEvents);
 applicationRouter.get('/all/events',inAppEventController.getAllInAppEvents)
 applicationRouter.post('/:userName/:appId/createinappmsg',validate(applicationValidation.createInAppMsg),inAppMsgController.createInAppMsg);
 applicationRouter.patch('/disableInAppMsgs/:userName/:appId',inAppMsgController.disableInAppMessages);
@@ -124,7 +124,7 @@ applicationRouter.get('/:userName/:appId/getInAppMessages',validate(applicationV
 applicationRouter.get('/events',validate(applicationValidation.getInAppMessagesByEventId),inAppMsgController.getInAppMessagesByEventIds);
 applicationRouter.patch('/:id/deleteInAppMsg',inAppMsgController.softDeleteInAppMsg);
 applicationRouter.patch('/editInAppMsg', validate(applicationValidation.editInAppMessages),inAppMsgController.editInAppMsg);
-
+applicationRouter.get('/:appId/awaymessage',validate(applicationValidation.processAwayMessage), inAppMsgController.processAwayMessage);
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)
 /**

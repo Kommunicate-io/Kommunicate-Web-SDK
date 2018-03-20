@@ -4444,3 +4444,18 @@ color: rgba(0,0,0,0.5);
 	margin-left: 5px !important;
   }
 /********** Guest Details Form Ends Here ***********/
+
+.mck-away-msg{
+	font-family: Roboto;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: #a9a4a4;
+    
+    
+}
+#mck-away-msg-box{
+	border-top: dashed 1px #bebbbb;
+	border-bottom: solid 1px #654df7;
+	padding: 8px 5px;
+}

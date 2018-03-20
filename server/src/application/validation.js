@@ -56,3 +56,10 @@ exports.editInAppMessages ={
         message:joi.string().required(),
     }
 }
+exports.processAwayMessage ={
+    param:{
+        appId:joi.string().required()
+    },query:{
+        conversationId:joi.string().required()
+    }
+}

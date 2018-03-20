@@ -137,7 +137,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         oInstance.loadConvTab(params);
                         break;
                     case 'loadTab':
-                        oInstance.loadTab(params);
+                        oInstance.loadTab(params,callback);
                         break;
                     case "uploadFile":
                         oInstance.uploadFile(params);
@@ -515,11 +515,11 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckMessageLayout.loadTab(params);
             $applozic('#mck-search').val('');
         };
-        _this.loadTab = function (tabId) {
+        _this.loadTab = function (tabId,callback) {
             mckMessageLayout.loadTab({
                 'tabId': tabId,
                 'isGroup': false
-            });
+            },callback);
             $applozic('#mck-search').val('');
         };
         _this.loadChat = function (optns) {
@@ -2132,6 +2132,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var $this = $applozic(this);
                     var currTabId = $mck_msg_inner.data("mck-id");
                     var isGroup = $mck_msg_inner.data("isgroup");
+                    KommunicateUI.hideAwayMessage();
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -3042,7 +3043,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                             mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
                         }
                     }
-                } else {
+                   // populate away messsage for support group..
+                    if(params.isGroup){
+                        Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":params.tabId},KommunicateUI.populateAwayMessage);  
+                    }
+                  } else {
                     CONTACT_SYNCING = true;
                     if (params.startTime) {
                         reqData += "&endTime=" + params.startTime;
@@ -8845,7 +8850,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 // no nedd to handle  message.type==4 and metadata.MSG_TYPE=="CALL_Rejected AND contnetType 103"
                             } else {
                                 mckMessageLayout.populateMessage(messageType, message, resp.notifyUser);
-                            }
+                                                            }
                         }
                     }
                 }
