@@ -34,40 +34,100 @@ class Dashboard extends Component {
       uperlimit:0,
       interval:0,
       chartUperLimit:0,
+      monthly: [],
+      chart: {
+        labels: [],
+        datasets: [
+          {
+            label: '',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
+      chartMonthly: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Users',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'MAU',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Messages',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
       mainChart: {
         labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
         datasets: [
           {
-            label: 'Messages Dataset',
-           // backgroundColor: 'whitesmoke',
-            borderColor: brandInfo,
+            label: 'Users',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
             data: [],
-            fillColor: "rgba(110,120,120,0.2)",
-          /*  strokeColor: "rgba(120,220,220,1)",
+          /*  fillColor: "rgba(134,132,247,0.25)",
+            strokeColor: "rgba(120,220,220,1)",
             pointColor: "rgba(120,220,220,1)",
             pointStrokeColor: "#f11",
             pointHighlightFill: "#f11",
             pointHighlightStroke: "rgba(120,220,220,1)",*/
           },
           {
-            label: 'Users Dataset',
-           // backgroundColor: 'transparent',
-            borderColor: brandSuccess,
+            label: 'MAU',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
             data: [],
-            fillColor: "rgba(110,120,120,0.2)",
+            fillColor: "rgba(134,132,247,0.25)",
           },
           {
-            label: 'Conversations Dataset',
-          //  backgroundColor: 'transparent',
-            borderColor: brandSuccess,
+            label: 'Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
             data: [],
-            fillColor: "rgba(110,120,120,0.2)",
+            fillColor: "rgba(134,132,247,0.25)",
+          },
+          {
+            label: 'Messages',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 1,
+            data: [],
+            fillColor: "rgba(134,132,247,0.25))",
           }
         ]
       }
@@ -113,6 +173,9 @@ class Dashboard extends Component {
         }
       }
     }
+
+    this.showChart = this.showChart.bind(this);
+
   }
   findMax=(a,b,c)=>{
   return a>=b?(a>=c?a:c):(b>=c?b:c);
@@ -123,10 +186,23 @@ class Dashboard extends Component {
     });
   }
 
+  showChart(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+
+    this.state.chart.labels = this.state.mainChart.labels;
+    this.state.chart.datasets.label = 'Users';
+    this.state.chart.datasets[0].data = this.state.mainChart.datasets[3].data;
+
+    this.setState({
+      chart: this.state.chart
+    });
+  }
+
   componentDidMount() {
 
   //  var env = getEnvironmentId();
-    var getAppKeyUrl =getConfig().applozicPlugin.getAppKeyUrl;
+    var getAppKeyUrl = getConfig().applozicPlugin.getAppKeyUrl;
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     var that = this;
@@ -137,12 +213,48 @@ class Dashboard extends Component {
     const apzToken = userSession.apzToken;
     const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
 
+    var userDataMonthly = [];
+    var mauDataMonthly = [];
+    var messageDataMonthly = [];
+    var channelDataMonthly = [];
+
+    var labelMonthly = [];
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
     axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+userSession.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
           .then(function(response){
             if(response.status==200){
                 var data = response.data;
+                //console.log(data);
+
                 if (data.length > 0) {
+
+                  for(var i = 0; i < data.length; i++) {
+                    var obj = data[i];
+                    console.log(obj);
+                    var datetime = new Date(obj.month);
+                    labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
+                    userDataMonthly.push(obj.newUserCount);
+                    mauDataMonthly.push(obj.activeUserCount);
+                    channelDataMonthly.push(obj.channelCount);
+                    messageDataMonthly.push(obj.newMessageCount);
+                    //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
+                  }
+
+                  var chartMonthly = that.state.chartMonthly;
+                  chartMonthly.labels = labelMonthly;
+                  chartMonthly.datasets[0].data = userDataMonthly;
+                  chartMonthly.datasets[1].data = mauDataMonthly;
+                  chartMonthly.datasets[2].data = channelDataMonthly;
+                  chartMonthly.datasets[3].data = messageDataMonthly;
+
+                  that.state.chart.labels = labelMonthly;
+                  that.state.chart.datasets.label = 'Users';
+                  that.state.chart.datasets[0].data = userDataMonthly;
+
+                  that.setState({
+                    chartMonthly: chartMonthly
+                  });
+
                   var stat = data[data.length - 1];
                   that.setState({
                     'newUsers': stat.newUserCount,
@@ -171,8 +283,9 @@ class Dashboard extends Component {
                 console.log(obj);
                 var datetime = new Date(obj.onDateTime);
                 for (var j = messageData.length; j< datetime.getDate(); j++) {
-                  messageData.push(0);
                   userData.push(0);
+                  channelData.push(0);
+                  messageData.push(0);
                 }
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
@@ -182,9 +295,9 @@ class Dashboard extends Component {
             }
 
             var mainChart = that.state.mainChart;
-            mainChart.datasets[0].data = messageData;
-            mainChart.datasets[1].data = userData;
+            mainChart.datasets[0].data = userData;
             mainChart.datasets[2].data = channelData;
+            mainChart.datasets[3].data = messageData;
             that.setState({
               'mainChart': mainChart
             });
@@ -198,7 +311,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn dashboard-card">
         <div className="row">
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--users active">
+            <div className="card card-inverse card-stats card-stats--users active" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Users</p>
                 <h4 className="card-stats-value">{this.state.newUsers}</h4>
@@ -210,7 +323,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--mau ">
+            <div className="card card-inverse card-stats card-stats--mau" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Monthly Active Users</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
@@ -221,7 +334,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--conversations">
+            <div className="card card-inverse card-stats card-stats--conversations" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Conversations</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
@@ -244,7 +357,7 @@ class Dashboard extends Component {
           */}
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--messages">
+            <div className="card card-inverse card-stats card-stats--messages" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Messages</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
@@ -283,7 +396,7 @@ class Dashboard extends Component {
               */}
             </div>
             <div className="chart-wrapper" style={{height: 200 + 'px', marginTop: 40 + 'px'}}>
-              <Line data={this.state.mainChart} options={this.mainChartOpts} height={200}/>
+              <Line data={this.state.chart} options={this.mainChartOpts} height={200}/>
             </div>
           </div>
           {/*
@@ -323,5 +436,9 @@ class Dashboard extends Component {
     )
   }
 }
+
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
 
 export default Dashboard;
