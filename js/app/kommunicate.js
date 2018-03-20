@@ -6,6 +6,7 @@ Kommunicate = {
             case "https://apps-test.applozic.com/":
             case "https://apps-test.applozic.com":
                 return "https://api-test.kommunicate.io";
+                //return "http://localhost:3999"
             default:
                 return "https://api.kommunicate.io";
         }
@@ -176,6 +177,22 @@ Kommunicate = {
     }, updateUser: function (options) {
         var data ={data:options};
         window.$applozic.fn.applozic('updateUser', data);
+    },getAwayMessage:function(options, callback){
+        $applozic.ajax({
+            url: Kommunicate.getBaseUrl() + "/applications/"+options.applicationId+"/awaymessage?conversationId="+options.conversationId,
+            type: "get",
+            contentType: "application/json",
+            success: function (result) {
+                console.debug("got away message data");
+                typeof callback =='function'?callback(null,result):"";
+                
+            },
+            error: function (err) {
+                console.log("err while fetching away message");
+                typeof callback =='function'?callback(err):"";
+
+            }
+        });
     },
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
