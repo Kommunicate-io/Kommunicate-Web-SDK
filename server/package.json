@@ -31,9 +31,9 @@
     "path": "^0.12.7",
     "randomstring": "1.1.5",
     "request": "^2.81.0",
-    "sequelize": "^4.4.2",
-    "underscore.string": "^3.3.4",
-    "uuid": "^3.1.0",
+    "sequelize": "4.13.5",
+    "underscore.string": "3.3.4",
+    "uuid": "3.1.0",
     "winston": "2.4.0"
   },
   "devDependencies": {

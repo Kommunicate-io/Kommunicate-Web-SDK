@@ -1,6 +1,7 @@
 const routes = require("../routers/routes.js");
 const userModel = require("../models").user;
 const db = require("../models");
+const Op = db.Sequelize.Op;
 const stringUtils = require("underscore.string");
 const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
@@ -384,14 +385,15 @@ exports.goOnline = (userId, appId)=>{
  * Specify type to filter users  1:Agents, 2: Bots
  * @param {Object} customer
  * @param {number} customer.id 
- * @param {Number} type 
+ * @param {Array} type 
  * @return {Object} 
  */
 const getAllUsersOfCustomer = (customer,type)=>{
   logger.info("fetching Users for customer, ",customer.id);
   let criteria={customerId:customer.id};
+  var a = Op.or;
   if(type){
-    criteria.type= type;
+    criteria.type= {[Op.or]:type};
   }
   return Promise.resolve(userModel.findAll({where:criteria}));
 }

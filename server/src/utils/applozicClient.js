@@ -241,7 +241,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
+      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse[0].description);
       return null;
     }
   }).catch(err=>{
@@ -405,12 +405,10 @@ exports.updateApplication = (data) => {
   })
 }
 
-exports.getUserDetails = (userName,applicationId,apzToken) => {
+exports.getUserDetails = (userNameList,applicationId,apzToken) => {
   let url = config.getProperties().urls.getUserInfo
   console.log("getting user info from applozic url : ", url);
-  console.log(userName)
-  let userNameArray = [userName]
-  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameArray}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameList}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
     console.log("got response from Applozic user info api :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
@@ -419,7 +417,7 @@ exports.getUserDetails = (userName,applicationId,apzToken) => {
       return null;
     }
   }).catch(err=>{
-    console.log("error while getting group info from Applozic" ,err);
+    console.log("error while getting user detail from Applozic" ,err);
     throw err;
   });
 

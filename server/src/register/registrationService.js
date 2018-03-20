@@ -217,7 +217,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 }
 
 exports.signUpWithApplozic = (options)=>{
-    
+    options.email =options.email|| options.userName;
   return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
     applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"})])

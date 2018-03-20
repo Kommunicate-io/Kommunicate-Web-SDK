@@ -19,7 +19,7 @@ exports.getAllUsers = function(req, res) {
   return userService.getCustomerInfoByApplicationId(applicationId)
   .then(customer=>{
     if(customer){
-      userService.getAllUsersOfCustomer(customer,type)
+      userService.getAllUsersOfCustomer(customer,[type])
       .then(dbUtils.getDataArrayFromResultSet)
       .then(data=>{
         logger.info("sending response success ")
