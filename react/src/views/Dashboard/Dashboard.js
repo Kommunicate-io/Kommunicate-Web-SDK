@@ -295,7 +295,7 @@ class Dashboard extends Component {
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 var datetime = new Date(obj.onDateTime);
-                labels.push(datetime.getDate());
+                labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
                 channelData.push(obj.channelCount);
@@ -385,7 +385,6 @@ class Dashboard extends Component {
                 <h4 className="card-stats-value">{this.state.messages}</h4>
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
-              <div className="vertical-line"></div>
             </div>
           </div>
 
