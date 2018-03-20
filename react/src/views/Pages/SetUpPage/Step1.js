@@ -16,7 +16,7 @@ class Step1 extends Component {
     this.websiteUrlCheck = this.websiteUrlCheck.bind(this);
     
     }
-    handleKeyPress1 = (e) => {
+    comapnyUrlValidationOnEnter = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         if(document.getElementById("website-url").value ===""|| document.getElementById("website-url").value === null){
@@ -30,7 +30,7 @@ class Step1 extends Component {
         }
       }
     }
-    handleKeyPress2 = (e) => {
+    comapnyNameValidationOnEnter = (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         if(document.getElementById("customer-name").value ===""|| document.getElementById("customer-name").value === null){
@@ -121,7 +121,7 @@ class Step1 extends Component {
                 <div className="company-url-main-div flex text-center">
                     <span id ="url-http-text"className="url-http-text">https://</span>
                     <div className="group form-group company-url-form-group">
-                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onKeyPress={this.handleKeyPress1} onBlur={(event) => this.onBlur(event.target.value)} onFocus={this.hideAllErrors} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
+                        <input className="input" type="text" id="website-url" name="website-url" placeholder=" " required onKeyPress={this.comapnyUrlValidationOnEnter} onBlur={(event) => this.onBlur(event.target.value)} onFocus={this.hideAllErrors} value={this.state.websiteUrl} onChange={(event) => { this.setState({ websiteUrl: event.target.value }) }} />
                         <label className="label-for-input email-label">www.mycompany.com</label>
                         <span id="emptyerror1" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -141,7 +141,7 @@ class Step1 extends Component {
                 </div>
                 <div className="company-url-main-div flex text-center">
                     <div className="group form-group form-group-user-name">
-                        <input className="input customer-name" type="text" id="customer-name" name="name" placeholder=" " required onKeyPress={this.handleKeyPress2} onBlur={(event) => this.onBlur(event.target.value)}  onkeypress="onenter()"onFocus={this.onFocusOfCompanyName} value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
+                        <input className="input customer-name" type="text" id="customer-name" name="name" placeholder=" " required onKeyPress={this.comapnyNameValidationOnEnter} onBlur={(event) => this.onBlur(event.target.value)}  onkeypress="onenter()"onFocus={this.onFocusOfCompanyName} value={this.state.name} onChange={(event) => { this.setState({ name: event.target.value }) }} />
                         <label className="label-for-input email-label">Your Name</label>
                         <span id="emptyerror2" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
