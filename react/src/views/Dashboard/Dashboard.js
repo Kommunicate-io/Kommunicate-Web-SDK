@@ -86,7 +86,7 @@ class Dashboard extends Component {
         ]
       },
       mainChart: {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+        labels: [],
         datasets: [
           {
             label: 'Users',
@@ -188,7 +188,6 @@ class Dashboard extends Component {
 
   showChart(e) {
     e.preventDefault();
-    console.log('The link was clicked.');
 
     var cards = document.getElementsByClassName("card-stats");
 
@@ -199,20 +198,23 @@ class Dashboard extends Component {
     let currentTarget = e.currentTarget;
     currentTarget.classList.add('active');
     let metric = currentTarget.getAttribute("data-metric");
-    console.log(metric);
+
+    let chart;
 
     if (metric == 1) {
-      this.state.chart.labels = this.state.chartMonthly.labels;
-      this.state.chart.datasets.label = 'MAU';
-      this.state.chart.datasets[0].data = this.state.chartMonthly.datasets[metric].data;
+      chart = Object.assign({}, this.state.chart);
+      chart.labels = this.state.chartMonthly.labels;
+      chart.datasets = [{}];
+      chart.datasets[0] = this.state.chartMonthly.datasets[metric];
     } else {
-      this.state.chart.labels = this.state.mainChart.labels;
-      this.state.chart.datasets.label = 'Users';
-      this.state.chart.datasets[0].data = this.state.mainChart.datasets[metric].data;
+      chart = Object.assign({}, this.state.mainChart); ;
+      chart.labels = this.state.mainChart.labels;
+      chart.datasets = [{}];
+      chart.datasets[0] = this.state.mainChart.datasets[metric];
     }
 
     this.setState({
-      chart: this.state.chart
+      'chart': chart
     });
   }
 
@@ -236,18 +238,17 @@ class Dashboard extends Component {
     var channelDataMonthly = [];
 
     var labelMonthly = [];
+    var labels = [];
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
     axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+userSession.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
           .then(function(response){
             if(response.status==200){
                 var data = response.data;
-                //console.log(data);
 
                 if (data.length > 0) {
 
                   for(var i = 0; i < data.length; i++) {
                     var obj = data[i];
-                    console.log(obj);
                     var datetime = new Date(obj.month);
                     labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
                     userDataMonthly.push(obj.newUserCount);
@@ -263,10 +264,6 @@ class Dashboard extends Component {
                   chartMonthly.datasets[1].data = mauDataMonthly;
                   chartMonthly.datasets[2].data = channelDataMonthly;
                   chartMonthly.datasets[3].data = messageDataMonthly;
-
-                  that.state.chart.labels = labelMonthly;
-                  that.state.chart.datasets.label = 'Users';
-                  that.state.chart.datasets[0].data = userDataMonthly;
 
                   that.setState({
                     chartMonthly: chartMonthly
@@ -297,13 +294,8 @@ class Dashboard extends Component {
             if (data.length > 0) {
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
-                console.log(obj);
                 var datetime = new Date(obj.onDateTime);
-                for (var j = messageData.length; j< datetime.getDate(); j++) {
-                  userData.push(0);
-                  channelData.push(0);
-                  messageData.push(0);
-                }
+                labels.push(datetime.getDate());
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
                 channelData.push(obj.channelCount);
@@ -311,12 +303,25 @@ class Dashboard extends Component {
               }
             }
 
-            var mainChart = that.state.mainChart;
+            var mainChart = Object.assign({}, that.state.mainChart);
+            mainChart.labels = labels;
             mainChart.datasets[0].data = userData;
             mainChart.datasets[2].data = channelData;
             mainChart.datasets[3].data = messageData;
+
             that.setState({
               'mainChart': mainChart
+            });
+
+            let chart = that.state.chart;
+            chart.labels = labels;
+            chart.datasets = [{}];
+            chart.datasets[0] = that.state.mainChart.datasets[0];
+            //chart.datasets[0].label = 'Users';
+            //chart.datasets[0].data = userData;
+
+            that.setState({
+              'chart': chart
             });
            }else{
            }
@@ -328,7 +333,7 @@ class Dashboard extends Component {
       <div className="animated fadeIn dashboard-card">
         <div className="row">
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats-users active" data-metric="0" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Users</p>
                 <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
@@ -340,18 +345,18 @@ class Dashboard extends Component {
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats-mau" data-metric="1" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Monthly Active Users</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
                 {/* <p className="card-sub-title">205 Users last month</p> */}
               </div>
-              
+              <div className="vertical-line"></div>
             </div>
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats-conversations" data-metric="2" onClick={this.showChart}>
               <div className="card-block pb-0">
                 <p className="card-main-title">Conversations</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
@@ -374,7 +379,7 @@ class Dashboard extends Component {
           */}
 
           <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
+            <div className="card card-inverse card-stats card-stats-messages" data-metric="3" onClick={this.showChart}>
               <div className="card-block pb-0">
               <p className="card-main-title">Messages</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
