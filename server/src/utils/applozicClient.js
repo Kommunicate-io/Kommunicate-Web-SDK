@@ -155,7 +155,7 @@ this method get the application detail for given applicationId
 exports.getApplication=(customer)=>{
   const applicationId = customer.applicationId;
   const getApplicationUrl = config.getProperties().urls.getApplicationDetail.replace(":applicationId", applicationId);
-  const apzToken = customer.apzToken?customer.apzToken: new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
+  const apzToken =  new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
   console.log("calling applozic.. url: ", getApplicationUrl, " apzToken: ", apzToken);
   let err = {};
   return Promise.resolve(axios.get(getApplicationUrl, {
