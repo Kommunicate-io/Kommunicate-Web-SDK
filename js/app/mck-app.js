@@ -260,7 +260,7 @@ function ApplozicSidebox() {
                             options.userId = KommunicateUtils.getCookie('kommunicate-id');
                			// options.userId = Cookies.get("kommunicate-id");
                		    }else {
-               			options.userId = getRandomId();
+               			options.userId = KommunicateUtils.getRandomId();
                         //    Cookies.set("kommunicate-id", options.userId);
                         KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
                		}
@@ -283,21 +283,6 @@ function ApplozicSidebox() {
             }
             return false;
         }
-    }
-        function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
     }
 
 }
