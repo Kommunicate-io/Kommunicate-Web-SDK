@@ -19,8 +19,8 @@ exports.login = (userDetail) => {
             user.adminUserName=customer.userName;
             user.adminDisplayName = customer.name;
             user.routingState = customer.agentRouting;
-            user.applozicUser=applozicUser;
-            user.subsciption = customer.subsciption;
+            user.applozicUser=applozicUser; 
+            user.subscription = customer.subscription;
             user.billingCustomerId = customer.billingCustomerId;
             return prepareResponse(user,application);
           });
