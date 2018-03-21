@@ -1432,6 +1432,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 mckUserUtils.checkUserConnectedStatus();
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                    // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
                 mckInit.tabFocused();
@@ -1450,6 +1451,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
+                // calling Kommunicate for post initialization processing. error first style.
+                Kommunicate.postPluginInitialization(null,data);
             };
             _this.validateAppSession = function (userPxy) {
                 var appHeaders = mckStorage.getAppHeaders();
@@ -8551,7 +8554,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.onMessage = function (obj) {
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
-                    var messageType = resp.type;
+                    var messageType = resp.type;                 
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
                         $applozic("." + resp.message.split(",")[0] + " .mck-message-status").removeClass('mck-icon-time').removeClass('mck-icon-sent').addClass('mck-icon-delivered');
                         mckMessageLayout.addTooltip(resp.message.split(",")[0]);
