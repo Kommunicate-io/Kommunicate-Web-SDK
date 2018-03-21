@@ -60,7 +60,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       field: "subscription" //0-FREE, 1-LAUNCH, 2-GROWTH, 3-ENTERPRISE
     },
-    billing_cus_id:{
+    billingCustomerId:{
       type: DataTypes.STRING(50),
       field: "billing_cus_id" 
     },

@@ -161,7 +161,7 @@ class Billing extends Component {
         };
 
         if (typeof billingCustomerId !== "undefined") {
-            customerInfo.billing_cus_id = billingCustomerId;
+            customerInfo.billingCustomerId = billingCustomerId;
             userSession.billingCustomerId = billingCustomerId;
         }
             
