@@ -1838,7 +1838,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     success: function (result) {
                         if (result.response.length > 0) {
                             var groupId = result.response[0].id;
-                            if (Cookies.get("_km-f-vis_") == "true") {
+                            if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
                                 $applozic.fn.applozic("loadGroupTab", groupId);
                             }
                             $applozic.fn.applozic("loadTab");
@@ -2061,16 +2061,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
                     $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
-                    if (!Cookies.get("_km-f-vis_")) {
-                        Cookies.set("_km-f-vis_", "true");
+                    if (!KommunicateUtils.getCookie("_km-f-vis_")) {
+                        KommunicateUtils.setCookie("_km-f-vis_", "true");
                     } else {
-                        Cookies.set("_km-f-vis_", "false");
+                        KommunicateUtils.setCookie("_km-f-vis_", "false");
                     }
                     if (IS_ANONYMOUS_CHAT === "false") {
                         //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chat-login-modal").css("display", "block");
                     } else {
-                        if (Cookies.get("_km-f-vis_") == "true") {
+                        if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
                             mckMessageService.loadConversationWithAgents({
                                 groupName: DEFAULT_GROUP_NAME,
                                 agentId: DEFAULT_AGENT_ID
