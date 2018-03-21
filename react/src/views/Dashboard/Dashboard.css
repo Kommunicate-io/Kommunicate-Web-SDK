@@ -13,6 +13,14 @@
 .graph-card {
     padding: 20px;
 }
+.card-main-header {
+    color: black;
+    background: #CCE7F8;
+    display: inline-block;
+    width: auto;
+    padding: 2px 10px 2px 10px;
+    margin: 10px auto 0 10px;
+}
 .card-main-title {
     font-size: 16px;
     font-weight: 400;

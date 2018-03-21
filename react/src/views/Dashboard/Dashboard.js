@@ -35,6 +35,13 @@ class Dashboard extends Component {
       interval:0,
       chartUperLimit:0,
       monthly: [],
+      currentMonth: '',
+      lastMonthStats: {
+        newUserCount: 0,
+        activeUserCount: 0,
+        channelCount: 0,
+        newMessageCount: 0
+      },
       chart: {
         labels: [],
         datasets: [
@@ -60,7 +67,7 @@ class Dashboard extends Component {
             data: [],
           },
           {
-            label: 'MAU',
+            label: 'Chat Users',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -245,11 +252,35 @@ class Dashboard extends Component {
             if(response.status==200){
                 var data = response.data;
 
+                if (data.length >= 2) {
+                  var lastMonthStats = data[data.length - 2];
+                  that.setState({'lastMonthStats': lastMonthStats});
+                } else {
+                  let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
+                  for (var i = 0; i < lastMonthSubTitle.length; i++) {
+                    lastMonthSubTitle[i].classList.add('n-vis');
+                  }
+                }
+
                 if (data.length > 0) {
+
+                  let lastDate = null;
 
                   for(var i = 0; i < data.length; i++) {
                     var obj = data[i];
                     var datetime = new Date(obj.month);
+
+                    if (lastDate == null) {
+                      lastDate = datetime;
+                    }
+                    for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
+                      labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
+                      userDataMonthly.push(0);
+                      mauDataMonthly.push(0);
+                      channelDataMonthly.push(0);
+                      messageDataMonthly.push(0);
+                    }
+
                     labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
                     userDataMonthly.push(obj.newUserCount);
                     mauDataMonthly.push(obj.activeUserCount);
@@ -270,7 +301,9 @@ class Dashboard extends Component {
                   });
 
                   var stat = data[data.length - 1];
+
                   that.setState({
+                    'currentMonth': MONTH_NAMES[new Date(stat.month).getMonth()],
                     'newUsers': stat.newUserCount,
                     'conversations' :stat.channelCount,
                     'messages': stat.newMessageCount,
@@ -292,10 +325,23 @@ class Dashboard extends Component {
             var userData = [];
             var channelData = [];
             if (data.length > 0) {
+              let lastDate = null;
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 var datetime = new Date(obj.onDateTime);
-                labels.push(datetime.getDate());
+
+                if (lastDate == null) {
+                  lastDate = datetime;
+                }
+                for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
+                  labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
+                  messageData.push(0);
+                  userData.push(0);
+                  channelData.push(0);
+                }
+
+                lastDate = datetime;
+                labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
                 channelData.push(obj.channelCount);
@@ -334,37 +380,39 @@ class Dashboard extends Component {
         <div className="row">
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-users active" data-metric="0" onClick={this.showChart}>
+             <div className="card-main-header">{this.state.currentMonth}</div>
+
               <div className="card-block pb-0">
                 <p className="card-main-title">Users</p>
                 <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
-{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                 <p className="card-sub-title">Last month: {this.state.lastMonthStats.newUserCount}</p>
               </div>
-              <div className="vertical-line"></div>
             </div>
+            <div className="vertical-line"></div>
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-mau" data-metric="1" onClick={this.showChart}>
+             <div className="card-main-header">{this.state.currentMonth}</div>
               <div className="card-block pb-0">
-              <p className="card-main-title">Monthly Active Users</p>
+              <p className="card-main-title">Chat Users</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                <p className="card-sub-title">Last month: {this.state.lastMonthStats.activeUserCount}</p>
               </div>
-              <div className="vertical-line"></div>
             </div>
+            <div className="vertical-line"></div>
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-conversations" data-metric="2" onClick={this.showChart}>
+              <div className="card-main-header">{this.state.currentMonth}</div>
               <div className="card-block pb-0">
                 <p className="card-main-title">Conversations</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
-{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                 <p className="card-sub-title">Last month: {this.state.lastMonthStats.channelCount}</p>
               </div>
-              <div className="vertical-line"></div>
             </div>
+            <div className="vertical-line"></div>
           </div>
 
           {/*
@@ -380,12 +428,12 @@ class Dashboard extends Component {
 
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-messages" data-metric="3" onClick={this.showChart}>
+              <div className="card-main-header">{this.state.currentMonth}</div>
               <div className="card-block pb-0">
               <p className="card-main-title">Messages</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                <p className="card-sub-title">Last month: {this.state.lastMonthStats.newMessageCount}</p>
               </div>
-              <div className="vertical-line"></div>
             </div>
           </div>
 
