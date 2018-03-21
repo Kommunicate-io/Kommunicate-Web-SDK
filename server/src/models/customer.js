@@ -51,7 +51,6 @@ module.exports = function(sequelize, DataTypes) {
     activeCampaignId:{
       type: DataTypes.INTEGER,
       field: 'active_campaign_id'
-      
     },
     agentRouting:{
       type: DataTypes.INTEGER,
@@ -59,7 +58,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     subscription:{
       type: DataTypes.INTEGER,
-      field: "subscription" //0-FREE, 1-LAUNCH, 2-GROWTH, 3-ENTERPRISE //Todo: add db script
+      field: "subscription" //0-FREE, 1-LAUNCH, 2-GROWTH, 3-ENTERPRISE
+    },
+    billing_cus_id:{
+      type: DataTypes.STRING(50),
+      field: "billing_cus_id" 
     },
   }, {
     underscored: true,
