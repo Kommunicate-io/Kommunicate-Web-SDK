@@ -326,7 +326,7 @@ exports.editInAppMsg=(body)=>{
  * return 1st online user. return undefined if no agents are online. 
  */
 exports.checkOnlineAgents=(customer)=>{
-  return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.AGENT,registrationService.USER_TYPE.ADMIN]).then(userList=>{
+  return userService.getAvailableAgents(customer).then(userList=>{
     let userIdList = userList.map(user=>user.userName);
     let defaultAgent = userList.filter(user=> user.type==3);
     logger.info("fetching detail of all agents from applozic");
