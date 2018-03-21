@@ -68,6 +68,9 @@
     border-top-left-radius: 4px;
 }
 .card-stats.card-stats--mau {
+    border-top-right-radius: 0px;
+}
+.card-stats.card-stats--messages {
     border-top-right-radius: 4px;
 }
 .vertical-line {
@@ -96,18 +99,21 @@
 
 
 @media (max-width:991px) {
-    .card-stats--messages .vertical-line {
+    .card-stats--mau .vertical-line {
         display: none;
     }
     .card-stats--messages {
-        border-top-right-radius: 4px;
+        border-top-right-radius: 0px;
     }
     .card-stats--mau {
         border-top-right-radius: 0px;
     }
+    .card-stats.card-stats--messages {
+        border-top-right-radius: 0px;
+    }
 }
 @media (max-width:575px) {
-    .card-stats--users .vertical-line {
+    .vertical-line {
         display: none;
     }
     .card-stats--messages {
@@ -115,6 +121,9 @@
     }
     .card-stats--users {
         border-top-right-radius: 4px;
+    }
+    .card-stats.card-stats--mau {
+        border-top-right-radius: 0px;
     }
     .card-stats {
         border-bottom: 1px solid #cfcaca;
