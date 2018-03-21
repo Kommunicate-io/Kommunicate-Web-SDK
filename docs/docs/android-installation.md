@@ -9,7 +9,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 
 ### Installation 
 
-Check if the dependency for kommunicate doesn’t exist in your app level gradle file. If not, then Add the following in your app build.gradle dependency:
+Add the following in your app build.gradle dependency:
 
 ```
 compile 'io.kommunicate:kommunicate:1.2.4'
