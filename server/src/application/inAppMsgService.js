@@ -67,9 +67,9 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             console.log("groupUser")
             return userService.getByUserNameAndAppId(groupUser.agentUserName,customer.applicationId)
             .then(res => {
-              console.log(res)
-              console.log(res.availability_status)
-              if(res.availability_status == 1){
+              logger.info(res);
+              logger.info(res.availabilityStatus)
+              if(res.availabilityStatus == 1){
                 offline = false
               }
               groupUser.agentId= res.id;
@@ -327,12 +327,12 @@ exports.editInAppMsg=(body)=>{
  */
 exports.checkOnlineAgents=(customer)=>{
   return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
-    let userIdList = userList.map(user=>user.userName);
+    let userIdList = userList.filter(user=>user.availabilityStatus==1).map(user=>user.userName);
     let defaultAgent = userList.filter(user=> user.type==3);
-    let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
+    //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
     logger.info("fetching detail of all agents from applozic");
-    if(avalableUserList.length>0){
-      return applozicClient.getUserDetails(avalableUserList,customer.applicationId, defaultAgent[0].apzToken);
+    if(userIdList.length>0){
+      return applozicClient.getUserDetails(userIdList,customer.applicationId, defaultAgent[0].apzToken);
     }else return Promise.resolve([]);
   }).then(agentsDetail=>{
     agentsDetail=agentsDetail||[];

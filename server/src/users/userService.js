@@ -53,6 +53,7 @@ let handleCreateUserError =(user,customer,err)=>{
       return err.data;
     })
   }else{
+    logger.error(" error :",err);
     throw err;
   }
 }
@@ -72,6 +73,7 @@ const createUser =user=>{
       if(user.type===registrationService.USER_TYPE.AGENT){
       return handleCreateUserError(user,customer,err);
       }else{
+        logger.error("error while creating user in applozic : ",err);
         throw err;
       }
     }))
@@ -354,7 +356,7 @@ exports.goAway = (userId, appId)=>{
         console.log("No customer in customer table with appId", appId);
         return null;
       }else {
-        return Promise.resolve(userModel.update({ availability_status: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+        return Promise.resolve(userModel.update({ availabilityStatus: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
           console.log("successfully updated user status to offline",result[0]);
           return result[0];
         }).catch(err=>{
@@ -371,7 +373,7 @@ exports.goOnline = (userId, appId)=>{
         console.log("No customer in customer table with appId", appId);
         return null;
       }else {
-        return Promise.resolve(userModel.update({ availability_status: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+        return Promise.resolve(userModel.update({ availabilityStatus: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
           console.log("successfully updated user status to online",result[0]);
           return result[0];
         }).catch(err=>{
@@ -441,7 +443,7 @@ const getAvailableAgents = (customer)=>{
   logger.info("fetching list of available agents for customer",customer.id);
   let criteria={customerId:customer.id,
                 type:{[Op.or]:[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]},
-                availability_status:CONST.AVAIBILITY_STATUS.AVAILABLE};
+                availabilityStatus:CONST.AVAIBILITY_STATUS.AVAILABLE};
   return Promise.resolve(userModel.findAll({where:criteria}));
 
 }
