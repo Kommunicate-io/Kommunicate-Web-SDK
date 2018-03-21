@@ -4,6 +4,7 @@ const adminUserId = config.getProperties().kommunicateAdminId;
 const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
 const constant =require('./constant');
+const logger = require('./logger.js')
 
 /*
 this method register a user in applozic db with given parameters.
@@ -407,13 +408,13 @@ exports.updateApplication = (data) => {
 
 exports.getUserDetails = (userNameList,applicationId,apzToken) => {
   let url = config.getProperties().urls.getUserInfo
-  console.log("getting user info from applozic url : ", url);
+  logger.info("getting user info from applozic url : ", url);
   return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameList}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
-    console.log("got response from Applozic user info api :", response.status);
+    logger.info("got response from Applozic user info api :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
+      logger.error("ERROR FROM APPLOZIC while fetching user Detail: ",response.data.errorResponse[0].description);
       return null;
     }
   }).catch(err=>{
