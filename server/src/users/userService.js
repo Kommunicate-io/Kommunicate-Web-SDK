@@ -14,6 +14,7 @@ const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPasswor
 const cacheClient = require("../cache/hazelCacheClient");
 const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
+const CONST = require("./constants.js");
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -430,6 +431,20 @@ const getUserDisplayName=(user)=>{
     return user.email;
   }
 }
+/**
+ * returns list of the all agents whos avaibility status is 1.
+ * 
+ * @param {Object} customer 
+ * @param {Number} customer.id
+ */
+const getAvailableAgents = (customer)=>{
+  logger.info("fetching list of available agents for customer",customer.id);
+  let criteria={customerId:customer.id,
+                type:{[Op.or]:[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]},
+                availability_status:CONST.AVAIBILITY_STATUS.AVAILABLE};
+  return Promise.resolve(userModel.findAll({where:criteria}));
+
+}
 
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
@@ -446,3 +461,4 @@ exports.isIntervalExceeds= isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;
 exports.getAllUsersOfCustomer= getAllUsersOfCustomer;
+exports.getAvailableAgents= getAvailableAgents;
