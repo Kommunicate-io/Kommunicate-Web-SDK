@@ -12,6 +12,7 @@ import GrowthPlanIcon from './img/Growth-plan-icon.svg';
 import EnterprisePlanIcon from './img/Enterprise-plan-icon.svg';
 import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
+import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 
 class Billing extends Component {
 
@@ -20,8 +21,6 @@ class Billing extends Component {
     
         this.state = {
             modalIsOpen: false,
-            hidePlanDetails: true,
-            planDetailsText: 'See plan details',
             toggleSlider: true,
             pricingMonthlyHidden: true,
             pricingYearlyHidden: false,
@@ -29,7 +28,6 @@ class Billing extends Component {
             showFeatures:'Show Features',
             'subscription': CommonUtils.getUserSession().subscription
         };
-        this.showPlanDetails = this.showPlanDetails.bind(this);
         this.showHideFeatures = this.showHideFeatures.bind(this);
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
         };
@@ -67,19 +65,11 @@ class Billing extends Component {
         this.setState({ modalIsOpen: false });
       };
 
-    showPlanDetails(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.setState({
-          hidePlanDetails: this.state.hidePlanDetails === true ? false : true,
-          planDetailsText: this.state.planDetailsText === 'See plan details' ? 'Hide plan details' : 'See plan details'
-        });
-    }
     showHideFeatures(e) {
         e.preventDefault();
         e.stopPropagation();
         this.setState({
-          hideFeatureList: this.state.hideFeatureList === true ? false : true,
+          hideFeatureList: !this.state.hideFeatureList,
           showFeatures: this.state.showFeatures === 'Show Features' ? 'Hide Features' : 'Show Features'
         });
     }
@@ -230,47 +220,8 @@ class Billing extends Component {
                                     </div>
                                 </div>
 
-                                <div className="active-plan-container flexi">
-                                    <div className="col-md-6 flexi">
-                                        <div className="active-plan-img-container">
-                                            <img src={GrowthPlanIcon} alt="Growth Plan Icon"/>
-                                        </div>
-                                        <div className="active-plan-details">
-                                            <p className="active-plan-name">Growth</p>
-                                            <p className="active-plan-mau">5000 Chat Users/month</p>
-                                            <a href="#/" className="see-plan-details" onClick={this.showPlanDetails}>{this.state.planDetailsText}</a>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 text-right">
-                                        <div className="active-plan-pricing">
-                                            <p className="active-plan-pricing-text">$199/month
-                                            </p>
-                                            <p  className="active-plan-mau n-vis">Billed Monthly</p>
-                                        </div>
-                                        <div className="active-plan-dropdown">
-                                            <div className="select-container">
-                                            <select className="monthly-yearly-select" id="monthly-yearly-select">
-                                                <option value="monthly">Billed Monthly</option>
-                                                <option value="yearly">Billed Yearly</option>
-                                                </select>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    <div className="col-md-12 active-plan-more-details" hidden={this.state.hidePlanDetails}>
-                                        <div className="info-bar-container">
-                                            <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Launch Plan</a> and… </p>
-                                        </div>
-                                        <div className="active-plan-feature-list">
-                                            <ul>
-                                                <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bot integrations</li>
-                                                <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integrations</li>
-                                                <li><i className="fa fa-check"></i> &nbsp;&nbsp;Priority email support</li>
-                                                <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
+                                <PlanDetails PlanIcon={GrowthPlanIcon} PlanName={'Enterprise'} PlanMAU={5000} PlanAmount={'199/month'} />
 
                                 <div className="download-link-image-container">
                                     <div className="download-link-container">
