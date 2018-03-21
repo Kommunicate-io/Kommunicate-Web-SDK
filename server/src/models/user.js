@@ -88,7 +88,7 @@ module.exports = function(sequelize, DataTypes) {
       unique: true,
       field: 'user_key'
     },
-    availability_status: {
+    availabilityStatus: {
       type: DataTypes.INTEGER(),
       field: 'availability_status',
       defaultValue: 1
@@ -97,6 +97,7 @@ module.exports = function(sequelize, DataTypes) {
       field: 'all_conversations',
       defaultValue: 0
     },
+    // todo change name into camelcase
     bot_availability_status: {
       type: DataTypes.INTEGER(),
       field: 'bot_availability_status',

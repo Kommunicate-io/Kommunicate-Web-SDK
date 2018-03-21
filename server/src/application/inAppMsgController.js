@@ -346,6 +346,7 @@ exports.processAwayMessage = function(req,res){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");
                 res.json({"code":"AGENTS_ONLINE","message":"skiping away message. some agents are online"}).status(200);
+                return;
                }else if(isGroupUserAnonymous){
                 // agents are offline. group user is anonymous
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
