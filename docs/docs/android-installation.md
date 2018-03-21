@@ -9,24 +9,16 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 
 ### Installation 
 
-Clone Kommunicate Android repo - `Kommunicate-Android-Chat-SDK-Customer-Support` from GitHub 
+Check if the dependency for kommunicate doesn’t exist in your app level gradle file. If not, then Add the following in your app build.gradle dependency:
 
-Kommunicate.io Android Chat SDK for Customer Support <br />
-```
-git clone https://github.com/Kommunicate-io/Kommunicate-Android-Chat-SDK-Customer-Support.git
-```
-
-Now, from Android Studio, select `File ->New -> Import Module -> Select 'kommunicate'` from cloned path.
-
-Check if the dependency for kommunicate doesn’t exist in your app level gradle file. If not, then add it by the method described below:
 ```
 compile 'io.kommunicate:kommunicate:1.2.4'
 ```
 
-After the app has successfully build, open your Application Class(If you do not have an application class, create one) and add imlement the ```KmActionCallback``` interface:
+After the app has successfully build, open your Application Class(If you do not have an application class, create one) and add implement the ```KmActionCallback``` interface:
 
 ```
-      public class KommunicateApplication extends MultiDexApplication implements KmActionCallback {
+ public class KommunicateApplication extends MultiDexApplication implements KmActionCallback {
 ```
 
 Then override the ```KmActionCallback```'s ```onReceive``` method :
