@@ -1706,6 +1706,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_loading = $applozic("#mck-contact-loading");
             var $mck_no_messages = $applozic('#mck-no-messages');
             var $mck_group_search = $applozic(".mck-group-search");
+            var $mck_city_search  = $applozic(".mck-city-search");
             var $mck_msg_response = $applozic("#mck-msg-response");
             var $mck_form_field = $applozic("#mck-msg-form input");
             var $mck_block_button = $applozic("#mck-block-button");
@@ -3901,6 +3902,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_contact_search_tab = $applozic("#mck-contact-search-tab");
             var $mck_contact_search_tabview = $applozic("#mck-contact-search-tabview");
             var $mck_contact_search_input = $applozic("#mck-contact-search-input");
+            var $mck_city_search_input = $applozic("#mck-city-search-input");
 
             var $mck_search_list = $applozic("#mck-search-list");
             var $mck_no_search_contacts = $applozic("#mck-no-search-contacts");
@@ -5104,6 +5106,71 @@ var MCK_CLIENT_GROUP_MAP = [];
                     'isContactSearch': true
                 });
             };
+
+            _this.searchCity = function () {
+                var items = new Array();
+                $mck_city_search_input.mcktypeahead({
+                    order: 'desc',
+                    hint: false,
+                    minLength: 3,
+                    backdropOnFocus: true,
+                    dynamic: true,
+                    source: function (query, process) {
+                        mckUtils.ajax({
+                            url: 'http://localhost:5454/city/search?name=' + query,
+                            type: 'get',
+                            success: (data) => {
+                                console.log('data: ', data);
+                                data.data.map(function (city) {
+                                    var group;
+                                    group = {
+                                        CityId: city.CityId,
+                                        CityName: city.CityName,
+                                        CountryName: city.CountryName,
+                                        toString: function () {
+                                            return JSON.stringify(city);
+                                        },
+                                        toLowerCase: function () {
+                                            return city.CityName.toLowerCase();
+                                        },
+                                        indexOf: function (string) {
+                                            return String.prototype.indexOf.apply(city.CityName, arguments);
+                                        },
+                                        replace: function (string) {
+                                            var value = '';
+                                            value += city.CityName;
+                                            if (typeof (city.level) != 'undefined') {
+                                                value += ' <span class="pull-right muted">';
+                                                value += city.level;
+                                                value += '</span>';
+                                            }
+                                            return String.prototype.replace.apply('<div style="padding: 10px; font-size: 1.5em;">' + value + '</div>', arguments);
+                                        }
+                                    };
+                                    items.push(group);
+                                });
+                                process(items);
+                            }
+                        })
+                    },
+                    property: 'CityName',
+                    items: 8,
+                    updater: function (item) {
+                        var city = JSON.parse(item);
+                        console.log(city.CityName);
+                        $applozic('#mck-city-json').val(item);
+                        return city.CityName + ', ' + city.CountryName;
+                    },
+                    matcher: function (city) {
+                        var matcher1 = new RegExp(this.query, "i");
+                        return matcher1.test(city.CityName);
+                    },
+                    highlighter: function (city) {
+                        return city.CityName + ', ' + city.CountryName;
+                    }
+                });
+            };
+            
             _this.initAutoSuggest = function (params) {
                 var contactsArray = params.contactsArray;
                 var $searchId = params.$searchId;
@@ -7590,6 +7657,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_msg_sbmt = $applozic("#mck-msg-sbmt");
             var $mck_text_box = $applozic("#mck-text-box");
             var $mck_file_input = $applozic("#mck-file-input");
+            var $mck_city_search_input = $applozic("#mck-city-search-input");
             var $mck_overlay_box = $applozic(".mck-overlay-box");
             var $mck_file_upload = $applozic(".mck-file-upload");
             var $mck_group_icon_upload = $applozic("#mck-group-icon-upload");
@@ -7652,6 +7720,17 @@ var MCK_CLIENT_GROUP_MAP = [];
                         });
                     }
                 });
+                
+                $mck_city_search_input.keypress(function (e) {
+                    if (e.which === 13) {
+                        var message=$applozic('#mck-city-json').val();
+                        if(message){
+                            var messagePxy={metadata:{city:message}};
+
+                        }
+                    }
+                    mckMessageLayout.searchCity();
+                })
             };
 
             _this.audioRecoder = function (params) {
