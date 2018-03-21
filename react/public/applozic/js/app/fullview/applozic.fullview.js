@@ -3862,10 +3862,12 @@ var KM_CLIENT_GROUP_MAP = [];
 				return imgsrctag;
 			};
 			_this.getContactImageByAlphabet = function(name) {
-				if (typeof name === 'undefined' || name === "") {
+				if (typeof name !=="string" ||typeof name === 'undefined' || name === "") {
 					return '<div class="km-alpha-contact-image km-alpha-user"><span class="km-icon-user"></span></div>';
 				}
+				
 				var first_alpha = name.charAt(0);
+				
 				var letters = /^[a-zA-Z0-9]+$/;
 
 				if (first_alpha.match(letters)) {
