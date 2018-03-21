@@ -35,6 +35,12 @@ class Dashboard extends Component {
       interval:0,
       chartUperLimit:0,
       monthly: [],
+      lastMonthStats: {
+        newUserCount: 0,
+        activeUserCount: 0,
+        channelCount: 0,
+        newMessageCount: 0
+      },
       chart: {
         labels: [],
         datasets: [
@@ -245,6 +251,16 @@ class Dashboard extends Component {
             if(response.status==200){
                 var data = response.data;
 
+                if (data.length >= 2) {
+                  var lastMonthStats = data[data.length - 2];
+                  that.setState({'lastMonthStats': lastMonthStats});
+                } else {
+                  let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
+                  for (var i = 0; i < lastMonthSubTitle.length; i++) {
+                    lastMonthSubTitle[i].classList.add('n-vis');
+                  }
+                }
+
                 if (data.length > 0) {
 
                   let lastDate = null;
@@ -364,8 +380,7 @@ class Dashboard extends Component {
               <div className="card-block pb-0">
                 <p className="card-main-title">Users this month</p>
                 <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
-{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                 <p className="card-sub-title">{this.state.lastMonthStats.newUserCount} Users last month</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -376,7 +391,7 @@ class Dashboard extends Component {
               <div className="card-block pb-0">
               <p className="card-main-title">Chat Users this month</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                <p className="card-sub-title">{this.state.lastMonthStats.activeUserCount} Chat Users last month</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -387,8 +402,7 @@ class Dashboard extends Component {
               <div className="card-block pb-0">
                 <p className="card-main-title">Conversations this month</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
-{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                 <p className="card-sub-title">{this.state.lastMonthStats.channelCount} Conversations last month</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -410,7 +424,7 @@ class Dashboard extends Component {
               <div className="card-block pb-0">
               <p className="card-main-title">Messages this month</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+                <p className="card-sub-title">{this.state.lastMonthStats.newMessageCount} Messages last month</p>
               </div>
             </div>
           </div>
