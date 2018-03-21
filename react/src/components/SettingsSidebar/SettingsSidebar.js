@@ -49,7 +49,8 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
                         </li>
-                        <li className="ss-nav-item integrations-link">
+                        {/* hiding billing section */}
+                        <li className="ss-nav-item integrations-link n-vis">
                             <NavLink to={'/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
                         </li>
                         <li className="ss-nav-title">
