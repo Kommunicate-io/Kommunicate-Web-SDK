@@ -163,11 +163,12 @@ class Integration extends Component {
                   </a>
                   <div id="android-code-div" className="code-div col-md-12 animated fadeIn" hidden={this.state.displayAndroidInstructions}>
                     <div className="docs-instructions">
-                      Clone the repo Kommunicate-Android-Chat-SDK-Customer-Support from github <br/><br/>
-                      <div className="code-snippet">git clone https://github.com/Kommunicate-io/Kommunicate-Android-Chat-SDK-Customer-Support.git</div><br/>
+                    Add the following in your app build.gradle dependency: <br/><br/>
+                      <div className="code-snippet">compile 'io.kommunicate:kommunicate:1.2.4'</div>
+                      {/* <br/>
                       Then from Android Studio select <span>File -> New ->  Import Module -> Select 'kommunicate'</span> from cloned path. <br/><br/>
                       Check in your app level gradle file, if the dependency for kommunicate doesn’t exist then add it as below <br/><br/>
-                      <div className="code-snippet">compile project(':kommunicate')</div>
+                      <div className="code-snippet">compile project(':kommunicate')</div> */}
                     </div>
                     
                     <div style={{ marginTop: "25px" }}>
