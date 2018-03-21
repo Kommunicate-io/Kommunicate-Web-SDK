@@ -378,9 +378,9 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-users active" data-metric="0" onClick={this.showChart}>
               <div className="card-block pb-0">
-                <p className="card-main-title">Users this month</p>
+                <p className="card-main-title">Users</p>
                 <h4 className="card-stats-value" data-metric="0">{this.state.newUsers}</h4>
-                 <p className="card-sub-title">{this.state.lastMonthStats.newUserCount} Users last month</p>
+                 <p className="card-sub-title">Last month: {this.state.lastMonthStats.newUserCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -389,9 +389,9 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-mau" data-metric="1" onClick={this.showChart}>
               <div className="card-block pb-0">
-              <p className="card-main-title">Chat Users this month</p>
+              <p className="card-main-title">Chat Users</p>
                 <h4 className="card-stats-value">{this.state.active}</h4>
-                <p className="card-sub-title">{this.state.lastMonthStats.activeUserCount} Chat Users last month</p>
+                <p className="card-sub-title">Last month: {this.state.lastMonthStats.activeUserCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -400,9 +400,9 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-conversations" data-metric="2" onClick={this.showChart}>
               <div className="card-block pb-0">
-                <p className="card-main-title">Conversations this month</p>
+                <p className="card-main-title">Conversations</p>
                 <h4 className="card-stats-value">{this.state.conversations}</h4>
-                 <p className="card-sub-title">{this.state.lastMonthStats.channelCount} Conversations last month</p>
+                 <p className="card-sub-title">Last month: {this.state.lastMonthStats.channelCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
@@ -422,9 +422,9 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats-messages" data-metric="3" onClick={this.showChart}>
               <div className="card-block pb-0">
-              <p className="card-main-title">Messages this month</p>
+              <p className="card-main-title">Messages</p>
                 <h4 className="card-stats-value">{this.state.messages}</h4>
-                <p className="card-sub-title">{this.state.lastMonthStats.newMessageCount} Messages last month</p>
+                <p className="card-sub-title">Last month: {this.state.lastMonthStats.newMessageCount}</p>
               </div>
             </div>
           </div>
