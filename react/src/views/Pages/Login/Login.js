@@ -335,6 +335,7 @@ websiteUrl = (e)=> {
                     <div hidden ={this.state.hideUserNameInputbox}>
                       <InputField
                       inputType={'email'}
+                                  id={'email-input-field'}
                                   title={'Email Id'}
                                   name={'email'}
                                   onChange={this.setEmail}
@@ -353,7 +354,7 @@ websiteUrl = (e)=> {
                           {
 
                             Object.keys(this.state.appIdList).map(function(key) {
-                              return <MenuItem onClick={()=>{
+                              return <MenuItem key = {key} onClick={()=>{
                                 this.state.applicationId=key;
                                 this.state.applicationName = this.state.appIdList[key];
                                 this.setState({"dropDownBoxTitle":key});
