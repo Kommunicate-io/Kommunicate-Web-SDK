@@ -47,7 +47,7 @@ function ApplozicSidebox() {
     }, {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
-    		"name":"cookie","url" : MCK_STATICPATH+"/lib/js/js.cookie.js"
+    		"name":"cookie","url" : MCK_STATICPATH+"/js/app/km-utils.js"
     }/*, {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
@@ -255,12 +255,14 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
             	if(options.isAnonymousChat && !options.userId){
-               		 if (Cookies.get("kommunicate-id")) {
-               			options.userId = Cookies.get("kommunicate-id");
-               		}
-               		else {
+               		//  if (Cookies.get("kommunicate-id")) {
+                        if (KommunicateUtils.getCookie('kommunicate-id')) {
+                            options.userId = KommunicateUtils.getCookie('kommunicate-id');
+               			// options.userId = Cookies.get("kommunicate-id");
+               		    }else {
                			options.userId = getRandomId();
-               			Cookies.set("kommunicate-id", options.userId);
+                        //    Cookies.set("kommunicate-id", options.userId);
+                        KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
                		}
 
             	}else{
@@ -282,11 +284,20 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function getRandomId() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < 32; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        return text;
+        function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
+
 }
