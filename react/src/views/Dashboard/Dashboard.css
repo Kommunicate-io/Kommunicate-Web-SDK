@@ -41,7 +41,7 @@
     color: #5c5aa7;
 }
 .card-sub-title {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -61,7 +61,7 @@
 .card-stats.active {
     border-top: 3px solid #5c5aa7;
 }
-.card-stats.active .card-main-title, .card-stats.active .card-sub-title  {
+.card-stats.active .card-main-title,   .card-stats.active .card-stats-value {
     font-weight: 500;
 }
 .card-stats.card-stats--users {
@@ -78,6 +78,21 @@
     right: 0;
     background-color: #cfcaca;
 }
+.card-stats .card-block {
+    padding: 0.7rem;
+}
+
+.card-stats-month {
+    margin: 0;
+    padding: 1px 8px;
+    border-radius: 3px;
+    background-color: #CCE7F8;
+    color: #3a3a3a;
+    display: inline-block;
+    margin-bottom: 4px;
+    min-width: 1px;
+}
+
 
 
 @media (max-width:991px) {
