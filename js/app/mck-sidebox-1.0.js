@@ -1291,6 +1291,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
+                userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
                 USER_DEVICE_KEY = '';
                 var isValidated = _this.validateAppSession(userPxy);
