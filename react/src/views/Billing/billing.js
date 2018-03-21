@@ -32,13 +32,7 @@ class Billing extends Component {
         this.showPlanDetails = this.showPlanDetails.bind(this);
         this.showHideFeatures = this.showHideFeatures.bind(this);
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
-        // this.openModal = this.openModal.bind(this);
-        // this.closeModal = this.closeModal.bind(this);
-            'subscription': CommonUtils.getUserSession().subscription
         };
-
-        this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
-    }
 
     componentDidMount() {
       let that = this;
