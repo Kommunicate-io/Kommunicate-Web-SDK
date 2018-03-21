@@ -326,12 +326,16 @@ exports.editInAppMsg=(body)=>{
  * return 1st online user. return undefined if no agents are online. 
  */
 exports.checkOnlineAgents=(customer)=>{
-  return userService.getAvailableAgents(customer).then(userList=>{
+  return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
     let userIdList = userList.map(user=>user.userName);
     let defaultAgent = userList.filter(user=> user.type==3);
+    let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
     logger.info("fetching detail of all agents from applozic");
-    return applozicClient.getUserDetails(userIdList,customer.applicationId, defaultAgent[0].apzToken);
+    if(avalableUserList.length>0){
+      return applozicClient.getUserDetails(avalableUserList,customer.applicationId, defaultAgent[0].apzToken);
+    }else return Promise.resolve([]);
   }).then(agentsDetail=>{
+    agentsDetail=agentsDetail||[];
     logger.info("got agent detail from applozic. checking if any agent is online..");
     return agentsDetail.find(agent=>agent.connected);
   })
