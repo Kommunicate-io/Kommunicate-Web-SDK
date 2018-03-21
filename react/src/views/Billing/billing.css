@@ -83,7 +83,7 @@
     font-stretch: normal;
     line-height: normal;
     letter-spacing: 1.1px;
-    text-align: left;
+    /* text-align: left; */
     color: #868383;
     margin-bottom: 8px;
     margin-top: 6px;
@@ -120,13 +120,14 @@
 
 .active-plan-more-details {
     margin-top: 20px;
+    padding: 0;
 }
 
 .active-plan-feature-list {
     -moz-column-width: 20em;
     -webkit-column-width: 20em;
     column-width: 20em;
-    padding: 0 25px 0 30px;
+    padding: 0 24px 0 30px;
     margin: 25px auto;
 }
 
