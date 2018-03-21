@@ -247,9 +247,23 @@ class Dashboard extends Component {
 
                 if (data.length > 0) {
 
+                  let lastDate = null;
+
                   for(var i = 0; i < data.length; i++) {
                     var obj = data[i];
                     var datetime = new Date(obj.month);
+
+                    if (lastDate == null) {
+                      lastDate = datetime;
+                    }
+                    for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
+                      labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
+                      userDataMonthly.push(0);
+                      mauDataMonthly.push(0);
+                      channelDataMonthly.push(0);
+                      messageDataMonthly.push(0);
+                    }
+
                     labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
                     userDataMonthly.push(obj.newUserCount);
                     mauDataMonthly.push(obj.activeUserCount);
@@ -292,9 +306,22 @@ class Dashboard extends Component {
             var userData = [];
             var channelData = [];
             if (data.length > 0) {
+              let lastDate = null;
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 var datetime = new Date(obj.onDateTime);
+
+                if (lastDate == null) {
+                  lastDate = datetime;
+                }
+                for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
+                  labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
+                  messageData.push(0);
+                  userData.push(0);
+                  channelData.push(0);
+                }
+
+                lastDate = datetime;
                 labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
