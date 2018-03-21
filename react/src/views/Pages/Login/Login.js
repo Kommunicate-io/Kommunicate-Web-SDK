@@ -146,6 +146,9 @@ submitForm = ()=>{
 
           response.data.result.password = password;
           response.data.result.displayName=response.data.result.name;
+          console.log(response.data);
+          console.log("set to user session:");
+          console.log(response.data.result);
           CommonUtils.setUserSession(response.data.result);
         }
 

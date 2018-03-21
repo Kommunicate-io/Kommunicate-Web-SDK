@@ -27,7 +27,8 @@ class Billing extends Component {
             hideFeatureList: true,
             showFeatures:'Show Features',
             subscription: CommonUtils.getUserSession().subscription,
-            billingCustomerId: CommonUtils.getUserSession().billingCustomerId
+            billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
+            currentPlan: SUBSCRIPTION_PLANS[0]
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -35,6 +36,10 @@ class Billing extends Component {
 
     componentDidMount() {
       let that = this;
+      console.log("#subscription: ");
+      console.log(CommonUtils.getUserSession().subscription);
+
+      this.setState({currentPlan: this.subscriptionPlanStatus()});
 
       document.getElementById("portal").addEventListener("click", function(event){
         if(event.target.classList.contains('n-vis')) {
@@ -174,6 +179,7 @@ class Billing extends Component {
     }
 
     subscriptionPlanStatus() {
+        //Todo: during trial, all are in Growth Plan, after trial, set it as Free
         return SUBSCRIPTION_PLANS[this.state.subscription || 0];
     }
 
@@ -230,14 +236,12 @@ class Billing extends Component {
                                 </div>
 
                                 {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
-                                <PlanDetails PlanIcon={GrowthPlanIcon} PlanName={'Enterprise'} PlanMAU={5000} PlanAmount={'199/month'} />
+                                <PlanDetails PlanIcon={this.state.currentPlan.icon} PlanName={this.state.currentPlan.name} PlanMAU={this.state.currentPlan.mau} PlanAmount={this.state.currentPlan.amount} />
 
                                 <div className="download-link-image-container">
                                     <div className="download-link-container">
                                       Your plan details
                                     
-                                      {this.subscriptionPlanStatus()} #
-
                                       <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Launch</a>
                                       <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Growth</a>
 
@@ -435,10 +439,30 @@ class Billing extends Component {
 }
 
 const SUBSCRIPTION_PLANS = {
-    0: "Free",
-    1: "Launch",
-    2: "Growth",
-    3: "Enterprise",
+    0: {
+        'icon': StartupPlanIcon,
+        'name': 'Free',
+        'mau': '250',
+        'amount' : '0/month'
+    },
+    1: {
+        'icon': LaunchPlanIcon,
+        'name': 'Launch',
+        'mau': '1000',
+        'amount' : '39/month'
+    },
+    2: {
+        'icon': GrowthPlanIcon,
+        'name': 'Growth',
+        'mau': '5000',
+        'amount' : '149/month'
+    },
+    3: {
+        'icon': EnterprisePlanIcon,
+        'name': 'Enterprise',
+        'mau': 'Custom',
+        'amount' : 'Custom'
+    }
   };
 
 export default Billing;
