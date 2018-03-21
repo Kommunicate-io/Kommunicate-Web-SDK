@@ -26,7 +26,8 @@ class Billing extends Component {
             pricingYearlyHidden: false,
             hideFeatureList: true,
             showFeatures:'Show Features',
-            'subscription': CommonUtils.getUserSession().subscription
+            subscription: CommonUtils.getUserSession().subscription,
+            billingCustomerId: CommonUtils.getUserSession().billingCustomerId
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -140,7 +141,7 @@ class Billing extends Component {
 
     }
 
-    updateSubscription(subscription) {
+    updateSubscription(subscription, billingCustomerId) {
         let that = this;
         let userSession = CommonUtils.getUserSession();
 
@@ -148,14 +149,22 @@ class Billing extends Component {
             applicationId: userSession.application.applicationId,
             subscription: subscription
         };
+
+        if (typeof billingCustomerId !== "undefined") {
+            customerInfo.billingCustomerId = billingCustomerId;
+            userSession.billingCustomerId = billingCustomerId;
+        }
             
-        that.updateCustomerSubscription(customerInfo, CommonUtils.getUserSession().userName)
+        that.updateCustomerSubscription(customerInfo, userSession.userName)
             .then(response => {
                 console.log(response)
                 if (response.data.code === 'SUCCESS') {
                     userSession.subscription=subscription;
                     CommonUtils.setUserSession(userSession);
                     that.state.subscription = subscription;
+                    if (typeof billingCustomerId !== "undefined") {
+                        that.state.billingCustomerId = billingCustomerId;
+                    }
                     Notification.info(response.data.message);
                 }
             }).catch(err => {

@@ -41,3 +41,5 @@ alter table kommunicate_test.auto_suggests add column `status`  enum('draft', 'p
 alter table kommunicate_test.auto_suggests add column `type`  enum('faq', 'shortcut') collate utf8mb4_unicode_ci default null;
 
 alter table customers add column subscription int default 0;
+
+alter table customers add column billing_cus_id varchar(50);
