@@ -219,9 +219,9 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
 
 exports.disableInAppMessages=(createdBy, customerId, category)=>{
     let criteria={customerId: customerId, status: 1, category: category};
-    if(constant.CATEGORY.AWAY_MESSAGE == category){
-      criteria.createdBy = createdBy
-    }
+    // if(constant.CATEGORY.AWAY_MESSAGE == category){
+    //   //criteria.createdBy = createdBy
+    // }
     return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
       return { code: err.parent.code, message: err.parent.sqlMessage }
     });
@@ -230,9 +230,9 @@ exports.disableInAppMessages=(createdBy, customerId, category)=>{
 
 exports.enableInAppMessages=(createdBy, customerId, category)=>{
     let criteria={customerId: customerId, status: 2, category: category};
-    if(constant.CATEGORY.AWAY_MESSAGE == category){
-      criteria.createdBy = createdBy
-    }
+    // if(constant.CATEGORY.AWAY_MESSAGE == category){
+    //   //criteria.createdBy = createdBy
+    // }
     return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
       return { code: err.parent.code, message: err.parent.sqlMessage }
     });
