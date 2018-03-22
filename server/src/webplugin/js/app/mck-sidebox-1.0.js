@@ -1764,19 +1764,19 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
             _this.createNewConversation = function (params, callback) {
-                var group = [];
-                var groupName;
-                group.push(params.agentId);
-                group.push(kommunicate._globals.userId);
-                if(params.botIds){
-                    console.log(params.botIds);
-                    for (var i = 0; i < params.botIds.length; i++) {
-                        group.push(params.botIds[i]);
-                    }
-                }
-                groupName= group.sort().join().replace(/,/g, "_").substring(0, 250);
+                // var group = [];
+                // var groupName;
+                // group.push(params.agentId);
+                // group.push(kommunicate._globals.userId);
+                // if(params.botIds){
+                //     console.log(params.botIds);
+                //     for (var i = 0; i < params.botIds.length; i++) {
+                //         group.push(params.botIds[i]);
+                //     }
+                // }
+                // groupName= group.sort().join().replace(/,/g, "_").substring(0, 250);
                 $applozic.fn.applozic("createGroup", {
-                    groupName: groupName,
+                    groupName: params.groupName,
                     type: 10,
                     admin: params.agentId,
                     users: [
