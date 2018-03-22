@@ -1,0 +1,57 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.integration-description-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-align: left;
+    color: #6c6a6a;
+}
+.integration-description-logo{
+    margin-right: 25px;
+    margin-left: 4px;
+}
+.title-divider {
+    height: 1px;
+    opacity: 0.36;
+    background-color: #d8d8d8;
+    border: 1px solid #a5b0bd;
+}
+.integration-instructions {
+    font-size: 12px;
+    color: #8f8b8b;
+    letter-spacing: 1px;
+}
+.integration-instruction-set {
+    margin-top: 20px;
+    margin-left: 24px;
+}
+.token-title{
+    font-size: 12px;
+    color: #7d7f81;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.integration-save-btn{
+    margin-left: 395px;
+}
+.integration-save-delete-wrapper{
+    margin-left: 2px;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 12px;
+}
+.token-input-wrapper{
+    margin-left: 24px;
+}
+.integration-token-input {
+    width: 238px;
+    height: 35px;
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+    margin-left: 18px;
+}
