@@ -253,9 +253,7 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(customerId){
     criteria.customerId=customerId;
   }
-  if (constant.EVENT_ID.WELCOME_MESSAGE != eventIds[0]) {
-    criteria.createdBy = { [Sequelize.Op.or]: [null, createdBy] }
-  }
+  
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }

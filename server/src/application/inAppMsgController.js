@@ -213,9 +213,6 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var eventIds = req.query.eventIds;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
     return registrationService.getCustomerByApplicationId(appId).then(customer => {
-        if (constant.EVENT_ID.WELCOME_MESSAGE == eventIds[0]) {
-            userName = customer.userName;
-        }
         return userService.getByUserNameAndAppId(userName, appId).then(user => {
             if (!user) {
                 return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
