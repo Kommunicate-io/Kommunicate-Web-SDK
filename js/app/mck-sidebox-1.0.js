@@ -2391,6 +2391,14 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                         messagePxy.conversationPxy = conversationPxy;
                     }
+                    var city = $applozic('#mck-city-json').val();
+                    if(city && city!=""){
+                        messagePxy.metadata={bookCity:city};
+                        $applozic('#mck-city-json').val('');
+                        $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box');
+                        $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
+
+                    }
                     if ($mck_msg_inner.data("isgroup") === true) {
                         messagePxy.groupId = $mck_msg_to.val();
                     } else {
@@ -4465,6 +4473,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
+                // if(msg.metadata.askHotelCity){
+                //     $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
+                //     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                // }
                 if (msg.contentType === 23) {
 
                     if (msg.metadata.msg_type === "BUTTON") {
@@ -5114,6 +5126,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         var city = JSON.parse(item);
                         console.log(city.CityName);
                         $applozic('#mck-city-json').val(item);
+                        $mck_text_box.text(city.CityName+', '+city.CountryName);
                         return city.CityName + ', ' + city.CountryName;
                     },
                     matcher: function (city) {
@@ -7676,14 +7689,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
                 
-                $mck_city_search_input.keypress(function (e) {
-                    if (e.which === 13) {
-                        var message=$applozic('#mck-city-json').val();
-                        if(message){
-                            var messagePxy={metadata:{city:message}};
-
-                        }
-                    }
+                $mck_city_search_input.on('input', function (e) {
+                    e.preventDefault();
                     mckMessageLayout.searchCity();
                 })
             };
