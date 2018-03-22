@@ -197,7 +197,7 @@ Kommunicate = {
     updateUserIdentity: function (newUserId) {
         window.$applozic.fn.applozic('updateUserIdentity', {
             newUserId: newUserId, callback: function (response) {
-                window.Cookies.set('kommunicate-id', newUserId)
+                KommunicateUtils.setCookie('kommunicate-id', newUserId)
                 if (response == 'success') {
                     window.$applozic.fn.applozic('reInitialize', { userId: newUserId });
                 }
