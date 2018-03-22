@@ -11,7 +11,7 @@ const CommonUtils = {
     },
     updateAvailabilityStatus: function(available) {
         let userSession = CommonUtils.getUserSession();
-        userSession.availability_status = available;
+        userSession.availabilityStatus = available;
         CommonUtils.setUserSession(userSession);
     },
     getUrlParameter: function(search, name) {
