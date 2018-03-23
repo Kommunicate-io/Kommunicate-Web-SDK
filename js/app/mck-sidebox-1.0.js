@@ -2395,7 +2395,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if(city && city!=""){
                         messagePxy.metadata={bookCity:city};
                         $applozic('#mck-city-json').val('');
-                        $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box');
+                        $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box').val('');
                         $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
 
                     }
@@ -4473,10 +4473,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
-                // if(msg.metadata.askHotelCity){
-                //     $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
-                //     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
-                // }
+                if(msg.metadata.askHotelCity){
+                    $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
+                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                }
                 if (msg.contentType === 23) {
 
                     if (msg.metadata.msg_type === "BUTTON") {
