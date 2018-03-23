@@ -150,3 +150,4 @@ issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDel
 zendeskRouter.post('/:appId/ticket/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
 zendeskRouter.put('/:appId/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
 zendeskRouter.post('/:appId/insert/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
+zendeskRouter.get('/:appId/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.getZendeskIntegrationSetting)
