@@ -120,7 +120,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         'messageType': 5,
         'type': 0
     };
-    $applozic.fn.applozic = function (appOptions, params) {
+    $applozic.fn.applozic = function (appOptions, params,callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
