@@ -42,6 +42,10 @@ class Billing extends Component {
 
     componentDidMount() {
         this.processSubscriptionPlanStatus();
+        console.log("#chargebee customer id: ");
+        let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
+
+        this.updateSubscription(this.state.subscription, customerId);
 
         document.getElementById("portal").addEventListener("click", function (event) {
             if (event.target.classList.contains('n-vis')) {
@@ -113,47 +117,52 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-        var cbInstance = window.Chargebee.getInstance();
-        console.log(cbInstance);
-
-        cbInstance.setCheckoutCallbacks(function (cart) {
-            // you can define a custom callbacks based on cart object
-            return {
-                loaded: function () {
-                    console.log("checkout opened");
-                },
-                close: function () {
-                    console.log("checkout closed");
-                },
-                success: function (hostedPageId) {
-                    console.log("success, hostedPageId: " + hostedPageId);
-                },
-                step: function (value) {
-                    // value -> which step in checkout
-                    console.log(value);
-                    if (value == "thankyou_screen") {
-                        let plans = document.getElementsByClassName('checkout active');
-                        that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
+      //  try {
+            var cbInstance = window.Chargebee.getInstance();
+            console.log(cbInstance);
+    
+            cbInstance.setCheckoutCallbacks(function (cart) {
+                // you can define a custom callbacks based on cart object
+                return {
+                    loaded: function () {
+                        console.log("checkout opened");
+                    },
+                    close: function () {
+                        console.log("checkout closed");
+                    },
+                    success: function (hostedPageId) {
+                        console.log("success, hostedPageId: " + hostedPageId);
+                    },
+                    step: function (value) {
+                        // value -> which step in checkout
+                        console.log(value);
+                        if (value == "thankyou_screen") {
+                            let plans = document.getElementsByClassName('checkout active');
+                            that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
+                        }
+                    },
+                    visit: function (visit) {
+                        // Optional
+                        // called whenever the customer navigates different sections in portal
+                    },
+                    paymentSourceAdd: function () {
+                        // Optional
+                        // called whenever a new payment source is added in portal
+                    },
+                    paymentSourceUpdate: function () {
+                        // Optional
+                        // called whenever a payment source is updated in portal
+                    },
+                    paymentSourceRemove: function () {
+                        // Optional
+                        // called whenever a payment source is removed in portal.
                     }
-                },
-                visit: function (visit) {
-                    // Optional
-                    // called whenever the customer navigates different sections in portal
-                },
-                paymentSourceAdd: function () {
-                    // Optional
-                    // called whenever a new payment source is added in portal
-                },
-                paymentSourceUpdate: function () {
-                    // Optional
-                    // called whenever a payment source is updated in portal
-                },
-                paymentSourceRemove: function () {
-                    // Optional
-                    // called whenever a payment source is removed in portal.
                 }
-            }
-        });
+            });
+       /* } catch(error) {
+            console.log("chargebee error");
+            console.log(error);
+        }    */   
 
     }
 
@@ -171,7 +180,7 @@ class Billing extends Component {
             userSession.billingCustomerId = billingCustomerId;
         }
 
-        that.updateCustomerSubscription(customerInfo, userSession.userName)
+        that.updateCustomerSubscription(customerInfo)
             .then(response => {
                 console.log(response)
                 if (response.data.code === 'SUCCESS') {
@@ -208,9 +217,10 @@ class Billing extends Component {
 
     }
 
-    updateCustomerSubscription(customerInfo, customerName) {
+    updateCustomerSubscription(customerInfo) {
+        let userSession = CommonUtils.getUserSession();
 
-        const patchCustomerUrl = getConfig().kommunicateApi.signup + '/' + customerName;
+        const patchCustomerUrl = getConfig().kommunicateApi.signup + '/' + userSession.userName;
 
         return Promise.resolve(axios({
             method: 'patch',
