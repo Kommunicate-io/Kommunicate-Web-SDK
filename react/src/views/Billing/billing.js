@@ -249,8 +249,11 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        <button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>
-
+                                    {this.state.trialLeft > 0 && this.trialLeft <= 30 ?  
+                                        (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
+                                        : 
+                                        null
+                                    }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
                                     </div>
                                 </div>
