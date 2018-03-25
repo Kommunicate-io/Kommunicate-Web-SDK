@@ -261,16 +261,8 @@ class Billing extends Component {
                                 {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
                                 <PlanDetails PlanIcon={this.state.currentPlan.icon} PlanName={this.state.currentPlan.name} PlanMAU={this.state.currentPlan.mau} PlanAmount={this.state.currentPlan.amount} />
 
-                                <div className="download-link-image-container">
-                                    <div className="download-link-container">
-                                      Your plan details
-                                    
-                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Launch</a>
-                                      <a className="checkout chargebee n-vis" href="javascript:void(0)" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Growth</a>
-
-                                      <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
-
-                                  </div>
+                                <div className="manage-accountr">
+                                    <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
                                 </div>
                             </div>
 
