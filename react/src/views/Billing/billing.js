@@ -10,7 +10,8 @@ import StartupPlanIcon from './img/Startup-plan-icon.svg';
 import LaunchPlanIcon from './img/Launch-plan-icon.svg';
 import GrowthPlanIcon from './img/Growth-plan-icon.svg';
 import EnterprisePlanIcon from './img/Enterprise-plan-icon.svg';
-import Modal from 'react-responsive-modal';
+import Modal from 'react-modal';
+//import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 
@@ -33,10 +34,13 @@ class Billing extends Component {
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
+
+        this.onOpenModal = this.onOpenModal.bind(this);
+        this.onCloseModal = this.onCloseModal.bind(this);
+        this.afterOpenModal = this.afterOpenModal.bind(this);
         };
 
     componentDidMount() {
-      let that = this;
       this.processSubscriptionPlanStatus();
 
       document.getElementById("portal").addEventListener("click", function(event){
@@ -46,28 +50,37 @@ class Billing extends Component {
         }
       });
 
-      var checkouts = document.getElementsByClassName("checkout");
-      console.log("#found checkouts: " + checkouts.length);
-      for (var i = 0; i < checkouts.length; i++) {
-        checkouts[i].addEventListener('click', function(event) {
-            that.checkoutSubscription(event, that);
-        }, false);
-      }
-
-      let subscribeElems = document.getElementsByClassName("chargebee");
-      
-      for (var i=0, max=subscribeElems.length; i < max; i++) {
-        subscribeElems[i].click();
-      }
+      this.chargebeeInit();
     }
 
     onOpenModal = () => {
         this.setState({ modalIsOpen: true });
       };
+
+      afterOpenModal = () => {
+        this.chargebeeInit();
+      }
     
       onCloseModal = () => {
         this.setState({ modalIsOpen: false });
       };
+
+      chargebeeInit() {
+        let that = this;
+
+        var checkouts = document.getElementsByClassName("checkout");
+        for (var i = 0; i < checkouts.length; i++) {
+          checkouts[i].addEventListener('click', function(event) {
+              that.checkoutSubscription(event, that);
+          }, false);
+        }
+
+        let subscribeElems = document.getElementsByClassName("chargebee");
+      
+        for (var i=0, max=subscribeElems.length; i < max; i++) {
+          subscribeElems[i].click();
+        }
+      }
 
     showHideFeatures(e) {
         e.preventDefault();
@@ -267,10 +280,11 @@ class Billing extends Component {
                             </div>
 
                             {/* Change Plan Modal */}
-                            <Modal open={modalIsOpen} onClose={this.onCloseModal}>
-
+                            <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.onCloseModal}
+                             style={customStyles} shouldCloseOnOverlayClick={true}>
                                 <div className="row text-center">
                                 <h1 className="change-plan-text">Change Plan</h1>
+                                <button onClick={this.onCloseModal}>close</button>
                                 <hr/>
 
                                 {/* <!-- Pricing Toggle --> */}
@@ -477,6 +491,17 @@ const SUBSCRIPTION_PLANS = {
         'name': 'Enterprise',
         'mau': 'Custom',
         'amount' : 'Custom'
+    }
+  };
+
+  const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)'
     }
   };
 
