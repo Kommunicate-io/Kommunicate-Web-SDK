@@ -2551,7 +2551,10 @@ tbody.collapse.show {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none; }
-
+.integrations-nav-link{
+  width: auto !important;
+  padding-top: 4px !important ;
+}
 .nav-link, .navbar .dropdown-toggle {
   display: block;
   padding: 0.5rem 1rem; }

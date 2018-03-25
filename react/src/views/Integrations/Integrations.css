@@ -9,13 +9,14 @@ body {
     letter-spacing: 1.3px;
     color: #354052;
 }
-.logo-wrapper {
+.content-wrapper {
+    width: 80%;
     text-align: center;
-    height: 163px;
     border-radius: 4px;
     background-color: #ffffff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
+    padding-bottom: 10px;
+    padding-top: 16px;
 }
 .logo-title {
     font-size: 14px;
@@ -30,7 +31,7 @@ body {
     color: #9b9696;
     padding-left: 25px;
     padding-right: 25px;
-    margin-bottom: 0;
+    margin-bottom: 11px;
 }
 .integration-settings {
     font-size: 12px;
@@ -38,7 +39,7 @@ body {
     color: #5c5aa7;
     padding-top: 11px;
     text-transform: uppercase;
-    
+    cursor: pointer;
 }
 .integration-brand-logo {
     padding-top: 16px;

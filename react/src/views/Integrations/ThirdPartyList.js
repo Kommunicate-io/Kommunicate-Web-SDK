@@ -5,17 +5,39 @@ import HelpdocsIntegrationDescription from './HelpdocsIntegrationDescription.js'
 
 export let thirdPartyList = [{
     name: "Helpdocs",
-    description: "Import your FAQs from Helpdocs",
     logo: HelpdocsLogo,
-    setting: "SETTINGS",
+    subTitle: "Import your FAQs from Helpdocs",  
+    instructions:[
+        "Log in to your HelpDocs dashboard",
+        "Go to Settings",
+        "Click Create a New API Key",
+        "Enter a name for your key. This is just so you can identify the key later.",
+        "Choose permissions for your key by ticking the appropriate checkboxes",
+        "Hit Save",
+    ]       
 }, {
     name: "Zendesk",
-    description: "Open Zendesk ticket for all conversations",
     logo: ZendeskLogo,
-    setting: "SETTINGS",
+    subTitle: "Open Zendesk ticket for all conversations", 
+    instructions:[
+        "Sign in to your Zendesk dashboard.",
+        "Enter your Access Email Id of Zendesk",
+        "Add Access token on clicking "+" sign and save. Copy and paste that Access token here",
+        "Open the agent interface by selecting Support from the product tray in the upper-right",
+        "Select Admin > Channels > API. Make sure Token Access is enabled in the settings.",
+        "In your browser, navigate to your Zendesk account. The url will look something like",
+        "https://your_subdomain.zendesk.com.",
+        "Copy your subdoamin and paste in to domain field",
+        "Hit save",
+    ]
+    
 }, {
     name: "Clearbit",
-    description: "Get company details of youranonymous visitors",
+    subTitle: "Get company details of youranonymous visitors",
     logo: ClearbitLogo,
-    setting: "SETTINGS",
+    instructions:[
+        "Login to your https://clearbit.com/ account",
+        "Go to Dashboard > API to get the API Key",
+    ]
+    
 }]

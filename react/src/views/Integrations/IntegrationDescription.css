@@ -22,6 +22,12 @@ body {
     font-size: 12px;
     color: #8f8b8b;
     letter-spacing: 1px;
+    margin: 0;
+}
+.instructions-title {
+    font-size: 12px;
+    color: #8f8b8b;
+    letter-spacing: 1px;
 }
 .integration-instruction-set {
     margin-top: 20px;
@@ -34,18 +40,22 @@ body {
     letter-spacing: 1px;
 }
 .integration-save-btn{
-    margin-left: 395px;
+    margin-left: 380px;
+    padding-right: 16px;
+    
 }
-.integration-save-delete-wrapper{
-    margin-left: 2px;
-    position: absolute;
+.integration-save-delete-wrapper {
+    margin-left: 4px;
+    margin-top: 120px;
+    /* position: absolute; */
     bottom: 0;
     display: flex;
     align-items: flex-end;
-    margin-bottom: 12px;
+    
 }
-.token-input-wrapper{
+.token-input-wrapper {
     margin-left: 24px;
+    margin-top: 51px;
 }
 .integration-token-input {
     width: 238px;
@@ -54,4 +64,57 @@ body {
     border-radius: 4px;
     border: solid 1px #9cb3de;
     margin-left: 18px;
+    margin-bottom: 120px;
+    padding: 8px;
+}
+.zendesk-token-input-wrapper {
+    margin-left: 24px;
+}
+.zendesk-integration-save-delete-wrapper {
+    margin-left: 4px;
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-end;
+}
+.zendesk-integration-save-btn {
+    margin-left: 418px;
+    padding-right: 16px;
+}
+.zendesk-email-input {
+    width: 238px;
+    height: 35px;
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+    margin-left: 68px;
+}
+.zendesk-access-token-input{
+    width: 238px;
+    height: 35px;
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+    margin-left: 35px;
+}
+.zendesk-subdoamin-input{
+    width: 238px;
+    height: 35px;
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+    margin-left: 2px;
+}
+.zendesk-domain {
+    font-size: 12px;
+    color: #8f8b8b ;
+    letter-spacing: 1px ;
+    font-weight: 400;
+}
+.zendesk-domain-https {
+    margin-left: 35px;
+    font-size: 12px;
+    color: #8f8b8b ;
+    letter-spacing: 1px ;
+    font-weight: 400;
+
 }

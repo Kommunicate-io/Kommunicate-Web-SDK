@@ -6,6 +6,7 @@ import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
+import {THIRDPARTY_INTEGRATION_TYPE} from '../utils/Constant';
 
 /**
  * Creates Customer /Bot/ Agent   
@@ -728,6 +729,22 @@ const getCustomerByApplicationId = () => {
 
 }
 
+const submitIntegrationKeys = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/insert/config/" +
+    THIRDPARTY_INTEGRATION_TYPE.ZENDESK;
+  return Promise.resolve(axios({
+    method: 'POST',
+    url: url,
+    data: data
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => { console.log("Error while third party integration", err) })
+
+}
+
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -769,5 +786,6 @@ export {
   enableNotifyEveryBody,
   enableAutomaticAssignment,
   getSuggestionsByCriteria,
-  getCustomerByApplicationId
+  getCustomerByApplicationId,
+  submitIntegrationKeys
 }
