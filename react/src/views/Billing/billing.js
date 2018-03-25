@@ -32,27 +32,12 @@ class Billing extends Component {
             trialLeft: 0
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
-        this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
+        //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
         };
 
     componentDidMount() {
       let that = this;
-      console.log("#subscription: ");
-      console.log(new Date(CommonUtils.getUserSession().application.createdAtTime));
-      console.log(CommonUtils.getUserSession().subscription);
-
-      var now = new Date();
-      var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
-      var timeDiff = now.getTime() - trialStarted.getTime();
-      var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      if (diffDays < 31) {
-        this.setState({trialLeft: (31 - diffDays)});
-      } else {
-        //Todo: show trial ended
-      }
-
-
-      this.setState({currentPlan: this.subscriptionPlanStatus()});
+      this.processSubscriptionPlanStatus();
 
       document.getElementById("portal").addEventListener("click", function(event){
         if(event.target.classList.contains('n-vis')) {
@@ -191,9 +176,23 @@ class Billing extends Component {
             });     
     }
 
-    subscriptionPlanStatus() {
-        //Todo: during trial, all are in Growth Plan, after trial, set it as Free
-        return SUBSCRIPTION_PLANS[this.state.subscription || 0];
+    processSubscriptionPlanStatus() {
+        if (this.state.subscription > 0) {
+            this.setState({ currentPlan: SUBSCRIPTION_PLANS[this.state.subscription] });
+        } else {
+            var now = new Date();
+            var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
+            var timeDiff = now.getTime() - trialStarted.getTime();
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if (diffDays < 31) {
+                this.setState({ trialLeft: (31 - diffDays) });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS[2] });
+            } else {
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS[0] });
+            }
+        }
+
     }
 
     updateCustomerSubscription(customerInfo, customerName) {
@@ -229,7 +228,8 @@ class Billing extends Component {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-block">
-                                { this.state.trialLeft > 0 && this.trialLeft <= 30 && this.currentPlan == 0 ?  
+                            {this.state.subscription == 0 ?
+                                ( this.state.trialLeft > 0 && this.trialLeft <= 30 ?  
                                     (<div className="info-bar-container">
                                         <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Startup Plan (FREE) at the end of the trial period.</p>
                                     </div>
@@ -239,8 +239,11 @@ class Billing extends Component {
                                         <p className="info-bar-text"><strong>Trial period over.</strong> You have been subscribed to the Startup Plan.</p>
                                         </div>
                                     ) 
-                                }
-
+                                )
+                                :
+                                null
+                            }
+                                
                                 <div className="current-plan-container flexi">
                                     <div className="col-md-6">
                                         <p className="current-plan-details-text">Current plan details</p>
