@@ -42,7 +42,6 @@ class Billing extends Component {
 
     componentDidMount() {
         this.processSubscriptionPlanStatus();
-        console.log("#chargebee customer id: ");
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
         this.updateSubscription(this.state.subscription, customerId);
