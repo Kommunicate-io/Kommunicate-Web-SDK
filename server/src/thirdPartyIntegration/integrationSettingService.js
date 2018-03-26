@@ -14,8 +14,12 @@ const updateOrCreate = (customerId, type, setting) => {
     });
 }
 
-const getZendeskIntegrationSetting = (customerId, type) => {
-    return Promise.resolve(ThirdPartyIntegrationSettings.find({ where: { customerId: customerId, type: type } })).then(setting => {
+const getIntegrationSetting = (customerId, type) => {
+    let criteria={customerId:customerId};
+    if(type){
+        criteria.type=type;
+    }
+    return Promise.resolve(ThirdPartyIntegrationSettings.findAll({ where: criteria })).then(setting => {
         return setting;
     });
 }
@@ -28,6 +32,6 @@ const deleteIntegrationSetting = (customerId, type) => {
 
 module.exports = {
     updateOrCreate: updateOrCreate,
-    getZendeskIntegrationSetting: getZendeskIntegrationSetting,
+    getIntegrationSetting: getIntegrationSetting,
     deleteIntegrationSetting: deleteIntegrationSetting
 }
