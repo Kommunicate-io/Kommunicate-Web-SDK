@@ -30,7 +30,7 @@ class Billing extends Component {
             hideFeatureList: true,
             showFeatures: 'Show Features',
             radioButtonChecked: true,
-            showSubscribedSuccess: false,
+            hideSubscribedSuccess: true,
             subscription: CommonUtils.getUserSession().subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS[0],
@@ -129,7 +129,7 @@ class Billing extends Component {
 
         //    try {
         var cbInstance = window.Chargebee.getInstance();
-        console.log(cbInstance);
+        //console.log(cbInstance);
 
         cbInstance.setCheckoutCallbacks(function (cart) {
             // you can define a custom callbacks based on cart object
@@ -192,7 +192,6 @@ class Billing extends Component {
 
         that.updateCustomerSubscription(customerInfo)
             .then(response => {
-                console.log(response)
                 if (response.data.code === 'SUCCESS') {
                     userSession.subscription = subscription;
                     CommonUtils.setUserSession(userSession);
@@ -257,7 +256,7 @@ class Billing extends Component {
         //TODO: handle the functionality of Radio button checks
     }
     onCloseSubscribedSuccess() {
-        this.setState({ showSubscribedSuccess: true });
+        this.setState({ hideSubscribedSuccess: false });
     }
 
     render() {
@@ -280,8 +279,8 @@ class Billing extends Component {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-block">
-                                {this.state.subscription == 0 ?
-                                    (this.state.trialLeft > 0 && this.trialLeft <= 30 ?
+                                {this.state.subscription == '' || this.state.subscription == 0 ?
+                                    (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
                                             <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Startup Plan (FREE) at the end of the trial period.</p>
                                         </div>
@@ -297,7 +296,7 @@ class Billing extends Component {
                                 }
 
                                 {/* Subscribe successfully box */}
-                                <div className="subscribe-success-error-container text-center" hidden={this.state.showSubscribedSuccess}>
+                                <div className="subscribe-success-error-container text-center" hidden={this.state.hideSubscribedSuccess}>
                                     <div className="subscribe-success_img-container">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56">
                                             <g fill="#2DD35C">
@@ -323,19 +322,23 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        {this.state.trialLeft > 0 && this.trialLeft <= 30 ?
+                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                             (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
                                             :
                                             null
                                         }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
                                     </div>
-                                    <div className="radio-btn-container">
-                                        <form>
-                                            <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedYearly} />
-                                            <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedMonthly} />
-                                        </form>
-                                    </div>
+                                    {this.state.subscription > 0 ?
+                                        (
+                                        <div className="radio-btn-container">
+                                            <form>
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedMonthly} />
+                                            </form>
+                                        </div>
+                                        ) : null
+                                    }
                                 </div>
 
                                 {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
@@ -542,6 +545,7 @@ class Billing extends Component {
                                     </div>
                                 </div>
                             </Modal>
+
                         </div>
                     </div>
                 </div>
