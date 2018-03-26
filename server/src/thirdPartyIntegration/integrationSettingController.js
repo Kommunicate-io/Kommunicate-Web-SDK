@@ -24,14 +24,14 @@ exports.updateOrCreate = (req, res) => {
 
 }
 
-exports.getZendeskIntegrationSetting = (req, res) => {
+exports.getIntegrationSetting = (req, res) => {
     let appId = req.params.appId;
-    let type = req.params.type;
+    let type = req.query.type;
     return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
           return res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
-       return integrationSettingService.getZendeskIntegrationSetting(customer.id, type).then(response => {
+       return integrationSettingService.getIntegrationSetting(customer.id, type).then(response => {
             console.log('response', response);
           return res.status(200).json({ code: "SUCCESS", message: response })
         })

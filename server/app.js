@@ -75,6 +75,7 @@ app.use('/group',routes.group);
 app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
 app.use('/zendesk', routes.zendesk);
+app.use('/integration/settings', routes.thirdPartySetting);
 
 function startApp() {
     app.listen(port, function () {
