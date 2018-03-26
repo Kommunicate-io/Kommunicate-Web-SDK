@@ -57,8 +57,8 @@ module.exports = function(sequelize, DataTypes) {
       field: "agent_routing"
     },
     subscription:{
-      type: DataTypes.INTEGER,
-      field: "subscription" //0-FREE, 1-LAUNCH, 2-GROWTH, 3-ENTERPRISE
+      type: DataTypes.STRING(50),
+      field: "subscription" //STARTUP, LAUNCH, GROWTH, ENTERPRISE
     },
     billingCustomerId:{
       type: DataTypes.STRING(50),

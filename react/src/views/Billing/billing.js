@@ -29,11 +29,11 @@ class Billing extends Component {
             pricingYearlyHidden: false,
             hideFeatureList: true,
             showFeatures: 'Show Features',
-            radioButtonChecked: true,
+            yearlyChecked: false,
             hideSubscribedSuccess: true,
             subscription: CommonUtils.getUserSession().subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
-            currentPlan: SUBSCRIPTION_PLANS[0],
+            currentPlan: SUBSCRIPTION_PLANS['startup'],
             trialLeft: 0
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
@@ -44,6 +44,10 @@ class Billing extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
+
+        if (CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == 0) {
+            this.state.subscription = 'startup';
+        }
     };
 
     componentDidMount() {
@@ -150,7 +154,7 @@ class Billing extends Component {
                     console.log(value);
                     if (value == "thankyou_screen") {
                         let plans = document.getElementsByClassName('checkout active');
-                        that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
+                        that.updateSubscription(plans[0].getAttribute('data-subscription'));
                     }
                 },
                 visit: function (visit) {
@@ -210,8 +214,11 @@ class Billing extends Component {
     }
 
     processSubscriptionPlanStatus() {
-        if (this.state.subscription > 0) {
+        if (this.state.subscription != '' && this.state.subscription != 'startup') {
             this.setState({ currentPlan: SUBSCRIPTION_PLANS[this.state.subscription] });
+            if (this.state.subscription.indexOf('yearly') != -1) {
+                this.setState({yearlyChecked: true});
+            }
         } else {
             var now = new Date();
             var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
@@ -220,12 +227,11 @@ class Billing extends Component {
 
             if (diffDays < 31) {
                 this.setState({ trialLeft: (31 - diffDays) });
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS[2] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['growth_monthly'] });
             } else {
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS[0] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['startup'] });
             }
         }
-
     }
 
     updateCustomerSubscription(customerInfo) {
@@ -242,7 +248,6 @@ class Billing extends Component {
             }
         })).then(function (response) {
             if (response.status === 200 && response.data !== undefined) {
-                console.log(response);
                 return response;
             }
 
@@ -281,7 +286,7 @@ class Billing extends Component {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-block">
-                                {this.state.subscription == '' || this.state.subscription == 0 ?
+                                {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
                                             <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Startup Plan (FREE) at the end of the trial period.</p>
@@ -325,18 +330,18 @@ class Billing extends Component {
                                     </div>
                                     <div className="col-md-6 text-right">
                                         {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
+                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
                                             :
                                             null
                                         }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
                                     </div>
-                                    {this.state.subscription > 0 ?
+                                    {this.state.subscription != 'startup' ?
                                         (
                                         <div className="radio-btn-container">
                                             <form>
-                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedYearly} />
-                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedMonthly} />
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.yearlyChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={!this.state.yearlyChecked} label={billedMonthly} />
                                             </form>
                                         </div>
                                         ) : null
@@ -411,9 +416,9 @@ class Billing extends Component {
                                                 </div>
                                                 <div className="pricing-table-footer">
                                                     {
-                                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">
+                                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup">
                                                             {
-                                                                (this.state.subscription === 0) ? "Current Plan" : "Select Plan"
+                                                                (this.state.subscription == 'startup') ? "Current Plan" : "Select Plan"
                                                             }
                                                         </button>
                                                     }
@@ -455,9 +460,14 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_monthly" data-cb-type="checkout" data-cb-plan-id="launch_monthly">
                                                         {
-                                                            (this.state.subscription === 1) ? "Current Plan" : "Select Plan"
+                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                     </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_yearly" data-cb-type="checkout" data-cb-plan-id="launch_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
                                                         }
                                                     </button>
                                                 </div>
@@ -498,9 +508,14 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth_monthly">
                                                         {
-                                                            (this.state.subscription === 2) ? "Current Plan" : "Select Plan"
+                                                            (this.state.subscription.indexOf('growth') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="growth_yearly" data-cb-type="checkout" data-cb-plan-id="growth_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('growth') != -1) ? "Current Plan" : "Select Plan"
                                                         }
                                                     </button>
                                                 </div>
@@ -538,9 +553,16 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    {
-                                                        (this.state.subscription === 3) ? <button className="km-button km-button--primary" disbled>Current Plan</button> : <button className="km-button km-button--primary">Select Plan</button>
-                                                    }
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">
+                                                        {
+                                                            (this.state.subscription.indexOf('enterprise') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_yearly" data-cb-type="checkout" data-cb-plan-id="enterprise_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('enterprise') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -557,29 +579,43 @@ class Billing extends Component {
 }
 
 const SUBSCRIPTION_PLANS = {
-    0: {
-        'id': 'startup',
+    'startup': {
         'icon': StartupPlanIcon,
         'name': 'Startup',
         'mau': '250',
         'amount': '0/month'
     },
-    1: {
-        'id': 'launch',
+    'launch_monthly': {
+        'icon': LaunchPlanIcon,
+        'name': 'Launch',
+        'mau': '1000',
+        'amount': '49/month'
+    },
+    'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': '1000',
         'amount': '39/month'
     },
-    2: {
-        'id': 'growth',
+    'growth_monthly': {
+        'icon': GrowthPlanIcon,
+        'name': 'Growth',
+        'mau': '5000',
+        'amount': '199/month'
+    },
+    'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': '5000',
         'amount': '149/month'
     },
-    3: {
-        'id': 'enterprise',
+    'enterprise_monthly': {
+        'icon': EnterprisePlanIcon,
+        'name': 'Enterprise',
+        'mau': 'Custom',
+        'amount': 'Custom'
+    },
+    'enterprise_yearly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Custom',
