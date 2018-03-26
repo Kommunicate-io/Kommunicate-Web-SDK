@@ -133,7 +133,7 @@ exports.patchCustomer = (req,res)=>{
     });
     if(isUpdated){
       response.code="SUCCESS";
-      response.message="updation successfull";
+      response.message="Updated";
       res.status(200).json(response);
     }else{
       response.code="NOT_FOUND";
