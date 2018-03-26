@@ -25,7 +25,7 @@ function getJsCode (){
     options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
   
-   options.conversationtitle=options.agentName||options.agentId;
+   options.conversationTitle=options.agentName||options.agentId;
   var env = getEnvironmentId();
   
   if(env=="test"||env=="development"){
