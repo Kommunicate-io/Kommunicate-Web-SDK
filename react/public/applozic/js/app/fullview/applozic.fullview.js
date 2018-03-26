@@ -3699,8 +3699,8 @@ var KM_CLIENT_GROUP_MAP = [];
 									target: '_blank'
 								});
 							}
-							$textMessage.append(x);
 						}
+							$textMessage.append(x);
 					}
 				} else {
 					$textMessage.html(emoji_template);
