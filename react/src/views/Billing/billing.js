@@ -127,52 +127,52 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-    //    try {
-            var cbInstance = window.Chargebee.getInstance();
-            console.log(cbInstance);
-    
-            cbInstance.setCheckoutCallbacks(function (cart) {
-                // you can define a custom callbacks based on cart object
-                return {
-                    loaded: function () {
-                        console.log("checkout opened");
-                    },
-                    close: function () {
-                        console.log("checkout closed");
-                    },
-                    success: function (hostedPageId) {
-                        console.log("success, hostedPageId: " + hostedPageId);
-                    },
-                    step: function (value) {
-                        // value -> which step in checkout
-                        console.log(value);
-                        if (value == "thankyou_screen") {
-                            let plans = document.getElementsByClassName('checkout active');
-                            that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
-                        }
-                    },
-                    visit: function (visit) {
-                        // Optional
-                        // called whenever the customer navigates different sections in portal
-                    },
-                    paymentSourceAdd: function () {
-                        // Optional
-                        // called whenever a new payment source is added in portal
-                    },
-                    paymentSourceUpdate: function () {
-                        // Optional
-                        // called whenever a payment source is updated in portal
-                    },
-                    paymentSourceRemove: function () {
-                        // Optional
-                        // called whenever a payment source is removed in portal.
+        //    try {
+        var cbInstance = window.Chargebee.getInstance();
+        console.log(cbInstance);
+
+        cbInstance.setCheckoutCallbacks(function (cart) {
+            // you can define a custom callbacks based on cart object
+            return {
+                loaded: function () {
+                    console.log("checkout opened");
+                },
+                close: function () {
+                    console.log("checkout closed");
+                },
+                success: function (hostedPageId) {
+                    console.log("success, hostedPageId: " + hostedPageId);
+                },
+                step: function (value) {
+                    // value -> which step in checkout
+                    console.log(value);
+                    if (value == "thankyou_screen") {
+                        let plans = document.getElementsByClassName('checkout active');
+                        that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
                     }
+                },
+                visit: function (visit) {
+                    // Optional
+                    // called whenever the customer navigates different sections in portal
+                },
+                paymentSourceAdd: function () {
+                    // Optional
+                    // called whenever a new payment source is added in portal
+                },
+                paymentSourceUpdate: function () {
+                    // Optional
+                    // called whenever a payment source is updated in portal
+                },
+                paymentSourceRemove: function () {
+                    // Optional
+                    // called whenever a payment source is removed in portal.
                 }
-            });
-       /* } catch(error) {
-            console.log("chargebee error");
-            console.log(error);
-        }    */   
+            }
+        });
+        /* } catch(error) {
+             console.log("chargebee error");
+             console.log(error);
+         }    */
 
     }
 
@@ -257,7 +257,7 @@ class Billing extends Component {
         //TODO: handle the functionality of Radio button checks
     }
     onCloseSubscribedSuccess() {
-        this.setState({showSubscribedSuccess: true});
+        this.setState({ showSubscribedSuccess: true });
     }
 
     render() {
@@ -301,17 +301,17 @@ class Billing extends Component {
                                     <div className="subscribe-success_img-container">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56">
                                             <g fill="#2DD35C">
-                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
-                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
+                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z" />
+                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z" />
                                             </g>
                                         </svg>
                                     </div>
                                     <h3 className="subscribe-success-error-text">You have been successfully subscribed</h3>
                                     <button className="close-modal-btn" onClick={this.onCloseSubscribedSuccess}>
-                                    CLOSE
+                                        CLOSE
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                                            <path d="M0 0h24v24H0z" fill="none" />
                                         </svg>
                                     </button>
                                 </div>
@@ -351,11 +351,11 @@ class Billing extends Component {
                                 style={customStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
                                 <div className="row text-center">
                                     <h1 className="change-plan-text">Change Plan</h1>
-                                    <hr/>
+                                    <hr />
                                     <button className="close-modal-btn" onClick={this.onCloseModal}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                                            <path d="M0 0h24v24H0z" fill="none" />
                                         </svg>
                                     </button>
                                     <hr />
@@ -405,13 +405,13 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">
-                                                        {
-                                                            (this.state.subscription === 0) ? "Current Plan" : "Select Plan"
-                                                        }
-                                                    </button>
-                                                }  
+                                                    {
+                                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">
+                                                            {
+                                                                (this.state.subscription === 0) ? "Current Plan" : "Select Plan"
+                                                            }
+                                                        </button>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -436,7 +436,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>1000 Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -480,7 +479,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>5000 Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -495,11 +493,11 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">
-                                                    {
-                                                        (this.state.subscription === 2) ? "Current Plan" : "Select Plan"
-                                                    }
-                                                </button> 
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">
+                                                        {
+                                                            (this.state.subscription === 2) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -512,7 +510,6 @@ class Billing extends Component {
                                                     <div className="price-image-container">
                                                         <img src={EnterprisePlanIcon} alt="Enterprise Plan Icon" />
                                                     </div>
-
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <div className="pricing-table-body-header">
@@ -523,7 +520,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>Unlimited Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -533,22 +529,19 @@ class Billing extends Component {
                                                             <li>Custom bot development</li>
                                                             <li>Personalized support on Phone &amp; Skype</li>
                                                             <li>Customised solution for your specific needs</li>
-
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 3) ? <button className="km-button km-button--primary" disbled>Current Plan</button> : <button className="km-button km-button--primary">Select Plan</button>
-                                                }
-                                                    
+                                                    {
+                                                        (this.state.subscription === 3) ? <button className="km-button km-button--primary" disbled>Current Plan</button> : <button className="km-button km-button--primary">Select Plan</button>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </Modal>
-
                         </div>
                     </div>
                 </div>
