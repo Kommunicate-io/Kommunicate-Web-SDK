@@ -20,7 +20,14 @@ const getZendeskIntegrationSetting = (customerId, type) => {
     });
 }
 
+const deleteIntegrationSetting = (customerId, type) => {
+    return Promise.resolve(ThirdPartyIntegrationSettings.destroy({ where: { customerId: customerId, type: type } })).then(response => {
+        return response;
+    });
+}
+
 module.exports = {
     updateOrCreate: updateOrCreate,
-    getZendeskIntegrationSetting: getZendeskIntegrationSetting
+    getZendeskIntegrationSetting: getZendeskIntegrationSetting,
+    deleteIntegrationSetting: deleteIntegrationSetting
 }
