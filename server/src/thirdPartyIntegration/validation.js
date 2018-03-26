@@ -4,10 +4,14 @@ module.exports.settings = {
     params: {
         appId: joi.string().required(),
         type: joi.number().integer().required()
+    }
+}
+
+module.exports.getSettings = {
+    params: {
+        appId: joi.string().required(),
     },
-    body: {
-        accessKey: joi.string(),
-        accessToken: joi.string(),
-        domain: joi.string(),
+    query: {
+        type: joi.number().integer(),
     }
 }

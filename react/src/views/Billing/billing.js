@@ -14,6 +14,8 @@ import Modal from 'react-modal';
 //import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
+import RadioButton from '../../components/RadioButton/RadioButton';
+// import {RadioGroup, Radio} from '../../components/Radio/Radio';
 
 class Billing extends Component {
 
@@ -27,6 +29,8 @@ class Billing extends Component {
             pricingYearlyHidden: false,
             hideFeatureList: true,
             showFeatures: 'Show Features',
+            radioButtonChecked: true,
+            showSubscribedSuccess: false,
             subscription: CommonUtils.getUserSession().subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS[0],
@@ -38,6 +42,8 @@ class Billing extends Component {
         this.onOpenModal = this.onOpenModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
+        this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
+        this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
     };
 
     componentDidMount() {
@@ -118,7 +124,7 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-      //  try {
+    //    try {
             var cbInstance = window.Chargebee.getInstance();
             console.log(cbInstance);
     
@@ -244,7 +250,26 @@ class Billing extends Component {
 
     }
 
+    handleYearlyMonthlyPlanChange() {
+        //TODO: handle the functionality of Radio button checks
+    }
+    onCloseSubscribedSuccess() {
+        this.setState({showSubscribedSuccess: true});
+    }
+
     render() {
+        const billedYearly = (
+            <div className="radio-content-container">
+                <h3>Billed Yearly</h3>
+                <p>$149/month</p>
+            </div>
+        )
+        const billedMonthly = (
+            <div className="radio-content-container">
+                <h3>Billed Monthly</h3>
+                <p>$199/month</p>
+            </div>
+        )
         const { modalIsOpen } = this.state;
         return (
             <div className="animated fadeIn">
@@ -268,6 +293,28 @@ class Billing extends Component {
                                     null
                                 }
 
+                                {/* Subscribe successfully box */}
+                                <div className="subscribe-success-error-container text-center" hidden={this.state.showSubscribedSuccess}>
+                                    <div className="subscribe-success_img-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56">
+                                            <g fill="#2DD35C">
+                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
+                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <h3 className="subscribe-success-error-text">You have been successfully subscribed</h3>
+                                    <button className="close-modal-btn" onClick={this.onCloseSubscribedSuccess}>
+                                    CLOSE
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                        </svg>
+                                    </button>
+                                </div>
+
+
+
                                 <div className="current-plan-container flexi">
                                     <div className="col-md-6">
                                         <p className="current-plan-details-text">Current plan details</p>
@@ -279,6 +326,12 @@ class Billing extends Component {
                                             null
                                         }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
+                                    </div>
+                                    <div className="radio-btn-container">
+                                        <form>
+                                            <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedYearly} />
+                                            <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedMonthly} />
+                                        </form>
                                     </div>
                                 </div>
 
@@ -292,10 +345,16 @@ class Billing extends Component {
 
                             {/* Change Plan Modal */}
                             <Modal isOpen={this.state.modalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.onCloseModal}
-                                style={customStyles} shouldCloseOnOverlayClick={true}>
+                                style={customStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
                                 <div className="row text-center">
                                     <h1 className="change-plan-text">Change Plan</h1>
-                                    <button onClick={this.onCloseModal}>close</button>
+                                    <hr/>
+                                    <button className="close-modal-btn" onClick={this.onCloseModal}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                        </svg>
+                                    </button>
                                     <hr />
 
                                     {/* <!-- Pricing Toggle --> */}
@@ -343,7 +402,10 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
+                                                {
+                                                    (this.state.subscription === 0) ?
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
+                                                }  
                                                 </div>
                                             </div>
                                         </div>
@@ -383,7 +445,10 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
+                                                {
+                                                    (this.state.subscription === 1) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
+                                                }
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -423,7 +488,10 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
+                                                {
+                                                    (this.state.subscription === 2) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
+                                                }
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -462,7 +530,10 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="km-button km-button--primary">Select Plan</button>
+                                                {
+                                                    (this.state.subscription === 3) ? <button className="km-button km-button--primary" disbled>Current Plan</button> : <button className="km-button km-button--primary">Select Plan</button>
+                                                }
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -511,12 +582,13 @@ const SUBSCRIPTION_PLANS = {
 
 const customStyles = {
     content: {
-        top: '50%',
+        top: '55px',
         left: '50%',
         right: 'auto',
         bottom: 'auto',
         marginRight: '-50%',
-        transform: 'translate(-50%, -50%)'
+        transform: 'translateX(-50%)',
+        maxWidth: '900px',
     }
 };
 

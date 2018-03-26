@@ -46,6 +46,7 @@ const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
 const zendeskRouter = express.Router();
+const thirdPartySettingRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -63,6 +64,7 @@ exports.group = groupRouter;
 exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
 exports.zendesk = zendeskRouter;
+exports.thirdPartySetting = thirdPartySettingRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -149,5 +151,6 @@ issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDel
 */
 zendeskRouter.post('/:appId/ticket/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
 zendeskRouter.put('/:appId/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
-zendeskRouter.post('/:appId/insert/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
-zendeskRouter.get('/:appId/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.getZendeskIntegrationSetting)
+thirdPartySettingRouter.post('/:appId/insert/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
+thirdPartySettingRouter.get('/:appId',validate(thirdPartySettingValidation.getSettings), integrationSettingController.getIntegrationSetting)
+thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.deleteIntegrationSetting)

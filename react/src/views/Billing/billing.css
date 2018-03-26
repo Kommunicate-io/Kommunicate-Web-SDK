@@ -331,13 +331,13 @@
 }
 
 .launch .pricing-table-body-footer ul {
-    margin-bottom: 119px;
+    margin-bottom:94px;
 }
 .growth .pricing-table-body-footer ul {
-    margin-bottom: 169px;
+    margin-bottom: 119px;
 }
 .enterprise .pricing-table-body-footer ul {
-    margin-bottom: 131px;
+    margin-bottom: 106px;
 }
 
 
@@ -416,4 +416,93 @@
     transition-property: left, right;
     transition-delay: 0s, .08s;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.ReactModal__Overlay--after-open {
+    background-color: rgba(0, 0, 0, 0.75) !important;
+    z-index: 5000 !important;
+    overflow-y: auto !important;
+}
+.close-modal-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    border: none;
+}
+
+.radio-btn-container {
+    width: 100%;
+    margin-top: 20px;
+}
+.radio-btn-container form {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.radio-button-container {
+    margin-bottom: 0px;
+}
+.radiobutton .checkmark {
+    top: 10px;
+}
+.radio-content-container {
+    margin-left: 40px
+}
+.monthly-radio-btn {
+    margin-left: 20px;
+}
+.radio-content-container h3 {
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #515050;
+}
+.radio-content-container p {
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #7e7c7c;
+    margin-bottom: 0px;
+}
+
+
+/* Subscribe Success Error */
+.subscribe-success-error-container {
+    width: 100%;
+    position: relative;
+    padding: 25px 10px;
+    border: dashed 2px #c5c5c5;
+    border-radius: 4px;
+}
+.subscribe-success-error-text {
+    font-size: 20px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #383939;
+    margin-top: 20px;
+}
+.subscribe-success-error-container .close-modal-btn svg {
+    margin-bottom: -5px;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+}
+.subscribe-success-error-container .close-modal-btn {
+    opacity: 0.5;
+    top: 5px;
+    right: 0px;
 }
