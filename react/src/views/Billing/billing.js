@@ -90,6 +90,9 @@ class Billing extends Component {
 
         for (var i = 0, max = subscribeElems.length; i < max; i++) {
             subscribeElems[i].click();
+            if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
+                subscribeElems[i].disabled = true;
+            }
         }
     }
 
@@ -403,8 +406,11 @@ class Billing extends Component {
                                                 </div>
                                                 <div className="pricing-table-footer">
                                                 {
-                                                    (this.state.subscription === 0) ?
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">
+                                                        {
+                                                            (this.state.subscription === 0) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 }  
                                                 </div>
                                             </div>
@@ -445,10 +451,11 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 1) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
-                                                }
-                                                   
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">
+                                                        {
+                                                            (this.state.subscription === 1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -488,10 +495,11 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 2) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
-                                                }
-                                                    
+                                                <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">
+                                                    {
+                                                        (this.state.subscription === 2) ? "Current Plan" : "Select Plan"
+                                                    }
+                                                </button> 
                                                 </div>
                                             </div>
                                         </div>
