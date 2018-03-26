@@ -1,6 +1,8 @@
 
-
-Kommunicate = {
+/**
+ * all methods exposed to  users. 
+ */
+$applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
         switch (MCK_BASE_URL) {
             case "https://apps-test.applozic.com/":
@@ -31,57 +33,23 @@ Kommunicate = {
         });
     },
     startConversation: function (params, callback) {
-        var user=[];
-        var group = [];
-        group.push(params.agentId);
-        group.push(kommunicate._globals.userId);
-        user.push({"userId":params.agentId,"groupRole":1});
-        user.push({"userId":"bot","groupRole":2});
+        var user=[{"userId":params.agentId,"groupRole":1},{"userId":"bot","groupRole":2}];
+    
         if(params.botIds){
-            console.log(params.botIds);
             for (var i = 0; i < params.botIds.length; i++) {
                 user.push({"userId":params.botIds[i],"groupRole":2});
-                group.push(params.botIds[i]);
             }
         }
-        var groupName = Kommunicate.createGroupName(group);
-        $applozic.fn.applozic("createGroup", {
-            groupName: groupName,
-            type: 10,
-            admin: params.agentId,
-            users: user,
-            metadata: {
-                CREATE_GROUP_MESSAGE: "",
-                REMOVE_MEMBER_MESSAGE: "",
-                ADD_MEMBER_MESSAGE: "",
-                JOIN_MEMBER_MESSAGE: "",
-                GROUP_NAME_CHANGE_MESSAGE: "",
-                GROUP_ICON_CHANGE_MESSAGE: "",
-                GROUP_LEFT_MESSAGE: "",
-                DELETED_GROUP_MESSAGE: "",
-                GROUP_USER_ROLE_UPDATED_MESSAGE: "",
-                GROUP_META_DATA_UPDATED_MESSAGE: "",
-                CONVERSATION_ASSIGNEE: params.agentId,
-                //ALERT: "false",
-                HIDE: "true"
-            },
-            callback: function (response) {
-                console.log("response", response);
-                if (response.status === 'success' && response.data.clientGroupId) {
-                    Kommunicate.createNewConversation({
-                        "groupId": response.data.clientGroupId,
-                        "participentUserId": kommunicate._globals.userId,
-                        "defaultAgentId": params.agentId,
-                        "applicationId": kommunicate._globals.appId
-                    }, function (err, result) {
-                        console.log(err, result);
-                        if (!err) {
-                            callback(response.data.clientGroupId);
-                        }
-                    })
-                }
-            }
-        });
+        var groupName = params.groupName||kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId;
+       var conversationDetail = {
+           "groupName": groupName,
+           "type":10,
+           "agentId":params.agentId,
+           "users": user,
+           "clientGroupId":params.clientGroupId
+       }
+       
+        Kommunicate.client.createConversation(conversationDetail,callback);
     },
     openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
@@ -91,6 +59,69 @@ Kommunicate = {
     },
     openDirectConversation: function (userId) {
         window.$applozic.fn.applozic('loadTab', userId);
+    },
+    /**
+     * load conversation will open or create a conversation between existing users. 
+     * it generate clientGroupId from the given conversationDetail, if any group exists with that Id opens that otherwise it will call creatge group API.
+     * it will not open the group created by createConversation API. 
+     * @param {Object}  conversationDetail
+     * @param {Array} conversationDetail.agentIds required parameter
+     * @param {Array} conversationDetail.botIds  optional parameter
+     */
+    loadConversation:function(conversationDetail,callback){
+        var agentList = conversationDetail.agentIds||[];
+        var botList = conversationDetail.botIds||[];
+        
+        if(agentList.length <1){
+            var error ={code:"INVALID_PARAMETERS",message:"required parameter agentIds is missing."}
+            return typeof callback == 'function'? callback(error):console.log("required parameter agentIds is missing.");
+        }
+        // max length of clientGroupId is 256 in db. 
+        // default bot is not included in client groupId generation
+        var loggedInUserName= kommunicate._globals.userId || KommunicateUtils.getCookie("kommunicate-id");
+        var agentsNameStr = agentList.join("_");
+
+        var botsNameStr =  botList.join("_");
+       var clientGroupId =  encodeURIComponent(botsNameStr?[agentsNameStr,loggedInUserName,botsNameStr].join("_"):[agentsNameStr,loggedInUserName].join("_"));
+        if(clientGroupId.length>256){
+            var error ={code:"MEMBER_LIMIT_EXCEEDS",message:"try adding fewer members"}
+
+            return typeof callback == 'function'? callback(error):console.log("member limit exceeds. try adding fewer members");
+        }
+        mckGroupService.getGroupFeed({
+            'clientGroupId': clientGroupId,
+            'apzCallback': function(result){
+                if(result.status=='error'&&result.code=='AL-G-01'){
+                    // group not found. createing new group
+                    var users=agentList.map(function(item){
+                        return {"userId":item,"groupRole":1}
+                    });
+                    users.push({"userId":"bot","groupRole":2});
+                    users.push(botList.map(function(item){
+                        return {"userId":item,"groupRole":2}
+                    }));
+                      var conversationDetail = {
+                        "groupName": kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId,
+                        "type":10,
+                        "agentId":users[0].userId,
+                        "users": users,
+                        "clientGroupId":clientGroupId
+                    }
+                    Kommunicate.client.createConversation(conversationDetail,function(result){
+                        if(callback){
+                        return callback(null,result);
+                        }
+                    });
+                }else if(result.status=='success'){
+                 // group exist with clientGroupId
+                 var groupId = result.data.id;
+                 $applozic.fn.applozic('loadTab',groupId);
+                 return callback(null, result);
+                }
+               
+
+            }
+        });
     },
     createGroupName: function(group){
        return group.sort().join().replace(/,/g, "_").substring(0, 250);
@@ -125,6 +156,9 @@ Kommunicate = {
         }
         window.$applozic.fn.applozic('getGroupListByFilter', groupDetail);
     },
+    /**
+     * creating conversation entry in kommuncate db.
+     */
     createNewConversation: function (options, callback) {
         if (typeof (callback) !== 'function') {
             throw new Error("invalid callback! expected: Kommunicate.startNewConversation(options, callback) ");
@@ -276,10 +310,4 @@ Kommunicate = {
         }
     }
 
-}
-function KommunicateClient() {
-    //groupName:DEFAULT_GROUP_NAME,
-    //agentId:DEFAULT_AGENT_ID
-
-}
-
+});
