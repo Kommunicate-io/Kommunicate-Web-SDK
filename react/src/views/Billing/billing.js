@@ -44,7 +44,9 @@ class Billing extends Component {
         this.processSubscriptionPlanStatus();
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
-        this.updateSubscription(this.state.subscription, customerId);
+        if (customerId) {
+            this.updateSubscription(this.state.subscription, customerId);
+        }
 
         document.getElementById("portal").addEventListener("click", function (event) {
             if (event.target.classList.contains('n-vis')) {
@@ -341,7 +343,7 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -381,7 +383,7 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -421,7 +423,7 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
+                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
                                                 </div>
                                             </div>
                                         </div>
