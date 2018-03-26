@@ -89,7 +89,9 @@ class Billing extends Component {
         let subscribeElems = document.getElementsByClassName("chargebee");
 
         for (var i = 0, max = subscribeElems.length; i < max; i++) {
-            subscribeElems[i].click();
+            if (subscribeElems[i].classList.contains('n-vis')) {
+                subscribeElems[i].click();
+            }
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
                 subscribeElems[i].disabled = true;
             }
