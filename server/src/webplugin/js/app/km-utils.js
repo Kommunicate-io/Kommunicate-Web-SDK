@@ -1,4 +1,21 @@
-/* Method to get cookies*/
+/* .
+ Initilize all global variables used in kommunicate 
+*/
+
+
+/**
+ * Kommunicate stores all Exposed functions to user.
+ * 
+ */
+Kommunicate = {};
+
+/**
+ * stores all UI manipulation
+ */
+KommunicateUI = {};
+
+
+/**all  utilities*/
 KommunicateUtils ={
 
 getCookie :function(cname){
