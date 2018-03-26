@@ -341,7 +341,7 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button className="checkout chargebee km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="free">Select Plan</button>
+                                                    <button className="checkout chargebee km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -478,24 +478,28 @@ class Billing extends Component {
 
 const SUBSCRIPTION_PLANS = {
     0: {
+        'id': 'startup',
         'icon': StartupPlanIcon,
-        'name': 'Free',
+        'name': 'Startup',
         'mau': '250',
         'amount': '0/month'
     },
     1: {
+        'id': 'launch',
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': '1000',
         'amount': '39/month'
     },
     2: {
+        'id': 'growth',
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': '5000',
         'amount': '149/month'
     },
     3: {
+        'id': 'enterprise',
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Custom',
