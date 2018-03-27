@@ -1,7 +1,7 @@
 import ClearbitLogo from './images/clearbit.png';
 import ZendeskLogo from './images/zendesk.png';
 import HelpdocsLogo from './images/helpdocs.png';
-import HelpdocsIntegrationDescription from './HelpdocsIntegrationDescription.js';
+
 
 export let thirdPartyList = [{
     name: "Helpdocs",

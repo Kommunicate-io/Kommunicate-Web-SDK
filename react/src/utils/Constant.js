@@ -1,3 +1,0 @@
-export const THIRDPARTY_INTEGRATION_TYPE = {
-    ZENDESK: 1
-}

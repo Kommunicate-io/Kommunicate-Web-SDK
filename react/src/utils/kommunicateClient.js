@@ -6,7 +6,7 @@ import {getJsCode} from './customerSetUp';
 import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
-import {THIRDPARTY_INTEGRATION_TYPE} from '../utils/Constant';
+
 
 /**
  * Creates Customer /Bot/ Agent   
