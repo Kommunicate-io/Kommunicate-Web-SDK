@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './IntegrationDescription.css';
-import ZendeskLogo from './images/zendesk.png';
 import DeleteIcon from '../../components/DeleteIcon/DeleteIcon';
-import { submitIntegrationKeys }  from '../../utils/kommunicateClient'
+import { createAndUpdateThirdPArtyIntegration, deleteThirdPartyByIntegrationType }  from '../../utils/kommunicateClient'
 import { thirdPartyList} from './ThirdPartyList'
 import Notification from '../model/Notification';
 
@@ -11,44 +10,121 @@ class IntegrationDescription extends Component{
     constructor(props){
         super(props);
         this.state = {
-            apiKey:"",
-            email:"",
+            accessKey:"",
             accessToken:"",
             subdoamin:"",
-            activeModal:this.props.activeModal
+            activeModal:this.props.activeModal,
+            thirdPartyList:this.props.thirdPartyList,
+            helpdocsKeys:this.props.helpdocsKeys,
+            zendeskKeys:this.props.zendeskKeys,
+            clearbitKeys:this.props.clearbitKeys
         }
         
     }
-    submitIntegrationKeys = () => {          
+    componentDidMount () {
+        if(this.state.activeModal == 0 && this.state.helpdocsKeys.length > 0) {
+            this.setState({
+            accessKey:this.state.helpdocsKeys[0].accessKey,
+            })
+        }
+        if(this.state.activeModal == 1 && this.state.zendeskKeys.length > 0) {
+            this.setState({
+                accessKey:this.state.zendeskKeys[0].accessKey,
+                accessToken:this.state.zendeskKeys[0].accessToken,
+                subdoamin:this.state.zendeskKeys[0].domain
+            })
+        }
+        if(this.state.activeModal == 2 && this.state.clearbitKeys.length > 0) {
+            this.setState({
+            accessKey:this.state.clearbitKeys[0].accessKey,
+            })
+        }
+        
+    }
+
+    validateIntegrationInput = () => {
+        if(this.state.activeModal == 1) {
+            if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
+                this.createandUpdateThirdPartyIntegration()
+            }
+            else {
+                Notification.info("All fields are mandatory")
+            }
+        }
+        else {
+            if (this.state.accessKey !== "") {
+                this.createandUpdateThirdPartyIntegration()
+            }
+            else {
+                Notification.info("API Key is mandatory")
+            }
+        }
+
+    }
+    createandUpdateThirdPartyIntegration= () => {          
         
         let keys= {
-            "apiKey":this.state.apiKey,
-            "accessKey":this.state.email,
+            "accessKey":this.state.accessKey,
             "accessToken":this.state.accessToken,
             "domain":this.state.subdoamin
         }
+        let integrationType =thirdPartyList[this.state.activeModal].integrationType
+        createAndUpdateThirdPArtyIntegration(keys,integrationType)
+        .then(response => {
+            console.log(response)
+            if (response.status === 200 && response.data.code === "SUCCESS") {
+                Notification.info(thirdPartyList[this.state.activeModal].name+" integrated Successfully")
+                this.props.handleCloseModal();
+                this.props.getThirdPartyList();
+               
+            } else {
+                Notification.info("There was a problem while integrating"+thirdPartyList[this.state.activeModal].name);
+                this.props.handleCloseModal();
+            }
+            return response;
+        })
+        .catch(err => {
+            console.log(err)
+        })         
+        }
+                     
+    deleteThirdPartyValidation = () => {
         if(this.state.activeModal == 1) {
-            if (this.state.email !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
-                submitIntegrationKeys(keys)
-                    .then(response => {
-                        console.log(response)
-                        if (response.status === 200 && response.data.code === "SUCCESS") {
-                            Notification.info("Zendesk Integrated Successfully")
-                            this.props.handleCloseModal()
-                            
-                        } else {
-                            Notification.info("There was a problem while integrating Zendesk");
-                        }
-                        return response;
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
+            if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
+                this.deleteThirdPartyIntegration();
             }
             else {
-                Notification.info("All fields are mandatory");
+                this.props.handleCloseModal();
             }
         }
+        else {
+            if (this.state.accessKey !== "") {
+                this.deleteThirdPartyIntegration();
+            }
+            else {
+                this.props.handleCloseModal();
+            }
+        }
+
+
+    }
+
+    deleteThirdPartyIntegration = () => {
+        let integrationType =thirdPartyList[this.state.activeModal].integrationType
+        deleteThirdPartyByIntegrationType(integrationType)
+		.then(response => {
+			console.log(response)
+			if(response.status === 200 && response.data.code === "SUCCESS"){
+				Notification.info(thirdPartyList[this.state.activeModal].name+" integration deleted");		
+                this.props.handleCloseModal();
+                this.props.getThirdPartyList();
+			}else{
+				Notification.info("There was problem in deleting the "+thirdPartyList[this.state.activeModal].name+" integration");
+			}
+		})
+		.catch(err => {
+			console.log(err)
+		})		
     }
 
     render(){
@@ -65,16 +141,21 @@ class IntegrationDescription extends Component{
         <div className="token-input-wrapper">
         { this.state.activeModal !== 1 &&
             <p className="token-title">API Key:
-            <input type="text" name="integration-token" className ="integration-token-input" />
+            <input type="text" name="integration-token" className ="integration-token-input" value={this.state.accessKey}
+                onChange={(e) => { 
+                    let apiKey = this.state.accessKey;
+                    apiKey = e.target.value;
+                    this.setState({accessKey:apiKey})
+                }} />
             </p>
         }
         { this.state.activeModal == 1 &&
             <p className="token-title">Email:
-            <input type="text" id="integration-token" className ="zendesk-email-input" value={this.state.email} 
+            <input type="text" id="integration-token" className ="zendesk-email-input" value={this.state.accessKey} 
                 onChange={(e) => { 
-                    let email = this.state.email;
-                    email= e.target.value;
-                    this.setState({email:email})
+                    let accessKey = this.state.accessKey;
+                    accessKey= e.target.value;
+                    this.setState({accessKey:accessKey})
                 }} />
             </p>
         }
@@ -103,9 +184,9 @@ class IntegrationDescription extends Component{
         }
         </div>
         <div className="row zendesk-integration-save-delete-wrapper">
-          <div className="integration-trash-icon"> <DeleteIcon/></div>
+          <div className="integration-trash-icon"> <DeleteIcon handleOnClick = {this.deleteThirdPartyValidation} /></div>
           <div className="zendesk-integration-save-btn"> 
-          <button className="km-button km-button--primary save-integrate-btn" onClick={this.submitIntegrationKeys}>Save and Integrate</button></div>              
+          <button className="km-button km-button--primary save-integrate-btn" onClick={this.validateIntegrationInput}>Save and Integrate</button></div>              
         </div>
     </div>
         

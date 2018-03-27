@@ -7,12 +7,15 @@ body {
     letter-spacing: 0.3px;
     text-align: left;
     color: #6c6a6a;
+    padding-bottom: 10px;
 }
 .integration-description-logo{
     margin-right: 25px;
     margin-left: 4px;
 }
 .title-divider {
+    margin-right: -1.2rem;
+    margin-left: -1.2rem;
     height: 1px;
     opacity: 0.36;
     background-color: #d8d8d8;
@@ -30,7 +33,7 @@ body {
     letter-spacing: 1px;
 }
 .integration-instruction-set {
-    margin-top: 20px;
+    margin-top: 14px;
     margin-left: 24px;
 }
 .token-title{
@@ -87,6 +90,7 @@ body {
     border-radius: 4px;
     border: solid 1px #9cb3de;
     margin-left: 68px;
+    padding: 8px;
 }
 .zendesk-access-token-input{
     width: 238px;
@@ -94,7 +98,8 @@ body {
     opacity: 0.63;
     border-radius: 4px;
     border: solid 1px #9cb3de;
-    margin-left: 35px;
+    margin-left: 18px;
+    padding: 8px;
 }
 .zendesk-subdoamin-input{
     width: 238px;
@@ -103,6 +108,7 @@ body {
     border-radius: 4px;
     border: solid 1px #9cb3de;
     margin-left: 2px;
+    padding: 8px;
 }
 .zendesk-domain {
     font-size: 12px;

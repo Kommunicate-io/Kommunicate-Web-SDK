@@ -6,7 +6,8 @@ import HelpdocsIntegrationDescription from './HelpdocsIntegrationDescription.js'
 export let thirdPartyList = [{
     name: "Helpdocs",
     logo: HelpdocsLogo,
-    subTitle: "Import your FAQs from Helpdocs",  
+    subTitle: "Import your FAQs from Helpdocs",
+    integrationType:1,  
     instructions:[
         "Log in to your HelpDocs dashboard",
         "Go to Settings",
@@ -18,7 +19,8 @@ export let thirdPartyList = [{
 }, {
     name: "Zendesk",
     logo: ZendeskLogo,
-    subTitle: "Open Zendesk ticket for all conversations", 
+    subTitle: "Open Zendesk ticket for all conversations",
+    integrationType: 2, 
     instructions:[
         "Sign in to your Zendesk dashboard.",
         "Enter your Access Email Id of Zendesk",
@@ -35,6 +37,7 @@ export let thirdPartyList = [{
     name: "Clearbit",
     subTitle: "Get company details of youranonymous visitors",
     logo: ClearbitLogo,
+    integrationType: 3,
     instructions:[
         "Login to your https://clearbit.com/ account",
         "Go to Dashboard > API to get the API Key",

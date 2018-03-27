@@ -8,8 +8,8 @@ class DeleteIcon extends Component {
 
         const { handleOnClick } = this.props;
 
-        return ( <div className="delete-icon">
-            <i className="fa fa-trash-o" onClick={handleOnClick} ></i>
+        return ( <div className="delete-icon" onClick={handleOnClick}>
+            <i className="fa fa-trash-o"></i>
             </div>     
         );
     }

@@ -729,10 +729,9 @@ const getCustomerByApplicationId = () => {
 
 }
 
-const submitIntegrationKeys = (data) => {
+const createAndUpdateThirdPArtyIntegration = (data,integrationType) => {
   let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/insert/config/" +
-    THIRDPARTY_INTEGRATION_TYPE.ZENDESK;
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId + "/insert/" +integrationType;
   return Promise.resolve(axios({
     method: 'POST',
     url: url,
@@ -740,9 +739,29 @@ const submitIntegrationKeys = (data) => {
   })).then(result => {
     console.log(result);
     return result;
-  }).catch(err => { console.log("Error while third party integration", err) })
+  }).catch(err => { console.log("Error while submiting third party integration keys", err) })
 
 }
+const getThirdPartyListByApplicationId = () => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId
+   return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => {console.log("Error while fetching third party integration by applicationId", err)})
+
+}
+const deleteThirdPartyByIntegrationType = (integrationType) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl +"/integration/settings/"+ userSession.application.applicationId + "/" +integrationType;
+  return Promise.resolve(axios.delete(url))
+    .then(response => response)
+    .catch(err => err);
+}
+
 
 
 export {
@@ -787,5 +806,7 @@ export {
   enableAutomaticAssignment,
   getSuggestionsByCriteria,
   getCustomerByApplicationId,
-  submitIntegrationKeys
+  createAndUpdateThirdPArtyIntegration,
+  getThirdPartyListByApplicationId,
+  deleteThirdPartyByIntegrationType
 }
