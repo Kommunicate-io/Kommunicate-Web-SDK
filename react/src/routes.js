@@ -17,6 +17,7 @@ const routes = {
   '/agent-app': 'Agent App',
   '/agent-assignment':'Agent Assignment',
   '/billing': 'Billing',
+  '/integrations': 'Integrations'
 };
 
 export default routes;

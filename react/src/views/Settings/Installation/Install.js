@@ -11,7 +11,7 @@ const multiEmailLink = {
 
 }
 const pluginBaseUrl = getConfig().kommunicateApi.pluginUrl;
-class Integration extends Component {
+class Install extends Component {
   static defaultProps = {
     cardSize: 10
   }
@@ -226,4 +226,4 @@ class Integration extends Component {
   }
 }
 
-export default Integration;
+export default Install;

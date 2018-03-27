@@ -100,6 +100,13 @@ class Sidebar extends Component {
     <circle className="cls-1" cx="29.7" cy="27.1" r="2.5" />
 </svg></NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink to={'/integrations'} className="nav-link" activeClassName="active" data-tip="Integrations" data-effect="solid" data-place="right">
+              <svg className="integrations-nav-link" xmlns='http://www.w3.org/2000/svg' width='27' height='15'>
+              <path fill='#FFF' d='M4.594 4.898c-.016-.001-.031-.005-.048-.005H1.128c-.606 0-1.097.491-1.097 1.097v2.55c0 .605.491 1.097 1.097 1.097h3.418c.017 0 .032-.004.048-.005.982 2.847 3.677 4.895 6.855 4.895V.003c-3.178 0-5.873 2.048-6.855 4.895zM25.9 4.893h-3.42c-.016 0-.032.004-.048.005A7.25 7.25 0 0 0 15.578.003v4.314h-2.323a.58.58 0 1 0 0 1.162h2.323v3.573h-2.323a.58.58 0 0 0 0 1.162h2.323v4.313c3.179 0 5.873-2.048 6.855-4.895.016.001.032.005.048.005H25.9c.606 0 1.097-.492 1.097-1.098V5.99c0-.606-.49-1.097-1.097-1.097z'/>
+              </svg>
+              </NavLink>
+            </li>
 
             {/* <li className="divider"></li>
             <li className="nav-title">
@@ -159,10 +166,12 @@ class Sidebar extends Component {
            
             <li className="nav-item">
               <NavLink to={'/faq'} className="nav-link" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 45.8 40'>
-    <path className='cls-1' d='M45.7,4H2.3c-.7,0-1.2.8-1.2,1.7V35.2c0,.9.5,1.7,1.2,1.7H19.6l3.7,6.7a.9.9,0,0,0,1.5,0l3.6-6.7H45.7c.7,0,1.2-.8,1.2-1.7V5.7C46.9,4.8,46.4,4,45.7,4ZM26.1,29.4H8.2a1.4,1.4,0,0,1,0-2.8H26.1a1.4,1.4,0,0,1,0,2.8Zm13.6-7.5H8.2a1.3,1.3,0,0,1-1.1-1.4,1.3,1.3,0,0,1,1.1-1.4H39.8a1.3,1.3,0,0,1,1.1,1.4A1.3,1.3,0,0,1,39.8,21.9Zm0-7.6H8.2a1.3,1.3,0,0,1-1.1-1.4,1.3,1.3,0,0,1,1.1-1.4H39.8a1.3,1.3,0,0,1,1.1,1.4A1.3,1.3,0,0,1,39.8,14.3Z'
-    transform='translate(-1.1 -4)' />
-</svg></NavLink>
+              <path className='cls-1' d='M45.7,4H2.3c-.7,0-1.2.8-1.2,1.7V35.2c0,.9.5,1.7,1.2,1.7H19.6l3.7,6.7a.9.9,0,0,0,1.5,0l3.6-6.7H45.7c.7,0,1.2-.8,1.2-1.7V5.7C46.9,4.8,46.4,4,45.7,4ZM26.1,29.4H8.2a1.4,1.4,0,0,1,0-2.8H26.1a1.4,1.4,0,0,1,0,2.8Zm13.6-7.5H8.2a1.3,1.3,0,0,1-1.1-1.4,1.3,1.3,0,0,1,1.1-1.4H39.8a1.3,1.3,0,0,1,1.1,1.4A1.3,1.3,0,0,1,39.8,21.9Zm0-7.6H8.2a1.3,1.3,0,0,1-1.1-1.4,1.3,1.3,0,0,1,1.1-1.4H39.8a1.3,1.3,0,0,1,1.1,1.4A1.3,1.3,0,0,1,39.8,14.3Z'
+                transform='translate(-1.1 -4)' />
+              </svg>
+              </NavLink>
             </li>
+            
           </ul>
         </nav>
         <ReactTooltip />
