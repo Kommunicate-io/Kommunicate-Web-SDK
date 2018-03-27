@@ -17,7 +17,8 @@ class IntegrationDescription extends Component{
             thirdPartyList:this.props.thirdPartyList,
             helpdocsKeys:this.props.helpdocsKeys,
             zendeskKeys:this.props.zendeskKeys,
-            clearbitKeys:this.props.clearbitKeys
+            clearbitKeys:this.props.clearbitKeys,
+            deleteStatement:false
         }
         
     }
@@ -41,6 +42,12 @@ class IntegrationDescription extends Component{
         }
         
     }
+    showDeleteStatement = () => {
+        this.setState({
+            deleteStatement:!this.state.deleteStatement
+        })
+    }
+
 
     validateIntegrationInput = () => {
         if(this.state.activeModal == 1) {
@@ -183,11 +190,24 @@ class IntegrationDescription extends Component{
            </p>
         }
         </div>
-        <div className="row zendesk-integration-save-delete-wrapper">
-          <div className="integration-trash-icon"> <DeleteIcon handleOnClick = {this.deleteThirdPartyValidation} /></div>
-          <div className="zendesk-integration-save-btn"> 
-          <button className="km-button km-button--primary save-integrate-btn" onClick={this.validateIntegrationInput}>Save and Integrate</button></div>              
-        </div>
+        { this.state.deleteStatement == false &&
+            <div className="row zendesk-integration-save-delete-wrapper">
+                <div className="integration-trash-icon"> <DeleteIcon handleOnClick = {this.showDeleteStatement}/></div>
+                <div className="zendesk-integration-save-btn"> 
+                    <button className="km-button km-button--primary save-integrate-btn" onClick={this.validateIntegrationInput}>Save and Integrate</button>
+                </div>              
+            </div>
+        }
+        { this.state.deleteStatement == true &&
+            <div className="row delete-confirmation-wrapper">
+                <div className="delete-question">Do you want to delete {thirdPartyList[this.state.activeModal].name} integartion ?</div>
+                <div className="yes-or-no-btn-wrapper"> 
+                    <button className="km-button km-button--secondary delete-integration-btn" onClick = {this.deleteThirdPartyValidation} >Yes, Delete</button>
+                    <button className="km-button km-button--primary save-integrate-btn no-integration-btn" onClick={this.showDeleteStatement}>No</button>
+                </div>              
+            </div>
+        }
+        
     </div>
         
     }

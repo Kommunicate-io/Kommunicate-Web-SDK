@@ -27,9 +27,8 @@ export let thirdPartyList = [{
         "Add Access token on clicking "+" sign and save. Copy and paste that Access token here",
         "Open the agent interface by selecting Support from the product tray in the upper-right",
         "Select Admin > Channels > API. Make sure Token Access is enabled in the settings.",
-        "In your browser, navigate to your Zendesk account. The url will look something like",
-        "https://your_subdomain.zendesk.com.",
-        "Copy your subdoamin and paste in to domain field",
+        "Navigate to your Zendesk account.The url look like https://your_subdomain.zendesk.com.",
+        "Copy your subdomain and paste in to domain field",
         "Hit save",
     ]
     
