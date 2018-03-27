@@ -10,10 +10,13 @@ import StartupPlanIcon from './img/Startup-plan-icon.svg';
 import LaunchPlanIcon from './img/Launch-plan-icon.svg';
 import GrowthPlanIcon from './img/Growth-plan-icon.svg';
 import EnterprisePlanIcon from './img/Enterprise-plan-icon.svg';
+import EarlyBirdPlanIcon from './img/Enterprise-plan-icon.svg';
 import Modal from 'react-modal';
 //import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
+import PlanView from '../.../../../components/PlanDetails/PlanView';
+
 import RadioButton from '../../components/RadioButton/RadioButton';
 // import {RadioGroup, Radio} from '../../components/Radio/Radio';
 
@@ -246,7 +249,7 @@ class Billing extends Component {
 
             if (diffDays < 31) {
                 this.setState({ trialLeft: (31 - diffDays) });
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS['growth_monthly'] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['early_bird_monthly'] });
             } else {
                 this.setState({ currentPlan: SUBSCRIPTION_PLANS['startup'] });
             }
@@ -342,15 +345,13 @@ class Billing extends Component {
                                     </button>
                                 </div>
 
-
-
                                 <div className="current-plan-container flexi">
                                     <div className="col-md-6">
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
                                         {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
+                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth_monthly">Buy this plan</button>)
                                             :
                                             null
                                         }
@@ -446,7 +447,7 @@ class Billing extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-3 col-md-3 col-xs-12">
+                                    <div className="col-lg-3 col-md-3 col-xs-12" hidden>
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
@@ -494,7 +495,7 @@ class Billing extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-3 col-md-3 col-xs-12">
+                                    <div className="col-lg-3 col-md-3 col-xs-12" hidden>
                                         <div className="pricing-table">
                                             <div className="pricing-table-container growth">
                                                 <div className="pricing-table-header">
@@ -542,6 +543,12 @@ class Billing extends Component {
                                             </div>
                                         </div>
                                     </div>
+
+                                    <PlanView showHideFeatures={this.showHideFeatures} PlanIcon={EarlyBirdPlanIcon} PlanName={SUBSCRIPTION_PLANS['early_bird_monthly'].name} PlanMAU={SUBSCRIPTION_PLANS['early_bird_monthly'].mau} 
+                                        PlanAmountMonthly={SUBSCRIPTION_PLANS['early_bird_monthly'].amount} PlanAmountYearly={SUBSCRIPTION_PLANS['early_bird_yearly'].amount}
+                                        PricingMonthlyHidden={this.state.pricingMonthlyHidden}
+                                        Subscription={this.state.subscription} ShowFeatures={this.state.showFeatures} HideFeatureList={this.state.hideFeatureList}/>
+
                                     <div className="col-lg-3 col-md-3 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container enterprise">
@@ -564,7 +571,7 @@ class Billing extends Component {
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Growth</p>
+                                                        <p>All in Early Bird</p>
                                                         <ul>
                                                             <li>Custom bot development</li>
                                                             <li>Personalized support on Phone &amp; Skype</li>
@@ -603,31 +610,43 @@ const SUBSCRIPTION_PLANS = {
         'icon': StartupPlanIcon,
         'name': 'Startup',
         'mau': '250',
-        'amount': '0/month'
+        'amount': '0'
     },
     'launch_monthly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': '1000',
-        'amount': '49/month'
+        'amount': '49'
     },
     'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': '1000',
-        'amount': '39/month'
+        'amount': '39'
     },
     'growth_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': '5000',
-        'amount': '199/month'
+        'amount': '199'
     },
     'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': '5000',
-        'amount': '149/month'
+        'amount': '149'
+    },
+     'early_bird_monthly': {
+        'icon': EarlyBirdPlanIcon,
+        'name': 'Early Bird',
+        'mau': 'Unlimited',
+        'amount': '49'
+    },
+    'early_bird_yearly': {
+        'icon': EarlyBirdPlanIcon,
+        'name': 'Early Bird',
+        'mau': 'Unlimited',
+        'amount': '39'
     },
     'enterprise_monthly': {
         'icon': EnterprisePlanIcon,
