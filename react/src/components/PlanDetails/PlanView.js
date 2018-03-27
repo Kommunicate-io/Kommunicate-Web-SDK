@@ -31,7 +31,7 @@ export default class PlanView extends Component {
         const { PlanIcon, PlanName, PlanMAU, PlanAmountMonthly, PlanAmountYearly, PricingMonthlyHidden, Subscription, ShowFeatures, HideFeatureList } = this.props;
 
         return (
-            <div className="col-lg-3 col-md-3 col-xs-12">
+            <div className="col-lg-12 col-md-12 col-xs-12">
                 <div className="pricing-table">
                     <div className="pricing-table-container growth">
                         <div className="pricing-table-header">
@@ -45,9 +45,9 @@ export default class PlanView extends Component {
                             <div className="pricing-table-body-header">
                                 <div className="pricing-value">
                                     <h2 id="early-bird-pricing-monthly" hidden={!PricingMonthlyHidden}>${PlanAmountYearly}<span className="per-month-span">/MO</span>
-                                        <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
-                                    <h2 id="early-bird-pricing-yearly" hidden={PricingMonthlyHidden}>${PlanAmountMonthly}<span className="per-month-span">/MO</span>
                                         <p style={{ visibility: 'visible', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
+                                    <h2 id="early-bird-pricing-yearly" hidden={PricingMonthlyHidden}>${PlanAmountMonthly}<span className="per-month-span">/MO</span>
+                                        <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
                                 </div>
                                 <div className="price-mau">
                                     <h4>{PlanMAU} Chat users /mo</h4>
@@ -57,10 +57,10 @@ export default class PlanView extends Component {
                             <div className="pricing-table-body-footer" hidden={HideFeatureList}>
                                 <p>All in Startup</p>
                                 <ul>
-                                    <li>Custom bot integrations</li>
-                                    <li>Priority Email Support</li>
+                                    <li>Unlimited bots</li>
+                                    <li>Advanced reporting</li>
                                     <li>CRM integration</li>
-                                    <li>Data retention: Forever</li>
+                                    <li>Chat &amp; Email Support</li>
                                 </ul>
                             </div>
                         </div>

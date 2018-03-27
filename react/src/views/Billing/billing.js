@@ -10,7 +10,7 @@ import StartupPlanIcon from './img/Startup-plan-icon.svg';
 import LaunchPlanIcon from './img/Launch-plan-icon.svg';
 import GrowthPlanIcon from './img/Growth-plan-icon.svg';
 import EnterprisePlanIcon from './img/Enterprise-plan-icon.svg';
-import EarlyBirdPlanIcon from './img/Enterprise-plan-icon.svg';
+import EarlyBirdPlanIcon from './img/Growth-plan-icon.svg';
 import Modal from 'react-modal';
 //import Modal from 'react-responsive-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
@@ -401,7 +401,7 @@ class Billing extends Component {
                                         <label className={this.state.toggleSlider === true ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly</label>
                                     </div>
 
-                                    <div className="col-lg-3 col-md-3 col-xs-12">
+                                    <div className="col-lg-4 col-md-4 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container">
                                                 <div className="pricing-table-header">
@@ -544,12 +544,15 @@ class Billing extends Component {
                                         </div>
                                     </div>
 
-                                    <PlanView showHideFeatures={this.showHideFeatures} PlanIcon={EarlyBirdPlanIcon} PlanName={SUBSCRIPTION_PLANS['early_bird_monthly'].name} PlanMAU={SUBSCRIPTION_PLANS['early_bird_monthly'].mau} 
-                                        PlanAmountMonthly={SUBSCRIPTION_PLANS['early_bird_monthly'].amount} PlanAmountYearly={SUBSCRIPTION_PLANS['early_bird_yearly'].amount}
-                                        PricingMonthlyHidden={this.state.pricingMonthlyHidden}
-                                        Subscription={this.state.subscription} ShowFeatures={this.state.showFeatures} HideFeatureList={this.state.hideFeatureList}/>
+                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                        <PlanView showHideFeatures={this.showHideFeatures} PlanIcon={EarlyBirdPlanIcon} PlanName={SUBSCRIPTION_PLANS['early_bird_monthly'].name} PlanMAU={SUBSCRIPTION_PLANS['early_bird_monthly'].mau} 
+                                            PlanAmountMonthly={SUBSCRIPTION_PLANS['early_bird_monthly'].amount} PlanAmountYearly={SUBSCRIPTION_PLANS['early_bird_yearly'].amount}
+                                            PricingMonthlyHidden={this.state.pricingMonthlyHidden}
+                                            Subscription={this.state.subscription} ShowFeatures={this.state.showFeatures} HideFeatureList={this.state.hideFeatureList}/>
+                                    </div>
+                                    
 
-                                    <div className="col-lg-3 col-md-3 col-xs-12">
+                                    <div className="col-lg-4 col-md-4 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container enterprise">
                                                 <div className="pricing-table-header">
