@@ -255,6 +255,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'getGroupListByFilter':
                         return oInstance.getGroupListByFilter(params);
                         break;
+                    case 'updateMessageMetadata':
+                        return oInstance.updateMessageMetadata(params);
+                        break;
 
                 }
             } else if ($applozic.type(appOptions) === 'object') {
@@ -1032,6 +1035,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
         };
         
+        _this.updateMessageMetadata = function (params){
+            mckMessageService.updateMessageMetadata(params);
+        }
+        
         _this.sendGroupMessage = function (params) {
             if (typeof params === 'object') {
                 params = $applozic.extend(true, {}, message_default_options, params);
@@ -1749,6 +1756,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_group_member_search_list = $applozic("#mck-group-member-search-list");
             var $mck_no_gsm_text = $applozic("#mck-no-gsm-text");
             var MESSAGE_SEND_URL = "/rest/ws/message/send";
+            var UPDATE_MESSAGE_METADATA = "/rest/ws/message/update/metadata"
             var GROUP_CREATE_URL = "/rest/ws/group/v2.1/create";
             var MESSAGE_LIST_URL = "/rest/ws/message/list";
             var UPDATE_REPLY_MAP = "/rest/ws/message/detail"
@@ -2764,6 +2772,26 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
                 $('#mck-reply-to-div').removeClass('vis').addClass('n-vis');
+            };
+
+            _this.updateMessageMetadata = function (messagePxy) {
+               if(! messagePxy.metadata && ! messagePxy.messageKey){
+                   console.log('empty metadata');
+                   return;
+               }
+                mckUtils.ajax({
+                    type: 'POST',
+                    url: MCK_BASE_URL + UPDATE_MESSAGE_METADATA,
+                    global: false,
+                    data: w.JSON.stringify(messagePxy),
+                    contentType: 'application/json',
+                    success: function (data) {
+                       console.log('metadata updated: ', data)  
+                    },
+                    error: function () {
+                       
+                    }
+                });
             };
 
             _this.downloadImage = function (fileurl) {
@@ -4473,9 +4501,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
-                if(msg.metadata.askHotelCity){
+                if(msg.metadata.askHotelCity && msg.metadata.askHotelCity=="true"){
                     $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    mckMessageService.updateMessageMetadata({key:msg.key, metadata:{askHotelCity:false}})
                 }
                 if (msg.contentType === 23) {
 
@@ -5081,6 +5110,15 @@ var MCK_CLIENT_GROUP_MAP = [];
                     hint: false,
                     minLength: 3,
                     backdropOnFocus: true,
+                    menu: '<ul class="mcktypeahead mck-dropup-menu"></ul>',
+                    show: function() {
+                        var t = e.extend({}, this.$element.offset(), {
+                            height: this.$element[0].offsetHeight
+                        });
+                        return this.$menu.css({
+                            left: t.left
+                        }), this.$menu.show(), this.shown = !0, this
+                    },
                     dynamic: true,
                     source: function (query, process) {
                         mckUtils.ajax({
