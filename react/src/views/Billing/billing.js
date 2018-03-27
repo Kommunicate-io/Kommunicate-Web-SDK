@@ -51,6 +51,9 @@ class Billing extends Component {
     };
 
     componentDidMount() {
+        //
+        document.getElementById("chargebee-init").click();
+
         this.processSubscriptionPlanStatus();
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
@@ -136,6 +139,21 @@ class Billing extends Component {
         //    try {
         var cbInstance = window.Chargebee.getInstance();
         //console.log(cbInstance);
+
+        /*
+        var cbInstance;
+        try {
+            cbInstance = window.Chargebee.getInstance();
+        } catch(err) {
+            console.log(err);
+         //   alert("chargebee instance not created.");
+           // return;
+        }
+        //console.log(cbInstance);
+
+        if (typeof cbInstance === "undefined") {
+            return;
+        } */
 
         cbInstance.setCheckoutCallbacks(function (cart) {
             // you can define a custom callbacks based on cart object
@@ -286,6 +304,7 @@ class Billing extends Component {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-block">
+                                <button id="chargebee-init" hidden></button>
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
