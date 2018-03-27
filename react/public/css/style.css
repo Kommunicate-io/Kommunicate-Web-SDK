@@ -2552,6 +2552,7 @@ tbody.collapse.show {
   margin-bottom: 0;
   list-style: none; }
 .integrations-nav-link{
+  margin-left: -1px;
   width: auto !important;
   padding-top: 4px !important ;
 }
