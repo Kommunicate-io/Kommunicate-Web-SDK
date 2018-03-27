@@ -99,6 +99,7 @@ getHotelCardTemplate : function(options,sessionId){
 
 getRoomDetailTemplate: function (options, sessionId) {
     let guest=options.NoOfGuest=="undefined"?1:options.NoOfGuest
+    let dayRates = (options.DayRates.Amount)?options.DayRates.Amount:options.Price.RoomPrice;
 
     return `<div class="km-single-card-message">
                 <div class="message received km-blocked-room">
@@ -113,7 +114,7 @@ getRoomDetailTemplate: function (options, sessionId) {
                             </div>
                             <div class="km-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
-                                <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + Math.ceil(options.DayRates.Amount) + `</span>
+                                <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + Math.ceil(dayRates) + `</span>
                             </div>
                             <div class="km-blocked-room-sub-total">
                                 <p>Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
