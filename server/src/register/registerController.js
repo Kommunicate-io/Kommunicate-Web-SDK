@@ -93,7 +93,8 @@ exports.patchCustomer = (req,res)=>{
   const userId = req.params.userId; 
   console.log("request recieved to update customer: ",userId, "body",customer);
   if (customer.websiteUrl) {
-    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage }).catch(err => {
+    let appName=(customer.companyName)?customer.companyName:"";
+    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName}).catch(err => {
       console.log('error while updating application')
     })  
   }
