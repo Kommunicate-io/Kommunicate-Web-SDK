@@ -92,6 +92,9 @@ exports.updateSuggestion = (req, res) => {
 	if (null !== req.body.content) {
 		suggestion['content'] = req.body.content
 	}
+	if (null !== req.body.status) {
+		suggestion['status'] = req.body.status
+	}
 	autosuggestService.updateSuggetion(suggestion).then(response => {
 		res.status(200).json({ code: "SUGESSTION_UPDATED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
