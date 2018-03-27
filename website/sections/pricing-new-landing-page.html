@@ -20,7 +20,7 @@
 
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="pricing-table">
-                    <div class="pricing-table-container">
+                    <div class="pricing-table-container startup">
                         <div class="pricing-table-header">
                             <h2 class="pricing-table-plan-title">Startup</h2>
                             <div class="price-image-container">
@@ -65,6 +65,7 @@
                             </div>
                             
                         </div>
+                        
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
@@ -76,6 +77,10 @@
                                     <h4>250 Chat users /mo</h4>
                                     <h6>Unlimited Agents</h6>
                                 </div>                              
+                            </div>
+                            <div class="pricing-table-footer">
+                                <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Sign Up Now</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
                             </div>
                             <div class="pricing-table-body-footer">
                                 <p style="opacity:0;">Includes...</p>
@@ -89,10 +94,10 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="pricing-table-footer">
+                        <!-- <div class="pricing-table-footer">
                             <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Sign Up Now</a>
                             <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -155,6 +160,7 @@
                             </div>
                             
                         </div>
+                        
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
@@ -168,20 +174,24 @@
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
+                            <div class="pricing-table-footer">
+                                <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialLaunch',1,{'nonInteraction': true});">Start Free Trial</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestLaunch',1,{'nonInteraction': true});">Schedule a demo</a>
+                            </div>
                             <div class="pricing-table-body-footer">
                                     <p>All in Startup</p>
                                 <ul>
                                     <li>Unlimited bots</li>
                                     <li>Advanced reporting</li>
                                     <li>White label (removed powered by Kommunicate)</li>
-                                    <li>Data retention: Forever</li>
+                                    <li>Chat &amp; Email Support</li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="pricing-table-footer">
+                        <!-- <div class="pricing-table-footer">
                             <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialLaunch',1,{'nonInteraction': true});">Start Free Trial</a>
                             <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestLaunch',1,{'nonInteraction': true});">Schedule a demo</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -257,6 +267,7 @@
                             </div>
                             
                         </div>
+                        
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
@@ -270,6 +281,10 @@
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
+                            <div class="pricing-table-footer">
+                                <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialGrowth',1,{'nonInteraction': true});">Start Free Trial</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestGrowth',1,{'nonInteraction': true});">Schedule a demo</a>
+                            </div>
                             <div class="pricing-table-body-footer">
                                 <p>All in Startup</p>
                                 <ul>
@@ -280,10 +295,10 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="pricing-table-footer">
+                        <!-- <div class="pricing-table-footer">
                             <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialGrowth',1,{'nonInteraction': true});">Start Free Trial</a>
                             <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestGrowth',1,{'nonInteraction': true});">Schedule a demo</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -364,6 +379,7 @@
                             </div>
                             
                         </div>
+                        
                         <div class="pricing-table-body">
                             <div class="pricing-table-body-header">
                                 <div class="pricing-value">
@@ -376,6 +392,12 @@
                                     <h6>Unlimited Agents</h6>
                                 </div>
                             </div>
+
+                            <div class="pricing-table-footer">
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','Contact','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});">Contact us</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});" style="visibility:hidden;">Schedule a demo</a>
+                            </div>
+
                             <div class="pricing-table-body-footer">
                                 <p>All in Growth</p>
                                 <ul>
@@ -386,10 +408,10 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="pricing-table-footer">
+                        <!-- <div class="pricing-table-footer">
                             <a href="https://calendly.com/kommunicate/15min" target="_blank" class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','Contact','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});">Contact us</a>
                             <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});" style="visibility:hidden;">Schedule a demo</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
