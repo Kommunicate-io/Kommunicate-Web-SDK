@@ -672,34 +672,40 @@
                 var t = Object(s.a)(e, "cbGaEnabled"),
                     n = Object(s.a)(e, "cbFbqEnabled");
                 ! function() {
-                    document.addEventListener("DOMContentLoaded", function() {
-                        var a = d.init({
+                    //------kommunicate.io-------//
+                    //Hack to check click on chargebee-init in order to support in react
+                    //document.addEventListener("DOMContentLoaded", function() {
+                    //document.getElementById("chargebee-init").addEventListener("click", function() {
+
+                    document.addEventListener('click',function(event){
+                        if(event.target && event.target.id == 'chargebee-init'){
+                            var a = d.init({
                                 site: Object(s.a)(e, "cbSite"),
                                 domain: Object(s.a)(e, "cbDomain"),
                                 enableGATracking: !!t,
                                 enableFBQTracking: !!n
                             })
 
-                        //----Kommunicate.io-----//
-                        var r = a.createChargebeePortal();
-                        document.addEventListener('click',function(event){
-                            if(event.target && event.target.getAttribute('data-cb-type') == 'portal'){
-                                i = event.target;
+                            //----Kommunicate.io-----//
+                            var r = a.createChargebeePortal();
+                            document.addEventListener('click',function(event){
+                                if(event.target && event.target.getAttribute('data-cb-type') == 'portal'){
+                                    i = event.target;
+                                    i.cbPortal = r, i.addEventListener("click", function(e) {
+                                        i.cbPortal.open(), e.preventDefault(), e.stopPropagation()
+                                    })
+                                }
+                            })
+                            //----Kommunicate.io-----//
+
+                        /* i = document.querySelector("[data-cb-type=portal]");
+                            if (i) {
+                                var r = a.createChargebeePortal();
                                 i.cbPortal = r, i.addEventListener("click", function(e) {
                                     i.cbPortal.open(), e.preventDefault(), e.stopPropagation()
                                 })
-                            }
-                         })
-                        //----Kommunicate.io-----//
-
-
-                           /* i = document.querySelector("[data-cb-type=portal]");
-                        if (i) {
-                            var r = a.createChargebeePortal();
-                            i.cbPortal = r, i.addEventListener("click", function(e) {
-                                i.cbPortal.open(), e.preventDefault(), e.stopPropagation()
-                            })
-                        } */
+                            } */
+                        }
                     })
                 }()
             }
