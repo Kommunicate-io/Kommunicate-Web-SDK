@@ -113,11 +113,11 @@ getRoomDetailTemplate: function (options, sessionId) {
                             </div>
                             <div class="km-blocked-room-price">
                                 <p>Price:<br><span>(Per Room Per Night)</span></p>
-                                <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + options.Price.RoomPrice + `</span>
+                                <span>`+(options.Price.CurrencyCode == "INR" ? '&#x20B9;' : options.Price.CurrencyCode ) + " " + Math.ceil(options.DayRates.Amount) + `</span>
                             </div>
                             <div class="km-blocked-room-sub-total">
                                 <p>Total:<br><span>(1 Room for `+ options.NoOfNights +` Nights)</span></p>
-                                <span> `+ (options.Price.CurrencyCode=="INR"?'&#x20B9;': options.Price.CurrencyCode ) + " " +options.NoOfNights * options.Price.RoomPrice + ` </span>
+                                <span> `+ (options.Price.CurrencyCode=="INR"?'&#x20B9;': options.Price.CurrencyCode ) + " " +Math.ceil(options.Price.RoomPrice) + ` </span>
                             </div>
                         </div>
                         <div class="km-blocked-room-button-container">
