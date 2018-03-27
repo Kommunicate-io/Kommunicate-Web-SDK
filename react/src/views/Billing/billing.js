@@ -351,7 +351,7 @@ class Billing extends Component {
                                     </div>
                                     <div className="col-md-6 text-right">
                                         {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth_monthly">Buy this plan</button>)
+                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="early_bird_monthly" data-cb-type="checkout" data-cb-plan-id="early_bird_monthly">Buy this plan</button>)
                                             :
                                             null
                                         }
