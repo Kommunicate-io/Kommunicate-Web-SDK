@@ -39,7 +39,7 @@ class Aside extends Component {
        return;
      }else {
        //window.location ="/dashboard";
-       window.appHistory.push('/dashboard');
+       //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
   }

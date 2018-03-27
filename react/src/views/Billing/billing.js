@@ -18,6 +18,7 @@ import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 import PlanView from '../.../../../components/PlanDetails/PlanView';
 
 import RadioButton from '../../components/RadioButton/RadioButton';
+import { Z_DEFAULT_STRATEGY } from 'zlib';
 // import {RadioGroup, Radio} from '../../components/Radio/Radio';
 
 class Billing extends Component {
@@ -63,6 +64,7 @@ class Billing extends Component {
 
         if (customerId) {
             this.updateSubscription(this.state.subscription, customerId);
+            this.setState({hideSubscribedSuccess: false});
         }
 
         document.getElementById("portal").addEventListener("click", function (event) {
