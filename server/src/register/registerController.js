@@ -16,7 +16,7 @@ exports.createCustomer = (req,res)=>{
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
-  const subscription = req.body.subscription||0;
+  const subscription = req.body.subscription||'startup';
   let response={};
   let userDetail =Object.assign({},req.body);
   userDetail.email=email;

@@ -29,11 +29,11 @@ class Billing extends Component {
             pricingYearlyHidden: false,
             hideFeatureList: true,
             showFeatures: 'Show Features',
-            radioButtonChecked: true,
-            showSubscribedSuccess: false,
+            yearlyChecked: false,
+            hideSubscribedSuccess: true,
             subscription: CommonUtils.getUserSession().subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
-            currentPlan: SUBSCRIPTION_PLANS[0],
+            currentPlan: SUBSCRIPTION_PLANS['startup'],
             trialLeft: 0
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
@@ -44,6 +44,10 @@ class Billing extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
+
+        if (CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == 0) {
+            this.state.subscription = 'startup';
+        }
     };
 
     componentDidMount() {
@@ -89,7 +93,12 @@ class Billing extends Component {
         let subscribeElems = document.getElementsByClassName("chargebee");
 
         for (var i = 0, max = subscribeElems.length; i < max; i++) {
-            subscribeElems[i].click();
+            if (subscribeElems[i].classList.contains('n-vis')) {
+                subscribeElems[i].click();
+            }
+            if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
+                subscribeElems[i].disabled = true;
+            }
         }
     }
 
@@ -124,52 +133,52 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-    //    try {
-            var cbInstance = window.Chargebee.getInstance();
-            console.log(cbInstance);
-    
-            cbInstance.setCheckoutCallbacks(function (cart) {
-                // you can define a custom callbacks based on cart object
-                return {
-                    loaded: function () {
-                        console.log("checkout opened");
-                    },
-                    close: function () {
-                        console.log("checkout closed");
-                    },
-                    success: function (hostedPageId) {
-                        console.log("success, hostedPageId: " + hostedPageId);
-                    },
-                    step: function (value) {
-                        // value -> which step in checkout
-                        console.log(value);
-                        if (value == "thankyou_screen") {
-                            let plans = document.getElementsByClassName('checkout active');
-                            that.updateSubscription(Number(plans[0].getAttribute('data-subscription')));
-                        }
-                    },
-                    visit: function (visit) {
-                        // Optional
-                        // called whenever the customer navigates different sections in portal
-                    },
-                    paymentSourceAdd: function () {
-                        // Optional
-                        // called whenever a new payment source is added in portal
-                    },
-                    paymentSourceUpdate: function () {
-                        // Optional
-                        // called whenever a payment source is updated in portal
-                    },
-                    paymentSourceRemove: function () {
-                        // Optional
-                        // called whenever a payment source is removed in portal.
+        //    try {
+        var cbInstance = window.Chargebee.getInstance();
+        //console.log(cbInstance);
+
+        cbInstance.setCheckoutCallbacks(function (cart) {
+            // you can define a custom callbacks based on cart object
+            return {
+                loaded: function () {
+                    console.log("checkout opened");
+                },
+                close: function () {
+                    console.log("checkout closed");
+                },
+                success: function (hostedPageId) {
+                    console.log("success, hostedPageId: " + hostedPageId);
+                },
+                step: function (value) {
+                    // value -> which step in checkout
+                    console.log(value);
+                    if (value == "thankyou_screen") {
+                        let plans = document.getElementsByClassName('checkout active');
+                        that.updateSubscription(plans[0].getAttribute('data-subscription'));
                     }
+                },
+                visit: function (visit) {
+                    // Optional
+                    // called whenever the customer navigates different sections in portal
+                },
+                paymentSourceAdd: function () {
+                    // Optional
+                    // called whenever a new payment source is added in portal
+                },
+                paymentSourceUpdate: function () {
+                    // Optional
+                    // called whenever a payment source is updated in portal
+                },
+                paymentSourceRemove: function () {
+                    // Optional
+                    // called whenever a payment source is removed in portal.
                 }
-            });
-       /* } catch(error) {
-            console.log("chargebee error");
-            console.log(error);
-        }    */   
+            }
+        });
+        /* } catch(error) {
+             console.log("chargebee error");
+             console.log(error);
+         }    */
 
     }
 
@@ -189,7 +198,6 @@ class Billing extends Component {
 
         that.updateCustomerSubscription(customerInfo)
             .then(response => {
-                console.log(response)
                 if (response.data.code === 'SUCCESS') {
                     userSession.subscription = subscription;
                     CommonUtils.setUserSession(userSession);
@@ -206,8 +214,11 @@ class Billing extends Component {
     }
 
     processSubscriptionPlanStatus() {
-        if (this.state.subscription > 0) {
+        if (this.state.subscription != '' && this.state.subscription != 'startup') {
             this.setState({ currentPlan: SUBSCRIPTION_PLANS[this.state.subscription] });
+            if (this.state.subscription.indexOf('yearly') != -1) {
+                this.setState({yearlyChecked: true});
+            }
         } else {
             var now = new Date();
             var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
@@ -216,12 +227,11 @@ class Billing extends Component {
 
             if (diffDays < 31) {
                 this.setState({ trialLeft: (31 - diffDays) });
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS[2] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['growth_monthly'] });
             } else {
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS[0] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['startup'] });
             }
         }
-
     }
 
     updateCustomerSubscription(customerInfo) {
@@ -238,7 +248,6 @@ class Billing extends Component {
             }
         })).then(function (response) {
             if (response.status === 200 && response.data !== undefined) {
-                console.log(response);
                 return response;
             }
 
@@ -254,7 +263,7 @@ class Billing extends Component {
         //TODO: handle the functionality of Radio button checks
     }
     onCloseSubscribedSuccess() {
-        this.setState({showSubscribedSuccess: true});
+        this.setState({ hideSubscribedSuccess: false });
     }
 
     render() {
@@ -277,8 +286,8 @@ class Billing extends Component {
                     <div className="col-md-10">
                         <div className="card">
                             <div className="card-block">
-                                {this.state.subscription == 0 ?
-                                    (this.state.trialLeft > 0 && this.trialLeft <= 30 ?
+                                {this.state.subscription == '' || this.state.subscription == 'startup' ?
+                                    (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
                                             <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Startup Plan (FREE) at the end of the trial period.</p>
                                         </div>
@@ -294,21 +303,21 @@ class Billing extends Component {
                                 }
 
                                 {/* Subscribe successfully box */}
-                                <div className="subscribe-success-error-container text-center" hidden={this.state.showSubscribedSuccess}>
+                                <div className="subscribe-success-error-container text-center" hidden={this.state.hideSubscribedSuccess}>
                                     <div className="subscribe-success_img-container">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56">
                                             <g fill="#2DD35C">
-                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
-                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
+                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z" />
+                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z" />
                                             </g>
                                         </svg>
                                     </div>
                                     <h3 className="subscribe-success-error-text">You have been successfully subscribed</h3>
                                     <button className="close-modal-btn" onClick={this.onCloseSubscribedSuccess}>
-                                    CLOSE
+                                        CLOSE
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                                            <path d="M0 0h24v24H0z" fill="none" />
                                         </svg>
                                     </button>
                                 </div>
@@ -320,19 +329,23 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        {this.state.trialLeft > 0 && this.trialLeft <= 30 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
+                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
+                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth">Buy this plan</button>)
                                             :
                                             null
                                         }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
                                     </div>
-                                    <div className="radio-btn-container">
-                                        <form>
-                                            <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedYearly} />
-                                            <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.radioButtonChecked} label={billedMonthly} />
-                                        </form>
-                                    </div>
+                                    {this.state.subscription != 'startup' ?
+                                        (
+                                        <div className="radio-btn-container">
+                                            <form>
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.yearlyChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={!this.state.yearlyChecked} label={billedMonthly} />
+                                            </form>
+                                        </div>
+                                        ) : null
+                                    }
                                 </div>
 
                                 {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
@@ -348,11 +361,11 @@ class Billing extends Component {
                                 style={customStyles} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
                                 <div className="row text-center">
                                     <h1 className="change-plan-text">Change Plan</h1>
-                                    <hr/>
+                                    <hr />
                                     <button className="close-modal-btn" onClick={this.onCloseModal}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                                            <path d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                                            <path d="M0 0h24v24H0z" fill="none" />
                                         </svg>
                                     </button>
                                     <hr />
@@ -402,10 +415,13 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 0) ?
-                                                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="0" data-cb-type="checkout" data-cb-plan-id="startup">Select Plan</button>
-                                                }  
+                                                    {
+                                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup">
+                                                            {
+                                                                (this.state.subscription == 'startup') ? "Current Plan" : "Select Plan"
+                                                            }
+                                                        </button>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -430,7 +446,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>1000 Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -445,10 +460,16 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 1) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="1" data-cb-type="checkout" data-cb-plan-id="launch">Select Plan</button>
-                                                }
-                                                   
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_monthly" data-cb-type="checkout" data-cb-plan-id="launch_monthly">
+                                                        {
+                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                     </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_yearly" data-cb-type="checkout" data-cb-plan-id="launch_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -473,7 +494,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>5000 Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -488,10 +508,16 @@ class Billing extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 2) ? <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth" disabled>Current Plan</button> : <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="2" data-cb-type="checkout" data-cb-plan-id="growth">Select Plan</button>
-                                                }
-                                                    
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="growth_monthly" data-cb-type="checkout" data-cb-plan-id="growth_monthly">
+                                                        {
+                                                            (this.state.subscription.indexOf('growth') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="growth_yearly" data-cb-type="checkout" data-cb-plan-id="growth_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('growth') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -504,7 +530,6 @@ class Billing extends Component {
                                                     <div className="price-image-container">
                                                         <img src={EnterprisePlanIcon} alt="Enterprise Plan Icon" />
                                                     </div>
-
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <div className="pricing-table-body-header">
@@ -515,7 +540,6 @@ class Billing extends Component {
                                                         </div>
                                                         <div className="price-mau">
                                                             <h4>Unlimited Chat users /mo</h4>
-
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -525,15 +549,20 @@ class Billing extends Component {
                                                             <li>Custom bot development</li>
                                                             <li>Personalized support on Phone &amp; Skype</li>
                                                             <li>Customised solution for your specific needs</li>
-
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                {
-                                                    (this.state.subscription === 3) ? <button className="km-button km-button--primary" disbled>Current Plan</button> : <button className="km-button km-button--primary">Select Plan</button>
-                                                }
-                                                    
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">
+                                                        {
+                                                            (this.state.subscription.indexOf('enterprise') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_yearly" data-cb-type="checkout" data-cb-plan-id="enterprise_yearly">
+                                                        {
+                                                            (this.state.subscription.indexOf('enterprise') != -1) ? "Current Plan" : "Select Plan"
+                                                        }
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -550,29 +579,43 @@ class Billing extends Component {
 }
 
 const SUBSCRIPTION_PLANS = {
-    0: {
-        'id': 'startup',
+    'startup': {
         'icon': StartupPlanIcon,
         'name': 'Startup',
         'mau': '250',
         'amount': '0/month'
     },
-    1: {
-        'id': 'launch',
+    'launch_monthly': {
+        'icon': LaunchPlanIcon,
+        'name': 'Launch',
+        'mau': '1000',
+        'amount': '49/month'
+    },
+    'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': '1000',
         'amount': '39/month'
     },
-    2: {
-        'id': 'growth',
+    'growth_monthly': {
+        'icon': GrowthPlanIcon,
+        'name': 'Growth',
+        'mau': '5000',
+        'amount': '199/month'
+    },
+    'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': '5000',
         'amount': '149/month'
     },
-    3: {
-        'id': 'enterprise',
+    'enterprise_monthly': {
+        'icon': EnterprisePlanIcon,
+        'name': 'Enterprise',
+        'mau': 'Custom',
+        'amount': 'Custom'
+    },
+    'enterprise_yearly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Custom',
