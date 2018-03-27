@@ -551,6 +551,8 @@ function MckGroupService() {
                         response.data = group;
                     }
                 } else if (data.status === "error") {
+                    
+                    response.code =data.errorResponse[0].errorCode;
                     response.status = "error";
                     response.errorMessage = data.errorResponse[0].description;
                 }
