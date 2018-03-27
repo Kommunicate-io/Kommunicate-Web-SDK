@@ -14,6 +14,8 @@ import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
+import {Link} from 'react-router-dom';
+
 
 class Tabs extends Component {
 
@@ -221,7 +223,7 @@ class Tabs extends Component {
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
                   <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> Conversation Routing </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
+                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> <Link to="/agent-assignment">Conversation Routing </Link>  </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
                   </p>
                 </div>
               </div>
@@ -257,7 +259,7 @@ class Tabs extends Component {
           </ModalHeader>
           <ModalBody>
             <div className="row">
-              <label className="col-sm-3">Title:</label>
+              <label className="col-sm-12 km-faq-label">Title:</label>
             </div>
             <div className="row">
               <div className="col-sm-12">
@@ -265,7 +267,7 @@ class Tabs extends Component {
               </div>
             </div>
             <div className="row mt-4">
-              <label className="col-sm-3">FAQ Content:</label>
+              <label className="col-sm-12 km-faq-label">FAQ Content:</label>
             </div>
             <div className="row">
               <div className="col-md-12">
