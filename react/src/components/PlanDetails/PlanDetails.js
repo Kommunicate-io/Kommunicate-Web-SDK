@@ -43,14 +43,14 @@ export default class PlanDetails extends Component {
                         </p>
                         <p className="active-plan-mau">Billed Monthly</p>
                     </div>
-                    <div className="active-plan-dropdown">
+                    {/* <div className="active-plan-dropdown">
                         <div className="select-container">
                             <select className="monthly-yearly-select" id="monthly-yearly-select">
                                 <option value="monthly">Billed Monthly</option>
                                 <option value="yearly">Billed Yearly</option>
                             </select>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="col-md-12 active-plan-more-details" hidden={this.state.hidePlanDetails}>
