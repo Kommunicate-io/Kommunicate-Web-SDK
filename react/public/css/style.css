@@ -10210,6 +10210,8 @@ input:required {
   text-align: left;
   color: #515050;
   text-align: justify;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 
 .km-bot-integration-coming-soon {
@@ -10524,6 +10526,7 @@ input:required {
     height: 200px;
     overflow-y: auto;
     padding: 0 10px 0 10px;
+    overflow-x: hidden;
 }
 
 .km-bot-list-of-faqs-container > div:nth-child(even) {
@@ -10532,4 +10535,21 @@ input:required {
 
 .km-bot-list-of-faqs-container > div {
     height: 55px;
+}
+
+.km-faq-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.km-faq-second-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  border: solid 1px #c0bdbd;;
+  margin-left: -15px;
+  margin-right: -15px;
 }
