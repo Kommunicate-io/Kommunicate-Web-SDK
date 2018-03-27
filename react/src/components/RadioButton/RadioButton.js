@@ -14,13 +14,17 @@ class RadioButton extends Component {
         const { idRadioButton } = this.props;
         const { checked } = this.props;
         const { handleOnChange } = this.props;
+        const currentpath = window.location.pathname;
 
         return (
             <div className="radiobutton">
                 <label className="radio-button-container" htmlFor={idRadioButton} >
                     <input id={idRadioButton} type='radio' value={label} checked={checked} disabled={disabled} onChange={handleOnChange} />
-                    <span className="checkmark"></span>
-                    {label}
+                    <div className="radio-wrapper">
+                        <div className="checkmark" style={(currentpath.includes('billing')) ? {top: '10px'} : {top:'50%'}}></div>
+                        {label}
+                    </div>
+                    
                 </label>
             </div>
         );

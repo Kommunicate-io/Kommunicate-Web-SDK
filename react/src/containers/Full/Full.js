@@ -11,7 +11,7 @@ import Users from '../../views/Users/'
 import Conversations from '../../views/Conversations/'
 import Reports from '../../views/Reports/'
 import Bot from '../../views/Bot/'
-import Integration from '../../views/Settings/Integration/'
+import Install from '../../views/Settings/Installation'
 import Admin from '../../views/Admin/'
 import Team from '../../views/Team/'
 import Autoreply from '../../views/Autoreply/'
@@ -21,6 +21,7 @@ import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
 import Faq from '../../views/Faq/'
 import Billing from '../../views/Billing/'
+import Integrations from '../../views/Integrations/Integrations.js'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -119,10 +120,11 @@ class Full extends Component {
                 <Route exact path="/welcome-message" name="Welcome" component={Welcome}/>
                 <Route exact path="/away-message" name="AwayMessage" component={AwayMessage}/>
                 <Route exact path="/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
-                <Route exact path="/install" name="Integration" component={Integration}/>
+                <Route exact path="/install" name="Install" component={Install}/>
                 <Route exact path="/agent-app" name="Download" component={Download}/>
                 <Route exact path="/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
                 <Route exact path="/billing" name="Billing" component={Billing}/>
+                <Route exact path="/Integrations" name="Billing" component={Integrations}/>
                 }}/> 
                   
                 

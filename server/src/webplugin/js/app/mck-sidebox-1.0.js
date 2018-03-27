@@ -124,7 +124,9 @@ var MCK_CLIENT_GROUP_MAP = [];
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
-        }
+            // updating groupName to conversationTitle, supporting groupName for backward compatibility
+            appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
+                }
         var oInstance = undefined;
         if (typeof ($mck_sidebox.data('applozic_instance')) !== 'undefined') {
             oInstance = $mck_sidebox.data('applozic_instance');
@@ -438,7 +440,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var ringToneService;
         var mckVideoCallringTone = null;
         var IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
-        var DEFAULT_GROUP_NAME = appOptions.groupName;
+        var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
@@ -1291,6 +1293,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
+                userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
                 USER_DEVICE_KEY = '';
                 var isValidated = _this.validateAppSession(userPxy);
@@ -1764,63 +1767,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
             _this.createNewConversation = function (params, callback) {
-                // var group = [];
-                // var groupName;
-                // group.push(params.agentId);
-                // group.push(kommunicate._globals.userId);
-                // if(params.botIds){
-                //     console.log(params.botIds);
-                //     for (var i = 0; i < params.botIds.length; i++) {
-                //         group.push(params.botIds[i]);
-                //     }
-                // }
-                // groupName= group.sort().join().replace(/,/g, "_").substring(0, 250);
-                $applozic.fn.applozic("createGroup", {
-                    groupName: params.groupName,
-                    type: 10,
-                    admin: params.agentId,
-                    users: [
-                        {
-                            userId: "bot",
-                            groupRole: 2
-                        },
-                        {
-                            userId: params.agentId,
-                            groupRole: 1
-                        }
-                    ],
-                    metadata: {
-                        CREATE_GROUP_MESSAGE: "",
-                        REMOVE_MEMBER_MESSAGE:"",
-                        ADD_MEMBER_MESSAGE:"",
-                        JOIN_MEMBER_MESSAGE: "",
-                        GROUP_NAME_CHANGE_MESSAGE:"",
-                        GROUP_ICON_CHANGE_MESSAGE:"",
-                        GROUP_LEFT_MESSAGE: "",
-                        DELETED_GROUP_MESSAGE:"",
-                        GROUP_USER_ROLE_UPDATED_MESSAGE:"",
-                        GROUP_META_DATA_UPDATED_MESSAGE: "",
-                        CONVERSATION_ASSIGNEE: params.agentId,
-                        //ALERT: "false",
-                        HIDE: "true"
-                    },
-                    callback: function (response) {
-                        if (response.status === 'success' && response.data.clientGroupId) {
-                            Kommunicate.createNewConversation({
-                                "groupId": response.data.clientGroupId,
-                                "participentUserId": MCK_USER_ID,
-                                "defaultAgentId": DEFAULT_AGENT_ID,
-                                "applicationId": MCK_APP_ID
-                            }, function (err, result) {
-                                console.log(err, result);
-                                if (!err) {
-                                    callback(response.data.clientGroupId);
-                                }
-                            })
-                        }
-                        // 
-                    }
-                });
+                Kommunicate.startConversation(params,callback);
             }
             _this.loadConversationWithAgents = function (params, callback) {
                 if (window.applozic.PRODUCT_ID == "kommunicate") {
@@ -1829,24 +1776,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                         .addClass("n-vis");
                 }
 
-                var formData = "type=" + 10 + "&startIndex=" + 0 + "&limit=" + 10;
-                $applozic.ajax({
-                    url: MCK_BASE_URL + "/rest/ws/group/bytype",
-                    type: "get",
-                    data: formData,
-                    contentType: "application/json",
-                    success: function (result) {
-                        if (result.response.length > 0) {
-                            var groupId = result.response[0].id;
-                            if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
-                                $applozic.fn.applozic("loadGroupTab", groupId);
-                            }
-                            $applozic.fn.applozic("loadTab");
-                        } else {
-                            mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, callback);
-
-                        }
+                var options = {type:10,startIndex:0,limit:10};
+                //TO DO: set group detail data in session and fetch from their instead of making call every time.
+                Kommunicate.client.getGroupDetailByType(options, function(err,result){
+                    if(err){
+                         console.log("error while fetching group detail by type",err)
+                         return;
+                    }else if (result.response.length ==0) {
+                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, callback);
+                    } else if(result.response.length ==1) {
+                        var groupId = result.response[0].id;
+                        $applozic.fn.applozic("loadGroupTab", groupId);
+                    }else {
+                        $applozic.fn.applozic("loadTab");
                     }
+
                 });
             };
 
@@ -2061,16 +2005,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
                     $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
-                    if (!KommunicateUtils.getCookie("_km-f-vis_")) {
+                    /*if (!KommunicateUtils.getCookie("_km-f-vis_")) {
                         KommunicateUtils.setCookie("_km-f-vis_", "true");
                     } else {
                         KommunicateUtils.setCookie("_km-f-vis_", "false");
-                    }
+                    }*/
                     if (IS_ANONYMOUS_CHAT === "false") {
                         //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chat-login-modal").css("display", "block");
                     } else {
-                        if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
+                        if (true || KommunicateUtils.getCookie("_km-f-vis_") == "true") {
                             mckMessageService.loadConversationWithAgents({
                                 groupName: DEFAULT_GROUP_NAME,
                                 agentId: DEFAULT_AGENT_ID
@@ -2078,7 +2022,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                                Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID })
                             });
                         } else {
-                            var $this = $applozic(this);
+                            // not needed. remove this if every thing works fine.
+                            /*var $this = $applozic(this);
                             var elem = this;
                             if ($this.parents(".mck-search-list").length) {
                                 $mck_search.bind('blur');
@@ -2087,7 +2032,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 }, 600);
                             } else {
                                 _this.openChat(this);
-                            }
+                            }*/
                         }
                     }
                 });
@@ -4628,12 +4573,16 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (emoji_template.indexOf('emoji-inner') === -1 && msg.contentType === 0) {
                     var nodes = emoji_template.split("<br/>");
                     for (var i = 0; i < nodes.length; i++) {
-                        var x = d.createElement('div');
-                        x.appendChild(d.createTextNode(nodes[i]));
-                        if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
-                            x = $applozic(x).linkify({
-                                target: '_blank'
-                            });
+                        if (nodes[i] === "") {
+                            var x = d.createElement('BR');
+                        } else {
+                            var x = d.createElement('div');
+                            x.appendChild(d.createTextNode(nodes[i]));
+                            if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
+                                x = $applozic(x).linkify({
+                                    target: '_blank'
+                                });
+                            }
                         }
                         $textMessage.append(x);
                     }

@@ -3689,14 +3689,18 @@ var KM_CLIENT_GROUP_MAP = [];
 				if (emoji_template.indexOf('emoji-inner') === -1 && msg.contentType === 0) {
 					var nodes = emoji_template.split("<br/>");
 					for (var i = 0; i < nodes.length; i++) {
-						var x = d.createElement('div');
-						x.appendChild(d.createTextNode(nodes[i]));
-						if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
-							x = $kmApplozic(x).linkify({
-								target : '_blank'
-							});
+						if (nodes[i] === "") {
+							var x = d.createElement('BR');
+						} else {
+							var x = d.createElement('div');
+							x.appendChild(d.createTextNode(nodes[i]));
+							if (nodes[i] && nodes[i].match(LINK_MATCHER)) {
+								x = $kmApplozic(x).linkify({
+									target: '_blank'
+								});
+							}
 						}
-						$textMessage.append(x);
+							$textMessage.append(x);
 					}
 				} else {
 					$textMessage.html(emoji_template);
@@ -3783,11 +3787,11 @@ var KM_CLIENT_GROUP_MAP = [];
                 if (typeof msg.fileMeta === "object") {
                     if (msg.fileMeta.contentType.indexOf("image") !== -1) {
                         if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.getFileurl(msg) + '" area-hidden="true"></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.getFileurl(msg) + '" area-hidden="true"></img></a>';
                         } else if (msg.contentType === 5) {
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                         } else {
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media kmfancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
                         }
                     } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
                         return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + _this.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + _this.getFileurl(msg) + '" type="video/ogg"></video></a>';

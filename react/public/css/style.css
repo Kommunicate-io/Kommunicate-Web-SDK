@@ -2551,7 +2551,11 @@ tbody.collapse.show {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none; }
-
+.integrations-nav-link{
+  margin-left: -1px;
+  width: auto !important;
+  padding-top: 4px !important ;
+}
 .nav-link, .navbar .dropdown-toggle {
   display: block;
   padding: 0.5rem 1rem; }
@@ -10210,6 +10214,8 @@ input:required {
   text-align: left;
   color: #515050;
   text-align: justify;
+  margin-left: -15px;
+  margin-right: -15px;
 }
 
 .km-bot-integration-coming-soon {
@@ -10524,6 +10530,7 @@ input:required {
     height: 200px;
     overflow-y: auto;
     padding: 0 10px 0 10px;
+    overflow-x: hidden;
 }
 
 .km-bot-list-of-faqs-container > div:nth-child(even) {
@@ -10532,4 +10539,34 @@ input:required {
 
 .km-bot-list-of-faqs-container > div {
     height: 55px;
+}
+
+.km-faq-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.km-faq-second-container {
+  border-radius: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  border: solid 1px #c0bdbd;;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.km-faq-label {
+  height: 19px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #6a6666;
 }

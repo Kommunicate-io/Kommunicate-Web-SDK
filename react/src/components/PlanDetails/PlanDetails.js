@@ -78,6 +78,20 @@ export default class PlanDetails extends Component {
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
                                     </ul>
                                 </div> </div> 
+                        : PlanName === 'Early Bird' ? 
+                        <div> 
+                            <div className="info-bar-container">
+                                <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Startup Plan</a> and… </p>
+                            </div>
+                            <div className="active-plan-feature-list">
+                                <ul>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bot integrations</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integrations</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Priority email support</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
+                                </ul>
+                            </div> 
+                        </div> 
                         : PlanName === 'Growth' ? 
                             <div> 
                                 <div className="info-bar-container">

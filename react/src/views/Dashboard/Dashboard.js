@@ -114,27 +114,24 @@ class Dashboard extends Component {
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            data: [],
-            fillColor: "rgba(134,132,247,0.25)",
+            borderWidth: 2,
+            data: []
           },
           {
             label: 'Conversations',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            data: [],
-            fillColor: "rgba(134,132,247,0.25)",
+            borderWidth: 2,
+            data: []
           },
           {
             label: 'Messages',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            data: [],
-            fillColor: "rgba(134,132,247,0.25))",
+            borderWidth: 2,
+            data: []
           }
         ]
       }
