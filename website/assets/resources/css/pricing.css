@@ -483,7 +483,10 @@ position: relative;
         padding-top: 72px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 61px;
+        padding-top: 111px;
+    }
+    .pricing-table-body-footer {
+        padding-left: 15px;
     }
 }
 @media (min-width:992px) and (max-width:1199px) {
@@ -494,10 +497,10 @@ position: relative;
         padding-top: 51px;
     }
     .growth .pricing-table-footer {
-        padding-top: 97px;
+        padding-top: 72px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 85px;
+        padding-top: 61px;
     }
 }
 @media (max-width: 991px){
