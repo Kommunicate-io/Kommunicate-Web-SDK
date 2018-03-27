@@ -124,3 +124,24 @@ body {
     font-weight: 400;
 
 }
+.delete-confirmation-wrapper{
+    margin-left: 4px;
+    margin-top: 20px;
+    display: flex;
+    
+}
+.delete-question{
+    padding-top: 8px;
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.8px;
+    text-align: left;
+    color: #6a6666;
+}
+.yes-or-no-btn-wrapper{
+    margin-left: 51px;
+    padding-right: 16px;
+}
+.no-integration-btn{
+    margin-left: 12px
+}
