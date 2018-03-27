@@ -51,7 +51,8 @@ class Billing extends Component {
     };
 
     componentDidMount() {
-        //
+        /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
+        Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
 
         this.processSubscriptionPlanStatus();
