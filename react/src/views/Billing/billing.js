@@ -25,6 +25,11 @@ class Billing extends Component {
     constructor(props) {
         super(props);
 
+        let subscription = CommonUtils.getUserSession().subscription;
+        if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
+            subscription = 'startup';
+        }
+
         this.state = {
             modalIsOpen: false,
             toggleSlider: true,
@@ -34,7 +39,7 @@ class Billing extends Component {
             showFeatures: 'Show Features',
             yearlyChecked: false,
             hideSubscribedSuccess: true,
-            subscription: CommonUtils.getUserSession().subscription,
+            subscription: subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS['startup'],
             trialLeft: 0,
@@ -46,16 +51,14 @@ class Billing extends Component {
         this.onOpenModal = this.onOpenModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
+        this.selectYearly = this.selectYearly.bind(this);
+        this.selectMonthly = this.selectMonthly.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
         this.buyThisPlanClick = this.buyThisPlanClick.bind(this);
-       
-        if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
-            this.state.subscription = 'startup';
-        }
     };
 
     componentDidMount() {
+        
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
@@ -273,9 +276,18 @@ class Billing extends Component {
 
     }
 
-    handleYearlyMonthlyPlanChange() {
-        //TODO: handle the functionality of Radio button checks
+    selectYearly() {
+        /*this.setState({
+            yearlyChecked: true
+        });*/
     }
+
+    selectMonthly() {
+        /*this.setState({
+            yearlyChecked: false
+        });*/
+    }
+
     onCloseSubscribedSuccess() {
         this.setState({ hideSubscribedSuccess: false });
     }
@@ -371,8 +383,8 @@ class Billing extends Component {
                                         (
                                         <div className="radio-btn-container">
                                             <form>
-                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.yearlyChecked} label={billedYearly} />
-                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={!this.state.yearlyChecked} label={billedMonthly} />
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.selectYearly()} checked={this.state.yearlyChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.selectMonthly()} checked={!this.state.yearlyChecked} label={billedMonthly} />
                                             </form>
                                         </div>
                                         ) : null
