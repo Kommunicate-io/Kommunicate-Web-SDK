@@ -7,7 +7,8 @@ export let thirdPartyList = [{
     name: "Helpdocs",
     logo: HelpdocsLogo,
     subTitle: "Import your FAQs from Helpdocs",
-    integrationType:1,  
+    integrationType:1,
+    docsLink:"https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",  
     instructions:[
         "Log in to your HelpDocs dashboard",
         "Go to Settings",
@@ -20,7 +21,8 @@ export let thirdPartyList = [{
     name: "Zendesk",
     logo: ZendeskLogo,
     subTitle: "Open Zendesk ticket for all conversations",
-    integrationType: 2, 
+    integrationType: 2,
+    docsLink:"https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start", 
     instructions:[
         "Sign in to your Zendesk dashboard.",
         "Enter your Access Email Id of Zendesk",
@@ -37,6 +39,7 @@ export let thirdPartyList = [{
     subTitle: "Get company details of youranonymous visitors",
     logo: ClearbitLogo,
     integrationType: 3,
+    docsLink:"https://clearbit.com/docs",
     instructions:[
         "Login to your https://clearbit.com/ account",
         "Go to Dashboard > API to get the API Key",
