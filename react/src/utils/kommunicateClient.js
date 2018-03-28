@@ -301,9 +301,9 @@ const getAllSuggestions = () => {
     .catch(err => {console.log("Error in getting auto suggestions")});
 }
 
-const getSuggestionsByAppId = (applicationId) => {
+const getSuggestionsByAppId = (applicationId, type) => {
 
-  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId+'?type='+type
 
   return Promise.resolve(axios.get(autoSuggestUrl))
     .then(response => response.data.data)
