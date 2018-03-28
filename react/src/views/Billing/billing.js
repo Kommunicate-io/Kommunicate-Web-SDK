@@ -199,7 +199,7 @@ class Billing extends Component {
         let that = this;
 
         that.setState({subscription: subscription});
-        this.setState({ currentPlan: SUBSCRIPTION_PLANS[this.state.subscription] });
+        this.setState({ currentPlan: SUBSCRIPTION_PLANS[subscription] });
 
         let userSession = CommonUtils.getUserSession();
 
