@@ -16,7 +16,7 @@ import Modal from 'react-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 import PlanView from '../.../../../components/PlanDetails/PlanView';
-
+ 
 import RadioButton from '../../components/RadioButton/RadioButton';
 // import {RadioGroup, Radio} from '../../components/Radio/Radio';
 
@@ -63,6 +63,7 @@ class Billing extends Component {
 
         if (customerId) {
             this.updateSubscription(this.state.subscription, customerId);
+            this.setState({hideSubscribedSuccess: false});
         }
 
         document.getElementById("portal").addEventListener("click", function (event) {
