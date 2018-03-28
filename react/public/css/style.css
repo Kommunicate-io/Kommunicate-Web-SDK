@@ -10570,3 +10570,28 @@ input:required {
   text-align: left;
   color: #6a6666;
 }
+
+.km-faq-label-14 {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #515252;
+}
+
+.km-faq-label-14-500 {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #5c5f5f;
+}
+
