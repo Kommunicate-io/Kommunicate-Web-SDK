@@ -79,7 +79,7 @@ class Billing extends Component {
     }
 
     buyThisPlanClick = () => {
-        this.setState({showPlanSelection: true});
+        this.setState({showPlanSelection: !this.state.showPlanSelection});
     }
 
     onOpenModal = () => {
@@ -342,15 +342,30 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
 
-                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
+                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
                                             (
                                             <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
                                             )
                                             :
                                             null
                                         }
+                                        {!this.state.showPlanSelection ?
+                                            (<button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>)
+                                            :
+                                            null
+                                        }
+
+                                    {/* Next and Cancel Buttons */}
+                                    {this.state.showPlanSelection ?
+                                       (
+                                        <div>
+                                            <button id="next-step-btn" className="km-button km-button--primary next-step-btn ">Next</button>
+                                            <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={this.buyThisPlanClick}>Cancel</button>
+                                        </div>
+                                       ) : null
+                                    }
+
                                     </div>
                                     {this.state.showPlanSelection ?
                                         (
