@@ -63,11 +63,13 @@ class Billing extends Component {
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
 
+        let userSession = CommonUtils.getUserSession();
+
         this.processSubscriptionPlanStatus();
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
         if (customerId) {
-            this.updateSubscription(this.state.subscription, customerId);
+            this.updateSubscription(userSession.subscription, customerId);
             this.setState({hideSubscribedSuccess: false});
         }
 
@@ -282,7 +284,7 @@ class Billing extends Component {
     }
 
     onCloseSubscribedSuccess() {
-        this.setState({ hideSubscribedSuccess: false });
+        this.setState({ hideSubscribedSuccess: true });
     }
 
     render() {
