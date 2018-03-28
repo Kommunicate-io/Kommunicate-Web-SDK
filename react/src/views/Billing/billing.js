@@ -69,7 +69,8 @@ class Billing extends Component {
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
         if (customerId) {
-            this.updateSubscription(userSession.subscription, customerId);
+            let subscription = CommonUtils.getUrlParameter(window.location.href, 'sub_id');
+            this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false});
         }
 
@@ -196,6 +197,9 @@ class Billing extends Component {
 
     updateSubscription(subscription, billingCustomerId) {
         let that = this;
+
+        that.setState({subscription: subscription});
+
         let userSession = CommonUtils.getUserSession();
 
         const customerInfo = {
@@ -214,8 +218,9 @@ class Billing extends Component {
                     userSession.subscription = subscription;
                     CommonUtils.setUserSession(userSession);
                     that.state.subscription = subscription;
+
                     if (typeof billingCustomerId !== "undefined") {
-                        that.state.billingCustomerId = billingCustomerId;
+                        that.setState({billingCustomerId: billingCustomerId});
                     }
                     Notification.info(response.data.message);
                 }
