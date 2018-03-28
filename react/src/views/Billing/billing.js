@@ -37,7 +37,8 @@ class Billing extends Component {
             subscription: CommonUtils.getUserSession().subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS['startup'],
-            trialLeft: 0
+            trialLeft: 0,
+            showPlanSelection: false
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -47,6 +48,7 @@ class Billing extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
+        this.buyThisPlanClick = this.buyThisPlanClick.bind(this);
        
         if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
             this.state.subscription = 'startup';
@@ -76,6 +78,10 @@ class Billing extends Component {
         this.chargebeeInit();
     }
 
+    buyThisPlanClick = () => {
+        this.setState({showPlanSelection: true});
+    }
+
     onOpenModal = () => {
         this.setState({ modalIsOpen: true });
     };
@@ -99,8 +105,10 @@ class Billing extends Component {
         }
 
         let subscribeElems = document.getElementsByClassName("chargebee");
+        for (var i = 0; i < subscribeElems.length; i++) {
+            console.log(subscribeElems[i].id);
+            console.log(subscribeElems[i].classList);
 
-        for (var i = 0, max = subscribeElems.length; i < max; i++) {
             if (subscribeElems[i].classList.contains('n-vis')) {
                 subscribeElems[i].click();
             }
@@ -141,24 +149,7 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-        //    try {
         var cbInstance = window.Chargebee.getInstance();
-        //console.log(cbInstance);
-
-        /*
-        var cbInstance;
-        try {
-            cbInstance = window.Chargebee.getInstance();
-        } catch(err) {
-            console.log(err);
-         //   alert("chargebee instance not created.");
-           // return;
-        }
-        //console.log(cbInstance);
-
-        if (typeof cbInstance === "undefined") {
-            return;
-        } */
 
         cbInstance.setCheckoutCallbacks(function (cart) {
             // you can define a custom callbacks based on cart object
@@ -351,14 +342,17 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
+                                        <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
+
                                         {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="early_bird_monthly" data-cb-type="checkout" data-cb-plan-id="early_bird_monthly">Buy this plan</button>)
+                                            (
+                                            <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
+                                            )
                                             :
                                             null
                                         }
-                                        <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
                                     </div>
-                                    {this.state.subscription != 'startup' ?
+                                    {this.state.showPlanSelection ?
                                         (
                                         <div className="radio-btn-container">
                                             <form>
