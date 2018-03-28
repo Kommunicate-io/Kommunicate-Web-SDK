@@ -20,7 +20,8 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
     "authenticationTypeId": 1,
     "email":email,
     "displayName":displayName,
-    "gcmKey":gcmKey
+    "gcmKey":gcmKey,
+    "chatNotificationMailSent":true,
   })).then(response=>{
     let err = {};
     console.log("Applozic server returned : ",response.status);
@@ -61,6 +62,7 @@ const createApplozicClientV1 = (options)=>{
   console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",options.userId,"applicationId",options.applicationId,"role","email",options.email);
   options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
   options.roleName = options.roleName?options.roleName:options.role;
+  options.chatNotificationMailSent=true;
   options.userId =options.userName;
     return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
       let err = {};
