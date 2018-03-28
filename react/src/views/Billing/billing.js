@@ -357,6 +357,12 @@ class Billing extends Component {
                                             null
                                         }
                                         <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
+
+                                        {/* Next and Cancel Buttons */}
+                                        <button id="next-step-btn" className="km-button km-button--primary next-step-btn ">Next</button>
+                                        <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn ">Cancel</button>
+
+
                                     </div>
                                     {this.state.subscription != 'startup' ?
                                         (

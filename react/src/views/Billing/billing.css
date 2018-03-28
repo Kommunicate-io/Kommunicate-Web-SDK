@@ -45,7 +45,7 @@
     margin: 0px;
 }
 
-.change-plan-btn {
+.change-plan-btn, .next-step-btn, .cancel-step-btn {
     margin-left: 20px;
 }
 
