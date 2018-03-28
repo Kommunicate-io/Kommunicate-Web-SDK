@@ -74,7 +74,7 @@ var mckGroupService = new MckGroupService();
                     }, function (err, result) {
                         console.log(err, result);
                         if (!err) {
-                            callback(response.data.groupId);
+                            callback(response.data.value);
                         }
                     })
                 }
