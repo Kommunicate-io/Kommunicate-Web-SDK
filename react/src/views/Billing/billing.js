@@ -69,7 +69,7 @@ class Billing extends Component {
         let customerId = CommonUtils.getUrlParameter(window.location.href, 'cus_id');
 
         if (customerId) {
-            let subscription = CommonUtils.getUrlParameter(window.location.href, 'sub_id');
+            let subscription = CommonUtils.getUrlParameter(window.location.href, 'plan_id');
             this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false});
         }
