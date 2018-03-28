@@ -232,7 +232,7 @@ class Tabs extends Component {
                   + Add a FAQ
                 </button>
               </div>
-              <div className="mt-4 km-faq-container">
+              <div className={this.state.listOfFAQs.length > 0 ? "mt-4 km-faq-container":"n-vis"}>
                 <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2", height: "35px", paddingTop: "0.4rem"}}>
                   <span>{"FAQs (" + this.state.listOfFAQs.length + ")"}</span>
                 </div>
