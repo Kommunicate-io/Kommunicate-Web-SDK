@@ -25,6 +25,11 @@ class Billing extends Component {
     constructor(props) {
         super(props);
 
+        let subscription = CommonUtils.getUserSession().subscription;
+        if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
+            subscription = 'startup';
+        }
+
         this.state = {
             modalIsOpen: false,
             toggleSlider: true,
@@ -34,10 +39,11 @@ class Billing extends Component {
             showFeatures: 'Show Features',
             yearlyChecked: false,
             hideSubscribedSuccess: true,
-            subscription: CommonUtils.getUserSession().subscription,
+            subscription: subscription,
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS['startup'],
-            trialLeft: 0
+            trialLeft: 0,
+            showPlanSelection: false
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -45,15 +51,14 @@ class Billing extends Component {
         this.onOpenModal = this.onOpenModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
-        this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
+        this.selectYearly = this.selectYearly.bind(this);
+        this.selectMonthly = this.selectMonthly.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
-       
-        if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
-            this.state.subscription = 'startup';
-        }
+        this.buyThisPlanClick = this.buyThisPlanClick.bind(this);
     };
 
     componentDidMount() {
+        
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
@@ -74,6 +79,10 @@ class Billing extends Component {
         });
 
         this.chargebeeInit();
+    }
+
+    buyThisPlanClick = () => {
+        this.setState({showPlanSelection: !this.state.showPlanSelection});
     }
 
     onOpenModal = () => {
@@ -99,8 +108,10 @@ class Billing extends Component {
         }
 
         let subscribeElems = document.getElementsByClassName("chargebee");
+        for (var i = 0; i < subscribeElems.length; i++) {
+            console.log(subscribeElems[i].id);
+            console.log(subscribeElems[i].classList);
 
-        for (var i = 0, max = subscribeElems.length; i < max; i++) {
             if (subscribeElems[i].classList.contains('n-vis')) {
                 subscribeElems[i].click();
             }
@@ -141,24 +152,7 @@ class Billing extends Component {
         }
         event.target.classList.add('active');
 
-        //    try {
         var cbInstance = window.Chargebee.getInstance();
-        //console.log(cbInstance);
-
-        /*
-        var cbInstance;
-        try {
-            cbInstance = window.Chargebee.getInstance();
-        } catch(err) {
-            console.log(err);
-         //   alert("chargebee instance not created.");
-           // return;
-        }
-        //console.log(cbInstance);
-
-        if (typeof cbInstance === "undefined") {
-            return;
-        } */
 
         cbInstance.setCheckoutCallbacks(function (cart) {
             // you can define a custom callbacks based on cart object
@@ -282,9 +276,18 @@ class Billing extends Component {
 
     }
 
-    handleYearlyMonthlyPlanChange() {
-        //TODO: handle the functionality of Radio button checks
+    selectYearly() {
+        /*this.setState({
+            yearlyChecked: true
+        });*/
     }
+
+    selectMonthly() {
+        /*this.setState({
+            yearlyChecked: false
+        });*/
+    }
+
     onCloseSubscribedSuccess() {
         this.setState({ hideSubscribedSuccess: false });
     }
@@ -351,25 +354,37 @@ class Billing extends Component {
                                         <p className="current-plan-details-text">Current plan details</p>
                                     </div>
                                     <div className="col-md-6 text-right">
-                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
-                                            (<button id="buy-plan-btn" className="checkout chargebee n-vis km-button km-button--primary buy-plan-btn" data-subscription="early_bird_monthly" data-cb-type="checkout" data-cb-plan-id="early_bird_monthly">Buy this plan</button>)
+
+                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
+                                            (
+                                            <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
+                                            )
                                             :
                                             null
                                         }
-                                        <button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>
+                                        {!this.state.showPlanSelection ?
+                                            (<button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>)
+                                            :
+                                            null
+                                        }
 
-                                        {/* Next and Cancel Buttons */}
-                                        <button id="next-step-btn" className="km-button km-button--primary next-step-btn ">Next</button>
-                                        <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn ">Cancel</button>
-
+                                    {/* Next and Cancel Buttons */}
+                                    {this.state.showPlanSelection ?
+                                       (
+                                        <div>
+                                            <button id="next-step-btn" className="km-button km-button--primary next-step-btn ">Next</button>
+                                            <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={this.buyThisPlanClick}>Cancel</button>
+                                        </div>
+                                       ) : null
+                                    }
 
                                     </div>
-                                    {this.state.subscription != 'startup' ?
+                                    {this.state.showPlanSelection ?
                                         (
                                         <div className="radio-btn-container">
                                             <form>
-                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={this.state.yearlyChecked} label={billedYearly} />
-                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.handleYearlyMonthlyPlanChange} checked={!this.state.yearlyChecked} label={billedMonthly} />
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.selectYearly()} checked={this.state.yearlyChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.selectMonthly()} checked={!this.state.yearlyChecked} label={billedMonthly} />
                                             </form>
                                         </div>
                                         ) : null
