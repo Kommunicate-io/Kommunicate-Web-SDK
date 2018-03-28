@@ -3982,6 +3982,7 @@ var MCK_CLIENT_GROUP_MAP = [];
 
             var $mck_msg_new = $applozic("#mck-msg-new");
             var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
+            var CITY_SEARCH_URL='https://bots.applozic.com/bot/city/search?name='
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=   '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
@@ -5154,8 +5155,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     order: 'desc',
                     hint: false,
                     minLength: 3,
+                    wrapper:".mck-sidebox",
                     backdropOnFocus: true,
-                    menu: '<ul class="mcktypeahead mck-dropup-menu"></ul>',
+                    menu: '<ul class="mcktypeahead mck-hotel-city-menu mck-dropup-menu"></ul>',
                     show: function() {
                         var t = e.extend({}, this.$element.offset(), {
                             height: this.$element[0].offsetHeight
@@ -5167,7 +5169,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     dynamic: true,
                     source: function (query, process) {
                         mckUtils.ajax({
-                            url: 'http://localhost:5454/city/search?name=' + query,
+                            url: CITY_SEARCH_URL+ query,
                             type: 'get',
                             success: (data) => {
                                 console.log('data: ', data);
