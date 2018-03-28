@@ -2443,9 +2443,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if(city && city!=""){
                         messagePxy.metadata={bookCity:city};
                         $applozic('#mck-city-json').val('');
+                    }
+                    if ($applozic('#mck-city-search-input').hasClass('mck-text-box')) {
                         $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box').val('');
                         $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
-
                     }
                     if ($mck_msg_inner.data("isgroup") === true) {
                         messagePxy.groupId = $mck_msg_to.val();
@@ -7776,6 +7777,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 
                 $mck_city_search_input.on('input', function (e) {
                     e.preventDefault();
+                    $mck_text_box.text($mck_city_search_input.val());
                     mckMessageLayout.searchCity();
                 })
             };
