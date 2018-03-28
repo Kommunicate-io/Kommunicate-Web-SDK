@@ -47,8 +47,7 @@ class Billing extends Component {
         this.afterOpenModal = this.afterOpenModal.bind(this);
         this.handleYearlyMonthlyPlanChange = this.handleYearlyMonthlyPlanChange.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
-        console.log("#subscription:");
-        console.log(CommonUtils.getUserSession().subscription);
+       
         if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
             this.state.subscription = 'startup';
         }
