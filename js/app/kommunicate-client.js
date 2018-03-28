@@ -67,14 +67,14 @@ var mckGroupService = new MckGroupService();
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
                     Kommunicate.createNewConversation({
-                        "groupId": response.data.groupId,
+                        "groupId": response.data.value,
                         "participentUserId": kommunicate._globals.userId,
                         "defaultAgentId": conversationDetail.agentId,
                         "applicationId": kommunicate._globals.appId
                     }, function (err, result) {
                         console.log(err, result);
                         if (!err) {
-                            callback(response.data.clientGroupId);
+                            callback(response.data.groupId);
                         }
                     })
                 }
