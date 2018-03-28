@@ -82,7 +82,7 @@ class Billing extends Component {
     }
 
     buyThisPlanClick = () => {
-        this.setState({showPlanSelection: !this.state.showPlanSelection});
+        this.setState({showPlanSelection: !this.state.showPlanSelection}, () => this.chargebeeInit());
     }
 
     onOpenModal = () => {
@@ -109,8 +109,6 @@ class Billing extends Component {
 
         let subscribeElems = document.getElementsByClassName("chargebee");
         for (var i = 0; i < subscribeElems.length; i++) {
-            console.log(subscribeElems[i].id);
-            console.log(subscribeElems[i].classList);
 
             if (subscribeElems[i].classList.contains('n-vis')) {
                 subscribeElems[i].click();
@@ -192,11 +190,6 @@ class Billing extends Component {
                 }
             }
         });
-        /* } catch(error) {
-             console.log("chargebee error");
-             console.log(error);
-         }    */
-
     }
 
     updateSubscription(subscription, billingCustomerId) {
@@ -277,15 +270,15 @@ class Billing extends Component {
     }
 
     selectYearly() {
-        /*this.setState({
-            yearlyChecked: true
-        });*/
+        this.setState({
+            yearlyChecked: 1
+        })
     }
 
     selectMonthly() {
-        /*this.setState({
-            yearlyChecked: false
-        });*/
+        this.setState({
+            yearlyChecked: 0
+        })
     }
 
     onCloseSubscribedSuccess() {
@@ -293,16 +286,17 @@ class Billing extends Component {
     }
 
     render() {
+        //Todo: set this dynamically based on current plan
         const billedYearly = (
             <div className="radio-content-container">
                 <h3>Billed Yearly</h3>
-                <p>$149/month</p>
+                <p>{SUBSCRIPTION_PLANS['early_bird_yearly'].amount}/month</p>
             </div>
         )
         const billedMonthly = (
             <div className="radio-content-container">
                 <h3>Billed Monthly</h3>
-                <p>$199/month</p>
+                <p>{SUBSCRIPTION_PLANS['early_bird_monthly'].amount}/month</p>
             </div>
         )
         const { modalIsOpen } = this.state;
@@ -372,7 +366,12 @@ class Billing extends Component {
                                     {this.state.showPlanSelection ?
                                        (
                                         <div>
-                                            <button id="next-step-btn" className="km-button km-button--primary next-step-btn ">Next</button>
+                                            <button hidden={!this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="early_bird_yearly" data-cb-type="checkout" data-cb-plan-id="early_bird_yearly">
+                                                Next
+                                            </button>
+                                            <button hidden={this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="early_bird_monthly" data-cb-type="checkout" data-cb-plan-id="early_bird_monthly">
+                                                Next
+                                            </button>
                                             <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={this.buyThisPlanClick}>Cancel</button>
                                         </div>
                                        ) : null
@@ -383,8 +382,8 @@ class Billing extends Component {
                                         (
                                         <div className="radio-btn-container">
                                             <form>
-                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.selectYearly()} checked={this.state.yearlyChecked} label={billedYearly} />
-                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.selectMonthly()} checked={!this.state.yearlyChecked} label={billedMonthly} />
+                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.selectYearly} checked={this.state.yearlyChecked} label={billedYearly} />
+                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.selectMonthly} checked={!this.state.yearlyChecked} label={billedMonthly} />
                                             </form>
                                         </div>
                                         ) : null
