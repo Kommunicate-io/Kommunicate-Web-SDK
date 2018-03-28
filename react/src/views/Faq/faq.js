@@ -282,13 +282,15 @@ class Tabs extends Component {
                 </div>
               </div> 
               <div className="text-right km-bot-align-item-v-center" style={{width: "47%"}}>
-                <span>Status : </span>
-                <div className="km-bot-align-item-v-center">
-                  <Label check htmlFor="inline-radio1">
-                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> Draft
+                <div style={{width: "33%", marginRight: "5px"}}>
+                  <span className="km-faq-label-14-500">Status: </span>
+                </div>
+                <div className="km-bot-align-item-v-center" style={{width: "66%"}}>
+                  <Label check htmlFor="inline-radio1" style={{marginRight: "5px"}}>
+                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> <span className="km-faq-label-14">Draft</span>
                   </Label>
                   <Label check htmlFor="inline-radio2">
-                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> Published
+                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> <span className="km-faq-label-14">Published</span>
                   </Label>
                 </div>
               </div> 
