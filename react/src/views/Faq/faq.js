@@ -15,6 +15,7 @@ import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
 import {Link} from 'react-router-dom';
+import trash2x from './images/trash-icon@2x.png'
 
 
 class Tabs extends Component {
@@ -219,11 +220,11 @@ class Tabs extends Component {
               <div className="mt-4 km-faq-second-container">
                 <div style={{padding: "10px"}}>
                   <p>
-                  <img src={bot1x} style={{marginRight: "26px"}}/>
+                  <img src={bot2x} style={{marginRight: "26px", widht: "24px", height: "26px"}}/>
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
                   <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> <Link to="/agent-assignment">Conversation Routing </Link>  </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
+                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot2x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> <Link to="/agent-assignment">Conversation Routing </Link>  </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
                   </p>
                 </div>
               </div>
@@ -276,8 +277,8 @@ class Tabs extends Component {
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
               <div className="col-sm-2 km-bot-align-item-v-center">
-                <div style={{border: "1px solid black", borderRadius: "50%", padding: "5px"}} onClick={this.toggleDeleteFaq}>
-                  <i className="icon-trash icons font-1xl d-block"></i>
+                <div onClick={this.toggleDeleteFaq}>
+                  <img src={trash2x} style={{width: "22px", height: "22px"}}/>
                 </div>
               </div> 
               <div className="text-right km-bot-align-item-v-center" style={{width: "47%"}}>
