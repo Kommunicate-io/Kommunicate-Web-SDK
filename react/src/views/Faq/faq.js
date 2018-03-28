@@ -15,7 +15,8 @@ import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
 import {Link} from 'react-router-dom';
-import trash2x from './images/trash-icon@2x.png'
+import trash2x from './images/trash-icon@2x.png';
+import {AUTOREPLY} from '../Autoreply/Constant';
 
 
 class Tabs extends Component {
@@ -120,8 +121,8 @@ class Tabs extends Component {
       userName: userSession.userName,
       name: this.state.faqTitle,
       content: this.state.faqContent,
-      category: 'faq',
-      type: 'faq',
+      category: AUTOREPLY.FAQ,
+      type: AUTOREPLY.FAQ,
       status: this.state.isDraft ? 'draft':'published'
     }
 

@@ -18,3 +18,7 @@ export const WELCOME_MSG_METADATA = {
     category: "ARCHIVE",
     skipBot: true
 }
+export const AUTOREPLY={
+    SUGGESTION:'shortcut',
+    FAQ:'faq'
+}

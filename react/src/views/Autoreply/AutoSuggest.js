@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import validator from 'validator';
 import './AutoSuggest.css'
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient'
+import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
+import {AUTOREPLY} from './Constant';
+
+
 class AutoSuggest extends Component {
 	
 	state = {
@@ -30,7 +33,7 @@ class AutoSuggest extends Component {
 	
 	getSuggestions = () => {
 		let userSession = CommonUtils.getUserSession();
-		getSuggestionsByAppId(userSession.application.applicationId)
+		getSuggestionsByAppId(userSession.application.applicationId, AUTOREPLY.SUGGESTION)
 			.then(autoSuggestions => {
 				let userShortcuts = [];
 				let userShortcutsCopy =[];
@@ -70,7 +73,7 @@ class AutoSuggest extends Component {
 		let userSession = CommonUtils.getUserSession();
 
 		this.setState({ viewAllSuggestions: !this.state.viewAllSuggestions })
-		getSuggestionsByAppId(userSession.application.applicationId)
+		getSuggestionsByAppId(userSession.application.applicationId, AUTOREPLY.SUGGESTION)
 			.then(autoSuggestions => {
 				this.setState({ autoSuggestions: autoSuggestions })
 				console.log(this.state.autoSuggestions)
@@ -108,7 +111,8 @@ class AutoSuggest extends Component {
 				userName: userSession.userName,
 				name: " ",
 				category: this.state.userShortcuts[0].shortcutField.trim(),
-				content: this.state.userShortcuts[0].messageField
+				content: this.state.userShortcuts[0].messageField,
+				type:AUTOREPLY.SUGGESTION
 			}
 			createSuggestions(suggestion)
 				.then(response => {
