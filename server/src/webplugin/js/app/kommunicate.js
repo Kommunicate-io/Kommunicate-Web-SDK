@@ -69,7 +69,12 @@ $applozic.extend(true,Kommunicate,{
      * @param {Array} conversationDetail.botIds  optional parameter
      */
     loadConversation:function(conversationDetail,callback){
-        var agentList = conversationDetail.agentIds||[];
+        var agentList = (conversationDetail.agentIds||[]).sort(function(a, b){
+            if( a.toLowerCase()< b.toLowerCase()) return -1;
+            if(a.toLowerCase() > b.toLowerCase()) return 1;
+            return 0;
+        });
+        console.log("agent list ",agentList);
         var botList = conversationDetail.botIds||[];
         
         if(agentList.length <1){
@@ -105,7 +110,7 @@ $applozic.extend(true,Kommunicate,{
                         "type":10,
                         "agentId":users[0].userId,
                         "users": users,
-                        "clientGroupId":clientGroupId
+                        "clientGroupId":decodeURIComponent(clientGroupId)
                     }
                     Kommunicate.client.createConversation(conversationDetail,function(result){
                         if(callback){
@@ -115,7 +120,7 @@ $applozic.extend(true,Kommunicate,{
                 }else if(result.status=='success'){
                  // group exist with clientGroupId
                  var groupId = result.data.id;
-                 $applozic.fn.applozic('loadTab',groupId);
+                 $applozic.fn.applozic('loadGroupTab',groupId);
                  return callback(null, result);
                 }
                
