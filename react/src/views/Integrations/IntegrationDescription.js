@@ -43,9 +43,27 @@ class IntegrationDescription extends Component{
         
     }
     showDeleteStatement = () => {
-        this.setState({
-            deleteStatement:!this.state.deleteStatement
-        })
+        if(this.state.activeModal == 1) {
+            if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
+                this.setState({
+                    deleteStatement:!this.state.deleteStatement
+                })
+            }
+            else {
+                Notification.info("Nothing to delete !")
+            }
+        }
+        else {
+            if (this.state.accessKey !== "") {
+                this.setState({
+                    deleteStatement:!this.state.deleteStatement
+                })
+            }
+            else {
+                Notification.info("Nothing to delete !")
+            }
+        }
+        
     }
 
 
