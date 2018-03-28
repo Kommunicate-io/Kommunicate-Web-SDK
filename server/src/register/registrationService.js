@@ -33,6 +33,7 @@ exports.createCustomer = customer=>{
       let user = getUserObject(customer,applozicCustomer,application);
       customer.password= bcrypt.hashSync(customer.password, 10);
       customer.applicationId= application.applicationId;
+      customer.subscription = "startup";
       user.password=customer.password;
       return customerModel.create(customer).then(customer=>{
         console.log("persited in db",customer?customer.dataValues:null);
