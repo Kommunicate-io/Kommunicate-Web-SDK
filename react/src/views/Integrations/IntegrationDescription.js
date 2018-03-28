@@ -144,6 +144,9 @@ class IntegrationDescription extends Component{
             {thirdPartyList[this.state.activeModal].instructions.map((item, index) => (
                 <p key={index} className="integration-instructions">{index+1}. {item} </p>
             ))}
+            <br/>
+            <span className="integration-api-support">Need more help? Go to
+            <a target="_blank" className="integration-api-support-link" href={thirdPartyList[this.state.activeModal].docsLink}> {thirdPartyList[this.state.activeModal].name} Docs</a></span>
         </div>
         <div className="token-input-wrapper">
         { this.state.activeModal !== 1 &&

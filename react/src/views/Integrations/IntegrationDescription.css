@@ -145,3 +145,17 @@ body {
 .no-integration-btn{
     margin-left: 12px
 }
+.integration-api-support{
+    font-size: 14px;
+    color: #8f8b8b;
+    letter-spacing: 1px;
+    margin: 0;
+}
+.integration-api-support-link{
+    color: #8f8b8b;
+    font-weight: 500;
+    text-decoration: none !important;
+}
+.integration-api-support-link {
+    color: #8f8b8b !important;
+}
