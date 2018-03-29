@@ -89,6 +89,7 @@ app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
 app.use('/zendesk', routes.zendesk);
 app.use('/integration/settings', routes.thirdPartySetting);
+app.use('/google', routes.googleAuth);
 
 function startApp() {
     app.listen(port, function () {
