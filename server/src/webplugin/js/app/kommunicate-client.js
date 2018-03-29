@@ -61,6 +61,7 @@ var mckGroupService = new MckGroupService();
                 CONVERSATION_ASSIGNEE: conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
+                NOALERT:"true",
                 HIDE: "true"
             },
             callback: function (response) {
