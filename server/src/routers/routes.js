@@ -31,7 +31,6 @@ const thirdPartySettingValidation = require('../thirdPartyIntegration/validation
 const googleAuthController = require('../googleAuth/googleAuthController');
 
 
-
 //router declaration
 const userRouter = express.Router();
 const applicationRouter = express.Router();
