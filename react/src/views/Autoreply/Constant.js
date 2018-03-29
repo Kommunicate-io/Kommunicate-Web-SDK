@@ -16,7 +16,9 @@ export const STATUS = {
 }
 export const WELCOME_MSG_METADATA = {
     category: "ARCHIVE",
-    skipBot: true
+    skipBot: true,
+    show:false,
+    ALERT:false
 }
 export const AUTOREPLY={
     SUGGESTION:'shortcut',

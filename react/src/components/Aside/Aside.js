@@ -180,7 +180,9 @@ class Aside extends Component {
                                             'message' : "Assigned to " + displayName,
                                             'metadata':{
                                               'skipBot':true,
-                                              'KM_ASSIGN' :userId
+                                              'KM_ASSIGN' :userId,
+                                              'show': false,
+                                              'ALERT':false
                                             }
                                           });
                                       }
