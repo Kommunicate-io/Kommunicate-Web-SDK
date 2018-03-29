@@ -14,7 +14,7 @@ class Welcome extends Component{
      enableDisableCheckbox: true,
      status:STATUS.ENABLE,
      welcomeMessages:[{messageField:''}],
-     welcomeMessagesCopy:[],
+     welcomeMessagesCopy:[{messageField:''}],
      enableAddMsgLink: false,
      activeTextField: -1,
      disableButton:true,
