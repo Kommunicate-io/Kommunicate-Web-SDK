@@ -1,0 +1,15 @@
+/* Input Type File Button */
+
+.km-btn-file {
+    width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+  }
+  .km-btn-file-label {
+    line-height: 36px;
+    cursor: pointer;
+  }
+  
