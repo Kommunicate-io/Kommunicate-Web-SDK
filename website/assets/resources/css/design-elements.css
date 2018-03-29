@@ -446,6 +446,53 @@ a, a:hover, a:focus, a:active {
   }
 }
 
+
+
+/* Input Type File Button */
+
+.km-btn-file {
+  width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+.km-btn-file-label {
+  line-height: 36px;
+  cursor: pointer;
+}
+
+.km-file-upload-btn::-webkit-file-upload-button {
+  border-radius: 3px;
+  -webkit-appearance: none;
+  outline: none;
+  background: transparent;
+  height: 36px;
+  padding: 0px 16px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  min-width: 70px;
+  border: solid 1px #5c5aa7;
+  background-color: #FFFFFF;
+  color: #5c5aa7;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.km-file-upload-btn::-webkit-file-upload-button:hover {
+  outline: none;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+  border: solid 1px #5c5aa7;
+  background-color: #F5F5F5;
+  color: #5c5aa7;
+}
+
+
+
+
   /****** New Design System Code Ends Here ******/
 
 
