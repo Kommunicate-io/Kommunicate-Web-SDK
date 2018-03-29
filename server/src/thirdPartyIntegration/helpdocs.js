@@ -5,6 +5,7 @@
         var HELPDOCS_URL = "https://api.helpdocs.io";
         var helpdocsKey;
 
+        //Helpdocs.init("cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao");
         Helpdocs.init = function (key) {
             helpdocsKey = key;
         }
