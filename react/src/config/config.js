@@ -13,8 +13,8 @@ var baseurl ={
   },
   default:{
    baseUrl: "https://apps-test.applozic.com",
-  //baseUrl: "http://localhost:9090/applozic",
-  //kommunicateAPI: "http://localhost:3999"
+  // baseUrl: "http://localhost:9090/applozic",
+  // kommunicateAPI: "http://localhost:3999"
    kommunicateAPI: "https://api-test.kommunicate.io"
 
   }
@@ -33,6 +33,7 @@ var config = {
       userDetailUrl:baseurl.prod.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
       registerClientUrl: baseurl.prod.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots.applozic.com/bot',
+      certificateUpload :baseurl.prod.baseUrl+"/rest/ws/appmodule/edit",
       applicationList:baseurl.prod.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:baseurl.prod.baseUrl+"/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.prod.baseUrl+"/rest/ws/invite/dev",
@@ -54,6 +55,11 @@ var config = {
       signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.prod.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.prod.kommunicateAPI+"/profileImage"
+    },adminDetails:{
+      kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
+      kommunicateAdminId: "techdisrupt@applozic.com",
+      kommunicateAdminPassword: "techdisrupt",
+      kommunicateAdminApzToken: "dGVjaGRpc3J1cHRAYXBwbG96aWMuY29tOnRlY2hkaXNydXB0",
     },
     port:5454
   },
@@ -67,6 +73,7 @@ var config = {
       sendMessageUrl:baseurl.dashboard.baseUrl+"/rest/ws/message/v2/send",
       sendMailUrl:baseurl.dashboard.baseUrl+"/rest/ws/mail/send",
       userDetailUrl:baseurl.dashboard.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
+      certificateUpload :baseurl.dashboard.baseUrl+"/rest/ws/appmodule/edit",
       registerClientUrl: baseurl.dashboard.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots.applozic.com/bot',
       applicationList:baseurl.dashboard.baseUrl+'/rest/ws/user/getlist?&roleNameList=APPLICATION_WEB_ADMIN',
@@ -90,6 +97,11 @@ var config = {
       signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.dashboard.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.dashboard.kommunicateAPI+"/profileImage"
+    },adminDetails:{
+      kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
+      kommunicateAdminId: "suraj@applozic.com",
+      kommunicateAdminPassword: "1234567890",
+      kommunicateAdminApzToken: "c3VyYWpAYXBwbG96aWMuY29tOjEyMzQ1Njc4OTA=",
     },
     port:5454
   },
@@ -106,6 +118,7 @@ var config = {
       userDetailUrl:baseurl.test.baseUrl+"/rest/ws/user/v2/detail?v=2.1",
       registerClientUrl: baseurl.test.baseUrl+"/rest/ws/register/client",
       addBotUrl: 'https://bots-test.applozic.com/bot',
+      certificateUpload :baseurl.test.baseUrl+"/rest/ws/appmodule/edit",
       statsUrl:'https://apps-test.applozic.com/rest/ws/stats/get?appKey=:appKey',
       applicationList:baseurl.test.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
       statsFilterUrl:"https://apps-test.applozic.com/rest/ws/stats/filter?appKey=:appKey",
@@ -127,6 +140,11 @@ var config = {
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.test.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.test.kommunicateAPI+"/profileImage"
+    },adminDetails:{
+      kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
+      kommunicateAdminId: "suraj@applozic.com",
+      kommunicateAdminPassword: "1234567890",
+      kommunicateAdminApzToken: "c3VyYWpAYXBwbG96aWMuY29tOjEyMzQ1Njc4OTA=",
     },
     port:5454
 
@@ -146,6 +164,7 @@ var config = {
       addBotUrl: 'https://bots-test.applozic.com/bot',
       statsUrl:'https://apps-test.applozic.com/rest/ws/stats/get?appKey=:appKey',
       applicationList:baseurl.default.baseUrl+'/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN',
+      certificateUpload :baseurl.default.baseUrl+"/rest/ws/appmodule/edit",
       statsFilterUrl:"https://apps-test.applozic.com/rest/ws/stats/filter?appKey=:appKey",
       devUrl:baseurl.default.baseUrl+"/rest/ws/v2/invite/dev",
       autoreplyUrl:'https://api-test.kommunicate.io/users/',
@@ -166,6 +185,12 @@ var config = {
       sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
       autoSuggest :baseurl.default.kommunicateAPI+"/autosuggest/message",
       profileImage:baseurl.default.kommunicateAPI+"/profileImage"
+    },adminDetails:{
+      kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
+      kommunicateParentAppName: "suraj",
+      kommunicateAdminId: "suraj@applozic.com",
+      kommunicateAdminPassword: "1234567890",
+      kommunicateAdminApzToken: "c3VyYWpAYXBwbG96aWMuY29tOjEyMzQ1Njc4OTA=",
     },
     port:5454
   },
