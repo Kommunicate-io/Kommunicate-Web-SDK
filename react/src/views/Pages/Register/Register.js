@@ -30,6 +30,11 @@ class Register extends Component {
     this.state=Object.assign({type: 'password'},this.initialState);
   }
   componentWillMount(){
+
+    if (CommonUtils.getUserSession()) {
+      window.location = "/dashboard";
+    }
+    
     const search = this.props.location.search;
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
     const email = CommonUtils.getUrlParameter(search, 'email');

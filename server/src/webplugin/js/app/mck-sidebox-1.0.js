@@ -6313,7 +6313,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (params.newUserId === null || params.newUserId === "") {
                     return;
                 }
-                var data = 'newUserId='+ params.newUserId ;
+                var data = 'newUserId='+ encodeURIComponent(params.newUserId);
                 mckUtils.ajax({
                     url: MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
                     type: 'get',
