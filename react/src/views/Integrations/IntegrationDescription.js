@@ -23,19 +23,19 @@ class IntegrationDescription extends Component{
         
     }
     componentDidMount () {
-        if(this.state.activeModal == 0 && this.state.helpdocsKeys.length > 0) {
+        if(this.state.activeModal == 'helpdocs' && this.state.helpdocsKeys.length > 0) {
             this.setState({
             accessKey:this.state.helpdocsKeys[0].accessKey,
             })
         }
-        if(this.state.activeModal == 1 && this.state.zendeskKeys.length > 0) {
+        if(this.state.activeModal == 'zendesk' && this.state.zendeskKeys.length > 0) {
             this.setState({
                 accessKey:this.state.zendeskKeys[0].accessKey,
                 accessToken:this.state.zendeskKeys[0].accessToken,
                 subdoamin:this.state.zendeskKeys[0].domain
             })
         }
-        if(this.state.activeModal == 2 && this.state.clearbitKeys.length > 0) {
+        if(this.state.activeModal == 'clearbit' && this.state.clearbitKeys.length > 0) {
             this.setState({
             accessKey:this.state.clearbitKeys[0].accessKey,
             })
@@ -43,7 +43,7 @@ class IntegrationDescription extends Component{
         
     }
     showDeleteStatement = () => {
-        if(this.state.activeModal == 1) {
+        if(this.state.activeModal == 'zendesk') {
             if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
                 this.setState({
                     deleteStatement:!this.state.deleteStatement
@@ -68,7 +68,7 @@ class IntegrationDescription extends Component{
 
 
     validateIntegrationInput = () => {
-        if(this.state.activeModal == 1) {
+        if(this.state.activeModal == 'zendesk') {
             if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
                 this.createandUpdateThirdPartyIntegration()
             }
@@ -114,7 +114,7 @@ class IntegrationDescription extends Component{
         }
                      
     deleteThirdPartyValidation = () => {
-        if(this.state.activeModal == 1) {
+        if(this.state.activeModal == 'zendesk') {
             if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
                 this.deleteThirdPartyIntegration();
             }
@@ -153,6 +153,7 @@ class IntegrationDescription extends Component{
     }
 
     render(){
+        //alert(this.state.activeModal);
         return <div className="integration-description-wrapper">        
             <h4 className="integration-description-title"><span><img src={thirdPartyList[this.state.activeModal].logo} className="integration-description-logo"/></span>
             Integrating {thirdPartyList[this.state.activeModal].name} with Kommunicate</h4>
@@ -167,7 +168,7 @@ class IntegrationDescription extends Component{
             <a target="_blank" className="integration-api-support-link" href={thirdPartyList[this.state.activeModal].docsLink}> {thirdPartyList[this.state.activeModal].name} Docs</a></span>
         </div>
         <div className="token-input-wrapper">
-        { thirdPartyList[this.state.activeModal].name !== "Zendesk"  &&
+        { thirdPartyList[this.state.activeModal].key !== "zendesk"  &&
             <p className="token-title">API Key:
             <input type="text" name="integration-token" className ="integration-token-input" value={this.state.accessKey}
                 onChange={(e) => { 
@@ -177,7 +178,7 @@ class IntegrationDescription extends Component{
                 }} />
             </p>
         }
-        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
+        { thirdPartyList[this.state.activeModal].key === "zendesk" &&
             <p className="token-title">Email:
             <input type="text" id="integration-token" className ="zendesk-email-input" value={this.state.accessKey} 
                 onChange={(e) => { 
@@ -187,7 +188,7 @@ class IntegrationDescription extends Component{
                 }} />
             </p>
         }
-        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
+        { thirdPartyList[this.state.activeModal].key === "zendesk" &&
             <p className="token-title">Access Token:
             <input type="text" id="integration-token" className ="zendesk-access-token-input" value={this.state.accessToken}
              onChange={(e) => { 
@@ -197,7 +198,7 @@ class IntegrationDescription extends Component{
               }} />   
            </p>
         }
-        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
+        { thirdPartyList[this.state.activeModal].key === "zendesk" &&
             <p className="token-title">Subdomain:
             <span className="zendesk-domain-https">https://</span>
             <input type="text" id="integration-token" className ="zendesk-subdoamin-input" value={this.state.subdoamin} 
