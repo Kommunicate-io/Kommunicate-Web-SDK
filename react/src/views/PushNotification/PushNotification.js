@@ -52,7 +52,7 @@ class PushNotification extends Component{
     file.this =this;
     file.env ="distribution";
     file.callback= function(file){
-      file.success.submitGcmkey(file.url,file.env);
+      file.success.submitApnsForDistribution(file.url);
     }
     this.certificateUpload(file);
   }
@@ -63,23 +63,17 @@ class PushNotification extends Component{
     file.this =this;
     file.env ="development";
     file.callback= function(file){
-      file.success.submitGcmkey(file.url,file.env);
+      file.success.submitApnsForDevelopment(file.url);
     }
      this.certificateUpload(file);
   }
-  submitGcmkey(fileurl,env){
+  submitGcmkey(fileurl){
     if(document.getElementById("gcmKey").value ===""&& document.getElementById("apnsUrl").value ===""&& document.getElementById("testApnsUrl").value ===""){
       return;
     }
 
     let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
-    if(fileurl && env ==="development"){
-      applicationList.testApnsUrl =fileurl;
-    }
-    if(fileurl && env ==="distribution"){
-      applicationList.apnsUrl =fileurl;
-    }
     var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
 
     var application = {};
@@ -93,7 +87,7 @@ class PushNotification extends Component{
       application.name = applicationList.name;
     }
     if (applicationList.gcmKey) {
-      application.gcmKey = applicationList.gcmKey?applicationList.gcmKey:document.getElementById("gcmKey").value;
+      application.gcmKey = applicationList.gcmKey;
     }
     if((document.getElementById("gcmKey").value)){
       application.gcmKey = document.getElementById("gcmKey").value;
@@ -110,8 +104,8 @@ class PushNotification extends Component{
     if (applicationList.testapnsPassword||(document.getElementById("testApnsPassword").value)) {
       application.testApnsPassword = applicationList.apnsPassword?applicationList.apnsPassword:document.getElementById("testApnsPassword").value;
     }
-    userSession.application.appModulePxys[0] =applicationList;
-    localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+    userSession.application.appModulePxys[0]=application;
+    CommonUtils.setUserSession(userSession);
   axios({
     method: 'post',
     url: userDetailUrl,
@@ -123,15 +117,126 @@ class PushNotification extends Component{
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
       if (response.status === 200) {
-        alert(" data successfully updated");
+        Notification.info("GCM Key updated");
       } else {
-        alert("something went wrong");
+        Notification.info("something went wrong");
       }
     })
     this.setState({disableButtonForAndroid: true });
-    this.setState({disableButtonForIosDistribution: true });
-    this.setState({disableButtonForIosDevelopment: true });
 
+  }
+  submitApnsForDistribution(fileurl){
+    if( document.getElementById("apnsUrl").value ===""){
+      return;
+    }
+
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
+    let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
+      applicationList.apnsUrl =fileurl;
+    var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+
+    var application = {};
+    if (applicationList.applicationId) {
+      application.applicationId = applicationList.applicationId;
+    }
+    if (applicationList.id) {
+      application.id = applicationList.id;
+    }
+    if (applicationList.name) {
+      application.name = applicationList.name;
+    }
+    if (applicationList.gcmKey) {
+      application.gcmKey = applicationList.gcmKey;
+    }
+    if (applicationList.apnsUrl) {
+      application.apnsUrl = applicationList.apnsUrl;
+    }
+    if (applicationList.testApnsUrl) {
+      application.testApnsUrl = applicationList.testApnsUrl;
+    }
+    if (applicationList.testApnsPassword) {
+      application.testApnsPassword = applicationList.testApnsPassword;
+    }
+    if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
+      application.apnsPassword = applicationList.apnsPassword?applicationList.apnsPassword:document.getElementById("apnsPassword").value;
+    }
+    userSession.application.appModulePxys[0]=application;
+    CommonUtils.setUserSession(userSession);
+
+  axios({
+    method: 'post',
+    url: userDetailUrl,
+    contentType: 'application/json',
+    data: application,
+    headers: {
+      "Apz-Token": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
+      "Content-Type": "application/json",
+      "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
+    }}).then(function(response) {
+      if (response.status === 200) {
+        Notification.info("Apns Detail for distribution updated sucessfully");
+      } else {
+        Notification.info("something went wrong");
+      }
+    })
+    this.setState({disableButtonForIosDistribution: true });
+
+  }
+  submitApnsForDevelopment(fileurl){
+    if( document.getElementById("testApnsUrl").value ===""){
+      return;
+    }
+
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
+    let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
+      applicationList.testApnsUrl =fileurl;
+    var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+
+    var application = {};
+    if (applicationList.applicationId) {
+      application.applicationId = applicationList.applicationId;
+    }
+    if (applicationList.id) {
+      application.id = applicationList.id;
+    }
+    if (applicationList.name) {
+      application.name = applicationList.name;
+    }
+    if (applicationList.gcmKey) {
+      application.gcmKey = applicationList.gcmKey;
+    }
+    if (applicationList.apnsUrl) {
+      application.apnsUrl = applicationList.apnsUrl;
+    }
+    if (applicationList.testApnsUrl) {
+      application.testApnsUrl = applicationList.testApnsUrl;
+    }
+    if (applicationList.testApnsPassword) {
+      application.testApnsPassword = applicationList.testApnsPassword;
+    }
+    if (applicationList.testApnsPassword||(document.getElementById("testApnsPassword").value)) {
+      application.testApnsPassword = document.getElementById("testApnsPassword").value;
+    }
+    userSession.application.appModulePxys[0]=application;
+    CommonUtils.setUserSession(userSession);
+
+  axios({
+    method: 'post',
+    url: userDetailUrl,
+    contentType: 'application/json',
+    data: application,
+    headers: {
+      "Apz-Token": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
+      "Content-Type": "application/json",
+      "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
+    }}).then(function(response) {
+      if (response.status === 200) {
+        Notification.info("Apns for distribution updated sucessfully");
+      } else {
+        Notification.info("something went wrong");
+      }
+    })
+    this.setState({disableButtonForIosDevelopment: true });
   }
 
   render() {
