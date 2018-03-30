@@ -617,7 +617,7 @@ class Billing extends Component {
                                                             (this.state.subscription.indexOf('enterprise') != -1) ? 
                                                                 <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">Current Plan</button>
                                                                 : 
-                                                                <button className="km-button km-button--primary"><a href="https://calendly.com/kommunicate/15min" target="_blank" class="links">Contact Us</a></button>
+                                                                <button className="km-button km-button--primary" onClick={()=> window.open("https://calendly.com/kommunicate/15min", "_blank")}>Contact Us</button>
                                                         }
                                                     {/*
                                                     <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">
