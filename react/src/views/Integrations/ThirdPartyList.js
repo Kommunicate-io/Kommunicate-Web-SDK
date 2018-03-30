@@ -4,25 +4,13 @@ import HelpdocsLogo from './images/helpdocs.png';
 
 
 export let thirdPartyList = [{
-    name: "Helpdocs",
-    logo: HelpdocsLogo,
-    subTitle: "Import your FAQs from Helpdocs",
-    integrationType:1,
-    docsLink:"https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",  
-    instructions:[
-        "Log in to your HelpDocs dashboard",
-        "Go to Settings",
-        "Click Create a New API Key",
-        "Enter a name for your key. This is just so you can identify the key later.",
-        "Choose permissions for your key by ticking the appropriate checkboxes",
-        "Hit Save",
-    ]       
-}, {
     name: "Zendesk",
     logo: ZendeskLogo,
     subTitle: "Open Zendesk ticket for all conversations",
     integrationType: 2,
-    docsLink:"https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start", 
+    docsLink:"https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
+    status:"Settings",
+    enable:1, 
     instructions:[
         "Sign in to your Zendesk dashboard.",
         "Enter your Access Email Id of Zendesk",
@@ -40,9 +28,27 @@ export let thirdPartyList = [{
     logo: ClearbitLogo,
     integrationType: 3,
     docsLink:"https://clearbit.com/docs",
+    status:"Coming soon",
+    enable:0,
     instructions:[
         "Login to your https://clearbit.com/ account",
         "Go to Dashboard > API to get the API Key",
     ]
     
-}]
+},{
+    name: "Helpdocs",
+    logo: HelpdocsLogo,
+    subTitle: "Import your FAQs from Helpdocs",
+    integrationType:1,
+    docsLink:"https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
+    status:"Coming soon",
+    enable:0,  
+    instructions:[
+        "Log in to your HelpDocs dashboard",
+        "Go to Settings",
+        "Click Create a New API Key",
+        "Enter a name for your key. This is just so you can identify the key later.",
+        "Choose permissions for your key by ticking the appropriate checkboxes",
+        "Hit Save",
+    ]       
+},]

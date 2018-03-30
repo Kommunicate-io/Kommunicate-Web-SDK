@@ -49,3 +49,8 @@ body {
 .enable-integration-wrapper {
     border-top: 5px solid #22d674;
 }
+.not-active {
+    pointer-events: none;
+    cursor: default;
+    text-decoration:none;
+  }
