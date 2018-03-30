@@ -624,14 +624,12 @@ class Aside extends Component {
                               <span className= {this.state.visibleIntegartion ? "km-sidebox-forward-tab-integration active-tab-integration" : "km-sidebox-forward-tab-integration"}
                               onClick={this.changeTabToReply}>Forward to integrations</span>
                             </div>
-                            { this.state.visibleIntegartion == true && this.state.visibleReply == false &&
-                              <div className="km-sidebox-third-party-integration">
-                                <span className="inteagration-forward-text">Forward to:</span>
-                                {thirdParty}
-                              </div>
-                            }
-                            {this.state.visibleIntegartion == false && this.state.visibleReply == true &&
-                            <div id="km-write-box" className="blk-lg-12 km-write-box">
+                            <div className={this.state.visibleReply ? "n-vis" : "km-sidebox-third-party-integration"}>
+                              <span className="inteagration-forward-text">Forward to:</span>
+                              {thirdParty}
+                            </div>
+
+                            <div id="km-write-box" className={this.state.visibleReply ? "blk-lg-12 km-write-box":"n-vis" } >
                               <form id="km-msg-form" className="vertical km-msg-form">
                                 <div className="km-form-group n-vis">
                                   <label className="sr-only placeholder-text control-label"
@@ -676,7 +674,6 @@ class Aside extends Component {
                                   title="Send Message"></a>
                               </form>
                             </div>
-                            }
                             
                             <div className="blk-lg-12">
                               <div id="km-file-box" className="n-vis"></div>
