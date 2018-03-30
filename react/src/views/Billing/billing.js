@@ -357,7 +357,7 @@ class Billing extends Component {
                                     </div>
                                     <div className="col-md-6 text-right">
 
-                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
+                                        {this.state.subcription == 'startup' && this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
                                             (
                                             <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
                                             )
@@ -617,7 +617,7 @@ class Billing extends Component {
                                                             (this.state.subscription.indexOf('enterprise') != -1) ? 
                                                                 <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">Current Plan</button>
                                                                 : 
-                                                                <button className="km-button km-button--primary"><a href="https://calendly.com/kommunicate/15min" target="_blank" class="links">Contact Us</a></button>
+                                                                <button className="km-button km-button--primary" onClick={()=> window.open("https://calendly.com/kommunicate/15min", "_blank")}>Contact Us</button>
                                                         }
                                                     {/*
                                                     <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">
