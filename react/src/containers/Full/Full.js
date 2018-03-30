@@ -95,7 +95,7 @@ class Full extends Component {
       <div className="app" suppressContentEditableWarning={true}> 
         <Header profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
         <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
-          <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/install">Kommunicate Installation</Link> or set up your <Link to="/profile">Profile</Link></p>
+          <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
           <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
         </div>
         <div className="app-body">

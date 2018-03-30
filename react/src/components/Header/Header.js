@@ -121,7 +121,7 @@ class Header extends Component {
                 <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availabilityStatus === 1 ? "Go Away" : "Go Online"} </DropdownItem>
                 }
 
-                <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/profile"> Profile</Link></DropdownItem>
+                <DropdownItem><Link className="nav-link" style={{color: "#000"}} to="/settings/profile"> Profile</Link></DropdownItem>
                 <DropdownItem onClick={ this.logout }> Logout </DropdownItem>
               </DropdownMenu>
             </Dropdown>
