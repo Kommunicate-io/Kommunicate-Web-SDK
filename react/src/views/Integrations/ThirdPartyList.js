@@ -10,7 +10,6 @@ export let thirdPartyList = [{
     integrationType: 2,
     docsLink:"https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
     status:"Settings",
-    enable:1, 
     instructions:[
         "Sign in to your Zendesk dashboard.",
         "Enter your Access Email Id of Zendesk",
@@ -29,7 +28,6 @@ export let thirdPartyList = [{
     integrationType: 3,
     docsLink:"https://clearbit.com/docs",
     status:"Coming soon",
-    enable:0,
     instructions:[
         "Login to your https://clearbit.com/ account",
         "Go to Dashboard > API to get the API Key",
@@ -41,8 +39,7 @@ export let thirdPartyList = [{
     subTitle: "Import your FAQs from Helpdocs",
     integrationType:1,
     docsLink:"https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
-    status:"Coming soon",
-    enable:0,  
+    status:"Coming soon",  
     instructions:[
         "Log in to your HelpDocs dashboard",
         "Go to Settings",
