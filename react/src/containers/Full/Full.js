@@ -126,7 +126,7 @@ class Full extends Component {
                 <Route exact path="/settings/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Billing" component={Integrations}/>
-                <Route exact path="/settings/pushNotification" name="PushNotification" component={PushNotification}/>
+                <Route exact path="/settings/pushnotification" name="PushNotification" component={PushNotification}/>
                 }}/> 
                 
                 <Redirect from="/" to="/dashboard"/>
