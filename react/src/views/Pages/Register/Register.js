@@ -95,6 +95,10 @@ class Register extends Component {
     userInfo.name=_this.state.name || _this.state.userName;
     userInfo.subscription = _this.state.subscription;
 
+    if (window.heap) {
+      window.heap.identify(email);
+    }
+
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {

@@ -110,6 +110,7 @@ submitForm = ()=>{
   // alert("button clicked "+ this.state.userName+ "  "+this.state.password);
   //validateUser(this.state);
   var _this=this;
+
   const loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
   if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
@@ -117,7 +118,10 @@ submitForm = ()=>{
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
     
   }else{
-    console.log("inside submit form");
+    if (window.heap) {
+      window.heap.identify(userName);
+    }
+
     this.setState({loginButtonDisabled:true});
     axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
     .then(function(response){
