@@ -88,7 +88,7 @@ class Integrations extends Component {
                 <img src={item.logo} className="integration-brand-logo" />
                 <h6 className="logo-title">{item.name}</h6>
                 <p className="integration-description">{item.subTitle}</p>
-                <span className={ item.enable ? "integration-settings" : "integration-settings not-active" }  onClick={() => {this.setState({activeDiv:index},this.openModal)}}>{item.status}</span>
+                <span className={ item.name == "Zendesk" ? "integration-settings" : "integration-settings not-active" }  onClick={() => {this.setState({activeDiv:index},this.openModal)}}>{item.status}</span>
             </div>
         </div> 
      });
