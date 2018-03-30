@@ -12,6 +12,11 @@ import './pushNotification.css';
 class PushNotification extends Component{
   constructor(props){
     super(props);
+
+    let userDetail =CommonUtils.getUserSession().application.appModulePxys[0];
+    console.log(userDetail.testApnsUrl);
+    console.log(userDetail.apnsUrl);
+
     this.state = {
      enableDisableCheckbox: false,
      activeTextField: -1,
@@ -19,9 +24,24 @@ class PushNotification extends Component{
      disableButtonForAndroid:true,
      disableButtonForIosDevelopment:true,
      disableButtonForIosDistribution:true,
+     gcmKey: userDetail.gcmKey?userDetail.gcmKey: "",
+     apnsForDevelepment: userDetail.testApnsUrl? this.getFileName(userDetail.testApnsUrl): "Upload File",
+     apnsForDistribution: userDetail.apnsUrl? this.getFileName(userDetail.apnsUrl): "Upload File",
+     apnsPassword:userDetail.apnsPassword? userDetail.apnsPassword: "",
+     apnstestPassword:userDetail.testApnsPassword? userDetail.testApnsPassword: "",
+     apnsProdUrl: userDetail.apnsUrl,
+     apnsTestUrl: userDetail.testApnsUrl
     };
+
     this.submitGcmkey = this.submitGcmkey.bind(this);
     this.uploadDistributionapnsFile = this.uploadDistributionapnsFile.bind(this);
+    this.submitApnsForDevelopment = this.submitApnsForDevelopment.bind(this);
+  }
+  getFileName(url){
+    var s = url.lastIndexOf("/");
+    var n= url.substr(s);
+    var filename = n.split("/")[1]
+    return filename;
   }
   certificateUpload(params){
       var data = new FormData();
@@ -45,37 +65,53 @@ class PushNotification extends Component{
           }
         });
   }
+
   uploadDistributionapnsFile(){
     var file ={};
     var allowedFiles = [".p12"];
-    if(!document.getElementById("apnsUrl").files[0]){
+    if(!document.getElementById("apnsUrl").files[0] && this.state.apnsPassword === "" && this.state.apnsForDistribution===""){
       Notification.error("Please select file");
       return;
     }
       file.file = document.getElementById("apnsUrl").files[0];
       var fileUpload =document.getElementById("apnsUrl");
+
+      if (fileUpload.getAttribute("data-url")) {
+        this.submitApnsForDistribution(fileUpload.getAttribute("data-url"));
+        return;
+      }
+
       var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+      if(document.getElementById("apnsUrl").value !==""){
       if (!regex.test(fileUpload.value.toLowerCase())) {
         Notification.error("Please upload file in .p12 format");
           return false;
       }
+    
       file.name = file.file.name;
       file.this = this;
       file.env = "distribution";
       file.callback = function (file) {
         file.success.submitApnsForDistribution(file.url);
-      }
+      }}
       this.certificateUpload(file);
 }
   uploadDevelopmentapnsFile(){
     var file ={};
     var allowedFiles = [".p12"];
-    if(!document.getElementById("apnsUrl").files[0]){
+    if(!document.getElementById("testApnsUrl").files[0] && this.state.apnstestPassword ===""&&this.state.apnsForDevelepment==="" ){
       Notification.error("Please select file");
       return;
     }
-      file.file = document.getElementById("apnsUrl").files[0];
-      var fileUpload =document.getElementById("apnsUrl");
+      file.file = document.getElementById("testApnsUrl").files[0];
+      var fileUpload =document.getElementById("testApnsUrl");
+
+      if (fileUpload.getAttribute("data-url")) {
+        this.submitApnsForDevelopment(fileUpload.getAttribute("data-url"));
+        return;
+      }
+
+      if(document.getElementById("testApnsUrl").value !==""){
       var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
       if (!regex.test(fileUpload.value.toLowerCase())) {
         Notification.error("Please upload file in .p12 format");
@@ -86,7 +122,7 @@ class PushNotification extends Component{
       file.env = "development";
       file.callback = function (file) {
         file.success.submitApnsForDevelopment(file.url);
-      }
+      } }
       this.certificateUpload(file);
   }
   submitGcmkey(fileurl){
@@ -148,7 +184,7 @@ class PushNotification extends Component{
 
   }
   submitApnsForDistribution(fileurl){
-    if( document.getElementById("apnsUrl").value ===""){
+    if( document.getElementById("apnsUrl").value ==="" && document.getElementById("apnsPassword").value ===""){
       return;
     }
 
@@ -205,7 +241,7 @@ class PushNotification extends Component{
 
   }
   submitApnsForDevelopment(fileurl){
-    if( document.getElementById("testApnsUrl").value ===""){
+    if( document.getElementById("testApnsUrl").value ==="" && document.getElementById("testApnsPassword").value ===""){
       return;
     }
 
@@ -296,7 +332,7 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">GCM/FCM key :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="gcmKey" className="km-pushnotification-input" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
+                    <input id="gcmKey"onChange={(e) => {this.setState({ gcmKey: e.target.value })}} className="km-pushnotification-input" value ={this.state.gcmKey} type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
                     </div>
                     <div className="btn-group">
                   <button disabled={this.state.disableButtonForAndroid} className="km-button km-button--primary save-changes-btn"
@@ -326,13 +362,13 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <InputFile id={'apnsUrl'} className={'secondary'} text={'Upload File'} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'}  />
+                    <InputFile id={'apnsUrl'} dataUrl={this.state.apnsProdUrl} className={'secondary'} text={this.state.apnsForDistribution} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'}  />
                     </div>
                     </div>
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input className="km-pushnotification-input" id="apnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input" value={this.state.apnsPassword} onChange ={(e) =>{ this.setState({disableButtonForIosDistribution: false, apnsPassword: e.target.value })} }id="apnsPassword" type="password"></input></div>
                   </div> 
                   <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDistribution}  className="km-button km-button--primary save-changes-btn"
@@ -349,13 +385,13 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <InputFile id={'testApnsUrl'} className={'secondary'} text={'Upload File'} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
+                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={this.state.apnsForDevelepment} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
                     </div>
                     </div>
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input className="km-pushnotification-input" id="testApnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input"  value={this.state.apnstestPassword} onChange={(e) =>{ this.setState({disableButtonForIosDevelopment: false, apnstestPassword: e.target.value   })} }  id="testApnsPassword" type="password"></input></div>
                   </div> 
                   </div>
                   <div className="btn-group">
