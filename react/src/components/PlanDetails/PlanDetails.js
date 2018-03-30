@@ -131,7 +131,7 @@ PlanDetails.propTypes = {
     PlanIcon: PropTypes.string.isRequired,
     PlanName: PropTypes.string.isRequired,
     PlanAmount: PropTypes.string.isRequired,
-    PlanMAU: PropTypes.number.isRequired,
+    PlanMAU: PropTypes.string.isRequired,
 };
 
 

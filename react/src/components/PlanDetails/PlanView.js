@@ -88,7 +88,7 @@ PlanView.propTypes = {
     PlanName: PropTypes.string.isRequired,
     PlanAmountMonthly: PropTypes.string.isRequired,
     PlanAmountYearly: PropTypes.string.isRequired,
-    PlanMAU: PropTypes.number.isRequired,
+    PlanMAU: PropTypes.string.isRequired,
     PricingMonthlyHidden: PropTypes.bool.isRequired,
     Subscription: PropTypes.string.isRequired,
     ShowFeatures: PropTypes.string.isRequired,
