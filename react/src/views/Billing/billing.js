@@ -357,7 +357,7 @@ class Billing extends Component {
                                     </div>
                                     <div className="col-md-6 text-right">
 
-                                        {this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
+                                        {this.state.subcription == 'startup' && this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
                                             (
                                             <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
                                             )
