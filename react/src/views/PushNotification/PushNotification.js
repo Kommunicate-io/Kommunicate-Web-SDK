@@ -6,7 +6,8 @@ import axios from 'axios';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
-// import applozic.fullview.js from "../../../../js/app/fullview/applozic.fullview.js";
+import InputFile from '../.../../../components/InputFile/InputFile';
+import './pushNotification.css';
 
 class PushNotification extends Component{
   constructor(props){
@@ -67,6 +68,9 @@ class PushNotification extends Component{
      this.certificateUpload(file);
   }
   submitGcmkey(fileurl,env){
+    if(document.getElementById("gcmKey").value ===""&& document.getElementById("apnsUrl").value ===""&& document.getElementById("testApnsUrl").value ===""){
+      return;
+    }
 
     let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
@@ -118,8 +122,15 @@ class PushNotification extends Component{
       "Content-Type": "application/json",
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
-      console.log(response);
+      if (response.status === 200) {
+        alert(" data successfully updated");
+      } else {
+        alert("something went wrong");
+      }
     })
+    this.setState({disableButtonForAndroid: true });
+    this.setState({disableButtonForIosDistribution: true });
+    this.setState({disableButtonForIosDevelopment: true });
 
   }
 
@@ -131,7 +142,7 @@ class PushNotification extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="card-block away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Enabling push Notification allows kommunicate to send Notification even when your mobile app in foreground</h4>
+                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app in foreground</h4>
                 <div className="app-id-container">
                   <div className="app-id-div">
                     <span className="app-id-sub-text">
@@ -146,11 +157,10 @@ class PushNotification extends Component{
             </div>
           </div>
         </div>
-        {/* known customers container */}
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="card">
-              <div className="card-header away-card-header">
+              <div className="card-header away-card-header km-div">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
                    
@@ -159,11 +169,9 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">GCM/FCM key :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="gcmKey" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
+                    <input id="gcmKey" className="km-pushnotification-input" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
                     </div>
-                  </div>
-                </div>            
-                <div className="btn-group">
+                    <div className="btn-group">
                   <button disabled={this.state.disableButtonForAndroid} className="km-button km-button--primary save-changes-btn"
                     onClick={(e) => {
                       this.setState({
@@ -171,56 +179,59 @@ class PushNotification extends Component{
                       }, this.submitGcmkey)
                     }} >Save</button>
                 </div>
+                  </div>
+                </div>            
               </div>          
             </div>
           </div>
         </div>
-        {/* known customers container ends here */}
-        {/* Anonymous customers container */}
         <div className="row">
         <div className="col-sm-12 col-md-12">
           <div className="card">
-            <div className="card-header away-card-header">
+            <div className="card-header away-card-header km-div">
               <div className="away-message-known-customers-wrapper">
               <div className="">
                    
                     <div className="form-group">For IOS(APNS)<span className="customer-type"> </span></div>  
-                    <div className="form-group">For DISTRIBUTION<span className="customer-type"> </span></div>             
-                    <div className="row form-group">
+                    <div className="form-group">For DISTRIBUTION<span className="customer-type"> </span></div>  
+                    <hr className="km-pushnotification-hr"></hr>     
+                    <div className="row form-group km-pushNotification-development">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="apnsUrl" type="file"onFocus ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept=".p12"></input></div>
+                    <InputFile id={'apnsUrl'} className={'secondary'} text={'Upload File'} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'} />
+                    </div>
                     </div>
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="apnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input" id="apnsPassword" type="password"></input></div>
                   </div> 
                   <div className="btn-group">
-                <button disabled={this.state.disableButtonForIosDistribution} className="km-button km-button--primary save-changes-btn"
+                <button disabled={this.state.disableButtonForIosDistribution}  className="km-button km-button--primary save-changes-btn"
                   onClick={(e) => {
                     this.setState({
                       disableButtonForIosDistribution: true
                     },this.uploadDistributionapnsFile)
                   }} >Save</button>
               </div>
-                  <div className="form-group">For DEVELOPMENT<span className="customer-type"> </span></div>             
-                    <div className="row form-group">
+              <div>
+                  <div className="form-group km-pushNotification-div">For DEVELOPMENT<span className="customer-type"> </span></div>   
+                  <hr className="km-pushnotification-hr"></hr>           
+                    <div className="row form-group km-pushNotification-development">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="testApnsUrl" type="file" onFocus ={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} }accept=".p12"></input></div>
+                    <InputFile id={'testApnsUrl'} className={'secondary'} text={'Upload File'} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
+                    </div>
                     </div>
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="testApnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input" id="testApnsPassword" type="password"></input></div>
                   </div> 
                   </div>
-                  
-              </div>            
-              <div className="btn-group">
+                  <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDevelopment} className="km-button km-button--primary save-changes-btn"
                   onClick={(e) => {
                     this.setState({
@@ -228,11 +239,12 @@ class PushNotification extends Component{
                     },this.uploadDevelopmentapnsFile)
                   }} >Save</button>
               </div>
+                  </div>
+              </div>            
             </div>          
           </div>
         </div>
       </div>
-        {/* Anonymous customers container end here */}
       </div>
 
     )

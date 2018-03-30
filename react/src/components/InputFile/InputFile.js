@@ -6,7 +6,7 @@ export default class InputFile extends Component {
     constructor(props: any)
     {
         super(props);
-        this.state = {message:'some initial message', text: props.text, id: props.id, multiple: props.multiple, accept: props.accept, className: props.className};
+        this.state = {message:'some initial message', text: props.text, id: props.id, multiple: props.multiple, accept: props.accept, className: props.className,onBlur:props.onBlur};
         // this.state = { text: props.text, id: props.id, multiple: props.multiple };
         this.getUploadedFileName = this.getUploadedFileName.bind(this);
     }
@@ -66,11 +66,11 @@ export default class InputFile extends Component {
 
     render () {
 
-        const { id, text, multiple, accept, className } = this.state;
+        const { id, text, multiple, accept, className ,onBlur} = this.state;
 
         return(
             <div>
-                <input id={id} type="file" className="km-btn-file" data-multiple-caption={this.state.message} multiple={multiple} onChange={this.getUploadedFileName} accept={accept}></input>
+                <input id={id} type="file" className="km-btn-file" data-multiple-caption={this.state.message} multiple={multiple} onBlur={onBlur} onChange={this.getUploadedFileName} accept={accept}></input>
                 <label htmlFor={id} className={(className === 'primary') ? "km-button km-button--primary km-btn-file-label" : (className === 'secondary') ? "km-button km-button--secondary km-btn-file-label" : "km-button km-button--primary km-btn-file-label"}>
                     <span>{text}</span>
                     {/* <span hidden={}>{text}</span> */}
@@ -86,4 +86,5 @@ InputFile.propTypes = {
     multiple: PropTypes.string,
     accept: PropTypes.string,
     className: PropTypes.string,
+    onBlur:PropTypes.func,
 };
