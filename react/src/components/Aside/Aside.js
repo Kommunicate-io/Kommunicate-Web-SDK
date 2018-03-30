@@ -3,7 +3,11 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-import {updateApplozicUser} from '../../utils/kommunicateClient'
+import {updateApplozicUser} from '../../utils/kommunicateClient';
+import { thirdPartyList } from './km-thirdparty-list'
+import Modal from 'react-responsive-modal';
+import ModalContent from './ModalContent.js';
+
 
 class Aside extends Component {
   constructor(props) {
@@ -12,6 +16,10 @@ class Aside extends Component {
     this.state = {
       activeTab: '1',
       assignee: '',
+      visibleIntegartion:false,
+      visibleReply:true,
+      modalIsOpen:false,
+      clickedButton:-1,
       agents : new Array(),
       statuses: {
         0: 'Open',
@@ -23,7 +31,6 @@ class Aside extends Component {
       group: null
     };
   }
-
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
@@ -42,6 +49,26 @@ class Aside extends Component {
        //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
+  }
+
+  changeTabToIntegration = () => {
+    this.setState({
+      visibleIntegartion: false,
+      visibleReply:true
+    })
+  }
+  changeTabToReply = () => {
+    this.setState({
+      visibleIntegartion:true,
+      visibleReply:false
+    })
+  }
+  openModal = (index) => {
+    this.setState({ modalIsOpen: true});
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
   }
 
   loadAgents() {
@@ -72,7 +99,11 @@ class Aside extends Component {
     var that = this;
     window.$kmApplozic.fn.applozic("getGroup", {
         groupId: groupId, callback: function(response) {
-          that.setState({group: response});
+          that.setState({
+            group: response,
+            visibleIntegartion:false,
+            visibleReply:true
+          });
           that.selectAssignee();
           that.selectStatus();
           that.setUpAgentTakeOver(response);
@@ -259,6 +290,11 @@ class Aside extends Component {
   }
 
   render() {
+    const thirdParty = thirdPartyList.map((item,index) => {
+         return <button onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
+         className="km-button km-button--secondary">
+         <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
+    });
     return (
       <aside className="aside-menu">
         <div className="animated fadeIn applozic-chat-container">
@@ -447,7 +483,7 @@ class Aside extends Component {
                             <div className="form-group col-sm-3">
                               <select className="form-control" id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
                                 <option value="0">Open</option>
-                                <option value="1">In Progess</option>
+                                <option value="1">In Progress</option>
                                 <option value="2">Close</option>
                                 <option value="3">Spam</option>
                                 <option value="4">Duplicate</option>
@@ -573,6 +609,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="write">
+                        
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
                           <div className="km-box-form km-row n-vis">
                             <div className="blk-lg-12">
@@ -581,6 +618,19 @@ class Aside extends Component {
                             <div className="blk-lg-12">
                               <p id="km-msg-response" className="km-box-response n-vis"></p>
                             </div>
+                            <div className="km-sidebox-tab">       
+                              <span className={ this.state.visibleReply ? "km-sidebox-tab-reply active-tab-reply" : "km-sidebox-tab-reply"} 
+                              onClick={this.changeTabToIntegration}>Reply</span>
+                              <span className= {this.state.visibleIntegartion ? "km-sidebox-forward-tab-integration active-tab-integration" : "km-sidebox-forward-tab-integration"}
+                              onClick={this.changeTabToReply}>Forward to integrations</span>
+                            </div>
+                            { this.state.visibleIntegartion == true && this.state.visibleReply == false &&
+                              <div className="km-sidebox-third-party-integration">
+                                <span className="inteagration-forward-text">Forward to:</span>
+                                {thirdParty}
+                              </div>
+                            }
+                            {this.state.visibleIntegartion == false && this.state.visibleReply == true &&
                             <div id="km-write-box" className="blk-lg-12 km-write-box">
                               <form id="km-msg-form" className="vertical km-msg-form">
                                 <div className="km-form-group n-vis">
@@ -626,6 +676,8 @@ class Aside extends Component {
                                   title="Send Message"></a>
                               </form>
                             </div>
+                            }
+                            
                             <div className="blk-lg-12">
                               <div id="km-file-box" className="n-vis"></div>
                             </div>
@@ -965,6 +1017,10 @@ class Aside extends Component {
           </div>
 
         </div>
+        <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
+          
+          <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
+        </Modal>
       </aside>
     )
   }

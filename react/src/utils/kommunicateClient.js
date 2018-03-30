@@ -761,7 +761,42 @@ const deleteThirdPartyByIntegrationType = (integrationType) => {
     .then(response => response)
     .catch(err => err);
 }
+const getZendeskIntegrationTicket = (groupId) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/ticket/"+groupId
+  return Promise.resolve(axios({
+    method: 'GET',
+    url: url,
+    
+  })).then(result => {
+    return result;
+  }).catch(err => { console.log("Error while fetching zendesk ticket", err) })
+}
+const createZendeskIntegrationTicket = (data,groupId) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/ticket/"+groupId+"/create"
+  return Promise.resolve(axios({
+    method: 'POST',
+    url: url,
+    data: data
+  })).then(result => {
+    return result;
+  }).catch(err => { console.log("Error while creating zendesk ticket", err) })
 
+}
+const updateZendeskIntegrationTicket = (data,groupId) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/"+ userSession.application.applicationId +"/ticket/"+ groupId +"/update"
+  return Promise.resolve(axios({
+    method: 'PUT',
+    url: url,
+    data: data
+  })).then(result => {
+
+    return result;
+  }).catch(err => { console.log("Error while creating zendesk ticket", err) })
+
+}
 
 
 export {
@@ -808,5 +843,10 @@ export {
   getCustomerByApplicationId,
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
-  deleteThirdPartyByIntegrationType
+  deleteThirdPartyByIntegrationType,
+  getZendeskIntegrationTicket,
+  createZendeskIntegrationTicket,
+  updateZendeskIntegrationTicket,
+
+  
 }
