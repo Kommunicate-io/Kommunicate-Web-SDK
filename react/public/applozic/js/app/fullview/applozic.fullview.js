@@ -5175,6 +5175,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					error : function() {}
 				});
 			};
+
 			_this.getUserStatus = function(params) {
 				var response = new Object();
 				kmUtils.ajax({

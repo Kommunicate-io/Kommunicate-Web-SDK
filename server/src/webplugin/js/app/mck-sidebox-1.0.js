@@ -582,7 +582,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckFileService.uploadFile(file);
         };
 
-
         _this.audioAttach = function (file) {
             mckFileService.audioRecoder(file);
 
@@ -7609,6 +7608,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
             };
+
 
             _this.audioRecoder = function (params) {
                 var file = params.file;

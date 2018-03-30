@@ -53,6 +53,9 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item billing-link ">
                             <NavLink to={'/settings/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
                         </li>
+                        <li className="ss-nav-item">
+                            <NavLink to={'/pushnotification'} className="ss-nav-link" activeClassName="active">PushNotification</NavLink>
+                        </li>
                         <li className="ss-nav-title">
                             DOWNLOAD
                         </li>

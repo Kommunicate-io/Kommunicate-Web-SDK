@@ -21,6 +21,7 @@ import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
 import Faq from '../../views/Faq/'
 import Billing from '../../views/Billing/'
+import pushNotification from '../../views/PushNotification/PushNotification.js'
 import Integrations from '../../views/Integrations/Integrations.js'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
@@ -125,6 +126,7 @@ class Full extends Component {
                 <Route exact path="/settings/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Billing" component={Integrations}/>
+                <Route exact path="/pushNotification" name="pushNotification" component={pushNotification}/>
                 }}/> 
                 
                 <Redirect from="/" to="/dashboard"/>
