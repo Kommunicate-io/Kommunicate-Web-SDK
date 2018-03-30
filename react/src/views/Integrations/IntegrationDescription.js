@@ -167,7 +167,7 @@ class IntegrationDescription extends Component{
             <a target="_blank" className="integration-api-support-link" href={thirdPartyList[this.state.activeModal].docsLink}> {thirdPartyList[this.state.activeModal].name} Docs</a></span>
         </div>
         <div className="token-input-wrapper">
-        { this.state.activeModal == 1 &&
+        { thirdPartyList[this.state.activeModal].name !== "Zendesk"  &&
             <p className="token-title">API Key:
             <input type="text" name="integration-token" className ="integration-token-input" value={this.state.accessKey}
                 onChange={(e) => { 
@@ -177,7 +177,7 @@ class IntegrationDescription extends Component{
                 }} />
             </p>
         }
-        { this.state.activeModal !== 1 &&
+        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
             <p className="token-title">Email:
             <input type="text" id="integration-token" className ="zendesk-email-input" value={this.state.accessKey} 
                 onChange={(e) => { 
@@ -187,7 +187,7 @@ class IntegrationDescription extends Component{
                 }} />
             </p>
         }
-        { this.state.activeModal !== 1 &&
+        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
             <p className="token-title">Access Token:
             <input type="text" id="integration-token" className ="zendesk-access-token-input" value={this.state.accessToken}
              onChange={(e) => { 
@@ -197,7 +197,7 @@ class IntegrationDescription extends Component{
               }} />   
            </p>
         }
-        { this.state.activeModal !== 1 &&
+        { thirdPartyList[this.state.activeModal].name === "Zendesk" &&
             <p className="token-title">Subdomain:
             <span className="zendesk-domain-https">https://</span>
             <input type="text" id="integration-token" className ="zendesk-subdoamin-input" value={this.state.subdoamin} 
