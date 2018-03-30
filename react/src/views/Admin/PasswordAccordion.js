@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import '../Settings/Integration/Accordion.css';
+import '../Settings/Installation/Accordion.css';
 import {changePassword } from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
 import './Admin.css';

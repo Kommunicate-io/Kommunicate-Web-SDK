@@ -43,7 +43,12 @@ module.exports = (sequalize, DataTypes) => {
       agentId: {
         type: DataTypes.INTEGER,
         field: "agent_id"
+      },
+      metadata:{
+        type:DataTypes.JSON,
+        allowNull: true
       }
+
     },
 
     {

@@ -235,7 +235,7 @@ class Forms extends Component {
                       <img src={ this.props.profilePicUrl } className="default-dp" /><br /> 
               
                       <div className="edit-dp-btn">
-                        <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                        <br /><span className="change-courser" onClick={this.openModal}>Edit Display Photo</span>
                         <div className="about-dp">Your customers will see this photo</div>
                         
 

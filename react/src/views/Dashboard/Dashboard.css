@@ -13,6 +13,14 @@
 .graph-card {
     padding: 20px;
 }
+.card-main-header {
+    color: black;
+    background: #CCE7F8;
+    display: inline-block;
+    width: auto;
+    padding: 2px 10px 2px 10px;
+    margin: 10px auto 0 10px;
+}
 .card-main-title {
     font-size: 16px;
     font-weight: 400;
@@ -33,7 +41,7 @@
     color: #5c5aa7;
 }
 .card-sub-title {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -53,13 +61,16 @@
 .card-stats.active {
     border-top: 3px solid #5c5aa7;
 }
-.card-stats.active .card-main-title, .card-stats.active .card-sub-title  {
+.card-stats.active .card-main-title,   .card-stats.active .card-stats-value {
     font-weight: 500;
 }
 .card-stats.card-stats--users {
     border-top-left-radius: 4px;
 }
 .card-stats.card-stats--mau {
+    border-top-right-radius: 0px;
+}
+.card-stats.card-stats--messages {
     border-top-right-radius: 4px;
 }
 .vertical-line {
@@ -70,21 +81,39 @@
     right: 0;
     background-color: #cfcaca;
 }
+.card-stats .card-block {
+    padding: 0.7rem;
+}
+
+.card-stats-month {
+    margin: 0;
+    padding: 1px 8px;
+    border-radius: 3px;
+    background-color: #CCE7F8;
+    color: #3a3a3a;
+    display: inline-block;
+    margin-bottom: 4px;
+    min-width: 1px;
+}
+
 
 
 @media (max-width:991px) {
-    .card-stats--messages .vertical-line {
+    .card-stats--mau .vertical-line {
         display: none;
     }
     .card-stats--messages {
-        border-top-right-radius: 4px;
+        border-top-right-radius: 0px;
     }
     .card-stats--mau {
         border-top-right-radius: 0px;
     }
+    .card-stats.card-stats--messages {
+        border-top-right-radius: 0px;
+    }
 }
 @media (max-width:575px) {
-    .card-stats--users .vertical-line {
+    .vertical-line {
         display: none;
     }
     .card-stats--messages {
@@ -92,6 +121,9 @@
     }
     .card-stats--users {
         border-top-right-radius: 4px;
+    }
+    .card-stats.card-stats--mau {
+        border-top-right-radius: 0px;
     }
     .card-stats {
         border-bottom: 1px solid #cfcaca;

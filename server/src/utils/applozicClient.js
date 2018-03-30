@@ -4,6 +4,7 @@ const adminUserId = config.getProperties().kommunicateAdminId;
 const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
 const constant =require('./constant');
+const logger = require('./logger.js')
 
 /*
 this method register a user in applozic db with given parameters.
@@ -19,7 +20,8 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
     "authenticationTypeId": 1,
     "email":email,
     "displayName":displayName,
-    "gcmKey":gcmKey
+    "gcmKey":gcmKey,
+    "chatNotificationMailSent":true,
   })).then(response=>{
     let err = {};
     console.log("Applozic server returned : ",response.status);
@@ -60,6 +62,7 @@ const createApplozicClientV1 = (options)=>{
   console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",options.userId,"applicationId",options.applicationId,"role","email",options.email);
   options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
   options.roleName = options.roleName?options.roleName:options.role;
+  options.chatNotificationMailSent=true;
   options.userId =options.userName;
     return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
       let err = {};
@@ -155,7 +158,7 @@ this method get the application detail for given applicationId
 exports.getApplication=(customer)=>{
   const applicationId = customer.applicationId;
   const getApplicationUrl = config.getProperties().urls.getApplicationDetail.replace(":applicationId", applicationId);
-  const apzToken = customer.apzToken?customer.apzToken: new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
+  const apzToken =  new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
   console.log("calling applozic.. url: ", getApplicationUrl, " apzToken: ", apzToken);
   let err = {};
   return Promise.resolve(axios.get(getApplicationUrl, {
@@ -241,7 +244,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
+      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse[0].description);
       return null;
     }
   }).catch(err=>{
@@ -405,21 +408,19 @@ exports.updateApplication = (data) => {
   })
 }
 
-exports.getUserDetails = (userName,applicationId,apzToken) => {
+exports.getUserDetails = (userNameList,applicationId,apzToken) => {
   let url = config.getProperties().urls.getUserInfo
-  console.log("getting user info from applozic url : ", url);
-  console.log(userName)
-  let userNameArray = [userName]
-  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameArray}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
-    console.log("got response from Applozic user info api :", response.status);
+  logger.info("getting user info from applozic url : ", url);
+  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameList}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+    logger.info("got response from Applozic user info api :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
     }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse.description);
+      logger.error("ERROR FROM APPLOZIC while fetching user Detail: ",response.data.errorResponse[0].description);
       return null;
     }
   }).catch(err=>{
-    console.log("error while getting group info from Applozic" ,err);
+    console.log("error while getting user detail from Applozic" ,err);
     throw err;
   });
 

@@ -67,9 +67,9 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             console.log("groupUser")
             return userService.getByUserNameAndAppId(groupUser.agentUserName,customer.applicationId)
             .then(res => {
-              console.log(res)
-              console.log(res.availability_status)
-              if(res.availability_status == 1){
+              logger.info(res);
+              logger.info(res.availabilityStatus)
+              if(res.availabilityStatus == 1){
                 offline = false
               }
               groupUser.agentId= res.id;
@@ -77,7 +77,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             }).then( groupUser => {
               let userId=groupUser.userId;
               console.log("userId")
-              return applozicClient.getUserDetails(userId,customer.applicationId,apzToken)
+              return applozicClient.getUserDetails([userId],customer.applicationId,apzToken)
               .then(userInfo => {
                 console.log(userInfo);
                 if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
@@ -219,9 +219,9 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
 
 exports.disableInAppMessages=(createdBy, customerId, category)=>{
     let criteria={customerId: customerId, status: 1, category: category};
-    if(constant.CATEGORY.AWAY_MESSAGE == category){
-      criteria.createdBy = createdBy
-    }
+    // if(constant.CATEGORY.AWAY_MESSAGE == category){
+    //   //criteria.createdBy = createdBy
+    // }
     return Promise.resolve(db.InAppMsg.update({status: 2}, { where: criteria})).catch(err => {
       return { code: err.parent.code, message: err.parent.sqlMessage }
     });
@@ -230,9 +230,9 @@ exports.disableInAppMessages=(createdBy, customerId, category)=>{
 
 exports.enableInAppMessages=(createdBy, customerId, category)=>{
     let criteria={customerId: customerId, status: 2, category: category};
-    if(constant.CATEGORY.AWAY_MESSAGE == category){
-      criteria.createdBy = createdBy
-    }
+    // if(constant.CATEGORY.AWAY_MESSAGE == category){
+    //   //criteria.createdBy = createdBy
+    // }
     return Promise.resolve(db.InAppMsg.update({status: 1}, { where: criteria})).catch(err => {
       return { code: err.parent.code, message: err.parent.sqlMessage }
     });
@@ -253,9 +253,7 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   if(customerId){
     criteria.customerId=customerId;
   }
-  if (constant.EVENT_ID.WELCOME_MESSAGE != eventIds[0]) {
-    criteria.createdBy = { [Sequelize.Op.or]: [null, createdBy] }
-  }
+  
   if(eventIds.length>0){
     criteria.eventId={ $in:eventIds}
   }
@@ -322,6 +320,41 @@ exports.editInAppMsg=(body)=>{
         return response;    
       })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
+/**
+ * return 1st online user. return undefined if no agents are online. 
+ */
+exports.checkOnlineAgents=(customer)=>{
+  return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
+    let userIdList = userList.filter(user=>user.availabilityStatus==1).map(user=>user.userName);
+    let defaultAgent = userList.filter(user=> user.type==3);
+    //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
+    logger.info("fetching detail of all agents from applozic");
+    if(userIdList.length>0){
+      return applozicClient.getUserDetails(userIdList,customer.applicationId, defaultAgent[0].apzToken);
+    }else return Promise.resolve([]);
+  }).then(agentsDetail=>{
+    agentsDetail=agentsDetail||[];
+    logger.info("got agent detail from applozic. checking if any agent is online..");
+    return agentsDetail.find(agent=>agent.connected);
+  })
+}
 
+exports.isGroupUserAnonymous=(customer,conversationId)=>{
+logger.info("checking if group user is anonymous ");
+return userService.getAdminUserByAppId(customer.applicationId).then(adminUser=>{
+  let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
+  return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
+  .then(groupInfo => {
+      logger.info("successfully got groupInfo from applozic for conversationId : ",conversationId);
+      
+      let groupUser= groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
+      return applozicClient.getUserDetails([groupUser[0].userId],customer.applicationId,apzToken)
+      .then(userInfo => { 
+        logger.info("received group user info...");
+       return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+      })
+    })
+  })
+}
 exports.getInAppMessage=getInAppMessage;
 exports.defaultMessage = defaultMessage;

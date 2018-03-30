@@ -120,11 +120,13 @@ var MCK_CLIENT_GROUP_MAP = [];
         'messageType': 5,
         'type': 0
     };
-    $applozic.fn.applozic = function (appOptions, params) {
+    $applozic.fn.applozic = function (appOptions, params,callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
-        }
+            // updating groupName to conversationTitle, supporting groupName for backward compatibility
+            appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
+                }
         var oInstance = undefined;
         if (typeof ($mck_sidebox.data('applozic_instance')) !== 'undefined') {
             oInstance = $mck_sidebox.data('applozic_instance');
@@ -137,7 +139,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         oInstance.loadConvTab(params);
                         break;
                     case 'loadTab':
-                        oInstance.loadTab(params);
+                        oInstance.loadTab(params,callback);
                         break;
                     case "uploadFile":
                         oInstance.uploadFile(params);
@@ -438,7 +440,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var ringToneService;
         var mckVideoCallringTone = null;
         var IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
-        var DEFAULT_GROUP_NAME = appOptions.groupName;
+        var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
@@ -515,11 +517,11 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckMessageLayout.loadTab(params);
             $applozic('#mck-search').val('');
         };
-        _this.loadTab = function (tabId) {
+        _this.loadTab = function (tabId,callback) {
             mckMessageLayout.loadTab({
                 'tabId': tabId,
                 'isGroup': false
-            });
+            },callback);
             $applozic('#mck-search').val('');
         };
         _this.loadChat = function (optns) {
@@ -1290,6 +1292,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
+                userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
                 USER_DEVICE_KEY = '';
                 var isValidated = _this.validateAppSession(userPxy);
@@ -1431,6 +1434,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 mckUserUtils.checkUserConnectedStatus();
                 if (typeof MCK_ON_PLUGIN_INIT === 'function') {
+                    // callback when plugin initilized successfully.
                     MCK_ON_PLUGIN_INIT('success', data);
                 }
                 mckInit.tabFocused();
@@ -1449,6 +1453,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
+                // calling Kommunicate for post initialization processing. error first style.
+                Kommunicate.postPluginInitialization(null,data);
             };
             _this.validateAppSession = function (userPxy) {
                 var appHeaders = mckStorage.getAppHeaders();
@@ -1760,63 +1766,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
             _this.createNewConversation = function (params, callback) {
-                // var group = [];
-                // var groupName;
-                // group.push(params.agentId);
-                // group.push(kommunicate._globals.userId);
-                // if(params.botIds){
-                //     console.log(params.botIds);
-                //     for (var i = 0; i < params.botIds.length; i++) {
-                //         group.push(params.botIds[i]);
-                //     }
-                // }
-                // groupName= group.sort().join().replace(/,/g, "_").substring(0, 250);
-                $applozic.fn.applozic("createGroup", {
-                    groupName: params.groupName,
-                    type: 10,
-                    admin: params.agentId,
-                    users: [
-                        {
-                            userId: "bot",
-                            groupRole: 2
-                        },
-                        {
-                            userId: params.agentId,
-                            groupRole: 1
-                        }
-                    ],
-                    metadata: {
-                        CREATE_GROUP_MESSAGE: "",
-                        REMOVE_MEMBER_MESSAGE:"",
-                        ADD_MEMBER_MESSAGE:"",
-                        JOIN_MEMBER_MESSAGE: "",
-                        GROUP_NAME_CHANGE_MESSAGE:"",
-                        GROUP_ICON_CHANGE_MESSAGE:"",
-                        GROUP_LEFT_MESSAGE: "",
-                        DELETED_GROUP_MESSAGE:"",
-                        GROUP_USER_ROLE_UPDATED_MESSAGE:"",
-                        GROUP_META_DATA_UPDATED_MESSAGE: "",
-                        CONVERSATION_ASSIGNEE: params.agentId,
-                        //ALERT: "false",
-                        HIDE: "true"
-                    },
-                    callback: function (response) {
-                        if (response.status === 'success' && response.data.clientGroupId) {
-                            Kommunicate.createNewConversation({
-                                "groupId": response.data.clientGroupId,
-                                "participentUserId": MCK_USER_ID,
-                                "defaultAgentId": DEFAULT_AGENT_ID,
-                                "applicationId": MCK_APP_ID
-                            }, function (err, result) {
-                                console.log(err, result);
-                                if (!err) {
-                                    callback(response.data.clientGroupId);
-                                }
-                            })
-                        }
-                        // 
-                    }
-                });
+                Kommunicate.startConversation(params,callback);
             }
             _this.loadConversationWithAgents = function (params, callback) {
                 if (window.applozic.PRODUCT_ID == "kommunicate") {
@@ -1825,24 +1775,27 @@ var MCK_CLIENT_GROUP_MAP = [];
                         .addClass("n-vis");
                 }
 
-                var formData = "type=" + 10 + "&startIndex=" + 0 + "&limit=" + 10;
-                $applozic.ajax({
-                    url: MCK_BASE_URL + "/rest/ws/group/bytype",
-                    type: "get",
-                    data: formData,
-                    contentType: "application/json",
-                    success: function (result) {
-                        if (result.response.length > 0) {
-                            var groupId = result.response[0].id;
-                            if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
-                                $applozic.fn.applozic("loadGroupTab", groupId);
-                            }
-                            $applozic.fn.applozic("loadTab");
-                        } else {
-                            mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, callback);
-
-                        }
+                var options = {type:10,startIndex:0,limit:10};
+                //TO DO: set group detail data in session and fetch from their instead of making call every time.
+                Kommunicate.client.getGroupDetailByType(options, function(err,result){
+                    if(err){
+                         console.log("error while fetching group detail by type",err)
+                         return;
+                    }else if (result.response.length ==0) {
+                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, function(groupId){
+                            Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });
+                            callback();
+                            
+                        });
+                    } else if(result.response.length ==1) {
+                        var groupId = result.response[0].id;
+                        $applozic.fn.applozic("loadGroupTab", groupId);
+                        callback();
+                    }else {
+                        $applozic.fn.applozic("loadTab");
+                        callback();
                     }
+
                 });
             };
 
@@ -2057,34 +2010,30 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
                     $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
-                    if (!KommunicateUtils.getCookie("_km-f-vis_")) {
-                        KommunicateUtils.setCookie("_km-f-vis_", "true");
-                    } else {
-                        KommunicateUtils.setCookie("_km-f-vis_", "false");
-                    }
+                    var $this = $applozic(this);
+                    var elem = this;
                     if (IS_ANONYMOUS_CHAT === "false") {
                         //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chat-login-modal").css("display", "block");
-                    } else {
-                        if (KommunicateUtils.getCookie("_km-f-vis_") == "true") {
+                    } else if($this.data('mck-id')){
+                        // clicked on conversation list;
+                        if ($this.parents(".mck-search-list").length) {
+                            $mck_search.bind('blur');
+                            //set timeout for ios devices to avoid contact list search issue.
+                            setTimeout(function () {
+                                _this.openChat(elem);
+                            }, 600);
+                        } else {
+                            _this.openChat(elem);
+                        }
+                    }else{
                             mckMessageService.loadConversationWithAgents({
                                 groupName: DEFAULT_GROUP_NAME,
                                 agentId: DEFAULT_AGENT_ID
-                            }, function (groupId) {
-                               Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID })
+                            }, function () {
+                                console.log("conversation created successfully");  
                             });
-                        } else {
-                            var $this = $applozic(this);
-                            var elem = this;
-                            if ($this.parents(".mck-search-list").length) {
-                                $mck_search.bind('blur');
-                                setTimeout(function () {
-                                    _this.openChat(elem);
-                                }, 600);
-                            } else {
-                                _this.openChat(this);
-                            }
-                        }
+                       
                     }
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -2131,6 +2080,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var $this = $applozic(this);
                     var currTabId = $mck_msg_inner.data("mck-id");
                     var isGroup = $mck_msg_inner.data("isgroup");
+                    KommunicateUI.hideAwayMessage();
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -3041,7 +2991,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                             mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
                         }
                     }
-                } else {
+                   // populate away messsage for support group..
+                    if(params.isGroup){
+                        Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":params.tabId},KommunicateUI.populateAwayMessage);  
+                    }
+                  } else {
                     CONTACT_SYNCING = true;
                     if (params.startTime) {
                         reqData += "&endTime=" + params.startTime;
@@ -8537,7 +8491,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             _this.onMessage = function (obj) {
                 if (subscriber != null && subscriber.id === obj.headers.subscription) {
                     var resp = $applozic.parseJSON(obj.body);
-                    var messageType = resp.type;
+                    var messageType = resp.type;                 
                     if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
                         $applozic("." + resp.message.split(",")[0] + " .mck-message-status").removeClass('mck-icon-time').removeClass('mck-icon-sent').addClass('mck-icon-delivered');
                         mckMessageLayout.addTooltip(resp.message.split(",")[0]);
@@ -8836,7 +8790,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 // no nedd to handle  message.type==4 and metadata.MSG_TYPE=="CALL_Rejected AND contnetType 103"
                             } else {
                                 mckMessageLayout.populateMessage(messageType, message, resp.notifyUser);
-                            }
+                                                            }
                         }
                     }
                 }

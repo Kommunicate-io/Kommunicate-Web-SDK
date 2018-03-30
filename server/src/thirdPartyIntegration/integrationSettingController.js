@@ -8,35 +8,54 @@ exports.updateOrCreate = (req, res) => {
     let type = req.params.type;
     return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
-            res.status(200).json({ code: "SUCCESS", message: "no user found" })
+          return  res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
         settings.customerId = customer.id;
         settings.type = type;
         return integrationSettingService.updateOrCreate(customer.id, type, settings).then(response => {
             console.log('response of creating settings', response);
-            res.status(200).json({ code: "SUCCESS", message: response })
+           return res.status(200).json({ code: "SUCCESS", message: response })
         });
 
     }).catch(err => {
         console.log('error while inserting thirdparty setting', err)
-        res.status(500).json({ code: "ERROR", message: "creation error" });
+        return res.status(500).json({ code: "ERROR", message: "creation error" });
     })
 
 }
 
-exports.getZendeskIntegrationSetting = (req, res) => {
+exports.getIntegrationSetting = (req, res) => {
     let appId = req.params.appId;
+    let type = req.query.type;
     return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
-            res.status(200).json({ code: "SUCCESS", message: "no user found" })
+          return res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
-        integrationSettingService.getZendeskIntegrationSetting(customer.id, ).then(respons => {
+       return integrationSettingService.getIntegrationSetting(customer.id, type).then(response => {
             console.log('response', response);
-            res.status(200).json({ code: "SUCCESS", message: response })
+          return res.status(200).json({ code: "SUCCESS", message: response })
         })
     }).catch(err => {
         console.log('error thirdparty setting', err)
-        res.status(500).json({ code: "ERROR", message: "error" });
+        return res.status(500).json({ code: "ERROR", message: "error" });
+    })
+
+}
+
+exports.deleteIntegrationSetting = (req, res) => {
+    let appId = req.params.appId;
+    let type = req.params.type;
+    return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
+        if (!customer) {
+          return res.status(200).json({ code: "SUCCESS", message: "no user found" })
+        }
+       return integrationSettingService.deleteIntegrationSetting(customer.id, type).then(response => {
+            console.log('response', response);
+          return res.status(200).json({ code: "SUCCESS", message: response })
+        })
+    }).catch(err => {
+        console.log('error thirdparty setting', err)
+        return res.status(500).json({ code: "ERROR", message: "error" });
     })
 
 }

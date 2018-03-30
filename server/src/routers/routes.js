@@ -46,6 +46,7 @@ const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
 const zendeskRouter = express.Router();
+const thirdPartySettingRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -63,6 +64,7 @@ exports.group = groupRouter;
 exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
 exports.zendesk = zendeskRouter;
+exports.thirdPartySetting = thirdPartySettingRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -115,7 +117,7 @@ conversationRouter.post('/member/add',validate(conversationValidation.addMemberI
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
-applicationRouter.post('/events',inAppMsgController.processEvents2);
+applicationRouter.post('/events',inAppMsgController.processEvents);
 applicationRouter.get('/all/events',inAppEventController.getAllInAppEvents)
 applicationRouter.post('/:userName/:appId/createinappmsg',validate(applicationValidation.createInAppMsg),inAppMsgController.createInAppMsg);
 applicationRouter.patch('/disableInAppMsgs/:userName/:appId',inAppMsgController.disableInAppMessages);
@@ -124,7 +126,7 @@ applicationRouter.get('/:userName/:appId/getInAppMessages',validate(applicationV
 applicationRouter.get('/events',validate(applicationValidation.getInAppMessagesByEventId),inAppMsgController.getInAppMessagesByEventIds);
 applicationRouter.patch('/:id/deleteInAppMsg',inAppMsgController.softDeleteInAppMsg);
 applicationRouter.patch('/editInAppMsg', validate(applicationValidation.editInAppMessages),inAppMsgController.editInAppMsg);
-
+applicationRouter.get('/:appId/awaymessage',validate(applicationValidation.processAwayMessage), inAppMsgController.processAwayMessage);
 //group router
 groupRouter.post('/create',userController.createGroupOfAllAgents)
 /**
@@ -147,6 +149,12 @@ issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDel
 /*
 *zendesk APIs
 */
-zendeskRouter.post('/:appId/ticket/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
-zendeskRouter.put('/:appId/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
-zendeskRouter.post('/:appId/insert/config/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
+zendeskRouter.post('/:appId/ticket/:groupId/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
+zendeskRouter.put('/:appId/ticket/:groupId/update', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.get('/:appId/ticket/:groupId', validate(zendeskValidation.getTicket),zendeskController.getTicket)
+/**
+ * third party settings
+ */
+thirdPartySettingRouter.post('/:appId/insert/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
+thirdPartySettingRouter.get('/:appId',validate(thirdPartySettingValidation.getSettings), integrationSettingController.getIntegrationSetting)
+thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.deleteIntegrationSetting)

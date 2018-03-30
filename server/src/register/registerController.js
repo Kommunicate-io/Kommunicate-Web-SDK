@@ -16,7 +16,7 @@ exports.createCustomer = (req,res)=>{
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
-  const subscription = req.body.subscription||0;
+  const subscription = req.body.subscription||'startup';
   let response={};
   let userDetail =Object.assign({},req.body);
   userDetail.email=email;
@@ -93,7 +93,8 @@ exports.patchCustomer = (req,res)=>{
   const userId = req.params.userId; 
   console.log("request recieved to update customer: ",userId, "body",customer);
   if (customer.websiteUrl) {
-    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage }).catch(err => {
+    let appName=(customer.companyName)?customer.companyName:"";
+    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName}).catch(err => {
       console.log('error while updating application')
     })  
   }
@@ -133,7 +134,7 @@ exports.patchCustomer = (req,res)=>{
     });
     if(isUpdated){
       response.code="SUCCESS";
-      response.message="updation successfull";
+      response.message="Updated";
       res.status(200).json(response);
     }else{
       response.code="NOT_FOUND";

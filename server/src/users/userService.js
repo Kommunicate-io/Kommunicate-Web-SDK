@@ -1,6 +1,7 @@
 const routes = require("../routers/routes.js");
 const userModel = require("../models").user;
 const db = require("../models");
+const Op = db.Sequelize.Op;
 const stringUtils = require("underscore.string");
 const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
@@ -13,6 +14,7 @@ const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPasswor
 const cacheClient = require("../cache/hazelCacheClient");
 const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
+const CONST = require("./constants.js");
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -51,6 +53,7 @@ let handleCreateUserError =(user,customer,err)=>{
       return err.data;
     })
   }else{
+    logger.error(" error :",err);
     throw err;
   }
 }
@@ -70,6 +73,7 @@ const createUser =user=>{
       if(user.type===registrationService.USER_TYPE.AGENT){
       return handleCreateUserError(user,customer,err);
       }else{
+        logger.error("error while creating user in applozic : ",err);
         throw err;
       }
     }))
@@ -352,7 +356,7 @@ exports.goAway = (userId, appId)=>{
         console.log("No customer in customer table with appId", appId);
         return null;
       }else {
-        return Promise.resolve(userModel.update({ availability_status: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+        return Promise.resolve(userModel.update({ availabilityStatus: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
           console.log("successfully updated user status to offline",result[0]);
           return result[0];
         }).catch(err=>{
@@ -369,7 +373,7 @@ exports.goOnline = (userId, appId)=>{
         console.log("No customer in customer table with appId", appId);
         return null;
       }else {
-        return Promise.resolve(userModel.update({ availability_status: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
+        return Promise.resolve(userModel.update({ availabilityStatus: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
           console.log("successfully updated user status to online",result[0]);
           return result[0];
         }).catch(err=>{
@@ -384,14 +388,15 @@ exports.goOnline = (userId, appId)=>{
  * Specify type to filter users  1:Agents, 2: Bots
  * @param {Object} customer
  * @param {number} customer.id 
- * @param {Number} type 
+ * @param {Array} type 
  * @return {Object} 
  */
 const getAllUsersOfCustomer = (customer,type)=>{
   logger.info("fetching Users for customer, ",customer.id);
   let criteria={customerId:customer.id};
+  var a = Op.or;
   if(type){
-    criteria.type= type;
+    criteria.type= {[Op.or]:type};
   }
   return Promise.resolve(userModel.findAll({where:criteria}));
 }
@@ -428,6 +433,20 @@ const getUserDisplayName=(user)=>{
     return user.email;
   }
 }
+/**
+ * returns list of the all agents whos avaibility status is 1.
+ * 
+ * @param {Object} customer 
+ * @param {Number} customer.id
+ */
+const getAvailableAgents = (customer)=>{
+  logger.info("fetching list of available agents for customer",customer.id);
+  let criteria={customerId:customer.id,
+                type:{[Op.or]:[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]},
+                availabilityStatus:CONST.AVAIBILITY_STATUS.AVAILABLE};
+  return Promise.resolve(userModel.findAll({where:criteria}));
+
+}
 
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
@@ -444,3 +463,4 @@ exports.isIntervalExceeds= isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;
 exports.getAllUsersOfCustomer= getAllUsersOfCustomer;
+exports.getAvailableAgents= getAvailableAgents;

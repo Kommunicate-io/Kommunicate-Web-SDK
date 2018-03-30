@@ -33,6 +33,7 @@ exports.createCustomer = customer=>{
       let user = getUserObject(customer,applozicCustomer,application);
       customer.password= bcrypt.hashSync(customer.password, 10);
       customer.applicationId= application.applicationId;
+      customer.subscription = "startup";
       user.password=customer.password;
       return customerModel.create(customer).then(customer=>{
         console.log("persited in db",customer?customer.dataValues:null);
@@ -217,7 +218,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 }
 
 exports.signUpWithApplozic = (options)=>{
-    
+    options.email =options.email|| options.userName;
   return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
     applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"})])

@@ -39,7 +39,7 @@ exports.getSuggestionsByAppId = (req, res) => {
 			})
 			.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 	}else{
-		autosuggestService.getSuggestionsByAppId(req.params.applicationId)
+		autosuggestService.getSuggestionsByAppId(req.params.applicationId, req.query.type)
 			.then(suggestions => {
 				if(!suggestions){
 					res.status(404).json({code:"NO_SUGGESTIONS_FOUND"});
@@ -91,6 +91,9 @@ exports.updateSuggestion = (req, res) => {
 	}
 	if (null !== req.body.content) {
 		suggestion['content'] = req.body.content
+	}
+	if (null !== req.body.status) {
+		suggestion['status'] = req.body.status
 	}
 	autosuggestService.updateSuggetion(suggestion).then(response => {
 		res.status(200).json({ code: "SUGESSTION_UPDATED_SUCCESSFULLY", data: "success" })
