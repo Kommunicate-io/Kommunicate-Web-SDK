@@ -3,10 +3,12 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-import {updateApplozicUser} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
+
+
 
 
 class Aside extends Component {
@@ -20,6 +22,7 @@ class Aside extends Component {
       visibleReply:true,
       modalIsOpen:false,
       clickedButton:-1,
+      disableButton:true,
       agents : new Array(),
       statuses: {
         0: 'Open',
@@ -40,6 +43,7 @@ class Aside extends Component {
   }
 
   componentDidMount() {
+    this.getThirdparty ();
      if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
@@ -49,8 +53,19 @@ class Aside extends Component {
        //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
+     
   }
-
+  
+  getThirdparty = () => {
+    getThirdPartyListByApplicationId().then(response => {
+      let zendeskKeys = response.data.message.filter(function (integration) {
+        return integration.type == 2;});
+        if(zendeskKeys.length > 0 ){
+          this.setState({disableButton:false}) 
+        }     
+    })
+    
+  }
   changeTabToIntegration = () => {
     this.setState({
       visibleIntegartion: false,
@@ -102,15 +117,16 @@ class Aside extends Component {
           that.setState({
             group: response,
             visibleIntegartion:false,
-            visibleReply:true
+            visibleReply:true,
           });
           that.selectAssignee();
           that.selectStatus();
           that.setUpAgentTakeOver(response);
+          
         }
     });
   }
-
+  
   getGroupAdmin(group) {
     var assignee = this.state.group.adminName;
     for(var key in this.state.group.users) {
@@ -291,7 +307,7 @@ class Aside extends Component {
 
   render() {
     const thirdParty = thirdPartyList.map((item,index) => {
-         return <button key = {index} onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
+         return <button disabled = {this.state.disableButton } key = {index} onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
