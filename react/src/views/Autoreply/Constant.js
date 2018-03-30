@@ -17,7 +17,6 @@ export const STATUS = {
 export const WELCOME_MSG_METADATA = {
     category: "ARCHIVE",
     skipBot: true,
-    show:false,
     NO_ALERT:false
 }
 export const AUTOREPLY={

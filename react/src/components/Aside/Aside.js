@@ -181,7 +181,6 @@ class Aside extends Component {
                                             'metadata':{
                                               'skipBot':true,
                                               'KM_ASSIGN' :userId,
-                                              show:false,
                                               NO_ALERT:false
                                             }
                                           });
