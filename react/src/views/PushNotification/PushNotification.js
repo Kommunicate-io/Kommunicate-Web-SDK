@@ -14,8 +14,6 @@ class PushNotification extends Component{
     super(props);
 
     let userDetail =CommonUtils.getUserSession().application.appModulePxys[0];
-    console.log(userDetail.testApnsUrl);
-    console.log(userDetail.apnsUrl);
 
     this.state = {
      enableDisableCheckbox: false,
@@ -57,7 +55,6 @@ class PushNotification extends Component{
           "Apz-Token": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
         }}).then(function(response){
           if(response.status==200 ){
-           console.log(response);
            file.url = response.data;
                file.success = params.this;
                file.env = params.env;
