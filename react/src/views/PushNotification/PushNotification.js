@@ -47,33 +47,47 @@ class PushNotification extends Component{
   }
   uploadDistributionapnsFile(){
     var file ={};
+    var allowedFiles = [".doc", ".docx", ".pdf"];
     if(!document.getElementById("apnsUrl").files[0]){
       Notification.error("Please select file");
       return;
     }
-    file.file = document.getElementById("apnsUrl").files[0];
-    file.name = file.file.name;
-    file.this =this;
-    file.env ="distribution";
-    file.callback= function(file){
-      file.success.submitApnsForDistribution(file.url);
-    }
-    this.certificateUpload(file);
-  }
+      file.file = document.getElementById("apnsUrl").files[0];
+      var fileUpload =document.getElementById("apnsUrl");
+      var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+      if (!regex.test(fileUpload.value.toLowerCase())) {
+        Notification.error("Please upload file in .p12 format");
+          return false;
+      }
+      file.name = file.file.name;
+      file.this = this;
+      file.env = "distribution";
+      file.callback = function (file) {
+        file.success.submitApnsForDistribution(file.url);
+      }
+      this.certificateUpload(file);
+}
   uploadDevelopmentapnsFile(){
     var file ={};
-    if(!document.getElementById("testApnsUrl").files[0]){
+    var allowedFiles = [".doc", ".docx", ".pdf"];
+    if(!document.getElementById("apnsUrl").files[0]){
       Notification.error("Please select file");
       return;
     }
-    file.file = document.getElementById("testApnsUrl").files[0];
-    file.name = file.file.name;
-    file.this =this;
-    file.env ="development";
-    file.callback= function(file){
-      file.success.submitApnsForDevelopment(file.url);
-    }
-     this.certificateUpload(file);
+      file.file = document.getElementById("apnsUrl").files[0];
+      var fileUpload =document.getElementById("apnsUrl");
+      var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+      if (!regex.test(fileUpload.value.toLowerCase())) {
+        Notification.error("Please upload file in .p12 format");
+          return false;
+      }
+      file.name = file.file.name;
+      file.this = this;
+      file.env = "development";
+      file.callback = function (file) {
+        file.success.submitApnsForDevelopment(file.url);
+      }
+      this.certificateUpload(file);
   }
   submitGcmkey(fileurl){
     if(document.getElementById("gcmKey").value ===""&& document.getElementById("apnsUrl").value ===""&& document.getElementById("testApnsUrl").value ===""){
@@ -239,7 +253,7 @@ class PushNotification extends Component{
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
       if (response.status === 200) {
-        Notification.info("Apns for distribution updated sucessfully");
+        Notification.info("Apns for developmentz updated sucessfully");
       } else {
         Notification.error("something went wrong");
       }
@@ -255,7 +269,7 @@ class PushNotification extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="card-block away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app in foreground</h4>
+                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app in is background</h4>
                 <div className="app-id-container">
                   <div className="app-id-div">
                     <span className="app-id-sub-text">
@@ -312,7 +326,7 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <InputFile id={'apnsUrl'} className={'secondary'} text={'Upload File'} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'} />
+                    <InputFile id={'apnsUrl'} className={'secondary'} text={'Upload File'} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'}  />
                     </div>
                     </div>
                     <div className="row form-group">
