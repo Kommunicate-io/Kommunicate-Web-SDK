@@ -111,7 +111,7 @@ class Integrations extends Component {
         </div>
         <div className="col-lg-8">
             <div className = "integration-wrapper">
-                <h4 className="integration-title">Improve work flow - Use Kommunicte with other services</h4>
+                <h4 className="integration-title">Improve work flow - Use Kommunicate with other services</h4>
             </div>
             <div className="row">
             {thirdParties}
