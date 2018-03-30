@@ -22,12 +22,30 @@ class PushNotification extends Component{
     this.submitGcmkey = this.submitGcmkey.bind(this);
     this.uploadDistributionapnsFile = this.uploadDistributionapnsFile.bind(this);
   }
+  certificateUpload(params){
+      var data = new FormData();
+      var certificateUploadUrl =getConfig().applozicPlugin.certificateUpload
+      var file ={};
+      data.append("file", params.file);
+      axios({
+        method: 'POST',
+        url:certificateUploadUrl,
+        data: data,
+        headers: {
+          "Apz-AppId": getConfig().adminDetails.kommunicateParentKey,
+          "Apz-Token": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
+        }}).then(function(response){
+          if(response.status==200 ){
+           console.log(response);
+           file.url = response.data;
+               file.success = params.this;
+               file.env = params.env;
+               params.callback(file);
+          }
+        });
+  }
   uploadDistributionapnsFile(){
     var file ={};
-    file.headers= {
-      "ApzToken": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
-      "ApzAppId":getConfig().adminDetails.kommunicateParentKey
-    }
     file.file = document.getElementById("apnsUrl").files[0];
     file.name = file.file.name;
     file.this =this;
@@ -35,14 +53,10 @@ class PushNotification extends Component{
     file.callback= function(file){
       file.success.submitGcmkey(file.url,file.env);
     }
-    window.$kmApplozic.fn.applozic('certificateUpload',file);
+    this.certificateUpload(file);
   }
   uploadDevelopmentapnsFile(){
     var file ={};
-    file.headers= {
-      "ApzToken": "Basic "+getConfig().adminDetails.kommunicateAdminApzToken,
-      "ApzAppId":getConfig().adminDetails.kommunicateParentKey
-    }
     file.file = document.getElementById("testApnsUrl").files[0];
     file.name = file.file.name;
     file.this =this;
@@ -50,11 +64,11 @@ class PushNotification extends Component{
     file.callback= function(file){
       file.success.submitGcmkey(file.url,file.env);
     }
-     window.$kmApplozic.fn.applozic('certificateUpload',file);
+     this.certificateUpload(file);
   }
   submitGcmkey(fileurl,env){
 
-    let userDetailUrl =getConfig().applozicPlugin.certificateUpload; 
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
     if(fileurl && env ==="development"){
       applicationList.testApnsUrl =fileurl;

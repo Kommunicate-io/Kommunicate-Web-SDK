@@ -176,9 +176,6 @@ var KM_CLIENT_GROUP_MAP = [];
 					oInstance.getUserStatus(params);
 					return "success";
 					break;
-				case 'certificateUpload':
-					return oInstance.certificateUpload(params);
-					break;
 				case "getContactDetail":
 					oInstance.getContactDetail(params);
 					return "success";
@@ -656,9 +653,6 @@ var KM_CLIENT_GROUP_MAP = [];
 				params.callback(mckUserUtils.getUserDetail(params.userId));
 			}
 		};
-		_this.certificateUpload = function (file) {
-            mckFileService.certificateUpload(file);
-        };
 		_this.getContactImage = function(user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
 			var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
@@ -6205,7 +6199,6 @@ var KM_CLIENT_GROUP_MAP = [];
 			var FILE_UPLOAD_URL = "/rest/ws/aws/file/url";
 			var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
 			var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
-			var CERTIFICATE_UPLOAD_URL ="/rest/ws/file/upload/cert";
 			var mck_filebox_tmpl = '<div id="km-filebox-${fileIdExpr}" class="km-file-box ${fileIdExpr}">' + '<div class="km-file-expr">' + '<span class="km-file-content blk-lg-7"><span class="km-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="km-file-sz">${fileSizeExpr}</span></span>' + '<span class="progress progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar progress-bar-success bar" stye></span></span>' + '<span class="move-right blk-lg-2">' + '<button type="button" class="km-box-close km-remove-file" data-dismiss="div" aria-hidden="true">&times;</button>' + '</span></div></div>';
 			$kmApplozic.template("KMfileboxTemplate", mck_filebox_tmpl);
 			_this.init = function() {
@@ -6506,22 +6499,6 @@ var KM_CLIENT_GROUP_MAP = [];
 					error : function() {}
 				});
 			};
-			_this.certificateUpload = function (params) {
-                var data = new FormData();
-                var xhr = new XMLHttpRequest();
-                var file = {};
-                xhr.addEventListener('load', function (e) {
-                    file.url = this.responseText;
-                    file.success = params.this;
-                    file.env = params.env;
-                    params.callback(file);
-                });
-                data.append("file", params.file);
-                xhr.open('post', MCK_BASE_URL + CERTIFICATE_UPLOAD_URL, true);
-                xhr.setRequestHeader("Apz-Token", params.headers.ApzToken);
-                xhr.setRequestHeader("Apz-AppId", params.headers.ApzAppId);
-                xhr.send(data);
-            }
 			_this.getFilePreviewPath = function(fileMeta) {
 				return (typeof fileMeta === "object") ? '<a href="' + MCK_FILE_URL + FILE_PREVIEW_URL + fileMeta.blobKey + '" target="_blank">' + fileMeta.name + '</a>' : "";
 			};
