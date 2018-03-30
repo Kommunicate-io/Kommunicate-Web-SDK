@@ -1,0 +1,18 @@
+.km-div{
+    margin:10px;
+}
+
+.km-development-div{
+    margin-top:20px;
+}
+.km-pushnotification-input{
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #a1a1a1;
+}
+
+.km-pushnotification-hr{
+    margin: 0px!important;
+    width:40em!important;
+    }
+
