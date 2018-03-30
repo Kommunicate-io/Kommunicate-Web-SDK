@@ -291,7 +291,7 @@ class Aside extends Component {
 
   render() {
     const thirdParty = thirdPartyList.map((item,index) => {
-         return <button onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
+         return <button key = {index} onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
