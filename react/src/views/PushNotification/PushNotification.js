@@ -7,7 +7,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
 import InputFile from '../.../../../components/InputFile/InputFile';
-import './PushNotification.css';
+import './pushNotification.css';
 
 class PushNotification extends Component{
   constructor(props){
