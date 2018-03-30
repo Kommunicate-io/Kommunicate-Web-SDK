@@ -48,5 +48,7 @@ alter table customers DROP column subscription;
 
 alter table customers add column subscription varchar(50) NOT NULL DEFAULT 'startup';
 
+alter table conversations add column metadata json;
+
 
 

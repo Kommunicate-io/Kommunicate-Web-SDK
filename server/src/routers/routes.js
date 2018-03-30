@@ -149,8 +149,12 @@ issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDel
 /*
 *zendesk APIs
 */
-zendeskRouter.post('/:appId/ticket/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
-zendeskRouter.put('/:appId/ticket/update/:id', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.post('/:appId/ticket/:groupId/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
+zendeskRouter.put('/:appId/ticket/:groupId/update', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.get('/:appId/ticket/:groupId', validate(zendeskValidation.getTicket),zendeskController.getTicket)
+/**
+ * third party settings
+ */
 thirdPartySettingRouter.post('/:appId/insert/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
 thirdPartySettingRouter.get('/:appId',validate(thirdPartySettingValidation.getSettings), integrationSettingController.getIntegrationSetting)
 thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.deleteIntegrationSetting)
