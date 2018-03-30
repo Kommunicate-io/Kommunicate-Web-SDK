@@ -6,7 +6,7 @@ export default class InputFile extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {message:'some initial message', text: props.text, id: props.id, multiple: props.multiple, accept: props.accept, className: props.className, onBlur: props.onBlur, hideCloseBtn: true};
+        this.state = {message:'some initial message', dataUrl: props.dataUrl, text: props.text, id: props.id, multiple: props.multiple, accept: props.accept, className: props.className, onBlur: props.onBlur, hideCloseBtn: true};
         // this.state = { text: props.text, id: props.id, multiple: props.multiple };
         this.getUploadedFileName = this.getUploadedFileName.bind(this);
         this.removeSelectedFiles = this.removeSelectedFiles.bind(this);
@@ -41,11 +41,11 @@ export default class InputFile extends Component {
 
     render () {
 
-        const { id, text, multiple, accept, className, onBlur } = this.state;
+        const { id, dataUrl, text, multiple, accept, className, onBlur } = this.state;
 
         return(
             <div>
-                <input id={id} type="file" className="km-btn-file" data-multiple-caption={this.state.message} multiple={multiple} onChange={this.getUploadedFileName} accept={accept} onBlur={onBlur}></input>
+                <input id={id} data-url={dataUrl} type="file" className="km-btn-file" data-multiple-caption={this.state.message} multiple={multiple} onChange={this.getUploadedFileName} accept={accept} onBlur={onBlur}></input>
                 <label htmlFor={id} className={(className === 'primary') ? "km-button km-button--primary km-btn-file-label" : (className === 'secondary') ? "km-button km-button--secondary km-btn-file-label" : "km-button km-button--primary km-btn-file-label"}>
                     <span className={(text !== this.props.text) ? "pad-right-40" : " "}>{text}</span>
                 </label>
@@ -64,6 +64,7 @@ export default class InputFile extends Component {
 
 InputFile.propTypes = {
     id: PropTypes.string.isRequired,
+    dataUrl: PropTypes.string,
     text: PropTypes.string.isRequired,
     multiple: PropTypes.string,
     accept: PropTypes.string,
