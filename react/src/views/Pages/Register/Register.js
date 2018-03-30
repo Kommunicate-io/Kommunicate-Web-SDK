@@ -24,7 +24,7 @@ class Register extends Component {
       token:null,
       invitedBy:'',
       signupButtonTxt:'Create Account',
-      subscription: 0
+      subscription: 'startup'
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
