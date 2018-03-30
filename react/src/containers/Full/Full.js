@@ -124,7 +124,7 @@ class Full extends Component {
                 <Route exact path="/settings/agent-app" name="Download" component={Download}/>
                 <Route exact path="/settings/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
-                <Route exact path="/settings/integrations" name="Billing" component={Integrations}/>
+                <Route exact path="/integrations" name="Billing" component={Integrations}/>
                 }}/> 
                 
                 <Redirect from="/" to="/dashboard"/>
