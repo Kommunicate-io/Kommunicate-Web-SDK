@@ -1,0 +1,9 @@
+.delete-icon {
+    border: 1px solid grey;
+    border-radius: 50%;
+    height: 22px;
+    width: 22px;
+    text-align: center;
+    cursor: pointer;
+    
+}

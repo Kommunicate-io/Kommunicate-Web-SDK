@@ -81,7 +81,7 @@ class Step2 extends Component {
       companyName: this.state.company_name,
       companySize: this.state.company_size,
       industry: (this.state.industry === "Other") ? this.state.industryOthers : this.state.industry,
-      subscription: 0 //change this to subscription id if the subscription plan comes to signup flow in future
+      subscription: 'startup' //change this to subscription plan id if the subscription plan comes to signup flow in future
     }
     console.log(customerInfo);
     patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
@@ -125,7 +125,7 @@ class Step2 extends Component {
                       <div className="col-md-6 text-center pt-100">
                         <img src={this.state.imageFile} className="default-dp"></img><br />
                         <div className="edit-dp-btn">
-                          <br /><h5 className="change-courser" onClick={this.openModal}>Edit Display Photo</h5>
+                          <br /><span className="change-courser" onClick={this.openModal}>Edit Display Photo</span>
                           <div className="about-dp">Your customers will see this photo</div>
                           <Modal
                             isOpen={this.state.modalIsOpen}

@@ -34,23 +34,103 @@ class Dashboard extends Component {
       uperlimit:0,
       interval:0,
       chartUperLimit:0,
-      mainChart: {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+      monthly: [],
+      currentMonth: '',
+      lastMonthStats: {
+        newUserCount: 0,
+        activeUserCount: 0,
+        channelCount: 0,
+        newMessageCount: 0
+      },
+      chart: {
+        labels: [],
         datasets: [
           {
-            label: 'Messages Dataset',
-            backgroundColor: 'transparent',
-            borderColor: brandInfo,
+            label: '',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
+      chartMonthly: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Users',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Chat Users',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Messages',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
+      mainChart: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Users',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          /*  fillColor: "rgba(134,132,247,0.25)",
+            strokeColor: "rgba(120,220,220,1)",
+            pointColor: "rgba(120,220,220,1)",
+            pointStrokeColor: "#f11",
+            pointHighlightFill: "#f11",
+            pointHighlightStroke: "rgba(120,220,220,1)",*/
+          },
+          {
+            label: 'MAU',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
             data: []
           },
           {
-            label: 'Users Dataset',
-            backgroundColor: 'transparent',
-            borderColor: brandSuccess,
+            label: 'Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
+            borderWidth: 2,
+            data: []
+          },
+          {
+            label: 'Messages',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
             data: []
           }
         ]
@@ -74,7 +154,7 @@ class Dashboard extends Component {
       scales: {
         xAxes: [{
           gridLines: {
-            drawOnChartArea: false,
+            drawOnChartArea: true,
           }
         }],
         yAxes: [{
@@ -97,6 +177,9 @@ class Dashboard extends Component {
         }
       }
     }
+
+    this.showChart = this.showChart.bind(this);
+
   }
   findMax=(a,b,c)=>{
   return a>=b?(a>=c?a:c):(b>=c?b:c);
@@ -107,10 +190,42 @@ class Dashboard extends Component {
     });
   }
 
+  showChart(e) {
+    e.preventDefault();
+
+    var cards = document.getElementsByClassName("card-stats");
+
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('active');
+    }
+
+    let currentTarget = e.currentTarget;
+    currentTarget.classList.add('active');
+    let metric = currentTarget.getAttribute("data-metric");
+
+    let chart;
+
+    if (metric == 1) {
+      chart = Object.assign({}, this.state.chart);
+      chart.labels = this.state.chartMonthly.labels;
+      chart.datasets = [{}];
+      chart.datasets[0] = this.state.chartMonthly.datasets[metric];
+    } else {
+      chart = Object.assign({}, this.state.mainChart); ;
+      chart.labels = this.state.mainChart.labels;
+      chart.datasets = [{}];
+      chart.datasets[0] = this.state.mainChart.datasets[metric];
+    }
+
+    this.setState({
+      'chart': chart
+    });
+  }
+
   componentDidMount() {
 
   //  var env = getEnvironmentId();
-    var getAppKeyUrl =getConfig().applozicPlugin.getAppKeyUrl;
+    var getAppKeyUrl = getConfig().applozicPlugin.getAppKeyUrl;
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     var that = this;
@@ -121,14 +236,71 @@ class Dashboard extends Component {
     const apzToken = userSession.apzToken;
     const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
 
+    var userDataMonthly = [];
+    var mauDataMonthly = [];
+    var messageDataMonthly = [];
+    var channelDataMonthly = [];
+
+    var labelMonthly = [];
+    var labels = [];
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
     axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+userSession.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
           .then(function(response){
             if(response.status==200){
                 var data = response.data;
+
+                if (data.length >= 2) {
+                  var lastMonthStats = data[data.length - 2];
+                  that.setState({'lastMonthStats': lastMonthStats});
+                } else {
+                  let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
+                  for (var i = 0; i < lastMonthSubTitle.length; i++) {
+                    lastMonthSubTitle[i].classList.add('n-vis');
+                  }
+                }
+
                 if (data.length > 0) {
-                  var stat = data[data.length - 1];
+
+                  let lastDate = null;
+
+                  for(var i = 0; i < data.length; i++) {
+                    var obj = data[i];
+                    var datetime = new Date(obj.month);
+
+                    if (lastDate == null) {
+                      lastDate = datetime;
+                    }
+                    for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
+                      labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
+                      userDataMonthly.push(0);
+                      mauDataMonthly.push(0);
+                      channelDataMonthly.push(0);
+                      messageDataMonthly.push(0);
+                    }
+
+                    labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
+                    userDataMonthly.push(obj.newUserCount);
+                    mauDataMonthly.push(obj.activeUserCount);
+                    channelDataMonthly.push(obj.channelCount);
+                    messageDataMonthly.push(obj.newMessageCount);
+                    //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
+                  }
+
+                  var chartMonthly = that.state.chartMonthly;
+                  chartMonthly.labels = labelMonthly;
+                  chartMonthly.datasets[0].data = userDataMonthly;
+                  chartMonthly.datasets[1].data = mauDataMonthly;
+                  chartMonthly.datasets[2].data = channelDataMonthly;
+                  chartMonthly.datasets[3].data = messageDataMonthly;
+
                   that.setState({
+                    chartMonthly: chartMonthly
+                  });
+
+                  var stat = data[data.length - 1];
+
+                  that.setState({
+                    'currentMonth': MONTH_NAMES_LONG[new Date(stat.month).getMonth()],
                     'newUsers': stat.newUserCount,
                     'conversations' :stat.channelCount,
                     'messages': stat.newMessageCount,
@@ -148,25 +320,51 @@ class Dashboard extends Component {
             var data = response.data;
             var messageData = [];
             var userData = [];
+            var channelData = [];
             if (data.length > 0) {
+              let lastDate = null;
               for(var i = 0; i < data.length; i++) {
                 var obj = data[i];
                 var datetime = new Date(obj.onDateTime);
-                for (var j = messageData.length; j< datetime.getDate(); j++) {
+
+                if (lastDate == null) {
+                  lastDate = datetime;
+                }
+                for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
+                  labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
                   messageData.push(0);
                   userData.push(0);
+                  channelData.push(0);
                 }
+
+                lastDate = datetime;
+                labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
                 messageData.push(obj.messageCount);
                 userData.push(obj.userCount);
+                channelData.push(obj.channelCount);
                 that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
               }
             }
 
-            var mainChart = that.state.mainChart;
-            mainChart.datasets[0].data = messageData;
-            mainChart.datasets[1].data = userData;
+            var mainChart = Object.assign({}, that.state.mainChart);
+            mainChart.labels = labels;
+            mainChart.datasets[0].data = userData;
+            mainChart.datasets[2].data = channelData;
+            mainChart.datasets[3].data = messageData;
+
             that.setState({
               'mainChart': mainChart
+            });
+
+            let chart = that.state.chart;
+            chart.labels = labels;
+            chart.datasets = [{}];
+            chart.datasets[0] = that.state.mainChart.datasets[0];
+            //chart.datasets[0].label = 'Users';
+            //chart.datasets[0].data = userData;
+
+            that.setState({
+              'chart': chart
             });
            }else{
            }
@@ -177,16 +375,44 @@ class Dashboard extends Component {
     return (
       <div className="animated fadeIn dashboard-card">
         <div className="row">
-          <div className="col-sm-6 col-lg-4 text-center">
-            <div className="card card-inverse card-stats card-stats--users active">
-              <div className="card-block pb-0">
-                <p className="card-main-title">Users</p>
-                <h4 className="card-stats-value">{this.state.newUsers}</h4>
-{/* Uncomment below line to see last month user text. Do the same thing for below two cards.*/}
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
+
+              <div className="card-block pb-0 text-left">
+                <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-main-title text-center">Users</p>
+                <h4 className="card-stats-value text-center" data-metric="0">{this.state.newUsers}</h4>
+                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
+            
+          </div>
+
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
+              <div className="card-block pb-0 text-left">
+              <p className="card-stats-month">{this.state.currentMonth}</p>
+              <p className="card-main-title text-center">Chat Users</p>
+                <h4 className="card-stats-value text-center">{this.state.active}</h4>
+                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.activeUserCount}</p>
+              </div>
+              <div className="vertical-line"></div>
+            </div>
+            
+          </div>
+
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
+              <div className="card-block pb-0 text-left">
+              <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-main-title text-center">Conversations</p>
+                <h4 className="card-stats-value text-center">{this.state.conversations}</h4>
+                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.channelCount}</p>
+              </div>
+              <div className="vertical-line"></div>
+            </div>
+            
           </div>
 
           {/*
@@ -200,27 +426,17 @@ class Dashboard extends Component {
           </div>
           */}
 
-          <div className="col-sm-6 col-lg-4 text-center">
-            <div className="card card-inverse card-stats card-stats--messages">
-              <div className="card-block pb-0">
-              <p className="card-main-title">Messages</p>
-                <h4 className="card-stats-value">{this.state.messages}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
+          <div className="col-sm-6 col-lg-3 text-center">
+            <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
+              <div className="card-block pb-0 text-left">
+              <p className="card-stats-month">{this.state.currentMonth}</p>
+              <p className="card-main-title text-center">Messages</p>
+                <h4 className="card-stats-value text-center">{this.state.messages}</h4>
+                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newMessageCount}</p>
               </div>
-              <div className="vertical-line"></div>
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-4 text-center">
-            <div className="card card-inverse card-stats card-stats--mau ">
-              <div className="card-block pb-0">
-              <p className="card-main-title">Monthly Active Users</p>
-                <h4 className="card-stats-value">{this.state.active}</h4>
-                {/* <p className="card-sub-title">205 Users last month</p> */}
-              </div>
-              
-            </div>
-          </div>
         </div>
 
         <div className="card">
@@ -250,7 +466,7 @@ class Dashboard extends Component {
               */}
             </div>
             <div className="chart-wrapper" style={{height: 200 + 'px', marginTop: 40 + 'px'}}>
-              <Line data={this.state.mainChart} options={this.mainChartOpts} height={200}/>
+              <Line data={this.state.chart} options={this.mainChartOpts} height={200}/>
             </div>
           </div>
           {/*
@@ -290,5 +506,12 @@ class Dashboard extends Component {
     )
   }
 }
+
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+const MONTH_NAMES_LONG = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
 
 export default Dashboard;

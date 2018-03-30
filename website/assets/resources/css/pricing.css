@@ -43,8 +43,8 @@ a, a:hover, a:focus, a:active {
     font-stretch: normal;
     line-height: normal;
     color: #4a4a4a;
-    margin-top: 20px;
-    margin-bottom: 65px;
+    margin-top: 15px;
+    margin-bottom: 20px;
 }
 .pricing-subtitle.beta-text {
     /* margin-top: 60px; */
@@ -474,30 +474,45 @@ position: relative;
 
 @media (min-width:992px) {
     .pricing-table-container {
-        min-height: 695px;
+        min-height: 771px;
+    }
+    .startup .pricing-table-footer {
+        padding-bottom: 30px;
     }
     .launch .pricing-table-footer {
-        padding-top: 49px;
+        /* padding-top: 49px; */
+        padding-bottom: 30px;
     }
     .growth .pricing-table-footer {
-        padding-top: 72px;
+        /* padding-top: 72px; */
+        padding-bottom: 30px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 61px;
+        /* padding-top: 111px; */
+        padding-bottom: 30px;
+    }
+    .pricing-table-body-footer {
+        padding-left: 15px;
     }
 }
 @media (min-width:992px) and (max-width:1199px) {
     .pricing-table-container {
-        min-height: 695px;
+        min-height: 771px;
+    }
+    .startup .pricing-table-footer {
+        padding-bottom: 30px;
     }
     .launch .pricing-table-footer {
-        padding-top: 51px;
+        /* padding-top: 51px; */
+        padding-bottom: 30px;
     }
     .growth .pricing-table-footer {
-        padding-top: 97px;
+        /* padding-top: 72px; */
+        padding-bottom: 30px;
     }
     .enterprise .pricing-table-footer {
-        padding-top: 85px;
+        /* padding-top: 61px; */
+        padding-bottom: 30px;
     }
 }
 @media (max-width: 991px){
@@ -531,7 +546,7 @@ position: relative;
 
 /* Pricing Toggle */
 .pricing-toggle {
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 .toggle,
 .toggler {
@@ -554,8 +569,8 @@ position: relative;
 }
 .toggle {
   position: relative;
-  width: 80px;
-  height: 35px;
+  width: 59px;
+  height: 26px;
   border-radius: 100px;
   background-color: #5C5AA7;
   overflow: hidden;

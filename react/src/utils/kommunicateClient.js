@@ -7,6 +7,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 
+
 /**
  * Creates Customer /Bot/ Agent   
  * @param {Object} userInfo 
@@ -300,9 +301,9 @@ const getAllSuggestions = () => {
     .catch(err => {console.log("Error in getting auto suggestions")});
 }
 
-const getSuggestionsByAppId = (applicationId) => {
+const getSuggestionsByAppId = (applicationId, type) => {
 
-  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + applicationId+'?type='+type
 
   return Promise.resolve(axios.get(autoSuggestUrl))
     .then(response => response.data.data)
@@ -728,6 +729,41 @@ const getCustomerByApplicationId = () => {
 
 }
 
+const createAndUpdateThirdPArtyIntegration = (data,integrationType) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId + "/insert/" +integrationType;
+  return Promise.resolve(axios({
+    method: 'POST',
+    url: url,
+    data: data
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => { console.log("Error while submiting third party integration keys", err) })
+
+}
+const getThirdPartyListByApplicationId = () => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/integration/settings/" + userSession.application.applicationId
+   return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+  })).then(result => {
+    console.log(result);
+    return result;
+  }).catch(err => {console.log("Error while fetching third party integration by applicationId", err)})
+
+}
+const deleteThirdPartyByIntegrationType = (integrationType) => {
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl +"/integration/settings/"+ userSession.application.applicationId + "/" +integrationType;
+  return Promise.resolve(axios.delete(url))
+    .then(response => response)
+    .catch(err => err);
+}
+
+
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -769,5 +805,8 @@ export {
   enableNotifyEveryBody,
   enableAutomaticAssignment,
   getSuggestionsByCriteria,
-  getCustomerByApplicationId
+  getCustomerByApplicationId,
+  createAndUpdateThirdPArtyIntegration,
+  getThirdPartyListByApplicationId,
+  deleteThirdPartyByIntegrationType
 }

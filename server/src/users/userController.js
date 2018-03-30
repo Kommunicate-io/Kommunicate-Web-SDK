@@ -19,7 +19,7 @@ exports.getAllUsers = function(req, res) {
   return userService.getCustomerInfoByApplicationId(applicationId)
   .then(customer=>{
     if(customer){
-      userService.getAllUsersOfCustomer(customer,type)
+      userService.getAllUsersOfCustomer(customer,[type])
       .then(dbUtils.getDataArrayFromResultSet)
       .then(data=>{
         logger.info("sending response success ")
@@ -84,7 +84,10 @@ logger.info("request received to create a user: ",req.body);
     res.status(400).json({code: "BAD_REQUEST",message: "ApplicationId can't be Empty"});
     return;
   }
-  Promise.all([userService.getCustomerInfoByApplicationId(req.body.applicationId),userService.getByUserNameAndAppId(req.body.userName,req.body.applicationId)]).then(([customer,user])=>{
+  Promise.all([userService.getCustomerInfoByApplicationId(req.body.applicationId),
+    userService.getByUserNameAndAppId(req.body.userName,req.body.applicationId),
+    userService.getAdminUserByAppId(req.body.applicationId)
+  ]).then(([customer,user,adminUser])=>{
     if(!customer) {
       logger.info("no customer registered with applicationId",req.body.applicationId);
       res.status(400).json({code: "BAD_REQUEST",message: "Invalid ApplicationId"});
@@ -94,7 +97,7 @@ logger.info("request received to create a user: ",req.body);
       res.status(409).json({code: "USER_ALREADY_EXISTS",message: "user Already exists with user and applicationId"});
       return;
     }else{
-      return Promise.all([userService.createUser(req.body),applozicClient.getApplication(customer)]).then(([user,application])=>{
+      return Promise.all([userService.createUser(req.body),applozicClient.getApplication({"applicationId":customer.applicationId,"userName":adminUser.userName,"accessToken":adminUser.accessToken})]).then(([user,application])=>{
           logger.info("user created successfully.. ",user);
           if(user.type===1){
             registrationService.sendWelcomeMail(user.email, user.name , true, user.companyName);

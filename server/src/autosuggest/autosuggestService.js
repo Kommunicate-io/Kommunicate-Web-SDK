@@ -25,20 +25,16 @@ const getSuggestionsByUser = (userName) => {
 		.catch(err => err);
 }
 
-const getSuggestionsByAppId = (applicationId) => {
-	
-	// SELECT * FROM auto_suggest WHERE applicationId=applicationId;
-
-	return autoSuggestModel.findAll({
-		where: {
-			// SELECT * FROM auto_suggest WHERE  applicationKey='default' OR applicationKey=applicationKey;
-			// [Op.or]: [{applicationKey:'default'}, {applicationKey:applicationKey}]
-			applicationId: applicationId
-		}})
-		.then(suggestions => {
-			return suggestions
-		})
-		.catch(err => err);
+const getSuggestionsByAppId = (applicationId, type) => {
+	let criteria = { applicationId: applicationId }
+	if (type) {
+		criteria.type = type
+	}
+	return autoSuggestModel.findAll({ where: criteria }).then(suggestions => {
+		return suggestions
+	}).catch(err => {
+		throw err;
+	});
 }
 
 const getSuggestionsByCriteria = (criteria, value, applicationId) => {

@@ -14,6 +14,10 @@ import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
+import {Link} from 'react-router-dom';
+import trash2x from './images/trash-icon@2x.png';
+import {AUTOREPLY} from '../Autoreply/Constant';
+
 
 class Tabs extends Component {
 
@@ -117,8 +121,8 @@ class Tabs extends Component {
       userName: userSession.userName,
       name: this.state.faqTitle,
       content: this.state.faqContent,
-      category: 'faq',
-      type: 'faq',
+      category: AUTOREPLY.FAQ,
+      type: AUTOREPLY.FAQ,
       status: this.state.isDraft ? 'draft':'published'
     }
 
@@ -214,27 +218,27 @@ class Tabs extends Component {
                   <p>FAQs help customers find answers faster through self service, and also reduce workload of your team</p>
                 </div>
               </div>
-              <div className="mt-4 km-bot-integrated-bots-container">
+              <div className="mt-4 km-faq-second-container">
                 <div style={{padding: "10px"}}>
                   <p>
-                  <img src={bot1x} style={{marginRight: "26px"}}/>
+                  <img src={bot2x} style={{marginRight: "26px", widht: "24px", height: "26px"}}/>
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
                   <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot1x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: 500}}> Conversation Routing </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
+                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot2x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> <Link to="/settings/agent-assignment">Conversation Routing </Link>  </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
                   </p>
                 </div>
               </div>
               <div className="row mt-4">
-                <button className="btn btn-primary" onClick={this.toggleFaqModal}>
+                <button className="km-button km-button--primary" onClick={this.toggleFaqModal}>
                   + Add a FAQ
                 </button>
               </div>
-              <div className="mt-4 km-bot-integrated-bots-container">
-                <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2"}}>
-                  <p>{"FAQs (" + this.state.listOfFAQs.length + ")"}</p>
+              <div className={this.state.listOfFAQs.length > 0 ? "mt-4 km-faq-container":"n-vis"}>
+                <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2", height: "35px", paddingTop: "0.4rem"}}>
+                  <span>{"FAQs (" + this.state.listOfFAQs.length + ")"}</span>
                 </div>
-                <div className="km-bot-list-of-faqs-container">
+                <div className={this.state.listOfFAQs.length > 0 ? "km-bot-list-of-faqs-container":"n-vis"}>
                   {this.state.listOfFAQs.map(faq => (
                     <div key={faq.id} className="row km-bot-align-item-v-center" onClick={() => this.setFAQDetails(faq.name, faq.content, faq.status.toLowerCase(), faq.id)} style={{cursor: "pointer"}}>
                       <div className="col-sm-2">
@@ -257,7 +261,7 @@ class Tabs extends Component {
           </ModalHeader>
           <ModalBody>
             <div className="row">
-              <label className="col-sm-3">Title:</label>
+              <label className="col-sm-12 km-faq-label">Title:</label>
             </div>
             <div className="row">
               <div className="col-sm-12">
@@ -265,7 +269,7 @@ class Tabs extends Component {
               </div>
             </div>
             <div className="row mt-4">
-              <label className="col-sm-3">FAQ Content:</label>
+              <label className="col-sm-12 km-faq-label">FAQ Content:</label>
             </div>
             <div className="row">
               <div className="col-md-12">
@@ -274,43 +278,45 @@ class Tabs extends Component {
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
               <div className="col-sm-2 km-bot-align-item-v-center">
-                <div style={{border: "1px solid black", borderRadius: "50%", padding: "5px"}} onClick={this.toggleDeleteFaq}>
-                  <i className="icon-trash icons font-1xl d-block"></i>
+                <div onClick={this.toggleDeleteFaq}>
+                  <img src={trash2x} style={{width: "22px", height: "22px"}}/>
                 </div>
               </div> 
-              <div className="col-sm-6 text-right km-bot-align-item-v-center">
-                <span>Status : </span>
-                <div className="km-bot-align-item-v-center">
-                  <Label check htmlFor="inline-radio1">
-                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> Draft
+              <div className="text-right km-bot-align-item-v-center" style={{width: "47%"}}>
+                <div style={{width: "33%", marginRight: "5px"}}>
+                  <span className="km-faq-label-14-500">Status: </span>
+                </div>
+                <div className="km-bot-align-item-v-center" style={{width: "66%"}}>
+                  <Label check htmlFor="inline-radio1" style={{marginRight: "5px"}}>
+                    <Input type="radio" id="inline-radio1" name="inline-radios" value="option1" checked={this.state.isDraft} onChange={() => {this.setState({isPublished: false, isDraft: true})}}/> <span className="km-faq-label-14">Draft</span>
                   </Label>
                   <Label check htmlFor="inline-radio2">
-                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> Published
+                    <Input type="radio" id="inline-radio2" name="inline-radios" value="option2" checked={this.state.isPublished} onChange={() => {this.setState({isPublished: true, isDraft: false})}}/> <span className="km-faq-label-14">Published</span>
                   </Label>
                 </div>
               </div> 
               <div className="col-sm-2 text-right">
-                <button className="btn btn-outline-primary" onClick={this.toggleFaqModal}>
+                <button className="km-button km-button--secondary" onClick={this.toggleFaqModal}>
                   Discard 
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="btn btn-primary" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
+                <button className="km-button km-button--primary" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
                   Save
                 </button>
               </div> 
             </div>
             <div className={this.state.showDeleteFaq ? "row mt-4":"n-vis"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}> 
-              <div className="col-sm-6 text-left km-bot-align-item-v-center">
+              <div className="col-sm-6 text-left km-bot-align-item-v-center" style={{width: "47%"}}>
                 <span>Do you want to delete this FAQ?</span>
               </div> 
               <div className="col-sm-4 text-right">
-                <button className="btn btn-outline-primary" onClick={ () => {this.deleteFaq();}}>
+                <button className="km-button km-button--secondary" onClick={ () => {this.deleteFaq();}}>
                   Yes, Delete
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="btn btn-primary" onClick={this.toggleDeleteFaq}>
+                <button className="km-button km-button--primary" onClick={this.toggleDeleteFaq}>
                   No
                 </button>
               </div> 

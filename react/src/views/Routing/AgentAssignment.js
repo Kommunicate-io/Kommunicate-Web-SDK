@@ -102,7 +102,7 @@ handleRadioBtnAutomaticAssignment = () => {
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
               <div className="col-md-11 col-lg-11">
-                  <h4 className="routing-title">Automatic assignment </h4>
+                  <h4 className="routing-title">Automatic assignment</h4>
                   <p className="routing-description">All new conversations will be automatically assigned to each agent on a round robin basis.</p>
               </div>
           </div>
@@ -118,9 +118,14 @@ handleRadioBtnAutomaticAssignment = () => {
                         <form>
                             <RadioButton idRadioButton={'notify-everybody-radio'} handleOnChange={this.handleRadioBtnNotifyEverybody}
                                 checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
+                             
                             <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
                                 checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} />
+                        
+                                {/* automatic message comming soon
+                                <div  >{automaticAssignmentContainer}</div>*/}
                         </form>
+
                     </div>
                 </div>
             </div>

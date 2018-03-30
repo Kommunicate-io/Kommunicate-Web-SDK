@@ -39,7 +39,7 @@ class Aside extends Component {
        return;
      }else {
        //window.location ="/dashboard";
-       window.appHistory.push('/dashboard');
+       //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
   }
@@ -180,7 +180,8 @@ class Aside extends Component {
                                             'message' : "Assigned to " + displayName,
                                             'metadata':{
                                               'skipBot':true,
-                                              'KM_ASSIGN' :userId
+                                              'KM_ASSIGN' :userId,
+                                              NO_ALERT:false
                                             }
                                           });
                                       }

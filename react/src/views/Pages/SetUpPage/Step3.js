@@ -4,7 +4,7 @@ import {getJsCode, getJsInstructions} from '../../../utils/customerSetUp';
 
 import Notification from '../../model/Notification';
 import MultiEmail from '../../MultiEmail/';
-import Integration from '../../Settings/Integration/';
+import Install from '../../Settings/Installation/';
 import CommonUtils from '../../../utils/CommonUtils';
 
 class Step3 extends Component {
@@ -72,7 +72,7 @@ class Step3 extends Component {
         </div>
         <div className="row justify-content-center">
           <div className="col-md-10">
-            <Integration customerInfo={this.props.customerInfo}cardSize={12}/>
+            <Install customerInfo={this.props.customerInfo}cardSize={12}/>
             <div className="form-group">
           <button className={this.props.hideSkipForNow? "n-vis" : "km-button km-button--primary ml-20"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}> Finish setup</button>
         </div>

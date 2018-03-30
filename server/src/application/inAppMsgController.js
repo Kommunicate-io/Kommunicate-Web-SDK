@@ -77,7 +77,7 @@ exports.getInAppMessages=(req,res)=>{
 });
 }
 
-exports.processEvents=(req, res)=>{
+/*exports.processEvents=(req, res)=>{
     const eventType = req.query.type;
     const groupId = req.body.conversationId;
     const applicationId = req.body.applicationId;
@@ -97,16 +97,16 @@ exports.processEvents=(req, res)=>{
         res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
     }
 
-}
+}*/
 
-exports.processEvents2=(req, res)=>{
+exports.processEvents=(req, res)=>{
     const eventType = req.query.type;
     const groupId = req.body.conversationId;
     const applicationId = req.body.applicationId;
     const agentName = req.body.agentId;
 
     return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
-        if(eventType==constant.EVENT_ID.WELCOME_MESSAGE){
+        if(eventType==constant.EVENT_ID.WELCOME_MESSAGE){  
             return  inAppMsgService.sendWelcomeMessage(groupId,customer).then(response=>{
                 logger.info(response);
                 if(response =="success"){
@@ -213,9 +213,6 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var eventIds = req.query.eventIds;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
     return registrationService.getCustomerByApplicationId(appId).then(customer => {
-        if (constant.EVENT_ID.WELCOME_MESSAGE == eventIds[0]) {
-            userName = customer.userName;
-        }
         return userService.getByUserNameAndAppId(userName, appId).then(user => {
             if (!user) {
                 return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
@@ -329,3 +326,46 @@ exports.editInAppMsg = (req, res)=>{
     })
 }
 
+
+exports.processAwayMessage = function(req,res){
+    
+    const applicationId = req.params.appId;
+    const conversationId = req.query.conversationId;
+    logger.info("processing awayMessage for application: ",applicationId);
+    return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+        let eventId = 0;
+        if(customer){
+            return Promise.all([inAppMsgService.checkOnlineAgents(customer),
+                inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
+                .then(([onlineUser,isGroupUserAnonymous])=>{
+            
+               if(onlineUser){
+                // agents are online. skip away message
+                logger.info("agents are online. skip away message");
+                res.json({"code":"AGENTS_ONLINE","message":"skiping away message. some agents are online"}).status(200);
+                return;
+               }else if(isGroupUserAnonymous){
+                // agents are offline. group user is anonymous
+                eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
+                
+               }else{
+                // agents are offline and user is known.
+                eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
+               }
+               return inAppMsgService.getInAppMessage(customer.id,eventId).then(result=>{
+                   logger.info("got data from db.. sending response.");
+                   let messageList = result.map(data=>data.dataValues);
+                   res.json({"code":"SUCCESS",data:messageList}).status(200);
+               })
+            });
+        }else{
+            logger.info("no customer found with applicationId :",applicationId);
+            res.json({"code":"APPLICATION_NOT_EXISTS","message":"application does not belong to any registerd customer."}).status(404);
+        }
+    }).catch(err=>{
+        logger.info("error while processing away message :",err);
+        res.json({"code":"INTERNAL SERVER ERROR","message":"something went wrong"}).status(500);
+    })
+    
+
+}
