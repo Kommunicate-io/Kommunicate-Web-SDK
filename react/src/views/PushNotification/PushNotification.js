@@ -68,7 +68,7 @@ class PushNotification extends Component{
      this.certificateUpload(file);
   }
   submitGcmkey(fileurl,env){
-    if(document.getElementById("gcmKey").value ===""||document.getElementById("apnsUrl").value ===""||document.getElementById("testApnsUrl").value ===""){
+    if(document.getElementById("gcmKey").value ===""&& document.getElementById("apnsUrl").value ===""&& document.getElementById("testApnsUrl").value ===""){
       return;
     }
 
@@ -122,11 +122,15 @@ class PushNotification extends Component{
       "Content-Type": "application/json",
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
-      this.setState({disableButtonForAndroid: true });
-      this.setState({disableButtonForIosDistribution: true });
-      this.setState({disableButtonForIosDevelopment: true });
-     alert(" data successfully updated");
+      if (response.status === 200) {
+        alert(" data successfully updated");
+      } else {
+        alert("something went wrong");
+      }
     })
+    this.setState({disableButtonForAndroid: true });
+    this.setState({disableButtonForIosDistribution: true });
+    this.setState({disableButtonForIosDevelopment: true });
 
   }
 
@@ -167,9 +171,7 @@ class PushNotification extends Component{
                     <div className="col-sm-6 col-md-6">
                     <input id="gcmKey" className="km-pushnotification-input" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
                     </div>
-                  </div>
-                </div>            
-                <div className="btn-group">
+                    <div className="btn-group">
                   <button disabled={this.state.disableButtonForAndroid} className="km-button km-button--primary save-changes-btn"
                     onClick={(e) => {
                       this.setState({
@@ -177,6 +179,8 @@ class PushNotification extends Component{
                       }, this.submitGcmkey)
                     }} >Save</button>
                 </div>
+                  </div>
+                </div>            
               </div>          
             </div>
           </div>
@@ -191,7 +195,7 @@ class PushNotification extends Component{
                     <div className="form-group">For IOS(APNS)<span className="customer-type"> </span></div>  
                     <div className="form-group">For DISTRIBUTION<span className="customer-type"> </span></div>  
                     <hr className="km-pushnotification-hr"></hr>     
-                    <div className="row form-group">
+                    <div className="row form-group km-pushNotification-development">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
@@ -211,9 +215,10 @@ class PushNotification extends Component{
                     },this.uploadDistributionapnsFile)
                   }} >Save</button>
               </div>
-                  <div className="form-group">For DEVELOPMENT<span className="customer-type"> </span></div>   
+              <div>
+                  <div className="form-group km-pushNotification-div">For DEVELOPMENT<span className="customer-type"> </span></div>   
                   <hr className="km-pushnotification-hr"></hr>           
-                    <div className="row form-group">
+                    <div className="row form-group km-pushNotification-development">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
@@ -226,9 +231,7 @@ class PushNotification extends Component{
                     <input className="km-pushnotification-input" id="testApnsPassword" type="password"></input></div>
                   </div> 
                   </div>
-                  
-              </div>            
-              <div className="btn-group">
+                  <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDevelopment} className="km-button km-button--primary save-changes-btn"
                   onClick={(e) => {
                     this.setState({
@@ -236,6 +239,8 @@ class PushNotification extends Component{
                     },this.uploadDevelopmentapnsFile)
                   }} >Save</button>
               </div>
+                  </div>
+              </div>            
             </div>          
           </div>
         </div>
