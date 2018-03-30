@@ -214,9 +214,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'leaveGroup':
                         return oInstance.leaveGroup(params);
                         break;
-                    case 'certificateUpload':
-                        return oInstance.certificateUpload(params);
-                        break;
                     case 'addGroupMember':
                         return oInstance.addGroupMember(params);
                         break;
@@ -581,10 +578,6 @@ var MCK_CLIENT_GROUP_MAP = [];
         };
         _this.uploadFile = function (file) {
             mckFileService.uploadFile(file);
-        };
-
-        _this.certificateUpload = function (file) {
-            mckFileService.certificateUpload(file);
         };
 
         _this.audioAttach = function (file) {
@@ -7614,7 +7607,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             var FILE_PREVIEW_URL = "/rest/ws/aws/file";
             var FILE_UPLOAD_URL = "/rest/ws/aws/file/url";
             var ATTACHMENT_UPLOAD_URL = "/rest/ws/upload/image";
-            var CERTIFICATE_UPLOAD_URL ="/rest/ws/file/upload/cert";
             var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
             var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
             var mck_filebox_tmpl = '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' + '<div class="mck-file-expr">' + '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="mck-file-sz">${fileSizeExpr}</span></span>' + '<span class="progress progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar progress-bar-success bar" stye></span></span>' + '<span class="move-right">' + '<button type="button" class="mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' + '</span></div></div>';
@@ -7662,23 +7654,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
             };
-           
-            _this.certificateUpload = function (params) {
-                var data = new FormData();
-                var xhr = new XMLHttpRequest();
-                var file = {};
-                xhr.addEventListener('load', function (e) {
-                    file.url = this.responseText;
-                    file.success = params.this;
-                    file.env = params.env;
-                    params.callback(file);
-                });
-                data.append("file", params.file);
-                xhr.open('post', MCK_BASE_URL + CERTIFICATE_UPLOAD_URL, true);
-                xhr.setRequestHeader("Apz-Token", params.headers.ApzToken);
-                xhr.setRequestHeader("Apz-AppId", params.headers.ApzAppId);
-                xhr.send(data);
-            }
 
 
             _this.audioRecoder = function (params) {

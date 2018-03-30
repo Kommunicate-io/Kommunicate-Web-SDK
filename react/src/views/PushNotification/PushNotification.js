@@ -6,8 +6,9 @@ import axios from 'axios';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
+// import applozic.fullview.js from "../../../../js/app/fullview/applozic.fullview.js";
 
-class pushNotification extends Component{
+class PushNotification extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -34,7 +35,7 @@ class pushNotification extends Component{
     file.callback= function(file){
       file.success.submitGcmkey(file.url,file.env);
     }
-    window.$applozic.fn.applozic('certificateUpload',file);
+    window.$kmApplozic.fn.applozic('certificateUpload',file);
   }
   uploadDevelopmentapnsFile(){
     var file ={};
@@ -49,49 +50,49 @@ class pushNotification extends Component{
     file.callback= function(file){
       file.success.submitGcmkey(file.url,file.env);
     }
-    window.$applozic.fn.applozic('certificateUpload',file);
+     window.$kmApplozic.fn.applozic('certificateUpload',file);
   }
   submitGcmkey(fileurl,env){
 
     let userDetailUrl =getConfig().applozicPlugin.certificateUpload; 
-    let ApplicationList = CommonUtils.getUserSession().application.appModulePxys[0];
+    let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
     if(fileurl && env ==="development"){
-      ApplicationList.testApnsUrl =fileurl;
+      applicationList.testApnsUrl =fileurl;
     }
     if(fileurl && env ==="distribution"){
-      ApplicationList.apnsUrl =fileurl;
+      applicationList.apnsUrl =fileurl;
     }
     var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
 
     var application = {};
-    if (ApplicationList.applicationId) {
-      application.applicationId = ApplicationList.applicationId;
+    if (applicationList.applicationId) {
+      application.applicationId = applicationList.applicationId;
     }
-    if (ApplicationList.id) {
-      application.id = ApplicationList.id;
+    if (applicationList.id) {
+      application.id = applicationList.id;
     }
-    if (ApplicationList.name) {
-      application.name = ApplicationList.name;
+    if (applicationList.name) {
+      application.name = applicationList.name;
     }
-    if (ApplicationList.gcmKey) {
-      application.gcmKey = ApplicationList.gcmKey?ApplicationList.gcmKey:document.getElementById("gcmKey").value;
+    if (applicationList.gcmKey) {
+      application.gcmKey = applicationList.gcmKey?applicationList.gcmKey:document.getElementById("gcmKey").value;
     }
     if((document.getElementById("gcmKey").value)){
       application.gcmKey = document.getElementById("gcmKey").value;
     }
-    if (ApplicationList.apnsUrl) {
-      application.apnsUrl = ApplicationList.apnsUrl;
+    if (applicationList.apnsUrl) {
+      application.apnsUrl = applicationList.apnsUrl;
     }
-    if (ApplicationList.testApnsUrl) {
-      application.testApnsUrl = ApplicationList.testApnsUrl;
+    if (applicationList.testApnsUrl) {
+      application.testApnsUrl = applicationList.testApnsUrl;
     }
-    if (ApplicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
-      application.apnsPassword = ApplicationList.apnsPassword?ApplicationList.apnsPassword:document.getElementById("apnsPassword").value;
+    if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
+      application.apnsPassword = applicationList.apnsPassword?applicationList.apnsPassword:document.getElementById("apnsPassword").value;
     }
-    if (ApplicationList.testapnsPassword||(document.getElementById("testApnsPassword").value)) {
-      application.testApnsPassword = ApplicationList.apnsPassword?ApplicationList.apnsPassword:document.getElementById("testApnsPassword").value;
+    if (applicationList.testapnsPassword||(document.getElementById("testApnsPassword").value)) {
+      application.testApnsPassword = applicationList.apnsPassword?applicationList.apnsPassword:document.getElementById("testApnsPassword").value;
     }
-    userSession.application.appModulePxys[0] =ApplicationList;
+    userSession.application.appModulePxys[0] =applicationList;
     localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
   axios({
     method: 'post',
@@ -224,4 +225,4 @@ class pushNotification extends Component{
   }
 }
 
-export default pushNotification;
+export default PushNotification;
