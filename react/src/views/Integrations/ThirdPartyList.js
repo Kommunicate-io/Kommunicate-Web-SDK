@@ -4,6 +4,7 @@ import HelpdocsLogo from './images/helpdocs.png';
 
 
 export let thirdPartyList = [{
+    key: 'helpdocs',
     name: "Helpdocs",
     logo: HelpdocsLogo,
     subTitle: "Import your FAQs from Helpdocs",
@@ -18,6 +19,7 @@ export let thirdPartyList = [{
         "Hit Save",
     ]       
 }, {
+    key: 'zendesk',
     name: "Zendesk",
     logo: ZendeskLogo,
     subTitle: "Open Zendesk ticket for all conversations",
@@ -35,6 +37,7 @@ export let thirdPartyList = [{
     ]
     
 }, {
+    key: 'clearbit',
     name: "Clearbit",
     subTitle: "Get company details of youranonymous visitors",
     logo: ClearbitLogo,

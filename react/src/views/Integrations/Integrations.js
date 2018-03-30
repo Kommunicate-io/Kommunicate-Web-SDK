@@ -10,7 +10,7 @@ class Integrations extends Component {
         super(props);
         this.state = {
             modalIsOpen: false,      
-            activeDiv:-1,
+            activeDiv:'zendesk',
             Helpdocs:false, //enableHelpdocs
             Zendesk:false,  //enableZendesk
             Clearbit:false, //enableClearbit
@@ -88,7 +88,7 @@ class Integrations extends Component {
                 <img src={item.logo} className="integration-brand-logo" />
                 <h6 className="logo-title">{item.name}</h6>
                 <p className="integration-description">{item.subTitle}</p>
-                <span className="integration-settings" onClick={() => {this.setState({activeDiv:index},this.openModal)}}>Settings</span>
+                <span className="integration-settings" onClick={() => {this.setState({activeDiv:item.key},this.openModal)}}>Settings</span>
             </div>
         </div> 
      });

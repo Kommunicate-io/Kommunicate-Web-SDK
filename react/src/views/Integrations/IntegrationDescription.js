@@ -23,19 +23,19 @@ class IntegrationDescription extends Component{
         
     }
     componentDidMount () {
-        if(this.state.activeModal == 0 && this.state.helpdocsKeys.length > 0) {
+        if(this.state.activeModal == 'helpdocs' && this.state.helpdocsKeys.length > 0) {
             this.setState({
             accessKey:this.state.helpdocsKeys[0].accessKey,
             })
         }
-        if(this.state.activeModal == 1 && this.state.zendeskKeys.length > 0) {
+        if(this.state.activeModal == 'zendesk' && this.state.zendeskKeys.length > 0) {
             this.setState({
                 accessKey:this.state.zendeskKeys[0].accessKey,
                 accessToken:this.state.zendeskKeys[0].accessToken,
                 subdoamin:this.state.zendeskKeys[0].domain
             })
         }
-        if(this.state.activeModal == 2 && this.state.clearbitKeys.length > 0) {
+        if(this.state.activeModal == 'clearbit' && this.state.clearbitKeys.length > 0) {
             this.setState({
             accessKey:this.state.clearbitKeys[0].accessKey,
             })
@@ -43,7 +43,7 @@ class IntegrationDescription extends Component{
         
     }
     showDeleteStatement = () => {
-        if(this.state.activeModal == 1) {
+        if(this.state.activeModal == 'zendesk') {
             if (this.state.accessKey !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
                 this.setState({
                     deleteStatement:!this.state.deleteStatement
