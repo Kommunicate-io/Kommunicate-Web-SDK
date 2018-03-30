@@ -253,7 +253,7 @@ class PushNotification extends Component{
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
       if (response.status === 200) {
-        Notification.info("Apns for developmentz updated sucessfully");
+        Notification.info("Apns for development updated sucessfully");
       } else {
         Notification.error("something went wrong");
       }
@@ -269,7 +269,7 @@ class PushNotification extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="card-block away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app in is background</h4>
+                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app is in background</h4>
                 <div className="app-id-container">
                   <div className="app-id-div">
                     <span className="app-id-sub-text">
