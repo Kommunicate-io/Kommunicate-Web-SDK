@@ -47,6 +47,10 @@ class PushNotification extends Component{
   }
   uploadDistributionapnsFile(){
     var file ={};
+    if(!document.getElementById("apnsUrl").files[0]){
+      Notification.error("Please select file");
+      return;
+    }
     file.file = document.getElementById("apnsUrl").files[0];
     file.name = file.file.name;
     file.this =this;
@@ -58,6 +62,10 @@ class PushNotification extends Component{
   }
   uploadDevelopmentapnsFile(){
     var file ={};
+    if(!document.getElementById("testApnsUrl").files[0]){
+      Notification.error("Please select file");
+      return;
+    }
     file.file = document.getElementById("testApnsUrl").files[0];
     file.name = file.file.name;
     file.this =this;
