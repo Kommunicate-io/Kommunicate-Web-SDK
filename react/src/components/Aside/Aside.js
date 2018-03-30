@@ -323,7 +323,7 @@ class Aside extends Component {
                             <div className="km-dropdown-toggle" data-toggle="kmdropdown"
                                 aria-expanded="true">
                                 <img
-                            src="applozic/images/icon-menu.png" className="km-menu-icon" alt="Menu"/>
+                            src="/applozic/images/icon-menu.png" className="km-menu-icon" alt="Menu"/>
                               </div>
                               <ul id="km-start-new-menu-box"
                                 className="km-dropdown-menu km-tab-menu-box menu-right"
@@ -384,7 +384,7 @@ class Aside extends Component {
                                   <h3>No groups yet!</h3>
                                 </div>
                                   <div id="km-search-loading" className="km-loading n-vis">
-                                    <img src="applozic/images/ring.gif"/>
+                                    <img src="/applozic/images/ring.gif"/>
                                   </div>
                               </div>
                             </div>
@@ -399,7 +399,7 @@ class Aside extends Component {
                             </ul>
                           </div>
                           <div id="km-unassigned-loading" className="km-loading n-vis">
-                            <img src="applozic/images/ring.gif"/>
+                            <img src="/applozic/images/ring.gif"/>
                           </div>
                           <div id="km-no-unassigned-text"
                             className="km-no-data-text km-text-muted n-vis">No
@@ -428,7 +428,7 @@ class Aside extends Component {
                                   className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
                                 </ul>
                                 <div id="km-contact-loading" className="km-loading">
-                                  <img src="applozic/images/ring.gif"/>
+                                  <img src="/applozic/images/ring.gif"/>
                                 </div>
                                 <div id="km-no-contact-text"
                                   className="km-no-data-text km-text-muted n-vis">No
@@ -523,7 +523,7 @@ class Aside extends Component {
                             <div id="km-tab-menu" className="km-menu-item km-text-right">
                               <div className="km-dropdown-toggle" data-toggle="kmdropdown"
                                 aria-expanded="true">
-                                <img src="applozic/images/icon-menu.png" className="km-menu-icon"
+                                <img src="/applozic/images/icon-menu.png" className="km-menu-icon"
                                   alt="Tab Menu"/>
                               </div>
                               <ul id="km-tab-menu-list"
@@ -594,7 +594,7 @@ class Aside extends Component {
                             <div className="chat km-message-inner km-panel-inner"
                               data-km-id="${contIdExpr}"></div>
                             <div id="km-msg-loading" className="km-loading n-vis">
-                              <img src="applozic/images/ring.gif"/>
+                              <img src="/applozic/images/ring.gif"/>
                             </div>
                             <div id="km-no-more-messages"
                               className="km-no-more-messages km-show-more-icon n-vis">
@@ -652,13 +652,13 @@ class Aside extends Component {
                                     <li><a id="km-file-up" href="javascript:void(0)"
                                       className="km-file-upload menu-item" title="File &amp; Photos">
 
-                                        <img src="applozic/images/mck-icon-photo.png"
+                                        <img src="/applozic/images/mck-icon-photo.png"
                                         className="menu-icon" alt="File &amp; Photos"/> <span>Files
                                           &amp; Photos</span>
                                     </a></li>
                                     <li><a id="km-btn-loc" href="javascript:void(0)" className="menu-item"
                                       title="Location"> <img
-                                        src="applozic/images/mck-icon-marker.png" className="menu-icon"
+                                        src="/applozic/images/mck-icon-marker.png" className="menu-icon"
                                         alt="Location"/> <span>Location</span>
                                     </a></li>
 
@@ -717,7 +717,7 @@ class Aside extends Component {
                                   <div id="km-group-create-icon-loading"
                                     className="km-loading n-vis">
                                     <img
-                                      src="applozic/images/mck-loading.gif"/>
+                                      src="/applozic/images/mck-loading.gif"/>
                                   </div> <input id="km-group-icon-upload"
                                   className="km-group-icon-upload n-vis" type="file"
                                   name="files[]"/>
@@ -787,7 +787,7 @@ class Aside extends Component {
                                   className="km-overlay-label">Change Group Icon</span>
                               </div>
                               <div id="km-group-info-icon-loading" className="km-loading n-vis">
-                                <img src="applozic/images/mck-loading.gif"/>
+                                <img src="/applozic/images/mck-loading.gif"/>
                               </div> <input id="km-group-icon-change"
                               className="km-group-icon-change n-vis" type="file" name="file[]" />
                             </span>
@@ -796,7 +796,7 @@ class Aside extends Component {
                             <a id="km-btn-group-icon-save" href="javascript:void(0)" role="link"
                               className="km-btn-group-icon-save n-vis" title="Click to save">
                               <img
-                              src="applozic/images/mck-icon-save.png"
+                              src="/applozic/images/mck-icon-save.png"
                               alt="Save"/>
                             </a>
                           </div>
@@ -810,10 +810,10 @@ class Aside extends Component {
                             <div className="blk-lg-3 km-group-name-edit-icon">
                               <a id="km-group-name-edit" href="javascript:void(0)" role="link"
                                 className="km-group-name-edit vis" title="Edit"> <img
-                                src="applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
+                                src="/applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
                                 id="km-group-name-save" href="javascript:void(0)" role="link"
                                 className="km-group-name-save n-vis" title="Click to save"> <img
-                                src="applozic/images/mck-icon-save.png" alt="Save"/></a>
+                                src="/applozic/images/mck-icon-save.png" alt="Save"/></a>
                             </div>
                           </div>
                         </div>
@@ -826,7 +826,7 @@ class Aside extends Component {
                               <a id="km-group-add-member" className="km-group-add-member"
                                 href="javascript:void(0)">
                                 <div className="blk-lg-3">
-                                  <img src="applozic/images/mck-icon-add-member.png"
+                                  <img src="/applozic/images/mck-icon-add-member.png"
                                     alt="Add Member"/>
                                 </div>
                                 <div className="blk-lg-9">Add member</div>
@@ -879,7 +879,7 @@ class Aside extends Component {
                                   className="km-overlay-label">Change Profile Picture</span>
                               </div>
                               <div id="km-user-info-icon-loading" className="km-loading n-vis">
-                                <img src="applozic/images/mck-loading.gif"/>
+                                <img src="/applozic/images/mck-loading.gif"/>
                               </div> <input id="km-user-icon-change"
                               className="km-user-icon-change n-vis" type="file" name="file[]" />
                             </span>
@@ -888,7 +888,7 @@ class Aside extends Component {
                             <a id="km-btn-user-icon-save" href="javascript:void(0)" role="link"
                               className="km-btn-user-icon-save n-vis" title="Click to save">
                               <img
-                              src="applozic/images/mck-icon-save.png"
+                              src="/applozic/images/mck-icon-save.png"
                               alt="Save"/>
                             </a>
                           </div>
@@ -976,7 +976,7 @@ class Aside extends Component {
                     <div className="km-box-content">
                       <div className="km-box-top km-row">
                         <div className="blk-lg-3">
-                          <img src="applozic/images/mck-icon-add-member.png" alt="Add Member"/>
+                          <img src="/applozic/images/mck-icon-add-member.png" alt="Add Member"/>
                         </div>
                         <div className="blk-lg-7">
                           <h4 className="km-box-title">Add Member</h4>
