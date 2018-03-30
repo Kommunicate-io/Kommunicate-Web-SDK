@@ -26,7 +26,7 @@ export let thirdPartyList = {
     'clearbit': {
         key: 'clearbit',
         name: "Clearbit",
-        subTitle: "Get company details of youranonymous visitors",
+        subTitle: "Get company details of your anonymous visitors",
         logo: ClearbitLogo,
         integrationType: 3,
         docsLink: "https://clearbit.com/docs",
