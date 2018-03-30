@@ -158,7 +158,7 @@ class PushNotification extends Component{
       application.testApnsPassword = applicationList.testApnsPassword;
     }
     if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
-      application.apnsPassword = applicationList.apnsPassword?applicationList.apnsPassword:document.getElementById("apnsPassword").value;
+      application.apnsPassword =document.getElementById("apnsPassword").value;
     }
     userSession.application.appModulePxys[0]=application;
     CommonUtils.setUserSession(userSession);
