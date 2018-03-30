@@ -142,7 +142,7 @@ class PushNotification extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="card-block away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Enabling push Notification allows kommunicate to send Notification even when your mobile app in foreground</h4>
+                <h4 className="away-message-title">Enabling push notification allows kommunicate to send notification even when your mobile app in foreground</h4>
                 <div className="app-id-container">
                   <div className="app-id-div">
                     <span className="app-id-sub-text">
