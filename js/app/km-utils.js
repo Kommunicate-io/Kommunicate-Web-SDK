@@ -1,5 +1,23 @@
-/* Method to get cookies*/
+/* .
+ Initilize all global variables used in kommunicate 
+*/
+
+
+/**
+ * Kommunicate stores all Exposed functions to user.
+ * 
+ */
+Kommunicate = {};
+
+/**
+ * stores all UI manipulation
+ */
+KommunicateUI = {};
+
+
+/**all  utilities*/
 KommunicateUtils ={
+
 getCookie :function(cname){
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -18,8 +36,8 @@ getCookie :function(cname){
 /* Method to set cookies*/
 setCookie: function(cname, cvalue, exdays) {
     var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = "expires="+ d.toUTCString();
+    var cookieMaxExpirationdate= "2038-01-19 04:14:07";
+    var expires = "expires="+ new Date(cookieMaxExpirationdate).toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 },
 getRandomId:function() {
