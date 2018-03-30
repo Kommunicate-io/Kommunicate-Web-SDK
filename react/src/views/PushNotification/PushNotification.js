@@ -119,7 +119,7 @@ class PushNotification extends Component{
       if (response.status === 200) {
         Notification.info("GCM Key updated");
       } else {
-        Notification.info("something went wrong");
+        Notification.error("something went wrong");
       }
     })
     this.setState({disableButtonForAndroid: true });
@@ -176,7 +176,7 @@ class PushNotification extends Component{
       if (response.status === 200) {
         Notification.info("Apns Detail for distribution updated sucessfully");
       } else {
-        Notification.info("something went wrong");
+        Notification.error("something went wrong");
       }
     })
     this.setState({disableButtonForIosDistribution: true });
@@ -233,7 +233,7 @@ class PushNotification extends Component{
       if (response.status === 200) {
         Notification.info("Apns for distribution updated sucessfully");
       } else {
-        Notification.info("something went wrong");
+        Notification.error("something went wrong");
       }
     })
     this.setState({disableButtonForIosDevelopment: true });
