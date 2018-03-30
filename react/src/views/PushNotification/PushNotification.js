@@ -68,6 +68,9 @@ class PushNotification extends Component{
      this.certificateUpload(file);
   }
   submitGcmkey(fileurl,env){
+    if(document.getElementById("gcmKey").value ===""||document.getElementById("apnsUrl").value ===""||document.getElementById("testApnsUrl").value ===""){
+      return;
+    }
 
     let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
@@ -119,6 +122,9 @@ class PushNotification extends Component{
       "Content-Type": "application/json",
       "Apz-AppId":getConfig().adminDetails.kommunicateParentKey
     }}).then(function(response) {
+      this.setState({disableButtonForAndroid: true });
+      this.setState({disableButtonForIosDistribution: true });
+      this.setState({disableButtonForIosDevelopment: true });
      alert(" data successfully updated");
     })
 
@@ -159,7 +165,7 @@ class PushNotification extends Component{
                         
                     <div className="col-sm-6 col-md-6">GCM/FCM key :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="gcmKey" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
+                    <input id="gcmKey" className="km-pushnotification-input" type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
                     </div>
                   </div>
                 </div>            
@@ -183,7 +189,8 @@ class PushNotification extends Component{
               <div className="">
                    
                     <div className="form-group">For IOS(APNS)<span className="customer-type"> </span></div>  
-                    <div className="form-group">For DISTRIBUTION<span className="customer-type"> </span></div>     
+                    <div className="form-group">For DISTRIBUTION<span className="customer-type"> </span></div>  
+                    <hr className="km-pushnotification-hr"></hr>     
                     <div className="row form-group">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
@@ -194,7 +201,7 @@ class PushNotification extends Component{
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="apnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input" id="apnsPassword" type="password"></input></div>
                   </div> 
                   <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDistribution}  className="km-button km-button--primary save-changes-btn"
@@ -204,7 +211,8 @@ class PushNotification extends Component{
                     },this.uploadDistributionapnsFile)
                   }} >Save</button>
               </div>
-                  <div className="form-group">For DEVELOPMENT<span className="customer-type"> </span></div>             
+                  <div className="form-group">For DEVELOPMENT<span className="customer-type"> </span></div>   
+                  <hr className="km-pushnotification-hr"></hr>           
                     <div className="row form-group">
                         
                     <div className="col-sm-6 col-md-6">Apple Certificate :<span className="customer-type"> </span></div>
@@ -215,7 +223,7 @@ class PushNotification extends Component{
                     <div className="row form-group">
                     <div className="col-sm-6 col-md-6">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input id="testApnsPassword" type="password"></input></div>
+                    <input className="km-pushnotification-input" id="testApnsPassword" type="password"></input></div>
                   </div> 
                   </div>
                   
