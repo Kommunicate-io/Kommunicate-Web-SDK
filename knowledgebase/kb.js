@@ -96,7 +96,27 @@
                 }
                 });
             } else {
-                //Not supported yet
+                KommunicateKB.getFaq({data: options.data, success: function(response) {
+                    var article = response.data.article;
+                    
+                    var article = {
+                        articleId: article.id,
+                        title: article.name,
+                        description: article.content, 
+                        status: article.status,
+                        source: SOURCES.kommunicate
+                    };
+
+                    if (options.success) {
+                        var res = new Object();
+                        res.status = "success";
+                        res.data = article;
+                        options.success(res);
+                    }
+                }, error: function() {
+
+                }
+            });
             }
         }
 
@@ -129,7 +149,8 @@
             });
         }
 
-        //KommunicateKB.getArticle({data: {articleId: 'tuqx5g5kq5'}, success: function(response) {console.log(response);}, error: function() {}});
+        //KommunicateKB.getFaq({data: {articleId: 1}, success: function(response) {console.log(response);}, error: function() {}});
+        //Note: server side not supported yet
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
             KMCommonUtils.ajax({
