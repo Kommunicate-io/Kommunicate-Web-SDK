@@ -4230,7 +4230,7 @@ color: rgba(0,0,0,0.5);
     border: 1px solid #7766B5;
 }
 .km-undecorated-link{
-	text-decoration:none;
+	text-decoration:none !important;
 }
 
 /********** Guest Details Form Starts Here ***********/
@@ -4472,7 +4472,8 @@ color: rgba(0,0,0,0.5);
 .faq-list--body_list {
     list-style: none;
     margin: 0;
-    padding: 0;
+	padding: 0;
+	margin-bottom: 0px !important;
 }
 .faq-list--body_list li>a {
     display: flex;
@@ -4484,7 +4485,10 @@ color: rgba(0,0,0,0.5);
 }
 .faq-list--body_que-ans {
     padding: 10px 12px;
-    /*width: calc(100% - 106px);*/
+	/*width: calc(100% - 106px);*/
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     transition: all 0.3s ease-in-out;
 }
 .faq-list--body_list li>a:hover {
@@ -4505,14 +4509,14 @@ color: rgba(0,0,0,0.5);
     overflow: hidden;
 }
 .faq-list--body_img {
-    padding-left: 12px;
+    padding: 10px 0px 10px 12px;
     /*width: 70px;*/
-    height: 70px;
+    height: 50px;
     border-radius: 4px;
 }
 .faq-list--body_img img {
-    width: 70px;
-    height: 70px;
+	width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 4px;
 }
@@ -4533,7 +4537,7 @@ color: rgba(0,0,0,0.5);
     width: 100%;
     height: 110px;
     position: relative;
-    z-index: -1;
+    z-index: 0;
     display: block;
     border-top-left-radius:18px;
     border-top-right-radius:18px;
@@ -4550,9 +4554,8 @@ color: rgba(0,0,0,0.5);
 }
 
 .faq-list--footer {
-    width: 100%;
-    height: 35px;
-    line-height: 35px;
+	width: 100%;
+	min-height: 35px;
     border-bottom-left-radius: 18px;
     border-bottom-right-radius: 18px;
 }
@@ -4561,11 +4564,12 @@ color: rgba(0,0,0,0.5);
     outline: none;
     border: none;
     background: transparent;
-    height: 100%;
     color: #00b0ff;
     font-size: 15px;
     text-transform: uppercase;
-    cursor: pointer;
+	cursor: pointer;
+	padding: 12px 0px;
+    border-radius: 0px;
 }
 
 .faq-list--header_text-container {
@@ -4578,4 +4582,60 @@ color: rgba(0,0,0,0.5);
     color: rgb(48, 48, 48);
     word-wrap: break-word;
     font-size: 16px;
+}
+.faq-list--footer_button-container button:not(:last-child){
+	border-bottom: 1px solid #e5e5e5;
+
+}
+.faq-list, .km-dialog-box{
+	width:96%;
+}
+
+/********  dialog box template *************/
+/* FAQ Answer */
+.message.received.faq-answer {
+    padding: 0px;
+	background: transparent;
+	width:96%;
+}
+.faq-answer--body {
+    border-radius: 5px;
+  background-color: #e6e5ec;
+}
+.faq-answer--body_container {
+    padding: 10px;
+}
+.faq-answer--body_que {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    color: #141515;
+}
+.faq-answer--body_ans {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    color: #646262;
+}
+.faq-answer--footer {
+	padding: 10px 10px;
+}
+.faq-answer--footer_button-text-container {
+    display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.faq-answer--footer_button-text-container p {
+	margin-bottom: 0px;
+	margin-right: 10px;
+}
+.faq-answer--footer_button-text-container button {
+	margin-left: 10px;
+	margin-right: 10px;
 }

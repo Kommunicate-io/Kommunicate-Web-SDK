@@ -169,7 +169,7 @@ getPassangerDetail : function(options){
             `
 },
 getListMarkup:function(){
-   return `<div id="faq-list"class="message received faq-list" style="">
+   return `<div class="message received faq-list" style="">
     <div class="faq-list--container"  >
             <div class="faq-list--header">
                     <div class="faq-list--header_text-img">
@@ -185,7 +185,7 @@ getListMarkup:function(){
             <div class="faq-list--body_list-container">
                 <ul class="faq-list--body_list">
                     {{#elements}}
-                    <li> <a href={{action}} target="_blank">
+                    <li> <a href={{action}} target="_blank" class="km-undecorated-link">
                             <div class="faq-list--body_img">
                                     {{{imgSrc}}}
                             </div>
@@ -207,13 +207,34 @@ getListMarkup:function(){
         <div class="faq-list--footer">
                 <div class="faq-list--footer_button-container">
                         {{#buttons}}
-                        <button class="km-cta-button km-add-more-rooms km-undecorated-link"><a href ="{{action}}" target="_blank">{{name}}</a></button>
+                        <button class="km-cta-button km-add-more-rooms"><a class ="km-undecorated-link" href ="{{action}}" target="_blank">{{name}}</a></button>
                         {{/buttons}}
                     
             </div>
         </div>
     </div>`
+},
+getDialogboxTemplate : function(){
+    return `<div id ="faq-answer" class="message received faq-answer">
+    <div class="faq-answer--container">
+        <div class="faq-answer--body">
+            <div class="faq-answer--body_container">
+                <p class="faq-answer--body_que">{{title}}</p>
+                <p class="faq-answer--body_ans"> {{description}}</p>
+            </div>
+        </div>
+        <div class="faq-answer--footer">
+            <div class="faq-answer--footer_button-text-container">
+                <p>{{buttonLabel}}</p>
+                {{#buttons}}
+                <button class="km-cta-button km-add-more-rooms">{{name}}</button>
+               {{/buttons}}
+            </div>
+        </div>
+    </div>
+</div>`;
 }
+
 };
 
 Kommunicate.markup.buttonContainerTemplate= function(options){
@@ -278,25 +299,31 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
     }
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
-Kommunicate.markup.getListContainerMarkup = function(json){
-    if(json){
+Kommunicate.markup.getListContainerMarkup = function(metadata){
+    if(metadata && metadata.payload){
+       var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
             json.headerImgSrc = '<img src= '+json.headerImgSrc+'/>' 
         }if(json.elements.length){
             json.elements =   json.elements.map(function(item){
-               if(item.url){
-                item.url =  '<img src ='+item.url +'/>';
+               if(item.imgSrc){
+                item.imgSrc =  '<img src ='+item.imgSrc +'/>';
                }
                 return item;
             })
         }
-        var template = document.getElementById('faq-list').innerHTML;
-       var op = Mustache.to_html(template, json);
-       debugger;
-        return  op;
-
+        
+       return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
     }else{
         return "";
     }
 
+}
+Kommunicate.markup.getDialogboxContainer = function(metadata){
+    if(metadata && metadata.payload){
+        var json = JSON.parse(metadata.payload);
+        return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
+     }else{
+         return "";
+     }
 }
