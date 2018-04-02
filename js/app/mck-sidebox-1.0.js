@@ -5516,6 +5516,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
+                        if(message.metadata.hide ==="true"){
+                            return;
+                        }
                         if (message.contentType === 2) {
                             emoji_template = '<span class="mck-icon-marker"></span>';
                         } else {
