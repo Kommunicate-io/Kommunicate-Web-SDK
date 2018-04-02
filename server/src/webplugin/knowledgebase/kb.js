@@ -6,6 +6,7 @@
         var KB_URL = "/autosuggest/message/:appId?criteria=type&value=faq";
         var appId;
         var helpdocsKey;
+        var SOURCES = {kommunicate : 'KOMMUNICATE', helpdocs: 'HELPDOCS'};
 
         //KommunicateKB.init("https://api.kommunicate.io", "kommunicate-support", "cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao");
         KommunicateKB.init = function (url, applicationId, helpdocsToken) {
@@ -21,20 +22,19 @@
         KommunicateKB.getArticles = function(options) {
             var articles = [];
             KommunicateKB.getFaqs({data: options.data, success: function(response) {
-                console.log(response);
                 for (var i = 0; i < response.data.length; i++){
                     var article = response.data[i];
                     articles.push({
                         articleId: article.id,
                         title: article.name,
                         description: article.content, 
-                        status: article.status
+                        status: article.status,
+                        source: SOURCES.kommunicate
                     });
                 }
 
                 if (helpdocsKey) {
                     Helpdocs.getArticles({data: options.data, success:function(response) {
-                            console.log(response);
                             var data = response.data;
                             for (var i = 0; i < data.articles.length; i++){
                                 var article = data.articles[i];
@@ -43,7 +43,8 @@
                                     articleId: article.article_id,
                                     title: article.title,
                                     description: article.description, 
-                                    url: article.url
+                                    url: article.url,
+                                    source: SOURCES.helpdocs
                                 });
                             }
 
@@ -69,7 +70,34 @@
             }, error: function() {
 
             }});
+        }
 
+        //KommunicateKB.getArticle({data: {articleId: 'tuqx5g5kq5'}, success: function(response) {console.log(response);}, error: function() {}});
+        KommunicateKB.getArticle = function (options) {
+            if (options.data.source == SOURCES.helpdocs) {
+                Helpdocs.getArticle({data: options.data, success: function(response) {
+                    var article = response.data.article;
+                    var article = {
+                        articleId: article.article_id,
+                        title: article.title,
+                        description: article.description, 
+                        url: article.url,
+                        source: SOURCES.helpdocs
+                    };
+
+                    if (options.success) {
+                        var res = new Object();
+                        res.status = "success";
+                        res.data = article;
+                        options.success(res);
+                    }
+                }, error: function() {
+
+                }
+                });
+            } else {
+                //Not supported yet
+            }
         }
 
         //KommunicateKB.getArticles({data: {query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
