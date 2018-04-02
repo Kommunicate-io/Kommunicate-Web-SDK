@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const config = require("../../conf/config");
 const applozicClient = require("../utils/applozicClient");
 const registrationService = require("../register/registrationService");
+const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
+const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 exports.login = (userDetail) => {
   const userName= userDetail.userName;
   const password = userDetail.password;
@@ -15,14 +17,17 @@ exports.login = (userDetail) => {
       if(user && bcrypt.compareSync(password, user.password)) {
         // valid user credentials
           return Promise.resolve(userService.getCustomerInfoByApplicationId(applicationId)).then(customer=>{
-            user.isAdmin = customer.userName==user.userName;
-            user.adminUserName=customer.userName;
-            user.adminDisplayName = customer.name;
-            user.routingState = customer.agentRouting;
-            user.applozicUser=applozicUser;
-            user.subscription = customer.subscription;
-            user.billingCustomerId = customer.billingCustomerId;
-            return prepareResponse(user,application);
+            return integrationSettingService.getIntegrationSetting(customer.id,CLEARBIT).then(key=>{ 
+              user.isAdmin = customer.userName==user.userName;
+              user.adminUserName=customer.userName;
+              user.adminDisplayName = customer.name;
+              user.routingState = customer.agentRouting;
+              user.applozicUser=applozicUser;
+              user.subscription = customer.subscription;
+              user.billingCustomerId = customer.billingCustomerId;
+              user.clearbitKey =key.length > 0 ? key[0].accessKey:"";
+              return prepareResponse(user,application);
+            })
           });
       }else{
         console.log("invalid login credential");
