@@ -6,6 +6,8 @@ const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
 const config = require("../../conf/config");
+const pipeDrive = require('../pipedrive/pipedrive');
+const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 //const logger =require("../utils/logger");
 exports.createCustomer = (req,res)=>{
@@ -118,8 +120,13 @@ exports.patchCustomer = (req,res)=>{
       console.log("Error while getting customer by userId", error);
     });
   }
-  
-  
+  if (pipeDriveEnable) {
+    let organization = { name: customer.companyName };
+    let person = { name: customer.name, email: userId, phone: customer.contactNo, }
+    return pipeDrive.createDealInPipeDrive(organization, person).catch(err => {
+      console.log('error while updating pipe drive data', err);
+    });
+  }
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     userService.getAdminUserByAppId(customer.applicationId).then(user=>{
       let userobj =  {};
