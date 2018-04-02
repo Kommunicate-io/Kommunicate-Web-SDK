@@ -13,7 +13,6 @@
             }
 
             var reqOptions = extend({}, {}, options);
-            console.log(options);
 
             var request = new XMLHttpRequest();
             var responsedata;
@@ -29,7 +28,6 @@
                 reqOptions.url = reqOptions.url + "?" + reqOptions.data;
             }
 
-            console.log("request.open");
             request.open(typ, reqOptions.url, asyn);
             if (typ === 'POST' || typ === 'GET') {
                 if (typeof reqOptions.contentType === 'undefined') {
