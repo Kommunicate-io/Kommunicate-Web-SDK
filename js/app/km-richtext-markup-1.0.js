@@ -167,7 +167,74 @@ getPassangerDetail : function(options){
                 </div>
             </div>
             `
+},
+getListMarkup:function(){
+   return `<div class="message received faq-list" style="">
+    <div class="faq-list--container"  >
+            <div class="faq-list--header">
+                    <div class="faq-list--header_text-img">
+                            {{{headerImgSrc}}}
+                    </div>
+                    <div class="faq-list--header_text-container">
+                            <p class="faq-list--header_text">
+                                    {{headerText}}
+                            </p>
+                        </div>
+        </div>
+        <div class="faq-list--body">
+            <div class="faq-list--body_list-container">
+                <ul class="faq-list--body_list">
+                    {{#elements}}
+                    <li> <a href={{action}} target="_blank" class="km-undecorated-link">
+                            <div class="faq-list--body_img">
+                                    {{{imgSrc}}}
+                            </div>
+                        <div class="faq-list--body_que-ans">
+                                <p class="faq-list--body_que">
+                                    {{title}}
+                                </p>
+                                <p class="faq-list--body_ans">
+                                    {{description}}
+                                </p>
+                            </div>
+                        </a>
+                    </li>
+                    {{/elements}}
+                
+                </ul>
+            </div>
+        </div>
+        <div class="faq-list--footer">
+                <div class="faq-list--footer_button-container">
+                        {{#buttons}}
+                        <button class="km-cta-button km-add-more-rooms"><a class ="km-undecorated-link" href ="{{action}}" target="_blank">{{name}}</a></button>
+                        {{/buttons}}
+                    
+            </div>
+        </div>
+    </div>`
+},
+getDialogboxTemplate : function(){
+    return `<div id ="faq-answer" class="message received faq-answer">
+    <div class="faq-answer--container">
+        <div class="faq-answer--body">
+            <div class="faq-answer--body_container">
+                <p class="faq-answer--body_que">{{title}}</p>
+                <p class="faq-answer--body_ans"> {{description}}</p>
+            </div>
+        </div>
+        <div class="faq-answer--footer">
+            <div class="faq-answer--footer_button-text-container">
+                <p>{{buttonLabel}}</p>
+                {{#buttons}}
+                <button class="km-cta-button km-add-more-rooms">{{name}}</button>
+               {{/buttons}}
+            </div>
+        </div>
+    </div>
+</div>`;
 }
+
 };
 
 Kommunicate.markup.buttonContainerTemplate= function(options){
@@ -231,4 +298,32 @@ Kommunicate.markup.getRoomDetailsContainerTemplate = function (roomList, session
         roomListMarkup = roomListMarkup + Kommunicate.markup.getRoomDetailTemplate(roomDetails[i], sessionId);
     }
     return `<div class="km-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
+}
+Kommunicate.markup.getListContainerMarkup = function(metadata){
+    if(metadata && metadata.payload){
+       var json = JSON.parse(metadata.payload);
+        if(json.headerImgSrc){
+            json.headerImgSrc = '<img src= '+json.headerImgSrc+'/>' 
+        }if(json.elements.length){
+            json.elements =   json.elements.map(function(item){
+               if(item.imgSrc){
+                item.imgSrc =  '<img src ='+item.imgSrc +'/>';
+               }
+                return item;
+            })
+        }
+        
+       return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
+    }else{
+        return "";
+    }
+
+}
+Kommunicate.markup.getDialogboxContainer = function(metadata){
+    if(metadata && metadata.payload){
+        var json = JSON.parse(metadata.payload);
+        return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
+     }else{
+         return "";
+     }
 }

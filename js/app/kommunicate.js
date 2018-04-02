@@ -306,6 +306,11 @@ $applozic.extend(true,Kommunicate,{
                 case "6":
                     return Kommunicate.markup.quickRepliesContainerTemplate(metadata);
                     break;
+                case "7":
+                    return Kommunicate.markup.getListContainerMarkup(metadata);
+                    
+                case "8":
+                    return Kommunicate.markup.getDialogboxContainer(metadata);
                 default:
                     return "";
                     break;
