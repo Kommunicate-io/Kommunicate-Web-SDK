@@ -19,19 +19,51 @@
         }
 
         KommunicateKB.getArticles = function(options) {
-            var articles = {};
+            var articles = [];
             KommunicateKB.getFaqs({data: options.data, success: function(response) {
                 console.log(response);
-                //Todo: convert to article format.
+                for (var i = 0; i < response.data.length; i++){
+                    var article = response.data[i];
+                    articles.push({
+                        articleId: article.id,
+                        title: article.name,
+                        description: article.content, 
+                        status: article.status
+                    });
+                }
 
                 if (helpdocsKey) {
                     Helpdocs.getArticles({data: options.data, success:function(response) {
                             console.log(response);
-                            //Todo: convert to article format.
+                            var data = response.data;
+                            for (var i = 0; i < data.articles.length; i++){
+                                var article = data.articles[i];
+
+                                articles.push({
+                                    articleId: article.article_id,
+                                    title: article.title,
+                                    description: article.description, 
+                                    url: article.url
+                                });
+                            }
+
+                            if (options.success) {
+                                var res = new Object();
+                                res.status = "success";
+                                res.data = articles;
+                                options.success(res);
+                            }
                         }, error: function(error) {
 
                         }
                     });
+                } else {
+                    if (options.success) {
+                        var res = new Object();
+                        res.status = "success";
+                        res.data = articles;
+                        options.success(res);
+                    }
                 }
 
             }, error: function() {
