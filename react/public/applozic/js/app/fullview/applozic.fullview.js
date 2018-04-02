@@ -6633,7 +6633,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_preview_file_content.html("");
 					$mck_preview_file_content.removeClass('vis').addClass('n-vis');
 				}
-				$mck_preview_name.html(displayName);
+				if (contact.isGroup === true && contact.type !== 10) {
+                    $mck_preview_name.html(displayName);
+                }
 				$mck_preview_icon.html(imgsrctag);
 				$mck_msg_preview.data('km-id', contact.contactId);
 				$mck_msg_preview.show();
