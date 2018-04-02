@@ -4,14 +4,12 @@ const axios = require("axios");
 var userId = "4047878";
 const API_KEY = '5b37f277e072d90ada8d7d9852a1386079fdcce7';
 
-const ADD_ORGANIZATION_API_URL = "https://applozic2.pipedrive.com/v1/organizations?api_token=";
-const ADD_PERSON_API_URL = "https://applozic2.pipedrive.com/v1/persons?api_token=";
-const ADD_DEAL_API_URL = "https://applozic2.pipedrive.com/v1/deals?api_token=";
+const ADD_ORGANIZATION_API_URL = "https://applozic.pipedrive.com/v1/organizations?api_token=";
+const ADD_PERSON_API_URL = "https://applozic.pipedrive.com/v1/persons?api_token=";
+const ADD_DEAL_API_URL = "https://applozic.pipedrive.com/v1/deals?api_token=";
 
 
 exports.createDealInPipeDrive = (organization, person) => {
-    //let organization = req.body.organization;
-    //let person = req.body.person;
     let deal = { title: organization.name, person_id: '', org_id: '', stage_id: 6, }
     console.log('organization: ', organization, 'person: ', person);
     return createOrganization(organization).then(organizationId => {
