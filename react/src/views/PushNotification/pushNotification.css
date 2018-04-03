@@ -6,161 +6,23 @@
     margin-top:20px;
 }
 .km-pushnotification-input{
-        width: 419px;
-        height: 36px;
-        object-fit: contain;
-        margin-top: 40px;
-        padding:15px;
-        border-radius: 4px;
-        background-color: #ffffff;
-        border: solid 1px #a1a1a1;
-      
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #a1a1a1;
+    height: 35px;
+    width: 104px;
 }
 
 .km-pushnotification-hr{
+    margin: 0px!important;
     width:40em!important;
-    border: solid 1px #bbb5b5;
-    margin-top: 5px!important;
     }
-    .FCM {
-        font-family: Roboto;
-        font-size: 14px;
-        font-weight: 500;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: 0.6px;
-        text-align: left;
-        color: #656161;
-      }
 
-.FCM-key {
-        margin-top: 47px;
-        margin-left: 15px;
-        width: 119px;
-        height: 16px;
-        font-family: Roboto;
-        font-size: 14px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: 0.6px;
-        text-align: left;
-        color: #656161;
-      }
 .km-pushNotification-development{
     margin-top: 15px;
 }
 
 .km-pushNotification-div{
-    margin-top: 45px;
+    margin-top: 15px;
 }
 
-.Rectangle-2-Copy {
-    width: 605px;
-    height: 199px;
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-  .Mask {
-    width: 389px;
-    height: 39px;
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: solid 1px #cdcdd3;
-  }
-  .Rectangle-2-Copy {
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-
-  .For-iOS-APNS {
-    margin-top: 29px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
-  }
-  .For-DISTRIBUTION {
-    margin-top: 33px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #312f2f;
-  }
-  .Apple-certificate {
-    margin-top: 29px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
-    margin-left: 15px;
-  }
-  .Enabling-push-notifi {
-    width: 605px;
-    height: 42px;
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 1.3px;
-    text-align: left;
-    color: #354052;
-  }
-  .km-input-apns {
-    padding: 15px;
-    width: 210px;
-    height: 36px;
-    margin-left: 46px;
-    margin-top: 22px;
-    border-radius: 4px;
-    background-color: #ffffff;
-    border: solid 1px #a1a1a1;
-  }
-  .km-input-component{
-    margin-top: 20px;
-  }
-  .Rectangle-7 {
-    width: 297px;
-    height: 39px;
-    border-radius: 2px;
-    background-color: #cce7f8;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.7px;
-    text-align: left;
-    color: #6a6b6d;
-  }
-  .km-pushnotification-button{
-    border-radius: 3px;
-    background-color: #d6dbe1;
-  }
-  .km-pushnotification-header{
-      margin-left: 5px;
-  }
