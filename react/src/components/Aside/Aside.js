@@ -240,7 +240,9 @@ class Aside extends Component {
                                             'metadata':{
                                               'skipBot':true,
                                               'KM_ASSIGN' :userId,
-                                              NO_ALERT:true
+                                              NO_ALERT:true,
+                                              BADGE_COUNT:false,
+                                              category: "ARCHIVE",
                                             }
                                           });
                                       }
@@ -301,7 +303,11 @@ class Aside extends Component {
                                             'groupId' : that.state.group.groupId,
                                             'message' : "Status changed to " + that.state.statuses[status],
                                             'metadata':{
-                                              'KM_STATUS' :that.state.statuses[status]
+                                              'KM_STATUS' :that.state.statuses[status],
+                                              skipBot:true,
+                                              NO_ALERT:true,
+                                              BADGE_COUNT:false,
+                                              category: "ARCHIVE",
                                             }
                                           });
                                       }
