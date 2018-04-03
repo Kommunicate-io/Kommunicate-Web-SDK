@@ -2191,7 +2191,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_gm_search_box.mckModal('hide');
                 });
                 $applozic(d).on('click', '.mck-btn-remove-member', function (e) {
-                    e.preventDefault();
+                    e.stopPropagation();
                     var userId = $applozic(this).parents('.mck-li-group-member').data('mck-id');
                     var groupId = $mck_group_info_tab.data('mck-id');
                     if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
