@@ -23,7 +23,6 @@ app.use(cors());
 // });
 compressor.minify({
   compressor: 'gcc',
-  //compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/common.js', './src/webplugin/knowledgebase/helpdocs.js', './src/webplugin/knowledgebase/kb.js'],
   output: './src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
   callback: function (err, min) {
