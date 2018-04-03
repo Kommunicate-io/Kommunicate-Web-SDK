@@ -11,6 +11,17 @@
   .km-btn-file-label {
     line-height: 36px;
     cursor: pointer;
+    width: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+  }
+  .km-btn-file-label span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
   }
   .close-btn-container {
     margin-left: -40px;
