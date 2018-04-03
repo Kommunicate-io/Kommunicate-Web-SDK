@@ -128,17 +128,17 @@ exports.patchCustomer = (req,res)=>{
     });
   }
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
-    userService.getAdminUserByAppId(customer.applicationId).then(user=>{
-      let userobj =  {};
-      userId?userobj.userId=userId:"";
-      customer.name? userobj.displayName = customer.name:"";
-      customer.email?userobj.email =customer.email:"";
-      applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,userobj).then(response=>{
-        console.log("Applozic update user response: " + response);
-      }).catch(err=>{
-        console.log("error while updating Applozic user");
-      }) 
-    });
+    // userService.getAdminUserByAppId(customer.applicationId).then(user=>{
+    //   let userobj =  {};
+    //   userId?userobj.userId=userId:"";
+    //   customer.name? userobj.displayName = customer.name:"";
+    //   customer.email?userobj.email =customer.email:"";
+    // applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,userobj).then(response=>{
+    //     console.log("Applozic update user response: " + response);
+    //   }).catch(err=>{
+    //     console.log("error while updating Applozic user");
+    //   }) 
+    // });
     if(isUpdated){
       response.code="SUCCESS";
       response.message="Updated";
@@ -149,9 +149,9 @@ exports.patchCustomer = (req,res)=>{
       res.status(404).json(response);
     }
 
-  }).catch((err)=>{
-    response.code="INTERNAL_SERVER_ERROR";
-    response.message="something went wrong!";
+  }).catch((err) => {
+    response.code = err.code == "DUPLICATE_EMAIL" ? err.code : "INTERNAL_SERVER_ERROR";
+    response.message = err.message ? err.message : "something went wrong!";
     res.status(500).json(response);
   });
 
