@@ -48,14 +48,14 @@ getRandomId:function() {
     return text;
 },
 getDataFromKmSession: function(key){
-    var session = sessionStorage.getItem("kommunicate");
+    var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
    return  session?JSON.parse(session)[key]:"";
 },
 storeDataIntoKmSession: function(key, data){
-    var session = sessionStorage.getItem("kommunicate");
+    var session = sessionStorage.getItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY);
     session=  session?JSON.parse(session):{};
     session[key] = data;
-    sessionStorage.setItem("kommunicate", JSON.stringify(session));
+    sessionStorage.setItem(KommunicateConstants.KOMMUNICATE_SESSION_KEY, JSON.stringify(session));
 
 }
 }
