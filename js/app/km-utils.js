@@ -46,5 +46,16 @@ getRandomId:function() {
     for (var i = 0; i < 32; i++)
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
+},
+getDataFromKmSession: function(key){
+    var session = sessionStorage.getItem("kommunicate");
+   return  session?JSON.parse(session)[key]:"";
+},
+storeDataIntoKmSession: function(key, data){
+    var session = sessionStorage.getItem("kommunicate");
+    session=  session?JSON.parse(session):{};
+    session[key] = data;
+    sessionStorage.setItem("kommunicate", JSON.stringify(session));
+
 }
 }
