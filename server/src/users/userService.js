@@ -329,10 +329,15 @@ if(!response) {
 };
 
 exports.updateUser = (userId, appId, userInfo) => {
-  return Promise.resolve(getByUserNameAndAppId(userId, appId))
-    .then(user => {
+  return Promise.all([getByUserNameAndAppId(userId, appId),emailValidation(userInfo.email)])
+    .then(([user,isvalid]) => {
       if (user == null) {
         throw new Error("No customer in customer table with appId", appId);
+      }
+      if(user.email!=userInfo.email && isvalid){
+        var error = new Error("user already exist for this email");
+        error.code='DUPLICATE_EMAIL';
+        throw error;
       }
       let userDetail={userId:userId, displayName:userInfo.name, email:userInfo.email,phoneNumber:userInfo.contactNo};
       applozicClient
@@ -446,6 +451,12 @@ const getAvailableAgents = (customer)=>{
                 availabilityStatus:CONST.AVAIBILITY_STATUS.AVAILABLE};
   return Promise.resolve(userModel.findAll({where:criteria}));
 
+}
+
+const emailValidation = (email) => {
+  return Promise.resolve(userModel.findAll({ where: { email: email } })).then(users => {
+    return users.length > 0;
+  });
 }
 
 exports.getUserDisplayName = getUserDisplayName;

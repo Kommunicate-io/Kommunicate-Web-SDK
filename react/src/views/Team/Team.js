@@ -47,9 +47,13 @@ class Integration extends Component {
           return;
         }
       }
-      notifyThatEmailIsSent({to:multipleEmailAddress,templateName:"INVITE_TEAM_MAIL"}).then(data=>{
-        _this.setState({multipleEmailAddress: [],emailAddress:""});
-      });
+
+      for(let i = 0; i < multipleEmailAddress.length; i++){
+        notifyThatEmailIsSent({to:multipleEmailAddress[i],templateName:"INVITE_TEAM_MAIL"}).then(data=>{
+          _this.setState({multipleEmailAddress: [],emailAddress:""});
+        });
+      }
+
     }else{
       console.log(this.state.emailAddress)
       if(this.state.emailAddress&&!isEmail(this.state.emailAddress)){

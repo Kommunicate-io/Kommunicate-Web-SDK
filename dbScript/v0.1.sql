@@ -40,11 +40,7 @@ alter  table auto_suggests modify column `name` TEXT;
 alter table auto_suggests add column `status`  enum('draft', 'published') collate utf8mb4_unicode_ci default null;
 alter table auto_suggests add column `type`  enum('faq', 'shortcut') collate utf8mb4_unicode_ci default null;
 
-alter table customers add column subscription int default 0;
-
 alter table customers add column billing_cus_id varchar(50);
-
-alter table customers DROP column subscription;
 
 alter table customers add column subscription varchar(50) NOT NULL DEFAULT 'startup';
 

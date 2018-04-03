@@ -5516,6 +5516,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
+                        if(message.metadata.hide ==="true"){
+                            return;
+                        }
+                        if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
+                            return;
+                        }
                         if (message.contentType === 2) {
                             emoji_template = '<span class="mck-icon-marker"></span>';
                         } else {
@@ -6313,7 +6319,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (params.newUserId === null || params.newUserId === "") {
                     return;
                 }
-                var data = 'newUserId='+ params.newUserId ;
+                var data = 'newUserId='+ encodeURIComponent(params.newUserId);
                 mckUtils.ajax({
                     url: MCK_BASE_URL + USER_IDENTITY_UPDATE_URL,
                     type: 'get',
@@ -8114,7 +8120,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_preview_file_content.html('');
                     $mck_preview_file_content.removeClass('vis').addClass('n-vis');
                 }
-                $mck_preview_name.html(displayName);
+                if (contact.isGroup === true && contact.type !== 10) {
+                    $mck_preview_name.html(displayName);
+                }
                 $mck_preview_icon.html(imgsrctag);
                 $mck_msg_preview.data('mck-id', contact.contactId);
                 $mck_msg_preview.show();
