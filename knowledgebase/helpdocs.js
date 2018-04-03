@@ -3,18 +3,12 @@
     function define_Helpdocs() {
         var Helpdocs = {};
         var HELPDOCS_URL = "https://api.helpdocs.io";
-        var helpdocsKey;
 
-        //Helpdocs.init("cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao");
-        Helpdocs.init = function (key) {
-            helpdocsKey = key;
-        }
-
-        //Helpdocs.getArticles({data: {query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
+        //Helpdocs.getArticles({data: {helpdocsAccessKey: '', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         Helpdocs.getArticles = function (options) {
-            var url = HELPDOCS_URL + "/v1/article?key=" + helpdocsKey;
+            var url = HELPDOCS_URL + "/v1/article?key=" + options.data.helpdocsAccessKey;
             if (options.data.query) {
-                url = HELPDOCS_URL + "/v1/search?key=" + helpdocsKey + "&query=" + options.data.query;
+                url = HELPDOCS_URL + "/v1/search?key=" + options.data.helpdocsAccessKey + "&query=" + options.data.query;
             }
 
             var response = new Object();
@@ -43,7 +37,7 @@
         Helpdocs.getArticle = function (options) {
             var response = new Object();
             KMCommonUtils.ajax({
-                url: HELPDOCS_URL + "/v1/article/" + options.data.articleId + "?key=" + helpdocsKey,
+                url: HELPDOCS_URL + "/v1/article/" + options.data.articleId + "?key=" + options.data.helpdocsAccessKey,
                 async: (typeof options.async !== 'undefined') ? options.async : true,
                 type: 'get',
                 success: function (data) {
