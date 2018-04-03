@@ -5519,7 +5519,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         if(message.metadata.hide ==="true"){
                             return;
                         }
-                        if(msg.metadata && (msg.metadata.KM_ASSIGN || msg.metadata.KM_STATUS)){
+                        if(message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
                             return;
                         }
                         if (message.contentType === 2) {
