@@ -57,7 +57,7 @@ a, a:hover, a:focus, a:active {
 .homepage-beta-landing-page-section {
   position: relative;
   padding-top: 50px;
-  height: 100vh;
+  /* height: 100vh; */
   overflow: hidden;
   background: transparent;
 }
@@ -2234,6 +2234,8 @@ input:-ms-input-placeholder {
   }
   .homepage-showcase-section .image-container svg {
     margin-top: -120px;
+    max-width: 900px;
+    margin: -120px auto 0px;
   }
 }
 @media screen and (max-width:885px) {
@@ -2259,3 +2261,12 @@ input:-ms-input-placeholder {
     right: -54%;
   }
 }
+
+
+
+/* .homepage-beta-landing-page-section {
+  background-image: url(/assets/resources/images/colorful-bg.svg);
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: 195% 163%;
+} */
