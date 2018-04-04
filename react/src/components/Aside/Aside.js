@@ -7,8 +7,12 @@ import {updateApplozicUser, getThirdPartyListByApplicationId} from '../../utils/
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
-
-
+import LocationIcon from './Icons/location.png';
+import DomainIcon from './Icons/web-icon.png'
+import FacebookIcon from './Icons/facebook-icon.png'
+import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png'
+import TwitterIcon from './Icons/twitter-icon.png'
+import LinkedinIcon from './Icons/linkedin-icon.png'
 
 
 class Aside extends Component {
@@ -24,6 +28,7 @@ class Aside extends Component {
       clickedButton:-1,
       disableButton:true,
       agents : new Array(),
+      clearbitKey:"",
       statuses: {
         0: 'Open',
         1: 'In Progress',
@@ -54,6 +59,11 @@ class Aside extends Component {
      }
      window.Aside = this;
      
+  }
+  componentWillMount() {
+    let userSession = CommonUtils.getUserSession();
+     let clearbitKey = userSession.clearbitKey
+     this.setState({clearbitKey: clearbitKey})
   }
   
   getThirdparty = () => {
@@ -869,8 +879,8 @@ class Aside extends Component {
                     <div className="panel-content">
                       <div className="km-box-top">
                         <div className="blk-lg-10">
-                          <div className="km-box-title km-truncate" title="User Info">User
-                            Info</div>
+                          <div className="km-box-title km-truncate" title="User Info">Conversation Details
+                          </div>
                         </div>
                         <div className="blk-lg-2">
                           <button type="button" id="km-user-info-close"
@@ -878,6 +888,8 @@ class Aside extends Component {
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
+                      </div>
+                      <div id="km-customer-title-panel" className="km-customer-title-panel">Customer
                       </div>
                       <div id="km-user-detail-panel" className="km-user-detail-box">
                         <div className="km-user-icon-sec">
@@ -910,16 +922,73 @@ class Aside extends Component {
                           <div id="km-user-name-box" className="km-row km-user-name-box">
                             <div className="blk-lg-9">
                               <div id="km-user-title" className="km-user-title"
-                                contentEditable="false" suppressContentEditableWarning="true">User title</div>
+                                contentEditable="false" suppressContentEditableWarning="true">User title
+                              </div>
+                              <div id="km-user-info-list"
+                                className="km-user-info-list">
+                                <span className="email"></span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="km-box-body">
+                        <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
+                        Clearbit</div>
                         <div className="km-tab-cell">
                           <div className="km-user-info-inner">
-                            <ul id="km-user-info-list"
+                            <div id="km-user-info-list" className="km-user-info-list">
+                              <h4 id="full-name" className="km-clearbit-field km-clearbit-user-full-name"></h4>
+                              <p id="bio" className="km-clearbit-field km-clearbit-user-bio n-vis"></p>
+                              <div className="km-clearbit-user-domain-location-wrapper">
+                                <div id="location-icon" className="km-clearbit-logo-wrapper n-vis">
+                                  <img src = {LocationIcon} className="km-clearbit-location-icon" />
+                                  <p id="location" className="km-clearbit-field km-clearbit-user-data"></p>
+                                </div>
+                                <div id="domain-icon" className="km-clearbit-logo-wrapper n-vis">
+                                  <img src={DomainIcon} className="km-clearbit-domain-icon" />
+                                  <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
+                                    <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
+                                  </a>          
+                              </div>
+                              </div>
+                              <div id="divider-1" className="km-clearbit-divider n-vis"></div>
+                              <div id="industry" className="km-clearbit-field km-clearbit-user-industry"></div>
+                              <div id="foundedYear" className="km-clearbit-field km-clearbit-user-industry"></div>
+                              <div className="km-clearbit-company-description-wrapper">
+                                <p id="description" className="km-clearbit-field km-clearbit-user-data"></p>
+                              </div>
+                              <div id="divider-2" className="km-clearbit-divider n-vis"></div>
+                              <div className="km-clearbit-user-social-info-wrapper">
+                                <div id="km-cl-ln-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="linkedin" className="km-cl-icon km-clearbit-link" href="" target="_blank">
+                                    <img src={LinkedinIcon} className="km-clearbit-social-icon " />
+                                  </a>
+                                </div>
+                                <div id="km-cl-fb-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="facebook" className="km-cl-icon km-clearbit-link" href="" target="_blank">
+                                    <img src={FacebookIcon} className="km-clearbit-social-icon " />
+                                  </a>
+                                </div>
+                                <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">  
+                                    <img src={TwitterIcon} className="km-clearbit-social-icon" />
+                                  </a>  
+                                </div>
+                                <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">  
+                                    <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
+                                  </a>
+                                </div>  
+                              </div>
+                            
+                            </div>
+                            {/* <ul id="km-user-info-list"
                               className="km-user-info-list km-nav km-nav-tabs km-nav-stacked">
+                              <li className="full-name"></li>
+                              <li className="location"></li>
+                              <li className="industry"></li>
+                              <li className="description"></li>
                               <li className="email"></li>
                               <li className="bio n-vis"></li>
                               <li className="title n-vis"></li>
@@ -927,7 +996,7 @@ class Aside extends Component {
                               <li className="domain n-vis">Website: <a className="domain-url" href="" target="_blank"></a></li>
                               <li className="location n-vis"></li>
                               <li className="profile-linkedin n-vis">Linkedin: <a className="linkedin" href="" target="_blank"></a></li>
-                            </ul>
+                            </ul> */}
                           </div>
                         </div>
                       </div>

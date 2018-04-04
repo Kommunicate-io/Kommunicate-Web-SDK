@@ -4,6 +4,7 @@ import DeleteIcon from '../../components/DeleteIcon/DeleteIcon';
 import { createAndUpdateThirdPArtyIntegration, deleteThirdPartyByIntegrationType }  from '../../utils/kommunicateClient'
 import { thirdPartyList} from './ThirdPartyList'
 import Notification from '../model/Notification';
+import CommonUtils from '../../utils/CommonUtils';
 
 class IntegrationDescription extends Component{
 
@@ -98,6 +99,11 @@ class IntegrationDescription extends Component{
         .then(response => {
             console.log(response)
             if (response.status === 200 && response.data.code === "SUCCESS") {
+                if(integrationType == 3){
+                    let userSession = CommonUtils.getUserSession();
+                    userSession.clearbitKey = this.state.accessKey;
+                    CommonUtils.setUserSession(userSession)
+                }
                 Notification.info(thirdPartyList[this.state.activeModal].name+" integrated Successfully")
                 this.props.handleCloseModal();
                 this.props.getThirdPartyList();

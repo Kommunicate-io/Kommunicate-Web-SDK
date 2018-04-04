@@ -137,13 +137,22 @@ function activeCampaign(email) {
 }
 
 function clearbit(email, userId) {
+    //Todo: clear all fields
+    $("#km-user-info-list .km-clearbit-field").html('');
+    $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
+    $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
+    $("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
+    $("#km-user-info-list .km-clearbit-link").attr('href', '');
+    
+    var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
     $.ajax({
         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
         type: 'GET',
         headers: {
-            "Authorization":"Bearer sk_8235cd13e90bd6b84260902b98c64aba"
+            // "Authorization":"Bearer sk_8235cd13e90bd6b84260902b98c64aba"
+            "Authorization":"Bearer "+userSession.clearbitKey
         },
         success: function(response) {
             displayCustInfo(response)
@@ -160,29 +169,86 @@ function displayCustInfo(clearbitData) {
   var info = "";
   var userInfo = {};
   if (typeof person !== "undefined" && person != null && person != "null") {
-    info = person.bio + " " + person.location;
-    $("#km-user-info-list .bio").html(person.bio !== null ? person.bio : '' + " " + person.location !== null ? person.location : '');
-    $("#km-user-info-list .bio").removeClass('n-vis');
-    var employment = person.employment;
-    if (typeof employment !== "undefined" && employment != null && employment != "null") {
-        info = info + " " + person.employment.title;
-        $("#km-user-info-list .title").html(person.employment.title);
-        $("#km-user-info-list .title").removeClass('n-vis');
-    }
+    $("#km-user-info-list #bio").html(person.bio !== null ? person.bio : '');
+    $("#km-user-info-list #bio").removeClass('n-vis');
+    $('#km-user-info-list #full-name').html(person.name.fullName !== null ? person.name.fullName : '');
+    $('#km-user-info-list #domain').html(person.site !== null ? person.site : '');
+    $("#km-user-info-list #domain-link").attr('href', person.site !== null ? person.site : '');
+    $("#km-user-info-list #domain-icon").removeClass('n-vis');
+    if(person.location !== null){
+      $('#km-user-info-list #location').html(person.location !== null ? person.location : '');
+      $("#km-user-info-list #location-icon").removeClass('n-vis');
+    }  
     var linkedin = person.linkedin;
-    if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
+    if (typeof linkedin.handle !== "undefined" && linkedin.handle != null && linkedin.handle != "null") {
         info = info + " " + linkedin.handle;
-        $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
-        $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
-        $("#km-user-info-list .linkedin").text('https://linkedin.com/'+ linkedin.handle);
+        $("#km-user-info-list #linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
+        $("#km-user-info-list #km-cl-ln-icon-box").removeClass('n-vis');
     }
+    var facebook = person.facebook;
+    if (typeof facebook.handle !== "undefined" && facebook.handle != null && facebook.handle != "null") {
+        $("#km-user-info-list #facebook").attr('href', 'https://facebook.com/' + facebook.handle);
+        $("#km-user-info-list #km-cl-fb-icon-box").removeClass('n-vis');
+    }
+    var twitter = person.twitter;
+    if (typeof twitter.handle !== "undefined" && twitter.handle != null && twitter.handle != "null") {
+        $("#km-user-info-list #twitter").attr('href', 'https://twitter.com/' + twitter.handle);
+        $("#km-user-info-list #km-cl-tw-icon-box").removeClass('n-vis');
+    }
+    
+   
 }
 if (typeof company !== "undefined" && company != null && company != "null") {
     info = info + " " + company.domain;
-    $("#km-user-info-list .domain").removeClass('n-vis');
-    $("#km-user-info-list .domain-url").attr('href', 'https://www.'+company.domain);
-    $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
-    
+    if(person != null ){
+      if(person.site == null){
+        $("#km-user-info-list #domain-link").attr('href', 'http://www.'+company.domain);
+        $("#km-user-info-list #domain").text('http://www.'+company.domain);
+        $("#km-user-info-list #domain-icon").removeClass('n-vis');
+      }
+    }
+    else {
+      $("#km-user-info-list #domain-link").attr('href', 'http://www.'+company.domain);
+      $("#km-user-info-list #domain").text('http://www.'+company.domain);
+      $("#km-user-info-list #domain-icon").removeClass('n-vis');
+    }
+   
+    if(company.category.industry !== null || company.foundedYear !== null || company.description !== null) {
+      $('#km-user-info-list #industry').html(company.category.industry !== null ? 
+        '<span class="clearbit-industry-details">Industry</span>'+ company.category.industry : '');
+      $('#km-user-info-list #foundedYear').html(company.foundedYear !== null ? 
+        '<span class="clearbit-industry-details">Founded</span>'+company.foundedYear : '');
+    }
+    if(typeof company.description != "undefined" && company.description != null && company.description != "null") {
+      if (company.description.length >  100) {
+       var description = company.description.substr(0, 100) + '...';
+       $('#km-user-info-list #description').html(description !== null ? description : '');
+      }
+      else {
+        $('#km-user-info-list #description').html(company.description !== null ? dcompany.description : '');
+      }
+    }
+    var crunchbase = company.crunchbase;
+    if (typeof crunchbase.handle !== "undefined" && crunchbase.handle != null && crunchbase.handle != "null") {
+        $("#km-user-info-list #crunchbase").attr('href', 'https://crunchbase.com/' + crunchbase.handle);
+        $("#km-user-info-list #km-cl-cb-icon-box").removeClass('n-vis');    
+    }
+}
+if(person != null){
+  if(person.name.fullName !== null || person.domain !== null || person.location !== null || person.bio !== null){
+    $("#km-user-info-list #divider-1").removeClass('n-vis');
+  }
+  if(facebook.handle != null || linkedin.handle != null || twitter.handle != null ){
+    $("#km-user-info-list #divider-2").removeClass('n-vis');
+  }
+}
+else if (company != null) {
+  if (company.category.industry !== null ||company.foundedYear !== null || company.description !== null){
+    $("#km-user-info-list #divider-1").removeClass('n-vis');
+  }
+  if (crunchbase.handle != null) {
+    $("#km-user-info-list #divider-2").removeClass('n-vis');
+  }
 }
 }
 

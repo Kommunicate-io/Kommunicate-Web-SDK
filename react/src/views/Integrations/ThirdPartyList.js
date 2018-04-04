@@ -30,7 +30,7 @@ export let thirdPartyList = {
         logo: ClearbitLogo,
         integrationType: 3,
         docsLink: "https://clearbit.com/docs",
-        status: "Coming soon",
+        status: "Settings",
         instructions: [
             "Login to your https://clearbit.com/ account",
             "Go to Dashboard > API to get the API Key",
