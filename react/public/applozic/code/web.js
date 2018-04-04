@@ -137,6 +137,8 @@ function clearbit(email, userId) {
     $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
     $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
     $("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
+    $("#km-user-info-list .km-clearbit-link").attr('href', '');
+    
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
@@ -195,18 +197,17 @@ if (typeof company !== "undefined" && company != null && company != "null") {
     info = info + " " + company.domain;
     if(person != null ){
       if(person.site == null){
-        $("#km-user-info-list .domain-link").attr('href', 'https://www.'+company.domain);
-        $("#km-user-info-list #domain").text('https://www.'+company.domain);
+        $("#km-user-info-list #domain-link").attr('href', 'http://www.'+company.domain);
+        $("#km-user-info-list #domain").text('http://www.'+company.domain);
         $("#km-user-info-list #domain-icon").removeClass('n-vis');
       }
     }
     else {
-      $("#km-user-info-list .domain-link").attr('href', 'https://www.'+company.domain);
-      $("#km-user-info-list #domain").text('https://www.'+company.domain);
+      $("#km-user-info-list #domain-link").attr('href', 'http://www.'+company.domain);
+      $("#km-user-info-list #domain").text('http://www.'+company.domain);
       $("#km-user-info-list #domain-icon").removeClass('n-vis');
     }
-    
-    
+   
     if(company.category.industry !== null || company.foundedYear !== null || company.description !== null) {
       $('#km-user-info-list #industry').html(company.category.industry !== null ? 
         '<span class="clearbit-industry-details">Industry</span>'+ company.category.industry : '');

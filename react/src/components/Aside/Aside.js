@@ -28,6 +28,7 @@ class Aside extends Component {
       clickedButton:-1,
       disableButton:true,
       agents : new Array(),
+      clearbitKey:"",
       statuses: {
         0: 'Open',
         1: 'In Progress',
@@ -59,6 +60,11 @@ class Aside extends Component {
      window.Aside = this;
      
   }
+  componentWillMount() {
+    let userSession = CommonUtils.getUserSession();
+     let clearbitKey = userSession.clearbitKey
+     this.setState({clearbitKey: clearbitKey})
+  }
   
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
@@ -70,15 +76,6 @@ class Aside extends Component {
     })
     
   }
-  // truncateText(selector, maxLength) {
-  //   var element = document.querySelector(selector),
-  //       truncated = element.innerText;
-
-  //   if (truncated.length > maxLength) {
-  //       truncated = truncated.substr(0,maxLength) + '...';
-  //   }
-  //   return truncated;
-  // }
   changeTabToIntegration = () => {
     this.setState({
       visibleIntegartion: false,
@@ -936,7 +933,8 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="km-box-body">
-                        <div id="km-clearbit-title-panel" className="km-clearbit-title-panel">Clearbit</div>
+                        <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
+                        Clearbit</div>
                         <div className="km-tab-cell">
                           <div className="km-user-info-inner">
                             <div id="km-user-info-list" className="km-user-info-list">
@@ -949,7 +947,7 @@ class Aside extends Component {
                                 </div>
                                 <div id="domain-icon" className="km-clearbit-logo-wrapper n-vis">
                                   <img src={DomainIcon} className="km-clearbit-domain-icon" />
-                                  <a id= "domain-link" href="" target="_blank">
+                                  <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
                                     <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
                                   </a>          
                               </div>
@@ -963,22 +961,22 @@ class Aside extends Component {
                               <div id="divider-2" className="km-clearbit-divider n-vis"></div>
                               <div className="km-clearbit-user-social-info-wrapper">
                                 <div id="km-cl-ln-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="linkedin" className="km-cl-icon" href="" target="_blank">
+                                  <a id="linkedin" className="km-cl-icon km-clearbit-link" href="" target="_blank">
                                     <img src={LinkedinIcon} className="km-clearbit-social-icon " />
                                   </a>
                                 </div>
                                 <div id="km-cl-fb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="facebook" className="km-cl-icon" href="" target="_blank">
+                                  <a id="facebook" className="km-cl-icon km-clearbit-link" href="" target="_blank">
                                     <img src={FacebookIcon} className="km-clearbit-social-icon " />
                                   </a>
                                 </div>
                                 <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="twitter" className="km-cl-icon" href="" target="_blank">  
+                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">  
                                     <img src={TwitterIcon} className="km-clearbit-social-icon" />
                                   </a>  
                                 </div>
                                 <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="crunchbase" className="km-cl-icon"  href="" target="_blank">  
+                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">  
                                     <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
                                   </a>
                                 </div>  
