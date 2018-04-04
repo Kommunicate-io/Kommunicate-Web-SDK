@@ -29,7 +29,12 @@ const createCustomerOrAgent = (userInfo, userType)=>{
   }
 }
 const createCustomer = function(email,password,name,userName) {
-  const signUpUrl = getConfig().kommunicateApi.signup;
+  let signUpUrl = getConfig().kommunicateApi.signup;
+
+  if(localStorage.getItem('Google_OAuth') === 'true'){
+    signUpUrl += '?OAuthSignUp=true'
+  }
+
   return Promise.resolve(axios.post(signUpUrl, { userName: userName, password:password, name:name,email:email}))
     .then((response) => {
         console.debug(response.data.data);
