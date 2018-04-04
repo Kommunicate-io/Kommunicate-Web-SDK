@@ -36,7 +36,7 @@ class DataSource (
     //Get RDD of Events.
     PEventStore.find(
       appName = dsp.appName,
-      entityType = Some("content"), // specify data entity type
+      entityType = Some("application"), // specify data entity type
       eventNames = Some(List("e-mail", "chat")) // specify data event name
 
       // Convert collected RDD of events to and RDD of Observation
@@ -45,10 +45,10 @@ class DataSource (
       val label : String = e.properties.get[String]("label")
       Observation(
         // if (label == "spam") 10.0 else if (label == "Q1") 1.0 else if (label == "Q2") 2.0 else if (label == "Q3") 3.0 else 0.0,
-        if (label != "") label.toDouble else 0.0,
+        //if (label != "") label.toDouble else 0.0,
         e.properties.get[String]("text"),
-        //e.properties.get[String]("appId"),
-        label
+        e.properties.get[String]("appId"),
+        label.toDouble
       )
     }).cache
   }
