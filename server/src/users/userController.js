@@ -268,8 +268,8 @@ exports.patchUser = (req,res)=>{
     }
 
   }).catch((err)=>{
-    response.code="INTERNAL_SERVER_ERROR";
-    response.message="something went wrong!";
+    response.code = err.code == "DUPLICATE_EMAIL" ? err.code : "INTERNAL_SERVER_ERROR";
+    response.message = err.message ? err.message : "something went wrong!";
     res.status(500).json(response);
   });
 

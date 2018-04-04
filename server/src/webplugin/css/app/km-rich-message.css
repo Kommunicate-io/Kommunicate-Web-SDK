@@ -638,7 +638,11 @@
     .faq-list--body_que-ans .faq-list--body_que {
         font-size: 15px;
         color: #5c5aa7;
-        margin: 0px
+        margin: 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        
     }
     .faq-list--body_que-ans .faq-list--body_ans {
         font-size: 14px;

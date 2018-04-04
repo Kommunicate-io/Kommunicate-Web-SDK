@@ -87,15 +87,14 @@ const getResponse = (customer,application)=>{
 };
 
 exports.updateCustomer = (userId, customer) => {
-  return Promise.resolve(customerModel.update(customer, { where: { "userName": userId } })).then(result => {
-    console.log("successfully updated user", result[0]);
-    userService.updateUser(userId, customer.applicationId, {name:customer.name, email:customer.email,companyName:customer.companyName})
+  return userService.updateUser(userId, customer.applicationId, { name: customer.name, email: customer.email, companyName: customer.companyName }).then(result => {
+    customerModel.update(customer, { where: { "userName": userId } });
     return result[0];
   }).catch(err => {
     console.log("error while updating user", err);
     throw err;
-  });
-};
+  })
+}
 
 exports.getCustomerByApplicationId = appId => {
   console.log("getting application by application Id", appId);

@@ -6,23 +6,18 @@
     margin-top:20px;
 }
 .km-pushnotification-input{
-        width: 419px;
-        height: 36px;
-        object-fit: contain;
-        margin-top: 40px;
-        padding:15px;
-        border-radius: 4px;
-        background-color: #ffffff;
-        border: solid 1px #a1a1a1;
-      
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #a1a1a1;
+    height: 35px;
+    width: 104px;
 }
 
 .km-pushnotification-hr{
+    margin: 0px!important;
     width:40em!important;
-    border: solid 1px #bbb5b5;
-    margin-top: 5px!important;
     }
-    .fcm {
+ .fcm {
         font-family: Roboto;
         font-size: 14px;
         font-weight: 500;
@@ -49,12 +44,13 @@
         text-align: left;
         color: #656161;
       }
+
 .km-pushNotification-development{
     margin-top: 15px;
 }
 
 .km-pushNotification-div{
-    margin-top: 45px;
+    margin-top: 15px;
 }
 
   .for-ios-apns {
@@ -142,3 +138,4 @@
   .km-pushnotification-header{
       margin-left: 5px;
   }
+
