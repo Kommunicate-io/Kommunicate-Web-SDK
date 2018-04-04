@@ -67,25 +67,38 @@ var mckGroupService = new MckGroupService();
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
                     Kommunicate.createNewConversation({
-                        "groupId": response.data.groupId,
+                        "groupId": response.data.value,
                         "participentUserId": kommunicate._globals.userId,
                         "defaultAgentId": conversationDetail.agentId,
                         "applicationId": kommunicate._globals.appId
                     }, function (err, result) {
                         console.log(err, result);
                         if (!err) {
-                            callback(response.data.clientGroupId);
+                            callback(response.data.value);
                         }
                     })
                 }
             }
         });
      },
-     /**
-      * get detail by clientGroupId 
+     /**get the third party settings access key
+      * @param {Object} options
+      * @param {String} options.appId
+      * @param {Number} options.type
+      * @param {function} callback
       */
-      getGroupDetailByClientGroupId:function(clientGroupId,callback){
+     getThirdPartySettings:function(options,callback){
+        $applozic.ajax({
+            url:  Kommunicate.getBaseUrl()+ "/integration/settings/"+options.appId+"?type="+options.type,
+            type: "get",
+            contentType: "application/json",
+            success: function (result) {
+                callback(null,result);
+            },error:function(err){
+                callback(err);
+            }
+        });  
 
-      }
+     }
  }
 

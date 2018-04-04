@@ -24,12 +24,17 @@ class Register extends Component {
       token:null,
       invitedBy:'',
       signupButtonTxt:'Create Account',
-      subscription: 0
+      subscription: 'startup'
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
   }
   componentWillMount(){
+
+    if (CommonUtils.getUserSession()) {
+      window.location = "/dashboard";
+    }
+    
     const search = this.props.location.search;
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
     const email = CommonUtils.getUrlParameter(search, 'email');
@@ -94,6 +99,10 @@ class Register extends Component {
     userInfo.password = password;
     userInfo.name=_this.state.name || _this.state.userName;
     userInfo.subscription = _this.state.subscription;
+
+    if (window.heap) {
+      window.heap.identify(email);
+    }
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)

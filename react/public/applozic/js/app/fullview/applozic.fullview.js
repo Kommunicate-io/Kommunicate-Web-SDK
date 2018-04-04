@@ -1807,7 +1807,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_goup_search_box.mckModal('hide');
 				});
 				$kmApplozic(d).on('click', '.km-btn-remove-member', function(e) {
-					e.preventDefault();
+					e.stopPropagation();
 					var userId = $kmApplozic(this).parents('.km-li-group-member').data('km-id');
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
@@ -4577,6 +4577,9 @@ var KM_CLIENT_GROUP_MAP = [];
 				var emoji_template = "";
 				if (typeof message !== 'undefined') {
 					if (message.message) {
+						if(message.metadata.hide ==="true"){
+                            return;
+                        }
 						if (message.contentType === 2) {
 							emoji_template = '<span class="km-icon-marker"></span>';
 						} else {
@@ -5175,6 +5178,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					error : function() {}
 				});
 			};
+
 			_this.getUserStatus = function(params) {
 				var response = new Object();
 				kmUtils.ajax({
@@ -6632,7 +6636,9 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_preview_file_content.html("");
 					$mck_preview_file_content.removeClass('vis').addClass('n-vis');
 				}
-				$mck_preview_name.html(displayName);
+				if (contact.isGroup === true && contact.type !== 10) {
+                    $mck_preview_name.html(displayName);
+                }
 				$mck_preview_icon.html(imgsrctag);
 				$mck_msg_preview.data('km-id', contact.contactId);
 				$mck_msg_preview.show();

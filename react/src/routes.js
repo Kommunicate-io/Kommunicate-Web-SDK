@@ -6,18 +6,19 @@ const routes = {
   '/components': 'Components',
   '/reports': 'Reports',
   '/bot': 'Bot Integration',
-  '/install': 'Install',
-  '/team': 'Team',
+  '/settings/install': 'Install',
+  '/settings/team': 'Team',
   '/configuration':"Configuration",
   '/autoreply':"Configuration",
-  '/profile': "Profile",
-  '/message-shortcuts': 'Quick Replies',
-  '/welcome-message': 'Welcome Message',
-  '/away-message': 'Away Message',
-  '/agent-app': 'Agent App',
-  '/agent-assignment':'Agent Assignment',
-  '/billing': 'Billing',
-  '/integrations': 'Integrations'
+  '/settings/profile': "Profile",
+  '/settings/message-shortcuts': 'Quick Replies',
+  '/settings/welcome-message': 'Welcome Message',
+  '/settings/away-message': 'Away Message',
+  '/settings/agent-app': 'Agent App',
+  '/settings/agent-assignment':'Agent Assignment',
+  '/settings/billing': 'Billing',
+  '/integrations': 'Integrations',
+  '/settings/pushnotification': 'Push Notification'
 };
 
 export default routes;

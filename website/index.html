@@ -18,7 +18,6 @@ layout:
     {% include headtag.html %}
     <link rel="stylesheet" href="/assets/resources/css/homepage.css" type="text/css">
 
-
 </head>
 
 <body id="page-top">
@@ -26,93 +25,112 @@ layout:
       {% include nav-header.html %}
     </div>
     {% include_relative /sections/homepage-landing-page.html %}
+    {% include_relative /sections/homepage-showcase-section.html %}
     {% include_relative /sections/homepage-features-section.html %}
-    {% include_relative /sections/homepage-trust-section.html %}
-    {% include_relative /sections/homepage-reasons-invite-list-section.html %}
-    {% include_relative /sections/homepage-latest-section.html %}
+    {% include_relative /sections/homepage-experience-section.html %}
+    {% include_relative /sections/homepage-customer-testimonial-section.html %}
+    {% include_relative /sections/homepage-integrate-section.html %}
     {% include_relative /sections/homepage-cta-section.html %}
     {% include footer-section.html %}
-
-
-    <!-- <script type='text/javascript' src='/assets/resources/js/gsap/TimelineMax.min.js'></script>
-    <script type='text/javascript' src='/assets/resources/js/gsap/TweenMax.min.js'></script> -->
-    <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
-    <!-- <script>
-        var previewImage = document.getElementsByClassName("preview-image");
-        var timeline = new TimelineMax();
-        timeline
-        // from(previewImage, 2, {
-        //         x: "100%",
-        //         opacity: 0
-        //     })
-            .from(".hero-section .hero-text, .hero-section .hero-subtext", 1.5, {
-                x: -100,
-                opacity: 0
-            })
-            // .from("#intro h1, #intro p", 1, {
-            //     opacity: 0
-            // })
-            .from("#form-container", 1.5, {
-                x: 100,
-                opacity: 0
-            }, '-=1.5')
-            .from("#intro form, #intro h6", 1, {
-                y: 100,
-                opacity: 0
-            })
-            .from(".mck-sidebox-launcher", 1, {
-                x: 100,
-                opacity: 0
-            })
-            // .from("#intro h6", 1, {
-            //     y: 100,
-            //     opacity: 0
-            // });
-    </script> -->
-
-<script>
-//Select all links with hashes
-$('a[href*="#"]')
-  // Remove links that don't actually link to anything
-  .not('[href="#"]')
-  .not('[href="#0"]')
-  .click(function(event) {
-    // On-page links
-    if (
-      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-      &&
-      location.hostname == this.hostname
-    ) {
-      // Figure out element to scroll to
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      // Does a scroll target exist?
-      if (target.length) {
-        // Only prevent default if animation is actually gonna happen
-        event.preventDefault();
-        $('html, body').animate({
-          scrollTop: target.offset().top
-        }, 1000, function() {
-          // Callback after animation
-          // Must change focus!
-          var $target = $(target);
-          $target.focus();
-          if ($target.is(":focus")) { // Checking if the target was focused
-            return false;
-          } else {
-            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
-            $target.focus(); // Set focus again
-          };
-        });
-      }
-    }
-  });
-
-</script>
 
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
 <!-- End of HubSpot Embed Code -->
+
+
+<script>
+  $(document).ready(function(){
+
+var slide = $('.slider-single');
+var slideTotal = slide.length - 1;
+var slideCurrent = -1;
+
+function slideInitial() {
+  slide.addClass('proactivede');
+  setTimeout(function() {
+    slideRight();
+  }, 500);
+}
+
+function slideRight() {
+  if (slideCurrent < slideTotal) {
+    slideCurrent++;
+  } else {
+    slideCurrent = 0;
+  }
+
+  if (slideCurrent > 0) {
+    var preactiveSlide = slide.eq(slideCurrent - 1);
+  } else {
+    var preactiveSlide = slide.eq(slideTotal);
+  }
+  var activeSlide = slide.eq(slideCurrent);
+  if (slideCurrent < slideTotal) {
+    var proactiveSlide = slide.eq(slideCurrent + 1);
+  } else {
+    var proactiveSlide = slide.eq(0);
+
+  }
+
+  slide.each(function() {
+    var thisSlide = $(this);
+    if (thisSlide.hasClass('preactivede')) {
+      thisSlide.removeClass('preactivede preactive active proactive').addClass('proactivede');
+    }
+    if (thisSlide.hasClass('preactive')) {
+      thisSlide.removeClass('preactive active proactive proactivede').addClass('preactivede');
+    }
+  });
+  preactiveSlide.removeClass('preactivede active proactive proactivede').addClass('preactive');
+  activeSlide.removeClass('preactivede preactive proactive proactivede').addClass('active');
+  proactiveSlide.removeClass('preactivede preactive active proactivede').addClass('proactive');
+}
+
+function slideLeft() {
+  if (slideCurrent > 0) {
+    slideCurrent--;
+  } else {
+    slideCurrent = slideTotal;
+  }
+
+  if (slideCurrent < slideTotal) {
+    var proactiveSlide = slide.eq(slideCurrent + 1);
+  } else {
+    var proactiveSlide = slide.eq(0);
+  }
+  var activeSlide = slide.eq(slideCurrent);
+  if (slideCurrent > 0) {
+    var preactiveSlide = slide.eq(slideCurrent - 1);
+  } else {
+    var preactiveSlide = slide.eq(slideTotal);
+  }
+  slide.each(function() {
+    var thisSlide = $(this);
+    if (thisSlide.hasClass('proactivede')) {
+      thisSlide.removeClass('preactive active proactive proactivede').addClass('preactivede');
+    }
+    if (thisSlide.hasClass('proactive')) {
+      thisSlide.removeClass('preactivede preactive active proactive').addClass('proactivede');
+    }
+  });
+  preactiveSlide.removeClass('preactivede active proactive proactivede').addClass('preactive');
+  activeSlide.removeClass('preactivede preactive proactive proactivede').addClass('active');
+  proactiveSlide.removeClass('preactivede preactive active proactivede').addClass('proactive');
+}
+var left = $('.slider-left');
+var right = $('.slider-right');
+left.on('click', function() {
+  slideLeft();
+});
+right.on('click', function() {
+  slideRight();
+});
+slideInitial();
+
+
+  });
+</script>
+
 
 </body>
 

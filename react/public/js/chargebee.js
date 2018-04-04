@@ -675,8 +675,6 @@
                     //------kommunicate.io-------//
                     //Hack to check click on chargebee-init in order to support in react
                     //document.addEventListener("DOMContentLoaded", function() {
-                    //document.getElementById("chargebee-init").addEventListener("click", function() {
-
                     document.addEventListener('click',function(event){
                         if(event.target && event.target.id == 'chargebee-init'){
                             var a = d.init({

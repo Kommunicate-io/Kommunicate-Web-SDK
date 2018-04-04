@@ -20,6 +20,9 @@ function ApplozicSidebox() {
     }, {
             "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/app/mck-sidebox-1.0.css"
     },{
+        "name": "km-richmessages", "url": MCK_STATICPATH + "/css/app/km-rich-message.css"
+},
+    {
    	 	"name": "km-login-model", "url": MCK_STATICPATH + "/css/app/km-login-model.css"
    }, {
        "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/tiny-slider.css"
@@ -40,7 +43,9 @@ function ApplozicSidebox() {
             "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
     }, {
             "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/min/tiny-slider.js"
-    }, {
+    },{
+            "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
+    },{
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
     }, {
             "name": "mck-common", "url": MCK_STATICPATH + "/js/app/mck-common-1.0.js"

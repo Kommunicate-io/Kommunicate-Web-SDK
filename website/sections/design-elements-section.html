@@ -158,5 +158,73 @@ import Checkbox from '../../../components/Checkbox/Checkbox';
             </div>
           </div>
         </div>
+
+
+        <div class="row input-type-file-btn">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <h1>Buttons</h1>
+              <div class="col-sm-6" style="margin-top: 20px">
+                  <p class="css-classes-text">primary</p>
+                  <input id="km-btn-file" type="file" class="km-btn-file" data-multiple-caption="{count} files selected" multiple></input>
+                  <label for="km-btn-file" class="km-button km-button--primary km-btn-file-label"><span>Uplaod file</span></label>
+              </div>
+              <div class="col-sm-6" style="margin-top: 20px">
+                  <p class="css-classes-text">secondary</p>
+                  <input id="km-btn-file" type="file" class="km-btn-file"></input>
+                  <label for="km-btn-file" class="km-button km-button--secondary km-btn-file-label"><span>Uplaod file</span></label>
+              </div>
+              
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12"  style="margin-top: 80px">
+                    <div class="code-div">
+                            <pre>
+                                <code class="language-jsx">
+        import InputFile from '../.../../../components/InputFile/InputFile';
+          
+          // "id" will the unique ID of the input. This field is mandatory.
+          // "text" will be the text visible on the button (in this case "Upload File"). This field is mandatory.
+          // "multiple" will take multiple value as input. This field is optional.
+          // "accept" will only accept certain filetypes (in this case ".p12"). This field is optional.
+          // "className" will show how the button looks ("primary" will make button background purple and "secondary" will make it white). This field is optional.
+
+          &lt;InputFile id={'input-file'} className={'primary'} text={'Upload File'} multiple={'multiple'} accept={'.p12'} /&gt;
+        </code>
+                            </pre>
+                      </div>
+            </div>
+        </div>
+
     </div>
 </section>
+
+<script>
+'use strict';
+
+;( function ( document, window, index )
+{
+	var inputs = document.querySelectorAll('#km-btn-file');
+	Array.prototype.forEach.call( inputs, function( input )
+	{
+		var label	 = input.nextElementSibling,
+			labelVal = label.innerHTML;
+
+		input.addEventListener( 'change', function( e )
+		{
+			var fileName = '';
+			if( this.files && this.files.length > 1 )
+				fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+			else
+				fileName = e.target.value.split( '\\' ).pop();
+
+			if( fileName )
+				label.querySelector( 'span' ).innerHTML = fileName;
+			else
+				label.innerHTML = labelVal;
+		});
+
+		// Firefox bug fix
+		input.addEventListener( 'focus', function(){ input.classList.add( 'has-focus' ); });
+		input.addEventListener( 'blur', function(){ input.classList.remove( 'has-focus' ); });
+	});
+}( document, window, 0 ));
+</script>

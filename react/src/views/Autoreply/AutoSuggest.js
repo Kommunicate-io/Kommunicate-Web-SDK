@@ -5,6 +5,7 @@ import Notification from '../model/Notification';
 import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import {AUTOREPLY} from './Constant';
+import EmptyStateImage from './img/empty-message-shortcuts.png';
 
 
 class AutoSuggest extends Component {
@@ -399,7 +400,7 @@ class AutoSuggest extends Component {
 				<div className="field-header">
 					<div className="row"> 
 							<div className="empty-state-message-shortcuts-div text-center col-lg-9" hidden={this.state.showEmptyState}>
-								<img src="img/empty-message-shortcuts.png" alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
+								<img src={EmptyStateImage} alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
 								<p className="empty-state-message-shortcuts-first-text">
 									Why don't you create<br></br>your first shortcut here!
 								</p>

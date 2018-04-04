@@ -265,3 +265,109 @@ ul#km-group-search-list li {
     padding: 10px 15px;
     display: initial;
 }
+
+
+
+/* css for tab , reply, integration, modal  */
+.inteagration-forward-text {
+	font-size: 14px;
+	letter-spacing: 0.5px;
+    color: #969699;
+    margin-right: 5px;
+}
+.km-sidebox-tab-reply {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    color: #808081;
+    cursor: pointer;
+    padding: 1px;
+}
+.km-sidebox-forward-tab-integration{
+    margin-left: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    color: #808081;
+    cursor: pointer;
+    padding: 1px;
+}
+.km-sidebox-tab{
+    border-bottom: 1px solid #dbd7d7;
+    /* margin-bottom: 14px; */
+}
+.active-tab-integration{
+    color: #5c5aa7;
+    border-bottom: 2px solid #5c5aa7;
+}
+.active-tab-reply{
+    color: #5c5aa7;
+    border-bottom: 2px solid #5c5aa7;
+}
+.km-fullview-integration-logo{
+    height: 9px;
+    margin-right: 8px;
+    margin-bottom: 3px;
+}
+
+.conversation-integration-modal-title {
+    font-family: 'OpenSans', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: #6c6a6a;
+    padding-bottom: 10px;
+}
+.integration-conversation-title {
+    font-size: 14px;
+    letter-spacing: 1.1px;
+    color: #7d7f81;
+}
+.conversation-integration-description-logo {
+    margin-right: 25px;
+    margin-left: 4px;
+}
+.conversation-integration-title-divider {
+    margin-right: -1.2rem;
+    margin-left: -1.2rem;
+    height: 1px;
+    opacity: 0.36;
+    background-color: #d8d8d8;
+    border: 1px solid #a5b0bd;
+    margin-bottom: 52px;
+}
+.integration-conversation-note{
+    font-size: 14px; 
+    letter-spacing: 1.1px;
+    color: #7d7f81;
+}
+.integration-conversation-note-msg-text-area{
+    opacity: 0.63;
+    border-radius: 4px;
+    border: solid 1px #9cb3de;
+    margin-left: 58px;
+    padding: 8px;
+}
+.integration-conversation-note-wrapper {
+    display: flex;
+}
+.integration-conversation-title-input {
+    width: 400px;
+    height: 35px;
+    opacity: 0.63;
+    border-radius: 4px;
+    border: 1px solid #9cb3de;
+    margin-left: 7px;
+    padding: 8px;
+}
+.create-ticket-btn-wrapper {
+    margin-top: 81px;
+    text-align: right;
+}
+.km-sidebox-third-party-integration{
+    margin-top: 11px;
+    margin-bottom: 2px;
+}
+.km-write-box {
+    margin-top: 7px;
+}

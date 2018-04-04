@@ -10,13 +10,13 @@ class Integrations extends Component {
         super(props);
         this.state = {
             modalIsOpen: false,      
-            activeDiv:-1,
+            activeDiv:'zendesk',
             Helpdocs:false, //enableHelpdocs
             Zendesk:false,  //enableZendesk
             Clearbit:false, //enableClearbit
             helpdocsKeys:[],
             zendeskKeys:[],
-            clearbitKeys:[],
+            clearbitKeys:[]
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -72,8 +72,11 @@ class Integrations extends Component {
         
   
     }
-    openModal = (index) => {
-        this.setState({ modalIsOpen: true});
+    openModal = (event) => {
+        this.setState({
+            activeDiv:event.target.getAttribute("data-key"),
+            modalIsOpen: true
+        });
     }
     
     closeModal = () => {
@@ -81,16 +84,26 @@ class Integrations extends Component {
     }
     
  render (){
-     const thirdParties = thirdPartyList.map((item,index) => {
-     var enabledClass = this.state[item.name]?"content-wrapper enable-integration-wrapper":"content-wrapper";
-        return <div key={index} className="col-lg-4 col-md-4 ">        
-            <div className={enabledClass}>
-                <img src={item.logo} className="integration-brand-logo" />
-                <h6 className="logo-title">{item.name}</h6>
-                <p className="integration-description">{item.subTitle}</p>
-                <span className="integration-settings" onClick={() => {this.setState({activeDiv:index},this.openModal)}}>Settings</span>
-            </div>
-        </div> 
+     const thirdParties = [thirdPartyList].map((party) => {
+         var party = thirdPartyList;
+         var result = [];
+         for (var key in party) {
+             var partyKey = key;
+
+             if (party.hasOwnProperty(key)) {
+                 var item = party[key];
+                 var enabledClass = this.state[item.name] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
+                 result.push(<div key={key} className="col-lg-4 col-md-4 ">
+                     <div className={enabledClass}>
+                         <img src={item.logo} className="integration-brand-logo" />
+                         <h6 className="logo-title">{item.name}</h6>
+                         <p className="integration-description">{item.subTitle}</p>
+                         <span data-key={item.key} className={item.key == "zendesk" ? "integration-settings" + " " + item.key : "integration-settings not-active"} onClick={this.openModal}>{item.status}</span>
+                     </div>
+                 </div>);
+             }
+         }
+         return result;
      });
      
      return <div className="row">
@@ -98,7 +111,7 @@ class Integrations extends Component {
         </div>
         <div className="col-lg-8">
             <div className = "integration-wrapper">
-                <h4 className="integration-title">Improve work flow - Use Kommunicte with other services</h4>
+                <h4 className="integration-title">Improve work flow - Use Kommunicate with other services</h4>
             </div>
             <div className="row">
             {thirdParties}
@@ -107,7 +120,7 @@ class Integrations extends Component {
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} 
-                  getThirdPartyList = {this.getThirdPartyList}helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} />
+                  getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} />
             </div>
         </Modal>
      </div>

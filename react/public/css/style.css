@@ -9831,6 +9831,10 @@ pointer-events: none;
   background-color: #5C5AA7;
   color: #FFFFFF;
 }
+.km-button--primary a {
+  background-color: #5C5AA7;
+  color: #FFFFFF;
+}
 .km-button--primary:hover {
   background-color: #3c3b7b;
   color: #FFFFFF;

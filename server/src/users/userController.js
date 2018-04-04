@@ -11,6 +11,8 @@ const cacheClient = require("../cache/hazelCacheClient");
 const dbUtils = require('../utils/dbUtils')
 const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
+const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
+const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 
 exports.getAllUsers = function(req, res) {
   logger.info("request received to get all users");
@@ -98,6 +100,7 @@ logger.info("request received to create a user: ",req.body);
       return;
     }else{
       return Promise.all([userService.createUser(req.body),applozicClient.getApplication({"applicationId":customer.applicationId,"userName":adminUser.userName,"accessToken":adminUser.accessToken})]).then(([user,application])=>{
+        return integrationSettingService.getIntegrationSetting(customer.id,CLEARBIT).then(key=>{   
           logger.info("user created successfully.. ",user);
           if(user.type===1){
             registrationService.sendWelcomeMail(user.email, user.name , true, user.companyName);
@@ -106,9 +109,11 @@ logger.info("request received to create a user: ",req.body);
           user.adminUserName = customer.userName;
           user.adminDisplayName = customer.name;
           user.routingState = customer.agentRouting;
+          user.clearbitKey = key.length > 0 ? key[0].accessKey:"";
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;
         });
+      });
     }
   }).catch(err=>{
     if(err.code==="USER_ALREADY_EXISTS") {

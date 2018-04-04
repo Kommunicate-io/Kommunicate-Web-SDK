@@ -88,8 +88,8 @@ class Sidebar extends Component {
 </svg></NavLink>
             
             </li>
-
-            <li className="nav-item">
+            {/* FAQ is hidden for release 1.4.0 */}
+            {/* <li className="nav-item">
             <NavLink to={'/faq'} className="nav-link" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right" style={{  padding: '0.7rem 0.7rem 0.7rem', marginTop: '5px'}}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.9 19" style={{ width: '32px', height: '29px', marginLeft: '3px'}}>
                <g data-name="Layer 2">
@@ -101,7 +101,7 @@ class Sidebar extends Component {
               </g>
               </svg>
           </NavLink>
-            </li>
+            </li> */}
             {/*
             <li className="nav-item">
               <NavLink to={'/reports'} className="nav-link" activeClassName="active"><i className="icon-notebook"></i> Reports</NavLink>
@@ -135,7 +135,7 @@ class Sidebar extends Component {
             </li> */}
                   <li className="nav-item">
 
-                    <NavLink to={'/profile'} className={(currentPath.includes('install') || currentPath.includes('profile') || currentPath.includes('team') || currentPath.includes('message-shortcuts') || currentPath.includes('agent-app') || currentPath.includes('away-message') || currentPath.includes('welcome-message'))  ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 46 46'>
+                    <NavLink to={'/settings/profile'} className={currentPath.includes('/settings/') ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right"><svg xmlns='http://www.w3.org/2000/svg' id='Layer_1' viewBox='0 0 46 46'>
 
                       <path className='cls-1' d='M41,28.9a15.9,15.9,0,0,1-1.5,3.7l2.5,6-3.3,3.3-6-2.5A16,16,0,0,1,28.9,41l-2.6,6H21.6l-2.5-6a15.9,15.9,0,0,1-3.7-1.5l-6,2.5L6.1,38.6l2.5-6A15.9,15.9,0,0,1,7,28.9L1,26.4V21.6l6-2.5a15.9,15.9,0,0,1,1.5-3.7l-2.5-6L9.4,6.1l6,2.5A15.9,15.9,0,0,1,19.1,7l2.6-6h4.7l2.5,6a15.9,15.9,0,0,1,3.7,1.5l6-2.5,3.3,3.3-2.5,6A15.9,15.9,0,0,1,41,19.1l6,2.6v4.7ZM31.1,24A7.1,7.1,0,1,0,24,31.1,7.1,7.1,0,0,0,31.1,24Z'
     transform='translate(-1 -1)' />

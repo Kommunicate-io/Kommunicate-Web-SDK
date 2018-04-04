@@ -1,0 +1,34 @@
+/* Input Type File Button */
+
+.km-btn-file {
+    width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+  }
+  .km-btn-file-label {
+    line-height: 36px;
+    cursor: pointer;
+    width: inherit;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+  }
+  .km-btn-file-label span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+  }
+  .close-btn-container {
+    margin-left: -40px;
+    cursor: pointer;
+    height: 36px;
+    display: inline-block;
+  }
+  .pad-right-40 {
+    padding-right: 30px;
+  }

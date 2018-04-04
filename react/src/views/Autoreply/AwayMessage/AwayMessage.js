@@ -40,6 +40,7 @@ class AwayMessage extends Component{
     let awayMessageAnonymousCustomers = [];
     let awayMessageCopyAnonymousCustomers =[];
       return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
+        
         // eventId id 2 when agent is offline and customer is known
         eventId1Messages = response.filter(function (msg) {
           return msg.eventId == 1;

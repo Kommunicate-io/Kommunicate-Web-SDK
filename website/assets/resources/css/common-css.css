@@ -1,8 +1,9 @@
 .nav-main-header {
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     height: 65px;
+    z-index: 500;
     transition: all 0.3s ease-out;
 }
 .navigation-header {
@@ -38,25 +39,33 @@
   transition: color 0.3s ease;
 }
 .page-links-ul li>a:hover {
-  color: #fdfdfd81;
+  color: rgba(253, 253, 253, 0.5);
+}
+.sticky .page-links-ul li>a {
+    color: #5c5aa7;
+}
+.sticky .page-links-ul li>a:hover {
+    color: rgba(92, 90, 167, 0.5);
 }
 .nav-signup-button {
     color: #fff;
     border-radius: 4px;
-    border: solid 1.4px #2dd35c;
-    /* height: 36px; */
-    /* line-height: 34px; */
-    padding: 10.5px 14.5px;
-    width: 150px;
+    border: solid 1.4px #FFF;
     text-align: center;
     font-size: 16px;
+    background-color: transparent;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 175px;
+    height: 36px;
+    padding: 0px 15px !important;
+    line-height: 36px;
     transition: all 0.3s ease;
-    font-weight: 600;
 }
 .nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
-    color: #FFFFFF;
-    border: solid 1.4px #2dd35c;
-    background-color: #2dd35c;
+    color: #FFF !important;
+    border: solid 1.4px #FFF;
+    background-color: transparent;
 }
 .nav-login-button {
     font-size: 16px;
@@ -174,8 +183,8 @@
 
 .footer-section {
     position: relative;
-    padding: 50px 0px 20px 0px;
-    text-align: center;
+    padding: 0px 0px 20px 0px;
+    /* text-align: center; */
     background-color: #5C5AA7;
 }
 .footer-section .img-container svg {
@@ -265,14 +274,29 @@
 }
 
 .sticky {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
-    background: linear-gradient(to left, #4daab7, #2475bb 41%, #5c5aa7);
+    background: #FFF;
     box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
     z-index: 1005;
     transition: all 0.3s ease;
   }
+
+
+  .sticky .nav-signup-button {
+    color: #5c5aa7;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
+  }
+  .sticky .nav-signup-button:hover {
+    color: #5c5aa7;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
+  }
+
+
+
 
   @media (max-width: 470px) {
       .links-container {
@@ -289,3 +313,118 @@
   .try-kommunicate-mobile {
       display: none;
   }
+
+
+  /* New Footer Design */
+  footer .sitemap {
+    display: flex;
+    max-width: 1170px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    margin: 0 auto 1.5em;
+    /* padding: 0px 15px; */
+}
+.kmLogoFooter {
+    display: block;
+}
+.kmLogoFooter svg{
+    width: auto;
+    height: 35px;
+}
+footer .sitemap a {
+    color: rgba(255, 255, 255, 0.6);
+    display: table;
+    margin: 2px -10px;
+    padding: 3px 10px;
+}
+footer .sitemap a:hover, footer .sitemap a:focus {
+    color: white;
+    text-decoration: none;
+}
+.km-address p {
+    font-size: 14px;
+    line-height: 1.83;
+    color: #d9d9d9;
+    /* padding-left: 10px; */
+}
+footer .copyright {
+    max-width: 1170px;
+    text-align: left;
+    margin: 0 auto;
+    padding: 0px 15px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.footer-links-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    display: -ms-flexbox;
+}
+.footer-links-listbox {
+    display: block;
+    -ms-flex: 1 0 25%;
+    flex: 1 0 25%;
+    margin: 0;
+    padding: 24px 20px 32px;
+}
+.footer-links-listbox h5 {
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal;
+    text-align: left;
+    font-weight: bold;
+    line-height: 1.57;
+    color: #ffffff;
+}
+.footer-links-listbox-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.footer-links-listbox-list li>a {
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.14;
+    letter-spacing: normal;
+    text-align: left;
+    color: #d9d9d9;
+    display: block;
+    padding: 8px 0;
+    margin: 0;
+}
+@media screen and (max-width: 1000px) {
+    .footer-links-list {
+        flex-wrap: wrap;
+    }
+    .footer-links-listbox {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+    }
+}
+@media screen and (max-width: 720px) {
+    .footer-links-listbox {
+        -ms-flex: 1 0 100%;
+        flex: 1 0 100%;
+        padding: 15px 0px;
+    }
+}
+
+@media screen and (max-width: 927px) {
+    .page-links-ul, .nav-signup-button, .nav-login-button {
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+    }
+    .menu-btn-icon {
+        fill: #5c5aa7;
+    }
+}
+
+
+

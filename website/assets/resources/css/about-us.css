@@ -165,48 +165,23 @@ a, a:hover, a:focus, a:active {
 .km-logo-varient3-1 {
     fill: #5C5AA7;
 }
-.sticky .km-logo-final-logo-0 {
-    fill: #FFFFFF !important;
-}
+
 .page-links-ul li>a {
     color: #5C5AA7;
 }
-.sticky .page-links-ul li>a {
-    color: #FFFFFF;
-}
+
 .page-links-ul li>a:hover {
     color: rgba(93, 90, 167, 0.5);
 }
-.sticky .page-links-ul li>a:hover {
-    color: rgba(255, 255, 255, 0.5);
-}
 .nav-signup-button {
-    color: #FFFFFF;
-    border: none;
-    background-color: #2dd35c;
-    font-weight: 600
-}
-.sticky .nav-signup-button {
-    color: #FFFFFF;
-    border: none;
-    background-color: #2dd35c;
-    font-weight: 600;
+    color: #5c5aa7;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
 }
 .nav-signup-button:hover {
-    color: #FFFFFF;
-    background-color: #1aaa42;
-    border: none;
-    font-weight: 600;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-}
-.sticky .nav-signup-button:hover {
-    color: #FFFFFF;
-    background-color: #1aaa42;
-    border: none;
-    font-weight: 600;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    color: #5c5aa7 !important;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
 }
 .nav-login-button {
     color: #5C5AA7;
@@ -267,9 +242,9 @@ a, a:hover, a:focus, a:active {
     }
 }
 
-.page-links-ul li:last-child>a {
+.page-links-ul li:nth-child(4)>a {
     font-weight: bold;
 }
 .page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
-    fill: #5d5aa786 !important;
+    fill: rgba(93, 90, 167, 0.5) !important;
 }
