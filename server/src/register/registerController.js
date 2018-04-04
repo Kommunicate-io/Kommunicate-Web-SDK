@@ -123,9 +123,7 @@ exports.patchCustomer = (req,res)=>{
   if (pipeDriveEnable) {
     let organization = { name: customer.companyName };
     let person = { name: customer.name, email: userId, phone: customer.contactNo, }
-    return pipeDrive.createDealInPipeDrive(organization, person).catch(err => {
-      console.log('error while updating pipe drive data', err);
-    });
+    pipeDrive.createDealInPipeDrive(organization, person);
   }
   registrationService.updateCustomer(userId,customer).then(isUpdated=>{
     // userService.getAdminUserByAppId(customer.applicationId).then(user=>{
