@@ -9,12 +9,14 @@ const config = require("../../conf/config");
 const pipeDrive = require('../pipedrive/pipedrive');
 const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
+const logger = require('../utils/logger');
 //const logger =require("../utils/logger");
 exports.createCustomer = (req,res)=>{
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName?req.body.userName:req.body.userId;
   //const userId =  userName; 
   const isPreSignUp = req.query.preSignUp;
+  const isOAuthSignUp = req.query.OAuthSignUp;
   const password = isPreSignUp?randomString.generate(6):req.body.password;
   const name = req.body.name;
   const email=req.body.email||userName;
@@ -25,8 +27,8 @@ exports.createCustomer = (req,res)=>{
   userDetail.password = password;
   userDetail.userName=userName;
   userDetail.subscription = subscription;
-  console.log("userName:", userName, password,isPreSignUp);
-  if(userName&&(isPreSignUp||password)){
+  logger.info("userName:", userName, password,isPreSignUp,isOAuthSignUp);
+  if(userName&&(isPreSignUp||password||isOAuthSignUp)){
     console.log("request received for pre sign up, EmailId : ",userName);
     //TODO : check the if user exist form communicate Db;
     Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
