@@ -1,4 +1,4 @@
-{"eventTime": "2015-06-08T16:45:01.590+0000", "entityId": 1, "properties": {"appId": "applozic-sample-app", "text": "how to integrate in android", "label": "1"}, "event": "e-mail", "entityType": "content"}
+{"eventTime": "2015-06-08T16:45:01.590+0000", "entityId": 1, "properties": {"appId": "applozic-sample-app","text": "how to integrate in android", "label": "1"}, "event": "e-mail", "entityType": "content"}
 {"eventTime": "2015-06-08T16:45:03.590+0000", "entityId": 2, "properties": {"appId": "applozic-sample-app","text": "Have you started integration?", "label": "2"}, "event": "e-mail", "entityType": "content"}
 {"eventTime": "2015-06-08T16:46:08.590+0000", "entityId": 4, "properties": {"appId": "kommunicate-support","text": "What is the price?", "label": "3"}, "event": "e-mail", "entityType": "content"}
 {"eventTime": "2015-06-08T16:46:08.590+0000", "entityId": 5, "properties": {"appId": "applozic-sample-app","text": "Is group chat present?", "label": "4"}, "event": "e-mail", "entityType": "content"}
