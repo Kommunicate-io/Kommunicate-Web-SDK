@@ -57,22 +57,6 @@
     margin-top: 45px;
 }
 
-.Rectangle-2-Copy {
-    width: 605px;
-    height: 199px;
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-
-  .Rectangle-2-Copy {
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-
   .for-ios-apns {
     margin-top: 29px;
     font-family: Roboto;
