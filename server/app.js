@@ -36,7 +36,7 @@ compressor.minify({
 });
 compressor.minify({
   compressor: 'clean-css',
-  input: ['./src/webplugin/css/app/mck-sidebox-1.0.css'],
+  input: ['./src/webplugin/css/app/km-rich-message.css','./src/webplugin/css/app/mck-sidebox-1.0.css'],
   output: './src/webplugin/js/app/mck-sidebox-1.0.min.css',
   callback: function (err, min) {
     if(!err)
