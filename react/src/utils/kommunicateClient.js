@@ -782,7 +782,7 @@ const createZendeskIntegrationTicket = (data,groupId) => {
   })).then(result => {
     return result;
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
-
+}
 
 const updateConversation = (conversation) => {
   let userSession = CommonUtils.getUserSession();
@@ -855,13 +855,8 @@ export {
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
   deleteThirdPartyByIntegrationType,
-
   updateConversation,
-
   getZendeskIntegrationTicket,
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
-
-  
-
 }
