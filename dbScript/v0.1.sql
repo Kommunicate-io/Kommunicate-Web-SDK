@@ -46,5 +46,7 @@ alter table customers add column subscription varchar(50) NOT NULL DEFAULT 'star
 
 alter table conversations add column metadata json;
 
+alter table kommunicate_test.conversations add column close_at datetime;
+
 
 

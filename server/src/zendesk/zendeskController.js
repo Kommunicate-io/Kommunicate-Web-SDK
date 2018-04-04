@@ -21,7 +21,7 @@ exports.createZendeskTicket = (req, res) => {
             return zendeskService.createZendeskTicket(ticket, settings[0]).then(response => {
                 console.log("response from zendesk", response);
                 let zendeskTicket = { type: ZENDESK, ticketId: response.data.ticket.id }
-                conversationService.updateConversation(conversationId, zendeskTicket);
+                conversationService.updateTicketIntoConversation(conversationId, zendeskTicket);
                 return res.status(200).json({ code: "SUCCESS", data: response.data });
             });
         });

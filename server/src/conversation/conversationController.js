@@ -48,3 +48,12 @@ exports.addMemberIntoConversation = (req, res) => {
     });
 
 }
+
+exports.updateConversation = (req, res) => {
+    return conversationService.updateConversation(req.body).then(response => {
+        return res.status(200).json({message:'SUCCESS',data:'updated successfully'});
+    }).catch(err => {
+        console.log(err);
+        return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });
+    })
+}

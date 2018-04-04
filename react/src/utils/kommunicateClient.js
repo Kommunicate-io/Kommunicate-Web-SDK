@@ -783,6 +783,16 @@ const createZendeskIntegrationTicket = (data,groupId) => {
     return result;
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
 
+
+const updateConversation = (conversation) => {
+  let userSession = CommonUtils.getUserSession();
+  conversation.appId = userSession.application.applicationId
+  let url = getConfig().kommunicateBaseUrl + "/conversations/update";
+  return Promise.resolve(axios.patch(url, conversation)).then(response => {
+    console.log(response);
+    return response;
+  }).catch(err => { console.log(err) });
+
 }
 const updateZendeskIntegrationTicket = (data,groupId) => {
   let userSession = CommonUtils.getUserSession();
@@ -795,6 +805,7 @@ const updateZendeskIntegrationTicket = (data,groupId) => {
 
     return result;
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
+
 
 }
 
@@ -844,9 +855,13 @@ export {
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
   deleteThirdPartyByIntegrationType,
+
+  updateConversation,
+
   getZendeskIntegrationTicket,
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
 
   
+
 }

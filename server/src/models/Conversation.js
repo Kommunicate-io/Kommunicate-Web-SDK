@@ -47,6 +47,10 @@ module.exports = (sequalize, DataTypes) => {
       metadata:{
         type:DataTypes.JSON,
         allowNull: true
+      },
+      closeAt:{
+        type:DataTypes.DATE,
+        field:'close_at'
       }
 
     },
