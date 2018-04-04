@@ -3,14 +3,18 @@ var querystring = require('querystring');
 const registrationService = require("../register/registrationService");
 const userService = require('../users/userService');
 const logger = require('../utils/logger');
+const config = require("../../conf/config");
 
 const CLIENT_ID = '155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com'
 const CLIENT_SECRET = '67BmE4D4qPn9PfglGn27pAmX'
-const GOOGLE_REDIRECT_URL = 'http://localhost:3999/google/authCode'
-const REDIRECT_URL = 'http://localhost:3000/signup'
-const G_PLUS_PROFILE_URL = 'https://www.googleapis.com/plus/v1/people/me';
+
+const GOOGLE_REDIRECT_URL = config.getProperties().urls.hostUrl + '/google/authCode'
+const REDIRECT_URL = config.getProperties().urls.dashboardHostUrl + '/signup'
+
+const GOOGLE_PLUS_PROFILE_URL = 'https://www.googleapis.com/plus/v1/people/me';
 
 const getToken = (authCode) => {
+	logger.info(GOOGLE_REDIRECT_URL)
 	var params = {
 		code: authCode,
 		client_id: CLIENT_ID,
@@ -26,7 +30,7 @@ const getToken = (authCode) => {
 			const headers = {
 	  			Authorization : authorization
 	  		}  		
-	  		return axios.get(G_PLUS_PROFILE_URL, { headers: headers })
+	  		return axios.get(GOOGLE_PLUS_PROFILE_URL, { headers: headers })
   	});
 }
 
@@ -34,6 +38,8 @@ exports.authCode = (req, res) => {
 	let authCode = req.query.code;
 	getToken(authCode).then(response => {
 		logger.info(response.data)
+		
+		logger.info(REDIRECT_URL)
 		
 		let userName = response.data.emails[0].value;
 
