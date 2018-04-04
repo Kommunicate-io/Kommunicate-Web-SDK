@@ -185,7 +185,7 @@ getListMarkup:function(){
             <div class="faq-list--body_list-container">
                 <ul class="faq-list--body_list">
                     {{#elements}}
-                    <li> <a href={{action}} target="_blank" class="km-undecorated-link">
+                    <li class ={{hadlerClass}} data-type={{dataType}} data-reply = {{dataReply}} data-articleid= {{dataArticleId}} data-source={{source}}> <a href={{href}} target="_blank" class="km-undecorated-link" >
                             <div class="faq-list--body_img">
                                     {{{imgSrc}}}
                             </div>
@@ -207,7 +207,7 @@ getListMarkup:function(){
         <div class="faq-list--footer">
                 <div class="faq-list--footer_button-container">
                         {{#buttons}}
-                        <button class="km-cta-button km-add-more-rooms"><a class ="km-undecorated-link" href ="{{action}}" target="_blank">{{name}}</a></button>
+                        <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ={{dataType}} data-reply={{dataReply}}><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
                         {{/buttons}}
                     
             </div>
@@ -306,12 +306,39 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
             json.headerImgSrc = '<img src= '+json.headerImgSrc+'/>' 
         }if(json.elements.length){
             json.elements =   json.elements.map(function(item){
-               if(item.imgSrc){
+               // checking for image
+                if(item.imgSrc){
                 item.imgSrc =  '<img src ='+item.imgSrc +'/>';
                }
+               //checking for type
+               if(!item.action || item.action.type =="quick_reply" || item.action.type =="submit"){
+                item.href = "javascript:void(0)";
+                item.hadlerClass= "km-list-item-handler";
+               }else{
+                item.href = item.action.url;
+               }
+               
+               item.dataType=item.action.type||"";
+               item.dataReply = item.action.text||item.title||"";
+               item.dataArticleId = item.articleId||"";
+               item.dataSource = item.source||"";
+               // TODO : add post url in data.
                 return item;
             })
         }
+        json.buttons=  json.buttons.map(button=>{
+            if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
+                button.href = "javascript:void(0)";
+                button.hadlerClass= "km-list-button-item-handler";
+               }else{
+                button.href = button.action.url;
+               }
+               
+               button.dataType=button.action.type||"";
+               button.dataReply = button.action.text||button.name||"";
+               // TODO : add post url in data.
+                return button;
+        })
         
        return Mustache.to_html(Kommunicate.markup.getListMarkup(), json);
     }else{
