@@ -762,6 +762,16 @@ const deleteThirdPartyByIntegrationType = (integrationType) => {
     .catch(err => err);
 }
 
+const updateConversation = (conversation) => {
+  let userSession = CommonUtils.getUserSession();
+  conversation.appId = userSession.application.applicationId
+  let url = getConfig().kommunicateBaseUrl + "/conversations/update";
+  return Promise.resolve(axios.patch(url, conversation)).then(response => {
+    console.log(response);
+    return response;
+  }).catch(err => { console.log(err) });
+
+}
 
 
 export {
@@ -808,5 +818,6 @@ export {
   getCustomerByApplicationId,
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
-  deleteThirdPartyByIntegrationType
+  deleteThirdPartyByIntegrationType,
+  updateConversation
 }

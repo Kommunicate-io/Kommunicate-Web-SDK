@@ -3,7 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-import {updateApplozicUser} from '../../utils/kommunicateClient'
+import {updateApplozicUser, updateConversation} from '../../utils/kommunicateClient'
 
 class Aside extends Component {
   constructor(props) {
@@ -187,7 +187,7 @@ class Aside extends Component {
                                       }
                                     });
 
-
+                                    updateConversation({groupId:this.state.group.groupId,agentId:userId});
 
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
@@ -200,7 +200,7 @@ class Aside extends Component {
                                                   }
                                                 }
                                               });
-
+    
   }
 
   addGroupMember(groupId, userId, callback) {
@@ -247,6 +247,7 @@ class Aside extends Component {
                                           });
                                       }
                                     });
+                                    updateConversation({groupId:that.state.group.groupId,status:status});
   }
 
   updateUserContactDetail(userId, params){

@@ -1,5 +1,5 @@
 const db = require("../models");
-const CONVERSATION_STATUS = require('./conversationUtils').CONVERSATION_STATUS;
+const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY } = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
@@ -22,7 +22,7 @@ const getConversationByGroupId = groupId => {
     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } }));
 }
 
-const updateConversation = (groupId, options) => {
+const updateTicketIntoConversation = (groupId, options) => {
     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } })).then(conversation => {
         if (conversation && conversation.metadata && conversation.metadata.integration) {
             let integration = conversation.metadata.integration;
@@ -62,6 +62,60 @@ const createConversation = (options) => {
     return Promise.resolve(db.Conversation.create(conversation)).then(result => {
         console.log("conversation created successfully", result);
         return result;
+    });
+
+}
+/**
+ * update conversation
+ */
+const updateConversation = (options) => {
+    let conversation = {};
+    if (options.participentUserId) {
+        conversation.participentUserId = options.participentUserId;
+    }
+    if (options.participentUserId) {
+        conversation.participentUserId = options.participentUserId;
+    }
+    if (options.status) {
+        conversation.status = CONVERSATION_STATUS_ARRAY[options.status];
+        conversation.closeAt = CONVERSATION_STATUS_ARRAY[options.status] == CONVERSATION_STATUS.CLOSED ? new Date() : null;
+    }
+    if (options.createdBy) {
+        conversation.createdBy = options.createdBy;
+    }
+    if (options.metadata) {
+        updateConversationMetadata(options.groupId, options.metadata);
+    }
+    if (options.agentId) {
+        return userService.getByUserNameAndAppId(options.agentId, options.appId).then(user => {
+            conversation.agentId = user.id;
+            return db.Conversation.update(conversation, { where: { groupId: options.groupId } });
+        }).catch(err => { throw err })
+    } else {
+        return Promise.resolve(db.Conversation.update(conversation, { where: { groupId: options.groupId } })).then(resp => {
+            return resp;
+        }).catch(err => { throw err });
+    }
+
+
+}
+
+const updateConversationMetadata = (groupId, metadata) => {
+    let conversation = { metadata: metadata };
+    getConversationByGroupId(groupId).then(resp => {
+        if (resp && resp.metadata) {
+            // Object.assign(conversation.metadata, resp.metadata);
+            let existingMetadata = resp.metadata;
+            for (var key in existingMetadata) {
+                if (typeof matadata[key] == 'string' && existingMetadata[key] != metadata[key]) {
+                    existingMetadata[key] = metadata[key];
+                }
+            }
+            conversation.metadata = existingMetadata;
+        }
+        db.Conversation.update(conversation, { where: { groupId: groupId } });
+    }).catch(err => {
+        console.log('error while updating conversation metadata', err);
     });
 
 }
@@ -149,6 +203,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
 
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
+    updateTicketIntoConversation: updateTicketIntoConversation,
     updateConversation: updateConversation,
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
