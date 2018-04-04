@@ -304,6 +304,9 @@ a, a:hover, a:focus, a:active {
 .km-logo-final-logo-0 {
     fill: #ffffff !important;
 }
+.sticky .km-logo-final-logo-0 {
+    fill: #5c5aa7 !important;
+}
 .page-links-ul li:first-child>a {
     font-weight: bold;
 }
@@ -314,34 +317,6 @@ a, a:hover, a:focus, a:active {
     fill: rgba(255, 255, 255, 0.5) !important;
 }
 
-.nav-signup-button {
-    color: #FFFFFF;
-    border: none;
-    background-color: #2dd35c;
-    font-weight: 600
-}
-.sticky .nav-signup-button {
-    color: #FFFFFF;
-    border: none;
-    background-color: #2dd35c;
-    font-weight: 600;
-}
-.nav-signup-button:hover {
-    color: #FFFFFF;
-    background-color: #1aaa42;
-    border: none;
-    font-weight: 600;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-}
-.sticky .nav-signup-button:hover {
-    color: #FFFFFF;
-    background-color: #1aaa42;
-    border: none;
-    font-weight: 600;
-    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-}
 
 .nav-login-button {
     color: #ffffff;
