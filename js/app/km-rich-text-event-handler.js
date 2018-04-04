@@ -13,7 +13,10 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click','.km-submit-person-detail',Kommunicate.richMsgEventHandler.handlleSubmitPersonDetail);
     $applozic("#mck-message-cell").on('click', '.km-block-room-button', Kommunicate.richMsgEventHandler.processBookRoomClick);
     $applozic("#mck-message-cell").on('click', '.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies);
-     
+    $applozic("#mck-message-cell").on('click', '.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem); 
+    $applozic("#mck-message-cell").on('click', '.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem); 
+    
+    
 }
 
 
@@ -168,13 +171,13 @@ Kommunicate.richMsgEventHandler = {
     },
    
     handlleSubmitPersonDetail: function (e) {
-        var title = $(e.target).closest('.km-guest-details-container').find(".km-title-select option:selected").text();
-        var age = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.km-age-input");
-        var fname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input");
-        var mname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
-        var lname = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
-        var email = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
-        var phone = $(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
+        var title = $applozic(e.target).closest('.km-guest-details-container').find(".km-title-select option:selected").text();
+        var age = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.km-age-input");
+        var fname = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input");
+        var mname = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.middle-name-input");
+        var lname = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
+        var email = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
+        var phone = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
         if(fname[0].value==""){
             $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
             return;
@@ -213,6 +216,46 @@ Kommunicate.richMsgEventHandler = {
 
         Kommunicate.sendMessage(messagePxy);
 
+    },
+    processClickOnListItem: function(e){
+        var target = e.currentTarget;
+        var reply = target.dataset.reply;
+        var type = target.dataset.type;
+        var articleId = target.dataset.articleid;
+        var source = target.dataset.source;
+        if(type && type =="quick_reply"){
+            var messagePxy = {
+                'message': reply, //message to send 
+                'metadata': {
+                    "KM-FAQ-ID":articleId,
+                    "source":source
+                }
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
+        }else if(type && type =='submit'){
+            //TODO : support for post request with data.
+        }
+
+    },
+    processClickOnButtonItem: function(e){
+        var target = e.currentTarget;
+        var reply = target.dataset.reply;
+        var type = target.dataset.type;
+        if(type && type =="quick_reply"){
+            var messagePxy = {
+                'message': reply, //message to send 
+                'metadata': {
+                    "KM-BUTTON-CLICKED":true
+                }
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
+        }else if(type && type =='submit'){
+            //TODO : support for post request with data.
+        }
+
     }
+
 
 }
