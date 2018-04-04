@@ -44,6 +44,9 @@ class Register extends Component {
     if (email) {
       this.setState({email:email});
     }
+
+    localStorage.removeItem('Google_OAuth');
+
     const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
     console.log(googleOAuth)
 
