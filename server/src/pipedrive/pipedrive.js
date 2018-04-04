@@ -1,16 +1,16 @@
 
 const logger = require("../utils/logger");
 const axios = require("axios");
-var userId = "4047878";
-const API_KEY = '5b37f277e072d90ada8d7d9852a1386079fdcce7';
-
+const USER_ID = "4047853";
+const STAGE_ID = 15;
+const API_KEY = '37819590033f154fe2769778cad3489180d622ea';
 const ADD_ORGANIZATION_API_URL = "https://applozic.pipedrive.com/v1/organizations?api_token=";
 const ADD_PERSON_API_URL = "https://applozic.pipedrive.com/v1/persons?api_token=";
 const ADD_DEAL_API_URL = "https://applozic.pipedrive.com/v1/deals?api_token=";
 
 
 exports.createDealInPipeDrive = (organization, person) => {
-    let deal = { title: organization.name, person_id: '', org_id: '', stage_id: 6, }
+    let deal = { title: organization.name, person_id: '', org_id: '', stage_id: STAGE_ID, }
     console.log('organization: ', organization, 'person: ', person);
     return createOrganization(organization).then(organizationId => {
         console.log('response of organization: ', organizationId);
@@ -19,7 +19,7 @@ exports.createDealInPipeDrive = (organization, person) => {
         return createPerson(person).then(personId => {
             console.log('personId:', personId)
             deal.person_id = personId;
-            deal.user_id = userId;
+            deal.user_id = USER_ID;
             return createDeal(deal).then(result => {
                 console.log('final response: ', result);
                 return { message: 'SUCCESS', data: result.data };
