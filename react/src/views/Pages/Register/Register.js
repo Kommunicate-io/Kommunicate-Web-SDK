@@ -7,6 +7,8 @@ import  {createCustomer, saveToLocalStorage,createCustomerOrAgent} from '../../.
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
 import ApplozicClient from '../../../utils/applozicClient';
+import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
+import GoogleLogo from './logo_google.svg';
 
 class Register extends Component {
   constructor(props){
@@ -24,7 +26,8 @@ class Register extends Component {
       token:null,
       invitedBy:'',
       signupButtonTxt:'Create Account',
-      subscription: 'startup'
+      subscription: 'startup',
+      googleOAuth :false
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -41,7 +44,25 @@ class Register extends Component {
     if (email) {
       this.setState({email:email});
     }
+    const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
+    console.log(googleOAuth)
 
+    if(googleOAuth === 'true'){
+      this.setState({googleOAuth: true})
+      localStorage.setItem('Google_OAuth', true);
+    }else if(googleOAuth === 'false'){
+      console.log(googleOAuth)
+      Notification.warning("User Already Exists", 3000);
+    }
+    
+    const name = CommonUtils.getUrlParameter(search, 'name')
+    console.log(name)
+
+    if(name){
+      this.setState({name: name})
+      console.log(name)
+    }
+    
    if(isInvited){
      this.state.isInvited=true;
      //this.state.invitedUserEmail=invitedUserEmail;
@@ -54,6 +75,30 @@ class Register extends Component {
     this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
    }
     //console.log("location",this.props.location);
+  }
+
+  componentDidMount(){
+    // const search = this.props.location.search;
+    // const email = CommonUtils.getUrlParameter(search, 'email');
+    // if (email) {
+    //   this.setState({email:email});
+    // }
+    // const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
+    // console.log(googleOAuth)
+
+    // if(googleOAuth){
+    //   this.setState({googleOAuth: true})
+    // }
+    
+
+    // const name = CommonUtils.getUrlParameter(search, 'name')
+    // console.log(name)
+
+    // if(name){
+    //   this.setState({name: name})
+    //   console.log(name)
+    // }
+
   }
 
 
@@ -85,7 +130,7 @@ class Register extends Component {
   createAccountWithUserId=(_this)=>{
 
     var email = this.state.email;
-    var password =this.state.password;
+    var password = this.state.password ? this.state.password:null;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
 
@@ -153,7 +198,7 @@ class Register extends Component {
     if(!isEmail(email)){
       Notification.warning("Invalid Email !!");
       return;
-    }else if(validator.isEmpty(password)||validator.isEmpty(email)){
+    }else if( !this.state.googleOAuth  && ( validator.isEmpty(password) || validator.isEmpty(email))){
       Notification.warning(" All fields are mandatory !!");
     }else{
       // located in '../../../utils/kommunicateClient'
@@ -220,18 +265,26 @@ class Register extends Component {
                   <h1 className="login-signup-heading text-center">Sign Up</h1>
                   <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
 
+                  <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
+                  {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
+                   <input type="text" className="input" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} value={this.state.name} required/>
+                   <label className="label-for-input name-label">Name</label>
+                  </div>  
+
                   <div className="input-group mb-3">
                     {/* <span className="input-group-addon">@</span> */}
                     <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById(this.state.isInvited?"input-name":"input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required disabled={this.state.isInvited}/>
                     <label className="label-for-input email-label">Email Id</label>
                   </div>
+
                   <div className={this.state.isInvited?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
                    <input id = "input-name"type="text" className="input" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} required/>
                    <label className="label-for-input name-label">Name</label>
-                  </div> 
+                  </div>
 
-                  <div className="input-group mb-3 register-password-div">
+                  <div className={this.state.googleOAuth ? "n-vis":"input-group mb-3 register-password-div"}>
+                  {/*<div className="input-group mb-3 register-password-div">*/}
                     {/* <span className="input-group-addon"><i className="icon-lock"></i></span> */}
                     <input id="input-password" type={this.state.type} className="input" placeholder=" "  onChange={ this.setPassword } onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("create-button").click()}}} required/>
                     <label className="label-for-input email-label">Password</label>
@@ -254,6 +307,9 @@ class Register extends Component {
                     <div className="col-lg-12 text-center">
                       <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
 
+                      <a className={this.state.googleOAuth ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href="https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=http://localhost:3999/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up">
+                        <img src={GoogleSignIn} style={{width: "60%", height: "100%"}}/>
+                      </a>
                       <p>
                         Already have an account? <a href="/login/">Sign In</a>
                       </p>
