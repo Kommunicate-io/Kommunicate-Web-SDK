@@ -31,7 +31,9 @@ exports.createCustomer = customer=>{
     ]).then(([applozicCustomer,/*agent,*/bot])=>{
       customer.apzToken = new Buffer(customer.userName+":"+customer.password).toString('base64');
       let user = getUserObject(customer,applozicCustomer,application);
-      customer.password= bcrypt.hashSync(customer.password, 10);
+      if(customer.password !== null){
+        customer.password= bcrypt.hashSync(customer.password, 10);
+      }
       customer.applicationId= application.applicationId;
       customer.subscription = "startup";
       user.password=customer.password;
