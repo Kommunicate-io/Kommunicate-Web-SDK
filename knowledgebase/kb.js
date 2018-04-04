@@ -120,6 +120,9 @@
                 url = url + "&query=" + options.data.query;
             }
 
+            //Todo: if query is present then call machine learning server to get answer ids.
+            //curl -H "Content-Type: application/json" -d '{ "text":"how to setup notification", "appId":"kommunicate-support" }' https://machine.kommunicate.io/queries.json
+
             var response = new Object();
             KMCommonUtils.ajax({
                 url: url,
