@@ -108,7 +108,8 @@ class DataSource (
 case class Observation(
   label: Double,
   text: String,
-  category: String
+  category: String,
+  appId: String
 )
 
 /** TrainingData class serving as a wrapper for all

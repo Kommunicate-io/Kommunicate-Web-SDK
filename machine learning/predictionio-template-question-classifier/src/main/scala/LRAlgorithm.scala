@@ -38,6 +38,7 @@ class LRAlgorithm(val ap: LRAlgorithmParams)
       // Add the different binary columns for each label.
       (data: DataFrame, label: Double) => {
         // function: multiclass labels --> binary labels
+        //Devashish: Todo: We might need to change label value as label.toDouble else 0.0
         val f: UserDefinedFunction = functions.udf((e : Double) => if (e == label) 1.0 else 0.0)
 
         data.withColumn(label.toInt.toString, f(data("label")))
