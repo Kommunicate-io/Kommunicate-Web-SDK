@@ -121,7 +121,7 @@ const config ={
     offBussinessHoursMessageInterval: 1,
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
     activeCampaignEnabled: false,
-    pipeDriveEnable:false,
+    pipeDriveEnable:true,
   },
   default: {
     port: 3999,
