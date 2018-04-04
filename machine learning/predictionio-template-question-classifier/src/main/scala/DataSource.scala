@@ -47,7 +47,7 @@ class DataSource (
         // if (label == "spam") 10.0 else if (label == "Q1") 1.0 else if (label == "Q2") 2.0 else if (label == "Q3") 3.0 else 0.0,
         if (label != "") label.toDouble else 0.0,
         e.properties.get[String]("text"),
-        e.properties.get[String]("appId"),
+        //e.properties.get[String]("appId"),
         label
       )
     }).cache
@@ -108,8 +108,8 @@ class DataSource (
 case class Observation(
   label: Double,
   text: String,
-  category: String,
-  appId: String
+  category: String
+ // appId: String
 )
 
 /** TrainingData class serving as a wrapper for all
