@@ -6,7 +6,7 @@ module.exports.createCustomer= {
       name: joi.string(),
       userName: joi.string().email().required(),
       email : joi.string().email(),
-      password: joi.string(),
+      password: joi.any(),
       companyName :joi.string(),
       companySize : joi.string()
       }
