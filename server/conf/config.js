@@ -58,7 +58,8 @@ const config ={
       // this property define how often Off business hours notification will be sent to user. value in minute
       offBussinessHoursMessageInterval: 5,
       activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
-      activeCampaignEnabled: true
+      activeCampaignEnabled: true,
+      pipeDriveEnable:true
 
   },
   test: {
@@ -119,12 +120,13 @@ const config ={
     // this property define how often Off business hours notification will be sent to user. value in minute
     offBussinessHoursMessageInterval: 1,
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
-    activeCampaignEnabled: false
+    activeCampaignEnabled: false,
+    pipeDriveEnable:false,
   },
   default: {
     port: 3999,
     db: {
-      // url: "mysql://root:password@localhost:3306/kommunicate_test",
+      // url: "mysql://admin:adm1n2ol6@localhost:3306/kommunicate_test",
       url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
@@ -179,7 +181,8 @@ const config ={
     // this property define how often Off business hours notification will be sent to user. value in minute
     offBussinessHoursMessageInterval: 1,
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
-    activeCampaignEnabled: false
+    activeCampaignEnabled: false,
+    pipeDriveEnable:false,
 
   },
   dashboard: {
@@ -241,7 +244,8 @@ const config ={
       // this property define how often Off business hours notification will be sent to user. value in minute
       offBussinessHoursMessageInterval: 5,
       activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
-      activeCampaignEnabled: false
+      activeCampaignEnabled: false,
+      pipeDriveEnable:false,
 
   },
   commonProperties: {

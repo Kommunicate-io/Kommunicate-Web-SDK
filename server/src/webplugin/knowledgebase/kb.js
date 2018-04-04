@@ -4,21 +4,14 @@
         var KommunicateKB = {};
         var KM_API_URL = "https://api.kommunicate.io";
         var KB_URL = "/autosuggest/message/:appId?criteria=type&value=faq";
-        var appId;
-        var helpdocsKey;
         var SOURCES = {kommunicate : 'KOMMUNICATE', helpdocs: 'HELPDOCS'};
 
-        //KommunicateKB.init("https://api.kommunicate.io", "kommunicate-support", "cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao");
-        KommunicateKB.init = function (url, applicationId, helpdocsToken) {
+        //KommunicateKB.init("https://api.kommunicate.io");
+        KommunicateKB.init = function (url) {
             KM_API_URL = url;
-            appId = applicationId;
-            helpdocsKey = helpdocsToken;
-            if(helpdocsKey) {
-                Helpdocs.init(helpdocsKey);
-            }
-            KB_URL = KB_URL.replace(":appId", appId);
         }
 
+        //KommunicateKB.getArticles({data: {appId: 'kommunicate-support', query: 'fcm', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getArticles = function(options) {
             var articles = [];
             KommunicateKB.getFaqs({data: options.data, success: function(response) {
@@ -33,7 +26,7 @@
                     });
                 }
 
-                if (helpdocsKey) {
+                if (options.data.helpdocsAccessKey) {
                     Helpdocs.getArticles({data: options.data, success:function(response) {
                             var data = response.data;
                             for (var i = 0; i < data.articles.length; i++){
@@ -72,7 +65,7 @@
             }});
         }
 
-        //KommunicateKB.getArticle({data: {articleId: 'tuqx5g5kq5'}, success: function(response) {console.log(response);}, error: function() {}});
+        //KommunicateKB.getArticle({data: {appId: 'kommunicate-support', articleId: 'tuqx5g5kq5', source: 'HELPDOCS', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getArticle = function (options) {
             if (options.data.source == SOURCES.helpdocs) {
                 Helpdocs.getArticle({data: options.data, success: function(response) {
@@ -120,9 +113,9 @@
             }
         }
 
-        //KommunicateKB.getArticles({data: {query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
+        //KommunicateKB.getFaqs({data: {appId: 'kommunicate-support', query: 'apns'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getFaqs = function (options) {
-            var url = KM_API_URL + KB_URL;
+            var url = KM_API_URL + KB_URL.replace(":appId", options.data.appId);
             if (options.data.query) {
                 url = url + "&query=" + options.data.query;
             }
@@ -149,12 +142,12 @@
             });
         }
 
-        //KommunicateKB.getFaq({data: {articleId: 1}, success: function(response) {console.log(response);}, error: function() {}});
+        //KommunicateKB.getFaq({data: {appId: 'kommunicate-support', articleId: 1}, success: function(response) {console.log(response);}, error: function() {}});
         //Note: server side not supported yet
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
             KMCommonUtils.ajax({
-                url: KM_API_URL + KB_URL + "&articleId=" + options.data.articleId,
+                url: KM_API_URL + KB_URL.replace(":appId", options.data.appId) + "&articleId=" + options.data.articleId,
                 async: (typeof options.async !== 'undefined') ? options.async : true,
                 type: 'get',
                 success: function (data) {

@@ -13,7 +13,12 @@ $(document).ready(function() {
 
 var autoSuggestions = {};
 
+
+
 function initAutoSuggestions() {
+
+  var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+  var appId = userSession.application.applicationId;
 
   for(autoSuggest in autoSuggestions){
     $('#km-text-box').atwho({
@@ -23,7 +28,7 @@ function initAutoSuggestions() {
       data: autoSuggestions[autoSuggest],
       callbacks: {
         beforeInsert: function(value, $li, e) {
-          var machineInput = {"text": $(".active-chat .km-msg-left .km-msg-content div").last().html(), "label": $li.attr('data-suggestionId')};
+          var machineInput = {"text": $(".active-chat .km-msg-left .km-msg-content div").last().html(), "appId": appId, "label": $li.attr('data-suggestionId')};
           $('#km-text-box').data("metadata", encodeURIComponent(JSON.stringify(machineInput)));
           return value;
         },

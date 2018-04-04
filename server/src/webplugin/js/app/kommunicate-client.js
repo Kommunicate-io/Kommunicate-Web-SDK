@@ -81,11 +81,24 @@ var mckGroupService = new MckGroupService();
             }
         });
      },
-     /**
-      * get detail by clientGroupId 
+     /**get the third party settings access key
+      * @param {Object} options
+      * @param {String} options.appId
+      * @param {Number} options.type
+      * @param {function} callback
       */
-      getGroupDetailByClientGroupId:function(clientGroupId,callback){
+     getThirdPartySettings:function(options,callback){
+        $applozic.ajax({
+            url:  Kommunicate.getBaseUrl()+ "/integration/settings/"+options.appId+"?type="+options.type,
+            type: "get",
+            contentType: "application/json",
+            success: function (result) {
+                callback(null,result);
+            },error:function(err){
+                callback(err);
+            }
+        });  
 
-      }
+     }
  }
 
