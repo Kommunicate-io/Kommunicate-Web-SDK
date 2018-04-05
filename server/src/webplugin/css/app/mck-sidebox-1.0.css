@@ -4455,7 +4455,7 @@ color: rgba(0,0,0,0.5);
     
     
 }
-.faqlist{
+.km-faq-list{
 	color: #444 !important;
 	list-style-type: none;
     border-radius: 0;
@@ -4465,7 +4465,7 @@ color: rgba(0,0,0,0.5);
     background-color: #fff !important;
     text-decoration: none;
 }
-.faqanswerlist{
+.km-faqanswer-list{
 	color: #444 !important;
 	list-style-type: none;
     border-radius: 0;
@@ -4474,29 +4474,29 @@ color: rgba(0,0,0,0.5);
     background-color: #fff !important;
     text-decoration: none;
 }
-.faqimage{
+.km-faqimage{
 	height: 25px;
     width: 25px;
 	margin-right: 10px;
 }
-.faqanchor{
+.km-faqanchor{
 	color: grey !important;
 	font-size: larger!important;
 }
-.faqdisplay{
+.km-faqdisplay{
 	display:flex;
 }
 
-.faqflex{
+.km-faqflex{
 	flex:1;
 }
 
-.faqdiv{
+.km-faqdiv{
 	overflow-y: auto;
     height: 480px;
 }
 
-.faqquestion{
+.km-faqquestion{
 	width: 287px;
 	height: 32px;
 	font-family: Roboto!important;
@@ -4511,7 +4511,7 @@ color: rgba(0,0,0,0.5);
 	margin-bottom: 20px;
 }
 
-.faqanswer{
+.km-faqanswer{
 	width: 297px;
 	height: 193px;
 	font-family: Roboto!important;
@@ -4525,7 +4525,7 @@ color: rgba(0,0,0,0.5);
 	color: #757578!important;
 	
 }
-.faqsearch{
+.km-faqsearch{
 	height: 32px;
     padding: 0 5px;
     width: calc(100% - 35px);
@@ -4547,19 +4547,19 @@ color: rgba(0,0,0,0.5);
 	background-color: #8b8b8c;
   
 }
-.faqtitle{
+.km-faqtitle{
 	flex: 1;
     width: 60px;
     font-size: 16px;
 }
-.faqbtn{
+.km-faqbtn{
 	background-color: #716fb3;
 }
-.button:hover #faqbtn {
+.button:hover #km-faqbtn {
 	background-color: #716fb3;
 }
 
-.faqback{
+.km-faqback{
 	flex: 1;
     font-size: 20px;
 }
