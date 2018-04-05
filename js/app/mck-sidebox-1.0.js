@@ -494,7 +494,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 , success: function (response) {
                     console.log(response);
                     $applozic.each(response.data, function (i, faq) {
-                        $("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="km-faqimage"/ ></div> <div class="km-faqanchor km-faqflex">' + faq.title + '</div></a></li>');
+                        $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="km-faqimage"/ ></div> <div class="km-faqanchor km-faqflex">' + faq.title + '</div></a></li>');
                     });
                 }, error: function () { }
             });
@@ -1879,6 +1879,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     });
                 }
             });
+
+           
             
             $applozic(d).on("click", ".km-faqback", function () {
                 if ($applozic('#km-faqanswer').hasClass('vis')) {
@@ -4168,6 +4170,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_tab_conversation.removeClass('vis').addClass('n-vis');
                     $mck_search_tabview_box.removeClass('vis').addClass('n-vis');
                     $mck_tab_individual.removeClass('n-vis').addClass('vis');
+                    
+                    $applozic("#km-faq").removeClass('vis').addClass('n-vis');
                     if (MCK_MODE === 'support') {
                         $applozic('.mck-tab-link').removeClass('vis').addClass('n-vis');
                     }
@@ -4193,6 +4197,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
+                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box.removeClass('n-vis').addClass('vis');
                     $mck_product_box.removeClass('vis').addClass('n-vis');
