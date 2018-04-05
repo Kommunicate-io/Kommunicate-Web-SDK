@@ -251,7 +251,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c86dd7', end
 .cta-email-pre-signup {
   background: #fff;
     width: 50%;
-    color: #5c5aa7;
+    color: #545454;
     font-size: 18px;
     padding: 15px 16px 15px 14px;
     margin: 0;
@@ -1113,7 +1113,7 @@ label {
   }
   .hero-subtext {
       font-size: 18px;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
   }
   .mobile-only {
       display: none;
@@ -1159,6 +1159,9 @@ label {
   }
   .no-credit-card-text {
     margin-left: 0px !important;
+  }
+  .homepage-beta-landing-page-section .no-credit-card-text {
+    display: none;
   }
 }
 
