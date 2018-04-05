@@ -2304,3 +2304,13 @@ input:-ms-input-placeholder {
     background-position: right -3px top -198px;
 }
 }
+
+
+.slider-container .slider-content .slider-single.proactive, .slider-container .slider-content .slider-single.preactive, .slider-container .slider-left, .slider-container .slider-right {
+  display: none;
+}
+
+.slider-container .slider-content {
+  width: 84%;
+  height: 58%;
+}
