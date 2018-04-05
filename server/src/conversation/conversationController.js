@@ -57,3 +57,14 @@ exports.updateConversation = (req, res) => {
         return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });
     })
 }
+
+exports.getConversationStats = (req, res) => {
+    let agentId = req.query.agentId;
+    let customerId = req.query.customerId;
+    return conversationService.getConversationStats(agentId, customerId).then(response => {
+        return res.status(200).json({ message: 'SUCCESS', response: response });
+    }).catch(err => {
+        console.log(err);
+        return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });
+    })
+}
