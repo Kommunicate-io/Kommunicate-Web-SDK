@@ -135,19 +135,12 @@ function activeCampaign(email) {
     }
   });
 }
-
 function clearbit(email, userId) {
     //Todo: clear all fields
-    $("#km-user-info-list .km-clearbit-field").html('');
-    $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-link").attr('href', '');
-    
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
-    //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
-    //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
-    $.ajax({
+        //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
+        //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
+      $.ajax({
         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
         type: 'GET',
         headers: {
@@ -155,12 +148,11 @@ function clearbit(email, userId) {
             "Authorization":"Bearer "+userSession.clearbitKey
         },
         success: function(response) {
-            displayCustInfo(response)
-            var user={'userId':userId,'metadata': {'kmClearbitData' : JSON.stringify(response)}}
-            window.Aside.updateApplozicUser(user);
+          displayCustInfo(response)
+          var user={'userId':userId,'metadata': {'kmClearbitData' : JSON.stringify(response)}}
+          window.Aside.updateApplozicUser(user);
         }
-    });
-
+      });
 }
 
 function displayCustInfo(clearbitData) {
