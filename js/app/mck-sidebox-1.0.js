@@ -486,6 +486,19 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
+            KommunicateKB.init("https://api.kommunicate.io");
+
+            KommunicateKB.getArticles({
+                data:
+
+                    { appId: 'kommunicate-support', query: '', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
+                , success: function (response) {
+                    console.log(response);
+                    $applozic.each(response.data, function (i, faq) {
+                        $("#faqdiv").append('<li class="faqlist" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="faqimage"/ ></div> <div class="faqanchor faqflex">' + faq.title + '</div></a></li>');
+                    });
+                }, error: function () { }
+            });
             mckMessageLayout.initEmojis();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
@@ -1825,6 +1838,47 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
             $applozic(d).on("click", ".mck-message-delete", function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
+            });
+
+            $applozic(d).on("click", "#faq", function () {
+                $applozic('.mck-message-inner').removeClass("vis").addClass("n-vis");
+                $applozic('#mck-conversation-title').removeClass("vis").addClass("n-vis");
+                $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+                $applozic('#faq').removeClass("vis").addClass("n-vis");
+                $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
+                $applozic('.faqback').removeClass("n-vis").addClass("vis");
+                $applozic('.faqtitle').removeClass("n-vis").addClass("vis");
+
+            });
+            $applozic(d).on("click", ".faqlist", function () {
+                $('#faqanswer').empty();
+                var articleId = $(this).attr('data-articleid');
+                var source = $(this).attr('data-source');
+                KommunicateKB.getArticle({
+                    data: { appId: 'kommunicate-support', articleId: articleId, source: source, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }, success: function (response) {
+                        $("#faqanswer").append('<li class="faqanswerlist"><div class=""> <div class="faqquestion">' + response.data.title + '</div> <div class="faqanchor faqanswer">' + response.data.description + '</div></div></li>');
+                        $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
+                        $applozic('.faqanswer').removeClass("n-vis").addClass("vis");
+
+                    }
+                    , error: function () { }
+                });
+            });
+            
+            $applozic(d).on("click", ".faqback", function () {
+                if ($applozic('#faqanswer').hasClass('vis')) {
+                    $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
+                    $applozic('#faqanswer').removeClass("vis").addClass("n-vis");
+                } else {
+                    $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
+                    $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
+                    $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
+                    $applozic('#faq').removeClass("n-vis").addClass("vis");
+                    $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
+                    $applozic('.faqback').removeClass("vis").addClass("n-vis");
+                    $applozic('.faqtitle').removeClass("vis").addClass("n-vis");
+                }
+
             });
 
             $applozic(d).on("click", ".mck-message-reply", function () {
