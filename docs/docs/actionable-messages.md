@@ -103,7 +103,7 @@ The appearance of the Quick Replies and Buttons will be adjusted automatically.
 
 The list template is a list of  structured items  with a optional header image and header text.
 
-![List Template](../website/static/img/list.jpg)
+![List Template](/img/list.jpg)
 
 
 
