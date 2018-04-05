@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="1536.724 -972.564 758.613 499.064">
+  <defs>
+    <linearGradient id="a" x1=".003" x2="1.351" y1=".498" y2=".758" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#499be4"/>
+      <stop offset=".475" stop-color="#5dd8db"/>
+      <stop offset="1" stop-color="#b4ec51"/>
+    </linearGradient>
+    <linearGradient id="b" x1="-.083" x2="1.02" y2="1.01" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#a6a8d3"/>
+      <stop offset="1" stop-color="#4831d9"/>
+    </linearGradient>
+  </defs>
+  <g data-name="Group 17">
+    <path fill="url(#a)" d="M757.968 528.125c0 194.83.18 316.316.869 436.587A511.446 511.446 0 0 1 513.5 1027C235.009 1027 8.3 804.536.224 528c11.65 0 492.689.086 757.744.125z" data-name="Oval 2 Copy" transform="translate(1536.5 -1500.5)"/>
+    <path fill="url(#b)" d="M380.014 141.221c.125 42.717-.022 366.834-.014 436.435A296.313 296.313 0 0 1 295 590C132.076 590 0 457.924 0 295a291.2 291.2 0 0 1 43.723-154.064c45.75.078 276.354.396 336.291.285z" data-name="Oval 2" transform="translate(1914.5 -1113.5)"/>
+  </g>
+</svg>
