@@ -487,15 +487,14 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckNotificationService.init();
             mckMapLayout.init();
             KommunicateKB.init("https://api.kommunicate.io");
-
             KommunicateKB.getArticles({
                 data:
 
-                    { appId: 'kommunicate-support', query: '', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
+                    { appId: MCK_APP_ID, query: '', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
                 , success: function (response) {
                     console.log(response);
                     $applozic.each(response.data, function (i, faq) {
-                        $("#faqdiv").append('<li class="faqlist" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="faqimage"/ ></div> <div class="faqanchor faqflex">' + faq.title + '</div></a></li>');
+                        $("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="km-faqimage"/ ></div> <div class="km-faqanchor km-faqflex">' + faq.title + '</div></a></li>');
                     });
                 }, error: function () { }
             });
@@ -1840,27 +1839,27 @@ var MCK_CLIENT_GROUP_MAP = [];
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
             });
 
-            $applozic(d).on("click", "#faq", function () {
+            $applozic(d).on("click", "#km-faq", function () {
                 $applozic('.mck-message-inner').removeClass("vis").addClass("n-vis");
                 $applozic('#mck-conversation-title').removeClass("vis").addClass("n-vis");
                 $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
-                $applozic('#faq').removeClass("vis").addClass("n-vis");
+                $applozic('#km-faq').removeClass("vis").addClass("n-vis");
                 $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
-                $applozic('.faqback').removeClass("n-vis").addClass("vis");
-                $applozic('.faqtitle').removeClass("n-vis").addClass("vis");
-                $applozic('.faqsearch').removeClass("n-vis").addClass("vis");
+                $applozic('.km-faqback').removeClass("n-vis").addClass("vis");
+                $applozic('.km-faqtitle').removeClass("n-vis").addClass("vis");
+                $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
 
             });
-            $applozic(d).on("click", ".faqlist", function () {
-                $('#faqanswer').empty();
+            $applozic(d).on("click", ".km-faq-list", function () {
+                $applozic('#km-faqanswer').empty();
                 var articleId = $(this).attr('data-articleid');
                 var source = $(this).attr('data-source');
                 KommunicateKB.getArticle({
                     data: { appId: 'kommunicate-support', articleId: articleId, source: source, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }, success: function (response) {
-                        $("#faqanswer").append('<li class="faqanswerlist"><div class=""> <div class="faqquestion">' + response.data.title + '</div> <div class="faqanchor faqanswer">' + response.data.description + '</div></div></li>');
+                        $applozic("#km-faqanswer").append('<li class="km-faqanswer-list"><div class=""> <div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.description + '</div></div></li>');
                         $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
-                        $applozic('.faqanswer').removeClass("n-vis").addClass("vis");
-                        $applozic('.faqsearch').removeClass("vis").addClass("n-vis");
+                        $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
+                        $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
 
                     }
                     , error: function () { }
@@ -1872,30 +1871,30 @@ var MCK_CLIENT_GROUP_MAP = [];
                         data:
                             { appId: 'kommunicate-support', query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
                         , success: function (response) {
-                            $('#faqdiv').empty();
+                            $applozic('#km-faqdiv').empty();
                             $applozic.each(response.data, function (i, faq) {
-                                $("#faqdiv").append('<li class="faqlist" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="faqimage"/ ></div> <div class="faqanchor faqflex">' + faq.title + '</div></a></li>');
+                                $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="km-faqimage"/ ></div> <div class="km-faqanchor km-faqflex">' + faq.title + '</div></a></li>');
                             });
                         }, error: function () { }
                     });
                 }
             });
             
-            $applozic(d).on("click", ".faqback", function () {
-                if ($applozic('#faqanswer').hasClass('vis')) {
+            $applozic(d).on("click", ".km-faqback", function () {
+                if ($applozic('#km-faqanswer').hasClass('vis')) {
                     $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
-                    $applozic('#faqanswer').removeClass("vis").addClass("n-vis");
-                    $applozic('.faqsearch').removeClass("n-vis").addClass("vis");
+                    $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+                    $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
                 }
                  else {
                     $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
-                    $applozic('#faq').removeClass("n-vis").addClass("vis");
+                    $applozic('#km-faq').removeClass("n-vis").addClass("vis");
                     $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
-                    $applozic('.faqback').removeClass("vis").addClass("n-vis");
-                    $applozic('.faqtitle').removeClass("vis").addClass("n-vis");
-                    $applozic('.faqsearch').removeClass("vis").addClass("n-vis");
+                    $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
+                    $applozic('.km-faqtitle').removeClass("vis").addClass("n-vis");
+                    $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
                 }
 
             });
