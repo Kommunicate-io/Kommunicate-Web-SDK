@@ -33,7 +33,7 @@ class NBAlgorithm(
 
   /** Prediction method for trained model. */
   def predict(model: NBModel, query: Query): PredictedResult = {
-    model.predict(query.text)
+    model.predict(query.appId, query.text)
   }
 }
 
@@ -73,7 +73,10 @@ class NBModel(
   /** Implement predict method for our model using
     * the prediction rule given in tutorial.
     */
-  def predict(doc : String) : PredictedResult = {
+  def predict(appId: String, doc : String) : PredictedResult = {
+  
+    //Todo: figure out how to use appId
+
     val x: Array[Double] = getScores(doc)
     val y: (Double, Double) = (nb.labels zip x).maxBy(_._2)
     PredictedResult(categoryMap.getOrElse(y._1, ""), y._2)
