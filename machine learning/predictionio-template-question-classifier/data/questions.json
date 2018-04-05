@@ -1,2 +1,2 @@
-{"eventTime": "2015-06-08T16:46:09.590+0000", "event": "chat", "entityType": "user", "entityId": "devashish@applozic.com", "properties": {"text": "What is the cost?", "label": "0"}}
-
+{"eventTime": "2015-06-08T16:46:09.590+0000", "event": "chat", "entityType": "user", "entityId": "devashish@applozic.com", "properties": {"appId": "applozic-sample-app", "text": "What is the cost?", "label": "30001"}}
+{"eventTime": "2015-06-08T16:46:09.590+0000", "event": "chat", "entityType": "user", "entityId": "devashish@applozic.com", "properties": {"appId": "kommunicate-support", "text": "What is the cost?", "label": "40001"}}
