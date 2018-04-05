@@ -215,10 +215,10 @@ const getConversationStats = (agentId, customerId) => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
-            let funct = users.map(user => {
+            let func = users.map(user => {
                 return getConversationStatByAgentId(user.id);
             })
-            return Promise.all(funct).then(data => {
+            return Promise.all(func).then(data => {
                 return { result: 'success', data: data };
             });
         }).catch(err => {
