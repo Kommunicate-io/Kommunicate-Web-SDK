@@ -267,7 +267,7 @@
 
 .mck-box-open .mck-box, .mck-box-open .mck-box {
 	overflow-x: hidden;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 }
 
 .mck-box div, .mck-box .mck-box-title {
@@ -1310,6 +1310,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: relative;
 	display: table-row;
 	height: 100%;
+	overflow-y: scroll;
 }
 
 .mck-box-body .mck-tab-cell {
@@ -4492,7 +4493,7 @@ color: rgba(0,0,0,0.5);
 
 .faqdiv{
 	overflow-y: auto;
-    height: 380px;
+    height: 480px;
 }
 
 .faqquestion{
@@ -4524,15 +4525,54 @@ color: rgba(0,0,0,0.5);
 	color: #757578!important;
 	
 }
+.faqsearch{
+	height: 32px;
+    padding: 0 5px;
+    width: calc(100% - 35px);
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    outline: none;
+    background-image: none;
+    border: 0;
+    position: relative;
+    z-index: 2;
+    float: left;
+    margin-bottom: 0;
+	display: table-cell;
+	margin-right:5px;
+	margin-left:5px;
+	opacity: 0.22;
+	border-radius: 3px;
+	background-color: #8b8b8c;
+  
+}
 .faqtitle{
 	flex: 1;
     width: 60px;
     font-size: 16px;
 }
+.faqbtn{
+	background-color: #716fb3;
+}
+.button:hover #faqbtn {
+	background-color: #716fb3;
+}
 
 .faqback{
 	flex: 1;
     font-size: 20px;
+}
+.km-search-icon{
+	position: absolute;
+    left: 15px;
+    top: 2px;
+}
+
+.km-faqsearch-input{
+	padding-left: 42px!important;
+	width: 349px!important;
+	height: 31px!important;
 }
 
 .mck-title{

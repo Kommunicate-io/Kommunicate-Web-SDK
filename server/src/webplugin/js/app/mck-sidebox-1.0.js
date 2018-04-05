@@ -1848,6 +1848,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
                 $applozic('.faqback').removeClass("n-vis").addClass("vis");
                 $applozic('.faqtitle').removeClass("n-vis").addClass("vis");
+                $applozic('.faqsearch').removeClass("n-vis").addClass("vis");
 
             });
             $applozic(d).on("click", ".faqlist", function () {
@@ -1859,17 +1860,34 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $("#faqanswer").append('<li class="faqanswerlist"><div class=""> <div class="faqquestion">' + response.data.title + '</div> <div class="faqanchor faqanswer">' + response.data.description + '</div></div></li>');
                         $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                         $applozic('.faqanswer').removeClass("n-vis").addClass("vis");
+                        $applozic('.faqsearch').removeClass("vis").addClass("n-vis");
 
                     }
                     , error: function () { }
                 });
+            });
+            $("#km-contact-search-input").keypress(function (e) {
+                if (e.which == 32 || e.which == 13) {
+                    KommunicateKB.getArticles({
+                        data:
+                            { appId: 'kommunicate-support', query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
+                        , success: function (response) {
+                            $('#faqdiv').empty();
+                            $applozic.each(response.data, function (i, faq) {
+                                $("#faqdiv").append('<li class="faqlist" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="faqdisplay"> <div><img src="https://static.pexels.com/photos/39517/rose-flower-blossom-bloom-39517.jpeg" class="faqimage"/ ></div> <div class="faqanchor faqflex">' + faq.title + '</div></a></li>');
+                            });
+                        }, error: function () { }
+                    });
+                }
             });
             
             $applozic(d).on("click", ".faqback", function () {
                 if ($applozic('#faqanswer').hasClass('vis')) {
                     $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
                     $applozic('#faqanswer').removeClass("vis").addClass("n-vis");
-                } else {
+                    $applozic('.faqsearch').removeClass("n-vis").addClass("vis");
+                }
+                 else {
                     $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
@@ -1877,6 +1895,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                     $applozic('.faqback').removeClass("vis").addClass("n-vis");
                     $applozic('.faqtitle').removeClass("vis").addClass("n-vis");
+                    $applozic('.faqsearch').removeClass("vis").addClass("n-vis");
                 }
 
             });
