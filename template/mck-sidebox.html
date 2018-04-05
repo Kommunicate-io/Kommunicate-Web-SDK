@@ -4,7 +4,7 @@
 			class="mck-sidebox-content mck-box-content">
 			<div id="mck-conversation-header"
 				class="mck-conversation-header mck-truncate n-vis"></div>
-			<div class="mck-box-top">
+			<div class="mck-box-top mck-title">
 				<div class="blk-lg-10">
 					<div id="mck-tab-individual" class="mck-row">
 						<div class="mck-tab-link blk-lg-2">
@@ -34,7 +34,12 @@
 					<div id="mck-tab-conversation" class="mck-row">
 						<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
 					</div>
+					<div>
+					<div class="blk-lg-2 km-faqback"><pre>&lt;</pre> </div>
+					<div class="km-faqtitle">FAQ</div>
+					</div>
 				</div>
+				<button id="km-faq" class="km-faq"type="button">FAQ</button>
 				<div class="blk-lg-2">
 					<button type="button"
 						class="mck-minimize-icon mck-box-close mck-close icon n-vis">
@@ -156,6 +161,19 @@
 						</div>
 					</div>
 					<div class="mck-message-inner"></div>
+					
+						<div id="km-faqdiv" class="mck-faq-inner km-faqdiv"></div>
+						<div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12 n-vis">
+							<span class="km-search-icon">
+								<a href="#" role="link" class="mck-contact-search-link">
+									<span class="mck-icon-search"></span>
+								</a>
+							</span>
+							<input id="km-contact-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search..." autofocus="" class="mck-typeahead">
+						</div>
+						<div id="km-faqanswer" class="km-faqanswer"></div>
+					</div>
+					
 					<div id="mck-contact-loading" class="mck-loading">
 						<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif"
 							alt="Loading" />

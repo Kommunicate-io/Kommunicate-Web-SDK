@@ -53,7 +53,10 @@ function ApplozicSidebox() {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/js/app/km-utils.js"
-    }/*, {
+    },{
+        "name":"faq","url" : MCK_STATICPATH+"/knowledgebase/kommunicate-kb-0.1.min.js"
+    }
+    /*, {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
     var mck_script_loader2 = [ {
