@@ -690,11 +690,14 @@
         bottom: 2px;
         left: 12px;
         margin: 0;
+        margin-bottom: 0px !important;
+        padding: 7px !important;
         text-align:center;
         width: calc(100% - 12px);
         color: #fff;
         word-wrap: break-word;
         font-size: 16px;
+        border-bottom: 1px solid #edeff1;
     }
     
     .faq-list--footer {
@@ -717,8 +720,8 @@
     
     .faq-list--header_text-container {
         background-color: #fff;
-        border-top: solid 1px #e5e5e5;
-        border-bottom: solid 1px #e5e5e5;
+        border: none !important;
+        min-height:10px;
     }
     .faq-list--header_text {
         margin: 0;
@@ -781,4 +784,10 @@
     .faq-answer--footer_button-text-container button {
         margin-left: 10px;
         margin-right: 10px;
+    }
+
+
+
+    .faq-list--header .faq-list--header_text-container:first-child{
+        border-radius: 16px 16px 0px 0px;
     }
