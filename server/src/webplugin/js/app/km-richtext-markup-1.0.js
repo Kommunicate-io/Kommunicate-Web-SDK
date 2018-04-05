@@ -172,13 +172,9 @@ getListMarkup:function(){
    return `<div class="message received faq-list" style="">
     <div class="faq-list--container"  >
             <div class="faq-list--header">
-                    <div class="faq-list--header_text-img">
-                            {{{headerImgSrc}}}
-                    </div>
+                    {{{headerImgSrc}}}
                     <div class="faq-list--header_text-container">
-                            <p class="faq-list--header_text">
-                                    {{headerText}}
-                            </p>
+                                    {{{headerText}}}
                         </div>
         </div>
         <div class="faq-list--body">
@@ -303,8 +299,11 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
-            json.headerImgSrc = '<img src= '+json.headerImgSrc+'/>' 
-        }if(json.elements.length){
+            json.headerImgSrc = '<div class="faq-list--header_text-img"><img src= '+json.headerImgSrc+'/></div>' 
+        }if(json.headerText){
+            json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
+        }
+        if(json.elements.length){
             json.elements =   json.elements.map(function(item){
                // checking for image
                 if(item.imgSrc){
