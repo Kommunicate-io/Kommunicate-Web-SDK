@@ -2238,7 +2238,7 @@ input:-ms-input-placeholder {
     margin: -120px auto 0px;
   }
 }
-@media screen and (max-width:885px) {
+@media screen and (max-width:927px) {
   .homepage-beta-landing-page-section .bg-oval {
     display: block;
     width: auto;
@@ -2263,10 +2263,44 @@ input:-ms-input-placeholder {
 }
 
 
+@media screen and (min-width:928px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg.svg);
+    background-size: 820px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -64px;
+  }
+}
+@media screen and (min-width:928px) and (max-width:991px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg.svg);
+    background-size: 700px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -64px;
+}
+}
 
-/* .homepage-beta-landing-page-section {
-  background-image: url(/assets/resources/images/colorful-bg.svg);
-  background-size: auto;
-  background-repeat: no-repeat;
-  background-position: 195% 163%;
-} */
+@media screen and (min-width:1440px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg.svg);
+    background-repeat: no-repeat;
+    background-size: 900px;
+    background-position: right -5px top -98px;
+}
+}
+@media screen and (min-width:1600px) and (max-width:1750px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg.svg);
+    background-repeat: no-repeat;
+    background-size: 1000px;
+    background-position: right -3px top -158px;
+}
+}
+@media screen and (min-width:1751px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg.svg);
+    background-repeat: no-repeat;
+    background-size: 1090px;
+    background-position: right -3px top -198px;
+}
+}
