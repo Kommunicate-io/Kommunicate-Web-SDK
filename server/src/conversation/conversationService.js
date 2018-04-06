@@ -202,21 +202,24 @@ const getConversationAssigneeFromMap = (userIds, key) => {
     });
 };
 
-const getConversationStatByAgentId = (agentId) => {
-    return Promise.resolve(db.Conversation.findAll({ group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] }, { where: { agentId: agentId } })).then(result => {
-        console.log('response of data:', result)
+const getConversationStatByAgentId = (agentId, startTime, endTime) => {
+    let criteria={agentId: agentId}
+    if(startTime && endTime){
+        criteria.created_at={$between:[new Date(startTime),new Date(endTime)]}
+    }
+    return Promise.resolve(db.Conversation.findAll({where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
         return { agentId: agentId, statics: result };
     }).catch(err => { throw err });
 }
 
-const getConversationStats = (agentId, customerId) => {
+const getConversationStats = (agentId, customerId, startTime, endTime) => {
     if (customerId) {
         return userService.getUsersByCustomerId(customerId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
             let func = users.map(user => {
-                return getConversationStatByAgentId(user.id);
+                return getConversationStatByAgentId(user.id, startTime, endTime);
             })
             return Promise.all(func).then(data => {
                 return { result: 'success', data: data };
@@ -227,7 +230,7 @@ const getConversationStats = (agentId, customerId) => {
         })
     }
     if (agentId) {
-        return getConversationStatByAgentId(agentId).then(stat => {
+        return getConversationStatByAgentId(agentId, startTime, endTime).then(stat => {
             return { result: 'success', data: stat };
         }).catch(err => {
             console.log(err);
