@@ -98,7 +98,7 @@ class Integrations extends Component {
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className={item.key == "clearbit" || item.key == "zendesk" ? "integration-settings" + " " + item.key : "integration-settings not-active"} onClick={this.openModal}>{item.status}</span>
+                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>Settings</span>
                      </div>
                  </div>);
              }

@@ -41,7 +41,7 @@ class SettingsSidebar extends Component {
                             <NavLink to={'/settings/team'} className="ss-nav-link" activeClassName="active">Team</NavLink>
                         </li>
                         <li className="ss-nav-item agent-assignment-link">
-                            <NavLink to={'/settings/agent-assignment'} className="ss-nav-link" activeClassName="active">Agent Assignment</NavLink>
+                            <NavLink to={'/settings/agent-assignment'} className="ss-nav-link" activeClassName="active">Conversation Routing</NavLink>
                         </li>
                         <li className="ss-nav-title">
                             CONFIGURATION

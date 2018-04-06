@@ -8,7 +8,7 @@ import {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import Notification from '../model/Notification';
 import {createSuggestions, getSuggestionsByCriteria, deleteSuggestionsById, updateSuggestionsById} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Button, Modal as FaqModal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import bot1x from './images/bot-icon.png';
@@ -17,7 +17,12 @@ import bot3x from './images/bot-icon@3x.png';
 import {Link} from 'react-router-dom';
 import trash2x from './images/trash-icon@2x.png';
 import {AUTOREPLY} from '../Autoreply/Constant';
-
+import HelpdocsLogo from '../Integrations/images/helpdocs.png';
+import TickIcon from '../Integrations/images/tick.png';
+import { thirdPartyList } from '../Integrations/ThirdPartyList';
+import Modal  from 'react-responsive-modal'  ;
+import IntegrationDescription from '../Integrations/IntegrationDescription.js';
+import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 
 class Tabs extends Component {
 
@@ -34,8 +39,12 @@ class Tabs extends Component {
       isDraft: true,
       isPublished: false,
       listOfFAQs: [],
-      faqId: null
+      faqId: null,
+      modalIsOpen:false,
+      helpdocsKey:[],
     };
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
 
     let userSession = CommonUtils.getUserSession();
     this.applicationId = userSession.application.applicationId;
@@ -46,7 +55,8 @@ class Tabs extends Component {
 
   componentDidMount=()=>{
 
-    this.getFaqsWrapper()
+    this.getFaqsWrapper();
+    this.getThirdPartyList();
 
   }
 
@@ -79,7 +89,29 @@ class Tabs extends Component {
       faqId: null
     })
   }
+  getThirdPartyList = () =>{
+    return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
+      let helpdocsKey = response.data.message.filter(function (integration) {
+        return integration.type == 1;
+      });
+      this.setState({
+        helpdocsKey:helpdocsKey
+      })
+        
+    }).catch(err => {
+        console.log("Error while fetching third patry intgration list", err);
+    })
+}
 
+  openModal = (event) => {
+    this.setState({
+        modalIsOpen: true
+    });
+  }
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  }
   setFAQDetails = (title, content, status, id) => {
     this.setState({
       faqId: id,
@@ -225,7 +257,11 @@ class Tabs extends Component {
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
                   <p>
-                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}><img src={bot2x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> <Link to="/settings/agent-assignment">Conversation Routing </Link>  </span> to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
+                  <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}>
+                  <img src={bot2x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> 
+                  &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> 
+                  <Link className="faq-converstion-routing-link" to="/settings/agent-assignment">Conversation Routing </Link>  </span> 
+                  to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
                   </p>
                 </div>
               </div>
@@ -233,6 +269,28 @@ class Tabs extends Component {
                 <button className="km-button km-button--primary" onClick={this.toggleFaqModal}>
                   + Add a FAQ
                 </button>
+                <div className="km-faq-or">OR</div>
+                { this.state.helpdocsKey.length == 0 &&
+                  <button className="km-button km-button--secondary" onClick={this.openModal}>
+                  <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
+                    Integrate with Helpdocs
+                  </button>
+                }
+                
+                { this.state.helpdocsKey.length > 0 &&
+                  <div className="km-faq-helpdocs-edit-wrapper">
+                    <img className="km-faq-helpdocs-logo" src={TickIcon} />
+                    <span className="km-faq-helpdocs-edit">Integration done with Helpdocs
+                    <span onClick ={this.openModal}  className="km-faq-helpdocs-edit km-faq-edit-btn"> Edit</span></span>
+                  </div>
+                }
+                <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
+                  <div>
+                    <IntegrationDescription activeModal={"helpdocs"} handleCloseModal={this.closeModal} 
+                      getThirdPartyList = {this.getThirdPartyList} helpdocsKeys={this.state.helpdocsKey}/> 
+                  
+                  </div>
+                </Modal>
               </div>
               <div className={this.state.listOfFAQs.length > 0 ? "mt-4 km-faq-container":"n-vis"}>
                 <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2", height: "35px", paddingTop: "0.4rem"}}>
@@ -256,7 +314,7 @@ class Tabs extends Component {
             </div>
           </div>
         </div>
-        <Modal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog">
+        <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleFaqModal}>
           </ModalHeader>
           <ModalBody>
@@ -322,7 +380,7 @@ class Tabs extends Component {
               </div> 
             </div>
           </ModalBody>
-        </Modal>
+        </FaqModal>
       </div>
     )
   }
