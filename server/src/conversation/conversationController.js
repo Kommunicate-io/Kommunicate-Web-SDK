@@ -61,7 +61,9 @@ exports.updateConversation = (req, res) => {
 exports.getConversationStats = (req, res) => {
     let agentId = req.query.agentId;
     let customerId = req.query.customerId;
-    return conversationService.getConversationStats(agentId, customerId).then(response => {
+    let startTime = req.query.startTime*1;
+    let endTime = req.query.endTime*1;
+    return conversationService.getConversationStats(agentId, customerId, startTime, endTime).then(response => {
         return res.status(200).json({ message: 'SUCCESS', response: response });
     }).catch(err => {
         console.log(err);
