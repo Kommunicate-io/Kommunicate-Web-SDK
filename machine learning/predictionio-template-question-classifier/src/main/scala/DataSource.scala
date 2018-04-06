@@ -36,7 +36,7 @@ class DataSource (
     //Get RDD of Events.
     PEventStore.find(
       appName = dsp.appName,
-      entityType = Some("content"), // specify data entity type
+      entityType = Some("user"), // specify data entity type
       eventNames = Some(List("e-mail", "chat")) // specify data event name
 
       // Convert collected RDD of events to and RDD of Observation
@@ -46,9 +46,9 @@ class DataSource (
       Observation(
         // if (label == "spam") 10.0 else if (label == "Q1") 1.0 else if (label == "Q2") 2.0 else if (label == "Q3") 3.0 else 0.0,
         if (label != "") label.toDouble else 0.0,
+        e.properties.get[String]("appId"),
         e.properties.get[String]("text"),
-        //e.properties.get[String]("appId"),
-        label
+        label.toDouble
       )
     }).cache
   }
@@ -94,7 +94,7 @@ class DataSource (
       // Prepare test data for fold.
       val test = data.filter(_._2 % dsp.evalK.get == k)
         .map(_._1)
-        .map(e => (Query(e.text), ActualResult(e.category)))
+        .map(e => (Query(e.appId, e.text), ActualResult(e.category)))
 
       (train, new EmptyEvaluationInfo, test)
     }
@@ -107,6 +107,7 @@ class DataSource (
   */
 case class Observation(
   label: Double,
+  appId: String,
   text: String,
   category: String
  // appId: String
