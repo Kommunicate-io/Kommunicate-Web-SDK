@@ -271,7 +271,7 @@
 }
 
 .mck-box div, .mck-box .mck-box-title {
-	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif !important;
+	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif ;
 }
 
 .mck-sidebox .mck-box-title {
@@ -4447,7 +4447,7 @@ color: rgba(0,0,0,0.5);
 /********** Guest Details Form Ends Here ***********/
 
 .mck-away-msg{
-	font-family: Roboto !important;
+	font-family: 'Roboto', sans-serif!important;
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
@@ -4487,7 +4487,7 @@ color: rgba(0,0,0,0.5);
 	color: grey !important;
 	/* font-size: larger!important; */
 	width: calc(100% - 80px);
-	font-family: Roboto!important;
+	font-family: 'Roboto', sans-serif!important;
 	font-size: 14px!important;
 	font-weight: normal;
 	font-style: normal;
@@ -4507,14 +4507,14 @@ color: rgba(0,0,0,0.5);
 
 .km-faqdiv{
 	overflow-y: auto;
-    height: 430px;
+    height: 100%;
 }
 
 .km-faqquestion{
 	width: 345px;
 	height: 32px;
-	font-family: Roboto!important;
-	font-size: 14px!important;
+	font-family: 'Roboto', sans-serif!important;
+	font-size: 16px!important;
 	font-weight: 500;
 	font-style: normal;
 	font-stretch: normal;
@@ -4533,9 +4533,9 @@ color: rgba(0,0,0,0.5);
 
 .km-faqanswer{
 	width: 345px;
-	height: 193px;
-	font-family: Roboto!important;
-	font-size: 14px!important;
+	height: 90%;
+	font-family: 'Roboto', sans-serif!important;
+	font-size: 16px!important;
 	font-weight: normal;
 	font-style: normal;
 	font-stretch: normal;
@@ -4558,7 +4558,7 @@ color: rgba(0,0,0,0.5);
     position: relative;
     z-index: 2;
     float: left;
-    margin-bottom: 0;
+    margin-bottom: -10;
 	display: table-cell;
 	margin-right:5px;
 	margin-left:5px;
@@ -4567,7 +4567,8 @@ color: rgba(0,0,0,0.5);
 	/* background-color: #8b8b8c; */
 	padding-top: 30px!important;
     padding-bottom: 35px;
-    border-top: 1px solid black!important;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5)!important;
+	
   
 }
 .km-faqtitle{
@@ -4587,7 +4588,7 @@ color: rgba(0,0,0,0.5);
 	font-size: 20px;
 	margin-top: -20px;
 }
-.km-search-icon{
+.km-faqsearch-icon{
 	position: absolute;
     left: 15px;
     top: 39px;
@@ -4613,7 +4614,7 @@ color: rgba(0,0,0,0.5);
 }
 #km-contact-search-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 	
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif;
 	font-size: 20px;
 	font-weight: normal;
 	font-style: normal;

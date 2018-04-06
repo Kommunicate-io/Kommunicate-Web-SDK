@@ -1846,7 +1846,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if(document.getElementById("km-faqdiv").hasChildNodes()){
                 $applozic('.mck-message-inner').removeClass("vis").addClass("n-vis");
                 $applozic('#mck-conversation-title').removeClass("vis").addClass("n-vis");
-                $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+                $applozic('#mck-contacts-content').removeClass("vis").addClass("n-vis");
                 $applozic('#km-faq').removeClass("vis").addClass("n-vis");
                 $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
                 $applozic('.km-faqback').removeClass("n-vis").addClass("vis");
@@ -1899,7 +1899,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                  else {
                     $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
-                    $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
+                    $applozic('#mck-contacts-content').removeClass("n-vis").addClass("vis");
                     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
                     $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                     $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
