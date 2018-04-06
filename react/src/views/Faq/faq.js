@@ -258,7 +258,7 @@ class Tabs extends Component {
                   </p>
                   <p>
                   <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}>
-                  <img src={bot2x} style={{widht: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> 
+                  <img src={bot2x} style={{width: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> 
                   &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> 
                   <Link className="faq-converstion-routing-link" to="/settings/agent-assignment">Conversation Routing </Link>  </span> 
                   to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
