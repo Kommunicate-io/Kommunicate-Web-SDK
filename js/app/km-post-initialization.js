@@ -19,7 +19,7 @@ Kommunicate.postPluginInitialization= function(err,data){
 });
 // get the third party settings 
 // 1: for helpDocs
-/*Kommunicate.client.getThirdPartySettings({appId:data.appId,type:1},function(err,settings){
+Kommunicate.client.getThirdPartySettings({appId:data.appId,type:1},function(err,settings){
     if(err){
         console.log("err : ", err);
         return;
@@ -29,11 +29,9 @@ Kommunicate.postPluginInitialization= function(err,data){
         var helpdocsKey = settings.message.find(function(item){
             return item.type==KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
         });
-       // KommunicateKB.init(Kommunicate.getBaseUrl());
-       // KommunicateKB.getArticles({data: {appId: settings.appId, query: 'fcm', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
-       KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY",helpdocsKey)
+        helpdocsKey&&KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY",helpdocsKey.accessKey)
        console.log("helodocs key",KommunicateUtils.getDataFromKmSession('HELPDOCS_KEY'));
     }
-})*/
+})
 
 }
