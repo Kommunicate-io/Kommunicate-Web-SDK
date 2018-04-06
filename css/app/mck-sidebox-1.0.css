@@ -4529,6 +4529,7 @@ color: rgba(0,0,0,0.5);
 	background-color: #716fb3 !important;
 	color: white;
 	border: none;
+	width: 76px;
 }
 
 .km-faqanswer{
@@ -4574,7 +4575,8 @@ color: rgba(0,0,0,0.5);
 .km-faqtitle{
 	flex: 1;
     width: 60px;
-    font-size: 16px;
+	font-size: 16px;
+	margin-left: 35px;
 }
 .km-faqbtn{
 	background-color: #716fb3;
@@ -4584,9 +4586,10 @@ color: rgba(0,0,0,0.5);
 }
 
 .km-faqback{
-	flex: 1;
-	font-size: 20px;
-	margin-top: -20px;
+	margin-top: 10px;
+	white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
 }
 .km-faqsearch-icon{
 	position: absolute;
@@ -4600,7 +4603,8 @@ color: rgba(0,0,0,0.5);
     padding-left: 42px!important;
     width: 300px!important;
     height: 31px!important;
-    background-color: #8b8b8c!important;
+	background-color: #8b8b8c!important;
+	color: white!important;
 }
 
 .mck-title{
