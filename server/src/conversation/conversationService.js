@@ -5,6 +5,7 @@ const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
+const Sequelize= require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
 
 /**
@@ -201,11 +202,47 @@ const getConversationAssigneeFromMap = (userIds, key) => {
     });
 };
 
+const getConversationStatByAgentId = (agentId) => {
+    return Promise.resolve(db.Conversation.findAll({ group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] }, { where: { agentId: agentId } })).then(result => {
+        console.log('response of data:', result)
+        return { agentId: agentId, statics: result };
+    }).catch(err => { throw err });
+}
+
+const getConversationStats = (agentId, customerId) => {
+    if (customerId) {
+        return userService.getUsersByCustomerId(customerId).then(users => {
+            if (users.length == 0) {
+                return { result: 'no user stats found', data: [] };
+            }
+            let func = users.map(user => {
+                return getConversationStatByAgentId(user.id);
+            })
+            return Promise.all(func).then(data => {
+                return { result: 'success', data: data };
+            });
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+    }
+    if (agentId) {
+        return getConversationStatByAgentId(agentId).then(stat => {
+            return { result: 'success', data: stat };
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+    }
+    return Promise.resolve({ result: 'oops! invalid query', data: [] });
+}
+
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
     updateTicketIntoConversation: updateTicketIntoConversation,
     updateConversation: updateConversation,
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
-    createConversation: createConversation
+    createConversation: createConversation,
+    getConversationStats:getConversationStats
 }

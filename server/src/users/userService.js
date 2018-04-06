@@ -459,6 +459,16 @@ const emailValidation = (email) => {
   });
 }
 
+const getUsersByCustomerId = (customerId) => {
+  let criteria = {
+    customerId: customerId,
+    type: { [Op.or]: [registrationService.USER_TYPE.ADMIN, registrationService.USER_TYPE.AGENT] }
+  };
+  return Promise.resolve(userModel.findAll({ where: criteria })).then(users => {
+    return users;
+  });
+}
+
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
@@ -475,3 +485,4 @@ exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;
 exports.getAllUsersOfCustomer= getAllUsersOfCustomer;
 exports.getAvailableAgents= getAvailableAgents;
+exports.getUsersByCustomerId=getUsersByCustomerId;
