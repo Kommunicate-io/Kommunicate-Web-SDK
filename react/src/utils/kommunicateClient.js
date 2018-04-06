@@ -809,6 +809,18 @@ const updateZendeskIntegrationTicket = (data,groupId) => {
 
 }
 
+const getConversationStats = (isCustomer) => {
+  let userSession = CommonUtils.getUserSession();
+  let query = isCustomer ? 'customerId=' + userSession.customerId : 'agentId' + userSession.id;
+  let url = getConfig().kommunicateBaseUrl + "/conversations?" + query;
+  return Promise.resolve(axios.get(url)).then(response => {
+    console.log('filter: ', response);
+    return response;
+  }).catch(err => {
+    return;
+  });
+}
+
 
 export {
   createCustomer,
