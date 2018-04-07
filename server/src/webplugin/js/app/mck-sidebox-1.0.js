@@ -443,6 +443,8 @@ var MCK_CLIENT_GROUP_MAP = [];
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
+        var mcktimer;
+        var helpdocskey ;
         w.MCK_OL_MAP = new Array();
         _this.events = {
             'onConnectFailed': function () { },
@@ -486,21 +488,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            KommunicateKB.init("https://api.kommunicate.io");
-            var helpdocskey = JSON.parse(sessionStorage.kommunicate).HELPDOCS_KEY;
-            if(helpdocskey){
-            KommunicateKB.getArticles({
-                data:
-
-                    { appId: MCK_APP_ID, query: '', helpdocsAccessKey: helpdocskey}
-                , success: function (response) {
-                    console.log(response);
-                    $applozic.each(response.data, function (i, faq) {
-                        $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
-                    });
-                }, error: function () { }
-            });
-        }
             mckMessageLayout.initEmojis();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
@@ -1470,6 +1457,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
+                if(sessionStorage.kommunicate && JSON.parse(sessionStorage.kommunicate).HELPDOCS_KEY){
+                    helpdocskey = JSON.parse(sessionStorage.kommunicate).HELPDOCS_KEY;
+                }
             };
             _this.validateAppSession = function (userPxy) {
                 var appHeaders = mckStorage.getAppHeaders();
@@ -1863,8 +1853,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var articleId = $(this).attr('data-articleid');
                 var source = $(this).attr('data-source');
                 KommunicateKB.getArticle({
-                    data: { appId: 'kommunicate-support', articleId: articleId, source: source, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }, success: function (response) {
-                        $applozic("#km-faqanswer").append('<li class="km-faqanswer-list"><div class=""> <div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.description + '</div></div></li>');
+                    data: { appId: MCK_APP_ID, articleId: articleId, source: source, helpdocsAccessKey: helpdocskey }, success: function (response) {
+                        $applozic("#km-faqanswer").append('<li class="km-faqanswer-list"><div class=""> <div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div></li>');
                         $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                         $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
                         $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
@@ -1873,11 +1863,25 @@ var MCK_CLIENT_GROUP_MAP = [];
                     , error: function () { }
                 });
             });
-            $("#km-contact-search-input").keypress(function (e) {
+            $("#km-contact-search-input").keydown(function (e) {
+                   clearTimeout(mcktimer);
+                   mcktimer=setTimeout(function validate(){
+                       KommunicateKB.getArticles({
+                        data:
+        
+                            { appId: MCK_APP_ID, query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: helpdocskey}
+                        , success: function (response) {
+                            $applozic('#km-faqdiv').empty();
+                            $applozic.each(response.data, function (i, faq) {
+                                $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
+                            });
+                        }, error: function () { }
+                    });
+                    },2000);
                 if (e.which == 32 || e.which == 13) {
                     KommunicateKB.getArticles({
                         data:
-                            { appId: 'kommunicate-support', query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao' }
+                            { appId: MCK_APP_ID, query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: helpdocskey }
                         , success: function (response) {
                             $applozic('#km-faqdiv').empty();
                             $applozic.each(response.data, function (i, faq) {
