@@ -58,7 +58,7 @@ a, a:hover, a:focus, a:active {
   position: relative;
   padding-top: 50px;
   /* height: 100vh; */
-  min-height: 830px;
+  min-height: 760px;
   overflow: hidden;
   background: transparent;
 }
