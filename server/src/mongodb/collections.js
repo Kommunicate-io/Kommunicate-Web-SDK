@@ -1,0 +1,3 @@
+exports.COLLECTIONS={
+    FAQ:"faq"
+}

@@ -41,14 +41,13 @@ const updateTicketIntoConversation = (groupId, options) => {
 }
 /**
  * create a new conversation
- *@param options
- {
- *      groupId: applozic gruop Id
- *      participentUserId : user who is involved in this conversation
- *      createdBy: Applozic userId if comming from plugin. AgentId if comming from dashboard;
- *      status : "OPEN","ASIGNED","CLOSED","SPAM","REOPENED",
- *      defaultAgentId: assignee agent Id
- * }
+ *@param {Object} options
+ *@param {Object} options.groupId: applozic gruop Id
+ *@param {Object} options.participentUserId : user who is involved in this conversation
+ *@param {Object} options.createdBy: Applozic userId if comming from plugin. AgentId if comming from dashboard;
+ *@param {Object} options.status : "OPEN","ASIGNED","CLOSED","SPAM","REOPENED",
+ *@param {Object} options.defaultAgentId: assignee agent Id
+ * 
  */
 const createConversation = (options) => {
     console.log("creating new converation, options:", options);

@@ -30,6 +30,7 @@ const integrationSettingController = require('../thirdPartyIntegration/integrati
 const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
 
 
+
 //router declaration
 const userRouter = express.Router();
 const applicationRouter = express.Router();
@@ -47,6 +48,7 @@ const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
 const zendeskRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
+const faqRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -65,6 +67,7 @@ exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
 exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
+exports.faq=faqRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -162,3 +165,7 @@ zendeskRouter.get('/:appId/ticket/:groupId', validate(zendeskValidation.getTicke
 thirdPartySettingRouter.post('/:appId/insert/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
 thirdPartySettingRouter.get('/:appId',validate(thirdPartySettingValidation.getSettings), integrationSettingController.getIntegrationSetting)
 thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.deleteIntegrationSetting)
+/**
+ * Faq search
+ */
+faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
