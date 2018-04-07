@@ -136,6 +136,7 @@ function activeCampaign(email) {
   });
 }
 function clearbit(email, userId) {
+    
     //Todo: clear all fields
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
         //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
