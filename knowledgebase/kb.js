@@ -23,6 +23,7 @@
                         title: article.name,
                         description: article.content, 
                         status: article.status,
+                        body: article.content,
                         source: SOURCES.kommunicate
                     });
                 }
@@ -37,6 +38,7 @@
                                     articleId: article.article_id,
                                     title: article.title,
                                     description: article.description, 
+                                    body: article.description,
                                     url: article.url,
                                     source: SOURCES.helpdocs
                                 });
@@ -81,6 +83,7 @@
                         articleId: article.article_id,
                         title: article.title,
                         description: article.description, 
+                        body: article.body,
                         url: article.url,
                         source: SOURCES.helpdocs
                     };
