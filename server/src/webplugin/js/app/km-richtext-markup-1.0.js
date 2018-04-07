@@ -181,7 +181,7 @@ getListMarkup:function(){
             <div class="faq-list--body_list-container">
                 <ul class="faq-list--body_list">
                     {{#elements}}
-                    <li class ={{hadlerClass}} data-type={{dataType}} data-reply = {{dataReply}} data-articleid= {{dataArticleId}} data-source={{source}}> <a href={{href}} target="_blank" class="km-undecorated-link" >
+                    <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
                             <div class="faq-list--body_img">
                                     {{{imgSrc}}}
                             </div>
@@ -203,7 +203,7 @@ getListMarkup:function(){
         <div class="faq-list--footer">
                 <div class="faq-list--footer_button-container">
                         {{#buttons}}
-                        <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ={{dataType}} data-reply={{dataReply}}><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
+                        <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
                         {{/buttons}}
                     
             </div>
