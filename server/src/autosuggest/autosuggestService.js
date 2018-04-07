@@ -5,6 +5,9 @@ const stringUtils = require("underscore.string");
 const config = require("../../conf/config");
 const Sequelize= require("sequelize");
 const Op = Sequelize.Op;
+const logger = require("../utils/logger");
+const mongoClient = require("../mongodb/client");
+const collections = require("../mongodb/collections").COLLECTIONS;
 
 const getAllSuggestions = () => {
 	return autoSuggestModel.findAll()
@@ -57,23 +60,55 @@ const getSuggestionsByCriteria = (criteria, value, applicationId) => {
 }
 
 const createSuggestion = (suggestion) => {
-	return autoSuggestModel.create(suggestion)
+	 return db.sequelize.transaction(t=> {
+	 	return autoSuggestModel.create(suggestion,{transaction:t}).then(data=>{
+			logger.info("auto suggestion is created. making entry in mongo db", data);
+			return mongoClient.insertOne(collections.FAQ,data.dataValues).then(mongoResult=>{
+				return data;
+			}).catch(e=>{
+				logger.error("error while creating auto suggestion/faq",e);
+				throw e;
+			});
+		 })
+	})
 }
 
 const updateSuggetion = (suggestion) => {
-	return autoSuggestModel.update(suggestion, {
-		where: {
-			id: suggestion.id
-		}
-	});
+	return db.sequelize.transaction(t=> {
+		return autoSuggestModel.update(suggestion, {
+			where: {
+				id: suggestion.id
+			},transaction:t
+		}).then(data=>{
+			logger.info("auto suggestion is updated. updating in mongo db", data);
+			return mongoClient.updateOne({collectionName:collections.FAQ,criteria:{"id":suggestion.id},update:suggestion}).then(mongoResult=>{
+				return data;
+			})
+		});
+	});	
 }
 
 const deleteSuggetion = (suggestion) => {
-	return autoSuggestModel.destroy( {
-		where: {
-			id: suggestion.id
-		}
-	});
+	return db.sequelize.transaction(t=> {
+		return autoSuggestModel.destroy( {
+			where: {
+				id: suggestion.id
+			},transaction:t
+		}).then(data=>{
+			logger.info("deleting auto suggest from mongo db");
+			 return mongoClient.deleteOne({collectionName:collections.FAQ,criteria:{"id":suggestion.id}})
+			 .then(deleteResult=>{
+				return data;
+			 });
+
+		});
+
+	})
+	
+}
+exports.searchFAQ =(options)=>{
+	options.collectionName = collections.FAQ;
+	return mongoClient.searchFAQ(options);
 }
 
 exports.getAllSuggestions = getAllSuggestions

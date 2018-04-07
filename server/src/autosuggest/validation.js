@@ -20,3 +20,11 @@ module.exports.deleteSuggetion = {
 		id:joi.number().required(),
 	}
 }
+
+module.exports.searchFAQ = {
+	query:{
+		appId:joi.string().required(),
+		query:joi.string().required()
+		
+	}
+}
