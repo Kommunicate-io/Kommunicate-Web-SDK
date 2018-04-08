@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import validator from 'validator';
 import axios from 'axios';
-import {getConfig} from '../../.../../../config/config.js';
+import {getConfig} from '../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
 import  {createCustomer, saveToLocalStorage,createCustomerOrAgent} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
@@ -133,7 +133,7 @@ class Register extends Component {
   createAccountWithUserId=(_this)=>{
 
     var email = this.state.email;
-    var password = this.state.password ? this.state.password:null;
+    var password = this.state.password ? this.state.password:"CHANGIT";
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
 
@@ -270,7 +270,7 @@ class Register extends Component {
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
-                   <input type="text" className="input" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} value={this.state.name} required/>
+                   <input type="text" className="input" placeholder="Google user name" onKeyPress={(e)=>{if(e.charCode===13){document.getElementById("input-password").focus()}}} onChange= {this.setUserName} value={this.state.name} required/>
                    <label className="label-for-input name-label">Name</label>
                   </div>  
 
@@ -310,7 +310,7 @@ class Register extends Component {
                     <div className="col-lg-12 text-center">
                       <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
 
-                      <a className={this.state.googleOAuth ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href="https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=http://localhost:3999/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up">
+                      <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href={"'https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up'"}>
                         <img src={GoogleSignIn} style={{width: "60%", height: "100%"}}/>
                       </a>
                       <p>
