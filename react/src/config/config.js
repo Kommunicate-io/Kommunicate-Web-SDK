@@ -42,7 +42,7 @@ var config = {
       autoreplyUrl:'https://api.kommunicate.io/users/',
       getTimeZoneUrl:'https://api.kommunicate.io/misc/tz',
       createApplozicUser: baseurl.prod.baseUrl+"/rest/ws/user/v2/create",
-      updateApplozicUser: baseurl.prod.baseUrl+'/rest/ws/user/update',
+      updateApplozicUser: baseurl.prod.baseUrl+'/rest/ws/user/update'
     },kommunicateApi:{
       login:baseurl.prod.kommunicateAPI+"/login",
       signup:baseurl.prod.kommunicateAPI+"/customers",
@@ -55,7 +55,8 @@ var config = {
       sendMail :baseurl.prod.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.prod.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.prod.kommunicateAPI+"/autosuggest/message",
-      profileImage:baseurl.prod.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.prod.kommunicateAPI+"/profileImage",
+      subscriptionCount: baseurl.prod.kommunicateAPI + '/subscription/count'
     },adminDetails:{
       kommunicateParentKey: "applozic1a93cb1a2320be20d1e15353c3524c72d",
       kommunicateAdminId: "techdisrupt@applozic.com",
@@ -98,7 +99,8 @@ var config = {
       sendMail :baseurl.dashboard.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.dashboard.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.dashboard.kommunicateAPI+"/autosuggest/message",
-      profileImage:baseurl.dashboard.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.dashboard.kommunicateAPI+"/profileImage",
+      subscriptionCount: baseurl.dashboard.kommunicateAPI + '/subscription/count'
     },adminDetails:{
       kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
       kommunicateAdminId: "suraj@applozic.com",
@@ -142,7 +144,8 @@ var config = {
       sendMail :baseurl.test.kommunicateAPI+"/misc/mail",
       signUpWithApplozic:baseurl.test.kommunicateAPI+"/signUpWithApplozic",
       autoSuggest :baseurl.test.kommunicateAPI+"/autosuggest/message",
-      profileImage:baseurl.test.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.test.kommunicateAPI+"/profileImage",
+      subscriptionCount: baseurl.test.kommunicateAPI + '/subscription/count'
     },adminDetails:{
       kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
       kommunicateAdminId: "suraj@applozic.com",
@@ -188,7 +191,8 @@ var config = {
       activateAccountUrl:baseurl.default.kommunicateAPI+"/register?invite=true&applicationId=:applicationId",
       sendMail :baseurl.default.kommunicateAPI+"/misc/mail",
       autoSuggest :baseurl.default.kommunicateAPI+"/autosuggest/message",
-      profileImage:baseurl.default.kommunicateAPI+"/profileImage"
+      profileImage:baseurl.default.kommunicateAPI+"/profileImage",
+      subscriptionCount: baseurl.default.kommunicateAPI + '/subscription/count'
     },adminDetails:{
       kommunicateParentKey: "applozic2de64d50463586b9568467a1df9d21102",
       kommunicateParentAppName: "suraj",

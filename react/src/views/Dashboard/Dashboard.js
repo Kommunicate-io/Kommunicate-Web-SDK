@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Bar, Line } from 'react-chartjs-2';
 import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
-import  {getConfig} from '../../config/config.js';
+import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
 
-const brandPrimary =  '#5c5aa7';
-const brandSuccess =  '#18A9B7';
-const brandInfo =     '#D13351';
-const brandDanger =   '#f86c6b';
+const brandPrimary = '#5c5aa7';
+const brandSuccess = '#18A9B7';
+const brandInfo = '#D13351';
+const brandDanger = '#f86c6b';
 
 // Main Chart
 
 var elements = 27;
 
-const numOfSteps= 5;
+const numOfSteps = 5;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -30,10 +30,10 @@ class Dashboard extends Component {
       newUsers: 0,
       assigned: 0,
       messages: 0,
-      conversations :0,
-      uperlimit:0,
-      interval:0,
-      chartUperLimit:0,
+      conversations: 0,
+      uperlimit: 0,
+      interval: 0,
+      chartUperLimit: 0,
       monthly: [],
       currentMonth: '',
       lastMonthStats: {
@@ -102,12 +102,12 @@ class Dashboard extends Component {
             pointHoverBackgroundColor: '#fff',
             borderWidth: 2,
             data: [],
-          /*  fillColor: "rgba(134,132,247,0.25)",
-            strokeColor: "rgba(120,220,220,1)",
-            pointColor: "rgba(120,220,220,1)",
-            pointStrokeColor: "#f11",
-            pointHighlightFill: "#f11",
-            pointHighlightStroke: "rgba(120,220,220,1)",*/
+            /*  fillColor: "rgba(134,132,247,0.25)",
+              strokeColor: "rgba(120,220,220,1)",
+              pointColor: "rgba(120,220,220,1)",
+              pointStrokeColor: "#f11",
+              pointHighlightFill: "#f11",
+              pointHighlightStroke: "rgba(120,220,220,1)",*/
           },
           {
             label: 'MAU',
@@ -134,7 +134,8 @@ class Dashboard extends Component {
             data: []
           }
         ]
-      }
+      },
+      offerRemaining: 100
     };
     this.mainChartOpts = {
       // tooltips: {
@@ -146,7 +147,7 @@ class Dashboard extends Component {
 
       // },
       responsive: true,
-      
+
       maintainAspectRatio: false,
       legend: {
         display: true
@@ -181,8 +182,8 @@ class Dashboard extends Component {
     this.showChart = this.showChart.bind(this);
 
   }
-  findMax=(a,b,c)=>{
-  return a>=b?(a>=c?a:c):(b>=c?b:c);
+  findMax = (a, b, c) => {
+    return a >= b ? (a >= c ? a : c) : (b >= c ? b : c);
   }
   toggle() {
     this.setState({
@@ -211,7 +212,7 @@ class Dashboard extends Component {
       chart.datasets = [{}];
       chart.datasets[0] = this.state.chartMonthly.datasets[metric];
     } else {
-      chart = Object.assign({}, this.state.mainChart); ;
+      chart = Object.assign({}, this.state.mainChart);;
       chart.labels = this.state.mainChart.labels;
       chart.datasets = [{}];
       chart.datasets[0] = this.state.mainChart.datasets[metric];
@@ -224,8 +225,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
 
-  //  var env = getEnvironmentId();
-    var getAppKeyUrl = getConfig().applozicPlugin.getAppKeyUrl;
+    //  var env = getEnvironmentId();
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     var that = this;
@@ -234,7 +234,7 @@ class Dashboard extends Component {
     startDate.setDate(1);
     var startTime = startDate.getTime();
     const apzToken = userSession.apzToken;
-    const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey",application.key);
+    const statsUrl = getConfig().applozicPlugin.statsUrl.replace(":appKey", application.key);
 
     var userDataMonthly = [];
     var mauDataMonthly = [];
@@ -244,131 +244,136 @@ class Dashboard extends Component {
     var labelMonthly = [];
     var labels = [];
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
-    axios.get(statsUrl, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Access-Token":userSession.password,"Authorization":"Basic "+userSession.authorization,"Content-Type":"application/json","Apz-Product-App":true}})
-          .then(function(response){
-            if(response.status==200){
-                var data = response.data;
+    axios.get(statsUrl, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Access-Token": userSession.password, "Authorization": "Basic " + userSession.authorization, "Content-Type": "application/json", "Apz-Product-App": true } })
+      .then(function (response) {
+        if (response.status == 200) {
+          var data = response.data;
 
-                if (data.length >= 2) {
-                  var lastMonthStats = data[data.length - 2];
-                  that.setState({'lastMonthStats': lastMonthStats});
-                } else {
-                  let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
-                  for (var i = 0; i < lastMonthSubTitle.length; i++) {
-                    lastMonthSubTitle[i].classList.add('n-vis');
-                  }
-                }
+          if (data.length >= 2) {
+            var lastMonthStats = data[data.length - 2];
+            that.setState({ 'lastMonthStats': lastMonthStats });
+          } else {
+            let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
+            for (var i = 0; i < lastMonthSubTitle.length; i++) {
+              lastMonthSubTitle[i].classList.add('n-vis');
+            }
+          }
 
-                if (data.length > 0) {
+          if (data.length > 0) {
 
-                  let lastDate = null;
+            let lastDate = null;
 
-                  for(var i = 0; i < data.length; i++) {
-                    var obj = data[i];
-                    var datetime = new Date(obj.month);
+            for (var i = 0; i < data.length; i++) {
+              var obj = data[i];
+              var datetime = new Date(obj.month);
 
-                    if (lastDate == null) {
-                      lastDate = datetime;
-                    }
-                    for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
-                      labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
-                      userDataMonthly.push(0);
-                      mauDataMonthly.push(0);
-                      channelDataMonthly.push(0);
-                      messageDataMonthly.push(0);
-                    }
-
-                    labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
-                    userDataMonthly.push(obj.newUserCount);
-                    mauDataMonthly.push(obj.activeUserCount);
-                    channelDataMonthly.push(obj.channelCount);
-                    messageDataMonthly.push(obj.newMessageCount);
-                    //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
-                  }
-
-                  var chartMonthly = that.state.chartMonthly;
-                  chartMonthly.labels = labelMonthly;
-                  chartMonthly.datasets[0].data = userDataMonthly;
-                  chartMonthly.datasets[1].data = mauDataMonthly;
-                  chartMonthly.datasets[2].data = channelDataMonthly;
-                  chartMonthly.datasets[3].data = messageDataMonthly;
-
-                  that.setState({
-                    chartMonthly: chartMonthly
-                  });
-
-                  var stat = data[data.length - 1];
-
-                  that.setState({
-                    'currentMonth': MONTH_NAMES_LONG[new Date(stat.month).getMonth()],
-                    'newUsers': stat.newUserCount,
-                    'conversations' :stat.channelCount,
-                    'messages': stat.newMessageCount,
-                    'active': stat.activeUserCount || 0,
-                    'leads': '0',
-                    'online': '0',
-                    'assigned': '0',
-                  });
-                }
-               }else{
-               }
-          });
-
-    axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey",application.key) + "&startTime=" + startTime + "&endTime=" + endTime, {headers:{"Apz-AppId": application.applicationId, "Apz-Token":"Basic "+apzToken,"Content-Type":"application/json","Authorization":"Basic "+userSession.authorization,"Apz-Product-App":true}})
-      .then(function(response){
-        if(response.status==200){
-            var data = response.data;
-            var messageData = [];
-            var userData = [];
-            var channelData = [];
-            if (data.length > 0) {
-              let lastDate = null;
-              for(var i = 0; i < data.length; i++) {
-                var obj = data[i];
-                var datetime = new Date(obj.onDateTime);
-
-                if (lastDate == null) {
-                  lastDate = datetime;
-                }
-                for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
-                  labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
-                  messageData.push(0);
-                  userData.push(0);
-                  channelData.push(0);
-                }
-
+              if (lastDate == null) {
                 lastDate = datetime;
-                labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
-                messageData.push(obj.messageCount);
-                userData.push(obj.userCount);
-                channelData.push(obj.channelCount);
-                that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
               }
+              for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
+                labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
+                userDataMonthly.push(0);
+                mauDataMonthly.push(0);
+                channelDataMonthly.push(0);
+                messageDataMonthly.push(0);
+              }
+
+              labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
+              userDataMonthly.push(obj.newUserCount);
+              mauDataMonthly.push(obj.activeUserCount);
+              channelDataMonthly.push(obj.channelCount);
+              messageDataMonthly.push(obj.newMessageCount);
+              //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
             }
 
-            var mainChart = Object.assign({}, that.state.mainChart);
-            mainChart.labels = labels;
-            mainChart.datasets[0].data = userData;
-            mainChart.datasets[2].data = channelData;
-            mainChart.datasets[3].data = messageData;
+            var chartMonthly = that.state.chartMonthly;
+            chartMonthly.labels = labelMonthly;
+            chartMonthly.datasets[0].data = userDataMonthly;
+            chartMonthly.datasets[1].data = mauDataMonthly;
+            chartMonthly.datasets[2].data = channelDataMonthly;
+            chartMonthly.datasets[3].data = messageDataMonthly;
 
             that.setState({
-              'mainChart': mainChart
+              chartMonthly: chartMonthly
             });
 
-            let chart = that.state.chart;
-            chart.labels = labels;
-            chart.datasets = [{}];
-            chart.datasets[0] = that.state.mainChart.datasets[0];
-            //chart.datasets[0].label = 'Users';
-            //chart.datasets[0].data = userData;
+            var stat = data[data.length - 1];
 
             that.setState({
-              'chart': chart
+              'currentMonth': MONTH_NAMES_LONG[new Date(stat.month).getMonth()],
+              'newUsers': stat.newUserCount,
+              'conversations': stat.channelCount,
+              'messages': stat.newMessageCount,
+              'active': stat.activeUserCount || 0,
+              'leads': '0',
+              'online': '0',
+              'assigned': '0',
             });
-           }else{
-           }
-    });
+          }
+        } else {
+        }
+      });
+
+    axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey", application.key) + "&startTime=" + startTime + "&endTime=" + endTime, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Content-Type": "application/json", "Authorization": "Basic " + userSession.authorization, "Apz-Product-App": true } })
+      .then(function (response) {
+        if (response.status == 200) {
+          var data = response.data;
+          var messageData = [];
+          var userData = [];
+          var channelData = [];
+          if (data.length > 0) {
+            let lastDate = null;
+            for (var i = 0; i < data.length; i++) {
+              var obj = data[i];
+              var datetime = new Date(obj.onDateTime);
+
+              if (lastDate == null) {
+                lastDate = datetime;
+              }
+              for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
+                labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
+                messageData.push(0);
+                userData.push(0);
+                channelData.push(0);
+              }
+
+              lastDate = datetime;
+              labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
+              messageData.push(obj.messageCount);
+              userData.push(obj.userCount);
+              channelData.push(obj.channelCount);
+              that.state.chartUperLimit = that.findMax(that.state.chartUperLimit, obj.messageCount, obj.userCount);
+            }
+          }
+
+          var mainChart = Object.assign({}, that.state.mainChart);
+          mainChart.labels = labels;
+          mainChart.datasets[0].data = userData;
+          mainChart.datasets[2].data = channelData;
+          mainChart.datasets[3].data = messageData;
+
+          that.setState({
+            'mainChart': mainChart
+          });
+
+          let chart = that.state.chart;
+          chart.labels = labels;
+          chart.datasets = [{}];
+          chart.datasets[0] = that.state.mainChart.datasets[0];
+          //chart.datasets[0].label = 'Users';
+          //chart.datasets[0].data = userData;
+
+          that.setState({
+            'chart': chart
+          });
+        } else {
+        }
+      });
+
+    axios.get(getConfig().kommunicateApi.subscriptionCount)
+      .then(function (response) {
+        that.setState({ offerRemaining: (100 - parseInt(response.data)) });
+      });
   }
 
   render() {
@@ -379,40 +384,40 @@ class Dashboard extends Component {
             <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
 
               <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-stats-month">{this.state.currentMonth} Offer: {this.state.offerRemaining}</p>
                 <p className="card-main-title text-center">Users</p>
                 <h4 className="card-stats-value text-center" data-metric="0">{this.state.newUsers}</h4>
-                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>
+                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
-            
+
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
               <div className="card-block pb-0 text-left">
-              <p className="card-stats-month">{this.state.currentMonth}</p>
-              <p className="card-main-title text-center">Chat Users</p>
+                <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-main-title text-center">Chat Users</p>
                 <h4 className="card-stats-value text-center">{this.state.active}</h4>
                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.activeUserCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
-            
+
           </div>
 
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
               <div className="card-block pb-0 text-left">
-              <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-stats-month">{this.state.currentMonth}</p>
                 <p className="card-main-title text-center">Conversations</p>
                 <h4 className="card-stats-value text-center">{this.state.conversations}</h4>
-                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.channelCount}</p>
+                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.channelCount}</p>
               </div>
               <div className="vertical-line"></div>
             </div>
-            
+
           </div>
 
           {/*
@@ -429,8 +434,8 @@ class Dashboard extends Component {
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
               <div className="card-block pb-0 text-left">
-              <p className="card-stats-month">{this.state.currentMonth}</p>
-              <p className="card-main-title text-center">Messages</p>
+                <p className="card-stats-month">{this.state.currentMonth}</p>
+                <p className="card-main-title text-center">Messages</p>
                 <h4 className="card-stats-value text-center">{this.state.messages}</h4>
                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newMessageCount}</p>
               </div>
@@ -465,8 +470,8 @@ class Dashboard extends Component {
               </div>
               */}
             </div>
-            <div className="chart-wrapper" style={{height: 200 + 'px', marginTop: 40 + 'px'}}>
-              <Line data={this.state.chart} options={this.mainChartOpts} height={200}/>
+            <div className="chart-wrapper" style={{ height: 200 + 'px', marginTop: 40 + 'px' }}>
+              <Line data={this.state.chart} options={this.mainChartOpts} height={200} />
             </div>
           </div>
           {/*

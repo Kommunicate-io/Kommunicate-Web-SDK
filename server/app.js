@@ -91,6 +91,8 @@ app.use('/zendesk', routes.zendesk);
 app.use('/integration/settings', routes.thirdPartySetting);
 app.use('/faq',routes.faq);
 app.use('/google', routes.googleAuth);
+app.use('/subscription', routes.chargebee);
+
 
 function startApp() {
     app.listen(port, function () {

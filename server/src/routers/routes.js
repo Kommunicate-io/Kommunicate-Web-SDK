@@ -29,6 +29,7 @@ const zendeskValidation = require('../zendesk/validation') ;
 const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
 const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
 const googleAuthController = require('../googleAuth/googleAuthController');
+const chargebeeController= require("../chargebee/chargebeeController");
 
 
 //router declaration
@@ -50,6 +51,7 @@ const zendeskRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
+const chargebeeRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -70,6 +72,7 @@ exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
 exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
+exports.chargebee = chargebeeRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -172,3 +175,8 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
  * Faq search
  */
 faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
+
+/**
+ * Chargebee
+ */
+chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
