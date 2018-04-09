@@ -379,9 +379,9 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className="animated fadeIn">
-      {/* TODO: Add onClick={} in below component to handle click of "Avail offer now" button */}
-        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining}  />
+      <div className="animated fadeIn early-bird-card">
+
+        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
       
       <div className="animated fadeIn dashboard-card">
       
@@ -390,7 +390,7 @@ class Dashboard extends Component {
             <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
 
               <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth} Offer: {this.state.offerRemaining}</p>
+                <p className="card-stats-month">{this.state.currentMonth}</p>
                 <p className="card-main-title text-center">Users</p>
                 <h4 className="card-stats-value text-center" data-metric="0">{this.state.newUsers}</h4>
                 <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>

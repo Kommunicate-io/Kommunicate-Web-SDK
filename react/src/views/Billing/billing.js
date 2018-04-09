@@ -58,6 +58,13 @@ class Billing extends Component {
     };
 
     componentDidMount() {
+
+        const search = this.props.location.search;
+        const earlyBirdOffer = CommonUtils.getUrlParameter(search, 'offer');
+
+        if(earlyBirdOffer === 'early-bird') {
+            this.onOpenModal();
+        }
         
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
@@ -308,6 +315,9 @@ class Billing extends Component {
             </div>
         )
         const { modalIsOpen } = this.state;
+
+        
+
         return (
             <div className="animated fadeIn">
                 <div className="row">

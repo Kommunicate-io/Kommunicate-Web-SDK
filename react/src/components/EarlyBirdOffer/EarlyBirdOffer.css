@@ -52,9 +52,15 @@
     background-color: #2dd35c;
     z-index: 2;
     position: relative;
+    display: block;
+    max-width: 150px;
+    line-height: 36px;
+    margin-right: 0px;
+    margin-left: auto
 }
 .avail-offer-button:hover {
     background-color: #2caf51;
+    text-decoration: none;
 }
 .offer-left {
     position: relative;
