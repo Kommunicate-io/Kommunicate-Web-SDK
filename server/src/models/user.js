@@ -106,7 +106,7 @@ module.exports = function(sequelize, DataTypes) {
     loginType: {
      type:DataTypes.ENUM,
      field:'login_type',
-     values: ['email', 'oauth'],
+     values: ['email', 'oauth']
     },
   }, {
     underscored: true,
