@@ -1863,13 +1863,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                     , error: function () { }
                 });
             });
-            $("#km-contact-search-input").keydown(function (e) {
+            $("#km-faq-search-input").keydown(function (e) {
                    clearTimeout(mcktimer);
                    mcktimer=setTimeout(function validate(){
                        KommunicateKB.getArticles({
                         data:
         
-                            { appId: MCK_APP_ID, query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: helpdocskey}
+                            { appId: MCK_APP_ID, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocskey}
                         , success: function (response) {
                             $applozic('#km-faqdiv').empty();
                             $applozic.each(response.data, function (i, faq) {
@@ -1881,7 +1881,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (e.which == 32 || e.which == 13) {
                     KommunicateKB.getArticles({
                         data:
-                            { appId: MCK_APP_ID, query: document.getElementById("km-contact-search-input").value, helpdocsAccessKey: helpdocskey }
+                            { appId: MCK_APP_ID, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocskey }
                         , success: function (response) {
                             $applozic('#km-faqdiv').empty();
                             $applozic.each(response.data, function (i, faq) {
