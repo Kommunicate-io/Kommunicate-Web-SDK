@@ -103,6 +103,11 @@ module.exports = function(sequelize, DataTypes) {
       field: 'bot_availability_status',
       defaultValue: 1
     },
+    loginType: {
+     type:DataTypes.ENUM,
+     field:'login_type'
+     values: ['email', 'oauth'],
+    },
   }, {
     underscored: true,
     paranoid: true,

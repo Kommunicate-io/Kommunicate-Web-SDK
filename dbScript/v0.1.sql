@@ -48,5 +48,4 @@ alter table conversations add column metadata json;
 
 alter table kommunicate_test.conversations add column close_at datetime;
 
-
-
+alter table kommunicate_test.customers add column `login_type`  enum('email', 'oauth') collate utf8mb4_unicode_ci default null;
