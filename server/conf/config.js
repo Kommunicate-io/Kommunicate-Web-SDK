@@ -60,8 +60,9 @@ const config ={
       offBussinessHoursMessageInterval: 5,
       activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
       activeCampaignEnabled: true,
-      pipeDriveEnable:true
-
+      pipeDriveEnable:true,
+      chargebeeSite: "kommunicate",
+      chargebeeApiKey: "live_TY45sFsefggFLWQCxIgI5m3rzIK5yWpQ"
   },
   test: {
     port: 3999,
@@ -124,6 +125,8 @@ const config ={
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
     activeCampaignEnabled: false,
     pipeDriveEnable:true,
+    chargebeeSite: "kommunicate-test",
+    chargebeeApiKey: "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
   },
   default: {
     port: 3999,
@@ -186,7 +189,8 @@ const config ={
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
     activeCampaignEnabled: false,
     pipeDriveEnable:false,
-
+    chargebeeSite: "kommunicate-test",
+    chargebeeApiKey: "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
   },
   dashboard: {
       port: 3999,
