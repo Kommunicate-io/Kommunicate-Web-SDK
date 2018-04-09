@@ -28,7 +28,7 @@ const zendeskController = require('../zendesk/zendeskController');
 const zendeskValidation = require('../zendesk/validation') ;
 const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
 const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
-
+const googleAuthController = require('../googleAuth/googleAuthController');
 
 
 //router declaration
@@ -49,6 +49,7 @@ const issueTypeReplyRouter = express.Router();
 const zendeskRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
+const googleAuthRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -68,6 +69,7 @@ exports.issueTypeAutoReply = issueTypeReplyRouter;
 exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
 exports.faq=faqRouter;
+exports.googleAuth = googleAuthRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -152,6 +154,7 @@ issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
 issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
 issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.deleteIssueTypeAutoReply)
 
+googleAuthRouter.get('/authCode', googleAuthController.authCode);
 
 /*
 *zendesk APIs
