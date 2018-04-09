@@ -5,6 +5,7 @@ import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
+import EarlyBirdOffer from '../.../../../components/EarlyBirdOffer/EarlyBirdOffer';
 
 const brandPrimary = '#5c5aa7';
 const brandSuccess = '#18A9B7';
@@ -378,7 +379,11 @@ class Dashboard extends Component {
 
   render() {
     return (
+      <div className="animated fadeIn">
+        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
+      
       <div className="animated fadeIn dashboard-card">
+      
         <div className="row">
           <div className="col-sm-6 col-lg-3 text-center">
             <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
@@ -507,6 +512,7 @@ class Dashboard extends Component {
           */}
         </div>
 
+      </div>
       </div>
     )
   }
