@@ -5,6 +5,7 @@ const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
+const Sequelize= require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
 
 /**
@@ -200,11 +201,50 @@ const getConversationAssigneeFromMap = (userIds, key) => {
     });
 };
 
+const getConversationStatByAgentId = (agentId, startTime, endTime) => {
+    let criteria={agentId: agentId}
+    if(startTime && endTime){
+        criteria.created_at={$between:[new Date(startTime),new Date(endTime)]}
+    }
+    return Promise.resolve(db.Conversation.findAll({where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
+        return { agentId: agentId, statics: result };
+    }).catch(err => { throw err });
+}
+
+const getConversationStats = (agentId, customerId, startTime, endTime) => {
+    if (customerId) {
+        return userService.getUsersByCustomerId(customerId).then(users => {
+            if (users.length == 0) {
+                return { result: 'no user stats found', data: [] };
+            }
+            let func = users.map(user => {
+                return getConversationStatByAgentId(user.id, startTime, endTime);
+            })
+            return Promise.all(func).then(data => {
+                return { result: 'success', data: data };
+            });
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+    }
+    if (agentId) {
+        return getConversationStatByAgentId(agentId, startTime, endTime).then(stat => {
+            return { result: 'success', data: stat };
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        });
+    }
+    return Promise.resolve({ result: 'oops! invalid query', data: [] });
+}
+
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
     updateTicketIntoConversation: updateTicketIntoConversation,
     updateConversation: updateConversation,
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
-    createConversation: createConversation
+    createConversation: createConversation,
+    getConversationStats:getConversationStats
 }

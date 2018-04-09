@@ -233,6 +233,14 @@ a, a:hover, a:focus, a:active {
 .al-km-team-vibhor { background-position: -1px -560px; width: 111px; height: 111px; }
 .al-km-team-vipin { background-position: -113px -560px; width: 111px; height: 111px; }
 
+.al-km-team-vigil img, .al-km-team-pooja img {
+    width: 111px;
+    height: 111px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+
 .desig br {
     display: none;
 }

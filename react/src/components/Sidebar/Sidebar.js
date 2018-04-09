@@ -88,8 +88,7 @@ class Sidebar extends Component {
 </svg></NavLink>
             
             </li>
-            {/* FAQ is hidden for release 1.4.0 */}
-            {/* <li className="nav-item">
+            <li className="nav-item">
             <NavLink to={'/faq'} className="nav-link" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right" style={{  padding: '0.7rem 0.7rem 0.7rem', marginTop: '5px'}}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.9 19" style={{ width: '32px', height: '29px', marginLeft: '3px'}}>
                <g data-name="Layer 2">
@@ -101,7 +100,7 @@ class Sidebar extends Component {
               </g>
               </svg>
           </NavLink>
-            </li> */}
+            </li>
             {/*
             <li className="nav-item">
               <NavLink to={'/reports'} className="nav-link" activeClassName="active"><i className="icon-notebook"></i> Reports</NavLink>

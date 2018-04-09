@@ -14,6 +14,8 @@ import ApplozicClient   from '../../../utils/applozicClient';
 import ValidationUtils from  '../../../utils/validationUtils';
 import { Buffer } from 'buffer';
 import InputField from '../../../components/InputField/InputField';
+import GoogleLogo from '../Register/logo_google.svg';
+import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 
 
 class Login extends Component {
@@ -46,7 +48,8 @@ constructor(props){
     errorInputColor:'',
     errorMessageTextPassword:'',
     hideErrorMessagePassword: true,
-    handleUserNameBlur:false
+    handleUserNameBlur:false,
+    loginViaOAuth: false,
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -57,6 +60,30 @@ constructor(props){
   componentWillMount() {
     if (CommonUtils.getUserSession()) {
       window.location = "/dashboard";
+    }
+
+    const search = this.props.location.search;
+    const googleLogin = CommonUtils.getUrlParameter(search, 'googleLogin');
+    console.log(googleLogin)
+
+    if(googleLogin === 'true'){
+
+      const email = CommonUtils.getUrlParameter(search, 'email');
+
+      this.setState({
+        loginViaOAuth: true,
+        email: email,
+        userName: email,
+        password: 'CHANGIT',
+        loginButtonAction: 'getAppList'
+      }, () => {
+        Promise.resolve(this.login()).then( numOfApp => {
+          console.log(numOfApp);
+          if(numOfApp == 1){
+            this.submitForm()
+          }
+        })
+      })
     }
   }
 
@@ -211,7 +238,6 @@ login = (event)=>{
       console.log("response",response);
       if(response.status=200 && response.data!=="Invalid userId or EmailId"){
         const numOfApp=Object.keys(response.data).length;
-        console.log("number of app",numOfApp);
         if(numOfApp===1){
           _this.state.applicationId=Object.keys(response.data)[0];
           _this.state.applicationName=response.data[_this.state.applicationId];
@@ -234,6 +260,7 @@ login = (event)=>{
       // Notification.info("You are not a registered user. Please sign up!!!");
       _this.setState({hideErrorMessage: false, errorMessageText:"You are not a registered user. Please sign up!!!"});
     }
+      return numOfApp;
     }else{
         console.log("err while getting application list, status : ",response.status);
         Notification.error(response.message);
@@ -368,7 +395,7 @@ websiteUrl = (e)=> {
                         }
                       </DropdownButton>
                     </div>
-                    <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox}>
+                    <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox || this.state.loginViaOAuth}>
                     <div className="password-input-label-group">
                       <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} style={{borderColor: this.state.errorInputColor}} required/>
                       <label className="label-for-input email-label">Password</label>
@@ -434,6 +461,13 @@ websiteUrl = (e)=> {
                       }
                       </div>
                     </div>
+                    <div className="row mt-4">
+                      <div className="col-6">
+                        <a className="mt-4 signup-signup-btn" href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl  + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
+                          <img src={GoogleSignIn} style={{height: "100%", width: "100%"}}/>
+                        </a>
+                      </div>
+                    </div>               
                     <div className="row">
                       <div className="col-6 text-left forgot-password-div">
                         <button type="button" id ="btn-forgot-password" className="btn btn-link px-0" hidden={this.state.isForgotPwdHidden}  onClick= { this.initiateForgotPassword }>Forgot password?</button>

@@ -6,7 +6,7 @@ import org.apache.predictionio.controller.Engine
 /** Define Query class which serves as a wrapper for
   * new text data.
   */
-case class Query(text: String)
+case class Query(appId: String, text: String)
 
 /** Define PredictedResult class which serves as a
   * wrapper for a predicted class label and the associated

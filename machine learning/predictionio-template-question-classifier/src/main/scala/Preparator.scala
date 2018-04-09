@@ -37,15 +37,15 @@ class Preparator(pp: PreparatorParams)
 
     // Convert trainingdata's observation text into TF vector
     // and then fit a IDF model
-    val idf: IDFModel = new IDF().fit(td.data.map(e => tfHasher.hashTF(e.text)))
+    val idf: IDFModel = new IDF().fit(td.data.map(e => tfHasher.hashTF(e.appId, e.text)))
 
     val tfIdfModel = new TFIDFModel(
       hasher = tfHasher,
       idf = idf
     )
 
-    // Transform RDD[Observation] to RDD[(Label, text)]
-    val doc: RDD[(Double, String)] = td.data.map (obs => (obs.label, obs.text))
+    // Transform RDD[Observation] to RDD[(Label, appId, text)]
+    val doc: RDD[(Double, String)] = td.data.map (obs => (obs.label, obs.appId, obs.text))
 
     // transform RDD[(Label, text)] to RDD[LabeledPoint]
     val transformedData: RDD[(LabeledPoint)] = tfIdfModel.transform(doc)
@@ -90,7 +90,10 @@ class TFHasher(
 
 
   /** Hashing function: Text -> term frequency vector. */
-  def hashTF(text: String): Vector = {
+  def hashTF(appId: String, text: String): Vector = {
+
+    //Todo: figure out how to use appId
+
     val newList : Array[String] = tokenize(text)
     .filterNot(stopWords.contains(_))
     .sliding(nGram)
@@ -107,14 +110,14 @@ class TFIDFModel(
 ) extends Serializable {
 
   /** trasform text to tf-idf vector. */
-  def transform(text: String): Vector = {
+  def transform(appId: String, text: String): Vector = {
     // Map(n-gram -> document tf)
-    idf.transform(hasher.hashTF(text))
+    idf.transform(hasher.hashTF(appId, text))
   }
 
-  /** transform RDD of (label, text) to RDD of LabeledPoint */
-  def transform(doc: RDD[(Double, String)]): RDD[LabeledPoint] = {
-    doc.map{ case (label, text) => LabeledPoint(label, transform(text)) }
+  /** transform RDD of (label, appId, text) to RDD of LabeledPoint */
+  def transform( doc: RDD[(Double, String, String)]): RDD[LabeledPoint] = {
+    doc.map{ case (label, appId, text) => LabeledPoint(label, transform(appId, text)) }
   }
 }
 

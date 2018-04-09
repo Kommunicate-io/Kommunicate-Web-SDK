@@ -6,11 +6,14 @@
     margin-top:20px;
 }
 .km-pushnotification-input{
-    border-radius: 4px;
-    background-color: #ffffff;
-    border: solid 1px #a1a1a1;
-    height: 35px;
-    width: 104px;
+    width: 419px;
+         height: 36px;
+           object-fit: contain;
+       margin-top: 40px;
+           padding:15px;
+           border-radius: 4px;
+           background-color: #ffffff;
+          border: solid 1px #a1a1a1;
 }
 
 .km-pushnotification-hr{
@@ -50,7 +53,7 @@
 }
 
 .km-pushNotification-div{
-    margin-top: 15px;
+    margin-top: 45px;
 }
 
   .for-ios-apns {

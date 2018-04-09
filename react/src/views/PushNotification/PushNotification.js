@@ -365,7 +365,7 @@ class PushNotification extends Component{
                     <div className="row form-group">
                     <div className="apple-certificate ">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input className="km-pushnotification-input" value={this.state.apnsPassword} onChange ={(e) =>{ this.setState({disableButtonForIosDistribution: false, apnsPassword: e.target.value })} }id="apnsPassword" type="password"></input></div>
+                    <input className="km-input-apns" value={this.state.apnsPassword} onChange ={(e) =>{ this.setState({disableButtonForIosDistribution: false, apnsPassword: e.target.value })} }id="apnsPassword" type="password"></input></div>
                   </div> 
                   <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDistribution}  className="km-button km-button--primary save-changes-btn"
@@ -388,7 +388,7 @@ class PushNotification extends Component{
                     <div className="row form-group">
                     <div className="apple-certificate">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
-                    <input className="km-pushnotification-input"  value={this.state.apnstestPassword} onChange={(e) =>{ this.setState({disableButtonForIosDevelopment: false, apnstestPassword: e.target.value   })} }  id="testApnsPassword" type="password"></input></div>
+                    <input className="km-input-apns"  value={this.state.apnstestPassword} onChange={(e) =>{ this.setState({disableButtonForIosDevelopment: false, apnstestPassword: e.target.value   })} }  id="testApnsPassword" type="password"></input></div>
                   </div> 
                   </div>
                   <div className="btn-group">

@@ -1,0 +1,43 @@
+<svg id="Group_11" data-name="Group 11" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="2894 -986 128 128">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #6353d8;
+      }
+
+      .cls-2 {
+        fill: none;
+        stroke: #fff;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        filter: url(#Oval_4);
+      }
+    </style>
+    <filter id="Oval_4" x="2894" y="-986" width="128" height="128" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#707070" flood-opacity="0.502"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_6" data-name="Group 6" transform="translate(-34 -19)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 34, 19)">
+      <circle id="Oval_4-2" data-name="Oval 4" class="cls-1" cx="55" cy="55" r="55" transform="translate(2901 -979)"/>
+    </g>
+    <g id="P6-cross_platform" data-name="P6-cross platform" transform="translate(2951.923 -923.333)">
+      <path id="Combined-Shape" class="cls-2" d="M29.9,39.357a20.069,20.069,0,0,1-16.54-13.32H0V13.925H13.167A20.056,20.056,0,0,1,29.9,0Z"/>
+      <rect id="Rectangle" class="cls-3" width="12.149" height="4.685" rx="1.5" transform="translate(37.38 13.119)"/>
+      <rect id="Rectangle-Copy" class="cls-3" width="12.149" height="4.685" rx="1.5" transform="translate(37.38 25.301)"/>
+      <path id="Combined-Shape-Copy" class="cls-2" d="M29.9,39.357a20.069,20.069,0,0,1-16.54-13.32H0V13.925H13.167A20.056,20.056,0,0,1,29.9,0Z" transform="translate(77.564 39.357) rotate(180)"/>
+    </g>
+  </g>
+</svg>

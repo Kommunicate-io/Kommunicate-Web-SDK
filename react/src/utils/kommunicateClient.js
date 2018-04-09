@@ -29,7 +29,12 @@ const createCustomerOrAgent = (userInfo, userType)=>{
   }
 }
 const createCustomer = function(email,password,name,userName) {
-  const signUpUrl = getConfig().kommunicateApi.signup;
+  let signUpUrl = getConfig().kommunicateApi.signup;
+
+  if(localStorage.getItem('Google_OAuth') === 'true'){
+    signUpUrl += '?OAuthSignUp=true'
+  }
+
   return Promise.resolve(axios.post(signUpUrl, { userName: userName, password:password, name:name,email:email}))
     .then((response) => {
         console.debug(response.data.data);
@@ -807,6 +812,18 @@ const updateZendeskIntegrationTicket = (data,groupId) => {
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
 
 
+}
+
+const getConversationStats = (isCustomer) => {
+  let userSession = CommonUtils.getUserSession();
+  let query = isCustomer ? 'customerId=' + userSession.customerId : 'agentId' + userSession.id;
+  let url = getConfig().kommunicateBaseUrl + "/conversations?" + query;
+  return Promise.resolve(axios.get(url)).then(response => {
+    console.log('filter: ', response);
+    return response;
+  }).catch(err => {
+    return;
+  });
 }
 
 
