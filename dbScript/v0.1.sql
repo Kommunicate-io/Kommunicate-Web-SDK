@@ -46,5 +46,6 @@ alter table customers add column subscription varchar(50) NOT NULL DEFAULT 'star
 
 alter table conversations add column metadata json;
 
+alter table kommunicate_test.conversations add column close_at datetime;
 
-
+alter table customers add column `login_type`  enum('email', 'oauth') collate utf8mb4_unicode_ci default null;

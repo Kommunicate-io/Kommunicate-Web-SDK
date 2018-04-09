@@ -28,6 +28,7 @@ const zendeskController = require('../zendesk/zendeskController');
 const zendeskValidation = require('../zendesk/validation') ;
 const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
 const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
+const googleAuthController = require('../googleAuth/googleAuthController');
 
 
 //router declaration
@@ -47,6 +48,8 @@ const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
 const zendeskRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
+const faqRouter = express.Router();
+const googleAuthRouter = express.Router();
 
 //export routers
 exports.home = home;
@@ -65,6 +68,8 @@ exports.issueType = issueTypeRouter;
 exports.issueTypeAutoReply = issueTypeReplyRouter;
 exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
+exports.faq=faqRouter;
+exports.googleAuth = googleAuthRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -111,9 +116,13 @@ autoSuggestRouter.patch('/',validate(autoSuggestValidation.updateSuggestion), au
 autoSuggestRouter.delete('/',validate(autoSuggestValidation.deleteSuggetion), autoSuggestController.deleteSuggetion)
 chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
+
+//conversation router
 conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
+conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
 conversationRouter.get('/participent/:participentId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
-conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation)
+conversationRouter.get('/', conversationController.getConversationStats);
+conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);
@@ -145,6 +154,7 @@ issueTypeReplyRouter.get('/',issueTypeAutoReplyController.getIssueTypeAutoReply)
 issueTypeReplyRouter.patch('/',validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.updateIssueTypeAutoReply )
 issueTypeReplyRouter.delete('/', validate(issueTypeAutoReplyValidation.updateDeleteIssueTypeAutoReply), issueTypeAutoReplyController.deleteIssueTypeAutoReply)
 
+googleAuthRouter.get('/authCode', googleAuthController.authCode);
 
 /*
 *zendesk APIs
@@ -158,3 +168,7 @@ zendeskRouter.get('/:appId/ticket/:groupId', validate(zendeskValidation.getTicke
 thirdPartySettingRouter.post('/:appId/insert/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.updateOrCreate)
 thirdPartySettingRouter.get('/:appId',validate(thirdPartySettingValidation.getSettings), integrationSettingController.getIntegrationSetting)
 thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidation.settings), integrationSettingController.deleteIntegrationSetting)
+/**
+ * Faq search
+ */
+faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);

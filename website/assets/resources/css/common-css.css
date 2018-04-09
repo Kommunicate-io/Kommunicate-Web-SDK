@@ -1,8 +1,9 @@
 .nav-main-header {
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     height: 65px;
+    z-index: 500;
     transition: all 0.3s ease-out;
 }
 .navigation-header {
@@ -32,42 +33,49 @@
 }
 .page-links-ul li>a {
     font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   color: #fdfdfd;
   padding: 0px 25px;
   transition: color 0.3s ease;
 }
 .page-links-ul li>a:hover {
-  color: #fdfdfd81;
+  color: rgba(253, 253, 253, 0.5);
+}
+.sticky .page-links-ul li>a {
+    color: #5c5aa7;
+}
+.sticky .page-links-ul li>a:hover {
+    color: rgba(92, 90, 167, 0.5);
 }
 .nav-signup-button {
     color: #fff;
     border-radius: 4px;
-    border: solid 1.4px #2dd35c;
-    /* height: 36px; */
-    /* line-height: 34px; */
-    padding: 10.5px 14.5px;
-    width: 150px;
+    border: solid 1.4px #FFF;
     text-align: center;
     font-size: 16px;
+    background-color: transparent;
+    font-weight: 500;
+    display: inline-block;
+    min-width: 175px;
+    height: 36px;
+    padding: 0px 15px !important;
+    line-height: 36px;
     transition: all 0.3s ease;
-    font-weight: 600;
 }
 .nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
-    color: #FFFFFF;
-    border: solid 1.4px #2dd35c;
-    background-color: #2dd35c;
+    color: #FFF !important;
+    border: solid 1.4px #FFF;
+    background-color: transparent;
 }
 .nav-login-button {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 500;
     color: #5C5AA7;
     transition: all 0.3s ease;
     padding-right: 20px;
 }
 .nav-login-button:hover {
     font-size: 16px;
-    font-weight: 400;
     color: rgba(93, 90, 167, 0.5);
 }
 .nav-kommunicate-logo {
@@ -174,9 +182,9 @@
 
 .footer-section {
     position: relative;
-    padding: 50px 0px 20px 0px;
-    text-align: center;
-    background-color: #5C5AA7;
+    padding: 0px 0px 20px 0px;
+    /* text-align: center; */
+    background-color: #FFF;
 }
 .footer-section .img-container svg {
     width: auto;
@@ -184,7 +192,28 @@
     margin: 0 auto;
     /* filter: opacity(0.2); */
 }
+.footer-cta-section {
+    background-color: #5c5aa7;
+    padding: 20px 0px 15px;
+}
+.footer-cta-title {
+    font-size: 26px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #fff;
+    margin: 25px 0px;
 
+}
+.footer-cta-section .cta-signup-btn {
+    background-color: #2dd35c;
+    margin: 15px auto;
+}
+.footer-cta-section .cta-signup-btn:hover {
+    background-color: #1e923f;
+}
 .links-container {
     margin-top: 50px;
     display: flex;
@@ -265,14 +294,29 @@
 }
 
 .sticky {
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     width: 100%;
-    background: linear-gradient(to left, #4daab7, #2475bb 41%, #5c5aa7);
+    background: #FFF;
     box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
     z-index: 1005;
     transition: all 0.3s ease;
   }
+
+
+  .sticky .nav-signup-button {
+    color: #fff !important;
+    border: solid 1.4px #2dd35c;
+    background-color: #2dd35c;
+  }
+  .sticky .nav-signup-button:hover {
+    color: #fff !important;
+    border: solid 1.4px #1e923f;
+    background-color: #1e923f;
+  }
+
+
+
 
   @media (max-width: 470px) {
       .links-container {
@@ -289,3 +333,164 @@
   .try-kommunicate-mobile {
       display: none;
   }
+
+
+  /* New Footer Design */
+  footer .sitemap {
+    display: flex;
+    max-width: 1170px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    margin: 0 auto 1.5em;
+    /* padding: 0px 15px; */
+}
+.kmLogoFooter {
+    display: block;
+    margin-top: 35px !important;
+}
+.kmLogoFooter svg{
+    width: auto;
+    height: 35px;
+}
+footer .sitemap a {
+    color: #636363;
+    display: table;
+    margin: 2px -10px;
+    padding: 3px 10px;
+}
+
+footer .sitemap a:hover, footer .sitemap a:focus {
+    color: #000;
+    text-decoration: none;
+}
+.km-address p {
+    font-size: 14px;
+    line-height: 1.83;
+    color: #636363;
+    /* padding-left: 10px; */
+}
+footer .copyright {
+    max-width: 1170px;
+    text-align: left;
+    margin: 0 auto;
+    padding: 0px 15px;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.footer-links-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    display: -ms-flexbox;
+}
+.footer-links-listbox {
+    display: block;
+    -ms-flex: 1 0 25%;
+    flex: 1 0 25%;
+    margin: 0;
+    padding: 24px 20px 32px;
+}
+.footer-links-listbox h5 {
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal;
+    text-align: left;
+    font-weight: bold;
+    line-height: 1.57;
+    color: #000;
+}
+.footer-links-listbox-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.footer-links-listbox-list li>a {
+    font-size: 14px;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.14;
+    letter-spacing: normal;
+    text-align: left;
+    color: #636363;
+    display: block;
+    padding: 8px 0;
+    margin: 0;
+}
+@media screen and (max-width: 1000px) {
+    .footer-links-list {
+        flex-wrap: wrap;
+    }
+    .footer-links-listbox {
+        -ms-flex-preferred-size: 50%;
+        flex-basis: 50%;
+    }
+}
+@media screen and (max-width: 720px) {
+    .footer-links-listbox {
+        -ms-flex: 1 0 100%;
+        flex: 1 0 100%;
+        padding: 15px 0px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .page-links-ul, .nav-signup-button, .nav-login-button {
+        display: none;
+    }
+    .menu-mobile {
+        display: block;
+    }
+    .menu-btn-icon {
+        fill: #5c5aa7;
+    }
+}
+
+/*** Buttons ***/
+.km-button {
+    border-radius: 3px;
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    background: transparent;
+    height: 36px;
+    padding: 0px 16px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    min-width: 70px;
+    transition: all 0.3s ease-out;
+  }
+  .km-button:focus {
+    outline: none;
+  }
+  .km-button:hover {
+    outline: none;
+    border: none;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
+  }
+  .km-button--primary {
+    background-color: #5C5AA7;
+    color: #FFFFFF;
+  }
+  .km-button--primary:hover {
+    background-color: #3c3b7b;
+    color: #FFFFFF;
+  }
+.cta-signup-btn {
+    display: block;
+    margin: 0 auto;
+    max-width: 250px;
+    line-height: 50px;
+    height: 50px;
+    font-size: 17px;
+  }
+.cta-signup-btn:focus, .cta-signup-btn:active {
+    color: #fff;
+  }
+
+

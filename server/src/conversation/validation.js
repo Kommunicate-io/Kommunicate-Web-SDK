@@ -33,3 +33,12 @@ module.exports.getConversationList= {
         userId:joi.string().required()
     }
   }
+  module.exports.updateConversation= {
+    body:{
+        groupId:joi.number().integer().required(),
+        appId:joi.string().required(),
+        participentUserId:joi.string(),
+        createdBy:joi.string(),
+        status:joi.string().only(["0","1","2","3","4"])
+    }
+  }

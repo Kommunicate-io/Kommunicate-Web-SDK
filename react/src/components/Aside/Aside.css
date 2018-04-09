@@ -66,13 +66,16 @@ span.km-contact-search-tab img {
     vertical-align: middle;
     line-height: 29px;
     height: 29px;
-    text-align: center;
-    font-weight: 500;
+    text-align: left;
+    font-weight: normal;
     font-size: 14px;
     border-top-right-radius: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    letter-spacing: 0.5px;
+    color: #5a5858;
+    font-family: 'OpenSans', sans-serif;
 }
 .km-user-name-sec a {
     border-left: 1px solid #ddd;
@@ -94,6 +97,7 @@ span.km-contact-search-tab img {
     position: relative;
     background-color: #F0F0F0;
     margin: 0;
+    display: flex;
 }
 .km-user-sub-sec {
     padding: 10px 0;
@@ -102,7 +106,8 @@ span.km-contact-search-tab img {
     outline: none;
 }
 .km-user-icon-sec {
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
+    width: 25%
 }
 .km-user-info-list li {
     float: left;
@@ -121,15 +126,128 @@ span.km-contact-search-tab img {
     left: 0;
 }
 .km-user-icon-box img {
-    width: 100%;
-    height: 100%;
+    /* width: 100%; */
+    /* height: 100%; */
     overflow: hidden;
+    height: 53px;
+    width: 53px;
+    border-radius: 110px;
+}
+.km-user-info-inner {
+    padding-left: 16px;
+    padding-right: 15px;
+    padding-top: 12px;
+}
+.km-customer-title-panel{
+    background-color: #d8d8d8;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: #5a5858;
+    padding-left: 13px;
+    font-family: 'OpenSans', sans-serif;
+}
+.km-clearbit-title-panel {
+    background-color: #d8d8d8;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: #5a5858;
+    padding-left: 13px;
+    font-family: 'OpenSans', sans-serif;
+}
+.km-clearbit-user-full-name {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    text-align: left;
+    color: #5a5858;
+    margin-bottom: 0;
+}
+.km-clearbit-user-bio {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: #7a7777;
+    margin-bottom: 0;
+}
+.km-clearbit-user-data {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: #898686;
+    margin-bottom: 0;
+}
+.km-clearbit-user-industry {
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    color: #5a5858;
+}
+.clearbit-industry-details {
+    font-size: 12px !important;
+    letter-spacing: 0.4px !important;
+    text-align: left !important;
+    color: #898686 !important;
+    margin-right: 22px !important;
+}
+.km-clearbit-logo-wrapper {
+    display: flex
+}
+.km-clearbit-location-icon {
+    width: 11px;
+    height: 11px;
+    margin-top: 5px;
+    margin-right: 7px;
+    margin-bottom: 5px;
+}
+.km-clearbit-domain-icon {
+    width: 11px;
+    height: 11px;
+    margin-top: 5px;
+    margin-right: 7px;
+    margin-bottom: 5px;
+}
+.km-clearbit-user-domain{
+    margin-bottom: 0;
+}
+.km-clearbit-logo-wrapper > #domain-link {
+    text-decoration: none;
+}
+.km-clearbit-logo-wrapper > a:hover {
+    color:none !important;
+}
+.km-clearbit-divider{
+    margin-bottom: 15px;
+    margin-top: 15px;
+    height: 2px;
+    border: solid 1px #cecece;
+}
+.km-clearbit-company-description-wrapper{
+    padding-top: 16px;
+}
+.km-clearbit-user-social-info-wrapper {
+    display: flex;
+}
+.km-clearbit-user-domain-location-wrapper {
+    margin-top: 10px
+}
+.km-cl-icon {
+    height: 32px;
+    width: 32px;
+}
+.km-cl-icon-wrapper {
+    margin-left: 10px
+}
+.km-clearbit-social-icon {
+    height: 32px;
+    width: 32px;
 }
 .km-user-icon-box {
     position: relative;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
+    /* width: 120px; */
+    height: 95px;
+    /* height: 120px; */
+    /* border-radius: 50%; */
     overflow: hidden;
     margin: 0 auto;
     vertical-align: baseline;
@@ -148,8 +266,8 @@ span.km-contact-search-tab img {
     border-radius: 110px;
 }
 #km-user-info-tab .km-alpha-contact-image {
-    height: 110px;
-    width: 110px;
+    height: 53px;
+    width: 53px;
     max-width: 110px;
     margin-right: 0;
     line-height: 110px !important;
@@ -159,7 +277,7 @@ span.km-contact-search-tab img {
     font-weight: bold;
     vertical-align: middle;
     height: 110px;
-    line-height: 110px;
+    line-height: 53px;
     display: block;
 }
 ul#km-contact-search-list li,
@@ -260,11 +378,11 @@ ul#km-group-search-list li {
 #takeover-from-bot {
     display: none;
 }
-#km-user-info-list a{
+/* #km-user-info-list a{
     position: relative;
     padding: 10px 15px;
     display: initial;
-}
+} */
 
 
 

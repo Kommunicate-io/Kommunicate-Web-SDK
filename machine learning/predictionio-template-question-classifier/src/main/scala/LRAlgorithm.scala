@@ -38,6 +38,7 @@ class LRAlgorithm(val ap: LRAlgorithmParams)
       // Add the different binary columns for each label.
       (data: DataFrame, label: Double) => {
         // function: multiclass labels --> binary labels
+        //Devashish: Todo: We might need to change label value as label.toDouble else 0.0
         val f: UserDefinedFunction = functions.udf((e : Double) => if (e == label) 1.0 else 0.0)
 
         data.withColumn(label.toInt.toString, f(data("label")))
@@ -67,7 +68,7 @@ class LRAlgorithm(val ap: LRAlgorithmParams)
   }
 
   def predict(model: LRModel, query: Query): PredictedResult = {
-    model.predict(query.text)
+    model.predict(query.appId, query.text)
   }
 }
 
@@ -87,7 +88,10 @@ class LRModel(
   }
 
   /** Define prediction rule. */
-  def predict(text: String): PredictedResult = {
+  def predict(appId: String, text: String): PredictedResult = {
+  
+    //Todo: Figure out how to use appId
+
     val x: Array[Double] = tfIdf.transform(text).toArray
 
     // Logistic Regression binary formula for positive probability.

@@ -12,6 +12,7 @@ const config ={
           },
         },
       },
+      mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-204-49-118.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
       urls: {
         getApplicationDetail: "https://chat.kommunicate.io/rest/ws/application/get?applicationId=:applicationId",
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
@@ -74,6 +75,7 @@ const config ={
         },
       },
     },
+    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
@@ -121,7 +123,7 @@ const config ={
     offBussinessHoursMessageInterval: 1,
     activeCampaignApiKey:"79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
     activeCampaignEnabled: false,
-    pipeDriveEnable:false,
+    pipeDriveEnable:true,
   },
   default: {
     port: 3999,
@@ -136,6 +138,7 @@ const config ={
         },
       },
     },
+    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",

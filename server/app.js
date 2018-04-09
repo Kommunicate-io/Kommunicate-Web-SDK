@@ -23,6 +23,18 @@ app.use(cors());
 // });
 compressor.minify({
   compressor: 'gcc',
+  input: ['./src/webplugin/knowledgebase/common.js', './src/webplugin/knowledgebase/helpdocs.js', './src/webplugin/knowledgebase/kb.js'],
+  output: './src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
+  callback: function (err, min) {
+    if(!err)
+    console.log(" kommunicate-kb-0.1.min.js combined successfully");
+    else {
+      console.log("err while minifying kommunicate-kb-0.1.min.js",err);
+    }
+  }
+});
+compressor.minify({
+  compressor: 'gcc',
   //compressor: 'no-compress',
   input: ['./src/webplugin/js/app/constant.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/km-post-initialization.js'],
   output: './src/webplugin/js/app/kommunicate-plugin-0.1.min.js',
@@ -30,13 +42,13 @@ compressor.minify({
     if(!err)
     console.log(" kommunicate-plugin-0.1.min.js combined successfully");
     else {
-      console.log("err while minifying kommunicate-richtext-0.1.min.js",err);
+      console.log("err while minifying kommunicate-plugin-0.1.min.js",err);
     }
   }
 });
 compressor.minify({
   compressor: 'clean-css',
-  input: ['./src/webplugin/css/app/mck-sidebox-1.0.css'],
+  input: ['./src/webplugin/css/app/km-rich-message.css','./src/webplugin/css/app/mck-sidebox-1.0.css'],
   output: './src/webplugin/js/app/mck-sidebox-1.0.min.css',
   callback: function (err, min) {
     if(!err)
@@ -77,6 +89,8 @@ app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
 app.use('/zendesk', routes.zendesk);
 app.use('/integration/settings', routes.thirdPartySetting);
+app.use('/faq',routes.faq);
+app.use('/google', routes.googleAuth);
 
 function startApp() {
     app.listen(port, function () {

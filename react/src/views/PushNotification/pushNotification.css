@@ -6,23 +6,18 @@
     margin-top:20px;
 }
 .km-pushnotification-input{
-        width: 419px;
-        height: 36px;
-        object-fit: contain;
-        margin-top: 40px;
-        padding:15px;
-        border-radius: 4px;
-        background-color: #ffffff;
-        border: solid 1px #a1a1a1;
-      
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #a1a1a1;
+    height: 35px;
+    width: 104px;
 }
 
 .km-pushnotification-hr{
+    margin: 0px!important;
     width:40em!important;
-    border: solid 1px #bbb5b5;
-    margin-top: 5px!important;
     }
-    .FCM {
+ .fcm {
         font-family: Roboto;
         font-size: 14px;
         font-weight: 500;
@@ -34,7 +29,7 @@
         color: #656161;
       }
 
-.FCM-key {
+.fcm-key {
         margin-top: 47px;
         margin-left: 15px;
         width: 119px;
@@ -49,37 +44,16 @@
         text-align: left;
         color: #656161;
       }
+
 .km-pushNotification-development{
     margin-top: 15px;
 }
 
 .km-pushNotification-div{
-    margin-top: 45px;
+    margin-top: 15px;
 }
 
-.Rectangle-2-Copy {
-    width: 605px;
-    height: 199px;
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-  .Mask {
-    width: 389px;
-    height: 39px;
-    border-radius: 3px;
-    background-color: #ffffff;
-    border: solid 1px #cdcdd3;
-  }
-  .Rectangle-2-Copy {
-    object-fit: contain;
-    border-radius: 2px;
-    background-color: #f4f5f7;
-    border: solid 1px #ddd7d7;
-  }
-
-  .For-iOS-APNS {
+  .for-ios-apns {
     margin-top: 29px;
     font-family: Roboto;
     font-size: 14px;
@@ -91,7 +65,7 @@
     text-align: left;
     color: #656161;
   }
-  .For-DISTRIBUTION {
+  .for-distribution {
     margin-top: 33px;
     font-family: Roboto;
     font-size: 14px;
@@ -103,7 +77,7 @@
     text-align: left;
     color: #312f2f;
   }
-  .Apple-certificate {
+  .apple-certificate {
     margin-top: 29px;
     font-family: Roboto;
     font-size: 14px;
@@ -116,7 +90,7 @@
     color: #656161;
     margin-left: 15px;
   }
-  .Enabling-push-notifi {
+  .enabling-push-notification {
     width: 605px;
     height: 42px;
     font-family: Roboto;
@@ -142,7 +116,7 @@
   .km-input-component{
     margin-top: 20px;
   }
-  .Rectangle-7 {
+  .rectangle-7 {
     width: 297px;
     height: 39px;
     border-radius: 2px;
@@ -164,3 +138,4 @@
   .km-pushnotification-header{
       margin-left: 5px;
   }
+

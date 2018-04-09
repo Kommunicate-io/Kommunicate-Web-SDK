@@ -1,5 +1,5 @@
 const autosuggestService = require("./autosuggestService");
-
+const logger = require("../utils/logger");
 exports.getAllSuggestions = (req, res) => {
 
 	autosuggestService.getAllSuggestions()
@@ -119,4 +119,15 @@ exports.deleteSuggetion = (req, res) => {
 			error: err
 		})
 	})
+}
+
+exports.searchFAQ=(req,res)=>{
+	logger.info("searching for query..")
+	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query}).then(data=>{
+		logger.info("got data from db");
+		return res.status(200).json({ code: "SUCCESS", data: data });
+	}).catch(e=>{
+		logger.error("error while fetching data from db",e);
+		return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message:"something went wrong" });
+	});
 }

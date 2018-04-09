@@ -1807,7 +1807,7 @@ var KM_CLIENT_GROUP_MAP = [];
 					$mck_goup_search_box.mckModal('hide');
 				});
 				$kmApplozic(d).on('click', '.km-btn-remove-member', function(e) {
-					e.preventDefault();
+					e.stopPropagation();
 					var userId = $kmApplozic(this).parents('.km-li-group-member').data('km-id');
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
