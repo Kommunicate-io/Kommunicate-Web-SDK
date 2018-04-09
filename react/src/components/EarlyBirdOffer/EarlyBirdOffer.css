@@ -1,0 +1,101 @@
+.early-bird-offer-container {
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #cbc6c6;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 20px;
+}
+.early-bird-offer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}
+.early-bird-details-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding-left: 30px;
+}
+.img-container {
+    padding: 0px 20px;
+}
+.img-container svg {
+    width: 48px;
+    height: 48px;
+}
+.early-bird-details {
+    padding-top: 10px;
+}
+.percent-off {
+    margin-bottom: 10px;
+}
+
+.curves-container {
+    position: relative;
+    text-align: right;
+    padding-right: 30px !important;
+}
+.bg-curves-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 330px;
+    z-index: 0;
+}
+
+.avail-offer-button {
+    margin-top: 31px;
+    margin-bottom: 10px;
+    background-color: #2dd35c;
+    z-index: 2;
+    position: relative;
+    display: block;
+    max-width: 150px;
+    line-height: 36px;
+    margin-right: 0px;
+    margin-left: auto
+}
+.avail-offer-button:hover {
+    background-color: #2caf51;
+    text-decoration: none;
+}
+.offer-left {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+}
+.offer-left span {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.offer-tag {
+    position: absolute;
+    width: 100px;
+    top: 15px;
+    left: -28px;
+    background-color: #2dd35c;
+    transform: rotate(-46deg);
+    text-align: center;
+}
+.offer-tag p {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}

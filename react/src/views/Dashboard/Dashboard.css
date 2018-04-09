@@ -129,3 +129,10 @@
         border-bottom: 1px solid #cfcaca;
     }
 }
+
+@media only screen and (min-width:992px) {
+    .early-bird-card {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
