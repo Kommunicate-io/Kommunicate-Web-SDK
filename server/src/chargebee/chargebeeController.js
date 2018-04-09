@@ -8,7 +8,7 @@ exports.subscriptionCount = function (req, res) {
         api_key: chargebeeApiKey
     });
     chargebee.subscription.list({
-        limit: 5,
+        limit: 1000,
         "plan_id[starts_with]": "early_bird",
         "status[is]": "active",
         "sort_by[asc]": "created_at"
