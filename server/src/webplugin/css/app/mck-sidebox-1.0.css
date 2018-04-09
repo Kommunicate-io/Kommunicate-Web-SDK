@@ -4615,7 +4615,7 @@ color: rgba(0,0,0,0.5);
     align-items: center;
     justify-content: space-between;
 }
-#km-contact-search-input:placeholder {
+#km-faq-search-input:placeholder {
     font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: normal;
@@ -4627,7 +4627,7 @@ color: rgba(0,0,0,0.5);
 	color: #696464!important;
     /* Firefox */
 }
-#km-contact-search-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+#km-faq-search-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
 	
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
@@ -4640,7 +4640,7 @@ color: rgba(0,0,0,0.5);
 	color: #696464!important;
 }
 
-#km-contact-search-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+#km-faq-search-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: normal;
@@ -4652,7 +4652,7 @@ color: rgba(0,0,0,0.5);
 	color: #696464!important;
 }
 
-#km-contact-search-input::-ms-input-placeholder { /* Microsoft Edge */
+#km-faq-search-input::-ms-input-placeholder { /* Microsoft Edge */
 	font-family: 'Roboto', sans-serif;
 	font-size: 14px;
 	font-weight: normal;
