@@ -380,7 +380,8 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="animated fadeIn">
-        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
+      {/* TODO: Add onClick={} in below component to handle click of "Avail offer now" button */}
+        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining}  />
       
       <div className="animated fadeIn dashboard-card">
       

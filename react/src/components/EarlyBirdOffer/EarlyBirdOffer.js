@@ -6,7 +6,7 @@ export default class EarlyBirdOffer extends Component {
 
     render() {
 
-        const {OfferPercent, remainingOffers} = this.props;
+        const {OfferPercent, remainingOffers, onClick} = this.props;
 
         return(
             <div className="early-bird-offer-container">
@@ -34,7 +34,7 @@ export default class EarlyBirdOffer extends Component {
                         </div>
                     </div>
                     <div className="col-lg-6 col-md-6 col-sm-12 curves-container">
-                        <button className="km-button km-button--primary avail-offer-button">Avail offer now</button>
+                        <button className="km-button km-button--primary avail-offer-button" onClick={onClick}>Avail offer now</button>
                         <p className="offer-left">Hurry, only <span><strong>{remainingOffers}</strong></span> remaining!</p>
                         <div className="bg-curves-container">
                             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 307.032 135.562'>
@@ -53,4 +53,5 @@ export default class EarlyBirdOffer extends Component {
 EarlyBirdOffer.propTypes = {
     OfferPercent: PropTypes.string.isRequired, 
     remainingOffers: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
 }
