@@ -267,11 +267,11 @@
 
 .mck-box-open .mck-box, .mck-box-open .mck-box {
 	overflow-x: hidden;
-	overflow-y: auto;
+	/* overflow-y: auto; */
 }
 
 .mck-box div, .mck-box .mck-box-title {
-	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif !important;
+	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif ;
 }
 
 .mck-sidebox .mck-box-title {
@@ -1310,6 +1310,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: relative;
 	display: table-row;
 	height: 100%;
+	overflow-y: scroll;
 }
 
 .mck-box-body .mck-tab-cell {
@@ -4446,7 +4447,7 @@ color: rgba(0,0,0,0.5);
 /********** Guest Details Form Ends Here ***********/
 
 .mck-away-msg{
-	font-family: Roboto;
+	font-family: 'Roboto', sans-serif!important;
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
@@ -4454,6 +4455,215 @@ color: rgba(0,0,0,0.5);
     
     
 }
+.km-faq-list{
+	color: #444 !important;
+	list-style-type: none;
+    border-radius: 0;
+    border-bottom: 1px solid #F3F3F3 !important;
+    line-height: 18px;
+    padding: 20px;
+    background-color: #fff !important;
+	text-decoration: none;
+	cursor: pointer;
+}
+.km-faqanswer-list{
+	color: #444 !important;
+	list-style-type: none;
+    border-radius: 0;
+    line-height: 18px;
+    padding: 20px;
+    background-color: #fff !important;
+    text-decoration: none;
+}
+.km-faqimage{
+	height: 33px;
+    width: 33px;
+    margin-right: 10px;
+    background-image: url(images/km-faqicon1.png);
+    background-size: contain;
+	background-repeat: no-repeat;
+	opacity: 0.6;
+}
+.km-faqanchor{
+	color: grey !important;
+	width: calc(100% - 80px);
+	font-family: 'Roboto', sans-serif!important;
+	font-size: 14px!important;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.8px;
+	text-align: left;
+	color: #565658;
+	cursor: pointer;
+}
+.km-faqdisplay{
+	display:flex;
+}
+
+.km-faqflex{
+	flex:1;
+}
+
+.km-faqdiv{
+	overflow-y: auto;
+    height: 100%;
+}
+
+.km-faqquestion{
+	width: 345px;
+	height: 32px;
+	font-family: 'Roboto', sans-serif!important;
+	font-size: 16px!important;
+	font-weight: 500;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.8px;
+	text-align: left;
+	color: #3f3f3f!important;
+	margin-bottom: 20px;
+}
+
+.km-faq{
+	color: white;
+	border: none;
+	width: 76px;
+	color: white;
+    height: 15px;
+    width: 30px;
+    margin-right: 18px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.15)!important;
+    padding: 10px;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.km-faqanswer{
+	width: 345px;
+	height: 90%;
+	font-family: 'Roboto', sans-serif!important;
+	font-size: 16px!important;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 1px!important;
+	text-align: left;
+	color: #757578!important;
+	
+}
+.km-faqsearch{
+    padding: 0 5px;
+    font-size: 14px;
+    color: #555;
+    outline: none;
+    background-image: none;
+    border: 0;
+    position: relative;
+    z-index: 2;
+    float: left;
+    display: table-cell;
+	border-radius: 3px;
+	padding: 10px;
+    margin: -10px 0px;
+    width: auto;
+	
+  
+}
+.km-faqtitle{
+	flex: 1;
+    width: 60px;
+	font-size: 16px;
+	margin-left: 35px;
+}
+.km-faqbtn{
+	background-color: #716fb3;
+}
+.button:hover #km-faqbtn {
+	background-color: #716fb3;
+}
+
+.km-faqback{
+	margin-top: 10px;
+	white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+}
+.km-faqsearch-icon{
+	position: absolute;
+    left: 15px;
+    top: 20px;
+}
+
+.km-faqsearch-input{
+    padding-left: 42px!important;
+    width: 300px!important;
+    height: 31px!important;
+    background-color: #d0d0d0 !important;
+    color: #696464!important;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+}
+
+.mck-title{
+	display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#km-contact-search-input:placeholder {
+    font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #696464!important;
+    /* Firefox */
+}
+#km-contact-search-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+	
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #696464!important;
+}
+
+#km-contact-search-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #696464!important;
+}
+
+#km-contact-search-input::-ms-input-placeholder { /* Microsoft Edge */
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #696464!important;
+}
+
 #mck-away-msg-box{
 	border-top: dashed 1px #bebbbb;
 	border-bottom: solid 1px #654df7;

@@ -13,6 +13,7 @@
 
         //KommunicateKB.getArticles({data: {appId: 'kommunicate-support', query: 'fcm', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
         KommunicateKB.getArticles = function(options) {
+            try{
             var articles = [];
             KommunicateKB.getFaqs({data: options.data, success: function(response) {
                 for (var i = 0; i < response.data.length; i++){
@@ -22,6 +23,7 @@
                         title: article.name,
                         description: article.content, 
                         status: article.status,
+                        body: article.content,
                         source: SOURCES.kommunicate
                     });
                 }
@@ -36,6 +38,7 @@
                                     articleId: article.article_id,
                                     title: article.title,
                                     description: article.description, 
+                                    body: article.description,
                                     url: article.url,
                                     source: SOURCES.helpdocs
                                 });
@@ -48,7 +51,7 @@
                                 options.success(res);
                             }
                         }, error: function(error) {
-
+                            options.error(error);
                         }
                     });
                 } else {
@@ -60,9 +63,15 @@
                     }
                 }
 
-            }, error: function() {
-
+            }, error: function(err) {
+                if(typeof options.error ==='function' ){
+                    options.err(err);
+                }
+                
             }});
+        }catch(e){
+            options.error(e);
+            }
         }
 
         //KommunicateKB.getArticle({data: {appId: 'kommunicate-support', articleId: 'tuqx5g5kq5', source: 'HELPDOCS', helpdocsAccessKey: 'cgIRxXkKSsyBYPTlPg4veC5kxvuKL9cC4Ip9UEao'}, success: function(response) {console.log(response);}, error: function() {}});
@@ -74,6 +83,7 @@
                         articleId: article.article_id,
                         title: article.title,
                         description: article.description, 
+                        body: article.body,
                         url: article.url,
                         source: SOURCES.helpdocs
                     };
@@ -84,8 +94,8 @@
                         res.data = article;
                         options.success(res);
                     }
-                }, error: function() {
-
+                }, error: function(e) {
+                    options.error(e);
                 }
                 });
             } else {
@@ -106,8 +116,8 @@
                         res.data = article;
                         options.success(res);
                     }
-                }, error: function() {
-
+                }, error: function(e) {
+                    options.error(e);
                 }
             });
             }
@@ -119,6 +129,9 @@
             if (options.data.query) {
                 url = url + "&query=" + options.data.query;
             }
+
+            //Todo: if query is present then call machine learning server to get answer ids.
+            //curl -H "Content-Type: application/json" -d '{ "text":"how to setup notification", "appId":"kommunicate-support" }' https://machine.kommunicate.io/queries.json
 
             var response = new Object();
             KMCommonUtils.ajax({

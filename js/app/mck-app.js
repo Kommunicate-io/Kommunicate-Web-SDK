@@ -20,6 +20,12 @@ function ApplozicSidebox() {
     }, {
             "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/app/mck-sidebox-1.0.css"
     },{
+            "name": "km-richmessages", "url": MCK_STATICPATH + "/css/app/km-rich-message.css"
+        }, {
+            "name": "robotocss", "url": "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700"
+
+        },
+    {
    	 	"name": "km-login-model", "url": MCK_STATICPATH + "/css/app/km-login-model.css"
    }, {
        "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/tiny-slider.css"
@@ -50,7 +56,10 @@ function ApplozicSidebox() {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     } ,{
     		"name":"cookie","url" : MCK_STATICPATH+"/js/app/km-utils.js"
-    }/*, {
+    },{
+        "name":"faq","url" : MCK_STATICPATH+"/knowledgebase/kommunicate-kb-0.1.min.js"
+    }
+    /*, {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
     var mck_script_loader2 = [ {
