@@ -28,6 +28,13 @@ exports.createCustomer = (req,res)=>{
   userDetail.userName=userName;
   userDetail.subscription = subscription;
   logger.info("userName:", userName, password,isPreSignUp,isOAuthSignUp);
+  /*
+  * When login is done via 'Sign in with Google' make password = null and loginType = 'oauth'.
+  * Making sure that passoword is null for 'Sign in with Google'
+  */
+  if(isOAuthSignUp && req.body.loginType === 'oauth'){
+    userDetail.password = 'mi8&zG#0rLyE^$1&MXSe'
+  }
   if(userName&&(isPreSignUp||password||isOAuthSignUp)){
     console.log("request received for pre sign up, EmailId : ",userName);
     //TODO : check the if user exist form communicate Db;
