@@ -6,7 +6,7 @@ import {Modal} from 'react-bootstrap';
 import  {Button}  from 'react-bootstrap';
 import Dropdown from 'react-dropdown';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
-import {resetPassword} from '../../../utils/kommunicateClient';
+import {resetPassword, getUserInfo} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
 import './login.css';
@@ -49,7 +49,7 @@ constructor(props){
     errorMessageTextPassword:'',
     hideErrorMessagePassword: true,
     handleUserNameBlur:false,
-    loginViaOAuth: false,
+    googleOAuth: false,
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -71,10 +71,10 @@ constructor(props){
       const email = CommonUtils.getUrlParameter(search, 'email');
 
       this.setState({
-        loginViaOAuth: true,
+        googleOAuth: true,
         email: email,
         userName: email,
-        password: 'CHANGIT',
+        password: 'CHANGE IT',
         loginButtonAction: 'getAppList'
       }, () => {
         Promise.resolve(this.login()).then( numOfApp => {
@@ -138,15 +138,19 @@ submitForm = ()=>{
   //validateUser(this.state);
   var _this=this;
 
-  const loginUrl= getConfig().kommunicateApi.login;
+  let loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
-  if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
+  if(!this.state.googleOAuth && (validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password))){
     // Notification.warning("Email Id or Password can't be empty!");
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
     
   }else{
     if (window.heap) {
       window.heap.identify(userName);
+    }
+
+    if (this.state.googleOAuth === true){
+      loginUrl += "?loginType=oauth"
     }
 
     this.setState({loginButtonDisabled:true});
@@ -295,6 +299,56 @@ websiteUrl = (e)=> {
   window.location = kmWebsiteUrl;
 }
 
+checkLoginType = () => {
+
+  Promise.resolve(getUserInfo(this.state.userName, this.state.applicationId)).then(response => {
+    console.log(response.data);
+  })
+
+}
+
+showPasswordField = () => {
+
+  if (this.state.hidePasswordInputbox || this.state.googleOAuth) {
+    return (
+      <div className="input-group mb-4"></div>
+    );
+  }else{
+    return (
+      <div className="input-group mb-4">
+        <div className="password-input-label-group">
+          <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} style={{borderColor: this.state.errorInputColor}} required/>
+          <label className="label-for-input email-label">Password</label>
+          <span className="show-paasword-btn" onClick={this.showHide}>
+          {this.state.type === 'input' ? <svg fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg> :     <svg xmlns="http://www.w3.org/2000/svg" fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none"/>
+              <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+            </svg>}
+          </span>
+        </div>
+        <div className="input-error-div" hidden={this.state.hideErrorMessagePassword}>
+          <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
+            <g id='Page-1' fill='none' fillRule='evenodd'>
+                <g id='Framework' transform='translate(-77 -805)' fill='#ED1C24'>
+                    <g id='Wrong-Value-with-Notification' transform='translate(77 763)'>
+                        <g id='Error-Notification' transform='translate(0 40)'>
+                            <path d='M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z'
+                            id='Error-Icon' />
+                        </g>
+                    </g>
+                </g>
+            </g>
+          </svg>
+          <p className="input-error-message">{this.state.errorMessageTextPassword}</p>
+        </div>
+      </div>
+    );
+  }
+}
+
 
   render() {
     return (
@@ -395,37 +449,6 @@ websiteUrl = (e)=> {
                         }
                       </DropdownButton>
                     </div>
-                    <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox || this.state.loginViaOAuth}>
-                    <div className="password-input-label-group">
-                      <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} style={{borderColor: this.state.errorInputColor}} required/>
-                      <label className="label-for-input email-label">Password</label>
-                      <span className="show-paasword-btn" onClick={this.showHide}>
-                      {this.state.type === 'input' ? <svg fill="#999999" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0z" fill="none"/>
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                        </svg> :     <svg xmlns="http://www.w3.org/2000/svg" fill="#999999" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none"/>
-                          <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
-                        </svg>}
-                        
-                      </span>
-                      </div>
-                      <div className="input-error-div" hidden={this.state.hideErrorMessagePassword}>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
-                          <g id='Page-1' fill='none' fillRule='evenodd'>
-                              <g id='Framework' transform='translate(-77 -805)' fill='#ED1C24'>
-                                  <g id='Wrong-Value-with-Notification' transform='translate(77 763)'>
-                                      <g id='Error-Notification' transform='translate(0 40)'>
-                                          <path d='M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z'
-                                          id='Error-Icon' />
-                                      </g>
-                                  </g>
-                              </g>
-                          </g>
-                        </svg>
-                        <p className="input-error-message">{this.state.errorMessageTextPassword}</p>
-                       </div>
-                    </div>
                     {/* <div className="password-input-label-group" hidden ={this.state.hidePasswordInputbox}>
                       <InputField
                                   inputType={this.state.type}
@@ -448,7 +471,12 @@ websiteUrl = (e)=> {
                         
                       </span>
                     </div> */}
-
+                    { /*
+                      * Just for more better security no need to render the password field.
+                      * User can just unhide the field if it is hidden it is better just to not render the field.
+                      */
+                      this.showPasswordField()
+                    }
                     <div className="row">
                       <div className="col-3">
                         <button id="login-button" type="button" className="btn btn-primary px-3 km-login-btn btn-primary-custom" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</button>
