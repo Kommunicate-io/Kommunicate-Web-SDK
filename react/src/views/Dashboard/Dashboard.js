@@ -22,8 +22,14 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
 
+    let subscription = CommonUtils.getUserSession().subscription;
+    if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
+        subscription = 'startup';
+    }
+
     this.toggle = this.toggle.bind(this);
     this.state = {
+      subscription: subscription,
       dropdownOpen: false,
       active: 0,
       online: 0,
@@ -380,8 +386,11 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="animated fadeIn early-bird-card">
-
+      {this.state.subscription == 'startup' ?
         <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
+        :
+        null
+      }
       
       <div className="animated fadeIn dashboard-card">
       
