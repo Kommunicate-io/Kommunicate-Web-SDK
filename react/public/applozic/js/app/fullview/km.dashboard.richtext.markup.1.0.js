@@ -168,7 +168,70 @@ getPassangerDetail : function(options){
     </div>
 </div>
 `
-}
+},
+getListMarkup:function(){
+    return `<div class="message received faq-list" style="">
+     <div class="faq-list--container"  >
+             <div class="faq-list--header">
+                     {{{headerImgSrc}}}
+                     <div class="faq-list--header_text-container">
+                                     {{{headerText}}}
+                         </div>
+         </div>
+         <div class="faq-list--body">
+             <div class="faq-list--body_list-container">
+                 <ul class="faq-list--body_list">
+                     {{#elements}}
+                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
+                             <div class="faq-list--body_img">
+                                     {{{imgSrc}}}
+                             </div>
+                         <div class="faq-list--body_que-ans">
+                                 <p class="faq-list--body_que">
+                                     {{title}}
+                                 </p>
+                                 <p class="faq-list--body_ans">
+                                     {{description}}
+                                 </p>
+                             </div>
+                         </a>
+                     </li>
+                     {{/elements}}
+                 
+                 </ul>
+             </div>
+         </div>
+         <div class="faq-list--footer">
+                 <div class="faq-list--footer_button-container">
+                         {{#buttons}}
+                         <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
+                         {{/buttons}}
+                     
+             </div>
+         </div>
+     </div>
+</div>`
+ },
+ getDialogboxTemplate : function(){
+     return `<div  class="message received faq-answer">
+     <div class="faq-answer--container">
+         <div class="faq-answer--body">
+             <div class="faq-answer--body_container">
+                 <p class="faq-answer--body_que">{{title}}</p>
+                 <p class="faq-answer--body_ans"> {{description}}</p>
+             </div>
+         </div>
+         <div class="faq-answer--footer">
+             <div class="faq-answer--footer_button-text-container">
+                 <p>{{buttonLabel}}</p>
+                 {{#buttons}}
+                 <button class="km-cta-button km-add-more-rooms">{{name}}</button>
+                {{/buttons}}
+             </div>
+         </div>
+     </div>
+ </div>`;
+ }
 };
 
 kommunicateDashboard.markup.buttonContainerTemplate= function(options){
@@ -232,30 +295,61 @@ kommunicateDashboard.markup.getRoomDetailsContainerTemplate = function (roomList
     }
     return `<div class="km-dashboard-card-room-detail-container  km-div-slider">` + roomListMarkup + `</div>`
 }
-/*{"HotelRoomsDetails":[{
-    "ChildCount":0,
-    "RequireAllPaxDetails":true,
-    "RoomIndex":1,
-    "RoomTypeCode":"001:DEL:3834:S3807:4259:16538|1",
-    "RoomTypeName":"Standard Twin",
-    "RatePlanCode":"001:DEL:3834:S3807:4259:16538|1",
-    "CancellationPolicy":"Standard Twin#^#INR 476.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 1904.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#",
-    "Price":{"CurrencyCode":"INR",
-        "RoomPrice":1903.5,
-        "Tax":0,
-        "ExtraGuestCharge":0,
-        "ChildCharge":0,
-        "OtherCharges":0,
-        "Discount":0,
-        "PublishedPrice":1903.5,
-        "PublishedPriceRoundedOff":1904,
-        "OfferedPrice":1903.5,
-        "OfferedPriceRoundedOff":1904,
-        "AgentCommission":0,
-        "AgentMarkUp":0,
-        "ServiceTax":114.21,
-        "TDS":0
+kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
+    if(metadata && metadata.payload){
+       var json = JSON.parse(metadata.payload);
+        if(json.headerImgSrc){
+            json.headerImgSrc = '<div class="faq-list--header_text-img"><img src= '+json.headerImgSrc+'/></div>' 
+        }if(json.headerText){
+            json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
         }
-    },
-    {"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":2,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16528|1","RoomTypeName":"Deluxe Twin","RatePlanCode":"001:DEL1:3834:S3807:4259:16528|1","CancellationPolicy":"Deluxe Twin#^#INR 588.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2350.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2350,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2350,"PublishedPriceRoundedOff":2350,"OfferedPrice":2350,"OfferedPriceRoundedOff":2350,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":141,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":3,"RoomTypeCode":"001:DEL:3834:S3807:4259:16533|1","RoomTypeName":"Standard Triple","RatePlanCode":"001:DEL:3834:S3807:4259:16533|1","CancellationPolicy":"Standard Triple#^#INR 711.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 2844.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":2843.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":2843.5,"PublishedPriceRoundedOff":2844,"OfferedPrice":2843.5,"OfferedPriceRoundedOff":2844,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":170.61,"TDS":0}},{"ChildCount":0,"RequireAllPaxDetails":true,"RoomIndex":4,"RoomTypeCode":"001:DEL1:3834:S3807:4259:16527|1","RoomTypeName":"Deluxe Triple","RatePlanCode":"001:DEL1:3834:S3807:4259:16527|1","CancellationPolicy":"Deluxe Triple#^#INR 817.00 will be charged, If cancelled between 01-Feb-2018 00:00:00 and 04-Feb-2018 23:59:59.|INR 3267.00 will be charged, If cancelled between 05-Feb-2018 00:00:00 and 08-Feb-2018 00:00:00.|100.00% of total amount will be charged, If cancelled between 08-Feb-2018 00:00:01 and 09-Feb-2018 23:59:59.|#!#","Price":{"CurrencyCode":"INR","RoomPrice":3266.5,"Tax":0,"ExtraGuestCharge":0,"ChildCharge":0,"OtherCharges":0,"Discount":0,"PublishedPrice":3266.5,"PublishedPriceRoundedOff":3267,"OfferedPrice":3266.5,"OfferedPriceRoundedOff":3267,"AgentCommission":0,"AgentMarkUp":0,"ServiceTax":195.99,"TDS":0}}]}
-*/
+        if(json.elements.length){
+            json.elements =   json.elements.map(function(item){
+               // checking for image
+                if(item.imgSrc){
+                item.imgSrc =  '<img src ='+item.imgSrc +'/>';
+               }
+               //checking for type
+               if(!item.action || item.action.type =="quick_reply" || item.action.type =="submit"){
+                item.href = "javascript:void(0)";
+                item.hadlerClass= "km-list-item-handler";
+               }else{
+                item.href = item.action.url;
+               }
+               
+               item.dataType=item.action.type||"";
+               item.dataReply = item.action.text||item.title||"";
+               item.dataArticleId = item.articleId||"";
+               item.dataSource = item.source||"";
+               // TODO : add post url in data.
+                return item;
+            })
+        }
+        json.buttons=  json.buttons.map(button=>{
+            if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
+                button.href = "javascript:void(0)";
+                button.hadlerClass= "km-list-button-item-handler";
+               }else{
+                button.href = button.action.url;
+               }
+               
+               button.dataType=button.action.type||"";
+               button.dataReply = button.action.text||button.name||"";
+               // TODO : add post url in data.
+                return button;
+        })
+        
+       return Mustache.to_html(kommunicateDashboard.markup.getListMarkup(), json);
+    }else{
+        return "";
+    }
+
+}
+kommunicateDashboard.markup.getDialogboxContainer = function(metadata){
+    if(metadata && metadata.payload){
+        var json = JSON.parse(metadata.payload);
+        return Mustache.to_html(kommunicateDashboard.markup.getDialogboxTemplate(), json);
+     }else{
+         return "";
+     }
+}

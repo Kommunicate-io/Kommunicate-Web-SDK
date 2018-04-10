@@ -71,36 +71,25 @@ exports.searchFAQ=(options)=>{
  * @param {object} options
  * @param {string} options.collectionName
  * @param {object} options.query
- * @param {object} options.projection
  * @param {object} options.options
  */
  exports.find= (options)=>{
-    logger.info("fetching records from collection "+options.collectionName);
-
     return new Promise((resolve,reject)=>{
-        mongoClient.connect(mongoURL,function(err,client){
-            if(err){
-                logger.error("error while connecting to mongo db",err);
-                return reject(err);
-            }else{
-                var db = client.db(DEFAULT_SCHEMA);
-                var stream = db.collection(options.collectionName).find(options.query,options.projection,options.options).stream();
-                var counter =0, result=[];
-                stream.on("data", function(item){
-                    //console.log("proccessing document..", item);
-                        result[counter]=item;
-                        counter++;
-                });
-                stream.on("end", function() {
-                    console.log("got data from db");
-                    return resolve(result);
-                });
-            }
-        });	
+        logger.info("fetching records from collection "+options.collectionName);
+        mongoClient.connect(mongoURL).then(client=>{
+            var db = client.db(DEFAULT_SCHEMA);
+            return db.collection(options.collectionName).find(options.query,options.options).toArray(function(err,data){
+                if(err){
+                    return reject(err);
+                }
+                logger.info("fetchec data from db");
+                return resolve(data);
 
-     })
+            })
+        })
       
-    }
+    })
+}
 
     /**
      * this method updates a document selected by selector.
