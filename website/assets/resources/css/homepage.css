@@ -58,7 +58,7 @@ a, a:hover, a:focus, a:active {
   position: relative;
   padding-top: 50px;
   /* height: 100vh; */
-  min-height: 760px;
+  min-height: 840px;
   overflow: hidden;
   background: transparent;
 }
@@ -1477,11 +1477,11 @@ input:-ms-input-placeholder {
   fill: #5c5aa7 !important;
 }
 
-.km-launcher-logo-0 {
+/* .km-launcher-logo-0 {
   fill: #ffffff !important;
 } .km-launcher-logo-1 {
   fill: #5C5AA7 !important;
-}
+} */
 
 
 .whats-new-section {
@@ -1513,7 +1513,6 @@ input:-ms-input-placeholder {
   margin-top: 5px; 
   font-size:16px; 
   color:#a6a1a1;
-  margin-left: 15%;
 }
 
 .homepage-showcase-section {
@@ -2238,6 +2237,9 @@ input:-ms-input-placeholder {
   .slider-container .slider-content .slider-single.proactive .slider-single-image, .slider-container .slider-content .slider-single.preactive .slider-single-image {
     opacity: 0.5;
   }
+  .homepage-beta-landing-page-section {
+    min-height: auto;
+  }
 }
 
 @media screen and (min-width:992px) {
@@ -2252,6 +2254,13 @@ input:-ms-input-placeholder {
     max-width: 900px;
     margin: -120px auto 0px;
   }
+  .homepage-experience-section {
+    margin-top: -130px;
+}
+.homepage-beta-features-section .section-heading {
+  margin-top: -50px;
+}
+
 }
 @media screen and (max-width:767px) {
   .homepage-beta-landing-page-section .bg-oval {
@@ -2278,47 +2287,88 @@ input:-ms-input-placeholder {
 }
 
 
-@media screen and (min-width:928px) {
+@media screen and (min-width:1200px) and (max-width:1289px) {
   .homepage-beta-landing-page-section {
     background-image: url(/assets/resources/images/colorful-bg2.svg);
-    background-size: 390px;
+    background-size: 338px;
     background-repeat: no-repeat;
-    background-position: right -5px top -154px;
+    background-position: right -5px top -4px;
   }
 }
-@media screen and (min-width:768px) and (max-width:991px) {
+@media screen and (min-width:1290px) and (max-width:1400px) {
   .homepage-beta-landing-page-section {
     background-image: url(/assets/resources/images/colorful-bg2.svg);
-    background-size: 300px;
+    background-size: 400px;
     background-repeat: no-repeat;
-    background-position: right -5px top -104px;
+    background-position: right -5px top -34px;
+  }
+}
+@media screen and (min-width:1400px) and (max-width:1450px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 440px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -44px;
+  }
+}
+@media screen and (min-width:1451px) and (max-width:1550px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 460px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -84px;
+  }
+}
+@media screen and (min-width:1551px) and (max-width:1630px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 500px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -94px;
+  }
+}
+@media screen and (min-width:1631px) and (max-width:1710px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 536px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -164px;
+  }
+}
+@media screen and (min-width:1711px) and (max-width:1800px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 576px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -204px;
+  }
+}
+@media screen and (min-width:1801px) and (max-width:1880px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 620px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -254px;
+  }
+}
+@media screen and (min-width:1881px) and (max-width:1990px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 660px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -234px;
+  }
+}
+@media screen and (min-width:768px) and (max-width:1199px) {
+  .homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    background-size: 320px;
+    background-repeat: no-repeat;
+    background-position: right -5px top -4px;
 }
 }
 
-@media screen and (min-width:1440px) {
-  .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
-    background-repeat: no-repeat;
-    background-size: 430px;
-    background-position: right -5px top -188px;
-}
-}
-@media screen and (min-width:1600px) and (max-width:1750px) {
-  .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
-    background-repeat: no-repeat;
-    background-size: 520px;
-    background-position: right -3px top -228px;
-}
-}
-@media screen and (min-width:1751px) {
-  .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
-    background-repeat: no-repeat;
-    background-size: 640px;
-    background-position: right -3px top -278px;
-}
-}
+
 
 
 .slider-container .slider-content .slider-single.proactive, .slider-container .slider-content .slider-single.preactive, .slider-container .slider-left, .slider-container .slider-right {
@@ -2410,12 +2460,7 @@ input:-ms-input-placeholder {
 }
 
 
-.homepage-beta-landing-page-section .arch {
-  position: absolute;
-    bottom: 0;
-    width: 100%;
-    left: 0;
-}
+
 
 @media only screen and (max-width:991px) {
   .hero-section {
@@ -2443,6 +2488,12 @@ input:-ms-input-placeholder {
 @media only screen and (min-width:768px) {
   .faster-query, .improve-support {
     border-right: 1px solid #ececec;
+  }
+  .homepage-beta-landing-page-section .arch {
+    position: absolute;
+      bottom: 0;
+      width: 100%;
+      left: 0;
   }
 }
 @media only screen and (max-width:767px) {
