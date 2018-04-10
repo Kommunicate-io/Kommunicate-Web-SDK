@@ -751,7 +751,7 @@
     }
     .km-faq-answer--body {
         border-radius: 5px;
-      background-color: #e6e5ec;
+      background-color: #FFFFFF;
     }
     .km-faq-answer--body_container {
         padding: 10px;
@@ -786,7 +786,7 @@
         margin-bottom: 0px;
         margin-right: 10px;
         color:#646262;
-        font-family: OpenSans;
+        font-family: Roboto;
         font-size: 14px;
         letter-spacing: 0.5px;
     }
@@ -799,4 +799,8 @@
 
     .km-faq-list--header .km-faq-list--header_text-container:first-child{
         border-radius: 16px 16px 0px 0px;
+    }
+    .km-faq-dialog-button{
+        min-width: 40px;
+        border-radius: 15px;
     }
