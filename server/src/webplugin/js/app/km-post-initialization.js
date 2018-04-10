@@ -68,19 +68,11 @@ if (helpdocsKey) {
 Kommunicate.faqEvents= function (data,helpdocsKey){
     var mcktimer; 
     $applozic(d).on("click", ".mck-sidebox-launcher", function () {
-        if ($applozic('#km-faqdiv').hasClass('vis')) {
-            $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
-            $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
-            $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
-            $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
-        }
-       
-        if ($applozic('#km-faqanswer').hasClass('vis')) {
-            $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
-            $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
-            $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
-            $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
-        }
+        Kommunicate.showChat();
+    });
+   
+    $applozic(d).on("click", "#mck-msg-preview", function () {
+        Kommunicate.showChat();
     });
     $applozic(d).on("click", ".km-faq-list", function () {
         $applozic('#km-faqanswer').empty();
@@ -88,6 +80,7 @@ Kommunicate.faqEvents= function (data,helpdocsKey){
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
+                if ($applozic("#km-faqanswer .km-faqanswer-list").length == 0) { 
                 $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
                 $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                 $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
@@ -95,7 +88,7 @@ Kommunicate.faqEvents= function (data,helpdocsKey){
                 $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
                 $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
 
-            }
+            }}
             , error: function () { }
         });
     });
@@ -170,4 +163,20 @@ Kommunicate.faqEvents= function (data,helpdocsKey){
         }
 
     });
+}
+
+Kommunicate.showChat = function(){
+    if ($applozic('#km-faqdiv').hasClass('vis')) {
+        $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
+        $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
+        $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+        $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
+    }
+   
+    if ($applozic('#km-faqanswer').hasClass('vis')) {
+        $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
+        $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+        $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+        $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
+    }
 }
