@@ -1,3 +1,3 @@
 exports.COLLECTIONS={
-    FAQ:"faq"
+    KNOWLEDGE_BASE:"knowledgebase"
 }

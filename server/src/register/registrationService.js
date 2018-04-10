@@ -14,6 +14,7 @@ const KOMMUNICATE_ADMIN_ID =config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPassword;
 const USER_TYPE={"AGENT": 1,"BOT": 2,"ADMIN": 3};
 const logger = require("../utils/logger");
+const LIZ = require("./bots.js").LIZ;
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -26,9 +27,9 @@ exports.createCustomer = customer=>{
     customer.applicationId=application.applicationId;
     customer.role="APPLICATION_WEB_ADMIN";
     return Promise.all([applozicClient.createUserInApplozic(customer),
-                   /*applozicClient.createApplozicClient("agent","agent",application.applicationId,null,"APPLICATION_WEB_ADMIN"),*/
+        applozicClient.createApplozicClient(LIZ.userName,LIZ.password,application.applicationId,null,"BOT",null,LIZ.name),
                    applozicClient.createApplozicClient("bot","bot",application.applicationId,null,"BOT")
-    ]).then(([applozicCustomer,/*agent,*/bot])=>{
+    ]).then(([applozicCustomer,liz,bot])=>{
       customer.apzToken = new Buffer(customer.userName+":"+customer.password).toString('base64');
       let user = getUserObject(customer,applozicCustomer,application);
       if(customer.password !== null){
@@ -42,8 +43,9 @@ exports.createCustomer = customer=>{
         user.customerId=customer?customer.dataValues.id:null;
         //let agentobj= getFromApplozicUser(agent,customer,USER_TYPE.ADMIN);
         let botObj = getFromApplozicUser(bot,customer,USER_TYPE.BOT);
+        let lizObj = getFromApplozicUser(liz,customer,USER_TYPE.BOT,LIZ.password)
         // update bot plateform
-        Promise.resolve(botPlatformClient.createBot({
+        Promise.all([botPlatformClient.createBot({
           "name": bot.userId,
           "key": bot.userKey,
           "brokerUrl": bot.brokerUrl,
@@ -52,13 +54,22 @@ exports.createCustomer = customer=>{
           "authorization": botObj.authorization,
           "type": "KOMMUNICATE_SUPPORT",
           "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
-        })).then(result=>{
+        }),botPlatformClient.createBot({
+          "name": liz.userId,
+          "key": liz.userKey,
+          "brokerUrl": liz.brokerUrl,
+          "accessToken": liz.accessToken,
+          "applicationKey": application.applicationId,
+          "authorization": lizObj.authorization,
+          "type": "KOMMUNICATE_SUPPORT",
+          "handlerModule":"SUPPORT_BOT_HANDLER"
+        })]).then(([liz,result])=>{
             console.log("bot platform updated....",result);
             return result;
         }).catch(err=>{
           console.log("err while updating bot plateform..",err);
         });
-        return userModel.bulkCreate([user,/*agentobj,*/botObj]).spread((user,/*agent,*/bot)=>{
+        return userModel.bulkCreate([user,/*agentobj,*/botObj,lizObj]).spread((user,/*agent,*/bot,lizObj)=>{
           console.log("user created",user?user.dataValues:null);
          // console.log("created agent",agent.dataValues);
           console.log("created bot ",bot.dataValues);
@@ -110,15 +121,16 @@ exports.getCustomerByApplicationId = appId => {
     });
 };
 
-const getFromApplozicUser= (applozicUser,customer,type)=>{
+const getFromApplozicUser= (applozicUser,customer,type,pwd)=>{
   let userObject = {};
+  let password =pwd||applozicUser.userId;
   userObject.userName= applozicUser.userId;
   console.log("data",applozicUser);
-  userObject.password= bcrypt.hashSync(applozicUser.userId, 10);
-  userObject.apzToken= new Buffer(applozicUser.userId+":"+applozicUser.userId).toString('base64');
+  userObject.password= bcrypt.hashSync(password, 10);
+  userObject.apzToken= new Buffer(applozicUser.userId+":"+password).toString('base64');
   userObject.customerId= customer.id;
   userObject.authorization= new Buffer(applozicUser.userId+":"+applozicUser.deviceKey).toString('base64');
-  userObject.accessToken= applozicUser.userId,
+  userObject.accessToken= password,
   userObject.type= type;
   userObject.name=applozicUser.displayName;
   userObject.brokerUrl=applozicUser.brokerUrl;
@@ -175,7 +187,7 @@ exports.sendWelcomeMail= (email, userName, agent, companyName)=>{
   return mailService.sendMail(mailOptions);
 }
 
-const populateDataInKommunicateDb = (options,application,applozicCustomer,applozicBot)=>{
+const populateDataInKommunicateDb = (options,application,applozicCustomer,applozicBot,liz)=>{
  let kmCustomer ={name:applozicCustomer.displayName,userName:options.userName,email:options.email,
  contactNo:applozicCustomer.contactNumber,applicationId:application.applicationId}  ;
  kmCustomer.password = bcrypt.hashSync(options.password, 10);
@@ -193,7 +205,8 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
     kmUser.customerId=customer?customer.dataValues.id:null;
     // update bot plateform
     let botObj = getFromApplozicUser(applozicBot,customer,USER_TYPE.BOT);
-    Promise.resolve(botPlatformClient.createBot({
+    let lizObj = getFromApplozicUser(liz,customer,USER_TYPE.BOT,LIZ.password)
+    Promise.all([botPlatformClient.createBot({
       "name": applozicBot.userId,
       "key": applozicBot.userKey,
       "brokerUrl": applozicBot.brokerUrl,
@@ -202,13 +215,22 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
       "authorization":new Buffer(applozicBot.userId+":"+applozicBot.deviceKey).toString('base64'),
       "type": "KOMMUNICATE_SUPPORT",
       "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
-    })).then(result=>{
+    }),botPlatformClient.createBot({
+      "name": liz.userId,
+      "key": liz.userKey,
+      "brokerUrl": liz.brokerUrl,
+      "accessToken": liz.userId,
+      "applicationKey": application.applicationId,
+      "authorization":new Buffer(liz.userId+":"+liz.deviceKey).toString('base64'),
+      "type": "KOMMUNICATE_SUPPORT",
+      "handlerModule":"SUPPORT_BOT_HANDLER"
+    })]).then(result=>{
         console.log("bot platform updated....",result);
         return result;
     }).catch(err=>{
       console.log("err while updating bot plateform..",err);
     });
-    return userModel.bulkCreate([kmUser,/*agentobj,*/botObj],{transaction:t}).spread((user,/*agent,*/bot)=>{
+    return userModel.bulkCreate([kmUser,/*agentobj,*/botObj,lizObj],{transaction:t}).spread((user,/*agent,*/bot,liz)=>{
       console.log("user created",user?user.dataValues:null);
      // console.log("created agent",agent.dataValues);
       console.log("created bot ",bot.dataValues);
@@ -222,12 +244,13 @@ exports.signUpWithApplozic = (options)=>{
     options.email =options.email|| options.userName;
   return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
     return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
-    applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"})])
-    .then(([customer,bot])=>{
+    applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"}),
+    applozicClient.applozicLogin({"userName":LIZ.userName,"password":LIZ.password,"applicationId":application.applicationId,"roleName":"BOT",displayName:LIZ.name})])
+    .then(([customer,bot,liz])=>{
       return applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})
       .then(updatedUser=>{
         options.role= "APPLICATION_WEB_ADMIN";
-        return populateDataInKommunicateDb(options,application,customer,bot);
+        return populateDataInKommunicateDb(options,application,customer,bot,liz);
       })
     })
 

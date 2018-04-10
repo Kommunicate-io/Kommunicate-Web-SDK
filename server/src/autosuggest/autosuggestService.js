@@ -63,7 +63,7 @@ const createSuggestion = (suggestion) => {
 	 return db.sequelize.transaction(t=> {
 	 	return autoSuggestModel.create(suggestion,{transaction:t}).then(data=>{
 			logger.info("auto suggestion is created. making entry in mongo db", data);
-			return mongoClient.insertOne(collections.FAQ,data.dataValues).then(mongoResult=>{
+			return mongoClient.insertOne(collections.KNOWLEDGE_BASE,data.dataValues).then(mongoResult=>{
 				return data;
 			}).catch(e=>{
 				logger.error("error while creating auto suggestion/faq",e);
@@ -81,7 +81,7 @@ const updateSuggetion = (suggestion) => {
 			},transaction:t
 		}).then(data=>{
 			logger.info("auto suggestion is updated. updating in mongo db", data);
-			return mongoClient.updateOne({collectionName:collections.FAQ,criteria:{"id":suggestion.id},update:suggestion}).then(mongoResult=>{
+			return mongoClient.updateOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id},update:suggestion}).then(mongoResult=>{
 				return data;
 			})
 		});
@@ -96,7 +96,7 @@ const deleteSuggetion = (suggestion) => {
 			},transaction:t
 		}).then(data=>{
 			logger.info("deleting auto suggest from mongo db");
-			 return mongoClient.deleteOne({collectionName:collections.FAQ,criteria:{"id":suggestion.id}})
+			 return mongoClient.deleteOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id}})
 			 .then(deleteResult=>{
 				return data;
 			 });
@@ -107,10 +107,10 @@ const deleteSuggetion = (suggestion) => {
 	
 }
 exports.searchFAQ =(options)=>{
-	options.collectionName = collections.FAQ;
+	options.collectionName = collections.KNOWLEDGE_BASE;
 	if(options.id){
 		options.id=parseInt(options.id);
-		return mongoClient.find({collectionName:collections.FAQ,query:{id:options.id,type:"faq",status:"published"},options:{projection:{name:1,content:1,id:1,_id:0}}});
+		return mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published"},options:{projection:{name:1,content:1,id:1,_id:0}}});
 	}else{
 		return mongoClient.searchFAQ(options);
 	}
