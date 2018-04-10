@@ -21,7 +21,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var helpdocsAccessKey = KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
-    if (helpdocsAccessKey == null || helpdocsKey == "") {
+    if (helpdocsAccessKey == null || helpdocsAccessKey == "") {
         Kommunicate.client.getThirdPartySettings({ appId: data.appId, type: 1 }, function (err, settings) {
             if (err) {
                 console.log("err : ", err);
@@ -33,7 +33,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
                     return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
                 });
 
-                if (helpdocsAccessKey) {
+                if (helpdocsKey) {
                     KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey);
                 } else {
                     KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", "null");
