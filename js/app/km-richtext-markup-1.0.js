@@ -169,67 +169,67 @@ getPassangerDetail : function(options){
             `
 },
 getListMarkup:function(){
-   return `<div class="message received faq-list" style="">
-    <div class="faq-list--container"  >
-            <div class="faq-list--header">
-                    {{{headerImgSrc}}}
-                    <div class="faq-list--header_text-container">
-                                    {{{headerText}}}
-                        </div>
-        </div>
-        <div class="faq-list--body">
-            <div class="faq-list--body_list-container">
-                <ul class="faq-list--body_list">
-                    {{#elements}}
-                    <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
-                            <div class="faq-list--body_img">
-                                    {{{imgSrc}}}
-                            </div>
-                        <div class="faq-list--body_que-ans">
-                                <p class="faq-list--body_que">
-                                    {{title}}
-                                </p>
-                                <p class="faq-list--body_ans">
-                                    {{description}}
-                                </p>
-                            </div>
-                        </a>
-                    </li>
-                    {{/elements}}
-                
-                </ul>
-            </div>
-        </div>
-        <div class="faq-list--footer">
-                <div class="faq-list--footer_button-container">
-                        {{#buttons}}
-                        <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
-                        {{/buttons}}
-                    
-            </div>
-        </div>
-    </div>`
-},
-getDialogboxTemplate : function(){
-    return `<div id ="faq-answer" class="message received faq-answer">
-    <div class="faq-answer--container">
-        <div class="faq-answer--body">
-            <div class="faq-answer--body_container">
-                <p class="faq-answer--body_que">{{title}}</p>
-                <p class="faq-answer--body_ans"> {{description}}</p>
-            </div>
-        </div>
-        <div class="faq-answer--footer">
-            <div class="faq-answer--footer_button-text-container">
-                <p>{{buttonLabel}}</p>
-                {{#buttons}}
-                <button class="km-cta-button km-add-more-rooms">{{name}}</button>
-               {{/buttons}}
-            </div>
-        </div>
-    </div>
-</div>`;
-}
+    return `<div class="km-message km-received km-faq-list" style="">
+     <div class="km-faq-list--container"  >
+             <div class="km-faq-list--header">
+                     {{{headerImgSrc}}}
+                     <div class="km-faq-list--header_text-container">
+                                     {{{headerText}}}
+                         </div>
+         </div>
+         <div class="km-faq-list--body">
+             <div class="km-faq-list--body_list-container">
+                 <ul class="km-faq-list--body_list">
+                     {{#elements}}
+                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
+                             <div class="km-faq-list--body_img">
+                                     {{{imgSrc}}}
+                             </div>
+                         <div class="km-faq-list--body_que-ans">
+                                 <p class="km-faq-list--body_que">
+                                     {{title}}
+                                 </p>
+                                 <p class="km-faq-list--body_ans">
+                                     {{description}}
+                                 </p>
+                             </div>
+                         </a>
+                     </li>
+                     {{/elements}}
+                 
+                 </ul>
+             </div>
+         </div>
+         <div class="km-faq-list--footer">
+                 <div class="km-faq-list--footer_button-container">
+                         {{#buttons}}
+                         <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
+                         {{/buttons}}
+                     
+             </div>
+         </div>
+     </div>`
+ },
+ getDialogboxTemplate : function(){
+     return `<div id ="km-faq-answer" class="km-message km-received km-faq-answer">
+     <div class="km-faq-answer--container">
+         <div class="km-faq-answer--body">
+             <div class="km-faq-answer--body_container">
+                 <p class="km-faq-answer--body_que">{{title}}</p>
+                 <p class="km-faq-answer--body_ans"> {{description}}</p>
+             </div>
+         </div>
+         <div class="km-faq-answer--footer">
+             <div class="km-faq-answer--footer_button-text-container">
+                 <p>{{buttonLabel}}</p>
+                 {{#buttons}}
+                 <button class="km-cta-button km-add-more-rooms">{{name}}</button>
+                {{/buttons}}
+             </div>
+         </div>
+     </div>
+ </div>`;
+ }
 
 };
 
