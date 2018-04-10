@@ -15,6 +15,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click', '.km-quick-replies', Kommunicate.richMsgEventHandler.processQuickReplies);
     $applozic("#mck-message-cell").on('click', '.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem); 
     $applozic("#mck-message-cell").on('click', '.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem); 
+    $applozic("#mck-message-cell").on('click', '.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton); 
     
     
 }
@@ -255,6 +256,18 @@ Kommunicate.richMsgEventHandler = {
             //TODO : support for post request with data.
         }
 
+    },
+    processClickOnDialogButton:function(e){
+        var target = e.currentTarget;
+        var reply = target.dataset.reply;
+        var messagePxy = {
+            'message': reply, //message to send 
+            'metadata': {
+                skipBot:true
+            }
+        };
+
+        Kommunicate.sendMessage(messagePxy);
     }
 
 

@@ -785,6 +785,10 @@
     .km-faq-answer--footer_button-text-container p {
         margin-bottom: 0px;
         margin-right: 10px;
+        color:#646262;
+        font-family: OpenSans;
+        font-size: 14px;
+        letter-spacing: 0.5px;
     }
     .km-faq-answer--footer_button-text-container button {
         margin-left: 10px;
