@@ -4513,7 +4513,7 @@ color: rgba(0,0,0,0.5);
 
 .km-faqquestion{
 	width: 345px;
-	height: 32px;
+	/* height: 32px; */
 	font-family: 'Roboto', sans-serif!important;
 	font-size: 16px!important;
 	font-weight: 500;
@@ -4533,8 +4533,8 @@ color: rgba(0,0,0,0.5);
 	color: white;
     height: 15px;
     width: 30px;
-    margin-right: 18px;
-    font-size: 16px;
+    margin-right: 18px!important;
+    font-size: 16px!important;
     background-color: rgba(255, 255, 255, 0.15)!important;
     padding: 10px;
 	border-radius: 6px;
@@ -4623,7 +4623,7 @@ color: rgba(0,0,0,0.5);
 }
 .km-faqsearch-icon{
 	position: absolute;
-    left: 15px;
+    left: 25px;
     top: 20px;
 }
 

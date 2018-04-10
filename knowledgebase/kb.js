@@ -100,14 +100,14 @@
                 });
             } else {
                 KommunicateKB.getFaq({data: options.data, success: function(response) {
-                    var article = response.data.article;
+                    var faq = response.data.data[0];
                     
                     var article = {
-                        articleId: article.id,
-                        title: article.name,
-                        description: article.content, 
-                        body: article.content,
-                        status: article.status,
+                        articleId: faq.id,
+                        title: faq.name,
+                        description: faq.content, 
+                        body: faq.content,
+                        status: faq.status,
                         source: SOURCES.kommunicate
                     };
 
