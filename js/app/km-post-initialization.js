@@ -51,8 +51,8 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
     KommunicateKB.getArticles({
         data: { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey }, 
         success: function (response) {
-            if (response.data && response.data.length > 0 && $applozic(".km-faq-container").hasClass("n-vis")) {
-                $applozic(".km-faq-container").removeClass('n-vis').addClass('vis');
+            if (response.data && response.data.length > 0 && $applozic(".km-kb-container").hasClass("n-vis")) {
+                $applozic(".km-kb-container").removeClass('n-vis').addClass('vis');
             }
             $applozic.each(response.data, function (i, faq) {
                 $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
