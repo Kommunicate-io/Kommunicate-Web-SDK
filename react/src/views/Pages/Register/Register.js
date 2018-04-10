@@ -108,7 +108,7 @@ class Register extends Component {
   createAccountWithUserId=(_this)=>{
 
     var email = this.state.email;
-    var password = this.state.password ? this.state.password:"CHANGIT";
+    var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
 
