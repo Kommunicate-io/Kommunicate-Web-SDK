@@ -89,7 +89,7 @@ app.use('/issuetype', routes.issueType);
 app.use('/issuetype/autoreply', routes.issueTypeAutoReply);
 app.use('/zendesk', routes.zendesk);
 app.use('/integration/settings', routes.thirdPartySetting);
-app.use('/faq',routes.faq);
+app.use('/kb',routes.faq);
 app.use('/google', routes.googleAuth);
 app.use('/subscription', routes.chargebee);
 
