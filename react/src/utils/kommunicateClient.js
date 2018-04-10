@@ -30,12 +30,27 @@ const createCustomerOrAgent = (userInfo, userType)=>{
 }
 const createCustomer = function(email,password,name,userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
+  let loginType = 'email'
 
-  if(localStorage.getItem('Google_OAuth') === 'true'){
+  /*
+  * When login is done via 'Sign in with Google' make password = null and loginType = 'oauth'.
+  * Adding a query param OAuthSignUp as a backend flag
+  */
+  if (localStorage.getItem('Google_OAuth') === 'true') {
     signUpUrl += '?OAuthSignUp=true'
+    password = null
+    loginType = 'oauth'
   }
 
-  return Promise.resolve(axios.post(signUpUrl, { userName: userName, password:password, name:name,email:email}))
+  const signUrlBodyParameters = {
+    userName,
+    password,
+    name,
+    email,
+    loginType
+  }
+
+  return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
     .then((response) => {
         console.debug(response.data.data);
         if(response.status==200){
