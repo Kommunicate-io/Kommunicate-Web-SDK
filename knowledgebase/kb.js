@@ -106,6 +106,7 @@
                         articleId: article.id,
                         title: article.name,
                         description: article.content, 
+                        body: article.content,
                         status: article.status,
                         source: SOURCES.kommunicate
                     };
