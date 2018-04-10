@@ -1844,6 +1844,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic('.km-faqtitle').removeClass("n-vis").addClass("vis");
                 $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
+                $applozic('.mck-no-conversations').removeClass("vis").addClass("n-vis");
+                $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
                 } else{
                 $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
                 }
@@ -1855,16 +1857,22 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var source = $(this).attr('data-source');
                 KommunicateKB.getArticle({
                     data: { appId: MCK_APP_ID, articleId: articleId, source: source, helpdocsAccessKey: helpdocskey }, success: function (response) {
-                        $applozic("#km-faqanswer").append('<li class="km-faqanswer-list"><div class=""> <div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div></li>');
+                        $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
                         $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                         $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
                         $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
+                        $applozic('.mck-no-conversations').removeClass("vis").addClass("n-vis");
+                        $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
 
                     }
                     , error: function () { }
                 });
             });
-            $("#km-faq-search-input").keydown(function (e) {
+            $applozic(d).on("click", "#km-faqanswer a", function (e) {       
+                e.preventDefault();
+                window.open(e.target.href);
+            });
+            $applozic("#km-faq-search-input").keydown(function (e) {
                    clearTimeout(mcktimer);
                    mcktimer=setTimeout(function validate(){
                        KommunicateKB.getArticles({
