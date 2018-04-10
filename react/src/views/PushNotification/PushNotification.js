@@ -73,7 +73,7 @@ class PushNotification extends Component{
       file.file = document.getElementById("apnsUrl").files[0];
       var fileUpload =document.getElementById("apnsUrl");
 
-      if (fileUpload.getAttribute("data-url")) {
+      if (fileUpload.getAttribute("data-url") && document.getElementById("apnsUrl").value ==="") {
         this.submitApnsForDistribution(fileUpload.getAttribute("data-url"));
         return;
       }
@@ -103,7 +103,7 @@ class PushNotification extends Component{
       file.file = document.getElementById("testApnsUrl").files[0];
       var fileUpload =document.getElementById("testApnsUrl");
 
-      if (fileUpload.getAttribute("data-url")) {
+      if (fileUpload.getAttribute("data-url")&& document.getElementById("testApnsUrl").value ==="") {
         this.submitApnsForDevelopment(fileUpload.getAttribute("data-url"));
         return;
       }
@@ -382,7 +382,7 @@ class PushNotification extends Component{
                         
                     <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6 km-input-component">
-                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={this.state.apnsForDevelepment} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
+                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={"Upload File"} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
                     </div>
                     </div>
                     <div className="row form-group">
