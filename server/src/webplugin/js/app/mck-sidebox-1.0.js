@@ -2147,9 +2147,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
 
                 var loadChat = function () {
-                    var agentId = DEFAULT_AGENT_ID;
-                    var botIds = DEFAULT_BOT_IDS;
-                    var agentName = DEFAULT_AGENT_NAME ? DEFAULT_AGENT_NAME : DEFAULT_AGENT_ID;
                     if (window.applozic.PRODUCT_ID === 'kommunicate') {
                         $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
                     }
