@@ -234,6 +234,7 @@ const createAgent =(agent)=>{
   if(!(agent&&agent.userName&&agent.applicationId&&agent.password&&agent.type)){
     throw new Error("missing mendatory fields");
   }
+  //Todo: check if the user exists then update the user.
   const url = getConfig().kommunicateApi.createUser;
   console.debug("creating agent :",agent, "url: ",url);
   return axios.post(url,agent).then(agent=>{
