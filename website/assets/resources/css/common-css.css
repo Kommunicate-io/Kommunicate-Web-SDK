@@ -33,7 +33,7 @@
 }
 .page-links-ul li>a {
     font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #fdfdfd;
   padding: 0px 25px;
   transition: color 0.3s ease;
@@ -398,7 +398,7 @@ footer .copyright {
     font-stretch: normal;
     letter-spacing: normal;
     text-align: left;
-    font-weight: bold;
+    font-weight: 500;
     line-height: 1.57;
     color: #000;
 }
