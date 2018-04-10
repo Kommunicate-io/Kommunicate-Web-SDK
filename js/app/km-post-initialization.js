@@ -19,29 +19,29 @@ Kommunicate.postPluginInitialization = function (err, data) {
     });
     // get the third party settings 
     // 1: for helpDocs
-    Kommunicate.client.getThirdPartySettings({ appId: data.appId, type: 1 }, function (err, settings) {
-        if (err) {
-            console.log("err : ", err);
-            return;
-        }
-        console.log("data : ", settings);
-        if (settings && settings.code == "SUCCESS") {
-            var helpdocsKey = settings.message.find(function (item) {
-                return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
-            });
-            if (KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY")) {
-                KommunicateKB.init("https://api.kommunicate.io");
-                var helpdocKey =KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
-                KommunicateKB.init("https://api.kommunicate.io");
-                Kommunicate.helpdocsInitialization(data,helpdocKey);
-            } else {
-                helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey)
-                KommunicateKB.init("https://api.kommunicate.io");
-                Kommunicate.helpdocsInitialization(data,helpdocsKey.accessKey);
+    KommunicateKB.init("https://api.kommunicate.io");
+    if (KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY")) {
+        var helpdocKey = KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
+        Kommunicate.helpdocsInitialization(data, helpdocKey);
+    } else {
+        Kommunicate.client.getThirdPartySettings({ appId: data.appId, type: 1 }, function (err, settings) {
+            if (err) {
+                console.log("err : ", err);
+                return;
             }
-           
-        }
-    })
+            console.log("data : ", settings);
+            if (settings && settings.code == "SUCCESS") {
+                var helpdocsKey = settings.message.find(function (item) {
+                    return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
+                });
+
+                helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey)
+                Kommunicate.helpdocsInitialization(data, helpdocsKey.accessKey);
+
+
+            }
+        })
+    }
 
 }
 
