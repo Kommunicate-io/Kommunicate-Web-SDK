@@ -38,7 +38,7 @@ class SettingsSidebar extends Component {
                             <NavLink to={'/settings/message-shortcuts'} className="ss-nav-link" activeClassName="active">Quick Replies</NavLink>
                         </li>
                         <li className="ss-nav-item team-link">
-                            <NavLink to={'/settings/team'} className="ss-nav-link" activeClassName="active">Team</NavLink>
+                            <NavLink to={'/settings/team'} className="ss-nav-link" activeClassName="active">Teammates</NavLink>
                         </li>
                         <li className="ss-nav-item agent-assignment-link">
                             <NavLink to={'/settings/agent-assignment'} className="ss-nav-link" activeClassName="active">Conversation Routing</NavLink>

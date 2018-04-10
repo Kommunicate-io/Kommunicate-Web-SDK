@@ -10440,7 +10440,13 @@ input:required {
   text-align: left;
   color: #5c5f5f;
 }
-
+.km-bot-integration-instruction {
+  margin-left: 50px;
+}
+.km-bot-instruction-link{
+  text-decoration: none !important;
+  color: #5C5AA7 !important;
+}
 .km-bot-list-of-integrated-bots-container {
   height: 200px;
   overflow-y: auto;
