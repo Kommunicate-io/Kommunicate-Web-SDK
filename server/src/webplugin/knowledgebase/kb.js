@@ -3,7 +3,7 @@
     function define_KommunicateKB() {
         var KommunicateKB = {};
         var KM_API_URL = "https://api.kommunicate.io";
-        var KB_URL = "/autosuggest/message/:appId?criteria=type&value=faq";
+        var KB_URL = "/kb/search?appId=:appId";
         var SOURCES = {kommunicate : 'KOMMUNICATE', helpdocs: 'HELPDOCS'};
 
         //KommunicateKB.init("https://api.kommunicate.io");
@@ -159,8 +159,14 @@
         //Note: server side not supported yet
         KommunicateKB.getFaq = function (options) {
             var response = new Object();
+
+            let url = KM_API_URL + KB_URL.replace(":appId", options.data.appId);
+            if(options.data && options.data.articleId){
+                url += "&articleId=" + options.data.articleId;
+            }
+
             KMCommonUtils.ajax({
-                url: KM_API_URL + KB_URL.replace(":appId", options.data.appId) + "&articleId=" + options.data.articleId,
+                url: url,
                 async: (typeof options.async !== 'undefined') ? options.async : true,
                 type: 'get',
                 success: function (data) {
