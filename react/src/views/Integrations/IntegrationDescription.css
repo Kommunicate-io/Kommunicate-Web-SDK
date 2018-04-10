@@ -152,10 +152,7 @@ body {
     margin: 0;
 }
 .integration-api-support-link{
-    color: #8f8b8b;
+    color: #5C5AA7 !important;
     font-weight: 500;
     text-decoration: none !important;
-}
-.integration-api-support-link {
-    color: #8f8b8b !important;
 }

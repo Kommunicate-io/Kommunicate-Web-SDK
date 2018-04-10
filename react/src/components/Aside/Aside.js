@@ -70,12 +70,16 @@ class Aside extends Component {
   
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
-      let zendeskKeys = response.data.message.filter(function (integration) {
-        return integration.type == 2;});
-        if(zendeskKeys.length > 0 ){
-          this.setState({disableButton:false}) 
-        }     
-    })
+      if(response !== undefined ) {
+        let zendeskKeys = response.data.message.filter(function (integration) {
+          return integration.type == 2;});
+          if(zendeskKeys.length > 0 ){
+            this.setState({disableButton:false}) 
+          }
+      }     
+    }).catch(err => {
+      console.log("erroe while fetching zendesk integration keys",err)
+    });
     
   }
   changeTabToIntegration = () => {

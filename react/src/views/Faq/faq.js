@@ -256,13 +256,15 @@ class Tabs extends Component {
                   <img src={bot2x} style={{marginRight: "26px", widht: "24px", height: "26px"}}/>
                   <span className="km-bot-integrated-bots-container-heading">Want to use the FAQs in a conversation as automatic replies? </span>
                   </p>
-                  <p>
+                  <p className="km-bot-integration-instruction" >Read instructions for opening chat with FAQ Bot(botId: faq)
+                    <a className="km-bot-instruction-link" target="_blank" href="https://docs.kommunicate.io/docs/web-botintegration.html"> here </a> </p>
+                  {/* <p>
                   <span>Select &nbsp;<span style={{border:"1px dashed #c8c2c2", padding: "5px"}}>
                   <img src={bot2x} style={{width: "17px", height: "18.4px"}}/> &nbsp;FAQ Bot&nbsp; </span> 
                   &nbsp;from the bot list in <span style={{color: "#5c5aa7", fontWeight: "500", cursor: "pointers"}}> 
                   <Link className="faq-converstion-routing-link" to="/settings/agent-assignment">Conversation Routing </Link>  </span> 
                   to assign this bot to all new conversations. Bot will reply to customer queries with matching FAQs.</span>
-                  </p>
+                  </p> */}
                 </div>
               </div>
               <div className="row mt-4">
