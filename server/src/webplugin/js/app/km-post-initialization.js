@@ -21,7 +21,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var helpdocsKey = KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
-    if (helpdocsKey == null) {
+    if (helpdocsKey == null || helpdocsKey == "null") {
         Kommunicate.client.getThirdPartySettings({ appId: data.appId, type: 1 }, function (err, settings) {
             if (err) {
                 console.log("err : ", err);
