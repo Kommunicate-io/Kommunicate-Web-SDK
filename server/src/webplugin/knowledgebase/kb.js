@@ -106,6 +106,7 @@
                         articleId: faq.id,
                         title: faq.name,
                         description: faq.content, 
+                        body: faq.content,
                         status: faq.status,
                         source: SOURCES.kommunicate
                     };
