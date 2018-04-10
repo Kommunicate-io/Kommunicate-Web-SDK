@@ -111,7 +111,7 @@ exports.searchFAQ =(options)=>{
 	if(options.id){
 		options.id=parseInt(options.id);
 		return mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,id:1,_id:0}}});
-	}else if(options.query){
+	}else if(options.text){
 		return mongoClient.searchFAQ(options);
 	}else{
 		return mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,id:1,_id:0}}});
