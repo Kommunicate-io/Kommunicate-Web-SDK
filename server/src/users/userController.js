@@ -109,6 +109,8 @@ logger.info("request received to create a user: ",req.body);
           user.adminUserName = customer.userName;
           user.adminDisplayName = customer.name;
           user.routingState = customer.agentRouting;
+          user.subscription = customer.subscription;
+          user.billingCustomerId = customer.billingCustomerId;
           user.clearbitKey = key.length > 0 ? key[0].accessKey:"";
           res.status(201).json({code:"SUCCESS",data:user}).end();
           return;
