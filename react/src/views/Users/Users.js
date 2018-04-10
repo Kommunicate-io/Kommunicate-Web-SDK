@@ -62,7 +62,7 @@ class Users extends Component {
                   </tbody>
                 </table>
                 <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
-                  <img src="img/empty-customers.png"  alt="Customers Empty State" className="empty-state-customers-img" />
+                  <img src="/img/empty-customers.png"  alt="Customers Empty State" className="empty-state-customers-img" />
                   <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>
                   <p className="empty-state-message-shortcuts-second-text">There are no customers to show</p>
                 </div>
