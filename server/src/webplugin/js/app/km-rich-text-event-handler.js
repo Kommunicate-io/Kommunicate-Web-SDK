@@ -227,7 +227,7 @@ Kommunicate.richMsgEventHandler = {
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': {
-                    "KM-FAQ-ID":articleId,
+                    "KM_FAQ_ID":articleId,
                     "source":source
                 }
             };
@@ -246,7 +246,7 @@ Kommunicate.richMsgEventHandler = {
             var messagePxy = {
                 'message': reply, //message to send 
                 'metadata': {
-                    "KM-BUTTON-CLICKED":true
+                    "KM_BUTTON_CLICKED":true
                 }
             };
     

@@ -170,27 +170,27 @@ getPassangerDetail : function(options){
 `
 },
 getListMarkup:function(){
-    return `<div class="message received faq-list" style="">
-     <div class="faq-list--container"  >
-             <div class="faq-list--header">
+    return `<div class="km-dash-message km-dash-received km-dash-faq-list" style="">
+     <div class="km-dash-faq-list--container"  >
+             <div class="km-dash-faq-list--header">
                      {{{headerImgSrc}}}
-                     <div class="faq-list--header_text-container">
+                     <div class="km-dash-faq-list--header_text-container">
                                      {{{headerText}}}
                          </div>
          </div>
-         <div class="faq-list--body">
-             <div class="faq-list--body_list-container">
-                 <ul class="faq-list--body_list">
+         <div class="km-dash-faq-list--body">
+             <div class="km-dash-faq-list--body_list-container">
+                 <ul class="km-dash-faq-list--body_list">
                      {{#elements}}
                      <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
-                             <div class="faq-list--body_img">
+                             <div class="km-dash-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
-                         <div class="faq-list--body_que-ans">
-                                 <p class="faq-list--body_que">
+                         <div class="km-dash-faq-list--body_que-ans">
+                                 <p class="km-dash-faq-list--body_que">
                                      {{title}}
                                  </p>
-                                 <p class="faq-list--body_ans">
+                                 <p class="km-dash-faq-list--body_ans">
                                      {{description}}
                                  </p>
                              </div>
@@ -201,8 +201,8 @@ getListMarkup:function(){
                  </ul>
              </div>
          </div>
-         <div class="faq-list--footer">
-                 <div class="faq-list--footer_button-container">
+         <div class="km-dash-faq-list--footer">
+                 <div class="km-dash-faq-list--footer_button-container">
                          {{#buttons}}
                          <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
                          {{/buttons}}
@@ -213,16 +213,16 @@ getListMarkup:function(){
 </div>`
  },
  getDialogboxTemplate : function(){
-     return `<div  class="message received faq-answer">
-     <div class="faq-answer--container">
-         <div class="faq-answer--body">
-             <div class="faq-answer--body_container">
-                 <p class="faq-answer--body_que">{{title}}</p>
-                 <p class="faq-answer--body_ans"> {{description}}</p>
+     return `<div  class="km-dash-message km-dash-received km-dash-faq-answer">
+     <div class="km-dash-faq-answer--container">
+         <div class="km-dash-faq-answer--body">
+             <div class="km-dash-faq-answer--body_container">
+                 <p class="km-dash-faq-answer--body_que">{{title}}</p>
+                 <p class="km-dash-faq-answer--body_ans"> {{description}}</p>
              </div>
          </div>
-         <div class="faq-answer--footer">
-             <div class="faq-answer--footer_button-text-container">
+         <div class="km-dash-faq-answer--footer">
+             <div class="km-dash-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
                  <button class="km-cta-button km-add-more-rooms">{{name}}</button>
