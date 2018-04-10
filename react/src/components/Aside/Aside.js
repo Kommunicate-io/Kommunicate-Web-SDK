@@ -644,7 +644,7 @@ class Aside extends Component {
                         <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
                             <img src="/img/empty-conversations.png" alt="Conversations Empty State" className="empty-state-conversations-img"/>
                             <p className="empty-state-message-shortcuts-first-text">No message notification</p>
-                            <p className="empty-state-message-shortcuts-second-text">Add chat widget yo your webpage to<br></br>engage more with your users</p>
+                            <p className="empty-state-message-shortcuts-second-text">Add chat widget into your webpage to<br></br>engage more with your users</p>
                         </div>
                       </div>
                       <div className="write">
