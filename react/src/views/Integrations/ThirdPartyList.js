@@ -1,3 +1,4 @@
+import React, { Component } from 'react';
 import ClearbitLogo from './images/clearbit.png';
 import ZendeskLogo from './images/zendesk.png';
 import HelpdocsLogo from './images/helpdocs.png';
@@ -13,6 +14,8 @@ export let thirdPartyList = {
         docsLink: "https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
         status: "Settings",
         instructions: [
+            <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://www.zendesk.com/login/#support">
+            Zendesk dashboard</a></span>,
             "Sign in to your Zendesk dashboard.",
             "Enter your Access Email Id of Zendesk",
             "Add Access token on clicking " + " sign and save. Copy and paste that Access token here",
@@ -32,8 +35,10 @@ export let thirdPartyList = {
         docsLink: "https://clearbit.com/docs",
         status: "Settings",
         instructions: [
-            "Login to your https://clearbit.com/ account",
-            "Go to Dashboard > API to get the API Key",
+            <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://dashboard.clearbit.com/login">
+            Clearbit account</a></span>,
+            `Go to Dashboard > API to get the API Key`
+
         ]
     },
     'helpdocs': {
@@ -45,6 +50,8 @@ export let thirdPartyList = {
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
         status: "Coming soon",
         instructions: [
+            <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://my.helpdocs.io/login">
+            HelpDocs dashboard</a></span>,
             "Log in to your HelpDocs dashboard",
             "Go to Settings",
             "Click Create a New API Key",
