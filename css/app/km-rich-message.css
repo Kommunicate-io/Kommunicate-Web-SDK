@@ -618,7 +618,7 @@
     .faq-list--body_list li>a {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         text-decoration: none;
         border-bottom: solid 1px #e5e5e5;
         transition: all 0.3s ease-in-out;
