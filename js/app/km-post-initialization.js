@@ -35,7 +35,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
                     return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
                 });
 
-                helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey)
+                helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey);
                 helpdocsKey && Kommunicate.helpdocsInitialization(data, helpdocsKey.accessKey);
 
 
