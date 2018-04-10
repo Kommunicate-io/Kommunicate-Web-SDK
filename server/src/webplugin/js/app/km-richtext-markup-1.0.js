@@ -223,7 +223,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button class="km-cta-button km-add-more-rooms">{{name}}</button>
+                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
@@ -348,6 +348,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
 Kommunicate.markup.getDialogboxContainer = function(metadata){
     if(metadata && metadata.payload){
         var json = JSON.parse(metadata.payload);
+        
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
      }else{
          return "";
