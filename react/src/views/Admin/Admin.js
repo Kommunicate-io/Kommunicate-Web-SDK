@@ -269,7 +269,7 @@ class Forms extends Component {
                           <label className="form-control-label" htmlFor="admin-name">Name</label>
                           <input type="text" id="admin-name" name="admin-name" onChange={(event) => this.setState({ name: event.target.value })} value={this.state.name} className="form-control input-field" placeholder="Enter your name" /><br />
                           <label className="form-control-label" htmlFor="email-input">Email</label>
-                          <input type="email" id="email-input" name="email-input" onChange={(event) => this.setState({ email: event.target.value })} value={this.state.email} className="form-control input-field" placeholder="Enter Email" required /><br />
+                          <input type="email" id="email-input" name="email-input" onChange={(event) => this.setState({ email: event.target.value })} value={this.state.email} className="form-control input-field" placeholder="Enter Email" disabled /><br />
                           <label className="form-control-label" htmlFor="role-input">Designation</label>
                           <input type="text" id="role-input" name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br />
                           <label className="form-control-label label-contact" htmlFor="number-input">Contact Number (optional)</label>
