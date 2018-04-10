@@ -29,119 +29,130 @@ Kommunicate.postPluginInitialization = function (err, data) {
             var helpdocsKey = settings.message.find(function (item) {
                 return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
             });
-
-            helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey)
-            KommunicateKB.init("https://api.kommunicate.io");
-            if (helpdocsKey) {
-                KommunicateKB.getArticles({
-                    data:
-
-                        { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey.accessKey }
-                    , success: function (response) {
-                        $applozic.each(response.data, function (i, faq) {
-                            $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
-                        });
-                    }, error: function () { }
-                });
-                Kommunicate.faqEvents(data,helpdocsKey.accessKey);
+            if (KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY")) {
+                KommunicateKB.init("https://api.kommunicate.io");
+                var helpdocKey =KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
+                KommunicateKB.init("https://api.kommunicate.io");
+                Kommunicate.helpdocsInitialization(data,helpdocKey);
+            } else {
+                helpdocsKey && KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey)
+                KommunicateKB.init("https://api.kommunicate.io");
+                Kommunicate.helpdocsInitialization(data,helpdocsKey.accessKey);
             }
+           
         }
     })
 
 }
 
+//faq plugin
+Kommunicate.helpdocsInitialization = function (data,helpdocsKey){
+   
+if (helpdocsKey) {
+    KommunicateKB.getArticles({
+        data:
 
+            { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey }
+        , success: function (response) {
+            $applozic.each(response.data, function (i, faq) {
+                $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
+            });
+            Kommunicate.faqEvents(data,helpdocsKey);
+        }, error: function () { }
+    });
+}
+}
 
 // faq releated events
 
 Kommunicate.faqEvents= function (data,helpdocsKey){
-    console.log("inside post init");
-$applozic(d).on("click", ".km-faq-list", function () {
-    $applozic('#km-faqanswer').empty();
-    var articleId = $(this).attr('data-articleid');
-    var source = $(this).attr('data-source');
-    KommunicateKB.getArticle({
-        data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
-            $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
-            $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
-            $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
-            $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
+    var mcktimer;
+    $applozic(d).on("click", ".km-faq-list", function () {
+        $applozic('#km-faqanswer').empty();
+        var articleId = $(this).attr('data-articleid');
+        var source = $(this).attr('data-source');
+        KommunicateKB.getArticle({
+            data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
+                $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
+                $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
+                $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
+                $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
+                $applozic('.mck-no-conversations').removeClass("vis").addClass("n-vis");
+                $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+
+            }
+            , error: function () { }
+        });
+    });
+    $applozic(d).on("click", "#km-faq", function () {
+        if (document.getElementById("km-faqdiv").hasChildNodes()) {
+            $applozic('.mck-message-inner').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-conversation-title').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-contacts-content').removeClass("vis").addClass("n-vis");
+            $applozic('#km-faq').removeClass("vis").addClass("n-vis");
+            $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
+            $applozic('.km-faqback').removeClass("n-vis").addClass("vis");
+            $applozic('.km-faqtitle').removeClass("n-vis").addClass("vis");
+            $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
+            $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
             $applozic('.mck-no-conversations').removeClass("vis").addClass("n-vis");
             $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
-
+        } else {
+            $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
         }
-        , error: function () { }
+
     });
-});
-$applozic(d).on("click", "#km-faq", function () {
-    if(document.getElementById("km-faqdiv").hasChildNodes()){
-    $applozic('.mck-message-inner').removeClass("vis").addClass("n-vis");
-    $applozic('#mck-conversation-title').removeClass("vis").addClass("n-vis");
-    $applozic('#mck-contacts-content').removeClass("vis").addClass("n-vis");
-    $applozic('#km-faq').removeClass("vis").addClass("n-vis");
-    $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
-    $applozic('.km-faqback').removeClass("n-vis").addClass("vis");
-    $applozic('.km-faqtitle').removeClass("n-vis").addClass("vis");
-    $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
-    $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
-    $applozic('.mck-no-conversations').removeClass("vis").addClass("n-vis");
-    $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
-    } else{
-    $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
-    }
+    $applozic(d).on("click", "#km-faqanswer a", function (e) {
+        e.preventDefault();
+        window.open(e.target.href);
+    });
+    $applozic("#km-faq-search-input").keydown(function (e) {
+        clearTimeout(mcktimer);
+        mcktimer = setTimeout(function validate() {
+            KommunicateKB.getArticles({
+                data:
 
-});
-$applozic(d).on("click", "#km-faqanswer a", function (e) {       
-    e.preventDefault();
-    window.open(e.target.href);
-});
-$applozic("#km-faq-search-input").keydown(function (e) {
-       clearTimeout(mcktimer);
-       mcktimer=setTimeout(function validate(){
-           KommunicateKB.getArticles({
-            data:
-
-                { appId: MCK_APP_ID, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocskey}
-            , success: function (response) {
-                $applozic('#km-faqdiv').empty();
-                $applozic.each(response.data, function (i, faq) {
-                    $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
-                });
-            }, error: function () { }
-        });
-        },2000);
-    if (e.which == 32 || e.which == 13) {
-        KommunicateKB.getArticles({
-            data:
-                { appId: MCK_APP_ID, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocskey }
-            , success: function (response) {
-                $applozic('#km-faqdiv').empty();
-                $applozic.each(response.data, function (i, faq) {
-                    $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><span class="km-faqimage"/ ></span> <div class="km-faqanchor ">' + faq.title + '</div></a></li>');
-                });
-            }, error: function () { }
-        });
-    }
-});
+                    { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
+                , success: function (response) {
+                    $applozic('#km-faqdiv').empty();
+                    $applozic.each(response.data, function (i, faq) {
+                        $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
+                    });
+                }, error: function () { }
+            });
+        }, 2000);
+        if (e.which == 32 || e.which == 13) {
+            KommunicateKB.getArticles({
+                data:
+                    { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
+                , success: function (response) {
+                    $applozic('#km-faqdiv').empty();
+                    $applozic.each(response.data, function (i, faq) {
+                        $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><span class="km-faqimage"/ ></span> <div class="km-faqanchor ">' + faq.title + '</div></a></li>');
+                    });
+                }, error: function () { }
+            });
+        }
+    });
 
 
 
-$applozic(d).on("click", ".km-faqback", function () {
-    if ($applozic('#km-faqanswer').hasClass('vis')) {
-        $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
-        $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
-        $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
-    }
-     else {
-        $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
-        $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
-        $applozic('#mck-contacts-content').removeClass("n-vis").addClass("vis");
-        $applozic('#km-faq').removeClass("n-vis").addClass("vis");
-        $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
-        $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
-        $applozic('.km-faqtitle').removeClass("vis").addClass("n-vis");
-        $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
-    }
+    $applozic(d).on("click", ".km-faqback", function () {
+        if ($applozic('#km-faqanswer').hasClass('vis')) {
+            $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
+            $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+            $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
+        }
+        else {
+            $applozic('.mck-message-inner').removeClass("n-vis").addClass("vis");
+            $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
+            $applozic('#mck-contacts-content').removeClass("n-vis").addClass("vis");
+            $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+            $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
+            $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
+            $applozic('.km-faqtitle').removeClass("vis").addClass("n-vis");
+            $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
+        }
 
-});
+    });
 }
