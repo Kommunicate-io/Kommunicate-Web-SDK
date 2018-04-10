@@ -444,8 +444,6 @@ var MCK_CLIENT_GROUP_MAP = [];
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
-        var mcktimer;
-        var helpdocskey ;
         w.MCK_OL_MAP = new Array();
         _this.events = {
             'onConnectFailed': function () { },
@@ -1458,9 +1456,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
-                if(sessionStorage.kommunicate && JSON.parse(sessionStorage.kommunicate).HELPDOCS_KEY){
-                    helpdocskey = JSON.parse(sessionStorage.kommunicate).HELPDOCS_KEY;
-                }
             };
             _this.validateAppSession = function (userPxy) {
                 var appHeaders = mckStorage.getAppHeaders();
