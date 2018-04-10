@@ -24,7 +24,8 @@ module.exports.deleteSuggetion = {
 module.exports.searchFAQ = {
 	query:{
 		appId:joi.string().required(),
-		query:joi.string().required()
+		query:joi.string(),
+		articleId:joi.string()
 		
 	}
 }

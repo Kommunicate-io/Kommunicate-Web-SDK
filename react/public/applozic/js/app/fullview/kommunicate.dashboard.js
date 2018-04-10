@@ -69,6 +69,12 @@ kommunicateDashboard ={
                 case "6":
                     return kommunicateDashboard.markup.quickRepliesContainerTemplate(metadata);
                     break;
+                case "7":
+                    return kommunicateDashboard.markup.getListContainerMarkup(metadata);
+                    break;
+                case "8":
+                    return kommunicateDashboard.markup.getDialogboxContainer(metadata);
+                    break;
                 default:
                     return "";
                     break;

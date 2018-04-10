@@ -15,6 +15,8 @@ kommunicateDashboard.attachEvents = function($kmApplozic){
     // $kmApplozic("#km-message-cell").on('click','.km-dashboard-submit-person-detail',kommunicateDashboard.richMsgEventHandler.handlleSubmitPersonDetail);
     // $kmApplozic("#km-message-cell").on('click', '.km-dashboard-block-room-button', kommunicateDashboard.richMsgEventHandler.processBookRoomClick);
     // $kmApplozic("#km-message-cell").on('click', '.km-dashboard-quick-replies', kommunicateDashboard.richMsgEventHandler.processQuickReplies);
+    //$applozic("#mck-message-cell").on('click', '.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem); 
+    //$applozic("#mck-message-cell").on('click', '.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem); 
      
 
 }
@@ -215,6 +217,45 @@ kommunicateDashboard.richMsgEventHandler ={
           info.slideItems[indexPrev].classList.remove('active');
           info.slideItems[indexCurrent].classList.add('active');
         };
+
+    },
+    processClickOnListItem: function(e){
+        var target = e.currentTarget;
+        var reply = target.dataset.reply;
+        var type = target.dataset.type;
+        var articleId = target.dataset.articleid;
+        var source = target.dataset.source;
+        if(type && type =="quick_reply"){
+            var messagePxy = {
+                'message': reply, //message to send 
+                'metadata': {
+                    "KM-FAQ-ID":articleId,
+                    "source":source
+                }
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
+        }else if(type && type =='submit'){
+            //TODO : support for post request with data.
+        }
+
+    },
+    processClickOnButtonItem: function(e){
+        var target = e.currentTarget;
+        var reply = target.dataset.reply;
+        var type = target.dataset.type;
+        if(type && type =="quick_reply"){
+            var messagePxy = {
+                'message': reply, //message to send 
+                'metadata': {
+                    "KM-BUTTON-CLICKED":true
+                }
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
+        }else if(type && type =='submit'){
+            //TODO : support for post request with data.
+        }
 
     }
 

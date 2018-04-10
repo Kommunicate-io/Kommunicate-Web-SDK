@@ -600,4 +600,200 @@ cursor: pointer;
 }
 
 
+
 /********** Guest Details Form Ends Here ***********/
+/******** Generic list template*************/
+    /* FAQ List */
+    .km-dash-message.km-dash-received.km-dash-faq-list {
+        padding: 0px;
+        background: transparent;
+        width: 70%;
+        border:1px solid;
+    }
+    .km-dash-faq-list--body, .km-dash-faq-list--footer {
+        background-color: #fff;
+    }
+    
+    .km-dash-faq-list--body_list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 0px !important;
+    }
+    .km-dash-faq-list--body_list li>a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start !important;
+        text-decoration: none;
+        border-bottom: solid 1px #e5e5e5;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-dash-faq-list--body_que-ans {
+        padding: 10px 12px;
+        /*width: calc(100% - 106px);*/
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+    }
+    .km-dash-faq-list--body_list li>a:hover {
+        background-color: #efefef;
+    }
+    
+    .km-dash-faq-list--body_que-ans .km-dash-faq-list--body_que {
+        font-size: 15px;
+        color: #5c5aa7;
+        margin: 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        
+    }
+    .km-dash-faq-list--body_que-ans .km-dash-faq-list--body_ans {
+        font-size: 14px;
+        color: #646262;
+        margin: 5px 0px 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+    .km-dash-faq-list--body_img {
+        padding: 10px 0px 10px 12px;
+        /*width: 70px;*/
+        height: 50px;
+    }
+    .km-dash-faq-list--body_img img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+    .km-dash-faq-list--body_img:empty .km-dash-faq-list--body_que-ans {
+        width: 100%;
+    }
+    .km-dash-faq-list--header {
+        position: relative;
+    }
+    .km-dash-faq-list--header_text-img {
+        background-color: rgba(103, 103, 103, 0);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+    }
+    .km-dash-faq-list--header_text-img img {
+        object-fit: cover;
+        width: 100%;
+        height: 110px;
+        position: relative;
+        z-index: 0;
+        display: block;
+        border-top-left-radius:18px;
+        border-top-right-radius:18px;
+    }
+    .km-dash-faq-list--header_text {
+        bottom: 2px;
+        left: 12px;
+        margin: 0;
+        margin-bottom: 0px !important;
+        padding: 7px !important;
+        text-align:center;
+        width: calc(100% - 12px);
+        color: #fff;
+        word-wrap: break-word;
+        font-size: 16px;
+        border-bottom: 1px solid #edeff1;
+    }
+    
+    .km-dash-faq-list--footer {
+        width: 100%;
+        min-height: 35px;
+        border-bottom-left-radius: 18px;
+        border-bottom-right-radius: 18px;
+    }
+    .km-dash-faq-list--footer_button-container button {
+        width: 100%;
+        outline: none;
+        border: none;
+        background: transparent;
+        font-size: 15px;
+        cursor: pointer;
+        padding: 12px 0px;
+        border-radius: 0px;
+    }
+    .km-faq-list--footer_button-container button a{
+        color: #5c5aa7;
+    }
+    
+    .km-dash-faq-list--header_text-container {
+        background-color: #fff;
+        border: none !important;
+        min-height:10px;
+    }
+    .km-dash-faq-list--header_text {
+        margin: 0;
+        color: rgb(48, 48, 48);
+        word-wrap: break-word;
+        font-size: 16px;
+    }
+    .km-dash-faq-list--footer_button-container button:not(:last-child){
+        border-bottom: 1px solid #e5e5e5;
+    
+    }
+    .km-dash-faq-list, .km-dialog-box{
+        width:96%;
+    }
+    
+    /********  dialog box template *************/
+    /* FAQ Answer */
+    .km-dash-message.km-dash-received.km-dash-faq-answer {
+        padding: 0px;
+        background: transparent;
+        width:45% !important;
+    }
+    .km-dash-faq-answer--body {
+        border-radius: 5px;
+      background-color: #e6e5ec;
+    }
+    .km-dash-faq-answer--body_container {
+        padding: 10px;
+    }
+    .km-dash-faq-answer--body_que {
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        color: #141515;
+    }
+    .km-dash-faq-answer--body_ans {
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 0.5px;
+        color: #646262;
+    }
+    .km-dash-faq-answer--footer {
+        padding: 10px 10px;
+    }
+    .km-dash-faq-answer--footer_button-text-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .km-dash-faq-answer--footer_button-text-container p {
+        margin-bottom: 0px;
+        margin-right: 10px;
+    }
+    .km-dash-faq-answer--footer_button-text-container button {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+
+
+    .km-dash-faq-list--header .km-dash-faq-list--header_text-container:first-child{
+        border-radius: 16px 16px 0px 0px;
+    }

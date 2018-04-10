@@ -123,7 +123,7 @@ exports.deleteSuggetion = (req, res) => {
 
 exports.searchFAQ=(req,res)=>{
 	logger.info("searching for query..")
-	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query}).then(data=>{
+	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query,id:req.query.articleId}).then(data=>{
 		logger.info("got data from db");
 		return res.status(200).json({ code: "SUCCESS", data: data });
 	}).catch(e=>{
