@@ -109,6 +109,11 @@ onComapnyNameFocus(){
   document.getElementById("emptyerrorforCompanyName").className = 'n-vis';
   document.getElementById("company-name").className = 'input';
 }
+
+onContactNumberFocus (){
+  document.getElementById("emptyerror").className = 'n-vis';
+  document.getElementById("number-input").className = 'input';
+}
   
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -184,7 +189,7 @@ onComapnyNameFocus(){
                               <label className="label-for-input email-label">Designation <span className="km-italic">(Optional)</span></label>
                             </div>
                             <div className="group form-group email-form-group">
-                            <input className="input" type="text" pattern="[0-9]*" id="number-input"required name="number-input" placeholder=" " onInput={this.handleChange.bind(this)}  value={this.state.contact_no} />
+                            <input className="input" type="text" pattern="[0-9]*" id="number-input"required name="number-input" placeholder=" " onInput={this.handleChange.bind(this)}  onFocus={this.onContactNumberFocus} value={this.state.contact_no} />
                               <label className="label-for-input email-label">Contact No.</label>
                               <div id="emptyerror" className="input-error-div n-vis">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
