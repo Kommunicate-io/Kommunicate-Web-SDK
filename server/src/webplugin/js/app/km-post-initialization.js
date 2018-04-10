@@ -54,12 +54,8 @@ if (helpdocsKey) {
 
             { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey }
         , success: function (response) {
-            var articleId;
-            var title;
-            $applozic.each(response.data, function (i, faq) {
-                articleId =faq.articleId? faq.articleId:faq.id;
-                title = faq.title?faq.title :faq.name;        
-                $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
+            $applozic.each(response.data, function (i, faq) {       
+                $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
             });
             Kommunicate.faqEvents(data,helpdocsKey);
         }, error: function () { }
@@ -92,8 +88,7 @@ Kommunicate.faqEvents= function (data,helpdocsKey){
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
-                var ans = response.data.body?response.data.body:response.data.content;
-                $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + ans + '</div></div>');
+                $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
                 $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                 $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
                 $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
