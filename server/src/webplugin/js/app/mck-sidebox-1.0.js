@@ -442,6 +442,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
+        var DEFAULT_BOT_IDS = appOptions.botIds;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         var mcktimer;
         var helpdocskey ;
@@ -1787,7 +1788,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                          console.log("error while fetching group detail by type",err)
                          return;
                     }else if (result.response.length ==0) {
-                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, function(groupId){
+                        mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function(groupId){
                             Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { "groupId": groupId, "applicationId": MCK_APP_ID });
                             callback();
                             
@@ -1944,7 +1945,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_contact_search.click(function () {
 
                     // mckMessageLayout.addContactsToContactSearchList();
-                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID }, function (conversationId) {
+                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
                         Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
 
@@ -2115,7 +2116,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }else{
                             mckMessageService.loadConversationWithAgents({
                                 groupName: DEFAULT_GROUP_NAME,
-                                agentId: DEFAULT_AGENT_ID
+                                agentId: DEFAULT_AGENT_ID,
+                                botIds: DEFAULT_BOT_IDS
                             }, function () {
                                 console.log("conversation created successfully");  
                             });
@@ -2145,14 +2147,13 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
 
                 var loadChat = function () {
-                    var agentId = DEFAULT_AGENT_ID;
-                    var agentName = DEFAULT_AGENT_NAME ? DEFAULT_AGENT_NAME : DEFAULT_AGENT_ID;
                     if (window.applozic.PRODUCT_ID === 'kommunicate') {
                         $mck_btn_leave_group.removeClass('vis').addClass('n-vis');
                     }
                     mckMessageService.loadConversationWithAgents({
                         groupName: DEFAULT_GROUP_NAME,
-                        agentId: DEFAULT_AGENT_ID
+                        agentId: DEFAULT_AGENT_ID,
+                        botIds: DEFAULT_BOT_IDS
                     });
 
                 }
