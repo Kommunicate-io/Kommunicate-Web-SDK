@@ -4567,7 +4567,7 @@ color: rgba(0,0,0,0.5);
 	left: 0;
 	bottom: 0;
 	right: 0;
-	position: absolute;
+	/*position: absolute;*/
 }
 
 #km-faqanswer{
