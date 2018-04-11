@@ -4506,10 +4506,15 @@ color: rgba(0,0,0,0.5);
 	flex:1;
 }
 
-.km-faqdiv{
+.km-faqdiv {
 	overflow-y: auto;
-    height: 100%;
-}
+	height: 90%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+ }
 
 .km-faqquestion{
 	width: 345px;
