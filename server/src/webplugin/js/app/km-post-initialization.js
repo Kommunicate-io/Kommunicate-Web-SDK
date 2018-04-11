@@ -109,6 +109,10 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
             $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
             $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
             $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-away-msg-box').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-msg-form').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-tab-individual').removeClass("vis").addClass("n-vis");
+
         } else {
             $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
         }
@@ -164,6 +168,7 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
             $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
             $applozic('.km-faqtitle').removeClass("vis").addClass("n-vis");
             $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
+            $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
         }
 
     });
