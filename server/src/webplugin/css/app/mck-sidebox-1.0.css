@@ -4471,7 +4471,7 @@ color: rgba(0,0,0,0.5);
 	list-style-type: none;
     border-radius: 0;
     line-height: 18px;
-    padding: 20px;
+	margin: 20px 20px 0 20px;
     background-color: #fff !important;
     text-decoration: none;
 }
@@ -4567,7 +4567,7 @@ color: rgba(0,0,0,0.5);
 	left: 0;
 	bottom: 0;
 	right: 0;
-	/*position: absolute;*/
+	position: absolute;
 }
 
 #km-faqanswer{

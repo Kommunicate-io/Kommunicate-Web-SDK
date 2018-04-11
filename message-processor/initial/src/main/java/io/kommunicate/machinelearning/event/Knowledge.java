@@ -18,6 +18,8 @@ public class Knowledge {
     private String category;
     private String type;
     private String status;
+    
+    private String answerId;
 
     public String getApplicationId() {
         return applicationId;
@@ -74,6 +76,13 @@ public class Knowledge {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public String getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(String answerId) {
+        this.answerId = answerId;
+    }
     
 }

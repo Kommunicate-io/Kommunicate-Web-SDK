@@ -82,6 +82,11 @@ public class MachineLearningClient {
         //{"applicationId":"3190ea118ed9eb01319ef0a19310a3e54","userName":"devashish+11apr@applozic.com","name":"where is the new faq?","content":"here","category":"faq","type":"faq","status":"published"}
         
         Knowledge knowledge = new Knowledge();
+        knowledge.setApplicationId(event.getProperties().getAppId());
+        knowledge.setCategory("category");
+        knowledge.setAnswerId(event.getProperties().getLabel());
+        //Not setting content, handle it in API side
+        knowledge.setName(event.getProperties().getText());
         
         return "success";
     }
