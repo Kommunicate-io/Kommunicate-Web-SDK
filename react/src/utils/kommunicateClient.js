@@ -33,12 +33,12 @@ const createCustomer = function(email,password,name,userName) {
   let loginType = 'email'
 
   /*
-  * When login is done via 'Sign in with Google' make password = null and loginType = 'oauth'.
+  * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
   * Adding a query param OAuthSignUp as a backend flag
   */
   if (localStorage.getItem('Google_OAuth') === 'true') {
     signUpUrl += '?OAuthSignUp=true'
-    password = null
+    password = "VERY SECURE"
     loginType = 'oauth'
   }
 
