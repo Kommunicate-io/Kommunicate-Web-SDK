@@ -103,7 +103,7 @@ exports.authCode = (req, res) => {
 		}
 	}).then( _numOfApp => {
 		logger.info(3);
-		logger.info(_numOfApp)
+		logger.info("Number of apps is " + _numOfApp)
 		if(_numOfApp > 1){
 			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
 			throw 'Ignore this error. It is present to by pass the promise chain'
@@ -128,13 +128,14 @@ exports.authCode = (req, res) => {
 
 const checkNumberOfApps = (email) => {
 	logger.info(email)
-	let GET_APP_LIST_URL = APP_LIST_URL + "&emailId=" + querystring.stringify(email)
+	let GET_APP_LIST_URL = APP_LIST_URL + "&emailId=" + encodeURIComponent(email)
+	let numOfApp = 1
 	return  axios.get(GET_APP_LIST_URL)
 		.then(function(response){
 			logger.info("response",response);
 			if (response.status=200 && response.data!=="Invalid userId or EmailId") {
-				const numOfApp = Object.keys(response.data).length;
-				logger.info(numOfApp);
+				numOfApp = Object.keys(response.data).length;
+				logger.info("Number of apps is " + numOfApp);
 			} else {
 				logger.info("Error while getting application list, status : ",response.status);
 			}
