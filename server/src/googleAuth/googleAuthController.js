@@ -16,6 +16,11 @@ const KOMMUNICATE_LOGIN_URL = config.getProperties().urls.dashboardHostUrl + '/l
 
 const GOOGLE_PLUS_PROFILE_URL = 'https://www.googleapis.com/plus/v1/people/me';
 
+const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
+const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
+
+const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN";
+
 const getUserInfoByEmail = (options) => {
 	let APPLOZIC_CLIENT_URL_GET_USER_INFO = APPLOZIC_CLIENT_URL;
 	APPLOZIC_CLIENT_URL_GET_USER_INFO += "email=" + options.email + "&applicationId=" + options.applicationId;
@@ -57,26 +62,86 @@ const getToken = (authCode) => {
 }
 
 exports.authCode = (req, res) => {
+
 	let authCode = req.query.code;
+	let user = {}
+	let customer = {}
+	let numOfApp = 1
+	let email = null
+
 	getToken(authCode).then(response => {
 		logger.info(response.data);
-		const email = response.data.emails[0].value;
+		email = response.data.emails[0].value;
 
-		Promise.all([registrationService.getCustomerByUserName(email),userService.getUserByName(email)]).then(([customer,user])=>{
-			if (customer || user) {
-				// After successful OAuth, if user exists in the kommunicate db log in.
-				Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId})).then( data => {
-					logger.info(data);
-					res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email)
-				}).catch(err => {
-					logger.info("Failed!!!");
-				})
-			} else {
-				// After successful OAuth, if user doesn't exist in kommunicate db allow sign up.
-				res.redirect(REDIRECT_URL + '?googleSignUp=true&email=' + email + '&name=' + response.data.displayName )
+		return Promise.all([registrationService.getCustomerByUserName(email),userService.getUserByName(email)])
+	}).then( ([_customer,_user] ) => {
+		logger.info(1)
+		user = _user
+		customer = _customer.dataValues
+		logger.info(typeof customer);
+		logger.info(customer);
+		logger.info(user);
+		if (customer || user) {
+			// After successful OAuth, if user exists in the kommunicate db log in.
+			return Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId}))
+		} else {
+			// After successful OAuth, if user doesn't exist in kommunicate db allow sign up.
+			res.redirect(REDIRECT_URL + '?googleSignUp=true&email=' + email + '&name=' + response.data.displayName )
+			throw 'Ignore this error. It is present to by pass the promise chain'
+		}
+	}).then( data => {
+		logger.info(2);
+		logger.info(data);
+		logger.info(user.loginType);
+		if(user.loginType === 'oauth'){
+			logger.info("oauth oauth oauth oauth oauth oauth oauth oauth")
+			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType)
+			throw 'Ignore this error. It is present to by pass the promise chain'
+		} else if(user.loginType === 'email' || user.loginType === null) {
+			logger.info("email email email email email email email email")
+			return Promise.resolve(checkNumberOfApps(email))
+		}
+	}).then( _numOfApp => {
+		logger.info(3);
+		logger.info(_numOfApp)
+		if(_numOfApp > 1){
+			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
+			throw 'Ignore this error. It is present to by pass the promise chain'
+		} else {
+			const loginDetails = {
+				userName: user.userName,
+				password: user.accessToken,
+				applicationId: customer.applicationId
 			}
-		}).catch(err => {
-			logger.info("registrationService.getCustomerByUserName OR userService.getUserByName FAILED!!!")
-      	})
+			return Promise.resolve(loginService.login(loginDetails))
+		}
+	}).then( result => {
+	    logger.info(result);
+	    delete result.id
+	    delete result.password
+	    result.applicationId = customer.applicationId
+	    res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + numOfApp + "&" + querystring.stringify(result))
+	}).catch(err => {
+		logger.info(err)
+	})
+}
+
+const checkNumberOfApps = (email) => {
+	logger.info(email)
+	let GET_APP_LIST_URL = APP_LIST_URL + "&emailId=" + querystring.stringify(email)
+	return  axios.get(GET_APP_LIST_URL)
+		.then(function(response){
+			logger.info("response",response);
+			if (response.status=200 && response.data!=="Invalid userId or EmailId") {
+				const numOfApp = Object.keys(response.data).length;
+				logger.info(numOfApp);
+			} else {
+				logger.info("Error while getting application list, status : ",response.status);
+			}
+			return numOfApp
+	   }
+	).catch(err => {
+		logger.info("googleOAuthController checkNumberOfApps ")
+		logger.info(err);
 	})
 }
