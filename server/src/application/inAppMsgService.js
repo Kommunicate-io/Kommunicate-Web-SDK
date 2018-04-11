@@ -42,10 +42,23 @@ const getInAppMessage=(customerId, eventType)=>{
 }
 
 exports.sendWelcomeMessage=(conversationId, customer)=>{
-  return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer)).then(response => {
-    console.log(response);
-    return response;
+  return userService.getByUserNameAndAppId("bot",customer.applicationId)
+  .then(bot=>{
+    return applozicClient.getGroupInfo(conversationId,customer.applicationId,bot.apzToken,true).then(groupDetail=>{
+        // picking admin id if conversation Assignee is not available
+        let conversationAssignee="";
+        if(groupDetail){
+          let conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
+          groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
+          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer,null,conversationAssignee)).then(response => {
+            logger.info("response in sendWelcomeMessage",response);
+            return response;
+          })
+        }
+        
+    })
   })
+ 
 }
 
 exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
@@ -126,7 +139,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   // only supporting event type =1;
    //eventType =1;
   if (!agentName) {
-    agentName = customer.userName;
+    agentName =agentId||customer.userName;
   }
     return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
