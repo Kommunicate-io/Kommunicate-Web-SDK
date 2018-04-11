@@ -12,8 +12,17 @@ public class Properties implements Serializable {
         
     }
     
+    private String appId;
     private String text;
     private String label;
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
 
     public String getText() {
         return text;
