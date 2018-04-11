@@ -50,6 +50,7 @@ constructor(props){
     hideErrorMessagePassword: true,
     handleUserNameBlur:false,
     googleOAuth: false,
+    loginType: 'email'
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -69,18 +70,27 @@ constructor(props){
     if(googleLogin === 'true'){
 
       const email = CommonUtils.getUrlParameter(search, 'email');
+      const loginType = CommonUtils.getUrlParameter(search, 'loginType');
+      const numOfApp = CommonUtils.getUrlParameter(search, 'numOfApp');
+
+      console.log(email);
+      console.log(loginType);
+      console.log(numOfApp);
 
       this.setState({
         googleOAuth: true,
         email: email,
         userName: email,
-        password: 'CHANGE IT',
-        loginButtonAction: 'getAppList'
+        password: 'CHANGIT',
+        loginButtonAction: 'getAppList',
+        loginType: loginType
       }, () => {
         Promise.resolve(this.login()).then( numOfApp => {
           console.log(numOfApp);
-          if(numOfApp == 1){
+          if(numOfApp == 1 && loginType === 'oauth'){
             this.submitForm()
+          } else if (numOfApp == 1 && loginType === 'email' ){
+            this.setUpLocalStorageForLogin()
           }
         })
       })
@@ -149,8 +159,10 @@ submitForm = ()=>{
       window.heap.identify(userName);
     }
 
-    if (this.state.googleOAuth === true){
+    if (this.state.loginType === 'oauth'){
       loginUrl += "?loginType=oauth"
+    } else if (this.state.loginType === 'email'){
+      loginUrl += "?loginType=email"
     }
 
     this.setState({loginButtonDisabled:true});
@@ -300,11 +312,7 @@ websiteUrl = (e)=> {
 }
 
 checkLoginType = () => {
-
-  Promise.resolve(getUserInfo(this.state.userName, this.state.applicationId)).then(response => {
-    console.log(response.data);
-  })
-
+  return Promise.resolve(getUserInfo(this.state.email, this.state.applicationId))
 }
 
 showPasswordField = () => {
@@ -348,6 +356,44 @@ showPasswordField = () => {
     );
   }
 }
+
+  setUpLocalStorageForLogin = () => {
+
+    var search = window.location.href;
+    const userDetails = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+
+    if (typeof (Storage) !== "undefined") {
+
+      if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
+        window.$applozic.fn.applozic('logout');
+      }
+
+      if (userDetails.apzToken) {
+      } else {
+        var apzToken = new Buffer(userDetails.userName + ":" + userDetails.accessToken).toString('base64');
+        userDetails.apzToken = apzToken;
+      }
+
+      if (!userDetails.application) {
+        console.log("response doesn't have application, create {}");
+        userDetails.application = {};
+      }
+      userDetails.application.applicationId = userDetails.applicationId;
+
+      userDetails.displayName=userDetails.name;
+      CommonUtils.setUserSession(userDetails);
+    }
+
+    if (window.$applozic) {
+      var options = window.applozic._globals;
+      options.userId = userDetails.userName;
+      options.accessToken = userDetails.accessToken;
+      window.$applozic.fn.applozic(options);
+    }
+
+    this.props.history.push("/dashboard");
+    this.state=this.initialState;
+  }
 
 
   render() {
