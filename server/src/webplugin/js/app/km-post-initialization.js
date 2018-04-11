@@ -84,7 +84,7 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
         KommunicateKB.getArticle({
             data: { appId: data.appId, articleId: articleId, source: source, helpdocsAccessKey: helpdocsKey }, success: function (response) {
                 if ($applozic("#km-faqanswer .km-faqanswer-list").length == 0) {
-                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
+                    $applozic("#km-faqanswer").append('<div class="km-faqanswer-list km-faqanswerscroll"><div class="km-faqquestion">' + response.data.title + '</div> <div class="km-faqanchor km-faqanswer">' + response.data.body + '</div></div>');
                     $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
                     $applozic('.km-faqanswer').removeClass("n-vis").addClass("vis");
                     $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
