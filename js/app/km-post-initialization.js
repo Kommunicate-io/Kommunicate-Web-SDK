@@ -34,7 +34,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
                 });
 
                 if (helpdocsKey) {
-                    helpdocsAccessKey = helpdocs.accessKey;
+                    helpdocsAccessKey = helpdocsKey.accessKey;
                     KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", helpdocsKey.accessKey);
                 } else {
                     KommunicateUtils.storeDataIntoKmSession("HELPDOCS_KEY", "null");
