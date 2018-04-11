@@ -46,9 +46,9 @@ function ApplozicSidebox() {
             "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
     }, {
             "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/min/tiny-slider.js"
-    },{
+    },/*{
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
-    },{
+    },*/{
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
     }, {
             "name": "mck-common", "url": MCK_STATICPATH + "/js/app/mck-common-1.0.js"
@@ -59,7 +59,7 @@ function ApplozicSidebox() {
     },{
         "name":"faq","url" : MCK_STATICPATH+"/knowledgebase/kommunicate-kb-0.1.min.js"
     }
-    /*, {
+   /* , {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
     var mck_script_loader2 = [ {
