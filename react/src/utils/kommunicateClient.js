@@ -653,15 +653,10 @@ const getIntegratedBots = () => {
 
   return Promise.all([axios.get(url), getUsersByType(appId, 2)])
     .then( ([mongoBots, sqlBots])=> {
-
-      console.log(mongoBots.data);
-      console.log(sqlBots);
-
       let bots = []
       let dialogFlowBots = mongoBots.data.filter(bot=>{
         return (bot.aiPlatform && bot.aiPlatform.toLowerCase() === 'dialogflow');
       });
-      console.log('bots: ',dialogFlowBots)
       for(let i= 0; i < sqlBots.length; i++){
         for(let j = 0; j < mongoBots.data.length; j++ ){
           if(sqlBots[i].name !== "bot" && sqlBots[i].name.toLowerCase() == mongoBots.data[j].name.toLowerCase()){
