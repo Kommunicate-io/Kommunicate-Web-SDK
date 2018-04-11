@@ -653,27 +653,20 @@ const getIntegratedBots = () => {
 
   return Promise.all([axios.get(url), getUsersByType(appId, 2)])
     .then( ([mongoBots, sqlBots])=> {
-
-      console.log(mongoBots.data);
-      console.log(sqlBots);
-
       let bots = []
-      let dialogFlowBots = []
-
+      let dialogFlowBots = mongoBots.data.filter(bot=>{
+        return (bot.aiPlatform && bot.aiPlatform.toLowerCase() === 'dialogflow');
+      });
       for(let i= 0; i < sqlBots.length; i++){
         for(let j = 0; j < mongoBots.data.length; j++ ){
-          if(sqlBots[i].name !== "bot" && sqlBots[i].name === mongoBots.data[j].name){
+          if(sqlBots[i].name !== "bot" && sqlBots[i].name.toLowerCase() == mongoBots.data[j].name.toLowerCase()){
             let bot1 = sqlBots[i];
             let bot2 = mongoBots.data[j];
             bots[i] = {...bot1, ...bot2};
-
-            if(bots[i].aiPlatform && bots[i].aiPlatform.toLowerCase() === 'dialogflow'){
-              dialogFlowBots.push(bots[i]);
-            }
-            break;
           }
         }
       }
+
 
       return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
 
