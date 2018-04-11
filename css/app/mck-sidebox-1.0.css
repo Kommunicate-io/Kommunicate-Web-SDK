@@ -4506,7 +4506,7 @@ color: rgba(0,0,0,0.5);
 	flex:1;
 }
 
-.km-faqdiv {
+.km-faqdiv{
 	overflow-y: auto;
 	height: 100%;
 	top: 0;
@@ -4515,7 +4515,6 @@ color: rgba(0,0,0,0.5);
 	right: 0;
 	position: absolute;
 }
-
 
 .km-faqquestion{
 	width: 345px;
@@ -4548,8 +4547,8 @@ color: rgba(0,0,0,0.5);
 }
 
 .km-faqanswer{
+	height: 100%;
 	width: calc(100% - 20px);
-	height: 90%;
 	font-family: 'Roboto', sans-serif!important;
 	font-size: 16px!important;
 	font-weight: normal;
@@ -4560,6 +4559,15 @@ color: rgba(0,0,0,0.5);
 	text-align: left;
 	color: #757578!important;
 	
+}
+.km-faqanswerscroll{
+	overflow-y: auto;
+	height: 100%;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
 }
 
 #km-faqanswer{
