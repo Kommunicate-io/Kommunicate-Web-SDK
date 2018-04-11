@@ -54,12 +54,10 @@ function ApplozicSidebox() {
             "name": "mck-common", "url": MCK_STATICPATH + "/js/app/mck-common-1.0.js"
     }, {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
-    } ,{
-    		"name":"cookie","url" : MCK_STATICPATH+"/js/app/km-utils.js"
-    },{
-        "name":"faq","url" : MCK_STATICPATH+"/knowledgebase/kommunicate-kb-0.1.min.js"
+    }, {
+        "name": "km-utils", "url": MCK_STATICPATH + "/js/app/km-utils.js"
     }
-   /* , {
+    /*, {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
     var mck_script_loader2 = [ {
@@ -173,7 +171,7 @@ function ApplozicSidebox() {
        		 applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
        	 }
             $.each(mck_script_loader1, function(i, data) {
-                if (data.name === "mck-common") {
+                if (data.name === "km-utils") {
                     try {
                        var options = applozic._globals;
                         if (typeof options !== 'undefined' && options.locShare === true) {
