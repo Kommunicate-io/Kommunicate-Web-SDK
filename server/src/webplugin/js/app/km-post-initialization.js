@@ -49,6 +49,9 @@ Kommunicate.postPluginInitialization = function (err, data) {
 
 //faq plugin
 Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
+    if (helpdocsKey == "null") {
+        helpdocsKey = null;
+    }
     KommunicateKB.getArticles({
         data: { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey }, 
         success: function (response) {
