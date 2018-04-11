@@ -4098,7 +4098,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_search_tabview_box.removeClass('vis').addClass('n-vis');
                     $mck_tab_individual.removeClass('n-vis').addClass('vis');
                     
-                    $applozic("#km-faq").removeClass('vis').addClass('n-vis');
+                    // $applozic("#km-faq").removeClass('vis').addClass('n-vis');
                     if (MCK_MODE === 'support') {
                         $applozic('.mck-tab-link').removeClass('vis').addClass('n-vis');
                     }
@@ -4124,7 +4124,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckMessageLayout.hideOfflineMessage();
                     }
                     $mck_tab_individual.removeClass('vis').addClass('n-vis');
-                    $applozic("#km-faq").removeClass('n-vis').addClass('vis');
+                    // $applozic("#km-faq").removeClass('n-vis').addClass('vis');
                     $mck_tab_conversation.removeClass('n-vis').addClass('vis');
                     $mck_search_tabview_box.removeClass('n-vis').addClass('vis');
                     $mck_product_box.removeClass('vis').addClass('n-vis');
