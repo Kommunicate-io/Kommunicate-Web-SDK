@@ -29,7 +29,7 @@ exports.createCustomer = (req,res)=>{
   userDetail.subscription = subscription;
   logger.info("userName:", userName, password,isPreSignUp,isOAuthSignUp);
   /*
-  * When login is done via 'Sign in with Google' make password = null and loginType = 'oauth'.
+  * When login is done via 'Sign in with Google' make password = 'mi8&zG#0rLyE^$1&MXSe' and loginType = 'oauth'.
   * Making sure that passoword is null for 'Sign in with Google'
   */
   if(isOAuthSignUp && req.body.loginType === 'oauth'){
