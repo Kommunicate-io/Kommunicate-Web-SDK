@@ -798,6 +798,157 @@ class Aside extends Component {
                     </div>
                   </div>
                   <div id="km-group-info-tab"
+                    className="km-group-info-tab km-panel-sm km-panel">
+                    <div className="panel-content">
+                      <div className="km-box-top">
+                        <div className="km-title-wrapper"> 
+                          <div className="blk-lg-10">
+                            <div className="km-box-title km-truncate" title="Group Info">Details
+                            </div>
+                          </div>
+                          <div className="blk-lg-2">
+                            <button type="button" id="km-group-info-close"
+                              className="km-box-close km-close-panel move-right">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="km-group-icon-sec">
+                          <div id="km-group-info-icon-box"
+                            className="km-group-icon-box km-group-info-icon-box km-hover-on">
+                            <div className="km-group-icon"></div>
+                            <span className="km-overlay-box n-vis">
+                              <div className="km-overlay">
+                                <span className="km-camera-icon"></span> <span
+                                  className="km-overlay-label">Change Group Icon</span>
+                              </div>
+                              <div id="km-group-info-icon-loading" className="km-loading n-vis">
+                                <img src="/applozic/images/mck-loading.gif"/>
+                              </div> <input id="km-group-icon-change"
+                              className="km-group-icon-change n-vis" type="file" name="file[]" />
+                            </span>
+                          </div>
+                          <div className="km-text-center">
+                            <a id="km-btn-group-icon-save" href="javascript:void(0)" role="link"
+                              className="km-btn-group-icon-save n-vis" title="Click to save">
+                              <img
+                              src="/applozic/images/mck-icon-save.png"
+                              alt="Save"/>
+                            </a>
+                          </div>
+                        </div>
+                        <div id="km-group-name-sec" className="km-group-name-sec">
+                          <div id="km-group-name-box" className="km-row km-group-name-box">
+                            <div className="blk-lg-9">
+                              <div id="km-group-title" className="km-group-title"
+                                contentEditable="false" suppressContentEditableWarning="true">Group title</div>
+                            </div>
+                            <div className="blk-lg-3 km-group-name-edit-icon">
+                              <a id="km-group-name-edit" href="javascript:void(0)" role="link"
+                                className="km-group-name-edit vis" title="Edit"> <img
+                                src="/applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
+                                id="km-group-name-save" href="javascript:void(0)" role="link"
+                                className="km-group-name-save n-vis" title="Click to save"> <img
+                                src="/applozic/images/mck-icon-save.png" alt="Save"/></a>
+                            </div>
+                          </div>
+                        </div>     
+                      </div>
+                      <div>
+                        <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
+                        Clearbit</div>
+                        <div className="km-tab-cell">
+                          <div className="km-user-info-inner">
+                            <div id="km-user-info-list" className="km-user-info-list">
+                              <h4 id="full-name" className="km-clearbit-field km-clearbit-user-full-name"></h4>
+                              <p id="bio" className="km-clearbit-field km-clearbit-user-bio n-vis"></p>
+                              <div className="km-clearbit-user-domain-location-wrapper">
+                                <div id="location-icon" className="km-clearbit-logo-wrapper n-vis">
+                                  <img src = {LocationIcon} className="km-clearbit-location-icon" />
+                                  <p id="location" className="km-clearbit-field km-clearbit-user-data"></p>
+                                </div>
+                                <div id="domain-icon" className="km-clearbit-logo-wrapper n-vis">
+                                  <img src={DomainIcon} className="km-clearbit-domain-icon" />
+                                  <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
+                                    <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
+                                  </a>          
+                              </div>
+                              </div>
+                              <div id="divider-1" className="km-clearbit-divider n-vis"></div>
+                              <div id="industry" className="km-clearbit-field km-clearbit-user-industry"></div>
+                              <div id="foundedYear" className="km-clearbit-field km-clearbit-user-industry"></div>
+                              <div className="km-clearbit-company-description-wrapper">
+                                <p id="description" className="km-clearbit-field km-clearbit-user-data"></p>
+                              </div>
+                              <div id="divider-2" className="km-clearbit-divider n-vis"></div>
+                              <div className="km-clearbit-user-social-info-wrapper">
+                                <div id="km-cl-ln-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="linkedin" className="km-cl-icon km-clearbit-link" href="" target="_blank">
+                                    <img src={LinkedinIcon} className="km-clearbit-social-icon " />
+                                  </a>
+                                </div>
+                                <div id="km-cl-fb-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="facebook" className="km-cl-icon km-clearbit-link" href="" target="_blank">
+                                    <img src={FacebookIcon} className="km-clearbit-social-icon " />
+                                  </a>
+                                </div>
+                                <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">  
+                                    <img src={TwitterIcon} className="km-clearbit-social-icon" />
+                                  </a>  
+                                </div>
+                                <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
+                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">  
+                                    <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
+                                  </a>
+                                </div>  
+                              </div>
+                            
+                            </div>        
+                          </div>
+                        </div>
+                      </div>
+      
+                      <div id="km-clearbit-title-panel" className="km-clearbit-title-panel">
+                        Group Info</div>
+                      <div id="km-group-detail-panel" className="km-group-detail-box">
+                        <div id="km-group-member-panel"
+                          className="km-tab-panel km-group-member-panel vis">
+                          <div className="km-group-md-sec">
+                            <div className="km-row km-group-member-text">Members</div>
+                            <div id="km-group-add-member-box"
+                              className="km-row km-group-admin-options km-group-add-member-box n-vis">
+                              <a id="km-group-add-member" className="km-group-add-member"
+                                href="javascript:void(0)">
+                                <div className="blk-lg-3">
+                                  <img src="/applozic/images/mck-icon-add-member.png"
+                                    alt="Add Member"/>
+                                </div>
+                                <div className="blk-lg-9">Add member</div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="km-box-body">
+                        <div className="km-tab-cell">
+                          <div className="km-group-member-inner">
+                            <ul id="km-group-member-list"
+                              className="km-group-member-list km-contact-list km-nav km-nav-tabs km-nav-stacked">
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="km-group-info-ft" className="km-group-info-ft">
+                        <button type="button" id="km-btn-group-exit"
+                          className="km-btn km-btn-blue km-btn-group-exit"
+                          title="Exit Group">Exit Group</button>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* old sidebar design */}
+                  {/* <div id="km-group-info-tab"
                     className="km-group-info-tab km-panel-sm km-panel n-vis">
                     <div className="panel-content">
                       <div className="km-box-top">
@@ -886,135 +1037,8 @@ class Aside extends Component {
                           title="Exit Group">Exit Group</button>
                       </div>
                     </div>
-                  </div>
-                  <div id="km-user-info-tab"
-                    className="km-user-info-tab km-panel-sm km-panel n-vis">
-                    <div className="panel-content">
-                      <div className="km-box-top">
-                        <div className="blk-lg-10">
-                          <div className="km-box-title km-truncate" title="User Info">Conversation Details
-                          </div>
-                        </div>
-                        <div className="blk-lg-2">
-                          <button type="button" id="km-user-info-close"
-                            className="km-box-close km-close-panel move-right">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                      </div>
-                      <div id="km-customer-title-panel" className="km-customer-title-panel">Customer
-                      </div>
-                      <div id="km-user-detail-panel" className="km-user-detail-box">
-                        <div className="km-user-icon-sec">
-                          <div id="km-user-info-icon-box"
-                            className="km-user-icon-box km-user-info-icon-box km-hover-on">
-                            <div className="km-user-icon">
-                              <img src="" />
-                            </div>
-                            <span className="km-overlay-box n-vis">
-                              <div className="km-overlay">
-                                <span className="km-camera-icon"></span> <span
-                                  className="km-overlay-label">Change Profile Picture</span>
-                              </div>
-                              <div id="km-user-info-icon-loading" className="km-loading n-vis">
-                                <img src="/applozic/images/mck-loading.gif"/>
-                              </div> <input id="km-user-icon-change"
-                              className="km-user-icon-change n-vis" type="file" name="file[]" />
-                            </span>
-                          </div>
-                          <div className="km-text-center">
-                            <a id="km-btn-user-icon-save" href="javascript:void(0)" role="link"
-                              className="km-btn-user-icon-save n-vis" title="Click to save">
-                              <img
-                              src="/applozic/images/mck-icon-save.png"
-                              alt="Save"/>
-                            </a>
-                          </div>
-                        </div>
-                        <div id="km-user-name-sec" className="km-user-name-sec">
-                          <div id="km-user-name-box" className="km-row km-user-name-box">
-                            <div className="blk-lg-9">
-                              <div id="km-user-title" className="km-user-title"
-                                contentEditable="false" suppressContentEditableWarning="true">User title
-                              </div>
-                              <div id="km-user-info-list"
-                                className="km-user-info-list">
-                                <span className="email"></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="km-box-body">
-                        <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
-                        Clearbit</div>
-                        <div className="km-tab-cell">
-                          <div className="km-user-info-inner">
-                            <div id="km-user-info-list" className="km-user-info-list">
-                              <h4 id="full-name" className="km-clearbit-field km-clearbit-user-full-name"></h4>
-                              <p id="bio" className="km-clearbit-field km-clearbit-user-bio n-vis"></p>
-                              <div className="km-clearbit-user-domain-location-wrapper">
-                                <div id="location-icon" className="km-clearbit-logo-wrapper n-vis">
-                                  <img src = {LocationIcon} className="km-clearbit-location-icon" />
-                                  <p id="location" className="km-clearbit-field km-clearbit-user-data"></p>
-                                </div>
-                                <div id="domain-icon" className="km-clearbit-logo-wrapper n-vis">
-                                  <img src={DomainIcon} className="km-clearbit-domain-icon" />
-                                  <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
-                                    <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
-                                  </a>          
-                              </div>
-                              </div>
-                              <div id="divider-1" className="km-clearbit-divider n-vis"></div>
-                              <div id="industry" className="km-clearbit-field km-clearbit-user-industry"></div>
-                              <div id="foundedYear" className="km-clearbit-field km-clearbit-user-industry"></div>
-                              <div className="km-clearbit-company-description-wrapper">
-                                <p id="description" className="km-clearbit-field km-clearbit-user-data"></p>
-                              </div>
-                              <div id="divider-2" className="km-clearbit-divider n-vis"></div>
-                              <div className="km-clearbit-user-social-info-wrapper">
-                                <div id="km-cl-ln-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="linkedin" className="km-cl-icon km-clearbit-link" href="" target="_blank">
-                                    <img src={LinkedinIcon} className="km-clearbit-social-icon " />
-                                  </a>
-                                </div>
-                                <div id="km-cl-fb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="facebook" className="km-cl-icon km-clearbit-link" href="" target="_blank">
-                                    <img src={FacebookIcon} className="km-clearbit-social-icon " />
-                                  </a>
-                                </div>
-                                <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">  
-                                    <img src={TwitterIcon} className="km-clearbit-social-icon" />
-                                  </a>  
-                                </div>
-                                <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">  
-                                    <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
-                                  </a>
-                                </div>  
-                              </div>
-                            
-                            </div>
-                            {/* <ul id="km-user-info-list"
-                              className="km-user-info-list km-nav km-nav-tabs km-nav-stacked">
-                              <li className="full-name"></li>
-                              <li className="location"></li>
-                              <li className="industry"></li>
-                              <li className="description"></li>
-                              <li className="email"></li>
-                              <li className="bio n-vis"></li>
-                              <li className="title n-vis"></li>
-                              <li className="company n-vis"></li>
-                              <li className="domain n-vis">Website: <a className="domain-url" href="" target="_blank"></a></li>
-                              <li className="location n-vis"></li>
-                              <li className="profile-linkedin n-vis">Linkedin: <a className="linkedin" href="" target="_blank"></a></li>
-                            </ul> */}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  </div> */}
+                  
                 </div>
 
 
