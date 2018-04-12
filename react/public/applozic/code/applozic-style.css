@@ -633,6 +633,7 @@ body {
 	display: flex;
 	position: relative;
 	border-right: 1px solid #e5e5e5;
+	overflow-y: auto;
 }
 
 .km-panel-top {
@@ -673,6 +674,7 @@ body {
 
 .km-group-icon-sec {
 	padding-bottom: 10px;
+	padding-top: 50px;
 }
 
 .invite-team {

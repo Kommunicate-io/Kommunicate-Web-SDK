@@ -12,11 +12,9 @@ export let thirdPartyList = {
         subTitle: "Open Zendesk ticket for all conversations",
         integrationType: 2,
         docsLink: "https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
-        status: "Settings",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://www.zendesk.com/login/#support">
             Zendesk dashboard</a></span>,
-            "Sign in to your Zendesk dashboard.",
             "Enter your Access Email Id of Zendesk",
             "Add Access token on clicking " + " sign and save. Copy and paste that Access token here",
             "Open the agent interface by selecting Support from the product tray in the upper-right",
@@ -33,7 +31,6 @@ export let thirdPartyList = {
         logo: ClearbitLogo,
         integrationType: 3,
         docsLink: "https://clearbit.com/docs",
-        status: "Settings",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://dashboard.clearbit.com/login">
             Clearbit account</a></span>,
@@ -48,11 +45,9 @@ export let thirdPartyList = {
         subTitle: "Import your FAQs from Helpdocs",
         integrationType: 1,
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
-        status: "Coming soon",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://my.helpdocs.io/login">
             HelpDocs dashboard</a></span>,
-            "Log in to your HelpDocs dashboard",
             "Go to Settings",
             "Click Create a New API Key",
             "Enter a name for your key. This is just so you can identify the key later.",

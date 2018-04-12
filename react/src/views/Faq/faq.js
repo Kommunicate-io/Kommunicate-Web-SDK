@@ -273,10 +273,13 @@ class Tabs extends Component {
                 </button>
                 <div className="km-faq-or">OR</div>
                 { this.state.helpdocsKey.length == 0 &&
-                  <button className="km-button km-button--secondary" onClick={this.openModal}>
-                  <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
-                    Integrate with Helpdocs
-                  </button>
+                  <div>
+                    <button className="km-button km-button--secondary" onClick={this.openModal}>
+                    <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
+                      Integrate with Helpdocs
+                    </button>
+                    <p className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</p>
+                  </div>  
                 }
                 
                 { this.state.helpdocsKey.length > 0 &&

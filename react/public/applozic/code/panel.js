@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     $("#km-user-info-close").on('click', function(e) {
         e.preventDefault();
-        $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
+        // $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
         $kmApplozic(".km-container").removeClass('km-panel-3');
         $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
         $kmApplozic('body').removeClass('km-panel-3');
@@ -26,22 +26,37 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '#km-new-group', function(event) {
-        $('.km-user-info-tab').removeClass("vis").addClass('n-vis');
+        // $('.km-user-info-tab').removeClass("vis").addClass('n-vis');
     });
-
+    $(document).on('click', '#km-group-tab-title', function(event) {
+        var tabId = $('#km-group-tab-title').attr('data-km-id');
+        group = kmGroupUtils.getGroup(tabId);
+		var keys = Object.keys(group.users);	
+		keys.every((userId, index) => {
+			var user = group.users[userId];
+			if(user.role == 3){
+                getContactDetail(userId)
+				return false;
+			}
+			else {
+				return true;
+			}
+		})			
+        
+    });
     $(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
-        $('.km-group-info-tab').removeClass("vis").addClass('n-vis');
-        if ($('.km-user-info-tab').hasClass('n-vis')) {
-          $kmApplozic('body').removeClass('km-panel-3').addClass('km-panel-3');
-          $kmApplozic('.km-emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
-          $kmApplozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
-        } else {
-          $kmApplozic('body').removeClass('km-panel-3');
-          $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
-          $kmApplozic(".km-container").removeClass('km-panel-3');
-        }
+        // // $('.km-group-info-tab').removeClass("vis").addClass('n-vis');
+        // if ($('.km-user-info-tab').hasClass('n-vis')) {
+        //   $kmApplozic('body').removeClass('km-panel-3').addClass('km-panel-3');
+        //   $kmApplozic('.km-emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
+        //   $kmApplozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
+        // } else {
+        //   $kmApplozic('body').removeClass('km-panel-3');
+        //   $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
+        //   $kmApplozic(".km-container").removeClass('km-panel-3');
+        // }
 
-        $('.km-user-info-tab').toggleClass("n-vis").toggleClass('vis');
+        // $('.km-user-info-tab').toggleClass("n-vis").toggleClass('vis');
 
         $("#km-user-name-sec .km-user-title").html("");
         $("#km-user-info-list .email").html("");
@@ -51,6 +66,12 @@ $(document).ready(function() {
         if (typeof contactId == "undefined" || typeof contactId == "") {
             contactId = $("#km-msg-to").val();
         }
+        getContactDetail(contactId)
+        
+    });
+
+    function getContactDetail(contactId){
+
         $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
             resetCustomerInfoArea();     
             var ul = document.getElementById("km-user-info-list");
@@ -90,8 +111,8 @@ $(document).ready(function() {
                         }
                     }
                 }
-            });
-    });
+        });
+    }
 
 	$(".side-nav li a").click(function() {
 		var $this = $(this);
@@ -115,6 +136,7 @@ function resetCustomerInfoArea(){
     // $("#km-user-info-list .linkedin").text('');
     // $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain, #km-user-info-list .profile-linkedin").addClass('n-vis');
     // $(".customli").remove();
+    // $("#km-group-tab-title").attr('data-km-id',"");
     $("#km-user-info-list .km-clearbit-field").html('');
     $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
     $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');

@@ -56,11 +56,19 @@ span.km-contact-search-tab img {
 .km-group-info-tab .km-box-body,
 .km-user-info-tab .km-box-body {
     background-color: #F0F0F0;
+    display: block;
+    height: auto;
 }
 .km-group-info-tab .km-box-top .blk-lg-10,
 .km-group-create-tab .km-box-top .blk-lg-10,
 .km-user-info-tab .km-box-top .blk-lg-10 {
     width: 250px;
+}
+.km-title-wrapper {
+    position: fixed;
+    background-color: #fff;
+    z-index: 1;
+    width: 100%;
 }
 .km-user-name-sec .km-user-title {
     vertical-align: middle;
@@ -227,6 +235,7 @@ span.km-contact-search-tab img {
 }
 .km-clearbit-user-social-info-wrapper {
     display: flex;
+    margin-bottom: 17px;
 }
 .km-clearbit-user-domain-location-wrapper {
     margin-top: 10px
