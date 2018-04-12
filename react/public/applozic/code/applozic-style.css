@@ -492,7 +492,7 @@ body {
 	width: 24px;
 	height: 40px;
 	content: '';
-	background-image: url("/img/q2ug83h7h/smiley.png");
+	background-image: url("/img/smiley.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -504,7 +504,7 @@ body {
 	height: 40px;
 	margin-left: 11px;
 	content: '';
-	background-image: url("/img/nz9dho0pp/send.png");
+	background-image: url("/img/send.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
