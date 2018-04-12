@@ -215,7 +215,7 @@ class Tabs extends Component {
       devToken : this.state.devToken,
       aiPlatform : aiPlatform,
       botName : this.state.botName,
-      type:'CUSTOM_BOT'
+      type:'KOMMUNICATE_SUPPORT'
     }
 
     // let uuid_holder = uuid();
@@ -395,7 +395,7 @@ class Tabs extends Component {
     let axiosPostData = {
       botName: this.state.editedBotName,
       aiPlatform: "dialogflow",
-      type:"CUSTOM_BOT",
+      type:"KOMMUNICATE_SUPPORT",
       clientToken: this.state.editedClientToken,
       devToken: this.state.editedDevToken,
     }
