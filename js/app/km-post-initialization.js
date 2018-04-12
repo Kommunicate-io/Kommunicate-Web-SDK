@@ -103,8 +103,8 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
             $applozic('#mck-contacts-content').removeClass("vis").addClass("n-vis");
             $applozic('#km-faq').removeClass("vis").addClass("n-vis");
             $applozic('.mck-faq-inner').removeClass("n-vis").addClass("vis");
+            $applozic('.km-faqheader').removeClass("n-vis").addClass("vis");
             $applozic('.km-faqback').removeClass("n-vis").addClass("vis");
-            $applozic('.km-faqtitle').removeClass("n-vis").addClass("vis");
             $applozic('.km-faqsearch').removeClass("n-vis").addClass("vis");
             $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
             $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
@@ -151,6 +151,16 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
         }
     });
 
+   
+    $applozic(d).on("click", "#mck-conversation-back-btn", function () {
+        if($applozic('.km-kb-container').hasClass('vis')){
+            $applozic('.km-faqback').removeClass('vis').addClass('n-vis');
+            $applozic('.km-faq').removeClass('n-vis').addClass('vis');
+            $applozic('#mck-tab-conversation').removeClass('n-vis').addClass('vis');
+            $applozic('#mck-conversation-title').removeClass('n-vis').addClass('vis');
+            $applozic('#mck-no-conversations').removeClass('vis').addClass('n-vis');
+        } 
+    });
 
 
     $applozic(d).on("click", ".km-faqback", function () {
@@ -165,8 +175,8 @@ Kommunicate.faqEvents = function (data, helpdocsKey) {
             $applozic('#mck-contacts-content').removeClass("n-vis").addClass("vis");
             $applozic('#km-faq').removeClass("n-vis").addClass("vis");
             $applozic('.mck-faq-inner').removeClass("vis").addClass("n-vis");
-            $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
-            $applozic('.km-faqtitle').removeClass("vis").addClass("n-vis");
+            $applozic('.km-faqheader').removeClass("vis").addClass("n-vis");
+            // $applozic('.km-faqback').removeClass("vis").addClass("n-vis");
             $applozic('.km-faqsearch').removeClass("vis").addClass("n-vis");
             $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
         }
@@ -187,5 +197,10 @@ Kommunicate.showChat = function () {
         $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
         $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
         $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
+    }
+    if($applozic('.mck-message-inner').hasClass('vis')){
+       $applozic('.km-faqheader').removeClass("vis").addClass("n-vis");
+       $applozic('#mck-conversation-title').removeClass("n-vis").addClass("vis");
+       $applozic('#mck-away-msg-box').removeClass("vis").addClass("n-vis");
     }
 }
