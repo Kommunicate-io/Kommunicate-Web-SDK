@@ -1331,7 +1331,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-box-body .mck-message-inner {
 	position: absolute;
-	background-color: #eceff1;
+	background-color: #FFFFFF;
 	display: table-row;
 	top: 0;
 	right: 0;
@@ -1699,7 +1699,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-msg-left .mck-msg-box:after, .mck-msg-left .mck-msg-box:before,
 	.mck-msg-right .mck-msg-box:after, .mck-msg-right .mck-msg-box:before {
 	border: solid transparent;
-	content: " ";
+	/* content: " "; */
 	pointer-events: none;
 }
 
@@ -1711,7 +1711,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-msg-right .mck-msg-box:after {
 	border-color: transparent;
-	border-left-color: #2196f3;
+	border-left-color: #5c5aa7;
 	border-width: 11px;
 }
 
@@ -1806,14 +1806,14 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-msg-avator-bubble .mck-msg-avator {
 	display: block;
-	top: 50%;
+	top: 21px;
 	position: absolute;
 	margin-top: -21.5px;
 }
 
 .mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
 	float: left;
-	left: 0;
+	left: 7px;
 	margin-left: 3px;
 }
 
@@ -1825,8 +1825,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator img {
-	height: 43px;
-	width: 43px;
+	height: 35px;
+	width: 35px;
 	border-radius: 50%;
 	vertical-align: middle;
 }
@@ -2423,10 +2423,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	max-width: -moz-calc(85% - 58px); /* Firefox 4+ */
 	max-width: calc(85% - 58px); /* IE9+ and future browsers */
 	display: inline-block;
-	padding: 10px 14px 12px;
+	padding: 10px 14px 10px;
 	position: relative;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #2196f3;
+	background-color: #5c5aa7;
 }
 
 .mck-msg-avator-bubble.mck-msg-right .mck-msg-box {
@@ -2595,13 +2595,13 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-group-inner .mck-msg-left .mck-msg-box {
-	padding: 4px 8px;
+	padding: 10px;
 	color: #333;
-	background: #fff;
+	background: #e6e5ec;
 }
 
 .mck-group-inner .mck-msg-left .mck-msg-box:after {
-	border-right-color: #fff;
+	border-right-color: #e6e5ec;
 }
 
 .mck-audio-player {
