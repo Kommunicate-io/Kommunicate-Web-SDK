@@ -14,7 +14,7 @@ const config ={
       },
       mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-204-49-118.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
       urls: {
-        baseUrl: "https://chat.kommunicate.io/",
+        baseUrl: "https://chat.kommunicate.io",
         getApplicationDetail: "https://chat.kommunicate.io/rest/ws/application/get?applicationId=:applicationId",
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
@@ -209,7 +209,7 @@ const config ={
         },
       },
       urls: {
-        baseUrl: "https://dashboard.applozic.com",
+        baseUrl: "https://chat.kommunicate.io",
         getApplicationDetail: "https://dashboard.applozic.com/rest/ws/application/get?applicationId=:applicationId",
         createApplozicClient: "https://dashboard.applozic.com/rest/ws/register/client",
         createApplication: "https://dashboard.applozic.com/rest/ws/application/add",
