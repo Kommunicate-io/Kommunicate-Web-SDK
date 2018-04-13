@@ -66,6 +66,7 @@ let handleCreateUserError =(user,customer,err)=>{
  * @return {Object} userModel @see models/user.js
  */
 const createUser =user=>{
+  let aiPlatform = user.aiPlatform;
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
     let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";
     return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role,user.email,user.name)
@@ -98,7 +99,7 @@ const createUser =user=>{
             "applicationKey": customer.applicationId,
             "authorization": user.authorization,
             "type": "KOMMUNICATE_SUPPORT",
-            "handlerModule":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
+            "handlerModule":aiPlatform=="dialogflow"?"DEFAULT_THIRD_PARTY_BOT_HANDLER":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
           }).catch(err=>{
             logger.error("error while creating bot platform",err);
           })
