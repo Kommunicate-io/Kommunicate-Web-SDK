@@ -498,3 +498,9 @@ ul#km-group-search-list li {
 .km-write-box {
     margin-top: 7px;
 }
+.km-sidebar-display-name {
+  font-size: 14px;  
+  letter-spacing: 0.5px;
+  text-align: left;
+  text-align: center;
+}
