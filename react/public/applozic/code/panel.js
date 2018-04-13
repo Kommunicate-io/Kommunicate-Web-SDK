@@ -57,7 +57,6 @@ $(document).ready(function() {
         // }
 
         // $('.km-user-info-tab').toggleClass("n-vis").toggleClass('vis');
-
         $("#km-user-name-sec .km-user-title").html("");
         $("#km-user-info-list .email").html("");
         $("#km-user-info-icon-box .km-user-icon img").attr('src', "");
@@ -98,8 +97,9 @@ $(document).ready(function() {
                         }
                         //$("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
                         var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
-                        $("#km-user-info-icon-box .km-user-icon").html(imageLink);
-                        
+                        imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
+                        $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
+                        $("#km-sidebar-display-name").html(user.displayNAme || user.userId)
                         if (typeof user.email !== "undefined") {
                             if(user.metadata && user.metadata.kmClearbitData){
                                 var clearbitData=JSON.parse(user.metadata.kmClearbitData)
