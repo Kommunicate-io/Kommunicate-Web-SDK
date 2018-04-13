@@ -22,7 +22,7 @@ You can copy the below script and replace required parameters manually.
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": appId,"agentId":agentId,"conversationTitle":conversationTitle,botIds:["bot1","bot2"]};
+     var kommunicateSettings = {"appId": appId,"agentId":agentId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
 
     /*----------------- Kommunicate settings end ------------------*/
      
@@ -57,3 +57,4 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |userName | Display name of the user. Agents will identify users by this display name|
 |email | Email ID of the user. User will be notified on this email if not online|
 |chatLauncherHtml | Pass html for customize chat icon|
+|onInit| This takes a function which will be called after plugin initialized. it takes two parameter error and data.|
