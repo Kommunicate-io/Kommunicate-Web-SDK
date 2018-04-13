@@ -2462,6 +2462,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                         "contentType": 0,
                         "message": message
                     };
+                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
+                    if(chatContext){
+                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
+                    }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
                     if (conversationId) {
