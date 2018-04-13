@@ -5136,7 +5136,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             url: CITY_SEARCH_URL+ query,
                             type: 'get',
                             success: (data) => {
-                                console.log('data: ', data);
+                                //console.log('data: ', data);
                                 data.data.map(function (city) {
                                     var group;
                                     group = {
