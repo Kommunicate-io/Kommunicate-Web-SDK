@@ -7,7 +7,9 @@
  * Kommunicate stores all Exposed functions to user.
  * 
  */
-Kommunicate = {};
+Kommunicate = {
+    settings:{}
+};
 
 /**
  * stores all UI manipulation
