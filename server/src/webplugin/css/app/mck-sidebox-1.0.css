@@ -4001,7 +4001,7 @@ color: rgba(0,0,0,0.5);
     border-radius: 8px 8px 0px 0px;
     width: 100%;
     height: 100px;
-    background-image: url('/images/card-message-img-1.jpg');
+    /*background-image: url('/images/card-message-img-1.jpg');*/
     background-size: cover;
     background-position-y: 30%;
     object-fit: cover;
