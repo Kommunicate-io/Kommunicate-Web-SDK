@@ -1,7 +1,7 @@
 ---
 id: bot-configration
-title: Bot integration
-sidebar_label: Bot configration
+title: Bot setup
+sidebar_label: Bot setup
 ---
 
 **Integrate your bot with Kommunicate**
