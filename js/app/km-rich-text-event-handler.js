@@ -158,7 +158,7 @@ Kommunicate.richMsgEventHandler = {
 
 
     handlleRichButtonClick: function (e) {
-        console.log("event generated: ", e);
+        //console.log("event generated: ", e);
         var target = e.target || e.srcElement;
         var eventHandlerId = target.dataset.eventhandlerid;
         if (eventHandlerId == "km-eh-001") {
