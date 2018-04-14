@@ -69,3 +69,4 @@ Storage/build/*
 docs/website/package-lock.json
 docs/website/i18n/en.json
 docs/website/i18n/en.json
+message-processor/initial/target/classes/*
