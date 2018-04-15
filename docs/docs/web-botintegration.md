@@ -4,108 +4,31 @@ title: Integrate bot with kommunicate
 sidebar_label: Bot Integration
 ---
 
-**Integrate your bot with Kommunicate**
 
 * * *
+Once the bot is [integrated](https://docs.kommunicate.io/docs/bot-configration.html), it can be added to any conversation in your chat plugin. There are several ways to add bot in any conversation: 
+  1. Pass array of botIds in `botIds`  parameter in [installation script](https://docs.kommunicate.io/docs/web-installation.html#script). These bots will be added into every conversation by default.
+  2. Use `Kommunicate.startConversation()` method to start group conversation with bots and agents.
+  3. Use `Kommunicate.openDirectConversation()` method to start direct conversation with bot. This option is best suited if bot can handle the conversation without any agent.  
 
+# Group conversations with bot
+    
+  You can start group conversations with bot using `startConversation(conversationDetail, callback)`.
 
-You can easily integrate bots with Kommunicate to automate tasks which will reduce the workload on your agents. To integrate bot on your platform, visit kommunicate [dashboard](https://dashboard.kommunicate.io/bots/). Once integrated, the bot can send [actionable messages](https://docs.kommunicate.io/docs/actionable-messages.html) to make a conversation more interactive and design rich.
+```javascript
+  var conversationDetail = {
+    agentId: "agentId",
+    botIds: ["bot1","bot2"]
+  };
+  Kommunicate.startConversation(conversationDetail, function (response) {
+  console.log("new conversation created");
+  }); 
+```
 
-**Don't have a bot?**
+# One to one conversations with bot
+  Get the bot ID from the dashboard and pass it in the `openDirectConversation(botId)` method.
 
-* * *
-
-
-If you do not have any prior experience with developing and using bots, we will help to get your bot in place. Let us know your custom bot requirements by clicking on the Request Custom Bot in `dashboard->bots`, we will get in touch to assist you in developing the bot.
-
-**Already have a bot?**
-
-* * *
-
-
-You can easily integrate your bot in Kommunicate if you already have a bot developed on listed platforms. To integrate your bot, go to `Dashboard->bots` and select the bot platform you have used to develop the bot. Submit the required details and you will see a success message on the successful integration of the bot.
-
-Here is the list of supported platforms(we will add more platform in due course):
-
-* [Dialogflow](https://dialogflow.com/)
-
-* [Amazon Lex](https://aws.amazon.com/lex/) (coming soon)
-
-* [Microsoft Bot Framework](https://dev.botframework.com/) (coming soon)
-
-**To integrate bot built using Dialogflow, follow the below steps:**
-
-* * *
-
-
-1. Login to Dialogflow console and select the agent you want to integrate with Kommunicate from the drop-down in the left panel.
-
-2. Go to `Settings->general` and copy Client access token and Developer access token.
-
-3. Go to kommunicate `dashboard->bots` and click on `Dialogflow (settings)`.
-
-4. Submit the required details.
-
-On successful integration, the bot will be given an ID(botId) and will be listed under My Integrated Bots section. The botId will be used to identify the bot in the Kommunicate system.
-
-**Start conversations with bot**
-
-* * *
-Once the bot is integrated, it can be added to any conversation in your chat plugin. The bot can be plugged in both one to one and group conversations. 
-
-* **One to one conversations with bot** 
-
-    Get the bot ID from the dashboard and pass it in the `openDirectConversation(botId)` method.
-  ```javascript
+```javascript
     Kommunicate.openDirectConversation("botId");
-   ```
-* **Group conversations with bot**
-    You can start group conversations with bot using `startConversation(conversationDetail, callback)`.
-
-   ```javascript
-    var conversationDetail = {
-     agentId: AGENT_ID,
-     botIds: [BOTID1]
-    };
-    Kommunicate.startConversation(conversationDetail, function (response) {
-     console.log("new conversation created");
-    }); 
-   ```
-
-**Use Actionable messages to make conversations interactive**
-
-* * *
-
-
-Your bot is designed to send rich text messages to make conversations more interactive and useful. Here is a list of [rich text messages](https://docs.kommunicate.io/docs/actionable-messages.html) supported by Kommunicate.
-
-When setting an intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console, click on Add Response under `DEFAULT` tab and choose Custom Payload. Set below JSON as the response of the intent.
-
-``` javascript
-{
-  "platform": "kommunicate",
-  "metadata": {
-  // valid JSON for any type of Kommunicate's Actionable message.
-  }
-}
 ```
 
-Pass any kind of Kommunicate supported [actionable messages](https://docs.kommunicate.io/docs/actionable-messages.html) inside metadata.
-
-* **Example: Sample JSON for Quick Replies**
-``` JSON
-{
-   "platform": "kommunicate",
-   "metadata": {
-       "contentType": "300",
-       "templateId": "6",
-       "payload": [{
-           "title ": "Yes",
-           "message ": "Cool! send me more."
-       }, {
-           "title ": "No ",
-           "message": "Don't send it to me again"
-       }]
-   }
-}
-```

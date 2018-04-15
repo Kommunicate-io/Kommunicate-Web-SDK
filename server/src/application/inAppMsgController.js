@@ -77,27 +77,6 @@ exports.getInAppMessages=(req,res)=>{
 });
 }
 
-/*exports.processEvents=(req, res)=>{
-    const eventType = req.query.type;
-    const groupId = req.body.conversationId;
-    const applicationId = req.body.applicationId;
-    const agentName = req.body.agentId;
-    logger.info(req.body)
-    if(eventType == applicationUtils.EVENTS.CONVERSATION_STARTED){
-        return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
-            return inAppMsgService.processConversationStartedEvent(groupId,customer, agentName).then(response=>{
-                logger.info("message sent successfuly!");
-                res.status(200).json({code:"SUCCESS"});
-            })
-        }).catch(err=>{
-            logger.info("err while sending welcome messgae",err);
-            res.status(500).json({code:"INTERNAL_SERVER_ERROR"});
-        })
-    }else{
-        res.status(200).json({code:"EVENT_NOT_SUPPORTED"});
-    }
-
-}*/
 
 exports.processEvents=(req, res)=>{
     const eventType = req.query.type;
@@ -116,8 +95,8 @@ exports.processEvents=(req, res)=>{
                 }
             })
         }
-
-        return userService.getAdminUserByAppId(applicationId).then(adminUser=>{
+        // not needed now. remove this code if every thing works fine.
+       /* return userService.getAdminUserByAppId(applicationId).then(adminUser=>{
             return inAppMsgService.processEventWrapper(eventType, groupId, customer,adminUser, agentName).then(response=>{
                 logger.info(response);
                 if(response =="success"){
@@ -128,7 +107,7 @@ exports.processEvents=(req, res)=>{
                     res.status(200).json({code:"SUCCESS",message:response});
                 }
             })
-        })
+        })*/
        
     }).catch(err=>{
         logger.info("err while sending welcome messgae",err);

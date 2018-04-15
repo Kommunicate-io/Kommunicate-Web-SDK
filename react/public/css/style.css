@@ -10609,6 +10609,12 @@ input:required {
   width: 20px;
   margin-right: 10px;
 }
+.km-faq-import-faq-sub{
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  color: #9b9696;
+  margin-top: 5px;
+}
 .km-faq-or {
   padding: 8px 16px 0px 16px;
   font-size: 14px;

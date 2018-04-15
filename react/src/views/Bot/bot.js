@@ -215,7 +215,7 @@ class Tabs extends Component {
       devToken : this.state.devToken,
       aiPlatform : aiPlatform,
       botName : this.state.botName,
-      type:'CUSTOM_BOT'
+      type:'KOMMUNICATE_SUPPORT'
     }
 
     // let uuid_holder = uuid();
@@ -236,7 +236,7 @@ class Tabs extends Component {
 
     this.setState({disableIntegrateBotButton: true})
 
-    this.checkBotNameAvailability(userId).then( bot => {
+    this.checkBotNameAvailability(userId,aiPlatform).then( bot => {
       axios({
       method: 'post',
       url:userDetailUrl,
@@ -307,7 +307,7 @@ class Tabs extends Component {
     }
   }
 
-  checkBotNameAvailability(userId) {
+  checkBotNameAvailability(userId,aiPlatform) {
 
     if(!this.state.botName){
       Notification.info("Please enter a bot name !!");
@@ -323,8 +323,9 @@ class Tabs extends Component {
         userName: userId,
         type:2,
         applicationId:applicationId,
-        password:this.state.botName,
-        name:this.state.botName
+        password:userId,
+        name:this.state.botName,
+        aiPlatform:aiPlatform
       },"BOT")).then( bot => {
         Notification.info("Bot successfully created");
         return bot;
@@ -395,7 +396,7 @@ class Tabs extends Component {
     let axiosPostData = {
       botName: this.state.editedBotName,
       aiPlatform: "dialogflow",
-      type:"CUSTOM_BOT",
+      type:"KOMMUNICATE_SUPPORT",
       clientToken: this.state.editedClientToken,
       devToken: this.state.editedDevToken,
     }

@@ -234,12 +234,20 @@ exports.applozicLogin =(userDetail)=>{
     throw err;
   });
 };
-
-exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
+/**
+ * pass isBot = true if using bot headers.
+ */
+exports.getGroupInfo= (groupId,applicationId,apzToken, isBot)=>{
   let url = config.getProperties().urls.groupInfoUrl.replace(":groupId",groupId);
   console.log("getting group info from applozic url : ",url);
   console.log("applicationId", applicationId);
-  return Promise.resolve(axios.get(url,{headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true, "Content-Type": "application/json"}})).then(response=>{
+  let header ={};
+  if(isBot){
+    header ={"Application-Key": applicationId,    "Authorization":"Basic "+apzToken,   "Content-Type":"application/json"}
+  }else{
+    header = {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true, "Content-Type": "application/json"}
+  }
+  return Promise.resolve(axios.get(url,{headers: header})).then(response=>{
     console.log("got response from Applozic group Api. code :", response.status);
     if(response&&response.status==200&&response.data.status=="success") {
       return response.data.response;
@@ -251,7 +259,7 @@ exports.getGroupInfo= (groupId,applicationId,apzToken)=>{
     console.log("error while getting group info from Applozic" ,err);
     throw err;
   });
-};
+}
 
 exports.sendGroupMessage = (groupId,message,apzToken,applicationId,metadata)=>{
   console.log("sending message to group ",groupId);

@@ -481,7 +481,7 @@ body {
 	width: 20px;
 	height: 40px;
 	content: '';
-	background-image: url("http://s1.postimg.org/s5gfy283f/attachemnt.png");
+	background-image: url("/img/attachemnt.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -492,7 +492,7 @@ body {
 	width: 24px;
 	height: 40px;
 	content: '';
-	background-image: url("http://s14.postimg.org/q2ug83h7h/smiley.png");
+	background-image: url("/img/smiley.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -504,7 +504,7 @@ body {
 	height: 40px;
 	margin-left: 11px;
 	content: '';
-	background-image: url("http://s30.postimg.org/nz9dho0pp/send.png");
+	background-image: url("/img/send.png");
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -633,6 +633,7 @@ body {
 	display: flex;
 	position: relative;
 	border-right: 1px solid #e5e5e5;
+	overflow-y: auto;
 }
 
 .km-panel-top {
@@ -673,6 +674,7 @@ body {
 
 .km-group-icon-sec {
 	padding-bottom: 10px;
+	padding-top: 50px;
 }
 
 .invite-team {

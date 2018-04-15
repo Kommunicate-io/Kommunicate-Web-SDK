@@ -17,6 +17,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 
@@ -29,6 +30,9 @@ public class MachineLearningClient {
 
     @Autowired
     private ObjectMapper objectMapper;
+    
+    @Value("${kommunicate.api.url}")
+    private String API_URL = "https://api-test.kommunicate.io";
     
     /*
             curl -i -X POST https://machine.kommunicate.io/events/events.json?accessKey=vE5gvXzmCpBEvp1Rcbr0pukECUZpJMbCeRStber1PsiuRdSjIzyizi7HiqHKcPts \
@@ -71,7 +75,7 @@ public class MachineLearningClient {
         knowledge.setUserName(message.getSenderName());
         
         //Todo: Make url dynamic.
-        return post("https://api-test.kommunicate.io/autosuggest/message", objectMapper.writeValueAsString(knowledge));
+        return post(API_URL + "/autosuggest/message", objectMapper.writeValueAsString(knowledge));
     }
     
     public String post(String url, String data) {
