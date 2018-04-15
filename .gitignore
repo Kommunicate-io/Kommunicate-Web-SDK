@@ -73,4 +73,4 @@ server/src/webplugin/js/app/kommunicate-plugin-0.1.min.js
 server/src/webplugin/css/app/mck-sidebox-1.0.min.css
 server/src/webplugin/js/app/mck-sidebox-1.0.min.js
 server/src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js
-message-processor/initial/target/classes/*
+message-processor/initial/target/classes/**

@@ -70,11 +70,11 @@ public class MachineLearningClient {
         knowledge.setCategory("train");
         knowledge.setReferenceId(properties.getLabel());
         knowledge.setName(properties.getText());
-        knowledge.setStatus("draft");
+        //Todo: change it to draft once training and filter UI is ready
+        knowledge.setStatus("published");
         knowledge.setType("train");
         knowledge.setUserName(message.getSenderName());
         
-        //Todo: Make url dynamic.
         return post(API_URL + "/autosuggest/message", objectMapper.writeValueAsString(knowledge));
     }
     

@@ -63,6 +63,7 @@ exports.createSuggestion = (req, res) => {
 		content: req.body.content,
 		type: req.body.type ? req.body.type:null,
 		status: req.body.status ? req.body.status:null,
+		referenceId: req.body.referenceId ? req.body.referenceId : null
 	}
 
 	autosuggestService.createSuggestion(suggestion)
@@ -123,7 +124,7 @@ exports.deleteSuggetion = (req, res) => {
 
 exports.searchFAQ=(req,res)=>{
 	logger.info("searching for query..")
-	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query,id:req.query.articleId}).then(data=>{
+	return autosuggestService.searchFAQ({appId:req.query.appId,text:req.query.query,id:req.query.articleId, referenceId:req.query.referenceId}).then(data=>{
 		logger.info("got data from db");
 		return res.status(200).json({ code: "SUCCESS", data: data });
 	}).catch(e=>{
