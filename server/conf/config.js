@@ -14,6 +14,7 @@ const config ={
       },
       mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-204-49-118.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
       urls: {
+        baseUrl: "https://chat.kommunicate.io",
         getApplicationDetail: "https://chat.kommunicate.io/rest/ws/application/get?applicationId=:applicationId",
         createApplozicClient: "https://chat.kommunicate.io/rest/ws/register/client",
         createApplication: "https://chat.kommunicate.io/rest/ws/application/add",
@@ -78,6 +79,7 @@ const config ={
     },
     mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
+      baseUrl: "https://apps-test.applozic.com",
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
@@ -132,6 +134,7 @@ const config ={
     port: 3999,
     db: {
       // url: "mysql://admin:adm1n2ol6@localhost:3306/kommunicate_test",
+      // url: "mysql://root:password@localhost:3306/kommunicate_test",
       url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
@@ -143,6 +146,7 @@ const config ={
     },
     mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
+      baseUrl: "https://apps-test.applozic.com",
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
       createApplozicClient: "https://apps-test.applozic.com/rest/ws/register/client",
       createApplication: "https://apps-test.applozic.com/rest/ws/application/add",
@@ -205,6 +209,7 @@ const config ={
         },
       },
       urls: {
+        baseUrl: "https://chat.kommunicate.io",
         getApplicationDetail: "https://dashboard.applozic.com/rest/ws/application/get?applicationId=:applicationId",
         createApplozicClient: "https://dashboard.applozic.com/rest/ws/register/client",
         createApplication: "https://dashboard.applozic.com/rest/ws/application/add",
