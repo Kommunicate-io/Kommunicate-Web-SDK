@@ -7,6 +7,7 @@ const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
 const Sequelize = require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
+const { SQL_QUERIES } = require('../../query/query');
 
 /**
  * returns conversation list of given participent_user_Id
@@ -241,7 +242,7 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
 
 const getNewConversation = (queryParams, agentIds) => {
     let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
-    let query = "SELECT " + UNIT + "(created_at) AS " + UNIT + ",count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY " + UNIT + ";";
+    let query = SQL_QUERIES.NEW_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
@@ -249,22 +250,22 @@ const getNewConversation = (queryParams, agentIds) => {
 
 const getClosedConversation = (queryParams, agentIds) => {
     let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
-    let query = "SELECT " + UNIT + "(created_at) AS " + UNIT + ",count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY " + UNIT + ";";
+    let query = SQL_QUERIES.CLOSED_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
-const getAverageResolutionTime = (query, agentIds) => {
-    var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.days);
-    return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, close_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+const getAverageResolutionTime = (queryParams, agentIds) => {
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESOLUTION_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
-const getAvgResponseTime = (query, agentIds) => {
-    var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.days);
-    return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, updated_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW() and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+const getAvgResponseTime = (queryParams, agentIds) => {
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESPONSE_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
 const getAllStatistic = (query, agentIds) => {
@@ -303,6 +304,9 @@ const getConversationStat = (query) => {
                 } else if (!agentId) {
                     agentIds.push(users[i].id)
                 }
+            }
+            if (agentIds.length == 0) {
+                return { result: 'invalid Agent', data: [] };
             }
             return getAllStatistic(query, agentIds);
         }).catch(err => {
