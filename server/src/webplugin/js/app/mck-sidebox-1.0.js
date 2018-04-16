@@ -2386,9 +2386,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         "contentType": 0,
                         "message": message
                     };
-                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-                    if(chatContext){
-                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
+                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");		
+                    if(chatContext){		
+                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}		
                     }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
@@ -3957,6 +3957,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=   '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
                 '<div class="mck-clear">' +
+                '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class="mck-msg-box ${msgClassExpr}">' +
@@ -3968,7 +3969,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
                 '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
                 '</div>' +
-                '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-fileurl= "${fileUrlExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}</div>' +
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
@@ -5136,7 +5136,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             url: CITY_SEARCH_URL+ query,
                             type: 'get',
                             success: (data) => {
-                                //console.log('data: ', data);
+                                // console.log('data: ', data);
                                 data.data.map(function (city) {
                                     var group;
                                     group = {
