@@ -292,15 +292,15 @@ const getConversationStat = (query) => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
-            let agentIds = users.map(user => {
-                if (agentId && agentId == user.userName) {
-                    return user.id
+            let agentIds = [];
+            for (var i = 0; i < users.length; i++) {
+                if (agentId && agentId == users[i].userName) {
+                    agentIds.push(users[i].id)
                 } else if (!agentId) {
-                    return user.id
+                    agentIds.push(users[i].id)
                 }
-            })
+            }
             return getAllStatistic(query, agentIds);
-
         }).catch(err => {
             console.log(err);
             throw err;
