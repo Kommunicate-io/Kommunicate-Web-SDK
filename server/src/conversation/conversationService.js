@@ -239,16 +239,20 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
     return Promise.resolve({ result: 'oops! invalid query', data: [] });
 }
 
-const getNewConversation = (query, agentIds) => {
-    var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.days);
-    return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+const getNewConversation = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
+    let query = "SELECT " + UNIT + "(created_at) AS " + UNIT + ",count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY " + UNIT + ";";
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
-const getClosedConversation = (query, agentIds) => {
-    var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.days);
-    return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+const getClosedConversation = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
+    let query = "SELECT " + UNIT + "(created_at) AS " + UNIT + ",count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY " + UNIT + ";";
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getAverageResolutionTime = (query, agentIds) => {
