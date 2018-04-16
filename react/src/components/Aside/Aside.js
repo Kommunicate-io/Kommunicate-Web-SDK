@@ -895,8 +895,12 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
-      
-                      <div id="km-clearbit-title-panel" className="km-clearbit-title-panel">
+                      {/* user metadata */}
+                      <div id="km-sidebar-user-info-wrapper" className="n-vis" >
+                        <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
+                        <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper"></div>
+                      </div>     
+                      <div id="km-group-info-panel" className="km-sidebar-info-panel">
                         Group Info</div>
                       {/* Group Name */}
                       {/* <div id="km-group-name-sec" className="km-group-name-sec">
