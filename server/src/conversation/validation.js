@@ -42,3 +42,9 @@ module.exports.getConversationList= {
         status:joi.string().only(["0","1","2","3","4"])
     }
   }
+  module.exports.getConversationStats= {
+    query:{
+        days:joi.number().integer().required(),
+        customerId:joi.number().integer().required(),
+    }
+  }
