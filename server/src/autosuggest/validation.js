@@ -25,7 +25,7 @@ module.exports.searchFAQ = {
 	query:{
 		appId:joi.string().required(),
 		query:joi.string(),
-		articleId:joi.string()
-		
+		articleId:joi.string(),
+		referenceId:joi.number()
 	}
 }
