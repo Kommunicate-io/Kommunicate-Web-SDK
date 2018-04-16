@@ -34,16 +34,14 @@
 					<div id="mck-tab-conversation" class="mck-row">
 						<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
 					</div>
-					<div class="km-faqheader">
-					<div class="blk-lg-2 km-faqback">
+					<!-- <div class="blk-lg-2 km-faqback">
 						<svg class="mck-msg-list-icon" xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
 							<path d="M0 0h24v24H0z" fill="none" />
 							<path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
 						</svg>
+					</div> -->
+
 					</div>
-					<div class="km-faqtitle">FAQ</div>
-					</div>
-				</div>
 				<div class="km-kb-container n-vis">
 					<button id="km-faq" class="km-faq"type="button">FAQ</button>
 				</div>
@@ -167,12 +165,126 @@
 							</button>
 						</div>
 					</div>
+					<div class="mck-conversation">
 					<div class="mck-message-inner"></div>
-					
-						<div id="km-faqdiv" class="mck-faq-inner km-faqdiv n-vis"></div>
-						
-						<div id="km-faqanswer" class="km-faqanswer n-vis"></div>
-					
+					<div id="mck-contacts-content"
+					class="mck-contacts-content mck-text-center">
+					<button type="button" id="mck-msg-new"
+						class="mck-contact-search mck-btn mck-btn-blue" title="Start New">
+						<span>Start New</span>
+					</button>
+				</div>
+				<div id ="mck-away-msg-box" class="n-vis">
+						<p id="mck-away-msg" class="mck-away-msg"></p>
+					</div>
+					<div id="mck-sidebox-ft" class="mck-box-ft">
+							
+						<div class="mck-box-form mck-row n-vis">
+							<div class="blk-lg-12">
+								<p id="mck-msg-error" class="mck-sidebox-error n-vis"></p>
+							</div>
+							<div id="mck-msg-response" class="blk-lg-12 mck-box-response n-vis">
+								<div id="mck-response-text" class="response-text"></div>
+							</div>
+							<div class="blk-lg-12">
+								<form id="mck-msg-form" class="vertical mck-msg-form">
+									<div class="mck-form-group n-vis">
+										<label class="sr-only placeholder-text control-label"
+											for="mck-msg-to">To:</label> <input class="mck-form-cntrl"
+											id="mck-msg-to" name="mck-msg-to" placeholder="To" required>
+									</div>
+											 <div  id="mck-reply-to-div" class="n-vis">
+													<button type="button" id="close"
+													class="mck-box-close mck-close-panel move-right">
+													<span aria-hidden="true">&times;</span>
+													</button>
+													<div id="mck-reply-to" class=" mck-msgto "></div>
+																				<div id="mck-reply-msg"> </div>
+																				  </div>
+									<div class="mck-form-group last last-child">
+										<label class="sr-only placeholder-text control-label"
+											for="mck-textbox">Message</label>
+										<div id="mck-textbox-container" class="mck-textbox-container">
+											<div class="mck-blk-2 mck-text-box-panel move-left">
+												<div class="mck-blk-12">
+													<button type="button" id="mck-btn-smiley"
+														class="mck-btn mck-btn-smiley mck-btn-text-panel"
+														title="Smiley">
+														<span class="mck-icon-smiley-blue"></span>
+													</button>
+												</div>
+											</div>
+											<div
+												class="mck-blk-2 mck-text-box-panel mck-mid-panel move-left">
+												<div id="mck-attachmenu-box" class="mck-attach-menu">
+													<div id="mck-btn-attach"
+														class="mck-dropdown-toggle mck-btn-attach mck-file-attach-label mck-btn mck-btn-text-panel"
+														data-toggle="mckdropdown" aria-expanded="true"
+														title="Attach File">
+														<span class="mck-icon-upload"></span>
+													</div>
+													<ul id="mck-upload-menu-list"
+														class="mck-dropup-menu mck-upload-menu-list mck-menu-right"
+														role="menu">
+														<li><a id="mck-file-up" href="#"
+															class="mck-file-upload menu-item" title="File &amp; Photos">
+																<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-photo.png"
+																class="menu-icon" alt="File &amp; Photos"><span
+																id="mck-file-up-label">Files &amp; Photos</span>
+														</a></li>
+														<li><a id="mck-btn-loc" href="#"
+															class="menu-item mck-btn-loc" title="Share Location">
+																<div class="mck-menu-icon">
+																	<span class="mck-icon-marker-blue"></span>
+																</div> <span id="mck-share-loc-label">Share Location</span>
+														</a></li>
+		
+													</ul>
+												</div>
+												<div id="mck-attachfile-box" class="mck-blk-12 n-vis">
+													<button id="mck-file-up2" type="button"
+														class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel"
+														title="Attach File">
+														<span class="mck-icon-upload"></span>
+													</button>
+												</div>
+											</div>
+											<input id="mck-city-search-input" type="text" data-provide="typeahead" placeholder="Enter city name..." autofocus="" class="mck-blk-8 n-vis mck-text mck-typeahead" autocomplete="off">
+											<input id="mck-city-json" type="hidden" name="city-detail"/>
+											<div id="mck-text-box" contenteditable="true"
+												class="mck-blk-8 mck-text-box mck-text required" data-text="Enter your message here..."></div>
+											<div class="mck-blk-2 mck-text-box-panel move-right">
+												<div class="mck-blk-12">
+													<button type="submit" id="mck-msg-sbmt"
+														class="mck-btn mck-btn-text-panel" title="Send Message">
+														<span class="mck-icon-send"></span>
+													</button>
+												</div>
+											</div>
+											<input id="mck-file-input" class="mck-file-input n-vis"
+												type="file" name="files[]">
+											<div id="mck-file-box" class="n-vis"></div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					</div>
+					<div class="faq-common">
+						<div id="km-faqdiv" class="mck-faq-inner km-faqdiv"></div>
+						<div id="km-faqanswer" class="km-faqanswer"></div>
+						<div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
+								<span class="km-faqsearch-icon">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+											<path fill="#585555" fill-rule="nonzero" d="M10.557 9.573l5.162 5.162-.984.984-5.162-5.162a5.913 5.913 0 1 1 .984-.984zm-4.644.862a4.522 4.522 0 1 0 0-9.044 4.522 4.522 0 0 0 0 9.044z" opacity=".618"/>
+										</svg>								
+								</span>
+								<input id="km-faq-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search in FAQs..."
+									class="mck-typeahead">
+							</div>
+
+					</div>
 					
 					<div id="mck-contact-loading" class="mck-loading">
 						<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif"
@@ -198,118 +310,6 @@
 			<div id="mck-offline-message-box"
 				class="mck-offline-message-box n-vis">SET DEFAULT OFFLINE
 				MESSAGE!</div>
-			<div id ="mck-away-msg-box" class="n-vis">
-				<p id="mck-away-msg" class="mck-away-msg"></p>
-			</div>
-			<div id="mck-sidebox-ft" class="mck-box-ft">
-					<div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12 n-vis">
-						<span class="km-faqsearch-icon">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-									<path fill="#585555" fill-rule="nonzero" d="M10.557 9.573l5.162 5.162-.984.984-5.162-5.162a5.913 5.913 0 1 1 .984-.984zm-4.644.862a4.522 4.522 0 1 0 0-9.044 4.522 4.522 0 0 0 0 9.044z" opacity=".618"/>
-								</svg>								
-						</span>
-						<input id="km-faq-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search in FAQs..."
-							class="mck-typeahead">
-					</div>
-					
-				<div class="mck-box-form mck-row n-vis">
-					<div class="blk-lg-12">
-						<p id="mck-msg-error" class="mck-sidebox-error n-vis"></p>
-					</div>
-					<div id="mck-msg-response" class="blk-lg-12 mck-box-response n-vis">
-						<div id="mck-response-text" class="response-text"></div>
-					</div>
-					<div class="blk-lg-12">
-						<form id="mck-msg-form" class="vertical mck-msg-form">
-							<div class="mck-form-group n-vis">
-								<label class="sr-only placeholder-text control-label"
-									for="mck-msg-to">To:</label> <input class="mck-form-cntrl"
-									id="mck-msg-to" name="mck-msg-to" placeholder="To" required>
-							</div>
-                                     <div  id="mck-reply-to-div" class="n-vis">
-											<button type="button" id="close"
-								            class="mck-box-close mck-close-panel move-right">
-								            <span aria-hidden="true">&times;</span>
-							                </button>
-											<div id="mck-reply-to" class=" mck-msgto "></div>
-                                                                        <div id="mck-reply-msg"> </div>
-                                                                          </div>
-							<div class="mck-form-group last last-child">
-								<label class="sr-only placeholder-text control-label"
-									for="mck-textbox">Message</label>
-								<div id="mck-textbox-container" class="mck-textbox-container">
-									<div class="mck-blk-2 mck-text-box-panel move-left">
-										<div class="mck-blk-12">
-											<button type="button" id="mck-btn-smiley"
-												class="mck-btn mck-btn-smiley mck-btn-text-panel"
-												title="Smiley">
-												<span class="mck-icon-smiley-blue"></span>
-											</button>
-										</div>
-									</div>
-									<div
-										class="mck-blk-2 mck-text-box-panel mck-mid-panel move-left">
-										<div id="mck-attachmenu-box" class="mck-attach-menu">
-											<div id="mck-btn-attach"
-												class="mck-dropdown-toggle mck-btn-attach mck-file-attach-label mck-btn mck-btn-text-panel"
-												data-toggle="mckdropdown" aria-expanded="true"
-												title="Attach File">
-												<span class="mck-icon-upload"></span>
-											</div>
-											<ul id="mck-upload-menu-list"
-												class="mck-dropup-menu mck-upload-menu-list mck-menu-right"
-												role="menu">
-												<li><a id="mck-file-up" href="#"
-													class="mck-file-upload menu-item" title="File &amp; Photos">
-														<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-photo.png"
-														class="menu-icon" alt="File &amp; Photos"><span
-														id="mck-file-up-label">Files &amp; Photos</span>
-												</a></li>
-												<li><a id="mck-btn-loc" href="#"
-													class="menu-item mck-btn-loc" title="Share Location">
-														<div class="mck-menu-icon">
-															<span class="mck-icon-marker-blue"></span>
-														</div> <span id="mck-share-loc-label">Share Location</span>
-												</a></li>
-
-											</ul>
-										</div>
-										<div id="mck-attachfile-box" class="mck-blk-12 n-vis">
-											<button id="mck-file-up2" type="button"
-												class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel"
-												title="Attach File">
-												<span class="mck-icon-upload"></span>
-											</button>
-										</div>
-									</div>
-									<input id="mck-city-search-input" type="text" data-provide="typeahead" placeholder="Enter city name..." autofocus="" class="mck-blk-8 n-vis mck-text mck-typeahead" autocomplete="off">
-									<input id="mck-city-json" type="hidden" name="city-detail"/>
-									<div id="mck-text-box" contenteditable="true"
-										class="mck-blk-8 mck-text-box mck-text required" data-text="Enter your message here..."></div>
-									<div class="mck-blk-2 mck-text-box-panel move-right">
-										<div class="mck-blk-12">
-											<button type="submit" id="mck-msg-sbmt"
-												class="mck-btn mck-btn-text-panel" title="Send Message">
-												<span class="mck-icon-send"></span>
-											</button>
-										</div>
-									</div>
-									<input id="mck-file-input" class="mck-file-input n-vis"
-										type="file" name="files[]">
-									<div id="mck-file-box" class="n-vis"></div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-				<div id="mck-contacts-content"
-					class="mck-contacts-content mck-text-center">
-					<button type="button" id="mck-msg-new"
-						class="mck-contact-search mck-btn mck-btn-blue" title="Start New">
-						<span>Start New</span>
-					</button>
-				</div>
-			</div>
 			<div class="mck-running-on n-vis">
 				<a class = "mck-powered-by" href="https://www.kommunicate.io" target="_blank"><span
 					class="n-vis">Applozic Chat SDK</span>Powered by
