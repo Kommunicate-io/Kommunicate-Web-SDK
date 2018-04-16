@@ -1347,8 +1347,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 #mck-contacts-content{
 	position: absolute;
     bottom: 60px;
-    padding-left: 30%;
-    padding-right: 30%;
+	left: 50%; transform: translateX(-50%);
 }
 
 .mck-close-btn{
