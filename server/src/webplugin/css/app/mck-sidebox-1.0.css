@@ -2634,58 +2634,45 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	margin: 0 !important;
 }
 
-.mck-text-user {
-	color: #c5490f;
+.mck-conversation-name {
 	margin-left: 57px;
     font-size: 12px;
+}
+
+.mck-text-user {
+	color: #c5490f;
 }
 
 .mck-text-a {
 	color: #c15148;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-b {
 	color: #c34973;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-c {
 	color: #a053ad;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-d {
 	color: #8759d6;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-e {
 	color: #7986CB;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-f {
 	color: #3e83f5;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-g {
 	color: #4FC3F7;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-h {
 	color: #42b3c1;
-	margin-left: 57px;
-    font-size: 12px;
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2693,110 +2680,74 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-text-i {
 	color: #4DB6AC;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-j {
 	color: #57BB8A;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-k {
 	color: #9CCC65;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-l {
 	color: #b2bd43;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-m {
 	color: #b99700;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-n {
 	color: #c79a1c;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-o {
 	color: #FFA726;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-p {
 	color: #FF8A65;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-q {
 	color: #5a1616;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-r {
 	color: #074361;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-s {
 	color: #b97961;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-t {
 	color: #715858;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-u {
 	color: #8288a9;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-v {
 	color: #5c5aa7;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-w {
 	color: #949494;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-x {
 	color: #4ecada;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-y {
 	color: #9c614d;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-text-z {
 	color: #84ca33;
-	margin-left: 57px;
-    font-size: 12px;
 }
 
 .mck-user-ol-status.vis {

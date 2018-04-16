@@ -3957,7 +3957,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=   '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
                 '<div class="mck-clear">' +
-                '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
+                '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class="mck-msg-box ${msgClassExpr}">' +
