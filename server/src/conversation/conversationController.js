@@ -72,6 +72,10 @@ exports.getConversationStats = (req, res) => {
 }
 
 exports.getConversationStat = (req, res) => {
+    if (!req.query.days) {
+        let days = req.query.daily ? (new Date()).getDate() : (new Date()).getDay();
+        req.query.days = days;
+    }
     return conversationService.getConversationStat(req.query).then(response => {
         return res.status(200).json({ message: 'SUCCESS', response: response });
     }).catch(err => {

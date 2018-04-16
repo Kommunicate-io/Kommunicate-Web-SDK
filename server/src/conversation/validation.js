@@ -44,7 +44,6 @@ module.exports.getConversationList= {
   }
   module.exports.getConversationStats= {
     query:{
-        days:joi.number().integer().required(),
         customerId:joi.number().integer().required(),
     }
   }
