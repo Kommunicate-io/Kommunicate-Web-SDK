@@ -598,6 +598,9 @@
         border-top: dashed 1px #bebbbb;
         border-bottom: solid 1px #654df7;
         padding: 8px 5px;
+        position: absolute;
+        bottom: 60px;
+        background-color: white;
     }
     /******** Generic list template*************/
     /* FAQ List */
