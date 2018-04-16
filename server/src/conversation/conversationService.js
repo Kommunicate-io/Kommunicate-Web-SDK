@@ -241,25 +241,25 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
 
 const getNewConversation = (query, agentIds) => {
     var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.day);
+    firstDay.setDate(firstDay.getDate() - query.days);
     return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getClosedConversation = (query, agentIds) => {
     var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.day);
+    firstDay.setDate(firstDay.getDate() - query.days);
     return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getAverageResolutionTime = (query, agentIds) => {
     var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.day);
+    firstDay.setDate(firstDay.getDate() - query.days);
     return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, close_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
 const getAvgResponseTime = (query, agentIds) => {
     var firstDay = new Date();
-    firstDay.setDate(firstDay.getDate() - query.day);
+    firstDay.setDate(firstDay.getDate() - query.days);
     return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, updated_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW() and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
