@@ -48,10 +48,10 @@ exports.createCustomer = (req,res)=>{
          /* registrationService.sendWelcomeMail(email, name||email).catch(err=>{
             console.log("Error while sending welcom mail to user",err)  
           });*/
-          if (activeCampaignEnable == true) {
+          if (activeCampaignEnable) {
             activeCampaignClient.addContact({ "email": email })
               .then(subscriberId => {
-                return registrationService.updateCustomer(userName, { activeCampaignId: subscriberId });
+                return registrationService.updateOnlyCustomer(userName, { activeCampaignId: subscriberId });
               })
               .catch(error => {
                 console.log("Error while sending Email to activeCampaign", error);
@@ -102,7 +102,7 @@ exports.patchCustomer = (req,res)=>{
       console.log('error while updating application')
     })  
   }
-  if (activeCampaignEnable == true) {
+  if (activeCampaignEnable) {
     registrationService.getCustomerByUserName(userId).then(dbCostomer => {
       console.log("got the user from db", dbCostomer);
       return activeCampaignClient.updateActiveCampaign({
