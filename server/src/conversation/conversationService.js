@@ -5,7 +5,7 @@ const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
-const Sequelize= require("sequelize");
+const Sequelize = require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
 
 /**
@@ -202,11 +202,11 @@ const getConversationAssigneeFromMap = (userIds, key) => {
 };
 
 const getConversationStatByAgentId = (agentId, startTime, endTime) => {
-    let criteria={agentId: agentId}
-    if(startTime && endTime){
-        criteria.created_at={$between:[new Date(startTime),new Date(endTime)]}
+    let criteria = { agentId: agentId }
+    if (startTime && endTime) {
+        criteria.created_at = { $between: [new Date(startTime), new Date(endTime)] }
     }
-    return Promise.resolve(db.Conversation.findAll({where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
+    return Promise.resolve(db.Conversation.findAll({ where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
         return { agentId: agentId, statics: result };
     }).catch(err => { throw err });
 }
@@ -239,6 +239,77 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
     return Promise.resolve({ result: 'oops! invalid query', data: [] });
 }
 
+const getNewConversation = (query, agentIds) => {
+    var firstDay = new Date();
+    firstDay.setDate(firstDay.getDate() - query.day);
+    return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+}
+
+const getClosedConversation = (query, agentIds) => {
+    var firstDay = new Date();
+    firstDay.setDate(firstDay.getDate() - query.day);
+    return Promise.resolve(db.sequelize.query("SELECT HOUR(created_at) AS hour,count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:FIRSTDAY , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY hour;", { replacements: { "FIRSTDAY": firstDay, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+}
+
+const getAverageResolutionTime = (query, agentIds) => {
+    var firstDay = new Date();
+    firstDay.setDate(firstDay.getDate() - query.day);
+    return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, close_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+}
+
+const getAvgResponseTime = (query, agentIds) => {
+    var firstDay = new Date();
+    firstDay.setDate(firstDay.getDate() - query.day);
+    return Promise.resolve(db.sequelize.query("select  avg( TIMESTAMPDIFF (second, created_at, updated_at)) as average from conversations where created_at BETWEEN DATE_FORMAT(:FIRSTDAY, '%Y-%m-%d 00:00:00') AND NOW() and agent_id in (:agentIds);", { replacements: { "FIRSTDAY": firstDay, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+}
+
+const getAllStatistic = (query, agentIds) => {
+    //console.log('agentIds', agentIds)
+    return Promise.all([getNewConversation(query, agentIds),
+    getClosedConversation(query, agentIds),
+    getAverageResolutionTime(query, agentIds),
+    getAvgResponseTime(query, agentIds)])
+        .then(([newConversation, closedConversation, avgResolutionTime, avgResponseTime]) => {
+            let response = {
+                newConversation: newConversation,
+                closedConversation: closedConversation,
+                avgResolutionTime: avgResolutionTime,
+                avgResponseTime: avgResponseTime
+            }
+            return response;
+
+        }).catch(err => {
+            throw err
+        });
+
+}
+
+const getConversationStat = (query) => {
+    let customerId = query.customerId;
+    let agentId = query.agentId;
+    if (customerId) {
+        return userService.getUsersByCustomerId(customerId).then(users => {
+            if (users.length == 0) {
+                return { result: 'no user stats found', data: [] };
+            }
+            let agentIds = users.map(user => {
+                if (agentId && agentId == user.userName) {
+                    return user.id
+                } else if (!agentId) {
+                    return user.id
+                }
+            })
+            return getAllStatistic(query, agentIds);
+
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+    }
+}
+
+
+
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
     updateTicketIntoConversation: updateTicketIntoConversation,
@@ -246,5 +317,6 @@ module.exports = {
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
     createConversation: createConversation,
-    getConversationStats:getConversationStats
+    getConversationStats: getConversationStats,
+    getConversationStat: getConversationStat,
 }
