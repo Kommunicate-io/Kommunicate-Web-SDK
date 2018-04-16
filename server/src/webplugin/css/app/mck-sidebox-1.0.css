@@ -1345,7 +1345,14 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	overflow: auto;
 }
 #mck-contacts-content{
-margin-top: 291px;
+	position: absolute;
+    bottom: 60px;
+	left: 50%; transform: translateX(-50%);
+}
+
+.mck-close-btn{
+	width: 45px;
+    height: 50px;
 }
 
 .mck-gm-search-box .mck-box-body .mck-message-inner {
