@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.kommunicate.machinelearning.event;
 
 /**
@@ -10,7 +5,6 @@ package io.kommunicate.machinelearning.event;
  * @author devashish
  */
 public class Knowledge {
-    //{"applicationId":"3190ea118ed9eb01319ef0a19310a3e54","userName":"devashish+11apr@applozic.com","name":"where is the new faq?","content":"here","category":"faq","type":"faq","status":"published"}
     private String applicationId;
     private String userName;
     private String name;
@@ -18,8 +12,7 @@ public class Knowledge {
     private String category;
     private String type;
     private String status;
-    
-    private String answerId;
+    private String referenceId;
 
     public String getApplicationId() {
         return applicationId;
@@ -77,12 +70,12 @@ public class Knowledge {
         this.status = status;
     }
 
-    public String getAnswerId() {
-        return answerId;
+    public String getReferenceId() {
+        return referenceId;
     }
 
-    public void setAnswerId(String answerId) {
-        this.answerId = answerId;
+    public void setReferenceId(String referenceId) {
+        this.referenceId = referenceId;
     }
     
 }

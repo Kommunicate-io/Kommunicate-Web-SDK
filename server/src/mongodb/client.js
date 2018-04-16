@@ -52,7 +52,7 @@ exports.searchFAQ=(options)=>{
                 var db = client.db(DEFAULT_SCHEMA);
                 db.collection(options.collectionName).aggregate([{$match:{$text: { $search: options.text },applicationId:options.appId,status:"published",type:"faq"}},
                     { $sort: { score: { $meta: "textScore" } } },
-                    {$project:{name:1,content:1,id:1,_id:0}}
+                    {$project:{name:1,content:1,referenceId:1,id:1,_id:0}}
                 ],function(err,result){
                     if (err)return reject(err);
                     logger.info(" got data from db ");

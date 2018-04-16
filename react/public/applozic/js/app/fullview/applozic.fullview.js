@@ -902,15 +902,14 @@ var KM_CLIENT_GROUP_MAP = [];
             if (params.type > 12) {
                 return 'invalid message type';
             }
-            message = $kmApplozic.trim(message);
+			message = $kmApplozic.trim(message);
+			var metadata = params.metadata||{};
+			metadata["skipBot"]=true;
             var messagePxy = {
                 'type': params.messageType,
                 'contentType': params.type,
 				'message': message,
-				// 'metadata':{
-				// 	'skipBot':true
-				// }
-				'metadata':params.metadata
+				'metadata':metadata
 				
             };
             if (params.groupId) {
@@ -1967,13 +1966,17 @@ var KM_CLIENT_GROUP_MAP = [];
 					var messagePxy = {
 						"type" : 5,
 						"contentType" : 0,
-						"message" : message
+						"message" : message,
+						"metadata":{"skipBot":true}
 					};
 
 					if ($mck_text_box.data('metadata')) {
-						messagePxy.metadata = {'KM_ML_01' : decodeURIComponent($mck_text_box.data('metadata'))};
+						var metadata = messagePxy.metadata;
+						metadata['KM_ML_01']=decodeURIComponent($mck_text_box.data('metadata'))
+						messagePxy.metadata = metadata;
 						$mck_text_box.data("metadata", null);
 					}
+
 					var conversationId = $mck_msg_inner.data('km-conversationid');
 					var topicId = $mck_msg_inner.data('km-topicid');
 					if (conversationId) {

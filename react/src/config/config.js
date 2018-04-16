@@ -4,7 +4,7 @@ var baseurl ={
    kommunicateAPI: "https://api.kommunicate.io"
   },
   dashboard : {
-   baseUrl: "https://dashboard.applozic.com",
+   baseUrl: "https://chat.kommunicate.io",
    kommunicateAPI: "https://api.kommunicate.io"
   },
   test:{

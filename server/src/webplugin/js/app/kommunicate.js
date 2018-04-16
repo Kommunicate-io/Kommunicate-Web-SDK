@@ -278,6 +278,12 @@ $applozic.extend(true,Kommunicate,{
         } else {
             messagePxy.to = $mck_msg_to.val();
         }
+        var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
+        var metadata = messagePxy.metadata||{};
+        if(chatContext){
+            metadata ={"KM_CHAT_CONTEXT":chatContext}
+        }
+        messagePxy.metadata=metadata;
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
 
     },
@@ -318,6 +324,20 @@ $applozic.extend(true,Kommunicate,{
         } else {
             return "";
         }
+    },
+    updateSettings:function(options){
+        var settings = KommunicateUtils.getDataFromKmSession("settings");
+        settings=  settings?JSON.parse(settings):{}
+
+        for (var key in options){
+            settings[key]= options[key];
+        }
+        KommunicateUtils.storeDataIntoKmSession("settings",JSON.stringify(settings));
+    },
+    getSettings:function(setting){
+        var settings = KommunicateUtils.getDataFromKmSession("settings");
+        settings=  settings?JSON.parse(settings):null;
+        return setting&&settings?settings[setting]:(settings?settings:"");
     }
 
 });

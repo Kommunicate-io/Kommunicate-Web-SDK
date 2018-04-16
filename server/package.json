@@ -15,6 +15,7 @@
     "bcrypt": "1.0.2",
     "body-parser": "1.17.2",
     "chargebee": "^2.3.5",
+    "concat-files": "^0.1.1",
     "cors": "2.8.4",
     "express": "4.15.3",
     "express-minify": "1.0.0",

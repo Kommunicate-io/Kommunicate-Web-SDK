@@ -108,15 +108,27 @@ const deleteSuggetion = (suggestion) => {
 }
 exports.searchFAQ =(options)=>{
 	options.collectionName = collections.KNOWLEDGE_BASE;
+	var data;
 	if(options.id){
 		options.id=parseInt(options.id);
-		return mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+	} else if (options.referenceId) {
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{referenceId:parseInt(options.referenceId),type:"learning",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}else if(options.text){
-		return mongoClient.searchFAQ(options);
+		data = mongoClient.searchFAQ(options);
 	}else{
-		return mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}
-	
+
+	for(var i = 0; i < data.length; i += 1) {
+		var knowledge = data[i];
+		if (knowledge.referenceId != null && (knowledge.content == null || knowledge.content == "")) {
+			var result = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:knowledge.referenceId},options:{projection:{name:1,content:1,id:1,_id:0}}});
+			data[i].content = result[0].content;
+		}
+	}
+
+	return data;
 }
 
 exports.getAllSuggestions = getAllSuggestions
