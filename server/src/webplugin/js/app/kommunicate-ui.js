@@ -58,7 +58,7 @@ KommunicateUI={
         $applozic('.mck-conversation ').removeClass("vis").addClass("n-vis");
         $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
         $applozic('.mck-conversation-back-btn').removeClass("n-vis").addClass("vis");
-        $applozic("#mck-tab-title").html("faq").removeClass('n-vis').addClass('vis');
+        $applozic("#mck-tab-title").html("FAQ").removeClass('n-vis').addClass('vis');
 
     });
     $applozic(d).on("click", "#mck-msg-new", function (e) {
