@@ -169,9 +169,6 @@ submitForm = ()=>{
     this.setState({loginButtonDisabled:true});
     axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
     .then(function(response){
-      console.log(response);
-      console.log(response.data.code);
-      //Todo: if response is multiple applications then show the application drop down.
       if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
         Notification.warning("Invalid credentials");
         _this.setState({loginButtonDisabled:false});
@@ -194,13 +191,11 @@ submitForm = ()=>{
             response.data.result.apzToken = apzToken;
           }
 
-          console.log(response.data.result);
           if (!response.data.result.application) {
             console.log("response doesn't have application, create {}");
             response.data.result.application = {};
           }
 
-          //response.data.result.application.applicationId = _this.state.applicationId;
           _this.setState({'applicationId': response.data.result.application.applicationId});
 
           response.data.result.password = password;
@@ -271,7 +266,6 @@ login = (event)=>{
 }
 checkForMultipleApps=(response)=>{
   var _this = this;
-  console.log("response",response);
   if(response.status=200 && response.data!=="Invalid userId or EmailId"){
     var result = response.data.result;
     const numOfApp=Object.keys(result).length;
@@ -279,14 +273,12 @@ checkForMultipleApps=(response)=>{
       _this.state.applicationId=Object.keys(result)[0];
       _this.state.applicationName=result[_this.state.applicationId];
       _this.state.appIdList= result;
-      console.log("got one application for user, appId : ",_this.state.applicationId);
       if(_this.state.loginButtonAction=="passwordReset"){
         resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
         return 1;
       }
       _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
   }else if(numOfApp>1){
-    //popUpApplicationList(numOfApp,response.data);
       _this.state.appIdList= result;
     if(_this.state.loginButtonAction=="passwordReset"){
       _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
