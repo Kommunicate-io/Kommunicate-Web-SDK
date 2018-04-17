@@ -66,20 +66,19 @@ var mckGroupService = new MckGroupService();
             },
             callback: function (response) {
                 console.log("response", response);
-                if (response.status === 'success' && response.data.clientGroupId && !response.updated) {
-                    Kommunicate.createNewConversation({
-                        "groupId": response.data.value,
-                        "participentUserId": kommunicate._globals.userId,
-                        "defaultAgentId": conversationDetail.agentId,
-                        "applicationId": kommunicate._globals.appId
-                    }, function (err, result) {
-                        console.log(err, result);
-                        if (!err) {
-                            callback(response.data.value);
-                        }
-                    })
-                }else{
-                    callback(response.data.value);
+                if (response.status === 'success' && response.data.clientGroupId) {
+                    response.updated ? callback(response.data.value) :
+                        Kommunicate.createNewConversation({
+                            "groupId": response.data.value,
+                            "participentUserId": kommunicate._globals.userId,
+                            "defaultAgentId": conversationDetail.agentId,
+                            "applicationId": kommunicate._globals.appId
+                        }, function (err, result) {
+                            console.log(err, result);
+                            if (!err) {
+                                callback(response.data.value);
+                            }
+                        })
                 }
             }
         });
