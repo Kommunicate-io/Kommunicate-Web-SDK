@@ -48,7 +48,7 @@ exports.createConversation= (req,res)=>{
 exports.createSupportGroup=(req, res)=>{
     return Promise.resolve(conversationService.createConversationIntoApplozic(req)).then(response=>{
         console.log('response: ', response);
-        return res.status(201).json({code:"SUCCESS",data:response});
+        return res.status(201).json(response);
     }).catch(err=>{
         return res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong"}); 
     });

@@ -68,8 +68,9 @@ const createConversation = (conversation) => {
 const createConversationIntoApplozic = (req) => {
     let headers = req.headers;
     delete headers['host'];
-    return Promise.resolve(applozicClient.createSupportGroup(req.body, headers)).then(group => {
+    return Promise.resolve(applozicClient.createSupportGroup(req.body, headers)).then(result => {
         //console.log('group create response: ', group);
+        let group = result.response
         let user = group.groupUsers.filter(user => { return user.role == 3 })
         let conversation = {
             groupId: group.id,
@@ -79,7 +80,8 @@ const createConversationIntoApplozic = (req) => {
             applicationId: headers['application-key']
         }
         createConversation(conversation);
-        return group;
+        result.updated = true;
+        return result;
     }).catch(err => {
         throw err;
     })

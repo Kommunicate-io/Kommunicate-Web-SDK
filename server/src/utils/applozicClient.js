@@ -334,7 +334,7 @@ exports.createSupportGroup = (groupInfo, headers)=>{
   let url = config.getProperties().urls.createGroup;
   return Promise.resolve(axios.post(url,groupInfo,{headers:headers})).then(result=>{
     if(result.data&&result.data.status ==="success"){
-      return result.data.response;
+      return result.data;
     }else {
       throw {code:APPLOZIC_ERROR,data:response}
     }

@@ -42,6 +42,7 @@ var mckGroupService = new MckGroupService();
      */
      createConversation : function(conversationDetail,callback){
         $applozic.fn.applozic("createGroup", {
+            createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
             admin: conversationDetail.agentId,
@@ -65,7 +66,7 @@ var mckGroupService = new MckGroupService();
             },
             callback: function (response) {
                 console.log("response", response);
-                if (response.status === 'success' && response.data.clientGroupId) {
+                if (response.status === 'success' && response.data.clientGroupId && !response.updated) {
                     Kommunicate.createNewConversation({
                         "groupId": response.data.value,
                         "participentUserId": kommunicate._globals.userId,
@@ -77,6 +78,8 @@ var mckGroupService = new MckGroupService();
                             callback(response.data.value);
                         }
                     })
+                }else{
+                    callback(response.data.value);
                 }
             }
         });
