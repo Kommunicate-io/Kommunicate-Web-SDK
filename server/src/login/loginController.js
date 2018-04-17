@@ -10,7 +10,13 @@ exports.login = function(req, res) {
   if(req.query.loginType === 'oauth'){
     password = 'mi8&zG#0rLyE^$1&MXSe'
   }
-  Promise.resolve(loginService.login(req.body)).then(result=>{
+
+  const userDetail = {
+    userName: userName,
+    password: password,
+    applicationId: applicationId
+  }
+  Promise.resolve(loginService.login(userDetail)).then(result=>{
     let response={};
     console.log("status success");
     response.code="SUCCESS";
