@@ -71,17 +71,17 @@ constructor(props){
 
       const email = CommonUtils.getUrlParameter(search, 'email');
       const loginType = CommonUtils.getUrlParameter(search, 'loginType');
-      const numOfApp = CommonUtils.getUrlParameter(search, 'numOfApp');
+      const _numOfApp = CommonUtils.getUrlParameter(search, 'numOfApp');
 
       console.log(email);
       console.log(loginType);
-      console.log(numOfApp);
+      console.log(_numOfApp);
 
       this.setState({
         googleOAuth: true,
         email: email,
         userName: email,
-        password: 'CHANGIT',
+        password: 'CHANGE IT',
         loginButtonAction: 'getAppList',
         loginType: loginType
       }, () => {
@@ -89,8 +89,12 @@ constructor(props){
           console.log(numOfApp);
           if(numOfApp == 1 && loginType === 'oauth'){
             this.submitForm()
-          } else if (numOfApp == 1 && loginType === 'email' ){
+          } else if (numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
             this.setUpLocalStorageForLogin()
+          } else if (numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
+            this.setState({
+              googleOAuth: false
+            })
           }
         })
       })
@@ -361,6 +365,7 @@ showPasswordField = () => {
 
     var search = window.location.href;
     const userDetails = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+    console.log(userDetails)
 
     if (typeof (Storage) !== "undefined") {
 
@@ -393,6 +398,19 @@ showPasswordField = () => {
 
     this.props.history.push("/dashboard");
     this.state=this.initialState;
+  }
+
+  checkLoginTypeWrapper = () => {
+    this.checkLoginType().then( response => {
+      console.log(response.data.data.loginType);
+      if (response.data.data.loginType === 'oauth') {
+        this.submitForm()
+      } else {
+        this.setState({
+          googleOAuth: false
+        })
+      }
+    })
   }
 
 
@@ -489,6 +507,8 @@ showPasswordField = () => {
                                 this.state.applicationId=key;
                                 this.state.applicationName = this.state.appIdList[key];
                                 this.setState({"dropDownBoxTitle":key});
+
+                                this.checkLoginTypeWrapper()
 
                               }}>{key}</MenuItem>
                             }.bind(this))
