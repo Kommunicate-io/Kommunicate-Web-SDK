@@ -177,7 +177,7 @@ submitForm = ()=>{
         Notification.warning("Invalid credentials");
         _this.setState({loginButtonDisabled:false});
       } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
-        _this.checkForMultipleApps(response);
+        _this.checkForMultipleApps(response.data.result);
         return;
       }
       
@@ -264,14 +264,15 @@ login = (event)=>{
     var _this=this;
     return  axios.get(getApplistUrl)
     .then(function(response){
-      _this.checkForMultipleApps(response);
+      _this.checkForMultipleApps(response.data);
    });
 }
 }
-checkForMultipleApps=(response)=>{
+checkForMultipleApps=(result)=>{
+  console.log(result);
+
   var _this = this;
-  if(response.status=200 && response.data!=="Invalid userId or EmailId"){
-    var result = response.data.result;
+  if(result!=="Invalid userId or EmailId"){
     const numOfApp=Object.keys(result).length;
     if(numOfApp===1){
       _this.state.applicationId=Object.keys(result)[0];
@@ -295,8 +296,8 @@ checkForMultipleApps=(response)=>{
 }
   return numOfApp;
 }else{
-    console.log("err while getting application list, status : ",response.status);
-    Notification.error(response.message);
+    console.log("err while getting application list, response : ",result);
+    Notification.error(result);
   }
 }
 register=(event)=>{
