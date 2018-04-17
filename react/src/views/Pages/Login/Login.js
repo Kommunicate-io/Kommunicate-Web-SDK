@@ -30,12 +30,12 @@ constructor(props){
     applicationName:'',
     showAppListModal:false,
     hideUserNameInputbox:false,
-    hidePasswordInputbox:true,
+    hidePasswordInputbox:false,
     hideAppListDropdown:true,
     loginFormText:"Login",
     loginFormSubText:'Sign In to your account',
-    loginButtonText:'Next',
-    loginButtonAction:'getAppList',
+    loginButtonText:'Login',
+    loginButtonAction:'Login',
     appIdList:{},
     dropDownBoxTitle:"Select Application.......",
     hideBackButton:true,
@@ -150,6 +150,7 @@ submitForm = ()=>{
 
   let loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
+  
   if(!this.state.googleOAuth && (validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password))){
     // Notification.warning("Email Id or Password can't be empty!");
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
@@ -168,10 +169,18 @@ submitForm = ()=>{
     this.setState({loginButtonDisabled:true});
     axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
     .then(function(response){
+      console.log(response);
+      console.log(response.data.code);
+      //Todo: if response is multiple applications then show the application drop down.
       if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
         Notification.warning("Invalid credentials");
         _this.setState({loginButtonDisabled:false});
-      } else if (response.status == 200 && response.data.code == 'SUCCESS') {
+      } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
+        _this.checkForMultipleApps(response);
+        return;
+      }
+      
+      if (response.status == 200 && response.data.code == 'SUCCESS') {
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
 
@@ -185,11 +194,14 @@ submitForm = ()=>{
             response.data.result.apzToken = apzToken;
           }
 
+          console.log(response.data.result);
           if (!response.data.result.application) {
             console.log("response doesn't have application, create {}");
             response.data.result.application = {};
           }
-          response.data.result.application.applicationId = _this.state.applicationId;
+
+          //response.data.result.application.applicationId = _this.state.applicationId;
+          _this.setState({'applicationId': response.data.result.application.applicationId});
 
           response.data.result.password = password;
           response.data.result.displayName=response.data.result.name;
@@ -219,10 +231,12 @@ submitForm = ()=>{
 login = (event)=>{
   var _this= this;
   if(this.state.loginButtonAction==="Login"){
-    Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+    /*Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
       data?_this.state.userName=data.userId:_this.state.userName=_this.state.email;
     return this.submitForm();
-    });
+    });*/
+    this.state.userName = this.state.email;
+    return this.submitForm();
   }else if(this.state.loginButtonAction==="passwordResetAppSected" ){
     if(this.state.applicationId){
       Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
@@ -251,38 +265,43 @@ login = (event)=>{
     var _this=this;
     return  axios.get(getApplistUrl)
     .then(function(response){
-      console.log("response",response);
-      if(response.status=200 && response.data!=="Invalid userId or EmailId"){
-        const numOfApp=Object.keys(response.data).length;
-        if(numOfApp===1){
-          _this.state.applicationId=Object.keys(response.data)[0];
-          _this.state.applicationName=response.data[_this.state.applicationId];
-          _this.state.appIdList= response.data;
-          console.log("got one application for user, appId : ",_this.state.applicationId);
-          if(_this.state.loginButtonAction=="passwordReset"){
-            resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
-            return;
-          }
-          _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
-      }else if(numOfApp>1){
-        //popUpApplicationList(numOfApp,response.data);
-          _this.state.appIdList= response.data;
-        if(_this.state.loginButtonAction=="passwordReset"){
-          _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
-        }else{
-        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
-      }
-    }else{
-      // Notification.info("You are not a registered user. Please sign up!!!");
-      _this.setState({hideErrorMessage: false, errorMessageText:"You are not a registered user. Please sign up!!!"});
-    }
-      return numOfApp;
-    }else{
-        console.log("err while getting application list, status : ",response.status);
-        Notification.error(response.message);
-      }
+      _this.checkForMultipleApps(response);
    });
 }
+}
+checkForMultipleApps=(response)=>{
+  var _this = this;
+  console.log("response",response);
+  if(response.status=200 && response.data!=="Invalid userId or EmailId"){
+    var result = response.data.result;
+    const numOfApp=Object.keys(result).length;
+    if(numOfApp===1){
+      _this.state.applicationId=Object.keys(result)[0];
+      _this.state.applicationName=result[_this.state.applicationId];
+      _this.state.appIdList= result;
+      console.log("got one application for user, appId : ",_this.state.applicationId);
+      if(_this.state.loginButtonAction=="passwordReset"){
+        resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+        return 1;
+      }
+      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
+  }else if(numOfApp>1){
+    //popUpApplicationList(numOfApp,response.data);
+      _this.state.appIdList= result;
+    if(_this.state.loginButtonAction=="passwordReset"){
+      _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
+    }else{
+    _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
+  }
+}else{
+  // Notification.info("You are not a registered user. Please sign up!!!");
+  _this.setState({hideErrorMessage: false, errorMessageText:"You are not a registered user. Please sign up!!!"});
+}
+  return numOfApp;
+}else{
+    console.log("err while getting application list, status : ",response.status);
+    Notification.error(response.message);
+  }
 }
 register=(event)=>{
   this.props.history.push("/signup");
