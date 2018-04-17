@@ -83,38 +83,36 @@ exports.authCode = (req, res) => {
 			// After successful OAuth, if user exists in the kommunicate db log in.
 			user = _user
 			customer = _customer.dataValues
-			return Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId}))
+			// return Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId}))
+			return Promise.resolve(checkNumberOfApps(email))
 		} else {
 			logger.info("Doesn't exists");
 			// After successful OAuth, if user doesn't exist in kommunicate db allow sign up.
 			res.redirect(REDIRECT_URL + '?googleSignUp=true&email=' + email + '&name=' + name )
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		}
-	}).then( data => {
+	}).then( _numOfApp => {
 		logger.info(2);
-		logger.info(data);
+		logger.info(_numOfApp);
 		logger.info(user.loginType);
 		if(user.loginType === 'oauth'){
 			logger.info("oauth oauth oauth oauth oauth oauth oauth oauth")
-			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType)
+			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		} else if(user.loginType === 'email' || user.loginType === null) {
 			logger.info("email email email email email email email email")
 			return Promise.resolve(checkNumberOfApps(email))
-		}
-	}).then( _numOfApp => {
-		logger.info(3);
-		logger.info("Number of apps is " + _numOfApp)
-		if(_numOfApp > 1){
-			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
-			throw 'Ignore this error. It is present to by pass the promise chain'
-		} else {
-			const loginDetails = {
-				userName: user.userName,
-				password: user.accessToken,
-				applicationId: customer.applicationId
+			if(_numOfApp > 1){
+				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
+				throw 'Ignore this error. It is present to by pass the promise chain'
+			} else {
+				const loginDetails = {
+					userName: user.userName,
+					password: user.accessToken,
+					applicationId: customer.applicationId
+				}
+				return Promise.resolve(loginService.login(loginDetails))
 			}
-			return Promise.resolve(loginService.login(loginDetails))
 		}
 	}).then( result => {
 	    logger.info(result);
