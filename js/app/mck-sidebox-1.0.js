@@ -4510,11 +4510,37 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-
+        
                 if(msg.metadata.askHotelCity && msg.metadata.askHotelCity=="true"){
                     $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
                     mckMessageService.updateMessageMetadata({key:msg.key, metadata:{askHotelCity:false}})
+                }
+                if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
+                    $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
+                    $applozic('#mck-city-search-input').attr("placeholder", "say packers and movers..");
+                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    var autosuggestions =[];
+                    try{
+                        autosuggestions = JSON.parse(msg.metadata["KM_AUTO_SUGGESTIONS"]);
+                    }catch(e){
+                        console.error("KM_AUTO_SUGGESTIONS should be an array");
+                    }
+                    $applozic('#mck-city-search-input').data("origin","KM_AUTO_SUGGESTIONS");
+                    autosuggestions.length && $mck_city_search_input.mcktypeahead({
+                        source:autosuggestions,
+                        wrapper:".mck-sidebox",
+                        menu: '<ul class="mcktypeahead mck-hotel-city-menu mck-dropup-menu"></ul>',
+                        autoSelect: true,
+                        showHintOnFocus:'all',
+                        fitToElement:true,
+                        updater: function (item) {
+                            $mck_text_box.text(item);
+                            $applozic('#mck-city-search-input').focus();
+                            return item;
+                        }
+                      });
+               
                 }
                 if (msg.contentType === 23) {
 
@@ -5181,7 +5207,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     matcher: function (city) {
                         var matcher1 = new RegExp(this.query, "i");
                         return matcher1.test(city.CityName);
-                    },
+                    }, 
                     highlighter: function (city) {
                         return city.CityName + ', ' + city.CountryName;
                     }
@@ -7747,8 +7773,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_city_search_input.on('input', function (e) {
                     e.preventDefault();
                     $mck_text_box.text($mck_city_search_input.val());
+                    if($mck_city_search_input.data('origin')=="KM_AUTO_SUGGESTIONS"){
+                        return;
+                    }
                     mckMessageLayout.searchCity();
-                })
+                });
             };
 
 
