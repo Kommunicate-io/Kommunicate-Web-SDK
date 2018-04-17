@@ -159,7 +159,6 @@ exports.findApplications=(email)=>{
     let GET_APP_LIST_URL = APP_LIST_URL + "&emailId=" + encodeURIComponent(email)
     return  axios.get(GET_APP_LIST_URL)
       .then(function(response){
-        logger.info("response",response.data);
         if (response.status=200 && response.data!=="Invalid userId or EmailId") {
           return response.data;
         }
@@ -188,9 +187,6 @@ exports.getApplication=(customer)=>{
         "Apz-Product-App": true,
       },
     })).then(response=>{
-      console.log("###");
-      console.log(response.status);
-      console.log(response.data);
       if (response.status == 200) {
         if (response.data != "error") {
           console.log("got application detail..status code :", response.status);

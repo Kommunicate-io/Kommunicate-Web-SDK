@@ -12,7 +12,6 @@ exports.login = function(req, res) {
   }
   Promise.resolve(loginService.login(req.body)).then(result=>{
     let response={};
-    console.log("status success:" + result);
     if (result.application) {
       response.code="SUCCESS";
     } else {

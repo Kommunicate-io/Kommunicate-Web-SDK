@@ -8,23 +8,13 @@ const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 exports.login = (userDetail) => {
   const userName= userDetail.userName;
   const password = userDetail.password;
-  var applicationId =userDetail.applicationId;
+  var applicationId = userDetail.applicationId;
 
-  //Todo: if applicationId is coming directly call login.
   if (applicationId) {
-    console.log("Found applicationId: " + applicationId);
     return this.processLogin(userDetail);
   }
 
   return applozicClient.findApplications(userName).then(response => {
-
-    //Todo: check if the response contains more than 1 application then return that, 
-    //else pass the application Id to below code.
-
-    //Todo: check if the applicationId is present in applicationIds, if present user that, else reject the call.
-    console.log(response);
-    console.log(Object.keys(response));
-    console.log("length: " + Object.keys(response).length);
 
     if (Object.keys(response).length == 0) {
       let err= {};
@@ -38,7 +28,6 @@ exports.login = (userDetail) => {
     applicationId = Object.keys(response)[0];
     userDetail.applicationId = applicationId;
 
-    console.log("found: " + applicationId);
     return this.processLogin(userDetail);
   });
 };
@@ -50,7 +39,6 @@ exports.processLogin = (userDetail) => {
   return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),
     userService.getByUserNameAndAppId(userName,applicationId),
     applozicClient.applozicLogin(userDetail)]).then(([application,user,applozicUser])=>{
-      console.log("reached");
       if(user && bcrypt.compareSync(password, user.password)) {
         // valid user credentials
           return Promise.resolve(userService.getCustomerInfoByApplicationId(applicationId)).then(customer=>{
