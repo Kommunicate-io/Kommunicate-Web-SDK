@@ -303,7 +303,7 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
         }if(json.headerText){
             json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
         }
-        if(json.elements.length){
+        if(json.elements&&json.elements.length){
             json.elements =   json.elements.map(function(item){
                // checking for image
                 if(item.imgSrc){
@@ -325,6 +325,7 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                 return item;
             })
         }
+        if(json.buttons&&json.buttons.length){
         json.buttons=  json.buttons.map(button=>{
             if(!button.action || button.action.type =="quick_reply" || button.action.type =="submit"){
                 button.href = "javascript:void(0)";
@@ -338,6 +339,7 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                // TODO : add post url in data.
                 return button;
         })
+    }
         
        return Mustache.to_html(kommunicateDashboard.markup.getListMarkup(), json);
     }else{
