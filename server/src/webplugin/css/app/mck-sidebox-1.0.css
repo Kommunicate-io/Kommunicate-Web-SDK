@@ -862,12 +862,13 @@
 	color: #000;
 	/* text-shadow: 0 1px 0 #fff; */
 	filter: alpha(opacity = 20);
-	opacity: .8;
+	/* opacity: .8; */
 	-webkit-appearance: none;
 	padding: 0;
 	cursor: pointer;
 	background: 0 0;
 	border: 0;
+	height:50px;
 	outline: none;
 	width: 45px;
 }
@@ -1354,6 +1355,9 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	width: 45px;
     height: 50px;
 }
+.mck-sidebox .mck-box-top .blk-lg-2.mck-close-btn {
+	width: 45px;
+ } 
 
 .mck-gm-search-box .mck-box-body .mck-message-inner {
 	height: 300px;
@@ -4497,9 +4501,11 @@ color: rgba(0,0,0,0.5);
 	list-style-type: none;
     border-radius: 0;
     line-height: 18px;
-	margin: 20px 20px 0 20px;
+	/* margin: 20px 20px 0 20px; */
+	padding: 20px 20px 0 20px;
     background-color: #fff !important;
-    text-decoration: none;
+	text-decoration: none;
+	overflow-x: hidden;
 }
 .km-faqimage{
 	height: 33px;
@@ -4564,7 +4570,7 @@ color: rgba(0,0,0,0.5);
 	color: white;
     height: 15px;
     width: 30px;
-    margin-right: 18px!important;
+    margin-right: 10px!important;
     font-size: 16px!important;
     background-color: rgba(255, 255, 255, 0.15)!important;
     padding: 10px;
@@ -4633,26 +4639,26 @@ color: rgba(0,0,0,0.5);
 	width: 90%!important;
 	max-height: 100%!important;
 }
-.km-faqsearch{
+.km-faqsearch {
     padding: 0 5px;
     font-size: 14px;
     color: #555;
     outline: none;
-    background-image: none;
+    background-color: #fff;
     border: 0;
-    position: relative;
+    /* position: relative; */
     z-index: 2;
-    float: left;
-    display: table-cell;
-	border-radius: 3px;
-	padding: 10px;
+    /* float: left; */
+    /* display: table-cell; */
+    border-radius: 3px;
+    padding: 10px 0px;
     margin: -10px 0px;
-	width: auto;
-	position: absolute!important;
-	bottom:0;
-	
-  
+    width: 100%;
+    position: absolute!important;
+    bottom: 0;
 }
+
+
 .km-faqtitle{
 	flex: 1;
     width: 60px;
@@ -4682,15 +4688,16 @@ color: rgba(0,0,0,0.5);
 margin-top: 243px;
 } */
 
-.km-faqsearch-input{
+.km-faqsearch-input {
     padding-left: 42px!important;
-    width: 300px!important;
+    width: calc(100% - 70px);
     height: 31px!important;
     background-color: #d0d0d0 !important;
     color: #696464!important;
     box-shadow: none;
     outline: none;
     border: none;
+    margin: 0 15px!important;
     border-radius: 3px;
 }
 
