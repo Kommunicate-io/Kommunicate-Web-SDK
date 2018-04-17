@@ -62,7 +62,7 @@ KommunicateUI={
 
     });
     $applozic(d).on("click", "#mck-msg-new", function (e) {
-        $applozic('.mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+        $applozic('.mck-sidebox-ft').removeClass("n-vis").addClass("vis");
     });
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
         e.preventDefault();
