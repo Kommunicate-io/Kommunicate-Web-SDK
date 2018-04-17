@@ -3737,11 +3737,19 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 groupInfo.metadata = (params.metadata) ? params.metadata : MCK_LABELS['group.metadata'];
                 var response = new Object();
+                let header = {
+                    "UserId-Enabled": true,
+                    "Authorization": "Basic " + AUTH_CODE,
+                    "Application-Key": MCK_APP_ID,
+                    "Device-Key": USER_DEVICE_KEY,
+                    "Access-Token": MCK_ACCESS_TOKEN
+                }
                 mckUtils.ajax({
-                    url: MCK_BASE_URL + GROUP_CREATE_URL,
+                    url: params.createUrl ? params.createUrl : MCK_BASE_URL + GROUP_CREATE_URL,
                     global: false,
                     data: w.JSON.stringify(groupInfo),
                     type: 'post',
+                    headers:header,
                     contentType: 'application/json',
                     success: function (data) {
                         if (params.isInternal) {
@@ -3783,6 +3791,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                     }
                                 }
                                 if (typeof params.callback === 'function') {
+                                    response.updated = data.updated ? data.updated : false;
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
