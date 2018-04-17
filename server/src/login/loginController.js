@@ -18,8 +18,11 @@ exports.login = function(req, res) {
   }
   Promise.resolve(loginService.login(userDetail)).then(result=>{
     let response={};
-    console.log("status success");
-    response.code="SUCCESS";
+    if (result.application) {
+      response.code="SUCCESS";
+    } else {
+      response.code="MULTIPLE_APPS";
+    }
     response.result = result;
     res.status(200).json(response);
 }).catch(err=>{
