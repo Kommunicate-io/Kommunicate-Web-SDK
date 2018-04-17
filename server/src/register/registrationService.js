@@ -279,6 +279,10 @@ exports.updateAgentRoutingState = (applicationId, routingState) =>{
   });
 }
 
+exports.updateOnlyCustomer=(userId, customer)=>{
+  return customerModel.update(customer, { where: { "userName": userId } });
+}
+
 
 
 

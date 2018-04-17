@@ -5,8 +5,9 @@ const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
-const Sequelize= require("sequelize");
+const Sequelize = require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
+const { SQL_QUERIES } = require('../../query/query');
 
 /**
  * returns conversation list of given participent_user_Id
@@ -202,11 +203,11 @@ const getConversationAssigneeFromMap = (userIds, key) => {
 };
 
 const getConversationStatByAgentId = (agentId, startTime, endTime) => {
-    let criteria={agentId: agentId}
-    if(startTime && endTime){
-        criteria.created_at={$between:[new Date(startTime),new Date(endTime)]}
+    let criteria = { agentId: agentId }
+    if (startTime && endTime) {
+        criteria.created_at = { $between: [new Date(startTime), new Date(endTime)] }
     }
-    return Promise.resolve(db.Conversation.findAll({where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
+    return Promise.resolve(db.Conversation.findAll({ where: criteria, group: ['status'], attributes: ['status', [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']] })).then(result => {
         return { agentId: agentId, statics: result };
     }).catch(err => { throw err });
 }
@@ -239,6 +240,84 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
     return Promise.resolve({ result: 'oops! invalid query', data: [] });
 }
 
+const getNewConversation = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
+    let query = SQL_QUERIES.NEW_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+}
+
+const getClosedConversation = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
+    let query = SQL_QUERIES.CLOSED_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);;
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+}
+
+const getAverageResolutionTime = (queryParams, agentIds) => {
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESOLUTION_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+}
+
+const getAvgResponseTime = (queryParams, agentIds) => {
+    var endDate = new Date();
+    endDate.setDate(endDate.getDate() - queryParams.days);
+    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESPONSE_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+}
+
+const getAllStatistic = (query, agentIds) => {
+    //console.log('agentIds', agentIds)
+    return Promise.all([getNewConversation(query, agentIds),
+    getClosedConversation(query, agentIds),
+    getAverageResolutionTime(query, agentIds),
+    getAvgResponseTime(query, agentIds)])
+        .then(([newConversation, closedConversation, avgResolutionTime, avgResponseTime]) => {
+            let response = {
+                newConversation: newConversation,
+                closedConversation: closedConversation,
+                avgResolutionTime: avgResolutionTime,
+                avgResponseTime: avgResponseTime
+            }
+            return response;
+
+        }).catch(err => {
+            throw err
+        });
+
+}
+
+const getConversationStat = (query) => {
+    let customerId = query.customerId;
+    let agentId = query.agentId;
+    if (customerId) {
+        return userService.getUsersByCustomerId(customerId).then(users => {
+            if (users.length == 0) {
+                return { result: 'no user stats found', data: [] };
+            }
+            let agentIds = [];
+            for (var i = 0; i < users.length; i++) {
+                if (agentId && agentId == users[i].userName) {
+                    agentIds.push(users[i].id)
+                } else if (!agentId) {
+                    agentIds.push(users[i].id)
+                }
+            }
+            if (agentIds.length == 0) {
+                return { result: 'invalid Agent', data: [] };
+            }
+            return getAllStatistic(query, agentIds);
+        }).catch(err => {
+            console.log(err);
+            throw err;
+        })
+    }
+}
+
+
+
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
     updateTicketIntoConversation: updateTicketIntoConversation,
@@ -246,5 +325,6 @@ module.exports = {
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
     createConversation: createConversation,
-    getConversationStats:getConversationStats
+    getConversationStats: getConversationStats,
+    getConversationStat: getConversationStat,
 }
