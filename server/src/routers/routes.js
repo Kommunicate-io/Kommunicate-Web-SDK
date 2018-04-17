@@ -127,6 +127,7 @@ conversationRouter.get('/participent/:participentId',validate(conversationValida
 conversationRouter.get('/', conversationController.getConversationStats);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
 conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
+conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);

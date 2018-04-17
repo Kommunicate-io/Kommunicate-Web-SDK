@@ -24,7 +24,13 @@ exports.getConversationList=(req, res)=>{
 
 exports.createConversation= (req,res)=>{
     console.log("request received to create conversation");
-    return Promise.resolve(conversationService.createConversation(req.body)).then(result=>{
+        let conversation = {
+        groupId: req.body.groupId,
+        participentUserId: req.body.participentUserId,
+        agentId: req.body.defaultAgentId,
+        createdBy: req.body.createdBy,
+    }
+    return Promise.resolve(conversationService.createConversation(conversation)).then(result=>{
         console.log("conversation created successfully", result.dataValues);
         res.status(201).json({code:"SUCCESS",data:result.dataValues});
     }).catch(err=>{
@@ -37,6 +43,15 @@ exports.createConversation= (req,res)=>{
 
     })
 
+}
+
+exports.createSupportGroup=(req, res)=>{
+    return Promise.resolve(conversationService.createConversationIntoApplozic(req)).then(response=>{
+        console.log('response: ', response);
+        return res.status(201).json({code:"SUCCESS",data:response});
+    }).catch(err=>{
+        return res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong"}); 
+    });
 }
 
 exports.addMemberIntoConversation = (req, res) => {
