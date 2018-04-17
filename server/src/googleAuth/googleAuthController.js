@@ -68,25 +68,26 @@ exports.authCode = (req, res) => {
 	let customer = {}
 	let numOfApp = 1
 	let email = null
+	let name = null
 
 	getToken(authCode).then(response => {
 		logger.info(response.data);
-		email = response.data.emails[0].value;
+		email = response.data.emails[0].value ? response.data.emails[0].value : null;
+		name = response.data.displayName ? response.data.displayName : null;
 
 		return Promise.all([registrationService.getCustomerByUserName(email),userService.getUserByName(email)])
 	}).then( ([_customer,_user] ) => {
 		logger.info(1)
-		user = _user
-		customer = _customer.dataValues
-		logger.info(typeof customer);
-		logger.info(customer);
-		logger.info(user);
-		if (customer || user) {
+		if (_customer || _user) {
+			logger.info("Already exists");
 			// After successful OAuth, if user exists in the kommunicate db log in.
+			user = _user
+			customer = _customer.dataValues
 			return Promise.resolve(getUserInfoByEmail({email: email, applicationId: customer.applicationId}))
 		} else {
+			logger.info("Doesn't exists");
 			// After successful OAuth, if user doesn't exist in kommunicate db allow sign up.
-			res.redirect(REDIRECT_URL + '?googleSignUp=true&email=' + email + '&name=' + response.data.displayName )
+			res.redirect(REDIRECT_URL + '?googleSignUp=true&email=' + email + '&name=' + name )
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		}
 	}).then( data => {
@@ -119,6 +120,9 @@ exports.authCode = (req, res) => {
 	    logger.info(result);
 	    delete result.id
 	    delete result.password
+	    delete result.updated_at
+	    delete result.deleted_at
+	    delete result.created_at
 	    result.applicationId = customer.applicationId
 	    res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + numOfApp + "&" + querystring.stringify(result))
 	}).catch(err => {
