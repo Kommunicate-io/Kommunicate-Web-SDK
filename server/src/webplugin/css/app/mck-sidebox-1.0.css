@@ -861,7 +861,7 @@
 	font-weight: 700;
 	color: #000;
 	/* text-shadow: 0 1px 0 #fff; */
-	filter: alpha(opacity = 20);
+	/* filter: alpha(opacity = 20); */
 	/* opacity: .8; */
 	-webkit-appearance: none;
 	padding: 0;
