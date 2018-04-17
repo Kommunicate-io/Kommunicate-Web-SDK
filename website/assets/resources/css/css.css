@@ -1,0 +1,219 @@
+.homepage-beta-landing-page-section {
+    background-image: url(/assets/resources/images/css-bg.svg);
+    background-size: 500px;
+    background-position: right -65px top -354px;
+}
+.homepage-beta-landing-page-section {
+    min-height: 720px;
+}
+.homepage-beta-landing-page-section .arch {
+    z-index: -1;
+}
+.css-features-section {
+    padding-top: 100px;
+    margin-top: -1px;
+    background-color: #fff;
+    padding-bottom: 100px;
+    overflow: hidden;
+}
+
+.css-features-section .hr {
+    width: 20%;
+    margin-right: 0px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.css-features-section .section-heading, .css-features-section .section-subheading {
+    text-align: right;
+}
+
+.images-container svg {
+    width: 48px;
+    height: auto;
+}
+.text-container p {
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.47;
+    letter-spacing: normal;
+    text-align: left;
+    color: #494747;
+}
+.integration .images-container svg {
+    width: 70px;
+    margin-bottom: 8px;
+}
+.cross-platforms .images-container svg {
+    width: 60px;
+    margin-bottom: 5px;
+}
+.cards-container {
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px 3px rgba(233, 230, 230, 0.5);
+    margin-top: 3px;
+    margin-bottom: 3px;
+    min-height: 232px;
+}
+.bots, .faster, .integration, .cross-platforms {
+    padding: 0px 3px;
+    position: relative;
+}
+.bots .cards-container {
+    border-bottom-left-radius: 12px;
+}
+.integration .cards-container{
+    border-top-right-radius: 12px;
+}
+.faster .cards-container {
+    border-top-left-radius: 12px; 
+} 
+.cross-platforms .cards-container {
+    border-bottom-right-radius: 12px; 
+}
+.bots p, .cross-platforms p, .integration p, .faster p {
+    margin-top: 15px;
+}
+
+.shapes-container {
+    position: absolute;
+    width: 80px;
+    height: auto;
+}
+
+.integration .shapes-container {
+    top: -60px;
+    right: -50px;
+}
+.faster .shapes-container {
+    top: -60px;
+    left: -50px;
+    width: 110px;
+}
+.cross-platforms .shapes-container {
+    bottom: -60px;
+    right: -50px;
+    width: 110px;
+    transform: rotate(180deg);
+}
+.bots .shapes-container {
+    bottom: -60px;
+    left: -50px;
+}
+
+
+@media only screen and (max-width:767px) {
+    .homepage-beta-landing-page-section {
+        background-image: none;
+    }
+    .css-features-section .row.flexi {
+        flex-wrap: wrap-reverse;
+    }
+    .section-subheading {
+        margin-bottom: 80px;
+    }
+    .css-features-section .section-heading, .css-features-section .section-subheading  {
+        text-align: left;
+    }
+    .css-features-section .hr {
+        margin-left: 0;
+        margin-right: auto;
+    }
+    .cards {
+        max-width: 100%;
+    }
+    .cards-container {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        min-height: 50px;
+    }
+    .bots, .faster, .integration, .cross-platforms {
+        padding: 0px 15px;
+    }
+}
+@media only screen and (max-width:1199px) and (min-width:768px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 470px;
+        background-position: right -115px top -354px;
+    }
+}
+@media only screen and (max-width:991px) and (min-width:768px) {
+    .faster .cards-container {
+        height: 294px;
+    }
+    .bots .cards-container {
+        height: 302px;
+    }
+}
+@media only screen and (max-width:1275px) and (min-width:1200px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 470px;
+        background-position: right -100px top -354px;
+    }
+}
+@media only screen and (max-width:1362px) and (min-width:1276px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 470px;
+        background-position: right -75px top -334px;
+    }
+}
+@media only screen and (max-width:1430px) and (min-width:1363px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 500px;
+        background-position: right -65px top -354px;
+    }
+}
+@media only screen and (max-width:1530px) and (min-width:1431px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 530px;
+        background-position: right -65px top -354px;
+    }
+}
+@media only screen and (max-width:1610px) and (min-width:1531px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 565px;
+        background-position: right -65px top -354px;
+    }
+}
+@media only screen and (max-width:1690px) and (min-width:1611px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 645px;
+        background-position: right -75px top -464px;
+    }
+}
+@media only screen and (max-width:1760px) and (min-width:1691px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 645px;
+        background-position: right 5px top -514px;
+    }
+}
+@media only screen and (max-width:1830px) and (min-width:1761px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 665px;
+        background-position: right 35px top -544px;
+    }
+}
+@media only screen and (max-width:1910px) and (min-width:1831px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 690px;
+        background-position: right 35px top -544px;
+    }
+}
+@media only screen and (max-width:1980px) and (min-width:1911px) {
+    .homepage-beta-landing-page-section {
+        background-image: url(/assets/resources/images/css-bg.svg);
+        background-size: 740px;
+        background-position: right 35px top -584px;
+    }
+}
