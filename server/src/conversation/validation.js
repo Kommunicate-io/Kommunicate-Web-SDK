@@ -47,3 +47,15 @@ module.exports.getConversationList= {
         customerId:joi.number().integer().required(),
     }
   }
+
+module.exports.createConversationV2 = {
+    body: {
+        type: joi.number().integer().required(),
+        admin: joi.string().required(),
+        groupName: joi.string().required(),
+    },
+    headers:{
+        'application-key': joi.string().required(),
+        'authorization': joi.string().required()
+    }
+}

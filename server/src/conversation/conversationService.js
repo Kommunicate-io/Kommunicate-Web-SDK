@@ -50,22 +50,43 @@ const updateTicketIntoConversation = (groupId, options) => {
  *@param {Object} options.defaultAgentId: assignee agent Id
  * 
  */
-const createConversation = (options) => {
-    console.log("creating new converation, options:", options);
-    //return Promise.resolve().then().catch();
-    let conversation = {
-        groupId: options.groupId,
-        participentUserId: options.participentUserId,
-        status: CONVERSATION_STATUS.OPEN,
-        agentId: options.defaultAgentId,
-        createdBy: options.createdBy,
-    }
+const createConversation = (conversation) => {
+    console.log("creating new converation, options:", conversation);
+    conversation.status = CONVERSATION_STATUS.OPEN;
     return Promise.resolve(db.Conversation.create(conversation)).then(result => {
         console.log("conversation created successfully", result);
         return result;
     });
 
 }
+/**
+ * 
+ * This function create new support group into applozic.
+ * on success response,it will make entry of conversation into kommunicate.
+ * @param {req} request contain data and headers
+ */
+const createConversationIntoApplozic = (req) => {
+    let headers = req.headers;
+    delete headers['host'];
+    return Promise.resolve(applozicClient.createSupportGroup(req.body, headers)).then(result => {
+        //console.log('group create response: ', group);
+        let group = result.response
+        let user = group.groupUsers.filter(user => { return user.role == 3 })
+        let conversation = {
+            groupId: group.id,
+            participentUserId: user[0].userId,
+            defaultAgentId: group.adminId,
+            createdBy: user[0].userId,
+            applicationId: headers['application-key']
+        }
+        createConversation(conversation);
+        result.updated = true;
+        return result;
+    }).catch(err => {
+        throw err;
+    })
+}
+
 /**
  * update conversation
  */
@@ -327,4 +348,5 @@ module.exports = {
     createConversation: createConversation,
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
+    createConversationIntoApplozic:createConversationIntoApplozic
 }
