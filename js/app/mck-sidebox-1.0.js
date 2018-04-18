@@ -1835,7 +1835,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
             $applozic(d).on("click", ".mck-message-delete", function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
-            });         
+            });    
 
             $applozic(d).on("click", ".mck-message-reply", function () {
                 _this.replyMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
@@ -2022,6 +2022,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
                     var $this = $applozic(this);
                     var elem = this;
+                    KommunicateUI.showChat();
+                    $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
                     if (IS_ANONYMOUS_CHAT === "false") {
                         //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chat-login-modal").css("display", "block");
@@ -2386,9 +2388,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         "contentType": 0,
                         "message": message
                     };
-                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-                    if(chatContext){
-                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
+                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");		
+                    if(chatContext){		
+                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}		
                     }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
@@ -3966,6 +3968,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=   '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}" class="mck-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}">' +
                 '<div class="mck-clear">' +
+                '<div class="${nameTextExpr} ${showNameExpr} mck-conversation-name"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="blk-lg-12">' +
                 '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>' +
                 '<div class="mck-msg-box ${msgClassExpr}">' +
@@ -3977,7 +3980,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>' +
                 '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>' +
                 '</div>' +
-                '<div class="${nameTextExpr} ${showNameExpr}"><span class="mck-ol-status ${contOlExpr}"><span class="mck-ol-icon" title="${onlineLabel}"></span>&nbsp;</span>${msgNameExpr}</div>' +
                 '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-fileurl= "${fileUrlExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}</div>' +
                 '<div class="mck-msg-text mck-msg-content"></div>' +
                 '</div>' +
@@ -4067,6 +4069,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_msg_error.removeClass('mck-no-mb');
                 $mck_contacts_content.removeClass('n-vis').addClass('vis');
                 $modal_footer_content.removeClass('vis').addClass('n-vis');
+                $applozic("#mck-sidebox-ft").removeClass('vis').addClass('n-vis');
                 $mck_sidebox_search.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
                 $mck_group_create_tab.removeClass('vis').addClass('n-vis');
@@ -4091,6 +4094,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_tab_option_panel.removeClass('n-vis').addClass('vis');
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
                     $modal_footer_content.removeClass('n-vis').addClass('vis');
+                    $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                     $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
                     $mck_group_menu_options.removeClass('vis').addClass('n-vis');
                     if (params.isGroup) {
@@ -4519,11 +4523,37 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }];
                 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-
+        
                 if(msg.metadata.askHotelCity && msg.metadata.askHotelCity=="true"){
                     $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
                     mckMessageService.updateMessageMetadata({key:msg.key, metadata:{askHotelCity:false}})
+                }
+                if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
+                    $applozic('#mck-city-search-input').addClass('mck-text-box').removeClass('n-vis');
+                    $applozic('#mck-city-search-input').attr("placeholder", "say packers and movers..");
+                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    var autosuggestions =[];
+                    try{
+                        autosuggestions = JSON.parse(msg.metadata["KM_AUTO_SUGGESTIONS"]);
+                    }catch(e){
+                        console.error("KM_AUTO_SUGGESTIONS should be an array");
+                    }
+                    $applozic('#mck-city-search-input').data("origin","KM_AUTO_SUGGESTIONS");
+                    autosuggestions.length && $mck_city_search_input.mcktypeahead({
+                        source:autosuggestions,
+                        wrapper:".mck-sidebox",
+                        menu: '<ul class="mcktypeahead mck-hotel-city-menu mck-dropup-menu"></ul>',
+                        autoSelect: true,
+                        showHintOnFocus:'all',
+                        fitToElement:true,
+                        updater: function (item) {
+                            $mck_text_box.text(item);
+                            $applozic('#mck-city-search-input').focus();
+                            return item;
+                        }
+                      });
+               
                 }
                 if (msg.contentType === 23) {
 
@@ -5146,6 +5176,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             success: (data) => {
                                 //console.log('data: ', data);
                                 var items = new Array();
+
                                 data.data.map(function (city) {
                                     var group;
                                     group = {
@@ -5190,7 +5221,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     matcher: function (city) {
                         var matcher1 = new RegExp(this.query, "i");
                         return matcher1.test(city.CityName);
-                    },
+                    }, 
                     highlighter: function (city) {
                         return city.CityName + ', ' + city.CountryName;
                     }
@@ -5240,6 +5271,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             isGroup: contact.isGroup
                         });
                         $modal_footer_content.removeClass('n-vis').addClass('vis');
+                        $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('n-vis');
                     } else {
                         mckGroupLayout.addGroupMemberFromSearch(contact.contactId);
                     }
@@ -5274,6 +5306,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                         'isSearch': true
                                     });
                                     $modal_footer_content.removeClass('n-vis').addClass('vis');
+                                    $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                                 }
                             }
                             $mck_contact_search_input.val('');
@@ -5298,6 +5331,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 'isSearch': true
                             });
                             $modal_footer_content.removeClass('n-vis').addClass('vis');
+                            $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                         }
                         $mck_contact_search_input.val('');
                     });
@@ -7756,8 +7790,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_city_search_input.on('input', function (e) {
                     e.preventDefault();
                     $mck_text_box.text($mck_city_search_input.val());
+                    if($mck_city_search_input.data('origin')=="KM_AUTO_SUGGESTIONS"){
+                        return;
+                    }
                     mckMessageLayout.searchCity();
-                })
+                });
             };
 
 
