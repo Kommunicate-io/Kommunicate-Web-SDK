@@ -24,10 +24,10 @@ KommunicateUI={
     
    faqEvents:function (data, helpdocsKey) {
     var mcktimer;
-    $applozic(".mck-sidebox-launcher").on("click",'body', function () {
-        KommunicateUI.showChat();
-        $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
-    });
+    // $applozic(".mck-sidebox-launcher").on("click",'body', function () {
+    //     KommunicateUI.showChat();
+    //     $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
+    // });
 
     $applozic(d).on("click", "#mck-msg-preview", function () {
         KommunicateUI.showChat();
