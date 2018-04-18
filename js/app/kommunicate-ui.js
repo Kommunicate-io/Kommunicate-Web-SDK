@@ -24,7 +24,7 @@ KommunicateUI={
     
    faqEvents:function (data, helpdocsKey) {
     var mcktimer;
-    $applozic(d).on("click", ".mck-sidebox-launcher", function () {
+    $applozic(".mck-sidebox-launcher").on("click",'body', function () {
         KommunicateUI.showChat();
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
     });
@@ -61,9 +61,9 @@ KommunicateUI={
         $applozic("#mck-tab-title").html("FAQ").removeClass('n-vis').addClass('vis');
 
     });
-    $applozic(d).on("click", "#mck-msg-new", function (e) {
-        $applozic('.mck-sidebox-ft').removeClass("n-vis").addClass("vis");
-    });
+    // $applozic(d).on("click", "#mck-msg-new", function (e) {
+    //      $applozic('.mck-sidebox-ft').removeClass("n-vis").addClass("vis");
+    // });
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
         e.preventDefault();
         window.open(e.target.href);
@@ -112,12 +112,13 @@ KommunicateUI={
                 $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
                 $applozic('.faq-common').removeClass("vis").addClass("n-vis");
                 $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
+                // $applozic("#mck-sidebox-ft").removeClass('vis').addClass('n-vis');
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
                 return;
             }
             if($applozic('.mck-conversation').hasClass('vis')){
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
-                $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+                // $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
                 return;
             }
         }
@@ -127,10 +128,10 @@ KommunicateUI={
 showChat :function () {
     $applozic('.faq-common').removeClass("vis").addClass("n-vis");
     $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
-    $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
+    // $applozic('#mck-sidebox-ft').removeClass("n-vis").addClass("vis");
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     if($applozic('#mck-tab-conversation').hasClass('vis')){
-        $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
+        // $applozic('#mck-sidebox-ft').removeClass("vis").addClass("n-vis");
     }
    
 },
