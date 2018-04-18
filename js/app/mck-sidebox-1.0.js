@@ -5123,7 +5123,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
 
             _this.searchCity = function () {
-                var items = new Array();
                 $mck_city_search_input.mcktypeahead({
                     order: 'desc',
                     hint: false,
@@ -5146,6 +5145,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             type: 'get',
                             success: (data) => {
                                 //console.log('data: ', data);
+                                var items = new Array();
                                 data.data.map(function (city) {
                                     var group;
                                     group = {
