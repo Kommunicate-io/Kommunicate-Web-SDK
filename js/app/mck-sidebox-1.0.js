@@ -1835,7 +1835,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
             $applozic(d).on("click", ".mck-message-delete", function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
-            });         
+            });    
 
             $applozic(d).on("click", ".mck-message-reply", function () {
                 _this.replyMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
@@ -2022,6 +2022,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
                     var $this = $applozic(this);
                     var elem = this;
+                    KommunicateUI.showChat();
+                    $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
                     if (IS_ANONYMOUS_CHAT === "false") {
                         //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
                         $applozic("#km-chat-login-modal").css("display", "block");
@@ -4058,6 +4060,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_msg_error.removeClass('mck-no-mb');
                 $mck_contacts_content.removeClass('n-vis').addClass('vis');
                 $modal_footer_content.removeClass('vis').addClass('n-vis');
+                $applozic("#mck-sidebox-ft").removeClass('vis').addClass('n-vis');
                 $mck_sidebox_search.removeClass('vis').addClass('n-vis');
                 $mck_group_info_tab.removeClass('vis').addClass('n-vis');
                 $mck_group_create_tab.removeClass('vis').addClass('n-vis');
@@ -4082,6 +4085,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_tab_option_panel.removeClass('n-vis').addClass('vis');
                     $mck_contacts_content.removeClass('vis').addClass('n-vis');
                     $modal_footer_content.removeClass('n-vis').addClass('vis');
+                    $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                     $mck_btn_clear_messages.removeClass('n-vis').addClass('vis');
                     $mck_group_menu_options.removeClass('vis').addClass('n-vis');
                     if (params.isGroup) {
@@ -5257,6 +5261,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             isGroup: contact.isGroup
                         });
                         $modal_footer_content.removeClass('n-vis').addClass('vis');
+                        $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('n-vis');
                     } else {
                         mckGroupLayout.addGroupMemberFromSearch(contact.contactId);
                     }
@@ -5291,6 +5296,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                         'isSearch': true
                                     });
                                     $modal_footer_content.removeClass('n-vis').addClass('vis');
+                                    $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                                 }
                             }
                             $mck_contact_search_input.val('');
@@ -5315,6 +5321,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 'isSearch': true
                             });
                             $modal_footer_content.removeClass('n-vis').addClass('vis');
+                            $applozic("#mck-sidebox-ft").removeClass('n-vis').addClass('vis');
                         }
                         $mck_contact_search_input.val('');
                     });
