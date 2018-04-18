@@ -70,6 +70,9 @@ const createConversationIntoApplozic = (req) => {
     delete headers['host'];
     return Promise.resolve(applozicClient.createSupportGroup(req.body, headers)).then(result => {
         //console.log('group create response: ', group);
+        if (result.status === "APPLOZIC_ERROR") {
+            return result.data;
+        }
         let group = result.response
         let user = group.groupUsers.filter(user => { return user.role == 3 })
         let conversation = {
@@ -83,6 +86,7 @@ const createConversationIntoApplozic = (req) => {
         result.updated = true;
         return result;
     }).catch(err => {
+        console.log('error: ', err);
         throw err;
     })
 }
