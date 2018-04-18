@@ -1347,10 +1347,15 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 #mck-contacts-content{
 	position: absolute;
-    bottom: 60px;
+    bottom: 15px;
 	left: 50%; transform: translateX(-50%);
 }
-
+.mck-display-name{
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: inherit;
+}
 .mck-close-btn{
 	width: 45px;
     height: 50px;
@@ -4946,7 +4951,8 @@ margin-top: 243px;
 	width: 45px !important; 
 }
 #mck-tab-individual .mck-name-status-container.mck-box-title {
-	max-width: 300px;
+	max-width: 190px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
