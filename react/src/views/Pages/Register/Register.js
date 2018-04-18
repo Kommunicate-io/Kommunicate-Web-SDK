@@ -108,7 +108,7 @@ class Register extends Component {
   createAccountWithUserId=(_this)=>{
 
     var email = this.state.email;
-    var password = this.state.password ? this.state.password:"CHANGIT";
+    var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
 
@@ -284,10 +284,9 @@ class Register extends Component {
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
                       <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
-                      {/* signup with google is hidden for release 1.4.1 */}
-                      {/* <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
+                      <a className={ (this.state.googleOAuth) ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
                         <img src={GoogleSignIn} style={{width: "60%", height: "100%"}}/>
-                      </a> */}
+                      </a>
                       <p>
                         Already have an account? <a href="/login/">Sign In</a>
                       </p>

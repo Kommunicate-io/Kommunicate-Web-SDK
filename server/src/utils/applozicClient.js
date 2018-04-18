@@ -4,7 +4,9 @@ const adminUserId = config.getProperties().kommunicateAdminId;
 const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
 const constant =require('./constant');
-const logger = require('./logger.js')
+const logger = require('./logger.js');
+const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN";
+
 
 /*
 this method register a user in applozic db with given parameters.
@@ -152,6 +154,22 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
         throw err;
       });
     };
+
+exports.findApplications=(email)=>{
+    let GET_APP_LIST_URL = APP_LIST_URL + "&emailId=" + encodeURIComponent(email)
+    return  axios.get(GET_APP_LIST_URL)
+      .then(function(response){
+        if (response.status=200 && response.data!=="Invalid userId or EmailId") {
+          return response.data;
+        }
+        return "error";
+       }
+    ).catch(err => {
+      logger.info(err);
+      return "error";
+    });
+}
+
 /*
 this method get the application detail for given applicationId
 */
@@ -230,7 +248,7 @@ exports.applozicLogin =(userDetail)=>{
       throw err;
     }
   }).catch(err=>{
-    console.log("errror innside catch: ",err.response);
+    console.log("errror inside catch: ",err.response);
     throw err;
   });
 };

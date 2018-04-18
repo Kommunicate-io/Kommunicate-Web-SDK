@@ -17,10 +17,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@PropertySources({
+    @PropertySource("classpath:application.properties"),
+    @PropertySource(value = "classpath:application-${ws.properties}.properties", ignoreResourceNotFound = true),
+    @PropertySource(value = "file:${conf_dir}/application.properties", ignoreResourceNotFound = true)    
+    })
 public class MachineLearningClient {
     
     private static final Logger LOG = LoggerFactory.getLogger(MachineLearningClient.class.getName());
@@ -29,6 +37,9 @@ public class MachineLearningClient {
 
     @Autowired
     private ObjectMapper objectMapper;
+    
+    @Value("${kommunicate.api.url}")
+    private String API_URL = "https://api-test.kommunicate.io";
     
     /*
             curl -i -X POST https://machine.kommunicate.io/events/events.json?accessKey=vE5gvXzmCpBEvp1Rcbr0pukECUZpJMbCeRStber1PsiuRdSjIzyizi7HiqHKcPts \
@@ -47,7 +58,8 @@ public class MachineLearningClient {
             LOG.debug("Sender: " + messagePxy.getUserKey());
             event.setProperties(properties);
             
-            return post(objectMapper.writeValueAsString(event));
+            //return post(EVENT_SERVER_URL, objectMapper.writeValueAsString(event));
+            return insertIntoKnowledgeBase(properties, messagePxy);
         } catch (JsonProcessingException ex) {
             LOG.error("JsonProcessingException during sending event.", ex);
         } catch (IOException ex) {
@@ -56,10 +68,27 @@ public class MachineLearningClient {
         return "error";
     }
     
-    public String post(String data) {
+    public String insertIntoKnowledgeBase(Properties properties, MessagePxy message) throws JsonProcessingException {
+        //https://api-test.kommunicate.io/autosuggest/message
+        //{"applicationId":"3190ea118ed9eb01319ef0a19310a3e54","userName":"devashish+11apr@applozic.com","name":"where is the new faq?","content":"here","category":"faq","type":"faq","status":"published"}
+        
+        Knowledge knowledge = new Knowledge();
+        knowledge.setApplicationId(properties.getAppId());
+        knowledge.setCategory("train");
+        knowledge.setReferenceId(properties.getLabel());
+        knowledge.setName(properties.getText());
+        //Todo: change it to draft once training and filter UI is ready
+        knowledge.setStatus("published");
+        knowledge.setType("train");
+        knowledge.setUserName(message.getSenderName());
+        
+        return post(API_URL + "/autosuggest/message", objectMapper.writeValueAsString(knowledge));
+    }
+    
+    public String post(String url, String data) {
         LOG.info("Sending data to machine learning server: " + data);
         HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(EVENT_SERVER_URL);
+        HttpPost httpPost = new HttpPost(url);
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         String responseBody = null;
         try {
@@ -70,24 +99,11 @@ public class MachineLearningClient {
             responseBody = httpClient.execute(httpPost, responseHandler);
             LOG.info("Response from event server: " + responseBody);
         } catch (IOException ex) {
-            LOG.error("IOException from " + EVENT_SERVER_URL + " with " + data, ex);
+            LOG.error("IOException from " + url + " with " + data, ex);
         } finally {
             httpClient.getConnectionManager().shutdown();
         }
         return responseBody;
     }
     
-    public String insertIntoKnowledgeBase(Event event) {
-        //https://api-test.kommunicate.io/autosuggest/message
-        //{"applicationId":"3190ea118ed9eb01319ef0a19310a3e54","userName":"devashish+11apr@applozic.com","name":"where is the new faq?","content":"here","category":"faq","type":"faq","status":"published"}
-        
-        Knowledge knowledge = new Knowledge();
-        knowledge.setApplicationId(event.getProperties().getAppId());
-        knowledge.setCategory("category");
-        knowledge.setAnswerId(event.getProperties().getLabel());
-        //Not setting content, handle it in API side
-        knowledge.setName(event.getProperties().getText());
-        
-        return "success";
-    }
 }

@@ -6,7 +6,7 @@ import {Modal} from 'react-bootstrap';
 import  {Button}  from 'react-bootstrap';
 import Dropdown from 'react-dropdown';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
-import {resetPassword} from '../../../utils/kommunicateClient';
+import {resetPassword, getUserInfo} from '../../../utils/kommunicateClient';
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
 import './login.css';
@@ -30,12 +30,12 @@ constructor(props){
     applicationName:'',
     showAppListModal:false,
     hideUserNameInputbox:false,
-    hidePasswordInputbox:true,
+    hidePasswordInputbox:false,
     hideAppListDropdown:true,
     loginFormText:"Login",
     loginFormSubText:'Sign In to your account',
-    loginButtonText:'Next',
-    loginButtonAction:'getAppList',
+    loginButtonText:'Login',
+    loginButtonAction:'Login',
     appIdList:{},
     dropDownBoxTitle:"Select Application.......",
     hideBackButton:true,
@@ -49,7 +49,8 @@ constructor(props){
     errorMessageTextPassword:'',
     hideErrorMessagePassword: true,
     handleUserNameBlur:false,
-    loginViaOAuth: false,
+    googleOAuth: false,
+    loginType: 'email'
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -69,18 +70,31 @@ constructor(props){
     if(googleLogin === 'true'){
 
       const email = CommonUtils.getUrlParameter(search, 'email');
+      const loginType = CommonUtils.getUrlParameter(search, 'loginType');
+      const _numOfApp = CommonUtils.getUrlParameter(search, 'numOfApp');
+
+      console.log(email);
+      console.log(loginType);
+      console.log(_numOfApp);
 
       this.setState({
-        loginViaOAuth: true,
+        googleOAuth: true,
         email: email,
         userName: email,
-        password: 'CHANGIT',
-        loginButtonAction: 'getAppList'
+        password: 'CHANGE IT',
+        loginButtonAction: 'getAppList',
+        loginType: loginType
       }, () => {
         Promise.resolve(this.login()).then( numOfApp => {
           console.log(numOfApp);
-          if(numOfApp == 1){
+          if(numOfApp == 1 && loginType === 'oauth'){
             this.submitForm()
+          } else if (numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
+            this.setUpLocalStorageForLogin()
+          } else if (numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
+            this.setState({
+              googleOAuth: false
+            })
           }
         })
       })
@@ -138,9 +152,10 @@ submitForm = ()=>{
   //validateUser(this.state);
   var _this=this;
 
-  const loginUrl= getConfig().kommunicateApi.login;
+  let loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
-  if(validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password)){
+  
+  if(!this.state.googleOAuth && (validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password))){
     // Notification.warning("Email Id or Password can't be empty!");
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
     
@@ -149,13 +164,24 @@ submitForm = ()=>{
       window.heap.identify(userName);
     }
 
+    if (this.state.loginType === 'oauth'){
+      loginUrl += "?loginType=oauth"
+    } else if (this.state.loginType === 'email'){
+      loginUrl += "?loginType=email"
+    }
+
     this.setState({loginButtonDisabled:true});
     axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
     .then(function(response){
       if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
         Notification.warning("Invalid credentials");
         _this.setState({loginButtonDisabled:false});
-      } else if (response.status == 200 && response.data.code == 'SUCCESS') {
+      } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
+        _this.checkForMultipleApps(response.data.result);
+        return;
+      }
+      
+      if (response.status == 200 && response.data.code == 'SUCCESS') {
         console.log("logged in successfully");
         if (typeof (Storage) !== "undefined") {
 
@@ -173,7 +199,8 @@ submitForm = ()=>{
             console.log("response doesn't have application, create {}");
             response.data.result.application = {};
           }
-          response.data.result.application.applicationId = _this.state.applicationId;
+
+          _this.setState({'applicationId': response.data.result.application.applicationId});
 
           response.data.result.password = password;
           response.data.result.displayName=response.data.result.name;
@@ -203,10 +230,12 @@ submitForm = ()=>{
 login = (event)=>{
   var _this= this;
   if(this.state.loginButtonAction==="Login"){
-    Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+    /*Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
       data?_this.state.userName=data.userId:_this.state.userName=_this.state.email;
     return this.submitForm();
-    });
+    });*/
+    this.state.userName = this.state.email;
+    return this.submitForm();
   }else if(this.state.loginButtonAction==="passwordResetAppSected" ){
     if(this.state.applicationId){
       Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
@@ -235,38 +264,41 @@ login = (event)=>{
     var _this=this;
     return  axios.get(getApplistUrl)
     .then(function(response){
-      console.log("response",response);
-      if(response.status=200 && response.data!=="Invalid userId or EmailId"){
-        const numOfApp=Object.keys(response.data).length;
-        if(numOfApp===1){
-          _this.state.applicationId=Object.keys(response.data)[0];
-          _this.state.applicationName=response.data[_this.state.applicationId];
-          _this.state.appIdList= response.data;
-          console.log("got one application for user, appId : ",_this.state.applicationId);
-          if(_this.state.loginButtonAction=="passwordReset"){
-            resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
-            return;
-          }
-          _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
-      }else if(numOfApp>1){
-        //popUpApplicationList(numOfApp,response.data);
-          _this.state.appIdList= response.data;
-        if(_this.state.loginButtonAction=="passwordReset"){
-          _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
-        }else{
-        _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
-      }
-    }else{
-      // Notification.info("You are not a registered user. Please sign up!!!");
-      _this.setState({hideErrorMessage: false, errorMessageText:"You are not a registered user. Please sign up!!!"});
-    }
-      return numOfApp;
-    }else{
-        console.log("err while getting application list, status : ",response.status);
-        Notification.error(response.message);
-      }
+      _this.checkForMultipleApps(response.data);
    });
 }
+}
+checkForMultipleApps=(result)=>{
+  console.log(result);
+
+  var _this = this;
+  if(result!=="Invalid userId or EmailId"){
+    const numOfApp=Object.keys(result).length;
+    if(numOfApp===1){
+      _this.state.applicationId=Object.keys(result)[0];
+      _this.state.applicationName=result[_this.state.applicationId];
+      _this.state.appIdList= result;
+      if(_this.state.loginButtonAction=="passwordReset"){
+        resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+        return 1;
+      }
+      _this.setState({loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'Enter password to continue ',hidePasswordInputbox:false,hideAppListDropdown:true,hideUserNameInputbox:true,loginFormText:"Password",hideBackButton:false,isForgotPwdHidden:false});
+  }else if(numOfApp>1){
+      _this.state.appIdList= result;
+    if(_this.state.loginButtonAction=="passwordReset"){
+      _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false});
+    }else{
+    _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple application. Please select one application and enter password to login.',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,isForgotPwdHidden:false});
+  }
+}else{
+  // Notification.info("You are not a registered user. Please sign up!!!");
+  _this.setState({hideErrorMessage: false, errorMessageText:"You are not a registered user. Please sign up!!!"});
+}
+  return numOfApp;
+}else{
+    console.log("err while getting application list, response : ",result);
+    Notification.error(result);
+  }
 }
 register=(event)=>{
   this.props.history.push("/signup");
@@ -294,6 +326,104 @@ websiteUrl = (e)=> {
   let kmWebsiteUrl = getConfig().kommunicateWebsiteUrl;
   window.location = kmWebsiteUrl;
 }
+
+checkLoginType = () => {
+  return Promise.resolve(getUserInfo(this.state.email, this.state.applicationId))
+}
+
+showPasswordField = () => {
+
+  if (this.state.hidePasswordInputbox || this.state.googleOAuth) {
+    return (
+      <div className="input-group mb-4"></div>
+    );
+  }else{
+    return (
+      <div className="input-group mb-4">
+        <div className="password-input-label-group">
+          <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} style={{borderColor: this.state.errorInputColor}} required/>
+          <label className="label-for-input email-label">Password</label>
+          <span className="show-paasword-btn" onClick={this.showHide}>
+          {this.state.type === 'input' ? <svg fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg> :     <svg xmlns="http://www.w3.org/2000/svg" fill="#999999" height="24" viewBox="0 0 24 24" width="24">
+              <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none"/>
+              <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
+            </svg>}
+          </span>
+        </div>
+        <div className="input-error-div" hidden={this.state.hideErrorMessagePassword}>
+          <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
+            <g id='Page-1' fill='none' fillRule='evenodd'>
+                <g id='Framework' transform='translate(-77 -805)' fill='#ED1C24'>
+                    <g id='Wrong-Value-with-Notification' transform='translate(77 763)'>
+                        <g id='Error-Notification' transform='translate(0 40)'>
+                            <path d='M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z'
+                            id='Error-Icon' />
+                        </g>
+                    </g>
+                </g>
+            </g>
+          </svg>
+          <p className="input-error-message">{this.state.errorMessageTextPassword}</p>
+        </div>
+      </div>
+    );
+  }
+}
+
+  setUpLocalStorageForLogin = () => {
+
+    var search = window.location.href;
+    const userDetails = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
+    console.log(userDetails)
+
+    if (typeof (Storage) !== "undefined") {
+
+      if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
+        window.$applozic.fn.applozic('logout');
+      }
+
+      if (userDetails.apzToken) {
+      } else {
+        var apzToken = new Buffer(userDetails.userName + ":" + userDetails.accessToken).toString('base64');
+        userDetails.apzToken = apzToken;
+      }
+
+      if (!userDetails.application) {
+        console.log("response doesn't have application, create {}");
+        userDetails.application = {};
+      }
+      userDetails.application.applicationId = userDetails.applicationId;
+
+      userDetails.displayName=userDetails.name;
+      CommonUtils.setUserSession(userDetails);
+    }
+
+    if (window.$applozic) {
+      var options = window.applozic._globals;
+      options.userId = userDetails.userName;
+      options.accessToken = userDetails.accessToken;
+      window.$applozic.fn.applozic(options);
+    }
+
+    this.props.history.push("/dashboard");
+    this.state=this.initialState;
+  }
+
+  checkLoginTypeWrapper = () => {
+    this.checkLoginType().then( response => {
+      console.log(response.data.data.loginType);
+      if (response.data.data.loginType === 'oauth') {
+        this.submitForm()
+      } else {
+        this.setState({
+          googleOAuth: false
+        })
+      }
+    })
+  }
 
 
   render() {
@@ -390,41 +520,12 @@ websiteUrl = (e)=> {
                                 this.state.applicationName = this.state.appIdList[key];
                                 this.setState({"dropDownBoxTitle":key});
 
+                                this.checkLoginTypeWrapper()
+
                               }}>{key}</MenuItem>
                             }.bind(this))
                         }
                       </DropdownButton>
-                    </div>
-                    <div className="input-group mb-4" hidden ={this.state.hidePasswordInputbox || this.state.loginViaOAuth}>
-                    <div className="password-input-label-group">
-                      <input type={this.state.type} className="input" placeholder=" "  onChange = { this.setPassword } value={ this.state.password } onKeyPress={this.onKeyPress} style={{borderColor: this.state.errorInputColor}} required/>
-                      <label className="label-for-input email-label">Password</label>
-                      <span className="show-paasword-btn" onClick={this.showHide}>
-                      {this.state.type === 'input' ? <svg fill="#999999" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0z" fill="none"/>
-                          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                        </svg> :     <svg xmlns="http://www.w3.org/2000/svg" fill="#999999" height="24" viewBox="0 0 24 24" width="24">
-                          <path d="M0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0zm0 0h24v24H0z" fill="none"/>
-                          <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
-                        </svg>}
-                        
-                      </span>
-                      </div>
-                      <div className="input-error-div" hidden={this.state.hideErrorMessagePassword}>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
-                          <g id='Page-1' fill='none' fillRule='evenodd'>
-                              <g id='Framework' transform='translate(-77 -805)' fill='#ED1C24'>
-                                  <g id='Wrong-Value-with-Notification' transform='translate(77 763)'>
-                                      <g id='Error-Notification' transform='translate(0 40)'>
-                                          <path d='M0,10 C0,5.582 3.581,2 8,2 C12.418,2 16,5.582 16,10 C16,14.418 12.418,18 8,18 C3.581,18 0,14.418 0,10 Z M9.315,12.718 C9.702,13.105 10.331,13.105 10.718,12.718 C11.106,12.331 11.106,11.702 10.718,11.315 L9.41,10.007 L10.718,8.698 C11.105,8.311 11.105,7.683 10.718,7.295 C10.33,6.907 9.702,6.907 9.315,7.295 L8.007,8.603 L6.694,7.291 C6.307,6.903 5.678,6.903 5.291,7.291 C4.903,7.678 4.903,8.306 5.291,8.694 L6.603,10.006 L5.291,11.319 C4.903,11.707 4.903,12.335 5.291,12.722 C5.678,13.11 6.307,13.11 6.694,12.722 L8.007,11.41 L9.315,12.718 Z'
-                                          id='Error-Icon' />
-                                      </g>
-                                  </g>
-                              </g>
-                          </g>
-                        </svg>
-                        <p className="input-error-message">{this.state.errorMessageTextPassword}</p>
-                       </div>
                     </div>
                     {/* <div className="password-input-label-group" hidden ={this.state.hidePasswordInputbox}>
                       <InputField
@@ -448,7 +549,12 @@ websiteUrl = (e)=> {
                         
                       </span>
                     </div> */}
-
+                    { /*
+                      * Just for more better security no need to render the password field.
+                      * User can just unhide the field if it is hidden it is better just to not render the field.
+                      */
+                      this.showPasswordField()
+                    }
                     <div className="row">
                       <div className="col-3">
                         <button id="login-button" type="button" className="btn btn-primary px-3 km-login-btn btn-primary-custom" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</button>
@@ -461,14 +567,13 @@ websiteUrl = (e)=> {
                       }
                       </div>
                     </div>
-                    {/* signup with google is hidden for relese 1.4.1 */}
-                    {/* <div className="row mt-4">
+                    <div className="row mt-4">
                       <div className="col-6">
                         <a className="mt-4 signup-signup-btn" href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl  + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
                           <img src={GoogleSignIn} style={{height: "100%", width: "100%"}}/>
                         </a>
                       </div>
-                    </div>                */}
+                    </div>                
                     <div className="row">
                       <div className="col-6 text-left forgot-password-div">
                         <button type="button" id ="btn-forgot-password" className="btn btn-link px-0" hidden={this.state.isForgotPwdHidden}  onClick= { this.initiateForgotPassword }>Forgot password?</button>

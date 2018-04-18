@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 587 587">
+  <defs>
+    <linearGradient id="a" x1=".003" x2="1.351" y1=".498" y2=".758" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#499be4"/>
+      <stop offset=".475" stop-color="#5dd8db"/>
+      <stop offset="1" stop-color="#b4ec51"/>
+    </linearGradient>
+  </defs>
+  <circle cx="293.5" cy="293.5" r="293.5" fill="url(#a)" data-name="Oval 2 Copy"/>
+</svg>

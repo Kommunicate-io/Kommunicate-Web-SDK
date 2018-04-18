@@ -3,14 +3,26 @@ const kommunicateApplicationName= require('../../conf/config').getProperties().k
 const kommunicateApplicationId = require('../../conf/config').getProperties().kommunicateParentKey;
 exports.login = function(req, res) {
   const userName= req.body.userName;
-  const password = req.body.password;
+  let password = req.body.password;
   //const applicationName =req.body.applicationName?req.body.applicationName:kommunicateApplicationName;
   const applicationId =req.body.applicationId;
   console.log("request received to login : ", userName, "applicationName : ", applicationId);
-  Promise.resolve(loginService.login(req.body)).then(result=>{
+  if(req.query.loginType === 'oauth'){
+    password = 'mi8&zG#0rLyE^$1&MXSe'
+  }
+
+  const userDetail = {
+    userName: userName,
+    password: password,
+    applicationId: applicationId
+  }
+  Promise.resolve(loginService.login(userDetail)).then(result=>{
     let response={};
-    console.log("status success");
-    response.code="SUCCESS";
+    if (result.application) {
+      response.code="SUCCESS";
+    } else {
+      response.code="MULTIPLE_APPS";
+    }
     response.result = result;
     res.status(200).json(response);
 }).catch(err=>{
