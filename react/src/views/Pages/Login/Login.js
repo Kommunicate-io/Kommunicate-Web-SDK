@@ -85,18 +85,18 @@ constructor(props){
         loginButtonAction: 'getAppList',
         loginType: loginType
       }, () => {
-        Promise.resolve(this.login()).then( numOfApp => {
-          console.log(numOfApp);
-          if(numOfApp == 1 && loginType === 'oauth'){
+        Promise.resolve(this.login()).then( response => {
+          console.log(response);
+          if(_numOfApp == 1 && loginType === 'oauth'){
             this.submitForm()
-          } else if (numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
+          } else if (_numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
             this.setUpLocalStorageForLogin()
-          } else if (numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
+          } else if (_numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
             this.setState({
               googleOAuth: false
             })
           }
-        })
+        }).catch(err => {console.log(err)})
       })
     }
   }
@@ -166,8 +166,6 @@ submitForm = ()=>{
 
     if (this.state.loginType === 'oauth'){
       loginUrl += "?loginType=oauth"
-    } else if (this.state.loginType === 'email'){
-      loginUrl += "?loginType=email"
     }
 
     this.setState({loginButtonDisabled:true});
