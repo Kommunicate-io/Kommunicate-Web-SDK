@@ -1298,7 +1298,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-box .mck-contact-list li:last-child a, .mck-sidebox .mck-group-member-list li:last-child .mck-group-member-info
 	{
-	border-bottom: 0 !important;
+	/* border-bottom: 0 !important; */
 }
 
 .mck-box .mck-contact-list li a:hover, mck-sidebox .mck-group-member-list li a:hover
@@ -4485,7 +4485,8 @@ color: rgba(0,0,0,0.5);
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
-    color: #a9a4a4;
+	color: #a9a4a4;
+	margin-bottom: 0px;
     
     
 }
