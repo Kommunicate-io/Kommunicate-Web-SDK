@@ -54,6 +54,13 @@ module.exports.updatePassword = {
     newPassword:joi.string().required()
   }
 }
+module.exports.botStatus = {
+  params: {
+    botId: joi.string().required(),
+    appId: joi.string().required(),
+    status: joi.number().integer().only([0, 1])
+  }
+}
 
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;
