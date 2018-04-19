@@ -22,10 +22,11 @@ a, a:hover, a:focus, a:active {
 }
 .features-landing-page-section {
     padding: 120px 0px;
-    background-color: #654df7;
+    /* background-color: #654df7; */
+    background-image: linear-gradient(286deg, #a6a8d3, #6252d8 72%, #4831d9);
 }
 .features-title {
-    font-size: 36px;
+    font-size: 42px;
     font-weight: bold;
     letter-spacing: 0.2px;
     color: #fdfdfd;
@@ -41,7 +42,7 @@ a, a:hover, a:focus, a:active {
     margin: 0 auto;
     position: absolute;
     right: 50%;
-    top: 58px;
+    top: 7px;
     transform: translateX(50%);
 }
 
@@ -336,7 +337,18 @@ a, a:hover, a:focus, a:active {
         margin: 0 auto;
         position: absolute;
         right: 50%;
-        top: 79px;
+        top: 14px;
+        transform: translateX(50%);
+    }
+}
+@media (min-width:992px) and (max-width:1199px) {
+    .features-landing-page-section svg {
+        width: auto;
+        height: 240px;
+        margin: 0 auto;
+        position: absolute;
+        right: 50%;
+        top: 53px;
         transform: translateX(50%);
     }
 }
