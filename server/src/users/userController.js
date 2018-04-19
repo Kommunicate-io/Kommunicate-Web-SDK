@@ -371,3 +371,11 @@ exports.goOnline = (req, res) => {
     res.status(500).json(response);
   })
 }
+
+exports.changeBotStatus = (req, res) => {
+  return userService.changeBotStatus(req.params.botId, req.params.appId, req.params.status).then(result => {
+    return res.status(200).json({ code: 'success', message: 'updated successfully' });
+  }).catch(err => {
+    return res.status(500).json({ code: 'INTERNAL_SERVER_ERROR', message: 'something went wrong!' });
+  })
+}
