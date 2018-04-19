@@ -600,6 +600,8 @@
         padding: 8px 5px;
         position: absolute;
         bottom: 52px;
+        left:0; 
+        width: 97%;
         background-color: white;
     }
     /******** Generic list template*************/
