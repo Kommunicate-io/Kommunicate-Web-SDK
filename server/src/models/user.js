@@ -88,11 +88,19 @@ module.exports = function(sequelize, DataTypes) {
       unique: true,
       field: 'user_key'
     },
+    /**
+     * it is used in case of:
+     * user:- goonline(1)/goaway(0) 
+     */
     availabilityStatus: {
       type: DataTypes.INTEGER(),
       field: 'availability_status',
       defaultValue: 1
-    },allConversations: {
+    },
+    /**
+     * available(1)/unavailable(0) to add into conversation.
+     */
+    allConversations: {
       type: DataTypes.INTEGER(),
       field: 'all_conversations',
       defaultValue: 0

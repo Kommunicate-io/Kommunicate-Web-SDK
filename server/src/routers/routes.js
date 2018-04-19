@@ -98,6 +98,7 @@ userRouter.post('/:userName/password-reset', passwordResetController.processPass
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
+userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
