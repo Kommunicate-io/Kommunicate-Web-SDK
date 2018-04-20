@@ -18,6 +18,7 @@ body {
     border-radius: 2px;
     padding-top: 20px;
     padding-left: 15px;
+    padding-right: 15px;
     background-color: #f4f5f7;
     border: 1px solid #ddd7d7;
 }
@@ -65,4 +66,66 @@ body {
 }
 .checkmark {
     left: 9px;
+}
+
+.km-routing-assign-bot-text-1 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    text-align: left;
+    color: #656161;
+}
+
+.km-routing-assign-bot-text-2 {
+    opacity: 0.78;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: #716d6d;
+}
+
+.km-routing-assign-bot-text-3 {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: #716d6d;
+}
+
+.km-routing-do-not-have-bots {
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.2px;
+    text-align: left;
+    color: #716d6d;
+}
+
+
+.km-agent-routing-note-text {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.1px;
+    text-align: left;
+    color: #716d6d;
 }
