@@ -56,4 +56,4 @@ alter table users add column `login_type`  enum('email', 'oauth') collate utf8mb
 
 alter table conversations add application_id varchar(50) default null after id;
 
-ALTER TABLE `kommunicate_test`.`conversations` CHANGE COLUMN `participent_user_id` `participant_user_id` VARCHAR(255) NOT NULL ;
+ALTER TABLE `conversations` CHANGE COLUMN `participent_user_id` `participant_user_id` VARCHAR(255) NOT NULL ;
