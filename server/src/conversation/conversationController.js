@@ -8,8 +8,8 @@ const logger = require('../utils/logger');
  * 
  */
 exports.getConversationList=(req, res)=>{
-    const participentUserId = req.params.participentId;
-    conversationService.getConversationList(participentUserId)
+    const participantUserId = req.params.participantId;
+    conversationService.getConversationList(participantUserId)
     .then(dbUtils.getDataArrayFromResultSet)
     .then(conversationList=>{
         console.log("got data from db",conversationList);
@@ -26,7 +26,7 @@ exports.createConversation = (req, res) => {
     console.log("request received to create conversation");
     let conversation = {
         groupId: req.body.groupId,
-        participentUserId: req.body.participentUserId,
+        participantUserId: req.body.participantUserId || req.params.participentId,
         agentId: req.body.defaultAgentId,
         createdBy: req.body.createdBy,
         applicationId: req.body.applicationId ? req.body.applicationId : null

@@ -28,12 +28,12 @@ module.exports = (sequalize, DataTypes) => {
        *  this is the user who is involved in this conversation.
        * this is the user_name in applozic user table.
        */
-     participentUserId: {
+     participantUserId: {
         type: DataTypes.STRING,
         allowNull: false,
-        field: "participent_user_id"
+        field: "participant_user_id"
       },
-      //applozic user_name(participentUserId) if user creates conversation. agentId if agent creates
+      //applozic user_name(participantUserId) if user creates conversation. agentId if agent creates
       createdBy:{
         type: DataTypes.STRING, 
         allowNull:false,

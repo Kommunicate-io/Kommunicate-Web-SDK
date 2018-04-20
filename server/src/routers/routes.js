@@ -124,7 +124,7 @@ profileImageRouter.post('/', upload.single('file'), profileImageController.uploa
 //conversation router
 conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
 conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
-conversationRouter.get('/participent/:participentId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
+conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
 conversationRouter.get('/', conversationController.getConversationStats);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
 conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
