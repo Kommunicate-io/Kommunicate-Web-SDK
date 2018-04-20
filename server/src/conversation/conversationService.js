@@ -74,12 +74,14 @@ const createConversationIntoApplozic = (req) => {
             return result.data;
         }
         let group = result.response
-        let user = group.groupUsers.filter(user => { return user.role == 3 })
+        let participentUserId = group.groupUsers.filter(user => { return user.role == 3 })
+        let participentUser = group.users.filter(user => { return participentUserId[0].userId == user.userId })
+        let defaultAgent = group.users.filter(user => { return user.userId == group.adminId })
         let conversation = {
             groupId: group.id,
-            participentUserId: user[0].userId,
-            defaultAgentId: group.adminId,
-            createdBy: user[0].userId,
+            participentUserId: participentUser[0].id,
+            defaultAgentId: defaultAgent[0].id,
+            createdBy: participentUser[0].id,
             applicationId: headers['application-key']
         }
         createConversation(conversation);

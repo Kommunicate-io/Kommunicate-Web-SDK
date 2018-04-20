@@ -53,3 +53,5 @@ alter table customers add column `login_type`  enum('email', 'oauth') collate ut
 alter table customers drop column login_type;
 
 alter table users add column `login_type`  enum('email', 'oauth') collate utf8mb4_unicode_ci default null;
+
+alter table conversations add application_id varchar(50) default null after id;
