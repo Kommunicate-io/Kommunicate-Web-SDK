@@ -351,8 +351,8 @@ class Aside extends Component {
                         </div>
                         <div className="blk-lg-7">
                            <ul id="kommunicate-panel-tabs" className="list-inline km-nav-tab">
-                             <li className="active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">Assigned</a></li>
-                             <li><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Customers</a></li>
+                             <li id="km-conversation"className="active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">All Conversation</a></li>
+                             <li id="km-assigned"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Assigned</a></li>
                              {/*
                                <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
                               */}
@@ -466,6 +466,8 @@ class Aside extends Component {
                                 <ul id="km-contact-list"
                                   className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
                                 </ul>
+                                <ul id="km-assigned-search-list"
+                                  className="km-contact-list people km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
                                   <img src="/applozic/images/ring.gif"/>
                                 </div>
