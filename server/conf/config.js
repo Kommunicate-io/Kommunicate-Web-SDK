@@ -22,6 +22,7 @@ const config ={
         addMemberIntoConversation:'https://chat.kommunicate.io/rest/ws/group/add/users?role=:role',
         createGroup:"https://chat.kommunicate.io/rest/ws/group/v2.1/create",
         createBotUrl: "https://bots.applozic.com/bot",
+        updateBotUrl:"http://bots.applozic.com/bot/update",
         sendMessageUrl: "https://chat.kommunicate.io/rest/ws/message/v2/send",
         hostUrl: "https://api.kommunicate.io",
         kmWebsiteUrl: "https://www.kommunicate.io",
@@ -87,6 +88,7 @@ const config ={
       addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
       createBotUrl: "https://bots-test.applozic.com/bot",
+      updateBotUrl:"http://bots-test.applozic.com/bot/update",
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "https://api-test.kommunicate.io",
       kmWebsiteUrl: "https://test.kommunicate.io",
@@ -153,8 +155,15 @@ const config ={
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
       addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
+<<<<<<< HEAD
       createBotUrl: "https://bots-test.applozic.com/bot",
       updateBotUrl: "https://bots-test.applozic.com/bot/update",
+||||||| merged common ancestors
+      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+=======
+      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+      updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
+>>>>>>> KM-971 dashboard bot section bugs and improvements
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
       kmWebsiteUrl: "https://test.kommunicate.io",
@@ -218,6 +227,7 @@ const config ={
         addMemberIntoConversation:'https://dashboard.applozic.com/rest/ws/group/add/users?role=:role',
         createGroup:"https://dashboard.applozic.com/rest/ws/group/v2.1/create",
         createBotUrl: "http://topioslibraries.com/bot",
+        updateBotUrl: "http://topioslibraries.com/bot/update",
         sendMessageUrl: "https://dashboard.applozic.com/rest/ws/message/v2/send",
         hostUrl: "https://api.kommunicate.io",
         kmWebsiteUrl: "https://www.kommunicate.io",

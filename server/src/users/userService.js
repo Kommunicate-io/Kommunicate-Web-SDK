@@ -67,6 +67,12 @@ let handleCreateUserError =(user,customer,err)=>{
  */
 const createUser =user=>{
   let aiPlatform = user.aiPlatform;
+  let botName = user.botName;
+  let clientToken = user.clientToken;
+  let type = user.type;
+  let devToken = user.devToken;
+  let userId = user.userId;
+  
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
     let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";
     return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role,user.email,user.name)
@@ -98,6 +104,9 @@ const createUser =user=>{
             "accessToken": user.accessToken,
             "applicationKey": customer.applicationId,
             "authorization": user.authorization,
+            "clientToken": clientToken,
+            "devToken" : devToken,
+            "aiPlatform": aiPlatform,
             "type": "KOMMUNICATE_SUPPORT",
             "handlerModule":aiPlatform=="dialogflow"?"DEFAULT_THIRD_PARTY_BOT_HANDLER":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
           }).catch(err=>{
@@ -330,8 +339,11 @@ if(!response) {
 };
 
 exports.updateUser = (userId, appId, userInfo) => {
-  return Promise.all([getByUserNameAndAppId(userId, appId),emailValidation(userInfo.email)])
+  var email = userInfo.email ? userInfo.email : null ;
+  return Promise.all([getByUserNameAndAppId(userId, appId),emailValidation(email)])
     .then(([user,isvalid]) => {
+      var userKey = user.userKey;
+      var authorization = user.authorization;
       if (user == null) {
         throw new Error("No customer in customer table with appId", appId);
       }
@@ -341,13 +353,26 @@ exports.updateUser = (userId, appId, userInfo) => {
         throw error;
       }
       let userDetail={userId:userId, displayName:userInfo.name, email:userInfo.email,phoneNumber:userInfo.contactNo};
-      applozicClient
-        .updateApplozicClient(user.userName, user.accessToken, appId, userDetail)
+      applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail)
         .then(response => {
           console.log("Applozic update user response: " + response);
-        });
+        })
       return userModel.update(userInfo, {
         where: { userName: userId, customerId: user.customerId }
+        
+      }).then(function(){
+         if(user.type==registrationService.USER_TYPE.BOT){
+          // keeping it async for now. 
+          botPlatformClient.updateBot({
+            "key": userKey,
+            "clientToken": userInfo.clientToken,
+            "devToken" : userInfo.devToken,
+            "authorization": authorization,
+
+          }).catch(err=>{
+            logger.error("error while updating bot platform",err);
+          });
+        }
       });
     })
     .catch(err => {
@@ -456,6 +481,9 @@ const getAvailableAgents = (customer)=>{
 }
 
 const emailValidation = (email) => {
+  if(email == null) {
+    return true
+  }
   return Promise.resolve(userModel.findAll({ where: { email: email } })).then(users => {
     return users.length > 0;
   });

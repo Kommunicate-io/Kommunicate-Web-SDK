@@ -665,6 +665,7 @@ const getIntegratedBots = () => {
       let dialogFlowBots = mongoBots.data.filter(bot => {
         return (bot.aiPlatform && bot.aiPlatform.toLowerCase() === 'dialogflow');
       });
+<<<<<<< HEAD
 
       for (let i = 0; i < sqlBots.length; i++) {
         // for(let j = 0; j < mongoBots.data.length; j++ ){
@@ -684,6 +685,22 @@ const getIntegratedBots = () => {
           let b = Object.assign({}, mbot[0], sqlBots[i]);
           bots.push(b)
         }
+||||||| merged common ancestors
+      for(let i= 0; i < sqlBots.length; i++){
+        for(let j = 0; j < mongoBots.data.length; j++ ){
+          if(sqlBots[i].name !== "bot" && sqlBots[i].name.toLowerCase() == mongoBots.data[j].name.toLowerCase()){
+            let bot1 = sqlBots[i];
+            let bot2 = mongoBots.data[j];
+            bots[i] = {...bot1, ...bot2};
+          }
+        }
+=======
+      for(let i= 0; i < sqlBots.length; i++){
+       if(sqlBots[i].userName !== "bot"){
+        let mbot=mongoBots.data.filter(bot=>{ return bot.name===sqlBots[i].userName});
+        bots.push({...sqlBots[i], ...mbot[0]});
+       }
+>>>>>>> KM-971 dashboard bot section bugs and improvements
       }
 
       return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
