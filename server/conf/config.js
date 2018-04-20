@@ -162,6 +162,11 @@ const config ={
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
 =======
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+<<<<<<< HEAD
+      updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
+>>>>>>> KM-971 dashboard bot section bugs and improvements
+||||||| merged common ancestors
+=======
       updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
 >>>>>>> KM-971 dashboard bot section bugs and improvements
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",

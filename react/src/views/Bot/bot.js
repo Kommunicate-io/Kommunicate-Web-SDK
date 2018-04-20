@@ -497,6 +497,7 @@ class Tabs extends Component {
       Notification.info("Dev Token missing");
       return;
     }
+<<<<<<< HEAD
 >>>>>>> KM-971 dashboard bot section bugs and improvements
 
 const panes = [
@@ -519,6 +520,23 @@ const TabExampleSecondaryPointing = () => (
 =======
     
 >>>>>>> KM-971 dashboard bot section bugs and improvements
+||||||| merged common ancestors
+
+    let _this =this;
+
+    let data = {
+      clientToken : this.state.clientToken,
+      devToken : this.state.devToken,
+      aiPlatform : aiPlatform,
+      botName : this.state.botName,
+      type:'KOMMUNICATE_SUPPORT'
+    }
+=======
+
+    let _this =this;
+
+    
+>>>>>>> KM-971 dashboard bot section bugs and improvements
 
 <<<<<<< HEAD
 ||||||| merged common ancestors
@@ -527,7 +545,14 @@ const TabExampleSecondaryPointing = () => (
     let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
 
     // this.setState({uuid: uuid_holder})
-
+    let data = {
+      clientToken : this.state.clientToken,
+      devToken : this.state.devToken,
+      aiPlatform : aiPlatform,
+      botName : this.state.botName,
+      type:'KOMMUNICATE_SUPPORT',
+      userId:userId
+    }
     let userSession = CommonUtils.getUserSession();
     let applicationId = userSession.application.applicationId;
     let authorization = userSession.authorization;
@@ -540,56 +565,45 @@ const TabExampleSecondaryPointing = () => (
 
     this.setState({disableIntegrateBotButton: true})
 
-    this.checkBotNameAvailability(userId,aiPlatform).then( bot => {
-      axios({
-      method: 'post',
-      url:userDetailUrl,
-      data: userIdList,
-      headers: {
-        "Apz-Product-App": true,
-        "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
-        "Content-Type": "application/json",
-        "Apz-AppId":applicationId
-      }}).then(function(response) {
-        if(response.status==200 && response.data.response[0]){
-          console.log(response);
-          console.log("success");
-          axios({
-            method: 'post',
-            url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
-            // url:"http://localhost:5454/bot/"+response.data.response[0].id+'/configure', 
-            data:JSON.stringify(data),
-            headers: {
-              "Content-Type": "application/json",
-            }
-          }).then(function(response){
-            if(response.status==200 ){
-              _this.clearBotDetails();
-              Notification.info("Bot integrated successfully");
-              _this.setState({disableIntegrateBotButton: false}) 
-              if(aiPlatform === "dialogflow"){
-                _this.setState({dialogFlowIntegrated: true})
-              }else if( aiPlatform === "microsoft"){
-                _this.setState({microsoftIntegrated: true})
-              }else{
-
-              }
-              _this.toggleBotProfileModal()
-              _this.getIntegratedBotsWrapper()
-            }
-          });
-        }
-      });
-    }).catch( err => {
-      if(err.code=="USER_ALREADY_EXISTS"){
-        // _this.setState({botNameAlreadyExists:true})
-        Notification.info("Bot name taken. Try again.");
-      }else{
-        Notification.error("Something went wrong");
-        console.log("Error creating bot", err);
-      }
-      this.setState({disableIntegrateBotButton: false})
-    })
+     // 1st API call
+      return Promise.resolve(createCustomerOrAgent({   
+          userName: userId,
+          type:2,
+          applicationId:applicationId,
+          password:userId,
+          name:this.state.botName,
+          aiPlatform:aiPlatform,
+          clientToken : this.state.clientToken,
+          devToken : this.state.devToken,
+          botName : this.state.botName,
+          userId:userId
+        },"BOT")).then( response => {
+          Notification.info("Bot successfully created");
+          if (response.status == 200 || response.data.code === 'SUCCESS') {
+            this.clearBotDetails();
+            this.toggleBotProfileModal()
+            this.getIntegratedBotsWrapper() 
+            this.setState({ disableIntegrateBotButton: false })
+            if (aiPlatform === "dialogflow") {
+              this.setState({ dialogFlowIntegrated: true })
+            } else if (aiPlatform === "microsoft") {
+              this.setState({ microsoftIntegrated: true })
+            } 
+            
+            
+        
+          }
+        }).catch( err => {
+          if(err.code=="USER_ALREADY_EXISTS"){
+            // _this.setState({botNameAlreadyExists:true})
+            Notification.info("Bot name taken. Try again.");
+          }else{
+            Notification.error("Something went wrong");
+            console.log("Error creating bot", err);
+          }
+          this.setState({disableIntegrateBotButton: false})
+        })
+    
   }
 
   toggleOtherPlatformModal = () => {
@@ -686,7 +700,7 @@ const TabExampleSecondaryPointing = () => (
     }
   }
 
-  checkBotNameAvailability(userId,aiPlatform) {
+  checkBotNameAvailability(data,aiPlatform) {
 
     if(!this.state.botName){
       Notification.info("Please enter a bot name !!");
@@ -695,29 +709,31 @@ const TabExampleSecondaryPointing = () => (
 
     let userSession = CommonUtils.getUserSession();
     let applicationId = userSession.application.applicationId;
+    let authorization = userSession.authorization;
+    let password = CommonUtils.getUserSession().password;
+    let device = atob(authorization);
+    let devicekey = device.split(":")[1];
+    let env = getEnvironmentId();
+    // let userIdList = {"userIdList" : [userId]}
 
 
-    return Promise.resolve(
-      createCustomerOrAgent({
-        userName: userId,
-        type:2,
-        applicationId:applicationId,
-        password:userId,
-        name:this.state.botName,
-        aiPlatform:aiPlatform
-      },"BOT")).then( bot => {
-        Notification.info("Bot successfully created");
-        return bot;
-      })
+    
   }
-
+  abc = () => {
+    var name= this.state.myName;
+    console.log("name",name);
+  }
   toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable) => {
     console.log("toggleEditBotIntegrationModal")
+    let abc = {"myName":"suraj"};
+    this.setState({myName:"suraj"},this.abc);
+    var name= this.state.myName;
+    console.log("name",name);
+ 
     this.clearBotDetails();
     this.setState({
       editBotIntegrationModal: !this.state.editBotIntegrationModal
     })
-
     if(botIdInUserTable && botKey){
       this.setState({
         botIdInUserTable,
@@ -729,10 +745,6 @@ const TabExampleSecondaryPointing = () => (
       this.setEditBotIntegrationDetails(botName, botUserName, botToken, botDevToken)
     }
 
-    console.log(botAvailable);
-    console.log(botName);
-    console.log(botUserName);
-    console.log(botToken);
 
       this.setState({
         botAvailable: botAvailable == 1 ? true:false
@@ -770,6 +782,9 @@ const TabExampleSecondaryPointing = () => (
 
     let patchUserData = {
       name: this.state.editedBotName,
+      botName: this.state.editedBotName,
+      clientToken: this.state.editedClientToken,
+      devToken: this.state.editedDevToken,
     }
 
     let axiosPostData = {
@@ -788,12 +803,15 @@ const TabExampleSecondaryPointing = () => (
 
     if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
 
-      Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
-        .then(([patchUserInfoResponse, axiosPostResponse]) => {
-          if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
+      // Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
+      //   .then(([patchUserInfoResponse, axiosPostResponse]) => {
+      //     if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
+      return Promise.resolve(patchUserInfo(patchUserData, this.state.botUserName, this.applicationId))
+        .then(patchUserInfoResponse => {
+          if (patchUserInfoResponse.data.code === 'SUCCESS') {
             Notification.info("Changes Saved successfully")
-            this.toggleEditBotIntegrationModal()
-            this.getIntegratedBotsWrapper()
+            this.toggleEditBotIntegrationModal();
+            this.getIntegratedBotsWrapper();
           }
           this.getIntegratedBotsWrapper()
         }).catch(err => {console.log(err)})
@@ -1039,8 +1057,16 @@ class Tabs extends Component {
                         <div className="col-sm-4">
                           <span className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</span>
                         </div>
+<<<<<<< HEAD
                         <div className="col-sm-2" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
+||||||| merged common ancestors
+                        <div className="col-sm-1" style={{textAlign: "right"}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
+=======
+                        <div className="col-sm-2" style={{textAlign: "right"}}>
+                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status)}}>
+>>>>>>> KM-971 dashboard bot section bugs and improvements
                             Edit
                           </button>
                         </div>
