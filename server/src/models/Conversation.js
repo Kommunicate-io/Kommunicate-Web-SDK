@@ -9,6 +9,12 @@ module.exports = (sequalize, DataTypes) => {
         primaryKey: true,
         allowNull: false
       },
+
+      applicationId: {
+        type: DataTypes.STRING(50),
+        allowNull: true,
+        field: 'application_id'
+      },
       /**
        * applozic group_id. fetch the group detail from applozic db using this Id 
        */

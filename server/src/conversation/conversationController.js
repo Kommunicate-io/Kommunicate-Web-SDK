@@ -22,13 +22,14 @@ exports.getConversationList=(req, res)=>{
 }
 
 
-exports.createConversation= (req,res)=>{
+exports.createConversation = (req, res) => {
     console.log("request received to create conversation");
-        let conversation = {
+    let conversation = {
         groupId: req.body.groupId,
         participentUserId: req.body.participentUserId,
         agentId: req.body.defaultAgentId,
         createdBy: req.body.createdBy,
+        applicationId: req.body.applicationId ? req.body.applicationId : null
     }
     return Promise.resolve(conversationService.createConversation(conversation)).then(result=>{
         console.log("conversation created successfully", result.dataValues);
