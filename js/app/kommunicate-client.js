@@ -70,7 +70,7 @@ var mckGroupService = new MckGroupService();
                     response.updated ? callback(response.data.value) :
                         Kommunicate.createNewConversation({
                             "groupId": response.data.value,
-                            "participentUserId": kommunicate._globals.userId,
+                            "participantUserId": kommunicate._globals.userId,
                             "defaultAgentId": conversationDetail.agentId,
                             "applicationId": kommunicate._globals.appId
                         }, function (err, result) {
