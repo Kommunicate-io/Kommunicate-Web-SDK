@@ -561,7 +561,7 @@ class Tabs extends Component {
                             bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
                           }
                         </div>
-                        <div className="row col-sm-4">
+                        <div className="row col-sm-5">
                           <div style={{marginRight: "8px"}}>
                             <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
                           </div>
@@ -576,7 +576,7 @@ class Tabs extends Component {
                         <div className="col-sm-4">
                           <span className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</span>
                         </div>
-                        <div className="col-sm-2" style={{textAlign: "right"}}>
+                        <div className="col-sm-1" style={{textAlign: "right"}}>
                           <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
                             Edit
                           </button>

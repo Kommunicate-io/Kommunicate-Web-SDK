@@ -127,7 +127,7 @@ body {
 
 .drop-down-list-of-bots {
     height: 40px;
-    width: 60%;
+    width: fit-content;
     font-size: 14px;
     border: 1px solid #979797;
     text-align: right;
