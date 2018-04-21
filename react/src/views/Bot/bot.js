@@ -18,6 +18,9 @@ import KmIcon from './images/km-icon.png'
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
+import {Link} from 'react-router-dom';
+import './bot.css';
+import NoteIcon from './images/note-icon.png'
 
 class Tabs extends Component {
 
@@ -67,7 +70,8 @@ class Tabs extends Component {
       editedDevToken: '',
       botUserName: '',
       dialogFlowBots: [],
-      botAvailable: true
+      botAvailable: true,
+      conversationsAssignedToBot: null
     };
   let userSession = CommonUtils.getUserSession();
   this.applicationId = userSession.application.applicationId;
@@ -435,6 +439,14 @@ class Tabs extends Component {
       this.setState({
         listOfIntegratedBots: (response && response.allBots) ? response.allBots: [],
         dialogFlowBots: (response && response.dialogFlowBots) ? response.dialogFlowBots: [],
+      }, () => {
+        this.state.listOfIntegratedBots.map(bot => {
+          if(bot.allConversations == 1){
+            this.setState({
+              conversationsAssignedToBot: bot.name
+            })
+          }
+        })
       })
     });
   }
@@ -515,8 +527,29 @@ class Tabs extends Component {
               </div>
               <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
                 <div style={{height:"4px", backgroundColor: "#5C5AA7", borderRadius: "15px 15px 0 0"}}></div>
+                <div style={{padding: "10px"}} className={this.state.conversationsAssignedToBot ? null:"n-vis"}>
+                  <div style={{marginTop: "20px"}}>
+                    <span className="integrated-bot-assigned-bot-text">All new conversations are assigned to : </span>
+                    <span style={{display: "inline-block", border: "1px dashed #d0cccc", padding: "5px"}}>
+                      <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} /> 
+                      <span>{this.state.conversationsAssignedToBot ? this.state.conversationsAssignedToBot:'No Bot'}</span> 
+                    </span> 
+                  </div>
+                  <div style={{marginTop: "20px"}}>
+                    <span className="integrated-bot-note-text"><strong>Note:</strong> Any other integrated bots (if present) will remain idle and will not <br /> be assigned to any conversation</span>
+                  </div>
+                </div>
+                <div style={{padding: "10px"}} className={this.state.conversationsAssignedToBot ? "n-vis":null}>
+                  <div style={{marginTop: "20px", marginBottom:"20px"}}>
+                    <img src={NoteIcon} style={{height: '18px'}} />
+                    <span style={{marginLeft: "5px"}} className="integrated-bot-assigned-bot-text">None of your integrated bots are currently assigned in conversations</span>
+                  </div>
+                </div>
+                <div style={{backgroundColor: "#cce7f8", height: "41px", textAlign: "center"}}>
+                  <span className="integrated-bot-converstaion-routing-text">You may change conversation assignment settings from <Link to="/settings/agent-assignment">Conversation routing</Link></span>
+                </div>
                 <div style={{padding: "10px"}}>
-                  <span className="km-bot-integrated-bots-container-heading">My Integrated Bots:</span>
+                  <span className="km-bot-integrated-bots-container-heading">Integrated Bots:</span>
                   <hr />
                 </div>
                 <div className="km-bot-list-of-integrated-bots-container">
