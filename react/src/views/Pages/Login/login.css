@@ -1,6 +1,15 @@
 .login-signup-bg {
     background-color: #e4e5e6;
 }
+.container {
+    position: relative;
+}
+.login-app-div .container, .signup-app-div .container {
+    box-shadow: 0 2px 14px 0 rgba(137, 133, 133, 0.5);
+    background-color: #fff;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
 .header-container {
     width: 100%;
     display: flex;
@@ -32,7 +41,7 @@
     fill: #5C5AA7;
   }
   .register-password-div {
-      margin-bottom: 40px !important;
+      margin-bottom: 30px !important;
   }
 
 .dropdown.btn-group {
@@ -46,6 +55,8 @@
     font-size: 14px;
     text-align: left;
     border: 1px solid #979797;
+    border-radius: 4px;
+    color: #8f8c8c;
 }
 #split-button-pull-right + .dropdown-menu{
     width: 100%;
@@ -68,9 +79,9 @@
     margin-left: 0.3em;
     /* vertical-align: middle; */
     content: "";
-    border-top: 0.3em solid;
-    border-right: 0.3em solid transparent;
-    border-left: 0.3em solid transparent;
+    border-top: 7px solid #b1b3b1;
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
     right: 15px;
     top: 50%;
     transform: translateY(-50%);
@@ -90,7 +101,13 @@
 
 
   .login-signup-heading {
-      font-size: 24px;
+    font-size: 28px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    color: #383737;
   }
   .login-signup-sub-heading {
     font-size: 14px;
@@ -106,7 +123,7 @@
 
 .forgot-password-div {
     /* padding-left: 0px; */
-    margin-top: 10px;
+    margin-top: -25px;
 }
 .show-paasword-btn {
     position: absolute;
@@ -120,11 +137,12 @@
 }
 
 .signup-app-div, .login-app-div, .applozic-user-signup {
-    background: transparent;
+    background: #f5f5f5;
 }
 .signup-app-div::after, .login-app-div::after, .applozic-user-signup::after {
     content: '';
-    background: #F4F0F0;
+    /* background: #F4F0F0; */
+    background: #FFF;
     background-repeat: repeat;
     background-attachment: fixed;
     opacity: 0.8;
@@ -146,9 +164,10 @@
 
 .card {
     margin-bottom: 0px;
+    background: transparent;
 }
 .p-4 {
-    padding: 50px !important;
+    padding: 37px !important;
 }
 .signup-app-div .card-block, .login-app-div .card-block {
     padding: 0px;
@@ -158,10 +177,10 @@
     margin-left: 3.5rem !important;
 }
 .signup-card-block {
-    padding: 50px !important;
+    padding: 34px !important;
 }
 .signup-button-row p, .applozic-user-signup-btn-row p {
-    margin-top: 50px;
+    margin-top: 10px;
     font-size: 16px;
 }
 .signup-card-block .btn-primary-custom, .applozic-user-signup .btn-primary-custom {
@@ -169,15 +188,123 @@
     letter-spacing: 0.4px;
     font-size: 16px;
 }
+.email-field-group, .signup-with-google-btn {
+    margin-bottom: 30px !important;
+}
+
+.signup-with-google-btn {
+    display: block;
+    margin-top: 40px;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #4285f4;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #276efa;
+}
+.signup-with-google-btn:hover, .signup-with-google-btn:focus {
+    text-decoration: none;
+    color: #4285f4;
+}
+.signup-with-google-btn svg {
+    margin-bottom: -6px;
+    margin-right: 15px;
+}
+ 
+.or-seperator {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.or-seperator--line {
+    height: 1px;
+    background-color: #bdb9b9;
+    width: 100%;
+}
+.or-seperator--text {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 40px;
+    transform: translateX(-50%);
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: #979393; 
+}
+
+.hr {
+    width: 12%;
+    border-top: 4px solid #6556d7;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.bottom-shape-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 160px;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMzQ5Ljg2NCAxODguOTYiPiAgPGRlZnM+ICAgIDxzdHlsZT4gICAgICAuY2xzLTEgeyAgICAgICAgZmlsbDogdXJsKCNsaW5lYXItZ3JhZGllbnQpOyAgICAgIH0gICAgPC9zdHlsZT4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQiIHgxPSIxLjAyIiB5MT0iMS4wMjEiIHgyPSItMC4wODMiIGdyYWRpZW50VW5pdHM9Im9iamVjdEJvdW5kaW5nQm94Ij4gICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNhNmE4ZDMiLz4gICAgICA8c3RvcCBvZmZzZXQ9IjAuNzI0IiBzdG9wLWNvbG9yPSIjNjI1MmQ4Ii8+ICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNDgzMWQ5Ii8+ICAgIDwvbGluZWFyR3JhZGllbnQ+ICA8L2RlZnM+ICA8cGF0aCBpZD0iUGF0aF8xMV9Db3B5IiBkYXRhLW5hbWU9IlBhdGggMTEgQ29weSIgY2xhc3M9ImNscy0xIiBkPSJNLTM4LjY3OSwyMDkuNkMtNzkuMDU1LDEwMi4wNTctMTM5Ljk2NywxMDEuMjc5LTIyMC4zNTIsODIuODc2Uy0zODguNDUsMjAuOC0zODguNDUsMjAuOGwzNDkuODY0LS4xNTdTLTM5LjA3MiwxNjYuMTUzLTM4LjY3OSwyMDkuNloiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zOC41ODYgMjA5LjYwMikgcm90YXRlKDE4MCkiLz48L3N2Zz4=);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.signup-button-row p a{
+    text-decoration: underline;
+    color: #5c5aa7;
+}
+
+.have-need-account {
+    font-size: 14px !important;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    text-align: center;
+    color: #717173;
+    margin-top: 10px;
+}
+.have-need-account a {
+    font-weight: 500;
+    color: #5c5aa7;
+    text-decoration: underline;
+}
+
+.signup-form-div, .login-form-div {
+    z-index: 2;
+    position: relative;
+}
+
+.card-block-login-frgtpass-container .login-signup-heading {
+    margin-bottom: 50px;
+}
+
 
 @media(max-width:576px) {
     .signup-card-block {
         padding:20px !important;
     }
     .signup-app-div, .applozic-user-signup  {
-        background: #F4F0F0;
+        /* background: #F4F0F0; */
+        background: #FFF;
         display: block;
-        padding-top: 120px;
+        /* padding-top: 120px; */
     }
     .link-container {
         padding-top: 5px;
@@ -185,6 +312,9 @@
     .mx-4 {
         margin-left: 0px !important;
         margin-right: 0px !important;
+    }
+    .login-app-div .container, .signup-app-div .container {
+        padding-bottom: 80px;
     }
 }
 

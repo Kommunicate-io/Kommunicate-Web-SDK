@@ -13,7 +13,7 @@ class SettingsSidebar extends Component {
         return (
             <div className="settings-sidebar text-center">
                 <p className="settings-title">Settings</p>
-                <p className="hr"></p>
+                <hr className="hrr"/>
                 <div className="settings-sidebar-nav">
                     <ul className="ss-nav">
                         <li className="ss-nav-title">

@@ -7707,7 +7707,7 @@ iframe#crowd-shortcut {
     overflow-x: hidden;
     overflow-y: auto;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    width: 60px; }
+    width: auto; }
     .sidebar .sidebar-nav::-webkit-scrollbar {
       position: absolute;
       width: 10px;
@@ -7725,7 +7725,7 @@ iframe#crowd-shortcut {
       border-style: solid;
       border-width: 1px 2px; }
   .sidebar .nav {
-    width: 60px;
+    width: auto;
     flex-direction: column !important; }
     .sidebar .nav .nav-title {
       padding: 0.75rem 1rem;
@@ -7738,6 +7738,7 @@ iframe#crowd-shortcut {
     .sidebar .nav .nav-item {
       position: relative;
       margin: 0;
+      margin-top: 5px;
       transition: background .3s ease-in-out; }
       .sidebar .nav .nav-item ul {
         max-height: 0;
@@ -7750,18 +7751,27 @@ iframe#crowd-shortcut {
           list-style: none; }
       .sidebar .nav .nav-item .nav-link, .sidebar .nav .nav-item .navbar .dropdown-toggle, .navbar .sidebar .nav .nav-item .dropdown-toggle {
         display: block;
-        padding: 0.75rem 1rem;
+        padding: 10px 11px;
         color: #fff;
         text-decoration: none;
-        background: transparent; }
+        background: transparent;
+      border-radius: 3px; }
+      .sidebar .nav .nav-item .nav-link svg {
+        opacity: 0.4;
+      }
         .sidebar .nav .nav-item .nav-link:hover, .sidebar .nav .nav-item .navbar .dropdown-toggle:hover, .navbar .sidebar .nav .nav-item .dropdown-toggle:hover {
           color: #fff !important;
-          background: darkslateblue !important; }
+          background: darkslateblue !important;
+        border-radius: 3px; }
           .sidebar .nav .nav-item .nav-link:hover i, .sidebar .nav .nav-item .navbar .dropdown-toggle:hover i, .navbar .sidebar .nav .nav-item .dropdown-toggle:hover i {
             color: #fff !important; }
         .sidebar .nav .nav-item .nav-link.active, .sidebar .nav .nav-item .navbar .active.dropdown-toggle, .navbar .sidebar .nav .nav-item .active.dropdown-toggle {
           color: #fff;
-          background: #1cabe2; }
+          background: #1cabe2; 
+        border-radius: 3px; }
+        .sidebar .nav .nav-item .nav-link.active svg {
+          opacity: 1;
+        }
           .sidebar .nav .nav-item .nav-link.active i, .sidebar .nav .nav-item .navbar .active.dropdown-toggle i, .navbar .sidebar .nav .nav-item .active.dropdown-toggle i {
           /* color: #20a8d8; */}
         .sidebar .nav .nav-item .nav-link [class^="icon-"], .sidebar .nav .nav-item .navbar .dropdown-toggle [class^="icon-"], .navbar .sidebar .nav .nav-item .dropdown-toggle [class^="icon-"], .sidebar .nav .nav-item .nav-link [class*=" icon-"], .sidebar .nav .nav-item .navbar .dropdown-toggle [class*=" icon-"], .navbar .sidebar .nav .nav-item .dropdown-toggle [class*=" icon-"] {
@@ -8643,11 +8653,18 @@ app-root {
 
 .sidebar-fixed .sidebar {
   position: fixed;
-  width: 60px;
+  max-width: 260px;
+  min-width: 60px;;
   height: 100%;
-padding-top: 15px; }
+  padding: 15px 7px 15px 7px;
+  display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
-    height: calc(100vh - 55px); }
+    height: calc(100vh - 85px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+ }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
   margin-left: 60px; }
@@ -9581,8 +9598,8 @@ pointer-events: none;
 }
 
 .company-url-main-div {
-  justify-content: center;
-  margin-top: 60px;
+  /* justify-content: center; */
+  /* margin-top: 60px; */
 }
 
 .url-http-text {
@@ -9602,7 +9619,7 @@ pointer-events: none;
 
 
 .url-http-text::before {
-  content: 'Your company URL:';
+  /* content: 'Your company URL:'; */
   position: absolute;
   font-size: 16px;
   /* letter-spacing: 0.4px; */
@@ -9611,7 +9628,7 @@ pointer-events: none;
   width: 150px;
 }
 .form-group-user-name::before {
-  content: 'Your Name:';
+  /* content: 'Your Name:'; */
   position: absolute;
   font-size: 16px;
   color: #5c5aa7;
@@ -9635,13 +9652,13 @@ pointer-events: none;
   margin-bottom: 0px;
 }
 .form-group-user-name {
-  width: 410px;
+  /* width: 410px; */
   position: relative;
   margin-bottom: 0px;
 }
 
 .company-url-form-group::after, .form-group-user-name::after {
-  content: '* required information';
+  /* content: '* required information'; */
   position: absolute;
   font-size: 13px;
   color: #adadb1;
