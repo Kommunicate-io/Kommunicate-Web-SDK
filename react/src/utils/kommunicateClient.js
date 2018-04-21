@@ -834,6 +834,17 @@ const getConversationStats = (isCustomer) => {
   });
 }
 
+const conversationHandlingByBot = (botId, status) => {
+  let userSession = CommonUtils.getUserSession();
+  const converstaionHandlingByBotUrl =  getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: converstaionHandlingByBotUrl,
+  })).then(function(response){
+    console.log(response);
+  }).catch(err => {console.log(err)});
+
+}
 
 export {
   createCustomer,
@@ -884,4 +895,5 @@ export {
   getZendeskIntegrationTicket,
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
+  conversationHandlingByBot,
 }

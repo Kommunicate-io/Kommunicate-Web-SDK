@@ -10,7 +10,8 @@ import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {Link} from 'react-router-dom';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
 import { Collapse } from 'reactstrap';
-import { getIntegratedBots  } from '../../utils/kommunicateClient';
+import { getIntegratedBots, conversationHandlingByBot  } from '../../utils/kommunicateClient';
+import Diaglflow from '../Bot/images/dialogflow-icon.png'
 
 
 class AgentAssignemnt extends Component{
@@ -27,7 +28,9 @@ class AgentAssignemnt extends Component{
             openAgentRoutingRules: false,
             listOfBots: [],
             listOfBotsDropDown: false,
-            dropDownBoxTitle: 'Select a bot'
+            dropDownBoxTitle: 'Select a bot',
+            previousSelectedBot: null,
+            currentSelectedBot: null,
         };
 
     }
@@ -42,6 +45,16 @@ componentDidMount(){
             this.setState({
                 listOfBots: response.allBots,
                 botsAreAvailable: true
+            }, () => {
+                this.state.listOfBots.map( bot => {
+                    if (bot.allConversations == 1) {
+                        this.setState({
+                            currentSelectedBot: bot.name,
+                            dropDownBoxTitle: bot.name,
+                            assignConversationToBot: true,
+                        })
+                    }
+                })
             })
         }
     })
@@ -180,10 +193,27 @@ toggleConversationAssignment = () => {
                                         <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots" id="#">
                                               {
                                                 this.state.listOfBots.map( bot => {
-                                                  return (
-                                                    <MenuItem className="ul-list-of-bots" key = {bot.id} onClick={()=>{
-                                                        this.setState({"dropDownBoxTitle":bot.name})}}>{bot.name}
-                                                    </MenuItem>)
+
+                                                    return (
+                                                        <MenuItem className="ul-list-of-bots" key={bot.id} onClick={()=>{
+
+                                                            this.setState({"dropDownBoxTitle":bot.name}, () => {
+                                                                if (bot.allConversations == 0) {
+                                                                    conversationHandlingByBot(bot.name, 1).then(response => {
+                                                                        Notification.info('Conversations assigned to ' + bot.name)
+                                                                    })
+                                                                    if(this.state.currentSelectedBot){
+                                                                        conversationHandlingByBot(this.state.currentSelectedBot, 0)
+                                                                    }
+                                                                } else if (bot.allConversations == 1) {
+                                                                    conversationHandlingByBot(bot.name, 0)
+                                                                }
+                                                            })
+                                                        }}>
+                                                            <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} />
+                                                            <span>{bot.name}</span>
+                                                        </MenuItem>
+                                                    )
                                                 })
                                             }
                                         </DropdownButton>
