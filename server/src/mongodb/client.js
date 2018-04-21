@@ -5,6 +5,33 @@ const logger = require("../utils/logger");
 
 const DEFAULT_SCHEMA ="kommunicate";
 
+/**
+ * return a next value for a autoincremented filed.
+ * @param {String} collectionName collection name where document belongs 
+ * @param {fieldName} fieldName attribute name for which auto incremented value needed. 
+ */
+exports.getNextSequence = (collectionName,fieldName)=>{
+    logger.info("fetching next sequence for: ",fieldName," in: ",collectionName); 
+    return new Promise((resolve,reject)=>{
+        mongoClient.connect(mongoURL,(err,client)=>{
+            if(err){
+                logger.info("error while connecting to db: "+mongoURL,err);
+                return reject(err);
+            }else{
+                var db = client.db(DEFAULT_SCHEMA);
+                return db.collection("counter").findOneAndUpdate(
+                    {_id: collectionName+"_"+fieldName },
+                    {$inc:{sequence_value:1}},
+                    {returnOriginal:false}).then(sequenceDocument=>{
+                        return resolve(sequenceDocument.value.sequence_value);
+                    });
+                 
+            }
+    
+        });
+      
+    });
+}
 
 /**
  * this method insert a record in mongo db and return a promise.
@@ -21,9 +48,9 @@ exports.insertOne =(collectionName, document)=>{
                 return reject(err);
             }else{
                 var db = client.db(DEFAULT_SCHEMA);
-                db.collection(collectionName).insertOne(document,(result)=>{
+                db.collection(collectionName).insertOne(document).then(result=>{
                     logger.info(" record created successfully ");
-                    return resolve(result);
+                    return resolve(result.ops[0]);
                 });
             }
     

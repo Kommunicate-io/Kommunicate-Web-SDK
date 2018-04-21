@@ -191,10 +191,11 @@ class Tabs extends Component {
       Notification.info("Nothing to delete");
       return;
     }
-
+     let userSession = CommonUtils.getUserSession();
     let suggestion = {
       data: {
-        id: parseInt(this.state.faqId)
+        id: parseInt(this.state.faqId),
+        applicationId:userSession.application.applicationId
       }
     }
 

@@ -1,3 +1,4 @@
 exports.COLLECTIONS={
-    KNOWLEDGE_BASE:"knowledgebase"
+    KNOWLEDGE_BASE:"knowledgebase",
+    COUNTER:"counter"
 }

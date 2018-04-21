@@ -13,10 +13,10 @@ const { SQL_QUERIES } = require('../../query/query');
  * returns conversation list of given participent_user_Id
  * @userId
  */
-const getConversationList = (participentUserId) => {
+const getConversationList = (participantUserId) => {
 
-    console.log("request received to get conversation list of participent user: ", participentUserId);
-    return Promise.resolve(db.Conversation.findAll({ where: { participentUserId: participentUserId } }));
+    console.log("request received to get conversation list of participent user: ", participantUserId);
+    return Promise.resolve(db.Conversation.findAll({ where: { participantUserId: participantUserId } }));
 
 }
 
@@ -44,22 +44,15 @@ const updateTicketIntoConversation = (groupId, options) => {
  * create a new conversation
  *@param {Object} options
  *@param {Object} options.groupId: applozic gruop Id
- *@param {Object} options.participentUserId : user who is involved in this conversation
+ *@param {Object} options.participantUserId : user who is involved in this conversation
  *@param {Object} options.createdBy: Applozic userId if comming from plugin. AgentId if comming from dashboard;
  *@param {Object} options.status : "OPEN","ASIGNED","CLOSED","SPAM","REOPENED",
  *@param {Object} options.defaultAgentId: assignee agent Id
  * 
  */
-const createConversation = (options) => {
-    console.log("creating new converation, options:", options);
-    //return Promise.resolve().then().catch();
-    let conversation = {
-        groupId: options.groupId,
-        participentUserId: options.participentUserId,
-        status: CONVERSATION_STATUS.OPEN,
-        agentId: options.defaultAgentId,
-        createdBy: options.createdBy,
-    }
+const createConversation = (conversation) => {
+    console.log("creating new converation, options:", conversation);
+    conversation.status = CONVERSATION_STATUS.OPEN;
     return Promise.resolve(db.Conversation.create(conversation)).then(result => {
         console.log("conversation created successfully", result);
         return result;
@@ -67,15 +60,49 @@ const createConversation = (options) => {
 
 }
 /**
+ * 
+ * This function create new support group into applozic.
+ * on success response,it will make entry of conversation into kommunicate.
+ * @param {req} request contain data and headers
+ */
+const createConversationIntoApplozic = (req) => {
+    let headers = req.headers;
+    delete headers['host'];
+    return Promise.resolve(applozicClient.createSupportGroup(req.body, headers)).then(result => {
+        //console.log('group create response: ', group);
+        if (result.status === "APPLOZIC_ERROR") {
+            return result.data;
+        }
+        let group = result.response
+        let participantUserId = group.groupUsers.filter(user => { return user.role == 3 })
+        let participentUser = group.users.filter(user => { return participantUserId[0].userId == user.userId })
+        let defaultAgent = group.users.filter(user => { return user.userId == group.adminId })
+        let conversation = {
+            groupId: group.id,
+            participantUserId: participentUser[0].id,
+            defaultAgentId: defaultAgent[0].id,
+            createdBy: participentUser[0].id,
+            applicationId: headers['application-key']
+        }
+        createConversation(conversation);
+        result.updated = true;
+        return result;
+    }).catch(err => {
+        console.log('error: ', err);
+        throw err;
+    })
+}
+
+/**
  * update conversation
  */
 const updateConversation = (options) => {
     let conversation = {};
-    if (options.participentUserId) {
-        conversation.participentUserId = options.participentUserId;
+    if (options.participantUserId) {
+        conversation.participantUserId = options.participantUserId;
     }
-    if (options.participentUserId) {
-        conversation.participentUserId = options.participentUserId;
+    if (options.participantUserId) {
+        conversation.participantUserId = options.participantUserId;
     }
     if (options.status) {
         conversation.status = CONVERSATION_STATUS_ARRAY[options.status];
@@ -89,7 +116,7 @@ const updateConversation = (options) => {
     }
     if (options.agentId) {
         return userService.getByUserNameAndAppId(options.agentId, options.appId).then(user => {
-            conversation.agentId = user.id;
+            conversation.agentId = user.userKey;
             return db.Conversation.update(conversation, { where: { groupId: options.groupId } });
         }).catch(err => { throw err })
     } else {
@@ -327,4 +354,5 @@ module.exports = {
     createConversation: createConversation,
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
+    createConversationIntoApplozic:createConversationIntoApplozic
 }

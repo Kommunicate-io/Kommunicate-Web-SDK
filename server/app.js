@@ -16,11 +16,6 @@ var hazelCastClient= require("./src/cache/hazelCacheClient");
 app.use(cors());
 
 
-// concat(['./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/constant.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js'],
-// './src/webplugin/js/app/kommunicate-plugin-0.1.min.js', function(err) {
-//   if (err) throw err
-//   console.log('done');
-// });
 compressor.minify({
   compressor: 'gcc',
   input: ['./src/webplugin/knowledgebase/common.js', './src/webplugin/knowledgebase/helpdocs.js', './src/webplugin/knowledgebase/kb.js'],
@@ -46,6 +41,12 @@ compressor.minify({
     }
   }
 });
+
+// concat(['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/km-post-initialization.js'],
+// './src/webplugin/js/app/kommunicate-plugin-0.1.min.js', function(err) {
+//   if (err) throw err
+//   console.log('done');
+// });
 compressor.minify({
   compressor: 'clean-css',
   input: ['./src/webplugin/css/app/km-rich-message.css','./src/webplugin/css/app/mck-sidebox-1.0.css'],

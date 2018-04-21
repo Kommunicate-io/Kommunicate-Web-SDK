@@ -101,7 +101,6 @@ exports.authCode = (req, res) => {
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		} else if(user.loginType === 'email' || user.loginType === null) {
 			logger.info("email email email email email email email email")
-			return Promise.resolve(checkNumberOfApps(email))
 			if(_numOfApp > 1){
 				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
 				throw 'Ignore this error. It is present to by pass the promise chain'

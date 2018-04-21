@@ -198,7 +198,9 @@ class AutoSuggest extends Component {
 		let index = this.state.activeMenu;
 		let userShortcuts = Object.assign([], this.state.userShortcuts);	
 		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
-		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId} };
+		let userSession = CommonUtils.getUserSession();
+		
+		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId,applicationId:userSession.application.applicationId} };
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
