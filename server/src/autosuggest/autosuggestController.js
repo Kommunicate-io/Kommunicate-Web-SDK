@@ -1,5 +1,10 @@
 const autosuggestService = require("./autosuggestService");
 const logger = require("../utils/logger");
+
+/**
+ * returns all data in db irrespective to customer 
+ * dont use this API
+ */
 exports.getAllSuggestions = (req, res) => {
 
 	autosuggestService.getAllSuggestions()
@@ -13,18 +18,6 @@ exports.getAllSuggestions = (req, res) => {
 		.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 }
 
-// exports.getSuggestionsByUser = (req, res) => {
-
-// 	autosuggestService.getSuggestionsByUser(req.params.userName)
-// 		.then(suggestions => {
-// 			if(!suggestions){
-// 				res.status(404).json({code:"NO_SUGGESTIONS_FOUND"});
-// 			}else{
-// 				res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_USER", data:suggestions});
-// 			}
-// 		})
-// 		.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
-// }
 
 exports.getSuggestionsByAppId = (req, res) => {
 
