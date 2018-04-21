@@ -124,3 +124,15 @@ body {
     text-align: left;
     color: #716d6d;
 }
+
+.drop-down-list-of-bots {
+    height: 40px;
+    width: 60%;
+    font-size: 14px;
+    border: 1px solid #979797;
+    text-align: right;
+}
+
+.ul-list-of-bots {
+    padding: 5px;
+}
