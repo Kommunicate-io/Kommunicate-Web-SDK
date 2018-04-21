@@ -49,7 +49,7 @@ componentDidMount(){
                 this.state.listOfBots.map( bot => {
                     if (bot.allConversations == 1) {
                         this.setState({
-                            currentSelectedBot: bot.name,
+                            currentSelectedBot: bot.userName,
                             dropDownBoxTitle: bot.name,
                             assignConversationToBot: true,
                         })
@@ -199,14 +199,19 @@ toggleConversationAssignment = () => {
 
                                                             this.setState({"dropDownBoxTitle":bot.name}, () => {
                                                                 if (bot.allConversations == 0) {
-                                                                    conversationHandlingByBot(bot.name, 1).then(response => {
-                                                                        Notification.info('Conversations assigned to ' + bot.name)
-                                                                    })
                                                                     if(this.state.currentSelectedBot){
                                                                         conversationHandlingByBot(this.state.currentSelectedBot, 0)
                                                                     }
+                                                                    conversationHandlingByBot(bot.userName, 1).then(response => {
+                                                                        console.log(response);
+                                                                        if(response.code === "success"){
+                                                                            Notification.info('Conversations assigned to ' + bot.name)
+                                                                        } else {
+                                                                             Notification.info('Conversations not assigned to ' + bot.name)
+                                                                        }
+                                                                    }).catch(err => {console.log(err)})
                                                                 } else if (bot.allConversations == 1) {
-                                                                    conversationHandlingByBot(bot.name, 0)
+                                                                    Notification.info( bot.name + ' is already selected.')
                                                                 }
                                                             })
                                                         }}>
