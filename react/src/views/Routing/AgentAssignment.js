@@ -10,6 +10,7 @@ import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {Link} from 'react-router-dom';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
 import { Collapse } from 'reactstrap';
+import { getIntegratedBots  } from '../../utils/kommunicateClient';
 
 
 class AgentAssignemnt extends Component{
@@ -23,12 +24,27 @@ class AgentAssignemnt extends Component{
             preventMultiCallNotifyEverybody:false,
             botsAreAvailable: false,
             assignConversationToBot: false,
-            openAgentRoutingRules: false
+            openAgentRoutingRules: false,
+            listOfBots: [],
+            listOfBotsDropDown: false,
+            dropDownBoxTitle: 'Select a bot'
         };
 
     }
 componentWillMount (){
     this.getRoutingState();
+}
+
+componentDidMount(){
+    getIntegratedBots().then(response => {
+        console.log(response.allBots)
+        if (response && response.allBots && response.allBots.length > 0) {
+            this.setState({
+                listOfBots: response.allBots,
+                botsAreAvailable: true
+            })
+        }
+    })
 }
 getRoutingState = () => {
     return Promise.resolve(getCustomerByApplicationId()).then(response => {
@@ -157,16 +173,20 @@ toggleConversationAssignment = () => {
                                     </div>
                                 </div>
                                 <div className="row" style={{marginTop: "28px"}}>
-                                    <div className="col-md-7 col-sm-12">
+                                    <div className="col-md-7 col-sm-12" style={{marginTop: "20px"}}>
                                         <p className="km-routing-assign-bot-text-2">Select a bot to handle all new conversations: </p>
                                     </div>
-                                    <div className="col-md-4 col-sm-12">
-                                        <select>
-                                            <option value="volvo">Batman</option>
-                                            <option value="saab">Superman</option>
-                                            <option value="opel">Ironman</option>
-                                            <option value="audi">Spiderman</option>
-                                        </select>
+                                    <div className="col-md-4 col-sm-12" style={{ marginLeft: "-50px" }}>
+                                        <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots" id="#">
+                                              {
+                                                this.state.listOfBots.map( bot => {
+                                                  return (
+                                                    <MenuItem className="ul-list-of-bots" key = {bot.id} onClick={()=>{
+                                                        this.setState({"dropDownBoxTitle":bot.name})}}>{bot.name}
+                                                    </MenuItem>)
+                                                })
+                                            }
+                                        </DropdownButton>
                                     </div>
                                 </div>
                                 <div className="row" style={{marginTop: "73px"}}>
