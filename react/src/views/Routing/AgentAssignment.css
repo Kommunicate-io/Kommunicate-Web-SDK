@@ -69,7 +69,6 @@ body {
 }
 
 .km-routing-assign-bot-text-1 {
-    font-family: Roboto;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -82,7 +81,6 @@ body {
 
 .km-routing-assign-bot-text-2 {
     opacity: 0.78;
-    font-family: Roboto;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -94,7 +92,6 @@ body {
 }
 
 .km-routing-assign-bot-text-3 {
-    font-family: Roboto;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -106,7 +103,6 @@ body {
 }
 
 .km-routing-do-not-have-bots {
-    font-family: Roboto;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -119,7 +115,6 @@ body {
 
 
 .km-agent-routing-note-text {
-    font-family: Roboto;
     font-size: 14px;
     font-weight: normal;
     font-style: normal;
