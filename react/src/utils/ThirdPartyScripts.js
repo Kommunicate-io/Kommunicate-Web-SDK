@@ -7,26 +7,34 @@ class ThirdPartyScripts extends Component {
       componentDidMount(){
           // support chat widget
           var userId = CommonUtils.getUserSession.userName;
+          var currentPath = window.location.pathname;
 
-          (function(d, m){
-            var o = {};
-            if (userId) {
-              o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "userId": userId, "accessToken": CommonUtils.getUserSession().password,
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
-            } else {
-              o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
-            }
-            var s = document.createElement("script");
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = getConfig().kommunicateApi.pluginUrl;
-            var h = document.getElementsByTagName("head")[0];
-            h.appendChild(s);
-            window.kommunicate = m;
-            m._globals = o;
-          })(document, window.kommunicate || {});
+          if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
+            null
+          } else {
+            (function(d, m){
+              var o = {};
+              if (userId) {
+                o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+                "userId": userId, "accessToken": CommonUtils.getUserSession().password,
+                "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
+              } else {
+                o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+                "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
+              }
+              var s = document.createElement("script");
+              s.type = "text/javascript";
+              s.async = true;
+              s.src = getConfig().kommunicateApi.pluginUrl;
+              var h = document.getElementsByTagName("head")[0];
+              h.appendChild(s);
+              window.kommunicate = m;
+              m._globals = o;
+            })(document, window.kommunicate || {});
+          }
+
+
+
 
           // hot jar script
             (function(h,o,t,j,a,r){

@@ -57,25 +57,24 @@ class Step3 extends Component {
 
   render() {
     return (
-      <form>
+      <form className="step-3-form">
         <div className="col-lg-12 text-center">
-          <div className={this.props.hideSkipForNow? "n-vis" : "step-number-div" }>
+          {/* <div className={this.props.hideSkipForNow? "n-vis" : "step-number-div" }>
             3/3
-          </div>
-          <h1 className="setup-heading">{this.props.pageTitle}Integration</h1>
-          <h4 className="setup-sub-heading">Install Kommunicate to your product within <strong>2 minutes</strong></h4>
-          <h2 className="setup-integration-later-text">Installation instructions can also be found inside <span>Settings > CONFIGURATION > Install</span> later</h2>
-          <div className="button-link-container">
-          <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
-          </div>
-          <hr></hr>
+          </div> */}
+          <h1 className="setup-heading">{this.props.pageTitle}Add Kommunicate to your product</h1>
+          <h4 className="setup-sub-heading">I will do it <a href="javascript:void(0);" onClick={this.jumpToDashboard}>later</a> </h4>
+          {/* <h2 className="setup-integration-later-text">Installation instructions can also be found inside <span>Settings > CONFIGURATION > Install</span> later</h2> */}
         </div>
         <div className="row justify-content-center">
-          <div className="col-md-10">
+          <div className="col-md-12">
             <Install customerInfo={this.props.customerInfo}cardSize={12}/>
-            <div className="form-group">
-          <button className={this.props.hideSkipForNow? "n-vis" : "km-button km-button--primary ml-20"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}> Finish setup</button>
-        </div>
+            <div className="form-group text-center">
+              <button className={this.props.hideSkipForNow? "n-vis" : "km-button km-button--primary step-1-submit-btn"} onClick={this.jumpToDashboard} hidden={this.state.hideNextBtn}>Go to dashboard</button>
+              <div className="button-link-container text-center">
+                <MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
+              </div>
+            </div>
           </div>
         </div>
       </form>

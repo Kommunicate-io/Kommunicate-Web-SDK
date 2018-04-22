@@ -93,7 +93,7 @@ class MultiEmail extends Component {
         return (
             <div>
                 {<div className="form-group multi-email-install-link">
-                {((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) ?  <button
+                {((currentPath.includes('installation')) && (!currentPath.includes('setUpPage'))) ?  <button
                         className={this.state.instructionButtonShow === true ?"km-button km-button--primary":"n-vis"}
                         onClick={this.showEmailInput}
                     >
@@ -106,7 +106,7 @@ class MultiEmail extends Component {
                 </div>}
                 <div className={
                     ((this.state.emailInstructions === true) && ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))))
-                        ? "form-group flex-center row" : ((this.state.emailInstructions === true))
+                        ? "form-group flex-center" : ((this.state.emailInstructions === true))
                         ? "form-group m-top-10 row" : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
