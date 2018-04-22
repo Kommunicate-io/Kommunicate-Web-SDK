@@ -1,0 +1,35 @@
+.integrated-bot-converstaion-routing-text {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.1px;
+	text-align: left;
+	color: #716d6d;
+	line-height: 41px;
+}
+
+.integrated-bot-note-text {
+  font-size: 12px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.1px;
+  text-align: left;
+  color: #868c8c;
+}
+
+.integrated-bot-assigned-bot-text {
+  width: 276px;
+  height: 19px;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #716d6d;
+}

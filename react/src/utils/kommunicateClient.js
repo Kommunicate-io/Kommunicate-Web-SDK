@@ -669,19 +669,24 @@ const getIntegratedBots = () => {
   return Promise.all([axios.get(url), getUsersByType(appId, 2)])
     .then( ([mongoBots, sqlBots])=> {
       let bots = []
-      let dialogFlowBots = mongoBots.data.filter(bot=>{
-        return (bot.aiPlatform && bot.aiPlatform.toLowerCase() === 'dialogflow');
-      });
+      let dialogFlowBots = []
+
       for(let i= 0; i < sqlBots.length; i++){
         for(let j = 0; j < mongoBots.data.length; j++ ){
           if(sqlBots[i].name !== "bot" && sqlBots[i].name.toLowerCase() == mongoBots.data[j].name.toLowerCase()){
             let bot1 = sqlBots[i];
             let bot2 = mongoBots.data[j];
             bots[i] = {...bot1, ...bot2};
+
+            if(bots[i].aiPlatform && bots[i].aiPlatform === 'dialogflow'){
+              dialogFlowBots.push(bots[i])
+            }
           }
         }
       }
 
+      console.log(bots);
+      console.log(dialogFlowBots);
 
       return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
 
@@ -834,6 +839,15 @@ const getConversationStats = (isCustomer) => {
   });
 }
 
+const conversationHandlingByBot = (botId, status) => {
+  let userSession = CommonUtils.getUserSession();
+  const converstaionHandlingByBotUrl =  getConfig().kommunicateApi.createUser + '/' + botId + '/' + userSession.application.applicationId + '/' + status;
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: converstaionHandlingByBotUrl,
+  }))
+
+}
 
 export {
   createCustomer,
@@ -884,4 +898,5 @@ export {
   getZendeskIntegrationTicket,
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
+  conversationHandlingByBot,
 }
