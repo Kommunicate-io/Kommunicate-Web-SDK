@@ -912,7 +912,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
                 'contentType': params.type,
 				'message': message,
 				'metadata':metadata
-				
+
             };
             if (params.groupId) {
                 messagePxy.groupId = $kmApplozic.trim(params.groupId);
@@ -1699,7 +1699,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					topicId = (typeof topicId !== "undefined" && topicId !== "") ? topicId.toString() : "";
 					var isGroup = ($this.data("isgroup") === true);
 					var conversationId = $this.data("km-conversationid");
-					conversationId = (typeof conversationId !== "undefined" && conversationId !== "") ? conversationId.toString() : "";		
+					conversationId = (typeof conversationId !== "undefined" && conversationId !== "") ? conversationId.toString() : "";
 					// Todo: if contact is not present
 					// in the list then add it first.
 					/*
@@ -1767,7 +1767,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
-				//km-contacts-inner 
+				//km-contacts-inner
 				//km-message-inner
 				$kmMessageInner.bind('scroll', function() {
 					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
@@ -2322,7 +2322,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							reqData += "&conversationReq=true";
 						}
 					}
-					
+
 				} else {
 					if (params.startTime) {
 						reqData += "&endTime=" + params.startTime;
@@ -2527,7 +2527,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 										mckStorage.updateMckMessageArray(data.message);
 									}
 
-									
+
 								} else {
 									list ?mckMessageLayout.addContactsFromMessageList(data, true,list):mckMessageLayout.addContactsFromMessageList(data, true,list)
 									assigne ? mckStorage.setMckAssignedMessageArray(data.message) :mckStorage.setMckMessageArray(data.message)
@@ -2544,7 +2544,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 					$mck_loading.removeClass('vis').addClass('n-vis');
 					$mck_msg_loading.removeClass('vis').addClass('n-vis');
-				
+
 			}
 			_this.loadSupportGroup = function (params, callback) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
@@ -2704,7 +2704,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						if (individual) {
 							if (typeof currTabId === "undefined" || (params.tabId === currTabId && ('' + isGroupTab === '' + params.isGroup))) {
 								if (data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
-									
+
 									isMessages = false;
 									if (individual) {
 										if (params.startTime) {
@@ -3449,15 +3449,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
 
-      
-			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' + 
+
+			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
 			'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>'+
-			'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' + 
-			'<div class="km-msg-text km-msg-content"></div>' + 
-			'</div></div>' + 
+			'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' +
+			'<div class="km-msg-text km-msg-content"></div>' +
+			'</div></div>' +
 			'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >'+'{{html kmRichTextMarkup}}</div>'+
 			'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
-			
+
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
 			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
@@ -3873,7 +3873,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					fileSize = msg.fileMeta.size;
 				}
 				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata);
-				
+
 				var msgList = [ {
 					msgKeyExpr : msg.key,
 					msgDeliveredExpr : msg.delivered,
@@ -3970,11 +3970,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						target : '_blank'
 					});
 				}
-				
+
 				if (richText) {
                     kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic(".km-container div[data-msgkey='" + msg.key + "'] .km-div-slider"));
                 }
-				
+
 
 				if (msg.fileMeta) {
 					$kmApplozic("." + replyId + " .km-file-text a").trigger('click');
@@ -4020,7 +4020,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
                 }
                 return '';
 			};
-			
+
 			_this.getFileAttachment = function (msg) {
 				if (typeof msg.fileMeta === 'object') {
 					if (msg.fileMeta.contentType.indexOf("image") !== -1 || (msg.fileMeta.contentType.indexOf("audio") !== -1) || (msg.fileMeta.contentType.indexOf("video") !== -1)) {
@@ -4032,7 +4032,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 			};
 
-		
+
             _this.getFilePath = function (msg) {
                 if (msg.contentType === 2) {
                     try {
@@ -4118,9 +4118,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if (typeof name !=="string" ||typeof name === 'undefined' || name === "") {
 					return '<div class="km-alpha-contact-image km-alpha-user"><span class="km-icon-user"></span></div>';
 				}
-				
+
 				var first_alpha = name.charAt(0);
-				
+
 				var letters = /^[a-zA-Z0-9]+$/;
 
 				if (first_alpha.match(letters)) {
@@ -6215,7 +6215,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 					$mck_container.removeClass('km-panel-3').addClass('km-panel-3');
 					$mck_group_create_tab.removeClass('vis').addClass('n-vis');
-					$mck_group_info_tab.removeClass('n-vis').addClass('vis');		
+					$mck_group_info_tab.removeClass('n-vis').addClass('vis');
 				}
 			};
 			_this.loadCreateGroupTab = function() {
@@ -7420,7 +7420,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var tabId = $mck_message_inner.data('km-id');
 						// var Assigne = (contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID)?true:false;
 						// list.assigneupdate = Assigne;
-						if(contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
+						if(contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
 								mckStorage.updateMckAssignedMessageArray(messageArray);
