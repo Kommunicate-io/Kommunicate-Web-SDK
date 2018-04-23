@@ -295,6 +295,19 @@
     margin-bottom: 50px;
 }
 
+.login-back-btn {
+    position: absolute;
+    top: 45px;
+    left: 50px;
+}
+.login-back-btn svg {
+    width: 30px;
+    height: 30px;
+}
+.login-back-btn:hover {
+    box-shadow: none;
+    background-color: #fff;
+}
 
 @media(max-width:576px) {
     .signup-card-block {
