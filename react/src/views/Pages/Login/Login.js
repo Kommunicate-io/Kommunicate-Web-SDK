@@ -628,13 +628,7 @@ showPasswordField = () => {
                         Don’t have an account? <Link to={'/signup'}>Sign up</Link>
                       </p>
                       </div>
-                      <div className="col-12 text-left" >
-                      {
-                        !this.state.hideBackButton?
-                        <button type="button" className="km-button km-button--secondary step-1-submit-btn"  onClick= { this.backToLogin }>Back</button>
-                        :null
-                      }
-                      </div>
+                      
                     </div>
                
                     
@@ -668,6 +662,22 @@ showPasswordField = () => {
                 </div> */}
               </div>
             </div>
+          </div>
+          <div className="text-center" >
+            {
+              !this.state.hideBackButton?
+              <button type="button" className="km-button login-back-btn"  onClick= { this.backToLogin }>
+                <svg xmlns="http://www.w3.org/2000/svg" data-name="Group 12" viewBox="0 0 24 24">
+                <path fill="#5c5aa7" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" data-name="Path 4"/>
+                <path d="M0 0h24v24H0z" class="cls-2" data-name="Path 5" fill="none"/>
+                <g fill="none" stroke="#5c5aa7" data-name="Ellipse 3">
+                  <circle cx="12" cy="12" r="12" stroke="none"/>
+                  <circle cx="12" cy="12" r="11.5" class="cls-2" fill="none"/>
+                </g>
+                </svg>
+              </button>
+              :null
+            }
           </div>
           <div className="bottom-shape-container"></div>
         </div>

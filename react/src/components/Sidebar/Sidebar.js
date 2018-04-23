@@ -41,16 +41,16 @@ class Sidebar extends Component {
             {/* Dashboard Link */}
             <li className="nav-item">
               <NavLink to={'/dashboard'} className="nav-link" activeClassName="active" data-rh="Dashboard" data-rh-at="right" data-tip="Dashboard" data-effect="solid" data-place="right">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <g data-name="Group 5">
-                      <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 1" />
-                      <g data-name="Group 1">
-                          <path fill="#FFFFFF" d="M10.411 6.904h3.932v15.095h-3.932z" className="cls-2" />
-                          <path fill="#FFFFFF" d="M17.821 2h3.932v19.899h-3.932zM3 12.413h3.932v9.586H3z" className="cls-2"
-                          data-name="Rectangle-path" />
-                      </g>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g data-name="Group 5">
+                    <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 1" />
+                    <g data-name="Group 1">
+                        <path fill="#FFF" d="M9.951 7.909h3.158v12.122H9.951z" className="cls-2" />
+                        <path fill="#FFF" d="M15.902 3.97h3.158v15.98h-3.158zM4 12.332h3.158v7.698H4z" className="cls-2"
+                        data-name="Rectangle-path" />
                     </g>
-                </svg>
+                </g>
+            </svg>
               </NavLink>
             </li>
             {/* Conversations Link */}
@@ -125,11 +125,10 @@ class Sidebar extends Component {
               <NavLink to={'/faq'} className="nav-link" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
-                    <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 3" />
-                    <path fill="#fff" d="M8.429 2L3.571 5.238A1.358 1.358 0 0 0 3 6.381v14.667a.879.879 0 0 0 .857.952h16.1a.854.854 0 0 0 .857-.857V2.857A.854.854 0 0 0 19.952 2zm-.1 1.429l-.281 3.428-4-.19zm4.481 13.523H7.286a.751.751 0 0 1-.762-.762.819.819 0 0 1 .762-.762h5.524a.762.762 0 1 1 0 1.524zm3.524-4.286H7.286a.762.762 0 0 1 0-1.524h9.048a.751.751 0 0 1 .766.758c.09.386-.29.767-.767.767z"
-                    data-name="Path 2" />
+                  <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 3"/>
+                  <path fill="#fff" d="M8.712 3L4.5 5.811A1.178 1.178 0 0 0 4 6.8v12.734a.763.763 0 0 0 .744.827h13.971a.741.741 0 0 0 .744-.744V3.744A.741.741 0 0 0 18.715 3zM8.63 4.24l-.248 2.976-3.473-.165zm3.885 11.739H7.72a.652.652 0 0 1-.661-.661.711.711 0 0 1 .661-.661h4.795a.6615.6615 0 1 1 0 1.323zm3.059-3.72H7.72a.6615.6615 0 0 1 0-1.323h7.854a.652.652 0 0 1 .661.661c.083.331-.248.662-.661.662z" data-name="Path 2"/>
                 </g>
-            </svg>
+              </svg>
               </NavLink>
             </li>
 
