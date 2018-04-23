@@ -4,7 +4,7 @@
 .container {
     position: relative;
 }
-.login-app-div .container, .signup-app-div .container {
+.login-app-div .container, .signup-app-div .container, .applozic-user-signup .container {
     box-shadow: 0 2px 14px 0 rgba(137, 133, 133, 0.5);
     background-color: #fff;
     padding-top: 30px;
