@@ -227,6 +227,8 @@ function KmGroupUtils() {
     _this.getGroup = function(groupId) {
         if (typeof KM_GROUP_MAP[groupId] === 'object') {
             return KM_GROUP_MAP[groupId];
+        } else if (typeof KM_ASSIGNE_GROUP_MAP[groupId] === 'object') {
+            return KM_ASSIGNE_GROUP_MAP[groupId];
         } else {
             return;
         }
