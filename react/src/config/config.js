@@ -1,22 +1,25 @@
 var baseurl ={
   prod : {
    baseUrl: "https://chat.kommunicate.io",
-   kommunicateAPI: "https://api.kommunicate.io"
+   kommunicateAPI: "https://api.kommunicate.io",
+   botPlatformAPI:"https://bots.applozic.com"
   },
   dashboard : {
    baseUrl: "https://chat.kommunicate.io",
-   kommunicateAPI: "https://api.kommunicate.io"
+   kommunicateAPI: "https://api.kommunicate.io",
+   botPlatformAPI:"https://bots.applozic.com"
   },
   test:{
    baseUrl: "https://apps-test.applozic.com",
-   kommunicateAPI: "https://api-test.kommunicate.io"
+   kommunicateAPI: "https://api-test.kommunicate.io",
+   botPlatformAPI:"https://bots-test.applozic.com"
   },
   default:{
    baseUrl: "https://apps-test.applozic.com",
   // baseUrl: "http://localhost:9090/applozic",
-  // kommunicateAPI: "http://localhost:3999"
-   kommunicateAPI: "https://api-test.kommunicate.io"
-
+  //kommunicateAPI: "http://localhost:3999"
+  kommunicateAPI: "https://api-test.kommunicate.io",
+  botPlatformAPI:"http://localhost:5454"
   }
 }
 var config = {
@@ -220,6 +223,10 @@ export function getConfig() {
 }
 export function getResource(){
   return config['resources'];
+}
+export function getBaseUrl(){
+  var env =process.env.REACT_APP_NODE_ENV;
+  return baseurl[env] || baseurl.default;
 }
 export {baseurl};
 
