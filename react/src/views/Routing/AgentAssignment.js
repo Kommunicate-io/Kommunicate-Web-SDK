@@ -11,8 +11,8 @@ import {Link} from 'react-router-dom';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
 import { Collapse } from 'reactstrap';
 import { getIntegratedBots, conversationHandlingByBot  } from '../../utils/kommunicateClient';
-import Diaglflow from '../Bot/images/dialogflow-icon.png'
-
+import Diaglflow from '../Bot/images/dialogflow-icon.png';
+import botPlatformClient from '../../utils/botPlatformClient';
 
 class AgentAssignemnt extends Component{
     constructor(props) {
@@ -123,6 +123,14 @@ handleRadioBtnAutomaticAssignment = () => {
 }
 
 toggleConversationAssignment = () => {
+    console.log("state",this.state);
+    let status = !this.state.assignConversationToBot?"enabled":"disabled";
+    let currentSelectedBot = this.state.listOfBots.filter(item =>item.userName==this.state.currentSelectedBot)
+    botPlatformClient.toggleMute(currentSelectedBot[0].userKey,status).then(data=>{
+        if(data.code=="success"){
+            console.log("bot routing disabled..");
+        }
+    })
     this.setState({
         assignConversationToBot: !this.state.assignConversationToBot
     })
