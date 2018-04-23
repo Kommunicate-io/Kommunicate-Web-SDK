@@ -1486,7 +1486,7 @@ console.log("start");
                 if (data.betaPackage) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
-                    $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
+                    $applozic('.mck-running-on').removeClass('km-visibility-hidden').addClass('km-visibility-shown');
                 }
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
@@ -5438,7 +5438,7 @@ console.log("start");
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
+                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7 && contact.type !== 10) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
                         if (message.contentType !== 10) {
                             emoji_template = msgFrom + ": " + emoji_template;
