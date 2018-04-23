@@ -1,0 +1,136 @@
+---
+layout:
+---
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Customer Support, Website Chat, Customer Engagement, Messaging software, Chatbots, Customer Experience, Customer Messaging , Customer Service, Knowledge base, Customer Care, Customer Self Service, Chatbots for customer service, Customer Support Automation, Customer Service Experience, Customer Support Automation, Live chat, Chat Plugin, Chat Software	, Customer Feedback, Support Chat, Marketing automation, Live chat for sales	, Live chat for support	, Customer Engagement, Intercom, Intercom chat, Drift , Drift chat, Freshchat, Intercom alternatives, Drift alternatives">
+    <meta name="description" content="Kommunicate is a customer communication software for growing businesses for building long-lasting customer relationships that drive growth.">
+    <meta name="author" content="">
+    <meta http-equiv=”content-language” content=”en-us”>
+    <meta property="og:image" content="/assets/resources/images/Kommunicate.jpg" />
+
+    <title>Human+Bot Hybrid Customer Support Software | Kommunicate</title>
+ 
+    {% include headtag.html %}
+    <link rel="stylesheet" href="/assets/resources/css/homepage.css" type="text/css">
+
+</head>
+
+<body id="page-top">
+    <div class="show">
+      {% include nav-header.html %}
+    </div>
+    {% include_relative /sections/homepage-landing-page.html %}
+    {% include_relative /sections/homepage-experience-section.html %}
+    {% include_relative /sections/homepage-features-section.html %}
+    
+    {% include_relative /sections/homepage-customer-testimonial-section.html %}
+    {% include_relative /sections/homepage-integrate-section.html %}
+    {% include footer-section.html %}
+
+<!-- Start of HubSpot Embed Code -->
+  <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
+<!-- End of HubSpot Embed Code -->
+
+
+<script>
+  $(document).ready(function(){
+
+var slide = $('.slider-single');
+var slideTotal = slide.length - 1;
+var slideCurrent = -1;
+
+function slideInitial() {
+  slide.addClass('proactivede');
+  setTimeout(function() {
+    slideRight();
+  }, 500);
+}
+
+function slideRight() {
+  if (slideCurrent < slideTotal) {
+    slideCurrent++;
+  } else {
+    slideCurrent = 0;
+  }
+
+  if (slideCurrent > 0) {
+    var preactiveSlide = slide.eq(slideCurrent - 1);
+  } else {
+    var preactiveSlide = slide.eq(slideTotal);
+  }
+  var activeSlide = slide.eq(slideCurrent);
+  if (slideCurrent < slideTotal) {
+    var proactiveSlide = slide.eq(slideCurrent + 1);
+  } else {
+    var proactiveSlide = slide.eq(0);
+
+  }
+
+  slide.each(function() {
+    var thisSlide = $(this);
+    if (thisSlide.hasClass('preactivede')) {
+      thisSlide.removeClass('preactivede preactive active proactive').addClass('proactivede');
+    }
+    if (thisSlide.hasClass('preactive')) {
+      thisSlide.removeClass('preactive active proactive proactivede').addClass('preactivede');
+    }
+  });
+  preactiveSlide.removeClass('preactivede active proactive proactivede').addClass('preactive');
+  activeSlide.removeClass('preactivede preactive proactive proactivede').addClass('active');
+  proactiveSlide.removeClass('preactivede preactive active proactivede').addClass('proactive');
+}
+
+function slideLeft() {
+  if (slideCurrent > 0) {
+    slideCurrent--;
+  } else {
+    slideCurrent = slideTotal;
+  }
+
+  if (slideCurrent < slideTotal) {
+    var proactiveSlide = slide.eq(slideCurrent + 1);
+  } else {
+    var proactiveSlide = slide.eq(0);
+  }
+  var activeSlide = slide.eq(slideCurrent);
+  if (slideCurrent > 0) {
+    var preactiveSlide = slide.eq(slideCurrent - 1);
+  } else {
+    var preactiveSlide = slide.eq(slideTotal);
+  }
+  slide.each(function() {
+    var thisSlide = $(this);
+    if (thisSlide.hasClass('proactivede')) {
+      thisSlide.removeClass('preactive active proactive proactivede').addClass('preactivede');
+    }
+    if (thisSlide.hasClass('proactive')) {
+      thisSlide.removeClass('preactivede preactive active proactive').addClass('proactivede');
+    }
+  });
+  preactiveSlide.removeClass('preactivede active proactive proactivede').addClass('preactive');
+  activeSlide.removeClass('preactivede preactive proactive proactivede').addClass('active');
+  proactiveSlide.removeClass('preactivede preactive active proactivede').addClass('proactive');
+}
+var left = $('.slider-left');
+var right = $('.slider-right');
+left.on('click', function() {
+  slideLeft();
+});
+right.on('click', function() {
+  slideRight();
+});
+slideInitial();
+
+
+  });
+</script>
+
+<script src="https://applozic.activehosted.com/f/embed.php?id=11" type="text/javascript" charset="utf-8"></script>
+</body>
+
+</html>
