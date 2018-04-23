@@ -2582,7 +2582,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// }
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP+"?userId=" + MCK_USER_ID,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 					}
@@ -3652,26 +3652,26 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 					$kmApplozic("#km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
-					// $mck_msg_inner.bind('scroll', function() {
-					// 	if ($mck_msg_inner.scrollTop() === 0) {
-					// 		var tabId = $mck_msg_inner.data("km-id");
-					// 		if (typeof tabId === "undefined" || tabId === "") {
-					// 			return;
-					// 		}
-					// 		var isGroup = $mck_msg_inner.data('isgroup');
-					// 		var conversationId = $mck_msg_inner.data('km-conversationid');
-					// 		conversationId = (conversationId) ? conversationId.toString() : "";
-					// 		var startTime = $mck_msg_inner.data('datetime');
-					// 		if (startTime > 0 && !MESSAGE_SYNCING) {
-					// 			// mckMessageService.loadMessageList({
-					// 			// 	'tabId' : tabId,
-					// 			// 	'isGroup' : isGroup,
-					// 			// 	'conversationId' : conversationId,
-					// 			// 	'startTime' : startTime
-					// 			// });
-					// 		}
-					// 	}
-					// });
+					$mck_msg_inner.bind('scroll', function() {
+						if ($mck_msg_inner.scrollTop() === 0) {
+							var tabId = $mck_msg_inner.data("km-id");
+							if (typeof tabId === "undefined" || tabId === "") {
+								return;
+							}
+							var isGroup = $mck_msg_inner.data('isgroup');
+							var conversationId = $mck_msg_inner.data('km-conversationid');
+							conversationId = (conversationId) ? conversationId.toString() : "";
+							var startTime = $mck_msg_inner.data('datetime');
+							if (startTime > 0 && !MESSAGE_SYNCING) {
+								mckMessageService.loadMessageList({
+									'tabId' : tabId,
+									'isGroup' : isGroup,
+									'conversationId' : conversationId,
+									'startTime' : startTime
+								});
+							}
+						}
+					});
 					$mck_text_box.focus();
 				} else {
 					params.tabId = "";
