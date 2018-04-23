@@ -86,7 +86,7 @@ constructor(props){
         googleOAuth: true,
         email: email,
         userName: email,
-        password: 'CHANGE IT',
+        password: '',
         loginButtonAction: 'getAppList',
         loginType: loginType
       }, () => {
