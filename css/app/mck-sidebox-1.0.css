@@ -4704,15 +4704,21 @@ margin-top: 243px;
 
 .km-faqsearch-input {
     padding-left: 42px!important;
-    width: calc(100% - 70px);
+    width: calc(100% - 70px) !important;
     height: 31px!important;
     background-color: #d0d0d0 !important;
     color: #696464!important;
-    box-shadow: none;
-    outline: none;
-    border: none;
+    box-shadow: none!important;
+    outline: none!important;
+    border: none!important;
     margin: 0 15px!important;
-    border-radius: 3px;
+    border-radius: 3px!important;
+    box-sizing: content-box !important;
+}
+.km-faqsearch-input:focus {
+    box-shadow: none!important;
+    outline: none!important;
+    border: none!important;
 }
 
 .mck-title{
