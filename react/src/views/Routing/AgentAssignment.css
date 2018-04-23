@@ -136,3 +136,13 @@ body {
 .ul-list-of-bots {
     padding: 5px;
 }
+
+div.drop-down-container ul {
+    width: max-content;
+}
+
+.bot-name-drop-down-list {
+    margin-left: 2px;
+    display: inline-block;
+    width: 170px;
+}
