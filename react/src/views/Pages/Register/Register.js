@@ -9,6 +9,7 @@ import CommonUtils from '../../../utils/CommonUtils';
 import ApplozicClient from '../../../utils/applozicClient';
 import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
+import { Link } from 'react-router-dom';
 
 class Register extends Component {
   constructor(props){
@@ -198,13 +199,11 @@ class Register extends Component {
     console.log("invite",this.state.invitedUserEmail);
     return (
       <div className="app flex-row align-items-center signup-app-div">
-        <header>
-        <div className="header-container">
-          <div className="logo-container">
+        <div className="container">
+          <div className="logo-container text-center">
             <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 729.5 138.5">
-            <path className="km-logo-final-full-0" d="M148.7,130.6V53c0-28-22.7-50.8-50.8-50.8H51.7C23.7,2.2,0.9,24.9,0.9,53c0,28,22.7,50.8,50.8,50.8h50 c0,0,4.1,0.2,6.5,1.1c2.3,0.9,5,2.9,5,2.9l30.9,25.4c0,0,2.8,2.4,3.8,1.9C148.9,134.6,148.7,130.6,148.7,130.6z M53.1,63.3 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V41.5c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V63.3z M81.4,73.6 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V31.2c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V73.6z M109.7,63.3 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V41.5c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V63.3z"
-            />
-            <g>
+              <path className="km-logo-final-full-0" d="M148.7,130.6V53c0-28-22.7-50.8-50.8-50.8H51.7C23.7,2.2,0.9,24.9,0.9,53c0,28,22.7,50.8,50.8,50.8h50 c0,0,4.1,0.2,6.5,1.1c2.3,0.9,5,2.9,5,2.9l30.9,25.4c0,0,2.8,2.4,3.8,1.9C148.9,134.6,148.7,130.6,148.7,130.6z M53.1,63.3 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V41.5c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V63.3z M81.4,73.6 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V31.2c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V73.6z M109.7,63.3 c0,3.4-3,6.1-6.6,6.1c-3.6,0-6.6-2.7-6.6-6.1V41.5c0-3.4,3-6.1,6.6-6.1c3.6,0,6.6,2.7,6.6,6.1V63.3z"/>
+              <g>
                 <path className="km-logo-final-full-1" d="M177.5,86.6c-0.9,0.9-2,1.3-3.3,1.3c-1.3,0-2.4-0.4-3.3-1.3c-0.9-0.9-1.3-2-1.3-3.3V33.8 c0-1.3,0.4-2.4,1.3-3.3c0.9-0.9,2-1.3,3.3-1.3c1.3,0,2.4,0.4,3.3,1.3c0.9,0.9,1.4,2,1.4,3.3v29.1l17.2-17.2c0.9-0.9,2-1.3,3.3-1.3 c1.3,0,2.4,0.4,3.3,1.3c0.9,0.9,1.4,2,1.4,3.3c0,1.3-0.5,2.4-1.4,3.3l-12.6,12.6L203,80.3c1.2,1.6,1.4,3.2,0.5,5 c-0.9,1.8-2.2,2.6-3.9,2.6c-1.7,0-2.9-0.6-3.8-1.7l-12.3-15l-4.6,4.6v7.4C178.9,84.7,178.4,85.8,177.5,86.6z"
                 />
                 <path className="km-logo-final-full-1" d="M234.9,88.2c-5.7,0-10.4-2.1-14.4-6.2c-3.9-4.1-5.9-9.1-5.9-14.9c0-5.8,2-10.7,5.9-14.9 c3.9-4.2,8.7-6.3,14.2-6.3c5.5,0,10.3,2.1,14.2,6.3c3.9,4.2,5.8,9.3,5.8,15.1c0,5.8-2,10.6-5.9,14.4 C245.3,86.1,240.6,88.2,234.9,88.2z M226.9,58.3c-2,2.4-3,5.3-3,8.7c0,3.5,1,6.4,3,8.9c2.2,2.1,4.8,3.1,7.9,3.1 c3.1,0,5.7-1,7.9-3.1c2.2-2.5,3.3-5.4,3.3-8.9c0-3.5-1.1-6.4-3.3-8.7c-2.4-2.1-5-3.2-7.9-3.2C231.9,55.1,229.3,56.2,226.9,58.3z"
@@ -227,21 +226,39 @@ class Register extends Component {
                 />
                 <path className="km-logo-final-full-1" d="M726.8,65.9c0,1.2-0.4,2.2-1.2,3c-0.8,0.8-1.9,1.1-3.2,1.1h-26.7c0.5,2.4,1.5,4.3,2.9,5.5 c1.8,2.1,4.4,3.3,7.9,3.7c3.4,0.4,6.4-0.3,8.9-2.1c0.8-0.9,2-1.3,3.4-1.3c1.4,0,2.4,0.4,2.9,1.1c1.6,1.7,1.6,3.6,0,5.5 c-4,3.7-9,5.5-14.8,5.5c-5.9,0-10.8-2.1-14.7-6.2c-3.9-4.1-6-9-6-14.8c0.1-5.8,2.1-10.7,6-14.8c3.9-4.1,8.7-6.2,14.3-6.2 c5.6,0,10.3,1.8,14.2,5.5c3.8,3.7,5.9,8.3,6.3,14V65.9z M706.6,54c-3.2,0.2-5.9,1.2-7.8,3c-2,1.8-3.1,3.8-3.5,5.9H719 c-0.5-2-1.9-3.9-4.1-5.7C712.7,55.3,709.9,54.3,706.6,54z"
                 />
-            </g>
-        </svg>
-            </div>
-            <div className="link-container"> 
-            </div>
-        </div>
-    </header>
-        <div className="container">
-          <div className="row justify-content-center">
+              </g>
+            </svg>
+          </div>
+          
+          <div className="row justify-content-center signup-form-div">
             <div className="col-md-6">
+            <hr className="hr"/>
               <div className="card mx-4">
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
-                  <h1 className="login-signup-heading text-center">Sign Up</h1>
-                  <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
+                  <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
+                  {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
+
+                  <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
+                      <defs>
+                        <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
+                      </defs>
+                      <clipPath id="b">
+                          <use overflow="visible" xlinkHref="#a" />
+                      </clipPath>
+                      <path fill="#FBBC05" d="M0 37V11l17 13z" clipPath="url(#b)" />
+                      <path fill="#EA4335" d="M0 11l17 13 7-6.1L48 14V0H0z" clipPath="url(#b)" />
+                      <path fill="#34A853" d="M0 37l30-23 7.9 1L48 0v48H0z" clipPath="url(#b)" />
+                      <path fill="#4285F4" d="M48 48L17 24l-4-3 35-10z" clipPath="url(#b)" />
+                    </svg>
+                    Sign up with Google
+                  </a>
+
+                  <div className="or-seperator">
+                    <div className="or-seperator--line"></div>
+                    <div className="or-seperator--text">OR</div>
+                  </div>
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
@@ -249,7 +266,7 @@ class Register extends Component {
                    <label className="label-for-input name-label">Name</label>
                   </div>  
 
-                  <div className="input-group mb-3">
+                  <div className="input-group mb-3 email-field-group">
                     {/* <span className="input-group-addon">@</span> */}
                     <input id = "input-email" type="text" className="input" autoComplete="off" placeholder=" " onKeyPress={(e)=>{if(e.charCode===13){document.getElementById(this.state.isInvited?"input-name":"input-password").focus()}}} onChange= { this.setEmail } readOnly ={this.state.isEmailReadonly} value={this.state.email} required disabled={this.state.isInvited}/>
                     <label className="label-for-input email-label">Email Id</label>
@@ -283,12 +300,10 @@ class Register extends Component {
                   </div>
                   <div className="row signup-button-row">
                     <div className="col-lg-12 text-center">
-                      <button id="create-button"type="button" className="btn btn-primary px-4 btn-primary-custom signup-signup-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
-                      <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"mt-4 btn btn-primary px-4 btn-primary-custom signup-signup-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
-                        <img src={GoogleSignIn} style={{width: "60%", height: "100%"}}/>
-                      </a>
-                      <p>
-                        Already have an account? <a href="/login/">Sign In</a>
+                      <button id="create-button"type="button" className="km-button km-button--primary step-1-submit-btn" onClick= { this.createAccount } disabled ={this.state.disableRegisterButton}>{this.state.signupButtonTxt}</button>
+                      
+                      <p className="have-need-account">
+                        Already have an account? <Link to={'/login'}>Sign In</Link>
                       </p>
                     </div>
                   </div>
@@ -296,6 +311,7 @@ class Register extends Component {
                 </div>
               </div>
             </div>
+            <div className="bottom-shape-container"></div>
           </div>
         </div>
     );
