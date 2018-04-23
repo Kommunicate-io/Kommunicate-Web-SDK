@@ -238,7 +238,7 @@ function KmGroupUtils() {
             return;
         }
     };
-    _this.addGroup = function(group) {
+    _this.addGroup = function(group,list) {
         var name = (group.name) ? group.name : group.id;
         var users = [];
         $kmApplozic.each(group.groupUsers, function(i, user) {
@@ -267,6 +267,9 @@ function KmGroupUtils() {
         KM_GROUP_MAP[group.id] = groupFeed;
         if (group.clientGroupId) {
             KM_CLIENT_GROUP_MAP[group.clientGroupId] = groupFeed;
+        }
+        if(list){
+            KM_ASSIGNE_GROUP_MAP[group.id] = groupFeed;   
         }
         return groupFeed;
     };
