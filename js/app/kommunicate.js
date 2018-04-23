@@ -170,8 +170,8 @@ $applozic.extend(true,Kommunicate,{
         }
         let data = {
             "groupId": options.groupId,
-            "participentUserId": options.participentUserId,
-            "createdBy": options.participentUserId,
+            "participantUserId": options.participantUserId,
+            "createdBy": options.participantUserId,
             "defaultAgentId": options.defaultAgentId,
             "applicationId": options.applicationId,
         }
