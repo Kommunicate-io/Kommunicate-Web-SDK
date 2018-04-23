@@ -4546,12 +4546,12 @@ color: rgba(0,0,0,0.5);
 
 .km-faqdiv{
 	overflow-y: auto;
-	height: 100%;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	position: absolute;
+    height: calc(100% - 26px);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
 }
 
 .km-faqquestion{
@@ -4620,6 +4620,12 @@ color: rgba(0,0,0,0.5);
 
 #km-faqanswer{
 	overflow-y: scroll;
+}
+.km-visibility-hidden {
+	visibility: hidden !important;
+}
+.km-visibility-shown {
+	visibility: visible !important;
 }
 
 .km-faqanswer img{
