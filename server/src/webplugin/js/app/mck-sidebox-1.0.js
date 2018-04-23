@@ -3555,6 +3555,7 @@ console.log("start");
                                     }
                                 }
                                 if (typeof params.callback === 'function') {
+                                    response.updated = data.updated ? data.updated : false;
                                     response.status = 'success';
                                     response.data = group;
                                     params.callback(response);
@@ -4844,7 +4845,6 @@ console.log("start");
             };
 
             _this.searchCity = function () {
-                var items = new Array();
                 $mck_city_search_input.mcktypeahead({
                     order: 'desc',
                     hint: false,
@@ -4866,7 +4866,9 @@ console.log("start");
                             url: CITY_SEARCH_URL+ query,
                             type: 'get',
                             success: (data) => {
-                                // console.log('data: ', data);
+                                //console.log('data: ', data);
+                                var items = new Array();
+
                                 data.data.map(function (city) {
                                     var group;
                                     group = {

@@ -8,8 +8,8 @@ const logger = require('../utils/logger');
  * 
  */
 exports.getConversationList=(req, res)=>{
-    const participentUserId = req.params.participentId;
-    conversationService.getConversationList(participentUserId)
+    const participantUserId = req.params.participantId;
+    conversationService.getConversationList(participantUserId)
     .then(dbUtils.getDataArrayFromResultSet)
     .then(conversationList=>{
         console.log("got data from db",conversationList);
@@ -22,9 +22,16 @@ exports.getConversationList=(req, res)=>{
 }
 
 
-exports.createConversation= (req,res)=>{
+exports.createConversation = (req, res) => {
     console.log("request received to create conversation");
-    return Promise.resolve(conversationService.createConversation(req.body)).then(result=>{
+    let conversation = {
+        groupId: req.body.groupId,
+        participantUserId: req.body.participantUserId || req.params.participentId,
+        agentId: req.body.defaultAgentId,
+        createdBy: req.body.createdBy,
+        applicationId: req.body.applicationId ? req.body.applicationId : null
+    }
+    return Promise.resolve(conversationService.createConversation(conversation)).then(result=>{
         console.log("conversation created successfully", result.dataValues);
         res.status(201).json({code:"SUCCESS",data:result.dataValues});
     }).catch(err=>{
@@ -37,6 +44,15 @@ exports.createConversation= (req,res)=>{
 
     })
 
+}
+
+exports.createSupportGroup=(req, res)=>{
+    return Promise.resolve(conversationService.createConversationIntoApplozic(req)).then(response=>{
+        console.log('response: ', response);
+        return res.status(201).json(response);
+    }).catch(err=>{
+        return res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"Something went wrong"}); 
+    });
 }
 
 exports.addMemberIntoConversation = (req, res) => {

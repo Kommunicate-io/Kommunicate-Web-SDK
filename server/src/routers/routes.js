@@ -98,6 +98,7 @@ userRouter.post('/:userName/password-reset', passwordResetController.processPass
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
+userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
@@ -123,10 +124,11 @@ profileImageRouter.post('/', upload.single('file'), profileImageController.uploa
 //conversation router
 conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
 conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
-conversationRouter.get('/participent/:participentId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
+conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
 conversationRouter.get('/', conversationController.getConversationStats);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
 conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
+conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
 applicationRouter.get('/:appId/welcomemessage',validate(applicationValidation.getWelcomeMessage),inAppMsgController.getInAppMessages);

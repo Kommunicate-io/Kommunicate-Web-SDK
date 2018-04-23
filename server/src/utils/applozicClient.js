@@ -338,7 +338,7 @@ exports.updateApplozicClient = (userName, accessToken,applicationId,user,options
     if(response.data&&response.data.status ==="success"){
       return {code:"success"};
     }else {
-      throw {code:APPLOZIC_ERROR,data:response}
+      throw {code:"APPLOZIC_ERROR",data:response}
     }
    })
    .catch(err=>{
@@ -347,9 +347,20 @@ exports.updateApplozicClient = (userName, accessToken,applicationId,user,options
    })
 }
 
-exports.createGroup = (options)=>{
+exports.createSupportGroup = (groupInfo, headers) => {
   console.log("calling applozic client to create group");
-  return axois.post(url,{},{headers:{}});
+  let url = config.getProperties().urls.createGroup;
+  return Promise.resolve(axios.post(url, groupInfo, { headers: headers })).then(result => {
+    if (result.data && result.data.status === "success") {
+      return result.data;
+    } else {
+      return { status: "APPLOZIC_ERROR", data: result.data }
+    }
+  })
+    .catch(err => {
+      console.log("error while updating user", err);
+      throw err;
+    });
 }
 
 

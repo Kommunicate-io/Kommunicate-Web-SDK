@@ -469,7 +469,13 @@ const getUsersByCustomerId = (customerId) => {
     return users;
   });
 }
+const changeBotStatus =(botId, appId, status)=>{
+  return getByUserNameAndAppId(botId, appId).then(bot=>{
+    return Promise.resolve(userModel.update({allConversations:status},{where:{id:bot.id}}));
+  })
+}
 
+exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;

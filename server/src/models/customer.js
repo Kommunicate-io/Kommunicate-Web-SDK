@@ -63,12 +63,7 @@ module.exports = function(sequelize, DataTypes) {
     billingCustomerId:{
       type: DataTypes.STRING(50),
       field: "billing_cus_id" 
-    },
-    loginType: {
-     type:DataTypes.ENUM,
-     field:'login_type',
-     values: ['email', 'oauth']
-    },
+    }
   }, {
     underscored: true,
     paranoid: true
