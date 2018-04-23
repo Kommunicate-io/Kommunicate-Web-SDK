@@ -4680,7 +4680,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					titleExpr : title,
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
-				if ($listId === "km-contact-search-list") {
+				if ($listId === "km-contact-search-list" || $listId === "km-assigned-search-list" ||$listId === "km-closed-conversation-list") {
 					$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
 				} else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
