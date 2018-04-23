@@ -35,8 +35,6 @@ function ApplozicSidebox() {
     }, {
             "name": "plugins", "url": MCK_STATICPATH + "/lib/js/mck-ui-plugins.min.js"
     }, {
-            "name": "socket", "url": MCK_STATICPATH + "/lib/js/mck-socket.min.js"
-    }, {
             "name": "socket", "url": MCK_STATICPATH + "/lib/js/mqttws31.js"
     }, {
             "name": "maps", "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
@@ -46,12 +44,14 @@ function ApplozicSidebox() {
             "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
     }, {
             "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/min/tiny-slider.js"
-    },{
+    }, {
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
-    },{
+    }, {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
     }, {
-            "name": "mck-common", "url": MCK_STATICPATH + "/js/app/mck-common-1.0.js"
+            "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
+    }, {
+            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js"
     }, {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     }, {
@@ -64,9 +64,6 @@ function ApplozicSidebox() {
             "name": "locationpicker", "url": MCK_STATICPATH + "/lib/js/locationpicker.jquery.min.js"
     } ];
    var mck_videocall = [ {
-        "name": "video_videocall", "url": MCK_STATICPATH + "/js/app/videocall.js"
-
-    }, {
           "name": "video_twilio", "url": MCK_STATICPATH + "/js/app/twilio-video.js"
     } ];
     this.load = function() {
@@ -89,7 +86,7 @@ function ApplozicSidebox() {
             }
             head.appendChild(script);
         } catch (e) {
-            
+
             console.log("Plugin loading error. Refresh page.");
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
