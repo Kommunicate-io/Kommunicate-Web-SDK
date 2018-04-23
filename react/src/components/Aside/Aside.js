@@ -345,14 +345,15 @@ class Aside extends Component {
                 <div className="km-container">
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
-                      <div className="km-box-top km-row km-wt-user-icon">
+                      <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="blk-lg-3">
                           <div id="km-user-icon" className="km-user-icon"></div>
                         </div>
                         <div className="blk-lg-7">
                            <ul id="kommunicate-panel-tabs" className="list-inline km-nav-tab">
-                             <li id="km-conversation"className="active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">All Conversation</a></li>
-                             <li id="km-assigned"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Assigned</a></li>
+                             <li id="km-conversation"className="km-conversation-tabView active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">All Conversation</a></li>
+                             <li id="km-assigned" className="km-conversation-tabView"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Assigned</a></li>
+                             <li id="km-closed" className="km-conversation-tabView"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Closed</a></li>
                              {/*
                                <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
                               */}
@@ -434,7 +435,7 @@ class Aside extends Component {
                         <div id="km-unassigned-cell" className="km-unassigned-cell km-panel-cell n-vis">
                           <div className="km-panel-inner km-contacts-inner">
                             <ul id="km-assigned-list"
-                              className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
+                              className="km-contact-list km-nav km-nav-tabs km-nav-stacked">
                             </ul>
                           </div>
                           <div id="km-unassigned-loading" className="km-loading n-vis">
@@ -464,10 +465,12 @@ class Aside extends Component {
                             <div className="km-tab-cell">
                               <div className="km-message-inner">
                                 <ul id="km-contact-list"
-                                  className="people km-contact-list km-nav km-nav-tabs km-nav-stacked">
+                                  className="people km-contact-list km-converastion km-nav km-nav-tabs km-nav-stacked">
                                 </ul>
                                 <ul id="km-assigned-search-list"
-                                  className="km-contact-list people km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                <ul id="km-closed-conversation-list"
+                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
                                   <img src="/applozic/images/ring.gif"/>
                                 </div>
