@@ -47,7 +47,7 @@ componentDidMount(){
                 botsAreAvailable: true
             }, () => {
                 this.state.listOfBots.map( bot => {
-                    if (bot.allConversations == 1) {
+                    if (parseInt(bot.allConversations) == 1 && parseInt(bot.bot_availability_status) === 1) {
                         this.setState({
                             currentSelectedBot: bot.userName,
                             dropDownBoxTitle: bot.name,
@@ -189,34 +189,39 @@ toggleConversationAssignment = () => {
                                     <div className="col-md-7 col-sm-12" style={{marginTop: "20px"}}>
                                         <p className="km-routing-assign-bot-text-2">Select a bot to handle all new conversations: </p>
                                     </div>
-                                    <div className="col-md-4 col-sm-12" style={{ marginLeft: "-50px" }}>
+                                    <div className="col-md-4 col-sm-12 drop-down-container" style={{ marginLeft: "-50px" }}>
                                         <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots" id="#">
                                               {
                                                 this.state.listOfBots.map( bot => {
-
                                                     return (
                                                         <MenuItem className="ul-list-of-bots" key={bot.id} onClick={()=>{
-
-                                                            this.setState({"dropDownBoxTitle":bot.name}, () => {
-                                                                if (bot.allConversations == 0) {
-                                                                    if(this.state.currentSelectedBot){
-                                                                        conversationHandlingByBot(this.state.currentSelectedBot, 0)
-                                                                    }
-                                                                    conversationHandlingByBot(bot.userName, 1).then(response => {
-                                                                        console.log(response);
-                                                                        if(response.code === "success"){
-                                                                            Notification.info('Conversations assigned to ' + bot.name)
-                                                                        } else {
-                                                                             Notification.info('Conversations not assigned to ' + bot.name)
+                                                            if (parseInt(bot.bot_availability_status) === 1) {
+                                                                this.setState({"dropDownBoxTitle":bot.name}, () => {
+                                                                    if (bot.allConversations == 0) {
+                                                                        if(this.state.currentSelectedBot){
+                                                                            conversationHandlingByBot(this.state.currentSelectedBot, 0)
                                                                         }
-                                                                    }).catch(err => {console.log(err)})
-                                                                } else if (bot.allConversations == 1) {
-                                                                    Notification.info( bot.name + ' is already selected.')
-                                                                }
-                                                            })
+                                                                        conversationHandlingByBot(bot.userName, 1).then(response => {
+                                                                            console.log(response);
+                                                                            if(response.data.code === "success"){
+                                                                                Notification.info('Conversations assigned to ' + bot.name)
+                                                                            } else {
+                                                                                 Notification.info('Conversations not assigned to ' + bot.name)
+                                                                            }
+                                                                        }).catch(err => {console.log(err)})
+                                                                    } else if (bot.allConversations == 1) {
+                                                                        Notification.info( bot.name + ' is already selected.')
+                                                                    }
+                                                                 })
+                                                            } else if (parseInt(bot.bot_availability_status) === 0) {
+                                                                Notification.warning( bot.name + ' is disabled')
+                                                            }
                                                         }}>
                                                             <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} />
-                                                            <span>{bot.name}</span>
+                                                            <span className="bot-name-drop-down-list">{bot.name}</span>
+                                                            {
+                                                                (parseInt(bot.bot_availability_status) === 1) ? <span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span>:<span style={{marginLeft: '5px'}} className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
+                                                            }
                                                         </MenuItem>
                                                     )
                                                 })
