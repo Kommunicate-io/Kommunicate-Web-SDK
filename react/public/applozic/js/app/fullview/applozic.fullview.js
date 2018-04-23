@@ -2600,7 +2600,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						console.log("closed",data.response);
 						var list = {};
 						list.closedList = "km-closed-conversation-list";
-						mckMessageService.addContactInConversationList(data,"closed",list);
+						mckMessageService.addContactInConversationList(data,individual,"closed",list);
 					}
 
 				})
@@ -3702,9 +3702,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				}
 				if (params.initialcall) {
+					mckMessageService.loadCloseGroup(params, callback);
 					mckMessageService.loadSupportGroup(params, callback);
 					mckMessageService.loadAssignedGroup(params, callback);
-					mckMessageService.loadCloseGroup(params, callback);
 				} else {
 					 mckMessageService.loadMessageList(params, callback);
 				}
