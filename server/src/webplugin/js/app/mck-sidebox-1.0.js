@@ -5438,7 +5438,7 @@ console.log("start");
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
                     }
-                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7) {
+                    if (contact.isGroup && contact.type !== 3 && contact.type !== 7 && contact.type !== 10) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
                         if (message.contentType !== 10) {
                             emoji_template = msgFrom + ": " + emoji_template;
