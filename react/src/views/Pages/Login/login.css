@@ -291,6 +291,10 @@
     position: relative;
 }
 
+.login-signup-heading {
+    margin-bottom: 50px;
+}
+
 .card-block-login-frgtpass-container .login-signup-heading {
     margin-bottom: 50px;
 }
