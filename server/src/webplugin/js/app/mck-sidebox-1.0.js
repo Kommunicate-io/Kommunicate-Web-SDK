@@ -7720,6 +7720,7 @@ console.log("start");
             var openGroupSubscriber = [];
             var checkConnectedIntervalId;
             var sendConnectedStatusIntervalId;
+            var sendConnectedStatus;
             var SOCKET = '';
             var $mck_sidebox = $applozic("#mck-sidebox");
             var $mck_tab_title = $applozic("#mck-tab-title");
