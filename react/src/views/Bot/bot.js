@@ -7,7 +7,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
-import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo} from '../../utils/kommunicateClient';
+import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot} from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
@@ -491,6 +491,15 @@ class Tabs extends Component {
         // this.toggleDeleteBotIntegrationModal()
         // this.toggleEditBotIntegrationModal()
         this.getIntegratedBotsWrapper()
+        return true
+      }
+    }).then(response => {
+      if(response ===  true){
+        return conversationHandlingByBot(this.state.botUserName, 0)
+      }
+    }).then(response => {
+      if(response.data.code === "success"){
+        Notification.info('Disabled bot removed from converstaions')
       }
     })
 
