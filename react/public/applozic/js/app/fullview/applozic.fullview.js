@@ -4664,6 +4664,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if ($listId === "km-contact-search-list") {
 					contHtmlExpr = 'cs-' + contHtmlExpr;
 				}
+				if ($listId === "km-assigned-search-list") {
+					contHtmlExpr = 'as-' + contHtmlExpr;
+				}
+				if ($listId === "km-closed-conversation-list") {
+					contHtmlExpr = 'cl-' + contHtmlExpr;
+				}
 				var contactList = [ {
 					contHtmlExpr : contHtmlExpr,
 					contIdExpr : contact.contactId,
@@ -4690,7 +4696,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					} else {
 						$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
 						$kmApplozic.tmpl("KMconversationTemplate", contactList).appendTo('#conversation-section');
-					}
+					}}
 					var $textMessage = $kmApplozic("#km-li-" + contHtmlExpr + " .kmMsgTextExpr");
 					(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
 					if (!$kmApplozic(".left .person").length) {
@@ -4702,7 +4708,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					} else if ($mck_no_contact_text.hasClass('vis')) {
 						$mck_no_contact_text.removeClass('vis').addClass('n-vis');
 					}
-				}
+				
 			};
 			_this.addContactForSearchList = function(contact, $listId) {
 				var isGroupTab = contact.isGroup;
