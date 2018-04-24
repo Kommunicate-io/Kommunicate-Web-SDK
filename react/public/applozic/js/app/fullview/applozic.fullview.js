@@ -2426,7 +2426,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					// if (CONTACT_SYNCING && !params.startTime) {
 					// 	_this.initSearch();
 					// }
-					if (data.message.length === 0) {
+					if (data && data.message && data.message.length === 0) {
 						$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
 					}
 					CONTACT_SYNCING = false;
@@ -2496,7 +2496,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							}
 						}
 					} else {
-						if (data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
+						if (!data || data + '' === "null" || typeof data.message === "undefined" || data.message.length === 0) {
 							if (params.startTime) {
 								$mck_show_more_icon.removeClass('n-vis').addClass('vis');
 								$mck_show_more_icon.fadeOut(3000, function () {
@@ -2507,7 +2507,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							}
 							$mck_contacts_inner.data('datetime', '');
 						}
-						if (data + '' !== "null" && data.status !== 'error') {
+						if (data && data + '' !== "null" && data.status !== 'error') {
 							w.MCK_OL_MAP = [];
 							if (data.groupFeeds.length > 0) {
 								$kmApplozic.each(data.groupFeeds, function (i, groupFeed) {
