@@ -2580,9 +2580,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// if (!params.startTime) {
 				// 	$mck_msg_inner.html('');
 				// }
+				var data = '?userId='+ encodeURIComponent(MCK_USER_ID);
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP+"?userId=" + MCK_USER_ID,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP+ data,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 					}
@@ -2593,9 +2594,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var individual = false;
 				// var isConvReq = false;
 				// var reqData = '';
+				var data = '/assigned?userId='+ encodeURIComponent(MCK_USER_ID);
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + MCK_USER_ID+"&status=2",
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=2",
 					success: function (data) {
 						console.log("closed",data.response);
 						var list = {};
@@ -2640,9 +2642,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// if (!params.startTime) {
 				// 	$mck_msg_inner.html('');
 				// }
+				var data = '/assigned?userId='+ encodeURIComponent(MCK_USER_ID);
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + MCK_USER_ID,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						var list = {};
 						list.assigneList = "km-assigned-search-list";
@@ -2700,7 +2703,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
 						}
 
-						  var contactList = document.getElementById("km-contact-list"), 
+						  var contactList = document.getElementById("km-contact-list"),
 							emptyStateDiv = document.getElementById("empty-state-conversations-div");
 							if(contactList.getElementsByTagName("li").length !== 0) {
 								if(emptyStateDiv.classList.contains("vis")) {
