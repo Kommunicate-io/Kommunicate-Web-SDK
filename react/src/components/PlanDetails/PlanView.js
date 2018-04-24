@@ -57,9 +57,12 @@ export default class PlanView extends Component {
                             <div className="pricing-table-body-footer" hidden={HideFeatureList}>
                                 <p>All in Startup</p>
                                 <ul>
+                                    <li>Bot integration</li>
                                     <li>Unlimited bots</li>
                                     <li>Advanced reporting</li>
                                     <li>CRM integration</li>
+                                    <li>Contact Enrichment</li>
+                                    <li>FAQs</li>
                                     <li>Chat &amp; Email Support</li>
                                 </ul>
                             </div>

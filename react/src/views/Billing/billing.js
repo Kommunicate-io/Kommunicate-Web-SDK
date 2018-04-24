@@ -442,7 +442,7 @@ class Billing extends Component {
 
                                     <div className="col-lg-4 col-md-4 col-xs-12">
                                         <div className="pricing-table">
-                                            <div className="pricing-table-container">
+                                            <div className="pricing-table-container startup">
                                                 <div className="pricing-table-header">
                                                     <h2 className="pricing-table-plan-title">Startup</h2>
                                                     <div className="price-image-container">
@@ -465,12 +465,12 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p style={{ opacity: 0 }}>Includes...</p>
                                                         <ul>
-                                                            <li>Messenger</li>
-                                                            <li>Team Inbox</li>
-                                                            <li>Auto Reply</li>
-                                                            <li>Android &amp; iOS Agent app</li>
-                                                            <li>1 Bot integration supported</li>
-                                                            <li>Data retention: 3 months</li>
+                                                        <li>Live Chat</li>
+                                                        <li>Team Inbox</li>
+                                                        <li>Quick Replies</li>
+                                                        <li>Agent Routing</li>
+                                                        <li>Android &amp; iOS Agent app</li>
+                                                        <li>Data retention: 3 months</li>
                                                         </ul>
                                                     </div>
                                                 </div>
