@@ -91,7 +91,10 @@ class Tabs extends Component {
     this.setState({
       devToken: '',
       clientToken: '',
-      botName: ''
+      botName: '',
+      editedBotName: '',
+      editedClientToken: '',
+      editedDevToken: '',
     });
    }
    
@@ -398,7 +401,7 @@ class Tabs extends Component {
     }
 
     let axiosPostData = {
-      botName: this.state.editedBotName,
+      //botName: this.state.editedBotName,
       aiPlatform: "dialogflow",
       type:"KOMMUNICATE_SUPPORT",
       clientToken: this.state.editedClientToken,
