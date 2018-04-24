@@ -857,6 +857,28 @@ const conversationHandlingByBot = (botId, status) => {
 
 }
 
+const getConversationStatsByDayAndMonth = (days,agentId) => {
+  let userSession = CommonUtils.getUserSession();
+  let customerId=userSession.customerId;
+  let query={customerId:customerId, days:days, daily:false}
+  if(agentId&&agentId!="allagents"){
+   query.agentId=agentId;
+  }
+  // if(days== 0||days== 1) {
+  //   query.daily="false"
+  // }
+  // if(days== 7 ||days== 30) {
+  //   query.daily="false"
+  // }
+  let url = getConfig().kommunicateBaseUrl + "/conversations/stats"
+  return Promise.resolve(axios.get(url,{params: query})).then(response => {
+    console.log('filter: ', response);
+    return response;
+  }).catch(err => {
+    console.log(err)
+    return;
+  });
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -907,4 +929,5 @@ export {
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
   conversationHandlingByBot,
+  getConversationStatsByDayAndMonth
 }

@@ -9886,7 +9886,7 @@ pointer-events: none;
 
 
 /*** Checkbox ***/
-.checkbox-input[type='checkbox']{ height: 0; width: 0; }
+.checkbox-input[type='checkbox']{ height: 0; width: 0; opacity: 0; }
 
 .checkbox-input[type='checkbox'] + .checkbox-label{
   position: relative;

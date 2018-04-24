@@ -1,7 +1,7 @@
 .dashboard-card {
-    border-radius: 4px;
+  border: solid 1px #e1dbdb;
   background-color: #ffffff;
-  box-shadow: 0 0 3px 0 rgba(189, 184, 184, 0.5), 0 2px 4px 0 rgba(191, 189, 189, 0.5);
+  
   /* padding: 0px 20px 20px; */
 }
 .dashboard-card .row {
@@ -31,6 +31,19 @@
     color: #696b6b;
     margin-bottom: 10px;
 }
+.card-count-title {
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #8b8b8e;
+}
+.card-count {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #505154;
+}
 .card-stats-value {
     font-size: 24px;
     font-weight: 400;
@@ -58,12 +71,12 @@
     background-color: #fbfbfb;
     cursor: pointer;
 }
-.card-stats.active {
+/* .card-stats.active {
     border-top: 3px solid #5c5aa7;
 }
 .card-stats.active .card-main-title,   .card-stats.active .card-stats-value {
     font-weight: 500;
-}
+} */
 .card-stats.card-stats--users {
     border-top-left-radius: 4px;
 }
@@ -81,8 +94,8 @@
     right: 0;
     background-color: #cfcaca;
 }
-.card-stats .card-block {
-    padding: 0.7rem;
+.card-block {
+    padding: 13px;
 }
 
 .card-stats-month {
@@ -95,8 +108,28 @@
     margin-bottom: 4px;
     min-width: 1px;
 }
-
-
+.card-inner-block {
+    border-top: 3px solid transparent;
+    padding-top: 13px;
+    padding-left:11px;
+    padding-bottom: 19px;
+}
+.card-inner-block.active {
+    border-top-color: #5c5aa7;
+    background-color: #fbfbfb; 
+}
+.card-time-digit {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-align: left;
+  color: #505154;
+}
+.card-time-text{
+  font-size: 12px;
+  color: #505154;
+  letter-spacing: 0.6px;
+}
 
 @media (max-width:991px) {
     .card-stats--mau .vertical-line {

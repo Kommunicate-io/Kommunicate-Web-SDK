@@ -400,11 +400,12 @@ exports.goOnline = (userId, appId)=>{
 const getAllUsersOfCustomer = (customer,type)=>{
   logger.info("fetching Users for customer, ",customer.id);
   let criteria={customerId:customer.id};
-  var a = Op.or;
+ 
   if(type){
-    criteria.type= {[Op.or]:type};
+    criteria.type= {$in:type};
   }
-  return Promise.resolve(userModel.findAll({where:criteria}));
+  var order= [ ['name', 'ASC']];
+  return Promise.resolve(userModel.findAll({where:criteria, order}));
 }
 /**
  * update a new password for user

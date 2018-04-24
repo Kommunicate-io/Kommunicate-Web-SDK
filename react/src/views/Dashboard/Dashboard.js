@@ -6,7 +6,11 @@ import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
 import EarlyBirdOffer from '../.../../../components/EarlyBirdOffer/EarlyBirdOffer';
-
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import { getUsersByType, getConversationStatsByDayAndMonth } from '../../utils/kommunicateClient';
+import { USER_TYPE } from '../../utils/Constant'
+import Checkbox from '../../components/Checkbox/Checkbox'
 const brandPrimary = '#5c5aa7';
 const brandSuccess = '#18A9B7';
 const brandInfo = '#D13351';
@@ -24,11 +28,18 @@ class Dashboard extends Component {
 
     let subscription = CommonUtils.getUserSession().subscription;
     if (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0') {
-        subscription = 'startup';
+      subscription = 'startup';
     }
 
     this.toggle = this.toggle.bind(this);
     this.state = {
+      agentFilterOption: [{ label: "All Agents", value: "allagents" }],
+      timeFilterSelectedOption: { label: "Last 7 days", value: 7 },
+      agentFilterSelectedOption: { label: "All agents", value: "allagents" },
+      newConversationCount: 0,
+      closedConversationCount: 0,
+      avgResponseTime: [],
+      avgResolutionTime:[],
       subscription: subscription,
       dropdownOpen: false,
       active: 0,
@@ -62,11 +73,11 @@ class Dashboard extends Component {
           }
         ]
       },
-      chartMonthly: {
+      chartHourly: {
         labels: [],
         datasets: [
           {
-            label: 'Users',
+            label: 'New Conversations',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -74,7 +85,7 @@ class Dashboard extends Component {
             data: [],
           },
           {
-            label: 'Chat Users',
+            label: 'Closed Conversations',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -82,7 +93,7 @@ class Dashboard extends Component {
             data: [],
           },
           {
-            label: 'Conversations',
+            label: 'First Responsetime',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -90,7 +101,7 @@ class Dashboard extends Component {
             data: [],
           },
           {
-            label: 'Messages',
+            label: 'Resolution Time',
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -99,6 +110,117 @@ class Dashboard extends Component {
           }
         ]
       },
+      chartDaily: {
+        labels: [],
+        datasets: [
+          {
+            label: 'New Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Closed Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'First Responsetime',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Resolution Time',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
+      chartMonthly: {
+        labels: [],
+        datasets: [
+          {
+            label: 'New Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Closed Conversations',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'First Responsetime',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          },
+          {
+            label: 'Resolution Time',
+            backgroundColor: 'rgba(92,90,167,0.25)',
+            borderColor: '#5c5aa7',
+            pointHoverBackgroundColor: '#fff',
+            borderWidth: 2,
+            data: [],
+          }
+        ]
+      },
+      // chartMonthly: {
+      //   labels: [],
+      //   datasets: [
+      //     {
+      //       label: 'Users',
+      //       backgroundColor: 'rgba(92,90,167,0.25)',
+      //       borderColor: '#5c5aa7',
+      //       pointHoverBackgroundColor: '#fff',
+      //       borderWidth: 2,
+      //       data: [],
+      //     },
+      //     {
+      //       label: 'Chat Users',
+      //       backgroundColor: 'rgba(92,90,167,0.25)',
+      //       borderColor: '#5c5aa7',
+      //       pointHoverBackgroundColor: '#fff',
+      //       borderWidth: 2,
+      //       data: [],
+      //     },
+      //     {
+      //       label: 'Conversations',
+      //       backgroundColor: 'rgba(92,90,167,0.25)',
+      //       borderColor: '#5c5aa7',
+      //       pointHoverBackgroundColor: '#fff',
+      //       borderWidth: 2,
+      //       data: [],
+      //     },
+      //     {
+      //       label: 'Messages',
+      //       backgroundColor: 'rgba(92,90,167,0.25)',
+      //       borderColor: '#5c5aa7',
+      //       pointHoverBackgroundColor: '#fff',
+      //       borderWidth: 2,
+      //       data: [],
+      //     }
+      //   ]
+      // },
       mainChart: {
         labels: [],
         datasets: [
@@ -230,11 +352,25 @@ class Dashboard extends Component {
     });
   }
 
-  componentDidMount() {
+  getAllUsers = (applicationId) => {
+    let agentFilterOption = this.state.agentFilterOption
+    return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN])).then(data => {
+      data.map((user, index) => {
+        agentFilterOption.push({ label: user.name, value: user.email })
+      })
+      this.setState({ agentFilterOption: agentFilterOption })
+    }).catch(err => {
+      console.log("err while fetching users list ", err);
+    });
+  }
 
+
+  componentDidMount() {
     //  var env = getEnvironmentId();
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
+    this.getAllUsers(application.applicationId);
+    this.filterConversationDetails(this.state.timeFilterSelectedOption.value, this.state.agentFilterSelectedOption.value)
     var that = this;
     var endTime = new Date().getTime();
     var startDate = new Date();
@@ -247,6 +383,26 @@ class Dashboard extends Component {
     var mauDataMonthly = [];
     var messageDataMonthly = [];
     var channelDataMonthly = [];
+
+    //new
+    //Hourly
+    var newConversationHourly = [];
+    var closedConversationHourly = [];
+    var firstResponseTimeHourly = [];
+    var resolutionTimeHourly = [];
+
+    //Daily
+    var newConversationDaily = [];
+    var closedConversationDaily = [];
+    var firstResponseTimeDaily = [];
+    var resolutionTimeDaily = [];
+    
+    //Monthly
+    var newConversationMonthly = [];
+    var closedConversationMonthly = [];
+    var firstResponseTimeMonthly = [];
+    var resolutionTimeMonthly = [];
+    
 
     var labelMonthly = [];
     var labels = [];
@@ -382,60 +538,269 @@ class Dashboard extends Component {
         that.setState({ offerRemaining: Math.max((70 - parseInt(response.data)), 3)});
       });
   }
+  filterConversationDetails = (timeFilterSelectedOption, agentFilterSelectedOption) => {
+    return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption)).then(res => {
+      console.log(res);
+      let newConversationCount = 0 ;
+      let closedConversationCount = 0 ;
+      // let newConversationCount = res.data.response.newConversation[0].count;
+      // let closedConversationCount = res.data.response.closedConversation[0].count;
+    
+      var startDate = new Date();
+      startDate.setDate(startDate.getDate()-30);
 
-  render() {
-    return (
-      <div className="animated fadeIn early-bird-card">
-      {this.state.subscription == 'startup' ?
-        <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
-        :
-        null
+      var endDate = new Date();
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
+      ];
+      
+      var getDateArray = function(start, end) {
+        var arr = new Array();
+        var dt = new Date(start);
+        while (dt <= end) {
+            var dateFormat =  monthNames[dt.getMonth()]+ " " + dt.getDate();
+            arr.push(dateFormat);
+            dt.setDate(dt.getDate() + 1);
+        }
+        console.log(arr)
+        return arr;    
+      }
+    
+      var dateArr = getDateArray(startDate, endDate);
+      
+      
+      
+      
+      let avgResponseTime = res.data.response.avgResponseTime[0].average;
+      let avgResolutionTime = res.data.response.avgResolutionTime[0].average;
+      if(res.data.response.newConversation.length > 0){
+        let n_conversationCount = res.data.response.newConversation.map ((item,index) => {
+          return item.count
+        })  
+        for (var i  = 0; i < n_conversationCount.length; i++){
+          newConversationCount  += n_conversationCount[i];
+        }
+        this.setState({newConversationCount:newConversationCount})
+      }
+      else{
+        this.setState({newConversationCount: 0 }) 
+      }
+      if(res.data.response.closedConversation.length > 0){
+        let c_conversationCount = res.data.response.closedConversation.map ((item,index) => {
+          return item.count
+        })
+        
+        for (var i  = 0; i < c_conversationCount.length; i++){
+          closedConversationCount  += c_conversationCount[i];
+        }
+        this.setState({closedConversationCount:closedConversationCount})
+         
+      }
+      else {
+        this.setState({closedConversationCount: 0 })
       }
       
-      <div className="animated fadeIn dashboard-card">
       
-        <div className="row">
-          <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
+      
+      var date = new Date(null);
+      date.setSeconds(avgResponseTime); // specify value for SECONDS here
+      var result = date.toISOString().substr(11, 8);
+      console.log(result)
+      
+      return Promise.resolve(this.secondsToHms(avgResponseTime)).then(res =>{
+        this.setState({avgResponseTime:res})
+        
+        Promise.resolve(this.secondsToHms(avgResolutionTime)).then(resp =>{
+          this.setState({avgResolutionTime:resp})
+        })
+      })
+      // this.secondsToHms(avgResponseTime)
+      // this.secondsToHms(avgResolutionTime)
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  
+  secondsToHms = (d) => {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+    
+    var hDisplay = h > 0 ? (h == 1 ? " hr, " : " hrs, ") : "";
+    var mDisplay = m > 0 ? (m == 1 ? " min, " : " mins, ") : "";
+    var sDisplay = s > 0 ? (s == 1 ? " sec" : " secs") : "";
+    // return hDisplay + mDisplay + sDisplay;
+    // return {h:hDisplay,m:mDisplay,s:sDisplay }
+    return {hrDigit:h, hrText:hDisplay, minDigit:m, minText:mDisplay, secDigit:s, secText:sDisplay}
+   
+     
+}
+  timeFilterHandleChange = (timeFilterSelectedOption) => {
+    this.setState({ timeFilterSelectedOption });
+    console.log(`Time Filter Selected: ${timeFilterSelectedOption.value}`);
+    console.log("Agent Filter Selected:", this.state.agentFilterSelectedOption.value);
+    this.filterConversationDetails(`${timeFilterSelectedOption.value}`, this.state.agentFilterSelectedOption.value);
+  }
+  agentFilterHandleChange = (agentFilterSelectedOption) => {
+    this.setState({ agentFilterSelectedOption });
+    console.log("Time Filter Selected:", this.state.timeFilterSelectedOption.value);
+    console.log(`Agent Filter Selected: ${agentFilterSelectedOption.value}`);
+    this.filterConversationDetails(this.state.agentFilterSelectedOption.value, `${agentFilterSelectedOption.value}` );
+  }
 
-              <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth}</p>
-                <p className="card-main-title text-center">Users</p>
-                <h4 className="card-stats-value text-center" data-metric="0">{this.state.newUsers}</h4>
-                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>
-              </div>
-              <div className="vertical-line"></div>
+
+  render() {
+    let names = [];
+    const { timeFilterSelectedOption } = this.state;
+    const { agentFilterSelectedOption } = this.state;
+    return (
+      <div className="animated fadeIn early-bird-card">
+        {this.state.subscription == 'startup' ?
+          <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
+          :
+          null
+        }
+        <div className="animated fadeIn dashboard-card">
+          {/* new design */}
+          <div className="row">
+            <div className="col-lg-2 col-sm-4">
+              <Select
+                name="km-dashboard-time-filter"
+                clearable={false}
+                searchable={false}
+                value={timeFilterSelectedOption}
+                onChange={this.timeFilterHandleChange}
+                options={[
+                  { label: 'Today', value: 0 },
+                  { label: 'Yesterday', value: 1 },
+                  { label: 'Last 7 days', value: 7 },
+                  { label: 'Last 30 days', value: 30 }
+                ]}
+              />
+            </div>
+            <div className="col-lg-2 col-sm-4">
+              <Select
+                name="km-dashboard-agent-filter"
+                value={agentFilterSelectedOption}
+                clearable={false}
+                searchable={false}
+                onChange={this.agentFilterHandleChange}
+                options={this.state.agentFilterOption}
+              />
+            </div>
+            <div className="col-lg-4 col-sm-4">
+              <Checkbox idCheckbox={'some-checkbox'} label={'Show 24 hour distribution'} />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-6 col-lg-3 ">
+                <div className="card-block pb-0 text-left">
+                  <div className="card-inner-block active">
+                    <h4 className="card-count">{this.state.newConversationCount}</h4>
+                    <p className="card-count-title">New Conversations</p>
+                  </div>  
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-lg-3">
+                <div className="card-block pb-0 text-left">
+                  <div className="card-inner-block">
+                    <h4 className="card-count">{this.state.closedConversationCount}</h4>
+                    <p className="card-count-title">Closed Conversations</p>
+                  </div>  
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-lg-3">
+                <div className="card-block pb-0 text-left">
+                  <div className="card-inner-block"> 
+                  <h4 className="card-count">
+                    <span className="card-time-digit">{this.state.avgResponseTime.hrDigit}</span>
+                    <span className="card-time-text">{this.state.avgResponseTime.hrText}</span>
+                    <span className="card-time-digit">{this.state.avgResponseTime.minDigit}</span>
+                    <span className="card-time-text">{this.state.avgResponseTime.minText}</span>
+                    <span className="card-time-digit">{this.state.avgResponseTime.secDigit}</span>
+                    <span className="card-time-text">{this.state.avgResponseTime.secText}</span>    
+                  </h4>
+                  <p className="card-count-title">First Response Time</p>
+                  </div>  
+                </div>
+            </div>
+
+            <div className="col-sm-6 col-lg-3">
+                <div className="card-block pb-0 text-left">
+                  <div className="card-inner-block">
+                    <h4 className="card-count">
+                    <span className="card-time-digit">{this.state.avgResolutionTime.hrDigit}</span>
+                    <span className="card-time-text">{this.state.avgResolutionTime.hrText}</span>
+                    <span className="card-time-digit">{this.state.avgResolutionTime.minDigit}</span>
+                    <span className="card-time-text">{this.state.avgResolutionTime.minText}</span>
+                    <span className="card-time-digit">{this.state.avgResolutionTime.secDigit}</span>
+                    <span className="card-time-text">{this.state.avgResolutionTime.secText}</span>    
+                    </h4>
+                    <p className="card-count-title">Resolution Time</p>
+                  </div>
+                </div>
             </div>
 
           </div>
 
-          <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
-              <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth}</p>
-                <p className="card-main-title text-center">Chat Users</p>
-                <h4 className="card-stats-value text-center">{this.state.active}</h4>
-                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.activeUserCount}</p>
+          <div className="card">
+            <div className="card-block">
+              <div className="row">
               </div>
-              <div className="vertical-line"></div>
+              <div className="chart-wrapper" style={{ height: 200 + 'px', marginTop: 40 + 'px' }}>
+                <Line data={this.state.chart} options={this.mainChartOpts} height={200} />
+              </div>
             </div>
+
 
           </div>
 
-          <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
-              <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth}</p>
-                <p className="card-main-title text-center">Conversations</p>
-                <h4 className="card-stats-value text-center">{this.state.conversations}</h4>
-                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.channelCount}</p>
+          {/* old design */}
+          <div className="row">
+            <div className="col-sm-6 col-lg-3 text-center">
+              <div className="card card-inverse card-stats card-stats--users active" data-metric="0" onClick={this.showChart}>
+
+                <div className="card-block pb-0 text-left">
+                  <p className="card-stats-month">{this.state.currentMonth}</p>
+                  <p className="card-main-title text-center">Users</p>
+                  <h4 className="card-stats-value text-center" data-metric="0">{this.state.newUsers}</h4>
+                  <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newUserCount}</p>
+                </div>
+                <div className="vertical-line"></div>
               </div>
-              <div className="vertical-line"></div>
+
             </div>
 
-          </div>
+            <div className="col-sm-6 col-lg-3 text-center">
+              <div className="card card-inverse card-stats card-stats--mau" data-metric="1" onClick={this.showChart}>
+                <div className="card-block pb-0 text-left">
+                  <p className="card-stats-month">{this.state.currentMonth}</p>
+                  <p className="card-main-title text-center">Chat Users</p>
+                  <h4 className="card-stats-value text-center">{this.state.active}</h4>
+                  <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.activeUserCount}</p>
+                </div>
+                <div className="vertical-line"></div>
+              </div>
 
-          {/*
+            </div>
+
+            <div className="col-sm-6 col-lg-3 text-center">
+              <div className="card card-inverse card-stats card-stats--conversations" data-metric="2" onClick={this.showChart}>
+                <div className="card-block pb-0 text-left">
+                  <p className="card-stats-month">{this.state.currentMonth}</p>
+                  <p className="card-main-title text-center">Conversations</p>
+                  <h4 className="card-stats-value text-center">{this.state.conversations}</h4>
+                  <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.channelCount}</p>
+                </div>
+                <div className="vertical-line"></div>
+              </div>
+
+            </div>
+
+            {/*
           <div className="col-sm-6 col-lg-4">
             <div className="card card-inverse card-info">
               <div className="card-block pb-0">
@@ -446,27 +811,27 @@ class Dashboard extends Component {
           </div>
           */}
 
-          <div className="col-sm-6 col-lg-3 text-center">
-            <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
-              <div className="card-block pb-0 text-left">
-                <p className="card-stats-month">{this.state.currentMonth}</p>
-                <p className="card-main-title text-center">Messages</p>
-                <h4 className="card-stats-value text-center">{this.state.messages}</h4>
-                <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newMessageCount}</p>
+            <div className="col-sm-6 col-lg-3 text-center">
+              <div className="card card-inverse card-stats card-stats--messages" data-metric="3" onClick={this.showChart}>
+                <div className="card-block pb-0 text-left">
+                  <p className="card-stats-month">{this.state.currentMonth}</p>
+                  <p className="card-main-title text-center">Messages</p>
+                  <h4 className="card-stats-value text-center">{this.state.messages}</h4>
+                  <p className="card-sub-title text-center">Last month: {this.state.lastMonthStats.newMessageCount}</p>
+                </div>
               </div>
             </div>
+
           </div>
 
-        </div>
-
-        <div className="card">
-          <div className="card-block">
-            <div className="row">
-              {/* <div className="col-sm-5">
+          <div className="card">
+            <div className="card-block">
+              <div className="row">
+                {/* <div className="col-sm-5">
                 <h4 className="card-title mb-0">Traffic</h4>
                 <div className="small text-muted">This Month</div>
               </div> */}
-              {/*}
+                {/*}
               <div className="col-sm-7 hidden-sm-down">
                 <button type="button" className="btn btn-primary float-right"><i className="icon-cloud-download"></i></button>
                 <div className="btn-toolbar float-right" role="toolbar" aria-label="Toolbar with button groups">
@@ -484,12 +849,12 @@ class Dashboard extends Component {
                 </div>
               </div>
               */}
+              </div>
+              <div className="chart-wrapper" style={{ height: 200 + 'px', marginTop: 40 + 'px' }}>
+                <Line data={this.state.chart} options={this.mainChartOpts} height={200} />
+              </div>
             </div>
-            <div className="chart-wrapper" style={{ height: 200 + 'px', marginTop: 40 + 'px' }}>
-              <Line data={this.state.chart} options={this.mainChartOpts} height={200} />
-            </div>
-          </div>
-          {/*
+            {/*
           <div className="card-footer">
             <ul>
               <li>
@@ -520,9 +885,9 @@ class Dashboard extends Component {
             </ul>
           </div>
           */}
-        </div>
+          </div>
 
-      </div>
+        </div>
       </div>
     )
   }
