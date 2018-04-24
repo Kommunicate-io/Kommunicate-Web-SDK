@@ -2699,6 +2699,17 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						if(data.message.length === 0) {
 							$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
 						}
+
+						  var contactList = document.getElementById("km-contact-list"), 
+							emptyStateDiv = document.getElementById("empty-state-conversations-div");
+							if(contactList.getElementsByTagName("li").length !== 0) {
+								if(emptyStateDiv.classList.contains("vis")) {
+									emptyStateDiv.classList.add("n-vis");
+								}
+							} else {
+								$kmApplozic('#empty-state-conversations-div').addClass('vis').removeClass('n-vis');
+							}
+
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
 						if (individual) {
