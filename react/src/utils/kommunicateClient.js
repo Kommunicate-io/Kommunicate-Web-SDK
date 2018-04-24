@@ -127,7 +127,7 @@ const patchCustomerInfo = (customerInfo, customer) => {
      if(response.status === 200 && response.data !== undefined){
        console.log(response);
        let user = {'email': customerInfo.email, 'displayName': customerInfo.name};
-       window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
+       window.$kmApplozic.fn.applozic('updateUser', {data: user, success: function(response) {
           console.log(response);
         }, error: function(error) {
           console.log(error);

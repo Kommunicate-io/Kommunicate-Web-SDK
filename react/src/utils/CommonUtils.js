@@ -19,7 +19,29 @@ const CommonUtils = {
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         var results = regex.exec(search);
         return results === null ? '' : decodeURIComponent(results[1]);
-    }
+    },
+    getCookie :function(cname){
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    },
+    /* Method to set cookies*/
+    setCookie: function(cname, cvalue, exdays) {
+        var d = new Date();
+        var cookieMaxExpirationdate= "2038-01-19 04:14:07";
+        var expires = "expires="+ new Date(cookieMaxExpirationdate).toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    },
 }
 
 export default CommonUtils;
