@@ -7629,6 +7629,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (message.type === 7) {
                     return;
                 }
+                if (message.metadata.alert === false) {
+                    return;
+                }
                 var contact = (message.groupId) ? mckGroupUtils.getGroup('' + message.groupId) : mckMessageLayout.fetchContact('' + message.to.split(",")[0]);
                 var isGroup = false;
                 if (message.groupId) {
