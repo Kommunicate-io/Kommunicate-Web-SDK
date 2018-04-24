@@ -2743,17 +2743,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 									}
 								}
 								if (data + '' !== "null" && data.status !== 'error') {
-									if (isMessages) {
-										if (params.startTime > 0) {
-											mckMessageLayout.processMessageList(data, false);
-										} else {
-											mckMessageLayout.processMessageList(data, true);
-											$mck_tab_message_option.removeClass('n-vis').addClass('vis');
-											if (typeof (MCK_CALLBACK) === "function") {
-												MCK_CALLBACK(params.tabId);
-											}
-										}
-									}
 									if (data.userDetails.length > 0) {
 										$kmApplozic.each(data.userDetails, function(i, userDetail) {
 											MCK_USER_DETAIL_MAP[userDetail.userId] = userDetail;
@@ -2790,6 +2779,19 @@ var KM_ASSIGNE_GROUP_MAP =[];
 											kmGroupUtils.addGroup(groupFeed);
 										});
 									}
+
+									if (isMessages) {
+										if (params.startTime > 0) {
+											mckMessageLayout.processMessageList(data, false);
+										} else {
+											mckMessageLayout.processMessageList(data, true);
+											$mck_tab_message_option.removeClass('n-vis').addClass('vis');
+											if (typeof (MCK_CALLBACK) === "function") {
+												MCK_CALLBACK(params.tabId);
+											}
+										}
+									}
+
 									if (data.conversationPxys.length > 0) {
 										var tabConvArray = new Array();
 										$kmApplozic.each(data.conversationPxys, function(i, conversationPxy) {
@@ -5042,6 +5044,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				} else {
 					if (typeof (MCK_GETUSERNAME) === "function") {
 						displayName = MCK_GETUSERNAME(tabId);
+					}
+					var userDetail = MCK_USER_DETAIL_MAP[tabId];
+					if(typeof userDetail !== "undefined") {
+						displayName = userDetail.displayName;
 					}
 					if (typeof userName !== 'undefined' && userName) {
 						displayName = userName;
