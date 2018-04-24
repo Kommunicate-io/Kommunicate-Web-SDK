@@ -1769,18 +1769,18 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				//km-contacts-inner
 				//km-message-inner
-				$kmMessageInner.bind('scroll', function() {
-					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
-						var startTime = $kmApplozic(".km-contacts-inner").data('datetime');
-						if (startTime > 0 && !CONTACT_SYNCING) {
-							mckMessageService.loadMessageList({
-								'tabId' : '',
-								'isGroup' : false,
-								'startTime' : startTime
-							});
-						}
-					}
-				});
+				// $kmMessageInner.bind('scroll', function() {
+				// 	if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
+				// 		var startTime = $kmApplozic(".km-contacts-inner").data('datetime');
+				// 		if (startTime > 0 && !CONTACT_SYNCING) {
+				// 			mckMessageService.loadMessageList({
+				// 				'tabId' : '',
+				// 				'isGroup' : false,
+				// 				'startTime' : startTime
+				// 			});
+				// 		}
+				// 	}
+				// });
 				$mck_price_text_box.on('click', function(e) {
 					e.preventDefault();
 					$mck_price_text_box.removeClass('km-text-req');
