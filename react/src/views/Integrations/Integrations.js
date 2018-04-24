@@ -94,6 +94,7 @@ class Integrations extends Component {
                  var item = party[key];
                  var enabledClass = this.state[item.name] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
                  result.push(<div key={key} className="col-lg-4 col-md-4 ">
+                    <div className ={ enabledClass !== "content-wrapper" ? "active-integrated" : "hide-integrated" } text-center>INTEGRATED</div>
                      <div className={enabledClass}>
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
