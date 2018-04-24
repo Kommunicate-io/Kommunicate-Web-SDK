@@ -33,3 +33,10 @@
   text-align: left;
   color: #716d6d;
 }
+.bot-routing-link {
+  color: #5C5AA7;
+  text-decoration: none !important;
+}
+.bot-routing-link:hover {
+  color: #5C5AA7;
+}
