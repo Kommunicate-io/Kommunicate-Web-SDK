@@ -334,10 +334,13 @@
     margin-bottom:94px;
 }
 .growth .pricing-table-body-footer ul {
-    margin-bottom: 94px;
+    margin-bottom: 36px;
+}
+.startup .pricing-table-body-footer ul {
+    margin-bottom: 73px;
 }
 .enterprise .pricing-table-body-footer ul {
-    margin-bottom: 81px;
+    margin-bottom: 134px;
 }
 
 

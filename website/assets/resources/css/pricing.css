@@ -453,7 +453,7 @@ position: relative;
 
 @media (min-width:992px) {
     .pricing-table-container {
-        min-height: 771px;
+        min-height: 812px;
     }
     .startup .pricing-table-footer {
         padding-bottom: 30px;
@@ -476,7 +476,7 @@ position: relative;
 }
 @media (min-width:992px) and (max-width:1199px) {
     .pricing-table-container {
-        min-height: 771px;
+        min-height: 812px;
     }
     .startup .pricing-table-footer {
         padding-bottom: 30px;
