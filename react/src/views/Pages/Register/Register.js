@@ -136,6 +136,9 @@ class Register extends Component {
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
         window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
             console.log(response);
+            if(userInfo.userName){
+              CommonUtils.setCookie("kommunicate-id",userInfo.userName);
+              }
           }, error: function(error) {
             console.log(error);
           }

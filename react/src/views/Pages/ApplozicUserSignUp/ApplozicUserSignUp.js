@@ -8,6 +8,7 @@ import  {createCustomer, saveToLocalStorage, createCustomerOrAgent, checkUserInA
 import Notification from '../../model/Notification';
 import { Link } from 'react-router-dom';
 import '../Login/login.css';
+import CommonUtils from '../../../utils/CommonUtils';
 
 class ApplozicUserSignUp extends Component {
   
@@ -135,6 +136,9 @@ class ApplozicUserSignUp extends Component {
        }else if(response.data&& response.data.code==="SUCCESS"){
         if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
           window.Kommunicate.updateUserIdentity(userInfo.userName);
+          if(userInfo.userName){
+            CommonUtils.setCookie("kommunicate-id",userInfo.userName);
+            }
           }
         saveToLocalStorage(email, password, response.data.data.name, response);
         _this.setState({disableRegisterButton:false});
