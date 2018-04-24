@@ -558,7 +558,7 @@ class Tabs extends Component {
                   </div>
                 </div>
                 <div style={{backgroundColor: "#cce7f8", height: "41px", textAlign: "center"}}>
-                  <span className="integrated-bot-converstaion-routing-text">You may change conversation assignment settings from <Link to="/settings/agent-assignment">Conversation routing</Link></span>
+                  <span className="integrated-bot-converstaion-routing-text">You may change conversation assignment settings from <Link className="bot-routing-link" to="/settings/agent-assignment">Conversation routing</Link></span>
                 </div>
                 <div style={{padding: "10px"}}>
                   <span className="km-bot-integrated-bots-container-heading">Integrated Bots:</span>
