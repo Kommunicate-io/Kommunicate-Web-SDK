@@ -9,6 +9,13 @@
     background-color: #fff;
     padding-top: 30px;
     padding-bottom: 30px;
+    min-height: 653px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
 .header-container {
     width: 100%;
