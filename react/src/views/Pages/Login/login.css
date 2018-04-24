@@ -9,6 +9,13 @@
     background-color: #fff;
     padding-top: 30px;
     padding-bottom: 30px;
+    min-height: 653px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
 .header-container {
     width: 100%;
@@ -289,6 +296,10 @@
 .signup-form-div, .login-form-div {
     z-index: 2;
     position: relative;
+}
+
+.login-signup-heading {
+    margin-bottom: 50px;
 }
 
 .card-block-login-frgtpass-container .login-signup-heading {
