@@ -2582,7 +2582,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// }
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP+"?userId=" + MCK_USER_ID,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP+"?userId=" + encodeURIComponent(MCK_USER_ID),
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 					}
@@ -2595,7 +2595,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// var reqData = '';
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + MCK_USER_ID+"&status=2",
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + encodeURIComponent(MCK_USER_ID)+"&status=2",
 					success: function (data) {
 						console.log("closed",data.response);
 						var list = {};
@@ -2642,7 +2642,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// }
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + MCK_USER_ID,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + "/assigned?userId=" + encodeURIComponent(MCK_USER_ID),
 					success: function (data) {
 						var list = {};
 						list.assigneList = "km-assigned-search-list";
