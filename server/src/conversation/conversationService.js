@@ -162,7 +162,7 @@ const addMemberIntoConversation = (data) => {
                             if (user.userName === 'bot') {
                                 header.apzToken = user.apzToken
                             } if (user.allConversations == 1) {
-                                groupInfo.userIds.push(user.userName);
+                                userIds.push(user.userName);
                             }
                         }
                         else {
