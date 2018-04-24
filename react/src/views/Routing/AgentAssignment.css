@@ -146,3 +146,17 @@ div.drop-down-container ul {
     display: inline-block;
     width: 170px;
 }
+.see-docs-link {
+    color: #5C5AA7;
+    text-decoration: none !important;
+}
+.see-docs-link:hover {
+    color: #5C5AA7;
+}
+.routing-bot-link {
+    color: #5C5AA7;
+    text-decoration: none !important;
+}
+.routing-bot-link:hover {
+    color: #5C5AA7;
+}
