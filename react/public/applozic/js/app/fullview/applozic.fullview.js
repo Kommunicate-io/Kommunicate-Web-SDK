@@ -7420,7 +7420,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var tabId = $mck_message_inner.data('km-id');
 						// var Assigne = (contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID)?true:false;
 						// list.assigneupdate = Assigne;
-						if(contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
+						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
 								mckStorage.updateMckAssignedMessageArray(messageArray);
