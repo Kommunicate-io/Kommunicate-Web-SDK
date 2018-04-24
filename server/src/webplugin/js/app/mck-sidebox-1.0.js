@@ -3443,7 +3443,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                   }
               };
 
-
             _this.sendPriceMessage = function () {
                 var priceText = $mck_price_text_box.val();
                 if (priceText === '') {
@@ -3487,99 +3486,113 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 _this.sendMessage(messagePxy);
             };
+
             _this.getGroup = function (params) {
-                var usersArray = [];
-                $applozic.each(params.users, function (i, user) {
-                    if (typeof user.userId !== 'undefined') {
-                        if (typeof user.groupRole === 'undefined' || GROUP_ROLE_MAP.indexOf(user.groupRole) !== -1) {
-                            usersArray.push(user);
-                        }
-                    }
-                });
-                var groupInfo = {
-                    'groupName': $applozic.trim(params.groupName),
-                    'users': usersArray,
-                    'type': params.type
-                };
-                if (params.admin) {
-                    groupInfo.admin = params.admin;
-                }
-                if (params.clientGroupId) {
-                    groupInfo.clientGroupId = params.clientGroupId;
-                }
-                if (params.groupIcon) {
-                    groupInfo.imageUrl = params.groupIcon;
-                }
-                groupInfo.metadata = (params.metadata) ? params.metadata : MCK_LABELS['group.metadata'];
-                var response = new Object();
-                window.Applozic.ALApiService.createGroup({
-                    data: {group: groupInfo},
-                    success: function (data) {
-                        if (params.isInternal) {
-                            $mck_btn_group_create.attr('disabled', false).html(MCK_LABELS['create.group.title']);
-                        }
-                        if (typeof data === 'object' && data.status === 'success') {
-                            var groupPxy = data.response;
-                            if (typeof groupPxy === 'object') {
-                                var group = mckGroupUtils.addGroup(groupPxy);
-                                if (groupPxy.users.length > 0) {
-                                    $applozic.each(groupPxy.users, function (i, userDetail) {
-                                        MCK_USER_DETAIL_MAP[userDetail.userId] = userDetail;
-                                        if (userDetail.connected) {
-                                            w.MCK_OL_MAP[userDetail.userId] = true;
-                                        } else {
-                                            w.MCK_OL_MAP[userDetail.userId] = false;
-                                            if (typeof userDetail.lastSeenAtTime !== 'undefined') {
-                                                MCK_LAST_SEEN_AT_MAP[userDetail.userId] = userDetail.lastSeenAtTime;
-                                            }
-                                        }
-                                        mckMessageLayout.updateUnreadCount('user_' + userDetail.userId, userDetail.unreadCount, false);
-                                        var contact = mckMessageLayout.getContact('' + userDetail.userId);
-                                        (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
-                                    });
-                                }
-                                params.tabId = group.contactId;
-                                params.isGroup = true;
-                                if (params.isMessage) {
-                                    mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
-                                } else {
-                                    if (params.isInternal) {
-                                        $mck_msg_inner.data('mck-id', group.contactId);
-                                        $mck_msg_inner.data('isgroup', true);
-                                        mckGroupLayout.loadGroupInfo({
-                                            groupId: group.contactId
-                                        });
-                                    } else {
-                                        mckMessageLayout.loadTab(params);
-                                    }
-                                }
-                                if (typeof params.callback === 'function') {
-                                    response.updated = data.updated ? data.updated : false;
-                                    response.status = 'success';
-                                    response.data = group;
-                                    params.callback(response);
-                                }
-                            }
-                        } else if (data.status === 'error') {
-                            if (typeof params.callback === 'function') {
-                                response.status = 'error';
-                                response.errorMessage = data.errorResponse[0].description;
-                                params.callback(response);
-                            }
-                        }
-                    },
-                    error: function () {
-                        if (params.isInternal) {
-                            $mck_btn_group_create.attr('disabled', false).html(MCK_LABELS['create.group.title']);
-                        }
-                        if (typeof params.callback === 'function') {
-                            response.status = 'error';
-                            response.errorMessage = 'Unable to process request.';
-                            params.callback(response);
-                        }
-                    }
-                });
-            };
+               var usersArray = [];
+               $applozic.each(params.users, function (i, user) {
+                   if (typeof user.userId !== 'undefined') {
+                       if (typeof user.groupRole === 'undefined' || GROUP_ROLE_MAP.indexOf(user.groupRole) !== -1) {
+                           usersArray.push(user);
+                       }
+                   }
+               });
+               var groupInfo = {
+                   'groupName': $applozic.trim(params.groupName),
+                   'users': usersArray,
+                   'type': params.type
+               };
+               if (params.admin) {
+                   groupInfo.admin = params.admin;
+               }
+               if (params.clientGroupId) {
+                   groupInfo.clientGroupId = params.clientGroupId;
+               }
+               if (params.groupIcon) {
+                   groupInfo.imageUrl = params.groupIcon;
+               }
+               groupInfo.metadata = (params.metadata) ? params.metadata : MCK_LABELS['group.metadata'];
+               var response = new Object();
+               let header = {
+                   "UserId-Enabled": true,
+                   "Authorization": "Basic " + AUTH_CODE,
+                   "Application-Key": MCK_APP_ID,
+                   "Device-Key": USER_DEVICE_KEY,
+                   "Access-Token": MCK_ACCESS_TOKEN
+               }
+               mckUtils.ajax({
+                 url: params.createUrl ? params.createUrl : MCK_BASE_URL + GROUP_CREATE_URL,
+                 global: false,
+                 data: w.JSON.stringify(groupInfo),
+                 type: 'post',
+                 headers:header,
+                 contentType: 'application/json',
+                   success: function (data) {
+                       if (params.isInternal) {
+                           $mck_btn_group_create.attr('disabled', false).html(MCK_LABELS['create.group.title']);
+                       }
+                       if (typeof data === 'object' && data.status === 'success') {
+                           var groupPxy = data.response;
+                           if (typeof groupPxy === 'object') {
+                               var group = mckGroupUtils.addGroup(groupPxy);
+                               if (groupPxy.users.length > 0) {
+                                   $applozic.each(groupPxy.users, function (i, userDetail) {
+                                       MCK_USER_DETAIL_MAP[userDetail.userId] = userDetail;
+                                       if (userDetail.connected) {
+                                           w.MCK_OL_MAP[userDetail.userId] = true;
+                                       } else {
+                                           w.MCK_OL_MAP[userDetail.userId] = false;
+                                           if (typeof userDetail.lastSeenAtTime !== 'undefined') {
+                                               MCK_LAST_SEEN_AT_MAP[userDetail.userId] = userDetail.lastSeenAtTime;
+                                           }
+                                       }
+                                       mckMessageLayout.updateUnreadCount('user_' + userDetail.userId, userDetail.unreadCount, false);
+                                       var contact = mckMessageLayout.getContact('' + userDetail.userId);
+                                       (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
+                                   });
+                               }
+                               params.tabId = group.contactId;
+                               params.isGroup = true;
+                               if (params.isMessage) {
+                                   mckMessageLayout.loadTab(params, alMessageService.dispatchMessage)
+                               } else {
+                                   if (params.isInternal) {
+                                       $mck_msg_inner.data('mck-id', group.contactId);
+                                       $mck_msg_inner.data('isgroup', true);
+                                       mckGroupLayout.loadGroupInfo({
+                                           groupId: group.contactId
+                                       });
+                                   } else {
+                                       mckMessageLayout.loadTab(params);
+                                   }
+                               }
+                               if (typeof params.callback === 'function') {
+                                   response.updated = data.updated ? data.updated : false;
+                                   response.status = 'success';
+                                   response.data = group;
+                                   params.callback(response);
+                               }
+                           }
+                       } else if (data.status === 'error') {
+                           if (typeof params.callback === 'function') {
+                               response.status = 'error';
+                               response.errorMessage = data.errorResponse[0].description;
+                               params.callback(response);
+                           }
+                       }
+                   },
+                   error: function () {
+                       if (params.isInternal) {
+                           $mck_btn_group_create.attr('disabled', false).html(MCK_LABELS['create.group.title']);
+                       }
+                       if (typeof params.callback === 'function') {
+                           response.status = 'error';
+                           response.errorMessage = 'Unable to process request.';
+                           params.callback(response);
+                       }
+                   }
+               });
+           };
+
         }
 
         function MckMessageLayout() {
@@ -7136,7 +7149,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var FILE_AWS_UPLOAD_URL = "/rest/ws/upload/file";
             var FILE_DELETE_URL = "/rest/ws/aws/file/delete";
             var CUSTOM_FILE_UPLOAD_URL = '/files/upload/';
-            var mck_filebox_tmpl = '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' + '<div class="mck-file-expr">' + '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="mck-file-sz">${fileSizeExpr}</span></span>' + '<span class="progress progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="progress-bar progress-bar-success bar" stye></span></span>' + '<span class="move-right">' + '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' + '</span></div></div>';
+            var mck_filebox_tmpl = '<div id="mck-filebox-${fileIdExpr}" class="mck-file-box ${fileIdExpr}">' + '<div class="mck-file-expr">' + '<span class="mck-file-content blk-lg-8"><span class="mck-file-lb">{{html fileNameExpr}}</span>&nbsp;<span class="mck-file-sz">${fileSizeExpr}</span></span>' + '<span class="km-progress km-progress-striped active blk-lg-3" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="km-progress-bar km-progress-bar-success km-bar" stye></span></span>' + '<span class="move-right">' + '<button type="button" class="mck-attach-icon mck-box-close mck-remove-file" data-dismiss="div" aria-hidden="true">x</button>' + '</span></div></div>';
             $applozic.template("fileboxTemplate", mck_filebox_tmpl);
             _this.init = function () {
                 //ataching events for rich msh templates
@@ -7239,8 +7252,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic.tmpl("fileboxTemplate", fileboxList).appendTo('#mck-file-box');
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
-                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .progress .bar");
-                    var $file_progress = $applozic(".mck-file-box." + randomId + " .progress");
+                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
                     $file_progress.removeClass('n-vis').addClass('vis');
@@ -7337,8 +7350,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic.tmpl("fileboxTemplate", fileboxList).appendTo('#mck-file-box');
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
-                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .progress .bar");
-                    var $file_progress = $applozic(".mck-file-box." + randomId + " .progress");
+                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
                     $file_progress.removeClass('n-vis').addClass('vis');
@@ -7378,7 +7391,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 delete TAB_FILE_DRAFT[uniqueId];
                                 $file_name.html(fileExpr);
                                 $file_progress.removeClass('vis').addClass('n-vis');
-                                $applozic(".mck-file-box .progress").removeClass('vis').addClass('n-vis');
+                                $applozic(".mck-file-box .km-progress").removeClass('vis').addClass('n-vis');
                                 $mck_text_box.removeAttr('required');
                                 FILE_META.push(file_meta);
                                 $fileContainer.data('mckfile', file_meta);
@@ -7436,8 +7449,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $applozic.tmpl("fileboxTemplate", fileboxList).appendTo('#mck-file-box');
                     var $fileContainer = $applozic(".mck-file-box." + randomId);
                     var $file_name = $applozic(".mck-file-box." + randomId + " .mck-file-lb");
-                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .progress .bar");
-                    var $file_progress = $applozic(".mck-file-box." + randomId + " .progress");
+                    var $file_progressbar = $applozic(".mck-file-box." + randomId + " .km-progress .km-bar");
+                    var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
                     $file_progress.removeClass('n-vis').addClass('vis');
@@ -7476,7 +7489,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 delete TAB_FILE_DRAFT[uniqueId];
                                 $file_name.html(fileExpr);
                                 $file_progress.removeClass('vis').addClass('n-vis');
-                                $applozic(".mck-file-box .progress").removeClass('vis').addClass('n-vis');
+                                $applozic(".mck-file-box .km-progress").removeClass('vis').addClass('n-vis');
                                 $mck_text_box.removeAttr('required');
                                 FILE_META.push(file_meta);
                                 $fileContainer.data('mckfile', file_meta);
