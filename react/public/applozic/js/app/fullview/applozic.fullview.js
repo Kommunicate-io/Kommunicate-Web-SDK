@@ -1775,9 +1775,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				//Todo: add on scroll of all conversations
 				$kmMessageInner.bind('scroll', function() {
 					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
-						//Todo: figure out which tab is active and call load list accordingly.
 						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.active")[0].id;
-						console.log("#activeConversationTabId: " + activeConversationTabId);
 						var $conversation = $conversationAll;
 						
 						if (activeConversationTabId == "km-conversation") {
@@ -1789,25 +1787,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						}
 
 						var startTime = $conversation.data('datetime');
-						console.log("###startTime: " + startTime);
 
 						if (startTime > 0 && !CONTACT_SYNCING) {
 							var params = {};
 							params.startTime = startTime;
 							if (activeConversationTabId == "km-conversation") {
-								console.log("#loadSupportGroup");
 								mckMessageService.loadSupportGroup(params);
 							} else if (activeConversationTabId == "km-assigned") {
-								console.log("#loadAssignedGroup");
 								mckMessageService.loadAssignedGroup(params);
 							} else if (activeConversationTabId == "km-closed") {
-								console.log("#loadCloseGroup");
 								mckMessageService.loadCloseGroup(params);
 							}
 						}
 
 						/*var startTime = $kmApplozic(".km-contacts-inner").data('datetime');
-						console.log("### fetched startTime: " + startTime);
 						if (startTime > 0 && !CONTACT_SYNCING) {
 							mckMessageService.loadMessageList({
 								'tabId' : '',
@@ -2617,14 +2610,13 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				// if (!params.startTime) {
 				// 	$mck_msg_inner.html('');
 				// }
-				console.log("#params: ");
-				console.log(params);
+
 				CONTACT_SYNCING = true;
 				var data = '?userId='+ encodeURIComponent(MCK_USER_ID);
 				if (params.startTime) {
 				 	data += "&lastFetchTime=" + params.startTime;
 				}
-				data += "&pageSize=10";
+				data += "&pageSize=60";
 
 				kmUtils.ajax({
 					method: 'get',
@@ -2644,12 +2636,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
 			  	}
-			    data += "&pageSize=5";
+			    data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=2",
 					success: function (data) {
-						console.log("closed",data.response);
 						var list = {};
 						list.closedList = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data,individual,"km-closed-conversation-list",list);
@@ -2698,7 +2689,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
 			   	}
-			   	data += "&pageSize=5";
+			   	data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
@@ -4247,7 +4238,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							}
 						});
 					}
-					console.log("#list: " + list);
 					var $conversation = $conversationAll;
 					if (typeof list === "undefined") {
 						$conversation = $conversationAll;
@@ -4364,7 +4354,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.addContactsFromMessage = function(message, update, list) {
 				var contactIdsArray = _this.getUserIdFromMessage(message);
 				if (contactIdsArray.length > 0 && contactIdsArray[0]) {
-					for (var i = 0; i < contactIdsArray.length; i++) 
+					for (var i = 0; i < contactIdsArray.length; i++) {
 						var contact = _this.fetchContact('' + contactIdsArray[i]);
 						_this.updateRecentConversationList(contact, message, update, false, list);
 					}
