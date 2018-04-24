@@ -126,11 +126,13 @@ toggleConversationAssignment = () => {
     console.log("state",this.state);
     let status = !this.state.assignConversationToBot?"enabled":"disabled";
     let currentSelectedBot = this.state.listOfBots.filter(item =>item.userName==this.state.currentSelectedBot)
+    if(currentSelectedBot.length){
     botPlatformClient.toggleMute(currentSelectedBot[0].userKey,status).then(data=>{
         if(data.code=="success"){
             console.log("bot routing disabled..");
         }
-    })
+        })
+    }
     this.setState({
         assignConversationToBot: !this.state.assignConversationToBot
     })
