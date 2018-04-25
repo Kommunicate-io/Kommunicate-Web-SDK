@@ -76,7 +76,7 @@
     .mck-msg-box-rich-text-container{
         top: 0;
         float: left;
-        margin: 5px 0px 0px 7px;
+        margin: 5px 0px 0px 0px;
         color:#7766B5;
     }
     .km-guest-text-lable .km-children-text-lable{
@@ -462,6 +462,10 @@
     
     .km-fixed-container{
         width:100%;
+        overflow:hidden;
+        overflow: hidden;
+        border-radius: 5px;
+        border: solid 1px #e5e5e5;
     }
     
     
@@ -606,12 +610,28 @@
     }
     /******** Generic list template*************/
     /* FAQ List */
-    .km-message.km-received.km-faq-list {
+    .km-message.km-received.km-chat-faq-list {
         padding: 0px;
         background: transparent;
+        width:96%;
+
     }
     .km-faq-list--body, .km-faq-list--footer {
-        background-color: #fff;
+        /*background-color: #e5e5e5;*/
+    }
+    .km-faq-list--header_text-img {
+        background-color: rgba(103, 103, 103, 0);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
+        background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
+    }
+    .km-faq-list--header_text-img img {
+        object-fit: cover;
+        width: 100%;
+        height: 110px;
+        position: relative;
+        z-index: 0;
+        display: block;
     }
     
     .km-faq-list--body_list {
@@ -688,8 +708,8 @@
         position: relative;
         z-index: 0;
         display: block;
-        border-top-left-radius:18px;
-        border-top-right-radius:18px;
+        border-top-left-radius:5px;
+        border-top-right-radius:5px;
     }
     .km-faq-list--header_text {
         bottom: 2px;
@@ -729,7 +749,7 @@
     }
     
     .km-faq-list--header_text-container {
-        background-color: #fff;
+        /*background-color: #e5e5e5;*/
         border: none !important;
         min-height:10px;
     }
@@ -738,13 +758,18 @@
         color: rgb(48, 48, 48);
         word-wrap: break-word;
         font-size: 16px;
-    }
+        font-family: OpenSans;
+}
     .km-faq-list--footer_button-container button:not(:last-child){
         border-bottom: 1px solid #e5e5e5;
     
     }
     .km-faq-list, .km-dialog-box{
-        width:96%;
+        /*width:96%;*/
+    }
+
+    .km-faq-list--container{
+        
     }
     
     /********  dialog box template *************/
@@ -753,10 +778,11 @@
         padding: 0px;
         background: transparent;
         width:96%;
+        background-color:#e5e5e5;
     }
     .km-faq-answer--body {
         border-radius: 5px;
-      background-color: #FFFFFF;
+      background-color: #e5e5e5;
     }
     .km-faq-answer--body_container {
         padding: 10px;
@@ -803,7 +829,8 @@
 
 
     .km-faq-list--header .km-faq-list--header_text-container:first-child{
-        border-radius: 16px 16px 0px 0px;
+        
+        background-color: #e6e5ec;
     }
     .km-faq-dialog-button{
         min-width: 40px;
