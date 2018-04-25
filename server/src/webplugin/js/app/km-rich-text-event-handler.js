@@ -119,7 +119,7 @@ Kommunicate.richMsgEventHandler = {
                 hotelSelected: true,
                 sessionId: sessionId,
                 resultIndex: resultIndex,
-                skipBot: true
+                skipDialogflow: true
             }
         };
 
@@ -140,7 +140,7 @@ Kommunicate.richMsgEventHandler = {
                 RoomIndex: RoomIndex,
                 NoOfRooms: NoOfRooms,
                 blockHotelRoom: true,
-                skipBot: true,
+                skipDialogflow: true,
                 HotelResultIndex:HotelResultIndex
             }
         };
@@ -199,7 +199,7 @@ Kommunicate.richMsgEventHandler = {
                         metadata: { 
                                 sessionId: sessionId, 
                                 guestDetail: true, 
-                                skipBot: true, 
+                                skipDialogflow: true, 
                                 personInfo: JSON.stringify(personDetail) 
                                 } 
                             };
