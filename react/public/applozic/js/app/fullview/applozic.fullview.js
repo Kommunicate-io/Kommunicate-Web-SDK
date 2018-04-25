@@ -1272,26 +1272,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
 					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
 						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-						// if($("#km-contact-list .km-unread-count-box").hasClass('vis')){
-						// 	//addclass unread
-						// 	$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-
-						// }
-
-						
+						$("#km-assigned-search-list li:first-child" ).trigger( "click");
 						$("#assign-selected").removeClass('n-vis').addClass('vis');
 						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 
 					} else if ($("#km-closed").hasClass("km-conversation-icon-active")) {
 						$("#km-closed-conversation-list").removeClass('n-vis').addClass('vis');
-						
+						$("#km-closed-conversation-list li:first-child" ).trigger( "click");
 						$("#closed-conversatios-selected").removeClass('n-vis').addClass('vis');
 						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#assign-selected").removeClass('vis').addClass('n-vis');
 					} else {
 						$("#km-contact-list").removeClass('n-vis').addClass('vis');
-
+						$( "#km-contact-list li:first-child" ).trigger( "click");
 						$("#all-conversatios-selected").removeClass('n-vis').addClass('vis');
 						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#assign-selected").removeClass('vis').addClass('n-vis');
@@ -1790,7 +1784,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				$kmMessageInner.bind('scroll', function() {
 					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
-						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.active")[0].id;
+						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.km-conversation-icon-active")[0].id;
 						var $conversation = $conversationAll;
 						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
 						
@@ -7514,13 +7508,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-						if(message.metadata.KM_ASSIGN ===MCK_USER_ID){
+						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
 							list.assigneList = "km-assigned-search-list";
 						}
-						if(message.metadata.KM_STATUS ==="Close"){
+						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
 							list.closedList = "km-closed-conversation-list";
 						}
-
+						if(message.metadata && message.metadata.KM_ASSIGN !==MCK_USER_ID){
+							var asdiv ="#km-li-as-group-"+contact.groupId;
+							$(asdiv).remove();
+						}
+                        if(message.metadata && message.metadata.KM_STATUS !=="Close"){
+							var cldiv ="#km-li-cl-group-"+contact.groupId;
+							$(cldiv).remove();
+						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
