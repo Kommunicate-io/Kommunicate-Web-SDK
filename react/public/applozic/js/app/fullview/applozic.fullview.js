@@ -1770,20 +1770,21 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
-				//km-contacts-inner
-				//km-message-inner
-				//Todo: add on scroll of all conversations
 				$kmMessageInner.bind('scroll', function() {
 					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
 						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.active")[0].id;
 						var $conversation = $conversationAll;
+						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
 						
 						if (activeConversationTabId == "km-conversation") {
 							$conversation = $conversationAll;
+							conversationLoadingFunc = mckMessageService.loadSupportGroup;
 						} else if (activeConversationTabId == "km-assigned") {
 							$conversation = $conversationAssigned;
+							conversationLoadingFunc = mckMessageService.loadAssignedGroup;
 						} else if (activeConversationTabId == "km-closed") {
 							$conversation = $conversationClosed;
+							conversationLoadingFunc = mckMessageService.loadCloseGroup;
 						}
 
 						var startTime = $conversation.data('datetime');
@@ -1791,13 +1792,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						if (startTime > 0 && !CONTACT_SYNCING) {
 							var params = {};
 							params.startTime = startTime;
-							if (activeConversationTabId == "km-conversation") {
-								mckMessageService.loadSupportGroup(params);
-							} else if (activeConversationTabId == "km-assigned") {
-								mckMessageService.loadAssignedGroup(params);
-							} else if (activeConversationTabId == "km-closed") {
-								mckMessageService.loadCloseGroup(params);
-							}
+							conversationLoadingFunc(params);
 						}
 
 						/*var startTime = $kmApplozic(".km-contacts-inner").data('datetime');
