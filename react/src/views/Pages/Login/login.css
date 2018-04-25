@@ -183,7 +183,7 @@
     margin-right: 3.5rem !important;
     margin-left: 3.5rem !important;
 }
-.signup-card-block {
+.signup-card-block, .login-card-block {
     padding: 34px !important;
 }
 .signup-button-row p, .applozic-user-signup-btn-row p {
@@ -196,7 +196,7 @@
     font-size: 16px;
 }
 .email-field-group, .signup-with-google-btn {
-    margin-bottom: 30px !important;
+    margin-bottom: 20px !important;
 }
 
 .signup-with-google-btn {
@@ -318,6 +318,10 @@
 .login-back-btn:hover {
     box-shadow: none;
     background-color: #fff;
+}
+
+.login-form-div .step-1-submit-btn {
+    margin-top: 26px;
 }
 
 @media(max-width:576px) {
