@@ -525,6 +525,7 @@ footer .copyright {
 .ph-text-container p {
     margin-bottom: 0px;
     color: #fff;
+    font-size: 16px;
 }
 
 .flex-show {
@@ -535,23 +536,23 @@ footer .copyright {
     top: 0;
 }
 
-@media only screen and (max-width:803px) {
+@media only screen and (max-width:899px) {
     .nav-header-sticky .nav-main-header {
         top: 73px;
     }
 }
-@media only screen and (max-width:480px) {
+@media only screen and (max-width:531px) {
     .nav-header-sticky .nav-main-header {
         top: 95px;
     }
 }
-@media only screen and (max-width:350px) {
+@media only screen and (max-width:383px) {
     .nav-header-sticky .nav-main-header {
-        top: 115px;
+        top: 120px;
     }
 }
-@media only screen and (max-width:310px) {
+@media only screen and (max-width:337px) {
     .nav-header-sticky .nav-main-header {
-        top: 135px;
+        top: 140px;
     }
 }
