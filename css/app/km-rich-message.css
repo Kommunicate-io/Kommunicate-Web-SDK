@@ -468,6 +468,11 @@
         border: solid 1px #e5e5e5;
     }
     
+    .km-border-less-container{
+        width:96%;
+        overflow:hidden;
+        overflow: hidden;
+    }
     
     .km-slick-container .tns-controls button{
         position: absolute;
