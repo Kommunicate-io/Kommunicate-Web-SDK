@@ -40,7 +40,7 @@ getHotelCardTemplate : function(options,sessionId){
    
     }    
     //Note: Setting price as 8%, modify it to change price calculation logic.
-    var price = options.Price.CurrencyCode + " " + (options.Price.OfferedPrice/100)*108;
+    var price = (options.Price.CurrencyCode=="INR"?'&#x20B9;': options.Price.CurrencyCode )+ " " + Math.ceil(options.Price.OfferedPrice * 1);
     return `
     <div class="km-dashboard-single-card-message">
         <div class="km-dashboard-card-message-header">
