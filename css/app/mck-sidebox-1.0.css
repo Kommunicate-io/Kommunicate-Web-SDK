@@ -272,7 +272,7 @@
 }
 
 .mck-box div, .mck-box .mck-box-title {
-	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif ;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif ;
 }
 
 .mck-sidebox .mck-box-title {
@@ -1468,7 +1468,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	resize: none;
 
 	background-color: white;
-	width: calc(100% - 120px) !important;
+	width: calc(100% - 100px) !important;
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -1481,6 +1481,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	text-align: left;
 	box-shadow: none !important;
 	-webkit-user-select: text;
+	border: none;
 }
 
 .mck-text-box-panel {
