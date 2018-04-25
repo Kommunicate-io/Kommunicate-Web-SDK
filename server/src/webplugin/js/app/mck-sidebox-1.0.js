@@ -5430,7 +5430,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         if (message.contentType === 2) {
                             emoji_template = '<span class="mck-icon-marker"></span>';
                         } else {
-                            var msg = message.message;
+                            var msg = message.message||(message.metadata&&message.metadata.messagePreview);
                             if (mckUtils.startsWith(msg, "<img")) {
                                 return '<span class="mck-icon-camera"></span>&nbsp;<span>image</span>';
                             } else {
