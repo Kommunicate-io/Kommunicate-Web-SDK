@@ -2430,7 +2430,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
-							emptyStateChange();
+							mckMessageService.emptyStateChange();
 							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
