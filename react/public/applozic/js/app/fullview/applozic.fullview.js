@@ -4777,7 +4777,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						}
 					} else {
 						$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
-						if ($kmApplozic("#conversation-section.chat.km-message-inner." + contact.contactId).length == 0) {
+						if ($kmApplozic("#conversation-section .chat.km-message-inner." + contact.contactId).length == 0) {
 							$kmApplozic.tmpl("KMconversationTemplate", contactList).appendTo('#conversation-section');
 						}
 					}}
