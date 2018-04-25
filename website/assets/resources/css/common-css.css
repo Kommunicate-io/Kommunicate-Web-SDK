@@ -493,4 +493,42 @@ footer .copyright {
     color: #fff;
   }
 
+.nav-header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.nav-header-sticky .nav-main-header {
+    top: 55px;
+}
+.product-hunt-banner {
+    width: 100%;
+    padding: 19px 15px;
+    background-color: #da552f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(/assets/resources/images/ph-kitty-logo.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 23% 50%;
+}
+.ph-logo-container {
+    width: 50px;
+    /* height: 30px;
+    background-image: url(/assets/resources/images/ph-kitty-logo.png);
+    background-repeat: no-repeat;
+    background-size: cover; */
+}
+.ph-text-container p {
+    margin-bottom: 0px;
+    color: #fff;
+}
 
+.flex-show {
+    display: flex !important;
+}
+
+.nav-header-sticky .nav-main-header.sticky {
+    top: 0;
+}
