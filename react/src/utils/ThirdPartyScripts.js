@@ -9,10 +9,10 @@ class ThirdPartyScripts extends Component {
           var userId = CommonUtils.getUserSession.userName;
           var currentPath = window.location.pathname;
 
-          if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
+          /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
-          } else {
-            (function(d, m){
+          } else {*/
+            (function(d, m){ 
               var o = {};
               if (userId) {
                 o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
@@ -31,7 +31,7 @@ class ThirdPartyScripts extends Component {
               window.kommunicate = m;
               m._globals = o;
             })(document, window.kommunicate || {});
-          }
+          /*}*/
 
 
 
