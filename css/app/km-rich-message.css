@@ -494,7 +494,7 @@
     }
     
     .km-slick-container .tns-controls button:first-child{
-        left :0;
+        left :45px;
     }
     .km-slick-container .tns-controls button:last-child{
         right :0;
