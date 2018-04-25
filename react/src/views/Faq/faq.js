@@ -279,7 +279,7 @@ class Tabs extends Component {
                     <img className="km-faq-helpdocs-logo" src={HelpdocsLogo} />
                       Integrate with Helpdocs
                     </button>
-                    <p className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</p>
+                    <div className="km-faq-import-faq-sub">Import your FAQs from Helpdocs</div>
                   </div>  
                 }
                 
@@ -298,8 +298,8 @@ class Tabs extends Component {
                   </div>
                 </Modal>
               </div>
-              <div className={this.state.listOfFAQs.length > 0 ? "mt-4 km-faq-container":"n-vis"}>
-                <div className="col-sm-12 mt-4" style={{borderBottom: "1px solid #c8c2c2", height: "35px", paddingTop: "0.4rem"}}>
+              <div className={this.state.listOfFAQs.length > 0 ? "km-faq-container":"n-vis"}>
+                <div className="col-sm-12" style={{borderBottom: "1px solid #c8c2c2", height: "35px", paddingTop: "0.4rem"}}>
                   <span>{"FAQs (" + this.state.listOfFAQs.length + ")"}</span>
                 </div>
                 <div className={this.state.listOfFAQs.length > 0 ? "km-bot-list-of-faqs-container":"n-vis"}>
