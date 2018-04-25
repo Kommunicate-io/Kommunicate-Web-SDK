@@ -3494,7 +3494,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
-			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
+			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="km-li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
 			$kmApplozic.template("KMmessageTemplate", markup);
@@ -4345,11 +4345,13 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if ($kmApplozic('#' + $listId + ' #km-li-' + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + $listId + " #km-li-" + contact.htmlId + " .km-cont-msg-wrapper");
 					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-						if (list) {
-							if (list && list.assigneList) {
+						if (list && !list.assigneupdate) {
+							if (list.assigneList) {
 								_this.addContact(contact, list.assigneList, message, prepend);
-							} else if (list && list.closedList) {
+							} else if (list.closedList) {
 								_this.addContact(contact, list.closedList, message, prepend);
+							} else if(list.assigneupdate){
+
 							}
 						} else {
 							_this.updateContact(contact, message, $listId, update);
@@ -4629,8 +4631,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
-					$kmApplozic("#km-li-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
-					var $messageText = $kmApplozic("#km-li-" + contHtmlExpr + " .km-cont-msg-wrapper");
+					$kmApplozic(".km-li-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
+					var $messageText = $kmApplozic(".km-li-" + contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
 					(typeof emoji_template === 'object') ? $messageText.append(emoji_template) : $messageText.html(emoji_template);
 					if (message.conversationId) {
@@ -4641,15 +4643,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							if (topicId && IS_MCK_TOPIC_HEADER) {
 								var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
 								if (typeof topicDetail === "object") {
-									$kmApplozic("#km-li-" + contHtmlExpr + " .km-conversation-topic").html(topicDetail.title);
+									$kmApplozic(".km-li-" + contHtmlExpr + " .km-conversation-topic").html(topicDetail.title);
 								}
 							}
 						}
-						$kmApplozic("#km-li-" + contHtmlExpr + " a").data('km-conversationid', conversationId);
+						$kmApplozic(".km-li-" + contHtmlExpr + " a").data('km-conversationid', conversationId);
 					}
 					if (unreadCount > 0) {
-						$kmApplozic("#km-li-" + contHtmlExpr + " .km-unread-count-text").html(unreadCount);
-						$kmApplozic("#km-li-" + contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
+						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-text").html(unreadCount);
+						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
 					}
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					$contactElem.data('msg-time', message.createdAtTime);
@@ -4700,6 +4702,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				}
 				var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+				var contactClass = contHtmlExpr;
 				if ($listId === "km-contact-search-list") {
 					contHtmlExpr = 'cs-' + contHtmlExpr;
 				}
@@ -4723,6 +4726,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					conversationExpr : conversationId,
 					contHeaderExpr : isContHeader,
 					titleExpr : title,
+					contHtmlExpr1: contactClass,
+
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
 				if ($listId === "km-contact-search-list") {
@@ -7484,11 +7489,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
 							list.closedList = "km-closed-conversation-list";
 						}
+
 						if(message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact){
 							var asdiv ="#km-li-as-group-"+contact.groupId;
 							$(asdiv).remove();
 						}
-                        if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
+            if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
 							var cldiv ="#km-li-cl-group-"+contact.groupId;
 							$(cldiv).remove();
 						}
