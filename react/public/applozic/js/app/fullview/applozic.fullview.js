@@ -4373,15 +4373,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			};
 			_this.updateRecentConversationList = function(contact, message, update, prepend,list) {
 				var $listId = 'km-contact-list';
-				var assigneList;
-				var Closelist;
-				
-				if(list && list.assignelist){
-					assigneList = list.assignelist;
-				}
-				if(list && list.CloseList){
-					CloseList = list.CloseList;
-				}
 				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				if ($kmApplozic('#' + $listId + ' #km-li-' + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + $listId + " #km-li-" + contact.htmlId + " .km-cont-msg-wrapper");
@@ -4389,21 +4380,18 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						_this.updateContact(contact, message, $listId, update);
 					}
 				} else {
-					if (!list) {
-						_this.addContact(contact, $listId, message, prepend);
-						return;
-					} else {
-						if (list.assigneList) {
-							_this.addContact(contact, list.assigneList, message, prepend);
-						}
-						if (list.closedList) {
-							_this.addContact(contact, list.closedList, message, prepend);
-						}
-					if (list.assigneupdate) {
-						_this.addContact(contact, assigneList, message, prepend);
-						return;
+					if (list && list.assigneList) {
+						_this.addContact(contact, list.assigneList, message, prepend);
 					}
-				}
+					else if (list && list.closedList) {
+						_this.addContact(contact, list.closedList, message, prepend);
+					} else if (list && list.assigneupdate) {
+						_this.addContact(contact, $listId, message, prepend);
+						_this.addContact(contact, "km-assigned-search-list", message, prepend);
+					}
+					else {
+						_this.addContact(contact, $listId, message, prepend);
+					}
 				}
 			};
 			_this.addContactsToSearchList = function() {
