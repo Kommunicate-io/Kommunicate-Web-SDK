@@ -217,7 +217,7 @@ class Forms extends Component {
                 <div className="row">
                   <div className="col-md-12">
                     <div className="brand-header">
-                      <h5>Profile</h5>
+                      {/* <h5>Profile</h5> */}
                     </div>
                   </div>
                 </div>

@@ -110,6 +110,9 @@
 .integration-heading{
 	margin-top: 2px;
 }
+.intgration-card-header > h5 {
+	font-weight: normal;
+}
 .intgration-card-header {
 	color: #5f6162;
 	font-size: 12px;

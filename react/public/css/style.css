@@ -10543,7 +10543,7 @@ input:required {
 
 .invite-team {
   font-size: 18px !important;
-  font-weight: 500 !important;
+  font-weight: normal !important;
   line-height: 1.1 !important;
   color: rgb(95, 97, 98) !important;
 }
@@ -10552,12 +10552,31 @@ input:required {
   display: flex;
   align-items: center;
 }
-
+.faq-btn-wrapper {
+  padding-top: 25px;
+} 
+.faq-modal-discard-btn-box {
+  margin-left: 23px;
+}
+.faq-yes-delete-box {
+  padding-right: 3px;
+}
+.faq-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #6c6a6a;
+  padding-bottom: 10px;
+}
 .km-bot-list-of-faqs-container {
     height: 200px;
     overflow-y: auto;
     padding: 0 10px 0 10px;
     overflow-x: hidden;
+}
+.faq-modal-save-btn {
+  margin-left: 17px;
 }
 
 .km-bot-list-of-faqs-container > div:nth-child(even) {

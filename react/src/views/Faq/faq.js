@@ -268,9 +268,9 @@ class Tabs extends Component {
                   </p> */}
                 </div>
               </div>
-              <div className="row mt-4">
+              <div className="row mt-4 faq-btn-wrapper">
                 <button className="km-button km-button--primary" onClick={this.toggleFaqModal}>
-                  + Add a FAQ
+                  + Add FAQ
                 </button>
                 <div className="km-faq-or">OR</div>
                 { this.state.helpdocsKey.length == 0 &&
@@ -322,6 +322,7 @@ class Tabs extends Component {
         </div>
         <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog">
           <ModalHeader toggle={this.toggleFaqModal}>
+            <h4 className="faq-modal-title">FAQ</h4>
           </ModalHeader>
           <ModalBody>
             <div className="row">
@@ -341,7 +342,7 @@ class Tabs extends Component {
               </div>
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
-              <div className="col-sm-2 km-bot-align-item-v-center">
+              <div className="col-sm-1 km-bot-align-item-v-center">
                 <div onClick={this.toggleDeleteFaq}>
                   <img src={trash2x} style={{width: "22px", height: "22px"}}/>
                 </div>
@@ -359,13 +360,13 @@ class Tabs extends Component {
                   </Label>
                 </div>
               </div> 
-              <div className="col-sm-2 text-right">
+              <div className="col-sm-2 text-right faq-modal-discard-btn-box">
                 <button className="km-button km-button--secondary" onClick={this.toggleFaqModal}>
                   Discard 
                 </button>
               </div>
               <div className="col-sm-2 text-right">
-                <button className="km-button km-button--primary" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
+                <button className="km-button km-button--primary faq-modal-save-btn" onClick={ this.state.faqId === null ? this.createFAQ:this.updateFaq }>
                   Save
                 </button>
               </div> 
@@ -374,7 +375,7 @@ class Tabs extends Component {
               <div className="col-sm-6 text-left km-bot-align-item-v-center" style={{width: "47%"}}>
                 <span>Do you want to delete this FAQ?</span>
               </div> 
-              <div className="col-sm-4 text-right">
+              <div className="col-sm-4 text-right faq-yes-delete-box">
                 <button className="km-button km-button--secondary" onClick={ () => {this.deleteFaq();}}>
                   Yes, Delete
                 </button>
