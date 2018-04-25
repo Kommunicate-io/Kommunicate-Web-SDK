@@ -49,6 +49,7 @@ class Users extends Component {
                       <th>User</th>
                        <th>Contact Info</th>
                        <th>Last Activity</th>
+                       <th>Latest Conversation</th>
                        <th className="text-center">Add Info</th>
                       <th className="text-center">Actions</th>
                       <th className="text-center n-vis">Country</th>

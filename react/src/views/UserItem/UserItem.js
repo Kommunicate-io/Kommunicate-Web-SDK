@@ -17,6 +17,9 @@ class UserItem extends Component {
     render() {
         var user = this.props.user;
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
+        var latestConversation=user.messagePxy?user.messagePxy.message:"no conversation yet!";
+        var lastMessageTime=user.messagePxy?(window.$kmApplozic.fn.applozic('getDateTime',user.messagePxy.createdAtTime)):'';
+        var groupId=user.messagePxy?user.messagePxy.groupId:"";
         var image = (user.imageLink) ? (user.imageLink):'';
         var imageExpr = (user.imageLink) ? 'img-avatar vis' :'n-vis';
         var nameExpr =  (user.imageLink) ? 'n-vis' :'km-alpha-contact-image vis';
@@ -47,6 +50,10 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Seen</div>
                       <strong>{lastSeenAt}</strong>
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
+                    </td>
+                    <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
+                      <strong className="km-truncate-block">{latestConversation}</strong>
+                      <div className="small text-muted">{lastMessageTime} </div>
                     </td>
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
