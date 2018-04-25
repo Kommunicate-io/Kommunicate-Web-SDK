@@ -2645,8 +2645,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 			}
 			_this.loadAssignedGroup = function (params, callback) {
-				console.log("calling load assigned group");
-				console.log(params);
 				// $mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
 				// var isConvReq = false;
