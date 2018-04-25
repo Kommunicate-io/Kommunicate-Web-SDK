@@ -527,7 +527,7 @@
 
 .mck-btn.active.focus, .mck-btn.active:focus, .mck-btn.focus, .mck-btn:active.focus,
 	.mck-btn:active:focus, .mck-btn:focus {
-	outline: thin dotted;
+	outline: none;
 	outline: 5px auto -webkit-focus-ring-color;
 	outline-offset: -2px;
 }
@@ -1348,9 +1348,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	overflow: auto;
 }
 #mck-contacts-content{
-	position: absolute;
+	/* position: absolute;
     bottom: 15px;
-	left: 50%; transform: translateX(-50%);
+	left: 50%; transform: translateX(-50%); */
+	padding: 15px 0px;
 }
 .mck-display-name{
 	white-space: nowrap;
@@ -3887,6 +3888,9 @@ box-shadow: none!important;
     padding: 0;
     font-size: 14px;
     letter-spacing: 0.4px;
+}
+#mck-msg-new:focus {
+	outline: none;
 }
 .mck-msg-list-icon{
 	/* filter:invert(1); */
