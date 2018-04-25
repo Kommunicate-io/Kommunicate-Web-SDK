@@ -9,11 +9,12 @@ import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import LocationIcon from './Icons/location.png';
-import DomainIcon from './Icons/web-icon.png'
-import FacebookIcon from './Icons/facebook-icon.png'
-import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png'
-import TwitterIcon from './Icons/twitter-icon.png'
-import LinkedinIcon from './Icons/linkedin-icon.png'
+import DomainIcon from './Icons/web-icon.png';
+import FacebookIcon from './Icons/facebook-icon.png';
+import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
+import TwitterIcon from './Icons/twitter-icon.png';
+import LinkedinIcon from './Icons/linkedin-icon.png';
+import ReactTooltip from 'react-tooltip';
 
 
 
@@ -345,7 +346,34 @@ class Aside extends Component {
                 <div className="km-container">
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
+                    {/* conversation tab new design */}
                       <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
+                        <div className="km-conversation-header-icons">
+                          <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tip="Assigned to me" data-effect="solid" data-place="bottom">
+                            {/* <div className="km-conversation-header-notification-alert"></div> */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="20">
+                              <path fill="#AAA" d="M13.997 4.771c-.001-.615-.49-.947-.948-.947a.981.981 0 0 0-.657.255.91.91 0 0 0-.289.693v5.93a.41.41 0 1 1-.82 0V1.846c-.002-.615-.49-.947-.948-.947a.98.98 0 0 0-.656.254.91.91 0 0 0-.29.697v8.767a.41.41 0 0 1-.41.411.41.41 0 0 1-.41-.41V.947A.92.92 0 0 0 7.641 0h-.018a.978.978 0 0 0-.658.255.909.909 0 0 0-.29.696v9.74a.41.41 0 0 1-.82 0V2.657c-.003-.612-.49-.943-.947-.943a.98.98 0 0 0-.657.255.91.91 0 0 0-.29.696v9.96c1.097.015 3.055.314 4.458 2.066a.41.41 0 1 1-.64.513c-1.226-1.53-2.962-1.759-3.888-1.759-.11 0-.215.004-.314.01h-.014a.181.181 0 0 1-.07-.007.374.374 0 0 1-.145-.05.365.365 0 0 1-.105-.085.391.391 0 0 1-.049-.072.451.451 0 0 1-.036-.077L2.029 9.58c-.19-.6-.672-.958-1.287-.958-.148 0-.294.023-.433.067L0 8.788l1.899 6.03.002.008c.81 2.572 3.149 4.349 5.819 4.422.007 0 .014 0 .021.002 3.438-.016 6.24-2.829 6.259-6.28a.19.19 0 0 1-.003-.034V4.77z"/>
+                            </svg>
+                          </div>
+                          <div id= "km-conversation" className="km-conversation-header-icon km-conversation-tabView " data-tip="All Conversations" data-effect="solid" data-place="bottom">
+                          <svg xmlns='http://www.w3.org/2000/svg' width='14' height='17'>
+                            <path fill='#AAA' d='M11.427 0H2.57C1.151 0 0 1.096 0 2.448v11.845c0 1.351 1.151 2.447 2.57 2.447h8.851c1.42 0 2.57-1.096 2.57-2.447V8.898l.006-.01v-6.44c0-1.352-1.15-2.448-2.57-2.448zM8.913 13.273h-5.81c-.516 0-.934-.398-.934-.89s.418-.89.935-.89h5.809c.516 0 .935.398.935.89s-.419.89-.935.89zm1.98-2.834h-7.79c-.516 0-.934-.399-.934-.89 0-.492.418-.89.935-.89h7.79c.516 0 .934.398.934.89 0 .491-.418.89-.935.89zm0-2.835h-7.79c-.516 0-.934-.399-.934-.89 0-.492.418-.89.935-.89h7.79c.516 0 .934.398.934.89 0 .491-.418.89-.935.89zm-7.7-3.507a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049zm3.635 0a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049zm3.755 0a1.024 1.024 0 1 1 0-2.049 1.024 1.024 0 0 1 0 2.049z'/>
+                          </svg>
+                          </div>
+                          <div id="km-closed" className="km-conversation-header-icon km-conversation-tabView" data-tip="Closed Conversations" data-effect="solid" data-place="bottom">
+                            <svg xmlns='http://www.w3.org/2000/svg' width='14' height='17'>
+                              <path fill='#AAA' d='M13.3 0H.7C.314 0 0 .317 0 .706V3.67c0 .389.314.706.7.706h12.6c.386 0 .7-.317.7-.706V.706A.704.704 0 0 0 13.3 0zM.875 13.76c0 1.34 1.008 2.428 2.25 2.428h7.745c1.241 0 2.249-1.087 2.249-2.427V8.41l.005-.01V5H.875v8.76z'/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="km-row">
+                        <h4 id="assign-selected" className="km-conversation-tab-selected">Assigned to me</h4>
+                        <h4 id="all-conversatios-selected" className="km-conversation-tab-selected n-vis">All Conversations</h4>
+                        <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected n-vis">Closed Conversations</h4>
+                      </div>  
+                      {/* conversation tab old design */}
+                      {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="blk-lg-3">
                           <div id="km-user-icon" className="km-user-icon"></div>
                         </div>
@@ -354,9 +382,6 @@ class Aside extends Component {
                              <li id="km-conversation"className="km-conversation-tabView active "><a className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-contact-cell">All Conversation</a></li>
                              <li id="km-assigned" className="km-conversation-tabView"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Assigned</a></li>
                              <li id="km-closed" className="km-conversation-tabView"><a id="km-customers-cell-link" className="km-li-nav-tab" href="javascript:void(0)" data-tab="km-customers-cell">Closed</a></li>
-                             {/*
-                               <li><a href="javascript:void(0)" data-tab="km-unassigned-cell">Unassigned</a></li>
-                              */}
                            </ul>
                         </div>
                         <div className="blk-lg-2 move-right km-menu-item km-text-right">
@@ -376,7 +401,7 @@ class Aside extends Component {
                                     Group</a></li>
                               </ul>
                         </div>
-                      </div>
+                      </div> */}
                       <div id="kommunicate-panel-body" className="km-panel-body">
 
                         <div id="km-customers-cell" className="km-customers-cell km-panel-cell n-vis">
@@ -1147,13 +1172,14 @@ class Aside extends Component {
               <div id="km-sidebox"></div>
             </div>
           </div>
-
+          <ReactTooltip />
         </div>
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
           
           <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
         </Modal>
       </aside>
+      
     )
   }
 }
