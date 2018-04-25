@@ -28,6 +28,8 @@ KommunicateUI={
     $applozic(d).on("click", "#mck-msg-preview", function () {
         KommunicateUI.showChat();
     });
+
+    // On Click of Individual List Items their respective answers will show.
     $applozic(d).on("click", ".km-faq-list", function () {
         $applozic('#km-faqanswer').empty();
         var articleId = $(this).attr('data-articleid');
@@ -48,6 +50,8 @@ KommunicateUI={
             , error: function () { }
         });
     });
+
+    // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
         KommunicateUI.showHeader();
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
@@ -57,8 +61,10 @@ KommunicateUI={
         $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
         $applozic('.mck-conversation-back-btn').removeClass("n-vis").addClass("vis");
         $applozic("#mck-tab-title").html("FAQ").removeClass('n-vis').addClass('vis');
-
+        $applozic("#mck-away-msg-box").addClass("n-vis").removeClass("vis");
+        $applozic("#mck-sidebox-ft").addClass("n-vis").removeClass("vis");
     });
+
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
         e.preventDefault();
         window.open(e.target.href);
