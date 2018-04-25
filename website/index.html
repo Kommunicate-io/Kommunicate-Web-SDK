@@ -21,7 +21,15 @@ layout:
 </head>
 
 <body id="page-top">
-    <div class="show">
+    <div id="product-hunt-banner" class="product-hunt-banner hide">
+      <div class="ph-logo-container">
+        <!-- <img src="/assets/resources/images/ph-kitty-logo.png" alt="Product Hunt Kitty Logo"> -->
+      </div>
+      <div class="ph-text-container">
+        <p>Hey Product Hunters! Get first three months free on premium plans. Enter code <strong>"PRODUCTHUNT"</strong> at checkout.</p>
+      </div>
+    </div>
+    <div id="product-hunt-nav-bar" class="show ">
       {% include nav-header.html %}
     </div>
     {% include_relative /sections/homepage-landing-page.html %}
@@ -128,6 +136,30 @@ slideInitial();
 
 
   });
+
+  window.onload = function() {
+    //Product hunt banner code
+// Function to capture only Email Id from URL
+function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+    var newEmailValueFronURL = getQueryVariable("ref");
+
+    if (newEmailValueFronURL === "producthunt") {
+        $("#product-hunt-nav-bar").addClass("nav-header-sticky");
+        $("#product-hunt-banner").addClass("flex-show").removeClass("hide");
+    } else {
+        $("#product-hunt-banner").addClass("hide").removeClass("flex-show");
+    }
+  }
 </script>
 
 
