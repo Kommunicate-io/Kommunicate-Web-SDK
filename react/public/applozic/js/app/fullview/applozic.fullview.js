@@ -4390,6 +4390,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						_this.addContact(contact, "km-assigned-search-list", message, prepend);
 					}
 					else {
+						_this.addContact(contact, $listId, message, prepend);
 					}
 				}
 			};
