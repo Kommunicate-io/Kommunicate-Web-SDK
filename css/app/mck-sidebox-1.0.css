@@ -1657,7 +1657,6 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	float: left;
 	color: #333;
 	font-size: 14px;
-	margin-left: 15px;
 	min-height: 20px;
 	padding: 10px 14px 12px;
 	max-width: 70%; /* all browsers */
@@ -2468,7 +2467,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator-bubble.mck-msg-left .mck-msg-box {
-	margin-left: 58px;
+	/*margin-left: 58px;*/
 }
 
 .mck-msg-center {
@@ -3970,12 +3969,6 @@ outline: none;
 cursor: pointer;
 }
 
-.mck-msg-box-rich-text-container{
-	top: 0;
-	float: left;
-	margin: 5px 0px 0px 7px;
-	color:#7766B5;
-}
 .km-guest-text-lable .km-children-text-lable{
 	width:30 px;
 }
@@ -4847,22 +4840,6 @@ margin-top: 243px;
 .faq-list--header {
     position: relative;
 }
-.faq-list--header_text-img {
-    background-color: rgba(103, 103, 103, 0);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
-    background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0, 0, 0, 0.75) 100%);
-}
-.faq-list--header_text-img img {
-    object-fit: cover;
-    width: 100%;
-    height: 110px;
-    position: relative;
-    z-index: 0;
-    display: block;
-    border-top-left-radius:18px;
-    border-top-right-radius:18px;
-}
 .faq-list--header_text {
     bottom: 2px;
     left: 12px;
@@ -4913,7 +4890,8 @@ margin-top: 243px;
 }
 
 /********  dialog box template *************/
-/* FAQ Answer */
+/* FAQ Answer 
+// duplicate css. if any thing is getting used in faq  need to rename that class.
 .message.received.faq-answer {
     padding: 0px;
 	background: transparent;
@@ -4959,7 +4937,7 @@ margin-top: 243px;
 .faq-answer--footer_button-text-container button {
 	margin-left: 10px;
 	margin-right: 10px;
-}
+}*/
 
 /* Top Header updated design */
 .mck-back-btn-container {
@@ -4984,6 +4962,10 @@ margin-top: 243px;
 #mck-conversation-back-btn:hover, #mck-conversation-back-btn:focus, .mck-close-sidebox:hover, .mck-close-sidebox:focus {
 	background-color: rgba(0, 0, 0, .14);
 	border-radius: 6px;
+}
+
+.km-conversation-container-right{
+	margin-left:58px;
 }
 
 @media only screen and (max-width:600px) {
