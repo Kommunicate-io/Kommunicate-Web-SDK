@@ -4346,12 +4346,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if ($kmApplozic('#' + $listId + ' #km-li-' + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + $listId + " #km-li-" + contact.htmlId + " .km-cont-msg-wrapper");
 					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-						if (list && list.assigneList) {
-							_this.addContact(contact, list.assigneList, message, prepend);
-						} else if (list && list.closedList) {
-							_this.addContact(contact, list.closedList, message, prepend);
+						if (list) {
+							if (list && list.assigneList) {
+								_this.addContact(contact, list.assigneList, message, prepend);
+							} else if (list && list.closedList) {
+								_this.addContact(contact, list.closedList, message, prepend);
+							}
+						} else {
+							_this.updateContact(contact, message, $listId, update);
 						}
-						_this.updateContact(contact, message, $listId, update);
 					}
 				} else {
 					if (list && list.assigneList) {
