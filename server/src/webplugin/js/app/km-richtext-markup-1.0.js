@@ -216,7 +216,7 @@ getListMarkup:function(){
          <div class="km-faq-answer--body">
              <div class="km-faq-answer--body_container">
                  <p class="km-faq-answer--body_que">{{title}}</p>
-                 <p class="km-faq-answer--body_ans"> {{description}}</p>
+                 <p class="km-faq-answer--body_ans"> {{{description}}}</p>
              </div>
          </div>
          <div class="km-faq-answer--footer">

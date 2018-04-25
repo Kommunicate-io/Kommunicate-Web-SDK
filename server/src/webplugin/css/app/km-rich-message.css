@@ -461,7 +461,7 @@
     
     
     .km-fixed-container{
-        width:100%;
+        width:96%;
         overflow:hidden;
         overflow: hidden;
         border-radius: 5px;
@@ -613,7 +613,7 @@
     .km-message.km-received.km-chat-faq-list {
         padding: 0px;
         background: transparent;
-        width:96%;
+        width:100%;
 
     }
     .km-faq-list--body, .km-faq-list--footer {
@@ -777,7 +777,7 @@
     .km-message.km-received.km-faq-answer {
         padding: 0px;
         background: transparent;
-        width:96%;
+        width:100%;
         background-color:#e5e5e5;
     }
     .km-faq-answer--body {
@@ -786,6 +786,8 @@
     }
     .km-faq-answer--body_container {
         padding: 10px;
+        color:#646262;
+
     }
     .km-faq-answer--body_que {
         font-size: 14px;
