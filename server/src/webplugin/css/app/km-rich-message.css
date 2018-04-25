@@ -821,3 +821,7 @@
         min-width: 40px;
         border-radius: 15px;
     }
+
+    .km-faq-answer--body .km-faq-answer--body_container {
+        color:#646262;
+    }
