@@ -4387,6 +4387,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if ($kmApplozic('#' + $listId + ' #km-li-' + contactHtmlExpr).length > 0) {
 					var $mck_msg_part = $kmApplozic("#" + $listId + " #km-li-" + contact.htmlId + " .km-cont-msg-wrapper");
 					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
+						if (list && list.assigneList) {
+							_this.addContact(contact, list.assigneList, message, prepend);
+						} else if (list && list.closedList) {
+							_this.addContact(contact, list.closedList, message, prepend);
+						}
 						_this.updateContact(contact, message, $listId, update);
 					}
 				} else {
@@ -4762,9 +4767,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				} ];
 				if ($listId === "km-contact-search-list") {
 					$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
-				} else if ($listId === "km-assigned-search-list" || $listId === "km-closed-conversation-list") {
-					$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
-				} else {
+				}  else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : "") > latestCreatedAtTime || prepend) {
 						$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
@@ -5168,9 +5171,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							}
 						}
 					} else if (messageType === "APPLOZIC_02") {
-						// if(message.groupId && (message.metadata.KM_ASSIGN ||message.metadata.KM_STATUS)){
-						// 	mckMessageLayout.addGroupFromMessage(message, true,list) 
-						// }
+						if(message.groupId && (message.metadata.KM_ASSIGN ===MCK_USER_ID||message.metadata.KM_STATUS ==="Close")){
+							mckMessageLayout.addGroupFromMessage(message, true,list) 
+						}
 						if (($kmApplozic("." + message.oldKey).length === 0 && $kmApplozic("." + message.key).length === 0) || message.contentType === 10) {
 							if (typeof contact !== 'undefined') {
 								if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
