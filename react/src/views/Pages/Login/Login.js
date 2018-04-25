@@ -90,13 +90,13 @@ constructor(props){
         loginButtonAction: 'getAppList',
         loginType: loginType
       }, () => {
-        Promise.resolve(this.login()).then( numOfApp => {
-          console.log(numOfApp);
-          if(numOfApp == 1 && loginType === 'oauth'){
+        Promise.resolve(this.login()).then( response => {
+          console.log(response);
+          if(_numOfApp == 1 && loginType === 'oauth'){
             this.submitForm()
-          } else if (numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
+          } else if (_numOfApp == 1 && (loginType === 'email' || loginType === 'null')){
             this.setUpLocalStorageForLogin()
-          } else if (numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
+          } else if (_numOfApp != 1 && (loginType === 'email' || loginType === 'null')){
             this.setState({
               googleOAuth: false
             })
@@ -239,8 +239,11 @@ login = (event)=>{
       data?_this.state.userName=data.userId:_this.state.userName=_this.state.email;
     return this.submitForm();
     });*/
-    this.state.userName = this.state.email;
-    return this.submitForm();
+    this.setState({
+      userName: this.state.email
+    }, () => {
+      return this.submitForm()
+    })
   }else if(this.state.loginButtonAction==="passwordResetAppSected" ){
     if(this.state.applicationId){
       Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
@@ -401,7 +404,11 @@ showPasswordField = () => {
         userDetails.application = {};
       }
       userDetails.application.applicationId = userDetails.applicationId;
+      userDetails.application.appKey = userDetails.appKey;
+      userDetails.application.key = userDetails.appKey;
 
+      // Splicing the name to remove # which is added by Google redirect.
+      userDetails.name = userDetails.name.slice(0, -1);
       userDetails.displayName=userDetails.name;
       CommonUtils.setUserSession(userDetails);
     }
@@ -669,10 +676,10 @@ showPasswordField = () => {
               <button type="button" className="km-button login-back-btn"  onClick= { this.backToLogin }>
                 <svg xmlns="http://www.w3.org/2000/svg" data-name="Group 12" viewBox="0 0 24 24">
                 <path fill="#5c5aa7" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" data-name="Path 4"/>
-                <path d="M0 0h24v24H0z" class="cls-2" data-name="Path 5" fill="none"/>
+                <path d="M0 0h24v24H0z" className="cls-2" data-name="Path 5" fill="none"/>
                 <g fill="none" stroke="#5c5aa7" data-name="Ellipse 3">
                   <circle cx="12" cy="12" r="12" stroke="none"/>
-                  <circle cx="12" cy="12" r="11.5" class="cls-2" fill="none"/>
+                  <circle cx="12" cy="12" r="11.5" className="cls-2" fill="none"/>
                 </g>
                 </svg>
               </button>
