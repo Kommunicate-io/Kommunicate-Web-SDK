@@ -3875,9 +3875,18 @@ box-shadow: none!important;
 	width:100% !important;
 }
 #mck-msg-new{
-	background-color:#7767B4 !important;
-	color:white;
-	border-color: #7767B4 !important;
+	background-color: #7767B4 !important;
+    color: white;
+    border-color: #7767B4 !important;
+    border-radius: 26px;
+    box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
+    background-color: #ffffff;
+    border: solid 1px #7767b4;
+    height: 42px;
+    min-width: 270px;
+    padding: 0;
+    font-size: 14px;
+    letter-spacing: 0.4px;
 }
 .mck-msg-list-icon{
 	/* filter:invert(1); */
