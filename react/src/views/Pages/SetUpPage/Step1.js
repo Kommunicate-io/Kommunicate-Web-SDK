@@ -80,7 +80,7 @@ class Step1 extends Component {
         document.getElementById('mySpan').innerHTML = 'This field is mandatory';
         document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
         document.getElementById("website-url").className = 'input km-error-input';
-        document.getElementById("url-http-text").className = 'url-http-text km-error-input';
+        //document.getElementById("url-http-text").className = 'url-http-text km-error-input';
     }
     comapnyNameValidation(){
         document.getElementById("emptyerror2").className = 'input-error-div vis';
