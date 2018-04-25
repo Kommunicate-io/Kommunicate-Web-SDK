@@ -4767,9 +4767,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				} ];
 				if ($listId === "km-contact-search-list") {
 					$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
-				} else if ($listId === "km-assigned-search-list" || $listId === "km-closed-conversation-list") {
-					$kmApplozic.tmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
-				} else {
+				}  else {
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : "") > latestCreatedAtTime || prepend) {
 						$kmApplozic.tmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
