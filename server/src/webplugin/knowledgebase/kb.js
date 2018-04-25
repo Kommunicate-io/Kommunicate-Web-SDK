@@ -51,7 +51,15 @@
                                 options.success(res);
                             }
                         }, error: function(error) {
+                            if(articles.length && options.success){
+                                var res = new Object();
+                                res.status = "success";
+                                res.data = articles;
+                                options.success(res);
+                            }else if(options.error){
                             options.error(error);
+                            }
+                            
                         }
                     });
                 } else {

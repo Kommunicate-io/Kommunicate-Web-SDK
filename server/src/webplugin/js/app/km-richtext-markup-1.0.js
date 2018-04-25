@@ -169,7 +169,7 @@ getPassangerDetail : function(options){
             `
 },
 getListMarkup:function(){
-    return `<div class="km-message km-received km-faq-list" style="">
+    return `<div class="km-message km-received km-chat-faq-list" style="">
      <div class="km-faq-list--container"  >
              <div class="km-faq-list--header">
                      {{{headerImgSrc}}}
@@ -179,7 +179,7 @@ getListMarkup:function(){
          </div>
          <div class="km-faq-list--body">
              <div class="km-faq-list--body_list-container">
-                 <ul class="km-faq-list--body_list">
+                 <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
                      <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
                              <div class="km-faq-list--body_img">
@@ -211,12 +211,12 @@ getListMarkup:function(){
      </div>`
  },
  getDialogboxTemplate : function(){
-     return `<div id ="km-faq-answer" class="km-message km-received km-faq-answer">
+     return `<div class="km-message km-received km-faq-answer">
      <div class="km-faq-answer--container">
          <div class="km-faq-answer--body">
              <div class="km-faq-answer--body_container">
                  <p class="km-faq-answer--body_que">{{title}}</p>
-                 <p class="km-faq-answer--body_ans"> {{description}}</p>
+                 <p class="km-faq-answer--body_ans"> {{{description}}}</p>
              </div>
          </div>
          <div class="km-faq-answer--footer">
@@ -299,31 +299,36 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="faq-list--header_text-img"><img src= '+json.headerImgSrc+'/></div>' 
+            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= '+json.headerImgSrc+'/></div>' 
         }if(json.headerText){
-            json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
+            json.headerText ='<p class="km-faq-list--header_text">'+json.headerText+"</p>"
         }
         if(json.elements&&json.elements.length){
+            json.elementClass ="vis";
             json.elements =   json.elements.map(function(item){
                // checking for image
                 if(item.imgSrc){
                 item.imgSrc =  '<img src ='+item.imgSrc +'/>';
                }
                //checking for type
-               if(!item.action || item.action.type =="quick_reply" || item.action.type =="submit"){
+               if(item.action && item.action.type=="link"){
+                item.href = item.action.url;
+               }else{
                 item.href = "javascript:void(0)";
                 item.hadlerClass= "km-list-item-handler";
-               }else{
-                item.href = item.action.url;
+                
                }
-               
-               item.dataType=item.action.type||"";
-               item.dataReply = item.action.text||item.title||"";
+               if(item.action){
+                item.dataType=item.action.type||"";
+                item.dataReply = item.action.text||item.title||"";
+               }
                item.dataArticleId = item.articleId||"";
                item.dataSource = item.source||"";
                // TODO : add post url in data.
                 return item;
             })
+        }else{
+            json.elementClass ="n-vis"
         }
         if(json.buttons&&json.buttons.length){
         json.buttons=  json.buttons.map(button=>{
