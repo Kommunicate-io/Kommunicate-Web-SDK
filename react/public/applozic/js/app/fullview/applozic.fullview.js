@@ -1272,12 +1272,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
 					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
 						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-						// if($("#km-contact-list .km-unread-count-box").hasClass('vis')){
-						// 	//addclass unread
-						// 	$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-
-						// }
-
 						
 						$("#assign-selected").removeClass('n-vis').addClass('vis');
 						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
@@ -1790,7 +1784,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				$kmMessageInner.bind('scroll', function() {
 					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
-						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.active")[0].id;
+						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.km-conversation-icon-active")[0].id;
 						var $conversation = $conversationAll;
 						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
 						
