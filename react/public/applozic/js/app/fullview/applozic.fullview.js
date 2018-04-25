@@ -2539,7 +2539,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 									$mck_show_more_icon.removeClass('vis').addClass('n-vis');
 								});
 							} else {
-								$mck_no_contact_text.removeClass('n-vis').addClass('vis');
+								// $mck_no_contact_text.removeClass('n-vis').addClass('vis');
 							}
 							$mck_contacts_inner.data('datetime', '');
 						}
@@ -2631,10 +2631,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				})
 			}
 			_this.loadCloseGroup = function(params,callback){
-				// $mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
-				// var isConvReq = false;
-				// var reqData = '';
 				CONTACT_SYNCING = true;
 				var data = '/assigned?userId='+ encodeURIComponent(MCK_USER_ID);
 				if (params.startTime) {
@@ -2654,39 +2651,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 			}
 			_this.loadAssignedGroup = function (params, callback) {
-				// $mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
-				// var isConvReq = false;
-				// var reqData = '';
-				// if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
-				// 	MESSAGE_SYNCING = true;
-				// 	reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
-				// 	individual = true;
-				// 	if (params.startTime) {
-				// 		reqData += "&endTime=" + params.startTime;
-				// 	}
-				// 	reqData += "&pageSize=30";
-				// 	if ((IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX) && params.conversationId) {
-				// 		reqData += "&conversationId=" + params.conversationId;
-				// 		if (typeof MCK_TAB_CONVERSATION_MAP[params.tabId] === 'undefined') {
-				// 			isConvReq = true;
-				// 			reqData += "&conversationReq=true";
-				// 		} else {
-				// 			mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
-				// 		}
-				// 	}
-				// 	$mck_msg_loading.removeClass('n-vis').addClass('vis');
-				// } else {
-				// 	CONTACT_SYNCING = true;
-				// 	if (params.startTime) {
-				// 		reqData += "&endTime=" + params.startTime;
-				// 	}
-				// 	reqData += '&mainPageSize=60';
-				// 	$mck_loading.removeClass('n-vis').addClass('vis');
-				// }
-				// if (!params.startTime) {
-				// 	$mck_msg_inner.html('');
-				// }
 
 				CONTACT_SYNCING = true;
 				var data = '/assigned?userId='+ encodeURIComponent(MCK_USER_ID);
