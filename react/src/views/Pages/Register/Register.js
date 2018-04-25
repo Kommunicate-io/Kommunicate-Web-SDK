@@ -234,9 +234,9 @@ class Register extends Component {
           </div>
           
           <div className="row justify-content-center signup-form-div">
-            <div className="col-md-6">
+            <div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
             <hr className="hr"/>
-              <div className="card mx-4">
+              <div className="card">
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
