@@ -1267,16 +1267,28 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				});
 				$kmApplozic(d).on("click", ".km-conversation-tabView", function () {
-					$(".km-conversation-tabView").removeClass('active');
-					$(this).addClass('active');
+					$(".km-conversation-tabView").removeClass('km-conversation-icon-active');
+					$(this).addClass('km-conversation-icon-active');
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
-					if ($("#km-assigned").hasClass("active")) {
+					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
 						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
+						
+						$("#assign-selected").removeClass('n-vis').addClass('vis');
+						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
+						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 
-					} else if ($("#km-closed").hasClass("active")) {
+					} else if ($("#km-closed").hasClass("km-conversation-icon-active")) {
 						$("#km-closed-conversation-list").removeClass('n-vis').addClass('vis');
+						
+						$("#closed-conversatios-selected").removeClass('n-vis').addClass('vis');
+						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
+						$("#assign-selected").removeClass('vis').addClass('n-vis');
 					} else {
 						$("#km-contact-list").removeClass('n-vis').addClass('vis');
+
+						$("#all-conversatios-selected").removeClass('n-vis').addClass('vis');
+						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
+						$("#assign-selected").removeClass('vis').addClass('n-vis');
 					}
 
 				});
