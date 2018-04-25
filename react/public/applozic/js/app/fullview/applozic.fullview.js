@@ -6079,9 +6079,14 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 			};
 			_this.onGroupFeed = function(response, params) {
+				var list={};
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				if (response.status === 'success') {
 					var groupFeed = response.data;
+					if(groupFeed && groupFeed.metadata&& groupFeed.metadata.CONVERSATION_ASSIGNEE){
+						if(groupFeed.metadata.CONVERSATION_ASSIGNEE ===MCK_USER_ID)
+						list.assigneupdate =groupFeed.metadata.CONVERSATION_ASSIGNEE;
+					}
 					var conversationPxy = groupFeed.conversationPxy;
 					var group = kmGroupUtils.getGroup(groupFeed.id);
 					var tabConvArray = new Array();
@@ -6097,7 +6102,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						MCK_TAB_CONVERSATION_MAP[params.groupId] = tabConvArray;
 					}
 					if (params.isMessage && typeof params.message === 'object') {
-						mckMessageLayout.populateMessage(params.messageType, params.message, params.notifyUser);
+						mckMessageLayout.populateMessage(params.messageType, params.message, params.notifyUser,list);
 					}
 					if (params.isReloadTab) {
 						_this.reloadGroupTab(group);
