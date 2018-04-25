@@ -762,7 +762,7 @@
     .km-message.km-received.km-faq-answer {
         padding: 0px;
         background: transparent;
-        width:96%;
+        width:100%;
         background-color:#e5e5e5;
     }
     .km-faq-answer--body {
