@@ -257,6 +257,9 @@ $applozic.extend(true,Kommunicate,{
                 case "4":
                     return "km-slick-container";
                     break;
+                case "6":
+                    return "km-border-less-container";
+                    break;
 
                 default:
                     return "km-fixed-container";
