@@ -4374,13 +4374,6 @@ color: rgba(0,0,0,0.5);
 	padding: 0
 }
 
-.km-slick-container .tns-controls button:first-child{
-	left :45;
-}
-.km-slick-container .tns-controls button:last-child{
-	right :0;
-}
-
 /* Room Details after Blocking Room */
 .km-card-room-detail-container {
 	/* width: 90%; */
