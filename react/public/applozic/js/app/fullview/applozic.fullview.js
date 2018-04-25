@@ -2607,9 +2607,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					reqData += '&mainPageSize=60';
 					$mck_loading.removeClass('n-vis').addClass('vis');
 				}
-				if (!params.startTime) {
-					$mck_msg_inner.html('');
-				}
 
 				CONTACT_SYNCING = true;
 				var data = '?userId='+ encodeURIComponent(MCK_USER_ID);
