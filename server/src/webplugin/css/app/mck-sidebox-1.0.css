@@ -1085,6 +1085,9 @@
 	background-color: white;
 	border-bottom: none;
 }
+.mck-box .mck-contact-list li:last-child {
+	margin-bottom: 67px;
+}
 
 .mck-contact-list li .blk-lg-3, .mck-sidebox-launcher .blk-lg-3,
 	.mck-contact-list li .blk-lg-9, .mck-sidebox-launcher .blk-lg-9,
@@ -1348,10 +1351,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	overflow: auto;
 }
 #mck-contacts-content{
-	/* position: absolute;
+	position: absolute;
     bottom: 15px;
-	left: 50%; transform: translateX(-50%); */
-	padding: 15px 0px;
+	left: 50%; transform: translateX(-50%);
+	/* padding: 15px 0px; */
 }
 .mck-display-name{
 	white-space: nowrap;
