@@ -7487,11 +7487,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
 							list.closedList = "km-closed-conversation-list";
 						}
-						if(message.metadata && message.metadata.KM_ASSIGN !==MCK_USER_ID && contact){
+						if(message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact){
 							var asdiv ="#km-li-as-group-"+contact.groupId;
 							$(asdiv).remove();
 						}
-                        if(message.metadata && message.metadata.KM_STATUS !=="Close" && contact){
+                        if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
 							var cldiv ="#km-li-cl-group-"+contact.groupId;
 							$(cldiv).remove();
 						}
