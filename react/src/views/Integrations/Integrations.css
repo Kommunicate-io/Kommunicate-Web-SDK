@@ -2,12 +2,13 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 .integration-wrapper {
- margin-bottom: 49px;
+ margin-bottom: 30px;
 }
 .integration-title {
     font-size: 18px;
     letter-spacing: 1.3px;
     color: #354052;
+    font-weight: normal
 }
 .content-wrapper {
     width: 80%;

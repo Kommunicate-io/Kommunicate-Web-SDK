@@ -12,6 +12,7 @@ body {
     letter-spacing: 1.3px;
     text-align: left;
     color: #354052;
+    font-weight: normal;
 }
 .options-wrapper{
     width: 100%;
@@ -159,4 +160,11 @@ div.drop-down-container ul {
 }
 .routing-bot-link:hover {
     color: #5C5AA7;
+}
+.integration-container{
+    margin-left: 5px;
+}
+.conversation-routing-title-wrapper {
+    padding: 20px 0 0 20px;
+    margin-left: -7px;
 }

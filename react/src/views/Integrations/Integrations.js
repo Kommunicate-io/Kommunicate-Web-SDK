@@ -107,7 +107,7 @@ class Integrations extends Component {
          return result;
      });
      
-     return <div className="row">
+     return <div className="row card-block integration-container">
         <div className="col-lg-2">
         </div>
         <div className="col-lg-8">

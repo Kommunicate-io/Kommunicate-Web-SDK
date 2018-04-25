@@ -9,6 +9,7 @@ body {
     letter-spacing: 1.3px;
     text-align: left;
     color: #354052;
+    font-weight: normal;
 }
 .away-message-description{
     font-size: 16px;

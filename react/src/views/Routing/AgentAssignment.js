@@ -164,7 +164,7 @@ toggleConversationAssignment = () => {
     return (
         <div>
             <div className="col-md-8 col-sm-12">
-                <div className="row" style={{paddingLeft: "22px", marginLeft: "-7px"}}>
+                <div className="row" className="conversation-routing-title-wrapper">
                     <h4 className="agent-assignment-title">Set up how you want conversations to be assigned to your bots and agents</h4>
                 </div>
             </div>
