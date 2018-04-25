@@ -6080,9 +6080,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				if (response.status === 'success') {
 					var groupFeed = response.data;
-					if(groupFeed && groupFeed.metadata&& groupFeed.metadata.CONVERSATION_ASSIGNEE){
-						if(groupFeed.metadata.CONVERSATION_ASSIGNEE ===MCK_USER_ID)
-						list.assigneupdate =groupFeed.metadata.CONVERSATION_ASSIGNEE;
+					if (groupFeed && groupFeed.metadata && groupFeed.metadata.CONVERSATION_ASSIGNEE && groupFeed.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
+						list.assigneupdate = groupFeed.metadata.CONVERSATION_ASSIGNEE;
 					}
 					var conversationPxy = groupFeed.conversationPxy;
 					var group = kmGroupUtils.getGroup(groupFeed.id);
