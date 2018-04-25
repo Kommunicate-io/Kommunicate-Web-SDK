@@ -67,7 +67,7 @@ class Step2 extends Component {
 
   websiteUrlCheck(){
       document.getElementById("website-url").className = 'input km-error-input';
-      document.getElementById("url-http-text").className = 'url-http-text km-error-input';
+      //document.getElementById("url-http-text").className = 'url-http-text km-error-input';
       document.getElementById('mySpan').innerHTML = 'Invalid URL';
       document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
     }
