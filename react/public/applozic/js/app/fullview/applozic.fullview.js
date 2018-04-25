@@ -4938,7 +4938,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					} else if (message.fileMetaKey && typeof message.fileMeta === "object") {
 						emoji_template = mckMessageLayout.getFileIcon(message);
 					}
-					if (contact.isGroup && contact.type !== 3) {
+					if (contact.isGroup && contact.type !== 3 && contact.type !== 10) {
 						var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
 						if (message.contentType !== 10) {
 							emoji_template = msgFrom + ": " + emoji_template;
@@ -4970,7 +4970,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					} else if (message.fileMetaKey && typeof message.fileMeta === "object") {
 						emoji_template = (message.fileMeta.contentType.indexOf("image") !== -1) ? 'Image attachment' : 'File attachment';
 					}
-					if (contact.isGroup && contact.type !== 3) {
+					if (contact.isGroup && contact.type !== 3 && contact.type !== 10) {
 						var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);
 						emoji_template = msgFrom + ": " + emoji_template;
 					}
