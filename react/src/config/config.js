@@ -19,7 +19,8 @@ var baseurl ={
   // baseUrl: "http://localhost:9090/applozic",
   //kommunicateAPI: "http://localhost:3999"
   kommunicateAPI: "https://api-test.kommunicate.io",
-  botPlatformAPI:"http://localhost:5454"
+  //botPlatformAPI:"http://localhost:5454"
+  botPlatformAPI:"https://bots-test.applozic.com"
   }
 }
 var config = {

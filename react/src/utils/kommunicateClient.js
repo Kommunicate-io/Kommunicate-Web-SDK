@@ -687,7 +687,9 @@ const getIntegratedBots = () => {
         // }
         if (sqlBots[i].userName !== "bot") {
           let mbot = mongoBots.data.filter(bot => { return bot.name === sqlBots[i].userName });
-          bots.push({ ...sqlBots[i], ...mbot[0] });
+          // bots.push({ ...sqlBots[i], ...mbot[0] });
+          let b = Object.assign({}, mbot[0], sqlBots[i]);
+          bots.push(b)
         }
       }
 

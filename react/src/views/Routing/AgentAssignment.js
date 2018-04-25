@@ -184,7 +184,7 @@ toggleConversationAssignment = () => {
                                 <div className="col-md-8 col-sm-8" style={{width: "70%", margin:"30px auto"}}>
                                     <div style={this.state.botsAreAvailable ? { border: "1px dashed #c0c0c0", padding: "23px 17px", backgroundColor: "#cce7f8"}:{ border: "1px dashed #c0c0c0", padding: "23px 17px"}} className="text-center">
                                         {
-                                            this.state.botsAreAvailable ?  <p className="km-routing-do-not-have-bots">You have bots available. Turn on this section to use them in conversations.</p> : <p className="km-routing-do-not-have-bots">You do not have any bots available. You may start with your <Link to="/bot">Bot Integration</Link> or set up your <Link to="/faq">FAQ</Link> section </p> 
+                                            this.state.botsAreAvailable ?  <p className="km-routing-do-not-have-bots">You have bots available. Turn on this section to use them in conversations.</p> : <p className="km-routing-do-not-have-bots">You do not have any bots available. You may start with your <Link className="routing-bot-link" to="/bot">Bot Integration</Link> or set up your <Link className="routing-bot-link" to="/faq">FAQ</Link> section </p> 
                                         }
                                     </div>
                                 </div>
@@ -241,7 +241,7 @@ toggleConversationAssignment = () => {
                                 </div>
                                 <div className="row" style={{marginTop: "73px"}}>
                                     <div className="col-md-11 col-sm-11">
-                                        <p style={{ border: "1px solid #c0c0c0", padding:"6px"}} className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <Link to="https://docs.kommunicate.io/docs/web-installation.html">See Docs</Link></p>
+                                        <p style={{ border: "1px solid #c0c0c0", padding:"6px"}} className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs</a></p>
                                     </div>
                                 </div>
                             </div>

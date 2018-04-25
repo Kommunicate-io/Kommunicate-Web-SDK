@@ -53,4 +53,14 @@ body {
     pointer-events: none;
     cursor: default;
     text-decoration:none;
-  }
+}
+.hide-integrated{
+    visibility: hidden;
+}
+.active-integrated {
+    margin-left: 67px;
+    color: #22d674;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    font-family: 'OpenSans',sans-serif;
+}
