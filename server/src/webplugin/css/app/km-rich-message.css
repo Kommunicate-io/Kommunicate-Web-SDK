@@ -595,18 +595,17 @@
         letter-spacing: 0.5px;
         text-align: center;
         color: #a9a4a4;
-        
-        
+        margin-bottom: 0px !important;  
     }
     #mck-away-msg-box{
         border-top: dashed 1px #bebbbb;
         border-bottom: solid 1px #654df7;
         padding: 8px 5px;
-        position: absolute;
+        /* position: absolute;
         bottom: 52px;
         left:0; 
         width: 97%;
-        background-color: white;
+        background-color: white; */
     }
     /******** Generic list template*************/
     /* FAQ List */
@@ -777,7 +776,7 @@
     .km-message.km-received.km-faq-answer {
         padding: 0px;
         background: transparent;
-        width:100%;
+        width:96%;
         background-color:#e5e5e5;
     }
     .km-faq-answer--body {
@@ -786,8 +785,6 @@
     }
     .km-faq-answer--body_container {
         padding: 10px;
-        color:#646262;
-
     }
     .km-faq-answer--body_que {
         font-size: 14px;
