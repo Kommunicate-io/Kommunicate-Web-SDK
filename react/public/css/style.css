@@ -10554,6 +10554,7 @@ input:required {
 }
 .faq-btn-wrapper {
   padding-top: 25px;
+  margin-bottom: 8px;
 } 
 .faq-modal-discard-btn-box {
   margin-left: 23px;
@@ -10593,6 +10594,7 @@ input:required {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
   margin-left: -15px;
   margin-right: -15px;
+  /* margin-top: 0 !important; */
 }
 
 .km-faq-second-container {
@@ -10665,6 +10667,7 @@ input:required {
   height: 36px;
   border-radius: 3px;
   border: dashed 1px #cbc8c8;
+  margin-bottom: 23px;
 }
 .km-faq-helpdocs-edit {
   font-size: 14px;
