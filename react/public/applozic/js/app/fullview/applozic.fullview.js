@@ -1272,20 +1272,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
 					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
 						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-						
+						$("#km-assigned-search-list li:first-child" ).trigger( "click");
 						$("#assign-selected").removeClass('n-vis').addClass('vis');
 						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 
 					} else if ($("#km-closed").hasClass("km-conversation-icon-active")) {
 						$("#km-closed-conversation-list").removeClass('n-vis').addClass('vis');
-						
+						$("#km-closed-conversation-list li:first-child" ).trigger( "click");
 						$("#closed-conversatios-selected").removeClass('n-vis').addClass('vis');
 						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#assign-selected").removeClass('vis').addClass('n-vis');
 					} else {
 						$("#km-contact-list").removeClass('n-vis').addClass('vis');
-
+						$( "#km-contact-list li:first-child" ).trigger( "click");
 						$("#all-conversatios-selected").removeClass('n-vis').addClass('vis');
 						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#assign-selected").removeClass('vis').addClass('n-vis');
