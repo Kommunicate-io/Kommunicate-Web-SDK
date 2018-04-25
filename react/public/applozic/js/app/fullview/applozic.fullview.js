@@ -7508,13 +7508,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-						if(message.metadata.KM_ASSIGN ===MCK_USER_ID){
+						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
 							list.assigneList = "km-assigned-search-list";
 						}
-						if(message.metadata.KM_STATUS ==="Close"){
+						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
 							list.closedList = "km-closed-conversation-list";
 						}
-
+						if(message.metadata && message.metadata.KM_ASSIGN !==MCK_USER_ID){
+							var asdiv ="#km-li-as-group-"+contact.groupId;
+							$(asdiv).remove();
+						}
+                        if(message.metadata && message.metadata.KM_STATUS !=="Close"){
+							var cldiv ="#km-li-cl-group-"+contact.groupId;
+							$(cldiv).remove();
+						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
