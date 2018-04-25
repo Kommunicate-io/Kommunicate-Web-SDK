@@ -2579,37 +2579,37 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.loadSupportGroup = function (params, callback) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
-				// var isConvReq = false;
-				// var reqData = '';
-				// if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
-				// 	MESSAGE_SYNCING = true;
-				// 	reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
-				// 	individual = true;
-				// 	if (params.startTime) {
-				// 		reqData += "&endTime=" + params.startTime;
-				// 	}
-				// 	reqData += "&pageSize=30";
-				// 	if ((IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX) && params.conversationId) {
-				// 		reqData += "&conversationId=" + params.conversationId;
-				// 		if (typeof MCK_TAB_CONVERSATION_MAP[params.tabId] === 'undefined') {
-				// 			isConvReq = true;
-				// 			reqData += "&conversationReq=true";
-				// 		} else {
-				// 			mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
-				// 		}
-				// 	}
-				// 	$mck_msg_loading.removeClass('n-vis').addClass('vis');
-				// } else {
-				// 	CONTACT_SYNCING = true;
-				// 	if (params.startTime) {
-				// 		reqData += "&endTime=" + params.startTime;
-				// 	}
-				// 	reqData += '&mainPageSize=60';
-				// 	$mck_loading.removeClass('n-vis').addClass('vis');
-				// }
-				// if (!params.startTime) {
-				// 	$mck_msg_inner.html('');
-				// }
+				var isConvReq = false;
+				var reqData = '';
+				if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
+					MESSAGE_SYNCING = true;
+					reqData = (params.isGroup) ? "&groupId=" + params.tabId : "&userId=" + encodeURIComponent(params.tabId);
+					individual = true;
+					if (params.startTime) {
+						reqData += "&endTime=" + params.startTime;
+					}
+					reqData += "&pageSize=30";
+					if ((IS_MCK_TOPIC_HEADER || IS_MCK_TOPIC_BOX) && params.conversationId) {
+						reqData += "&conversationId=" + params.conversationId;
+						if (typeof MCK_TAB_CONVERSATION_MAP[params.tabId] === 'undefined') {
+							isConvReq = true;
+							reqData += "&conversationReq=true";
+						} else {
+							mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
+						}
+					}
+					$mck_msg_loading.removeClass('n-vis').addClass('vis');
+				} else {
+					CONTACT_SYNCING = true;
+					if (params.startTime) {
+						reqData += "&endTime=" + params.startTime;
+					}
+					reqData += '&mainPageSize=60';
+					$mck_loading.removeClass('n-vis').addClass('vis');
+				}
+				if (!params.startTime) {
+					$mck_msg_inner.html('');
+				}
 
 				CONTACT_SYNCING = true;
 				var data = '?userId='+ encodeURIComponent(MCK_USER_ID);
@@ -7492,8 +7492,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-						// var Assigne = (contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID)?true:false;
-						// list.assigneupdate = Assigne;
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
