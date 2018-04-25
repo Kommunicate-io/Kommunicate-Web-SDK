@@ -10664,3 +10664,10 @@ input:required {
 .faq-converstion-routing-link:hover {
   color : #5C5AA7 !important ; 
 }
+.km-truncate-block{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: block;
+}
