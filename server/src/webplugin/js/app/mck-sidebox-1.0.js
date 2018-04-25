@@ -5057,6 +5057,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 var $contactElem = $applozic("#li-" + contHtmlExpr);
                 var currentMessageTime = $contactElem.data('msg-time');
+
+                if (message.metadata && message.metadata.action) {
+                    return;
+                }
+
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
@@ -5430,7 +5435,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         if (message.contentType === 2) {
                             emoji_template = '<span class="mck-icon-marker"></span>';
                         } else {
-                            var msg = message.message||(message.metadata&&message.metadata.messagePreview);
+                            var msg = message.message;
                             if (mckUtils.startsWith(msg, "<img")) {
                                 return '<span class="mck-icon-camera"></span>&nbsp;<span>image</span>';
                             } else {
@@ -5452,6 +5457,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                     } else if (message.fileMetaKey && typeof message.fileMeta === "object") {
                         emoji_template = alFileService.getFileIcon(message);
+                    }else if(message.metadata && message.metadata.messagePreview ){
+                        emoji_template =message.metadata.messagePreview;
                     }
                     if (contact.isGroup && contact.type !== 3 && contact.type !== 7 && contact.type !== 10) {
                         var msgFrom = (message.to.split(",")[0] === MCK_USER_ID) ? "Me" : mckMessageLayout.getTabDisplayName(message.to.split(",")[0], false);

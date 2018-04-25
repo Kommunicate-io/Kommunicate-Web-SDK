@@ -9,6 +9,7 @@ import '../../Admin/Admin.css';
 import { getResource } from '../../../config/config.js';
 import isURL from 'validator/lib/isURL';
 import CommonUtils from '../../../utils/CommonUtils';
+import applozicClient from '../../../utils/applozicClient';
 
 const customStyles = {
   content: {
@@ -67,7 +68,7 @@ class Step2 extends Component {
 
   websiteUrlCheck(){
       document.getElementById("website-url").className = 'input km-error-input';
-      document.getElementById("url-http-text").className = 'url-http-text km-error-input';
+      //document.getElementById("url-http-text").className = 'url-http-text km-error-input';
       document.getElementById('mySpan').innerHTML = 'Invalid URL';
       document.getElementById("emptyerror1").className = 'input-error-div km-url-error vis';
     }
@@ -108,6 +109,17 @@ class Step2 extends Component {
           console.log("Setup completed successfully");
         }
       }).catch(err => { console.log('userInfo not saved') });
+      applozicClient.createKommunicateSupportUser({
+        "userId": userSession.userName,
+        "applicationId": "kommunicate-support",
+        "authenticationTypeId": 1,
+        "email":userSession.email||userSession.userName,
+        "displayName":customerInfo.name
+      }).then(res=>{
+        console.log("kommunicate user created successfully");
+      }).catch(e=>{
+        console.log("error while creating support user",e);
+      });
       userSession.name = customerInfo.name;
       userSession.adminDisplayName = customerInfo.name;
       CommonUtils.setUserSession(userSession)

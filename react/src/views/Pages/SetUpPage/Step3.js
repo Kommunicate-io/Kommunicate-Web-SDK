@@ -63,7 +63,7 @@ class Step3 extends Component {
             3/3
           </div> */}
           <h1 className="setup-heading">{this.props.pageTitle}Add Kommunicate to your product</h1>
-          <h4 className="setup-sub-heading">I will do it <a href="javascript:void(0);" onClick={this.jumpToDashboard}>later</a> </h4>
+          <h4 className={this.props.hideSkipForNow? "n-vis" : "setup-sub-heading"}>I will do it <a href="javascript:void(0);" onClick={this.jumpToDashboard}>later</a> </h4>
           {/* <h2 className="setup-integration-later-text">Installation instructions can also be found inside <span>Settings > CONFIGURATION > Install</span> later</h2> */}
         </div>
         <div className="row justify-content-center">

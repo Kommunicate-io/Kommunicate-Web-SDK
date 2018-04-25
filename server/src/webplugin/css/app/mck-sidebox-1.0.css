@@ -272,7 +272,7 @@
 }
 
 .mck-box div, .mck-box .mck-box-title {
-	font-family: Heslvetica Neue, Helvetica, Arial, sans-serif ;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif ;
 }
 
 .mck-sidebox .mck-box-title {
@@ -527,7 +527,7 @@
 
 .mck-btn.active.focus, .mck-btn.active:focus, .mck-btn.focus, .mck-btn:active.focus,
 	.mck-btn:active:focus, .mck-btn:focus {
-	outline: thin dotted;
+	outline: none;
 	outline: 5px auto -webkit-focus-ring-color;
 	outline-offset: -2px;
 }
@@ -667,7 +667,7 @@
 
 .mck-sidebox h1, .mck-sidebox h2, .mck-sidebox h3, .mck-sidebox h4,
 	.mck-sidebox h5, .mck-sidebox h6 {
-	font-weight: 300 !important;
+	font-weight: 400 !important;
 }
 
 .mck-box-footer {
@@ -1085,6 +1085,9 @@
 	background-color: white;
 	border-bottom: none;
 }
+.mck-box .mck-contact-list li:last-child {
+	margin-bottom: 67px;
+}
 
 .mck-contact-list li .blk-lg-3, .mck-sidebox-launcher .blk-lg-3,
 	.mck-contact-list li .blk-lg-9, .mck-sidebox-launcher .blk-lg-9,
@@ -1351,6 +1354,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: absolute;
     bottom: 15px;
 	left: 50%; transform: translateX(-50%);
+	/* padding: 15px 0px; */
 }
 .mck-display-name{
 	white-space: nowrap;
@@ -1468,7 +1472,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	resize: none;
 
 	background-color: white;
-	width: calc(100% - 120px) !important;
+	width: calc(100% - 100px) !important;
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -1481,6 +1485,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	text-align: left;
 	box-shadow: none !important;
 	-webkit-user-select: text;
+	border: none;
 }
 
 .mck-text-box-panel {
@@ -3874,9 +3879,21 @@ box-shadow: none!important;
 	width:100% !important;
 }
 #mck-msg-new{
-	background-color:#7767B4 !important;
-	color:white;
-	border-color: #7767B4 !important;
+	background-color: #716fb3 !important;
+    color: white;
+    border-color: #716fb3 !important;
+    border-radius: 26px;
+    box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
+    background-color: #ffffff;
+    border: solid 1px #716fb3;
+    height: 42px;
+    min-width: 270px;
+    padding: 0;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+}
+#mck-msg-new:focus {
+	outline: none;
 }
 .mck-msg-list-icon{
 	/* filter:invert(1); */
@@ -4372,13 +4389,6 @@ color: rgba(0,0,0,0.5);
     z-index: 5;
 	transform: translateY(50%);
 	padding: 0
-}
-
-.km-slick-container .tns-controls button:first-child{
-	left :45;
-}
-.km-slick-container .tns-controls button:last-child{
-	right :0;
 }
 
 /* Room Details after Blocking Room */

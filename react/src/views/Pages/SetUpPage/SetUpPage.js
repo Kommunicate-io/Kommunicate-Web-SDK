@@ -100,7 +100,7 @@ class SetUpPage extends Component {
 					<div className="bottom-shape-container">
 					
 						{
-							this.state.step === 1 ? <div className="steps-container"> <div className="step-1 filled"><p>Step 1</p></div> <div className="step-2 empty"><p>Step 2</p></div>	<div className="step-3 empty"><p>Step 3</p></div> </div> : this.state.step === 2 ? <div className="steps-container"> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled"><p>Step 2</p></div>	<div className="step-3 empty"><p>Step 3</p></div> </div> : <div className="steps-container"> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled visited"><p>Step 2</p></div>	<div className="step-3 filled"><p>Step 3</p></div> </div>
+							this.state.step === 1 ? <div className="steps-container"> <div className="step-1 filled"><p>Step 1</p></div> <div className="step-2 empty"><p>Step 2</p></div>	<div className="step-3 empty"><p>Step 3</p></div> </div> : this.state.step === 2 ? <div className="steps-container"> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled"><p>Step 2</p></div>	<div className="step-3 empty"><p>Step 3</p></div> </div> : <div className={ this.props.hideSkipForNow ? "n-vis": "steps-container"}> <div className="step-1 filled visited"><p>Step 1</p></div> <div className="step-2 filled visited"><p>Step 2</p></div>	<div className="step-3 filled"><p>Step 3</p></div> </div>
 						}
 						
 				</div>
