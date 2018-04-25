@@ -900,8 +900,8 @@ class Tabs extends Component {
           </ModalHeader>
           <ModalBody style={{padding: "0px"}}>
             <div className="km-bot-list-of-dialogflow-bots-container">
-                  {this.state.dialogFlowBots.map(bot => (
-                    <div style={{marginTop: "1em", marginBottom: "1em"}} key={bot.id}>
+                  {this.state.dialogFlowBots.map((bot,index) => (
+                    <div style={{marginTop: "1em", marginBottom: "1em"}} key={index}>
                       <div className="row col-sm-12" style={{marginLeft: "10px"}}>
                         <div className="col-sm-5">
                             <p className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</p>
