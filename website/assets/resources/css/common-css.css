@@ -508,17 +508,19 @@ footer .copyright {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url(/assets/resources/images/ph-kitty-logo.png);
+    /* background-image: url(/assets/resources/images/ph-kitty-logo.png);
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: 23% 50%;
+    background-position: 23% 50%; */
 }
 .ph-logo-container {
-    width: 50px;
-    /* height: 30px;
-    background-image: url(/assets/resources/images/ph-kitty-logo.png);
-    background-repeat: no-repeat;
-    background-size: cover; */
+    width: 58px;
+    height: 58px;
+    margin: -17px 15px -17px 0px; 
+}
+.ph-logo-container img {
+    width: 58px;
+    height: auto;
 }
 .ph-text-container p {
     margin-bottom: 0px;
@@ -531,4 +533,25 @@ footer .copyright {
 
 .nav-header-sticky .nav-main-header.sticky {
     top: 0;
+}
+
+@media only screen and (max-width:803px) {
+    .nav-header-sticky .nav-main-header {
+        top: 73px;
+    }
+}
+@media only screen and (max-width:480px) {
+    .nav-header-sticky .nav-main-header {
+        top: 95px;
+    }
+}
+@media only screen and (max-width:350px) {
+    .nav-header-sticky .nav-main-header {
+        top: 115px;
+    }
+}
+@media only screen and (max-width:310px) {
+    .nav-header-sticky .nav-main-header {
+        top: 135px;
+    }
 }
