@@ -18,6 +18,7 @@ app.use(cors());
 
 compressor.minify({
   compressor: 'gcc',
+  //compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/common.js', './src/webplugin/knowledgebase/helpdocs.js', './src/webplugin/knowledgebase/kb.js'],
   output: './src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
   callback: function (err, min) {
@@ -32,6 +33,20 @@ compressor.minify({
   compressor: 'gcc',
   //compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/km-post-initialization.js'],
+  output: './src/webplugin/js/app/km-chat-combined-0.1.min.js',
+  callback: function (err, min) {
+    if(!err)
+    console.log(" km-chat-combined-0.1.min.js combined successfully");
+    else {
+      console.log("err while minifying kkm-chat-combined-0.1.min.js",err);
+    }
+  }
+});
+
+compressor.minify({
+  
+  compressor: 'no-compress',
+  input: ['./src/webplugin/js/app/applozic.chat.min.js','./src/webplugin/js/app/km-chat-combined-0.1.min.js'],
   output: './src/webplugin/js/app/kommunicate-plugin-0.1.min.js',
   callback: function (err, min) {
     if(!err)
