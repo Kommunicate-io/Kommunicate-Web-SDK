@@ -157,6 +157,7 @@ const addMemberIntoConversation = (data) => {
             return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
                 if (users) {
                     let userIds = [];
+                    let agentIds=[];
                     users.forEach(function (user) {
                         if (user.type === 2) {
                             if (user.userName === 'bot') {
@@ -167,6 +168,7 @@ const addMemberIntoConversation = (data) => {
                         }
                         else {
                             userIds.push(user.userName);
+                            agentIds.push(user.userName);
                             // groupInfo.userIds.push(user.userName);
                         }
                         if (user.type === 3) {
@@ -175,7 +177,7 @@ const addMemberIntoConversation = (data) => {
 
                     });
                     if (customer.agentRouting) {
-                        assingConversationInRoundRobin(data.groupId, userIds, customer.applicationId, header);
+                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applicationId, header);
                     }
                     groupInfo.userIds = userIds;
                     logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
