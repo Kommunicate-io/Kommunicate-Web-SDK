@@ -4,9 +4,7 @@
  * all methods are attached to Kommunicate.client
  */
 
-var mckGroupService = new MckGroupService();
-
- Kommunicate.client={
+Kommunicate.client={
      /**
     * Get the group detail by type. 
     * @param {object} options
