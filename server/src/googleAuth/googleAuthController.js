@@ -116,15 +116,9 @@ exports.authCode = (req, res) => {
 	}).then( result => {
 	    logger.info(result);
 	    let applicationId = result.application.applicationId
-	    let appKey = result.application.key
-
 	    let userData = {
 			numOfApp: numOfApp,
 			applicationId: applicationId,
-			appKey: appKey,
-			accessToken: result.accessToken,
-			userName: result.userName,
-			name: result.name
 	    }
 	    res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType +  "&" + querystring.stringify(userData))
 	}).catch(err => {
