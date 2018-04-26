@@ -6,7 +6,7 @@ const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const defaultMessage ="Hi there! We are here to help you out. Send us a message and we will get back to you as soon as possible";
 const Sequelize = require("sequelize");
-const constant = require('./utils')
+const constant = require('./utils');
 
 exports.postWelcomeMsg=(options)=>{
     return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
@@ -147,19 +147,19 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE","skipBot":"true"})
+                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
