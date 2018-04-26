@@ -10692,4 +10692,5 @@ input:required {
   text-overflow: ellipsis;
   max-width: 200px;
   display: block;
+  cursor: pointer;
 }
