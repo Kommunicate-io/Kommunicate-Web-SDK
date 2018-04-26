@@ -163,7 +163,7 @@
         font-size: 16px;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     }
-    .km-card-message-image-continer::before {
+    /*.km-card-message-image-continer::before {
         content: "";
         position: absolute;
         top: 0;
@@ -172,7 +172,7 @@
         height: 100%;
         z-index: 0;
         border-radius: 10px 10px 0px 0px;
-    }
+    }*/
     .km-card-message-body {
         height: 67px;
         padding: 0px 10px;
