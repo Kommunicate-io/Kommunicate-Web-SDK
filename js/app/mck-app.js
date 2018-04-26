@@ -50,9 +50,10 @@ function ApplozicSidebox() {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
     }, {
             "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
-    }, {
-            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js"
-    }, {
+    },
+    /*{
+            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js" 
+    },*/ {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     }, {
         "name": "km-utils", "url": MCK_STATICPATH + "/js/app/km-utils.js"
