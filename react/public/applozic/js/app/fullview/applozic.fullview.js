@@ -3685,7 +3685,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-					$kmApplozic("#km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
 					$mck_msg_inner.bind('scroll', function() {
 						if ($mck_msg_inner.scrollTop() === 0) {
 							var tabId = $mck_msg_inner.data("km-id");
@@ -7494,7 +7494,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							var asdiv ="#km-li-as-group-"+contact.groupId;
 							$(asdiv).remove();
 						}
-            if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
+            			if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
 							var cldiv ="#km-li-cl-group-"+contact.groupId;
 							$(cldiv).remove();
 						}
