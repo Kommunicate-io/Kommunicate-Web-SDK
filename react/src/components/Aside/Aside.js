@@ -490,10 +490,10 @@ class Aside extends Component {
                             <div className="km-tab-cell">
                               <div className="km-message-inner">
                                 <ul id="km-contact-list"
-                                  className="people km-contact-list km-converastion km-nav km-nav-tabs km-nav-stacked">
+                                  className="people km-contact-list km-converastion km-nav km-nav-tabs km-nav-stacked n-vis">
                                 </ul>
                                 <ul id="km-assigned-search-list"
-                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
                                 <ul id="km-closed-conversation-list"
                                   className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
