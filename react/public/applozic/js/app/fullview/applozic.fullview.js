@@ -5169,9 +5169,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							mckNotificationService.notifyUser(message);
 						}
 						var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-						$kmApplozic("#km-li-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
+						$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 						if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
-							$kmApplozic("#km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
+							$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
@@ -6058,10 +6058,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if (currTabId === groupId.toString() && isGroupTab) {
 						$mck_tab_title.html(group.displayName);
 					}
-					if ($kmApplozic("#km-li-group-" + group.htmlId).length > 0) {
-						$kmApplozic("#km-li-group-" + group.htmlId + " .name").html(group.displayName);
+					if ($kmApplozic(".km-li-group-" + group.htmlId).length > 0) {
+						$kmApplozic(".km-li-group-" + group.htmlId + " .name").html(group.displayName);
 						if (group.imageUrl) {
-							$kmApplozic("#km-li-group-" + group.htmlId + " .icon").html("<img src=' " + group.imageUrl + "'>");
+							$kmApplozic(".km-li-group-" + group.htmlId + " .icon").html("<img src=' " + group.imageUrl + "'>");
 						}
 					}
 					KM_GROUP_MAP[group.contactId] = group;
