@@ -406,6 +406,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			return appOptions;
 		};
 		_this.init = function() {
+			mckMessageLayout.init();
+			mckGroupLayout.init();
 			ringToneService = new KmRingToneService();
 			mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK,{loop:false});
 			mckMessageService.init();
@@ -1500,7 +1502,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			var CONVERSATION_DELETE_URL = "/rest/ws/message/delete/conversation";
 			var CONVERSATION_READ_UPDATE_URL = "/rest/ws/message/read/conversation";
 			var offlineblk = '<div id="km-ofl-blk" class="km-m-b"><div class="km-clear"><div class="blk-lg-12 km-text-light km-text-muted km-test-center">${userIdExpr} is offline now</div></div></div>';
-			$kmApplozic.template("KMoflTemplate", offlineblk);
 			$kmApplozic(d).on("click", ".km-message-delete", function() {
 				_this.deleteMessage($kmApplozic(this).parents('.km-m-b').data("msgkey"));
 			});
@@ -1532,6 +1533,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$mck_search.focus();
 			};
 			_this.init = function() {
+				$kmApplozic.template("KMoflTemplate", offlineblk);
 				mckMessageLayout.initSearchAutoType();
 				mckStorage.clearMckMessageArray();
 				$kmApplozic(d).on("click", "." + MCK_LAUNCHER, function() {
@@ -3497,12 +3499,17 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="km-li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
-			$kmApplozic.template("KMmessageTemplate", markup);
-			$kmApplozic.template("KMcontactTemplate", contactbox);
-			$kmApplozic.template("KMconvTemplate", convbox);
-			$kmApplozic.template("KMsearchContactbox", searchContactbox);
-			$kmApplozic.template("KMconversationTemplate", conversationbox);
+			
 			var $mck_msg_inner = $kmApplozic("#km-message-inner");
+
+			_this.init = function() {
+				$kmApplozic.template("KMmessageTemplate", markup);
+				$kmApplozic.template("KMcontactTemplate", contactbox);
+				$kmApplozic.template("KMconvTemplate", convbox);
+				$kmApplozic.template("KMsearchContactbox", searchContactbox);
+				$kmApplozic.template("KMconversationTemplate", conversationbox);
+			};
+
 			_this.getMckMessageInner = function() {
 				return $mck_msg_inner;
 			}
@@ -5622,8 +5629,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			var $mck_group_create_overlay_label = $kmApplozic("#km-group-create-icon-box .km-overlay-label");
 			var groupContactbox = '<li id="km-li-gm-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}" data-alpha="${contFirstAlphaExpr}">' + '<div class="km-row km-group-member-info" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row">' + '<div class="blk-lg-8 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div>' + '<div class="blk-lg-4 km-group-admin-text move-right ${isAdminExpr}"><span>Admin</span></div></div>' + '<div class="km-row">' + '<div class="blk-lg-10 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div>' + '<div class="blk-lg-2 km-group-admin-options ${enableAdminMenuExpr}">' + '<div class="km-menu-box n-vis"><div class="km-dropdown-toggle km-group-admin-menu-toggle km-text-center" data-toggle="kmdropdown" aria-expanded="true">' + '<span class="km-caret"></span></div>' + '<ul id="km-group-admin-menu" class="km-dropdown-menu km-group-admin-menu km-tab-menu-box menu-right" role="menu">' + '<li><a href="#" class="km-btn-remove-member menu-item" title="Remove Member">Remove Member</a></li>' + '</ul></div></div>' + '</div></div></div></li>';
 			var groupSearchContact = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr} km-li-group-member" data-km-id="${contIdExpr}">' + '<a class="km-add-to-group" href="#" data-km-id="${contIdExpr}">' + '<div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="km-row"><div class="blk-lg-12 km-truncate km-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
-			$kmApplozic.template("KMgroupMemberTemplate", groupContactbox);
-			$kmApplozic.template("KMgroupSearchTemplate", groupSearchContact);
+			
 			$mck_new_group.on('click', function(e) {
 				e.preventDefault();
 				mckGroupLayout.loadCreateGroupTab();
@@ -5749,6 +5755,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			$mck_btn_group_create.on('click', function() {
 				_this.submitCreateGroup();
 			});
+			_this.init = function() {
+				$kmApplozic.template("KMgroupMemberTemplate", groupContactbox);
+				$kmApplozic.template("KMgroupSearchTemplate", groupSearchContact);
+			};
 			_this.submitCreateGroup = function() {
 				var groupName = $kmApplozic.trim($mck_group_create_title.text());
 				var groupType = $mck_group_create_type.val();
