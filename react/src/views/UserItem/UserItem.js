@@ -17,7 +17,7 @@ class UserItem extends Component {
     render() {
         var user = this.props.user;
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
-        var latestConversation=user.messagePxy?user.messagePxy.message:"no conversation yet!";
+        var latestConversation=user.messagePxy?user.messagePxy.message:"No conversation yet!";
         var lastMessageTime=user.messagePxy?(window.$kmApplozic.fn.applozic('getDateTime',user.messagePxy.createdAtTime)):'';
         var groupId=user.messagePxy?user.messagePxy.groupId:"";
         var image = (user.imageLink) ? (user.imageLink):'';
