@@ -4138,7 +4138,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if ($mck_no_messages.hasClass('vis')) {
                     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 }
-                var messageClass = msg.message? "vis":"n-vis";
+                var messageClass = (msg.message || msg.fileMeta) ? "vis":"n-vis";
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var statusIcon = 'mck-icon-time';
