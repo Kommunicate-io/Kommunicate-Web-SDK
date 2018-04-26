@@ -332,7 +332,7 @@ exports.updateApplozicClient = (userName, accessToken,applicationId,user,options
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,
     'Of-User-Id':user.userId,
-    //'Apz-Product-App': 'true'
+    'Apz-Product-App': 'true'
    }})
    .then(response=>{
     if(response.data&&response.data.status ==="success"){
