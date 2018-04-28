@@ -24,7 +24,7 @@ class UserItem extends Component {
       };
 
       window.$kmApplozic.fn.applozic("createGroup", {
-        createUrl: getConfig().kommunicateApi+"/conversations/create",
+        //createUrl: getConfig().kommunicateApi+"/conversations/create",
         groupName: conversationDetail.groupName,
         type: conversationDetail.type,
         admin: conversationDetail.agentId,
