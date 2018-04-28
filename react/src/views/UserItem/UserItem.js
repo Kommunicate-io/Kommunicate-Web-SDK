@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
+import { getConfig } from '../../config/config.js';
 
 class UserItem extends Component {
 
@@ -10,8 +11,49 @@ class UserItem extends Component {
 
     handleClick() {
       var user = this.props.user;
-      window.$kmApplozic.fn.applozic('loadTab', user.userId);
-      window.appHistory.push("/conversations");
+      var agentId = window.$kmApplozic.fn.applozic("getLoggedInUser");
+      var conversationDetail = {
+        agentId: agentId,
+        botIds: ["bot"],
+        //groupName: [agentId, user.userId].sort().join().replace(/,/g, "_").substring(0, 250),
+        groupName: user.displayName,
+        type: 10,
+        admin: agentId,
+        users: [{"userId":user.userId,"groupRole":3}], //userId of user
+        //clientGroupId: ''
+      };
+
+      window.$kmApplozic.fn.applozic("createGroup", {
+        //createUrl: getConfig().kommunicateApi+"/conversations/create",
+        groupName: conversationDetail.groupName,
+        type: conversationDetail.type,
+        admin: conversationDetail.agentId,
+        users: conversationDetail.users,
+        clientGroupId:conversationDetail.clientGroupId,
+        metadata: {
+            CREATE_GROUP_MESSAGE: "",
+            REMOVE_MEMBER_MESSAGE: "",
+            ADD_MEMBER_MESSAGE: "",
+            JOIN_MEMBER_MESSAGE: "",
+            GROUP_NAME_CHANGE_MESSAGE: "",
+            GROUP_ICON_CHANGE_MESSAGE: "",
+            GROUP_LEFT_MESSAGE: "",
+            DELETED_GROUP_MESSAGE: "",
+            GROUP_USER_ROLE_UPDATED_MESSAGE: "",
+            GROUP_META_DATA_UPDATED_MESSAGE: "",
+            CONVERSATION_ASSIGNEE: conversationDetail.agentId,
+            KM_CONVERSATION_TITLE:conversationDetail.groupName,
+            //ALERT: "false",
+            HIDE: "true"
+        },
+        callback: function (response) {
+            console.log("response", response);
+            if (response.status === 'success') {
+              window.$kmApplozic.fn.applozic('loadGroupTab', response.groupId);
+              window.appHistory.push("/conversations");
+            }
+        }
+      });
     }
    
     render() {
