@@ -11,18 +11,14 @@ class UserItem extends Component {
 
     handleClick() {
       var user = this.props.user;
-      //Todo: set conversationDetail
-      /**
-       * {"groupName":"Devashish","users":[{"userId":"devashish@kommunicate.io","groupRole":1},{"userId":"bot","groupRole":2}],"type":10,"admin":"devashish@kommunicate.io","metadata":{"CREATE_GROUP_MESSAGE":"","REMOVE_MEMBER_MESSAGE":"","ADD_MEMBER_MESSAGE":"","JOIN_MEMBER_MESSAGE":"","GROUP_NAME_CHANGE_MESSAGE":"","GROUP_ICON_CHANGE_MESSAGE":"","GROUP_LEFT_MESSAGE":"","DELETED_GROUP_MESSAGE":"","GROUP_USER_ROLE_UPDATED_MESSAGE":"","GROUP_META_DATA_UPDATED_MESSAGE":"","CONVERSATION_ASSIGNEE":"devashish@kommunicate.io","KM_CONVERSATION_TITLE":"Devashish","HIDE":"true"}}
-       */
       var agentId = window.$kmApplozic.fn.applozic("getLoggedInUser");
       var conversationDetail = {
-        agentId: agentId, //replace with logged in user id
-        botIds: ["bot"], //optional
+        agentId: agentId,
+        botIds: ["bot"],
         //groupName: [agentId, user.userId].sort().join().replace(/,/g, "_").substring(0, 250),
         groupName: user.displayName,
         type: 10,
-        admin: agentId, //replace with logged in user id
+        admin: agentId,
         users: [{"userId":user.userId,"groupRole":3}], //userId of user
         //clientGroupId: ''
       };
@@ -58,7 +54,6 @@ class UserItem extends Component {
             }
         }
       });
-      //window.$kmApplozic.fn.applozic('loadTab', user.userId);
     }
    
     render() {
