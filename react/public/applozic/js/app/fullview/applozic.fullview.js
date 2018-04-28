@@ -356,7 +356,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : KM_BASE_URL + "/plugin/audio/notification_tone.mp3";
 		var CONVERSATION_STATUS_MAP = [ "DEFAULT", "NEW", "OPEN" ];
 		var GROUP_ROLE_MAP = [0, 1, 2, 3];
-		var GROUP_TYPE_MAP = [ 1, 2, 5, 6 ];
+		var GROUP_TYPE_MAP = [ 1, 2, 5, 6, 10 ];
 		var BLOCK_STATUS_MAP = [ "BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY" ];
 		var mckStorage = new MckStorage();
 		var TAB_FILE_DRAFT = new Object();
@@ -3319,6 +3319,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 				if (params.groupIcon) {
 					groupInfo.imageUrl = params.groupIcon;
+				}
+				if (params.metadata) {
+					groupInfo.metadata = params.metadata;
 				}
 				var response = new Object();
 				kmUtils.ajax({
