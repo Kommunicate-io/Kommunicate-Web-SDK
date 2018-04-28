@@ -62,12 +62,11 @@ class Users extends Component {
                     <tr>
                       <th className="text-center"><i className="icon-people"></i></th>
                       <th>User</th>
-                       <th>Contact Info</th>
-                       <th>Last Activity</th>
-                       <th>Latest Conversation</th>
-                       <th className="text-center" >Assigned</th>
-                       <th className="text-center">Add Info</th>
-                      <th className="text-center">Actions</th>
+                      <th>Contact Info</th>
+                      <th>Last Activity</th>
+                      <th>Latest Conversation</th>
+                      <th className="text-center" >Assigned</th>
+                      <th className="text-center">Add Info</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>

@@ -17,7 +17,7 @@ class UserItem extends Component {
     render() {
         var user = this.props.user;
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
-        var latestConversation=user.messagePxy?user.messagePxy.message:"No conversation yet!";
+        var latestConversation=user.messagePxy?user.messagePxy.message:null;
         var lastMessageTime=user.messagePxy?(window.$kmApplozic.fn.applozic('getDateTime',user.messagePxy.createdAtTime)):'';
         var asignee=user.assignee?user.assignee:"";
         var groupId=user.messagePxy?user.messagePxy.groupId:"";
@@ -53,7 +53,15 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td>
                     <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
-                      <strong className="km-truncate-block">{latestConversation}</strong>
+                      <strong className="km-truncate-block">
+                      
+                      {latestConversation == null ?
+                        <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
+                        :
+                        latestConversation
+                      }
+                      
+                      </strong>
                       <div className="small text-muted">{lastMessageTime} </div>
                     </td>
                     <td>
@@ -82,10 +90,6 @@ class UserItem extends Component {
                       <div className="small text-muted n-vis">Last Seen</div>
                       <strong className="n-vis">{lastSeenAt}</strong>
                     </td>
-                    <td className="text-center">
-                     <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Chat</button>
-                    </td>
-
                   </tr>
         );
     }
