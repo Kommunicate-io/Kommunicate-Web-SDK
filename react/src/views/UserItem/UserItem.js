@@ -16,7 +16,7 @@ class UserItem extends Component {
         agentId: agentId,
         botIds: ["bot"],
         //groupName: [agentId, user.userId].sort().join().replace(/,/g, "_").substring(0, 250),
-        groupName: user.displayName,
+        groupName: user.displayName | user.id,
         type: 10,
         admin: agentId,
         users: [{"userId":user.userId,"groupRole":3}], //userId of user
@@ -57,6 +57,9 @@ class UserItem extends Component {
     }
    
     render() {
+        var conversationStyle = {
+          'text-decoration': 'underline'
+        };
         var user = this.props.user;
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
         var latestConversation=user.messagePxy?user.messagePxy.message:null;
@@ -95,7 +98,7 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td>
                     <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
-                      <strong className="km-truncate-block">
+                      <strong style={conversationStyle} className="km-truncate-block">
                       
                       {latestConversation == null ?
                         <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
