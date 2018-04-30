@@ -511,17 +511,17 @@ var MCK_CLIENT_GROUP_MAP = [];
         };
         _this.init = function () {
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
-            mckGroupLayout.init();
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             alNotificationService.init(appOptions);
             notificationtoneoption.loop = false;
             if(MCK_NOTIFICATION_TONE_LINK){
-            ringToneService = new RingToneService();
-            mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
+                ringToneService = new RingToneService();
+                mckNotificationTone = ringToneService.loadRingTone(MCK_NOTIFICATION_TONE_LINK, notificationtoneoption);
             }
             mckMessageService.init();
             mckFileService.init();
+            mckGroupLayout.init();
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();

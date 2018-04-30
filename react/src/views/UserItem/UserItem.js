@@ -11,12 +11,19 @@ class UserItem extends Component {
 
     handleClick() {
       var user = this.props.user;
+      var groupName = user.displayName;
+      if (!groupName) {
+        groupName = user.email;
+      }
+      if (!groupName) {
+        groupName = user.userId;
+      }
       var agentId = window.$kmApplozic.fn.applozic("getLoggedInUser");
       var conversationDetail = {
         agentId: agentId,
         botIds: ["bot"],
         //groupName: [agentId, user.userId].sort().join().replace(/,/g, "_").substring(0, 250),
-        groupName: user.displayName | user.id,
+        groupName: groupName,
         type: 10,
         admin: agentId,
         users: [{"userId":user.userId,"groupRole":3}], //userId of user
@@ -58,7 +65,8 @@ class UserItem extends Component {
    
     render() {
         var conversationStyle = {
-          'text-decoration': 'underline'
+          textDecoration: 'underline',
+          color: '#0000EE'
         };
         var user = this.props.user;
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
@@ -98,7 +106,7 @@ class UserItem extends Component {
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td>
                     <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
-                      <strong style={conversationStyle} className="km-truncate-block">
+                      <span style={conversationStyle} className="km-truncate-block">
                       
                       {latestConversation == null ?
                         <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
@@ -106,7 +114,7 @@ class UserItem extends Component {
                         latestConversation
                       }
                       
-                      </strong>
+                      </span>
                       <div className="small text-muted">{lastMessageTime} </div>
                     </td>
                     <td>
