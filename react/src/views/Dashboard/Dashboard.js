@@ -33,6 +33,7 @@ class Dashboard extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
+      last30Days : [],
       agentFilterOption: [{ label: "All Agents", value: "allagents" }],
       timeFilterSelectedOption: { label: "Last 7 days", value: 7 },
       agentFilterSelectedOption: { label: "All agents", value: "allagents" },
@@ -407,137 +408,138 @@ class Dashboard extends Component {
     var labelMonthly = [];
     var labels = [];
     //rest/ws/stats/filter?appKey=agpzfmFwcGxvemljchgLEgtBcHBsaWNhdGlvbhiAgICAuqiOCgw&startTime=1498847400000&endTime=1501352999000
-    axios.get(statsUrl, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Access-Token": userSession.password, "Authorization": "Basic " + userSession.authorization, "Content-Type": "application/json", "Apz-Product-App": true } })
-      .then(function (response) {
-        if (response.status == 200) {
-          var data = response.data;
+    // axios.get(statsUrl, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Access-Token": userSession.password, "Authorization": "Basic " + userSession.authorization, "Content-Type": "application/json", "Apz-Product-App": true } })
+    //   .then(function (response) {
+    //     if (response.status == 200) {
+    //       var data = response.data;
 
-          if (data.length >= 2) {
-            var lastMonthStats = data[data.length - 2];
-            that.setState({ 'lastMonthStats': lastMonthStats });
-          } else {
-            let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
-            for (var i = 0; i < lastMonthSubTitle.length; i++) {
-              lastMonthSubTitle[i].classList.add('n-vis');
-            }
-          }
+    //       if (data.length >= 2) {
+    //         var lastMonthStats = data[data.length - 2];
+    //         that.setState({ 'lastMonthStats': lastMonthStats });
+    //       } else {
+    //         let lastMonthSubTitle = document.getElementsByClassName("card-sub-title");
+    //         for (var i = 0; i < lastMonthSubTitle.length; i++) {
+    //           lastMonthSubTitle[i].classList.add('n-vis');
+    //         }
+    //       }
 
-          if (data.length > 0) {
+    //       if (data.length > 0) {
 
-            let lastDate = null;
+    //         let lastDate = null;
 
-            for (var i = 0; i < data.length; i++) {
-              var obj = data[i];
-              var datetime = new Date(obj.month);
+    //         for (var i = 0; i < data.length; i++) {
+    //           var obj = data[i];
+    //           var datetime = new Date(obj.month);
 
-              if (lastDate == null) {
-                lastDate = datetime;
-              }
-              for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
-                labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
-                userDataMonthly.push(0);
-                mauDataMonthly.push(0);
-                channelDataMonthly.push(0);
-                messageDataMonthly.push(0);
-              }
+    //           if (lastDate == null) {
+    //             lastDate = datetime;
+    //           }
+    //           for (var gap = lastDate.getMonth() + 1; gap < datetime.getMonth(); gap++) {
+    //             labelMonthly.push(MONTH_NAMES[lastDate.getMonth()]);
+    //             userDataMonthly.push(0);
+    //             mauDataMonthly.push(0);
+    //             channelDataMonthly.push(0);
+    //             messageDataMonthly.push(0);
+    //           }
 
-              labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
-              userDataMonthly.push(obj.newUserCount);
-              mauDataMonthly.push(obj.activeUserCount);
-              channelDataMonthly.push(obj.channelCount);
-              messageDataMonthly.push(obj.newMessageCount);
-              //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
-            }
+    //           labelMonthly.push(MONTH_NAMES[datetime.getMonth()]);
+    //           userDataMonthly.push(obj.newUserCount);
+    //           mauDataMonthly.push(obj.activeUserCount);
+    //           channelDataMonthly.push(obj.channelCount);
+    //           messageDataMonthly.push(obj.newMessageCount);
+    //           //that.state.chartUperLimit=that.findMax(that.state.chartUperLimit,obj.messageCount,obj.userCount);
+    //         }
 
-            var chartMonthly = that.state.chartMonthly;
-            chartMonthly.labels = labelMonthly;
-            chartMonthly.datasets[0].data = userDataMonthly;
-            chartMonthly.datasets[1].data = mauDataMonthly;
-            chartMonthly.datasets[2].data = channelDataMonthly;
-            chartMonthly.datasets[3].data = messageDataMonthly;
+    //         var chartMonthly = that.state.chartMonthly;
+    //         chartMonthly.labels = labelMonthly;
+    //         chartMonthly.datasets[0].data = userDataMonthly;
+    //         chartMonthly.datasets[1].data = mauDataMonthly;
+    //         chartMonthly.datasets[2].data = channelDataMonthly;
+    //         chartMonthly.datasets[3].data = messageDataMonthly;
 
-            that.setState({
-              chartMonthly: chartMonthly
-            });
+    //         that.setState({
+    //           chartMonthly: chartMonthly
+    //         });
 
-            var stat = data[data.length - 1];
+    //         var stat = data[data.length - 1];
 
-            that.setState({
-              'currentMonth': MONTH_NAMES_LONG[new Date(stat.month).getMonth()],
-              'newUsers': stat.newUserCount,
-              'conversations': stat.channelCount,
-              'messages': stat.newMessageCount,
-              'active': stat.activeUserCount || 0,
-              'leads': '0',
-              'online': '0',
-              'assigned': '0',
-            });
-          }
-        } else {
-        }
-      });
+    //         that.setState({
+    //           'currentMonth': MONTH_NAMES_LONG[new Date(stat.month).getMonth()],
+    //           'newUsers': stat.newUserCount,
+    //           'conversations': stat.channelCount,
+    //           'messages': stat.newMessageCount,
+    //           'active': stat.activeUserCount || 0,
+    //           'leads': '0',
+    //           'online': '0',
+    //           'assigned': '0',
+    //         });
+    //       }
+    //     } else {
+    //     }
+    //   });
 
-    axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey", application.key) + "&startTime=" + startTime + "&endTime=" + endTime, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Content-Type": "application/json", "Authorization": "Basic " + userSession.authorization, "Apz-Product-App": true } })
-      .then(function (response) {
-        if (response.status == 200) {
-          var data = response.data;
-          var messageData = [];
-          var userData = [];
-          var channelData = [];
-          if (data.length > 0) {
-            let lastDate = null;
-            for (var i = 0; i < data.length; i++) {
-              var obj = data[i];
-              var datetime = new Date(obj.onDateTime);
+    // axios.get(getConfig().applozicPlugin.statsFilterUrl.replace(":appKey", application.key) + "&startTime=" + startTime + "&endTime=" + endTime, { headers: { "Apz-AppId": application.applicationId, "Apz-Token": "Basic " + apzToken, "Content-Type": "application/json", "Authorization": "Basic " + userSession.authorization, "Apz-Product-App": true } })
+    //   .then(function (response) {
+    //     if (response.status == 200) {
+    //       var data = response.data;
+    //       var messageData = [];
+    //       var userData = [];
+    //       var channelData = [];
+    //       if (data.length > 0) {
+    //         let lastDate = null;
+    //         for (var i = 0; i < data.length; i++) {
+    //           var obj = data[i];
+    //           var datetime = new Date(obj.onDateTime);
 
-              if (lastDate == null) {
-                lastDate = datetime;
-              }
-              for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
-                labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
-                messageData.push(0);
-                userData.push(0);
-                channelData.push(0);
-              }
+    //           if (lastDate == null) {
+    //             lastDate = datetime;
+    //           }
+    //           for (var gap = lastDate.getDate() + 1; gap < datetime.getDate(); gap++) {
+    //             labels.push(MONTH_NAMES[lastDate.getMonth()] + " " + gap);
+    //             messageData.push(0);
+    //             userData.push(0);
+    //             channelData.push(0);
+    //           }
 
-              lastDate = datetime;
-              labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
-              messageData.push(obj.messageCount);
-              userData.push(obj.userCount);
-              channelData.push(obj.channelCount);
-              that.state.chartUperLimit = that.findMax(that.state.chartUperLimit, obj.messageCount, obj.userCount);
-            }
-          }
+    //           lastDate = datetime;
+    //           labels.push(MONTH_NAMES[datetime.getMonth()] + " " + datetime.getDate());
+    //           messageData.push(obj.messageCount);
+    //           userData.push(obj.userCount);
+    //           channelData.push(obj.channelCount);
+    //           that.state.chartUperLimit = that.findMax(that.state.chartUperLimit, obj.messageCount, obj.userCount);
+    //         }
+    //       }
 
-          var mainChart = Object.assign({}, that.state.mainChart);
-          mainChart.labels = labels;
-          mainChart.datasets[0].data = userData;
-          mainChart.datasets[2].data = channelData;
-          mainChart.datasets[3].data = messageData;
+    //       var mainChart = Object.assign({}, that.state.mainChart);
+    //       mainChart.labels = labels;
+    //       mainChart.datasets[0].data = userData;
+    //       mainChart.datasets[2].data = channelData;
+    //       mainChart.datasets[3].data = messageData;
 
-          that.setState({
-            'mainChart': mainChart
-          });
+    //       that.setState({
+    //         'mainChart': mainChart
+    //       });
 
-          let chart = that.state.chart;
-          chart.labels = labels;
-          chart.datasets = [{}];
-          chart.datasets[0] = that.state.mainChart.datasets[0];
-          //chart.datasets[0].label = 'Users';
-          //chart.datasets[0].data = userData;
+    //       let chart = that.state.chart;
+    //       chart.labels = labels;
+    //       chart.datasets = [{}];
+    //       chart.datasets[0] = that.state.mainChart.datasets[0];
+    //       //chart.datasets[0].label = 'Users';
+    //       //chart.datasets[0].data = userData;
 
-          that.setState({
-            'chart': chart
-          });
-        } else {
-        }
-      });
+    //       that.setState({
+    //         'chart': chart
+    //       });
+    //     } else {
+    //     }
+    //   });
 
     axios.get(getConfig().kommunicateApi.subscriptionCount)
       .then(function (response) {
         that.setState({ offerRemaining: Math.max((70 - parseInt(response.data)), 3)});
       });
   }
+  
   filterConversationDetails = (timeFilterSelectedOption, agentFilterSelectedOption) => {
     return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption)).then(res => {
       console.log(res);
@@ -554,7 +556,7 @@ class Dashboard extends Component {
           "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
       ];
       
-      var getDateArray = function(start, end) {
+      var getLast30days = function(start, end,) {
         var arr = new Array();
         var dt = new Date(start);
         while (dt <= end) {
@@ -562,11 +564,10 @@ class Dashboard extends Component {
             arr.push(dateFormat);
             dt.setDate(dt.getDate() + 1);
         }
-        console.log(arr)
         return arr;    
       }
-    
-      var dateArr = getDateArray(startDate, endDate);
+      var last30Days = getLast30days(startDate, endDate);
+      this.setState({last30Days:last30Days})
       
       
       
