@@ -320,7 +320,7 @@ register=(event)=>{
 
  initiateForgotPassword = (event)=>{
   this.state.loginButtonAction="passwordReset";
-  this.setState({"loginFormText":"Resetting Password",
+  this.setState({"loginFormText":"Reset your password",
   "loginFormSubText":'Please enter your registered email ID, your password reset link will be sent there.',
   loginButtonText:'Submit',
   loginButtonAction:'passwordReset',hideBackButton:false,hidePasswordInputbox:true,hideAppListDropdown:true,hideUserNameInputbox:false,isForgotPwdHidden:true, hideSignupLink:true,hideGoogleLoginBtn:true, marginBottomFrgtPassHead:'50px'});
