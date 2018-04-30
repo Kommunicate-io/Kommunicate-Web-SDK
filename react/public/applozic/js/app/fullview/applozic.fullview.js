@@ -1899,12 +1899,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				});
 				$kmApplozic(d).on('click', '.km-group-info-btn', function(e) {
-					e.preventDefault();
+				    e.preventDefault();
 					$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 					var tabId = $mck_msg_inner.data('km-id');
-					var isGroup = $mck_msg_inner.data('isgroup');
+					var isGroup = $mck_msg_inner.data('isgroup');			
 					if (!isGroup) {
-						$mck_group_menu_options.removeClass('vis').addClass('n-vis');
+						$mck_group_menu_options.removeClass('vis').addClass('n-vis');						
 						return;
 					}
 					var params = {
@@ -1917,7 +1917,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					mckGroupLayout.loadGroupInfo(params);
 					// setting emaji width
 					var width = $kmApplozic('#km-write-box').css('width');
-					$kmApplozic(".km-emoji-menu").css('width',width);
+					$kmApplozic(".km-emoji-menu").css('width',width);				
 				});
 				$mck_group_add_member.on('click', function(e) {
 					e.preventDefault();
@@ -5616,6 +5616,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			var $mck_group_create_close = $kmApplozic("#km-group-create-close");
 			var $mck_group_create_title = $kmApplozic("#km-group-create-title");
 			var $mck_group_menu_options = $kmApplozic(".km-group-menu-options");
+			var $mck_group_tab_title = $kmApplozic("#km-group-tab-title");
 			var $mck_btn_group_icon_save = $kmApplozic("#km-btn-group-icon-save");
 			var $mck_group_admin_options = $kmApplozic(".km-group-admin-options");
 			var $mck_tab_title = $kmApplozic("#km-tab-individual .km-tab-title");
@@ -5906,7 +5907,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$mck_tab_status.removeClass('n-vis').addClass('vis');
 					$mck_tab_title.addClass('km-tab-title-w-status');
 					$mck_group_menu_options.removeClass('n-vis').addClass('vis');
-					$mck_tab_info.addClass('km-group-info-btn');
+					$mck_tab_info.addClass('km-group-info-btn');			
+            		$mck_group_tab_title.trigger('click');
 				} else {
 					$mck_tab_title.removeClass('km-tab-title-w-status');
 					$mck_tab_status.removeClass('vis').addClass('n-vis');
@@ -6284,7 +6286,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
-						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');
+						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');	
 					} else {
 						kmGroupService.getGroupFeed({
 							'groupId' : params.groupId,
@@ -6295,7 +6297,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
 					$mck_container.removeClass('km-panel-3').addClass('km-panel-3');
 					$mck_group_create_tab.removeClass('vis').addClass('n-vis');
-					$mck_group_info_tab.removeClass('n-vis').addClass('vis');
+					$mck_group_info_tab.removeClass('n-vis').addClass('vis');		
 				}
 			};
 			_this.loadCreateGroupTab = function() {
