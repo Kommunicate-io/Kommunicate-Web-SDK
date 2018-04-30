@@ -4149,10 +4149,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						} else if (contact.photoLink) {
 							imgsrctag = '<img src="' + KM_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
 						} else {
-							if (!displayName) {
-								displayName = contact.displayName;
+							var userDetail = MCK_USER_DETAIL_MAP[contact.contactId];
+							if (userDetail && userDetail.imageLink) {
+								imgsrctag = '<img src="' + userDetail.imageLink + '"/>';
+							} else {
+								if (!displayName) {
+									displayName = contact.displayName;
+								}
+								imgsrctag = _this.getContactImageByAlphabet(displayName);
 							}
-							imgsrctag = _this.getContactImageByAlphabet(displayName);
 						}
 					}
 				}

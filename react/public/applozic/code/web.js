@@ -4,7 +4,7 @@ $(document).ready(function() {
   var $chat_relauncher = $('#chat-relauncher');
   var $chat_response = $('#chat-response');
   var $chat_postlaunch = $('#chat-post-launch');
-  
+
   $chat_relauncher.on('click', function() {
     window.location = '/login.html';
   });
@@ -104,7 +104,9 @@ function initAutoSuggestions() {
       onTabClicked : function(tabDetail) {
             var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
             $mck_group_info_btn.trigger('click');
+
             window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
+
             window.appHistory.replace('/conversations');
 
   					if(typeof tabDetail === 'object') {
