@@ -124,7 +124,14 @@ class Aside extends Component {
   }
 
   getDisplayName(user) {
-    return user.displayName ? user.displayName: user.userId;
+    console.log("#user: ");
+    console.log(user);
+    if (user.displayName) {
+      return user.displayName;
+    } else if (user.email) {
+      return user.email;
+    }
+    return user.userId
   }
 
   initConversation(groupId) {
