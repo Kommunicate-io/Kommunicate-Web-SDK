@@ -2,8 +2,31 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import SettingsSidebar from '../SettingsSidebar/SettingsSidebar';
+import ProfileImageName from '../Header/ProfileImageName';
+import CommonUtils from '../../utils/CommonUtils';
+
 
 class Sidebar extends Component {
+
+  constructor (props) {
+    super(props)
+     //_this =this;
+    let imageLink = CommonUtils.getUserSession().imageLink;
+    this.state = {
+      imageLink: imageLink,
+      displayName: ''
+    };
+  }
+
+  componentWillMount() {
+    let userSession = CommonUtils.getUserSession()
+    if(userSession){
+      this.setState(
+        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName}
+      )
+      
+    }
+  }
 
   handleClick(e) {
     e.preventDefault();
@@ -23,7 +46,26 @@ class Sidebar extends Component {
   //   return this.props.location.pathname.indexOf(routeName) > -1 ? "nav nav-second-level collapse in" : "nav nav-second-level collapse";
   // }
 
+
+  updateProfilePic(url) { 
+    this.setState({
+      imageLink: url==null ? "/img/avatars/default.png": url
+    });
+   }
+
+   updateUserDisplay(name){
+    this.setState(
+      {displayName:name}
+    )
+  }
+
+  launchSideboxChat() {
+    // Kommunicate.openConversationList();
+
+  }
+
   render() {
+
     const currentPath = window.location.pathname;
     var settingsSidebarShow, sidebarWidth;
     if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/integrations')) {
@@ -133,7 +175,6 @@ class Sidebar extends Component {
             </li>
 
           </ul>
-
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
           <ul className="nav">
             {/* Settings Link */}
@@ -150,17 +191,22 @@ class Sidebar extends Component {
             </li>
             {/* Help Link */}
             <li className="nav-item">
-            {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <g data-name="Group 2">
-                <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 8" />
-                <path fill="#fff" d="M12 22A10.011 10.011 0 0 1 2 12 10.011 10.011 0 0 1 12 2a10.011 10.011 0 0 1 10 10 10.011 10.011 0 0 1-10 10zm0-5a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1zm0-5a1 1 0 0 0-1 .985V15a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-.782a.5.5 0 0 1 .35-.472 3.981 3.981 0 0 0 2.535-4.7 3.952 3.952 0 0 0-2.957-2.942 4.3 4.3 0 0 0-.95-.108 3.989 3.989 0 0 0-3.983 3.949v.148a.988.988 0 0 0 .982.9 1 1 0 0 0 1-1 2.015 2.015 0 0 1 2-1.96 2.017 2.017 0 0 1 2 1.958A2 2 0 0 1 12 12z"
-                data-name="Exclusion 1" />
-              </g>
-            </svg> */}
+            {/* <a href="javascript:void(0)" 
+            // onClick={this.launchSideboxChat} 
+                className="nav-link" data-tip="Help" data-effect="solid" data-place="right">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <g data-name="Group 2">
+                  <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 8" />
+                  <path fill="#fff" d="M12 22A10.011 10.011 0 0 1 2 12 10.011 10.011 0 0 1 12 2a10.011 10.011 0 0 1 10 10 10.011 10.011 0 0 1-10 10zm0-5a1 1 0 0 0-1 1 1 1 0 0 0 1 1 1 1 0 0 0 1-1 1 1 0 0 0-1-1zm0-5a1 1 0 0 0-1 .985V15a1 1 0 0 0 1 1 1 1 0 0 0 1-1v-.782a.5.5 0 0 1 .35-.472 3.981 3.981 0 0 0 2.535-4.7 3.952 3.952 0 0 0-2.957-2.942 4.3 4.3 0 0 0-.95-.108 3.989 3.989 0 0 0-3.983 3.949v.148a.988.988 0 0 0 .982.9 1 1 0 0 0 1-1 2.015 2.015 0 0 1 2-1.96 2.017 2.017 0 0 1 2 1.958A2 2 0 0 1 12 12z"
+                  data-name="Exclusion 1" />
+                </g>
+              </svg>
+            </a> */}
+            
             </li>
             {/* Profile Link */}
             <li className="nav-item">
-            
+                <ProfileImageName profilePicUrl={this.state.imageLink} displayName={this.state.displayName} hideDisplayName={true}/>
             </li>
           </ul>
         </nav>

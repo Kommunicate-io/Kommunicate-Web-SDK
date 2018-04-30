@@ -29,7 +29,6 @@ import CommonUtils from '../../utils/CommonUtils';
 import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 
-
 class Full extends Component {
 
   
@@ -72,6 +71,7 @@ class Full extends Component {
     
   }
   componentDidMount() {
+    
     if(CommonUtils.getUserSession()){
       window.chatLogin();
     }
@@ -93,8 +93,10 @@ class Full extends Component {
 
     return (
       <div className="app" suppressContentEditableWarning={true}> 
-        <Header profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
-        <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
+        <Header 
+        // profilePicUrl={this.state.imageLink} displayName={this.state.displayName}
+        />
+          <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
           <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
           <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
         </div>
