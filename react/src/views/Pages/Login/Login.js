@@ -501,7 +501,7 @@ showPasswordField = () => {
                         <p className="input-error-message">{this.state.errorMessageText}</p>
                        </div>
                     </div> */}
-                          {/* signup google is hidden for release 1.5.2 . To make it visible, remove n-vis from classname   */}
+                          {/* login with google is hidden for release 1.5.2 . To make it visible, remove n-vis from classname   */}
                          <a className="signup-with-google-btn n-vis" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
