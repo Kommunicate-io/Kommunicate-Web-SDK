@@ -110,7 +110,7 @@ class Aside extends Component {
               var assign = window.$kmApplozic("#assign");
               that.setState({agents: response.response.users});
               window.$kmApplozic.each(response.response.users, function() {
-                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
+                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(CommonUtils.getDisplayName(this)));
               });
               if(sessionStorage.getItem("userProfileUrl")!=null){
                 that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
@@ -121,10 +121,6 @@ class Aside extends Component {
             }
          }
       });
-  }
-
-  getDisplayName(user) {
-    return user.displayName ? user.displayName: user.userId;
   }
 
   initConversation(groupId) {
