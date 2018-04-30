@@ -72,7 +72,6 @@ class Full extends Component {
     
   }
   componentDidMount() {
-    
     if(CommonUtils.getUserSession()){
       window.chatLogin();
     }
