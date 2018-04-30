@@ -514,6 +514,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             alNotificationService.init(appOptions);
+            mckMessageLayout.init();
             notificationtoneoption.loop = false;
             if(MCK_NOTIFICATION_TONE_LINK){
                 ringToneService = new RingToneService();
@@ -525,7 +526,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            mckMessageLayout.init();
             mckMessageLayout.initEmojis();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
