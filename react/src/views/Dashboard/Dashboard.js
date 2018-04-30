@@ -379,7 +379,7 @@ class Dashboard extends Component {
 
     axios.get(getConfig().kommunicateApi.subscriptionCount)
       .then(function (response) {
-        that.setState({ offerRemaining: Math.max((70 - parseInt(response.data), 3)});
+        that.setState({ offerRemaining: Math.max((70 - parseInt(response.data)), 3)});
       });
   }
 
