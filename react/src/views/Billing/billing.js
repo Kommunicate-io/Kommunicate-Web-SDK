@@ -458,7 +458,7 @@ class Billing extends Component {
                                                             </h2>
                                                         </div>
                                                         <div className="price-mau">
-                                                            <h4>250 Chat users /mo</h4>
+                                                            <h4>Unlimited Chat users /mo</h4>
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
