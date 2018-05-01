@@ -45,18 +45,7 @@ $(document).ready(function() {
         
     });
     $(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
-        // // $('.km-group-info-tab').removeClass("vis").addClass('n-vis');
-        // if ($('.km-user-info-tab').hasClass('n-vis')) {
-        //   $kmApplozic('body').removeClass('km-panel-3').addClass('km-panel-3');
-        //   $kmApplozic('.km-emoji-menu').removeClass('km-panel-3').addClass('km-panel-3');
-        //   $kmApplozic(".km-container").removeClass('km-panel-3').addClass('km-panel-3');
-        // } else {
-        //   $kmApplozic('body').removeClass('km-panel-3');
-        //   $kmApplozic('.km-emoji-menu').removeClass('km-panel-3');
-        //   $kmApplozic(".km-container").removeClass('km-panel-3');
-        // }
-
-        // $('.km-user-info-tab').toggleClass("n-vis").toggleClass('vis');
+        
         $("#km-user-name-sec .km-user-title").html("");
         $("#km-user-info-list .email").html("");
         $("#km-user-info-icon-box .km-user-icon img").attr('src', "");
@@ -141,14 +130,6 @@ $(document).ready(function() {
 });
 
 function resetCustomerInfoArea(){
-    // $("#km-user-info-list .bio, #km-user-info-list .title").html("");
-    // $("#km-user-info-list .domain-url").attr("href", "");
-    // $("#km-user-info-list .domain-url").text('');
-    // $("#km-user-info-list .linkedin").attr("href", "");
-    // $("#km-user-info-list .linkedin").text('');
-    // $("#km-user-info-list .bio, #km-user-info-list .title, #km-user-info-list .domain, #km-user-info-list .profile-linkedin").addClass('n-vis');
-    // $(".customli").remove();
-    // $("#km-group-tab-title").attr('data-km-id',"");
     $("#km-user-info-list .km-clearbit-field").html('');
     $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
     $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
@@ -159,58 +140,3 @@ function resetCustomerInfoArea(){
 
 }
 
-// function clearbit(email, userId) {
-//     //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
-//     //https://person-stream.clearbit.com/v2/combined/find?email=alex@alexmaccaw.com
-
-//     //sk_1c765b25f7e53c661ae995b148cb7863
-//     //sk_6aadb3d2a8cb824acc0334f7da36c2ee
-
-//     $.ajax({
-//         url: 'https://person-stream.clearbit.com/v2/combined/find?email=' + email,
-//         type: 'GET',
-//         headers: {
-//             "Authorization": "Bearer sk_6aadb3d2a8cb824acc0334f7da36c2ee"
-//         },
-//         success: function (response) {
-//             displayCustomerInfo(response)
-//             var metadata = JSON.stringify(response);
-//             var obj = JSON.parse(metadata)
-//             var user = { 'userId': userId, 'metadata': { 'kmClearbitData': JSON.stringify(response) } }
-//             window.Aside.updateApplozicUser(user);
-
-//         }
-//     });
-
-// }
-
-// function displayCustomerInfo(clearbitData) {
-//     var person = clearbitData.person;
-//     var company = clearbitData.company;
-//     var info = "";
-//     if (typeof person !== "undefined" && person != null && person != "null") {
-//         info = person.bio + " " + person.location;
-//         $("#km-user-info-list .bio").html(person.bio !== null ? person.bio : '' + " " + person.location !== null ? person.location : '');
-//         $("#km-user-info-list .bio").removeClass('n-vis');
-//         var employment = person.employment;
-//         if (typeof employment !== "undefined" && employment != null && employment != "null") {
-//             info = info + " " + person.employment.title;
-//             $("#km-user-info-list .title").html(person.employment.title);
-//             $("#km-user-info-list .title").removeClass('n-vis');
-//         }
-//         var linkedin = person.linkedin;
-//         if (typeof linkedin !== "undefined" && linkedin != null && linkedin != "null") {
-//             info = info + " " + linkedin.handle;
-//             $("#km-user-info-list .linkedin").attr('href', 'https://linkedin.com/' + linkedin.handle);
-//             $("#km-user-info-list .profile-linkedin").removeClass('n-vis');
-//             $("#km-user-info-list .linkedin").text('https://linkedin.com/'+ linkedin.handle);
-//         }
-//     }
-//     if (typeof company !== "undefined" && company != null && company != "null") {
-//         info = info + " " + company.domain;
-//         $("#km-user-info-list .domain").removeClass('n-vis');
-//         $("#km-user-info-list .domain-url").attr('href', 'https://www.'+company.domain);
-//         $("#km-user-info-list .domain-url").text('https://www.'+company.domain);
-        
-//     }
-// }
