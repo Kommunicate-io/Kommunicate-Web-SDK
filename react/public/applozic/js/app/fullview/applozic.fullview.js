@@ -2645,7 +2645,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=2",
 					success: function (data) {
 						var list = {};
-						list.closedList = "km-closed-conversation-list";
+						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data,individual,"km-closed-conversation-list",list);
 					}
 
@@ -2666,7 +2666,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						var list = {};
-						list.assigneList = "km-assigned-search-list";
+						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data,individual,"km-assigned-search-list",list);
 					}
 
@@ -4224,10 +4224,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var $conversation = $conversationAll;
 					if (typeof list === "undefined") {
 						$conversation = $conversationAll;
-					} else if (list.closedList) {
-						$conversation = $conversationClosed;
-					} else if (list.assigneList) {
-						$conversation = $conversationAssigned;
+					} else if (list.sectionId) {
+						$conversation = $kmApplozic("#" + list.sectionId);
 					}
 					$conversation.data('datetime', showMoreDateTime);
 					$mck_contacts_inner.data('datetime', showMoreDateTime);
@@ -4355,27 +4353,24 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				_this.updateRecentConversationList(group, message, update, false,list);
 			};
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
-                var $listId = sectionId;
-                var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-                if ($kmApplozic("#" + $listId + " #km-li-" + contactHtmlExpr).length > 0) {
-                    var $mck_msg_part = $applozic("#" + $listId + " #li-" + contact.htmlId + " .mck-cont-msg-wrapper");
+				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+                if ($kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr).length > 0) {
+                    var $mck_msg_part = $applozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-                        _this.updateContact(contact, message, $listId);
+                        _this.updateContact(contact, message, sectionId);
                     }
                 } else {
-                    _this.addContact(contact, $listId, message, prepend);
+                    _this.addContact(contact, sectionId, message, prepend);
                 }
 			};
 			_this.updateRecentConversationList = function(contact, message, update, prepend, list) {
 				if (!list) {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
-				} else if (list.assigneList) {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, list.assigneList);
+				} else if (list.sectionId) {
+					_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
 				} else if (list.assigneupdate) {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-assigned-search-list");
-				} else if (list.closedList) {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, list.closedList);
 				} else {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
 				}
@@ -4634,6 +4629,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			};
 			_this.updateContact = function(contact, message, $listId, update) {
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+				//Todo: check $contactElem based on the sectionId
 				var $contactElem = $kmApplozic("#km-li-" + contHtmlExpr);
 				var currentMessageTime = $contactElem.data('msg-time');
 				if (message && message.createdAtTime > currentMessageTime || update) {
@@ -7499,10 +7495,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
 						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
-							list.assigneList = "km-assigned-search-list";
+							list.sectionId = "km-assigned-search-list";
 						}
 						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
-							list.closedList = "km-closed-conversation-list";
+							list.sectionId = "km-closed-conversation-list";
 						}
 
 						if(message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact){
