@@ -48,7 +48,7 @@ class Users extends Component {
           }
         })
       }
-      return <UserItem key={index} user={result} />
+      return <UserItem key={index} user={result} hideConversation="false"/>
     });
     return (
       <div className="animated fadeIn">

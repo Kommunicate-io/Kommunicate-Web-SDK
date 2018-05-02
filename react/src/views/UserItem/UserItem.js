@@ -63,6 +63,8 @@ class UserItem extends Component {
           textDecoration: 'underline',
           color: '#0000EE'
         };
+        console.log(this.props.hideConversation);
+        var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
         var displayName = CommonUtils.getDisplayName(user);
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
@@ -101,23 +103,35 @@ class UserItem extends Component {
                       <strong>{lastSeenAt}</strong>
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td>
-                    <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
-                      <span style={conversationStyle} className="km-truncate-block">
-                      
-                      {latestConversation == null ?
-                        <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
+
+                    {this.props.hideConversation == "true" ?
+                        null
                         :
-                        latestConversation
-                      }
-                      
-                      </span>
-                      <div className="small text-muted">{lastMessageTime} </div>
-                    </td>
-                    <td>
-                      <div>{asignee}</div>
-                      <div className="small text-muted">
-                      </div>
-                    </td>
+                        
+                        <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
+                          <span style={conversationStyle} className="km-truncate-block">
+                          
+                          {latestConversation == null ?
+                            <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
+                            :
+                            latestConversation
+                          }
+                          
+                          </span>
+                          <div className="small text-muted">{lastMessageTime} </div>
+                        </td>
+                    }
+
+                    {this.props.hideConversation == "true" ?
+                        null
+                        :
+                        <td>
+                          <div>{asignee}</div>
+                          <div className="small text-muted">
+                          </div>
+                        </td>
+                    }
+                    
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
                     </td>
