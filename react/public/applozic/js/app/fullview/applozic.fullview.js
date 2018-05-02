@@ -4354,36 +4354,30 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 				_this.updateRecentConversationList(group, message, update, false,list);
 			};
-			_this.updateRecentConversationList = function(contact, message, update, prepend,list) {
-				var $listId = 'km-contact-list';
-				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-				if ($kmApplozic('#' + $listId + ' #km-li-' + contactHtmlExpr).length > 0) {
-					var $mck_msg_part = $kmApplozic("#" + $listId + " #km-li-" + contact.htmlId + " .km-cont-msg-wrapper");
-					if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
-						if (list && !list.assigneupdate) {
-							if (list.assigneList) {
-								_this.addContact(contact, list.assigneList, message, prepend);
-							} else if (list.closedList) {
-								_this.addContact(contact, list.closedList, message, prepend);
-							} else if(list.assigneupdate){
-
-							}
-						} else {
-							_this.updateContact(contact, message, $listId, update);
-						}
-					}
+			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
+                var $listId = sectionId;
+                var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
+                if ($kmApplozic("#" + $listId + " #km-li-" + contactHtmlExpr).length > 0) {
+                    var $mck_msg_part = $applozic("#" + $listId + " #li-" + contact.htmlId + " .mck-cont-msg-wrapper");
+                    if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
+                        _this.updateContact(contact, message, $listId);
+                    }
+                } else {
+                    _this.addContact(contact, $listId, message, prepend);
+                }
+			};
+			_this.updateRecentConversationList = function(contact, message, update, prepend, list) {
+				if (!list) {
+					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
+				} else if (list.assigneList) {
+					_this.updateRecentConversationListSection(contact, message, update, prepend, list.assigneList);
+				} else if (list.assigneupdate) {
+					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
+					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-assigned-search-list");
+				} else if (list.closedList) {
+					_this.updateRecentConversationListSection(contact, message, update, prepend, list.closedList);
 				} else {
-					if (list && list.assigneList) {
-						_this.addContact(contact, list.assigneList, message, prepend);
-					} else if (list && list.closedList) {
-						_this.addContact(contact, list.closedList, message, prepend);
-					} else if (list && list.assigneupdate) {
-						_this.addContact(contact, $listId, message, prepend);
-						_this.addContact(contact, "km-assigned-search-list", message, prepend);
-					}
-					else {
-						_this.addContact(contact, $listId, message, prepend);
-					}
+					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
 				}
 			};
 			_this.addContactsToSearchList = function() {
@@ -4635,8 +4629,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 			};
 			_this.removeContact = function(contact) {
+				//Todo: change # to .
 				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-				$kmApplozic("#km-li-" + contactHtmlExpr).remove();
+				$kmApplozic(".km-li-" + contactHtmlExpr).remove();
 			};
 			_this.updateContact = function(contact, message, $listId, update) {
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
@@ -6093,7 +6088,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				if (response.status === 'success') {
 					var groupFeed = response.data;
 					if (groupFeed && groupFeed.metadata && groupFeed.metadata.CONVERSATION_ASSIGNEE && groupFeed.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
-						list.assigneupdate = groupFeed.metadata.CONVERSATION_ASSIGNEE;
+						//list.assigneupdate = groupFeed.metadata.CONVERSATION_ASSIGNEE;
+						list.assigneupdate = true;
 					}
 					var conversationPxy = groupFeed.conversationPxy;
 					var group = kmGroupUtils.getGroup(groupFeed.id);
