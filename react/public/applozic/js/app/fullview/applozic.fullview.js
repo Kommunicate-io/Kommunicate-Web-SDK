@@ -4629,7 +4629,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 			};
 			_this.removeContact = function(contact) {
-				//Todo: change # to .
 				var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				$kmApplozic(".km-li-" + contactHtmlExpr).remove();
 			};
