@@ -63,7 +63,6 @@ class UserItem extends Component {
           textDecoration: 'underline',
           color: '#0000EE'
         };
-        console.log(this.props.hideConversation);
         var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
         var displayName = CommonUtils.getDisplayName(user);
