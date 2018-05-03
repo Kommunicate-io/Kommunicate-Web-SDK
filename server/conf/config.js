@@ -68,7 +68,7 @@ const config ={
   test: {
     port: 3999,
     db: {
-      url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
@@ -77,7 +77,7 @@ const config ={
         },
       },
     },
-    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
+    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
       baseUrl: "https://apps-test.applozic.com",
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
@@ -135,7 +135,7 @@ const config ={
     db: {
       // url: "mysql://admin:adm1n2ol6@localhost:3306/kommunicate_test",
       // url: "mysql://root:password@localhost:3306/kommunicate_test",
-      url: "mysql://testdbauser:db@u$er2o16@test-db.cz881axbtufc.ap-southeast-1.rds.amazonaws.com:3306/kommunicate_test",
+      url: "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
       options: {
         pool: {
           threadPoolMax: 5,
@@ -144,7 +144,7 @@ const config ={
         },
       },
     },
-    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-52-221-219-110.ap-southeast-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
+    mongoDbUrl:"mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
     urls: {
       baseUrl: "https://apps-test.applozic.com",
       getApplicationDetail: "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
@@ -153,7 +153,15 @@ const config ={
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
       addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
+<<<<<<< HEAD
       createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+||||||| parent of e84fb48d... updating RDS urls
+      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+      updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
+=======
+      createBotUrl: "https://bots-test.applozic.com/bot",
+      updateBotUrl: "https://bots-test.applozic.com/bot/update",
+>>>>>>> e84fb48d... updating RDS urls
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
       kmWebsiteUrl: "https://test.kommunicate.io",
