@@ -6,16 +6,13 @@ exports.login = function(req, res) {
   let password = req.body.password;
   //const applicationName =req.body.applicationName?req.body.applicationName:kommunicateApplicationName;
   const applicationId =req.body.applicationId;
+  let userDetail = req.body;
   console.log("request received to login : ", userName, "applicationName : ", applicationId);
   if(req.query.loginType === 'oauth'){
-    password = 'mi8&zG#0rLyE^$1&MXSe'
+    userDetail.password = 'mi8&zG#0rLyE^$1&MXSe'
   }
+ 
 
-  const userDetail = {
-    userName: userName,
-    password: password,
-    applicationId: applicationId
-  }
   Promise.resolve(loginService.login(userDetail)).then(result=>{
     let response={};
     if (result.application) {
