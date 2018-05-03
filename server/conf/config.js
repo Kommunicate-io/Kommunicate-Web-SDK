@@ -156,6 +156,7 @@ const config ={
       addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
 <<<<<<< HEAD
+<<<<<<< HEAD
       createBotUrl: "https://bots-test.applozic.com/bot",
       updateBotUrl: "https://bots-test.applozic.com/bot/update",
 ||||||| merged common ancestors
@@ -169,6 +170,13 @@ const config ={
 =======
       updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
 >>>>>>> KM-971 dashboard bot section bugs and improvements
+||||||| merged common ancestors
+      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
+      updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
+=======
+      createBotUrl: "https://bots-test.applozic.com/bot",
+      updateBotUrl: "https://bots-test.applozic.com/bot/update",
+>>>>>>> updating RDS urls
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
       kmWebsiteUrl: "https://test.kommunicate.io",
