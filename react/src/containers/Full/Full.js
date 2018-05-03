@@ -101,7 +101,7 @@ class Full extends Component {
           <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
         </div>
         <div className="app-body">
-          <Sidebar {...this.props}/>
+          <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
           {currentPath.includes('/settings') ? <SettingsSidebar {...this.props}/> : null}
           
           <main className="main">

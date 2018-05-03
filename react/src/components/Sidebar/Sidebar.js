@@ -11,10 +11,10 @@ class Sidebar extends Component {
   constructor (props) {
     super(props)
      //_this =this;
-    let imageLink = CommonUtils.getUserSession().imageLink;
+    // let imageLink = CommonUtils.getUserSession().imageLink;
     this.state = {
-      imageLink: imageLink,
-      displayName: ''
+      // imageLink: this.props.profilePicUrl,
+      // displayName: ''
     };
   }
 
@@ -206,7 +206,7 @@ class Sidebar extends Component {
             </li>
             {/* Profile Link */}
             <li className="nav-item">
-                <ProfileImageName profilePicUrl={this.state.imageLink} displayName={this.state.displayName} hideDisplayName={true}/>
+                <ProfileImageName profilePicUrl={this.props.profilePicUrl} displayName={this.props.displayName} hideDisplayName={true}/>
             </li>
           </ul>
         </nav>
