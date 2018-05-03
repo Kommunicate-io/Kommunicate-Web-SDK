@@ -153,15 +153,8 @@ const config ={
       groupInfoUrl: "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
       addMemberIntoConversation:'https://apps-test.applozic.com/rest/ws/group/add/users?role=:role',
       createGroup:"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
-<<<<<<< HEAD
-      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
-||||||| parent of e84fb48d... updating RDS urls
-      createBotUrl: "http://dashboard-test.applozic.com:5454/bot",
-      updateBotUrl:"http://dashboard-test.applozic.com:5454/bot/update",
-=======
       createBotUrl: "https://bots-test.applozic.com/bot",
       updateBotUrl: "https://bots-test.applozic.com/bot/update",
->>>>>>> e84fb48d... updating RDS urls
       sendMessageUrl: "https://apps-test.applozic.com/rest/ws/message/v2/send",
       hostUrl: "http://localhost:3999",
       kmWebsiteUrl: "https://test.kommunicate.io",
