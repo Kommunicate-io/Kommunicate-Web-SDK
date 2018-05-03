@@ -574,9 +574,7 @@ const TabExampleSecondaryPointing = () => (
           name:this.state.botName,
           aiPlatform:aiPlatform,
           clientToken : this.state.clientToken,
-          devToken : this.state.devToken,
-          botName : this.state.botName,
-          userId:userId
+          devToken : this.state.devToken
         },"BOT")).then( response => {
           Notification.info("Bot successfully created");
           if (response.status == 200 || response.data.code === 'SUCCESS') {
