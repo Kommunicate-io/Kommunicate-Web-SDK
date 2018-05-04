@@ -60,8 +60,16 @@ class Sidebar extends Component {
   }
 
   launchSideboxChat() {
-    // Kommunicate.openConversationList();
-
+    // window.Kommunicate.loadConversationwithAgent();
+    // window.Kommunicate.createNewConversation();
+    // window.Kommunicate.openLastConversation();
+    // window.$applozic.fn.applozic('loadConversationwithAgent');
+    window.Kommunicate.openConversationList();
+    document.querySelector('.faq-common').classList.add('n-vis');
+    document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
+    document.getElementById('mck-sidebox-launcher').classList.remove('vis');
+    document.getElementById('mck-away-msg-box').classList.remove('vis');
+    document.getElementById('mck-away-msg-box').classList.add('n-vis');
   }
 
   render() {
@@ -70,10 +78,8 @@ class Sidebar extends Component {
     var settingsSidebarShow, sidebarWidth;
     if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/integrations')) {
       settingsSidebarShow = " ";
-      // sidebarWidth = document.querySelector(".sidebar-fixed .sidebar").style.width = "60px";
     } else {
       settingsSidebarShow = <SettingsSidebar />;
-      // sidebarWidth = document.querySelector(".sidebar-fixed .sidebar").style.width = "260px";
     }
 
     return (
@@ -191,8 +197,8 @@ class Sidebar extends Component {
             </li>
             {/* Help Link */}
             <li className="nav-item">
-            {/* <a href="javascript:void(0)" 
-            // onClick={this.launchSideboxChat} 
+            <a href="javascript:void(0)" 
+            onClick={this.launchSideboxChat} 
                 className="nav-link" data-tip="Help" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 2">
@@ -201,7 +207,7 @@ class Sidebar extends Component {
                   data-name="Exclusion 1" />
                 </g>
               </svg>
-            </a> */}
+            </a>
             
             </li>
             {/* Profile Link */}
