@@ -53,6 +53,17 @@ export let thirdPartyList = {
             "Enter a name for your key. This is just so you can identify the key later.",
             "Choose permissions for your key by ticking the appropriate checkboxes",
             "Hit Save",
-        ]
+        ],
+        discountCouponBanner: [
+            <div className="discount-coupon-banner">
+                <div className="discount-coupon-text">
+                    <p><span className="discount-coupon-percent">20%</span> discount on all Helpdocs monthly plans. Use code <span className="discount-coupon-code">KOMMUNICATE318</span></p>
+                </div>
+                <div className="discount-coupon-note">
+                    <p>* Exclusively for Kommunicate customers</p>
+                </div>
+            </div>
+        ],
+        discountCouponOff: "20%"
     }
 };
