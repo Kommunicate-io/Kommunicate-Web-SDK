@@ -511,7 +511,6 @@ var MCK_CLIENT_GROUP_MAP = [];
         };
         _this.init = function () {
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
-            mckGroupLayout.init();
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
             alNotificationService.init(appOptions);
@@ -525,7 +524,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            mckMessageLayout.init();
             mckMessageLayout.initEmojis();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
@@ -1531,6 +1529,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 Kommunicate.postPluginInitialization(null,data);
             };
             _this.validateAppSession = function (userPxy) {
+                mckGroupLayout.init();
+                mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
                     if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === appHeaders.accessToken) {
