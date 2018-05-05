@@ -46,9 +46,9 @@ function ApplozicSidebox() {
             "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/min/tiny-slider.js"
     }, {
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
-    }, {
+    },/* {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
-    }, {
+    },*/ {
             "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
     },
     /*{
@@ -208,6 +208,7 @@ function ApplozicSidebox() {
                }
         } catch (e) {
             console.log("Plugin loading error. Refresh page.");
+            console.log(e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }

@@ -298,7 +298,7 @@
 
 .mck-box .vis, .mck-box .show, .mck-sidebox-launcher .vis,
 	.mck-sidebox-launcher.vis, .mck-msg-preview.vis {
-	display: block !important;
+	display: block;
 }
 
 .mck-box-body .mck-tab-cell.vis {
