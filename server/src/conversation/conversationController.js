@@ -26,7 +26,7 @@ exports.createConversation = (req, res) => {
     console.log("request received to create conversation");
     let conversation = {
         groupId: req.body.groupId,
-        participantUserId: req.body.participantUserId || req.params.participentUserId,
+        participantUserId: req.body.participantUserId || req.body.participentUserId,
         agentId: req.body.defaultAgentId,
         createdBy: req.body.createdBy,
         applicationId: req.body.applicationId ? req.body.applicationId : null
