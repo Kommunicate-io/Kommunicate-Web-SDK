@@ -10759,9 +10759,6 @@ input:required {
   color: #999494;
 }
 
-.sidebar-profile-dropdown--fixed button:nth-child(3) {
-  padding: 0 !important;
-}
 .sidebar .sidebar-nav .nav .nav-item .nav-link:disabled {
   background-color: transparent;
   cursor: none;
