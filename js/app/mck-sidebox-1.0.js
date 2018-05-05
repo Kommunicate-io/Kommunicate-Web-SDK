@@ -1531,6 +1531,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 Kommunicate.postPluginInitialization(null,data);
             };
             _this.validateAppSession = function (userPxy) {
+                mckGroupLayout.init();
+                mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
                     if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === appHeaders.accessToken) {
