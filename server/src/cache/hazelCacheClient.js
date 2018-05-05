@@ -32,7 +32,7 @@ exports.getDataFromMap= (mapPrefix,key)=> {
             return map.get(key);
         });
     }else{
-        return null;
+        return Promise.resolve(null);
     }
 };
 

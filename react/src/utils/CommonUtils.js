@@ -42,6 +42,14 @@ const CommonUtils = {
         var expires = "expires="+ new Date(cookieMaxExpirationdate).toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     },
+    getDisplayName: function(user) {
+        if (user.displayName) {
+          return user.displayName;
+        } else if (user.email) {
+          return user.email;
+        }
+        return user.userId
+      }
 }
 
 export default CommonUtils;

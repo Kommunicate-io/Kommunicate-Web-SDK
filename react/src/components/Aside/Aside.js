@@ -110,7 +110,7 @@ class Aside extends Component {
               var assign = window.$kmApplozic("#assign");
               that.setState({agents: response.response.users});
               window.$kmApplozic.each(response.response.users, function() {
-                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(that.getDisplayName(this)));
+                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(CommonUtils.getDisplayName(this)));
               });
               if(sessionStorage.getItem("userProfileUrl")!=null){
                 that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
@@ -121,10 +121,6 @@ class Aside extends Component {
             }
          }
       });
-  }
-
-  getDisplayName(user) {
-    return user.displayName ? user.displayName: user.userId;
   }
 
   initConversation(groupId) {
@@ -932,23 +928,6 @@ class Aside extends Component {
                       </div>     
                       <div id="km-group-info-panel" className="km-sidebar-info-panel">
                         Group Info</div>
-                      {/* Group Name */}
-                      {/* <div id="km-group-name-sec" className="km-group-name-sec">
-                        <div id="km-group-name-box" className="km-row km-group-name-box">
-                          <div className="blk-lg-9">
-                            <div id="km-group-title" className="km-group-title"
-                                contentEditable="false" suppressContentEditableWarning="true">Group title</div>
-                            </div>
-                            <div className="blk-lg-3 km-group-name-edit-icon">
-                              <a id="km-group-name-edit" href="javascript:void(0)" role="link"
-                                className="km-group-name-edit vis" title="Edit"> <img
-                                src="/applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
-                                id="km-group-name-save" href="javascript:void(0)" role="link"
-                                className="km-group-name-save n-vis" title="Click to save"> <img
-                                src="/applozic/images/mck-icon-save.png" alt="Save"/></a>
-                            </div>
-                          </div>
-                      </div> */}
                       <div id="km-group-detail-panel" className="km-group-detail-box">
                         <div id="km-group-member-panel"
                           className="km-tab-panel km-group-member-panel vis">
@@ -983,103 +962,8 @@ class Aside extends Component {
                           title="Exit Group">Exit Group</button>
                       </div>
                     </div>
-                  </div>
-                  
-                  {/* old sidebar design */}
-                  {/* <div id="km-group-info-tab"
-                    className="km-group-info-tab km-panel-sm km-panel n-vis">
-                    <div className="panel-content">
-                      <div className="km-box-top">
-                        <div className="blk-lg-10">
-                          <div className="km-box-title km-truncate" title="Group Info">Group
-                            Info</div>
-                        </div>
-                        <div className="blk-lg-2">
-                          <button type="button" id="km-group-info-close"
-                            className="km-box-close km-close-panel move-right">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                      </div>
-                      <div id="km-group-detail-panel" className="km-group-detail-box">
-                        <div className="km-group-icon-sec">
-                          <div id="km-group-info-icon-box"
-                            className="km-group-icon-box km-group-info-icon-box km-hover-on">
-                            <div className="km-group-icon"></div>
-                            <span className="km-overlay-box n-vis">
-                              <div className="km-overlay">
-                                <span className="km-camera-icon"></span> <span
-                                  className="km-overlay-label">Change Group Icon</span>
-                              </div>
-                              <div id="km-group-info-icon-loading" className="km-loading n-vis">
-                                <img src="/applozic/images/mck-loading.gif"/>
-                              </div> <input id="km-group-icon-change"
-                              className="km-group-icon-change n-vis" type="file" name="file[]" />
-                            </span>
-                          </div>
-                          <div className="km-text-center">
-                            <a id="km-btn-group-icon-save" href="javascript:void(0)" role="link"
-                              className="km-btn-group-icon-save n-vis" title="Click to save">
-                              <img
-                              src="/applozic/images/mck-icon-save.png"
-                              alt="Save"/>
-                            </a>
-                          </div>
-                        </div>
-                        <div id="km-group-name-sec" className="km-group-name-sec">
-                          <div id="km-group-name-box" className="km-row km-group-name-box">
-                            <div className="blk-lg-9">
-                              <div id="km-group-title" className="km-group-title"
-                                contentEditable="false" suppressContentEditableWarning="true">Group title</div>
-                            </div>
-                            <div className="blk-lg-3 km-group-name-edit-icon">
-                              <a id="km-group-name-edit" href="javascript:void(0)" role="link"
-                                className="km-group-name-edit vis" title="Edit"> <img
-                                src="/applozic/images/mck-icon-write.png" alt="Edit"/></a> <a
-                                id="km-group-name-save" href="javascript:void(0)" role="link"
-                                className="km-group-name-save n-vis" title="Click to save"> <img
-                                src="/applozic/images/mck-icon-save.png" alt="Save"/></a>
-                            </div>
-                          </div>
-                        </div>
-                        <div id="km-group-member-panel"
-                          className="km-tab-panel km-group-member-panel vis">
-                          <div className="km-group-md-sec">
-                            <div className="km-row km-group-member-text">Members</div>
-                            <div id="km-group-add-member-box"
-                              className="km-row km-group-admin-options km-group-add-member-box n-vis">
-                              <a id="km-group-add-member" className="km-group-add-member"
-                                href="javascript:void(0)">
-                                <div className="blk-lg-3">
-                                  <img src="/applozic/images/mck-icon-add-member.png"
-                                    alt="Add Member"/>
-                                </div>
-                                <div className="blk-lg-9">Add member</div>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="km-box-body">
-                        <div className="km-tab-cell">
-                          <div className="km-group-member-inner">
-                            <ul id="km-group-member-list"
-                              className="km-group-member-list km-contact-list km-nav km-nav-tabs km-nav-stacked">
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div id="km-group-info-ft" className="km-group-info-ft">
-                        <button type="button" id="km-btn-group-exit"
-                          className="km-btn km-btn-blue km-btn-group-exit"
-                          title="Exit Group">Exit Group</button>
-                      </div>
-                    </div>
-                  </div> */}
-                  
+                  </div> 
                 </div>
-
-
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">
                   <div className="km-box-dialog km-box-md">

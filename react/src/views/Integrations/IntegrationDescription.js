@@ -164,8 +164,13 @@ class IntegrationDescription extends Component{
             <h4 className="integration-description-title"><span><img src={thirdPartyList[this.state.activeModal].logo} className="integration-description-logo"/></span>
             Integrating {thirdPartyList[this.state.activeModal].name} with Kommunicate</h4>
             <div className="title-divider"></div>
+
+            {/* Discount Banner */}
+            { this.props.showDiscountOffer === true ? " " : thirdPartyList[this.state.activeModal].discountCouponBanner}
+
         <div className="integration-instruction-set">
             <p className="instructions-title">Instructions</p>
+            
             {thirdPartyList[this.state.activeModal].instructions.map((item, index) => (
                 <p key={index} className="integration-instructions">{index+1}. {item} </p>
             ))}

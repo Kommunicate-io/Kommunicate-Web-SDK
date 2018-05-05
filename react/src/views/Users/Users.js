@@ -16,8 +16,8 @@ class Users extends Component {
 
   componentWillMount() {
     var _this = this;
-    window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback': function(response) {
-        console.log("User Response", response);
+    window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback':function(response) {
+        //console.log("User Response", response);
         // if(response&&response.response){
         // _this.setState({result: response.response.users});
         // }
@@ -32,9 +32,24 @@ class Users extends Component {
   }
 
   render() {
-    var result = this.state.result.map(function(result,index){
-          return <UserItem key={index} user={ result } />
-          });
+    var result = this.state.result.map(function (result, index) {
+      if (result.messagePxy && result.messagePxy.groupId) {
+        window.$kmApplozic.fn.applozic("getGroup", {
+          groupId: result.messagePxy.groupId, callback: function (group) {
+            if (typeof group !== "undefined" && group !== null && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
+              window.$kmApplozic.fn.applozic("getContactDetail", {
+                "userId": group.metadata.CONVERSATION_ASSIGNEE, callback: function (user) {
+                  if (typeof user !== "undefined") {
+                    result.assignee = user.displayName || user.userId;
+                  }
+                }
+              })
+            }
+          }
+        })
+      }
+      return <UserItem key={index} user={result} hideConversation="false"/>
+    });
     return (
       <div className="animated fadeIn">
 
@@ -47,10 +62,11 @@ class Users extends Component {
                     <tr>
                       <th className="text-center"><i className="icon-people"></i></th>
                       <th>User</th>
-                       <th>Contact Info</th>
-                       <th>Last Activity</th>
-                       <th className="text-center">Add Info</th>
-                      <th className="text-center">Actions</th>
+                      <th>Contact Info</th>
+                      <th>Last Activity</th>
+                      <th>Latest Conversation</th>
+                      <th className="text-center" >Assigned</th>
+                      <th className="text-center">Add Info</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
