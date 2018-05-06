@@ -101,7 +101,7 @@ class Integration extends Component {
 
   render() {
     var result = this.state.result.map(function(result,index){
-          return <UserItem key={index} user={ result } />
+          return <UserItem key={index} user={ result } hideConversation="true" />
           });
     return (
       <div className="animated fadeIn">
@@ -138,7 +138,7 @@ class Integration extends Component {
                      <th>User</th>
                       <th>Contact Info</th>
                       <th>Last Activity</th>
-                      <th className="text-center">Add Info</th>
+                      <th className="text-center n-vis">Add Info</th>
                       <th className="text-center">Actions</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>

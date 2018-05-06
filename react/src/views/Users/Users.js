@@ -16,8 +16,8 @@ class Users extends Component {
 
   componentWillMount() {
     var _this = this;
-    window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback': function(response) {
-        console.log("User Response", response);
+    window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback':function(response) {
+        //console.log("User Response", response);
         // if(response&&response.response){
         // _this.setState({result: response.response.users});
         // }
@@ -48,7 +48,7 @@ class Users extends Component {
           }
         })
       }
-      return <UserItem key={index} user={result} />
+      return <UserItem key={index} user={result} hideConversation="false"/>
     });
     return (
       <div className="animated fadeIn">

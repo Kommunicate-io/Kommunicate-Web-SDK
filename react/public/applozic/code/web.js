@@ -102,6 +102,9 @@ function initAutoSuggestions() {
       // awsS3Server :true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
+            var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
+            $mck_group_info_btn.trigger('click');
+
             window.$kmApplozic("#km-contact-list .person").removeClass('prev-selection');
 
             window.appHistory.replace('/conversations');
@@ -113,20 +116,20 @@ function initAutoSuggestions() {
               } else {
                 window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
               }
-  					}
+            }             
 					},
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: true,
       topicBox: topicBoxEnabled,
       authenticationTypeId: 1,
-      initAutoSuggestions : initAutoSuggestions
+      initAutoSuggestions : initAutoSuggestions     
       // topicDetail: function(topicId) {}
     });
     return false;
   //});
   }
-
+  
 function activeCampaign(email) {
   $.ajax({
     url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_view&api_key=aa87aefccdb0f33344e88fc6c8764df8512427a3a84fc0431c3fed9691dab83cac9394b3&api_output=json&id=autoforosyurii@gmail.com',
