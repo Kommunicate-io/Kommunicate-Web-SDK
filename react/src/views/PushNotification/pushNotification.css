@@ -1,144 +1,146 @@
-.km-div{
-    margin:10px;
+.km-div {
+  margin: 10px;
 }
 
-.km-development-div{
-    margin-top:20px;
-}
-.km-pushnotification-input{
-    width: 419px;
-         height: 36px;
-           object-fit: contain;
-       margin-top: 40px;
-           padding:15px;
-           border-radius: 4px;
-           background-color: #ffffff;
-          border: solid 1px #a1a1a1;
+.km-development-div {
+  margin-top: 20px;
 }
 
-.km-pushnotification-hr{
-    margin: 0px!important;
-    width:40em!important;
-    }
- .fcm {
-        font-family: Roboto;
-        font-size: 14px;
-        font-weight: 500;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: 0.6px;
-        text-align: left;
-        color: #656161;
-      }
+.km-pushnotification-input {
+  width: 100%;
+  height: 36px;
+  outline: none;
+  object-fit: contain;
+  margin-top: 40px;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  border: solid 1px #a1a1a1;
+}
+
+.km-pushnotification-hr {
+  margin: 0px !important;
+}
+
+.fcm {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #656161;
+}
 
 .fcm-key {
-        margin-top: 47px;
-        margin-left: 15px;
-        width: 119px;
-        height: 16px;
-        font-family: Roboto;
-        font-size: 14px;
-        font-weight: normal;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: 0.6px;
-        text-align: left;
-        color: #656161;
-      }
-
-.km-pushNotification-development{
-    margin-top: 15px;
+  margin-top: 47px;
+  margin-left: 15px;
+  width: 119px;
+  height: 16px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #656161;
 }
 
-.km-pushNotification-div{
-    margin-top: 45px;
+.km-pushNotification-development {
+  margin-top: 15px;
 }
 
-  .for-ios-apns {
-    margin-top: 29px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
-  }
-  .for-distribution {
-    margin-top: 33px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #312f2f;
-  }
-  .apple-certificate {
-    margin-top: 29px;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
-    margin-left: 15px;
-  }
-  .enabling-push-notification {
-    width: 605px;
-    height: 42px;
-    font-family: Roboto;
-    font-size: 18px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 1.3px;
-    text-align: left;
-    color: #354052;
-  }
-  .km-input-apns {
-    padding: 15px;
-    width: 210px;
-    height: 36px;
-    margin-left: 46px;
-    margin-top: 22px;
-    border-radius: 4px;
-    background-color: #ffffff;
-    border: solid 1px #a1a1a1;
-  }
-  .km-input-component{
-    margin-top: 20px;
-  }
-  .rectangle-7 {
-    width: 297px;
-    height: 39px;
-    border-radius: 2px;
-    background-color: #cce7f8;
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 500;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: 0.7px;
-    text-align: left;
-    color: #6a6b6d;
-  }
-  .km-pushnotification-button{
-    border-radius: 3px;
-    background-color: #d6dbe1;
-  }
-  .km-pushnotification-header{
-      margin-left: 5px;
-  }
+.km-pushNotification-div {
+  margin-top: 45px;
+}
 
+.for-ios-apns {
+  margin-top: 29px;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #656161;
+}
+
+.for-distribution {
+  margin-top: 33px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #312f2f;
+}
+
+.apple-certificate {
+  margin-top: 29px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #656161;
+  margin-left: 15px;
+}
+
+.enabling-push-notification {
+  width: 605px;
+  font-size: 18px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1.3px;
+  text-align: left;
+  color: #354052;
+}
+
+.km-input-apns {
+  padding: 15px;
+  width: 70%;
+  outline: none;
+  height: 36px;
+  margin-left: 46px;
+  margin-top: 22px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  border: solid 1px #a1a1a1;
+}
+
+.km-input-component {
+  margin-top: 20px;
+}
+
+.rectangle-7 {
+  width: 297px;
+  border-radius: 2px;
+  background-color: #cce7f8;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #6a6b6d;
+}
+
+.km-pushnotification-button {
+  border-radius: 3px;
+  background-color: #d6dbe1;
+}
+
+.km-pushnotification-header {
+  margin-left: 5px;
+}
