@@ -650,7 +650,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		_this.getUserStatus = function(params) {
 			if (typeof params.callback === 'function') {
                 if (typeof params.userIds !== 'undefined') {
-					//todo: check if the user exists then return
 					var response = new Object();
 					response.status = "success";
 					var data = [];
