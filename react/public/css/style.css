@@ -10739,9 +10739,10 @@ input:required {
   text-decoration: none;
   color: #1c2429;
 }
+/*
 .mck-sidebox-launcher {
   display: none;
-}
+}*/
 .mck-sidebox-launcher.force-hide.vis  {
   display: none !important;
 }
