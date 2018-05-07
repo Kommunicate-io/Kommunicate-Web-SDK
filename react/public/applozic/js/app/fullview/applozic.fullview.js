@@ -6196,10 +6196,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				_this.enableGroupAdminMenuToggle();
 			};
 			_this.enableGroupAdminMenuToggle = function() {
-				$kmApplozic(d).on('click', '.km-group-member-info', function(e) {
+				/*$kmApplozic(d).on('click', '.km-group-member-info', function(e) {
 					e.stopPropagation();
 					$kmApplozic(this).find('.km-menu-box').addClass('open');
-				});
+				});*/
 
 				$kmApplozic('.km-group-member-info').bind("mouseenter", function() {
 					$kmApplozic(this).find('.km-menu-box').removeClass('n-vis');
