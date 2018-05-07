@@ -66,9 +66,11 @@ class Sidebar extends Component {
     // window.$applozic.fn.applozic('loadConversationwithAgent');
     window.Kommunicate.openConversationList();
     document.querySelector('.faq-common').classList.add('n-vis');
-    document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
-    document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
-    document.getElementById('mck-sidebox-launcher').classList.remove('vis');
+    if(document.getElementById('mck-sidebox-launcher')){
+      document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
+      document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
+      document.getElementById('mck-sidebox-launcher').classList.remove('vis');
+    }
     document.getElementById('mck-away-msg-box').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.add('n-vis');
   }
