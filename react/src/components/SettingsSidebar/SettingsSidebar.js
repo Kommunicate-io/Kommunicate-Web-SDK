@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './SettingsSidebar.css';
 
 class SettingsSidebar extends Component {
- 
+
     handleClick(e) {
         e.preventDefault();
         e.target.parentElement.classList.toggle('open');
@@ -54,7 +54,7 @@ class SettingsSidebar extends Component {
                             <NavLink to={'/settings/billing'} className="ss-nav-link" activeClassName="active">Billing</NavLink>
                         </li>
                         <li className="ss-nav-item">
-                            <NavLink to={'/settings/pushnotification'} className="ss-nav-link" activeClassName="active">Push Notification</NavLink>
+                            <NavLink to={'/settings/pushnotification'} className="ss-nav-link" activeClassName="active">Push Notifications</NavLink>
                         </li>
                         <li className="ss-nav-title">
                             DOWNLOAD
