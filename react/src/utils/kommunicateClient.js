@@ -52,7 +52,6 @@ const createCustomer = function(email,password,name,userName) {
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
     .then((response) => {
-        console.debug(response.data.data);
         if(response.status==200){
           if(response.data.code=="SUCCESS"){
             console.log(" successfully signed up");
@@ -368,9 +367,6 @@ const sendProfileImage = (imageFile, imageFileName) => {
 
   const profileImageUrl = getConfig().kommunicateApi.profileImage;
 
-  console.log(imageFile)
-  console.log(imageFileName)
-
   let data = new FormData()
 
   data.append('file', imageFile, imageFileName)
@@ -384,7 +380,6 @@ const sendProfileImage = (imageFile, imageFileName) => {
   .then(response => {
         
     window.$applozic.fn.applozic('updateUser', {data: {'imageLink': response.data.profileImageUrl}, success: function(response) {
-        console.log(response);
       }, error: function(error) {
         console.log(error);
       }
@@ -402,9 +397,6 @@ const updateApplozicUser = (userInfo) => {
     'Apz-Product-App':'true',
     'Of-User-Id':   userSession.userName 
   }
-  console.log(headers)
-
-  console.log(userInfo)
 
   const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;
 
@@ -486,7 +478,6 @@ const changePassword =(option)=>{
 const goAway = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goAway/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
-    console.log(result);
     CommonUtils.updateAvailabilityStatus(0);
   })
 }
@@ -494,7 +485,6 @@ const goAway = (userId, appId) => {
 const goOnline = (userId, appId) => {
   let url = getConfig().kommunicateBaseUrl+"/users/goOnline/"+userId+"/"+appId;
   return Promise.resolve(axios.patch(url)).then(result => {
-    console.log(result);
     CommonUtils.updateAvailabilityStatus(1);
   })
 }
@@ -693,9 +683,6 @@ const getIntegratedBots = () => {
         }
       }
 
-      console.log(bots);
-      console.log(dialogFlowBots);
-
       return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
 
     }).catch(err => {console.log(err)})
@@ -775,7 +762,6 @@ const getThirdPartyListByApplicationId = () => {
     method: 'get',
     url: url,
   })).then(result => {
-    console.log(result);
     return result;
   }).catch(err => {console.log("Error while fetching third party integration by applicationId", err)})
 

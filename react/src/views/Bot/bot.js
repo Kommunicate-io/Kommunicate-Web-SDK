@@ -438,7 +438,6 @@ class Tabs extends Component {
 
   getIntegratedBotsWrapper = () => {
     getIntegratedBots().then(response => {
-      console.log(response);
       this.setState({
         listOfIntegratedBots: (response && response.allBots) ? response.allBots: [],
         dialogFlowBots: (response && response.dialogFlowBots) ? response.dialogFlowBots: [],
