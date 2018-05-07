@@ -61,9 +61,7 @@ $(document).ready(function() {
     function getContactDetail(contactId){
 
         $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) {   
-            console.log("#found user detail: ");
             var user = response.data[0];
-            console.log(user);
             resetCustomerInfoArea();     
             var ul = document.getElementById("km-user-info-list");
            
