@@ -64,7 +64,6 @@ class Sidebar extends Component {
     // window.Kommunicate.createNewConversation();
     // window.Kommunicate.openLastConversation();
     // window.$applozic.fn.applozic('loadConversationwithAgent');
-    if(document.getElementById('mck-sidebox-launcher')){
     window.Kommunicate.openConversationList();
     document.querySelector('.faq-common').classList.add('n-vis');
     document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
@@ -72,7 +71,6 @@ class Sidebar extends Component {
     document.getElementById('mck-sidebox-launcher').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.add('n-vis');
-    }
   }
 
   render() {
