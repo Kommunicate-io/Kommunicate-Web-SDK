@@ -45,7 +45,6 @@ $(document).ready(function() {
         
     });
     $(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
-        
         $("#km-user-name-sec .km-user-title").html("");
         $("#km-user-info-list .email").html("");
         $("#km-user-info-icon-box .km-user-icon img").attr('src', "");
@@ -59,8 +58,7 @@ $(document).ready(function() {
     });
 
     function getContactDetail(contactId){
-
-        $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) {   
+        $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
             var user = response.data[0];
             resetCustomerInfoArea();     
             var ul = document.getElementById("km-user-info-list");
