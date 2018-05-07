@@ -10740,9 +10740,9 @@ input:required {
   color: #1c2429;
 }
 .mck-sidebox-launcher {
-  display: none !important;
+  display: none;
 }
-.mck-sidebox-launcher.vis  {
+.mck-sidebox-launcher.force-hide.vis  {
   display: none !important;
 }
 .away {

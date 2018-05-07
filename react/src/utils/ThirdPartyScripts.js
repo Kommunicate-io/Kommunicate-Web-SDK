@@ -28,7 +28,20 @@ class ThirdPartyScripts extends Component {
                   console.log("template not loaded"); 
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
                   window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
-                 } 
+                 }
+                 
+                if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
+                  null
+                } else {
+                  document.getElementById('sidebar-sidebox-help-icon').classList.add('vis'); 
+                 document.getElementById('sidebar-sidebox-help-icon').classList.remove('n-vis'); 
+                }
+
+                if (currentPath.includes('/login')) {
+                  document.getElementById('mck-sidebox-launcher').classList.add('vis'); 
+                  document.getElementById('mck-sidebox-launcher').classList.remove('n-vis');
+                }
+                 
               };
               var s = document.createElement("script");
               s.type = "text/javascript";
@@ -41,8 +54,7 @@ class ThirdPartyScripts extends Component {
             })(document, window.kommunicate || {});
           /*}*/
 
-
-
+            
 
           // hot jar script
             (function(h,o,t,j,a,r){
