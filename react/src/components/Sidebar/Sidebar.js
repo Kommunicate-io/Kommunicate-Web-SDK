@@ -197,7 +197,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Help Link */}
-            <li className="nav-item">
+            <li className="nav-item n-vis">
             <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
             onClick={this.launchSideboxChat} 
                 className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
