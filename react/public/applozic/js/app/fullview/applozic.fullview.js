@@ -649,8 +649,31 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		};
 		_this.getUserStatus = function(params) {
 			if (typeof params.callback === 'function') {
-				mckContactService.getUserStatus(params);
-			}
+                if (typeof params.userIds !== 'undefined') {
+					//todo: check if the user exists then return
+					var response = new Object();
+					response.status = "success";
+					var data = [];
+
+					for (var i = 0; i < params.userIds.length; i++) {
+						if (typeof MCK_USER_DETAIL_MAP[params.userIds[i]] === 'object') {
+							data.push(MCK_USER_DETAIL_MAP[params.userIds[i]]);
+						}
+					}
+					
+					if (data.length < params.userIds.length) {
+						mckContactService.getUsersDetail(params.userIds, params);
+					} else {
+						response.data = data;
+						if (params.callback) {
+							params.callback(response);
+						}
+						return response;
+					}
+                } else {
+					mckContactService.getUserStatus(params);
+                }
+            }
 		};
 		_this.getContactDetail = function(params) {
 			if (typeof params.callback == 'function') {
@@ -5522,6 +5545,13 @@ var KM_ASSIGNE_GROUP_MAP =[];
 										mckUserUtils.updateUserConnectedStatus();
 									} else if (params.message) {
 										mckMessageLayout.populateMessage(params.messageType, params.message, params.notifyUser);
+									}
+
+									var response = new Object();
+									response.status = "success";
+									response.data = data;
+									if (params.callback) {
+										params.callback(response);
 									}
 								}
 							}

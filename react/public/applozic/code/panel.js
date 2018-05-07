@@ -54,13 +54,16 @@ $(document).ready(function() {
         if (typeof contactId == "undefined" || typeof contactId == "") {
             contactId = $("#km-msg-to").val();
         }
-        getContactDetail(contactId)
+        getContactDetail(contactId);
         
     });
 
     function getContactDetail(contactId){
 
-        $kmApplozic.fn.applozic("getContactDetail", {"userId": contactId, callback: function(user) {   
+        $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) {   
+            console.log("#found user detail: ");
+            var user = response.data[0];
+            console.log(user);
             resetCustomerInfoArea();     
             var ul = document.getElementById("km-user-info-list");
            
