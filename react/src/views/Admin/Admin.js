@@ -80,7 +80,6 @@ class Forms extends Component {
     //update name in applozic db for user created under kommunicate-support app
     window.$applozic.fn.applozic('updateUser', {
       data: user, success: function (response) {
-        console.log(response);
       }, error: function (error) {
         console.log(error);
       }
@@ -114,7 +113,6 @@ class Forms extends Component {
     if (userSession.isAdmin) {
       patchCustomerInfo(customerInfo, CommonUtils.getUserSession().userName)
         .then(response => {
-          console.log(response)
           if (response.data.code === 'SUCCESS') {
             this.updateKommunicateSupportUser(user)
             userSession.adminDisplayName=this.state.name;
@@ -128,7 +126,6 @@ class Forms extends Component {
     } else {
       patchUserInfo(customerInfo, CommonUtils.getUserSession().userName, userSession.application.applicationId)
         .then(response => {
-          console.log(response)
           if (response.data.code === 'SUCCESS') {
             this.updateKommunicateSupportUser(user)
             Notification.info(response.data.message)
@@ -157,10 +154,8 @@ class Forms extends Component {
   componentWillMount() {
     var userSession = CommonUtils.getUserSession();
     if (userSession.isAdmin) {
-      console.log("isAdmin")
       return Promise.resolve(getCustomerInfo(CommonUtils.getUserSession().userName))
         .then(response => {
-          console.log(response)
           if (response.data.code === 'SUCCESS') {
             const customerInfo = response.data.data;
             this.setState({
@@ -182,7 +177,6 @@ class Forms extends Component {
 
       return Promise.resolve(getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId))
         .then(response => {
-          console.log(response)
           if (response.data.code === 'SUCCESS') {
             const customerInfo = response.data.data;
             this.setState({
