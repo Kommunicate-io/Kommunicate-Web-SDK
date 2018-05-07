@@ -7,6 +7,7 @@ clientConfig.networkConfig.addresses = [{host: config.getProperties().cache.haze
 clientConfig.groupConfig.name="dev";
 clientConfig.groupConfig.password="dev";
 let client =null;
+const logger = require("../utils/logger");
 
 
  exports.initializeClient= ()=>{
@@ -32,6 +33,7 @@ exports.getDataFromMap= (mapPrefix,key)=> {
             return map.get(key);
         });
     }else{
+        logger.info("cache client is null, returning null");
         return Promise.resolve(null);
     }
 };

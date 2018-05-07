@@ -177,6 +177,7 @@ const addMemberIntoConversation = (data) => {
 
                     });
                     if (customer.agentRouting) {
+                        logger.info("adding assignee in round robin fashion");
                         assingConversationInRoundRobin(data.groupId, agentIds, customer.applicationId, header);
                     }
                     groupInfo.userIds = userIds;
@@ -198,10 +199,12 @@ const addMemberIntoConversation = (data) => {
 
 const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
     getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
+        logger.info("got conversation agssignee : ", assignTo);
         let groupInfo = {
             groupId: groupId,
             metadata: { CONVERSATION_ASSIGNEE: assignTo }
         };
+        logger.info("updating assignee for conversation : ",groupInfo);
         applozicClient.updateGroup(
             groupInfo,
             appId,
@@ -223,6 +226,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
             arr.push(assignee);
             userIds = arr;
         } else {
+            logger.info("received nullfrom cache, adding default agent as assignee");
             assignee = userIds[0];
         }
 
