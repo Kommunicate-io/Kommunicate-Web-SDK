@@ -58,8 +58,6 @@ $(document).ready(function() {
     });
 
     function getContactDetail(contactId){
-        //alert("avoid this");  
-
         $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
             var user = response.data[0];
             resetCustomerInfoArea();     
