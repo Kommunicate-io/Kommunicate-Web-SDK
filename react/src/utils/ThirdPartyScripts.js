@@ -22,6 +22,14 @@ class ThirdPartyScripts extends Component {
                 o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
                 "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
               }
+
+              o.onInit=function(response) {          
+                if (typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
+                  console.log("template not loaded"); 
+                  window.$applozic.template = window.$kmApplozic.kmtemplate;
+                  window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
+                 } 
+              };
               var s = document.createElement("script");
               s.type = "text/javascript";
               s.async = true;
