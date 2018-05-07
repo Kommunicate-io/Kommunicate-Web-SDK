@@ -67,6 +67,7 @@ class Sidebar extends Component {
     window.Kommunicate.openConversationList();
     document.querySelector('.faq-common').classList.add('n-vis');
     document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
+    document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
     document.getElementById('mck-sidebox-launcher').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.add('n-vis');
@@ -197,9 +198,9 @@ class Sidebar extends Component {
             </li>
             {/* Help Link */}
             <li className="nav-item">
-            <a href="javascript:void(0)" 
+            <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
             onClick={this.launchSideboxChat} 
-                className="nav-link" data-tip="Help" data-effect="solid" data-place="right">
+                className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 2">
                   <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 8" />
