@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <script>
+        function onInit(response) {
+            // this function will be called by kommunicate after plugin installed. 
+            var campaignId = getChatContext();
+            // pass the campaign Id in Kommuniate chat context as below:
+            Kommunicate.updateSettings({ "KM_CHAT_CONTEXT": campaignId })
+        }
+        function getChatContext() {
+            // this method will get the campaign Id from the website url. 
+            // assuming your website url is https://events.mobilizeamerica.io/ohdems/event/1107/
+            // it will extract the campaign Id i.e. "ohdems" and return it. 
+            // you can modify this method to return the campaign Id according to your need.
+            var path = location.pathname.substring(1);
+            var context = "";
+            if (path.length) {
+                context = path.substring(0, path.indexOf("/"))
+            }
+            return context;
+        }
+    </script>
+
+
+
+
+    <script type="text/javascript">
+        // kommunicate installation script
+        (function (d, m) {
+
+        /*---------------- Kommunicate settings start ----------------*/
+        let o = {
+            "appId": "3baa37ff4df3afebf040ad3265d2ea8a0", // replace it with your application Id. 
+            "isAnonymousChat": true,
+            "agentId": "suraj+demo@kommunicate.io",      // default agent id. you can pass any agent Id. 
+            "conversationTitle": "Context chat demo",    // conversation title
+            "botIds": ["alex-demo-bot"],                 // bot id you want to add in conversation. you will get bot id from dashboard.
+            "onInit": onInit                             // callback function will be called after kommunicate plugin installed.
+            };                       
+        /*----------------- Kommunicate settings end ------------------*/
+
+        let s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "http://api.kommunicate.io/kommunicate.app";
+        let h = document.getElementsByTagName("head")[0];
+        h.appendChild(s);
+        window.kommunicate = m;
+        m._globals = o;
+        })(document, window.kommunicate || {});
+    </script>
+
+</head>
+
+<body>
+    <p style="margin:auto;">Hey there! Click on below Chat icon..</p>
+</body>
+
+</html>
