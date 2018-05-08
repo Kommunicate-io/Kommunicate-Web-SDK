@@ -2085,8 +2085,8 @@ ol, ul {
 	background-color: #F5F5F5;
 	border: 0;
 	border-radius: 4px;
-	border-bottom-left-radius: 0px;
-	border-top-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-top-right-radius: 0px;
 	float: left;
 	white-space: nowrap;
 	vertical-align: middle;
@@ -2094,7 +2094,7 @@ ol, ul {
 }
 
 .km-search-icon a {
-	border-left: 1px solid #ddd;
+	/* border-left: 1px solid #ddd; */
 	line-height: 32px
 }
 
@@ -2915,7 +2915,7 @@ ol, ul {
 }
 
 .km-btn-group-exit, .km-btn-group-create {
-	width: 279px;
+	width: 100%;
 }
 
 .km-overlay {
