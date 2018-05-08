@@ -1,3 +1,9 @@
+---
+id: cordova-pushnotification
+title: Push Notification
+sidebar_label: Push Notification
+---
+
 #### Android
 
 If you havent already done the setup in firebase and kommunicate dashboard, follow the below docs:
