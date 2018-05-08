@@ -3,6 +3,7 @@
     "Web":["web-installation","web-authentication","web-conversation","web-botintegration","actionable-messages","web-customization","web-logout"],
     "Android": ["android-installation","android-authentication","android-conversation","android-pushnotification","android-logout"],
     "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"],
+    "Cordova":["cordova-installation","cordova-authentication","cordova-conversation","cordova-pushnotification","cordova-logout","cordova-resolving-errors"],
     "Configration":["bot-configration"]
     
     
