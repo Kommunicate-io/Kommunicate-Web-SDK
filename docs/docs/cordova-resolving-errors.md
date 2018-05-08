@@ -1,6 +1,12 @@
+---
+id: cordova-resolving-errors
+title: Resolving Errors
+sidebar_label: Resolving Errors
+---
+
 #### Android support libraries/google versions conflict
 
-If using multiple plugins, you may get support libraries or firebase version conflict issues in android. 
+If using multiple plugins that use support libraries or google dependencies, you may get support libraries or firebase version conflict issues in android. 
 Use the below gradle script in your `app/platform/android/build.gradle` file's dependencies :
 
 ```
