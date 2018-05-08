@@ -276,6 +276,7 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
 const getNewConversation = (queryParams, agentIds) => {
     let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
     let query = SQL_QUERIES.NEW_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
@@ -284,6 +285,7 @@ const getNewConversation = (queryParams, agentIds) => {
 const getClosedConversation = (queryParams, agentIds) => {
     let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
     let query = SQL_QUERIES.CLOSED_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
@@ -292,6 +294,7 @@ const getClosedConversation = (queryParams, agentIds) => {
 const getAverageResolutionTime = (queryParams, agentIds) => {
     let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
     let query = SQL_QUERIES.AVG_RESOLUTION_TIME_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
@@ -300,6 +303,7 @@ const getAverageResolutionTime = (queryParams, agentIds) => {
 const getAvgResponseTime = (queryParams, agentIds) => {
     let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
     let query = SQL_QUERIES.AVG_RESPONSE_TIME_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
