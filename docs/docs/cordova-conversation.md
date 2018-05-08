@@ -1,3 +1,9 @@
+---
+id: cordova-conversation
+title: Conversation
+sidebar_label: Conversation
+---
+
 #### Launching chat screen
 
 You can open the chat screen by calling the below function:
