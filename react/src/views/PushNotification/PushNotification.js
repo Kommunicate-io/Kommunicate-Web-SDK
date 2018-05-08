@@ -209,11 +209,11 @@ class PushNotification extends Component{
     if (applicationList.testApnsUrl) {
       application.testApnsUrl = applicationList.testApnsUrl;
     }
-    if (applicationList.testApnsPassword) {
-      application.testApnsPassword = applicationList.testApnsPassword;
-    }
     if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
-      application.apnsPassword =document.getElementById("apnsPassword").value;
+      application.apnsPassword = document.getElementById("apnsPassword").value?document.getElementById("apnsPassword").value:applicationList.apnsPassword;
+    }
+    if (applicationList.testApnsPassword||(document.getElementById("testApnsPassword").value)) {
+      application.testApnsPassword = document.getElementById("testApnsPassword").value?document.getElementById("testApnsPassword").value:applicationList.testApnsPassword;
     }
     userSession.application.appModulePxys[0]=application;
     CommonUtils.setUserSession(userSession);
@@ -266,11 +266,11 @@ class PushNotification extends Component{
     if (applicationList.testApnsUrl) {
       application.testApnsUrl = applicationList.testApnsUrl;
     }
-    if (applicationList.testApnsPassword) {
-      application.testApnsPassword = applicationList.testApnsPassword;
+    if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
+      application.apnsPassword = document.getElementById("apnsPassword").value?document.getElementById("apnsPassword").value:applicationList.apnsPassword;
     }
     if (applicationList.testApnsPassword||(document.getElementById("testApnsPassword").value)) {
-      application.testApnsPassword = document.getElementById("testApnsPassword").value;
+      application.testApnsPassword = document.getElementById("testApnsPassword").value?document.getElementById("testApnsPassword").value:applicationList.testApnsPassword;
     }
     userSession.application.appModulePxys[0]=application;
     CommonUtils.setUserSession(userSession);
@@ -382,7 +382,7 @@ class PushNotification extends Component{
 
                     <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6 km-input-component">
-                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={"Upload File"} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
+                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={this.state.apnsForDevelepment} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
                     </div>
                     </div>
                     <div className="row form-group">
