@@ -1,3 +1,9 @@
+---
+id: cordova-authentication
+title: Authentication
+sidebar_label: Authentication
+---
+
 ## Authentication
 
 To authenticate a user you need to create a user object and then pass it to the `login` function:
