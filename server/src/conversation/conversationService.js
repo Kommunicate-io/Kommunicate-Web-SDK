@@ -83,11 +83,14 @@ const createConversationIntoApplozic = (req) => {
         let conversation = {
             groupId: group.id,
             participantUserId: participentUser[0].id,
-            defaultAgentId: defaultAgent[0].id,
+            defaultAgentId: defaultAgent[0].userId,
             createdBy: participentUser[0].id,
             applicationId: headers['application-key']
         }
+        userService.getByUserNameAndAppId(defaultAgent[0].userId, headers['application-key']).then(user => {
+            conversation.agentId = user.id;
         createConversation(conversation);
+        });
         result.updated = true;
         return result;
     }).catch(err => {
@@ -104,9 +107,6 @@ const updateConversation = (options) => {
     if (options.participantUserId) {
         conversation.participantUserId = options.participantUserId;
     }
-    if (options.participantUserId) {
-        conversation.participantUserId = options.participantUserId;
-    }
     if (options.status) {
         conversation.status = CONVERSATION_STATUS_ARRAY[options.status];
         conversation.closeAt = CONVERSATION_STATUS_ARRAY[options.status] == CONVERSATION_STATUS.CLOSED ? new Date() : null;
@@ -119,7 +119,7 @@ const updateConversation = (options) => {
     }
     if (options.agentId) {
         return userService.getByUserNameAndAppId(options.agentId, options.appId).then(user => {
-            conversation.agentId = user.userKey;
+            conversation.agentId = user.id;
             return db.Conversation.update(conversation, { where: { groupId: options.groupId } });
         }).catch(err => { throw err })
     } else {
