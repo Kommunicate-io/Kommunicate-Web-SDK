@@ -1,3 +1,9 @@
+---
+id: cordova-logout
+title: Logout
+sidebar_label: Logout
+---
+
 You can logout the user from Kommunicate using the below function:
 
 ```
