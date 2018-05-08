@@ -4,7 +4,7 @@ title: Push Notification
 sidebar_label: Push Notification
 ---
 
-#### Android
+### Android
 
 If you havent already done the setup in firebase and kommunicate dashboard, follow the below docs:
 
@@ -47,7 +47,7 @@ From login success callback, call the below function:
 applozic.registerPushNotification(function() {}, function(){});
 ```
 
-#### iOS
+### iOS
 
 Upload your APNS certificates for both development and distribution under Kommunicate dashboard/settings/Push Notification/iOS section
 

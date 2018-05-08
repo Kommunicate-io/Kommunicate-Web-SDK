@@ -4,7 +4,7 @@ title: Conversation
 sidebar_label: Conversation
 ---
 
-#### Launching chat screen
+### Launching chat screen
 
 You can open the chat screen by calling the below function:
 
@@ -16,7 +16,7 @@ kommunicate.launchConversation((response) => {
         });
 ```
 
-#### Launching individual chat thread
+### Launching individual chat thread
 
 You can open an individual chat thread by calling the below function and passing the `groupId`:
 
@@ -33,7 +33,7 @@ kommunicate.launchParticularConversation(convObj, function(response) {
       });
 ```
 
-#### Starting a new Conversation
+### Starting a new Conversation
 
 You can start a new conversation by using the below function:
 
