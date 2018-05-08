@@ -2493,6 +2493,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if ($applozic('#mck-city-search-input').hasClass('mck-text-box')) {
                         $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box').val('');
                         $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
+                        $applozic('.mck-dropup-menu').hide();
                     }
                     if ($mck_msg_inner.data("isgroup") === true) {
                         messagePxy.groupId = $mck_msg_to.val();
