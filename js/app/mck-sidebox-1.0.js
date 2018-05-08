@@ -1489,7 +1489,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (data.betaPackage) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
-                    $applozic('.mck-running-on').removeClass('km-visibility-hidden').addClass('km-visibility-shown');
+                    $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
                 }
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
