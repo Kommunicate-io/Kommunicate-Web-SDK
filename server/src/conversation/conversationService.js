@@ -157,7 +157,7 @@ const addMemberIntoConversation = (data) => {
             return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
                 if (users) {
                     let userIds = [];
-                    let agentIds=[];
+                    let agentIds = [];
                     users.forEach(function (user) {
                         if (user.type === 2) {
                             if (user.userName === 'bot') {
@@ -204,7 +204,7 @@ const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
             groupId: groupId,
             metadata: { CONVERSATION_ASSIGNEE: assignTo }
         };
-        logger.info("updating assignee for conversation : ",groupInfo);
+        logger.info("updating assignee for conversation : ", groupInfo);
         applozicClient.updateGroup(
             groupInfo,
             appId,
@@ -274,31 +274,39 @@ const getConversationStats = (agentId, customerId, startTime, endTime) => {
 }
 
 const getNewConversation = (queryParams, agentIds) => {
-    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
+    let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
     let query = SQL_QUERIES.NEW_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getClosedConversation = (queryParams, agentIds) => {
-    let UNIT = queryParams.daily ? 'DAY' : 'HOUR';
-    let query = SQL_QUERIES.CLOSED_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);;
+    let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
+    let query = SQL_QUERIES.CLOSED_CONVERSATION_COUNT_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
     return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getAverageResolutionTime = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
+    let query = SQL_QUERIES.AVG_RESOLUTION_TIME_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
-    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESOLUTION_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
 const getAvgResponseTime = (queryParams, agentIds) => {
+    let UNIT = queryParams.daily == 'true' ? 'DATE' : 'HOUR';
+    let query = SQL_QUERIES.AVG_RESPONSE_TIME_QUERY.replace(/UNIT/gi, UNIT);
+    query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
-    return Promise.resolve(db.sequelize.query(SQL_QUERIES.AVG_RESPONSE_TIME_QUERY, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }));
 }
 
 const getAllStatistic = (query, agentIds) => {
@@ -360,5 +368,5 @@ module.exports = {
     createConversation: createConversation,
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
-    createConversationIntoApplozic:createConversationIntoApplozic
+    createConversationIntoApplozic: createConversationIntoApplozic
 }

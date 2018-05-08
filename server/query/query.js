@@ -1,6 +1,6 @@
 exports.SQL_QUERIES = {
     NEW_CONVERSATION_COUNT_QUERY: "SELECT  UNIT (created_at) AS UNIT ,count(1) AS count FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY UNIT ;",
     CLOSED_CONVERSATION_COUNT_QUERY: "SELECT UNIT (created_at) AS UNIT ,count(1) AS count FROM conversations WHERE status=:status and created_at BETWEEN DATE_FORMAT(:endDate , '%Y-%m-%d 00:00:00') AND NOW()  and agent_id in (:agentIds) GROUP BY UNIT ;",
-    AVG_RESPONSE_TIME_QUERY: "SELECT AVG( TIMESTAMPDIFF (SECOND, created_at, updated_at)) AS average, DAY(created_at) AS `day` FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate, '%Y-%m-%d 00:00:00') AND NOW() AND agent_id IN (:agentIds) GROUP BY `day`",
-    AVG_RESOLUTION_TIME_QUERY: "SELECT AVG( TIMESTAMPDIFF (SECOND, created_at, close_at)) AS average, DAY(created_at) AS `day` FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate, '%Y-%m-%d 00:00:00') AND NOW() AND agent_id IN (:agentIds) GROUP BY `day`"
+    AVG_RESPONSE_TIME_QUERY: "SELECT AVG( TIMESTAMPDIFF (SECOND, created_at, updated_at)) AS average, UNIT (created_at) AS UNIT FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate, '%Y-%m-%d 00:00:00') AND NOW() AND agent_id IN (:agentIds) GROUP BY UNIT",
+    AVG_RESOLUTION_TIME_QUERY: "SELECT AVG( TIMESTAMPDIFF (SECOND, created_at, close_at)) AS average, UNIT (created_at) AS UNIT FROM conversations WHERE created_at BETWEEN DATE_FORMAT(:endDate, '%Y-%m-%d 00:00:00') AND NOW() AND agent_id IN (:agentIds) GROUP BY UNIT"
 }
