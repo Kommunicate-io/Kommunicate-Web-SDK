@@ -50,7 +50,7 @@ exports.sendWelcomeMessage=(conversationId, customer)=>{
         if(groupDetail){
           let conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
           groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
-          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer,null,conversationAssignee)).then(response => {
+          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer,groupDetail.adminId,conversationAssignee)).then(response => {
             logger.info("response in sendWelcomeMessage",response);
             return response;
           })
