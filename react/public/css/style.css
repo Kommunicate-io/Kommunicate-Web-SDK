@@ -8657,7 +8657,9 @@ app-root {
 .sidebar-fixed .sidebar {
   position: fixed;
   max-width: 260px;
-  min-width: 60px;;
+  min-width: 60px;
+  [;min-width: 60px;];
+  (;min-width: 60px;);
   height: 100%;
   padding: 15px 7px 15px 7px;
   display: flex; }
