@@ -6348,16 +6348,25 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					return a.dataset.alpha > b.dataset.alpha;
 				}).appendTo('#km-group-member-list');
 			};
-			_this.addGroupMemberFromSearch = function(userId) {
+			_this.addGroupMemberFromSearch = function (userId) {
 				var groupId = $mck_group_info_tab.data('km-id');
 				if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 					var group = kmGroupUtils.getGroup(groupId);
 					if (typeof group === 'object' && MCK_USER_ID === group.adminName) {
-						kmGroupService.addGroupMember({
-							'groupId' : groupId,
-							'userId' : userId,
-							'apzCallback' : mckGroupLayout.onAddedGroupMember
-						});
+						if (MCK_CONTACT_ARRAY[userId] && MCK_CONTACT_ARRAY[userId].roleType && MCK_CONTACT_ARRAY[userId].roleType === 8) {
+							kmGroupService.addGroupMember({
+								'groupId': groupId,
+								'userId': userId,
+								'role': '1',
+								'apzCallback': mckGroupLayout.onAddedGroupMember
+							});
+						} else {
+							kmGroupService.addGroupMember({
+								'groupId': groupId,
+								'userId': userId,
+								'apzCallback': mckGroupLayout.onAddedGroupMember
+							});
+						}
 					} else {
 						$mck_group_admin_options.removeClass('vis').addClass('n-vis');
 					}
