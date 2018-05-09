@@ -82,7 +82,7 @@ const createUser =user=>{
       console.log("created user in applozic db",applozicUser.userId);
       user.customerId=customer.id;
       user.apzToken=new Buffer(user.userName+":"+user.password).toString('base64');
-      user.authorization = new Buffer(user.userId+":"+applozicUser.deviceKey).toString('base64');
+      user.authorization = new Buffer(applozicUser.userId+":"+applozicUser.deviceKey).toString('base64');
       user.accessToken = user.password;
       user.userKey = applozicUser.userKey;
       user.password=bcrypt.hashSync(user.password, 10);
