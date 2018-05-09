@@ -1726,6 +1726,26 @@ input:-ms-input-placeholder {
   letter-spacing: normal;
   color: #929292;
 }
+.testimonial-by-designation a {
+  font-size: 22px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #929292;
+  text-decoration: none;
+}
+.testimonial-by-designation a:hover, .testimonial-by-designation a:focus {
+  font-size: 22px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #929292;
+  text-decoration: underline;
+}
 .testimonial-quote p{
   font-size: 22px;
   font-weight: normal;

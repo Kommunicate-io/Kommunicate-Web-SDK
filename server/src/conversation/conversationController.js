@@ -8,7 +8,7 @@ const logger = require('../utils/logger');
  * 
  */
 exports.getConversationList=(req, res)=>{
-    const participantUserId = req.params.participantId;
+    const participantUserId = req.params.participantId || req.params.participantUserId;
     conversationService.getConversationList(participantUserId)
     .then(dbUtils.getDataArrayFromResultSet)
     .then(conversationList=>{
@@ -26,7 +26,7 @@ exports.createConversation = (req, res) => {
     console.log("request received to create conversation");
     let conversation = {
         groupId: req.body.groupId,
-        participantUserId: req.body.participantUserId || req.params.participentId,
+        participantUserId: req.body.participantUserId || req.body.participentUserId,
         agentId: req.body.defaultAgentId,
         createdBy: req.body.createdBy,
         applicationId: req.body.applicationId ? req.body.applicationId : null
@@ -93,7 +93,8 @@ exports.getConversationStat = (req, res) => {
         req.query.days = days;
     }
     return conversationService.getConversationStat(req.query).then(response => {
-        return res.status(200).json({ message: 'SUCCESS', key: req.query.daily == "true" ? 1 : 2, response: response });
+
+        return res.status(200).json({ message: 'SUCCESS', key: req.query.daily && req.query.daily == "true" ? 1 : 2, response: response });
     }).catch(err => {
         console.log(err);
         return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });

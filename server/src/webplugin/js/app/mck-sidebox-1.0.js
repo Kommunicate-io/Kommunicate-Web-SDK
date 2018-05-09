@@ -1489,7 +1489,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (data.betaPackage) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
-                    $applozic('.mck-running-on').removeClass('km-visibility-hidden').addClass('km-visibility-shown');
+                    $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
                 }
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
@@ -1531,6 +1531,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 Kommunicate.postPluginInitialization(null,data);
             };
             _this.validateAppSession = function (userPxy) {
+                mckGroupLayout.init();
+                mckMessageLayout.init();
                 var appHeaders = ALStorage.getAppHeaders();
                 if (appHeaders && appHeaders.userId) {
                     if (userPxy.applicationId === appHeaders.appId && userPxy.userId === appHeaders.userId && userPxy.password === appHeaders.accessToken) {
@@ -2491,6 +2493,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if ($applozic('#mck-city-search-input').hasClass('mck-text-box')) {
                         $applozic('#mck-city-search-input').addClass('n-vis').removeClass('mck-text-box').val('');
                         $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
+                        $applozic('.mck-dropup-menu').hide();
                     }
                     if ($mck_msg_inner.data("isgroup") === true) {
                         messagePxy.groupId = $mck_msg_to.val();

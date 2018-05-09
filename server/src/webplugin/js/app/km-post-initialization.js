@@ -27,7 +27,6 @@ Kommunicate.postPluginInitialization = function (err, data) {
                 console.log("err : ", err);
                 return;
             }
-            console.log("data : ", settings);
             if (settings && settings.code == "SUCCESS") {
                 var helpdocsKey = settings.message.find(function (item) {
                     return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;

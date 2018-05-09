@@ -26,7 +26,6 @@ class Users extends Component {
         } else if(response.response.users.length == 0) {
           _this.setState({showEmptyStateImage: false});
         }
-        console.log(response.response.users.length);
       }
     });
   }

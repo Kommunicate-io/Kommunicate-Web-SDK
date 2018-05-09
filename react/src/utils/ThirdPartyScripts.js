@@ -22,6 +22,33 @@ class ThirdPartyScripts extends Component {
                 o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
                 "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
               }
+
+              o.onInit=function(response) {          
+                if (typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
+                  console.log("template not loaded"); 
+                  window.$applozic.template = window.$kmApplozic.kmtemplate;
+                  window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
+                 }
+                 
+                if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
+                  null
+                } else {
+                  document.getElementById('sidebar-sidebox-help-icon').classList.add('vis'); 
+                 document.getElementById('sidebar-sidebox-help-icon').classList.remove('n-vis'); 
+                }
+
+                if (currentPath.includes('/login')) {
+                  document.getElementById('mck-sidebox-launcher').classList.add('vis'); 
+                  document.getElementById('mck-sidebox-launcher').classList.remove('n-vis');
+                }
+                 
+                document.querySelector(".mck-close-sidebox").onclick = function() {
+                  document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
+                  document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
+                  document.getElementById('mck-sidebox-launcher').classList.remove('vis');
+                };
+
+              };
               var s = document.createElement("script");
               s.type = "text/javascript";
               s.async = true;
@@ -33,8 +60,7 @@ class ThirdPartyScripts extends Component {
             })(document, window.kommunicate || {});
           /*}*/
 
-
-
+            
 
           // hot jar script
             (function(h,o,t,j,a,r){

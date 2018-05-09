@@ -16,7 +16,8 @@ class Integrations extends Component {
             Clearbit:false, //enableClearbit
             helpdocsKeys:[],
             zendeskKeys:[],
-            clearbitKeys:[]
+            clearbitKeys:[],
+            showDiscountOffer: true
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -44,11 +45,11 @@ class Integrations extends Component {
             })
             if (this.state.helpdocsKeys.length > 0) {
 
-                this.setState({ Helpdocs:true })
+                this.setState({ Helpdocs:true, showDiscountOffer:true })
             }
             else {
 
-                this.setState({ Helpdocs:false })
+                this.setState({ Helpdocs:false, showDiscountOffer:false })
             }
             if (this.state.zendeskKeys.length > 0) {
 
@@ -100,6 +101,7 @@ class Integrations extends Component {
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
                          <span data-key={item.key} className="integration-settings" onClick={this.openModal}>Settings</span>
+                         <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.showDiscountOffer}>{item.discountCouponOff} off</div>
                      </div>
                  </div>);
              }
@@ -120,7 +122,7 @@ class Integrations extends Component {
         </div>
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
-                <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} 
+                <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} showDiscountOffer={this.state.showDiscountOffer} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} />
             </div>
         </Modal>

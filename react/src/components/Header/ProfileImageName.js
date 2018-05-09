@@ -80,6 +80,10 @@ export default class ProfileImageName extends Component {
         }
       }
 
+      goToProfile(e) {
+        window.appHistory.push("/settings/profile");
+      }
+
 
     render() {
         return (
@@ -103,8 +107,9 @@ export default class ProfileImageName extends Component {
                             <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />} </DropdownItem>
                         }
 
-                        <DropdownItem><Link style={{ color: "#000" }} to="/settings/profile"> Profile</Link></DropdownItem>
-                        <DropdownItem onClick={this.logout}> Logout </DropdownItem>
+                        <DropdownItem onClick={this.goToProfile}>Profile</DropdownItem>
+                        
+                        <DropdownItem onClick={this.logout}> Logout</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </div>

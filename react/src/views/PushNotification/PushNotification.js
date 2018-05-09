@@ -84,7 +84,7 @@ class PushNotification extends Component{
         Notification.error("Please upload file in .p12 format");
           return false;
       }
-    
+
       file.name = file.file.name;
       file.this = this;
       file.env = "distribution";
@@ -127,7 +127,7 @@ class PushNotification extends Component{
       return;
     }
 
-    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule;
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
     var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
 
@@ -185,7 +185,7 @@ class PushNotification extends Component{
       return;
     }
 
-    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule;
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
       applicationList.apnsUrl =fileurl;
     var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
@@ -209,11 +209,11 @@ class PushNotification extends Component{
     if (applicationList.testApnsUrl) {
       application.testApnsUrl = applicationList.testApnsUrl;
     }
-    if (applicationList.testApnsPassword) {
-      application.testApnsPassword = applicationList.testApnsPassword;
-    }
     if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
-      application.apnsPassword =document.getElementById("apnsPassword").value;
+      application.apnsPassword = document.getElementById("apnsPassword").value?document.getElementById("apnsPassword").value:applicationList.apnsPassword;
+    }
+    if (applicationList.testApnsPassword||(document.getElementById("testApnsPassword").value)) {
+      application.testApnsPassword = document.getElementById("testApnsPassword").value?document.getElementById("testApnsPassword").value:applicationList.testApnsPassword;
     }
     userSession.application.appModulePxys[0]=application;
     CommonUtils.setUserSession(userSession);
@@ -242,7 +242,7 @@ class PushNotification extends Component{
       return;
     }
 
-    let userDetailUrl =getConfig().applozicPlugin.editAppModule; 
+    let userDetailUrl =getConfig().applozicPlugin.editAppModule;
     let applicationList = CommonUtils.getUserSession().application.appModulePxys[0];
       applicationList.testApnsUrl =fileurl;
     var userSession =JSON.parse(localStorage.getItem('KM_USER_SESSION'));
@@ -266,11 +266,11 @@ class PushNotification extends Component{
     if (applicationList.testApnsUrl) {
       application.testApnsUrl = applicationList.testApnsUrl;
     }
-    if (applicationList.testApnsPassword) {
-      application.testApnsPassword = applicationList.testApnsPassword;
+    if (applicationList.apnsPassword||(document.getElementById("apnsPassword").value)) {
+      application.apnsPassword = document.getElementById("apnsPassword").value?document.getElementById("apnsPassword").value:applicationList.apnsPassword;
     }
     if (applicationList.testApnsPassword||(document.getElementById("testApnsPassword").value)) {
-      application.testApnsPassword = document.getElementById("testApnsPassword").value;
+      application.testApnsPassword = document.getElementById("testApnsPassword").value?document.getElementById("testApnsPassword").value:applicationList.testApnsPassword;
     }
     userSession.application.appModulePxys[0]=application;
     CommonUtils.setUserSession(userSession);
@@ -295,14 +295,14 @@ class PushNotification extends Component{
   }
 
   render() {
-  
+
     return (
       <div className="away-message-wrapper">
         <div className="row">
           <div className="col-md-8 col-sm-12">
             <div className="card-block away-message-header">
               <div className="row">
-                <h4 className="enabling-push-notification">Enabling push notification allows Kommunicate to send notification even when your mobile app is in background</h4>
+                <h4 className="enabling-push-notification">Enabling push notification allows Kommunicate to send notifications even when your mobile app is in background</h4>
                 <div className="app-id-container">
                   <div className="app-id-div">
                     <span className="rectangle-7">
@@ -323,10 +323,10 @@ class PushNotification extends Component{
               <div className="card-header away-card-header km-div">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
-                   
-                    <div className="form-group fcm">For Android (GCM/FCM)<span className="customer-type"> </span></div>           
+
+                    <div className="form-group fcm">For Android (GCM/FCM)<span className="customer-type"> </span></div>
                     <div className="row form-group">
-                        
+
                     <div className="fcm-key">GCM/FCM key :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
                     <input id="gcmKey"onChange={(e) => {this.setState({ gcmKey: e.target.value })}} className="km-pushnotification-input" value ={this.state.gcmKey} type="text" onFocus ={(e) =>{ this.setState({disableButtonForAndroid: false})} }></input></div>
@@ -340,8 +340,8 @@ class PushNotification extends Component{
                     }} >Save</button>
                 </div>
                   </div>
-                </div>            
-              </div>          
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -351,12 +351,12 @@ class PushNotification extends Component{
             <div className="card-header away-card-header km-div">
               <div className="away-message-known-customers-wrapper">
               <div className="">
-                   
-                    <div className="form-group for-ios-apns">For iOS(APNS)<span className="customer-type"> </span></div>  
-                    <div className="form-group for-distribution">For DISTRIBUTION<span className="customer-type"> </span></div>  
-                    <hr className="km-pushnotification-hr"></hr>     
+
+                    <div className="form-group for-ios-apns">For iOS(APNS)<span className="customer-type"> </span></div>
+                    <div className="form-group for-distribution">For DISTRIBUTION<span className="customer-type"> </span></div>
+                    <hr className="km-pushnotification-hr"></hr>
                     <div className="row form-group km-pushNotification-development">
-                        
+
                     <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6 km-input-component">
                     <InputFile id={'apnsUrl'} dataUrl={this.state.apnsProdUrl} className={'secondary'} text={this.state.apnsForDistribution} onBlur ={(e) =>{ this.setState({disableButtonForIosDistribution: false})} } accept={'.p12'}  />
@@ -366,7 +366,7 @@ class PushNotification extends Component{
                     <div className="apple-certificate ">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
                     <input className="km-input-apns" value={this.state.apnsPassword} onChange ={(e) =>{ this.setState({disableButtonForIosDistribution: false, apnsPassword: e.target.value })} }id="apnsPassword" type="password"></input></div>
-                  </div> 
+                  </div>
                   <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDistribution}  className="km-button km-button--primary save-changes-btn"
                   onClick={(e) => {
@@ -376,20 +376,20 @@ class PushNotification extends Component{
                   }} >Save</button>
               </div>
               <div>
-                  <div className="form-group km-pushNotification-div">For DEVELOPMENT<span className="customer-type"> </span></div>   
-                  <hr className="km-pushnotification-hr"></hr>           
+                  <div className="form-group km-pushNotification-div">For DEVELOPMENT<span className="customer-type"> </span></div>
+                  <hr className="km-pushnotification-hr"></hr>
                     <div className="row form-group km-pushNotification-development">
-                        
+
                     <div className="apple-certificate">Apple Certificate :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6 km-input-component">
-                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={"Upload File"} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
+                    <InputFile id={'testApnsUrl'} dataUrl={this.state.apnsTestUrl} className={'secondary'} text={this.state.apnsForDevelepment} onBlur={(e) =>{ this.setState({disableButtonForIosDevelopment: false})} } accept={'.p12'} />
                     </div>
                     </div>
                     <div className="row form-group">
                     <div className="apple-certificate">Password :<span className="customer-type"> </span></div>
                     <div className="col-sm-6 col-md-6">
                     <input className="km-input-apns"  value={this.state.apnstestPassword} onChange={(e) =>{ this.setState({disableButtonForIosDevelopment: false, apnstestPassword: e.target.value   })} }  id="testApnsPassword" type="password"></input></div>
-                  </div> 
+                  </div>
                   </div>
                   <div className="btn-group">
                 <button disabled={this.state.disableButtonForIosDevelopment} className="km-button km-button--primary save-changes-btn"
@@ -400,8 +400,8 @@ class PushNotification extends Component{
                   }} >Save</button>
               </div>
                   </div>
-              </div>            
-            </div>          
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ constructor(props){
 
     const search = this.props.location.search;
     const googleLogin = CommonUtils.getUrlParameter(search, 'googleLogin');
-    console.log(googleLogin)
+    // console.log(googleLogin)
 
     if(googleLogin === 'true'){
       const email = CommonUtils.getUrlParameter(search, 'email')
@@ -108,6 +108,7 @@ constructor(props){
       })
     }
   }
+
 
   onKeyPress(e) {
     if (e.charCode == 13) {
@@ -163,8 +164,8 @@ submitForm = ()=>{
   let loginUrl= getConfig().kommunicateApi.login;
   var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=this.state.applicationId;
   
-  console.log(userName)
-  console.log(password)
+  // console.log(userName)
+  // console.log(password)
   if(!this.state.googleOAuth && (validator.isEmpty(this.state.userName)|| validator.isEmpty(this.state.password))){
     // Notification.warning("Email Id or Password can't be empty!");
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
@@ -650,6 +651,7 @@ showPasswordField = () => {
           </div>
           <div className="bottom-shape-container"></div>
         </div>
+
       </div>
     );
   }

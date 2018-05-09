@@ -7710,7 +7710,7 @@ iframe#crowd-shortcut {
     width: auto; }
     .sidebar .sidebar-nav::-webkit-scrollbar {
       position: absolute;
-      width: 10px;
+      width: 0px;
       margin-left: -10px;
       -webkit-appearance: none; }
     .sidebar .sidebar-nav::-webkit-scrollbar-track {
@@ -8657,7 +8657,9 @@ app-root {
 .sidebar-fixed .sidebar {
   position: fixed;
   max-width: 260px;
-  min-width: 60px;;
+  min-width: 60px;
+  [;min-width: 60px;];
+  (;min-width: 60px;);
   height: 100%;
   padding: 15px 7px 15px 7px;
   display: flex; }
@@ -10740,6 +10742,9 @@ input:required {
   color: #1c2429;
 }
 .mck-sidebox-launcher {
+  display: none;
+}
+.mck-sidebox-launcher.force-hide.vis  {
   display: none !important;
 }
 .away {
@@ -10756,13 +10761,11 @@ input:required {
   color: #999494;
 }
 
-.sidebar-profile-dropdown--fixed button:nth-child(3) {
-  padding: 0 !important;
-}
 .sidebar .sidebar-nav .nav .nav-item .nav-link:disabled {
   background-color: transparent;
   cursor: none;
 }
+
 /* dropdown CSS */
 .Select-control { 
   border: 0px !important;
@@ -10777,3 +10780,4 @@ input:required {
   box-shadow: none !important;
   background: #fff !important;
 } 
+
