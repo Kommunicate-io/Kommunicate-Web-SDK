@@ -2232,7 +2232,31 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					success : function(data) {}
 				});
 			};
-			_this.submitMessage = function(messagePxy, optns) {
+			
+			_this.submitMessage = function (messagePxy, optns) {
+				var group = kmGroupUtils.getGroup(messagePxy.groupId);
+				var member = group.members.includes(MCK_USER_ID);
+				var conversationDetail = {
+					'groupId': messagePxy.groupId,
+					'userId': MCK_USER_ID
+				};
+				if (typeof group === 'object') {
+					if (MCK_CONTACT_ARRAY[MCK_USER_ID] && MCK_CONTACT_ARRAY[MCK_USER_ID].roleType && MCK_CONTACT_ARRAY[MCK_USER_ID].roleType === 8) {
+						conversationDetail.role = 1;
+					}
+					if (!member) {
+						conversationDetail.callback = function () {
+							_this.messageSend(messagePxy, optns);
+						}
+						kmGroupService.addGroupMember(conversationDetail);
+					} else {
+						_this.messageSend(messagePxy, optns);
+					}
+
+
+				}
+			};
+			_this.messageSend =function(messagePxy,optns){
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var randomId = messagePxy.key;
 				if (MCK_CHECK_USER_BUSY_STATUS) {
@@ -2300,7 +2324,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						}
 					}
 				});
-			};
+			}
 			_this.deleteMessage = function(msgKey) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var tabId = $mck_msg_inner.data('km-id');
@@ -5427,24 +5451,27 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 			};
 
-			_this.fetchContacts = function(params) {
+			_this.fetchContacts = function (params) {
 				var response = new Object();
 				var roleNameListParam = "";
 				if (params.roleNameList) {
 					for (var i = 0; i < params.roleNameList.length; i++) {
-					    roleNameListParam += "&" + "roleNameList=" + params.roleNameList[i];
+						roleNameListParam += "&" + "roleNameList=" + params.roleNameList[i];
 					}
 				}
 				kmUtils.ajax({
-					url : KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam),
-					type : 'get',
-					global : false,
-					success : function(response) {
+					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam),
+					type: 'get',
+					global: false,
+					success: function (response) {
+						for (var i = 0; i < response.response.users.length; i++) {
+							MCK_CONTACT_ARRAY[response.response.users[i].userId] = response.response.users[i];
+						}
 						if (params.callback) {
 							params.callback(response);
 						}
 					},
-					error : function() {
+					error: function () {
 
 					}
 				});
@@ -6347,16 +6374,24 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					return a.dataset.alpha > b.dataset.alpha;
 				}).appendTo('#km-group-member-list');
 			};
-			_this.addGroupMemberFromSearch = function(userId) {
+			_this.addGroupMemberFromSearch = function (userId) {
 				var groupId = $mck_group_info_tab.data('km-id');
 				if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 					var group = kmGroupUtils.getGroup(groupId);
+					var conversationDetail ={
+						'groupId': groupId,
+						'userId': userId,
+						'apzCallback': mckGroupLayout.onAddedGroupMember
+					};
 					if (typeof group === 'object' && MCK_USER_ID === group.adminName) {
-						kmGroupService.addGroupMember({
-							'groupId' : groupId,
-							'userId' : userId,
-							'apzCallback' : mckGroupLayout.onAddedGroupMember
-						});
+						if (MCK_CONTACT_ARRAY[userId] && MCK_CONTACT_ARRAY[userId].roleType && MCK_CONTACT_ARRAY[userId].roleType === 8) {
+							conversationDetail.role = 1;
+						}
+						if (MCK_CONTACT_ARRAY[userId] && MCK_CONTACT_ARRAY[userId].roleType && MCK_CONTACT_ARRAY[userId].roleType === 1) {
+							conversationDetail.role = 2;
+						}
+						kmGroupService.addGroupMember(conversationDetail);
+
 					} else {
 						$mck_group_admin_options.removeClass('vis').addClass('n-vis');
 					}
