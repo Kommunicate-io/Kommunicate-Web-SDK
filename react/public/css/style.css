@@ -10763,3 +10763,17 @@ input:required {
   background-color: transparent;
   cursor: none;
 }
+/* dropdown CSS */
+.Select-control { 
+  border: 0px !important;
+}
+.Select:focus, .Select:hover, .Select:active, .Select-control:hover, .Select-control:focus, .Select-control:active, .is-focused, .is-pseudo-focused, .has-value {
+  outline: none !important;
+  box-shadow: none !important;
+
+}
+.Select.is-focused:not(.is-open) > .Select-control {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background: #fff !important;
+} 

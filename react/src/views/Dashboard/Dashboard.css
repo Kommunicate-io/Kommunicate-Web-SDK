@@ -1,4 +1,5 @@
 .dashboard-card {
+  border-radius: 4px;
   border: solid 1px #e1dbdb;
   background-color: #ffffff;
   
@@ -31,14 +32,24 @@
     color: #696b6b;
     margin-bottom: 10px;
 }
+.filter-dropdown-wrapper {
+    border-bottom: solid 1px #e1dbdb;
+    height: 45px;
+    padding-top: 4px;
+    padding-left: 5px;
+}
+.filter-dropdown-wrapper .Select-control {
+    width: 67% !important;
+}
+
 .card-count-title {
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0.7px;
   text-align: left;
   color: #8b8b8e;
 }
 .card-count {
-  font-size: 18px;
+  font-size: 20x;
   font-weight: 500;
   letter-spacing: 0.8px;
   text-align: left;
@@ -117,6 +128,25 @@
 .card-inner-block.active {
     border-top-color: #5c5aa7;
     background-color: #fbfbfb; 
+}
+.card-inner-block.active > h4 {
+    color: #5c5aa7;
+    font-weight: bold;
+     
+}
+.card-inner-block.active .card-time-digit {
+    color: #5c5aa7;
+    font-weight: bold;
+     
+}
+.card-inner-block.active .card-time-text {
+    color: #5c5aa7;
+    font-weight: bold;
+     
+}
+.card-inner-block.active > p {
+    color: #5c5aa7;
+     
 }
 .card-time-digit {
   font-size: 18px;
