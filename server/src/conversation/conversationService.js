@@ -53,9 +53,12 @@ const updateTicketIntoConversation = (groupId, options) => {
 const createConversation = (conversation) => {
     console.log("creating new converation, options:", conversation);
     conversation.status = CONVERSATION_STATUS.OPEN;
-    return Promise.resolve(db.Conversation.create(conversation)).then(result => {
-        console.log("conversation created successfully", result);
-        return result;
+    return userService.getByUserNameAndAppId(conversation.defaultAgentId, conversation.applicationId).then(user => {
+        conversation.agentId = user.id
+        return Promise.resolve(db.Conversation.create(conversation)).then(result => {
+            console.log("conversation created successfully", result);
+            return result;
+        })
     });
 
 }
@@ -279,7 +282,7 @@ const getNewConversation = (queryParams, agentIds) => {
     query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
-    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "agentIds": agentIds, startDate: new Date() }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getClosedConversation = (queryParams, agentIds) => {
@@ -288,7 +291,7 @@ const getClosedConversation = (queryParams, agentIds) => {
     query = UNIT == 'HOUR' ? query.replace('HOUR (created_at)', 'TIME_FORMAT(created_at,"%H:00")') : query;
     var endDate = new Date();
     endDate.setDate(endDate.getDate() - queryParams.days);
-    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds }, type: db.sequelize.QueryTypes.SELECT }))
+    return Promise.resolve(db.sequelize.query(query, { replacements: { "endDate": endDate, "status": CONVERSATION_STATUS.CLOSED, "agentIds": agentIds, startDate: new Date() }, type: db.sequelize.QueryTypes.SELECT }))
 }
 
 const getAverageResolutionTime = (queryParams, agentIds) => {

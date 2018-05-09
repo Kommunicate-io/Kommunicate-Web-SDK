@@ -18,10 +18,11 @@ exports.getAllUsers = function(req, res) {
   logger.info("request received to get all users");
   var applicationId = req.query.appId;
   var type = req.query.type;
+  var type2 = type?type.split(","):type
   return userService.getCustomerInfoByApplicationId(applicationId)
   .then(customer=>{
     if(customer){
-      userService.getAllUsersOfCustomer(customer,[type])
+      userService.getAllUsersOfCustomer(customer,type2)
       .then(dbUtils.getDataArrayFromResultSet)
       .then(data=>{
         logger.info("sending response success ")

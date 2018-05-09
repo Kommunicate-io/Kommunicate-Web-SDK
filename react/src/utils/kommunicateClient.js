@@ -843,6 +843,169 @@ const conversationHandlingByBot = (botId, status) => {
 
 }
 
+const getConversationStatsByDayAndMonth = (days,agentId) => {
+  // let response = { 
+  //   "newConversation": [
+    
+  //       {
+  //         "HOUR": "12:00",
+  //         "count": 3
+  //       },
+  //       {
+  //         "HOUR": "05:00",
+  //         "count": 5
+  //       }
+  //   ],
+  //   "closedConversation": [
+  //       {
+  //           "HOUR": "17:00",
+  //           "count": 2
+  //       },
+  //   ],
+  //   "avgResolutionTime": [
+  //       {
+  //         "average": 1053.0000,
+  //         "HOUR": "00:00"  
+  //       },
+  //       {
+  //         "average": 1053.0000,
+  //         "HOUR": "12:00",
+  //       }
+  //   ],
+  //   "avgResponseTime": [
+  //       {
+  //           "average": 1053.0000,
+  //           "HOUR": "01:00"
+  //       },
+  //       {
+  //           "average": 1053.0000,
+  //           "HOUR": "12:00"
+  //       },
+  //       {
+  //           "average": 1053.0000,
+  //           "HOUR": "22:00"
+  //       },
+  //   ]
+  // }
+  // let response = { 
+  //   "newConversation": [
+  //       {
+  //           "DATE": "2018-04-04",
+  //           "count": 1
+  //       },
+  //       {
+  //           "DATE": "2018-04-25",
+  //           "count": 4
+  //       },
+  //       {
+  //         "DATE": "2018-04-28",
+  //         "count": 3
+  //       },
+  //       {
+  //           "DATE": "2018-05-03",
+  //           "count": 3
+  //       },
+  //       {
+  //         "DATE": "2018-05-07",
+  //         "count": 5
+  //       }
+  //   ],
+  //   "closedConversation": [
+  //       {
+  //           "DATE": "2018-04-05",
+  //           "count": 1
+  //       },
+  //       {
+  //           "DATE": "2018-04-25",
+  //           "count": 2
+  //       },
+  //       {
+  //         "DATE": "2018-04-28",
+  //         "count": 3
+  //       },
+  //       {
+  //         "DATE": "2018-05-05",
+  //         "count": 3
+  //       },
+  //       {
+  //         "DATE": "2018-05-06",
+  //         "count": 2
+  //       }
+  //   ],
+  //   "avgResolutionTime": [
+  //       {
+  //           "average": null,
+  //           "DATE": "2018-04-13"
+  //       },
+  //       {
+  //           "average": 2053.0000,
+  //           "DATE": "2018-04-23"
+  //       },
+  //       {
+  //           "average": 4053.0000,
+  //           "DATE": "2018-04-25"
+  //       },
+  //       {
+  //           "average": 3053.0000,
+  //           "DATE": "2018-04-28"     
+  //       },
+  //       {
+  //         "average": 2053.9900,
+  //         "DATE": "2018-05-03"  
+  //       },
+  //       {
+  //         "average": 1053.0000,
+  //         "DATE": "2018-05-04",
+  //       }
+  //   ],
+  //   "avgResponseTime": [
+       
+  //       {
+  //           "average":34624 ,
+  //           "DATE": "2018-04-23"
+  //       },
+  //       {
+  //           "average": 54624,
+  //           "DATE": "2018-04-25"
+  //       },
+  //       {
+  //         "average": 24624,
+  //         "DATE": "2018-04-28"
+  //       },
+  //       {
+  //         "average": 14624,
+  //         "DATE": "2018-05-03"  
+  //       },
+  //       {
+  //         "average": 44624,
+  //         "DATE": "2018-05-04",
+  //       }
+  //   ]
+  // }
+//   let data = { data: { response, key: 1 } } //Key = 1 for day // key == 2 for 30days 
+//  return data
+
+  let userSession = CommonUtils.getUserSession();
+  let customerId=userSession.customerId;
+  let query={customerId:customerId, days:days, daily:true}
+  if(agentId&&agentId!="allagents"){
+   query.agentId=agentId;
+  }
+  if(days== 0||days== 1) {
+    query.daily="false"
+  }
+  else {
+    query.daily="true"
+  }
+  let url = getConfig().kommunicateBaseUrl + "/conversations/stats"
+  return Promise.resolve(axios.get(url,{params: query})).then(response => {
+    console.log('filter: ', response);
+    return response;
+  }).catch(err => {
+    console.log(err)
+    return;
+  });
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -893,4 +1056,5 @@ export {
   createZendeskIntegrationTicket,
   updateZendeskIntegrationTicket,
   conversationHandlingByBot,
+  getConversationStatsByDayAndMonth
 }

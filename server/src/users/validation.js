@@ -42,7 +42,7 @@ module.exports.updateBusinessHours = {
 module.exports.getAllUser = {
   query:{
     appId:joi.string().required(),
-    type:joi.number().min(1).max(2).integer()
+    //type:joi.number().min(1).max(2).integer()
   }
 }
 

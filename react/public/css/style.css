@@ -9888,7 +9888,7 @@ pointer-events: none;
 
 
 /*** Checkbox ***/
-.checkbox-input[type='checkbox']{ height: 0; width: 0; }
+.checkbox-input[type='checkbox']{ height: 0; width: 0; opacity: 0; }
 
 .checkbox-input[type='checkbox'] + .checkbox-label{
   position: relative;
@@ -10765,3 +10765,19 @@ input:required {
   background-color: transparent;
   cursor: none;
 }
+
+/* dropdown CSS */
+.Select-control { 
+  border: 0px !important;
+}
+.Select:focus, .Select:hover, .Select:active, .Select-control:hover, .Select-control:focus, .Select-control:active, .is-focused, .is-pseudo-focused, .has-value {
+  outline: none !important;
+  box-shadow: none !important;
+
+}
+.Select.is-focused:not(.is-open) > .Select-control {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  background: #fff !important;
+} 
+
