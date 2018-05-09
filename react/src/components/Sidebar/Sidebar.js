@@ -66,9 +66,10 @@ class Sidebar extends Component {
     // window.$applozic.fn.applozic('loadConversationwithAgent');
     window.Kommunicate.openConversationList();
     document.querySelector('.faq-common').classList.add('n-vis');
-    document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
-    document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
-    document.getElementById('mck-sidebox-launcher').classList.remove('vis');
+    
+    // document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
+    // document.getElementById('mck-sidebox-launcher').classList.add('force-hide');
+    // document.getElementById('mck-sidebox-launcher').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.remove('vis');
     document.getElementById('mck-away-msg-box').classList.add('n-vis');
   }
@@ -197,7 +198,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Help Link */}
-            <li className="nav-item n-vis">
+            <li className="nav-item">
             <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
             onClick={this.launchSideboxChat} 
                 className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
