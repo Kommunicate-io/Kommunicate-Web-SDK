@@ -2640,11 +2640,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 
 				CONTACT_SYNCING = true;
-				var data = '?userId='+ encodeURIComponent(MCK_USER_ID);
+				var data = '?pageSize=60';
 				if (params.startTime) {
 				 	data += "&lastFetchTime=" + params.startTime;
 				}
-				data += "&pageSize=60";
 
 				kmUtils.ajax({
 					method: 'get',
