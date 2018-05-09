@@ -179,8 +179,24 @@ Kommunicate.richMsgEventHandler = {
         var lname = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
         var email = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
         var phone = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
+        if(title === "Title *"){
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-title-select:first").focus();
+            return;
+        }
         if(fname[0].value==""){
-            $(e.target).closest('.km-guest-details-container').find('input[type=text]').focus();
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input").focus();
+            return;
+        }
+        if(lname[0].value==""){
+            $applozic(e.target).closest('.km-guest-details-container').find('.km-guest-detail-form input.last-name-input').focus();
+            return;
+        }
+        if(email[0].value==""){
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input").focus();
+            return;
+        }
+        if(phone[0].value==""){
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input").focus();
             return;
         }
         var personDetail = {
