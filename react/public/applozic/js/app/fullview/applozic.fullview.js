@@ -2235,12 +2235,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			
 			_this.submitMessage = function (messagePxy, optns) {
 				var group = kmGroupUtils.getGroup(messagePxy.groupId);
-				var member = false;
-				for (var i = 0; i < group.members.length; i++) {
-					if (MCK_USER_ID === group.members[i]) {
-						member = true;
-					}
-				}
+				var member = group.members.includes(MCK_USER_ID);
 				var conversationDetail = {
 					'groupId': messagePxy.groupId,
 					'userId': MCK_USER_ID
@@ -2249,7 +2244,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if (MCK_CONTACT_ARRAY[MCK_USER_ID] && MCK_CONTACT_ARRAY[MCK_USER_ID].roleType && MCK_CONTACT_ARRAY[MCK_USER_ID].roleType === 8) {
 						conversationDetail.role = 1;
 					}
-					if (member === false) {
+					if (!member) {
 						conversationDetail.callback = function () {
 							_this.messageSend(messagePxy, optns);
 						}
