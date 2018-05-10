@@ -481,21 +481,19 @@ class Dashboard extends Component {
     displayTotalCounts.closedConversationCount = getTotalCount.closedConversationCount;
     this.setState({displayAllTotalCounts:displayTotalCounts});
 
-    if(day == 0 || day ==1) {
-      let s = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime / getTotalNoOfCountAndAvgs.avgResponseTime) ;
-      return Promise.resolve(this.millisToMinutesAndSeconds(s)).then(res => {
-        // avgResponseTime.last7Days = res
-        this.setState({ avgResponseTime: res })
-        let t = getTotalCount.avgResolutionTime == 0 ? getTotalCount.avgResolutionTime : (getTotalCount.avgResolutionTime) / getTotalNoOfCountAndAvgs.avgResolutionTime ;
-        Promise.resolve(this.secondsToHms(t)).then(resp => {
-        // avgResolutionTime.last7Days = resp
-        this.setState({ avgResolutionTime: resp })
-      })
+    if (day == 0 || day == 1) {
+      let s = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime / getTotalNoOfCountAndAvgs.avgResponseTime);
+      let ms = this.millisToMinutesAndSeconds(s)
+      // avgResponseTime.last7Days = res
+      this.setState({ avgResponseTime: ms })
+      let t = getTotalCount.avgResolutionTime == 0 ? getTotalCount.avgResolutionTime : (getTotalCount.avgResolutionTime) / getTotalNoOfCountAndAvgs.avgResolutionTime;
+      let hms = this.secondsToHms(t)
+      // avgResolutionTime.last7Days = resp
+      this.setState({ avgResolutionTime: hms })
+
       this.displayInitialChart(day)
-     
-      }).catch(err => {
-      console.log(err);
-      });
+
+
     } 
     // else if (day == 7) {
     //   return Promise.resolve(this.millisToMinutesAndSeconds((getTotalCount.avgResponseTime) / getTotalNoOfCountAndAvgs.avgResponseTime)).then(res => {
@@ -512,20 +510,16 @@ class Dashboard extends Component {
     //   });
     // }
     else {
-      let s = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime / getTotalNoOfCountAndAvgs.avgResponseTime) ;
-      return Promise.resolve(this.millisToMinutesAndSeconds(s)).then(res => {
-        // avgResponseTime.last7Days = res
-        this.setState({ avgResponseTime: res });
-        let t = getTotalCount.avgResolutionTime == 0 ? getTotalCount.avgResolutionTime : (getTotalCount.avgResolutionTime) / getTotalNoOfCountAndAvgs.avgResolutionTime ;
-         return Promise.resolve(this.secondsToHms(t)).then(resp => {
-          // avgResolutionTime.last7Days = resp
-          this.setState({ avgResolutionTime: resp });
-          this.displayInitialChart(day)
-        })
+      let avgRT = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime/getTotalNoOfCountAndAvgs.avgResponseTime);
+      let m_sec = this.millisToMinutesAndSeconds(avgRT)
+      // avgResponseTime.last7Days = res
+      this.setState({ avgResponseTime: m_sec });
+      let avgRST = getTotalCount.avgResolutionTime == 0 ? getTotalCount.avgResolutionTime : getTotalCount.avgResolutionTime / getTotalNoOfCountAndAvgs.avgResolutionTime;
+      let h_m_s = this.secondsToHms(avgRST)
+      // avgResolutionTime.last7Days = resp
+      this.setState({ avgResolutionTime: h_m_s });
+      this.displayInitialChart(day)
 
-      }).catch(err => {
-        console.log(err);
-      });
     }   
   }
 
@@ -853,34 +847,32 @@ class Dashboard extends Component {
       let totalNoOfResolutions = {dayWise : 0, last7Days:0, last30Days:0 };
       
       
-    if(res.data.key == 2 ) {
-      if (res.data.response.newConversation.length) {      
-        
-        res.data.response.newConversation.map((item, index) => {
+    if(res.data.key == 2 ) {     
+
+        res.data.response.newConversation.length && res.data.response.newConversation.map((item, index) => {
           totalNoOfNewCoversations.dayWise++;
           countForADay.newConversationCount += item.count;
           let getIndex = hoursDistribution.indexOf(item.HOUR);
           dayWiseData.newConversation.splice(getIndex, 1, item.count);
 
         })    
-      }  
-      res.data.response.closedConversation.map((item, index) => {
+        res.data.response.closedConversation.length && res.data.response.closedConversation.map((item, index) => {
           totalNoOfClosedCoversations.dayWise++;
           countForADay.closedConversationCount += item.count;
           let getIndex = hoursDistribution.indexOf(item.HOUR);    
           dayWiseData.closedConversation.splice(getIndex, 1, item.count);
 
         })
-        res.data.response.avgResponseTime.map((item, index) => {
+        res.data.response.avgResponseTime.length && res.data.response.avgResponseTime.map((item, index) => {
           totalNoOfResponse.dayWise++;
           let avgResponseTime = item.average === null ? item.average : parseFloat(item.average)
           countForADay.avgResponseTime += avgResponseTime;
           let getIndex = hoursDistribution.indexOf(item.HOUR);
-          let time= this.milliToMSToDispalyInsideChart(parseFloat(item.average))
+          let time= this.convertMilliSecToMinute(parseFloat(item.average))
             dayWiseData.avgResponseTime.splice(getIndex, 1, time);
     
         })
-        res.data.response.avgResolutionTime.map((item, index) => {
+        res.data.response.avgResolutionTime.length && res.data.response.avgResolutionTime.map((item, index) => {
           totalNoOfResolutions.dayWise++;
           let avgResolutionTime = item.average === null ? item.average : parseFloat(item.average)
           countForADay.avgResolutionTime += avgResolutionTime;
@@ -918,7 +910,7 @@ class Dashboard extends Component {
     }
     else {    
         //Filter Closed Conversation Count 
-        res.data.response.newConversation.map((item, index) => {
+        res.data.response.newConversation.length && res.data.response.newConversation.map((item, index) => {
           let dateInmSec = new Date(item.DATE).getTime();
 
           if (dateInmSec > date8DaysAgoInmSec) {
@@ -937,7 +929,7 @@ class Dashboard extends Component {
         })
         console.log(totalNoOfNewCoversations)
         console.log(last30DaysData);
-        res.data.response.closedConversation.map((item, index) => {
+        res.data.response.closedConversation.length && res.data.response.closedConversation.map((item, index) => {
           let dateInmSec = new Date(item.DATE).getTime();
           
           if (dateInmSec > date8DaysAgoInmSec) {
@@ -955,14 +947,14 @@ class Dashboard extends Component {
           }
         })
   
-        res.data.response.avgResponseTime.map((item, index) => {
+        res.data.response.avgResponseTime.length && res.data.response.avgResponseTime.map((item, index) => {
           let dateInmSec = new Date(item.DATE).getTime();
           
           if (dateInmSec > date8DaysAgoInmSec) {
             totalNoOfResponse.last7Days++;
             avgResponseTime.last7Days += parseFloat(item.average);
             let m = last7DaysYYYYMMDD.indexOf(item.DATE); 
-            let time = this.milliToMSToDispalyInsideChart(parseFloat(item.average))
+            let time = this.convertMilliSecToMinute(parseFloat(item.average))
             last7DaysData.avgResponseTime.splice(m, 1, time);
             
           }
@@ -970,13 +962,13 @@ class Dashboard extends Component {
             totalNoOfResponse.last30Days++;
             avgResponseTime.last30Days += parseFloat(item.average);  
             let n = last30DaysYYYYMMDD.indexOf(item.DATE);
-            let time = this.milliToMSToDispalyInsideChart(parseFloat(item.average))
+            let time = this.convertMilliSecToMinute(parseFloat(item.average))
             last30DaysData.avgResponseTime.splice(n, 1, time);
             
           }
         })
   
-        res.data.response.avgResolutionTime.map((item, index) => {
+        res.data.response.avgResolutionTime.length && res.data.response.avgResolutionTime.map((item, index) => {
           let dateInmSec = new Date(item.DATE).getTime();
           if (dateInmSec > date8DaysAgoInmSec) {
             totalNoOfResolutions.last7Days++;
@@ -1078,16 +1070,23 @@ getLastdays = (start, end) => {
   }
   return {mmdd, yyyymmdd};
 }
-secondsToHms = (d) => {
-  // if ( d === null || d == 0  ) {
-  //   return 0 ;
-  // }
-  d = Number(d);
-  var h = Math.floor(d / 3600);
-  h = h > 0 ? h : "";  
-  var m = Math.floor(d % 3600 / 60);
-  var s = Math.floor(d % 3600 % 60);
-
+secondsToHms = (milliseconds) => {
+  
+  let s = Math.floor(milliseconds / 1000);
+  let  m = Math.floor(s / 60);
+  s = s % 60;
+  let  h = Math.floor(m / 60);
+  m = m % 60;
+  let day = Math.floor(h / 24);
+  h = h % 24;
+  h = h > 0 ? h : "";
+  m = h > 0 ? m : "";
+  s = s > 0 ? s : "";
+  if ( h === "" && m === "" && s === "") {
+    h = "_";
+    m = "_";
+    s = "_"
+  }
   var hDisplay = h > 0 ? (h == 1 ? " hr, " : " hrs, ") : "";
   var mDisplay = m > 0 ? (m == 1 ? " min, " : " mins, ") : "";
   var sDisplay = s > 0 ? (s == 1 ? " sec" : " secs") : "";
@@ -1112,17 +1111,23 @@ secondsToHmsToDispalyInsideChart = (d) => {
   }
   
 }
-milliToMSToDispalyInsideChart = (d) => {
+convertMilliSecToMinute = (d) => {  // output is using to dispaly inside the avg response chart 
   let minutes = Math.floor(d / 60000);
   let seconds = (d / 1000).toFixed(0);
   return minutes + "." + (seconds < 10 ? '0' : '') + seconds;
 }
  millisToMinutesAndSeconds = (millis) => {
   let m = Math.floor(millis / 60000); 
-  m = m > 0 ? m : ""
   let s = ((millis % 60000) / 1000).toFixed(0);
   let mDisplay = m > 0 ? (m == 1 ? " min, " : " mins, ") : "";
   let sDisplay = s > 0 ? (s == 1 ? " sec" : " secs") : "";
+  m = m > 0 ? m : "";
+  s = s > 0 ? s : "";
+  if (m === "" && s === "") {
+    m = "_";
+    s = "_"
+  }
+
   return { minDigit: m, minText: mDisplay, secDigit: s, secText: sDisplay }
 }
 timeFilterHandleChange = (timeFilterSelectedOption) => {
