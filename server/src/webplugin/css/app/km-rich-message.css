@@ -446,6 +446,11 @@
     .km-input:last-child {
         margin-bottom: 15px !important;
     }
+    .mandatory-field-error{
+        font-size:12px;
+        color:#ff4a2a;
+        margin-top: 6px;
+    }
     .km-age-input {
         display: inline !important;
         width: 43% !important;
