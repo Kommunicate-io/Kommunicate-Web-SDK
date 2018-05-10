@@ -35,7 +35,11 @@ export default class ProfileImageName extends Component {
           changeStatusLabel: userSession.availabilityStatus === 1 ? <TurnOnAwayMode />: <TurnOnOnlineMode />,
           status: userSession.availabilityStatus,
           dropdownOpen: false,
+          showDropdownMenu: false,
         };
+
+        this.showDropdownMenu = this.showDropdownMenu.bind(this);
+        this.hideDropdownMenu = this.hideDropdownMenu.bind(this);
       }
 
     toggle() {
@@ -55,10 +59,11 @@ export default class ProfileImageName extends Component {
         sessionStorage.clear();
         localStorage.clear();
         //window.location="/login";
-        window.appHistory.replace('/login');
+        // window.appHistory.replace('/login');
+        window.location.assign("/login");
       }
 
-      toggleStatus = () => {
+      toggleStatus = (e) => {
         let userSession = CommonUtils.getUserSession();
         if(this.state.status === 1){
           goAway(userSession.userName, userSession.application.applicationId).then(response => {
@@ -84,11 +89,40 @@ export default class ProfileImageName extends Component {
         window.appHistory.push("/settings/profile");
       }
 
+      showDropdownMenu(event) {
+        event.preventDefault();
+        this.setState({ showDropdownMenu: true }, () => {
+          document.addEventListener('click', this.hideDropdownMenu);
+        });
+      }
+
+      hideDropdownMenu(event) {
+        var elem = document.getElementById("go-away");
+                  
+          if (this.dropdownMenu.contains(event.target)) {
+
+            if(event.target !== elem) {
+              this.setState({ showDropdownMenu: false }, () => {
+                document.removeEventListener('click', this.hideDropdownMenu);
+              });
+            } else {
+              this.setState({ showDropdownMenu: true }, () => {
+                document.addEventListener('click', this.hideDropdownMenu);
+              });
+            }
+          } else  {
+            this.setState({ showDropdownMenu: false }, () => {
+              document.removeEventListener('click', this.hideDropdownMenu);
+            });
+          }
+      }
+      
+
 
     render() {
         return (
             <div>
-                <Dropdown className="sidebar-profile-dropdown" isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                {/* <Dropdown className="sidebar-profile-dropdown"  isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                     <button onClick={this.toggle} className="nav-link dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded={this.state.dropdownOpen}>
                         <div style={{ display: "inline-block" }}>
                             <img src={this.props.profilePicUrl} className="img-avatar" alt={this.props.displayName} />
@@ -96,7 +130,7 @@ export default class ProfileImageName extends Component {
                         </div>
                         <span className="d-md-down-none" hidden={this.props.hideDisplayName}>{this.props.displayName}</span>
                     </button>
-                    <DropdownMenu className="dropdown-menu-right sidebar-profile-dropdown--fixed">
+                    <DropdownMenu className="dropdown-menu-right sidebar-profile-dropdown--fixed ">
                         <DropdownItem>
                             <p className="header-user-name">{this.props.displayName}</p>
                             <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
@@ -104,14 +138,54 @@ export default class ProfileImageName extends Component {
                             <span className="header-user-online"> {CommonUtils.getUserSession().availabilitStatus === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator" : null}></span>
                         </DropdownItem>
                         {
-                            <DropdownItem onClick={this.toggleStatus}> {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />} </DropdownItem>
+                            <DropdownItem onClick={this.toggleStatus} id="online-offline-status"> {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />} </DropdownItem>
                         }
 
                         <DropdownItem onClick={this.goToProfile}>Profile</DropdownItem>
                         
                         <DropdownItem onClick={this.logout}> Logout</DropdownItem>
                     </DropdownMenu>
-                </Dropdown>
+                </Dropdown> */}
+                
+
+                <button className="sidebar-profile-dropdown nav-link dropdown-toggle" onClick={this.showDropdownMenu} data-toggle="dropdown" type="button" aria-haspopup="true">
+                  <div style={{ display: "inline-block" }}>
+                    <img src={this.props.profilePicUrl} className="img-avatar" alt={this.props.displayName} />
+                    <span className={CommonUtils.getUserSession().availabilityStatus === 1 ? "online-indicator-profile-pic" : null}></span>
+                  </div>
+                  <span className="d-md-down-none" hidden={this.props.hideDisplayName}>{this.props.displayName}</span>
+                </button>
+        
+        {
+          this.state.showDropdownMenu
+            ? (
+              <div tabIndex="-1" aria-hidden="false" role="menu"
+                className="menu dropdown-menu-right sidebar-profile-dropdown--fixed"
+                ref={(element) => {
+                  this.dropdownMenu = element;
+                }}
+              >
+                <button className="dropdown-item" type="button" tabIndex="0">
+                  <p className="header-user-name">{this.props.displayName}</p>
+                  <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
+                  <p><span className="header-user-online"> You are online</span></p>
+                  <span className="header-user-online"> {CommonUtils.getUserSession().availabilitStatus === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator" : null}></span>
+                </button>
+
+                <button className="dropdown-item" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
+                  {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />}
+                </button>
+
+                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button>
+
+                <button className="dropdown-item" type="button" tabIndex="0"  onClick={this.logout} id="logout"> Logout </button>
+              </div>
+            )
+            : (
+              null
+            )
+        }
+
             </div>
         );
     }
