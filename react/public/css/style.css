@@ -8658,8 +8658,10 @@ app-root {
   position: fixed;
   max-width: 260px;
   min-width: 60px;
+  /* Below two lines are HACK for SAFARI BROWSERS */
   [;min-width: 60px;];
   (;min-width: 60px;);
+
   height: 100%;
   padding: 15px 7px 15px 7px;
   display: flex; }
@@ -10706,18 +10708,20 @@ input:required {
   bottom: 0;
   top: auto;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.32);
+  z-index: 1000;
+  background-color: #fff;
 }
-.sidebar-profile-dropdown button {
+.sidebar-profile-dropdown button, .sidebar-profile-dropdown {
   padding: 0 !important;
   border: 0;
 }
-.sidebar-profile-dropdown button img {
+.sidebar-profile-dropdown button img, .sidebar-profile-dropdown img {
   height: 30px;
 }
-.sidebar-profile-dropdown .nav-link {
+.sidebar-profile-dropdown .nav-link, .sidebar-profile-dropdown.nav-link {
   margin-top: 10px;
 }
-.sidebar-profile-dropdown .dropdown-toggle::after {
+.sidebar-profile-dropdown .dropdown-toggle::after, .sidebar-profile-dropdown.dropdown-toggle::after {
   content: none;
 }
 .sidebar-profile-dropdown .online-indicator-profile-pic {
