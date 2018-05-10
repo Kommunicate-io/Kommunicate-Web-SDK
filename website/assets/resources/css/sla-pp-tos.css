@@ -1,0 +1,101 @@
+#terms-conditions, #privacy, #sla {
+    padding-bottom: 80px;
+    padding-top: 120px;
+}
+.heading-base-line {
+    border-bottom: solid 1px #222;
+    text-align: center;
+    width: 200px;
+    margin: auto;
+    margin-bottom: 20px;
+    height: 7px;
+}
+.terms-title {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 30px;
+    line-height: 1.1em;
+    margin-bottom: 14px;
+    color: #313f48;
+    font-weight:600;
+}
+.terms-topic-heading {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 24px;
+    line-height: 1.1em;
+    margin-bottom: 10px;
+    font-weight:600;
+    margin-bottom: 30px;
+    margin-top: 42px;
+}
+.terms-topic-subheading {
+    font-size: 20px;
+    margin-top: 15px;
+    line-height: 1.3em;
+    font-weight: 500;
+    text-transform: none;
+    color: #313f48;
+    margin-bottom: 20px;
+}
+#terms-conditions p, #terms-conditions li, #privacy p, #privacy li, #sla p, #sla li {
+    font-size: 16px;
+    line-height: 24px;
+}
+#terms-conditions ul, #terms-conditions ol, #privacy ul, #privacy ol, #sla ul, #sla ol {
+    margin: 10px 10px 10px 30px;
+    padding: 0;
+}
+
+.last-updated p {
+    font-size: 14px !important;
+    font-weight: 500;
+}
+#sla .last-updated, #terms-conditions .last-updated {
+    margin-bottom: 50px;
+}
+
+.km-logo-varient3-1 {
+    fill: #5C5AA7;
+}
+
+.page-links-ul li>a {
+    color: #5C5AA7;
+}
+
+.page-links-ul li>a:hover {
+    color: rgba(93, 90, 167, 0.5);
+}
+
+.nav-signup-button {
+    color: #5c5aa7;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
+}
+.nav-signup-button:hover {
+    color: #5c5aa7 !important;
+    border: solid 1.4px #5c5aa7;
+    background-color: transparent;
+}
+.nav-login-button {
+    color: #5C5AA7;
+}
+.sticky .nav-login-button {
+    color: #FFFFFF;
+}
+.nav-login-button:hover {
+    color: rgba(93, 90, 167, 0.5);
+}
+.sticky .nav-login-button:hover {
+    color: rgba(255, 255, 255, 0.5);
+}
+.menu-btn-icon {
+    fill: #5C5AA7;
+}
+.sticky .menu-btn-icon {
+    fill: #5c5aa7;
+}
+
+.page-links-ul li:nth-child(3)>a:hover #chat-widget-copy-10{
+    fill: #5d5aa786 !important;
+}

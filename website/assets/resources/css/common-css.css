@@ -1,3 +1,25 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  ::selection {
+    background-color: #747ffc;
+    color: #ffffff;
+  }
+  
+  html * {
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  a, a:hover, a:focus, a:active {
+    text-decoration: none;
+  }
 .nav-main-header {
     width: 100%;
     position: fixed;
@@ -38,14 +60,18 @@
   padding: 0px 25px;
   transition: color 0.3s ease;
 }
-.page-links-ul li>a:hover {
+.page-links-ul li>a:hover, .page-links-ul li>a:focus {
   color: rgba(253, 253, 253, 0.5);
+  text-decoration: none;
+  outline: none;
 }
 .sticky .page-links-ul li>a {
     color: #5c5aa7;
 }
-.sticky .page-links-ul li>a:hover {
+.sticky .page-links-ul li>a:hover, .sticky .page-links-ul li>a:focus {
     color: rgba(92, 90, 167, 0.5);
+    text-decoration: none;
+    outline: none;
 }
 .nav-signup-button {
     color: #fff;
