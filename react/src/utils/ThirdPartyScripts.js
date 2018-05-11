@@ -23,8 +23,9 @@ class ThirdPartyScripts extends Component {
                 "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
               }
 
-              o.onInit=function(response) {          
-                if (typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
+              o.onInit=function(response) {        
+                
+                if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
                   console.log("template not loaded"); 
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
                   window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
