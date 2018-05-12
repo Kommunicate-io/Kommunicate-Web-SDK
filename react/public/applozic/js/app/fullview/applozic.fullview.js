@@ -4786,14 +4786,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					if (typeof latestCreatedAtTime === "undefined" || (message ? message.createdAtTime : "") > latestCreatedAtTime || prepend) {
 						$kmApplozic.kmtmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
-
-						//chat km-message-inner 243358
-						if ($kmApplozic("#conversation-section .chat.km-message-inner." + contact.contactId).length == 0) {
+						if (document.getElementById("conversation-section").getElementsByClassName("chat km-message-inner " + contact.contactId).length == 0) {
 							$kmApplozic.kmtmpl("KMconversationTemplate", contactList).prependTo('#conversation-section');
 						}
 					} else {
 						$kmApplozic.kmtmpl("KMcontactTemplate", contactList).appendTo('#' + $listId);
-						if ($kmApplozic("#conversation-section .chat.km-message-inner." + contact.contactId).length == 0) {
+						if (document.getElementById("conversation-section").getElementsByClassName("chat km-message-inner " + contact.contactId).length == 0) {
 							$kmApplozic.kmtmpl("KMconversationTemplate", contactList).appendTo('#conversation-section');
 						}
 					}}
