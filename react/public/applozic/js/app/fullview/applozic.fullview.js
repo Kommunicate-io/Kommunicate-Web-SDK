@@ -3869,11 +3869,13 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$kmApplozic("." + msgKey + " .msgtype-inbox-mck").attr('title', 'recieved');
 			};
 			_this.fetchContact = function(contactId) {
-				var contact = _this.getContact(contactId);
-				if (typeof contact === 'undefined') {
-					contact = _this.createContact(contactId);
+				if (contactId) {
+					var contact = _this.getContact(contactId);
+					if (typeof contact === 'undefined') {
+						contact = _this.createContact(contactId);
+					}
+					return contact;
 				}
-				return contact;
 			};
 			_this.getContact = function(contactId) {
 				if (typeof MCK_CONTACT_MAP[contactId] === 'object') {
