@@ -161,7 +161,7 @@ getPassangerDetail : function(options){
                     <input type="text" name="last-name"  class="km-input last-name-input km-pxinfo-btn-left" placeholder="Last Name *"  required>
                     <input type="email" name="email"  class="km-input e-mail-input km-pxinfo-btn-left" placeholder="Email Id *" required>
                     <input type="text" name="contact-no"  class="km-input number-input km-pxinfo-btn-left" placeholder="Contact Number *" required >
-                    <div class= "mandatory-field-error n-vis"><span> All fields are mandatory.</span></div>
+                    <div class= "km-mandatory-field-error n-vis"><span> All fields are mandatory.</span></div>
                 </div>
                 <div class="km-guest-button-container">
                     <button class="km-add-more-rooms km-submit-person-detail" data-sessionid= `+ options.sessionId +`>Submit</button>
