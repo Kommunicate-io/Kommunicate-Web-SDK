@@ -1,4 +1,4 @@
-action_factory: remote
+action_factory: null
 action_names:
 - utter_greet
 - utter_goodbye
