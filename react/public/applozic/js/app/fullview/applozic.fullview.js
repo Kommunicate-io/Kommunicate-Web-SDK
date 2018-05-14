@@ -1741,7 +1741,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
-					$(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis'); 
+					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis'); 
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
 					tabId = (typeof tabId !== "undefined" && tabId !== "") ? tabId.toString() : "";
@@ -2266,14 +2266,14 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 			};
 			_this.tabviewUnreadIconUpdate = function () {
-				if ($(".km-assigned-search-list .km-unread-count-box").hasClass('vis')) {
-					$("#km-assigned-unread-icon").removeClass("n-vis").addClass("vis");
+				if ($kmApplozic(".km-assigned-search-list .km-unread-count-box").hasClass('vis')) {
+					$kmApplozic("#km-assigned-unread-icon").removeClass("n-vis").addClass("vis");
 				}
-				if ($(".km-closed-conversation-list .km-unread-count-box").hasClass('vis')) {
-					$("#km-closed-unread-icon").removeClass("n-vis").addClass("vis");
+				if ($kmApplozic(".km-closed-conversation-list .km-unread-count-box").hasClass('vis')) {
+					$kmApplozic("#km-closed-unread-icon").removeClass("n-vis").addClass("vis");
 				}
-				if ($(".km-contact-list .km-unread-count-box").hasClass('vis')) {
-					$("#km-allconversation-unread-icon").removeClass("n-vis").addClass("vis");
+				if ($kmApplozic(".km-contact-list .km-unread-count-box").hasClass('vis')) {
+					$kmApplozic("#km-allconversation-unread-icon").removeClass("n-vis").addClass("vis");
 				}
 			}
 			
