@@ -449,8 +449,8 @@ class Dashboard extends Component {
 
     if (day == 0 || day == 1) {
       let s = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime / getTotalNoOfCountAndAvgs.avgResponseTime);
-      let m_s = this.millisToMinutesAndSeconds(s, timeConverterKey.toDisplayTotalAvg)
-      this.setState({ avgResponseTime: m_s })
+      let ms = this.millisToMinutesAndSeconds(s, timeConverterKey.toDisplayTotalAvg)
+      this.setState({ avgResponseTime: ms })
       
       let t = getTotalCount.avgResolutionTime == null ? getTotalCount.avgResolutionTime : (getTotalCount.avgResolutionTime) / getTotalNoOfCountAndAvgs.avgResolutionTime;
       let hms = this.secondsToHms(t, timeConverterKey.toDisplayTotalAvg)
@@ -463,13 +463,13 @@ class Dashboard extends Component {
     
     else {
       let avgRT = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime/getTotalNoOfCountAndAvgs.avgResponseTime);
-      let m_sec = this.millisToMinutesAndSeconds(avgRT, timeConverterKey.toDisplayTotalAvg)
+      let ms = this.millisToMinutesAndSeconds(avgRT, timeConverterKey.toDisplayTotalAvg)
       // avgResponseTime.last7Days = res
-      this.setState({ avgResponseTime: m_sec });
-      let avgRST = getTotalCount.avgResolutionTime == null ? getTotalCount.avgResolutionTime : getTotalCount.avgResolutionTime / getTotalNoOfCountAndAvgs.avgResolutionTime;
-      let h_m_s = this.secondsToHms(avgRST, timeConverterKey.toDisplayTotalAvg)
+      this.setState({ avgResponseTime: ms });
+      let avgRst = getTotalCount.avgResolutionTime == null ? getTotalCount.avgResolutionTime : getTotalCount.avgResolutionTime / getTotalNoOfCountAndAvgs.avgResolutionTime;
+      let hms = this.secondsToHms(avgRst, timeConverterKey.toDisplayTotalAvg)
       // avgResolutionTime.last7Days = resp
-      this.setState({ avgResolutionTime: h_m_s });
+      this.setState({ avgResolutionTime: hms });
       this.displayInitialChart(day)
 
     }   
@@ -843,7 +843,6 @@ secondsToHms = (milliseconds,key) => { // average resolution time converting in 
   m = m % 60;
   let day = Math.floor(h / 24);
   h = h % 24;
-
   if (key) {
     //key == 0 -> to display total average
     if (milliseconds !== null) {
