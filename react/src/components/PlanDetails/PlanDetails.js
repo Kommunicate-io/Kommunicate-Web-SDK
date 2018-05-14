@@ -72,10 +72,13 @@ export default class PlanDetails extends Component {
                             </div>
                                 <div className="active-plan-feature-list">
                                     <ul>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integration</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited bots</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Advanced reporting</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;White label (removed powered by Kommunicate)</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integration</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Contact Enrichment</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQs</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat &amp; Email Support</li>
                                     </ul>
                                 </div> </div> 
                         : PlanName === 'Early Bird' ? 
@@ -85,10 +88,13 @@ export default class PlanDetails extends Component {
                             </div>
                             <div className="active-plan-feature-list">
                                 <ul>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bot integrations</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integrations</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Priority email support</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integration</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited bots</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Advanced reporting</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integration</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Contact Enrichment</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQs</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat &amp; Email Support</li>
                                 </ul>
                             </div> 
                         </div> 

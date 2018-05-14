@@ -5,7 +5,7 @@ import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
-import EarlyBirdOffer from '../.../../../components/EarlyBirdOffer/EarlyBirdOffer';
+import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth } from '../../utils/kommunicateClient';
@@ -964,11 +964,12 @@ render() {
   const { agentFilterSelectedOption } = this.state;
   return (
     <div className="animated fadeIn early-bird-card">
-      {this.state.subscription == 'startup' ?
+      {/* {this.state.subscription == 'startup' ?
         <EarlyBirdOffer OfferPercent={'75'} remainingOffers={this.state.offerRemaining} />
         :
         null
-      }
+      } */}
+      <ProductHuntOffer />
       <div className="animated fadeIn dashboard-card">
         <div className="row filter-dropdown-wrapper">
           <div className="col-lg-2 col-sm-4">
