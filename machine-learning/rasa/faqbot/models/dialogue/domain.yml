@@ -1,0 +1,55 @@
+action_factory: null
+action_names:
+- utter_greet
+- utter_mau
+- utter_push_notification_config
+- utter_host_applozic
+- utter_customize_ui
+- utter_default_ui
+- utter_anything_else
+- utter_did_not_get_you
+- utter_thanks
+actions:
+- utter_greet
+- utter_mau
+- utter_push_notification_config
+- utter_host_applozic
+- utter_customize_ui
+- utter_default_ui
+- utter_anything_else
+- utter_did_not_get_you
+- utter_thanks
+config:
+  store_entities_as_slots: true
+entities: []
+intents:
+- mau_intent
+- push_notification_not_working
+- host_applozic
+- custom_ui
+- default_ui
+- greet
+- done
+- not_understood
+slots: {}
+templates:
+  utter_anything_else:
+  - text: Anything else?
+  utter_customize_ui:
+  - text: Yes Applozic is fully customizable
+  utter_default_ui:
+  - text: The default UI is not mandatory and is fully customizable
+  utter_did_not_get_you:
+  - text: Did not get you?
+  utter_greet:
+  - text: How may i help you?
+  utter_host_applozic:
+  - text: Yes, you can host applozic in your servers.
+  utter_mau:
+  - text: We define Monthly Active User (MAU) as any user who 'used' Applozic Chat
+      Messenger, in a given month.
+  utter_push_notification_config:
+  - text: Verify if Push Notification is configured.
+  utter_thanks:
+  - text: Have a great day
+topics: []
