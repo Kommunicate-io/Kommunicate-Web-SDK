@@ -1325,6 +1325,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
 						$("#assign-selected").removeClass('vis').addClass('n-vis');
 					}
+					mckMessageService.tabviewUnreadIconUpdate();
 
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function(e) {
@@ -1740,6 +1741,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					$(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis'); 
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
 					tabId = (typeof tabId !== "undefined" && tabId !== "") ? tabId.toString() : "";
@@ -2263,6 +2265,17 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					success : function(data) {}
 				});
 			};
+			_this.tabviewUnreadIconUpdate = function () {
+				if ($(".km-assigned-search-list .km-unread-count-box").hasClass('vis')) {
+					$("#km-assigned-unread-icon").removeClass("n-vis").addClass("vis");
+				}
+				if ($(".km-closed-conversation-list .km-unread-count-box").hasClass('vis')) {
+					$("#km-closed-unread-icon").removeClass("n-vis").addClass("vis");
+				}
+				if ($(".km-contact-list .km-unread-count-box").hasClass('vis')) {
+					$("#km-allconversation-unread-icon").removeClass("n-vis").addClass("vis");
+				}
+			}
 			
 			_this.submitMessage = function (messagePxy, optns) {
 				var group = kmGroupUtils.getGroup(messagePxy.groupId);
@@ -7425,6 +7438,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var messageType = resp.type;
 				var list ={};
 				mckMessageService.emptyStateChange();
+				mckMessageService.tabviewUnreadIconUpdate();
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);
