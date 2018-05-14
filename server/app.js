@@ -46,7 +46,7 @@ compressor.minify({
 compressor.minify({
   
   compressor: 'no-compress',
-  input: ['./src/webplugin/js/app/applozic.chat.min.js','./src/webplugin/js/app/km-chat-combined-0.1.min.js'],
+  input: ['./src/webplugin/js/app/applozic.jquery.js','./src/webplugin/js/app/applozic.chat.min.js','./src/webplugin/js/app/km-chat-combined-0.1.min.js'],
   output: './src/webplugin/js/app/kommunicate-plugin-0.1.min.js',
   callback: function (err, min) {
     if(!err)
