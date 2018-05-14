@@ -94,6 +94,7 @@ public class MachineLearningClient {
         try {
             StringEntity stringEntity = new StringEntity(data);
             httpPost.setEntity(stringEntity);
+            httpPost.setHeader("Accept", "application/json");
             httpPost.setHeader("Content-Type", "application/json");
             responseHandler = new BasicResponseHandler();
             responseBody = httpClient.execute(httpPost, responseHandler);
