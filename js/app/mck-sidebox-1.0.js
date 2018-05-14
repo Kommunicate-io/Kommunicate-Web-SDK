@@ -410,7 +410,10 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_ENABLE_BADGE_COUNT = appOptions.unreadCountOnchatLauncher;
         var CUSTOM_CHAT_LAUNCHER = appOptions.chatLauncherHtml;
         var MCK_CUSTOM_UPLOAD_SETTINGS = appOptions.fileupload;
-        var CITY_SEARCH_URL='https://bots.applozic.com/city/v2/search?name=';
+        //mcktypeahead
+        var MCK_TYPEAHEAD_URL='';//'https://bots.applozic.com/city/v2/search?name=';
+        var MCK_TYPEAHEAD_METHOD='get';
+        var MCK_TYPEAHEAD_HEADERS={};
 //      var MCK_AWS_S3_SERVER = (appOptions.awsS3Server)?appOptions.awsS3Server:false;
         var MCK_NOTIFICATION_TONE_LINK = (appOptions.notificationSoundLink) ? appOptions.notificationSoundLink : Kommunicate.getBaseUrl()+ "/plugin/audio/notification_tone.mp3";
         var MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $applozic.trim(appOptions.userId);
@@ -2496,6 +2499,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
                         $mck_autosuggest_search_input.addClass('n-vis').removeClass('mck-text-box').val('');
                         $mck_text_box.removeClass('n-vis').addClass('mck-text-box');
+                        MCK_TYPEAHEAD_URL='';
                         $applozic('.mck-dropup-menu').hide();
                     }
                     if ($mck_msg_inner.data("isgroup") === true) {
@@ -3700,7 +3704,6 @@ var MCK_CLIENT_GROUP_MAP = [];
 
             var $mck_msg_new = $applozic("#mck-msg-new");
             var FILE_PREVIEW_URL = "/rest/ws/aws/file/";
-            var CITY_SEARCH_URL='https://bots.applozic.com/city/v2/search?name='
             var LINK_EXPRESSION = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
             var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
                 var markup=  '<div name="message" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}' +
@@ -4262,10 +4265,15 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-
+                
                 if(msg.metadata.askHotelCity && msg.metadata.askHotelCity=="true"){
                     $mck_autosuggest_search_input.addClass('mck-text-box').removeClass('n-vis');
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    if(msg.metadata.searchUrl){
+                        MCK_TYPEAHEAD_URL=msg.metadata.searchUrl;
+                        MCK_TYPEAHEAD_METHOD=msg.metadata.method?msg.metadata.method:MCK_TYPEAHEAD_METHOD;
+                        MCK_TYPEAHEAD_HEADERS=msg.metadata.headers?msg.metadata.headers:MCK_TYPEAHEAD_HEADERS;
+                    }
                     mckMessageService.updateMessageMetadata({key:msg.key, metadata:{askHotelCity:false}})
                 }
                 if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
@@ -4884,7 +4892,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     minLength: 3,
                     wrapper: ".mck-sidebox",
                     backdropOnFocus: true,
-                    menu: '<ul class="mcktypeahead mck-hotel-city-menu mck-dropup-menu"></ul>',
+                    menu: '<ul class="mcktypeahead mck-auto-suggest-menu mck-dropup-menu"></ul>',
                     show: function () {
                         var t = e.extend({}, this.$element.offset(), {
                             height: this.$element[0].offsetHeight
@@ -4893,16 +4901,17 @@ var MCK_CLIENT_GROUP_MAP = [];
                             left: t.left
                         }), this.$menu.show(), this.shown = !0, this
                     },
-                    source: params.SURL && params.SURL != "" ? function (query, process) {
+                    source: params && params.source ? _this.processAutosuggestData(params.source) :function (query, process) {
                         mckUtils.ajax({
-                            url: params.SURL + query,
-                            type: params.method,
+                            url: MCK_TYPEAHEAD_URL + query,
+                            type: MCK_TYPEAHEAD_METHOD,
+                            header:MCK_TYPEAHEAD_HEADERS,
                             success: (data) => {
                                 var items = _this.processAutosuggestData(data.data);
                                 process(items);
                             }
                         })
-                    } : _this.processAutosuggestData(params.source),
+                    },
                     items: 8,
                     updater: function (metadataString) {
                         var metadataObj = JSON.parse(metadataString);
@@ -4957,7 +4966,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     items: 8,
                     wrapper:".mck-sidebox",
                     backdropOnFocus: true,
-                    menu: '<ul class="mcktypeahead mck-hotel-city-menu mck-dropup-menu"></ul>',
+                    menu: '<ul class="mcktypeahead mck-auto-suggest-menu mck-dropup-menu"></ul>',
                     show: function() {
                         var t = e.extend({}, this.$element.offset(), {
                             height: this.$element[0].offsetHeight
@@ -4969,7 +4978,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     dynamic: true,
                     source: function (query, process) {
                         mckUtils.ajax({
-                            url: CITY_SEARCH_URL+ query,
+                            url: SEARCH_URL+ query,
                             type: 'get',
                             success: (data) => {
                                 //console.log('data: ', data);
@@ -7337,7 +7346,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGESTIONS") {
                         return;
                     }
-                    mckMessageLayout.populateAutoSuggest({SURL:CITY_SEARCH_URL, method:'get'});
+                    if(MCK_TYPEAHEAD_URL!=""){
+                        mckMessageLayout.populateAutoSuggest();
+                    }
                 });
             };
 
