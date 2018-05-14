@@ -181,7 +181,7 @@ Kommunicate.richMsgEventHandler = {
         var phone = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
 
         if (fname[0].value == "" || lname[0].value == "" || email[0].value == "" || phone[0].value == ""){
-            $applozic(e.target).closest('.km-guest-details-container').find(".mendatory-field-error").removeClass('n-vis').addClass('vis');
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-mandatory-field-error").removeClass('n-vis').addClass('vis');
             return;
         }
         var personDetail = {
