@@ -196,7 +196,9 @@ Kommunicate.richMsgEventHandler = {
         var target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
         var messagePxy = {
-            message: "Your detail submitted",
+            message: personDetail.Title+' '+personDetail.FirstName+' '+personDetail.LastName+'\n'
+            +personDetail.EmailId+'\n'
+            +personDetail.PhoneNo,
             metadata: {
                 sessionId: sessionId,
                 guestDetail: true,
