@@ -2266,14 +2266,17 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 			};
 			_this.tabviewUnreadIconUpdate = function () {
-				if ($kmApplozic(".km-assigned-search-list .km-unread-count-box").hasClass('vis')) {
-					$kmApplozic("#km-assigned-unread-icon").removeClass("n-vis").addClass("vis");
-				}
-				if ($kmApplozic(".km-closed-conversation-list .km-unread-count-box").hasClass('vis')) {
-					$kmApplozic("#km-closed-unread-icon").removeClass("n-vis").addClass("vis");
-				}
-				if ($kmApplozic(".km-contact-list .km-unread-count-box").hasClass('vis')) {
-					$kmApplozic("#km-allconversation-unread-icon").removeClass("n-vis").addClass("vis");
+				var tabUnreadIconMap = {
+					'km-contact-list': 'km-allconversation-unread-icon',
+					'km-closed-conversation-list': 'km-closed-unread-icon',
+					'km-assigned-search-list': 'km-assigned-unread-icon'
+				};
+				if ($(".km-unread-count-box.vis").closest("ul").length !== 0) {
+					var tabIdObj = $(".km-unread-count-box.vis").closest("ul");
+					for (var i = 0; i < tabIdObj.length; i++) {
+						var tabId = tabIdObj[i].id;
+						$kmApplozic("#" + tabUnreadIconMap[tabId]).removeClass("n-vis").addClass("vis");
+					}
 				}
 			}
 			
