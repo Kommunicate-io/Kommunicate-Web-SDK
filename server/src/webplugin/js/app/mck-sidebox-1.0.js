@@ -4281,9 +4281,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     try{
                         autosuggestions = JSON.parse(msg.metadata.suggestionList);
                     }catch(e){
-                        console.error("KM_AUTO_SUGGESTIONS should be an array");
+                        console.error("suggestionList should be an array");
                     }
-                    $mck_autosuggest_search_input.data("origin","KM_AUTO_SUGGESTIONS");
+                    $mck_autosuggest_search_input.data("origin","KM_AUTO_SUGGEST");
                     autosuggestions.length && mckMessageLayout.populateAutoSuggest({source:autosuggestions});
                     }  
                 }
@@ -4887,14 +4887,14 @@ var MCK_CLIENT_GROUP_MAP = [];
              * @param {*} params will contain source function/array of object and object will
              * contain message string that will be displayed into message box and metadata
              * will contain that we want to send with message.
-             * params contain SURL or source
+             * params contain sourceUrl or source.
              * source will contain array of object
-             * example:{SURL:http://localhost:5454/city/search?name=}
+             * example:{sourceUrl:http://localhost:5454/city/search?name=}
              * or   {source:arrayOfObject}
              * object format into arrayOfObject:
              * {searchKey:key for search,
              * message: message//this is optional
-             * metadata:{}
+             * metadata:{}//optional
              * }
              */
             _this.populateAutoSuggest = function (params) {
@@ -7355,7 +7355,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_autosuggest_search_input.on('input', function (e) {
                     e.preventDefault();
                     $mck_text_box.text($mck_autosuggest_search_input.val());
-                    if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGESTIONS") {
+                    if ($mck_autosuggest_search_input.data('origin') == "KM_AUTO_SUGGEST") {
                         return;
                     }
                     if($mck_autosuggest_search_input.data('source-url') !=""){
