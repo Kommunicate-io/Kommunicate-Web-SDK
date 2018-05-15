@@ -24,6 +24,17 @@
 	color: #333;
 }
 
+.km-unread-icon {
+		width: 11px;
+		height: 11px;
+		background-color: #e45d6c;
+		border: solid 0.5px #e0d9d9;
+		position: absolute;
+		left: 35px;
+		display: inline-block;
+		border-radius: 50em;
+}
+
 .km-sidebox {
 	position: fixed !important;
 	height: 100% !important;
