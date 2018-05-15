@@ -179,24 +179,9 @@ Kommunicate.richMsgEventHandler = {
         var lname = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.last-name-input");
         var email = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input");
         var phone = $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input");
-        if(title === "Title *"){
-            $applozic(e.target).closest('.km-guest-details-container').find(".km-title-select:first").focus();
-            return;
-        }
-        if(fname[0].value==""){
-            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.first-name-input").focus();
-            return;
-        }
-        if(lname[0].value==""){
-            $applozic(e.target).closest('.km-guest-details-container').find('.km-guest-detail-form input.last-name-input').focus();
-            return;
-        }
-        if(email[0].value==""){
-            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.e-mail-input").focus();
-            return;
-        }
-        if(phone[0].value==""){
-            $applozic(e.target).closest('.km-guest-details-container').find(".km-guest-detail-form input.number-input").focus();
+
+        if (fname[0].value == "" || lname[0].value == "" || email[0].value == "" || phone[0].value == ""){
+            $applozic(e.target).closest('.km-guest-details-container').find(".km-mandatory-field-error").removeClass('n-vis').addClass('vis');
             return;
         }
         var personDetail = {
@@ -210,15 +195,17 @@ Kommunicate.richMsgEventHandler = {
         }
         var target = e.target || e.srcElement;
         var sessionId = target.dataset.sessionid;
-        var messagePxy = { 
-                        message: "Your detail submitted",
-                        metadata: { 
-                                sessionId: sessionId, 
-                                guestDetail: true, 
-                                skipDialogflow: true, 
-                                personInfo: JSON.stringify(personDetail) 
-                                } 
-                            };
+        var messagePxy = {
+            message: personDetail.Title+' '+personDetail.FirstName+' '+personDetail.LastName+'\n'
+            +personDetail.EmailId+'\n'
+            +personDetail.PhoneNo,
+            metadata: {
+                sessionId: sessionId,
+                guestDetail: true,
+                skipDialogflow: true,
+                personInfo: JSON.stringify(personDetail)
+            }
+        };
         Kommunicate.sendMessage(messagePxy);
         console.log("passenger detail submitted");
     },
