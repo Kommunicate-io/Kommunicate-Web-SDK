@@ -1313,7 +1313,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$(".km-conversation-tab-selected").removeClass('vis').addClass('n-vis');
 					var tabId =$(".km-conversation-icon-active")[0].id;
 					$("."+conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
-					$("."+conversationTabViewMap[tabId]+"li:first-child").trigger( "click");
+					$("."+conversationTabViewMap[tabId]+" li:first-child").trigger( "click");
 					mckMessageService.tabviewUnreadIconUpdate();
 
 				});
