@@ -5213,7 +5213,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var isValidMeta = mckMessageLayout.isValidMetaData(message);
 				var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 				if (!message.metadata || isValidMeta) {
-					(message.groupId) ? mckMessageLayout.addGroupFromMessage(message, true,list) : mckMessageLayout.addContactsFromMessage(message, true);
+					(message.groupId) ? mckMessageLayout.addGroupFromMessage(message, true,list) : mckMessageLayout.addContactsFromMessage(message, true,list);
 				}
 				if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
 					if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
@@ -7610,6 +7610,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
+						if(message && message.to){
+							list.sectionId = "km-assigned-search-list";
+						}
 						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
 							list.sectionId = "km-assigned-search-list";
 						}
