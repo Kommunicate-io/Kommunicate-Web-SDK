@@ -367,9 +367,9 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="km-row">
-                        <h4 id="assign-selected" className="km-conversation-tab-selected">Assigned to me</h4>
-                        <h4 id="all-conversatios-selected" className="km-conversation-tab-selected n-vis">All Conversations</h4>
-                        <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected n-vis">Closed Conversations</h4>
+                        <h4 id="assign-selected" className="km-conversation-tab-selected km-assignee">Assigned to me</h4>
+                        <h4 id="all-conversatios-selected" className="km-conversation-tab-selected km-allconversation n-vis">All Conversations</h4>
+                        <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected km-closed n-vis">Closed Conversations</h4>
                       </div>  
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
@@ -489,12 +489,12 @@ class Aside extends Component {
                             <div className="km-tab-cell">
                               <div className="km-message-inner">
                                 <ul id="km-contact-list"
-                                  className="people km-contact-list km-converastion km-nav km-nav-tabs km-nav-stacked n-vis">
+                                  className="people km-contact-list km-allconversation km-converastion km-nav km-nav-tabs km-nav-stacked n-vis">
                                 </ul>
                                 <ul id="km-assigned-search-list"
-                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
+                                  className="km-contact-list people km-assigned km-converastion km-nav km-nav-tabs km-nav-stacked"></ul>
                                 <ul id="km-closed-conversation-list"
-                                  className="km-contact-list people km-converastion km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
+                                  className="km-contact-list people km-converastion km-closed km-nav km-nav-tabs km-nav-stacked n-vis"></ul>
                                 <div id="km-contact-loading" className="km-loading">
                                   <img src="/applozic/images/ring.gif"/>
                                 </div>

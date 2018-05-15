@@ -1302,29 +1302,18 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				});
 				$kmApplozic(d).on("click", ".km-conversation-tabView", function () {
+					var conversationTabViewMap = {
+						'km-conversation': 'km-allconversation',
+						'km-assigned': 'km-assigned',
+						'km-closed': 'km-closed'
+					};
 					$(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$(this).addClass('km-conversation-icon-active');
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
-					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
-						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-						$("#km-assigned-search-list li:first-child" ).trigger( "click");
-						$("#assign-selected").removeClass('n-vis').addClass('vis');
-						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
-
-					} else if ($("#km-closed").hasClass("km-conversation-icon-active")) {
-						$("#km-closed-conversation-list").removeClass('n-vis').addClass('vis');
-						$("#km-closed-conversation-list li:first-child" ).trigger( "click");
-						$("#closed-conversatios-selected").removeClass('n-vis').addClass('vis');
-						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#assign-selected").removeClass('vis').addClass('n-vis');
-					} else {
-						$("#km-contact-list").removeClass('n-vis').addClass('vis');
-						$( "#km-contact-list li:first-child" ).trigger( "click");
-						$("#all-conversatios-selected").removeClass('n-vis').addClass('vis');
-						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#assign-selected").removeClass('vis').addClass('n-vis');
-					}
+					$(".km-conversation-tab-selected").removeClass('vis').addClass('n-vis');
+					var tabId =$(".km-conversation-icon-active")[0].id;
+					$("."+conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
+					$("."+conversationTabViewMap[tabId]+"li:first-child").trigger( "click");
 					mckMessageService.tabviewUnreadIconUpdate();
 
 				});
