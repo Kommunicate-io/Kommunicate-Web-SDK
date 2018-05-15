@@ -3797,6 +3797,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 					$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					mckMessageService.tabviewUnreadIconUpdate();
 					$mck_msg_inner.bind('scroll', function() {
 						if ($mck_msg_inner.scrollTop() === 0) {
 							var tabId = $mck_msg_inner.data("km-id");
@@ -4758,6 +4759,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if (unreadCount > 0) {
 						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-text").html(unreadCount);
 						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
+						mckMessageService.tabviewUnreadIconUpdate();
 					}
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					$contactElem.data('msg-time', message.createdAtTime);
@@ -5276,6 +5278,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 						if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
 							$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
+							mckMessageService.tabviewUnreadIconUpdate();
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
@@ -7430,7 +7433,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var messageType = resp.type;
 				var list ={};
 				mckMessageService.emptyStateChange();
-				mckMessageService.tabviewUnreadIconUpdate();
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);
@@ -7512,6 +7514,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					mckMessageLayout.updateUnreadCount('user_' + contact.contactId, 0, true);
 					$kmApplozic("#km-li-user-" + contact.htmlId + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount('user_' + contact.contactId));
 					$kmApplozic("#km-li-user-" + contact.htmlId + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					mckMessageService.tabviewUnreadIconUpdate();
 					events.onConversationReadFromOtherSource({
 						'userId' : userId
 					});
