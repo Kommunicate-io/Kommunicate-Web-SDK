@@ -4271,15 +4271,15 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
                     $mck_autosuggest_search_input.attr("placeholder", msg.metadata.KM_PLACEHOLDER?msg.metadata.KM_PLACEHOLDER:"");
                     $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
-                    if (msg.metadata.suggestionSource) {
-                        var source=JSON.parse(msg.metadata.suggestionSource)
+                    if (msg.metadata.KM_SUGGESTION_SOURCE) {
+                        var source=JSON.parse(msg.metadata.KM_SUGGESTION_SOURCE)
                         $mck_autosuggest_search_input.data('source-url', source.sourceUrl);
                         $mck_autosuggest_search_input.data('method', source.method ? source.method : 'get');
                         $mck_autosuggest_search_input.data('headers', source.headers ? source.headers : {});
-                    }else if(msg.metadata.suggestionList){
+                    }else if(msg.metadata.KM_SUGGESTION_LIST){
                         var autosuggestions =[];
                     try{
-                        autosuggestions = JSON.parse(msg.metadata.suggestionList);
+                        autosuggestions = JSON.parse(msg.metadata.KM_SUGGESTION_LIST);
                     }catch(e){
                         console.error("suggestionList should be an array");
                     }
