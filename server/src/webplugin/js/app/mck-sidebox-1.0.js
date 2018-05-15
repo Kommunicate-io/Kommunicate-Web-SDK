@@ -2493,7 +2493,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $mck_autosuggest_metadata.val('');
                     }
                     if ($mck_autosuggest_search_input.data('prev-msgkey') != "") {
-                        mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { KM_AUTO_SUGGEST: false } })
+                        mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { obsolete: true } })
                         $mck_autosuggest_search_input.data('prev-msgkey', "")
                     }
                     if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -4266,26 +4266,26 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
                 
-                if ((msg.metadata.KM_AUTO_SUGGEST && msg.metadata.KM_AUTO_SUGGEST == "true")) {
-                    $mck_autosuggest_search_input.addClass('mck-text-box').removeClass('n-vis');
-                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
-                    $mck_autosuggest_search_input.attr("placeholder", msg.metadata.KM_PLACEHOLDER?msg.metadata.KM_PLACEHOLDER:"");
-                    $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
-                    if (msg.metadata.KM_SUGGESTION_SOURCE) {
-                        var source=JSON.parse(msg.metadata.KM_SUGGESTION_SOURCE)
-                        $mck_autosuggest_search_input.data('source-url', source.sourceUrl);
-                        $mck_autosuggest_search_input.data('method', source.method ? source.method : 'get');
-                        $mck_autosuggest_search_input.data('headers', source.headers ? source.headers : {});
-                    }else if(msg.metadata.KM_SUGGESTION_LIST){
-                        var autosuggestions =[];
-                    try{
-                        autosuggestions = JSON.parse(msg.metadata.KM_SUGGESTION_LIST);
-                    }catch(e){
+                if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
+                    var autosuggetionMetadata = {}
+                    try {
+                        autosuggetionMetadata = JSON.parse(msg.metadata.KM_AUTO_SUGGESTION);
+                    } catch (e) {
                         console.error("suggestionList should be an array");
                     }
-                    $mck_autosuggest_search_input.data("origin","KM_AUTO_SUGGEST");
-                    autosuggestions.length && mckMessageLayout.populateAutoSuggest({source:autosuggestions});
-                    }  
+                    $mck_autosuggest_search_input.addClass('mck-text-box').removeClass('n-vis');
+                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    $mck_autosuggest_search_input.attr("placeholder", autosuggetionMetadata.placeholder ? autosuggetionMetadata.placeholder : "");
+                    $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
+                    if (autosuggetionMetadata.source.constructor==Array) {
+                        $mck_autosuggest_search_input.data("origin", "KM_AUTO_SUGGEST");
+                        autosuggetionMetadata.source.length && mckMessageLayout.populateAutoSuggest({ source: autosuggetionMetadata.source });
+                    }else if(typeof autosuggetionMetadata.source==="object"){
+                        $mck_autosuggest_search_input.data('source-url', autosuggetionMetadata.source.url);
+                        $mck_autosuggest_search_input.data('method', autosuggetionMetadata.source.method ? autosuggetionMetadata.source.method : 'get');
+                        $mck_autosuggest_search_input.data('headers', autosuggetionMetadata.source.headers ? autosuggetionMetadata.source.headers : {});
+                    } 
+                        
                 }
 
                 // if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
