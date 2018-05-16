@@ -868,7 +868,7 @@ const conversationHandlingByBot = (botId, status) => {
 //     return;
 //   });
 // }
-const getConversationStatsByDayAndMonth = (days, agentId) => {
+const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution) => {
   let userSession = CommonUtils.getUserSession();
   let customerId = userSession.customerId;
   let query = { customerId: customerId, days: days, daily: true };
@@ -877,7 +877,7 @@ const getConversationStatsByDayAndMonth = (days, agentId) => {
     query.daily = "false"
   }
   else {
-    query.daily = "true"
+    query.daily = !hoursWiseDistribution;
   }
   let url = getConfig().kommunicateBaseUrl + "/conversations/stats?customerId=" + query.customerId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
 
