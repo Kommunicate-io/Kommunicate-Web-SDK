@@ -3733,7 +3733,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         '</div>'+
                         '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>'+
                 '</div>'+
-                
+
                 '<div class="n-vis mck-context-menu">'+
                     '<ul>'+
                         '<li><a class="mck-message-forward ${msgForwardVisibleExpr}">${msgForwardExpr}</a></li>'+
@@ -6082,6 +6082,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
             var CONTACT_LIST_URL = "/rest/ws/user/filter";
             var USER_STATUS_URL = "/rest/ws/user/chat/status";
+            var USER_DISPLAY_NAME_UPDATE = "/rest/ws/user/name";
             var USER_IDENTITY_UPDATE_URL = "/rest/ws/user/change/identifier";
             var FRIEND_LIST_URL ="/rest/ws/group/";
             _this.getContactDisplayName = function (userIdArray) {
@@ -6261,7 +6262,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
             };
-            
+
             _this.updateDisplayName = function (userId, userName) {
                 if (userId === "" || userName === "") {
                     return;
@@ -6376,7 +6377,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '</select>' +
                 '</div></div></div></div></li>';
             var groupMemberSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}">' + '<a class="mck-add-to-group" href="#" data-mck-id="${contIdExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="mck-row"><div class="blk-lg-12 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
-            
+
             var MAX_GROUP_NAME_SIZE = 30;
             $applozic('.mck-group-name-box div[contenteditable]').keypress(function (e) {
                 if (e.which === 8 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || (e.ctrlKey && e.which === 97)) {
@@ -6516,7 +6517,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic.template("groupMemberTemplate", groupContactbox);
                 $applozic.template("groupMemberSearchTemplate", groupMemberSearchContact);
             };
-            
+
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();
