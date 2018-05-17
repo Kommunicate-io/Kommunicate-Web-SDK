@@ -4182,7 +4182,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
             _this.getFilePath = function (msg) {
                 if (msg.contentType === 2) {
                     try {
-                        var geoLoc = $applozic.parseJSON(msg.message);
+                        var geoLoc = $kmApplozic.parseJSON(msg.message);
                         if (geoLoc.lat && geoLoc.lon) {
                             return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '&key=' + MCK_MAP_STATIC_API_KEY + '"/></a>';
                         }
@@ -4457,7 +4457,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 if ($kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr).length > 0) {
-                    var $mck_msg_part = $applozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
+                    var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
                         _this.updateContact(contact, message, sectionId);
                     }
