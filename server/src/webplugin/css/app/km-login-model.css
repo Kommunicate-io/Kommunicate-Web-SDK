@@ -1,7 +1,7 @@
 .km-sidemodal {
 	
 	line-height: 18px;
-	min-width: 310px;
+	min-width: 360px;
 	right: 0px !important;
 	left: auto !important;
 	margin: 0px !important;
@@ -23,10 +23,16 @@
 	left: auto;
 	width: 300px;
 }
+.km-modal-color{
+	color:white;
+}
+.km-modal-title{
+	margin-left:20px;
+}
 .km-sidemodal .km-modal-content {
 	border: 0;
 	display: table;
-	width: 100%;
+	/* width: 100%; */
 	right: 0;
 	bottom: 0;
 	height: 100%;
@@ -44,6 +50,11 @@
 .km-modal-header {
 	padding: 0 15px 0 15px;
 	border-bottom: none;
+	width: 330px;
+	height: 63.7px;
+	border-radius: 8px;
+	background-color: #5c5aa7;
+  
 }
 .km-modal-body .km-modal-error {
 	background-color: #FFDFDF;
@@ -64,7 +75,12 @@
 	text-align: center;
 }
 .km-modal input, .km-modal textarea, .km-modal select {
-	background-color: #f5f5f5;
+	height: 36px;
+	border-radius: 3px;
+	border: solid 1px #a1a1a1;
+}
+.km-first-input{
+	margin:36px;
 }
 
 .km-modal textarea {
@@ -76,9 +92,46 @@
 	text-decoration: underline;
 }
 .km-modal .km-section-title {
-	border-top: solid 1px #ccc;
+	width: 249px;
+	height: 57px;
+	font-family: Roboto;
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.8px;
 	text-align: center;
+	color: #565658;
+	margin-top: 48px;
+	margin-bottom: 36px;
 }
+.km-start-conversation{
+	width: 100%;
+	height: 40px;
+	border-radius: 26px;
+	background-color: #5c5aa7;
+	margin-top: 45px;
+	color:white;
+}
+#km-form-chat-login{
+	margin:15px;
+}
+.km-modal-span{
+	margin-left: 32px;
+    width: 249px;
+    height: 57px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.8px;
+    text-align: center;
+    color: #565658;
+}
+
 .km-modal-backdrop {
 	position: absolute;
 	top: 0;
@@ -86,13 +139,14 @@
 	left: 0;
 	background-color: #000
 }.km-modal {
+	margin-left: 5px;
+	margin-right: 5px;
 	font-size: 12px;
 	line-height: 18px;
 	border: solid 1px #333;
 	vertical-align: middle;
 	text-align: left;
 	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.5);
-	border-radius: 6px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 12px;
 	line-height: 20px;
@@ -100,7 +154,11 @@
 	border: 0 !important;
 }.km-modal-body {
 	position: relative;
-	padding: 15px
+	padding: 15px;
+	width: 330px;
+	height: 492px;
+	background-color: #ffffff;
+	box-shadow: 2px 2px 5px 2px rgba(49, 48, 48, 0.5);
 }.km-form-control {
 	display: block;
 	margin-bottom: 15px;
@@ -127,4 +185,5 @@
 	top: auto !important;
 	position: absolute;
 	display: none;
+	margin-right: 118PX!important;
 }
