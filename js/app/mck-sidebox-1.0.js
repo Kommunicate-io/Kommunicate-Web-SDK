@@ -471,6 +471,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
         var IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
+        var KM_ASK_USER_DETAILS =appOptions.askUserDetails;
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -817,6 +818,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             MCK_CHECK_USER_BUSY_STATUS = (typeof optns.checkUserBusyWithStatus === "boolean") ? (optns.checkUserBusyWithStatus) : false;
             IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof optns.launchOnUnreadMessage === "boolean") ? optns.launchOnUnreadMessage : false;
             IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
+            KM_ASK_USER_DETAILS =appOptions.askUserDetails;
         }
         _this.logout = function () {
             if (typeof mckInitializeChannel !== 'undefined') {
@@ -2094,37 +2096,45 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var $this = $applozic(this);
                     var elem = this;
                     KommunicateUI.showChat();
+                    var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
                     $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
-                    if (IS_ANONYMOUS_CHAT === "false") {
-                        //$applozic("#km-chat-login-modal").removeClass('n-vis').addClass('vis');
-                        $applozic("#km-chat-login-modal").css("display", "block");
-                    } else if($this.data('mck-id')){
-                        // clicked on conversation list;
+                    if ($this.data('mck-id')) {
                         if ($this.parents(".mck-search-list").length) {
                             $mck_search.bind('blur');
-                            //set timeout for ios devices to avoid contact list search issue.
                             setTimeout(function () {
                                 _this.openChat(elem);
                             }, 600);
                         } else {
                             _this.openChat(elem);
                         }
-                    }else{
-                            mckMessageService.loadConversationWithAgents({
-                                groupName: DEFAULT_GROUP_NAME,
-                                agentId: DEFAULT_AGENT_ID,
-                                botIds: DEFAULT_BOT_IDS
-                            }, function () {
-                                console.log("conversation created successfully");
-                            });
+                        return;
+                    }
+                    else if (!IS_ANONYMOUS_CHAT) {
+                        $("#km-userId").val(MCK_USER_ID);
+                        if (KM_ASK_USER_DETAILS.length > 0) {
+                            for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
+                                $("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
+                            }
+                        }
+                        $applozic("#km-chat-login-modal").css("display", "block");
+                    } else {
+                        mckMessageService.loadConversationWithAgents({
+                            groupName: DEFAULT_GROUP_NAME,
+                            agentId: DEFAULT_AGENT_ID,
+                            botIds: DEFAULT_BOT_IDS
+                        }, function () {
+                            console.log("conversation created successfully");
+                        });
 
                     }
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $("#km-submit-chat-login");
                     var $error_chat_login = $("#km-error-chat-login");
-                    var userId = $("#km-userName").val();
+                    var userId = $("#km-userId").val();
                     var email = $("#km-email").val();
+                    var userName = $("#km-userName").val();
+                    var contactNumber = $("#km-contact").val();
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
@@ -2136,6 +2146,15 @@ var MCK_CLIENT_GROUP_MAP = [];
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
                         googleApiKey: MCK_GOOGLE_API_KEY
+                    }
+                    if (email) {
+                        options.email = email;
+                    }
+                    if (userName) {
+                        options.userName = userName;
+                    }
+                    if (contactNumber) {
+                        options.contactNumber = contactNumber;
                     }
 
                     $applozic.fn.applozic('reInitialize', options);

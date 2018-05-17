@@ -262,7 +262,7 @@ function ApplozicSidebox() {
         try {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
-            	if(options.isAnonymousChat && !options.userId){
+                    if(!options.userId){
                		//  if (Cookies.get("kommunicate-id")) {
                         if (KommunicateUtils.getCookie('kommunicate-id')) {
                             options.userId = KommunicateUtils.getCookie('kommunicate-id');
