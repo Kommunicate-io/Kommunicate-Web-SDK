@@ -138,6 +138,8 @@ var MCK_CLIENT_GROUP_MAP = [];
     $applozic.fn.applozic = function (appOptions, params,callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
+            // storing custum appOptions into session Storage.
+            KommunicateUtils.storeDataIntoKmSession("appOptions",appOptions);
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
             appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
@@ -535,7 +537,8 @@ var MCK_CLIENT_GROUP_MAP = [];
             }
         };
         _this.reInit = function (optns) {
-
+             // storing custum appOptions into session Storage.
+             KommunicateUtils.storeDataIntoKmSession("appOptions",optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
             } else {
@@ -1529,6 +1532,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
+                 // dispatch an event "kmInitilized". 
+                w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
             };
             _this.validateAppSession = function (userPxy) {
                 mckGroupLayout.init();
