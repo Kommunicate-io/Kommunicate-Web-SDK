@@ -7,8 +7,9 @@ var MCK_ONINIT = "";
 //window.applozic.PRODUCT_ID= "${productId}"?"${productId}":"applozic-chat";
 window.applozic.PRODUCT_ID =":PRODUCT_ID";
 // $.getScript(MCK_STATICPATH + '/sidebox/js/app/mck-app.js');
+var options={};
 var options = applozic._globals;
-options.isAnonymousChat =options.isAnonymousChat||true;
+options.isAnonymousChat =options.isAnonymousChat;
 if (typeof options !== 'undefined') {
   MCK_ONINIT = options.onInit;
 }
