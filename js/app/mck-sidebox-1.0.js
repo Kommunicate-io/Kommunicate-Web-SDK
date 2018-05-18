@@ -500,10 +500,10 @@ var MCK_CLIENT_GROUP_MAP = [];
                 return;
             }
             else if (!IS_ANONYMOUS_CHAT) {
-                $("#km-userId").val(MCK_USER_ID);
+                $applozic("#km-userId").val(MCK_USER_ID);
                 if (KM_ASK_USER_DETAILS.length > 0) {
                     for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
-                        $("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
+                        $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
                     }
                 }
                 $applozic("#km-chat-login-modal").css("display", "block");
