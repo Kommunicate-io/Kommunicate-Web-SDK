@@ -1,3 +1,7 @@
+.bot-main-card-container {
+  width: 60%;
+  margin: 0 auto;
+}
 .integrated-bot-converstaion-routing-text {
 	font-size: 14px;
 	font-weight: normal;
@@ -32,11 +36,89 @@
   letter-spacing: 0.2px;
   text-align: left;
   color: #716d6d;
+  margin-left: 10px;
 }
 .bot-routing-link {
-  color: #5C5AA7;
-  text-decoration: none !important;
+  color: #5C5AA7!important;
+  text-decoration: underline !important;
+  font-weight: 500;
+  cursor: pointer;
 }
 .bot-routing-link:hover {
-  color: #5C5AA7;
+  color: #5C5AA7!important;
+}
+
+.rrui__segmented-control__option {
+  background-color : white;
+  color : black;
+}
+.rrui__segmented-control__option:active {
+  background-color : cyan;
+}
+.rrui__segmented-control__option--selected {
+  background-color : blue;
+  color : white;
+}
+
+.banner-container {
+  margin: 20px 0px 20px;
+  display: flex;
+}
+.banner-div {
+  border-radius: 2px;
+  background-color: #cce7f8;
+  padding: 10px 15px;
+}
+.banner-div--warning {
+  border-radius: 2px;
+  background-color: #ffc107;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.banner-sub-text {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  color: #7d7f81;
+}
+.banner-main-text {
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  text-align: left;
+  color: #4a4b4d;
+  padding-left: 10px;
+  margin-right: 20px;
+}
+.banner-div--warning .banner-sub-text {
+  margin: 0px 0px 0px 10px;
+  color: #212121;
+
+}
+.banner-div--warning svg {
+  fill: #212121;
+}
+
+.km-bot-list-table-heading {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  color: #97999b;
+}
+
+@media only screen and (max-width: 992px) {
+  .bot-main-card-container {
+    width: 100%;
+  }
 }
