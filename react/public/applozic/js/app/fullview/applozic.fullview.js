@@ -4733,6 +4733,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				//Todo: check $contactElem based on the sectionId
 				var $contactElem = $kmApplozic("#km-li-" + contHtmlExpr);
+				if($listId === "km-assigned-search-list"){
+					$contactElem = $kmApplozic("#km-li-as-" + contHtmlExpr);
+				}
 				var currentMessageTime = $contactElem.data('msg-time');
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
@@ -7613,7 +7616,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-						if(message && message.to){
+						if(message && message.to && !message.groupId){
 							list.sectionId = "km-assigned-search-list";
 						}
 						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
