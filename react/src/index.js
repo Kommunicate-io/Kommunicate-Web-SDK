@@ -43,7 +43,8 @@ class App extends Component {
     return (
       
       <div>
-        <NotificationContainer />
+      <NotificationContainer />
+      <ThirdPartyScripts/>
       <BrowserRouter>
         <Switch>
           <Route exact path="/login" name="Login Page" component={Login}/>
@@ -57,7 +58,6 @@ class App extends Component {
           <Route path="/" name="Home" render={ ({history}) =>  CommonUtils.getUserSession() ?<Full history ={history}/> : <Redirect to={{pathname: '/login'}}/> }/>
         </Switch>
       </BrowserRouter>
-      <ThirdPartyScripts/>
       </div>
     )
   }

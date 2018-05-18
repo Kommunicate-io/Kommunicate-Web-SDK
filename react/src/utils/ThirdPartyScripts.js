@@ -6,25 +6,21 @@ class ThirdPartyScripts extends Component {
     
       componentDidMount(){
           // support chat widget
-          var userId = CommonUtils.getUserSession.userName;
+          var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
+            console.log("component did mount called from third party script");
             (function(d, m){ 
-              var o = {};
-              if (userId) {
-                o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-                "userId": userId, "accessToken": CommonUtils.getUserSession().password,
-                "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
-              } else {
-                o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-                "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true};
+              let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true}
+              if(userId){
+                o.userId = userId;
+                o.password =CommonUtils.getUserSession().password;
               }
-
-              o.onInit=function(response) {        
-                
+              o.onInit=function(response) {    
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
                   console.log("template not loaded"); 
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
@@ -38,7 +34,7 @@ class ThirdPartyScripts extends Component {
                  document.getElementById('sidebar-sidebox-help-icon').classList.remove('n-vis'); 
                 }
 
-                if (currentPath.includes('/login')) {
+                if (currentPath.includes('/login') && document.getElementById('mck-sidebox-launcher')) {
                   document.getElementById('mck-sidebox-launcher').classList.add('vis'); 
                   document.getElementById('mck-sidebox-launcher').classList.remove('n-vis');
                 }
