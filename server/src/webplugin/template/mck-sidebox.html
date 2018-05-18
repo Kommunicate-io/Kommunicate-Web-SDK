@@ -248,9 +248,9 @@
 											</button>
 										</div>
 									</div>
-									<input id="mck-city-search-input" type="text" data-provide="typeahead" placeholder="Enter city name..." class="mck-blk-8 n-vis mck-text mck-typeahead"
+									<input id="mck-autosuggest-search-input" type="text" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead"
 									 autocomplete="off">
-									<input id="mck-city-json" type="hidden" name="city-detail" />
+									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
 									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required" data-text="Enter your message here..."></div>
 									<div class="mck-blk-2 mck-text-box-panel move-right">
 										<div class="mck-blk-12">
@@ -616,34 +616,45 @@
 <div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false">
 	<div class="km-modal-dialog km-modal-sm">
 		<div class="km-modal-content">
-			<div class="km-modal-header">
-				<button type="button" class="km-close km-login-model-close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&#88;</span>
-				</button>
-				<h2 class="km-modal-title">Login</h2>
+				<div class="mck-box-top mck-title">
+						<div class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate">
+							<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">
+								Kommunicate Support</div>		
+					</div>
+				<div class="blk-lg-2 mck-close-btn">
+					<button type="button" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+							<path d="M0 0h24v24H0z" fill="none" />
+						</svg>
+					</button>
+				</div>
 			</div>
 			<div class="km-modal-body">
 				<div class="km-section-title">
-					<h3>Login detail</h3>
+					<p class="km-modal-span">Before starting, we just need a few details so that we may serve you better</p>
 				</div>
 				<p id="km-error-chat-login" class="km-modal-error n-vis"></p>
 				<div class="km-modal-form">
 					<form id="km-form-chat-login" class="km-vertical">
 						<div class="km-form-group">
-							<input class="km-form-control" id="km-userName" name="userName" placeholder="Name" required>
+								<input class="km-form-control n-vis" id="km-userId" name="km-userId"/>
+							</div>
+						<div class="km-form-group">
+								<input type="km-email" class="km-form-control n-vis" id="km-email" name="email" placeholder="Email" />
 						</div>
 						<div class="km-form-group">
-							<input type="km-email" class="km-form-control" id="km-email" name="email" placeholder="Email" required />
+							<input class="km-form-control n-vis" id="km-userName" name="km-userName" placeholder="Name"/>
 						</div>
 						<!--  <div class="form-group">
 							<input type="password" class="form-control" id="password"
 								name="password" placeholder="Password" required />
 						</div>-->
 						<div class="km-form-group">
-							<input class="km-form-control" id="km-companyName" name="companyName" placeholder="Company" required />
+							<input class="km-form-control n-vis" id="km-contact" name="km-contact" placeholder="Contact Number" />
 						</div>
 						<div class="km-form-group km-last km-last-child km-text-center">
-							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary">Start chat</button>
+							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation">Start Conversation</button>
 						</div>
 					</form>
 				</div>

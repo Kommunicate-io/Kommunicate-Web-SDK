@@ -48,9 +48,9 @@ function ApplozicSidebox() {
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
     },/* {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
-    },*/ {
+    }, {
             "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
-    },
+    },*/
     /*{
             "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js" 
     },*/ {
@@ -262,7 +262,7 @@ function ApplozicSidebox() {
         try {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
-            	if(options.isAnonymousChat && !options.userId){
+                    if(!options.userId){
                		//  if (Cookies.get("kommunicate-id")) {
                         if (KommunicateUtils.getCookie('kommunicate-id')) {
                             options.userId = KommunicateUtils.getCookie('kommunicate-id');

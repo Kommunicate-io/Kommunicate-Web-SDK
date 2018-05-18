@@ -740,6 +740,17 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					});
 					return;
 				}
+				if (params.groupId) {
+					var group = kmGroupUtils.getGroup(params.groupId);
+					var member = group.members.includes(MCK_USER_ID);
+					var group = {};
+					group.groupId = params.groupId;
+					group.userId = MCK_USER_ID;
+					var conversationDetail = mckMessageService.checkForRoleType(group);
+					if (!member) {
+						kmGroupService.addGroupMember(conversationDetail);
+					}
+				}
 				params.apzCallback = mckGroupLayout.onAddedGroupMember;
 				kmGroupService.addGroupMember(params);
 				return "success";
@@ -1291,29 +1302,19 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				});
 				$kmApplozic(d).on("click", ".km-conversation-tabView", function () {
+					var conversationTabViewMap = {
+						'km-conversation': 'km-allconversation',
+						'km-assigned': 'km-assigned',
+						'km-closed': 'km-closed'
+					};
 					$(".km-conversation-tabView").removeClass('km-conversation-icon-active');
 					$(this).addClass('km-conversation-icon-active');
 					$(".km-converastion").removeClass('vis').addClass('n-vis');
-					if ($("#km-assigned").hasClass("km-conversation-icon-active")) {
-						$("#km-assigned-search-list").removeClass('n-vis').addClass('vis');
-						$("#km-assigned-search-list li:first-child" ).trigger( "click");
-						$("#assign-selected").removeClass('n-vis').addClass('vis');
-						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
-
-					} else if ($("#km-closed").hasClass("km-conversation-icon-active")) {
-						$("#km-closed-conversation-list").removeClass('n-vis').addClass('vis');
-						$("#km-closed-conversation-list li:first-child" ).trigger( "click");
-						$("#closed-conversatios-selected").removeClass('n-vis').addClass('vis');
-						$("#all-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#assign-selected").removeClass('vis').addClass('n-vis');
-					} else {
-						$("#km-contact-list").removeClass('n-vis').addClass('vis');
-						$( "#km-contact-list li:first-child" ).trigger( "click");
-						$("#all-conversatios-selected").removeClass('n-vis').addClass('vis');
-						$("#closed-conversatios-selected").removeClass('vis').addClass('n-vis');
-						$("#assign-selected").removeClass('vis').addClass('n-vis');
-					}
+					$(".km-conversation-tab-selected").removeClass('vis').addClass('n-vis');
+					var tabId =$(".km-conversation-icon-active")[0].id;
+					$("."+conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
+					$("."+conversationTabViewMap[tabId]+" li:first-child").trigger( "click");
+					mckMessageService.tabviewUnreadIconUpdate();
 
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function(e) {
@@ -1727,8 +1728,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 					mckMessageService.getConversationId(params);
 				});
-				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function(e) {
+				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis'); 
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
 					tabId = (typeof tabId !== "undefined" && tabId !== "") ? tabId.toString() : "";
@@ -1752,23 +1754,43 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							topicStatus = CONVERSATION_STATUS_MAP[0];
 						}
 						mckMessageService.getConversationId({
-							'tabId' : tabId,
-							'isGroup' : isGroup,
-							'userName' : userName,
-							'topicId' : topicId,
-							'topicStatus' : topicStatus,
-							'isMessage' : false
+							'tabId': tabId,
+							'isGroup': isGroup,
+							'userName': userName,
+							'topicId': topicId,
+							'topicStatus': topicStatus,
+							'isMessage': false
 						});
 					} else {
-						mckMessageLayout.loadTab({
-							'tabId' : tabId,
-							'isGroup' : isGroup,
-							'userName' : userName,
-							'conversationId' : conversationId,
-							'topicId' : topicId
-						});
+						var groupDetail = {
+							'tabId': tabId,
+							'isGroup': isGroup,
+							'userName': userName,
+							'conversationId': conversationId,
+							'topicId': topicId
+						}
+						var groupInfo = kmGroupUtils.getGroup(tabId);
+						if (typeof groupInfo === 'object') {
+							var member = groupInfo.members.includes(MCK_USER_ID);
+							var group = {};
+							group.groupId = tabId;
+							group.userId = MCK_USER_ID;
+							var conversationDetail = mckMessageService.checkForRoleType(group);
+							conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
+							conversationDetail.callback = function () {
+								mckMessageLayout.loadTab(groupDetail);
+							}
+							if (!member) {
+								kmGroupService.addGroupMember(conversationDetail);
+							} else {
+								mckMessageLayout.loadTab(groupDetail);
+							}
+
+						} else {
+							mckMessageLayout.loadTab(groupDetail);
+						}
+						$mck_search.val("");
 					}
-					$mck_search.val("");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function(e) {
 					e.preventDefault();
@@ -2232,10 +2254,26 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					success : function(data) {}
 				});
 			};
+			_this.tabviewUnreadIconUpdate = function () {
+				var tabUnreadIconMap = {
+					'km-contact-list': 'km-allconversation-unread-icon',
+					'km-closed-conversation-list': 'km-closed-unread-icon',
+					'km-assigned-search-list': 'km-assigned-unread-icon'
+				};
+				if ($(".km-unread-count-box.vis").closest("ul").length !== 0) {
+					var tabIdObj = $(".km-unread-count-box.vis").closest("ul");
+					for (var i = 0; i < tabIdObj.length; i++) {
+						var tabId = tabIdObj[i].id;
+						$kmApplozic("#" + tabUnreadIconMap[tabId]).removeClass("n-vis").addClass("vis");
+					}
+				}
+			}
 			
 			_this.submitMessage = function (messagePxy, optns) {
 				var group = kmGroupUtils.getGroup(messagePxy.groupId);
+				if(group){
 				var member = group.members.includes(MCK_USER_ID);
+				}
 				var conversationDetail = {
 					'groupId': messagePxy.groupId,
 					'userId': MCK_USER_ID
@@ -2256,7 +2294,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 				}
 			};
-			_this.messageSend =function(messagePxy,optns){
+			_this.submitMessage =function(messagePxy,optns){
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var randomId = messagePxy.key;
 				if (MCK_CHECK_USER_BUSY_STATUS) {
@@ -2630,6 +2668,24 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$mck_loading.removeClass('vis').addClass('n-vis');
 					$mck_msg_loading.removeClass('vis').addClass('n-vis');
 
+			}
+			_this.checkForRoleType = function (group) {
+				if (typeof group.groupId !== 'undefined' && typeof group.userId !== 'undefined') {
+					var conversationDetail = {
+						'groupId': group.groupId,
+						'userId': group.userId,
+						'apzCallback': mckGroupLayout.onAddedGroupMember
+					};
+					if (typeof group === 'object') {
+						if (MCK_CONTACT_ARRAY[group.userId] && MCK_CONTACT_ARRAY[group.userId].roleType && MCK_CONTACT_ARRAY[group.userId].roleType === 8) {
+							conversationDetail.role = 1;
+						}
+						if (MCK_CONTACT_ARRAY[group.userId] && MCK_CONTACT_ARRAY[group.userId].roleType && MCK_CONTACT_ARRAY[group.userId].roleType === 1) {
+							conversationDetail.role = 2;
+						}
+					}
+					return conversationDetail;
+				}
 			}
 			_this.loadSupportGroup = function (params, callback) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
@@ -3741,6 +3797,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 					$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					mckMessageService.tabviewUnreadIconUpdate();
 					$mck_msg_inner.bind('scroll', function() {
 						if ($mck_msg_inner.scrollTop() === 0) {
 							var tabId = $mck_msg_inner.data("km-id");
@@ -3869,11 +3926,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$kmApplozic("." + msgKey + " .msgtype-inbox-mck").attr('title', 'recieved');
 			};
 			_this.fetchContact = function(contactId) {
-				var contact = _this.getContact(contactId);
-				if (typeof contact === 'undefined') {
-					contact = _this.createContact(contactId);
-				}
-				return contact;
+					var contact = _this.getContact(contactId);
+					if (typeof contact === 'undefined') {
+						contact = _this.createContact(contactId);
+					}
+					return contact;
 			};
 			_this.getContact = function(contactId) {
 				if (typeof MCK_CONTACT_MAP[contactId] === 'object') {
@@ -4125,7 +4182,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
             _this.getFilePath = function (msg) {
                 if (msg.contentType === 2) {
                     try {
-                        var geoLoc = $applozic.parseJSON(msg.message);
+                        var geoLoc = $kmApplozic.parseJSON(msg.message);
                         if (geoLoc.lat && geoLoc.lon) {
                             return '<a href="http://maps.google.com/maps?z=17&t=m&q=loc:' + geoLoc.lat + "," + geoLoc.lon + '" target="_blank"><img src="https://maps.googleapis.com/maps/api/staticmap?zoom=17&size=200x150&center=' + geoLoc.lat + "," + geoLoc.lon + '&maptype=roadmap&markers=color:red|' + geoLoc.lat + "," + geoLoc.lon + '&key=' + MCK_MAP_STATIC_API_KEY + '"/></a>';
                         }
@@ -4400,7 +4457,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 if ($kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr).length > 0) {
-                    var $mck_msg_part = $applozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
+                    var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
                         _this.updateContact(contact, message, sectionId);
                     }
@@ -4676,6 +4733,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				//Todo: check $contactElem based on the sectionId
 				var $contactElem = $kmApplozic("#km-li-" + contHtmlExpr);
+				if($listId === "km-assigned-search-list"){
+					$contactElem = $kmApplozic("#km-li-as-" + contHtmlExpr);
+				}
 				var currentMessageTime = $contactElem.data('msg-time');
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
@@ -4702,6 +4762,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if (unreadCount > 0) {
 						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-text").html(unreadCount);
 						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
+						mckMessageService.tabviewUnreadIconUpdate();
 					}
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					$contactElem.data('msg-time', message.createdAtTime);
@@ -5157,7 +5218,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var isValidMeta = mckMessageLayout.isValidMetaData(message);
 				var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 				if (!message.metadata || isValidMeta) {
-					(message.groupId) ? mckMessageLayout.addGroupFromMessage(message, true,list) : mckMessageLayout.addContactsFromMessage(message, true);
+					(message.groupId) ? mckMessageLayout.addGroupFromMessage(message, true,list) : mckMessageLayout.addContactsFromMessage(message, true,list);
 				}
 				if (typeof tabId !== 'undefined' && tabId === contact.contactId && isGroupTab === contact.isGroup) {
 					if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
@@ -5220,6 +5281,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 						if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
 							$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
+							mckMessageService.tabviewUnreadIconUpdate();
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
@@ -6376,18 +6438,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var groupId = $mck_group_info_tab.data('km-id');
 				if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 					var group = kmGroupUtils.getGroup(groupId);
-					var conversationDetail ={
-						'groupId': groupId,
-						'userId': userId,
-						'apzCallback': mckGroupLayout.onAddedGroupMember
-					};
 					if (typeof group === 'object' && MCK_USER_ID === group.adminName) {
-						if (MCK_CONTACT_ARRAY[userId] && MCK_CONTACT_ARRAY[userId].roleType && MCK_CONTACT_ARRAY[userId].roleType === 8) {
-							conversationDetail.role = 1;
-						}
-						if (MCK_CONTACT_ARRAY[userId] && MCK_CONTACT_ARRAY[userId].roleType && MCK_CONTACT_ARRAY[userId].roleType === 1) {
-							conversationDetail.role = 2;
-						}
+						var group = {};
+						group.groupId = groupId;
+						group.userId = userId;
+						var conversationDetail = mckMessageService.checkForRoleType(group);
 						kmGroupService.addGroupMember(conversationDetail);
 
 					} else {
@@ -7462,6 +7517,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					mckMessageLayout.updateUnreadCount('user_' + contact.contactId, 0, true);
 					$kmApplozic("#km-li-user-" + contact.htmlId + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount('user_' + contact.contactId));
 					$kmApplozic("#km-li-user-" + contact.htmlId + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					mckMessageService.tabviewUnreadIconUpdate();
 					events.onConversationReadFromOtherSource({
 						'userId' : userId
 					});
@@ -7560,6 +7616,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
+						if(message && message.to && !message.groupId){
+							list.sectionId = "km-assigned-search-list";
+						}
 						if(message.metadata && message.metadata.KM_ASSIGN ===MCK_USER_ID){
 							list.sectionId = "km-assigned-search-list";
 						}

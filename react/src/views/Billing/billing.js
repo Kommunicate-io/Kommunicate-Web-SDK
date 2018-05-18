@@ -486,7 +486,7 @@ class Billing extends Component {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-lg-3 col-md-3 col-xs-12" hidden>
+                                    <div className="col-lg-4 col-md-4 col-xs-12">
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
@@ -512,10 +512,13 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p>All in Startup</p>
                                                         <ul>
+                                                            <li>Bot integration</li>
                                                             <li>Unlimited bots</li>
                                                             <li>Advanced reporting</li>
-                                                            <li>White label (removed powered by Kommunicate)</li>
-                                                            <li>Data retention: Forever</li>
+                                                            <li>CRM integration</li>
+                                                            <li>Contact Enrichment</li>
+                                                            <li>FAQs</li>
+                                                            <li>Chat &amp; Email Support</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -583,7 +586,7 @@ class Billing extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="col-lg-4 col-md-4 col-xs-12">
+                                    <div className="col-lg-4 col-md-4 col-xs-12" hidden>
                                         <PlanView showHideFeatures={this.showHideFeatures} PlanIcon={EarlyBirdPlanIcon} PlanName={SUBSCRIPTION_PLANS['early_bird_monthly'].name} PlanMAU={SUBSCRIPTION_PLANS['early_bird_monthly'].mau} 
                                             PlanAmountMonthly={SUBSCRIPTION_PLANS['early_bird_monthly'].amount} PlanAmountYearly={SUBSCRIPTION_PLANS['early_bird_yearly'].amount}
                                             PricingMonthlyHidden={this.state.pricingMonthlyHidden}
@@ -613,7 +616,7 @@ class Billing extends Component {
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Early Bird</p>
+                                                        <p>All in Launch</p>
                                                         <ul>
                                                             <li>Custom bot development</li>
                                                             <li>Personalized support on Phone &amp; Skype</li>

@@ -2,10 +2,10 @@
   "action_fingerprints": {
     "action_listen": {
       "slots": [
+        "people",
         "cuisine",
         "price",
-        "location",
-        "people"
+        "location"
       ]
     }
   },

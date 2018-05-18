@@ -159,38 +159,95 @@
   font-size: 12px;
   color: #505154;
   letter-spacing: 0.6px;
+  font-weight: 400;
+}
+.dashboard-chart-checkbox-section {
+    padding-right: 10px !important;
+    text-align: right;
+}
+.dashboard-chart-checkbox {
+    margin-top: 5px;
+    margin-right: 10px;
+}
+.chart-checkbox-text {
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #7d7d80;
+}
+/* The container */
+.dashboard-chart-checkbox-label {
+    /* display: block; */
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #7d7d80;
+    position: relative;
+    padding-left: 25px;
+    margin-top: 7px;
+    /* margin-bottom: 12px; */
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-@media (max-width:991px) {
-    .card-stats--mau .vertical-line {
-        display: none;
-    }
-    .card-stats--messages {
-        border-top-right-radius: 0px;
-    }
-    .card-stats--mau {
-        border-top-right-radius: 0px;
-    }
-    .card-stats.card-stats--messages {
-        border-top-right-radius: 0px;
-    }
+/* Hide the browser's default checkbox */
+.dashboard-chart-checkbox-label input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
 }
-@media (max-width:575px) {
-    .vertical-line {
-        display: none;
-    }
-    .card-stats--messages {
-        border-top-right-radius: 0px;
-    }
-    .card-stats--users {
-        border-top-right-radius: 4px;
-    }
-    .card-stats.card-stats--mau {
-        border-top-right-radius: 0px;
-    }
-    .card-stats {
-        border-bottom: 1px solid #cfcaca;
-    }
+
+/* Create a custom checkbox */
+.chart-checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 17px;
+    width: 17px;
+    background-color: #fff;
+    border: 2px solid #9E9E9E;
+    /* transition: color 250ms cubic-bezier(.4,.0,.23,1); */
+}
+
+/* On mouse-over, add a grey background color */
+/* .dashboard-chart-checkbox-label:hover input ~ .chart-checkmark {
+    background-color: #ccc;
+} */
+
+/* When the checkbox is checked, add a blue background */
+.dashboard-chart-checkbox-label input:checked ~ .chart-checkmark {
+    background-color: #5c5aa7;
+    border-color: #5c5aa7;
+    border-radius: 2px;
+}
+
+/* Create the chart-checkmark/indicator (hidden when not checked) */
+.chart-checkmark::after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the chart-checkmark when checked */
+.dashboard-chart-checkbox-label input:checked ~ .chart-checkmark::after {
+    display: block;
+}
+
+/* Style the chart-checkmark/indicator */
+.dashboard-chart-checkbox-label .chart-checkmark::after {
+    left: 4px;
+    top: 0px;
+    width: 6px;
+    height: 11px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.dashboard-chart-checkbox-label input:disabled ~ .chart-checkmark {
+    opacity: 0.5;
 }
 
 @media only screen and (min-width:992px) {

@@ -4,8 +4,7 @@ module.exports.createSuggestion = {
 	body:{
 		applicationId: joi.string().required(),
 		userName: joi.string().required(),
-		category: joi.string().required(),
-		content: joi.string().required(),
+		category: joi.string().required()
 	}
 }
 

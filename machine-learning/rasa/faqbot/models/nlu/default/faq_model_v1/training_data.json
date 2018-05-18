@@ -1,0 +1,113 @@
+{
+  "rasa_nlu_data": {
+    "common_examples": [
+      {
+        "intent": "mau_intent",
+        "entities": [],
+        "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
+      },
+      {
+        "intent": "mau_intent",
+        "entities": [],
+        "text": "How is MAU calculated? "
+      },
+      {
+        "intent": "mau_intent",
+        "entities": [],
+        "text": "What is MAU? "
+      },
+      {
+        "intent": "mau_intent",
+        "entities": [],
+        "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
+      },
+      {
+        "intent": "push_notification_not_working",
+        "entities": [],
+        "text": "Why are messages not getting delivered on Applozic?"
+      },
+      {
+        "intent": "push_notification_not_working",
+        "entities": [],
+        "text": "Unable to send messages ?"
+      },
+      {
+        "intent": "push_notification_not_working",
+        "entities": [],
+        "text": "Unable to send messages ?"
+      },
+      {
+        "intent": "host_applozic",
+        "entities": [],
+        "text": "Can I host Applozic Chat on my own server instance?"
+      },
+      {
+        "intent": "host_applozic",
+        "entities": [],
+        "text": "Can I host Applozic Chat on my own server instance?"
+      },
+      {
+        "intent": "custom_ui",
+        "entities": [],
+        "text": "Can I build our own UI on Applozic?"
+      },
+      {
+        "intent": "custom_ui",
+        "entities": [],
+        "text": "Can I build our own UI on Applozic?"
+      },
+      {
+        "intent": "custom_ui",
+        "entities": [],
+        "text": "Can I build our own UI on Applozic?"
+      },
+      {
+        "intent": "default_ui",
+        "entities": [],
+        "text": "Can I customise the default UI?"
+      },
+      {
+        "intent": "default_ui",
+        "entities": [],
+        "text": "Can I customise the default UI?"
+      },
+      {
+        "intent": "default_ui",
+        "entities": [],
+        "text": "Can I customise the default UI?"
+      },
+      {
+        "intent": "not_understood",
+        "entities": [],
+        "text": "Pricing of Applozic?"
+      },
+      {
+        "intent": "greet",
+        "entities": [],
+        "text": "Hi"
+      },
+      {
+        "intent": "greet",
+        "entities": [],
+        "text": "Hello"
+      },
+      {
+        "intent": "greet",
+        "entities": [],
+        "text": "Need help"
+      },
+      {
+        "intent": "done",
+        "entities": [],
+        "text": "Nothing else"
+      },
+      {
+        "intent": "done",
+        "entities": [],
+        "text": "That will be all ."
+      }
+    ],
+    "regex_features": [],
+    "entity_synonyms": []
+  }
+}
