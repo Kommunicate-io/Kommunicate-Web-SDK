@@ -131,14 +131,11 @@ class Register extends Component {
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
-      if (window.Kommunicate && window.Kommunicate.updateUserIdentity && window.$applozic) {
-        window.Kommunicate.updateUserIdentity(userInfo.userName);
+      if (window.Kommunicate && window.$applozic) { 
+        //window.Kommunicate.updateUserIdentity(userInfo.userName);
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
         window.$applozic.fn.applozic('updateUser', {data: user, success: function(response) {
-            console.log(response);
-            if(userInfo.userName){
-              CommonUtils.setCookie("kommunicate-id",userInfo.userName);
-              }
+            console.log("email and displayName updated for support user");
           }, error: function(error) {
             console.log(error);
           }

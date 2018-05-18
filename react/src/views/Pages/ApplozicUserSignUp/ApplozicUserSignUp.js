@@ -135,14 +135,11 @@ class ApplozicUserSignUp extends Component {
         return;
        }else if(response.data&& response.data.code==="SUCCESS"){
         if (window.Kommunicate && window.Kommunicate.updateUserIdentity) {
-          window.Kommunicate.updateUserIdentity(userInfo.userName);
-          if(userInfo.userName){
-            CommonUtils.setCookie("kommunicate-id",userInfo.userName);
-            }
+          //window.Kommunicate.updateUserIdentity(userInfo.userName);
           }
         saveToLocalStorage(email, password, response.data.data.name, response);
         _this.setState({disableRegisterButton:false});
-        this.props.history.push('/dashboard');
+        this.props.history.push('/');
         return;
        }else throw "error";
       }

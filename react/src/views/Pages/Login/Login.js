@@ -17,6 +17,7 @@ import InputField from '../../../components/InputField/InputField';
 import GoogleLogo from '../Register/logo_google.svg';
 import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
+import {COOKIES} from '../../../utils/Constant';
 
 
 class Login extends Component {
@@ -212,23 +213,13 @@ submitForm = ()=>{
           }
 
           _this.setState({'applicationId': response.data.result.application.applicationId});
-
+          
           response.data.result.password = password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
         }
-
-        if (window.$applozic) {
-          var options = window.applozic._globals;
-          options.userId = _this.state.userName;
-          options.accessToken = _this.state.password;
-          window.$applozic.fn.applozic(options);          
-        }
-
         _this.props.history.push("/dashboard");
         _this.state=_this.initialState;
-    
-        //window.chatLogin();
     }
     }).catch(function(err){
       console.log(err);
