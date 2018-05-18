@@ -64,7 +64,11 @@ class Sidebar extends Component {
     // window.Kommunicate.createNewConversation();
     // window.Kommunicate.openLastConversation();
     // window.$applozic.fn.applozic('loadConversationwithAgent');
-    window.Kommunicate.openConversationList();
+
+    // window.Kommunicate.openConversationList();
+    // window.Kommunicate.mckLaunchSideboxChat();
+    
+    window.$applozic.fn.applozic('mckLaunchSideboxChat');
     document.querySelector('.faq-common').classList.add('n-vis');
     
     // document.getElementById('mck-sidebox-launcher').classList.add('n-vis');
@@ -88,6 +92,15 @@ class Sidebar extends Component {
       <div className="sidebar">
         <nav className="sidebar-nav">
           <ul className="nav">
+
+            <li className="nav-item logo-nav">
+              <div className="km-logo-circle-bg">
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352.7 316.7'>
+                  <path className='km-logo-final-logo-beta-0' d='M348.5,302.2V121.2c0-65.4-53-118.3-118.3-118.3H122.5C57.1,2.8,4.1,55.8,4.1,121.2 c0,65.4,53,118.4,118.4,118.4H239c0,0,9.5,0.6,15.2,2.6c5.5,2,11.5,6.8,11.5,6.8l72,59.3c0,0,6.5,5.6,8.9,4.5 C349,311.5,348.5,302.2,348.5,302.2z M125.8,145.3c0,7.9-6.9,14.3-15.4,14.3S95,153.2,95,145.3V94.5c0-7.9,6.9-14.3,15.4-14.3 s15.4,6.4,15.4,14.3V145.3z M191.7,169.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V70.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V169.3z M257.6,145.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V94.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V145.3z' fill="#5C5AA7"/>
+                </svg>
+              </div>
+            </li>
+
             {/* Dashboard Link */}
             <li className="nav-item">
               <NavLink to={'/dashboard'} className="nav-link" activeClassName="active" data-rh="Dashboard" data-rh-at="right" data-tip="Dashboard" data-effect="solid" data-place="right">
