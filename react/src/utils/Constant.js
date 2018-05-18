@@ -8,4 +8,11 @@ export const CONVERSATION_STATS_FILTER_KEY = {
     HOUR_WISE_DISTRIBUTION : 2
 }
 
-export const MEMORY_CACHING_TIME_DURATION = 2*60*1000   //in Millisec  
+export const MEMORY_CACHING_TIME_DURATION = 2*60*1000   //in Millisec 
+
+export const THIRD_PARTY_INTEGRATION_TYPE = {
+    HELPDOCS: 1,
+    ZENDESK: 2,
+    CLEARBIT: 3,
+    AGILE_CRM: 4
+}

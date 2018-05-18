@@ -4,19 +4,21 @@ import { thirdPartyList, modals } from './ThirdPartyList'
 import Modal from 'react-responsive-modal';
 import IntegrationDescription from './IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
-
+import { THIRD_PARTY_INTEGRATION_TYPE }  from '../../utils/Constant'
 class Integrations extends Component {
     constructor(props){
         super(props);
         this.state = {
             modalIsOpen: false,      
             activeDiv:'zendesk',
-            Helpdocs:false, //enableHelpdocs
-            Zendesk:false,  //enableZendesk
-            Clearbit:false, //enableClearbit
+            helpdocs:false, //using for enable and disable Helpdocs
+            zendesk:false,  //using for enable and disable Zendesk 
+            clearbit:false, //using for enable and disable Clearbit
+            Agilecrm:false, //usinfg for enable and disable Agile CRM
             helpdocsKeys:[],
             zendeskKeys:[],
             clearbitKeys:[],
+            agilecrmKeys:[],
             showDiscountOffer: true
         };
         this.openModal = this.openModal.bind(this);
@@ -29,44 +31,36 @@ class Integrations extends Component {
     getThirdPartyList = () =>{
         return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
             let helpdocsKeys = response.data.message.filter(function (integration) {
-                return integration.type == 1;
-              });
+                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.HELPDOCS;
+            });
             let zendeskKeys = response.data.message.filter(function (integration) {
-                return integration.type == 2;
+                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.ZENDESK;
             });
             let clearbitKeys = response.data.message.filter(function (integration) {
-                return integration.type == 3;
+                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.CLEARBIT;
+            });
+            let agilecrmKeys = response.data.message.filter(function (integration) {
+                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.AGILE_CRM;
             });
             this.setState({
                 helpdocsKeys:helpdocsKeys,
                 zendeskKeys:zendeskKeys,
-                clearbitKeys,clearbitKeys
+                clearbitKeys,clearbitKeys,
+                agilecrmKeys:agilecrmKeys,
 
             })
-            if (this.state.helpdocsKeys.length > 0) {
+            this.state.helpdocsKeys.length && this.setState({ helpdocs: true, showDiscountOffer: true });
+            this.state.helpdocsKeys.length == 0 && this.setState({ helpdocs: false, showDiscountOffer: false });
 
-                this.setState({ Helpdocs:true, showDiscountOffer:true })
-            }
-            else {
+            this.state.zendeskKeys.length && this.setState({ zendesk: true });
+            this.state.zendeskKeys.length == 0 && this.setState({ zendesk: false });
 
-                this.setState({ Helpdocs:false, showDiscountOffer:false })
-            }
-            if (this.state.zendeskKeys.length > 0) {
+            this.state.clearbitKeys.length && this.setState({ clearbit: true });
+            this.state.clearbitKeys.length == 0 && this.setState({ clearbit: false });
 
-                this.setState({ Zendesk:true })
-            }
-            else {
+            this.state.agilecrmKeys.length && this.setState({ agilecrm: true});
+            this.state.agilecrmKeys.length == 0 && this.setState({ agilecrm: false})
 
-                this.setState({ Zendesk:false })
-            }
-            if (this.state.clearbitKeys.length > 0) {
-
-                this.setState({ Clearbit:true })
-            }
-            else {
-
-                this.setState({  Clearbit:false}) 
-            }
         }).catch(err => {
             console.log("Error while fetching third patry intgration list", err);
         })
@@ -90,11 +84,10 @@ class Integrations extends Component {
          var result = [];
          for (var key in party) {
              var partyKey = key;
-
              if (party.hasOwnProperty(key)) {
                  var item = party[key];
-                 var enabledClass = this.state[item.name] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
-                 result.push(<div key={key} className="col-lg-4 col-md-4 ">
+                 var enabledClass = this.state[item.key] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
+                 result.push(<div key={key} className="col-lg-4 col-md-4 col-lg-4-integration ">
                     <div className ={ enabledClass !== "content-wrapper" ? "active-integrated" : "hide-integrated" }>INTEGRATED</div>
                      <div className={enabledClass}>
                          <img src={item.logo} className="integration-brand-logo" />
@@ -123,7 +116,7 @@ class Integrations extends Component {
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} showDiscountOffer={this.state.showDiscountOffer} 
-                  getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} />
+                  getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
             </div>
         </Modal>
      </div>
