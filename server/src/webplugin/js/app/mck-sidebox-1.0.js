@@ -276,7 +276,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         return oInstance.updateMessageMetadata(params);
                         break;
                     case 'mckLaunchSideboxChat':
-                        return oInstance.mckLaunchSideboxChat(params);
+                        return oInstance.mckLaunchSideboxChat();
                         break;
 
                 }
@@ -483,25 +483,13 @@ var MCK_CLIENT_GROUP_MAP = [];
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
 
-        _this.mckLaunchSideboxChat = function(params) {
+        _this.mckLaunchSideboxChat = function() {
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
-            var $this = $applozic(params);
-            var elem = params;
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
-            if ($this.data('mck-id')) {
-                if ($this.parents(".mck-search-list").length) {
-                    $mck_search.bind('blur');
-                    setTimeout(function () {
-                        mckMessageService.openChat(elem);
-                    }, 600);
-                } else {
-                    mckMessageService.openChat(elem);
-                }
-                return;
-            }
-            else if (!IS_ANONYMOUS_CHAT) {
+            
+            if (!IS_ANONYMOUS_CHAT) {
                 $applozic("#km-userId").val(MCK_USER_ID);
                 if (KM_ASK_USER_DETAILS.length > 0) {
                     for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
@@ -2139,7 +2127,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    $applozic.fn.applozic("mckLaunchSideboxChat",this);
+                    var $this = $applozic(this);
+                    var elem = this;
+                    if ($this.data('mck-id')) {
+                        if ($this.parents(".mck-search-list").length) {
+                            $mck_search.bind('blur');
+                            setTimeout(function () {
+                                mckMessageService.openChat(elem);
+                            }, 600);
+                        } else {
+                            mckMessageService.openChat(elem);
+                        }
+                        return;
+                    }
+                    $applozic.fn.applozic("mckLaunchSideboxChat");
+                    // console.log(this);
                     
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
