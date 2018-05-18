@@ -28,32 +28,32 @@ class IntegrationDescription extends Component {
     componentDidMount() {
         switch (this.state.activeModal) {
             case 'helpdocs':
-                this.state.helpdocsKeys.length &&
-                    this.setState({
-                        accessKey: this.state.helpdocsKeys[0].accessKey,
-                    })
+                this.state.helpdocsKeys &&
+                this.setState({
+                    accessKey: this.state.helpdocsKeys.accessKey,
+                })
                 break;
             case 'zendesk':
-                this.state.zendeskKeys.length &&
-                    this.setState({
-                        email: this.state.zendeskKeys[0].accessKey,
-                        accessToken: this.state.zendeskKeys[0].accessToken,
-                        subdoamin: this.state.zendeskKeys[0].domain
-                    })
+                this.state.zendeskKeys &&
+                this.setState({
+                    email: this.state.zendeskKeys.accessKey,
+                    accessToken: this.state.zendeskKeys.accessToken,
+                    subdoamin: this.state.zendeskKeys.domain
+                })
                 break;
             case 'clearbit':
-                this.state.clearbitKeys.length &&
-                    this.setState({
-                        accessKey: this.state.clearbitKeys[0].accessKey,
-                    })
+            this.state.clearbitKeys &&    
+            this.setState({
+                    accessKey: this.state.clearbitKeys.accessKey,
+                })
                 break;
             case 'agilecrm':
-                this.state.agilecrmKeys.length &&
-                    this.setState({
-                        email: this.state.agilecrmKeys[0].accessKey,
-                        accessKey: this.state.agilecrmKeys[0].accessToken,
-                        subdoamin: this.state.agilecrmKeys[0].domain
-                    })
+            this.state.agilecrmKeys &&
+                this.setState({
+                    email: this.state.agilecrmKeys.accessKey,
+                    accessKey: this.state.agilecrmKeys.accessToken,
+                    subdoamin: this.state.agilecrmKeys.domain
+                })
         }
 
 
@@ -163,7 +163,7 @@ class IntegrationDescription extends Component {
         let integrationType = thirdPartyList[this.state.activeModal].integrationType
         createAndUpdateThirdPArtyIntegration(keys, integrationType)
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.status === 200 && response.data.code === "SUCCESS") {
                     if (integrationType == 3) {
                         let userSession = CommonUtils.getUserSession();
@@ -210,7 +210,7 @@ class IntegrationDescription extends Component {
         let integrationType = thirdPartyList[this.state.activeModal].integrationType
         deleteThirdPartyByIntegrationType(integrationType)
             .then(response => {
-                console.log(response)
+                // console.log(response)
                 if (response.status === 200 && response.data.code === "SUCCESS") {
                     Notification.info(thirdPartyList[this.state.activeModal].name + " integration deleted");
                     this.props.handleCloseModal();
@@ -227,9 +227,11 @@ class IntegrationDescription extends Component {
     render() {
         //alert(this.state.activeModal);
         return <div className="integration-description-wrapper">
-            <h4 className="integration-description-title"><span><img src={thirdPartyList[this.state.activeModal].logo} className="integration-description-logo" /></span>
-                Integrating {thirdPartyList[this.state.activeModal].name} with Kommunicate</h4>
-            <div className="title-divider"></div>
+            <div className="integration-title-section">
+                <h4 className="integration-description-title"><span><img src={thirdPartyList[this.state.activeModal].logo} className="integration-description-logo" /></span>
+                    Integrating {thirdPartyList[this.state.activeModal].name} with Kommunicate</h4>
+                <div className="title-divider"></div>
+            </div>    
 
             {/* Discount Banner */}
             {this.props.showDiscountOffer === true ? " " : thirdPartyList[this.state.activeModal].discountCouponBanner}

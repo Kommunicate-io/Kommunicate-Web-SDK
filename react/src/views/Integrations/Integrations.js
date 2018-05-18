@@ -11,15 +11,7 @@ class Integrations extends Component {
         this.state = {
             modalIsOpen: false,      
             activeDiv:'zendesk',
-            helpdocs:false, //using for enable and disable Helpdocs
-            zendesk:false,  //using for enable and disable Zendesk 
-            clearbit:false, //using for enable and disable Clearbit
-            Agilecrm:false, //usinfg for enable and disable Agile CRM
-            helpdocsKeys:[],
-            zendeskKeys:[],
-            clearbitKeys:[],
-            agilecrmKeys:[],
-            showDiscountOffer: true
+            showDiscountOffer: false
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -30,43 +22,44 @@ class Integrations extends Component {
     }
     getThirdPartyList = () =>{
         return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
-            let helpdocsKeys = response.data.message.filter(function (integration) {
-                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.HELPDOCS;
-            });
-            let zendeskKeys = response.data.message.filter(function (integration) {
-                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.ZENDESK;
-            });
-            let clearbitKeys = response.data.message.filter(function (integration) {
-                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.CLEARBIT;
-            });
-            let agilecrmKeys = response.data.message.filter(function (integration) {
-                return integration.type == THIRD_PARTY_INTEGRATION_TYPE.AGILE_CRM;
-            });
-            this.setState({
-                helpdocsKeys:helpdocsKeys,
-                zendeskKeys:zendeskKeys,
-                clearbitKeys,clearbitKeys,
-                agilecrmKeys:agilecrmKeys,
+            this.setState({showDiscountOffer: false})
+            let integratedThirdParties={}
+            let enable = {};
+            let disable = {};
+            response.data.message.forEach(element => {
+                let type = element.type
+                //todo get state variable from third party list. then set it in state.
+                for (const key of Object.keys(thirdPartyList)) {
+                    // console.log(key, thirdPartyList[key]);
+                    let thirdParty = thirdPartyList[key];
+                    let integrationType= thirdParty.integrationType;
+                    disable[thirdParty.key] = false
+                    if (type == integrationType) {
+                        let state = thirdParty.state;
+                        integratedThirdParties[state]=element;
+                        enable[thirdParty.key] = true
+                        if ( thirdParty.key == "helpdocs" ) {
+                            this.setState({showDiscountOffer: true})
+                        }
+                                    
+                    }
 
-            })
-            this.state.helpdocsKeys.length && this.setState({ helpdocs: true, showDiscountOffer: true });
-            this.state.helpdocsKeys.length == 0 && this.setState({ helpdocs: false, showDiscountOffer: false });
-
-            this.state.zendeskKeys.length && this.setState({ zendesk: true });
-            this.state.zendeskKeys.length == 0 && this.setState({ zendesk: false });
-
-            this.state.clearbitKeys.length && this.setState({ clearbit: true });
-            this.state.clearbitKeys.length == 0 && this.setState({ clearbit: false });
-
-            this.state.agilecrmKeys.length && this.setState({ agilecrm: true});
-            this.state.agilecrmKeys.length == 0 && this.setState({ agilecrm: false})
-
+                }
+            
+        });
+    
+        this.setState(disable);
+        this.setState(enable);
+        this.setState(integratedThirdParties);
+        
+            
         }).catch(err => {
             console.log("Error while fetching third patry intgration list", err);
         })
         
   
     }
+    
     openModal = (event) => {
         this.setState({
             activeDiv:event.target.getAttribute("data-key"),

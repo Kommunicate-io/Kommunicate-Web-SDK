@@ -66,11 +66,7 @@ body {
     font-size: 11px;
     letter-spacing: 0.4px;
     font-family: 'OpenSans',sans-serif;
-    height: 19px;
-}
-[data-integration-type="agilecrm"] {
-    margin-bottom: 0;
-    margin-left: 54px;
+    height: 21px;
 }
 .col-lg-4-integration {
     width: 29.33333% !important;
