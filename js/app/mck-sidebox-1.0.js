@@ -2134,7 +2134,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    $applozic.fn.applozic("mckLaunchSideboxChat",elem);
+                    $applozic.fn.applozic("mckLaunchSideboxChat",this);
                     
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
