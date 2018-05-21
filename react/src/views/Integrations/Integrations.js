@@ -21,23 +21,29 @@ class Integrations extends Component {
         this.getThirdPartyList();
     }
     getThirdPartyList = () =>{
+        let integratedThirdParties={}
+        let enable = {};
+        for (const key of Object.keys(thirdPartyList)) {
+            let thirdParty = thirdPartyList[key];
+            let state = thirdParty.state;
+            enable[thirdParty.key] = false;
+            integratedThirdParties[state] = {};
+            this.setState(enable);
+            this.setState(integratedThirdParties);
+        }
         return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
             this.setState({hideHelpdocsOfferBanner: false})
-            let integratedThirdParties={}
-            let enable = {};
-            let disable = {};
             response.data.message.forEach(element => {
                 let type = element.type
                 //todo get state variable from third party list. then set it in state.
                 for (const key of Object.keys(thirdPartyList)) {
                     // console.log(key, thirdPartyList[key]);
                     let thirdParty = thirdPartyList[key];
-                    let integrationType= thirdParty.integrationType;
-                    disable[thirdParty.key] = false
+                    let integrationType= thirdParty.integrationType;      
                     if (type == integrationType) {
                         let state = thirdParty.state;
                         integratedThirdParties[state]=element;
-                        enable[thirdParty.key] = true
+                        enable[thirdParty.key] = true;
                         if ( thirdParty.key == "helpdocs" ) {
                             this.setState({hideHelpdocsOfferBanner: true})
                         }
@@ -47,8 +53,6 @@ class Integrations extends Component {
                 }
             
         });
-    
-        this.setState(disable);
         this.setState(enable);
         this.setState(integratedThirdParties);
         
