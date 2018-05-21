@@ -23,4 +23,5 @@ export const CONVERSATION_STATS_FILTER_KEY = {
     HOUR_WISE_DISTRIBUTION : 2
 }
 
-export const MEMORY_CACHING_TIME_DURATION = 2*60*1000   //in Millisec  
+export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec 
+
