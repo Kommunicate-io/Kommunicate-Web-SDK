@@ -182,3 +182,76 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #000 inset; */
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.react-phone-number-input__icon-image {
+    vertical-align: top;
+}
+.rrui__select__button {
+    border-color: transparent;
+}
+.rrui__select__button:focus, .rrui__select__native-expanded:focus + .rrui__select__button {
+    border-bottom-color: transparent;
+}
+.rrui__select__arrow {
+    color: #989898;
+}
+.rrui__input, .rrui__input-label {
+    height: 44px;
+}
+.react-phone-number-input__phone {
+    font-size: 16px;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    color: #000;
+    /* border: solid 1px #a1a1a1; */
+    border-radius: 4px;
+    opacity: 0.9;
+    background-color: #fff;
+    line-height: 24px;
+}
+.react-phone-number-input__row {
+    position: relative;
+    font-size: 16px;
+    padding: 0px;
+    width: 100%;
+    color: #000;
+    border: solid 1px #a1a1a1;
+    border-radius: 4px;
+    opacity: 1;
+    background-color: transparent;
+}
+.rrui__input-field, .rrui__select__button {
+    border: none;
+}
+.react-phone-number-input__country.rrui__select--collapsed {
+    margin-left: 0.5em;
+}
+
+.react-phone-number-input.input {
+    padding: 0;
+    border: 0;
+}
+.react-phone-number-input .input {
+    border: 0;
+}
+.react-phone-number-input .input ~ .label-for-input, .react-phone-number-input #number-input ~ .label-for-input {
+    left: 59px;
+}
+.rrui__input-field:focus, .rrui__select__button:focus, .rrui__select__native-expanded:focus + .rrui__select__button {
+    border: none;
+}
+
+.react-phone-number-input__country.rrui__select--expanded ~ .label-for-input {
+    display: none;
+}
+.react-phone-number-input__country .rrui__select__autocomplete {
+    padding-left: 10px;
+    border-radius: 4px;
+}
+.rrui__select__options:not(.rrui__select__options--menu) {
+    width: calc(100% + 2px);
+}
+.rrui__select__options--left-aligned {
+    left: -1px;
+}
