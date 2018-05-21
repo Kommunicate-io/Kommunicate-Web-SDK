@@ -30,9 +30,21 @@
 		background-color: #e45d6c;
 		border: solid 0.5px #e0d9d9;
 		position: absolute;
-		left: 35px;
+		left: 34px;
+		bottom:27px;
 		display: inline-block;
 		border-radius: 50em;
+}
+.km-allconversatiom-unread-icon{
+	width: 9px;
+    height: 9px;
+    background-color: #e45d6c;
+    position: absolute;
+	left: 30px;
+	bottom:24px;
+    z-index: 2222222222;
+    display: inline-block;
+    border-radius: 50em;
 }
 
 .km-sidebox {

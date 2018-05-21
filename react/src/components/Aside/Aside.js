@@ -362,7 +362,7 @@ class Aside extends Component {
                             <svg xmlns='http://www.w3.org/2000/svg' width='14' height='17'>
                               <path fill='#AAA' d='M13.3 0H.7C.314 0 0 .317 0 .706V3.67c0 .389.314.706.7.706h12.6c.386 0 .7-.317.7-.706V.706A.704.704 0 0 0 13.3 0zM.875 13.76c0 1.34 1.008 2.428 2.25 2.428h7.745c1.241 0 2.249-1.087 2.249-2.427V8.41l.005-.01V5H.875v8.76z'/>
                             </svg>
-                            <span id="km-closed-unread-icon" className="km-unread-icon n-vis"></span>
+                            <span id="km-closed-unread-icon"></span>
                           </div>
                         </div>
                       </div>
