@@ -11,7 +11,7 @@ class Integrations extends Component {
         this.state = {
             modalIsOpen: false,      
             activeDiv:'zendesk',
-            showDiscountOffer: false
+            hideHelpdocsOfferBanner: false
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -22,7 +22,7 @@ class Integrations extends Component {
     }
     getThirdPartyList = () =>{
         return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
-            this.setState({showDiscountOffer: false})
+            this.setState({hideHelpdocsOfferBanner: false})
             let integratedThirdParties={}
             let enable = {};
             let disable = {};
@@ -39,7 +39,7 @@ class Integrations extends Component {
                         integratedThirdParties[state]=element;
                         enable[thirdParty.key] = true
                         if ( thirdParty.key == "helpdocs" ) {
-                            this.setState({showDiscountOffer: true})
+                            this.setState({hideHelpdocsOfferBanner: true})
                         }
                                     
                     }
@@ -87,7 +87,7 @@ class Integrations extends Component {
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
                          <span data-key={item.key} className="integration-settings" onClick={this.openModal}>Settings</span>
-                         <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.showDiscountOffer}>{item.discountCouponOff} off</div>
+                         <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
                  </div>);
              }
@@ -108,7 +108,7 @@ class Integrations extends Component {
         </div>
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
-                <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} showDiscountOffer={this.state.showDiscountOffer} 
+                <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
             </div>
         </Modal>

@@ -234,7 +234,7 @@ class IntegrationDescription extends Component {
             </div>    
 
             {/* Discount Banner */}
-            {this.props.showDiscountOffer === true ? " " : thirdPartyList[this.state.activeModal].discountCouponBanner}
+            {this.props.hideHelpdocsOfferBanner === true ? " " : thirdPartyList[this.state.activeModal].discountCouponBanner}
 
             <div className="integration-instruction-set">
                 <p className="instructions-title">Instructions</p>
