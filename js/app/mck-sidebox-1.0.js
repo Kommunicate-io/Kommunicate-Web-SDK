@@ -487,16 +487,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");          
-            if (!IS_ANONYMOUS_CHAT) {
-                $applozic("#km-userId").val(MCK_USER_ID);
-                if (KM_ASK_USER_DETAILS.length > 0) {
-                    for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
-                        $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
-                    }
-                }
-                return;
-             } else {
+            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis"); 
                 mckMessageService.loadConversationWithAgents({
                     groupName: DEFAULT_GROUP_NAME,
                     agentId: DEFAULT_AGENT_ID,
@@ -504,8 +495,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }, function () {
                     console.log("conversation created successfully");
                 });
-
-            }
         };
 
         _this.events = {
@@ -1403,11 +1392,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                 var isValidated = _this.validateAppSession(userPxy);
                 if (!isValidated) {
                     var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-                    if (!IS_ANONYMOUS_CHAT) {
+                    if (!IS_ANONYMOUS_CHAT && KM_ASK_USER_DETAILS.length !==0 ) {
                         $applozic("#km-userId").val(MCK_USER_ID);
                         if (KM_ASK_USER_DETAILS.length > 0) {
                             for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
                                 $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
+                                $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).prop('required',true);
                             }
                         }
                         $applozic("#km-chat-login-modal").css("display", "block");
@@ -2142,7 +2132,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     e.preventDefault();
                     var $this = $applozic(this);
                     var elem = this;
-                    if ($this.data('mck-id')) {
+                    var userId =$this.data('mck-id')
+                    if (userId) {
                         if ($this.parents(".mck-search-list").length) {
                             $mck_search.bind('blur');
                             setTimeout(function () {
@@ -2154,7 +2145,6 @@ var MCK_CLIENT_GROUP_MAP = [];
                         return;
                     }
                     $applozic.fn.applozic("mckLaunchSideboxChat");
-                    // console.log(this);
                     
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
