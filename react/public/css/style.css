@@ -6106,7 +6106,7 @@ body {
 .breadcrumb {
   position: relative;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #cfd8dc; }
+  border-bottom: 1px solid #dce2e4; }
 
 button {
   cursor: pointer; }
@@ -10780,14 +10780,14 @@ input:required {
 .km-logo-circle-bg {
   background-color: #fff;
   border-radius: 50%;
-  width: 46px;
-  height: 46px;
+  width: 38px;
+  height: 38px;
 }
 .km-logo-circle-bg svg {
-  width: 30px;
-  height: auto; 
-  padding-top: 10px;
-  margin-left: 7px;
+  width: 24px;
+  height: auto;
+  padding-top: 9px;
+  margin-left: 6px;
 }
 
 /*******************************
@@ -10943,7 +10943,7 @@ input:required {
   -webkit-box-shadow: none;
   box-shadow: none;
   border-color: #5c5aa7;
-  font-weight: bold;
+  font-weight: normal;
   color: #515050;
 }
 

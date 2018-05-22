@@ -238,6 +238,9 @@ select:-webkit-autofill:focus {
 .react-phone-number-input .input ~ .label-for-input, .react-phone-number-input #number-input ~ .label-for-input {
     left: 59px;
 }
+.react-phone-number-input .input:focus ~ .label-for-input, .select:focus ~ .label-for-input, .select:valid ~ .label-for-input, .react-phone-number-input .input:valid ~ .label-for-input, .react-phone-number-input .input:not(:placeholder-shown) ~ .label-for-input, .react-phone-number-input #number-input:focus ~ .label-for-input, .select:focus ~ .label-for-input, .select:valid ~ .label-for-input, .react-phone-number-input #number-input:valid ~ .label-for-input, .react-phone-number-input #number-input:not(:placeholder-shown) ~ .label-for-input {
+    left: 9px;
+}
 .rrui__input-field:focus, .rrui__select__button:focus, .rrui__select__native-expanded:focus + .rrui__select__button {
     border: none;
 }
