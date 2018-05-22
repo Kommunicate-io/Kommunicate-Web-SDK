@@ -26,7 +26,7 @@ exports.login = (userDetail) => {
         } else {
           applicationId = Object.keys(response)[0];
           userDetail.applicationId = applicationId;
-          return registrationService.signUpWithApplozic(userDetail).then(result=>{
+          return registrationService.signUpWithApplozic(userDetail, false).then(result=>{
             // for (var key in response) {
             //   if(key!=applicationId){
             //   userDetail.applicationId = key;
@@ -53,7 +53,7 @@ exports.processLogin = (userDetail) => {
   var userName = userDetail.userName;
   var applicationId = userDetail.applicationId;
   var password = userDetail.password;
-  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),
+  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}, true),
     userService.getByUserNameAndAppId(userName,applicationId),
     applozicClient.applozicLogin(userDetail)]).then(([application,user,applozicUser])=>{
       if(user && bcrypt.compareSync(password, user.password)) {

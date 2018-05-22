@@ -174,7 +174,7 @@ exports.findApplications=(email, role, userApp)=>{
 /*
 this method get the application detail for given applicationId
 */
-exports.getApplication=(customer)=>{
+exports.getApplication=(customer, isApplicationWebAdmin)=>{
   const applicationId = customer.applicationId;
   const getApplicationUrl = config.getProperties().urls.getApplicationDetail.replace(":applicationId", applicationId);
   const apzToken =  new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
@@ -185,7 +185,7 @@ exports.getApplication=(customer)=>{
         "Apz-Token": "Basic " + apzToken,
         "Content-Type": "application/json",
         "Apz-AppId": applicationId,
-        "Apz-Product-App": true,
+        "Apz-Product-App": isApplicationWebAdmin,
       },
     })).then(response=>{
       if (response.status == 200) {
