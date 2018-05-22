@@ -14,12 +14,29 @@ exports.login = (userDetail) => {
     return this.processLogin(userDetail);
   }
 
-  return applozicClient.findApplications(userName).then(response => {
+  return applozicClient.findApplications(userName,'APPLICATION_WEB_ADMIN', false).then(response => {
 
     if (Object.keys(response).length == 0) {
-      let err= {};
-      err.code= "INVALID_CREDENTIALS";
-      throw err;
+      return applozicClient.findApplications(userName, 'APPLICATION_ADMIN', true).then(result => {
+        response = result;
+        if (Object.keys(response).length == 0) {
+          let err = {};
+          err.code = "INVALID_CREDENTIALS";
+          throw err;
+        } else {
+          applicationId = Object.keys(response)[0];
+          userDetail.applicationId = applicationId;
+          return registrationService.signUpWithApplozic(userDetail).then(result=>{
+            // for (var key in response) {
+            //   if(key!=applicationId){
+            //   userDetail.applicationId = key;
+            //   registrationService.signUpWithApplozic(userDetail);
+            //   }
+            // }
+            return this.processLogin(userDetail);
+          })
+        }
+      });
     }
     if (Object.keys(response).length > 1) {
       return response;

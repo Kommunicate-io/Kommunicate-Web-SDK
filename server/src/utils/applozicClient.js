@@ -5,7 +5,7 @@ const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
 const constant =require('./constant');
 const logger = require('./logger.js');
-const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN";
+const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?";
 const utils = require("./utils");
 
 /*
@@ -155,9 +155,9 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
       });
     };
 
-exports.findApplications=(email)=>{
+exports.findApplications=(email, role, userApp)=>{
   let param = utils.isValidEmail(email)?"emailId":"userId";
-    let GET_APP_LIST_URL = APP_LIST_URL + "&"+param+"=" + encodeURIComponent(email);
+    let GET_APP_LIST_URL = APP_LIST_URL +param+"=" + encodeURIComponent(email)+"&roleNameList="+role+"&userApp="+userApp;
     return  axios.get(GET_APP_LIST_URL)
       .then(function(response){
         if (response.status=200 && response.data!=="Invalid userId or EmailId") {
