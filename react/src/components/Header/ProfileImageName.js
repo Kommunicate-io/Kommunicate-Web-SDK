@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom' ;
 import { NavLink } from 'react-router-dom';
 import {goAway, goOnline} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
+import { COOKIES } from '../../utils/Constant';
 
 class TurnOnAwayMode extends Component {
   render() {
@@ -58,8 +59,7 @@ export default class ProfileImageName extends Component {
         }
         sessionStorage.clear();
         localStorage.clear();
-        //window.location="/login";
-        // window.appHistory.replace('/login');
+        CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
         window.location.assign("/login");
       }
 
