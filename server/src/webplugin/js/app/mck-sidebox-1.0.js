@@ -487,16 +487,13 @@ var MCK_CLIENT_GROUP_MAP = [];
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
-
-            if ($this.data('mck-id')) {
-                if ($this.parents(".mck-search-list").length) {
-                    $mck_search.bind('blur');
-                    setTimeout(function () {
-                        mckMessageService.openChat(elem);
-                    }, 600);
-                } else {
-                    mckMessageService.openChat(elem);
+            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");          
+            if (!IS_ANONYMOUS_CHAT) {
+                $applozic("#km-userId").val(MCK_USER_ID);
+                if (KM_ASK_USER_DETAILS.length > 0) {
+                    for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
+                        $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
+                    }
                 }
                 return;
              } else {
