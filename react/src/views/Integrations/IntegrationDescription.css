@@ -66,8 +66,8 @@ body {
     opacity: 0.63;
     border-radius: 4px;
     border: solid 1px #9cb3de;
-    margin-left: 18px;
-    margin-bottom: 120px;
+    margin-left: 51px;
+    /* margin-bottom: 120px; */
     padding: 8px;
 }
 .zendesk-token-input-wrapper {
@@ -209,4 +209,10 @@ body {
     padding: 4px 6px 0px 6px;
     top: -20px;
     left: -5px;
+}
+.integration-description-wrapper {
+    display:  flex;
+    flex-direction:  column;
+    justify-content: space-between;
+    min-height: 500px;
 }

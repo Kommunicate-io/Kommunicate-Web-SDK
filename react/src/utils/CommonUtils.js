@@ -36,11 +36,17 @@ const CommonUtils = {
         return "";
     },
     /* Method to set cookies*/
-    setCookie: function(cname, cvalue, exdays) {
+    setCookie: function(cname, cvalue, exdays,domain) {
         var d = new Date();
         var cookieMaxExpirationdate= "2038-01-19 04:14:07";
         var expires = "expires="+ new Date(cookieMaxExpirationdate).toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        let cookie = cname + "=" + cvalue + ";" + expires;
+        cookie=  domain?cookie+";domain="+domain:cookie;
+        cookie += ";path=/";
+        document.cookie =  cookie;
+    },
+    deleteCookie:function(name){
+            document.cookie = name +'=; Path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
     getDisplayName: function(user) {
         if (user.displayName) {
@@ -49,7 +55,21 @@ const CommonUtils = {
           return user.email;
         }
         return user.userId
-      }
+      },
+       getDomain:function() {
+        var hostName = window.location.hostname;
+        var domain = hostName;
+        
+        if (hostName != null) {
+            var parts = hostName.split('.').reverse();
+            
+            if (parts != null && parts.length > 1) {
+                domain = "."+parts[1] + '.' + parts[0];
+            }
+        }
+        
+        return domain;
+    }
 }
 
 export default CommonUtils;

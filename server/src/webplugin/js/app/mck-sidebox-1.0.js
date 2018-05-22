@@ -138,6 +138,8 @@ var MCK_CLIENT_GROUP_MAP = [];
     $applozic.fn.applozic = function (appOptions, params,callback) {
         var $mck_sidebox = $applozic('#mck-sidebox');
         if ($applozic.type(appOptions) === 'object') {
+            // storing custum appOptions into session Storage.
+            KommunicateUtils.storeDataIntoKmSession("appOptions",appOptions);
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
             appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
@@ -274,7 +276,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         return oInstance.updateMessageMetadata(params);
                         break;
                     case 'mckLaunchSideboxChat':
-                        return oInstance.mckLaunchSideboxChat(params);
+                        return oInstance.mckLaunchSideboxChat();
                         break;
 
                 }
@@ -481,13 +483,12 @@ var MCK_CLIENT_GROUP_MAP = [];
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
 
-        _this.mckLaunchSideboxChat = function(params) {
+        _this.mckLaunchSideboxChat = function() {
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
-            var $this = $applozic(params);
-            var elem = params;
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
+
             if ($this.data('mck-id')) {
                 if ($this.parents(".mck-search-list").length) {
                     $mck_search.bind('blur');
@@ -569,7 +570,8 @@ var MCK_CLIENT_GROUP_MAP = [];
             }
         };
         _this.reInit = function (optns) {
-
+             // storing custum appOptions into session Storage.
+             KommunicateUtils.storeDataIntoKmSession("appOptions",optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
             } else {
@@ -1578,6 +1580,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
+                 // dispatch an event "kmInitilized". 
+                w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
             };
             _this.validateAppSession = function (userPxy) {
                 mckGroupLayout.init();
@@ -2139,7 +2143,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    $applozic.fn.applozic("mckLaunchSideboxChat",this);
+                    var $this = $applozic(this);
+                    var elem = this;
+                    if ($this.data('mck-id')) {
+                        if ($this.parents(".mck-search-list").length) {
+                            $mck_search.bind('blur');
+                            setTimeout(function () {
+                                mckMessageService.openChat(elem);
+                            }, 600);
+                        } else {
+                            mckMessageService.openChat(elem);
+                        }
+                        return;
+                    }
+                    $applozic.fn.applozic("mckLaunchSideboxChat");
+                    // console.log(this);
                     
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
@@ -2526,7 +2544,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $mck_autosuggest_metadata.val('');
                     }
                     if ($mck_autosuggest_search_input.data('prev-msgkey') != "") {
-                        mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { KM_AUTO_SUGGEST: false } })
+                        mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { obsolete: true } })
                         $mck_autosuggest_search_input.data('prev-msgkey', "")
                     }
                     if ($mck_autosuggest_search_input.hasClass('mck-text-box')) {
@@ -3766,7 +3784,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         '</div>'+
                         '<div class="${msgFloatExpr}-muted mck-text-light mck-text-muted mck-text-xs mck-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} mck-message-status"></span></div>'+
                 '</div>'+
-                
+
                 '<div class="n-vis mck-context-menu">'+
                     '<ul>'+
                         '<li><a class="mck-message-forward ${msgForwardVisibleExpr}">${msgForwardExpr}</a></li>'+
@@ -4299,26 +4317,26 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
                 
-                if ((msg.metadata.KM_AUTO_SUGGEST && msg.metadata.KM_AUTO_SUGGEST == "true")) {
-                    $mck_autosuggest_search_input.addClass('mck-text-box').removeClass('n-vis');
-                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
-                    $mck_autosuggest_search_input.attr("placeholder", msg.metadata.KM_PLACEHOLDER?msg.metadata.KM_PLACEHOLDER:"");
-                    $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
-                    if (msg.metadata.suggestionSource) {
-                        var source=JSON.parse(msg.metadata.suggestionSource)
-                        $mck_autosuggest_search_input.data('source-url', source.sourceUrl);
-                        $mck_autosuggest_search_input.data('method', source.method ? source.method : 'get');
-                        $mck_autosuggest_search_input.data('headers', source.headers ? source.headers : {});
-                    }else if(msg.metadata.suggestionList){
-                        var autosuggestions =[];
-                    try{
-                        autosuggestions = JSON.parse(msg.metadata.suggestionList);
-                    }catch(e){
+                if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
+                    var autosuggetionMetadata = {}
+                    try {
+                        autosuggetionMetadata = JSON.parse(msg.metadata.KM_AUTO_SUGGESTION);
+                    } catch (e) {
                         console.error("suggestionList should be an array");
                     }
-                    $mck_autosuggest_search_input.data("origin","KM_AUTO_SUGGEST");
-                    autosuggestions.length && mckMessageLayout.populateAutoSuggest({source:autosuggestions});
-                    }  
+                    $mck_autosuggest_search_input.addClass('mck-text-box').removeClass('n-vis');
+                    $mck_text_box.removeClass('mck-text-box').addClass('n-vis');
+                    $mck_autosuggest_search_input.attr("placeholder", autosuggetionMetadata.placeholder ? autosuggetionMetadata.placeholder : "");
+                    $mck_autosuggest_search_input.data('prev-msgkey', msg.key);
+                    if (autosuggetionMetadata.source.constructor==Array) {
+                        $mck_autosuggest_search_input.data("origin", "KM_AUTO_SUGGEST");
+                        autosuggetionMetadata.source.length && mckMessageLayout.populateAutoSuggest({ source: autosuggetionMetadata.source });
+                    }else if(typeof autosuggetionMetadata.source==="object"){
+                        $mck_autosuggest_search_input.data('source-url', autosuggetionMetadata.source.url);
+                        $mck_autosuggest_search_input.data('method', autosuggetionMetadata.source.method ? autosuggetionMetadata.source.method : 'get');
+                        $mck_autosuggest_search_input.data('headers', autosuggetionMetadata.source.headers ? autosuggetionMetadata.source.headers : {});
+                    } 
+                        
                 }
 
                 // if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
@@ -6115,6 +6133,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var USER_DETAIL_URL = "/rest/ws/user/v2/detail";
             var CONTACT_LIST_URL = "/rest/ws/user/filter";
             var USER_STATUS_URL = "/rest/ws/user/chat/status";
+            var USER_DISPLAY_NAME_UPDATE = "/rest/ws/user/name";
             var USER_IDENTITY_UPDATE_URL = "/rest/ws/user/change/identifier";
             var FRIEND_LIST_URL ="/rest/ws/group/";
             _this.getContactDisplayName = function (userIdArray) {
@@ -6294,7 +6313,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                 });
             };
-            
+
             _this.updateDisplayName = function (userId, userName) {
                 if (userId === "" || userName === "") {
                     return;
@@ -6409,7 +6428,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 '</select>' +
                 '</div></div></div></div></li>';
             var groupMemberSearchContact = '<li id="li-${contHtmlExpr}" class="${contIdExpr} mck-li-group-member" data-mck-id="${contIdExpr}">' + '<a class="mck-add-to-group" href="#" data-mck-id="${contIdExpr}">' + '<div class="mck-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div>' + '<div class="blk-lg-9">' + '<div class="mck-row"><div class="blk-lg-12 mck-cont-name mck-truncate"><strong>${contNameExpr}</strong></div></div>' + '<div class="mck-row"><div class="blk-lg-12 mck-truncate mck-last-seen-status" title="${contLastSeenExpr}">${contLastSeenExpr}</div></div>' + '</div></div></a></li>';
-            
+
             var MAX_GROUP_NAME_SIZE = 30;
             $applozic('.mck-group-name-box div[contenteditable]').keypress(function (e) {
                 if (e.which === 8 || e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 39 || e.keyCode === 40 || (e.ctrlKey && e.which === 97)) {
@@ -6549,7 +6568,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $applozic.template("groupMemberTemplate", groupContactbox);
                 $applozic.template("groupMemberSearchTemplate", groupMemberSearchContact);
             };
-            
+
             _this.submitCreateGroup = function () {
                 var groupName = $applozic.trim($mck_group_create_title.text());
                 var groupType = $mck_group_create_type.val();

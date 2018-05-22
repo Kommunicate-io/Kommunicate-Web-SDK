@@ -28,6 +28,7 @@ import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthenticat
 import CommonUtils from '../../utils/CommonUtils';
 import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
+import { COOKIES } from '../../utils/Constant';
 
 class Full extends Component {
 
@@ -70,11 +71,38 @@ class Full extends Component {
     }
     
   }
-  componentDidMount() {
-    
-    if(CommonUtils.getUserSession()){
-      window.chatLogin();
+  initilizeSupportChatUser (){
+    let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
+    // if loggedIn user not present then logout the kommunciate support chat user.
+    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+      console.log("logging out the anonymous user  from chat.")
+      window.$applozic.fn.applozic('logout');
+      var options = window.applozic._globals;
+      options.userId = CommonUtils.getUserSession().userName;
+      options.accessToken = CommonUtils.getUserSession().password;
+      window.$applozic.fn.applozic(options);
+      CommonUtils.setCookie(COOKIES.KM_LOGGEDIN_USER_ID,dashboardLoggedInUserId,"",CommonUtils.getDomain());
+    }else{
+      console.log("user already logged in");
     }
+
+  }
+  componentDidMount() {
+    if(CommonUtils.getUserSession()){
+      // initilizing full view plugin for dashboard user
+    window.chatLogin();
+      //listen for kommunicate plugin initilized event. initilized support chat user.
+    window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
+
+    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+      // when user logs in this will get called. 
+      this.initilizeSupportChatUser();
+    }
+
+    }
+  }
+  componentWillUnmount(){
+    window.removeEventListener("kmInitilized",function(){});
   }
   updateUserDisplay(name){
     this.setState(
@@ -93,9 +121,9 @@ class Full extends Component {
 
     return (
       <div className="app" suppressContentEditableWarning={true}> 
-        <Header 
+        {/* <Header 
         // profilePicUrl={this.state.imageLink} displayName={this.state.displayName}
-        />
+        /> */}
           <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
           <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
           <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>

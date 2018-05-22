@@ -17,6 +17,7 @@ import InputField from '../../../components/InputField/InputField';
 import GoogleLogo from '../Register/logo_google.svg';
 import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
+import {COOKIES} from '../../../utils/Constant';
 
 
 class Login extends Component {
@@ -213,22 +214,12 @@ submitForm = ()=>{
 
           _this.setState({'applicationId': response.data.result.application.applicationId});
 
-          response.data.result.password = password;
+          response.data.result.password = password=='' ? response.data.result.accessToken : password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
         }
-
-        if (window.$applozic) {
-          var options = window.applozic._globals;
-          options.userId = _this.state.userName;
-          options.accessToken = _this.state.password;
-          window.$applozic.fn.applozic(options);          
-        }
-
         _this.props.history.push("/dashboard");
         _this.state=_this.initialState;
-    
-        //window.chatLogin();
     }
     }).catch(function(err){
       console.log(err);
@@ -503,7 +494,7 @@ showPasswordField = () => {
                        </div>
                     </div> */}
                           {/* login with google is hidden for release 1.5.2 . To make it visible, remove n-vis from classname   */}
-                         <a className="signup-with-google-btn n-vis" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
+                         <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
                               <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />

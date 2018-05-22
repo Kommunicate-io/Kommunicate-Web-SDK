@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ClearbitLogo from './images/clearbit.png';
 import ZendeskLogo from './images/zendesk.png';
 import HelpdocsLogo from './images/helpdocs.png';
+import AgilecrmLogo from './images/agilecrm.png';
 
 
 export let thirdPartyList = {
@@ -12,6 +13,8 @@ export let thirdPartyList = {
         subTitle: "Open Zendesk ticket for all conversations",
         integrationType: 2,
         docsLink: "https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
+        domain:".zendesk.com",
+        state: "zendeskKeys",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://www.zendesk.com/login/#support">
             Zendesk dashboard</a></span>,
@@ -31,6 +34,7 @@ export let thirdPartyList = {
         logo: ClearbitLogo,
         integrationType: 3,
         docsLink: "https://clearbit.com/docs",
+        state: "clearbitKeys",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://dashboard.clearbit.com/login">
             Clearbit account</a></span>,
@@ -44,6 +48,7 @@ export let thirdPartyList = {
         logo: HelpdocsLogo,
         subTitle: "Import your FAQs from Helpdocs",
         integrationType: 1,
+        state:"helpdocsKeys",
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://my.helpdocs.io/login">
@@ -65,5 +70,23 @@ export let thirdPartyList = {
             </div>
         ],
         discountCouponOff: "20%"
-    }
+    },
+    'agilecrm': {
+        key: 'agilecrm',
+        name: "Agile CRM",
+        logo: AgilecrmLogo,
+        subTitle: "Add leads to Agile CRM contact",
+        integrationType: 4,
+        docsLink: "https://www.agilecrm.com/api",
+        domain:".agilecrm.com",
+        state:"agilecrmKeys",
+        instructions: [
+            <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">
+            Agile CRM dashboard</a></span>,
+            "Enter Javascript API, It is present at Admin Settings -> Developers & API tab",
+            "Enter your Access Email Id of Agile CRM",
+            "Enter your subdoamin",
+            "Hit save",
+        ]
+    },
 };

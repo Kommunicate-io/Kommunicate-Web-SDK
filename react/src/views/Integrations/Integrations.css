@@ -11,7 +11,7 @@ body {
     font-weight: normal
 }
 .content-wrapper {
-    width: 80%;
+    width: 93%;
     text-align: center;
     border-radius: 4px;
     background-color: #ffffff;
@@ -19,7 +19,9 @@ body {
     padding-bottom: 10px;
     padding-top: 16px;
     margin-bottom: 20px;
+    border-top: 5px solid transparent;
 }
+
 .logo-title {
     font-size: 14px;
     font-weight: 500;
@@ -48,7 +50,7 @@ body {
     height: 46px;
 }
 .enable-integration-wrapper {
-    border-top: 5px solid #22d674;
+    border-color: #22d674;
 }
 .not-active {
     pointer-events: none;
@@ -64,4 +66,8 @@ body {
     font-size: 11px;
     letter-spacing: 0.4px;
     font-family: 'OpenSans',sans-serif;
+    height: 21px;
+}
+.col-lg-4-integration {
+    width: 29.33333% !important;
 }
