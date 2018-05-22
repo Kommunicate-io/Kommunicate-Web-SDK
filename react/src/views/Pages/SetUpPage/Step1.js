@@ -184,6 +184,8 @@ getCoutryCodeFromTimezone() {
   var timezone = Moment.tz.guess().toString();
   if(timezone === "Asia/Calcutta") {
     timezone = "Asia/Kolkata";
+  } else if(timezone === "Asia/Katmandu") {
+    timezone = "Asia/Kathmandu";
   } else {
     timezone = timezone;
   }

@@ -5,9 +5,10 @@
     background-color: #f4f5f7;
     margin-right: -7px;
     overflow-y: auto;
+    height: 100vh;
 }
 .settings-title {
-    font-size: 18px;
+    font-size: 22px;
     margin-top: 12px;
     margin-bottom: 12px;
     color: #666464;
