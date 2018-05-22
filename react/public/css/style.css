@@ -8664,7 +8664,7 @@ app-root {
   (;min-width: 60px;);
 
   height: 100%;
-  padding: 15px 7px 15px 7px;
+  padding: 11px 7px 15px 7px;
   display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
     height: calc(100vh - 30px);
@@ -10774,8 +10774,20 @@ input:required {
 } 
 
 .logo-nav {
-  margin-bottom: 30px !important;
+  margin-bottom: 40px !important;
   margin-top: 0px !important;
+}
+.logo-nav .nav-link {
+  padding: 0 !important;
+}
+.logo-nav .nav-link:hover {
+  padding: 0 !important;
+  border-radius: 50% !important;
+}
+.logo-nav .nav-link.active {
+  padding: 0 !important;
+  border-radius: 50% !important;
+  background-color: transparent !important;
 }
 .km-logo-circle-bg {
   background-color: #fff;
@@ -10784,10 +10796,11 @@ input:required {
   height: 38px;
 }
 .km-logo-circle-bg svg {
-  width: 24px;
-  height: auto;
+  width: 24px !important;
+  height: auto !important;
   padding-top: 9px;
   margin-left: 6px;
+  opacity: 1 !important;
 }
 
 /*******************************
