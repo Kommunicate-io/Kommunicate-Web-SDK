@@ -495,8 +495,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
                     }
                 }
-                $applozic("#km-chat-login-modal").css("display", "block");
-            } else {
+                return;
+             } else {
                 mckMessageService.loadConversationWithAgents({
                     groupName: DEFAULT_GROUP_NAME,
                     agentId: DEFAULT_AGENT_ID,
