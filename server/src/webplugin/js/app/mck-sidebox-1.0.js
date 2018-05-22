@@ -488,16 +488,18 @@ var MCK_CLIENT_GROUP_MAP = [];
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
-            
-            if (!IS_ANONYMOUS_CHAT) {
-                $applozic("#km-userId").val(MCK_USER_ID);
-                if (KM_ASK_USER_DETAILS.length > 0) {
-                    for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
-                        $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
-                    }
+
+            if ($this.data('mck-id')) {
+                if ($this.parents(".mck-search-list").length) {
+                    $mck_search.bind('blur');
+                    setTimeout(function () {
+                        mckMessageService.openChat(elem);
+                    }, 600);
+                } else {
+                    mckMessageService.openChat(elem);
                 }
-                $applozic("#km-chat-login-modal").css("display", "block");
-            } else {
+                return;
+             } else {
                 mckMessageService.loadConversationWithAgents({
                     groupName: DEFAULT_GROUP_NAME,
                     agentId: DEFAULT_AGENT_ID,
@@ -1403,7 +1405,26 @@ var MCK_CLIENT_GROUP_MAP = [];
                 USER_DEVICE_KEY = '';
                 var isValidated = _this.validateAppSession(userPxy);
                 if (!isValidated) {
-                  window.Applozic.ALApiService.login(
+                    var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
+                    if (!IS_ANONYMOUS_CHAT) {
+                        $applozic("#km-userId").val(MCK_USER_ID);
+                        if (KM_ASK_USER_DETAILS.length > 0) {
+                            for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
+                                $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).removeClass('n-vis').addClass('vis');
+                            }
+                        }
+                        $applozic("#km-chat-login-modal").css("display", "block");
+                    } else {
+                        _this.initialize(userPxy);
+                    }
+                } else {
+                    if (IS_CALL_ENABLED) {
+                        mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
+                    }
+                }
+            };
+            _this.initialize =function(userPxy){
+                window.Applozic.ALApiService.login(
                     {
                         data: {alUser: userPxy,baseUrl: MCK_BASE_URL},
                         success: function (result) {
@@ -1475,12 +1496,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                             }
                         }
                     });
-                } else {
-                    if (IS_CALL_ENABLED) {
-                        mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
-                    }
-                }
-            };
+            }
             _this.onInitApp = function (data) {
                 _this.appendLauncher();
                 _this.setLabels();
@@ -2157,7 +2173,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $error_chat_login.html('');
                     var options = {
                         userId: userId,
-                        appId: MCK_APP_ID,
+                        applicationId: MCK_APP_ID,
                         onInit: loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
@@ -2172,8 +2188,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (contactNumber) {
                         options.contactNumber = contactNumber;
                     }
+                     mckInit.initialize(options);
 
-                    $applozic.fn.applozic('reInitialize', options);
                     return false;
                 });
 

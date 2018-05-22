@@ -37,6 +37,10 @@ class Sidebar extends Component {
     return this.props.location.pathname.indexOf(routeName) > -1 ? 'nav-item nav-dropdown open' : 'nav-item nav-dropdown';
   }
 
+  hideUnreadCountOnConversationTab(){
+    window.$kmApplozic("#km-allconversatiom-unread-icon").removeClass("vis").addClass("n-vis");
+  }
+
   asideToggle(e) {
     e.preventDefault();
     document.body.classList.toggle('aside-menu-hidden');
@@ -64,6 +68,7 @@ class Sidebar extends Component {
     // window.Kommunicate.createNewConversation();
     // window.Kommunicate.openLastConversation();
     // window.$applozic.fn.applozic('loadConversationwithAgent');
+
 
     // window.Kommunicate.openConversationList();
     // window.Kommunicate.mckLaunchSideboxChat();
@@ -117,7 +122,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Conversations Link */}
-            <li className="nav-item">
+            <li className="nav-item" onClick={this.hideUnreadCountOnConversationTab} >
               <NavLink to={'/conversations'} className="nav-link" activeClassName="active" data-tip="Conversations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 4">
@@ -126,6 +131,7 @@ class Sidebar extends Component {
                     data-name="Path 1" />
                 </g>
             </svg>
+            <span id="km-allconversatiom-unread-icon" className="km-allconversatiom-unread-icon n-vis"></span>
               </NavLink>
             </li>
             {/* Customers Link */}
