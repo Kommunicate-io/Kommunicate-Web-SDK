@@ -194,3 +194,5 @@ agileRouter.post('/:appId/contact', validate(agileValidation.createContact),
 agileController.createContact);
 agileRouter.patch('/:appId/:contactId/contact', validate(agileValidation.updateContact),
 agileController.updateContact);
+agileRouter.patch('/:appId/contacts/:contactId/tag', validate(agileValidation.updateTag),
+agileController.updateTag);
