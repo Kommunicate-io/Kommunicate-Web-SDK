@@ -1,50 +1,50 @@
 {
-    "language": "en",
+    "entity_synonyms": null, 
     "pipeline": [
-        "rasa_nlu.utils.spacy_utils.SpacyNLP",
-        "rasa_nlu.tokenizers.spacy_tokenizer.SpacyTokenizer",
-        "rasa_nlu.featurizers.spacy_featurizer.SpacyFeaturizer",
-        "rasa_nlu.classifiers.sklearn_intent_classifier.SklearnIntentClassifier",
-        "rasa_nlu.extractors.crf_entity_extractor.CRFEntityExtractor",
+        "rasa_nlu.utils.spacy_utils.SpacyNLP", 
+        "rasa_nlu.tokenizers.spacy_tokenizer.SpacyTokenizer", 
+        "rasa_nlu.featurizers.spacy_featurizer.SpacyFeaturizer", 
+        "rasa_nlu.classifiers.sklearn_intent_classifier.SklearnIntentClassifier", 
+        "rasa_nlu.extractors.crf_entity_extractor.CRFEntityExtractor", 
         "rasa_nlu.extractors.entity_synonyms.EntitySynonymMapper"
-    ],
-    "training_data": "training_data.json",
-    "spacy_model_name": "en",
-    "intent_classifier_sklearn": "intent_classifier.pkl",
+    ], 
+    "spacy_model_name": "en", 
+    "training_data": "training_data.json", 
+    "language": "en", 
     "entity_extractor_crf": {
-        "model_file": "crf_model.pkl",
+        "BILOU_flag": true, 
+        "model_file": "crf_model.pkl", 
+        "version": 1, 
         "crf_features": [
             [
-                "low",
-                "title",
-                "upper",
-                "pos",
+                "low", 
+                "title", 
+                "upper", 
+                "pos", 
                 "pos2"
-            ],
+            ], 
             [
-                "bias",
-                "low",
-                "word3",
-                "word2",
-                "upper",
-                "title",
-                "digit",
-                "pos",
-                "pos2",
+                "bias", 
+                "low", 
+                "word3", 
+                "word2", 
+                "upper", 
+                "title", 
+                "digit", 
+                "pos", 
+                "pos2", 
                 "pattern"
-            ],
+            ], 
             [
-                "low",
-                "title",
-                "upper",
-                "pos",
+                "low", 
+                "title", 
+                "upper", 
+                "pos", 
                 "pos2"
             ]
-        ],
-        "BILOU_flag": true,
-        "version": 1
-    },
-    "entity_synonyms": null,
-    "trained_at": "20180513-005316",
-    "rasa_nlu_version": "0.11.5"
+        ]
+    }, 
+    "trained_at": "20180515-201613", 
+    "intent_classifier_sklearn": "intent_classifier.pkl", 
+    "rasa_nlu_version": "0.11.4"
 }
