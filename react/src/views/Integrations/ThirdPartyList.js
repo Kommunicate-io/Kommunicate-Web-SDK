@@ -4,6 +4,8 @@ import ZendeskLogo from './images/zendesk.png';
 import HelpdocsLogo from './images/helpdocs.png';
 import AgilecrmLogo from './images/agilecrm.png';
 
+const integration_type = { HELPDOCS: 1, ZENDESK: 2, CLEARBIT: 3,GOOGLE_SHETS:4, AGILE_CRM: 5 };
+
 
 export let thirdPartyList = {
     'zendesk': {
@@ -11,7 +13,7 @@ export let thirdPartyList = {
         name: "Zendesk",
         logo: ZendeskLogo,
         subTitle: "Open Zendesk ticket for all conversations",
-        integrationType: 2,
+        integrationType: integration_type.ZENDESK,
         docsLink: "https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
         domain:".zendesk.com",
         state: "zendeskKeys",
@@ -32,7 +34,7 @@ export let thirdPartyList = {
         name: "Clearbit",
         subTitle: "Get company details of your anonymous visitors",
         logo: ClearbitLogo,
-        integrationType: 3,
+        integrationType: integration_type.CLEARBIT,
         docsLink: "https://clearbit.com/docs",
         state: "clearbitKeys",
         instructions: [
@@ -47,7 +49,7 @@ export let thirdPartyList = {
         name: "Helpdocs",
         logo: HelpdocsLogo,
         subTitle: "Import your FAQs from Helpdocs",
-        integrationType: 1,
+        integrationType: integration_type.HELPDOCS,
         state:"helpdocsKeys",
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
         instructions: [
@@ -76,14 +78,14 @@ export let thirdPartyList = {
         name: "Agile CRM",
         logo: AgilecrmLogo,
         subTitle: "Add leads to Agile CRM contact",
-        integrationType: 4,
+        integrationType: integration_type.AGILE_CRM,
         docsLink: "https://www.agilecrm.com/api",
         domain:".agilecrm.com",
         state:"agilecrmKeys",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">
             Agile CRM dashboard</a></span>,
-            "Enter Javascript API, It is present at Admin Settings -> Developers & API tab",
+            "Enter REST API, It is present at Admin Settings -> Developers & API tab",
             "Enter your Access Email Id of Agile CRM",
             "Enter your subdoamin",
             "Hit save",
