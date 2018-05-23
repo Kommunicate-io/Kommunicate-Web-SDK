@@ -514,6 +514,9 @@ class Aside extends Component {
                     </div>
                   </div>
                   <div className="right">
+                    <div id="km-conversation-heading" className="km-conversation-heading breadcrumb vis">
+                      <p className="active breadcrumb-item">Conversations</p>
+                    </div>
                     <div className="panel-content">
                       <div id="km-toolbar" className="km-toolbar blk-lg-12 n-vis">
                           <div className="row">

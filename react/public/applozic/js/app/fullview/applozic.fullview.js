@@ -3777,6 +3777,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$mck_tab_title.attr('title', name);
 					$mck_tab_conversation.removeClass('vis').addClass('n-vis');
 					$mck_tab_header.removeClass('n-vis').addClass('vis');
+					$kmApplozic("#km-conversation-heading").addClass('n-vis').removeClass('vis');
 					if (MCK_MODE === 'support') {
 						$kmApplozic('.km-tab-link').removeClass('vis').addClass('n-vis');
 					}
