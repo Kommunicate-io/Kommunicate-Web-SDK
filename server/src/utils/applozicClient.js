@@ -5,7 +5,7 @@ const adminPassword=config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
 const constant =require('./constant');
 const logger = require('./logger.js');
-const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?";
+const APP_LIST_URL = config.getProperties().urls.baseUrl +"/rest/ws/user/getlist/v2.1?";
 const utils = require("./utils");
 
 /*
@@ -155,9 +155,9 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
       });
     };
 
-exports.findApplications=(email, role, userApp)=>{
+exports.findApplications=(email)=>{
   let param = utils.isValidEmail(email)?"emailId":"userId";
-    let GET_APP_LIST_URL = APP_LIST_URL +param+"=" + encodeURIComponent(email)+"&roleNameList="+role+"&userApp="+userApp;
+    let GET_APP_LIST_URL = APP_LIST_URL +param+"=" + encodeURIComponent(email)
     return  axios.get(GET_APP_LIST_URL)
       .then(function(response){
         if (response.status=200 && response.data!=="Invalid userId or EmailId") {
@@ -174,41 +174,41 @@ exports.findApplications=(email, role, userApp)=>{
 /*
 this method get the application detail for given applicationId
 */
-exports.getApplication=(customer, isApplicationWebAdmin)=>{
+exports.getApplication = (customer, isApplicationWebAdmin) => {
   const applicationId = customer.applicationId;
   const getApplicationUrl = config.getProperties().urls.getApplicationDetail.replace(":applicationId", applicationId);
-  const apzToken =  new Buffer(customer.userName+":"+customer.accessToken).toString('base64');
+  const apzToken = new Buffer(customer.userName + ":" + customer.accessToken).toString('base64');
   console.log("calling applozic.. url: ", getApplicationUrl, " apzToken: ", apzToken);
   let err = {};
   return Promise.resolve(axios.get(getApplicationUrl, {
-      headers: {
-        "Apz-Token": "Basic " + apzToken,
-        "Content-Type": "application/json",
-        "Apz-AppId": applicationId,
-        "Apz-Product-App": isApplicationWebAdmin,
-      },
-    })).then(response=>{
-      if (response.status == 200) {
-        if (response.data != "error") {
-          console.log("got application detail..status code :", response.status);
-          return response.data;
-        } else {
-          console.log("get application API response :", response.data);
-          err.code = "APPLICATION_NOT_EXISTS";
-          throw err;
-        }
-      } else{
-        err.code = "APPLOZIC_ERROR";
+    headers: {
+      "Apz-Token": "Basic " + apzToken,
+      "Content-Type": "application/json",
+      "Apz-AppId": applicationId,
+      "Apz-Product-App": isApplicationWebAdmin,
+    },
+  })).then(response => {
+    if (response.status == 200) {
+      if (response.data != "error") {
+        console.log("got application detail..status code :", response.status);
+        return response.data;
+      } else {
+        console.log("get application API response :", response.data);
+        err.code = "APPLICATION_NOT_EXISTS";
         throw err;
       }
-    }).catch(err=>{
-      if (err.response&&err.response.status==401) {
-        console.log("INVALID UserName or password : response received from server :", err.response.status);
-        err.code = "INVALID_CREDENTIALS";
-      }
-        throw err;
-    });
-  };
+    } else {
+      err.code = "APPLOZIC_ERROR";
+      throw err;
+    }
+  }).catch(err => {
+    if (err.response && err.response.status == 401) {
+      console.log("INVALID UserName or password : response received from server :", err.response.status);
+      err.code = "INVALID_CREDENTIALS";
+    }
+    throw err;
+  });
+};
 
 exports.applozicLogin =(userDetail)=>{
       //userName,password,applicationId,role,email
