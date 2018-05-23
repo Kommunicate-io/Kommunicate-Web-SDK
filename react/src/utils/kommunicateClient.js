@@ -665,25 +665,11 @@ const getIntegratedBots = () => {
       let dialogFlowBots = mongoBots.data.filter(bot => {
         return (bot.aiPlatform && bot.aiPlatform.toLowerCase() === 'dialogflow');
       });
-
-      for (let i = 0; i < sqlBots.length; i++) {
-        // for(let j = 0; j < mongoBots.data.length; j++ ){
-        //   if(sqlBots[i].name !== "bot" && sqlBots[i].name.toLowerCase() == mongoBots.data[j].name.toLowerCase()){
-        //     let bot1 = sqlBots[i];
-        //     let bot2 = mongoBots.data[j];
-        //     bots[i] = {...bot1, ...bot2};
-
-        //     if(bots[i].aiPlatform && bots[i].aiPlatform === 'dialogflow'){
-        //       dialogFlowBots.push(bots[i])
-        //     }
-        //   }
-        // }
-        if (sqlBots[i].userName !== "bot") {
-          let mbot = mongoBots.data.filter(bot => { return bot.name === sqlBots[i].userName });
-          // bots.push({ ...sqlBots[i], ...mbot[0] });
-          let b = Object.assign({}, mbot[0], sqlBots[i]);
-          bots.push(b)
-        }
+      for(let i= 0; i < sqlBots.length; i++){
+       if(sqlBots[i].userName !== "bot"){
+        let mbot=mongoBots.data.filter(bot=>{ return bot.name===sqlBots[i].userName});
+        bots.push({...sqlBots[i], ...mbot[0]});
+       }
       }
 
       return {'allBots': bots, 'dialogFlowBots': dialogFlowBots};
