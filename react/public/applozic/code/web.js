@@ -82,6 +82,7 @@ function initAutoSuggestions() {
         initAutoSuggestions();
         //$("#li-chat a").trigger('click');
         window.Aside.loadAgents();
+        window.Aside.loadBots();
       }
     }
 

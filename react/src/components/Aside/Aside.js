@@ -122,6 +122,9 @@ class Aside extends Component {
          }
       });
   }
+  loadBots() {
+    window.$kmApplozic.fn.applozic('fetchContacts', { roleNameList: ['BOT'], callback: function (response) { } });
+  }
 
   initConversation(groupId) {
     var that = this;
