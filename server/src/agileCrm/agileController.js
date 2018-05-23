@@ -49,4 +49,28 @@ exports.updateContact = (req, res) => {
         return res.status(500).json({ status: "ERROR", code: err.code, message: err.data });
     });
 }
+exports.updateTag = (req, res) => {
+    let appId = req.params.appId;
+    let agileContactId = req.params.contactId
+    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+        if (!customer) {
+            return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
+        }
+        return integrationSettingService.getIntegrationSetting(customer.id, AGILE_CRM).then(settings => {
+            if (settings.length == 0) {
+                return res.status(200).json({ code: "SUCCESS", message: 'no configuration found for Agile CRM' });
+            }
+            return agileService.updateTag(settings[0], agileContactId, req.body).then(response => {
+                console.log("response from agile CRM", response);
+                return res.status(200).json({ code: "SUCCESS", response: response });
+            })
+
+        });
+
+    }).catch(err => {
+        console.log('error while updating agile crm tag for a contact ', err);
+        return res.status(500).json({ status: "ERROR", code: err.code, message: err.data });
+    });
+}
+
 
