@@ -6,7 +6,7 @@ const registrationService = require("../register/registrationService");
 const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 exports.login = (userDetail) => {
-  const userName= userDetail.userName;
+  const userName = userDetail.userName;
   const password = userDetail.password;
   var applicationId = userDetail.applicationId;
 
@@ -15,28 +15,31 @@ exports.login = (userDetail) => {
   }
 
   return applozicClient.findApplications(userName).then(response => {
-
-    if (Object.keys(response).length == 0) {
-      let err= {};
-      err.code= "INVALID_CREDENTIALS";
+    let applicationWebAdminApp = response.APPLICATION_WEB_ADMIN;
+    let applicationAdminApp = response.APPLICATION_ADMIN;
+    if (Object.keys(applicationWebAdminApp).length == 1) {
+      userDetail.applicationId = Object.keys(applicationWebAdminApp)[0];
+      return this.processLogin(userDetail);
+    } else if (Object.keys(applicationWebAdminApp).length > 1) {
+      return applicationWebAdminApp;
+    } else if (Object.keys(applicationAdminApp).length > 0) {
+      userDetail.applicationId = Object.keys(applicationAdminApp)[0];
+      return registrationService.signUpWithApplozic(userDetail, false).then(result => {
+        return this.processLogin(userDetail);
+      });
+    } else {
+      let err = {};
+      err.code = "INVALID_CREDENTIALS";
       throw err;
     }
-    if (Object.keys(response).length > 1) {
-      return response;
-    }
-
-    applicationId = Object.keys(response)[0];
-    userDetail.applicationId = applicationId;
-
-    return this.processLogin(userDetail);
   });
-};
+}
 
 exports.processLogin = (userDetail) => {
   var userName = userDetail.userName;
   var applicationId = userDetail.applicationId;
   var password = userDetail.password;
-  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}),
+  return Promise.all([applozicClient.getApplication({userName: userName,applicationId:applicationId,accessToken:password}, true),
     userService.getByUserNameAndAppId(userName,applicationId),
     applozicClient.applozicLogin(userDetail)]).then(([application,user,applozicUser])=>{
       if(user && bcrypt.compareSync(password, user.password)) {

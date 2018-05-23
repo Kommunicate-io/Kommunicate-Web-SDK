@@ -240,22 +240,22 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
 })
 }
 
-exports.signUpWithApplozic = (options)=>{
-    options.email =options.email|| options.userName;
-  return applozicClient.getApplication({"applicationId":options.applicationId,"userName":options.userName,"accessToken":options.password}).then(application=>{
-    return Promise.all([applozicClient.applozicLogin({"userName":options.userName,"password":options.password,"applicationId":options.applicationId,"roleName":"APPLICATION_WEB_ADMIN","email":options.email}),
-    applozicClient.applozicLogin({"userName":"bot","password":"bot","applicationId":options.applicationId,"roleName":"BOT"}),
-    applozicClient.applozicLogin({"userName":LIZ.userName,"password":LIZ.password,"applicationId":application.applicationId,"roleName":"BOT",displayName:LIZ.name})])
-    .then(([customer,bot,liz])=>{
-      return applozicClient.updateApplozicClient(options.userName,options.password,options.applicationId,{userId:options.userName,roleName:"APPLICATION_WEB_ADMIN"})
-      .then(updatedUser=>{
-        options.role= "APPLICATION_WEB_ADMIN";
-        return populateDataInKommunicateDb(options,application,customer,bot,liz);
+exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
+  options.email = options.email || options.userName;
+  return applozicClient.getApplication({ "applicationId": options.applicationId, "userName": options.userName, "accessToken": options.password }, isApplicationWebAdmin).then(application => {
+    return Promise.all([applozicClient.applozicLogin({ "userName": options.userName, "password": options.password, "applicationId": options.applicationId, "roleName": "APPLICATION_WEB_ADMIN", "email": options.email }),
+    applozicClient.applozicLogin({ "userName": "bot", "password": "bot", "applicationId": options.applicationId, "roleName": "BOT" }),
+    applozicClient.applozicLogin({ "userName": LIZ.userName, "password": LIZ.password, "applicationId": application.applicationId, "roleName": "BOT", displayName: LIZ.name })])
+      .then(([customer, bot, liz]) => {
+        return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" })
+          .then(updatedUser => {
+            options.role = "APPLICATION_WEB_ADMIN";
+            return populateDataInKommunicateDb(options, application, customer, bot, liz);
+          })
       })
-    })
 
-  }).catch(e=>{
-    console.log("err",e);
+  }).catch(e => {
+    console.log("err", e);
     throw e;
   })
 }
