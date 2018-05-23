@@ -227,43 +227,21 @@ export default class IntegratedBots extends Component {
     toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable) => {
         console.log("toggleEditBotIntegrationModal")
         this.clearBotDetails();
-        this.setState({
-          editBotIntegrationModal: !this.state.editBotIntegrationModal
-        })
-    
-        if(botIdInUserTable && botKey){
-          this.setState({
-            botIdInUserTable,
-            botKey
-        }, () => {this.editBotDetails()})
-    
-        }
-        if(botName && botUserName && botToken && botDevToken){
-          this.setEditBotIntegrationDetails(botName, botUserName, botToken, botDevToken)
-        }
-    
-        console.log(botAvailable);
-        console.log(botName);
-        console.log(botUserName);
-        console.log(botToken);
-    
-          this.setState({
-            botAvailable: botAvailable == 1 ? true:false
-          }, () => {console.log(this.state.botAvailable)})
+       // updating  state
+        let updatedState ={};
+        updatedState.editBotIntegrationModal = !this.state.editBotIntegrationModal;
+        botIdInUserTable? updatedState.botIdInUserTable = botIdInUserTable:"";
+        botKey?updatedState.botKey=botKey:"";
+        botName?(updatedState.editBotIntegrationModalHeader = botName, updatedState.editedBotName = botName) :"";
+        botToken?updatedState.editedClientToken=botToken:"";
+        botDevToken?updatedState.editedDevToken=botDevToken:"";
+        botUserName?updatedState.botUserName =botUserName:"";
+        updatedState.botAvailable =Boolean(botAvailable);
+        
+        this.setState(updatedState)
       }
 
-      setEditBotIntegrationDetails = (botName, botUserName, clientToken, devToken) => {
-        this.setState({
-          editBotIntegrationModalHeader: botName,
-          editedBotName: botName,
-          editedClientToken: clientToken,
-          editedDevToken: devToken,
-          botUserName: botUserName,
-          botName,
-          clientToken,
-          devToken,
-        })
-      }
+  
 
       saveEditedBotDetails = () => {
 
@@ -315,13 +293,6 @@ export default class IntegratedBots extends Component {
             this.getIntegratedBotsWrapper()
           }
         })
-      }
-    
-      editBotDetails = () => {
-
-        console.log(this.state.botIdInUserTable)
-        console.log(this.state.botKey)
-    
       }
 
       toggleBotAvailability = () => {
@@ -451,7 +422,7 @@ export default class IntegratedBots extends Component {
                   </div>
                   {this.state.listOfIntegratedBots.map(bot => (
 
-                    <div className="row km-integrated-bot-list-row" key={bot.id} data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
+                    <div className="row km-integrated-bot-list-row" key={bot.id} data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status)}}>
                       <div className="col-md-3 col-sm-6 col-xs-12">
                         {/* <div style={{marginRight: "8px"}}>
                           <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
