@@ -8663,11 +8663,11 @@ app-root {
   [;min-width: 60px;];
   (;min-width: 60px;);
 
+  padding: 0px 7px 15px 7px;
   height: 100%;
-  padding: 11px 7px 15px 7px;
   display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
-    height: calc(100vh - 30px);
+    height: calc(100vh - 10px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10382,8 +10382,8 @@ input:required {
 } */
 
 .integration-invited-team-div {
-  margin-top: 55px;
-  margin-bottom:-55px;
+  /* margin-top: 55px;
+  margin-bottom:-55px; */
   background: #1cabe2;
   height: 40px;
   line-height: 40px;
@@ -10775,7 +10775,7 @@ input:required {
 
 .logo-nav {
   margin-bottom: 40px !important;
-  margin-top: 0px !important;
+  margin-top: 11px !important;
 }
 .logo-nav .nav-link {
   padding: 0 !important;

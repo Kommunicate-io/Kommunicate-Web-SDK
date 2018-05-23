@@ -1,6 +1,6 @@
 .settings-sidebar {
     margin-left: 7px;
-    margin-top: -15px;
+    margin-top: 0px;
     width: 200px;
     background-color: #f4f5f7;
     margin-right: -7px;
@@ -9,7 +9,7 @@
 }
 .settings-title {
     font-size: 22px;
-    margin-top: 16px;
+    margin-top: 12px;
     margin-bottom: 12px;
     color: #666464;
 }
