@@ -16,7 +16,7 @@ class KommunicateChatBot(OutputChannel):
         self.url = url 
 
     def send_text_message(self , recipient_id, message):
-        print message
+        print(message)
 
 class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
     def __init__(self, url="http://localhost:5000"):
