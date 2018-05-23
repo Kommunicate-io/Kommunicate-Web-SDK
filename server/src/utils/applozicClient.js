@@ -326,15 +326,20 @@ exports.updatePassword = (options)=>{
  * @return {Object} object having property code.
  * @throws {Object} applozic err, network error
  */
-exports.updateApplozicClient = (userName, accessToken,applicationId,user,options)=>{
+exports.updateApplozicClient = (userName, accessToken,applicationId,user,options, isBot)=>{
   let apzToken = options&&options.apzToken?options.apzToken:new Buffer(userName+":"+accessToken).toString('base64');
-  return axios.patch(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update?userId="+user.userId, user, {headers:{
+  let headers = isBot? {
+    "Access-Token": accessToken,
+    "Application-Key": applicationId,
+    "Authorization":"Basic "+ apzToken
+  }: {
     "Apz-Token":"Basic "+ apzToken,
     "Content-Type":"application/json",
     "Apz-AppId":applicationId,
     'Of-User-Id':user.userId,
     'Apz-Product-App': 'true'
-   }})
+   };
+  return axios.patch(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update?userId="+user.userId, user, {headers:headers})
    .then(response=>{
     if(response.data&&response.data.status ==="success"){
       return {code:"success"};
