@@ -353,17 +353,17 @@ exports.updateUser = (userId, appId, userInfo) => {
         throw error;
       }
       let userDetail={userId:userId, displayName:userInfo.name, email:userInfo.email,phoneNumber:userInfo.contactNo};
-      applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail)
+      applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail,null,user.type===registrationService.USER_TYPE.BOT)
         .then(response => {
           console.log("Applozic update user response: " + response);
         })
       return userModel.update(userInfo, {
         where: { userName: userId, customerId: user.customerId }
         
-      }).then(function(){
+      }).then(function(updateResult){
          if(user.type==registrationService.USER_TYPE.BOT){
           // keeping it async for now. 
-          botPlatformClient.updateBot({
+           botPlatformClient.updateBot({
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken" : userInfo.devToken,
@@ -372,6 +372,7 @@ exports.updateUser = (userId, appId, userInfo) => {
           }).catch(err=>{
             logger.error("error while updating bot platform",err);
           });
+          return updateResult?updateResult.length:0;
         }
       });
     })
