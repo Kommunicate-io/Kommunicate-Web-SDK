@@ -25,7 +25,9 @@ const issueTypeAutoReplyController = require('../issueTypeAutoReply/issueTypeAut
 const issueTypeAutoReplyValidation = require('../issueTypeAutoReply/validation');
 const inAppEventController = require('../appevent/InAppEventController');
 const zendeskController = require('../zendesk/zendeskController');
-const zendeskValidation = require('../zendesk/validation') ;
+const zendeskValidation = require('../zendesk/validation');
+const agileController = require('../agileCrm/agileController');
+const agileValidation = require('../agileCrm/validation');
 const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
 const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
 const googleAuthController = require('../googleAuth/googleAuthController');
@@ -48,6 +50,7 @@ const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
 const issueTypeReplyRouter = express.Router(); 
 const zendeskRouter = express.Router();
+const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
@@ -73,6 +76,7 @@ exports.thirdPartySetting = thirdPartySettingRouter;
 exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
 exports.chargebee = chargebeeRouter;
+exports.agile = agileRouter;
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -183,3 +187,10 @@ faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestCon
  * Chargebee
  */
 chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
+/**
+ * Agile CRM APIs
+ */
+agileRouter.post('/:appId/createContact', validate(agileValidation.createContact),
+agileController.createContact);
+agileRouter.patch('/:appId/:contactId/updateContact', validate(agileValidation.updateContact),
+agileController.updateContact);

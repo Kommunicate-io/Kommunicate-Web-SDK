@@ -83,7 +83,7 @@ export let thirdPartyList = {
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">
             Agile CRM dashboard</a></span>,
-            "Enter Javascript API, It is present at Admin Settings -> Developers & API tab",
+            "Enter REST API, It is present at Admin Settings -> Developers & API tab",
             "Enter your Access Email Id of Agile CRM",
             "Enter your subdoamin",
             "Hit save",
