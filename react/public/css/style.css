@@ -11135,3 +11135,8 @@ input:required {
 .badge-container--error  .badge-text {
   color: #f20e17;
 }
+
+.km-conversation-heading .breadcrumb-item {
+  margin-top: 11px;
+  margin-bottom: 11px;
+}
