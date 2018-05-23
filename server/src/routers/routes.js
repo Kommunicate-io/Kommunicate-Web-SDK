@@ -190,7 +190,7 @@ chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
 /**
  * Agile CRM APIs
  */
-agileRouter.post('/:appId/createContact', validate(agileValidation.createContact),
+agileRouter.post('/:appId/contact', validate(agileValidation.createContact),
 agileController.createContact);
-agileRouter.patch('/:appId/:contactId/updateContact', validate(agileValidation.updateContact),
+agileRouter.patch('/:appId/:contactId/contact', validate(agileValidation.updateContact),
 agileController.updateContact);
