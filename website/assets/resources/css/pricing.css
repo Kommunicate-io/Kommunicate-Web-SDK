@@ -44,7 +44,7 @@ a, a:hover, a:focus, a:active {
     line-height: normal;
     color: #4a4a4a;
     margin-top: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 90px;
 }
 .pricing-subtitle.beta-text {
     /* margin-top: 60px; */
@@ -453,7 +453,7 @@ position: relative;
 
 @media (min-width:992px) {
     .pricing-table-container {
-        min-height: 812px;
+        min-height: 985px;
     }
     .startup .pricing-table-footer {
         padding-bottom: 30px;
@@ -476,7 +476,7 @@ position: relative;
 }
 @media (min-width:992px) and (max-width:1199px) {
     .pricing-table-container {
-        min-height: 812px;
+        min-height: 1010px;
     }
     .startup .pricing-table-footer {
         padding-bottom: 30px;
