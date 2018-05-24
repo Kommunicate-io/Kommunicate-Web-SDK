@@ -106,6 +106,16 @@ transition: box-shadow .25s;
 .cards-link--ios {
     border-top: 5px solid #9b9b9b;
 }
+.cards-link--phonegap {
+    border-top: 5px solid #000;
+}
+.cards-link--phonegap svg, .cards-link--ionic svg {
+    width: auto;
+    height: 50px;
+}
+.cards-link--ionic {
+    border-top: 5px solid #478AFF;
+}
 .cards-logo {
     margin-bottom: 20px;
 }
