@@ -55,20 +55,22 @@ export default class PlanDetails extends Component {
 
                 <div className="col-md-12 active-plan-more-details" hidden={this.state.hidePlanDetails}>
                     {
-                        PlanName === 'Startup' ?
+                        PlanName === 'Free' ?
                             <div className="active-plan-feature-list">
                                 <ul>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Messenger</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Team Inbox</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Auto Reply</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Android &amp; iOS Agent app</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;1 Bot integration supported</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: 3 months</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited agents</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Live Chat</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Web and Mobile SDKs</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent apps</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Conversations reporting</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Welcome and offline messages</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integrations</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Quick replies</li>
                                 </ul>
                             </div> 
                         : PlanName === 'Launch' ? 
                             <div> <div className="info-bar-container">
-                                <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Startup Plan</a> and… </p>
+                                <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Free Plan</a> and… </p>
                             </div>
                                 <div className="active-plan-feature-list">
                                     <ul>
@@ -79,6 +81,7 @@ export default class PlanDetails extends Component {
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Contact Enrichment</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQs</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat &amp; Email Support</li>
+                                        
                                     </ul>
                                 </div> </div> 
                         : PlanName === 'Early Bird' ? 
@@ -101,14 +104,18 @@ export default class PlanDetails extends Component {
                         : PlanName === 'Growth' ? 
                             <div> 
                                 <div className="info-bar-container">
-                                    <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Launch Plan</a> and… </p>
+                                    <p className="info-bar-text">All features present in <a href="https://www.kommunicate.io/pricing" target="_blank" className="see-plan-details">Free Plan</a> and… </p>
                                 </div>
                                 <div className="active-plan-feature-list">
                                     <ul>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bot integrations</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;CRM integrations</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Priority email support</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Data retention: Forever</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent reporting</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Conversation routing</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat and email support</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot builder</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQ</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Liz bot</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;All integrations</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Standard SLA</li>
                                     </ul>
                                 </div> 
                             </div> 
@@ -119,9 +126,17 @@ export default class PlanDetails extends Component {
                                 </div>
                                 <div className="active-plan-feature-list">
                                     <ul>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bot development</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Personalized support on Phone &amp; Skype</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Customised solution for your specific needs</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Analytics APIs</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Downloadable reports</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Advanced reporting</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom bots</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Whitelabel</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Dedicated server</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Premium support</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agreements</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Routing rules: team based, trigger based agent assignment</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;CSAT score</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited scaling</li>
                                     </ul>
                                 </div> 
                             </div> 
