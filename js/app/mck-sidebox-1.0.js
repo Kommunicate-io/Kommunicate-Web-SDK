@@ -2154,6 +2154,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var email = $("#km-email").val();
                     var userName = $("#km-userName").val();
                     var contactNumber = $("#km-contact").val();
+                    if(contactNumber){
+                        userId =contactNumber;
+                    }
+                    if(email){
+                        userId = email;
+                    } 
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
