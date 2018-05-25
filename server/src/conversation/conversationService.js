@@ -165,7 +165,7 @@ const addMemberIntoConversation = (data) => {
                         if (user.type === 2) {
                             if (user.userName === 'bot') {
                                 header.apzToken = user.apzToken
-                            } if (user.allConversations == 1) {
+                            } if (customer.botRouting && user.allConversations == 1) {
                                 userIds.push(user.userName);
                             }
                         }

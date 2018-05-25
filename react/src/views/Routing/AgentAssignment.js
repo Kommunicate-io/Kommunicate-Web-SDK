@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import { enableNotifyEveryBody, enableAutomaticAssignment, getCustomerByApplicationId} from '../../utils/kommunicateClient'
+import { enableNotifyEveryBody, enableAutomaticAssignment, enableOrDisableBotRouting, getCustomerByApplicationId} from '../../utils/kommunicateClient'
 import axios from 'axios';
 import { ROUND_ROUBIN } from './Constants.js';
 import CommonUtils from '../../utils/CommonUtils';
@@ -24,7 +24,7 @@ class AgentAssignemnt extends Component{
             preventMultiCallAutoAssignment:false,
             preventMultiCallNotifyEverybody:false,
             botsAreAvailable: false,
-            assignConversationToBot: false,
+            assignConversationToBot: 0,
             openAgentRoutingRules: false,
             listOfBots: [],
             listOfBotsDropDown: false,
@@ -40,7 +40,7 @@ componentWillMount (){
 
 componentDidMount(){
     getIntegratedBots().then(response => {
-        console.log(response.allBots)
+        // console.log(response.allBots)
         if (response && response.allBots && response.allBots.length > 0) {
             this.setState({
                 listOfBots: response.allBots,
@@ -51,7 +51,7 @@ componentDidMount(){
                         this.setState({
                             currentSelectedBot: bot.userName,
                             dropDownBoxTitle: bot.name,
-                            assignConversationToBot: true,
+                            // assignConversationToBot: true,
                         })
                     }
                 })
@@ -61,6 +61,7 @@ componentDidMount(){
 }
 getRoutingState = () => {
     return Promise.resolve(getCustomerByApplicationId()).then(response => {
+        response.data.data.botRouting && this.setState({assignConversationToBot:1})
         if (response.data.data.agentRouting === 1) {
             this.setState({
                 checkedNotifyEverybody: 0,
@@ -87,7 +88,7 @@ handleRadioBtnNotifyEverybody = () => {
         checkedAutomaticAssignemnt: 0
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
-        enableNotifyEveryBody({ routingState: ROUND_ROUBIN.DISABLE }).then(response => {
+        return Promise.resolve(enableNotifyEveryBody({ routingState: ROUND_ROUBIN.DISABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUND_ROUBIN.DISABLE;
@@ -98,6 +99,8 @@ handleRadioBtnNotifyEverybody = () => {
                     preventMultiCallNotifyEverybody: true
                 })
             }
+        })).catch(err => {
+            console.log("error while updating agent routing", err);
         })
     }
 }
@@ -107,7 +110,7 @@ handleRadioBtnAutomaticAssignment = () => {
         checkedAutomaticAssignemnt: 1,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
-        enableAutomaticAssignment({ routingState: ROUND_ROUBIN.ENABLE }).then(response => {
+        return Promise.resolve(enableAutomaticAssignment({ routingState: ROUND_ROUBIN.ENABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUND_ROUBIN.ENABLE;
@@ -118,24 +121,36 @@ handleRadioBtnAutomaticAssignment = () => {
                     preventMultiCallNotifyEverybody: false
                 })
             }
+        })).catch(err => {
+            console.log("error while updating agent routing", err);
         })
     }
 }
 
 toggleConversationAssignment = () => {
-    console.log("state",this.state);
-    let status = !this.state.assignConversationToBot?"enabled":"disabled";
-    let currentSelectedBot = this.state.listOfBots.filter(item =>item.userName==this.state.currentSelectedBot)
-    if(currentSelectedBot.length){
-    botPlatformClient.toggleMute(currentSelectedBot[0].userKey,status).then(data=>{
-        if(data.code=="success"){
-            console.log("bot routing disabled..");
-        }
-        })
-    }
     this.setState({
         assignConversationToBot: !this.state.assignConversationToBot
     })
+    // console.log("state",this.state);
+    // let status = !this.state.assignConversationToBot?"enabled":"disabled";
+    let status = !this.state.assignConversationToBot
+    // let currentSelectedBot = this.state.listOfBots.filter(item =>item.userName==this.state.currentSelectedBot)
+    // if(currentSelectedBot.length){
+    // botPlatformClient.toggleMute(currentSelectedBot[0].userKey,status).then(data=>{
+    //     if(data.code=="success"){
+    //         // console.log("bot routing disabled..");
+    //     }
+    //     })
+    // }
+    return Promise.resolve(enableOrDisableBotRouting({ routingState: status }).then(response => {
+        if (response.status === 200 && response.data.code === "SUCCESS") {
+            status == 1 && Notification.success('Bot routing enabled');
+            status == 0 && Notification.success('Bot routing disabled');
+        }
+    })).catch(err => {
+        console.log("error while updating bot routing", err);
+    })
+
 }
 
 
@@ -212,7 +227,7 @@ toggleConversationAssignment = () => {
                                                                             conversationHandlingByBot(this.state.currentSelectedBot, 0)
                                                                         }
                                                                         conversationHandlingByBot(bot.userName, 1).then(response => {
-                                                                            console.log(response);
+                                                                            // console.log(response);
                                                                             if(response.data.code === "success"){
                                                                                 Notification.info('Conversations assigned to ' + bot.name)
                                                                             } else {

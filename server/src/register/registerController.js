@@ -257,16 +257,19 @@ exports.signUpWithAplozic= (req,res)=>{
 
 }
 
-exports.updateAgentRoutingState = (req, res)=>{
-let appId = req.params.appId;
-let routingState = req.params.routingState;
+exports.updateRoutingState = (req, res) => {
+  let appId = req.params.appId;
+  let routingState = req.params.routingState;
+  let user = req.params.user+"Routing"
+  let routingInfo = {};
+  routingInfo[user]=routingState;
 
-return registrationService.updateAgentRoutingState(appId, routingState).then(response=>{
-  return res.status(200).json({code:"SUCCESS",message:response.message});
-}).catch(err=>{
-  console.log("error while updating customer", err);
-  return res.status(500).json({code:"ERROR",message:"internal server error"});
-})
+  return registrationService.updateRoutingState(appId, routingInfo).then(response => {
+    return res.status(200).json({ code: "SUCCESS", message: response.message });
+  }).catch(err => {
+    console.log("error while updating customer", err);
+    return res.status(500).json({ code: "ERROR", message: "internal server error" });
+  })
 }
 exports.getCustomerByApplicationId = (req, res) => {
   let appId = req.query.applicationId;

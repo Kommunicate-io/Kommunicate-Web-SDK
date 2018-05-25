@@ -271,13 +271,16 @@ exports.getCustomerByAgentUserKey= (userKey) =>{
   });
 }
 
-exports.updateAgentRoutingState = (applicationId, routingState) =>{
-  return customerModel.update({agentRouting:routingState}, {where: {applicationId: applicationId}}).then(res=>{
-    return {message: "successfully updated"};
-  }).catch(err=>{
-    return {message: "routing update error "}
+exports.updateRoutingState = (applicationId, routingInfo) => {
+  return customerModel.update(routingInfo, { where: { applicationId: applicationId } }).then(res => {
+    return { message:"routing successfully updated" };
+  }).catch(err => {
+    return { message:"routing update error " }
   });
 }
+
+
+
 
 exports.updateOnlyCustomer=(userId, customer)=>{
   return customerModel.update(customer, { where: { "userName": userId } });
