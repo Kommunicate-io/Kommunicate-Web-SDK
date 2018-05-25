@@ -71,7 +71,9 @@ const createUser =user=>{
   let clientToken = user.clientToken;
   let type = user.type;
   let devToken = user.devToken;
-  let userId = user.userId;
+  let userId = user.userId?user.userId.toLowerCase():"";
+  
+  user.userName? (user.userName = user.userName.toLowerCase()):"";
   
   return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
     let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";

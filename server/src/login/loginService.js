@@ -6,7 +6,8 @@ const registrationService = require("../register/registrationService");
 const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 exports.login = (userDetail) => {
-  const userName = userDetail.userName;
+  userDetail.userName? (userDetail.userName = userDetail.userName.toLowerCase()):"";
+  const userName= userDetail.userName;
   const password = userDetail.password;
   var applicationId = userDetail.applicationId;
 

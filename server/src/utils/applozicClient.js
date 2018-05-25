@@ -15,7 +15,7 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
   console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role,"email",email);
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
-    "userId": userId,
+    "userId": userId?userId.toLowerCase():"",
     "applicationId": applicationId,
     "password": password,
     "roleName": role,
@@ -65,7 +65,7 @@ const createApplozicClientV1 = (options)=>{
   options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
   options.roleName = options.roleName?options.roleName:options.role;
   options.chatNotificationMailSent=true;
-  options.userId =options.userName;
+  options.userId =options.userName?options.userName.toLowerCase():"";
     return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
       let err = {};
       console.log("Applozic server returned : ",response.status);
@@ -213,7 +213,7 @@ exports.getApplication = (customer, isApplicationWebAdmin) => {
 exports.applozicLogin =(userDetail)=>{
       //userName,password,applicationId,role,email
   //let data ={"userId": userDetail.userName, "applicationId": userDetail.applicationId,"password": userDetail.password,"authenticationTypeId": 1,"email":userDetail.email};
-  userDetail.userId=userDetail.userName;
+  userDetail.userId=userDetail.userName?userDetail.userName.toLowerCase():"";
   userDetail.authenticationTypeId=userDetail.authenticationTypeId?userDetail.authenticationTypeId:1;
 
   if (userDetail.role){
