@@ -381,7 +381,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
 		w.MCK_OL_MAP = new Array();
-		var Conversation_section_Map = {
+		
+		var CONVERSATION_SECTION_MAP = {
 			'km-contact-list': 'cs',
 			'km-assigned-search-list': 'as',
 			'km-closed-conversation-list': 'cl'
@@ -4465,7 +4466,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			};
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-				var section = Conversation_section_Map[sectionId];
+				var section = CONVERSATION_SECTION_MAP[sectionId];
                 if ($kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr).length > 0) {
                     var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
@@ -4740,7 +4741,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.updateContact = function(contact, message, $listId, update) {
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				//Todo: check $contactElem based on the sectionId
-				var section = Conversation_section_Map[$listId];	
+				var section = CONVERSATION_SECTION_MAP[$listId];	
 				var $contactElem = $kmApplozic("#km-li-"+section+"-"+ contHtmlExpr);
 				var currentMessageTime = $contactElem.data('msg-time');
 				if (message && message.createdAtTime > currentMessageTime || update) {
