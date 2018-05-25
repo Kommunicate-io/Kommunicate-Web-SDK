@@ -57,3 +57,5 @@ alter table users add column `login_type`  enum('email', 'oauth') collate utf8mb
 alter table conversations add application_id varchar(50) default null after id;
 
 ALTER TABLE `conversations` CHANGE COLUMN `participent_user_id` `participant_user_id` VARCHAR(255) NOT NULL ;
+/*added column in customers, "bot_routing" KM-1070 */
+alter table customers add  column bot_routing tinyint(1)  default 0;
