@@ -31,7 +31,7 @@ body {
 	right: 150px;
 	/*width: calc(100% - 200px);*/
 	min-width: 800px;
-	height: calc(100% - 100px);
+	height: 100%;
 }
 .km-userinfo-keydiv{
 	position: relative;

@@ -2,112 +2,112 @@
   "rasa_nlu_data": {
     "common_examples": [
       {
-        "intent": "mau_intent",
-        "entities": [],
+        "entities": [], 
+        "intent": "mau_intent", 
         "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
-      },
+      }, 
       {
-        "intent": "mau_intent",
-        "entities": [],
+        "entities": [], 
+        "intent": "mau_intent", 
         "text": "How is MAU calculated? "
-      },
+      }, 
       {
-        "intent": "mau_intent",
-        "entities": [],
+        "entities": [], 
+        "intent": "mau_intent", 
         "text": "What is MAU? "
-      },
+      }, 
       {
-        "intent": "mau_intent",
-        "entities": [],
+        "entities": [], 
+        "intent": "mau_intent", 
         "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
-      },
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "entities": [],
+        "entities": [], 
+        "intent": "push_notification_not_working", 
         "text": "Why are messages not getting delivered on Applozic?"
-      },
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "entities": [],
+        "entities": [], 
+        "intent": "push_notification_not_working", 
         "text": "Unable to send messages ?"
-      },
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "entities": [],
+        "entities": [], 
+        "intent": "push_notification_not_working", 
         "text": "Unable to send messages ?"
-      },
+      }, 
       {
-        "intent": "host_applozic",
-        "entities": [],
+        "entities": [], 
+        "intent": "host_applozic", 
         "text": "Can I host Applozic Chat on my own server instance?"
-      },
+      }, 
       {
-        "intent": "host_applozic",
-        "entities": [],
+        "entities": [], 
+        "intent": "host_applozic", 
         "text": "Can I host Applozic Chat on my own server instance?"
-      },
+      }, 
       {
-        "intent": "custom_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "custom_ui", 
         "text": "Can I build our own UI on Applozic?"
-      },
+      }, 
       {
-        "intent": "custom_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "custom_ui", 
         "text": "Can I build our own UI on Applozic?"
-      },
+      }, 
       {
-        "intent": "custom_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "custom_ui", 
         "text": "Can I build our own UI on Applozic?"
-      },
+      }, 
       {
-        "intent": "default_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "default_ui", 
         "text": "Can I customise the default UI?"
-      },
+      }, 
       {
-        "intent": "default_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "default_ui", 
         "text": "Can I customise the default UI?"
-      },
+      }, 
       {
-        "intent": "default_ui",
-        "entities": [],
+        "entities": [], 
+        "intent": "default_ui", 
         "text": "Can I customise the default UI?"
-      },
+      }, 
       {
-        "intent": "not_understood",
-        "entities": [],
+        "entities": [], 
+        "intent": "not_understood", 
         "text": "Pricing of Applozic?"
-      },
+      }, 
       {
-        "intent": "greet",
-        "entities": [],
+        "entities": [], 
+        "intent": "greet", 
         "text": "Hi"
-      },
+      }, 
       {
-        "intent": "greet",
-        "entities": [],
+        "entities": [], 
+        "intent": "greet", 
         "text": "Hello"
-      },
+      }, 
       {
-        "intent": "greet",
-        "entities": [],
+        "entities": [], 
+        "intent": "greet", 
         "text": "Need help"
-      },
+      }, 
       {
-        "intent": "done",
-        "entities": [],
+        "entities": [], 
+        "intent": "done", 
         "text": "Nothing else"
-      },
+      }, 
       {
-        "intent": "done",
-        "entities": [],
+        "entities": [], 
+        "intent": "done", 
         "text": "That will be all ."
       }
-    ],
-    "regex_features": [],
-    "entity_synonyms": []
+    ], 
+    "entity_synonyms": [], 
+    "regex_features": []
   }
 }

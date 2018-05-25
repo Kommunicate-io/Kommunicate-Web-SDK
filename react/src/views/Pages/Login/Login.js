@@ -510,7 +510,7 @@ showPasswordField = () => {
                           Login with Google
                         </a>
 
-                        <div className="or-seperator n-vis" hidden={this.state.hideGoogleLoginBtn}>
+                        <div className="or-seperator" hidden={this.state.hideGoogleLoginBtn}>
                           <div className="or-seperator--line"></div>
                           <div className="or-seperator--text">OR</div>
                         </div>

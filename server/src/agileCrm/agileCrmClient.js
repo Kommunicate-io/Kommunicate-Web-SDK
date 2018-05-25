@@ -327,13 +327,13 @@ ContactAPI.prototype.deleteTagsById = function update(contact, success, failure)
                     var contacts = JSON.parse(body);
                     success(contacts);
                 } catch (ex) {
-                    failure(ex);
+                    failure({data:ex});
                 }
             }
         });
         resp.on('error', function(e) {
             if (failure) {
-                failure(e);
+                failure({data:e});
             }
         });
     });
@@ -343,7 +343,7 @@ ContactAPI.prototype.deleteTagsById = function update(contact, success, failure)
         put.write(data);
         put.end();
     } catch (ex) {
-        failure(ex);
+        failure({data:ex});
     }
 };
 

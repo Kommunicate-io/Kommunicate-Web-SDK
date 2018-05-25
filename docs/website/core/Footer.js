@@ -57,7 +57,7 @@ class Footer extends React.Component {
             <a href={this.docUrl('ios-installation.html', this.props.language)}>
               iOS
             </a>
-            <a href="https://docs.applozic.com/docs/ionic-phonegap-cordova-chat-sdk" target="_blank">
+            <a href={this.docUrl('cordova-installation.html', this.props.language)}>
             Ionic/Phonegap
             </a>
             <a href="https://docs.applozic.com/docs/xamarin-chat-sdk" target="_blank">

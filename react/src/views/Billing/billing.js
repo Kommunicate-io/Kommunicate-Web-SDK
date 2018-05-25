@@ -328,12 +328,12 @@ class Billing extends Component {
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
-                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Startup Plan (FREE) at the end of the trial period.</p>
+                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Free Plan at the end of the trial period.</p>
                                         </div>
                                         )
                                         : (
                                             <div className="info-bar-container info-bar--error">
-                                                <p className="info-bar-text"><strong>Trial period over.</strong> You have been subscribed to the Startup Plan.</p>
+                                                <p className="info-bar-text"><strong>Trial period over.</strong> You have been subscribed to the Free Plan.</p>
                                             </div>
                                         )
                                     )
@@ -444,7 +444,7 @@ class Billing extends Component {
                                         <div className="pricing-table">
                                             <div className="pricing-table-container startup">
                                                 <div className="pricing-table-header">
-                                                    <h2 className="pricing-table-plan-title">Startup</h2>
+                                                    <h2 className="pricing-table-plan-title">Free</h2>
                                                     <div className="price-image-container">
                                                         <img src={StartupPlanIcon} alt="Startup Plan Icon" />
                                                     </div>
@@ -457,7 +457,7 @@ class Billing extends Component {
                                                         <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p>
                                                             </h2>
                                                         </div>
-                                                        <div className="price-mau">
+                                                        <div className="price-mau n-vis">
                                                             <h4>Unlimited Chat users /mo</h4>
                                                         </div>
                                                     </div>
@@ -465,12 +465,14 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p style={{ opacity: 0 }}>Includes...</p>
                                                         <ul>
-                                                        <li>Live Chat</li>
-                                                        <li>Team Inbox</li>
-                                                        <li>Quick Replies</li>
-                                                        <li>Agent Routing</li>
-                                                        <li>Android &amp; iOS Agent app</li>
-                                                        <li>Data retention: 3 months</li>
+                                                            <li>Unlimited agents</li>
+                                                            <li>Live Chat</li>
+                                                            <li>Web and Mobile SDKs</li>
+                                                            <li>Agent apps</li>
+                                                            <li>Conversations reporting</li>
+                                                            <li>Welcome and offline messages</li>
+                                                            <li>Bot integrations</li>
+                                                            <li>Quick replies</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -490,45 +492,46 @@ class Billing extends Component {
                                         <div className="pricing-table">
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
-                                                    <h2 className="pricing-table-plan-title">Launch</h2>
+                                                    <h2 className="pricing-table-plan-title">Growth</h2>
                                                     <div className="price-image-container">
-                                                        <img src={LaunchPlanIcon} alt="Launch Plan Icon" />
+                                                        <img src={GrowthPlanIcon} alt="Launch Plan Icon" />
                                                     </div>
 
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <div className="pricing-table-body-header">
                                                         <div className="pricing-value">
-                                                            <h2 id="launch-pricing-monthly" hidden={this.state.pricingMonthlyHidden}>$49<span className="per-month-span">/MO</span>
+                                                            <h2 id="launch-pricing-monthly" hidden={this.state.pricingMonthlyHidden}>$10<span className="per-month-span"> PER AGENT / MO</span>
                                                                 <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
-                                                            <h2 id="launch-pricing-yearly" hidden={this.state.pricingYearlyHidden}>$39<span className="per-month-span">/MO</span>
+                                                            <h2 id="launch-pricing-yearly" hidden={this.state.pricingYearlyHidden}>$8<span className="per-month-span"> PER AGENT / MO</span>
                                                                 <p style={{ visibility: 'visible', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
                                                         </div>
-                                                        <div className="price-mau">
+                                                        <div className="price-mau n-vis">
                                                             <h4>1000 Chat users /mo</h4>
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Startup</p>
+                                                        <p>All in Free</p>
                                                         <ul>
-                                                            <li>Bot integration</li>
-                                                            <li>Unlimited bots</li>
-                                                            <li>Advanced reporting</li>
-                                                            <li>CRM integration</li>
-                                                            <li>Contact Enrichment</li>
-                                                            <li>FAQs</li>
-                                                            <li>Chat &amp; Email Support</li>
+                                                            <li>Agent reporting</li>
+                                                            <li>Conversation routing</li>
+                                                            <li>Chat and email support</li>
+                                                            <li>Bot builder</li>
+                                                            <li>FAQ</li>
+                                                            <li>Liz bot</li>
+                                                            <li>All integrations</li>
+                                                            <li>Standard SLA</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-footer">
-                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_monthly" data-cb-type="checkout" data-cb-plan-id="launch_monthly">
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly">
                                                         {
                                                             (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
                                                         }
                                                      </button>
-                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="launch_yearly" data-cb-type="checkout" data-cb-plan-id="launch_yearly">
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly">
                                                         {
                                                             (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Select Plan"
                                                         }
@@ -610,17 +613,25 @@ class Billing extends Component {
                                                         <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p>
                                                             </h2>
                                                         </div>
-                                                        <div className="price-mau">
+                                                        <div className="price-mau n-vis">
                                                             <h4>Unlimited Chat users /mo</h4>
                                                         </div>
                                                     </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Launch</p>
+                                                        <p>All in Growth</p>
                                                         <ul>
-                                                            <li>Custom bot development</li>
-                                                            <li>Personalized support on Phone &amp; Skype</li>
-                                                            <li>Customised solution for your specific needs</li>
+                                                            <li>Analytics APIs</li>
+                                                            <li>Downloadable reports</li>
+                                                            <li>Advanced reporting</li>
+                                                            <li>Custom bots</li>
+                                                            <li>Whitelabel</li>
+                                                            <li>Dedicated server</li>
+                                                            <li>Premium support</li>
+                                                            <li>Agreements</li>
+                                                            <li>Routing rules: team based, trigger based agent assignment</li>
+                                                            <li>CSAT score</li>
+                                                            <li>Unlimited scaling</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -662,32 +673,32 @@ class Billing extends Component {
 const SUBSCRIPTION_PLANS = {
     'startup': {
         'icon': StartupPlanIcon,
-        'name': 'Startup',
-        'mau': '250',
+        'name': 'Free',
+        'mau': 'Unlimited',
         'amount': '0'
     },
     'launch_monthly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
-        'mau': '1000',
+        'mau': 'Unlimited',
         'amount': '49'
     },
     'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
-        'mau': '1000',
+        'mau': 'Unlimited',
         'amount': '39'
     },
     'growth_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
-        'mau': '5000',
+        'mau': 'Unlimited',
         'amount': '199'
     },
     'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
-        'mau': '5000',
+        'mau': 'Unlimited',
         'amount': '149'
     },
      'early_bird_monthly': {
@@ -705,14 +716,26 @@ const SUBSCRIPTION_PLANS = {
     'enterprise_monthly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
-        'mau': 'Custom',
+        'mau': 'Unlimited',
         'amount': 'Custom'
     },
     'enterprise_yearly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
-        'mau': 'Custom',
+        'mau': 'Unlimited',
         'amount': 'Custom'
+    },
+    'per_agent_monthly': {
+        'icon': GrowthPlanIcon,
+        'name': 'Growth',
+        'mau': 'Unlimited',
+        'amount': '10'
+    },
+    'per_agent_yearly': {
+        'icon': GrowthPlanIcon,
+        'name': 'Growth',
+        'mau': 'Unlimited',
+        'amount': '8'
     }
 };
 

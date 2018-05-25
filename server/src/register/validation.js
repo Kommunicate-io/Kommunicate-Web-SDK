@@ -20,7 +20,9 @@ module.exports.patchCustomer={
 module.exports.updateRoutingState={
   params:{
         appId:joi.string().required(),
-        routingState:joi.string().required()
+        routingState:joi.string().required(),
+        user:joi.string().only(["agent", "bot"])
+
 
   }
 }

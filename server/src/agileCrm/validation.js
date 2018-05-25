@@ -10,3 +10,9 @@ module.exports.updateContact = {
         contactId: joi.string().required()
     }
 }
+module.exports.updateTag = {
+    params: {
+        appId: joi.string().required(),
+        contactId: joi.string().required()
+    }
+}

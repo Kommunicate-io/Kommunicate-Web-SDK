@@ -100,7 +100,7 @@ logger.info("request received to create a user: ",req.body);
       res.status(409).json({code: "USER_ALREADY_EXISTS",message: "user Already exists with user and applicationId"});
       return;
     }else{
-      return Promise.all([userService.createUser(req.body),applozicClient.getApplication({"applicationId":customer.applicationId,"userName":adminUser.userName,"accessToken":adminUser.accessToken})]).then(([user,application])=>{
+      return Promise.all([userService.createUser(req.body),applozicClient.getApplication({"applicationId":customer.applicationId,"userName":adminUser.userName,"accessToken":adminUser.accessToken}, true)]).then(([user,application])=>{
         return integrationSettingService.getIntegrationSetting(customer.id,CLEARBIT).then(key=>{   
           logger.info("user created successfully.. ",user);
           if(user.type===1){

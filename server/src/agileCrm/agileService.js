@@ -18,6 +18,9 @@ const createContact = (settings, userInfo) => {
         if (userInfo.lead_score) {
             contact["lead_score"] = userInfo.lead_score;
         }
+        if (userInfo.star_value) {
+            contact["star_value"] = userInfo.star_value;
+        }
         userInfo.first_name && contact.properties.push({
             "type": "SYSTEM",
             "name": "first_name",
@@ -89,21 +92,12 @@ const updateContact = (settings, contactId, userInfo) => {
             "id": contactId,
             "properties": []
         };
-        if (userInfo.tags) {
-            let tags = [];
-            for (var i = 0; i < userInfo.tags.length; i++) {
-                tags.push(userInfo.tags[i])
-            }
-            update_contact["tags"] = tags
-        }
-
         userInfo.first_name && update_contact.properties.push({
             "type": "SYSTEM",
             "name": "first_name",
             "value": userInfo.first_name
         })
-
-
+       
         userInfo.last_name && update_contact.properties.push({
             "type": "SYSTEM",
             "name": "last_name",
@@ -159,10 +153,39 @@ const updateContact = (settings, contactId, userInfo) => {
     });
 
 }
+const updateTag = (settings, contactId, userInfo) => {
+    return new Promise(function (resolve, reject) {
+        let response = {};
+        var obj = new AgileCRMManager(settings.domain, settings.accessToken, settings.accessKey);
+        var update_tags = {
+            "id": contactId,
+        };
+        if (userInfo.tags) {
+            let tags = [];
+            for (var i = 0; i < userInfo.tags.length; i++) {
+                tags.push(userInfo.tags[i])
+            }
+            update_tags["tags"] = tags
+        }
+        obj.contactAPI.updateTagsById(update_tags, function (data) {
+            // console.log(data);
+            response = data;
+            return resolve(response);
+
+        }, function (err) {
+            // console.log(err);
+            response = err;
+            return reject(err);
+        })
+
+    });
+
+}
 
 
 
 module.exports = {
     createContact,
-    updateContact
+    updateContact,
+    updateTag
 }

@@ -16,10 +16,10 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
         "contentType": "300",
         "templateId": "6",
         "payload": [{
-            "title ": "Yes",
-            "message ": "Cool! send me more."
+            "title": "Yes",
+            "message": "Cool! send me more."
         }, {
-            "title ": "No ",
+            "title": "No ",
             "message": "Don't send it to me again"
         }]
     }
@@ -87,10 +87,10 @@ Quick Replies provides a way to send messages on a click without typing them all
     "contentType": "300",
     "templateId": "6",
     "payload": [{
-        "title ": "Yes",
-        "message ": "Cool! send me more."
+        "title": "Yes",
+        "message": "Cool! send me more."
     }, {
-        "title ": "No ",
+        "title": "No ",
         "message": "Don't send it to me again"
     }]
 }

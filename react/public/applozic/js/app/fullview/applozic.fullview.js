@@ -367,6 +367,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		var MCK_UNREAD_COUNT_MAP = new Array();
 		var MCK_CHAT_CONTACT_ARRAY = new Array();
 		var MCK_GROUP_SEARCH_ARRAY = new Array();
+		var MCK_GROUP_ADDMEMBER_ARRAY =new Array();
 		var MCK_TAB_CONVERSATION_MAP = new Array();
 		var mckInit = new MckInit();
 		var mckMapLayout = new MckMapLayout();
@@ -1912,7 +1913,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 						var group = kmGroupUtils.getGroup(groupId);
-						if (typeof group === 'object' && MCK_USER_ID === group.adminName) {
+						if (typeof group === 'object' && group.users[MCK_USER_ID].role === 1) {
 							if (confirm('Are you sure want to remove this member!')) {
 								kmGroupService.removeGroupMember({
 									'groupId' : groupId,
@@ -1968,7 +1969,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (groupId) {
 						var group = kmGroupUtils.getGroup(groupId);
-						if (group && group.adminName === MCK_USER_ID) {
+						if (group && group.users[MCK_USER_ID].role === 1) {
 							if (MCK_GROUP_SEARCH_ARRAY.length > 0) {
 								mckGroupLayout.addMembersToGroupSearchList();
 							} else if (IS_MCK_OWN_CONTACTS && MCK_CONTACT_ARRAY.length > 0) {
@@ -5525,6 +5526,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					success: function (response) {
 						for (var i = 0; i < response.response.users.length; i++) {
 							MCK_CONTACT_ARRAY[response.response.users[i].userId] = response.response.users[i];
+							MCK_GROUP_ADDMEMBER_ARRAY[i] = response.response.users[i].userId;
 						}
 						if (params.callback) {
 							params.callback(response);
@@ -6296,7 +6298,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var isGroupAdminExpr = "n-vis";
 				var enableAdminMenuExpr = "n-vis";
 				var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
-				if (group.adminName === MCK_USER_ID) {
+				if (group.users[MCK_USER_ID].role === 1) {
 					enableAdminMenuExpr = "vis";
 				}
 				if (contact.contactId === MCK_USER_ID) {
@@ -6334,7 +6336,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var isGroup = $mck_msg_inner.data('isgroup');
 				if (isGroup) {
 					var group = kmGroupUtils.getGroup(groupId);
-					var contactArray = MCK_GROUP_SEARCH_ARRAY;
+					// var contactArray = MCK_GROUP_SEARCH_ARRAY;
+					var contactArray = MCK_GROUP_ADDMEMBER_ARRAY;
 					contactArray = contactArray.filter(function(item, pos) {
 						return contactArray.indexOf(item) === pos;
 					});
@@ -6401,7 +6404,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
-						(group.adminName === MCK_USER_ID) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');	
+						(group.users[MCK_USER_ID].role === 1) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');	
 					} else {
 						kmGroupService.getGroupFeed({
 							'groupId' : params.groupId,
@@ -6437,7 +6440,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var groupId = $mck_group_info_tab.data('km-id');
 				if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 					var group = kmGroupUtils.getGroup(groupId);
-					if (typeof group === 'object' && MCK_USER_ID === group.adminName) {
+					if (typeof group === 'object' && group.users[MCK_USER_ID].role === 1) {
 						var group = {};
 						group.groupId = groupId;
 						group.userId = userId;

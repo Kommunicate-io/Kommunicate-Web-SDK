@@ -107,7 +107,7 @@ const getUserInfo = (user, appId) => {
 
   return Promise.resolve(axios.get(getUserInfoUrl))
     .then(response => {
-      console.log(response)
+      // console.log(response)
       if(response.status === 200 && response.data !== undefined){
         return response
       }
@@ -127,10 +127,10 @@ const patchCustomerInfo = (customerInfo, customer) => {
     }
   })).then(function(response){
      if(response.status === 200 && response.data !== undefined){
-       console.log(response);
+      //  console.log(response);
        let user = {'email': customerInfo.email, 'displayName': customerInfo.name};
        window.$kmApplozic.fn.applozic('updateUser', {data: user, success: function(response) {
-          console.log(response);
+          // console.log(response);
         }, error: function(error) {
           console.log(error);
         }
@@ -158,12 +158,12 @@ const patchUserInfo = (userInfo, userId, appId) => {
     }
   })).then(function(response){
      if(response.status === 200 && response.data !== undefined){
-       console.log(response)
+      //  console.log(response)
        return response;
      }
 
      if(response.status === 404 && response.data !== undefined){
-       console.log(response)
+      //  console.log(response)
        return response;
      }
   });
@@ -268,7 +268,7 @@ const createAgent =(agent)=>{
 }
 
 const updatePassword =(options)=>{
-  console.log("reset password",options);
+  // console.log("reset password",options);
   try{
     if(!options || !options.newPassword || !options.code){
       throw new Error("mandetory fields are missing");
@@ -281,7 +281,7 @@ const updatePassword =(options)=>{
 }
 
 const resetPassword= (options)=>{
-  console.log("reset password",options);
+  // console.log("reset password",options);
   try{
     if(!options || !options.userName || !options.applicationId){
       throw new Error("mandetory fields are missing");
@@ -405,7 +405,8 @@ const updateApplozicUser = (userInfo) => {
 
   return Promise.resolve(axios.post(updateApplozicUserUrl, userInfo, {
     headers: headers
-  })).then(response => {console.log(response); 
+  })).then(response => {
+    // console.log(response); 
     return response})
 
 }
@@ -510,7 +511,7 @@ const getIssueTypes = (data) => {
   let url = getConfig().kommunicateBaseUrl+"/issuetype";
 
   return axios.get(url).then(response => {
-    console.log(response)
+    // console.log(response)
     if(response.data.code === 'GOT_ALL_ISSUE_TYPE'){
       return response.data.data
     }
@@ -555,7 +556,7 @@ const disableInAppMsgs = (obj) => {
       category: obj.category
     }
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => {console.log("Error in disableInAppMsgs", err)})
 
@@ -573,7 +574,7 @@ const enableInAppMsgs = (obj) => {
       category: obj.category
     }
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => {console.log("Error in enableInAppMsgs", err)})
 
@@ -622,7 +623,7 @@ const deleteInAppMsg = (id) => {
   let url = getConfig().kommunicateBaseUrl+"/applications/"+id+"/deleteInAppMsg";
 
   return Promise.resolve(axios.patch(url)).then(response => {
-    console.log(response)
+    // console.log(response)
     if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
       if(response.data.data instanceof Array){
         return response.data.data
@@ -642,7 +643,7 @@ const editInAppMsg = (id, message) => {
       message: message
     }
   })).then(response => {
-    console.log(response)
+    // console.log(response)
     if(response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success"){
       if(response.data.data instanceof Array){
         return response.data.data
@@ -680,29 +681,43 @@ const getIntegratedBots = () => {
 const enableNotifyEveryBody = (data) => {
   let userSession = CommonUtils.getUserSession();
 
-  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/routing/"+data.routingState;
+  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/agent/routing/"+data.routingState;
 
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => {console.log("Error while enable notify everybody", err)})
 }
 const enableAutomaticAssignment = (data) => {
   let userSession = CommonUtils.getUserSession();
 
-  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/routing/"+data.routingState;
+  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/agent/routing/"+data.routingState;
 
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => {console.log("Error while enable automatic assignemnt", err)})
 }
+const enableOrDisableBotRouting = (data) => {
+  let userSession = CommonUtils.getUserSession();
+
+  let url = getConfig().kommunicateBaseUrl+"/customers/"+userSession.application.applicationId+"/bot/routing/"+data.routingState;
+
+  return Promise.resolve(axios({
+    method: 'patch',
+    url: url,
+  })).then(result => {
+    // console.log(result);
+    return result;
+  }).catch(err => {console.log(err)})
+}
+
 
 const getSuggestionsByCriteria = (applicationId, criteria, value) => {
 
@@ -725,7 +740,7 @@ const getCustomerByApplicationId = () => {
     method: 'get',
     url: url,
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => {console.log("Error while fetching customer by applicationId", err)})
 
@@ -739,7 +754,7 @@ const createAndUpdateThirdPArtyIntegration = (data,integrationType) => {
     url: url,
     data: data
   })).then(result => {
-    console.log(result);
+    // console.log(result);
     return result;
   }).catch(err => { console.log("Error while submiting third party integration keys", err) })
 
@@ -790,7 +805,7 @@ const updateConversation = (conversation) => {
   conversation.appId = userSession.application.applicationId
   let url = getConfig().kommunicateBaseUrl + "/conversations/update";
   return Promise.resolve(axios.patch(url, conversation)).then(response => {
-    console.log(response);
+    // console.log(response);
     return response;
   }).catch(err => { console.log(err) });
 
@@ -815,7 +830,7 @@ const getConversationStats = (isCustomer) => {
   let query = isCustomer ? 'customerId=' + userSession.customerId : 'agentId' + userSession.id;
   let url = getConfig().kommunicateBaseUrl + "/conversations?" + query;
   return Promise.resolve(axios.get(url)).then(response => {
-    console.log('filter: ', response);
+    // console.log('filter: ', response);
     return response;
   }).catch(err => {
     return;
@@ -938,6 +953,7 @@ export {
   getIntegratedBots,
   enableNotifyEveryBody,
   enableAutomaticAssignment,
+  enableOrDisableBotRouting,
   getSuggestionsByCriteria,
   getCustomerByApplicationId,
   createAndUpdateThirdPArtyIntegration,
