@@ -381,6 +381,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
 		w.MCK_OL_MAP = new Array();
+		
+		var CONVERSATION_SECTION_MAP = {
+			'km-contact-list': 'cs',
+			'km-assigned-search-list': 'as',
+			'km-closed-conversation-list': 'cl'
+		};
 		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
@@ -4460,8 +4466,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			};
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-                if ($kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr).length > 0) {
-                    var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" + contactHtmlExpr + " .km-cont-msg-wrapper");
+				var section = CONVERSATION_SECTION_MAP[sectionId];
+                if ($kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr).length > 0) {
+                    var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
                         _this.updateContact(contact, message, sectionId);
                     }
@@ -4734,10 +4741,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.updateContact = function(contact, message, $listId, update) {
 				var contHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				//Todo: check $contactElem based on the sectionId
-				var $contactElem = $kmApplozic("#km-li-" + contHtmlExpr);
-				if($listId === "km-assigned-search-list"){
-					$contactElem = $kmApplozic("#km-li-as-" + contHtmlExpr);
-				}
+				var section = CONVERSATION_SECTION_MAP[$listId];	
+				var $contactElem = $kmApplozic("#km-li-"+section+"-"+ contHtmlExpr);
 				var currentMessageTime = $contactElem.data('msg-time');
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
@@ -4815,7 +4820,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 				var contHtmlExpr = (isGroupTab) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				var contactClass = contHtmlExpr;
-				if ($listId === "km-contact-search-list") {
+				if ($listId === "km-contact-list") {
 					contHtmlExpr = 'cs-' + contHtmlExpr;
 				}
 				if ($listId === "km-assigned-search-list") {
