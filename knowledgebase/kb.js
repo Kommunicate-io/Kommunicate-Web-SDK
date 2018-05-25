@@ -33,7 +33,7 @@
                             var data = response.data;
                             for (var i = 0; i < data.articles.length; i++){
                                 var article = data.articles[i];
-
+                                if(article.is_published === true){
                                 articles.push({
                                     articleId: article.article_id,
                                     title: article.title,
@@ -43,6 +43,7 @@
                                     source: SOURCES.helpdocs
                                 });
                             }
+                        }
 
                             if (options.success) {
                                 var res = new Object();
