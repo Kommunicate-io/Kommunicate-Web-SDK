@@ -7,7 +7,7 @@ sidebar_label: Conversation
 ## Launch conversation List:
 To launch the conversation list use the following method.
 ```
-Kommunicate.launchConversation()
+Kommunicate.launchConversation();
 ```
 ## Show conversation list:
 To show the conversation list use the following method.
