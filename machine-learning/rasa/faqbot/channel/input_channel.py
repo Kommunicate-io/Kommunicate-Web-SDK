@@ -12,15 +12,17 @@ from rasa_core.channels.rest import HttpInputComponent, HttpInputChannel
 
 
 class KommunicateChatBot(OutputChannel):
-    def __init__(self, url="http://localhost:5000"):
-        self.url = url 
+    def __init__(self, botId):
+        self.botId = botId 
 
     def send_text_message(self , recipient_id, message):
+        print(self.botId)
         print(message)
 
 class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
     def __init__(self, url="http://localhost:5000"):
         self.url = url
+
     def blueprint(self, on_new_message):
         kommunicate_chat_webhook = Blueprint('rocketchat_webhook', __name__)
 
@@ -34,7 +36,8 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
         def webhook():
             
             output = request.args.get("message")
-            outchannel = KommunicateChatBot()
+            botId = request.args.get("botId")
+            outchannel = KommunicateChatBot(botId)
             user_message = UserMessage(output, outchannel, "default")
             on_new_message(user_message)
             return make_response()
