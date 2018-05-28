@@ -3579,7 +3579,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                    "Access-Token": MCK_ACCESS_TOKEN
                }
                mckUtils.ajax({
-                 url: params.createUrl ? params.createUrl : MCK_BASE_URL + GROUP_CREATE_URL,
+                 url: MCK_BASE_URL + GROUP_CREATE_URL,
                  global: false,
                  data: w.JSON.stringify(groupInfo),
                  type: 'post',
