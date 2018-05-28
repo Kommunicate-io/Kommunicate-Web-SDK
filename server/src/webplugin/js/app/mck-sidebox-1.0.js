@@ -1884,6 +1884,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
+            var $mck_talk_to_human_link = $applozic("#talk-to-human-link");
 
             _this.createNewConversation = function (params, callback) {
                 Kommunicate.startConversation(params,callback);
@@ -1977,6 +1978,14 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
+
+                    // mckMessageLayout.addContactsToContactSearchList();
+                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                        Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
+                    });
+
+                });
+                $mck_talk_to_human_link.click(function () {
 
                     // mckMessageLayout.addContactsToContactSearchList();
                     mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
