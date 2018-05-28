@@ -24,7 +24,7 @@ const getConversationByGroupId = groupId => {
     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } }));
 }
 
-const updateTicketIntoConversation = (groupId, options) => {
+/*const updateTicketIntoConversation = (groupId, options) => {
     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } })).then(conversation => {
         if (conversation && conversation.metadata && conversation.metadata.integration) {
             let integration = conversation.metadata.integration;
@@ -37,9 +37,7 @@ const updateTicketIntoConversation = (groupId, options) => {
     }).catch(err => {
         throw err
     })
-
-
-}
+}*/
 /**
  * create a new conversation
  *@param {Object} options
@@ -364,7 +362,7 @@ const getConversationStat = (query) => {
 
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
-    updateTicketIntoConversation: updateTicketIntoConversation,
+   // updateTicketIntoConversation: updateTicketIntoConversation,
     updateConversation: updateConversation,
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
