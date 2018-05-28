@@ -56,7 +56,7 @@ a, a:hover, a:focus, a:active {
 
 .homepage-beta-landing-page-section {
   position: relative;
-  padding-top: 50px;
+  padding-top: 10px;
   /* height: 100vh; */
   min-height: 840px;
   overflow: hidden;
@@ -2275,7 +2275,7 @@ input:-ms-input-placeholder {
     margin: -120px auto 0px;
   }
   .homepage-experience-section {
-    margin-top: -130px;
+    margin-top: -90px;
 }
 .homepage-beta-features-section .section-heading {
   margin-top: -50px;
@@ -2480,7 +2480,7 @@ input:-ms-input-placeholder {
 }
 
 .homepage-beta-landing-page-section .category-links {
-  padding-top: 20px;
+  padding-top: 90px;
   list-style: none;
   padding-left: 0;
 }
@@ -2501,6 +2501,9 @@ input:-ms-input-placeholder {
   height: 49px;
   -webkit-filter: opacity(60%) grayscale(100%);
   filter: opacity(60%) grayscale(100%);
+}
+.img-customer-logos.active8me-logo {
+  height: 36px;
 }
 
 @media only screen and (max-width:991px) {
