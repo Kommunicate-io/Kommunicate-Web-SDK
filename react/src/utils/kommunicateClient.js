@@ -847,32 +847,18 @@ const conversationHandlingByBot = (botId, status) => {
 
 }
 
-// const getConversationStatsByDayAndMonth = (days,agentId) => {
-//   let userSession = CommonUtils.getUserSession();
-//   let customerId=userSession.customerId;
-//   let query={customerId:customerId, days:days, daily:true}
-//   if(agentId&&agentId!="allagents"){
-//    query.agentId=agentId;
-//   }
-//   if(days== 0||days== 1) {
-//     query.daily="false"
-//   }
-//   else {
-//     query.daily="true"
-//   }
-//   let url = getConfig().kommunicateBaseUrl + "/conversations/stats"
-//   return Promise.resolve(axios.get(url,{params: query})).then(response => {
-//     // console.log('filter: ', response);
-//     return response;
-//   }).catch(err => {
-//     console.log(err)
-//     return;
-//   });
-// }
 const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution) => {
   let userSession = CommonUtils.getUserSession();
   let customerId = userSession.customerId;
-  let query = { customerId: customerId, days: days, daily: true };
+  let applicationId = userSession.application.applicationId;
+  let query = { applicationId: applicationId, days: days, daily: true };
+  const header = {
+    'Content-Type' :'application/json',
+    'Apz-AppId': applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName+':'+userSession.password).toString('base64'),
+    'Apz-Product-App':true
+    
+  }
   agentId = encodeURIComponent(agentId)
   if (days == 0 || days == 1) {
     query.daily = "false"
@@ -880,7 +866,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   else {
     query.daily = !hoursWiseDistribution;
   }
-  let url = getConfig().kommunicateBaseUrl + "/conversations/stats?customerId=" + query.customerId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
+  let url = getConfig().homeUrl +"/rest/ws/group/stats?applicationId=" + query.applicationId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
 
   if (agentId && agentId != "allagents") {
     url = url.replace("&agentId=", '&agentId=' + agentId);
@@ -896,8 +882,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
       Promise.resolve(axios({
         method: 'GET',
         url: url,
-        // params:query,
-        // json: true,
+        headers:header
       }).then(response => {
         if (response.status !== 200) {
           reject({ 'statusCode': response.status });

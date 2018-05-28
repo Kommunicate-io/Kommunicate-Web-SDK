@@ -549,7 +549,8 @@ class Dashboard extends Component {
     // console.log(hoursDistribution)
     // this.setState({ hoursDistribution: hoursDistribution })
     
-    return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption,hoursWiseDistribution)).then(res => {
+    return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption,hoursWiseDistribution)).then(result => {
+      let res=result.response;
       // console.log(res);
       let countForADay ={newConversationCount:0, closedConversationCount:0, avgResponseTime:null, avgResolutionTime:null};
       let closedConversationCount = { today: 0, yesterday: 0, last7Days: 0, last30Days: 0 };
