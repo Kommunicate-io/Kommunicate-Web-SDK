@@ -4,6 +4,13 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
+### Setup
+
+There is a setup call that you need to do before registration or login. Add below line in AppDelegate's launch method or just before the registration:
+
+```
+Kommunicate.setup(applicationId: <pass your application key>)
+```
 
 ### Registration/Login
 
@@ -11,7 +18,6 @@ sidebar_label: Authentication
 Convenient methods are present in Kommunicate class to register a user on Kommunicate.
 
 To register a user to the Kommunicate server, use below method from `Kommunicate` class:
-
 
 Create a KMUser object and pass it to the `registerUser` method:
 
@@ -35,3 +41,5 @@ if Kommunicate.isLoggedIn {
   // User is already logged in
 }
 ```
+
+Note: To avoid calling in registration everytime use `isLoggedIn` to check if the user is already logged in or not.
