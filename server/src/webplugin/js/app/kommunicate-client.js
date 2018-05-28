@@ -40,7 +40,7 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         $applozic.fn.applozic("createGroup", {
-            createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
+            //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
             admin: conversationDetail.agentId,
@@ -66,7 +66,8 @@ Kommunicate.client={
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
-                    response.updated ? callback(response.data.value) :
+                    callback(response.data.value);
+                       /* conversation table migrated to Applozic
                         Kommunicate.createNewConversation({
                             "groupId": response.data.value,
                             "participantUserId": kommunicate._globals.userId,
@@ -77,7 +78,7 @@ Kommunicate.client={
                             if (!err) {
                                 callback(response.data.value);
                             }
-                        })
+                        })*/
                 }
             }
         });
