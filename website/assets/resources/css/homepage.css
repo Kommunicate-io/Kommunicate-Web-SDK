@@ -2479,8 +2479,29 @@ input:-ms-input-placeholder {
   height: auto;
 }
 
+.homepage-beta-landing-page-section .category-links {
+  padding-top: 20px;
+  list-style: none;
+  padding-left: 0;
+}
 
-
+.homepage-beta-landing-page-section .category-links li {
+  display: inline-block;
+  width: auto;
+  height: 60px;
+  margin-right: 60px;
+  margin-bottom: 20px;
+}
+.homepage-beta-landing-page-section .category-links li:last-child {
+  height: 60px;
+  margin-right: 0px;
+}
+.homepage-beta-landing-page-section .img-customer-logos {
+  width: auto;
+  height: 49px;
+  -webkit-filter: opacity(60%) grayscale(100%);
+  filter: opacity(60%) grayscale(100%);
+}
 
 @media only screen and (max-width:991px) {
   .hero-section {
