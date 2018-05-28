@@ -1884,7 +1884,6 @@ var MCK_CLIENT_GROUP_MAP = [];
             var refreshIntervalId;
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
-            var $mck_talk_to_human_link = $applozic("#talk-to-human-link");
 
             _this.createNewConversation = function (params, callback) {
                 Kommunicate.startConversation(params,callback);
@@ -1985,7 +1984,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     });
 
                 });
-                $mck_talk_to_human_link.click(function () {
+                $applozic(d).on('click', '#talk-to-human-link', function () {
 
                     // mckMessageLayout.addContactsToContactSearchList();
                     mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
