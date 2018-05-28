@@ -2,7 +2,7 @@ const joi = require("joi");
 
 module.exports.updateTicket = {
     params: {
-        groupId: joi.number().integer().required(),
+        ticketId: joi.number().integer().required(),
         appId: joi.string().required()
     },
     body: {
@@ -30,6 +30,6 @@ module.exports.createTicket = {
 module.exports.getTicket = {
     params: {
         appId: joi.string().required(),
-        groupId: joi.number().integer().required(),
+        ticketId: joi.number().integer().required(),
     }
 }

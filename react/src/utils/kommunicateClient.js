@@ -777,9 +777,9 @@ const deleteThirdPartyByIntegrationType = (integrationType) => {
     .then(response => response)
     .catch(err => err);
 }
-const getZendeskIntegrationTicket = (groupId) => {
+const getZendeskIntegrationTicket = (ticketId) => {
   let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/ticket/"+groupId
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/ticket/"+ticketId
   return Promise.resolve(axios({
     method: 'GET',
     url: url,
@@ -790,11 +790,19 @@ const getZendeskIntegrationTicket = (groupId) => {
 }
 const createZendeskIntegrationTicket = (data,groupId) => {
   let userSession = CommonUtils.getUserSession();
+  const headers = {
+    'Content-Type':'application/json',
+    'Apz-AppId':userSession.application.applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName+':'+userSession.password).toString('base64'),
+    'Apz-Product-App':'true',
+    'Of-User-Id':   userSession.userName 
+  }
   let url = getConfig().kommunicateBaseUrl + "/zendesk/" + userSession.application.applicationId + "/ticket/"+groupId+"/create"
   return Promise.resolve(axios({
     method: 'POST',
     url: url,
-    data: data
+    data: data,
+    headers:headers
   })).then(result => {
     return result;
   }).catch(err => { console.log("Error while creating zendesk ticket", err) })
@@ -810,9 +818,9 @@ const updateConversation = (conversation) => {
   }).catch(err => { console.log(err) });
 
 }
-const updateZendeskIntegrationTicket = (data,groupId) => {
+const updateZendeskIntegrationTicket = (data,ticketId) => {
   let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl + "/zendesk/"+ userSession.application.applicationId +"/ticket/"+ groupId +"/update"
+  let url = getConfig().kommunicateBaseUrl + "/zendesk/"+ userSession.application.applicationId +"/ticket/"+ ticketId +"/update"
   return Promise.resolve(axios({
     method: 'PUT',
     url: url,

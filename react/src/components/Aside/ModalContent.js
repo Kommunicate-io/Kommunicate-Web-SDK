@@ -17,15 +17,28 @@ class ModalContent extends Component {
             deleteStatement: false,
             title: "",
             note: "",
-            id: ""
+            id: "",
+            groupInfo:null
         }
 
     }
+
+    componentWillMount() {
+        let that=this
+       window.$kmApplozic.fn.applozic("getGroup", {
+            'groupId': this.state.groupId, 'callback': function (group) {
+                if (group) {
+                    that.setState({groupInfo : group})
+                }
+            }
+        });
+    }
+
     componentDidMount() {
         this.getZendeskTicket()
     }
     getZendeskTicket = () => {
-        return Promise.resolve(getZendeskIntegrationTicket(this.state.groupId)).then(response => {
+        return Promise.resolve(getZendeskIntegrationTicket(this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID)).then(response => {
             this.setState({
                 title: response.data.data.ticket.subject,
                 note: response.data.data.ticket.description,
@@ -75,7 +88,7 @@ class ModalContent extends Component {
 
     }
     updateZendeskIntegrationTicket = () => {
-        var groupId = window.$kmApplozic(".left .person.active").data('km-id');
+        var ticketId = this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID;
         let data = {
             "ticket": {
                 "status": "pending",
@@ -83,7 +96,7 @@ class ModalContent extends Component {
             }
         }
         if (this.state.note != "" && this.state.title != "") {
-            updateZendeskIntegrationTicket(data, this.state.groupId)
+            updateZendeskIntegrationTicket(data, ticketId)
                 .then(response => {
                     console.log(response)
                     if (response.status === 200 && response.data.code === "SUCCESS") {

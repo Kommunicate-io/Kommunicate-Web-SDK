@@ -170,8 +170,8 @@ googleAuthRouter.get('/authCode', googleAuthController.authCode);
 *zendesk APIs
 */
 zendeskRouter.post('/:appId/ticket/:groupId/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
-zendeskRouter.put('/:appId/ticket/:groupId/update', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
-zendeskRouter.get('/:appId/ticket/:groupId', validate(zendeskValidation.getTicket),zendeskController.getTicket)
+zendeskRouter.put('/:appId/ticket/:ticketId/update', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
+zendeskRouter.get('/:appId/ticket/:ticketId', validate(zendeskValidation.getTicket),zendeskController.getTicket)
 /**
  * third party settings
  */
