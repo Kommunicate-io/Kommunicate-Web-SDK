@@ -40,7 +40,7 @@ Kommunicate.client={
      */
      createConversation : function(conversationDetail,callback){
         $applozic.fn.applozic("createGroup", {
-            createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
+            //createUrl:Kommunicate.getBaseUrl()+"/conversations/create",
             groupName: conversationDetail.groupName,
             type: conversationDetail.type,
             admin: conversationDetail.agentId,
@@ -62,24 +62,24 @@ Kommunicate.client={
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
                 HIDE: "true"
-            },
-            callback: function (response) {
-                console.log("response", response);
-                if (response.status === 'success' && response.data.clientGroupId) {
-                    response.updated ? callback(response.data.value) :
-                        Kommunicate.createNewConversation({
-                            "groupId": response.data.value,
-                            "participantUserId": kommunicate._globals.userId,
-                            "defaultAgentId": conversationDetail.agentId,
-                            "applicationId": kommunicate._globals.appId
-                        }, function (err, result) {
-                            console.log(err, result);
-                            if (!err) {
-                                callback(response.data.value);
-                            }
-                        })
-                }
             }
+            // callback: function (response) {
+            //     console.log("response", response);
+            //     if (response.status === 'success' && response.data.clientGroupId) {
+            //         response.updated ? callback(response.data.value) :
+            //             Kommunicate.createNewConversation({
+            //                 "groupId": response.data.value,
+            //                 "participantUserId": kommunicate._globals.userId,
+            //                 "defaultAgentId": conversationDetail.agentId,
+            //                 "applicationId": kommunicate._globals.appId
+            //             }, function (err, result) {
+            //                 console.log(err, result);
+            //                 if (!err) {
+            //                     callback(response.data.value);
+            //                 }
+            //             })
+            //     }
+            // }
         });
      },
      /**get the third party settings access key
