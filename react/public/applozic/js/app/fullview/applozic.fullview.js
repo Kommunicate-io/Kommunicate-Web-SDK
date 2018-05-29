@@ -2269,12 +2269,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					'km-contact-list': 'km-allconversation-unread-icon',
 					'km-assigned-search-list': 'km-assigned-unread-icon'
 				};
-				var sectionId;
+				var sectionId = 'km-contact-list';
 				if (list.sectionId) {
 					sectionId = list.sectionId;
-				}
-				else if (!list.sectionId) {
-					sectionId = 'km-contact-list';
 				}
 				$kmApplozic("#" + tabUnreadIconMap[sectionId]).removeClass("n-vis").addClass("vis");
 				if(list.assigneupdate){
