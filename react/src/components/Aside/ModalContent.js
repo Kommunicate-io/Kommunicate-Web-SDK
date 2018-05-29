@@ -38,16 +38,18 @@ class ModalContent extends Component {
         this.getZendeskTicket()
     }
     getZendeskTicket = () => {
-        return Promise.resolve(getZendeskIntegrationTicket(this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID)).then(response => {
-            this.setState({
-                title: response.data.data.ticket.subject,
-                note: response.data.data.ticket.description,
-                id: response.data.data.ticket.id
-            })
+        if (this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID) {
+            return Promise.resolve(getZendeskIntegrationTicket(this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID)).then(response => {
+                this.setState({
+                    title: response.data.data.ticket.subject,
+                    note: response.data.data.ticket.description,
+                    id: response.data.data.ticket.id
+                })
 
-        }).catch(err => {
-            console.log("error while fetching zendesk ticket", err);
-        })
+            }).catch(err => {
+                console.log("error while fetching zendesk ticket", err);
+            })
+        }
     }
     handleCreateAndUpdate = () => {
         if (this.state.id != "") {
