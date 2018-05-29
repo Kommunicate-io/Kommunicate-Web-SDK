@@ -12,7 +12,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
             var message = obj && obj.message;
             var isValidMetadata = message.metadata && (message.metadata.category != 'HIDDEN' && message.metadata.hide != "true");
             var isSentByBot = isValidMetadata && message.metadata && message.metadata.skipBot == "true";
-            if (!message.metadata || (isValidMetadata && !isSentByBot)) {
+            if (!message.metadata || (isValidMetadata)) {
                 KommunicateUI.hideAwayMessage();
             }
         }
