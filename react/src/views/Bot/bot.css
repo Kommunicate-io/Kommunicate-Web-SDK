@@ -118,6 +118,21 @@
   letter-spacing: 0.4px;
   color: #97999b;
 }
+.km-bot-name-slider-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-dialog--edit .modal-header {
+    display: block;
+    padding-right: 75px;
+}
+.modal-dialog .close {
+  position: absolute;
+  top: 35px;
+  right: 20px;
+  font-size: 23px;
+}
 
 @media only screen and (max-width: 992px) {
   .bot-main-card-container {

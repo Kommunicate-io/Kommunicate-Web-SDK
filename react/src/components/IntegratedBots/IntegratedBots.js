@@ -501,14 +501,14 @@ export default class IntegratedBots extends Component {
                 </div>
 
                 {/* Modal for editing already created bot */}
-                <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog" style={{width: "700px"}}>
+                <Modal isOpen={this.state.editBotIntegrationModal} toggle={this.toggleEditBotIntegrationModal} className="modal-dialog modal-dialog--edit" style={{width: "700px"}}>
                   <ModalHeader toggle={this.toggleEditBotIntegrationModal}>
-                    <div className="row">
+                    <div className="km-bot-name-slider-container">
                       <div>
                         <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
                         <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>{this.state.editBotIntegrationModalHeader}</span>
                       </div>
-                      <div style={{marginTop: "20px", marginLeft: "200px"}}>
+                      <div style={{marginTop: "10px"}}>
                         <SliderToggle checked={this.state.botAvailable} handleOnChange={this.toggleBotAvailability} />
                       </div>
                     </div>
