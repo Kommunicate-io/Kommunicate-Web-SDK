@@ -93,8 +93,8 @@ class ModalContent extends Component {
         var ticketId = this.state.groupInfo.metadata.KM_ZENDESK_TICKET_ID;
         let data = {
             "ticket": {
-                "status": "pending",
-                "comment": { "subject": this.state.note }
+                // "status": "pending",
+                "comment": { "body": this.state.note }
             }
         }
         if (this.state.note != "" && this.state.title != "") {
