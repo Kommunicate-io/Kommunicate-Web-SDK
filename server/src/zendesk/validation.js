@@ -7,7 +7,7 @@ module.exports.updateTicket = {
     },
     body: {
         ticket: {
-            status: joi.string().only(['open', 'pending', 'hold', 'solved', 'closed']).required(),
+            // status: joi.string().only(['open', 'pending', 'hold', 'solved', 'closed']).required(),
             comment: { body: joi.string() }
         }
     }
