@@ -2271,9 +2271,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					'km-contact-list': 'km-allconversation-unread-icon',
 					'km-assigned-search-list': 'km-assigned-unread-icon'
 				};
-				var sectionId;
-				if(!list.sectionId){
-					sectionId ='km-contact-list';
+				var sectionId = 'km-contact-list';
+				if (list.sectionId) {
+					sectionId = list.sectionId;
 				}
 				$kmApplozic("#" + tabUnreadIconMap[sectionId]).removeClass("n-vis").addClass("vis");
 				if(list.assigneupdate){
@@ -7651,7 +7651,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 								mckStorage.updateMckAssignedMessageArray(messageArray);
 							}
 						}
-						if (message && message.metadata && !message.metadata.skipBot) {
+						if ((message && message.type !==5)  || ((message && message.metadata.KM_STATUS)&&(message && message.metadata.KM_ASSIGN)) ||(message && message.metadata.hide=== true)){
 							mckMessageService.tabviewUnreadIconUpdate(list);
 						}
 						if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
