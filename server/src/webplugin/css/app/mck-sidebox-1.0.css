@@ -4551,7 +4551,7 @@ color: rgba(0,0,0,0.5);
 
 .km-faqdiv{
 	overflow-y: auto;
-    height: calc(100% - 36px);
+    height: calc(100% - 72px);
     top: 0;
     left: 0;
     bottom: 0;
@@ -4699,7 +4699,7 @@ color: rgba(0,0,0,0.5);
 .km-faqsearch-icon{
 	position: absolute;
     left: 25px;
-    top: 20px;
+    top: 9px;
 }
 /* #km-faq-search-input{
 margin-top: 243px;
@@ -4976,6 +4976,40 @@ margin-top: 243px;
 
 .km-conversation-container-right{
 	margin-left:58px;
+}
+
+.km-talk-to-human-div {
+	background-color: #f5f5f5;
+	padding: 10px 20px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.km-talk-to-human-div p {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.21;
+	letter-spacing: 1.1px;
+	color: #9b9b9b;
+	margin-bottom: 0px;
+}
+.km-talk-to-human-div p>.talk-to-human-link {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    color: #5c5aa7;
+    padding-left: 10px;
+    text-decoration: none;
+}
+.km-contact-input-container {
+	position: relative;
+}
+#km-contact-search-input-box {
+	padding-top: 0px;
 }
 
 @media only screen and (max-width:600px) {

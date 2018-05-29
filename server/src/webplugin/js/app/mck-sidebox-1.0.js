@@ -1984,6 +1984,18 @@ var MCK_CLIENT_GROUP_MAP = [];
                     });
 
                 });
+                $applozic(d).on('click', '#talk-to-human-link', function () {
+
+                    // mckMessageLayout.addContactsToContactSearchList();
+                    mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
+                        Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
+                    });
+                    KommunicateUI.showChat();
+                    $applozic('#mck-contact-list').removeClass("vis").addClass("n-vis");
+                    $applozic('#km-faq-search-input').empty();
+
+
+                });
                 $mck_group_search.click(function () {
                     mckMessageLayout.addGroupsToGroupSearchList();
                 });
