@@ -1,6 +1,7 @@
 const path = require("path");
 const fs=require('fs');
 const config = require("../../conf/config");
+const constant =require('../../src/utils/constant');
 exports.getPlugin =(req,res)=>{
   //var MCK_CONTEXTPATH =req.protocol+"://"+req.headers.host;
   const MCK_CONTEXTPATH = config.getProperties().urls.hostUrl;
@@ -17,5 +18,18 @@ exports.getPlugin =(req,res)=>{
   res.send(plugin);
   console.log("plugin code sent successfully");
   });
+
+}
+
+exports.getPseudoName = (req,res) => {
+  let name = constant.NAME;
+  let adjective = constant.ADJECTIVE;
+  let randomPositionForName = Math.floor(Math.random()*name.length);
+  let randomName = name[randomPositionForName];
+  let randomPositionForAdjective = Math.floor(Math.random()*adjective.length);
+  let randomAdjective = adjective[randomPositionForAdjective]
+  let userId = randomName + " " + randomAdjective ;
+  let data = {"userId": userId };
+  return res.status(200).json({ code: "SUCCESS", response: data });
 
 }
