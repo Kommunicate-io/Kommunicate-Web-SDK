@@ -19,7 +19,7 @@ const brandDanger = '#f86c6b';
 // Main Chart
 
 var elements = 27;
-
+const tab = {newConversation:0, closedConversation:1, firstResponseTime:2, resolutionTime:3};
 const numOfSteps = 5;
 const  dayWiseFilterOptions = {today: 0, yesterday:1, last7Days:7, last30Days: 30};
 const timeConverterKey = {toDisplayInsideChart: 0, toDisplayTotalAvg: 1}
@@ -39,6 +39,7 @@ class Dashboard extends Component {
       last7days: [],
       disableCheckbox: false ,
       isChecked : false,
+      tabSelected: tab.newConversation,
       agentFilterOption: [{ label: "All Agents", value: "allagents" }],
       timeFilterSelectedOption: { label: "Last 7 days", value: 7 },
       agentFilterSelectedOption: { label: "All agents", value: "allagents" },
@@ -363,10 +364,13 @@ class Dashboard extends Component {
     chart.labels = getChartInfo.labels;
     let key = parseInt(currentTarget.dataset.key);
     chart.datasets[0].data = getChartInfo.datasets[key].data;
-    this.setState({chart: chart});
+    this.setState({
+      chart: chart,
+      tabSelected:key
+    });
 
   }
-  displayChartForNewConversation = (day, isChecked) => { 
+  displayInitialChart = (day, isChecked) => { 
     let chartState = "";
     if ((day == 0 || day == 1) || (day == 7 && isChecked == true) || (day == 30 && isChecked == true) ) {
       chartState = "chartFor24Hrs"
@@ -379,12 +383,12 @@ class Dashboard extends Component {
     for (var i = 0; i < cards.length; i++) {
       cards[i].classList.remove('active');
     }
-    cards[0].classList.add('active');
+    cards[this.state.tabSelected].classList.add('active');
     let chart = this.state.chart
     let getChartInfo = this.state[chartState];
     // let getChartInfoNewConversations = getChartInfo.datasets[0];
     chart.labels = getChartInfo.labels;
-    chart.datasets[0].data = getChartInfo.datasets[0].data;
+    chart.datasets[0].data = getChartInfo.datasets[this.state.tabSelected].data;
     this.setState({chart: chart});
 
   }
@@ -416,7 +420,7 @@ class Dashboard extends Component {
       let hms = this.secondsToHms(t, timeConverterKey.toDisplayTotalAvg)
       this.setState({ avgResolutionTime: hms })
 
-      this.displayChartForNewConversation(day, isChecked)
+      this.displayInitialChart(day, isChecked)
 
 
     } 
@@ -430,7 +434,7 @@ class Dashboard extends Component {
       let hms = this.secondsToHms(avgRst, timeConverterKey.toDisplayTotalAvg)
       // avgResolutionTime.last7Days = resp
       this.setState({ avgResolutionTime: hms });
-      this.displayChartForNewConversation(day)
+      this.displayInitialChart(day)
 
     }   
   }
