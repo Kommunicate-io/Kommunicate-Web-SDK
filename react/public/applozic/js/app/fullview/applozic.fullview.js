@@ -1740,6 +1740,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis'); 
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
+					var tabViewId = $this.data("km-tab-viewid");
 					tabId = (typeof tabId !== "undefined" && tabId !== "") ? tabId.toString() : "";
 					var userName = $this.data("km-name");
 					userName = (typeof userName !== "undefined" && userName !== "") ? userName.toString() : "";
@@ -1774,7 +1775,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							'isGroup': isGroup,
 							'userName': userName,
 							'conversationId': conversationId,
-							'topicId': topicId
+							'topicId': topicId,
+							'tabViewId':tabViewId
 						}
 						var groupInfo = kmGroupUtils.getGroup(tabId);
 						if (typeof groupInfo === 'object') {
@@ -3610,7 +3612,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
-			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
+			var contactbox = '<li id="km-li-${contHtmlExpr}" class="person ${contIdExpr} km-li-${contHtmlExpr1}" data-km-id="${contIdExpr}" data-km-tab-viewid="${tabViewIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}" data-msg-time="${msgCreatedAtTimeExpr}"><div class="km-row">' + '<div class="blk-lg-3"><span class="icon">{{html contImgExpr}}</span></div>' + '<div class="blk-lg-9"><div class="km-row"><div class="blk-lg-8 name">${contNameExpr}</div>' + '<div class="blk-lg-4 time km-truncate">${msgCreatedDateExpr}</div></div>' + '<div class="km-row"><div class="blk-lg-8 km-cont-msg-wrapper preview kmMsgTextExpr"></div>' + '<div class="blk-lg-4 km-unread-count-box unreadcount ${contUnreadExpr}"><span class="km-unread-count-text text">{{html contUnreadCount}}</span></div></div></div></div></div>' + '</li>';
 			var conversationbox = '<div class="chat km-message-inner ${contIdExpr}" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}" data-km-conversationid="${conversationExpr}"></div>';
 			var convbox = '<li id="km-li-${convIdExpr}" class="${convIdExpr}">' + '<a class="${mckLauncherExpr}" href="#" data-km-conversationid="${convIdExpr}" data-km-id="${tabIdExpr}" data-isgroup="${isGroupExpr}" data-km-topicid="${topicIdExpr}" data-isconvtab="true">' + '<div class="km-row km-truncate" title="${convTitleExpr}">${convTitleExpr}</div>' + '</a></li>';
 			
@@ -3805,9 +3807,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							isGroup: params.isGroup
 						});
 					}
+					//kusum
+					var section = CONVERSATION_SECTION_MAP[params.tabViewId];
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-					$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
+					$kmApplozic(".km-li-"+section+"-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
 					$mck_msg_inner.bind('scroll', function() {
 						if ($mck_msg_inner.scrollTop() === 0) {
 							var tabId = $mck_msg_inner.data("km-id");
@@ -4844,6 +4848,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					contHeaderExpr : isContHeader,
 					titleExpr : title,
 					contHtmlExpr1: contHtmlExpr,
+					tabViewIdExpr :$listId,
 
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
