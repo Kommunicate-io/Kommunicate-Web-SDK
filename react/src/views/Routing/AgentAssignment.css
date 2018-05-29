@@ -168,3 +168,7 @@ div.drop-down-container ul {
     padding: 20px 0 0 20px;
     margin-left: -7px;
 }
+.drop-down-list-of-bots ~ .dropdown-menu {
+    height: 250px;
+    overflow-y: auto;
+}

@@ -215,7 +215,7 @@ toggleConversationAssignment = () => {
                                         <p className="km-routing-assign-bot-text-2">Select a bot to handle all new conversations: </p>
                                     </div>
                                     <div className="col-md-4 col-sm-12 drop-down-container" style={{ marginLeft: "-50px" }}>
-                                        <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots" id="#">
+                                        <DropdownButton title={this.state.dropDownBoxTitle}  className="drop-down-list-of-bots km-button km-button--secondary" id="#">
                                               {
                                                 this.state.listOfBots.map( bot => {
                                                     return (

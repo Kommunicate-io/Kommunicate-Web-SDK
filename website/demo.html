@@ -27,7 +27,7 @@ layout:
     </div>
     
     {% include_relative /sections/demo-section.html %}
-    {% include_relative /sections/demo-footer-section.html %}
+    {% include /footer-section.html %}
 
 
     <!-- <script type="text/javascript" src="/assets/resources/js/classie.js"> -->
@@ -52,7 +52,7 @@ layout:
           element.disabled=false;
         } 
         function launchSideboxChat() {
-          Kommunicate.openConversationList();;
+          window.$applozic.fn.applozic('mckLaunchSideboxChat');
         }
         document.getElementById("launch-chat-button").addEventListener("click", launchSideboxChat);
       </script>
