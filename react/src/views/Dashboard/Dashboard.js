@@ -444,7 +444,8 @@ class Dashboard extends Component {
     let agentFilterOption = this.state.agentFilterOption
     return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN])).then(data => {
       data.map((user, index) => {
-        agentFilterOption.push({ label: user.name, value: user.email })
+        let userName = user.name == "" ? user.email :user.name
+        agentFilterOption.push({ label: userName, value: user.email })
       })
       this.setState({ agentFilterOption: agentFilterOption })
     }).catch(err => {
