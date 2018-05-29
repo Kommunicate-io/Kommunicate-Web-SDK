@@ -1462,6 +1462,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 if (MCK_ACCESS_TOKEN) {
                                     result.accessToken = userPxy.password;
                                 }
+                                
                                 _this.onInitApp(result);
                                 // mckUtils.manageIdleTime();
                             } else {
@@ -1565,6 +1566,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
+                if(!IS_ANONYMOUS_CHAT){
+                    $applozic.fn.applozic("mckLaunchSideboxChat");
+                   }
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized". 
