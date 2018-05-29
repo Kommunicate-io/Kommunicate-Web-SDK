@@ -30,8 +30,14 @@ class ThirdPartyScripts extends Component {
                 if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
                   null
                 } else {
-                  document.getElementById('sidebar-sidebox-help-icon').classList.add('vis'); 
-                 document.getElementById('sidebar-sidebox-help-icon').classList.remove('n-vis'); 
+
+                  if(document.getElementById('sidebar-sidebox-help-icon')) {
+                    document.getElementById('sidebar-sidebox-help-icon').classList.add('vis'); 
+                    document.getElementById('sidebar-sidebox-help-icon').classList.remove('n-vis'); 
+                  } else {
+                    console.log("Sidebox chat not loaded");
+                  }
+                  
                 }
 
                 if (currentPath.includes('/login') && document.getElementById('mck-sidebox-launcher')) {
