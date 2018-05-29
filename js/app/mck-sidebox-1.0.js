@@ -2548,7 +2548,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         messagePxy.metadata={suggestMessageMetadata:autosuggestMetadata};
                         $mck_autosuggest_metadata.val('');
                     }
-                    if ($mck_autosuggest_search_input.data('prev-msgkey') != "") {
+                    if ($mck_autosuggest_search_input.data('prev-msgkey') != "" && typeof $mck_autosuggest_search_input.data('prev-msgkey')!= "undefined") {
                         mckMessageService.updateMessageMetadata({ key: $mck_autosuggest_search_input.data('prev-msgkey'), metadata: { obsolete: true } })
                         $mck_autosuggest_search_input.data('prev-msgkey', "")
                     }
