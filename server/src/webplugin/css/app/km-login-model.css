@@ -183,7 +183,7 @@
 #km-chat-login-modal{
 	bottom:0 !important;
 	top: auto !important;
-	position: absolute;
+	position: fixed;
 	display: none;
 	margin-right: 118PX!important;
 }
