@@ -7646,7 +7646,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 								mckStorage.updateMckAssignedMessageArray(messageArray);
 							}
 						}
-						if (message && message.metadata && !message.metadata.skipBot) {
+						if ((message && message.type !==5)  || ((message && message.metadata.KM_STATUS)&&(message && message.metadata.KM_ASSIGN)) ||(message && message.metadata.hide=== true)){
 							mckMessageService.tabviewUnreadIconUpdate(list);
 						}
 						if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
