@@ -8,7 +8,7 @@
     color: #ffffff;
 }
 html * {
-    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;s
+    font-family: 'Roboto', 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
 }
 body {
     -webkit-font-smoothing: antialiased;
@@ -17,8 +17,22 @@ a, a:hover, a:focus, a:active {
     text-decoration: none;
 }
 
+.page-links-ul li>a {
+    color: #5c55a7;
+}
+.page-links-ul li>a:hover, .page-links-ul li>a:focus {
+    color: rgba(92, 90, 167, 0.5);
+    text-decoration: none;
+    outline: none;
+}
+.nav-signup-button,
+.nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
+    color: #5c55a7 !important;
+    border: solid 1.4px #5c55a7;
+    background-color: transparent;
+}
 
-.km-logo-final-logo-0 {
+/* .km-logo-final-logo-0 {
     fill: #ffffff !important;
 }
 .page-links-ul li:first-child>a {
@@ -69,7 +83,7 @@ a, a:hover, a:focus, a:active {
 }
 .nav-login-button:hover {
     color: rgba(255, 255, 255, 0.5);
-}
+} */
 
 
 
@@ -94,18 +108,18 @@ a, a:hover, a:focus, a:active {
     color: #535353;
 }
 
-.km-launcher-logo-0 {
+/* .km-launcher-logo-0 {
     fill: #ffffff !important;
   } .km-launcher-logo-1 {
     fill: #5C5AA7 !important;
-  }
+  } */
 
 /* footer section */
 .footer-section {
     position: relative;
     padding: 50px 0px 20px 0px;
-    text-align: center;
-    background-color: #5C5AA7;
+    /* text-align: center; */
+    /* background-color: #5C5AA7; */
 }
 .footer-section .img-container svg {
     width: auto;
