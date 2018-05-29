@@ -4467,8 +4467,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.updateRecentConversationListSection = function(contact, message, update, prepend, sectionId) {
 				var contactHtmlExpr =  (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 				var section = CONVERSATION_SECTION_MAP[sectionId];
-                if ($kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr).length > 0) {
-                    var $mck_msg_part = $kmApplozic("#" + sectionId + " .km-li-" +section+"-"+ contactHtmlExpr + " .km-cont-msg-wrapper");
+                if ($kmApplozic("#" + sectionId + " li.km-li-" +section+"-"+ contactHtmlExpr).length > 0) {
+                    var $mck_msg_part = $kmApplozic("#" + sectionId + ".km-li-" +section+"-"+ contactHtmlExpr + " .km-cont-msg-wrapper");
                     if (($mck_msg_part.is(":empty") || update) && message !== undefined) {
                         _this.updateContact(contact, message, sectionId);
                     }
@@ -4748,8 +4748,8 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
-					$kmApplozic(".km-li-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
-					var $messageText = $kmApplozic(".km-li-" + contHtmlExpr + " .km-cont-msg-wrapper");
+					$kmApplozic(".km-li-" +section+"-"+ contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
+					var $messageText = $kmApplozic(".km-li-" +section+"-"+contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
 					(typeof emoji_template === 'object') ? $messageText.append(emoji_template) : $messageText.html(emoji_template);
 					if (message.conversationId) {
@@ -4760,15 +4760,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							if (topicId && IS_MCK_TOPIC_HEADER) {
 								var topicDetail = MCK_TOPIC_DETAIL_MAP[topicId];
 								if (typeof topicDetail === "object") {
-									$kmApplozic(".km-li-" + contHtmlExpr + " .km-conversation-topic").html(topicDetail.title);
+									$kmApplozic(".km-li-" + section+"-"+contHtmlExpr + " .km-conversation-topic").html(topicDetail.title);
 								}
 							}
 						}
-						$kmApplozic(".km-li-" + contHtmlExpr + " a").data('km-conversationid', conversationId);
+						$kmApplozic(".km-li-" + section+"-"+contHtmlExpr + " a").data('km-conversationid', conversationId);
 					}
 					if (unreadCount > 0) {
-						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-text").html(unreadCount);
-						$kmApplozic(".km-li-" + contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
+						$kmApplozic(".km-li-" + section+"-"+contHtmlExpr + " .km-unread-count-text").html(unreadCount);
+						$kmApplozic(".km-li-" + section+"-"+contHtmlExpr + " .km-unread-count-box").removeClass('n-vis').addClass('vis');
 					}
 					var latestCreatedAtTime = $kmApplozic('#' + $listId + ' li:nth-child(1)').data('msg-time');
 					$contactElem.data('msg-time', message.createdAtTime);
@@ -4843,7 +4843,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					conversationExpr : conversationId,
 					contHeaderExpr : isContHeader,
 					titleExpr : title,
-					contHtmlExpr1: contactClass,
+					contHtmlExpr1: contHtmlExpr,
 
 					msgCreatedDateExpr : message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				} ];
