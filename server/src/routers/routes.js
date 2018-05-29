@@ -56,6 +56,7 @@ const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
 const chargebeeRouter = express.Router();
 
+
 //export routers
 exports.home = home;
 exports.users=userRouter;
@@ -86,6 +87,8 @@ home.get('/',function(req,res){
   res.status(200).json({"message":"Welcome to kommunicate"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
+home.get('/plugin/settings', webpluginController.getPseudoName);
+
 // requests to user router
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);

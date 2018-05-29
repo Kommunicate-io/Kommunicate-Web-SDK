@@ -241,12 +241,14 @@ function ApplozicSidebox() {
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
-                        mckInitSidebox();
+                        // mckInitSidebox();
+                        getPseudoName();
                     }
                 };
             } else { // Others
                 script.onload = function() {
-                    mckInitSidebox();
+                    // mckInitSidebox();
+                     getPseudoName();
                 };
             }
             body.appendChild(script);
@@ -258,7 +260,7 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function mckInitSidebox() {
+    function mckInitSidebox(userId) {
         try {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
@@ -268,9 +270,10 @@ function ApplozicSidebox() {
                             options.userId = KommunicateUtils.getCookie('kommunicate-id');
                			// options.userId = Cookies.get("kommunicate-id");
                		    }else {
-               			options.userId = KommunicateUtils.getRandomId();
+               			// options.userId = KommunicateUtils.getRandomId();
                         //    Cookies.set("kommunicate-id", options.userId);
-                        KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
+                        KommunicateUtils.setCookie('kommunicate-id',userId,1);
+                        options.userId = userId;
                		}
 
             	}else{
@@ -291,6 +294,19 @@ function ApplozicSidebox() {
             }
             return false;
         }
+    }
+    function getPseudoName() {
+        $.ajax({
+            url: MCK_CONTEXTPATH + "/plugin/settings",
+            method: 'GET',
+            success: function (data) {
+                mckInitSidebox(data.response.userId);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+
+        })
     }
 
 }
