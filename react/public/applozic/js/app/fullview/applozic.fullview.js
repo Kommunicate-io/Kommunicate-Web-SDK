@@ -2270,8 +2270,11 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					'km-assigned-search-list': 'km-assigned-unread-icon'
 				};
 				var sectionId;
-				if(!list.sectionId){
-					sectionId ='km-contact-list';
+				if (list.sectionId) {
+					sectionId = list.sectionId;
+				}
+				else if (!list.sectionId) {
+					sectionId = 'km-contact-list';
 				}
 				$kmApplozic("#" + tabUnreadIconMap[sectionId]).removeClass("n-vis").addClass("vis");
 				if(list.assigneupdate){
