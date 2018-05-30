@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
     userName: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique: "IDX_USER_NAME_APP_KEY",
+      //unique: "IDX_USER_NAME_APP_KEY",
       field: 'user_name'
     },
     email: {
@@ -39,12 +39,13 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(15),
       field: 'company_size'
     },
-    applicationId: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: "IDX_USER_NAME_APP_KEY",
-      field: 'application_id'
-    }, apzToken: {
+    // applicationId: {
+    //   type: DataTypes.STRING(50),
+    //   allowNull: false,
+    //   unique: "IDX_USER_NAME_APP_KEY",
+    //   field: 'application_id'
+    // }, 
+    apzToken: {
         type: DataTypes.STRING(200),
         field: 'apz_token'
     },
