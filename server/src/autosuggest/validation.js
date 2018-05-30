@@ -17,6 +17,7 @@ module.exports.updateSuggestion = {
 module.exports.deleteSuggetion = {
 	body:{
 		id:joi.number().required(),
+		applicationId: joi.string().required()
 	}
 }
 
