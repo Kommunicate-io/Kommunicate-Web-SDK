@@ -756,6 +756,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var conversationDetail = mckMessageService.checkForRoleType(group);
 					if (!member) {
 						kmGroupService.addGroupMember(conversationDetail);
+						return;
 					}
 				}
 				params.apzCallback = mckGroupLayout.onAddedGroupMember;
@@ -2264,7 +2265,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 			};
 			_this.tabviewUnreadIconUpdate = function (list) {
-				if($(".active.nav-link").data('tip')!=="Conversations"){
+				if(!$kmApplozic(".active.nav-link").hasClass('conversation-menu')){
 					$kmApplozic("#km-allconversatiom-unread-icon").removeClass("n-vis").addClass("vis");
 				}
 				var tabUnreadIconMap = {
@@ -2742,6 +2743,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
+						_this.tabViewUnreadCount(data,'km-allconversation-unread-icon');
 					}
 				})
 			}
@@ -2765,6 +2767,20 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				})
 
 			}
+			_this.tabViewUnreadCount = function (data, sectionId) {
+				var group = data.response.groupFeeds;
+				if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu')) {
+					document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
+					document.getElementById("km-allconversatiom-unread-icon").classList.add("vis");
+				}
+				for (var i = 0; i < group.length; i++) {
+					if (group[i].unreadCount) {
+						document.getElementById(sectionId).classList.remove("n-vis");
+						document.getElementById(sectionId).classList.add("vis");
+						break;
+					}
+				}
+			}
 			_this.loadAssignedGroup = function (params, callback) {
 				var individual = false;
 
@@ -2781,6 +2797,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data,individual,"km-assigned-search-list",list);
+						_this.tabViewUnreadCount(data,'km-assigned-unread-icon');
 					}
 
 				})
@@ -5617,11 +5634,16 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 					return;
 				}
+				var async = true;
+				if (params) {
+					async = typeof params.async !== 'undefined' ? params.async : true;
+				}
+
 				kmUtils.ajax({
 					url : KM_BASE_URL + USER_DETAIL_URL + "?" + data,
 					type : 'get',
 					contentType : 'application/json',
-					async: (typeof params.async !== 'undefined') ? params.async : true,
+					async: async,
 					success : function(data) {
 						if (data + '' === 'null') {
 							if (params.message) {
@@ -7637,13 +7659,27 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							list.sectionId = "km-closed-conversation-list";
 						}
 
-						if(message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact){
-							var asdiv ="#km-li-as-group-"+contact.groupId;
-							$(asdiv).remove();
+						if (message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
+							var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
+							if (asdiv) {
+								asdiv.remove();
+							}
 						}
-            			if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
-							var cldiv ="#km-li-cl-group-"+contact.groupId;
-							$(cldiv).remove();
+						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact) {
+							var cldiv = document.getElementById("km-li-cl-group-" + contact.groupId);
+							if (cldiv) {
+								cldiv.remove();
+							}
+						}
+						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS === "Close" && contact) {
+							var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
+							if (asdiv) {
+								asdiv.remove();
+							}
+							var csdiv = document.getElementById("km-li-cs-group-" + contact.groupId);
+							if (csdiv) {
+								csdiv.remove();
+							}
 						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;

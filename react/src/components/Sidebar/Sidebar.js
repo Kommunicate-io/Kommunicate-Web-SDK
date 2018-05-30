@@ -124,7 +124,7 @@ class Sidebar extends Component {
             </li>
             {/* Conversations Link */}
             <li className="nav-item" onClick={this.hideUnreadCountOnConversationTab}>
-              <NavLink to={'/conversations'} className="nav-link" activeClassName="active" data-tip="Conversations" data-effect="solid" data-place="right">
+              <NavLink to={'/conversations'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Conversations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 4">
                     <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 2" />
