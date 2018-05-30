@@ -2740,7 +2740,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=0",
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 						_this.tabViewUnreadCount(data,'km-allconversation-unread-icon');
