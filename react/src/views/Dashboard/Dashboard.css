@@ -249,6 +249,12 @@
 .dashboard-chart-checkbox-label input:disabled ~ .chart-checkmark {
     opacity: 0.5;
 }
+.time-zone-text {
+    text-align: right;
+    padding-top: 5px;
+    font-size: 14px;
+    color: #8b8b8e;
+}
 
 @media only screen and (min-width:992px) {
     .early-bird-card {
