@@ -90,7 +90,7 @@ class Integrations extends Component {
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.status}</span>
+                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.label}</span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
                  </div>);
