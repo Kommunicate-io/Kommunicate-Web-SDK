@@ -1,53 +1,233 @@
 <section class="pricing-landing-page-section">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="5069.341 -1698.366 487.075 449.844" class="bg-oval">
+            <path fill="#fff" d="M5463.93256672-1308.61066014a234.687 234.687 0 0 1-173.47766642 4.90814078c-119.16242124-43.37157438-182.04724098-172.9212509-143.8798152-292.66463196.9723044-3.051479 198.10497433 1.39821436 317.36124718-.00006465-1.4151535 108.0661769-.39892238 247.24527507-.00376556 287.75655583z" data-name="Oval 2" opacity=".869"></path>
+        </svg>
     <div class="container pricing-container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1 class="pricing-title">We are in public beta until 1<span>st</span> February, 2018 providing a bunch of features you can use for <span style="vertical-align:baseline;color:#7bba55;font-size:30px;font-weight:900;">FREE for 6 months.</span></h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                <p class="pricing-subtitle features">Features you can avail:</p>
-                <ul class="features-list">
-                    <li>Bot integration for automating simple tasks</li>
-                    <li>A powerful dashboard for managing conversations</li>
-                    <li>An integrated agent assigning system</li>
-                    <li>Custom welcome messages based on runtime</li>
-                    <li>Message shortcuts for faster responses</li>
-                    <li>Dynamic FAQs based on frequency and popularity</li>
-                </ul>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 text-center">
-                <p class="pricing-subtitle beta-text">Signup for the beta, and we will have generous plans for you forever</p>
-                <div class="pricing-container">
-                    <div class="price-numbers">
-                        <span class="price-dollar">$</span>
-                        <span class="price-value">10</span>
+        <div class="row text-center">
+
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <h1 class="pricing-title">Incredible Plans &amp; Simple Pricing</h1>
+                <hr class="hr">
+                <h3 class="pricing-subtitle">Our custom pricing model can help you scale to your success.</h3>
+
+                <!-- Pricing Toggle -->
+                <div class="pricing-toggle">
+                    <label class="toggler" id="filt-monthly">Monthly</label>
+                    <div class="toggle">
+                        <input type="checkbox" id="switcher" class="check" checked>
+                        <b class="b switch"></b>
                     </div>
-                    <div class="price-text">for 1000 conversations/month</div>
+                    <label class="toggler toggler--is-active" id="filt-yearly">Yearly</label>
+                </div>
+
+                <div class="contact-us-div">
+                    <p>Questions?</p> <button id="chat-withus-btn" class="chat-withus-btn"  disabled>Chat with us</button>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-div">
-                <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form6" class="pre-signup-form">
-                    <div class="signup-success-msg-div hide">
-                        <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
+            
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container startup">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">FREE</h2>
+                            <h4 class="pricing-table-plan-subtitle">Essential Features</h4>
+                            <div class="price-image-container">
+                                <div class="pricing-value">
+                                    <div>
+                                        <h2> $0 </h2>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER AGENT / MO</p>
+                                        <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;">(Billed Annually)</p>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-footer">
+                                <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialFree',1,{'nonInteraction': true});">Sign Up Now</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestFree',1,{'nonInteraction': true});">Schedule a demo</a>
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                <p style="opacity:0;">Includes...</p>
+                                <ul>
+                                    <li>Unlimited agents</li>
+                                    <li>Live Chat</li>
+                                    <li>Web and Mobile SDKs</li>
+                                    <li>Agent apps</li>
+                                    <li>Conversations reporting</li>
+                                    <li>Welcome messages</li>
+                                    <li>Offline messages</li>
+                                    <li>Bot integrations</li>
+                                    <li>Quick replies</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="circles circle-1"></div>
+                        <div class="circles circle-2"></div>
+                        <div class="circles circle-3"></div>
+                        
                     </div>
-                    <div class="signup-error-msg-div1 hide">
-                        <h1 class="signup-error-msg-text1">Hey! You are already in our beta list :)</h1>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.138 138.759" class="hearts-shape">
+                        <g data-name="Group 11">
+                          <path fill="#ef7c8f" d="M25.58862237 114.38154387a7.545 7.545 0 0 0 6.71608468 2.70813047 7.545 7.545 0 0 0 1.7470768 7.02762312 7.206 7.206 0 0 0 10.05912513.59707753c6.78106558-5.89469037 3.35817766-20.80689472 3.35817766-20.80689472s-14.29070587-5.46495432-21.07177145.42973606a7.206 7.206 0 0 0-.80869282 10.04432754z"/>
+                          <path fill="#fee774" d="M5.573139 10.061873a.51401156.51401156 0 0 0-.430116.882818l5.667191 5.316277a.51401156.51401156 0 0 1 .11038.599965l-3.37041 6.917805a.51401156.51401156 0 0 0 .705569.677478l6.786781-3.671493a.51401156.51401156 0 0 1 .601044.081478l5.71193 5.491585a.51401156.51401156 0 0 0 .861032-.470416l-1.464982-7.546094a.51401156.51401156 0 0 1 .270246-.554683l6.848763-3.515594a.51401156.51401156 0 0 0-.158434-.967108l-7.799739-1.149253a.51301154.51301154 0 0 1-.430985-.41911l-1.335593-7.576496a.51301154.51301154 0 0 0-.966571-.137202l-3.3945 6.96725a.51401156.51401156 0 0 1-.541395.282415z" data-name="Shape"/>
+                          <path fill="#ba6bef" d="M109.115 116.389v9.114h-8.641a1.4595 1.4595 0 0 0 0 2.919h8.641v8.878a1.4595 1.4595 0 1 0 2.919 0v-8.878h8.645a1.4595 1.4595 0 1 0 0-2.919h-8.646v-9.114a1.4595 1.4595 0 0 0-2.919 0z" data-name="Shape"/>
+                        </g>
+                      </svg>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <!-- <div class="pricing-most-popular-text">
+                        <p>Most Popular</p>
+                    </div> -->
+                    <div class="pricing-table-container growth">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">GROWTH</h2>
+                            <h4 class="pricing-table-plan-subtitle">Room to Grow</h4>
+                            <div class="price-image-container">
+                                <div class="pricing-value">
+                                    <div id="growth-pricing-monthly" class="a hide">
+                                        <h2> $10</h2>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px;color: #7b7b7b;" class="per-month-span">PER AGENT / MO</p>
+                                        <p style="visibility:hidden;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;">(Billed Annually)</p>
+                                    </div>
+                                    <div id="growth-pricing-yearly" class="a ">
+                                        <h2>$8</h2>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:30px; color: #7b7b7b;" class="per-month-span">PER AGENT / MO</p>
+                                        <p style="visibility:visible;font-size:14px;font-weight:400;margin-top:5px;margin-bottom:30px;color: #7b7b7b;">(Billed Annually)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-footer">
+                                <a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','StartFreeTrial','PricingTableStartTrialGrowth',1,{'nonInteraction': true});">Start Free Trial</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestGrowth',1,{'nonInteraction': true});">Schedule a demo</a>
+                            </div>
+                            <div class="pricing-table-body-footer">
+                                <p>Everything in <strong>FREE Plan</strong>, plus...</p>
+                                <ul>
+                                    <li>Agent reporting</li>
+                                    <li>Conversation routing</li>
+                                    <li>Chat and email support</li>
+                                    <li>Bot builder</li>
+                                    <li>FAQ</li>
+                                    <li>Liz bot</li>
+                                    <li>All integrations</li>
+                                    <li>Standard SLA</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="circles circle-1"></div>
+                        <div class="circles circle-2"></div>
+                        <div class="circles circle-3"></div>
                     </div>
-                    <div class="signup-error-msg-div2 hide">
-                        <h1 class="signup-error-msg-text1">Unable to process your request. Please try again after sometime.</h1>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-xs-12">
+                <div class="pricing-table">
+                    <div class="pricing-table-container enterprise">
+                        <div class="pricing-table-header">
+                            <h2 class="pricing-table-plan-title">ENTERPRISE</h2>
+                            <h4 class="pricing-table-plan-subtitle">Maximum Business Value</h4>
+                            <div class="price-image-container">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.138 108.437">
+                                    <defs>
+                                        <linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+                                        <stop offset="0" stop-color="#82cdf3" stop-opacity=".2"/>
+                                        <stop offset="1" stop-color="#4b9fe4" stop-opacity=".2"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <g data-name="Group 1" transform="translate(-1154.862 -323.546)">
+                                        <path fill="#ef7c8f" d="M1175.96649365 427.17486728a7.545 7.545 0 0 0 2.47209278-6.8065058 7.545 7.545 0 0 0 6.96236997-1.99127304 7.206 7.206 0 0 0 .2456554-10.0738351c-6.12775526-6.571213-20.91141842-2.6299818-20.91141842-2.6299818s-4.96288678 14.47272452 1.16486848 21.04393753a7.206 7.206 0 0 0 10.0664318.45765821z" data-name="heart copy"/>
+                                        <path fill="#6dbbf4" d="M1191.421 323.546l19.03246353 8.8749835-8.8749835 19.03246352-19.03246353-8.8749835z"/>
+                                        <circle cx="27" cy="27" r="27" fill="url(#a)" data-name="Oval 7" opacity=".5" transform="translate(1199 355)"/>
+                                        <path fill="#f38b35" d="M1251 405a9 9 0 1 1 9-9 9.01 9.01 0 0 1-9 9zm-2.25-11.7a.451.451 0 0 0-.45.45v4.5a.451.451 0 0 0 .45.45h4.5a.451.451 0 0 0 .45-.45v-4.5a.451.451 0 0 0-.45-.45z" data-name="Shape"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="pricing-table-body">
+                            <div class="pricing-table-footer">
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="pricing-footer-signup-btn form-submit-btn" onclick="ga('send','event','PricingPage','Contact','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});">Contact us</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" class="schedule-demo-links" onclick="ga('send','event','PricingPage','Demo','PricingTableDemoRequestEnterprise',1,{'nonInteraction': true});" style="visibility:hidden;">Schedule a demo</a>
+                            </div>
+
+                            <div class="pricing-table-body-footer">
+                                <p>Everything in <strong>GROWTH Plan</strong>, plus...</p>
+                                <ul>
+                                    <li>Analytics APIs</li>
+                                    <li>Downloadable reports</li>
+                                    <li>Advanced reporting</li>
+                                    <li>Custom bots</li>
+                                    <li>Whitelabel</li>
+                                    <li>Dedicated server</li>
+                                    <li>Premium support</li>
+                                    <li>Agreements</li>
+                                    <li>Routing rules</li>
+                                    <li>CSAT score</li>
+                                    <li>Unlimited scaling</li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="circles circle-1"></div>
+                        <div class="circles circle-2"></div>
                     </div>
-                    <input type="email" name="email" id="email-pre-signup6" placeholder="Your email address" autocomplete="off" class="cta-email-pre-signup"
-                        required>
-                    <br>
-                    <br>
-                    <button type="submit" class="form-submit-btn" id="get-me-in-btn6">Create Free Account</button>
-                </form>
-                <p style="margin-top: 25px; font-size:16px; text-align: center;">
-                    Quick setup. No credit card required.
-                  </p>
+                </div>
             </div>
         </div>
     </div>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440.621 634.931" class="middle-swirl">
+        <path fill="#fff" d="M.259 145.917s1025.426-308.765 1440.252-28c.137 18.35.126 24.949.074 33.888-106.435-45.472-275.736-81.984-502.92-26.7C570.903 214.357 242.427 558.136.002 634.932c-.026-35.503.257-489.015.257-489.015z" opacity=".8"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440.256 272.21" class="bottom-shape">
+        <path fill="#fff" d="M0 260.216S358.262-43.172 815.955 5.232c285.143 30.155 463.641 98.226 624.1 61.953.068 38.741 0 105.657.2 204.811-289.873.432-49.464.08-1440.256.044z" data-name="Path 3"/>
+      </svg>
 </section>
+<script>
+
+          var filtMonthly = document.getElementById("filt-monthly"),
+          filtYearly = document.getElementById("filt-yearly"),
+          switcher = document.getElementById("switcher"),
+          launchPricingMonthly = document.getElementById("launch-pricing-monthly"),
+        //   launchPricingYearly = document.getElementById("launch-pricing-yearly"),
+          growthPricingMonthly = document.getElementById("growth-pricing-monthly"),
+          growthPricingYearly = document.getElementById("growth-pricing-yearly");
+        
+        filtMonthly.addEventListener("click", function(){
+        switcher.checked = false;
+        filtMonthly.classList.add("toggler--is-active");
+        filtYearly.classList.remove("toggler--is-active");
+        // launchPricingMonthly.classList.remove("hide");
+        // launchPricingYearly.classList.add("hide");
+        growthPricingMonthly.classList.remove("hide");
+        growthPricingYearly.classList.add("hide");
+        });
+        
+        filtYearly.addEventListener("click", function(){
+        switcher.checked = true;
+        filtYearly.classList.add("toggler--is-active");
+        filtMonthly.classList.remove("toggler--is-active");
+        // launchPricingMonthly.classList.add("hide");
+        // launchPricingYearly.classList.remove("hide");
+        growthPricingMonthly.classList.add("hide");
+        growthPricingYearly.classList.remove("hide");
+        });
+        
+        switcher.addEventListener("click", function(){
+          filtYearly.classList.toggle("toggler--is-active");
+          filtMonthly.classList.toggle("toggler--is-active");
+        //   launchPricingMonthly.classList.toggle("hide");
+        //   launchPricingYearly.classList.toggle("hide");
+          growthPricingMonthly.classList.toggle("hide");
+          growthPricingYearly.classList.toggle("hide");
+        });
+        </script>
