@@ -2776,9 +2776,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				for (var i = 0; i < group.length; i++) {
 					if (group[i].unreadCount) {
 						unreadCount = unreadCount + 1;
+						break;
 					}
 				}
-				if (unreadCount > 1) {
+				if (unreadCount >= 1) {
 					$kmApplozic("#" + sectionId).removeClass("n-vis").addClass("vis");
 				}
 			}
@@ -7667,6 +7668,12 @@ var KM_ASSIGNE_GROUP_MAP =[];
             			if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
 							var cldiv ="#km-li-cl-group-"+contact.groupId;
 							$(cldiv).remove();
+						}
+						if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS === "Close" && contact){
+							var csdiv ="#km-li-cs-group-"+contact.groupId;
+							var asdiv ="#km-li-as-group-"+contact.groupId;
+							$(asdiv).remove();
+							$(csdiv).remove();
 						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
