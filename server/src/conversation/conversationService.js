@@ -228,7 +228,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
             userIds = arr;
         } else {
             logger.info("received nullfrom cache, adding default agent as assignee");
-            assignee = userIds[0];
+            assignee = userIds[userIds.length-1];
         }
 
         cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIds });
