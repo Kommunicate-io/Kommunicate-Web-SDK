@@ -92,6 +92,7 @@ class Step2 extends Component {
     // document.getElementById("emptyerror").className = 'n-vis';
     let userSession = CommonUtils.getUserSession();
     const customerInfo = {
+      email: userSession.email,
       applicationId: userSession.application.applicationId,
       websiteUrl: this.state.websiteUrl,
       name: this.props.customerInfo.name,
