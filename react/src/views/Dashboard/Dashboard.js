@@ -799,7 +799,7 @@ getLastdays = (start, end) => {
   return {mmdd, yyyymmdd};
 }
 secondsToHms = (seconds,key) => { // average resolution time converting in to H : M : S format
-  seconds = Number(seconds);
+  // seconds = Number(seconds);
   var h = Math.floor(seconds / 3600);
   var m = Math.floor(seconds % 3600 / 60);
   var s = Math.floor(seconds % 3600 % 60);
