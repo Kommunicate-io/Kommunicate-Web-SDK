@@ -141,11 +141,11 @@ position: relative;
 }
 .price-image-container svg {
     width: auto;
-    height: 120px;
+    height: 90px;
 }
 .enterprise .price-image-container {
-    margin-bottom: 19px;
-    margin-top: 25px;
+    margin-bottom: 39px;
+    margin-top: 35px;
 }
 .price-mau h4 {
     font-weight: 600;

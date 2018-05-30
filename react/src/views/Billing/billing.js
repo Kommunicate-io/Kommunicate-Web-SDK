@@ -445,13 +445,20 @@ class Billing extends Component {
                                             <div className="pricing-table-container startup">
                                                 <div className="pricing-table-header">
                                                     <h2 className="pricing-table-plan-title">Free</h2>
+                                                    <h4 className="pricing-table-plan-subtitle">Essential Features</h4>
                                                     <div className="price-image-container">
-                                                        <img src={StartupPlanIcon} alt="Startup Plan Icon" />
+                                                        <div className="pricing-value">
+                                                            <div>
+                                                                <h2> $0 </h2>
+                                                                <p style={{visibility:"visible",fontSize:"14px",fontWeight:"400",marginTop:"30px",color: "#7b7b7b"}} className="per-month-span">PER AGENT / MO</p>
+                                                                <p style={{visibility:"hidden",fontSize:"14px",fontWeight:"400",marginTop:"5px",marginBottom:"30px"}}>(Billed Annually)</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                 </div>
                                                 <div className="pricing-table-body">
-                                                    <div className="pricing-table-body-header">
+                                                    {/* <div className="pricing-table-body-header">
                                                         <div className="pricing-value">
                                                             <h2>FREE FOREVER
                                                         <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p>
@@ -460,7 +467,7 @@ class Billing extends Component {
                                                         <div className="price-mau n-vis">
                                                             <h4>Unlimited Chat users /mo</h4>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p style={{ opacity: 0 }}>Includes...</p>
@@ -493,26 +500,27 @@ class Billing extends Component {
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
                                                     <h2 className="pricing-table-plan-title">Growth</h2>
+                                                    <h4 className="pricing-table-plan-subtitle">Room to Grow</h4>
                                                     <div className="price-image-container">
-                                                        <img src={GrowthPlanIcon} alt="Launch Plan Icon" />
+                                                        <div className="pricing-value">
+                                                            <div id="growth-pricing-monthly" className="a hide" hidden={this.state.pricingMonthlyHidden}>
+                                                                <h2> $10</h2>
+                                                                <p style={{visibility:"visible",fontSize:"14px",fontWeight:"400",marginTop:"30px",color: "#7b7b7b"}} className="per-month-span">PER AGENT / MO</p>
+                                                                <p style={{visibility:"hidden",fontSize:"14px",fontWeight:"400",marginTop:"5px",marginBottom:"30px"}}>(Billed Annually)</p>
+                                                            </div>
+                                                            <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
+                                                                <h2>$8</h2>
+                                                                <p style={{visibility:"visible",fontSize:"14px",fontWeight:"400",marginTop:"30px",color: "#7b7b7b"}} className="per-month-span">PER AGENT / MO</p>
+                                                                <p style={{visibility:"visible",fontSize:"14px",fontWeight:"400",marginTop:"5px",marginBottom:"30px"}}>(Billed Annually)</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                 </div>
                                                 <div className="pricing-table-body">
-                                                    <div className="pricing-table-body-header">
-                                                        <div className="pricing-value">
-                                                            <h2 id="launch-pricing-monthly" hidden={this.state.pricingMonthlyHidden}>$10<span className="per-month-span"> PER AGENT / MO</span>
-                                                                <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
-                                                            <h2 id="launch-pricing-yearly" hidden={this.state.pricingYearlyHidden}>$8<span className="per-month-span"> PER AGENT / MO</span>
-                                                                <p style={{ visibility: 'visible', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p></h2>
-                                                        </div>
-                                                        <div className="price-mau n-vis">
-                                                            <h4>1000 Chat users /mo</h4>
-                                                        </div>
-                                                    </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Free</p>
+                                                        <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
                                                             <li>Agent reporting</li>
                                                             <li>Conversation routing</li>
@@ -540,6 +548,7 @@ class Billing extends Component {
                                             </div>
                                         </div>
                                     </div>
+
                                     <div className="col-lg-3 col-md-3 col-xs-12" hidden>
                                         <div className="pricing-table">
                                             <div className="pricing-table-container growth">
@@ -602,24 +611,28 @@ class Billing extends Component {
                                             <div className="pricing-table-container enterprise">
                                                 <div className="pricing-table-header">
                                                     <h2 className="pricing-table-plan-title">Enterprise</h2>
+                                                    <h4 className="pricing-table-plan-subtitle">Maximum Business Value</h4>
                                                     <div className="price-image-container">
-                                                        <img src={EnterprisePlanIcon} alt="Enterprise Plan Icon" />
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 78.138 67.437">
+                                                            <defs>
+                                                                <linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+                                                                <stop offset="0" stopColor="#82cdf3" stopOpacity=".2"/>
+                                                                <stop offset="1" stopColor="#4b9fe4" stopOpacity=".2"/>
+                                                                </linearGradient>
+                                                            </defs>
+                                                            <g data-name="Group 1" transform="translate(-1174.862 -344.546)">
+                                                                <path fill="#ef7c8f" d="M1195.96649365 407.17486728a7.545 7.545 0 0 0 2.47209278-6.8065058 7.545 7.545 0 0 0 6.96236997-1.99127304 7.206 7.206 0 0 0 .2456554-10.0738351c-6.12775526-6.571213-20.91141842-2.6299818-20.91141842-2.6299818s-4.96288678 14.47272452 1.16486848 21.04393753a7.206 7.206 0 0 0 10.0664318.45765821z" data-name="heart copy"/>
+                                                                <path fill="#6dbbf4" d="M1210.421 344.546l19.03246353 8.8749835-8.8749835 19.03246352-19.03246353-8.8749835z"/>
+                                                                <circle cx="14" cy="14" r="14" fill="url(#a)" data-name="Oval 7" opacity=".5" transform="translate(1212 368)"/>
+                                                                <path fill="#f38b35" d="M1244 405a9 9 0 1 1 9-9 9.01 9.01 0 0 1-9 9zm-2.25-11.7a.451.451 0 0 0-.45.45v4.5a.451.451 0 0 0 .45.45h4.5a.451.451 0 0 0 .45-.45v-4.5a.451.451 0 0 0-.45-.45z" data-name="Shape"/>
+                                                            </g>
+                                                        </svg>
                                                     </div>
                                                 </div>
                                                 <div className="pricing-table-body">
-                                                    <div className="pricing-table-body-header">
-                                                        <div className="pricing-value">
-                                                            <h2>CUSTOM
-                                                        <p style={{ visibility: 'hidden', fontSize: '14px', fontWeight: 400, marginTop: '10px' }}>(Billed Annually)</p>
-                                                            </h2>
-                                                        </div>
-                                                        <div className="price-mau n-vis">
-                                                            <h4>Unlimited Chat users /mo</h4>
-                                                        </div>
-                                                    </div>
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
-                                                        <p>All in Growth</p>
+                                                    <p>Everything in <strong>GROWTH Plan</strong>, plus...</p>
                                                         <ul>
                                                             <li>Analytics APIs</li>
                                                             <li>Downloadable reports</li>
@@ -629,7 +642,7 @@ class Billing extends Component {
                                                             <li>Dedicated server</li>
                                                             <li>Premium support</li>
                                                             <li>Agreements</li>
-                                                            <li>Routing rules: team based, trigger based agent assignment</li>
+                                                            <li>Routing rules</li>
                                                             <li>CSAT score</li>
                                                             <li>Unlimited scaling</li>
                                                         </ul>
