@@ -1922,7 +1922,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 						var group = kmGroupUtils.getGroup(groupId);
-						if (typeof group === 'object' && group.users[MCK_USER_ID].role === 1) {
+						if (typeof group === 'object' && group.users[MCK_USER_ID] && group.users[MCK_USER_ID].role === 1) {
 							if (confirm('Are you sure want to remove this member!')) {
 								kmGroupService.removeGroupMember({
 									'groupId' : groupId,
@@ -1978,7 +1978,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var groupId = $mck_group_info_tab.data('km-id');
 					if (groupId) {
 						var group = kmGroupUtils.getGroup(groupId);
-						if (group && group.users[MCK_USER_ID].role === 1) {
+						if (group && group.users[MCK_USER_ID] && group.users[MCK_USER_ID].role === 1) {
 							if (MCK_GROUP_SEARCH_ARRAY.length > 0) {
 								mckGroupLayout.addMembersToGroupSearchList();
 							} else if (IS_MCK_OWN_CONTACTS && MCK_CONTACT_ARRAY.length > 0) {
@@ -6332,7 +6332,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var isGroupAdminExpr = "n-vis";
 				var enableAdminMenuExpr = "n-vis";
 				var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
-				if (group.users[MCK_USER_ID].role === 1) {
+				if (group.users[MCK_USER_ID] && group.users[MCK_USER_ID].role === 1) {
 					enableAdminMenuExpr = "vis";
 				}
 				if (contact.contactId === MCK_USER_ID) {
@@ -6438,7 +6438,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						$mck_group_info_icon.html(resp);
 						$mck_group_title.html(group.displayName);
 						_this.addMembersToGroupInfoList(group);
-						(group.users[MCK_USER_ID].role === 1) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');	
+						(group.users[MCK_USER_ID] && group.users[MCK_USER_ID].role === 1) ? $mck_group_add_member_box.removeClass('n-vis').addClass('vis') : $mck_group_add_member_box.removeClass('vis').addClass('n-vis');	
 					} else {
 						kmGroupService.getGroupFeed({
 							'groupId' : params.groupId,
@@ -6474,7 +6474,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var groupId = $mck_group_info_tab.data('km-id');
 				if (typeof groupId !== 'undefined' && typeof userId !== 'undefined') {
 					var group = kmGroupUtils.getGroup(groupId);
-					if (typeof group === 'object' && group.users[MCK_USER_ID].role === 1) {
+					if (typeof group === 'object' && group.users[MCK_USER_ID] && group.users[MCK_USER_ID].role === 1) {
 						var group = {};
 						group.groupId = groupId;
 						group.userId = userId;
