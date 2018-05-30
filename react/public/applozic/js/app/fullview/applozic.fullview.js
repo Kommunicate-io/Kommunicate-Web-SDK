@@ -2740,7 +2740,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=0",
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 						_this.tabViewUnreadCount(data,'km-allconversation-unread-icon');
@@ -2791,7 +2791,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			   	data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+"&status=0",
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
