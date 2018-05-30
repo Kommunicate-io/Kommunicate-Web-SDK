@@ -111,7 +111,7 @@ exports.updateCustomer = (userId, customer) => {
 
 exports.getCustomerByApplicationId = appId => {
   console.log("getting application by application Id", appId);
-  return Promise.resolve(customerModel.findOne({ where: { applicationId: appId } }))
+  return Promise.resolve(customerModel.find({include: [{model: db.Application, as:'Application',where: {applicationId: appId }}]}))
     .then(customer => {
       console.log("found data for customer : ", customer == null ? null : customer.dataValues);
       return customer !== null ? customer.dataValues : null;
