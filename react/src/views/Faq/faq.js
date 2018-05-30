@@ -304,7 +304,7 @@ class Tabs extends Component {
                   <span>{"FAQs (" + this.state.listOfFAQs.length + ")"}</span>
                 </div>
                 <div className={this.state.listOfFAQs.length > 0 ? "km-bot-list-of-faqs-container":"n-vis"}>
-                  {this.state.listOfFAQs.map(faq => (
+                  {this.state.listOfFAQs.slice(0).reverse().map(faq => (
                     <div key={faq.id} className="row km-bot-align-item-v-center" onClick={() => this.setFAQDetails(faq.name, faq.content, faq.status.toLowerCase(), faq.id)} style={{cursor: "pointer"}}>
                       <div className="col-sm-2">
                         { 
