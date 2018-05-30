@@ -1117,6 +1117,10 @@ render() {
         </div> */}
 
       </div>
+      { this.state.isChecked &&
+        <div className="time-zone-wrapper"><p className="time-zone-text">Time zone : GMT</p></div>
+      }
+        
     </div>
   )
 }
