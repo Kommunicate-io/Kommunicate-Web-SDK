@@ -102,7 +102,7 @@ exports.updateSuggestion = (req, res) => {
 
 exports.deleteSuggetion = (req, res) => {
 	console.log("delete req: ",req)
-	const suggestion = { id: req.body.id };
+	const suggestion = req.body;
 	autosuggestService.deleteSuggetion(suggestion).then(response => {
 		res.status(200).json({ code: "SUGESSTION_DELETED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
