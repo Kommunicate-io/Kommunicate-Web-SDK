@@ -756,6 +756,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					var conversationDetail = mckMessageService.checkForRoleType(group);
 					if (!member) {
 						kmGroupService.addGroupMember(conversationDetail);
+						return;
 					}
 				}
 				params.apzCallback = mckGroupLayout.onAddedGroupMember;
@@ -5617,11 +5618,16 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 					return;
 				}
+				var async = true;
+				if (params) {
+					typeof params.async !== 'undefined' ? params.async : true;
+				}
+
 				kmUtils.ajax({
 					url : KM_BASE_URL + USER_DETAIL_URL + "?" + data,
 					type : 'get',
 					contentType : 'application/json',
-					async: (typeof params.async !== 'undefined') ? params.async : true,
+					async: async,
 					success : function(data) {
 						if (data + '' === 'null') {
 							if (params.message) {
