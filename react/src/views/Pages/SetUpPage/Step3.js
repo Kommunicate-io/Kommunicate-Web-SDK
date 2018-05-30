@@ -52,7 +52,8 @@ class Step3 extends Component {
   }
   jumpToDashboard = (e) => {
 		e.preventDefault()
-		this.props.history.push('/dashboard');
+    // this.props.history.push('/dashboard');
+    window.location.assign("/dashboard");
 	}
 
   render() {
