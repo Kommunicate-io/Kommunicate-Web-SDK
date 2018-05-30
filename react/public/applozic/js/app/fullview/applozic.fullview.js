@@ -5637,7 +5637,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 				var async = true;
 				if (params) {
-					typeof params.async !== 'undefined' ? params.async : true;
+					async = typeof params.async !== 'undefined' ? params.async : true;
 				}
 
 				kmUtils.ajax({
