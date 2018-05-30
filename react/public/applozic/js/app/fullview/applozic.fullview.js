@@ -2750,11 +2750,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.loadCloseGroup = function(params,callback){
 				var individual = false;
 				CONTACT_SYNCING = true;
-				var data = '/assigned?userId='+ encodeURIComponent(MCK_USER_ID);
+				var data = '?pageSize=60';
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
 			  	}
-			    data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=2",
@@ -2792,7 +2791,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			   	data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+"&status=0",
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
@@ -5298,6 +5297,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					}
 				} else {
 					if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
+						if(message.groupId && (message.metadata.KM_ASSIGN ===MCK_USER_ID||message.metadata.KM_STATUS ==="Close")){
+							mckMessageLayout.addGroupFromMessage(message, true,list) 
+						}
 						var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 						if (isValidMeta) {
 							if (message.contentType !== 10) {
@@ -7657,6 +7659,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						}
 						if(message.metadata && message.metadata.KM_STATUS ==="Close"){
 							list.sectionId = "km-closed-conversation-list";
+						}
+						if(message.metadata && message.metadata.KM_STATUS ==="Open"){
+							list.sectionId = "km-contact-list";
 						}
 
 						if (message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
