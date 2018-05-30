@@ -71,3 +71,6 @@ body {
 .col-lg-4-integration {
     width: 29.33333% !important;
 }
+[data-key="agilecrm"] {
+    cursor: default;
+  }
