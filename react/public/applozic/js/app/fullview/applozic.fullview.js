@@ -2265,7 +2265,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				});
 			};
 			_this.tabviewUnreadIconUpdate = function (list) {
-				if($(".active.nav-link").data('tip')!=="Conversations"){
+				if(!$kmApplozic(".active.nav-link").hasClass('conversation-menu')){
 					$kmApplozic("#km-allconversatiom-unread-icon").removeClass("n-vis").addClass("vis");
 				}
 				var tabUnreadIconMap = {
@@ -2770,7 +2770,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			_this.tabViewUnreadCount = function (data, sectionId) {
 				var unreadCount = 0;
 				var group = data.response.groupFeeds;
-				if ($(".active.nav-link").data('tip') !== "Conversations") {
+				if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu')) {
 					$kmApplozic("#km-allconversatiom-unread-icon").removeClass("n-vis").addClass("vis");
 				}
 				for (var i = 0; i < group.length; i++) {
