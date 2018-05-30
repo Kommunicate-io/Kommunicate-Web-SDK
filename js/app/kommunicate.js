@@ -53,12 +53,14 @@ $applozic.extend(true,Kommunicate,{
     },
     openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
+        KommunicateUI.showChat();
     },
     openConversation: function (groupId) {
         window.$applozic.fn.applozic('loadGroupTab', groupId);
     },
     openDirectConversation: function (userId) {
         window.$applozic.fn.applozic('loadTab', userId);
+        KommunicateUI.showChat();
     },
     /**
      * load conversation will open or create a conversation between existing users. 
