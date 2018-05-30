@@ -1983,7 +1983,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 								mckGroupLayout.addMembersToGroupSearchList();
 							} else if (IS_MCK_OWN_CONTACTS && MCK_CONTACT_ARRAY.length > 0) {
 								$kmApplozic.each(MCK_CONTACT_ARRAY, function(i, contact) {
-									MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
+									if (contact.contactId !== undefined) {
+										MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
+									}
 								});
 								mckGroupLayout.addMembersToGroupSearchList();
 							} else {
@@ -4973,7 +4975,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if ( (typeof data.userId !== "undefined") ) {
 						var contact = _this.getContact('' + data.userId);
 						contact = (typeof contact === 'undefined') ? _this.createContactWithDetail(data) : _this.updateContactDetail(contact, data);
-						MCK_CONTACT_ARRAY.push(contact);
+						if (contact !== 'undefined') {
+							MCK_CONTACT_ARRAY.push(contact);
+						}
 						MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 					}
 				});
@@ -5587,7 +5591,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 										userIdArray.push(user.userId);
 										var contact = mckMessageLayout.getContact('' + user.userId);
 										contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-										MCK_CONTACT_ARRAY.push(contact);
+										if (contact !== undefined) {
+											MCK_CONTACT_ARRAY.push(contact);
+										}
 										mckContactNameArray.push([ user.userId, contact.displayName ]);
 										if (user.connected) {
 											w.MCK_OL_MAP[user.userId] = true;
@@ -5658,7 +5664,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 									w.MCK_OL_MAP[userDetail.userId] = (userDetail.connected);
 									var contact = mckMessageLayout.getContact('' + userDetail.userId);
 									contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
-									MCK_CONTACT_ARRAY.push(contact);
+									if (contact !== 'undefined') {
+										MCK_CONTACT_ARRAY.push(contact);
+									}
 								});
 								if (params) {
 									if (params.setStatus) {
