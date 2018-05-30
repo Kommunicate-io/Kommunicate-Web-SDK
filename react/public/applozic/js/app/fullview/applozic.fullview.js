@@ -4975,10 +4975,10 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					if ( (typeof data.userId !== "undefined") ) {
 						var contact = _this.getContact('' + data.userId);
 						contact = (typeof contact === 'undefined') ? _this.createContactWithDetail(data) : _this.updateContactDetail(contact, data);
-						if (contact !== 'undefined') {
+						if (typeof contact !== 'undefined') {
 							MCK_CONTACT_ARRAY.push(contact);
+							MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 						}
-						MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 					}
 				});
 				mckMessageService.initSearch();
@@ -5591,7 +5591,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 										userIdArray.push(user.userId);
 										var contact = mckMessageLayout.getContact('' + user.userId);
 										contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-										if (contact !== undefined) {
+										if (typeof contact !== 'undefined') {
 											MCK_CONTACT_ARRAY.push(contact);
 										}
 										mckContactNameArray.push([ user.userId, contact.displayName ]);
