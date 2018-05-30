@@ -16,7 +16,7 @@ layout:
     <title>Pricing and FAQs | Kommunicate</title>
     {% include headtag.html %}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/resources/css/pricing.css" type="text/css">
+    <link rel="stylesheet" href="/assets/resources/css/price.css" type="text/css">
 
 
 </head>
@@ -26,8 +26,8 @@ layout:
       {% include nav-header.html %}
     </div>
     
-    {% include_relative /sections/pricing-landing-page.html %}
-    {% include_relative /sections/pricing-faq-section.html %}
+    {% include_relative /sections/pricing-new-landing-page.html %}
+    {% include_relative /sections/pricing-new-faq-section.html %}
     
     {% include footer-section.html %}
 
@@ -36,17 +36,6 @@ layout:
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
 <!-- End of HubSpot Embed Code -->
-
-<script>
-    window.onload = function()  {
-      var element = document.getElementById("chat-withus-btn");
-      element.disabled=false;
-    } 
-    function launchSideboxChat() {
-      window.$applozic.fn.applozic('mckLaunchSideboxChat');
-    }
-    document.getElementById("chat-withus-btn").addEventListener("click", launchSideboxChat);
-  </script>
 
 </body>
 
