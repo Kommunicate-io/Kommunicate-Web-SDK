@@ -14,7 +14,7 @@ class ThirdPartyScripts extends Component {
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
-            console.log("component did mount called from third party script");
+           
             (function(d, m){ 
               let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
               "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true}
