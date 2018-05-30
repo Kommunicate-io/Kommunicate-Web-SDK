@@ -494,8 +494,8 @@ showPasswordField = () => {
                         <p className="input-error-message">{this.state.errorMessageText}</p>
                        </div>
                     </div> */}
-                          {/* login with google is hidden for release 1.5.2 . To make it visible, remove n-vis from classname   */}
-                         <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
+                          {/* login with google is hidden for release 1.5.2 . To make it visible uncomment   */}
+                         {/* <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
                               <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
@@ -514,7 +514,7 @@ showPasswordField = () => {
                         <div className="or-seperator" hidden={this.state.hideGoogleLoginBtn}>
                           <div className="or-seperator--line"></div>
                           <div className="or-seperator--text">OR</div>
-                        </div>
+                        </div> */}
 
                     <div hidden ={this.state.hideUserNameInputbox}>
                       <InputField
