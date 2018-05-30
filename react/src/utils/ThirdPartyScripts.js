@@ -9,7 +9,7 @@ class ThirdPartyScripts extends Component {
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
           var sideboxHelpIcon = document.getElementById('sidebar-sidebox-help-icon');
-          var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+          // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
@@ -22,7 +22,8 @@ class ThirdPartyScripts extends Component {
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().password;
               }
-              o.onInit=function(response) {    
+              o.onInit=function(response) {   
+                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher'); 
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
                   console.log("template not loaded"); 
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
@@ -48,9 +49,14 @@ class ThirdPartyScripts extends Component {
                 }
                  
                 document.querySelector(".mck-close-sidebox").onclick = function() {
-                  mckSideboxLauncher.classList.add('n-vis');
-                  mckSideboxLauncher.classList.add('force-hide');
-                  mckSideboxLauncher.classList.remove('vis');
+                  if(mckSideboxLauncher) {
+                    mckSideboxLauncher.classList.add('n-vis');
+                    mckSideboxLauncher.classList.add('force-hide');
+                    mckSideboxLauncher.classList.remove('vis');
+                  }
+                  // mckSideboxLauncher.classList.add('n-vis');
+                  // mckSideboxLauncher.classList.add('force-hide');
+                  // mckSideboxLauncher.classList.remove('vis');
                 };
 
               };
