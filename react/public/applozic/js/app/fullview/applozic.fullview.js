@@ -7660,14 +7660,26 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						}
 
 						if (message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
-							document.getElementById("km-li-as-group-" + contact.groupId).remove();
+							var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
+							if (asdiv) {
+								asdiv.remove();
+							}
 						}
 						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact) {
-							document.getElementById("km-li-cl-group-" + contact.groupId).remove();
+							var cldiv = document.getElementById("km-li-cl-group-" + contact.groupId);
+							if (cldiv) {
+								cldiv.remove();
+							}
 						}
 						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS === "Close" && contact) {
-							document.getElementById("km-li-as-group-" + contact.groupId).remove();
-							document.getElementById("km-li-cs-group-" + contact.groupId).remove();
+							var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
+							if (asdiv) {
+								asdiv.remove();
+							}
+							var csdiv = document.getElementById("km-li-cs-group-" + contact.groupId);
+							if (csdiv) {
+								csdiv.remove();
+							}
 						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
