@@ -2768,7 +2768,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 
 			}
 			_this.tabViewUnreadCount = function (data, sectionId) {
-				var unreadCount = 0;
 				var group = data.response.groupFeeds;
 				if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu')) {
 					document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
@@ -2776,7 +2775,6 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				}
 				for (var i = 0; i < group.length; i++) {
 					if (group[i].unreadCount) {
-						unreadCount = unreadCount + 1;
 						document.getElementById(sectionId).classList.remove("n-vis");
 						document.getElementById(sectionId).classList.add("vis");
 						break;
