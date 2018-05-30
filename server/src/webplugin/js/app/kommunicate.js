@@ -202,6 +202,9 @@ $applozic.extend(true,Kommunicate,{
         sessionStorage.clear();
         localStorage.clear();
     },
+    launchConversation: function () {
+        window.$applozic.fn.applozic("mckLaunchSideboxChat");
+    },
     triggerEvent: function (event, options) {
         $applozic.ajax({
             url: Kommunicate.getBaseUrl() + "/applications/events?type=" + event,
