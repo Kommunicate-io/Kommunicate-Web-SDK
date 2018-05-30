@@ -1983,7 +1983,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 								mckGroupLayout.addMembersToGroupSearchList();
 							} else if (IS_MCK_OWN_CONTACTS && MCK_CONTACT_ARRAY.length > 0) {
 								$kmApplozic.each(MCK_CONTACT_ARRAY, function(i, contact) {
-									if (contact.contactId !== undefined) {
+									if (typeof contact !== undefined) {
 										MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 									}
 								});
@@ -5664,7 +5664,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 									w.MCK_OL_MAP[userDetail.userId] = (userDetail.connected);
 									var contact = mckMessageLayout.getContact('' + userDetail.userId);
 									contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
-									if (contact !== 'undefined') {
+									if (typeof contact !== 'undefined') {
 										MCK_CONTACT_ARRAY.push(contact);
 									}
 								});
