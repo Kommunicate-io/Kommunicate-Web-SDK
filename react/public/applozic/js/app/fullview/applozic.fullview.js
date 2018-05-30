@@ -2771,16 +2771,16 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				var unreadCount = 0;
 				var group = data.response.groupFeeds;
 				if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu')) {
-					$kmApplozic("#km-allconversatiom-unread-icon").removeClass("n-vis").addClass("vis");
+					document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
+					document.getElementById("km-allconversatiom-unread-icon").classList.add("vis");
 				}
 				for (var i = 0; i < group.length; i++) {
 					if (group[i].unreadCount) {
 						unreadCount = unreadCount + 1;
+						document.getElementById(sectionId).classList.remove("n-vis");
+						document.getElementById(sectionId).classList.add("vis");
 						break;
 					}
-				}
-				if (unreadCount >= 1) {
-					$kmApplozic("#" + sectionId).removeClass("n-vis").addClass("vis");
 				}
 			}
 			_this.loadAssignedGroup = function (params, callback) {
@@ -7661,19 +7661,15 @@ var KM_ASSIGNE_GROUP_MAP =[];
 							list.sectionId = "km-closed-conversation-list";
 						}
 
-						if(message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact){
-							var asdiv ="#km-li-as-group-"+contact.groupId;
-							$(asdiv).remove();
+						if (message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
+							document.getElementById("km-li-as-group-" + contact.groupId).remove();
 						}
-            			if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact){
-							var cldiv ="#km-li-cl-group-"+contact.groupId;
-							$(cldiv).remove();
+						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS !== "Close" && contact) {
+							document.getElementById("km-li-cl-group-" + contact.groupId).remove();
 						}
-						if(message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS === "Close" && contact){
-							var csdiv ="#km-li-cs-group-"+contact.groupId;
-							var asdiv ="#km-li-as-group-"+contact.groupId;
-							$(asdiv).remove();
-							$(csdiv).remove();
+						if (message.metadata && message.metadata.KM_STATUS && message.metadata.KM_STATUS === "Close" && contact) {
+							document.getElementById("km-li-as-group-" + contact.groupId).remove();
+							document.getElementById("km-li-cs-group-" + contact.groupId).remove();
 						}
 						if(contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID){
 							list.assigneupdate =true;
