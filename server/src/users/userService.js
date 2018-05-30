@@ -375,6 +375,8 @@ exports.updateUser = (userId, appId, userInfo) => {
             logger.error("error while updating bot platform",err);
           });
           return updateResult?updateResult.length:0;
+        }else{
+          return updateResult;
         }
       });
     })
