@@ -113,6 +113,17 @@ function myScrollFunction() {
   }
   </script>
 
+{% if page.url contains "demo" %}
+      <script>
+        (function(d, m){ 
+      let o = {"appId":"e1318f3a9a2e51adfaf4b04f8b68cc7d","isAnonymousChat":true,"agentId":"demo@kommunicate.io","groupName":"John Doe","email":""};
+      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      s.src = "https://api.kommunicate.io/kommunicate.app";
+      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = o;
+    })(document, window.kommunicate || {});
+      </script>
+{% else %}
 <script type="text/javascript" id="kommunicate-support-chat-script">
   (function(d, m){
        let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Devashish","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
@@ -126,3 +137,4 @@ function myScrollFunction() {
        m._globals = o;
      })(document, window.kommunicate || {});
 </script>
+{% endif %}
