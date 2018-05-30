@@ -370,7 +370,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="km-row">
-                        <h4 id="assign-selected" className="km-conversation-tab-selected km-assignee">Assigned to me</h4>
+                        <h4 id="assign-selected" className="km-conversation-tab-selected km-assigned">Assigned to me</h4>
                         <h4 id="all-conversatios-selected" className="km-conversation-tab-selected km-allconversation n-vis">All Conversations</h4>
                         <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected km-closed n-vis">Closed Conversations</h4>
                       </div>  
