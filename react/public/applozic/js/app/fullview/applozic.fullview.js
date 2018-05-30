@@ -2743,6 +2743,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
+						_this.tabViewUnreadCount(data,'km-allconversation-unread-icon');
 					}
 				})
 			}
@@ -2766,6 +2767,21 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				})
 
 			}
+			_this.tabViewUnreadCount = function (data, sectionId) {
+				var unreadCount = 0;
+				var group = data.response.groupFeeds;
+				if ($(".active.nav-link").data('tip') !== "Conversations") {
+					$kmApplozic("#km-allconversatiom-unread-icon").removeClass("n-vis").addClass("vis");
+				}
+				for (var i = 0; i < group.length; i++) {
+					if (group[i].unreadCount) {
+						unreadCount = unreadCount + 1;
+					}
+				}
+				if (unreadCount > 1) {
+					$kmApplozic("#" + sectionId).removeClass("n-vis").addClass("vis");
+				}
+			}
 			_this.loadAssignedGroup = function (params, callback) {
 				var individual = false;
 
@@ -2782,6 +2798,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data,individual,"km-assigned-search-list",list);
+						_this.tabViewUnreadCount(data,'km-assigned-unread-icon');
 					}
 
 				})
