@@ -17,6 +17,7 @@ export let thirdPartyList = {
         docsLink: "https://help.zendesk.com/hc/en-us/articles/115011289348-Zendesk-API-quick-start",
         domain:".zendesk.com",
         state: "zendeskKeys",
+        status:"SETTINGS",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://www.zendesk.com/login/#support">
             Zendesk dashboard</a></span>,
@@ -37,6 +38,7 @@ export let thirdPartyList = {
         integrationType: integration_type.CLEARBIT,
         docsLink: "https://clearbit.com/docs",
         state: "clearbitKeys",
+        status:"SETTINGS",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://dashboard.clearbit.com/login">
             Clearbit account</a></span>,
@@ -51,6 +53,7 @@ export let thirdPartyList = {
         subTitle: "Import your FAQs from Helpdocs",
         integrationType: integration_type.HELPDOCS,
         state:"helpdocsKeys",
+        status:"SETTINGS",
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://my.helpdocs.io/login">
@@ -81,6 +84,7 @@ export let thirdPartyList = {
         integrationType: integration_type.AGILE_CRM,
         docsLink: "https://www.agilecrm.com/api",
         domain:".agilecrm.com",
+        status:"Coming Soon",
         state:"agilecrmKeys",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">

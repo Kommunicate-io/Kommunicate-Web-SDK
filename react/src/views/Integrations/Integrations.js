@@ -90,7 +90,7 @@ class Integrations extends Component {
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>Settings</span>
+                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.status}</span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
                  </div>);
@@ -110,12 +110,14 @@ class Integrations extends Component {
             {thirdParties}
             </div>
         </div>
-        <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
+        { this.state.activeDiv !== "agilecrm" &&
+            <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
             </div>
-        </Modal>
+            </Modal>
+        }
      </div>
      
  }     
