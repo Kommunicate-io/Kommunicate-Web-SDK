@@ -218,7 +218,8 @@ submitForm = ()=>{
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
         }
-        _this.props.history.push("/dashboard");
+        // _this.props.history.push("/dashboard");
+        window.location.assign("/dashboard");
         _this.state=_this.initialState;
     }
     }).catch(function(err){
