@@ -221,7 +221,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
     let assignee = "";
     var mapPrifix = "userRoutingMap";
     return cacheClient.getDataFromMap(mapPrifix, key).then(value => {
-        if (value != null) {
+        if (value != null && value.userIds.length == userIds.length) {
             let arr = value.userIds;
             assignee = arr.shift();
             arr.push(assignee);
