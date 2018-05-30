@@ -34,7 +34,6 @@ class Aside extends Component {
       clearbitKey:"",
       statuses: {
         0: 'Open',
-        1: 'In Progress',
         2: 'Close',
         3: 'Spam',
         4: 'Duplicate'
@@ -557,7 +556,6 @@ class Aside extends Component {
                             <div className="form-group col-sm-3">
                               <select className="form-control" id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
                                 <option value="0">Open</option>
-                                <option value="1">In Progress</option>
                                 <option value="2">Close</option>
                                 <option value="3">Spam</option>
                                 <option value="4">Duplicate</option>
