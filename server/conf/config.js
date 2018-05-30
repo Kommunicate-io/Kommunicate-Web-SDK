@@ -100,7 +100,7 @@ const config ={
       
     },cache: {
       hazelCache: {
-        url: "172.31.16.80",
+        url: "172.31.17.248",
         port: "5701",
         user: "dev",
         password: "dev"
