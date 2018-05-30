@@ -798,17 +798,21 @@ getLastdays = (start, end) => {
   }
   return {mmdd, yyyymmdd};
 }
-secondsToHms = (milliseconds,key) => { // average resolution time converting in to H : M : S format
-  let s = Math.floor(milliseconds / 1000);
-  let m = Math.floor(s / 60);
-  s = s % 60;
-  let h = Math.floor(m / 60);
-  m = m % 60;
-  let day = Math.floor(h / 24);
-  h = h % 24;
+secondsToHms = (seconds,key) => { // average resolution time converting in to H : M : S format
+  seconds = Number(seconds);
+  var h = Math.floor(seconds / 3600);
+  var m = Math.floor(seconds % 3600 / 60);
+  var s = Math.floor(seconds % 3600 % 60);
+  // let s = Math.floor(milliseconds / 1000);
+  // let m = Math.floor(s / 60);
+  // s = s % 60;
+  // let h = Math.floor(m / 60);
+  // m = m % 60;
+  // let day = Math.floor(h / 24);
+  // h = h % 24;
   if (key) {
     //key == 0 -> to display total average
-    if (milliseconds !== null) {
+    if (seconds !== null) {
       h = h > 0 ? h : "";
       h === "" && (m = m > 0 ? m : "") ;
       h === "" && m == "" && (s = s >= 0 ? s : "");
@@ -827,15 +831,16 @@ secondsToHms = (milliseconds,key) => { // average resolution time converting in 
   }
   else {
     //key == 1 -> time to display inside the chart
-    h = h > 0 ? h : "" ;
-    h == "" &&  (m = m > 0 ? m : "" ) ;
+    return h +"."+ m
+    // h = h > 0 ? h : "" ;
+    // h == "" &&  (m = m > 0 ? m : "" ) ;
 
-    if (h > 0) {
-      return h + "." + m
-    }
-    else {
-      return m + "." + s ;
-    }
+    // if (h > 0) {
+    //   return h + "." + m
+    // }
+    // else {
+    //   return m + "." + s ;
+    // }
   }
   
 }
