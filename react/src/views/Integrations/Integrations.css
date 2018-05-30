@@ -42,7 +42,7 @@ body {
     font-weight: 500;
     color: #5c5aa7;
     padding-top: 11px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     cursor: pointer;
 }
 .integration-brand-logo {
@@ -73,4 +73,14 @@ body {
 }
 [data-key="agilecrm"] {
     cursor: default;
+    cursor: default;
+    color: #6c6a6a;
+    opacity: 0.52;
+    background-color: #94d0f7;
+    margin: auto;
+    padding-bottom: 4px;
+    padding-top: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    /* text-transform: lowercase; */
   }
