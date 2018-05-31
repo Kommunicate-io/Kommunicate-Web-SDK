@@ -7,7 +7,7 @@ sidebar_label: Authentication
 
 **kommunicateSettings in plugin script**
 
-here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
+Here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
 
 |parameters | description|
 |---    |---    |
@@ -16,12 +16,14 @@ here are the parameters you can pass in [initialization script](https://docs.kom
 |email | Email ID of logged in user|
 |password | User's password|
 |imageLink | This image will be visible to the user |
+|isAnonymousChat | true/false|
+|conversationTitle | Conversation Title|
 
 ## There are 3 ways to Login
 
 **1.Visitors**
 
-Whenever users come to your website, they are assigned with a random ID by default. This behavior is best suited for anonymous user.
+Whenever users come to your website, they are assigned with a random ID by default. This behaviour is best suited for anonymous user.
 Add below setting to allow anonymous user
 
 
@@ -29,9 +31,25 @@ Add below setting to allow anonymous user
 |---    |---    |
 |isAnonymousChat | true|
 
+
+### Example:
+```javascript
+
+    var kommunicateSettings = {"appId": applicationId,
+            "userId": userId,
+            "agentId": agentId,
+            "userName": userName,
+            "conversationTitle":conversationTitle,
+            "email": emailId,
+            "isAnonymousChat":true
+            };
+   
+
+```
+
 **2.Pre chat Lead Collection**
 
-Add below setting for pre chat lead collection 
+If you want to ask the user contact information before initiating the chat widget, then use the following setting:
 Here in askUserDetails name,email,phone are optional
 
 |parameters | description|
@@ -39,10 +57,25 @@ Here in askUserDetails name,email,phone are optional
 |isAnonymousChat | false|
 |askUserDetails  | ['name','email',phone]|
 
+### Example:
+```javascript
+
+    var kommunicateSettings = {"appId": applicationId,
+            "userId": userId,
+            "agentId": agentId,
+            "userName": userName,
+            "conversationTitle":conversationTitle,
+            "email": emailId,
+            "isAnonymousChat":false,
+            "askUserDetails":['name','email',phone]
+            };
+   
+
+```
 
 **3.Logged In Users**
 
-If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them.
+If the user is already logged in your website, then pass the user details to kommunicate using the following setting:
 
 |parameters | description|
 |---    |---    |
@@ -58,8 +91,9 @@ If your website asks login details from users, pass these details to Kommunicate
             "userId": userId,
             "agentId": agentId,
             "userName": userName,
-            "groupName":groupName,
-            "email": emailId
+            "conversationTitle":conversationTitle,
+            "email": emailId,
+            "isAnonymousChat":true
             };
    
 
