@@ -4,8 +4,6 @@ title: Integrate bot with kommunicate
 sidebar_label: Bot Integration
 ---
 
-
-* * *
 Once the bot is [integrated](https://docs.kommunicate.io/docs/bot-configration.html), it can be added to any conversation in your chat plugin. There are several ways to add bot in any conversation: 
   1. Pass array of botIds in `botIds`  parameter in [installation script](https://docs.kommunicate.io/docs/web-installation.html#script). These bots will be added into every conversation by default.
   2. Use `Kommunicate.startConversation()` method to start group conversation with bots and agents.

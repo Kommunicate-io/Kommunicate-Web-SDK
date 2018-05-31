@@ -221,6 +221,61 @@ footer .copyright {
 }
 
 
+nav.toc:last-child {
+    padding-top: 40px;
+    border-right: 1px solid #cbd5e4;
+}
+nav.toc .toggleNav .navGroup.navGroupActive h3 {
+    background: #f9f9f9;
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #4c4744;
+    padding-left: 0;
+}
+nav.toc .toggleNav .navGroup.navGroupActive {
+    background: #f9f9f9;
+    margin-bottom: 40px;
+}
+
+nav.toc .toggleNav ul li a {
+    display: block;
+    padding: 7px 12px;
+    margin-left: 5px;
+    /* background-color: #eeeeee; */
+    border-radius: 20px;
+    transition: color, background-color 0.3s;
+}
+nav.toc .toggleNav ul li a.navItemActive {
+    background-color: #eeeeee;
+}
+nav.toc .toggleNav ul li a:hover, nav.toc .toggleNav ul li a:focus {
+    background-color: #eeeeee;
+}
+
+.mainContainer .wrapper .post h1 {
+    font-size: 24px;
+    font-weight: 400;
+    /* color: #4c4744; */
+}
+.navListItem.navListItemActive {
+    position: relative;
+}
+.navListItem.navListItemActive::after {
+    /* content: ""; */
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid #cbd5e4;
+    top: 0px;
+    left: 105%;
+}
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
@@ -252,6 +307,13 @@ footer .copyright {
     footer .sitemap div {
         flex: none;
     }
+    nav.toc:last-child {
+        padding-top: 0px;
+        border: none;
+    }
+    nav.toc .toggleNav .navGroup.navGroupActive, nav.toc .toggleNav .navGroup.navGroupActive h3 {
+        background: #c6c6c6;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -263,6 +325,27 @@ footer .copyright {
     .fixedHeaderContainer header>a::after {
         content: '' !important;
         width: 0px;
+    }
+}
+@media only screen and (min-width: 480px) {
+    .mainContainer .wrapper .post h2 {
+        font-size: 28px;
+    }
+}
+
+@media only screen and (min-width: 736px) {
+    .docsNavContainer {
+        margin-top: 0px;
+    }
+    .mainContainer .wrapper .post .postHeader h1 {
+        font-size: 34px;
+        font-weight: 300;
+        /* color: #4c4744; */
+        padding-bottom: 16px;
+        border-bottom: solid 1px #cbd5e4;
+    }
+    nav.toc section .navGroups {
+        background: #f9f9f9;
     }
 }
 
