@@ -21,7 +21,7 @@ here are the parameters you can pass in [initialization script](https://docs.kom
 
 **1.Visitors**
 
-Whenever users come to your website, they are assigned with a random ID by default. This behavior is best suited for anonymous user.
+Whenever users come to your website, they are assigned with a random ID by default. This behaviour is best suited for anonymous user.
 Add below setting to allow anonymous user
 
 
