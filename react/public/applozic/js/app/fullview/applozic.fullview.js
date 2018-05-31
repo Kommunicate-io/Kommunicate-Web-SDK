@@ -6114,7 +6114,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				if (typeof response === 'object') {
 					if (response.status === "error") {
-						alert("Unable to process your request. " + response.errorMessage);
+						console.log("Unable to process your request. " + response.errorMessage);
 						return;
 					}
 				}
@@ -6199,7 +6199,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				if (typeof response === 'object') {
 					if (response.status === "error") {
-						alert("Unable to process your request. " + response.errorMessage);
+						console.log("Unable to process your request. " + response.errorMessage);
 						return;
 					}
 				}
@@ -6299,7 +6299,7 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			};
 			_this.loadGroupTab = function(response) {
 				if (response.status === 'error') {
-					alert("Unable to process your request. " + response.errorMessage);
+					console.log("Unable to process your request. " + response.errorMessage);
 				} else {
 					var group = response.data;
 					mckMessageLayout.loadTab({
