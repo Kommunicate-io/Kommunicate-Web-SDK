@@ -4,10 +4,9 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-## Identify your users
-Whenever users come to your website, they are assigned with a random ID by default. This behavior is best suited for anonymous user. If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them. You can pass these details either in kommunicateSettings in plugin script.
 
-**1. kommunicateSettings in plugin script**
+**kommunicateSettings in plugin script**
+
 here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
 
 |parameters | description|
@@ -17,6 +16,40 @@ here are the parameters you can pass in [initialization script](https://docs.kom
 |email | Email ID of logged in user|
 |password | User's password|
 |imageLink | This image will be visible to the user |
+
+## There are 3 ways to Login
+
+**1.Visitors**
+
+Whenever users come to your website, they are assigned with a random ID by default. This behavior is best suited for anonymous user.
+Add below setting to allow anonymous user
+
+
+|parameters | description|
+|---    |---    |
+|isAnonymousChat | true|
+
+**2.Pre chat Lead Collection**
+
+Add below setting for pre chat lead collection 
+Here in askUserDetails name,email,phone are optional
+
+|parameters | description|
+|---    |---    |
+|isAnonymousChat | false|
+|askUserDetails  | ['name','email',phone]|
+
+
+**3.Logged In Users**
+
+If your website asks login details from users, pass these details to Kommunicate so that your agents can identify the user while chatting with them.
+
+|parameters | description|
+|---    |---    |
+|isAnonymousChat| true|
+|userId| Pass your logged in user id|
+
+
 
 ### Example:
 ```javascript
@@ -33,7 +66,7 @@ here are the parameters you can pass in [initialization script](https://docs.kom
 ```
 
 
-**2. Update user's identity after plugin initialized**
+**Update user's identity after plugin initialized**
 
 Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 
