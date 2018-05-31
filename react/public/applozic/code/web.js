@@ -76,7 +76,6 @@ function initAutoSuggestions() {
     function onInitialize(data) {
       if (data.status == 'success') {
         // write your logic exectute after plugin initialize.
-        $("#login-modal").mckModal('hide');
         $('#chat').css('display', 'none');
         $('#chat-box-div').css('display', 'block');
         initAutoSuggestions();

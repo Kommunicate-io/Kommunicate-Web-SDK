@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-    $("#login-modal").mckModal('show');
 
     $(".km-group-search").on('click', function(e) {
         $("#km-customers-cell-link").trigger('click');
