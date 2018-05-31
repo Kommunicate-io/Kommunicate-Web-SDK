@@ -5236,7 +5236,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
-                    var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+                    var emoji_template = _this.getMessageTextForContactPreview(message, contact, 200);
                     $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-date").html(typeof message.createdAtTime === 'undefined' ? '' : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : '', true));
                     var $messageText = $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-wrapper");
                     $messageText.html('');
@@ -7906,7 +7906,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_msg_preview.data('mck-conversationid', conversationId);
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
                 if (message.message) {
-                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 50);
+                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 100);
                     $mck_preview_msg_content.html('');
                     (typeof msg === 'object') ? $mck_preview_msg_content.append(msg) : $mck_preview_msg_content.html(msg);
                     $mck_preview_msg_content.removeClass('n-vis').addClass('vis');
