@@ -143,6 +143,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             appOptions = $applozic.extend(true, {}, default_options, appOptions);
             // updating groupName to conversationTitle, supporting groupName for backward compatibility
             appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
+            appOptions.accessToken = appOptions.password || appOptions.accessToken;
                 }
         var oInstance = undefined;
         if (typeof ($mck_sidebox.data('applozic_instance')) !== 'undefined') {
@@ -392,7 +393,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var AUTHENTICATION_TYPE_ID_MAP = [0, 1, 2];
         var MCK_ON_PLUGIN_CLOSE = appOptions.onClose;
         var MCK_DISPLAY_TEXT = appOptions.displayText;
-        var MCK_ACCESS_TOKEN = appOptions.accessToken;
+        var MCK_ACCESS_TOKEN = appOptions.password||appOptions.accessToken;
         var MCK_CALLBACK = appOptions.readConversation;
         var MCK_GROUPMAXSIZE = appOptions.maxGroupSize;
         var MCK_ON_TAB_CLICKED = appOptions.onTabClicked;
@@ -560,6 +561,8 @@ var MCK_CLIENT_GROUP_MAP = [];
              KommunicateUtils.storeDataIntoKmSession("appOptions",optns);
             if ($applozic.type(optns) === 'object') {
                 optns = $applozic.extend(true, {}, default_options, optns);
+                appOptions.conversationTitle = appOptions.conversationTitle || appOptions.groupName;
+                appOptions.accessToken = appOptions.password || appOptions.accessToken;
             } else {
                 return;
             }
