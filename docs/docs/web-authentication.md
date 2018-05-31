@@ -21,7 +21,7 @@ Here are the parameters you can pass in [initialization script](https://docs.kom
 
 ## There are 3 ways to Login
 
-**1.Visitors**
+**1. Visitors**
 
 Whenever users come to your website, they are assigned with a random ID by default. This behaviour is best suited for anonymous user.
 Add below setting to allow anonymous user
@@ -47,7 +47,7 @@ Add below setting to allow anonymous user
 
 ```
 
-**2.Pre chat Lead Collection**
+**2. Pre chat Lead Collection**
 
 If you want to ask the user contact information before initiating the chat widget, then use the following setting:
 Here in askUserDetails name,email,phone are optional
@@ -73,7 +73,7 @@ Here in askUserDetails name,email,phone are optional
 
 ```
 
-**3.Logged In Users**
+**3. Logged In Users**
 
 If the user is already logged in your website, then pass the user details to kommunicate using the following setting:
 
