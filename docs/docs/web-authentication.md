@@ -32,7 +32,7 @@ Add below setting to allow anonymous user
 **2.Pre chat Lead Collection**
 
 Add below setting for pre chat lead collection 
-Here in askUserDetails name,email,phone are optional
+Here in askUserDetails name, email, phone are optional
 
 |parameters | description|
 |---    |---    |
