@@ -513,6 +513,9 @@ ul#km-group-search-list li {
   text-align: left;
   text-align: center;
 }
+.km-sidebar-user-email {
+    text-align: center;
+  }
 .km-user-info-metadata-wrapper{
     display: flex;
     padding: 8px 14px 5px 14px;

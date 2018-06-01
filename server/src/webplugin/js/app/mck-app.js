@@ -241,12 +241,14 @@ function ApplozicSidebox() {
                 script.onreadystatechange = function() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
-                        mckInitSidebox();
+                        // mckInitSidebox();
+                        getPseudoName();
                     }
                 };
             } else { // Others
                 script.onload = function() {
-                    mckInitSidebox();
+                    // mckInitSidebox();
+                     getPseudoName();
                 };
             }
             body.appendChild(script);
@@ -258,7 +260,7 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function mckInitSidebox() {
+    function mckInitSidebox(userName) {
         try {
             var options = applozic._globals;
             if(applozic.PRODUCT_ID =='kommunicate'){
@@ -271,6 +273,12 @@ function ApplozicSidebox() {
                			options.userId = KommunicateUtils.getRandomId();
                         //    Cookies.set("kommunicate-id", options.userId);
                         KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
+                        if (KommunicateUtils.getCookie('userName')) {
+                            options.userName = KommunicateUtils.getCookie('userName');
+                        }else {
+                            KommunicateUtils.setCookie('userName',userName, 1);
+                            options.userName = userName
+                        }
                		}
 
             	}else{
@@ -291,6 +299,19 @@ function ApplozicSidebox() {
             }
             return false;
         }
+    }
+    function getPseudoName() {
+        $applozic.ajax({
+            url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
+            method: 'GET',
+            success: function (data) {
+                mckInitSidebox(data.response.userName);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+
+        })
     }
 
 }

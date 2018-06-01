@@ -56,6 +56,7 @@ const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
 const chargebeeRouter = express.Router();
 
+
 //export routers
 exports.home = home;
 exports.users=userRouter;
@@ -86,11 +87,13 @@ home.get('/',function(req,res){
   res.status(200).json({"message":"Welcome to kommunicate"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
+
 // requests to user router
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
+userRouter.get('/chat/plugin/settings', userController.getPseudoName);
 userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
