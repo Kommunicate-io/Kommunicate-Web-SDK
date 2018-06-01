@@ -874,6 +874,7 @@ class Aside extends Component {
                         </div>
                         <div className="km-dispalyname-wrapper">
                           <p id="km-sidebar-display-name"  className="km-sidebar-display-name"></p>
+                          <p id="km-sidebar-user-email"  className="km-sidebar-user-email"></p>
                         </div>
                       </div>
                       <div>

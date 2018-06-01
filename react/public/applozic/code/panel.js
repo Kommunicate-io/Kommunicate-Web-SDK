@@ -58,6 +58,8 @@ $(document).ready(function() {
     });
 
     function getContactDetail(contactId){
+        $("#km-sidebar-display-name").html("");
+        $("#km-sidebar-user-email").html("");
         $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
             var user = response.data[0];
             resetCustomerInfoArea();     
@@ -100,6 +102,7 @@ $(document).ready(function() {
                         imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
                         $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $("#km-sidebar-display-name").html(user.displayName || user.userId)
+                        $("#km-sidebar-user-email").html(user.email)
                         if (typeof user.email !== "undefined") {
                             if(user.metadata && user.metadata.kmClearbitData){
                                 var clearbitData=JSON.parse(user.metadata.kmClearbitData)
