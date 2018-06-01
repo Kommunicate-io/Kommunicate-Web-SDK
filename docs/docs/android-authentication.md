@@ -6,10 +6,12 @@ sidebar_label: Authentication
 
 Authorization
 You can authorize a user as described below:
-```java
-KMUser user = new KMUser();
-user.setUserId("reytum_01");  //unique userId
-user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your application key
+```
+        KMUser user = new KMUser();
+        user.setUserId("reytum_01");  //unique userId
+        user.setPassword("password");
+        user.setImageLink(<image-url>);
+        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your application key
 ```
 Post this, call the method described below:
 ```java
