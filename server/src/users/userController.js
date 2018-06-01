@@ -13,6 +13,7 @@ const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
 const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
+const constant =require('../../src/utils/constant');
 
 exports.getAllUsers = function(req, res) {
   logger.info("request received to get all users");
@@ -379,4 +380,15 @@ exports.changeBotStatus = (req, res) => {
   }).catch(err => {
     return res.status(500).json({ code: 'INTERNAL_SERVER_ERROR', message: 'something went wrong!' });
   })
+}
+exports.getPseudoName = (req,res) => {
+  let name = constant.NAME;
+  let adjective = constant.ADJECTIVE;
+  let randomPositionForName = Math.floor(Math.random()*name.length);
+  let randomName = name[randomPositionForName];
+  let randomPositionForAdjective = Math.floor(Math.random()*adjective.length);
+  let randomAdjective = adjective[randomPositionForAdjective]
+  let userName = randomName + " " + randomAdjective ;
+  let data = {"userName": userName};
+  return res.status(200).json({ code: "SUCCESS", response: data });
 }
