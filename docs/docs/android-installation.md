@@ -12,17 +12,42 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-compile 'io.kommunicate:kommunicate:1.3'
+compile 'io.kommunicate:kommunicate:1.4'
 ```
-Add the following Activity in your `AndroidManifest.xml` file :
+Add the below Activities in your `AndroidManifest.xml` file :
 
 ```
-         <activity
+          <activity
             android:name="io.kommunicate.activities.KMConversationActivity"
             android:configChanges="keyboardHidden|screenSize|locale|smallestScreenSize|screenLayout|orientation"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/ApplozicTheme" />
+            
+          <activity
+            android:name="com.applozic.mobicomkit.uiwidgets.conversation.activity.ChannelNameActivity"
+            android:configChanges="keyboardHidden|screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleTop"
+            android:parentActivityName="io.kommunicate.activities.KMConversationActivity"
+            android:theme="@style/ApplozicTheme" />
+
+        <activity
+            android:name="com.applozic.mobicomkit.uiwidgets.conversation.activity.ChannelInfoActivity"
+            android:configChanges="keyboardHidden|screenSize|smallestScreenSize|screenLayout|orientation"
+            android:launchMode="singleTop"
+            android:parentActivityName="io.kommunicate.activities.KMConversationActivity"
+            android:theme="@style/ApplozicTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.kommunicate.activities.KMConversationActivity" />
+        </activity>
+
+        <activity
+            android:name="com.applozic.mobicomkit.uiwidgets.conversation.activity.MobicomLocationActivity"
+            android:configChanges="keyboardHidden|screenSize|smallestScreenSize|screenLayout|orientation"
+            android:parentActivityName="io.kommunicate.activities.KMConversationActivity"
+            android:theme="@style/ApplozicTheme"
+            android:windowSoftInputMode="adjustResize" />
 ```
 
 Add the following permissions in your `AndroidManifest.xml` file:
@@ -56,12 +81,17 @@ Then override the ```KmActionCallback```'s ```onReceive``` method :
         switch (action) {
              //This action will be received on click of the default start new chat button
             case Kommunicate.START_NEW_CHAT:
-                Kommunicate.setStartNewChat(context, <your-agent-id>, <your-bot-id>); //pass null if you want to use default bot
+                List<String> agents = new ArrayList<>(); //add your agents to this list
+                List<String> bots = new ArrayList<>(); //add your bots to this list
+                 try {
+                    KmHelper.setStartNewChat(context, agents, bots);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
-                
              //This action will be received on click of logout option in menu
             case Kommunicate.LOGOUT_CALL:
-                Kommunicate.performLogout(context, object); //object will receive the exit Activity, the one that will be launched when logout is successfull
+                KmHelper.performLogout(context, object); //object will receive the exit Activity, the one that will be launched when logout is successfull
                 break;
         }
     }
