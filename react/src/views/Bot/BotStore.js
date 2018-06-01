@@ -253,7 +253,6 @@ export default class BotStore extends Component {
           clientToken : this.state.clientToken,
           devToken : this.state.devToken,
           aiPlatform : aiPlatform,
-          botName : this.state.botName,
           type:'KOMMUNICATE_SUPPORT'
         }
     
@@ -292,7 +291,6 @@ export default class BotStore extends Component {
               axios({
                 method: 'post',
                 url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
-                // url:"http://localhost:5454/bot/"+response.data.response[0].id+'/configure', 
                 data:JSON.stringify(data),
                 headers: {
                   "Content-Type": "application/json",
