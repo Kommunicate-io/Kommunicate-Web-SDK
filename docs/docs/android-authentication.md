@@ -4,7 +4,7 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-Authorization
+#### Authorization
 You can authorize a user as described below:
 ```
         KMUser user = new KMUser();
