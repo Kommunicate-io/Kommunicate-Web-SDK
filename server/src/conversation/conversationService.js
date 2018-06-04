@@ -180,11 +180,11 @@ const addMemberIntoConversation = (data) => {
                     });
                     if (customer.agentRouting) {
                         logger.info("adding assignee in round robin fashion");
-                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applicationId, header);
+                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applications[0].applicationId, header);
                     }
                     groupInfo.userIds = userIds;
-                    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
+                    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
                         logger.info('response', response.data)
                         return { code: "SUCCESS", data: 'success' };
                     });
