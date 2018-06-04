@@ -65,64 +65,59 @@ let handleCreateUserError =(user,customer,err)=>{
  * 
  * @return {Object} userModel @see models/user.js
  */
-const createUser =user=>{
+const createUser = (user, customer) => {
   let aiPlatform = user.aiPlatform;
   let botName = user.botName;
   let clientToken = user.clientToken;
   let type = user.type;
   let devToken = user.devToken;
-  let userId = user.userId?user.userId.toLowerCase():"";
-  
-  user.userName? (user.userName = user.userName.toLowerCase()):"";
-  
-  return Promise.resolve(getCustomerInfoByApplicationId(user.applicationId)).then(customer=>{
-    let role =user.type==2?"BOT":"APPLICATION_WEB_ADMIN";
-    return Promise.resolve(applozicClient.createApplozicClient(user.userName,user.password,customer.applicationId,null,role,user.email,user.name)
-    .catch(err=>{
-      if(user.type===registrationService.USER_TYPE.AGENT){
-      return handleCreateUserError(user,customer,err);
-      }else{
-        logger.error("error while creating user in applozic : ",err);
-        throw err;
+  let userId = user.userId ? user.userId.toLowerCase() : "";
+  user.userName ? (user.userName = user.userName.toLowerCase()) : "";
+  let role = user.type == 2 ? "BOT" : "APPLICATION_WEB_ADMIN";
+  return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name).catch(err => {
+    if (user.type === registrationService.USER_TYPE.AGENT) {
+      return handleCreateUserError(user, customer, err);
+    } else {
+      logger.error("error while creating user in applozic : ", err);
+      throw err;
+    }
+  }).then(applozicUser => {
+    console.log("created user in applozic db", applozicUser.userId);
+    user.customerId = customer.id;
+    user.apzToken = new Buffer(user.userName + ":" + user.password).toString('base64');
+    user.authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
+    user.accessToken = user.password;
+    user.userKey = applozicUser.userKey;
+    user.password = bcrypt.hashSync(user.password, 10);
+    return userModel.create(user).catch(err => {
+      logger.error("error while creating bot", err);
+    }).then(user => {
+      if (user.type == registrationService.USER_TYPE.BOT) {
+        // keeping it async for now. 
+        botPlatformClient.createBot({
+          "name": user.userName,
+          "key": user.userKey,
+          "brokerUrl": applozicUser.brokerUrl,
+          "accessToken": user.accessToken,
+          "applicationKey": customer.applicationId,
+          "authorization": user.authorization,
+          "clientToken": clientToken,
+          "devToken": devToken,
+          "aiPlatform": aiPlatform,
+          "type": "KOMMUNICATE_SUPPORT",
+          "handlerModule": aiPlatform == "dialogflow" ? "DEFAULT_THIRD_PARTY_BOT_HANDLER" : "DEFAULT_KOMMUNICATE_SUPPORT_BOT"
+        }).catch(err => {
+          logger.error("error while creating bot platform", err);
+        })
       }
-    }))
-    .then(applozicUser=>{
-      console.log("created user in applozic db",applozicUser.userId);
-      user.customerId=customer.id;
-      user.apzToken=new Buffer(user.userName+":"+user.password).toString('base64');
-      user.authorization = new Buffer(applozicUser.userId+":"+applozicUser.deviceKey).toString('base64');
-      user.accessToken = user.password;
-      user.userKey = applozicUser.userKey;
-      user.password=bcrypt.hashSync(user.password, 10);
-      return userModel.create(user).catch(err=>{
-        logger.error("error while creating bot",err);
-      }).then(user=>{
-        if(user.type==registrationService.USER_TYPE.BOT){
-          // keeping it async for now. 
-          botPlatformClient.createBot({
-            "name": user.userName,
-            "key": user.userKey,
-            "brokerUrl": applozicUser.brokerUrl,
-            "accessToken": user.accessToken,
-            "applicationKey": customer.applicationId,
-            "authorization": user.authorization,
-            "clientToken": clientToken,
-            "devToken" : devToken,
-            "aiPlatform": aiPlatform,
-            "type": "KOMMUNICATE_SUPPORT",
-            "handlerModule":aiPlatform=="dialogflow"?"DEFAULT_THIRD_PARTY_BOT_HANDLER":"DEFAULT_KOMMUNICATE_SUPPORT_BOT"
-          }).catch(err=>{
-            logger.error("error while creating bot platform",err);
-          })
-        }
-        return user?user.dataValues:null;
-      });
-    }).catch(err=>{
+      return user ? user.dataValues : null;
+    }).catch(err => {
       console.log("err while creating a user", err);
       throw err;
     });
-  });
+  })
 };
+
 function businessHoursInGMT(newValue,timezone) {
     try{
     const openTime = moment.tz(newValue.openTime,"HH:mm:ss",timezone);
@@ -209,54 +204,43 @@ const updateBusinessHoursInDb=(data,criteria,t)=>{
  * Ruturns null if no customer found
  * @param {String} applicationId
  * @return {Object} customer 
- */
+ 
 const getCustomerInfoByApplicationId = applicationId=>{
   console.log("getting customer information from applicationId",applicationId);
   return db.customer.find({where: {applicationId: applicationId}}).then(customer=>{
     return customer?customer.dataValues:null;
   });
 };
+*/
 
 const insertBusinessHoursIntoDb=(businessHours, transaction)=>{
   return db.BusinessHour.create(businessHours,{transaction: transaction});
 };
 
-const getAdminUserByAppId = (appId)=> {
-  if(stringUtils.isBlank(appId)) {
+const getAdminUserByAppId = (appId) => {
+  if (stringUtils.isBlank(appId)) {
     console.log("empty appid received");
     throw new Error("application id is empty");
   }
-  return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
-    if(!customer) {
-      return null;
-    }
-    return userModel.findOne({where: {customerId: customer.id, type: 3}}).then(user => {
-      console.log("found data for user : ",user==null?null:user.dataValues);
-      return user!==null?user.dataValues:null;
-    });
+  return userModel.findOne({ where: { applicationId: appId, type: 3 } }).then(user => {
+    console.log("found data for user : ", user == null ? null : user.dataValues);
+    return user !== null ? user.dataValues : null;
   });
 };
 
-const getByUserNameAndAppId= (userName,appId)=>{
-  if(stringUtils.isBlank(userName)||stringUtils.isBlank(appId)) {
+const getByUserNameAndAppId = (userName, appId) => {
+  if (stringUtils.isBlank(userName)) {
     console.log("empty userName received");
     throw new Error("userName or application id is empty");
-  }else if(stringUtils.isBlank(userName)) {
-    console.log("empty userName received");
-    throw new Error("userName or application id is empty");
-  }else if(stringUtils.isBlank(appId)) {
+  } else if (stringUtils.isBlank(appId)) {
     console.log("empty appId received");
     throw new Error("userName or application id is empty");
   }
-  return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
-    if(!customer) {
-      return null;
-    }
-    return userModel.findOne({where: {userName: userName,customerId: customer.id}}).then(user => {
-      console.log("found data for user : ",user==null?null:user.dataValues);
-      return user!==null?user.dataValues:null;
-    });
+  return userModel.findOne({ where: { userName: userName, applicationId: appId } }).then(user => {
+    console.log("found data for user : ", user == null ? null : user.dataValues);
+    return user !== null ? user.dataValues : null;
   });
+
 };
 
 const processOffBusinessHours = (message, todaysBusinessHours)=>{
@@ -384,38 +368,38 @@ exports.updateUser = (userId, appId, userInfo) => {
     });
 };
 
-exports.goAway = (userId, appId)=>{
-    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
-      if(!customer) {
-        console.log("No customer in customer table with appId", appId);
-        return null;
-      }else {
-        return Promise.resolve(userModel.update({ availabilityStatus: 0 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
-          console.log("successfully updated user status to offline",result[0]);
-          return result[0];
-        }).catch(err=>{
-          console.log("error while updating user",err);
-          throw err;
-        });
-      }
-    });
+exports.goAway = (userId, appId) => {
+  // return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+  //   if(!customer) {
+  //     console.log("No customer in customer table with appId", appId);
+  //     return null;
+  //   }else {
+  return Promise.resolve(userModel.update({ availabilityStatus: 0 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+    console.log("successfully updated user status to offline", result[0]);
+    return result[0];
+  }).catch(err => {
+    console.log("error while updating user", err);
+    throw err;
+  });
+  //   }
+  // });
 };
 
-exports.goOnline = (userId, appId)=>{
-    return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
-      if(!customer) {
-        console.log("No customer in customer table with appId", appId);
-        return null;
-      }else {
-        return Promise.resolve(userModel.update({ availabilityStatus: 1 }, {where: {"userName": userId, customerId: customer.id}})).then(result=>{
-          console.log("successfully updated user status to online",result[0]);
-          return result[0];
-        }).catch(err=>{
-          console.log("error while updating user",err);
-          throw err;
-        });
-      }
-    });
+exports.goOnline = (userId, appId) => {
+  // return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
+  //   if(!customer) {
+  //     console.log("No customer in customer table with appId", appId);
+  //     return null;
+  //   }else {
+  return Promise.resolve(userModel.update({ availabilityStatus: 1 }, { where: { "userName": userId, applicatioId: appId } })).then(result => {
+    console.log("successfully updated user status to online", result[0]);
+    return result[0];
+  }).catch(err => {
+    console.log("error while updating user", err);
+    throw err;
+  });
+  //   }
+  // });
 };
 /**
  * Get list of all users if type is not specified.
@@ -425,15 +409,14 @@ exports.goOnline = (userId, appId)=>{
  * @param {Array} type 
  * @return {Object} 
  */
-const getAllUsersOfCustomer = (customer,type)=>{
-  logger.info("fetching Users for customer, ",customer.id);
-  let criteria={customerId:customer.id};
- 
-  if(type){
-    criteria.type= {$in:type};
+const getAllUsersOfCustomer = (applicatioId, type) => {
+  logger.info("fetching Users for customer, ", customer.id);
+  let criteria = { applicatioId: applicatioId };
+  if (type) {
+    criteria.type = { $in: type };
   }
-  var order= [ ['name', 'ASC']];
-  return Promise.resolve(userModel.findAll({where:criteria, order}));
+  var order = [['name', 'ASC']];
+  return Promise.resolve(userModel.findAll({ where: criteria, order }));
 }
 /**
  * update a new password for user
@@ -447,7 +430,7 @@ exports.updatePassword=(newPassword,user)=>{
   logger.info("updating password for user Id: ",user.id);
   return db.sequelize.transaction(t=> {
     let apzToken = new Buffer(user.userName+":"+newPassword).toString('base64');
-    return Promise.all([registrationService.getCustomerById (user.customerId),bcrypt.hash(newPassword,10)])
+    return Promise.all([customerService.getCustomerById(user.customerId),bcrypt.hash(newPassword,10)])
     .then(([customer,hash])=>{
       return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:customer.applicationId,userName:user.userName}),
         db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t}), 
@@ -502,17 +485,25 @@ const getUsersByCustomerId = (customerId) => {
   });
 }
 const changeBotStatus =(botId, appId, status)=>{
-  return getByUserNameAndAppId(botId, appId).then(bot=>{
-    return Promise.resolve(userModel.update({allConversations:status},{where:{id:bot.id}}));
-  })
+    return Promise.resolve(userModel.update({allConversations:status},{where:{id:bot.id, applicatioId:appId}}));
 }
 
+const getAgentByUserKey= (userKey) =>{
+  logger.info("getting user detail from userKey : ",userKey);
+  return Promise.resolve(userModel.findOne({where:{userKey:userKey}})).then(user=>{
+    if(user){
+      return getCustomerByApplicationId(user.applicationId);
+    }else{
+     throw new Error("User Not found");
+    }
+  });
+}
+exports.getAgentByUserKey=getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser=updateBusinessHoursOfUser;
 exports.createUser=createUser;
-exports.getCustomerInfoByApplicationId=getCustomerInfoByApplicationId;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

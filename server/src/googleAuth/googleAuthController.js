@@ -75,7 +75,7 @@ exports.authCode = (req, res) => {
 		email = response.data.emails[0].value ? response.data.emails[0].value : null;
 		name = response.data.displayName ? response.data.displayName : null;
 
-		return Promise.all([registrationService.getCustomerByUserName(email),userService.getUserByName(email)])
+		return Promise.all([customerService.getCustomerByUserName(email),userService.getUserByName(email)])
 	}).then( ([_customer,_user] ) => {
 		logger.info(1)
 		if (_customer || _user) {

@@ -13,35 +13,32 @@ const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
 const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
-
-exports.getAllUsers = function(req, res) {
+const customerService = require('../customer/CustomerService');
+/**
+ *
+ * @param {Http request object} req 
+ * @param {Http response object} res 
+ * req.query.type  contain string of type by , separated
+ */
+exports.getAllUsers = function (req, res) {
   logger.info("request received to get all users");
   var applicationId = req.query.appId;
   var type = req.query.type;
-  var type2 = type?type.split(","):type
-  return userService.getCustomerInfoByApplicationId(applicationId)
-  .then(customer=>{
-    if(customer){
-      userService.getAllUsersOfCustomer(customer,type2)
-      .then(dbUtils.getDataArrayFromResultSet)
-      .then(data=>{
-        logger.info("sending response success ")
-        data= data?data:[];
-        res.status(200).json({code:"SUCCESS",data:data});
-      })
-    }else{
-      logger.info("no customer found for given applicationId",applicationId);
-      res.status(400).json({code:"BAD_REQUEST",messsage:"Invalid Application Id"});
-      return;
-    }
-  })
-  .catch(err=>{
-    logger.error("error while fetching users :", err);
-    res.status(500).json({code:"INTERNAL_SERVER_ERROR",messsage:"Something went wrong"});
+  var type2 = type ? type.split(",") : type
+  return Promise.resolve(userService.getAllUsersOfCustomer(applicationId, type2))
+  .then(dbUtils.getDataArrayFromResultSet)
+    .then(data => {
+      logger.info("sending response success ")
+      data = data ? data : [];
+      res.status(200).json({ code: "SUCCESS", data: data });
+    })
+    .catch(err => {
+      logger.error("error while fetching users :", err);
+      res.status(500).json({ code: "INTERNAL_SERVER_ERROR", messsage: "Something went wrong" });
+    })
 
-  })
-  
 };
+
 exports.getUserByName = function(req,res) {
   const userName = req.params.userName;
   logger.info("request received to get a users : ",userName);
@@ -80,56 +77,59 @@ exports.getByUserNameAndAppId = function(req, res) {
     res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"something went wrong"});
   });
 }
-
-exports.createUser = function(req,res) {
-logger.info("request received to create a user: ",req.body);
-  if(!req.body.applicationId) {
-    res.status(400).json({code: "BAD_REQUEST",message: "ApplicationId can't be Empty"});
-    return;
+/**
+ * 
+ * @param {*} req 
+ * req.body contain user detail with applicationId
+ * @param {*} res 
+ */
+exports.createUser = function (req, res) {
+  logger.info("request received to create a user: ", req.body);
+  if (!req.body.applicationId) {
+    return res.status(400).json({ code: "BAD_REQUEST", message: "ApplicationId can't be Empty" });
   }
-  Promise.all([userService.getCustomerInfoByApplicationId(req.body.applicationId),
-    userService.getByUserNameAndAppId(req.body.userName,req.body.applicationId),
-    userService.getAdminUserByAppId(req.body.applicationId)
-  ]).then(([customer,user,adminUser])=>{
-    if(!customer) {
-      logger.info("no customer registered with applicationId",req.body.applicationId);
-      res.status(400).json({code: "BAD_REQUEST",message: "Invalid ApplicationId"});
-      return;
-    }else if(user) {
-      logger.info("user already registerd with userName and applicationId",req.body.userName,req.body.applicationId);
-      res.status(409).json({code: "USER_ALREADY_EXISTS",message: "user Already exists with user and applicationId"});
-      return;
-    }else{
-      return Promise.all([userService.createUser(req.body),applozicClient.getApplication({"applicationId":customer.applicationId,"userName":adminUser.userName,"accessToken":adminUser.accessToken}, true)]).then(([user,application])=>{
-        return integrationSettingService.getIntegrationSetting(customer.id,CLEARBIT).then(key=>{   
-          logger.info("user created successfully.. ",user);
-          if(user.type===1){
-            registrationService.sendWelcomeMail(user.email, user.name , true, user.companyName);
-          }
-          user.application = application;
-          user.adminUserName = customer.userName;
-          user.adminDisplayName = customer.name;
-          user.routingState = customer.agentRouting;
-          user.subscription = customer.subscription;
-          user.billingCustomerId = customer.billingCustomerId;
-          user.clearbitKey = key.length > 0 ? key[0].accessKey:"";
-          res.status(201).json({code:"SUCCESS",data:user}).end();
-          return;
-        });
-      });
-    }
-  }).catch(err=>{
-    if(err.code==="USER_ALREADY_EXISTS") {
-      logger.error("CONFLICTS!",err);
-      delete err.data;
-      res.status(409).json(err).end();
-    }else{
-    logger.error("error while creating user",err);
-    res.status(500).json(err).end();
-    }
-  }).catch(err=>{
-    logger.error('user creation error', error)
-  });
+  Promise.all([customerService.getCustomerByApplicationId(req.body.applicationId),
+  userService.getByUserNameAndAppId(req.body.userName, req.body.applicationId),
+  userService.getAdminUserByAppId(req.body.applicationId)])
+    .then(([customer, user, adminUser]) => {
+      if (!customer) {
+        logger.info("no customer registered with applicationId", req.body.applicationId);
+        return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid ApplicationId" });
+      } else if (user) {
+        logger.info("user already registerd with userName and applicationId", req.body.userName, req.body.applicationId);
+        return res.status(409).json({ code: "USER_ALREADY_EXISTS", message: "user Already exists with user and applicationId" });
+      } else {
+        return Promise.all([userService.createUser(req.body, customer),
+        applozicClient.getApplication({ "applicationId": req.body.applicationId, "userName": adminUser.userName, "accessToken": adminUser.accessToken }, true)])
+          .then(([user, application]) => {
+            return integrationSettingService.getIntegrationSetting(customer.id, CLEARBIT).then(key => {
+              logger.info("user created successfully.. ", user);
+              if (user.type === 1) {
+                registrationService.sendWelcomeMail(user.email, user.name, true, user.companyName);
+              }
+              user.application = application;
+              user.adminUserName = customer.userName;
+              user.adminDisplayName = customer.name;
+              user.routingState = customer.agentRouting;
+              user.subscription = customer.subscription;
+              user.billingCustomerId = customer.billingCustomerId;
+              user.clearbitKey = key.length > 0 ? key[0].accessKey : "";
+              return res.status(201).json({ code: "SUCCESS", data: user }).end();
+            });
+          });
+      }
+    }).catch(err => {
+      if (err.code === "USER_ALREADY_EXISTS") {
+        logger.error("CONFLICTS!", err);
+        delete err.data;
+        res.status(409).json(err).end();
+      } else {
+        logger.error("error while creating user", err);
+        res.status(500).json(err).end();
+      }
+    }).catch(err => {
+      logger.error('user creation error', error)
+    });
 };
 
 exports.updateBusinessHours = (req,res)=>{
@@ -304,13 +304,13 @@ exports.createGroupOfAllAgents = (req, res) => {
     return res.status(500).json({ code: "INVALID_APPLICATION_KEY", message: "invalid application" });
   }
   let groupInfo = { type: 10, users: [], metadata: config.getCommonProperties().groupMetadata }
-  return Promise.resolve(userService.getCustomerInfoByApplicationId(req.body.applicationKey)).then(customer => {
+  return Promise.resolve(customerService.getCustomerByApplicationId(req.body.applicationKey)).then(customer => {
     if (!customer) {
       return res.status(500).json({ code: "CUSTOMER_NOT_FOUND", message: "customer not found" });
     }
     groupInfo.admin = customer.userName;
     groupInfo.groupName = customer.name;
-    return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
+    return Promise.resolve(userService.getAllUsersOfCustomer(customer.applications[0].applicationId, undefined)).then(users => {
       if (users) {
         users.forEach(function (user) {
           console.log(user);
