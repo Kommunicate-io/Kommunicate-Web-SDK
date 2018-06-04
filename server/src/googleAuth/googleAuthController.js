@@ -16,7 +16,7 @@ const KOMMUNICATE_LOGIN_URL = config.getProperties().urls.dashboardHostUrl + '/l
 
 const GOOGLE_PLUS_PROFILE_URL = 'https://www.googleapis.com/plus/v1/people/me';
 
-const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
+const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 
 const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist?roleNameList=APPLICATION_WEB_ADMIN";

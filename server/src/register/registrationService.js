@@ -15,6 +15,7 @@ const KOMMUNICATE_ADMIN_PASSWORD =config.getProperties().kommunicateAdminPasswor
 const USER_TYPE={"AGENT": 1,"BOT": 2,"ADMIN": 3};
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
+const appSetting = require("../setting/application/appSettingService")
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -69,6 +70,8 @@ exports.createCustomer = customer=>{
         }).catch(err=>{
           console.log("err while updating bot plateform..",err);
         });
+        //insert appId in to application_settings table
+        appSetting.insertAppSettings({applicationId:customer.applicationId});
         return userModel.bulkCreate([user,/*agentobj,*/botObj,lizObj]).spread((user,/*agent,*/bot,lizObj)=>{
           console.log("user created",user?user.dataValues:null);
          // console.log("created agent",agent.dataValues);

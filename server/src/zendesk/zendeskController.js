@@ -1,6 +1,6 @@
 const zendeskService = require('./zendeskService');
 const registrationService = require('../register/registrationService');
-const integrationSettingService = require('../thirdPartyIntegration/integrationSettingService');
+const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const ZENDESK = require('../application/utils').INTEGRATION_PLATFORMS.ZENDESK;
 const conversationService = require('../conversation/conversationService');
 const applozicClient = require('../utils/applozicClient'); 
