@@ -5,6 +5,8 @@ const applozicClient = require("../utils/applozicClient");
 const registrationService = require("../register/registrationService");
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
+const customeService = require('../customer/CustomerService')
+
 exports.login = (userDetail) => {
   userDetail.userName? (userDetail.userName = userDetail.userName.toLowerCase()):"";
   const userName= userDetail.userName;
@@ -45,7 +47,7 @@ exports.processLogin = (userDetail) => {
     applozicClient.applozicLogin(userDetail)]).then(([application,user,applozicUser])=>{
       if(user && bcrypt.compareSync(password, user.password)) {
         // valid user credentials
-          return Promise.resolve(userService.getCustomerInfoByApplicationId(applicationId)).then(customer=>{
+          return Promise.resolve(customeService.getCustomerByApplicationId(applicationId)).then(customer=>{
             return integrationSettingService.getIntegrationSetting(customer.id,CLEARBIT).then(key=>{ 
               user.isAdmin = customer.userName==user.userName;
               user.adminUserName=customer.userName;
