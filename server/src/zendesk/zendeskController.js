@@ -3,7 +3,8 @@ const registrationService = require('../register/registrationService');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const ZENDESK = require('../application/utils').INTEGRATION_PLATFORMS.ZENDESK;
 const conversationService = require('../conversation/conversationService');
-const applozicClient = require('../utils/applozicClient'); 
+const applozicClient = require('../utils/applozicClient');
+const customerService = require('../customer/CustomerService')
 
 
 
@@ -13,7 +14,7 @@ exports.createZendeskTicket = (req, res) => {
     let appId = req.params.appId;
     let headers = req.headers;
     delete headers['host'];
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }
@@ -40,7 +41,7 @@ exports.updateZendeskTicket = (req, res) => {
     let ticketId = req.params.ticketId;
     let ticket = req.body;
     let appId = req.params.appId;
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }
@@ -68,7 +69,7 @@ exports.updateZendeskTicket = (req, res) => {
 exports.getTicket = (req, res) => {
     let ticketId = req.params.ticketId;
     let appId = req.params.appId;
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }

@@ -1,4 +1,5 @@
 const registrationService = require("./registrationService");
+const customerService = require('../customer/CustomerService')
 const userService = require('../users/userService');
 const joi = require("joi");
 const randomString  = require('randomstring');
@@ -38,7 +39,7 @@ exports.createCustomer = (req,res)=>{
   if(userName&&(isPreSignUp||password||isOAuthSignUp)){
     console.log("request received for pre sign up, EmailId : ",userName);
     //TODO : check the if user exist form communicate Db;
-    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
+    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
       if(customer || user){
         response.code ="USER_ALREADY_EXISTS";
@@ -58,7 +59,7 @@ exports.createCustomer = (req,res)=>{
           if (activeCampaignEnable) {
             activeCampaignClient.addContact({ "email": email })
               .then(subscriberId => {
-                return registrationService.updateOnlyCustomer(userName, { activeCampaignId: subscriberId });
+                return customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
               })
               .catch(error => {
                 console.log("Error while sending Email to activeCampaign", error);
@@ -173,7 +174,11 @@ exports.patchCustomer = (req, res) => {
     res.status(500).json(response);
   });
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getCustomerInformation = (req,res)=>{
   const userName = req.params.userName;
   console.log("request received to get customer information: ",userName);
@@ -181,7 +186,7 @@ exports.getCustomerInformation = (req,res)=>{
     res.status(400).json({code:"BAD_REQUEST",message:"user name is empty"});
     return;
   }
-  registrationService.getCustomerByUserName(userName).then(customer=>{
+  customerService.getCustomerByUserName(userName).then(customer=>{
     if(!customer){
       console.log("customer not found in db :",userName);
       res.status(404).json({code:"NOT_FOUND",message:"no customer exists with user name: "+userName});
@@ -209,7 +214,7 @@ exports.signUpWithAplozic= (req,res)=>{
   console.log("userName:", userName, password);
   if(userName&&password){
     console.log("request received to sign up with Applozic, EmailId : ",userName);
-    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
+    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
       if(customer || user){
         response.code ="USER_ALREADY_EXISTS";
@@ -266,7 +271,13 @@ exports.signUpWithAplozic= (req,res)=>{
 
 
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * will check this one
+ * let user = req.params.user+"Routing"
+ */
 exports.updateRoutingState = (req, res) => {
   let appId = req.params.appId;
   let routingState = req.params.routingState;
@@ -274,16 +285,20 @@ exports.updateRoutingState = (req, res) => {
   let routingInfo = {};
   routingInfo[user]=routingState;
 
-  return registrationService.updateRoutingState(appId, routingInfo).then(response => {
+  return customerService.updateRoutingState(appId, routingInfo).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
     console.log("error while updating routing state", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 }
+
+/**
+ * 
+ */
 exports.getCustomerByApplicationId = (req, res) => {
   let appId = req.query.applicationId;
-  return registrationService.getCustomerByApplicationId(appId).then(customer => {
+  return customerService.getCustomerByApplicationId(appId).then(customer => {
     if (!customer) {
       res.status(200).json({ code: "SUCCESS", message: "customer not found for this application id" });
     }

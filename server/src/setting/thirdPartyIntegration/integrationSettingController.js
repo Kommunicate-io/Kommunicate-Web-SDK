@@ -1,12 +1,13 @@
 const integrationSettingService = require('./integrationSettingService');
-const registrationService = require('../../register/registrationService');
+const registrationService = require('../register/registrationService');
+const customerService = require('../customer/CustomerService');
 
 
 exports.updateOrCreate = (req, res) => {
     let appId = req.params.appId;
     let settings = req.body;
     let type = req.params.type;
-    return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
           return  res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
@@ -27,7 +28,7 @@ exports.updateOrCreate = (req, res) => {
 exports.getIntegrationSetting = (req, res) => {
     let appId = req.params.appId;
     let type = req.query.type;
-    return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
           return res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
@@ -45,7 +46,7 @@ exports.getIntegrationSetting = (req, res) => {
 exports.deleteIntegrationSetting = (req, res) => {
     let appId = req.params.appId;
     let type = req.params.type;
-    return Promise.resolve(registrationService.getCustomerByApplicationId(appId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByApplicationId(appId)).then(customer => {
         if (!customer) {
           return res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }

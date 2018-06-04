@@ -4,12 +4,13 @@ const userService = require("../users/userService");
 const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
 const constant = require('./utils');
+const customerService=require('../customer/CustomerService');
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
     const appId= req.params.appId;
     const message = req.body.message;
-    registrationService.getCustomerByApplicationId(appId).then(customer=>{
+    customerService.getCustomerByApplicationId(appId).then(customer=>{
         if(!customer){
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
@@ -63,7 +64,7 @@ exports.sendWelcomeMessage=(message,bot)=>{
 exports.getInAppMessages=(req,res)=>{
     const appId = req.params.appId;
     logger.info("request received to get welcome message for appId: ",appId);
-    registrationService.getCustomerByApplicationId(appId).then(customer=>{
+    customerService.getCustomerByApplicationId(appId).then(customer=>{
         if(!customer){
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
@@ -84,7 +85,7 @@ exports.processEvents=(req, res)=>{
     const applicationId = req.body.applicationId;
     const agentName = req.body.agentId;
 
-    return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+    return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         if(eventType==constant.EVENT_ID.WELCOME_MESSAGE){  
             return  inAppMsgService.sendWelcomeMessage(groupId,customer).then(response=>{
                 logger.info(response);
@@ -191,7 +192,7 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var userName = req.query.userName;
     var eventIds = req.query.eventIds;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         return userService.getByUserNameAndAppId(userName, appId).then(user => {
             if (!user) {
                 return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
@@ -311,7 +312,7 @@ exports.processAwayMessage = function(req,res){
     const applicationId = req.params.appId;
     const conversationId = req.query.conversationId;
     logger.info("processing awayMessage for application: ",applicationId);
-    return registrationService.getCustomerByApplicationId(applicationId).then(customer=>{
+    return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
