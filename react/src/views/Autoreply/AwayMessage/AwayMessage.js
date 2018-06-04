@@ -4,7 +4,7 @@ import './AwayMessage.css';
 import { EVENT_ID, CATEGORY, STATUS, SEQUENCE, WELCOME_MSG_METADATA } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
-import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
+import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 
@@ -12,7 +12,8 @@ class AwayMessage extends Component{
   constructor(props){
     super(props);
     this.state = {
-     enableDisableCheckbox: true,
+     isChecked: true,
+     switchIsEnabled: true,
      status:STATUS.ENABLE,
      awayMessageKnownCustomers:[{messageField:''}],
      awayMessageAnonymousCustomers:[{messageField:''}],
@@ -25,9 +26,17 @@ class AwayMessage extends Component{
     };
     
   }
-
   componentDidMount(){
        this.getAwayMessages();
+       this.getStatusOfCollectEmailID();    
+  }
+  getStatusOfCollectEmailID = () => {
+   return Promise.resolve(getAppSetting().then(response => {
+      if(response.status == 200) {
+        response.data.response.collectEmail && this.setState({isChecked:true});
+        response.data.response.collectEmail == false && this.setState({isChecked:false});
+      }
+    })) 
   }
   getAwayMessages = () => {
      // Event ID 1 : agent is offline and anonymous customer
@@ -40,61 +49,62 @@ class AwayMessage extends Component{
     let awayMessageAnonymousCustomers = [];
     let awayMessageCopyAnonymousCustomers =[];
       return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
-        
         // eventId id 2 when agent is offline and customer is known
-        eventId1Messages = response.filter(function (msg) {
-          return msg.eventId == 1;
-        });
-        eventId2Messages = response.filter(function (msg) {
-          return msg.eventId == 2;
-        });
-        
-        eventId2Messages.map(item => {
-          awayMessageKnownCustomers.push({
-            messageField: item.message,
-            messageId: item.id,
-            status: item.status
-        })
-          awayMessageCopyKnownCustomers.push({
-            messageField: item.message,
-            messageId: item.id,
-            status: item.status
-         })
-        this.setState({
-            awayMessageKnownCustomers: awayMessageKnownCustomers,
-            awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers
-          }, this.updateUserStatus);
-        })
-        
-        // eventId id 1 when agent is offline and user is anonymous customer
-        eventId1Messages.map(item => {
-          awayMessageAnonymousCustomers.push({
+        if (response) {
+          eventId1Messages = response.filter(function (msg) {
+            return msg.eventId == 1;
+          });
+          eventId2Messages = response.filter(function (msg) {
+            return msg.eventId == 2;
+          });
+          
+          eventId2Messages.map(item => {
+            awayMessageKnownCustomers.push({
               messageField: item.message,
               messageId: item.id,
               status: item.status
           })
-          awayMessageCopyAnonymousCustomers.push({
+            awayMessageCopyKnownCustomers.push({
               messageField: item.message,
               messageId: item.id,
-                    status: item.status
-          })
+              status: item.status
+           })
           this.setState({
-              awayMessageAnonymousCustomers: awayMessageAnonymousCustomers,
-              awayMessageCopyAnonymousCustomers: awayMessageCopyAnonymousCustomers
-            },this.updateUserStatus);
-
-          })     
+              awayMessageKnownCustomers: awayMessageKnownCustomers,
+              awayMessageCopyKnownCustomers: awayMessageCopyKnownCustomers
+            }, this.updateUserStatus);
+          })
+          
+          // eventId id 1 when agent is offline and user is anonymous customer
+          eventId1Messages.map(item => {
+            awayMessageAnonymousCustomers.push({
+                messageField: item.message,
+                messageId: item.id,
+                status: item.status
+            })
+            awayMessageCopyAnonymousCustomers.push({
+                messageField: item.message,
+                messageId: item.id,
+                      status: item.status
+            })
+            this.setState({
+                awayMessageAnonymousCustomers: awayMessageAnonymousCustomers,
+                awayMessageCopyAnonymousCustomers: awayMessageCopyAnonymousCustomers
+              },this.updateUserStatus);
+  
+            })     
+        }
 
       }).catch(err => {
           console.log("Error while fetching away message", err);
       })
-
+      
   }
-  handleCheckboxChange = () => {
+  handleToggleSwitch = () => {
 
     // make api call to disable all rows in in_app_msgs where createdBy = user.id 
-    this.setState({enableDisableCheckbox: !this.state.enableDisableCheckbox}, () => {
-      if(this.state.enableDisableCheckbox) {
+    this.setState({switchIsEnabled: !this.state.switchIsEnabled}, () => {
+      if(this.state.switchIsEnabled) {
         //enable category 2 messages, category 2 is away message
         //changing the status 2 to 1 for all category 2 messages
         enableInAppMsgs({category: 2}).then(result => {
@@ -118,13 +128,13 @@ class AwayMessage extends Component{
   updateUserStatus =() =>{
     if(this.state.awayMessageKnownCustomers[0].status === 1){
       this.setState({
-        enableDisableCheckbox: true,
+        switchIsEnabled: true,
         status:1,
       })
     }
     else{
       this.setState({
-        enableDisableCheckbox: false,
+        switchIsEnabled: false,
         status:2
       })
     }
@@ -315,6 +325,15 @@ class AwayMessage extends Component{
     })
       
   }
+  toggleChangeCheckbox = () => {
+    let isChecked = !this.state.isChecked
+    this.setState({
+      isChecked: isChecked,
+    });
+    let data = {"collectEmail":isChecked}
+    updateAppSetting(isChecked, data)
+  }
+  
 
   //--End here-- Methods for Anonymous customers
   render() {
@@ -367,7 +386,7 @@ class AwayMessage extends Component{
             <div className="card-block away-message-header">
               <div className="row">
                 <h4 className="away-message-title">Show away message to customers </h4>
-                <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
+                <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
               </div>
               <div className="row" >
                 <p className="away-message-description">The away message will be shown to your customers if and when they send you a message while you are away.</p>
@@ -375,6 +394,40 @@ class AwayMessage extends Component{
             </div>
           </div>
         </div>
+        {/* Anonymous customers container */}
+        <div className="row">
+          <div className="col-sm-12 col-md-12">
+            <div className="card">
+              <div className="card-header away-card-header anonymous-wrapper">
+                <div className="away-message-anonymous-customers-wrapper">
+                  <div className="row">
+                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> anonymous </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
+                  </div>
+                  <div className="row away-msg-collect-email-checkbox">
+                    <Checkbox idCheckbox={'away-msg-collect-email-checkbox'} label={'Collect email ID from customer'}
+                    checked = {this.state.isChecked} handleOnChange = {this.toggleChangeCheckbox} />
+                  </div>
+                  {textAreaForAnonymousCustomersMsg}                  
+                </div>            
+                <div className="btn-group">
+                  <button disabled={this.state.disableButtonForAnonymousTextArea} className="km-button km-button--primary save-changes-btn"
+                    onClick={(e) => {
+                      this.setState({
+                        disableButtonForAnonymousTextArea: true
+                      }, this.awayMessageAnonymousCustomersMethod)
+                    }} >Save</button>
+                  <button disabled = {this.state.disableButtonForAnonymousTextArea} className="km-button km-button--secondary discard-btn" 
+                    onClick={(e) => {
+                        this.setState({
+                          disableButtonForAnonymousTextArea: true
+                        },this.discardAwayMessageAnonymousCustomers)
+                    }}>Discard</button>
+                </div>
+              </div> 
+            </div>
+          </div>
+        </div>
+        {/* Anonymous customers container end here */}
         {/* known customers container */}
         <div className="row">
           <div className="col-sm-12 col-md-12">
@@ -405,39 +458,7 @@ class AwayMessage extends Component{
           </div>
         </div>
         {/* known customers container ends here */}
-        {/* Anonymous customers container */}
-        <div className="row">
-          <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-header away-card-header anonymous-wrapper">
-                <div className="away-message-anonymous-customers-wrapper">
-                  <div className="row">
-                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> Anonymous </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
-                  </div>
-                  <div className="row n-vis">
-                    <Checkbox idCheckbox={'some-checkbox'} label={'Collect email ID from customer'} />
-                  </div>
-                  {textAreaForAnonymousCustomersMsg}                  
-                </div>            
-                <div className="btn-group">
-                  <button disabled={this.state.disableButtonForAnonymousTextArea} className="km-button km-button--primary save-changes-btn"
-                    onClick={(e) => {
-                      this.setState({
-                        disableButtonForAnonymousTextArea: true
-                      }, this.awayMessageAnonymousCustomersMethod)
-                    }} >Save</button>
-                  <button disabled = {this.state.disableButtonForAnonymousTextArea} className="km-button km-button--secondary discard-btn" 
-                    onClick={(e) => {
-                        this.setState({
-                          disableButtonForAnonymousTextArea: true
-                        },this.discardAwayMessageAnonymousCustomers)
-                    }}>Discard</button>
-                </div>
-              </div> 
-            </div>
-          </div>
-        </div>
-        {/* Anonymous customers container end here */}
+        
       </div>
 
     )
