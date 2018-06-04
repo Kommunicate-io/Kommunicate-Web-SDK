@@ -2195,7 +2195,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         options.email = email;
                     }
                     if (userName) {
-                        options.userName = userName;
+                        options.displayName = userName;
                     }
                     if (contactNumber) {
                         options.contactNumber = contactNumber;
