@@ -51,12 +51,12 @@ Add below setting to allow anonymous user
 
 If you want to ask the user contact information before initiating the chat widget, then use the following setting:
 
-Here in askUserDetails name,email,phone are optional
+Here in askUserDetails name, email, phone are optional
 
 |parameters | description|
 |---    |---    |
 |isAnonymousChat | false|
-|askUserDetails  | ['name','email','phone']|
+|askUserDetails  | ['name', 'email', 'phone']|
 
 ### Example:
 ```javascript
@@ -68,7 +68,7 @@ Here in askUserDetails name,email,phone are optional
             "conversationTitle":conversationTitle,
             "email": emailId,
             "isAnonymousChat":false,
-            "askUserDetails":['name','email','phone']
+            "askUserDetails":['name', 'email', 'phone']
             };
    
 
