@@ -88,6 +88,9 @@ export default class ProfileImageName extends Component {
       goToProfile(e) {
         window.appHistory.push("/settings/profile");
       }
+      goToApplicationsPage(e) {
+        window.location.assign("/apps");
+      }
 
       showDropdownMenu(event) {
         event.preventDefault();
@@ -120,6 +123,14 @@ export default class ProfileImageName extends Component {
 
 
     render() {
+      const userSession = CommonUtils.getUserSession();
+      if(CommonUtils.getApplicationIds()) {
+        var userAppsList = CommonUtils.getApplicationIds();
+        userAppsList = Object.keys(userAppsList).length;
+      } else {
+        userAppsList = 0;
+      }
+      
         return (
             <div>
                 {/* <Dropdown className="sidebar-profile-dropdown"  isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -168,9 +179,14 @@ export default class ProfileImageName extends Component {
                 <button className="dropdown-item" type="button" tabIndex="0">
                   <p className="header-user-name">{this.props.displayName}</p>
                   <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
-                  <p><span className="header-user-online"> You are online</span></p>
-                  <span className="header-user-online"> {CommonUtils.getUserSession().availabilitStatus === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator" : null}></span>
+                  {/* <p><span className="header-user-online"> You are online</span></p> */}
+                  {/* <span className="header-user-online"> {CommonUtils.getUserSession().availabilitStatus === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator" : null}></span> */}
                 </button>
+
+                <button className={userAppsList > 0 ? `dropdown-item app-list-dropdown-item vis` : "dropdown-item n-vis"} type="button" tabIndex="0" onClick={this.goToApplicationsPage}> 
+                  <p className="application-name">{userSession.application.name}</p>
+                  <p className="switch-app-text">Switch Application</p>
+                </button>                
 
                 <button className="dropdown-item" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
                   {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />}

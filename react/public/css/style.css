@@ -9195,13 +9195,7 @@ hr.transparent {
 }
 
 .header-user-name {
-  /* width: 104px; */
-  height: 20px;
-  font-size: 15px;
-  letter-spacing: 1.1px;
-  text-align: left;
-  color: #515050;
-  
+  margin-bottom: 3px;
 }
 .header-profile {
   color: #263238;
@@ -9212,9 +9206,8 @@ hr.transparent {
   height: 11px;
   font-size: 11px;
   letter-spacing: 0.7px;
-  text-align: left;
   color: #696464;
-
+  margin-bottom: 0px;
 }
 
 .header-user-online {
@@ -11139,4 +11132,137 @@ input:required {
 .km-conversation-heading .breadcrumb-item {
   margin-top: 11px;
   margin-bottom: 11px;
+}
+
+.app-list-dropdown-item {
+  border-left: 4px solid;
+  border-left-color: transparent;
+}
+.app-list-dropdown-item p {
+  margin-bottom: 0px;
+  margin-left: -4px;
+}
+.app-list-dropdown-item .application-name {
+  margin-bottom: 3px;
+}
+.app-list-dropdown-item .switch-app-text {
+  font-size: 11px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  color: #9b9b9b;
+}
+
+ .letter-0 {
+  border-left-color: #006e4a;
+}
+ .letter-1 {
+  border-left-color: #CF04FE;
+}
+ .letter-2 {
+  border-left-color: #284771;
+}
+ .letter-3 {
+  border-left-color: #C78818;
+}
+ .letter-4 {
+  border-left-color: #80BCA2;
+}
+ .letter-5 {
+  border-left-color: #759996;
+}
+ .letter-6 {
+  border-left-color: #3C4DD9;
+}
+ .letter-7 {
+  border-left-color: #9F0F4F;
+}
+ .letter-8 {
+  border-left-color: #8BD5B3;
+}
+ .letter-9 {
+  border-left-color: #355625;
+}
+ .letter-10 {
+border-left-color: #c15148;
+}
+ .letter-11 {
+border-left-color: #c34973;
+}
+ .letter-12 {
+border-left-color: #a053ad;
+}
+ .letter-13 {
+border-left-color: #8759d6;
+}
+ .letter-14 {
+border-left-color: #7986CB;
+}
+ .letter-15 {
+border-left-color: #3e83f5;
+}
+ .letter-16 {
+border-left-color: #4FC3F7;
+}
+ .letter-17 {
+border-left-color: #42b3c1;
+}
+ .letter-18 {
+border-left-color: #4DB6AC;
+}
+ .letter-19 {
+border-left-color: #57BB8A;
+}
+ .letter-20 {
+border-left-color: #9CCC65;
+}
+ .letter-21 {
+border-left-color: #b2bd43;
+}
+ .letter-22 {
+border-left-color: #b99700;
+}
+ .letter-23 {
+border-left-color: #c79a1c;
+}
+ .letter-24 {
+border-left-color: #FFA726;
+}
+ .letter-25 {
+border-left-color: #FF8A65;
+}
+ .letter-26 {
+border-left-color: #5a1616;
+}
+ .letter-27 {
+border-left-color: #074361;
+}
+ .letter-28 {
+border-left-color: #b97961;
+}
+ .letter-29 {
+border-left-color: #715858;
+}
+ .letter-30 {
+border-left-color: #8288a9;
+}
+ .letter-31 {
+border-left-color: #5c5aa7;
+}
+ .letter-32 {
+border-left-color: #949494;
+}
+ .letter-33 {
+border-left-color: #4ecada;
+}
+ .letter-34 {
+border-left-color: #9c614d;
+}
+ .letter-35 {
+border-left-color: #84ca33;
+}
+ .letter-36 {
+border-left-color: #5e8631;
 }

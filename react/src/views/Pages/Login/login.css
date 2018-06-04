@@ -4,7 +4,7 @@
 .container {
     position: relative;
 }
-.login-app-div .container, .signup-app-div .container, .applozic-user-signup .container {
+.login-app-div .container, .signup-app-div .container, .applozic-user-signup .container, .app-list-div .container {
     box-shadow: 0 2px 14px 0 rgba(137, 133, 133, 0.5);
     background-color: #fff;
     padding-top: 30px;
@@ -143,10 +143,10 @@
     margin-bottom: 15px;
 }
 
-.signup-app-div, .login-app-div, .applozic-user-signup {
+.signup-app-div, .login-app-div, .applozic-user-signup, .app-list-div {
     background: #f5f5f5;
 }
-.signup-app-div::after, .login-app-div::after, .applozic-user-signup::after {
+.signup-app-div::after, .login-app-div::after, .applozic-user-signup::after, .app-list-div::after {
     content: '';
     /* background: #F4F0F0; */
     background: #FFF;
@@ -176,14 +176,14 @@
 .p-4 {
     padding: 37px !important;
 }
-.signup-app-div .card-block, .login-app-div .card-block {
+.signup-app-div .card-block, .login-app-div .card-block, .app-list-div .card-block {
     padding: 0px;
 }
 .mx-4 {
     margin-right: 3.5rem !important;
     margin-left: 3.5rem !important;
 }
-.signup-card-block, .login-card-block {
+.signup-card-block, .login-card-block, .app-list-card-block {
     padding: 34px !important;
 }
 .signup-button-row p, .applozic-user-signup-btn-row p {
@@ -293,7 +293,7 @@
     text-decoration: underline;
 }
 
-.signup-form-div, .login-form-div {
+.signup-form-div, .login-form-div, .app-list-form-div {
     z-index: 2;
     position: relative;
 }
@@ -341,7 +341,7 @@
         margin-left: 0px !important;
         margin-right: 0px !important;
     }
-    .login-app-div .container, .signup-app-div .container {
+    .login-app-div .container, .signup-app-div .container, .app-list-div .container {
         padding-bottom: 80px;
     }
 }

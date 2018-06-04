@@ -56,7 +56,7 @@ const CommonUtils = {
         }
         return user.userId
       },
-       getDomain:function() {
+    getDomain:function() {
         var hostName = window.location.hostname;
         var domain = hostName;
         
@@ -69,7 +69,14 @@ const CommonUtils = {
         }
         
         return domain;
+    }, 
+    setApplicationIds: function(appID) {
+        localStorage.setItem('KM_USER_SESSION_APP_IDS', JSON.stringify(appID));
+    },
+    getApplicationIds: function() {
+        return JSON.parse(localStorage.getItem('KM_USER_SESSION_APP_IDS'));
     }
+
 }
 
 export default CommonUtils;
