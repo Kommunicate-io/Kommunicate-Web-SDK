@@ -247,9 +247,9 @@ const getConversationStatByAgentId = (agentId, startTime, endTime) => {
     }).catch(err => { throw err });
 }
 
-const getConversationStats = (agentId, customerId, startTime, endTime) => {
-    if (customerId) {
-        return userService.getUsersByCustomerId(customerId).then(users => {
+const getConversationStats = (agentId, customerId, applicationId, startTime, endTime) => {
+    if (applicationId) {
+        return userService.getAllUsersOfCustomer(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
@@ -335,8 +335,9 @@ const getAllStatistic = (query, agentIds) => {
 const getConversationStat = (query) => {
     let customerId = query.customerId;
     let agentId = query.agentId;
-    if (customerId) {
-        return userService.getUsersByCustomerId(customerId).then(users => {
+    let applicationId= query.applicationId;
+    if (applicationId) {
+        return userService.getAllUsersOfCustomer(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
