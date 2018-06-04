@@ -56,7 +56,7 @@ class App extends Component {
           <Route exact path="/500" name="Page 500" component={Page500}/>
           <Route exact path="/password/update" name = "Update Password" component = {PasswordReset}/>
           <Route exact path='/applozicsignup' name='Applozic User Sign Up' component={ApplozicUserSignUp} />
-          <Route exact path="/applist" name="Select Application" component={ApplicationList} />
+          <Route exact path="/apps" name="Select Application" component={ApplicationList} />
           <Route path="/" name="Home" render={ ({history}) =>  CommonUtils.getUserSession() ?<Full history ={history}/> : <Redirect to={{pathname: '/login'}}/> }/>
           
         </Switch>

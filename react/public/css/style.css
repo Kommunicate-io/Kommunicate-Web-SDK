@@ -11156,7 +11156,7 @@ input:required {
 }
 
  .letter-0 {
-  border-left-color: #382835;
+  border-left-color: #006e4a;
 }
  .letter-1 {
   border-left-color: #CF04FE;
@@ -11185,81 +11185,84 @@ input:required {
  .letter-9 {
   border-left-color: #355625;
 }
- .letter-a {
+ .letter-10 {
 border-left-color: #c15148;
 }
- .letter-b {
+ .letter-11 {
 border-left-color: #c34973;
 }
- .letter-c {
+ .letter-12 {
 border-left-color: #a053ad;
 }
- .letter-d {
+ .letter-13 {
 border-left-color: #8759d6;
 }
- .letter-e {
+ .letter-14 {
 border-left-color: #7986CB;
 }
- .letter-f {
+ .letter-15 {
 border-left-color: #3e83f5;
 }
- .letter-g {
+ .letter-16 {
 border-left-color: #4FC3F7;
 }
- .letter-h {
+ .letter-17 {
 border-left-color: #42b3c1;
 }
- .letter-i {
+ .letter-18 {
 border-left-color: #4DB6AC;
 }
- .letter-j {
+ .letter-19 {
 border-left-color: #57BB8A;
 }
- .letter-k {
+ .letter-20 {
 border-left-color: #9CCC65;
 }
- .letter-l {
+ .letter-21 {
 border-left-color: #b2bd43;
 }
- .letter-m {
+ .letter-22 {
 border-left-color: #b99700;
 }
- .letter-n {
+ .letter-23 {
 border-left-color: #c79a1c;
 }
- .letter-o {
+ .letter-24 {
 border-left-color: #FFA726;
 }
- .letter-p {
+ .letter-25 {
 border-left-color: #FF8A65;
 }
- .letter-q {
+ .letter-26 {
 border-left-color: #5a1616;
 }
- .letter-r {
+ .letter-27 {
 border-left-color: #074361;
 }
- .letter-s {
+ .letter-28 {
 border-left-color: #b97961;
 }
- .letter-t {
+ .letter-29 {
 border-left-color: #715858;
 }
- .letter-u {
+ .letter-30 {
 border-left-color: #8288a9;
 }
- .letter-v {
+ .letter-31 {
 border-left-color: #5c5aa7;
 }
- .letter-w {
+ .letter-32 {
 border-left-color: #949494;
 }
- .letter-x {
+ .letter-33 {
 border-left-color: #4ecada;
 }
- .letter-y {
+ .letter-34 {
 border-left-color: #9c614d;
 }
- .letter-z {
+ .letter-35 {
 border-left-color: #84ca33;
+}
+ .letter-36 {
+border-left-color: #5e8631;
 }

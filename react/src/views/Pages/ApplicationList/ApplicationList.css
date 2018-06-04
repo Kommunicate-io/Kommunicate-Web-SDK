@@ -67,110 +67,113 @@
 }
 
 .app-list-div .letter-0 {
-    border-left-color: #382835;
-}
+    border-left-color: #006e4a;
+  }
 .app-list-div .letter-1 {
     border-left-color: #CF04FE;
-}
-.app-list-div .letter-2 {
+  }
+   .app-list-div .letter-2 {
     border-left-color: #284771;
-}
-.app-list-div .letter-3 {
+  }
+   .app-list-div .letter-3 {
     border-left-color: #C78818;
-}
-.app-list-div .letter-4 {
+  }
+   .app-list-div .letter-4 {
     border-left-color: #80BCA2;
-}
-.app-list-div .letter-5 {
+  }
+   .app-list-div .letter-5 {
     border-left-color: #759996;
-}
-.app-list-div .letter-6 {
+  }
+   .app-list-div .letter-6 {
     border-left-color: #3C4DD9;
-}
-.app-list-div .letter-7 {
+  }
+   .app-list-div .letter-7 {
     border-left-color: #9F0F4F;
-}
-.app-list-div .letter-8 {
+  }
+   .app-list-div .letter-8 {
     border-left-color: #8BD5B3;
-}
-.app-list-div .letter-9 {
+  }
+   .app-list-div .letter-9 {
     border-left-color: #355625;
-}
-.app-list-div .letter-a {
-	border-left-color: #c15148;
-}
-.app-list-div .letter-b {
-	border-left-color: #c34973;
-}
-.app-list-div .letter-c {
-	border-left-color: #a053ad;
-}
-.app-list-div .letter-d {
-	border-left-color: #8759d6;
-}
-.app-list-div .letter-e {
-	border-left-color: #7986CB;
-}
-.app-list-div .letter-f {
-	border-left-color: #3e83f5;
-}
-.app-list-div .letter-g {
-	border-left-color: #4FC3F7;
-}
-.app-list-div .letter-h {
-	border-left-color: #42b3c1;
-}
-.app-list-div .letter-i {
-	border-left-color: #4DB6AC;
-}
-.app-list-div .letter-j {
-	border-left-color: #57BB8A;
-}
-.app-list-div .letter-k {
-	border-left-color: #9CCC65;
-}
-.app-list-div .letter-l {
-	border-left-color: #b2bd43;
-}
-.app-list-div .letter-m {
-	border-left-color: #b99700;
-}
-.app-list-div .letter-n {
-	border-left-color: #c79a1c;
-}
-.app-list-div .letter-o {
-	border-left-color: #FFA726;
-}
-.app-list-div .letter-p {
-	border-left-color: #FF8A65;
-}
-.app-list-div .letter-q {
-	border-left-color: #5a1616;
-}
-.app-list-div .letter-r {
-	border-left-color: #074361;
-}
-.app-list-div .letter-s {
-	border-left-color: #b97961;
-}
-.app-list-div .letter-t {
-	border-left-color: #715858;
-}
-.app-list-div .letter-u {
-	border-left-color: #8288a9;
-}
-.app-list-div .letter-v {
-	border-left-color: #5c5aa7;
-}
-.app-list-div .letter-w {
-	border-left-color: #949494;
-}
-.app-list-div .letter-x {
-	border-left-color: #4ecada;
-}
-.app-list-div .letter-y {
-	border-left-color: #9c614d;
-}
-.app-list-div .letter-z {
-	border-left-color: #84ca33;
-}
+  }
+   .app-list-div .letter-10 {
+  border-left-color: #c15148;
+  }
+   .app-list-div .letter-11 {
+  border-left-color: #c34973;
+  }
+   .app-list-div .letter-12 {
+  border-left-color: #a053ad;
+  }
+   .app-list-div .letter-13 {
+  border-left-color: #8759d6;
+  }
+   .app-list-div .letter-14 {
+  border-left-color: #7986CB;
+  }
+   .app-list-div .letter-15 {
+  border-left-color: #3e83f5;
+  }
+   .app-list-div .letter-16 {
+  border-left-color: #4FC3F7;
+  }
+   .app-list-div .letter-17 {
+  border-left-color: #42b3c1;
+  }
+   .app-list-div .letter-18 {
+  border-left-color: #4DB6AC;
+  }
+   .app-list-div .letter-19 {
+  border-left-color: #57BB8A;
+  }
+   .app-list-div .letter-20 {
+  border-left-color: #9CCC65;
+  }
+   .app-list-div .letter-21 {
+  border-left-color: #b2bd43;
+  }
+   .app-list-div .letter-22 {
+  border-left-color: #b99700;
+  }
+   .app-list-div .letter-23 {
+  border-left-color: #c79a1c;
+  }
+   .app-list-div .letter-24 {
+  border-left-color: #FFA726;
+  }
+   .app-list-div .letter-25 {
+  border-left-color: #FF8A65;
+  }
+   .app-list-div .letter-26 {
+  border-left-color: #5a1616;
+  }
+   .app-list-div .letter-27 {
+  border-left-color: #074361;
+  }
+   .app-list-div .letter-28 {
+  border-left-color: #b97961;
+  }
+   .app-list-div .letter-29 {
+  border-left-color: #715858;
+  }
+   .app-list-div .letter-30 {
+  border-left-color: #8288a9;
+  }
+   .app-list-div .letter-31 {
+  border-left-color: #5c5aa7;
+  }
+   .app-list-div .letter-32 {
+  border-left-color: #949494;
+  }
+   .app-list-div .letter-33 {
+  border-left-color: #4ecada;
+  }
+   .app-list-div .letter-34 {
+  border-left-color: #9c614d;
+  }
+   .app-list-div .letter-35 {
+  border-left-color: #84ca33;
+  }
+   .app-list-div .letter-36 {
+  border-left-color: #5e8631;
+  }

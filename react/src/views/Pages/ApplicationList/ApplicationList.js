@@ -17,6 +17,7 @@ class ApplicationList extends Component {
             password:'',
             applicationId:'',
             applicationName:'',
+            randomColorClass:0
         }
         this.submitForm = this.submitForm.bind(this);
     };
@@ -24,18 +25,24 @@ class ApplicationList extends Component {
 
     componentWillMount() {
       var userDetails = CommonUtils.getUserSession();
-      var appList = CommonUtils.getApplicationIds();
-      if(!userDetails) {
-        window.location = "/login";
-      } else if(userDetails && !appList) {
-        window.location = "/dashboard";
-      } else { 
+      // if(!userDetails) {
+      //   window.location = "/login";
+      // } else { 
+      //   this.setState({
+      //     userName: userDetails.userName,
+      //     password: userDetails.password
+      //   });
+      // }
+      if(userDetails) {
         this.setState({
           userName: userDetails.userName,
           password: userDetails.password
         });
+      } else if(!userDetails && !CommonUtils.getApplicationIds()) {
+        window.location = "/login";
+      } else if(userDetails && !CommonUtils.getApplicationIds()) {
+        window.location = "/dashboard";
       }
-
     }
 
     componentDidMount() {
@@ -48,11 +55,19 @@ class ApplicationList extends Component {
       }
     }
 
-    submitForm = (e, key)=>{
+    gotoDashboard() {
+      window.location = "/dashboard";
+    }
+
+    submitForm = (key)=>{
         var _this=this;
       
         let loginUrl= getConfig().kommunicateApi.login;
         var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=key;
+
+        // this.setState({
+        //   randomColorClass: rn
+        // });
         
           if (window.heap) {
             window.heap.identify(userName);
@@ -97,6 +112,7 @@ class ApplicationList extends Component {
                 response.data.result.displayName=response.data.result.name;
                 CommonUtils.setUserSession(response.data.result);
               }
+              // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
               window.location.assign("/dashboard");
           }
           }).catch(function(err){
@@ -108,15 +124,20 @@ class ApplicationList extends Component {
       }
 
     render() {
-        const applicationLists = new Map(Object.entries(CommonUtils.getApplicationIds()));
-        const allApps = [];
+        var appIdList = CommonUtils.getApplicationIds();
+        if(appIdList) {
+          var applicationLists = new Map(Object.entries(appIdList));
+        } else {
+          this.gotoDashboard();
+        }
+        var allApps = [];
         applicationLists.forEach(function(value, key) {
           allApps.push({
             appid: key,
-            appname: value
+            appname: value,
           });
         });
-        const letters = /^[a-zA-Z0-9]+$/;
+        // console.log(allApps);
 
         return(
             <div className="app flex-row align-items-center app-list-div">
@@ -165,10 +186,11 @@ class ApplicationList extends Component {
 
                                 <div className="application-list-main-container">
                                   {
-                                    allApps.map((key) => (
-                                      <div className={key.appname.charAt(0).match(letters) ? `application-lists letter-${key.appname.charAt(0).toLowerCase()}` : "application-lists"}  key = {key.appname} onClick={((e) => this.submitForm(e, key.appid))}>
-                                        <p className="app-name">{key.appname}</p>
-                                        <p className="app-id">{key.appid}</p>
+                                    allApps.map((item, index) => (
+                                     
+                                      <div className={`application-lists letter-${index}`}  key = {index} onClick={(e) => (this.submitForm(item.appid))}>
+                                        <p className="app-name">{item.appname}</p>
+                                        <p className="app-id">{item.appid}</p>
                                       </div>
                                     ))
                                   }

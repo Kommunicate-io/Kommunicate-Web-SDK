@@ -296,7 +296,7 @@ checkForMultipleApps=(result)=>{
       _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,hideSignupLink:true, isForgotPwdHidden:true, hideSignupLink:true, hideGoogleLoginBtn:true});
     }else{
     _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple applications',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Hi! Select your application",subHeading:false,hideBackButton:false,isForgotPwdHidden:true,hideSignupLink:false,hideSignupLink:true, hideGoogleLoginBtn:true});
-    _this.props.history.push({pathname:"/applist", state:{userid: this.state.userName, pass: this.state.password}});
+    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});
   }
 }else{
   // Notification.info("You are not a registered user. Please sign up!!!");
