@@ -19,7 +19,7 @@ const routes = {
   '/faq':'FAQ',
   '/settings/billing': 'Billing',
   '/integrations': 'Integrations',
-  '/settings/pushnotification': 'Push Notifications'
+  '/settings/pushnotification': 'Push Notifications',
 };
 
 export default routes;

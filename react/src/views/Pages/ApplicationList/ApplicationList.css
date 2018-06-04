@@ -1,0 +1,176 @@
+.app-list-div .login-signup-heading {
+    margin-bottom: 10px;
+}
+.app-list-div .app-list-card-block {
+    padding: 34px 20px !important;
+}
+.app-list-div .application-list-main-container {
+    width: 100%;
+    max-width: 400px;
+    height: 220px;
+    padding: 10px 5px 10px 10px;
+    overflow-y: auto;
+}
+.app-list-div .application-lists {
+    padding: 5px 20px 5px 16px;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-left: 4px solid;
+    border-left-color: transparent;
+    overflow: hidden;
+    transition: color 200ms cubic-bezier(0.4,0.0,0.2,1),background-color 200ms cubic-bezier(0.4,0.0,0.2,1),box-shadow 400ms cubic-bezier(0.4,0.0,0.2,1);
+}
+.app-list-div .application-lists:hover {
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.302), 0 4px 8px 3px rgba(60,64,67,0.149);
+    background-color: #f8f9fa;
+    outline: none;
+}
+.app-list-div .application-lists .app-name {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.42;
+    letter-spacing: 0.6px;
+    color: #4a4a4a;
+    margin-bottom: 0px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.app-list-div .application-lists .app-id {
+    font-size: 12px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.89;
+    letter-spacing: 0.4px;
+    color: #9b9b9b;
+    margin-bottom: 0px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.app-list-div .application-list-main-container::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+.app-list-div .application-list-main-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.app-list-div .application-list-main-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.app-list-div .letter-0 {
+    border-left-color: #382835;
+}
+.app-list-div .letter-1 {
+    border-left-color: #CF04FE;
+}
+.app-list-div .letter-2 {
+    border-left-color: #284771;
+}
+.app-list-div .letter-3 {
+    border-left-color: #C78818;
+}
+.app-list-div .letter-4 {
+    border-left-color: #80BCA2;
+}
+.app-list-div .letter-5 {
+    border-left-color: #759996;
+}
+.app-list-div .letter-6 {
+    border-left-color: #3C4DD9;
+}
+.app-list-div .letter-7 {
+    border-left-color: #9F0F4F;
+}
+.app-list-div .letter-8 {
+    border-left-color: #8BD5B3;
+}
+.app-list-div .letter-9 {
+    border-left-color: #355625;
+}
+.app-list-div .letter-a {
+	border-left-color: #c15148;
+}
+.app-list-div .letter-b {
+	border-left-color: #c34973;
+}
+.app-list-div .letter-c {
+	border-left-color: #a053ad;
+}
+.app-list-div .letter-d {
+	border-left-color: #8759d6;
+}
+.app-list-div .letter-e {
+	border-left-color: #7986CB;
+}
+.app-list-div .letter-f {
+	border-left-color: #3e83f5;
+}
+.app-list-div .letter-g {
+	border-left-color: #4FC3F7;
+}
+.app-list-div .letter-h {
+	border-left-color: #42b3c1;
+}
+.app-list-div .letter-i {
+	border-left-color: #4DB6AC;
+}
+.app-list-div .letter-j {
+	border-left-color: #57BB8A;
+}
+.app-list-div .letter-k {
+	border-left-color: #9CCC65;
+}
+.app-list-div .letter-l {
+	border-left-color: #b2bd43;
+}
+.app-list-div .letter-m {
+	border-left-color: #b99700;
+}
+.app-list-div .letter-n {
+	border-left-color: #c79a1c;
+}
+.app-list-div .letter-o {
+	border-left-color: #FFA726;
+}
+.app-list-div .letter-p {
+	border-left-color: #FF8A65;
+}
+.app-list-div .letter-q {
+	border-left-color: #5a1616;
+}
+.app-list-div .letter-r {
+	border-left-color: #074361;
+}
+.app-list-div .letter-s {
+	border-left-color: #b97961;
+}
+.app-list-div .letter-t {
+	border-left-color: #715858;
+}
+.app-list-div .letter-u {
+	border-left-color: #8288a9;
+}
+.app-list-div .letter-v {
+	border-left-color: #5c5aa7;
+}
+.app-list-div .letter-w {
+	border-left-color: #949494;
+}
+.app-list-div .letter-x {
+	border-left-color: #4ecada;
+}
+.app-list-div .letter-y {
+	border-left-color: #9c614d;
+}
+.app-list-div .letter-z {
+	border-left-color: #84ca33;
+}
