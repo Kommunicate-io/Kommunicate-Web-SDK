@@ -1,7 +1,8 @@
 const Customer = require("../models").customer;
 const Application = require('../models').Application;
 const user= require("../models").user;
-const applicationService = require('./ApplicationService')
+const applicationService = require('./ApplicationService');
+const logger = require('../utils/logger')
 
 
 const createCustomer = (customer, application) => {
