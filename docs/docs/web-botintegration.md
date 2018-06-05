@@ -23,10 +23,5 @@ Once the bot is [integrated](https://docs.kommunicate.io/docs/bot-configration.h
   }); 
 ```
 
-# One to one conversations with bot
-  Get the bot ID from the dashboard and pass it in the `openDirectConversation(botId)` method.
 
-```javascript
-    Kommunicate.openDirectConversation("botId");
-```
 
