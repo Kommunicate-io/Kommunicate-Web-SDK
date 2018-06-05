@@ -40,8 +40,6 @@ exports.createCustomer = customer => {
       return customerService.createCustomer(customer, {applicationId:application.applicationId}).then(customer => {
         console.log("persited in db", customer ? customer.dataValues : null);
         user.customerId = customer ? customer.dataValues.id : null;
-        customerService.createApplication({customerId:customer.id, applicationId:application.applicationId});
-        
         let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
         let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
         // create default bot plateform
@@ -92,7 +90,7 @@ const getUserObject = (customer,applozicCustomer,application)=>{
   user.accessToken = customer.password;
   user.type = USER_TYPE.ADMIN;
   user.userKey= applozicCustomer.userKey;
-  user.applicationId = applozicCustomer.applicationId;
+  user.applicationId = application.applicationId;
   return user;
 };
 
@@ -133,7 +131,7 @@ const getFromApplozicUser= (applozicUser,customer,type,pwd)=>{
   userObject.password= bcrypt.hashSync(password, 10);
   userObject.apzToken= new Buffer(applozicUser.userId+":"+password).toString('base64');
   userObject.customerId= customer.id;
-  userObject.applicationId=customer.applicationId;
+  userObject.applicationId=customer.applications[0].applicationId;
   userObject.authorization= new Buffer(applozicUser.userId+":"+applozicUser.deviceKey).toString('base64');
   userObject.accessToken= password,
   userObject.type= type;
