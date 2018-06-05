@@ -17,7 +17,7 @@ models.forEach(function(model) {
 db[model]= sequelize.import(path.join(__dirname, model));
 });
 
-db['customer'].hasMany(db['Application'],{targetKey:'customerId', as:'applications'});
+db['customer'].hasMany(db['Application'],{targetKey:'customerId'});
 db['Application'].belongsTo(db['customer'], {sourceKey:'customerId'} );
 //dont use foreign keys 
 //db.OffBusinessHoursConfig.belongsTo(db.BusinessHour,{constraints:false});
