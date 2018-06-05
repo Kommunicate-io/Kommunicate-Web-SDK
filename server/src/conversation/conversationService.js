@@ -156,7 +156,7 @@ const addMemberIntoConversation = (data) => {
     let header = {}
     return Promise.resolve(customerService.getCustomerByAgentUserKey(data.userId)).then(customer => {
         if (customer) {
-            return Promise.resolve(userService.getAllUsersOfCustomer(customer.applications[0].applicationId, undefined)).then(users => {
+            return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
                     let userIds = [];
                     let agentIds = [];
@@ -249,7 +249,7 @@ const getConversationStatByAgentId = (agentId, startTime, endTime) => {
 
 const getConversationStats = (agentId, customerId, applicationId, startTime, endTime) => {
     if (applicationId) {
-        return userService.getAllUsersOfCustomer(applicationId).then(users => {
+        return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
@@ -337,7 +337,7 @@ const getConversationStat = (query) => {
     let agentId = query.agentId;
     let applicationId= query.applicationId;
     if (applicationId) {
-        return userService.getAllUsersOfCustomer(applicationId).then(users => {
+        return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }

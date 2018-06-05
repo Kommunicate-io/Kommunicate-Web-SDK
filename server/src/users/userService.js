@@ -406,19 +406,23 @@ exports.goOnline = (userId, appId) => {
 /**
  * Get list of all users if type is not specified.
  * Specify type to filter users  1:Agents, 2: Bots
- * @param {Object} customer
- * @param {number} customer.id 
+ * @param {String} applicationId 
  * @param {Array} type 
  * @return {Object} 
  */
-const getAllUsersOfCustomer = (applicatioId, type) => {
-  logger.info("fetching Users for customer, ", customer.id);
-  let criteria = { applicatioId: applicatioId };
+const getUsersByAppIdAndTypes = (applicationId, type) => {
+  logger.info("fetching Users for customer, ", applicationId);
+  let criteria = { applicationId: applicationId };
   if (type) {
     criteria.type = { $in: type };
   }
   var order = [['name', 'ASC']];
-  return Promise.resolve(userModel.findAll({ where: criteria, order }));
+  return Promise.resolve(userModel.findAll({ where: criteria, order })).then(result => {
+    return result;
+  }).catch(err => {
+    logger.info('error while getting all users', err);
+    throw err;
+  });
 }
 /**
  * update a new password for user
@@ -515,6 +519,6 @@ exports.getConfigIfCurrentTimeOutOfBusinessHours=getConfigIfCurrentTimeOutOfBusi
 exports.isIntervalExceeds= isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId=getUserBusinessHoursByUserNameAndAppId;
-exports.getAllUsersOfCustomer= getAllUsersOfCustomer;
+exports.getUsersByAppIdAndTypes= getUsersByAppIdAndTypes;
 exports.getAvailableAgents= getAvailableAgents;
 exports.getUsersByCustomerId=getUsersByCustomerId;

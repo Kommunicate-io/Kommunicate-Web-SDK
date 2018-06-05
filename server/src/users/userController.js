@@ -26,18 +26,14 @@ exports.getAllUsers = function (req, res) {
   var applicationId = req.query.appId;
   var type = req.query.type;
   var type2 = type ? type.split(",") : type
-  return Promise.resolve(userService.getAllUsersOfCustomer(applicationId, type2))
-  .then(dbUtils.getDataArrayFromResultSet)
-    .then(data => {
-      logger.info("sending response success ")
-      data = data ? data : [];
-      res.status(200).json({ code: "SUCCESS", data: data });
-    })
-    .catch(err => {
-      logger.error("error while fetching users :", err);
-      res.status(500).json({ code: "INTERNAL_SERVER_ERROR", messsage: "Something went wrong" });
-    })
-
+  return Promise.resolve(userService.getUsersByAppIdAndTypes(applicationId, type2)).then(data => {
+    logger.info("sending response success ")
+    data = data ? data : [];
+    return res.status(200).json({ code: "SUCCESS", data: data });
+  }).catch(err => {
+    logger.error("error while fetching users :", err);
+    return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", messsage: "Something went wrong" });
+  })
 };
 
 exports.getUserByName = function(req,res) {
@@ -311,7 +307,7 @@ exports.createGroupOfAllAgents = (req, res) => {
     }
     groupInfo.admin = customer.userName;
     groupInfo.groupName = customer.name;
-    return Promise.resolve(userService.getAllUsersOfCustomer(customer.applications[0].applicationId, undefined)).then(users => {
+    return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
       if (users) {
         users.forEach(function (user) {
           console.log(user);
