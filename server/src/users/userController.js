@@ -13,6 +13,7 @@ const logger = require('../utils/logger');
 const bcrypt = require('bcrypt');
 const integrationSettingService = require('../../src/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
+const constant =require('../../src/utils/constant');
 const customerService = require('../customer/CustomerService');
 /**
  *
