@@ -5012,6 +5012,13 @@ margin-top: 243px;
 	padding-top: 0px;
 }
 
+#mck-btn-attach {
+	opacity: 0.6;
+}
+.mck-attach-menu-main-container {
+	opacity: 1 !important;
+}
+
 @media only screen and (max-width:600px) {
 	.mck-sidebox {
 		right: 0px !important;
@@ -5036,3 +5043,4 @@ margin-top: 243px;
 		right: 0px !important;
 	}
 }
+
