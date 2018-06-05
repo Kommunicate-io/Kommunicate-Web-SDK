@@ -36,7 +36,9 @@ class AwayMessage extends Component{
         response.data.response.collectEmail && this.setState({isChecked:true});
         response.data.response.collectEmail == false && this.setState({isChecked:false});
       }
-    })) 
+    })).catch(err => {
+      // console.log(err);
+    })
   }
   getAwayMessages = () => {
      // Event ID 1 : agent is offline and anonymous customer
@@ -330,8 +332,12 @@ class AwayMessage extends Component{
     this.setState({
       isChecked: isChecked,
     });
-    let data = {"collectEmail":isChecked}
-    updateAppSetting(isChecked, data)
+    let data = { "collectEmail": isChecked }
+    updateAppSetting(isChecked, data).then(response => {
+      // console.log(response);
+    }).catch(err => {
+      // console.log(err);
+    })
   }
   
 

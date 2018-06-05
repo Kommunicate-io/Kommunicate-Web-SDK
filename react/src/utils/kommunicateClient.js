@@ -909,14 +909,16 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
 const updateAppSetting = (status,data) => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
-  const url = getConfig().kommunicateBaseUrl + '/settings/application/update/' + appId;
+  const url = getConfig().kommunicateBaseUrl + '/settings/application/' + appId;
   return Promise.resolve(axios({
     method: 'PATCH',
     url: url,
     data:data
   })).then(result => {
     return result;
-  }).catch(err => { console.log("Error while updating application settings", err) })
+  }).catch(err => { 
+     throw {message:err}; 
+    console.log("Error while updating application settings", err) })
 
 }
 const getAppSetting = () => {
@@ -928,7 +930,9 @@ const getAppSetting = () => {
     url: url,
   })).then(result => {
     return result;
-  }).catch(err => { console.log("Error while fetching application settings", err) })
+  }).catch(err => {
+    throw {message:err}; 
+    console.log("Error while fetching application settings", err) })
 }  
 export {
   createCustomer,
