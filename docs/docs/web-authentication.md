@@ -58,6 +58,9 @@ Here in askUserDetails name, email, phone are optional
 |isAnonymousChat | false|
 |askUserDetails  | ['name', 'email', 'phone']|
 
+
+<img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
+
 ### Example:
 ```javascript
 
