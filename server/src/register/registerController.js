@@ -1,4 +1,5 @@
 const registrationService = require("./registrationService");
+const customerService = require('../customer/CustomerService')
 const userService = require('../users/userService');
 const joi = require("joi");
 const randomString  = require('randomstring');
@@ -38,7 +39,7 @@ exports.createCustomer = (req,res)=>{
   if(userName&&(isPreSignUp||password||isOAuthSignUp)){
     console.log("request received for pre sign up, EmailId : ",userName);
     //TODO : check the if user exist form communicate Db;
-    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
+    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
       if(customer || user){
         response.code ="USER_ALREADY_EXISTS";
@@ -58,7 +59,7 @@ exports.createCustomer = (req,res)=>{
           if (activeCampaignEnable) {
             activeCampaignClient.addContact({ "email": email })
               .then(subscriberId => {
-                return registrationService.updateOnlyCustomer(userName, { activeCampaignId: subscriberId });
+                return customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
               })
               .catch(error => {
                 console.log("Error while sending Email to activeCampaign", error);
@@ -97,20 +98,20 @@ exports.createCustomer = (req,res)=>{
     }
 }
 
-exports.patchCustomer = (req,res)=>{
-  let response ={};
+exports.patchCustomer = (req, res) => {
+  let response = {};
   let status;
   const customer = req.body;
-  const userId = req.params.userId; 
-  console.log("request recieved to update customer: ",userId, "body",customer);
+  const userId = req.params.userId;
+  console.log("request recieved to update customer: ", userId, "body", customer);
   if (customer.websiteUrl) {
-    let appName=(customer.companyName)?customer.companyName:"";
-    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName}).catch(err => {
+    let appName = (customer.companyName) ? customer.companyName : "";
+    applozicClient.updateApplication({ applicationId: customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName }).catch(err => {
       console.log('error while updating application')
-    })  
+    })
   }
   if (activeCampaignEnable) {
-    registrationService.getCustomerByUserName(userId).then(dbCostomer => {
+    customerService.getCustomerByUserName(userId).then(dbCostomer => {
       console.log("got the user from db", dbCostomer);
       return activeCampaignClient.updateActiveCampaign({
         "email": userId,
@@ -134,25 +135,14 @@ exports.patchCustomer = (req,res)=>{
     let person = { name: customer.name, email: userId, phone: customer.contactNo, }
     pipeDrive.createDealInPipeDrive(organization, person);
   }
-  registrationService.updateCustomer(userId,customer).then(isUpdated=>{
-    // userService.getAdminUserByAppId(customer.applicationId).then(user=>{
-    //   let userobj =  {};
-    //   userId?userobj.userId=userId:"";
-    //   customer.name? userobj.displayName = customer.name:"";
-    //   customer.email?userobj.email =customer.email:"";
-    // applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,userobj).then(response=>{
-    //     console.log("Applozic update user response: " + response);
-    //   }).catch(err=>{
-    //     console.log("error while updating Applozic user");
-    //   }) 
-    // });
-    if(isUpdated){
-      response.code="SUCCESS";
-      response.message="Updated";
+  registrationService.updateCustomer(userId, customer).then(isUpdated => {
+    if (isUpdated) {
+      response.code = "SUCCESS";
+      response.message = "Updated";
       res.status(200).json(response);
-    }else{
-      response.code="NOT_FOUND";
-      response.message="resource not found by userId "+userId;
+    } else {
+      response.code = "NOT_FOUND";
+      response.message = "resource not found by userId " + userId;
       res.status(404).json(response);
     }
 
@@ -161,9 +151,12 @@ exports.patchCustomer = (req,res)=>{
     response.message = err.message ? err.message : "something went wrong!";
     res.status(500).json(response);
   });
-
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getCustomerInformation = (req,res)=>{
   const userName = req.params.userName;
   console.log("request received to get customer information: ",userName);
@@ -171,7 +164,7 @@ exports.getCustomerInformation = (req,res)=>{
     res.status(400).json({code:"BAD_REQUEST",message:"user name is empty"});
     return;
   }
-  registrationService.getCustomerByUserName(userName).then(customer=>{
+  customerService.getCustomerByUserName(userName).then(customer=>{
     if(!customer){
       console.log("customer not found in db :",userName);
       res.status(404).json({code:"NOT_FOUND",message:"no customer exists with user name: "+userName});
@@ -199,7 +192,7 @@ exports.signUpWithAplozic= (req,res)=>{
   console.log("userName:", userName, password);
   if(userName&&password){
     console.log("request received to sign up with Applozic, EmailId : ",userName);
-    Promise.all([registrationService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
+    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
       console.log("got the user from db",user);
       if(customer || user){
         response.code ="USER_ALREADY_EXISTS";
@@ -256,7 +249,13 @@ exports.signUpWithAplozic= (req,res)=>{
 
 
 }
-
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * will check this one
+ * let user = req.params.user+"Routing"
+ */
 exports.updateRoutingState = (req, res) => {
   let appId = req.params.appId;
   let routingState = req.params.routingState;
@@ -264,16 +263,20 @@ exports.updateRoutingState = (req, res) => {
   let routingInfo = {};
   routingInfo[user]=routingState;
 
-  return registrationService.updateRoutingState(appId, routingInfo).then(response => {
+  return customerService.updateRoutingState(appId, routingInfo).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
     console.log("error while updating customer", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 }
+
+/**
+ * 
+ */
 exports.getCustomerByApplicationId = (req, res) => {
   let appId = req.query.applicationId;
-  return registrationService.getCustomerByApplicationId(appId).then(customer => {
+  return customerService.getCustomerByApplicationId(appId).then(customer => {
     if (!customer) {
       res.status(200).json({ code: "SUCCESS", message: "customer not found for this application id" });
     }

@@ -337,7 +337,7 @@ exports.editInAppMsg=(body)=>{
  * return 1st online user. return undefined if no agents are online. 
  */
 exports.checkOnlineAgents=(customer)=>{
-  return userService.getAllUsersOfCustomer(customer,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
+  return userService.getAllUsersOfCustomer(customer.applications[0].applicationId,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
     let userIdList = userList.filter(user=>user.availabilityStatus==1).map(user=>user.userName);
     let defaultAgent = userList.filter(user=> user.type==3);
     //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)

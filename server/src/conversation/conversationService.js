@@ -3,6 +3,7 @@ const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY } = require('./conversati
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
+const customerService = require('../customer/CustomerService');
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
 const Sequelize = require("sequelize");
@@ -153,9 +154,9 @@ const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
     let groupInfo = { userIds: [], clientGroupIds: [data.groupId] }
     let header = {}
-    return Promise.resolve(registrationService.getCustomerByAgentUserKey(data.userId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByAgentUserKey(data.userId)).then(customer => {
         if (customer) {
-            return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
+            return Promise.resolve(userService.getAllUsersOfCustomer(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
                     let userIds = [];
                     let agentIds = [];
