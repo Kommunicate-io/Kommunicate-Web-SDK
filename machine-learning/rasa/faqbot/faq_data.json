@@ -32,7 +32,7 @@
             "entities": []
         },
         {
-            "text": "Unable to send messages ?",
+            "text": "Not receiving messages?",
             "intent": "push_notification_not_working",
             "entities": []
         },
@@ -105,8 +105,8 @@
             "intent": "done",
             "entities": []
         }
-      ], 
-      "entity_examples": [], 
+      ],
+      "entity_examples": [],
       "intent_examples": []
     }
   }
