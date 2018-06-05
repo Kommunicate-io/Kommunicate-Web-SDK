@@ -33,7 +33,7 @@ const getCustomerByUserName = (userName) => {
 }
 
 const updateCustomer = (userName, customerDetail) => {
-    return Customer.Update(customerDetail, { where: { userName: userName } }).then(result => {
+    return Customer.update(customerDetail, { where: { userName: userName } }).then(result => {
         return result;
     })
 }
