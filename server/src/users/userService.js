@@ -344,7 +344,7 @@ exports.updateUser = (userId, appId, userInfo) => {
           console.log("Applozic update user response: " + response);
         })
       return userModel.update(userInfo, {
-        where: { userName: userId, customerId: user.customerId }
+        where: { userName: userId, applicationId: user.applicationId }
         
       }).then(function(updateResult){
          if(user.type==registrationService.USER_TYPE.BOT){
