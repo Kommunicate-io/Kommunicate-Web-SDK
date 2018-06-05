@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-    return sequelize.define("application_settings", {
+    return sequelize.define("app_settings", {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,

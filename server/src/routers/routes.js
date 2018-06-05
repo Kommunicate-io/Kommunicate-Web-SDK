@@ -210,5 +210,5 @@ settingRouter.get('/application/:appId', validate(applicationSettingValidation.g
   appSettingController.getAppSettingsByApplicationId);
 settingRouter.post('/application/insert', validate(applicationSettingValidation.insertAppSetting),
   appSettingController.insertAppSettings);
-settingRouter.patch('/application/update/:appId', validate(applicationSettingValidation.updateAppSettings),
+settingRouter.patch('/application/:appId', validate(applicationSettingValidation.updateAppSettings),
   appSettingController.updateAppSettings);
