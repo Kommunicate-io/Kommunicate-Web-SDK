@@ -42,9 +42,9 @@ const getInAppMessage=(customerId, eventType)=>{
 }
 
 exports.sendWelcomeMessage=(conversationId, customer)=>{
-  return userService.getByUserNameAndAppId("bot",customer.applicationId)
+  return userService.getByUserNameAndAppId("bot",customer.applications[0].applicationId)
   .then(bot=>{
-    return applozicClient.getGroupInfo(conversationId,customer.applicationId,bot.apzToken,true).then(groupDetail=>{
+    return applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,bot.apzToken,true).then(groupDetail=>{
         // picking admin id if conversation Assignee is not available
         let conversationAssignee="";
         if(groupDetail){
@@ -61,14 +61,14 @@ exports.sendWelcomeMessage=(conversationId, customer)=>{
  
 }
 
-exports.processEventWrapper = (eventType, conversationId, customer,adminUser, agentName) => {
+exports.processEventWrapper = (eventType, conversationId, customer, adminUser, agentName) => {
 
     if(eventType == 1 || eventType == 2 || eventType == 3 || eventType == 4){
       let anonymous = true
       let offline = true
       let eventType = 1
       let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
-      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
+      return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,apzToken))
         .then(groupInfo => {
             console.log("groupInfo")
             
@@ -78,7 +78,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             return {userId: groupUserRole3[0].userId, agentUserName: conversationAssignee}
         }).then( groupUser => {
             console.log("groupUser")
-            return userService.getByUserNameAndAppId(groupUser.agentUserName,customer.applicationId)
+            return userService.getByUserNameAndAppId(groupUser.agentUserName,customer.applications[0].applicationId)
             .then(res => {
               logger.info(res);
               logger.info(res.availabilityStatus)
@@ -90,7 +90,7 @@ exports.processEventWrapper = (eventType, conversationId, customer,adminUser, ag
             }).then( groupUser => {
               let userId=groupUser.userId;
               console.log("userId")
-              return applozicClient.getUserDetails([userId],customer.applicationId,apzToken)
+              return applozicClient.getUserDetails([userId],customer.applications[0].applicationId,apzToken)
               .then(userInfo => {
                 console.log(userInfo);
                 if(userInfo[0].hasOwnProperty("email") && userInfo[0].email){
@@ -141,25 +141,25 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   if (!agentName) {
     agentName =agentId||customer.userName;
   }
-    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
+    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applications[0].applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
           let  message = message1 && message1.dataValues ? message1.dataValues.message:defaultMessage;
           console.log(message);
-          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
+          return applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applications[0].applicationId,constant.WELCOME_MSG_METADATA)
             .then(response => {
               if(response.status == 200){
                 if(inAppMessages[1]){
                   let message2 = inAppMessages[1]
                   let message = message2 && message2.dataValues ? message2.dataValues.message:defaultMessage;
-                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
+                  applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applications[0].applicationId,constant.WELCOME_MSG_METADATA)
                     .then(response => {
                       if(response.status == 200){
                         if(inAppMessages[2]){
                           let message3 = inAppMessages[2]
                           let message = message3 && message3.dataValues ? message3.dataValues.message:defaultMessage;
-                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applicationId,constant.WELCOME_MSG_METADATA)
+                          applozicClient.sendGroupMessage(conversationId,message,new Buffer(user.userName+":"+user.accessToken).toString('base64'),customer.applications[0].applicationId,constant.WELCOME_MSG_METADATA)
                             .then(response => {
                               if(response.status == 200){
                                 return "succcess"
@@ -176,7 +176,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
       }else{
         /*remove this to send default welcome message
         let  message = defaultMessage;
-        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applicationId,{"category": "ARCHIVE"}).then(response=>{
+        return applozicClient.sendGroupMessageByBot(conversationId,message,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'),customer.applications[0].applicationId,{"category": "ARCHIVE"}).then(response=>{
             return "success";
           })*/
           return "no_message";
@@ -343,7 +343,7 @@ exports.checkOnlineAgents=(customer)=>{
     //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
     logger.info("fetching detail of all agents from applozic");
     if(userIdList.length>0){
-      return applozicClient.getUserDetails(userIdList,customer.applicationId, defaultAgent[0].apzToken);
+      return applozicClient.getUserDetails(userIdList,customer.applications[0].applicationId, defaultAgent[0].apzToken);
     }else return Promise.resolve([]);
   }).then(agentsDetail=>{
     agentsDetail=agentsDetail||[];
@@ -354,14 +354,14 @@ exports.checkOnlineAgents=(customer)=>{
 
 exports.isGroupUserAnonymous=(customer,conversationId)=>{
 logger.info("checking if group user is anonymous ");
-return userService.getAdminUserByAppId(customer.applicationId).then(adminUser=>{
+return userService.getAdminUserByAppId(customer.applications[0].applicationId).then(adminUser=>{
   let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
-  return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applicationId,apzToken))
+  return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,apzToken))
   .then(groupInfo => {
       logger.info("successfully got groupInfo from applozic for conversationId : ",conversationId);
       
       let groupUser= groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
-      return applozicClient.getUserDetails([groupUser[0].userId],customer.applicationId,apzToken)
+      return applozicClient.getUserDetails([groupUser[0].userId],customer.applications[0].applicationId,apzToken)
       .then(userInfo => { 
         logger.info("received group user info...");
        return Boolean(userInfo[0].email || userInfo[0].phoneNumber);

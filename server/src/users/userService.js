@@ -49,7 +49,7 @@ let handleCreateUserError =(user,customer,err)=>{
   if(err&&err.code=="USER_ALREADY_EXISTS" && err.data){
     console.log("updating role to application web admin");
     const data = err.data; 
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName,user.password,customer.applicationId,{userId:user.userName,roleName:"APPLICATION_WEB_ADMIN"},{apzToken: new Buffer(KOMMUNICATE_ADMIN_ID+":"+KOMMUNICATE_ADMIN_PASSWORD).toString("base64")})).then(response=>{
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName,user.password,customer.applications[0].applicationId,{userId:user.userName,roleName:"APPLICATION_WEB_ADMIN"},{apzToken: new Buffer(KOMMUNICATE_ADMIN_ID+":"+KOMMUNICATE_ADMIN_PASSWORD).toString("base64")})).then(response=>{
       return err.data;
     })
   }else{
@@ -438,7 +438,7 @@ exports.updatePassword=(newPassword,user)=>{
     let apzToken = new Buffer(user.userName+":"+newPassword).toString('base64');
     return Promise.all([customerService.getCustomerById(user.customerId),bcrypt.hash(newPassword,10)])
     .then(([customer,hash])=>{
-      return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:customer.applicationId,userName:user.userName}),
+      return Promise.all([applozicClient.updatePassword({newPassword:newPassword,oldPassword:user.accessToken,applicationId:user.applicationId,userName:user.userName}),
         db.user.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{id:user.id},transaction:t}), 
         db.customer.update({accessToken :newPassword, password : hash,apzToken:apzToken },{where:{userName:user.id},transaction:t})])
         .then(([res1,res2,res3])=>{
