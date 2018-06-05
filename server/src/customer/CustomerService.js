@@ -15,7 +15,7 @@ const createCustomer = (customer, application) => {
 }
 
 const getCustomerByApplicationId = (appId) => {
-    return Promise.resolve(Customer.findOne({include: [{model: Application, as:'applications',attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
+    return Promise.resolve(Customer.findOne({include: [{model: Application, attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
         return customer;
     })
 }
