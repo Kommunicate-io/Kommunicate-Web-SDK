@@ -5,7 +5,7 @@ sidebar_label: Authentication
 ---
 
 
-**kommunicateSettings in plugin script**
+## kommunicateSettings in plugin script
 
 Here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
 
