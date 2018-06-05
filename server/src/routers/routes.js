@@ -28,10 +28,12 @@ const zendeskController = require('../zendesk/zendeskController');
 const zendeskValidation = require('../zendesk/validation');
 const agileController = require('../agileCrm/agileController');
 const agileValidation = require('../agileCrm/validation');
-const integrationSettingController = require('../thirdPartyIntegration/integrationSettingController');
-const thirdPartySettingValidation = require('../thirdPartyIntegration/validation')
+const integrationSettingController = require('../setting/thirdPartyIntegration/integrationSettingController');
+const thirdPartySettingValidation = require('../setting/thirdPartyIntegration/validation')
 const googleAuthController = require('../googleAuth/googleAuthController');
 const chargebeeController= require("../chargebee/chargebeeController");
+const appSettingController = require("../setting/application/appSettingController");
+const applicationSettingValidation = require("../setting/application/validation")
 
 
 //router declaration
@@ -42,6 +44,7 @@ const customerRouter = express.Router();
 const home = express.Router();
 const miscRouters = express.Router();
 const chatRouter = express.Router();
+const settingRouter = express.Router();
 //const signUpWithApplozicRouter = express.Router();
 const conversationRouter =express.Router();
 const autoSuggestRouter = express.Router();
@@ -64,6 +67,7 @@ exports.applications = applicationRouter;
 exports.login= loginRouter;
 exports.customers =customerRouter;
 exports.misc = miscRouters;
+exports.setting = settingRouter;
 //exports.signUpWithApplozic = signUpWithApplozicRouter;
 exports.chat = chatRouter;
 exports.conversation=conversationRouter;
@@ -194,8 +198,17 @@ chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
  * Agile CRM APIs
  */
 agileRouter.post('/:appId/contact', validate(agileValidation.createContact),
-agileController.createContact);
+  agileController.createContact);
 agileRouter.patch('/:appId/:contactId/contact', validate(agileValidation.updateContact),
-agileController.updateContact);
+  agileController.updateContact);
 agileRouter.patch('/:appId/contacts/:contactId/tag', validate(agileValidation.updateTag),
-agileController.updateTag);
+  agileController.updateTag);
+/**
+ * setting router
+ */
+settingRouter.get('/application/:appId', validate(applicationSettingValidation.getAppSettingsByApplicationId),
+  appSettingController.getAppSettingsByApplicationId);
+settingRouter.post('/application/insert', validate(applicationSettingValidation.insertAppSetting),
+  appSettingController.insertAppSettings);
+settingRouter.patch('/application/:appId', validate(applicationSettingValidation.updateAppSettings),
+  appSettingController.updateAppSettings);

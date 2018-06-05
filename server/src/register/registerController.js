@@ -267,7 +267,7 @@ exports.updateRoutingState = (req, res) => {
   return registrationService.updateRoutingState(appId, routingInfo).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
   }).catch(err => {
-    console.log("error while updating customer", err);
+    console.log("error while updating routing state", err);
     return res.status(500).json({ code: "ERROR", message: "internal server error" });
   })
 }

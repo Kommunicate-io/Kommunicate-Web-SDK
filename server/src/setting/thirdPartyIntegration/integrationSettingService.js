@@ -1,4 +1,4 @@
-const ThirdPartyIntegrationSettings = require('../models').ThirdPartyIntegrationSettings;
+const ThirdPartyIntegrationSettings = require('../../models').ThirdPartyIntegrationSettings;
 
 const updateOrCreate = (customerId, type, setting) => {
     return Promise.resolve(ThirdPartyIntegrationSettings.find({ where: { customerId: customerId, type: type } })).then(existingSetting => {

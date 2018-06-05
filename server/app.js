@@ -108,7 +108,8 @@ app.use('/integration/settings', routes.thirdPartySetting);
 app.use('/kb',routes.faq);
 app.use('/google', routes.googleAuth);
 app.use('/subscription', routes.chargebee);
-app.use('/agilecrm', routes.agile)
+app.use('/agilecrm', routes.agile);
+app.use('/settings',routes.setting);
 
 
 function startApp() {
