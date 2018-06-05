@@ -51,6 +51,9 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
+#trained RASA test models
+machine-learning/rasa/faqbot/models
+
 # Yarn Integrity file
 .yarn-integrity
 
