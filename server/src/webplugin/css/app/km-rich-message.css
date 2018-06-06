@@ -369,7 +369,8 @@
     
     }
     .km-cta-multi-button-container .km-cta-button-many {
-        margin-top: 10px
+        margin-top: 10px;
+        margin-right: 10px;
     }
     .km-cta-multi-button-container .km-cta-button-1{
         margin-top: 10px;
