@@ -83,6 +83,7 @@ KommunicateUI={
                         $applozic(".km-talk-to-human-div p").text("We are here to help.");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     } else {
+                        $applozic(".no-results-found-container").addClass("n-vis").removeClass("vis");
                         $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     }
@@ -105,6 +106,7 @@ KommunicateUI={
                         $applozic(".km-talk-to-human-div p").text("We are here to help. ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     } else {
+                        $applozic(".no-results-found-container").addClass("n-vis").removeClass("vis");
                         $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     }

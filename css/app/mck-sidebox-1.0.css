@@ -4554,6 +4554,7 @@ color: rgba(0,0,0,0.5);
 
 .km-faqdiv{
 	overflow-y: auto;
+	overflow-x: hidden;
     height: calc(100% - 18px);
     top: 0;
     left: 0;
