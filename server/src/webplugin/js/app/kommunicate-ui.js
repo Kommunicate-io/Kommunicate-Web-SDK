@@ -78,10 +78,20 @@ KommunicateUI={
 
                     { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
                 , success: function (response) {
+                    if (response.data && response.data.length === 0 && $applozic(".no-results-found-container").hasClass("n-vis")) {
+                        $applozic(".no-results-found-container").addClass("vis").removeClass("n-vis");
+                        $applozic(".km-talk-to-human-div p").text("We are here to help.");
+                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
+                    } else {
+                        $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
+                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
+                    }
+                    
                     $applozic('#km-faqdiv').empty();
                     $applozic.each(response.data, function (i, faq) {
                         $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><div class="km-faqimage"></div></div> <div class="km-faqanchor">' + faq.title + '</div></a></li>');
-                    });
+                    });                    
+                    
                 }, error: function () { }
             });
         }, 2000);
@@ -90,10 +100,20 @@ KommunicateUI={
                 data:
                     { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
                 , success: function (response) {
+                    if (response.data && response.data.length === 0 && $applozic(".no-results-found-container").hasClass("n-vis")) {
+                        $applozic(".no-results-found-container").addClass("vis").removeClass("n-vis");
+                        $applozic(".km-talk-to-human-div p").text("We are here to help. ");
+                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
+                    } else {
+                        $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
+                        $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
+                    }
+
                     $applozic('#km-faqdiv').empty();
                     $applozic.each(response.data, function (i, faq) {
                         $applozic("#km-faqdiv").append('<li class="km-faq-list" data-source="' + faq.source + '" data-articleId="' + faq.articleId + '"><a class="km-faqdisplay"> <div><span class="km-faqimage"/ ></span> <div class="km-faqanchor ">' + faq.title + '</div></a></li>');
                     });
+                    
                 }, error: function () { }
             });
         }
@@ -115,6 +135,7 @@ KommunicateUI={
                 $applozic('.faq-common').removeClass("vis").addClass("n-vis");
                 $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+                $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
                 return;
             }
             if($applozic('.mck-conversation').hasClass('vis')){
@@ -136,6 +157,23 @@ showChat :function () {
 showHeader :function(){
     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
     $applozic('#mck-tab-conversation').removeClass("vis").addClass("n-vis");
+},
+
+sendFaqQueryAsMsg: function(groupId){
+    var messageInput = $applozic("#km-faq-search-input").val();
+    var msgTemplate = 'Hi, I have a query regarding \n' + '"' + messageInput +'"' + '\n\n Can you help me out?';
+    if(messageInput !== ""){
+        var messagePxy = {
+            "groupId": groupId,
+            "type": 5,
+            "contentType": 0,
+            "message": msgTemplate
+        };
+        // Kommunicate.sendMessage(messagePxy);
+        $applozic.fn.applozic('sendGroupMessage', messagePxy); 
+    } else {
+        return;
+    }
 }
   
 }
