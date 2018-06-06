@@ -8,7 +8,7 @@ sidebar_label: Conversation
 
 You can open the chat screen by calling the below function:
 
-```
+```js
 kommunicate.launchConversation((response) => {
           //conversation launched successfully
         }, (response) => {
@@ -20,9 +20,9 @@ kommunicate.launchConversation((response) => {
 
 You can open an individual chat thread by calling the below function and passing the `groupId`:
 
-```
+```js
 let convObj = {
-        'groupId' : groupId, //pass the groupId here
+        'clientChannelKey' : clientChannelKey, //pass the clientChannelKey here
         'takeOrder' : true //skip chat list on back press, pass false if you want to show chat list on back press
       };
       
@@ -37,14 +37,14 @@ kommunicate.launchParticularConversation(convObj, function(response) {
 
 You can start a new conversation by using the below function:
 
-```
+```js
  let convInfo = {
-      'agentId':'reytum@live.com',
-      'botId': 'Hotel-Booking-Assistant'
+      'agentIds':['reytum@live.com'],  //list of agentIds
+      'botIds': ['Hotel-Booking-Assistant']  //list of botIds
      };
      
   kommunicate.startNewConversation(convInfo, (response) => {
-      //You can launch the particular conversation here, response will be the groupId
+      //You can launch the particular conversation here, response will be the clientChannelKey
        console.log("Kommunicate create conversation successfull : " + response);
     },(response) => {
       console.log("Kommunicate create conversation failed : " + response);
