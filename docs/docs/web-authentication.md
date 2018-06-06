@@ -51,12 +51,14 @@ Add below setting to allow anonymous user
 
 For collecting user contact information before initiating chat, use the following setting 'askUserDetails':
 
+Once configured, user will see the form on click of the chat widget launch icon
+
 |parameters | description| required |
 |---    |---    |---    |
 |isAnonymousChat | false| yes |
 |askUserDetails  | ['name', 'email', 'phone']| atleast one is required |
 
-Once configured, user will see the form on click of the chat widget launch icon
+
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />
 
 ### Example:
