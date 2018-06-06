@@ -10,8 +10,6 @@ NOTE: [Configuring bot from dashboard](https://docs.kommunicate.io/docs/bot-conf
 Go to [Kommunicate Dashboard -> Settings -> Conversation Routing](https://dashboard.kommunicate.io/settings/agent-assignment) and enable "Assign new conversations to bot", select the configured bot. 
 Once its configured, go to the chat widget integrated in your website, click on "Start New Conversation", send a message and verify that the configured bot is replying.
 
-<img align="middle" src="/docs/website/static/img/Screen Shot 2018-06-06 at 1.36.26 PM.png" />
-
 
 ## Assign conversations to specific bots based on the webpage
 Pass array of botIds in `botIds` parameter in [installation script](https://docs.kommunicate.io/docs/web-installation.html#script) in webpages where the specific bot need to be a default bot to handle incoming conversations.
