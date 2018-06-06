@@ -5028,11 +5028,11 @@ margin-top: 243px;
 	opacity: 1 !important;
 }
 
-.no-results-found-container {
+.km-no-results-found-container {
 	padding:10px 25px;
 
 }
-.no-results-found {
+.km-no-results-found {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -5041,7 +5041,7 @@ margin-top: 243px;
 	border-radius: 4px;
 	padding: 10px 25px;
 }
-.no-results-found p	{
+.km-no-results-found p	{
 	margin-top: 10px;
 	font-size: 15px;
 	margin-bottom: 0px;

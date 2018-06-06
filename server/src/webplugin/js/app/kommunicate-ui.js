@@ -78,12 +78,12 @@ KommunicateUI={
 
                     { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
                 , success: function (response) {
-                    if (response.data && response.data.length === 0 && $applozic(".no-results-found-container").hasClass("n-vis")) {
-                        $applozic(".no-results-found-container").addClass("vis").removeClass("n-vis");
+                    if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
+                        $applozic(".km-no-results-found-container").addClass("vis").removeClass("n-vis");
                         $applozic(".km-talk-to-human-div p").text("We are here to help.");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     } else {
-                        $applozic(".no-results-found-container").addClass("n-vis").removeClass("vis");
+                        $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
                         $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     }
@@ -101,12 +101,12 @@ KommunicateUI={
                 data:
                     { appId: data.appId, query: document.getElementById("km-faq-search-input").value, helpdocsAccessKey: helpdocsKey }
                 , success: function (response) {
-                    if (response.data && response.data.length === 0 && $applozic(".no-results-found-container").hasClass("n-vis")) {
-                        $applozic(".no-results-found-container").addClass("vis").removeClass("n-vis");
+                    if (response.data && response.data.length === 0 && $applozic(".km-no-results-found-container").hasClass("n-vis")) {
+                        $applozic(".km-no-results-found-container").addClass("vis").removeClass("n-vis");
                         $applozic(".km-talk-to-human-div p").text("We are here to help. ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     } else {
-                        $applozic(".no-results-found-container").addClass("n-vis").removeClass("vis");
+                        $applozic(".km-no-results-found-container").addClass("n-vis").removeClass("vis");
                         $applozic(".km-talk-to-human-div p").text("Looking for something else? ");
                         $applozic(".km-talk-to-human-div").addClass("vis").removeClass("n-vis");
                     }
