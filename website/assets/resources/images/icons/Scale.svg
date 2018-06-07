@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Scale</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Scale" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(3.000000, 3.000000)">
+            <polyline id="Rectangle" stroke="#4A4A4A" stroke-linecap="round" transform="translate(2.375000, 2.375000) rotate(90.000000) translate(-2.375000, -2.375000) " points="4.75 4.75 0 4.75 0 0"></polyline>
+            <path d="M3.41497564,-0.522524356 C3.41497564,-0.833184528 3.66681547,-1.08502436 3.97747564,-1.08502436 C4.28813582,-1.08502436 4.53997564,-0.833184528 4.53997564,-0.522524356 L4.53997564,8.47747564 C4.53997564,8.78813582 4.28813582,9.03997564 3.97747564,9.03997564 C3.66681547,9.03997564 3.41497564,8.78813582 3.41497564,8.47747564 L3.41497564,-0.522524356 Z" id="Line" fill="#4A4A4A" fill-rule="nonzero" transform="translate(3.977476, 3.977476) rotate(-45.000000) translate(-3.977476, -3.977476) "></path>
+        </g>
+        <g id="Group" transform="translate(17.000000, 7.000000) scale(-1, 1) translate(-17.000000, -7.000000) translate(13.000000, 3.000000)">
+            <polyline id="Rectangle" stroke="#4A4A4A" stroke-linecap="round" transform="translate(2.375000, 2.375000) rotate(90.000000) translate(-2.375000, -2.375000) " points="4.75 4.75 0 4.75 0 0"></polyline>
+            <path d="M3.41497564,-0.522524356 C3.41497564,-0.833184528 3.66681547,-1.08502436 3.97747564,-1.08502436 C4.28813582,-1.08502436 4.53997564,-0.833184528 4.53997564,-0.522524356 L4.53997564,8.47747564 C4.53997564,8.78813582 4.28813582,9.03997564 3.97747564,9.03997564 C3.66681547,9.03997564 3.41497564,8.78813582 3.41497564,8.47747564 L3.41497564,-0.522524356 Z" id="Line" fill="#4A4A4A" fill-rule="nonzero" transform="translate(3.977476, 3.977476) rotate(-45.000000) translate(-3.977476, -3.977476) "></path>
+        </g>
+        <g id="Group" transform="translate(7.000000, 17.000000) scale(1, -1) translate(-7.000000, -17.000000) translate(3.000000, 13.000000)">
+            <polyline id="Rectangle" stroke="#4A4A4A" stroke-linecap="round" transform="translate(2.375000, 2.375000) rotate(90.000000) translate(-2.375000, -2.375000) " points="4.75 4.75 0 4.75 0 0"></polyline>
+            <path d="M3.41497564,-0.522524356 C3.41497564,-0.833184528 3.66681547,-1.08502436 3.97747564,-1.08502436 C4.28813582,-1.08502436 4.53997564,-0.833184528 4.53997564,-0.522524356 L4.53997564,8.47747564 C4.53997564,8.78813582 4.28813582,9.03997564 3.97747564,9.03997564 C3.66681547,9.03997564 3.41497564,8.78813582 3.41497564,8.47747564 L3.41497564,-0.522524356 Z" id="Line" fill="#4A4A4A" fill-rule="nonzero" transform="translate(3.977476, 3.977476) rotate(-45.000000) translate(-3.977476, -3.977476) "></path>
+        </g>
+        <g id="Group" transform="translate(17.000000, 17.000000) scale(-1, -1) translate(-17.000000, -17.000000) translate(13.000000, 13.000000)">
+            <polyline id="Rectangle" stroke="#4A4A4A" stroke-linecap="round" transform="translate(2.375000, 2.375000) rotate(90.000000) translate(-2.375000, -2.375000) " points="4.75 4.75 0 4.75 0 0"></polyline>
+            <path d="M3.41497564,-0.522524356 C3.41497564,-0.833184528 3.66681547,-1.08502436 3.97747564,-1.08502436 C4.28813582,-1.08502436 4.53997564,-0.833184528 4.53997564,-0.522524356 L4.53997564,8.47747564 C4.53997564,8.78813582 4.28813582,9.03997564 3.97747564,9.03997564 C3.66681547,9.03997564 3.41497564,8.78813582 3.41497564,8.47747564 L3.41497564,-0.522524356 Z" id="Line" fill="#4A4A4A" fill-rule="nonzero" transform="translate(3.977476, 3.977476) rotate(-45.000000) translate(-3.977476, -3.977476) "></path>
+        </g>
+    </g>
+</svg>

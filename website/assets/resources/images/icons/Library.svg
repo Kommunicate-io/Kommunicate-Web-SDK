@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Library</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Library" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-2" transform="translate(1.000000, 1.000000)">
+            <rect id="Rectangle-17" stroke="#4A4A4A" x="0.5" y="1.54761905" width="5.28571429" height="18.9047619" rx="2"></rect>
+            <circle id="Oval-7" fill="#4A4A4A" cx="3.14285714" cy="17.8095238" r="1.04761905"></circle>
+            <path d="M2.44444444,6.80952381 L3.84126984,6.80952381" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <path d="M2.44444444,9.95238095 L3.84126984,9.95238095" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <path d="M2.44444444,3.66666667 L3.84126984,3.66666667" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <rect id="Rectangle-17" stroke="#4A4A4A" x="7.83333333" y="1.54761905" width="5.28571429" height="18.9047619" rx="2"></rect>
+            <circle id="Oval-7" fill="#4A4A4A" cx="10.4761905" cy="17.8095238" r="1.04761905"></circle>
+            <path d="M9.77777778,6.80952381 L11.1746032,6.80952381" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <path d="M9.77777778,9.95238095 L11.1746032,9.95238095" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <path d="M9.77777778,3.66666667 L11.1746032,3.66666667" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            <g id="Group" transform="translate(17.809524, 11.000000) rotate(-8.000000) translate(-17.809524, -11.000000) translate(14.666667, 1.047619)">
+                <rect id="Rectangle-17" stroke="#4A4A4A" x="0.5" y="0.5" width="5.28571429" height="18.9047619" rx="2"></rect>
+                <circle id="Oval-7" fill="#4A4A4A" cx="3.14285714" cy="16.7619048" r="1.04761905"></circle>
+                <path d="M2.44444444,5.76190476 L3.84126984,5.76190476" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+                <path d="M2.44444444,8.9047619 L3.84126984,8.9047619" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+                <path d="M2.44444444,2.61904762 L3.84126984,2.61904762" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+            </g>
+        </g>
+    </g>
+</svg>

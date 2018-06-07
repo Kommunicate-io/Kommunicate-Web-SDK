@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>App</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-2" stroke="#4A4A4A" x="2.5" y="2.5" width="8" height="8" rx="2"></rect>
+        <rect id="Rectangle-2" stroke="#4A4A4A" x="13.5" y="2.5" width="8" height="8" rx="2"></rect>
+        <rect id="Rectangle-2" stroke="#4A4A4A" x="2.5" y="13.5" width="8" height="8" rx="2"></rect>
+        <rect id="Rectangle-2" stroke="#4A4A4A" x="13.5" y="13.5" width="8" height="8" rx="2"></rect>
+    </g>
+</svg>

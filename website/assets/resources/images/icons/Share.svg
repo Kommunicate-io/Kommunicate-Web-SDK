@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Share</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Share" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" stroke="#4A4A4A" cx="17.2464274" cy="4.81585013" r="3.27544486"></circle>
+        <circle id="Oval" stroke="#4A4A4A" cx="17.2464274" cy="19.4508165" r="3.27544486"></circle>
+        <circle id="Oval" stroke="#4A4A4A" cx="4.8869059" cy="12.1333333" r="3.27544486"></circle>
+        <path d="M14.0397247,6.10606416 L7.48883494,9.60847749 L14.0397247,6.10606416 Z" id="Rectangle" stroke="#4A4A4A"></path>
+        <path d="M14.0397247,17.8818412 L7.48883494,14.3794279 L14.0397247,17.8818412 Z" id="Rectangle" stroke="#4A4A4A"></path>
+    </g>
+</svg>

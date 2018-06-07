@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Secure</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Secure" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M20.4224748,3.19268744 C19.2787343,3.88534571 17.9617835,4.2597004 16.5894281,4.2597004 C14.890297,4.2597004 13.2794384,3.68515523 11.9822403,2.65393852 C10.6850421,3.68515523 9.07418357,4.2597004 7.37505246,4.2597004 C6.00269703,4.2597004 4.68574623,3.88534571 3.54200577,3.19268744 C2.85786787,4.81405368 2.5,6.56467071 2.5,8.36688823 C2.5,14.2916553 6.40204845,19.4510927 11.9822403,21.1270179 C17.5624321,19.4510927 21.4644806,14.2916553 21.4644806,8.36688823 C21.4644806,6.56467071 21.1066127,4.81405368 20.4224748,3.19268744 Z" id="Combined-Shape" stroke="#4A4A4A"></path>
+        <polyline id="Path-4" stroke="#4A4A4A" stroke-linecap="round" stroke-linejoin="round" points="8.31665039 11.6325684 11.6005859 14.4768066 16.6381836 8.98925781"></polyline>
+    </g>
+</svg>
