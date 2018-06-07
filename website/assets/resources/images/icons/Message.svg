@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Message</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="8.5" cy="10.5" r="1.5"></circle>
+        <circle id="path-2" cx="12.5" cy="10.5" r="1.5"></circle>
+        <circle id="path-3" cx="16.5" cy="10.5" r="1.5"></circle>
+    </defs>
+    <g id="Message" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M8.88823529,21.5176471 L14.872549,17.0294118 L15.0392157,17.0294118 L20,17.0294118 C20.8284271,17.0294118 21.5,16.3578389 21.5,15.5294118 L21.5,5 C21.5,4.17157288 20.8284271,3.5 20,3.5 L5,3.5 C4.17157288,3.5 3.5,4.17157288 3.5,5 L3.5,15.5294118 C3.5,16.3578389 4.17157288,17.0294118 5,17.0294118 L8.08823529,17.0294118 L8.08823529,21.1176471 C8.08823529,21.3937894 8.31209292,21.6176471 8.58823529,21.6176471 C8.6964204,21.6176471 8.80168721,21.5825581 8.88823529,21.5176471 Z" id="Combined-Shape" stroke="#4A4A4A"></path>
+        <g id="Oval">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <circle stroke="#4A4A4A" stroke-width="1" cx="8.5" cy="10.5" r="1"></circle>
+        </g>
+        <g id="Oval">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-2"></use>
+            <circle stroke="#4A4A4A" stroke-width="1" cx="12.5" cy="10.5" r="1"></circle>
+        </g>
+        <g id="Oval">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+            <circle stroke="#4A4A4A" stroke-width="1" cx="16.5" cy="10.5" r="1"></circle>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,39 @@
+<section class="icons-main-icons-section">
+    <div class="container">
+        <ul class="icons-main-container" id="icons-main-container">
+            {% assign iconlibrary = site.data.icons | sort: 'icon-name' %}
+            {% for icon in iconlibrary %}
+            <li class="icons-container">    
+                <div class="icons-type-tab">
+                    <span>{{icon.icon-type}}</span>
+                </div>
+                <div class="icons-icon-container">
+                    {{icon.icon-svg-data}}
+                </div>
+                <div class="icons-metadata-container">
+                    <div class="icons-metadata-name">
+                        <p>{{icon.icon-name}}</p>
+                    </div>
+                    <!-- <div class="icons-metadata-favourite">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="icon-{{icon.icon-id}}" class="icon-favourite">
+                            <path d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </div> -->
+                    <div class="icons-metadata-download">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="icon-{{icon.icon-id}}" class="icon-favourite">
+                            <path d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg> -->
+                        <a href="/assets/resources/images/icons/{{icon.icon-filename}}" download>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
+                                <path d="M378.528 214.688l-21.088-24c-5.824-6.624-15.904-7.264-22.56-1.472L272 244.32V16c0-8.832-7.168-16-16-16h-32c-8.832 0-16 7.168-16 16v228.32l-62.88-55.104c-6.624-5.792-16.704-5.152-22.56 1.472l-21.088 23.968c-5.856 6.656-5.184 16.8 1.472 22.624l126.528 110.752c6.048 5.28 15.04 5.28 21.088 0L377.056 237.28c6.656-5.824 7.328-15.968 1.472-22.592zM416 416H64c-8.832 0-16 7.168-16 16v32c0 8.832 7.168 16 16 16h352c8.832 0 16-7.168 16-16v-32c0-8.832-7.168-16-16-16z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Lead Generation</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Lead-Generation" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M17.4935019,14.9565863 L17.517429,20.7718567 C17.519669,21.3162528 17.9616197,21.7563889 18.5060204,21.7563889 C18.5080291,21.7563875 18.5080291,21.7563875 18.5100378,21.7563806 C19.0492842,21.7541619 19.4846312,21.3152176 19.4824124,20.7759712 L19.4584684,14.9565863 L17.4935019,14.9565863 Z" id="Rectangle" stroke="#4A4A4A" transform="translate(18.486931, 18.356488) scale(-1, 1) rotate(45.000000) translate(-18.486931, -18.356488) "></path>
+        <circle id="Oval-11" stroke="#4A4A4A" transform="translate(11.597598, 11.134440) scale(-1, 1) rotate(45.000000) translate(-11.597598, -11.134440) " cx="11.5975981" cy="11.1344403" r="6.36842105"></circle>
+        <circle id="Oval" stroke="#4A4A4A" cx="11.2954545" cy="8.16818182" r="1.39090909"></circle>
+        <path d="M15.2291019,14.4822513 C15.2291019,12.408939 13.5483502,10.7281873 11.4750379,10.7281873 C9.40172565,10.7281873 7.72097395,12.408939 7.72097395,14.4822513 L15.2291019,14.4822513 Z" id="Oval" stroke="#4A4A4A" stroke-linecap="round" stroke-linejoin="round"></path>
+        <g id="Group-2" transform="translate(0.000000, 3.000000)" stroke="#4A4A4A">
+            <circle id="Oval" cx="3.81818182" cy="1.92727273" r="1.23636364"></circle>
+            <path d="M5.60123839,4.62366463 C5.12073208,4.35558927 4.56711084,4.20283318 3.9778115,4.20283318 C2.13486724,4.20283318 0.640865736,5.69683469 0.640865736,7.53977894 C2.54700874,7.53977894 3.976616,7.53977894 4.9296875,7.53977894" id="Oval" stroke-linecap="round" stroke-linejoin="round"></path>
+        </g>
+        <g id="Group-2" transform="translate(20.000000, 7.000000) scale(-1, 1) translate(-20.000000, -7.000000) translate(17.000000, 3.000000)" stroke="#4A4A4A">
+            <circle id="Oval" cx="3.81818182" cy="1.92727273" r="1.23636364"></circle>
+            <path d="M5.60123839,4.62366463 C5.12073208,4.35558927 4.56711084,4.20283318 3.9778115,4.20283318 C2.13486724,4.20283318 0.640865736,5.69683469 0.640865736,7.53977894 C2.54700874,7.53977894 3.976616,7.53977894 4.9296875,7.53977894" id="Oval" stroke-linecap="round" stroke-linejoin="round"></path>
+        </g>
+    </g>
+</svg>

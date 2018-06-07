@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>External Link</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="External-Link" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round">
+        <path d="M19,13.0117188 L19,19.4 C19,20.2836556 18.2836556,21 17.4,21 L4.6,21 C3.7163444,21 3,20.2836556 3,19.4 L3,6.6 C3,5.7163444 3.7163444,5 4.6,5 L11.0519531,5" id="Rectangle-23" stroke="#4A4A4A"></path>
+        <path d="M14,3 L20,3 C20.5522847,3 21,3.44771525 21,4 L21,10" id="Rectangle" stroke="#4A4A4A"></path>
+        <path d="M20.5,3.5 L10.882308,13.117692" id="Line" stroke="#4A4A4A"></path>
+    </g>
+</svg>

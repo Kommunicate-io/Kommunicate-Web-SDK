@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>User Experience</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="User-Experience" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M7.00976562,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,5 C3,3.8954305 3.8954305,3 5,3 L20,3 C21.1045695,3 22,3.8954305 22,5 L22,17 C22,18.1045695 21.1045695,19 20,19 L17.9008789,19" id="Rectangle-12" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M3.5,7.5 L21.5,7.5" id="Line" stroke="#4A4A4A" stroke-linecap="square"></path>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="5.5" cy="5.5" r="1"></circle>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="7.5" cy="5.5" r="1"></circle>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="9.5" cy="5.5" r="1"></circle>
+        <path d="M11,22.5 L11,17.5 C11,16.6715729 11.6715729,16 12.5,16 C13.3284271,16 14,16.6715729 14,17.5 L14,22.5" id="Rectangle-11" stroke="#4A4A4A"></path>
+        <path d="M15.5613533,20.1637372 C16.1470945,19.4679915 16.5,18.5697506 16.5,17.5890842 C16.5,15.3799452 14.709139,13.5890842 12.5,13.5890842 C10.290861,13.5890842 8.5,15.3799452 8.5,17.5890842 C8.5,18.5199884 8.81799903,19.37662 9.35129376,20.0562756" id="Oval-12" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M12.5,17 L12.5,17 C12.7761424,17 13,17.2238576 13,17.5 L13,18 L12,18 L12,17.5 C12,17.2238576 12.2238576,17 12.5,17 Z" id="Rectangle" fill="#4A4A4A"></path>
+    </g>
+</svg>

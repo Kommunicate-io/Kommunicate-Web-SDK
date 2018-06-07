@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Bot</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Bot" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M7.70710678,22.2928932 C7.5195704,22.4804296 7.26521649,22.5857864 7,22.5857864 C6.44771525,22.5857864 6,22.1380712 6,21.5857864 L6,20 L5,20 C3.8954305,20 3,19.1045695 3,18 L3,9 C3,7.8954305 3.8954305,7 5,7 L20,7 C21.1045695,7 22,7.8954305 22,9 L22,18 C22,19.1045695 21.1045695,20 20,20 L10,20 L7.70710678,22.2928932 Z" id="Combined-Shape" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M12.5,6.5 L12.5,5.5" id="Line" stroke="#4A4A4A" stroke-linecap="square"></path>
+        <circle id="Oval-5" fill="#4A4A4A" cx="8.5" cy="13.5" r="1.5"></circle>
+        <circle id="Oval-5" fill="#4A4A4A" cx="16.5" cy="13.5" r="1.5"></circle>
+        <circle id="Oval-5" stroke="#4A4A4A" cx="12.5" cy="3.5" r="1.5"></circle>
+        <rect id="Rectangle-9" stroke="#4A4A4A" x="10.5" y="17.5" width="4" height="1" rx="0.5"></rect>
+        <path d="M8,17 C6.34314575,17 5,15.4329966 5,13.5 C5,11.5670034 6.34314575,10 8,10 L17,10 C18.6568542,10 20,11.5670034 20,13.5 C20,15.4329966 18.6568542,17 17,17" id="Rectangle-10" stroke="#4A4A4A" stroke-linecap="round"></path>
+    </g>
+</svg>

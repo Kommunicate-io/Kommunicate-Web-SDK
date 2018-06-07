@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Fallback Message</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Fallback-Message" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M15.5358887,16.8029412 L13.4372549,16.8029412 L7.95882353,20.9117647 C7.78572736,21.0415868 7.57519374,21.1117647 7.35882353,21.1117647 C6.80653878,21.1117647 6.35882353,20.6640495 6.35882353,20.1117647 L6.35882353,16.8029412 L4,16.8029412 C2.8954305,16.8029412 2,15.9075107 2,14.8029412 L2,5 C2,3.8954305 2.8954305,3 4,3 L18.05,3 C19.1545695,3 20.05,3.8954305 20.05,5 L20.05,10.5583496" id="Combined-Shape" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <polyline id="Path-4" stroke="#4A4A4A" stroke-linecap="round" stroke-linejoin="round" points="6.48989093 10.2373961 10.0523481 13.3228638 15.5172014 7.36989746"></polyline>
+        <path d="M16,17.9529663 L21.4648533,12" id="Path-4" stroke="#4A4A4A" stroke-linecap="round" transform="translate(18.732427, 14.976483) scale(-1, 1) translate(-18.732427, -14.976483) "></path>
+        <circle id="Oval" fill="#4A4A4A" cx="19" cy="18" r="1"></circle>
+        <path d="M20.6879136,16.9267078 C20.3328989,16.3695569 19.7096068,16 19,16 C18.2947738,16 17.6747998,16.3650083 17.3186918,16.9164111" id="Oval" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M21.7748292,15.1189658 C21.0555977,14.4260856 20.0775577,14 19,14 C17.9194647,14 16.9389978,14.4284437 16.2192143,15.1247159" id="Oval" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M22.8510067,13.3987544 C21.8089247,12.5256579 20.4658493,12 19,12 C17.5413387,12 16.2042503,12.5205152 15.1643452,13.3859352" id="Oval" stroke="#4A4A4A" stroke-linecap="round"></path>
+    </g>
+</svg>

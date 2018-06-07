@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Photo</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Photo" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-16" stroke="#4A4A4A" x="2.5" y="2.5" width="19" height="19" rx="2"></rect>
+        <polygon id="Path-9" stroke="#4A4A4A" stroke-linejoin="round" points="4.8684082 19 8.6340332 9.95214844 12.8642578 17.3880502 15.2680664 13.3812375 19.0615234 19"></polygon>
+        <circle id="Oval" stroke="#4A4A4A" cx="16" cy="7.13333333" r="2.13333333"></circle>
+    </g>
+</svg>

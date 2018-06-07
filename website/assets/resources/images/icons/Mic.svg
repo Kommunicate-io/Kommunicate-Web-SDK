@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Audio Call</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Audio-Call" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-5" stroke="#4A4A4A" x="7.5" y="2.5" width="10" height="15" rx="5"></rect>
+        <path d="M19,12 C19,15.8659932 16.0898509,19 12.5,19 C8.91014913,19 6,15.8659932 6,12" id="Rectangle-5" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M12.5,18.5 L12.5,21.5" id="Line" stroke="#4A4A4A"></path>
+        <path d="M7.5,7.5 L10.5,7.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,7.5 L17.5,7.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M7.5,9.5 L10.5,9.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,9.5 L17.5,9.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M7.5,11.5 L10.5,11.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,11.5 L17.5,11.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M8.5,21.5 L16.3469388,21.5" id="Line-2" stroke="#4A4A4A" stroke-linecap="round"></path>
+    </g>
+</svg>

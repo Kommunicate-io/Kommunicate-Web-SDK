@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Features</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Features" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Star" stroke="#4A4A4A" stroke-linejoin="round" points="6.14620001 8.54170684 3.58370748 9.88888889 4.07310001 7.03551152 2 5.01473845 4.86495374 4.5984363 6.14620001 2.00234781 7.42744628 4.5984363 10.2924 5.01473845 8.21930002 7.03551152 8.70869254 9.88888889"></polygon>
+        <polygon id="Star" stroke="#4A4A4A" stroke-linejoin="round" points="6.14620001 19.652818 3.58370748 21 4.07310001 18.1466226 2 16.1258496 4.86495374 15.7095474 6.14620001 13.1134589 7.42744628 15.7095474 10.2924 16.1258496 8.21930002 18.1466226 8.70869254 21"></polygon>
+        <polyline id="Path-4" stroke="#4A4A4A" stroke-linecap="round" stroke-linejoin="round" points="13.6554344 5.80083519 16.3483872 8.1332194 20.47941 3.6332194"></polyline>
+        <path d="M13.7460317,18.2222222 L20.5,18.2222222" id="Line-3" stroke="#4A4A4A" stroke-linecap="round"></path>
+    </g>
+</svg>

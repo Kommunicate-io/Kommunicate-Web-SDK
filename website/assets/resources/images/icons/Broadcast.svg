@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Broadcast</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Broadcast" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-8" stroke="#4A4A4A" x="8.96153846" y="7.57692308" width="6.53846154" height="6.53846154" rx="2"></rect>
+        <path d="M18.1538462,8.15384615 L18.1538462,12.4615385 M6.30769231,12.4615385 L6.30769231,8.15384615" id="Rectangle-8" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M20.3076923,7.07692308 L20.3076923,13.5384615 M4.15384615,13.5384615 L4.15384615,7.07692308" id="Rectangle-8" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M22.4615385,6 L22.4615385,14.6153846 M2,14.6153846 L2,6" id="Rectangle-8" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M12.2307692,14.5 L12.2307692,19.4615385" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+    </g>
+</svg>

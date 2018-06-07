@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Push Notification</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Push-Notification" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M19,13.317627 L19,15.1225509 C19,16.2271204 18.1045695,17.1225509 17,17.1225509 L12.9494985,17.1225509 L8.22597681,20.5171129 C8.05592626,20.6393199 7.85180198,20.7050593 7.64239395,20.7050593 C7.0901092,20.7050593 6.64239395,20.2573441 6.64239395,19.7050593 L6.64239395,17.1225509 L5.0637207,17.1225509 C3.9591512,17.1225509 3.0637207,16.2271204 3.0637207,15.1225509 L3.0637207,7 C3.0637207,5.8954305 3.9591512,5 5.0637207,5 L10.8115234,5" id="Combined-Shape" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <circle id="Oval" stroke="#4A4A4A" cx="16.5" cy="7.5" r="4.5"></circle>
+    </g>
+</svg>

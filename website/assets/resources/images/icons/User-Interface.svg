@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>User Interface</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="4" y="8" width="9" height="12" rx="1"></rect>
+    </defs>
+    <g id="User-Interface" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle-12" stroke="#4A4A4A" x="2.5" y="2.5" width="19" height="19" rx="2"></rect>
+        <g id="Rectangle-12">
+            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+            <rect stroke="#4A4A4A" stroke-width="1" x="4.5" y="8.5" width="8" height="11" rx="1"></rect>
+        </g>
+        <path d="M2.5,6.5 L21.5,6.5" id="Line" stroke="#4A4A4A" stroke-linecap="square"></path>
+        <path d="M14.5,9.5 L19.5,9.5" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,12.5 L19.5,12.5" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,15.5 L19.5,15.5" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <path d="M14.5,18.5 L19.5,18.5" id="Line" stroke="#4A4A4A" stroke-linecap="round"></path>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="4.5" cy="4.5" r="1"></circle>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="6.5" cy="4.5" r="1"></circle>
+        <circle id="Oval-7" stroke="#4A4A4A" stroke-width="0.5" fill="#4A4A4A" cx="8.5" cy="4.5" r="1"></circle>
+    </g>
+</svg>
