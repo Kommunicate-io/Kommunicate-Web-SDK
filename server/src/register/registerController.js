@@ -97,21 +97,22 @@ exports.createCustomer = (req,res)=>{
     }
 }
 
-exports.patchCustomer = (req,res)=>{
-  let response ={};
+exports.patchCustomer = (req, res) => {
+  let response = {};
   let status;
   const customer = req.body;
-  const userId = req.params.userId; 
-  console.log("request recieved to update customer: ",userId, "body",customer);
+  const userId = req.params.userId;
+  console.log("request recieved to update customer: ", userId, "body", customer);
   if (customer.websiteUrl) {
-    let appName=(customer.companyName)?customer.companyName:"";
-    applozicClient.updateApplication({applicationId:customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName}).catch(err => {
+    let appName = (customer.companyName) ? customer.companyName : "";
+    applozicClient.updateApplication({ applicationId: customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName }).catch(err => {
       console.log('error while updating application')
-    })  
+    })
   }
-  if (activeCampaignEnable) {
-    registrationService.getCustomerByUserName(userId).then(dbCostomer => {
-      console.log("got the user from db", dbCostomer);
+
+  registrationService.getCustomerByUserName(userId).then(dbCostomer => {
+    console.log("got the user from db", dbCostomer);
+    if (activeCampaignEnable) {
       return activeCampaignClient.updateActiveCampaign({
         "email": userId,
         "subscriberId": dbCostomer.dataValues.activeCampaignId,
@@ -121,20 +122,30 @@ exports.patchCustomer = (req,res)=>{
         "contactNo": customer.contactNo,
         "industry": customer.industry,
         "companySize": customer.companySize
+      }).catch(error => {
+        console.log("Error while updating company URL to activeCampaign", error);
+      });
+    }
+    if (pipeDriveEnable) {
+      applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applicationId, dbCostomer.apzToken).then(users => {
+        let integration = users[0].metadata && users[0].metadata.KM_INTEGRATION ? JSON.parse(users[0].metadata.KM_INTEGRATION) : {};
+        if (integration.pipeDriveId) {
+          pipeDrive.updateDeal({ id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo });
+        } else {
+          let organization = { name: customer.companyName };
+          let person = { name: customer.name, email: userId, phone: customer.contactNo, }
+          pipeDrive.createDealInPipeDrive(organization, person).then(result => {
+            integration['pipeDriveId'] = result.data.data.id;
+            let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
+            return applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applicationId, user, { apzToken: dbCostomer.apzToken }, false);
+          });
+        }
       })
-        .catch(error => {
-          console.log("Error while updating company URL to activeCampaign", error);
-        });
-    }).catch(error => {
-      console.log("Error while getting customer by userId", error);
-    });
-  }
-  if (pipeDriveEnable) {
-    let organization = { name: customer.companyName };
-    let person = { name: customer.name, email: userId, phone: customer.contactNo, }
-    pipeDrive.createDealInPipeDrive(organization, person);
-  }
-  registrationService.updateCustomer(userId,customer).then(isUpdated=>{
+    }
+  }).catch(error => {
+    console.log("Error while getting customer by userId", error);
+  });
+  registrationService.updateCustomer(userId, customer).then(isUpdated => {
     // userService.getAdminUserByAppId(customer.applicationId).then(user=>{
     //   let userobj =  {};
     //   userId?userobj.userId=userId:"";
@@ -146,13 +157,13 @@ exports.patchCustomer = (req,res)=>{
     //     console.log("error while updating Applozic user");
     //   }) 
     // });
-    if(isUpdated){
-      response.code="SUCCESS";
-      response.message="Updated";
+    if (isUpdated) {
+      response.code = "SUCCESS";
+      response.message = "Updated";
       res.status(200).json(response);
-    }else{
-      response.code="NOT_FOUND";
-      response.message="resource not found by userId "+userId;
+    } else {
+      response.code = "NOT_FOUND";
+      response.message = "resource not found by userId " + userId;
       res.status(404).json(response);
     }
 
@@ -161,7 +172,6 @@ exports.patchCustomer = (req,res)=>{
     response.message = err.message ? err.message : "something went wrong!";
     res.status(500).json(response);
   });
-
 }
 
 exports.getCustomerInformation = (req,res)=>{
