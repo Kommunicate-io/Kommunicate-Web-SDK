@@ -7,6 +7,7 @@ const API_KEY = '37819590033f154fe2769778cad3489180d622ea';
 const ADD_ORGANIZATION_API_URL = "https://applozic.pipedrive.com/v1/organizations?api_token=";
 const ADD_PERSON_API_URL = "https://applozic.pipedrive.com/v1/persons?api_token=";
 const ADD_DEAL_API_URL = "https://applozic.pipedrive.com/v1/deals?api_token=";
+const UPDATE_DEAL = "https://applozic.pipedrive.com/v1/deals";
 
 
 exports.createDealInPipeDrive = (organization, person) => {
@@ -49,6 +50,15 @@ const createPerson = (person) => {
 const createDeal = (deal) => {
     return Promise.resolve(axios.post(ADD_DEAL_API_URL + API_KEY, deal)).then(result => {
         return result
+    });
+}
+
+exports.updateDeal = (deal) => {
+    return Promise.resolve(axios.put(UPDATE_DEAL + '/' + deal.id + '?api_token=' + API_KEY, deal)).then(result => {
+        return result;
+    }).catch(err => {
+        console.log('update error pipedrive', err);
+        return "Not updated";
     });
 }
 
