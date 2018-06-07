@@ -2,8 +2,10 @@ from rasa_core.channels.custom import *
 from rasa_core.channels.rest import *
 from rasa_core.agent import Agent
 from rasa_core.interpreter import RasaNLUInterpreter
+import importlib
 import requests
 import json
+import sys
 
 from flask import Blueprint, request, jsonify, make_response
 from typing import Text, Optional
@@ -11,6 +13,12 @@ from typing import Text, Optional
 from rasa_core.channels.channel import UserMessage, OutputChannel
 from rasa_core.channels.rest import HttpInputComponent, HttpInputChannel
 
+def get_cnfg():
+	if(len(sys.argv) > 1):
+		cnfg = importlib.import_module('conf.' + sys.argv[1])
+	else:
+		cnfg = importlib.import_module('conf.default')
+	return cnfg
 
 class KommunicateChatBot(OutputChannel):
     def __init__(self, data):
@@ -22,14 +30,15 @@ class KommunicateChatBot(OutputChannel):
     def send_text_message(self , recipient_id, message):
         print(message)
 
-        send_message_url = "https://apps-test.applozic.com/rest/ws/message/v2/send"
+        send_message_url = get_cnfg().url + "/rest/ws/message/v2/send"
+        print send_message_url
 
         auth_headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
             "Application-Key": self.application_key,
            # "Authorization": "Basic cmFzYS10ZXN0OnJhc2EtdGVzdA=="
-           "Authorization": self.authorization
+			"Authorization": self.authorization
         }
 
         message_data = {"groupId": self.group_id,
@@ -47,7 +56,7 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
         @kommunicate_chat_webhook.route("/", methods=["GET", "POST"])
         def health():
             return jsonify({
-                "status": "ok"
+                "status": "ok",
             })
 
         @kommunicate_chat_webhook.route("/webhook/", methods=["GET", "POST"])

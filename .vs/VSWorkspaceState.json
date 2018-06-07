@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\docs",
+    "\\fiddlers",
+    "\\Kommunicate-Agent",
+    "\\machine-learning",
+    "\\machine-learning\\rasa",
+    "\\machine-learning\\rasa\\faqbot",
+    "\\machine-learning\\rasa\\faqbot\\channel"
+  ],
+  "SelectedNode": "\\Kommunicate-Agent\\app",
+  "PreviewInSolutionExplorer": false
+}
