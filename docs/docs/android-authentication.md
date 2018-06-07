@@ -5,6 +5,13 @@ sidebar_label: Authentication
 ---
 
 #### Authorization
+
+You need to initialise the Kommunicate SDK with your application key obtained from dashboard before accessing any method.
+Call the below method:
+
+```java
+Kommunicate.init(context, <your-app-id>);
+```
 You can authorize a user as described below:
 ```java
         KMUser user = new KMUser();
