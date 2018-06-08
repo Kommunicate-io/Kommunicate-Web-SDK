@@ -2,10 +2,11 @@ const agileService = require('./agileService')
 const registrationService = require('../register/registrationService');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const AGILE_CRM = require('../application/utils').INTEGRATION_PLATFORMS.AGILE_CRM;
+const customerService= require('../customer/CustomerService')
 
 exports.createContact = (req, res) => {
     let appId = req.params.appId;
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }
@@ -29,7 +30,7 @@ exports.createContact = (req, res) => {
 exports.updateContact = (req, res) => {
     let appId = req.params.appId;
     let agileContactId = req.params.contactId
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }
@@ -52,7 +53,7 @@ exports.updateContact = (req, res) => {
 exports.updateTag = (req, res) => {
     let appId = req.params.appId;
     let agileContactId = req.params.contactId
-    return registrationService.getCustomerByApplicationId(appId).then(customer => {
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }

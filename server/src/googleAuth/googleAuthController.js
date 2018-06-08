@@ -5,7 +5,7 @@ const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const config = require("../../conf/config");
 const loginService = require("../login/loginService");
-
+const customerService = require('../customer/CustomerService')
 const CLIENT_ID = '155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com'
 const CLIENT_SECRET = '67BmE4D4qPn9PfglGn27pAmX'
 
@@ -75,7 +75,7 @@ exports.authCode = (req, res) => {
 		email = response.data.emails[0].value ? response.data.emails[0].value : null;
 		name = response.data.displayName ? response.data.displayName : null;
 
-		return Promise.all([registrationService.getCustomerByUserName(email),userService.getUserByName(email)])
+		return Promise.all([customerService.getCustomerByUserName(email),userService.getUserByName(email)])
 	}).then( ([_customer,_user] ) => {
 		logger.info(1)
 		if (_customer || _user) {

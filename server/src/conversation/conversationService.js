@@ -3,6 +3,7 @@ const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY } = require('./conversati
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
+const customerService = require('../customer/CustomerService');
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
 const Sequelize = require("sequelize");
@@ -153,9 +154,9 @@ const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
     let groupInfo = { userIds: [], clientGroupIds: [data.groupId] }
     let header = {}
-    return Promise.resolve(registrationService.getCustomerByAgentUserKey(data.userId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByAgentUserKey(data.userId)).then(customer => {
         if (customer) {
-            return Promise.resolve(userService.getAllUsersOfCustomer(customer, undefined)).then(users => {
+            return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
                     let userIds = [];
                     let agentIds = [];
@@ -179,11 +180,11 @@ const addMemberIntoConversation = (data) => {
                     });
                     if (customer.agentRouting) {
                         logger.info("adding assignee in round robin fashion");
-                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applicationId, header);
+                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applications[0].applicationId, header);
                     }
                     groupInfo.userIds = userIds;
-                    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applicationId, header.apzToken, header.ofUserId)).then(response => {
+                    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                    return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
                         logger.info('response', response.data)
                         return { code: "SUCCESS", data: 'success' };
                     });
@@ -246,9 +247,9 @@ const getConversationStatByAgentId = (agentId, startTime, endTime) => {
     }).catch(err => { throw err });
 }
 
-const getConversationStats = (agentId, customerId, startTime, endTime) => {
-    if (customerId) {
-        return userService.getUsersByCustomerId(customerId).then(users => {
+const getConversationStats = (agentId, customerId, applicationId, startTime, endTime) => {
+    if (applicationId) {
+        return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }
@@ -334,8 +335,9 @@ const getAllStatistic = (query, agentIds) => {
 const getConversationStat = (query) => {
     let customerId = query.customerId;
     let agentId = query.agentId;
-    if (customerId) {
-        return userService.getUsersByCustomerId(customerId).then(users => {
+    let applicationId= query.applicationId;
+    if (applicationId) {
+        return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
             if (users.length == 0) {
                 return { result: 'no user stats found', data: [] };
             }

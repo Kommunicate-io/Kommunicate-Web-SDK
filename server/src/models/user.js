@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     userName: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique: "IDX_USER_CUSTOMER",
+      unique: "IDX_USER_NAME_APP_KEY",
       field: 'user_name'
     },
     email: {
@@ -53,10 +53,16 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       field: 'access_token'
     },
-    customerId: {
-      type: DataTypes.INTEGER(),
-      field: 'customer_id',
-      unique: "IDX_USER_CUSTOMER"
+    // customerId: {
+    //   type: DataTypes.INTEGER(),
+    //   field: 'customer_id',
+    //   unique: "IDX_USER_CUSTOMER"
+    // },
+    applicationId: {
+      type: DataTypes.STRING(150),
+      field: 'application_id',
+      unique: "IDX_USER_NAME_APP_KEY",
+      allowNull: false
     },
     role: {
       type: DataTypes.STRING(20)
