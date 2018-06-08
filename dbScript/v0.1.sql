@@ -73,6 +73,8 @@ CREATE TABLE `applications` (
 /** INSERT/MIGRATE DATA INTO APPLICATION TABLE*/
 INSERT INTO applications(customer_id,application_id,created_at, updated_at) select c.id, a.application_id, c.created_at, c.updated_at from customers c join application a on c.id=a.customer_id;
 
+alter table users add column application_id varchar(150);
+
 /* seed application Id to user table*/
 update users u join customers c on c.id= u.customer_id set u.application_id= c.application_id;
 
