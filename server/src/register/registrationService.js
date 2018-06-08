@@ -2,7 +2,7 @@ const bcrypt= require("bcrypt");
 // const customerModel = require("../models").customer;
 const userModel = require("../models").user;
 const config= require("../../conf/config");
- //const db = require("../models");
+const db = require("../models");
 const applozicClient = require("../utils/applozicClient");
 const botPlatformClient = require("../utils/botPlatformClient");
 const userService = require('../users/userService');
@@ -38,7 +38,8 @@ exports.createCustomer = customer => {
       // customer.applicationId = application.applicationId;
       customer.subscription = "startup";
       user.password = customer.password;
-      return customerService.createCustomer(customer, {applicationId:application.applicationId}).then(customer => {
+    return db.sequelize.transaction(t=> { 
+      return customerService.createCustomer(customer, {applicationId:application.applicationId}, {transaction:t}).then(customer => {
         console.log("persited in db", customer ? customer.dataValues : null);
         user.customerId = customer ? customer.dataValues.id : null;
         let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
@@ -71,7 +72,7 @@ exports.createCustomer = customer => {
         });
         //insert appId in to application_settings table
         appSetting.insertAppSettings({applicationId:customer.applicationId});
-        return userModel.bulkCreate([user,/*agentobj,*/botObj,lizObj]).spread((user,/*agent,*/bot,lizObj)=>{
+        return userModel.bulkCreate([user,/*agentobj,*/botObj,lizObj], {transaction:t}).spread((user,/*agent,*/bot,lizObj)=>{
           console.log("user created",user?user.dataValues:null);
          // console.log("created agent",agent.dataValues);
           console.log("created bot ",bot.dataValues);
@@ -82,6 +83,7 @@ exports.createCustomer = customer => {
   }).catch(err => {
     console.log("err while creating Customer ", err);
     throw err;
+  });
   });
 };
 const getUserObject = (customer,applozicCustomer,application)=>{
