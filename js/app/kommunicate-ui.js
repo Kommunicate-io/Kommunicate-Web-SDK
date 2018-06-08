@@ -8,11 +8,11 @@ KommunicateUI={
     },
     populateAwayMessage:function(err,message){
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
-        if(!err && message.code =="SUCCESS" &&message.data.length>0 &&!isCnversationWindowNotActive){
+        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
             // supporting only one away message for now. 
-            awayMessage =message.data[0].message;
+            awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
-            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
+            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
         }else{
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
@@ -20,6 +20,42 @@ KommunicateUI={
     hideAwayMessage:function(){
         $applozic("#mck-away-msg").html("");
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
+    },
+
+    getLeadStatus: function(data){
+        if (data.messages.length) {
+            let i = 0;
+            data.conversationId && data.messages.map(function (msg) {
+                if (msg.type == 5) {
+                    i++;
+                }
+            })        
+            if (i > 2) {
+                $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
+
+            }
+            if (i == 1) {
+                //displayLeadCollectionTemplate
+                data.conversationId && Kommunicate.getAwayMessage(data, function (err, result, options) {
+                    if (!err && result.code == "SUCCESS" && result.data.collectEmail && result.data.messageList.length > 0) {
+                        $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
+                    }
+
+                })
+            }
+
+        }
+    },
+    
+    displayLeadCollectionTemplate: function (err, result) {
+        let sendMsgCount = $applozic("[data-msgtype=5]").length;
+        if (sendMsgCount == 1 && !err && result.code == "SUCCESS" && result.data.collectEmail && result.data.messageList.length > 0) {
+            $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
+        }
+
+    },
+    hideLeadCollectionTemplate:function(){
+        $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
     },
     
    faqEvents:function (data, helpdocsKey) {

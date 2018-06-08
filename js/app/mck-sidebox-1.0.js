@@ -2236,6 +2236,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     var currTabId = $mck_msg_inner.data("mck-id");
                     var isGroup = $mck_msg_inner.data("isgroup");
                     KommunicateUI.hideAwayMessage();
+                    KommunicateUI.hideLeadCollectionTemplate();
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -2962,7 +2963,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 $mck_tab_message_option.removeClass('vis').addClass('n-vis');
                             }
                         }
-                        // mckInitializeChannel.checkConnected(true);
+                        // Lead Collection (Email)
+                        let sendMsgCount = $applozic("[data-msgtype=5]").length;
+                        sendMsgCount == 1 && Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":currentTabId},KommunicateUI.displayLeadCollectionTemplate);
+                        sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
+                        
                         var displayName = mckMessageLayout.getTabDisplayName(currentTabId, false);
                             if (!MCK_USER_DETAIL_MAP[currentTabId] && currentTabId !== displayName) {
                                 mckContactService.updateDisplayName(currentTabId, displayName);
@@ -3133,6 +3138,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     global: false,
                     success: function (data) {
                         var isMessages = true;
+                        let obj = {"messages":data.message,"applicationId":MCK_APP_ID,"conversationId":params.tabId}
+                        //Display/hide lead(email) collection template  
+                        KommunicateUI.getLeadStatus(obj);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
