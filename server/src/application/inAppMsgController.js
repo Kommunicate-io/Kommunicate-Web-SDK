@@ -5,6 +5,8 @@ const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
 const constant = require('./utils');
 const customerService=require('../customer/CustomerService');
+const appSetting = require("../setting/application/appSettingService")
+
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
@@ -314,6 +316,7 @@ exports.processAwayMessage = function(req,res){
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
+        let collectEmail = false;
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
@@ -332,11 +335,18 @@ exports.processAwayMessage = function(req,res){
                 // agents are offline and user is known.
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
                }
-               return inAppMsgService.getInAppMessage(customer.id,eventId).then(result=>{
-                   logger.info("got data from db.. sending response.");
-                   let messageList = result.map(data=>data.dataValues);
-                   res.json({"code":"SUCCESS",data:messageList}).status(200);
-               })
+               //get status of collect email
+                Promise.resolve(appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }))
+                .then(response => {  
+                     collectEmail = response.data.collectEmail;
+                     return inAppMsgService.getInAppMessage(customer.id,eventId).then(result=>{
+                        logger.info("got data from db.. sending response.");
+                        let messageList = result.map(data=>data.dataValues);
+                        let data = {"messageList":messageList, "collectEmail":collectEmail}
+                        res.json({"code":"SUCCESS",data:data}).status(200);
+                    })
+                })
+               
             });
         }else{
             logger.info("no customer found with applicationId :",applicationId);
