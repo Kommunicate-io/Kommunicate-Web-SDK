@@ -5,11 +5,11 @@ const applicationService = require('./ApplicationService');
 const logger = require('../utils/logger')
 
 
-const createCustomer = (customer, application) => {
-    return Promise.resolve(Customer.create(customer)).then(customer => {
+const createCustomer = (customer, application, {transaction:t}) => {
+    return Promise.resolve(Customer.create(customer, {transaction:t})).then(customer => {
         application.customerId = customer.id;
-        return applicationService.createApplication(application).then(application => {
-            return getCustomerByApplicationId(application.applicationId);
+        return applicationService.createApplication(application, {transaction:t}).then(application => {
+            return getCustomerByApplicationId(application.applicationId, {transaction:t});
         });
 
     })

@@ -204,8 +204,8 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
  kmUser.authorization = new Buffer(options.userName+":"+applozicCustomer.deviceKey).toString('base64');
  kmUser.apzToken=new Buffer(options.userName+":"+options.password).toString('base64');
 
- //return db.sequelize.transaction(t=> { 
-  return customerService.createCustomer(kmCustomer, {applicationId:application.applicationId}).then(customer=>{
+ return db.sequelize.transaction(t=> { 
+  return customerService.createCustomer(kmCustomer, {applicationId:application.applicationId}, {transaction:t}).then(customer=>{
     console.log("persited in db",customer?customer.dataValues:null);
     kmUser.customerId=customer?customer.dataValues.id:null;
     // update bot plateform
@@ -242,7 +242,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
       return getResponse(user.dataValues,application);
     });
   });
-//})
+})
 }
 
 exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
