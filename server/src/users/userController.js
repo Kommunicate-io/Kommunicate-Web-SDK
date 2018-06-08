@@ -388,7 +388,7 @@ exports.getPseudoName = (req,res) => {
   let randomName = name[randomPositionForName];
   let randomPositionForAdjective = Math.floor(Math.random()*adjective.length);
   let randomAdjective = adjective[randomPositionForAdjective]
-  let userName = randomName + " " + randomAdjective ;
+  let userName = randomAdjective + " " + randomName ;
   let data = {"userName": userName};
   return res.status(200).json({ code: "SUCCESS", response: data });
 }
