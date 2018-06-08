@@ -3131,7 +3131,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         var isMessages = true;
                         let obj = {"messages":data.message,"applicationId":MCK_APP_ID,"conversationId":params.tabId}
                         //Display/hide lead(email) collection template  
-                        KommunicateUI.getLeadStatus(null,null,obj);
+                        KommunicateUI.getLeadStatus(obj);
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {
