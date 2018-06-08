@@ -1,0 +1,2 @@
+
+url = "api.applozic.com"
