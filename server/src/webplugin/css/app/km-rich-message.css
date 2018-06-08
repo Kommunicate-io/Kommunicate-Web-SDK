@@ -623,13 +623,25 @@
     }
     #mck-away-msg-box{
         border-top: dashed 1px #bebbbb;
-        border-bottom: solid 1px #654df7;
+        /* border-bottom: solid 1px #654df7; */
         padding: 8px 5px;
         /* position: absolute;
         bottom: 52px;
         left:0; 
         width: 97%;
         background-color: white; */
+    }
+    .mck-collect-email {
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0.4px;
+        text-align: left;
+        color: #6b6767;
+    }
+    #mck-email-collection-box {
+        text-align: center;
+        padding: 5px;
+        background-color: #d8d8d8;
     }
     /******** Generic list template*************/
     /* FAQ List */
