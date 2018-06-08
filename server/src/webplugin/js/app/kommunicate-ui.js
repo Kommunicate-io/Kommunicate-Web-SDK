@@ -22,7 +22,7 @@ KommunicateUI={
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
     },
 
-    getLeadStatus: function(err,result,data){
+    getLeadStatus: function(data){
         if (data.messages.length) {
             let i = 0;
             data.conversationId && data.messages.map(function (msg) {
