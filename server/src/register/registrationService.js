@@ -41,6 +41,8 @@ exports.createCustomer = customer => {
       return customerService.createCustomer(customer, {applicationId:application.applicationId}).then(customer => {
         console.log("persited in db", customer ? customer.dataValues : null);
         user.customerId = customer ? customer.dataValues.id : null;
+        //customerService.createApplication({customerId:customer.id, applicationId:application.applicationId});
+        
         let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
         let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
         // create default bot plateform
