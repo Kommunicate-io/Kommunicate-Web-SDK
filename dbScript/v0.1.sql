@@ -60,16 +60,6 @@ ALTER TABLE `conversations` CHANGE COLUMN `participent_user_id` `participant_use
 /*added column in customers, "bot_routing" KM-1070 */
 alter table customers add  column bot_routing tinyint(1)  default 0;
 
-CREATE TABLE `applications` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) DEFAULT NULL,
-  `application_id` varchar(150) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `deleted_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-);
-
 /** INSERT/MIGRATE DATA INTO APPLICATION TABLE*/
 INSERT INTO applications(customer_id,application_id,created_at, updated_at) select c.id, a.application_id, c.created_at, c.updated_at from customers c join application a on c.id=a.customer_id;
 
