@@ -72,3 +72,10 @@ alter table users drop customer_id;
 
 alter table customers drop application_id; 
 
+ALTER TABLE customers ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
+
+ALTER TABLE customers ADD UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC);
+
+ALTER TABLE customers DROP INDEX  IDX_USER_NAME_APP_KEY;
+
+ALTER TABLE users ADD INDEX `IDX_USER_NAME_APP_KEY` (`user_name` ASC, `application_id` ASC);

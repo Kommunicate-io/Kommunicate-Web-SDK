@@ -33,7 +33,7 @@ module.exports = function(sequelize, DataTypes) {
     userName: {
       type: DataTypes.STRING(50),
       allowNull: false,
-      //unique: "IDX_USER_APPLICATION",
+      unique: "IDX_USER_NAME_APP_KEY",
       field: 'user_name'
     },
     email: {
@@ -61,7 +61,7 @@ module.exports = function(sequelize, DataTypes) {
     applicationId: {
       type: DataTypes.STRING(150),
       field: 'application_id',
-      //unique: "IDX_USER_APPLICATION",
+      unique: "IDX_USER_NAME_APP_KEY",
       allowNull: false
     },
     role: {
