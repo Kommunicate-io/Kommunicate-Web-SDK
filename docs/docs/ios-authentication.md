@@ -6,7 +6,7 @@ sidebar_label: Authentication
 
 ### Setup
 
-There is a setup call that you need to do before registration or login.You can get your applicatio key by signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io).
+There is a setup call that you need to do before registration or login.You can get your application key by signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io).
 Add below line in AppDelegate's launch method or just before the registration:
 
 ```
