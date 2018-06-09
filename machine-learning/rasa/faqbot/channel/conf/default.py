@@ -1,1 +1,1 @@
-url = "api-test.applozic.com"
+url = "https://apps-test.applozic.com"
