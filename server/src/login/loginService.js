@@ -34,11 +34,9 @@ exports.login = (userDetail) => {
     // else if (Object.keys(applicationWebAdminApp).length > 1) {
     //   return applicationWebAdminApp;
     // } 
-    else if (Object.keys(applicationAdminApp).length > 0) {
+    else if (Object.keys(applicationAdminApp).length == 1) {
       userDetail.applicationId = Object.keys(applicationAdminApp)[0];
-      return registrationService.signUpWithApplozic(userDetail, false).then(result => {
-        return this.processLogin(userDetail);
-      });
+      return kommunicateCustomerAndApplicationValidate(userDetail);
     } else {
       let err = {};
       err.code = "INVALID_CREDENTIALS";
