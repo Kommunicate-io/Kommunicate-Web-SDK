@@ -200,7 +200,7 @@ const populateDataInKommunicateDb = (options,application,applozicCustomer,apploz
  kmCustomer.password = bcrypt.hashSync(options.password, 10);
  kmCustomer.apzToken = new Buffer(options.userName+":"+options.password).toString('base64');
 
- let kmUser = {name:applozicCustomer.displayName,userName:options.userName,email:options.email,accessToken:options.password,role:options.role,type:USER_TYPE.ADMIN,userKey:applozicCustomer.userKey}
+ let kmUser = {name:applozicCustomer.displayName,userName:options.userName,email:options.email,accessToken:options.password,role:options.role,type:USER_TYPE.ADMIN,userKey:applozicCustomer.userKey, applicationId:application.applicationId}
  kmUser.password = bcrypt.hashSync(options.password, 10);
  kmUser.apzToken = bcrypt.hashSync(options.password, 10);
  kmUser.authorization = new Buffer(options.userName+":"+applozicCustomer.deviceKey).toString('base64');
@@ -258,6 +258,8 @@ exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
           .then(updatedUser => {
             options.role = "APPLICATION_WEB_ADMIN";
             return populateDataInKommunicateDb(options, application, customer, bot, liz);
+          }).catch(e => {
+            throw e;
           })
       })
 
