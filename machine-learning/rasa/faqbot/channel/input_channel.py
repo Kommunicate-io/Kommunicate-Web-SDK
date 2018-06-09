@@ -31,7 +31,7 @@ class KommunicateChatBot(OutputChannel):
         print(message)
 
         send_message_url = get_cnfg().url + "/rest/ws/message/v2/send"
-        print send_message_url
+        print(send_message_url)
 
         auth_headers = {
             "Accept": "application/json",
