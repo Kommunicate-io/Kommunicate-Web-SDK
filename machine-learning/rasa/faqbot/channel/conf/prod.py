@@ -1,2 +1,1 @@
-
-url = "api.applozic.com"
+url = "https://apps.applozic.com"
