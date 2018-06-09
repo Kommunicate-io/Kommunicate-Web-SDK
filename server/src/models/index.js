@@ -12,13 +12,13 @@ sequelize.authenticate().then(function() {
 })
 var db = {};
 
-const models = ['user','customer','BusinessHour','PasswordResetRequest', 'AutoSuggest',"Conversation","InAppMsg","IssueType","IssueTypeAutoReply",'InAppEvent', 'ThirdPartyIntegrationSettings', "AppSetting","Application"];
+const models = ['user','customer','BusinessHour','PasswordResetRequest', 'AutoSuggest',"Conversation","InAppMsg","IssueType","IssueTypeAutoReply",'InAppEvent', 'ThirdPartyIntegrationSettings', "AppSetting","application"];
 models.forEach(function(model) {
 db[model]= sequelize.import(path.join(__dirname, model));
 });
 
-db['customer'].hasMany(db['Application'],{targetKey:'customerId'});
-db['Application'].belongsTo(db['customer'], {sourceKey:'customerId'} );
+db['customer'].hasMany(db['application'],{targetKey:'customerId'});
+db['application'].belongsTo(db['customer'], {sourceKey:'customerId'} );
 //dont use foreign keys 
 //db.OffBusinessHoursConfig.belongsTo(db.BusinessHour,{constraints:false});
 

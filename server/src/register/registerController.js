@@ -1,5 +1,5 @@
 const registrationService = require("./registrationService");
-const customerService = require('../customer/CustomerService')
+const customerService = require('../customer/customerService')
 const userService = require('../users/userService');
 const joi = require("joi");
 const randomString  = require('randomstring');

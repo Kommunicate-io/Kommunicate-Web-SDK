@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 const constant =require('../../src/utils/constant');
-const customerService = require('../customer/CustomerService');
+const customerService = require('../customer/customerService');
 /**
  *
  * @param {Http request object} req 

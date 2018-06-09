@@ -4,7 +4,7 @@ const integrationSettingService = require('../setting/thirdPartyIntegration/inte
 const ZENDESK = require('../application/utils').INTEGRATION_PLATFORMS.ZENDESK;
 const conversationService = require('../conversation/conversationService');
 const applozicClient = require('../utils/applozicClient');
-const customerService = require('../customer/CustomerService')
+const customerService = require('../customer/customerService')
 
 
 

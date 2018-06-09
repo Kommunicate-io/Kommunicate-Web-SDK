@@ -17,7 +17,7 @@ const facebookLogoUrl = config.getProperties().urls.hostUrl+"/img/facebook-round
 const twitterLogourl = config.getProperties().urls.hostUrl + "/img/twitter-round32.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
 const kmWebsiteLogoIconUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-icon.png";
-const customerService = require('../customer/CustomerService');
+const customerService = require('../customer/customerService');
 
 exports.processPasswordResetRequest = (user, applicationId)=>{
   console.log("processing password reset request of user",user.userName);
