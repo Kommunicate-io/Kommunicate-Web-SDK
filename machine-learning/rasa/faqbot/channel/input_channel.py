@@ -59,7 +59,7 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
                 "status": "ok",
             })
 
-        @kommunicate_chat_webhook.route("/webhook/", methods=["GET", "POST"])
+        @kommunicate_chat_webhook.route("/webhook", methods=["GET", "POST"])
         def webhook():
             body = request.json
             output = body['message']
