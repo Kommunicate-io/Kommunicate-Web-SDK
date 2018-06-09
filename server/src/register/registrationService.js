@@ -16,7 +16,7 @@ const USER_TYPE={"AGENT": 1,"BOT": 2,"ADMIN": 3};
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
-const customerService = require('../customer/CustomerService.js');
+const customerService = require('../customer/customerService.js');
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -81,7 +81,7 @@ exports.createCustomer = customer => {
       });
     });
   }).catch(err => {
-    console.log("err while creating Customer ", err);
+    console.log("err while creating customer ", err);
     throw err;
   });
   });
@@ -116,7 +116,7 @@ exports.updateCustomer = (userId, customer) => {
 
 // exports.getCustomerByApplicationId = appId => {
 //   console.log("getting application by application Id", appId);
-//   return Promise.resolve(customerModel.find({include: [{model: db.Application, attributes:['applicationId'], where: {applicationId: appId }}]}))
+//   return Promise.resolve(customerModel.find({include: [{model: db.application, attributes:['applicationId'], where: {applicationId: appId }}]}))
 //     .then(customer => {
 //       customer.applicationId=customer.applications[0].applicationId;
 //       console.log("found data for customer : ", customer == null ? null : customer.dataValues);
@@ -164,7 +164,7 @@ const getFromApplozicUser= (applozicUser,customer,type,pwd)=>{
  */
 // exports.getCustomerById = (id)=>{
 //   console.log("fetching customer information by Id", id);
-//   return db.customer.findOne({include: [{model: db.Application, attributes:['applicationId'] }], where: {id: id}}).then(customer=>{
+//   return db.customer.findOne({include: [{model: db.application, attributes:['applicationId'] }], where: {id: id}}).then(customer=>{
 //     return customer;
 //   });
 // }

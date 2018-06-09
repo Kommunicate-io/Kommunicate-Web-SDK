@@ -5,7 +5,7 @@ const userService = require('../users/userService');
 const logger = require('../utils/logger');
 const config = require("../../conf/config");
 const loginService = require("../login/loginService");
-const customerService = require('../customer/CustomerService')
+const customerService = require('../customer/customerService')
 const CLIENT_ID = '155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com'
 const CLIENT_SECRET = '67BmE4D4qPn9PfglGn27pAmX'
 

@@ -1,4 +1,4 @@
-const Application = require("../models").Application;
+const application = require("../models").application;
 
 /**
  * 
@@ -6,7 +6,7 @@ const Application = require("../models").Application;
  */
 const createApplication = (application) => {
 
-    return Promise.resolve(Application.create(application)).then(appication => {
+    return Promise.resolve(application.create(application)).then(appication => {
         return application;
     }).catch(err => {
         let e = new Error('unable to create application');
@@ -21,7 +21,7 @@ const createApplication = (application) => {
  */
 const getApplicationListByCustomerId = (customerId) => {
 
-    return Promise.resolve(Application.findAll({ customerId: customerId })).then(appications => {
+    return Promise.resolve(application.findAll({ customerId: customerId })).then(appications => {
         return applications;
     }).catch(e => {
         let err = new Error('No application found');
@@ -34,7 +34,7 @@ const getApplicationListByCustomerId = (customerId) => {
  */
 const getApplication = (applicationId) => {
 
-    return Promise.resolve(Application.findOne({ applicationId: applicationId })).then(appications => {
+    return Promise.resolve(application.findOne({ applicationId: applicationId })).then(appications => {
         return applications;
     }).catch(e => {
         let err = new Error('No pplication found');

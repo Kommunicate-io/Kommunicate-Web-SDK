@@ -1,12 +1,12 @@
-const Customer = require("../models").customer;
-const Application = require('../models').Application;
+const customer = require("../models").customer;
+const application = require('../models').application;
 const user= require("../models").user;
-const applicationService = require('./ApplicationService');
+const applicationService = require('./applicationService');
 const logger = require('../utils/logger')
 
 
 const createCustomer = (customer, application, transaction) => {
-    return Promise.resolve(Customer.create(customer, transaction)).then(customer => {
+    return Promise.resolve(customer.create(customer, transaction)).then(customer => {
         application.customerId = customer.id;
         return applicationService.createApplication(application, transaction).then(application => {
             return getCustomerByApplicationId(application.applicationId);
@@ -16,30 +16,30 @@ const createCustomer = (customer, application, transaction) => {
 }
 
 const getCustomerByApplicationId = (appId) => {
-    return Promise.resolve(Customer.findOne({include: [{model: Application, attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
+    return Promise.resolve(customer.findOne({include: [{model: application, attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
         return customer;
     })
 }
 
 const getCustomerByEmail = (email) => {
-    return Promise.resolve(Customer.findOne({ where: { email: email },  include: [{ model: Application }] })).then(customer => {
+    return Promise.resolve(customer.findOne({ where: { email: email },  include: [{ model: application }] })).then(customer => {
         return customer;
     })
 }
 
 const getCustomerByUserName = (userName) => {
-    return Promise.resolve(Customer.findOne({ where: { userName: userName }, include: [{ model: Application }] })).then(customer => {
+    return Promise.resolve(customer.findOne({ where: { userName: userName }, include: [{ model: application }] })).then(customer => {
         return customer;
     })
 }
 
 const updateCustomer = (userName, customerDetail) => {
-    return Customer.update(customerDetail, { where: { userName: userName } }).then(result => {
+    return customer.update(customerDetail, { where: { userName: userName } }).then(result => {
         return result;
     })
 }
 const getCustomerById = (email) => {
-    return Promise.resolve(Customer.findOne({ include: [{ model: Application }] }, { where: { id: id } })).then(customer => {
+    return Promise.resolve(customer.findOne({ include: [{ model: application }] }, { where: { id: id } })).then(customer => {
         return customer;
     })
 }
@@ -67,7 +67,7 @@ const getCustomerByAgentUserKey= (userKey) =>{
 
 const isAdmin = (userName)=>{
     console.log("checkig if user is an admin", userName);
-    return Promise.resolve(Customer.findOne({where: {userName: userName}})).then(customer=>{
+    return Promise.resolve(customer.findOne({where: {userName: userName}})).then(customer=>{
       return customer?true:false;
     });
   }

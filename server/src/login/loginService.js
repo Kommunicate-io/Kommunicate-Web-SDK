@@ -5,7 +5,7 @@ const applozicClient = require("../utils/applozicClient");
 const registrationService = require("../register/registrationService");
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
-const customeService = require('../customer/CustomerService')
+const customeService = require('../customer/customerService')
 
 exports.login = (userDetail) => {
   userDetail.userName? (userDetail.userName = userDetail.userName.toLowerCase()):"";

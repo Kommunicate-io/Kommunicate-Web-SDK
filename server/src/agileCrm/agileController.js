@@ -2,7 +2,7 @@ const agileService = require('./agileService')
 const registrationService = require('../register/registrationService');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 const AGILE_CRM = require('../application/utils').INTEGRATION_PLATFORMS.AGILE_CRM;
-const customerService= require('../customer/CustomerService')
+const customerService= require('../customer/customerService')
 
 exports.createContact = (req, res) => {
     let appId = req.params.appId;

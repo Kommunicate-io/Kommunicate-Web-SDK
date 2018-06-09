@@ -1,6 +1,6 @@
 const integrationSettingService = require('./integrationSettingService');
 const registrationService = require('../register/registrationService');
-const customerService = require('../customer/CustomerService');
+const customerService = require('../customer/customerService');
 
 
 exports.updateOrCreate = (req, res) => {

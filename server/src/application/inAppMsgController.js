@@ -4,7 +4,7 @@ const userService = require("../users/userService");
 const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
 const constant = require('./utils');
-const customerService=require('../customer/CustomerService');
+const customerService=require('../customer/customerService');
 const appSetting = require("../setting/application/appSettingService")
 
 
