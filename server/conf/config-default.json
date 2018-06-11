@@ -1,0 +1,104 @@
+{
+    "port": "3999",
+    "db": {
+        "url": "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+        "options": {
+            "pool": {
+                "threadPoolMax": 5,
+                "threadPoolMin": 0,
+                "idle": 10000
+            }
+        }
+    },
+    "mongoDbUrl": "mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
+    "urls": {
+        "baseUrl": "https://apps-test.applozic.com",
+        "getApplicationDetail": "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
+        "createApplozicClient": "https://apps-test.applozic.com/rest/ws/register/client",
+        "createApplication": "https://apps-test.applozic.com/rest/ws/application/add",
+        "groupInfoUrl": "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
+        "addMemberIntoConversation": "https://apps-test.applozic.com/rest/ws/group/add/users?role=:role",
+        "createGroup": "https://apps-test.applozic.com/rest/ws/group/v2.1/create",
+        "createBotUrl": "https://bots-test.applozic.com/bot",
+        "updateBotUrl": "https://bots-test.applozic.com/bot/update",
+        "sendMessageUrl": "https://apps-test.applozic.com/rest/ws/message/v2/send",
+        "hostUrl": "http://localhost:3999",
+        "kmWebsiteUrl": "https://test.kommunicate.io",
+        "updatePasswordPage": "http://localhost:3000/password/update?code=:code",
+        "passwordResetUrl": "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+        "dashboardHostUrl": "http://localhost:3000",
+        "applozicHostUrl": "https://apps-test.applozic.com",
+        "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail"
+    },
+    "cache": {
+        "hazelCache": {
+            "url": "localhost",
+            "port": "5701",
+            "user": "dev",
+            "password": "dev"
+        }
+    },
+    "mailProvider": {
+        "accessKey": "AKIAIDIQARZR6CEWS57Q",
+        "accessPassword": "AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO",
+        "serviceEmail": "support@kommunicatemail.io",
+        "serviceProvider": "2"
+    },
+    "s3Access": {
+        "accessKeyId": "AKIAI67YDIHOPJVDVQHA",
+        "secretAccessKey": "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",
+        "region": "ap-south-1"
+    },
+    "commonProperties": {
+        "applicationWebhooks": [{
+                "type": 1,
+                "url": "",
+                "notifyVia": "0",
+                "fallbackTime": 300
+            },
+            {
+                "type": 2,
+                "url": "",
+                "notifyVia": "0",
+                "fallbackTime": 300
+            }
+        ],
+
+        "companyDetail": {
+            "companyLogo": "https://dashboard.kommunicate.io/img/logo02.png",
+            "companyAddress": "Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306",
+            "websiteUrl": "https://www.kommunicate.io/"
+        },
+        "groupMetadata": {
+            "ADD_MEMBER_MESSAGE": "",
+            "CREATE_GROUP_MESSAGE": "Conversation started",
+            "DELETED_GROUP_MESSAGE": "",
+            "GROUP_LEFT_MESSAGE": "",
+            "GROUP_META_DATA_UPDATED_MESSAGE": "",
+            "GROUP_NAME_CHANGE_MESSAGE": "",
+            "GROUP_USER_ROLE_UPDATED_MESSAGE": "",
+            "HIDE": "true",
+            "JOIN_MEMBER_MESSAGE": "",
+            "REMOVE_MEMBER_MESSAGE": ""
+        },
+        "kommunicatePricingPackage": 101,
+        "zendesk": {
+            "getTicketUrl": "https://[subdomain].zendesk.com/api/v2/tickets/[id].json",
+            "createTicketUrl": "https://[subdomain].zendesk.com/api/v2/tickets.json",
+            "updateTicketUrl": "https://[subdomain].zendesk.com/api/v2/tickets/[id].json"
+        }
+    },
+    "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
+    "kommunicateParentAppName": "suraj",
+    "kommunicateAdminId": "suraj@applozic.com",
+    "kommunicateAdminPassword": "1234567890",
+    "kommunicateAdminApzToken": "ZGV2YXNoaXNoQGFwcGxvemljLmNvbTprbm93bGVkZ2UxMjM=",
+    "KommonicateGCMKey": "AAAAeoKIKqc:APA91bGSCu3nUKOV3q0xpBmDl_f5VOfGhx-HI5TpnbefA3GzigMZf8Mp0ALz_WlWL3DZMM4ZzjC6z9CG-9fPwqoovcBgzCjgjXCG1Ktjwl2Q-a4XdfOjpNOaiLftUEi_9nzrE4c8jOaB",
+    "defaultOffhoursMessage": "Thanks for your message. will call you back in our business hours.",
+    "offBussinessHoursMessageInterval": 1,
+    "activeCampaignApiKey": "79c8255584cf52a2e8c91f9ef92b7afdbde9c4cd97288797e300659032e14aa3247a638e",
+    "activeCampaignEnabled": false,
+    "pipeDriveEnable": false,
+    "chargebeeSite": "kommunicate-test",
+    "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
+}
