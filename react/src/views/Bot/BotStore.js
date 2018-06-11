@@ -421,8 +421,8 @@ export default class BotStore extends Component {
               <div className="row mt-4">
                 <div className="col-sm-3">
                   <div className="row" style={{textAlign: "center"}}>
-                    <p className={(this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{"backgroundColor": "#22d674", color: "white", borderRadius: "50%", width: "23px", height: "23px", padding: "3px 0px 0px 0px", marginLeft: "13%", fontSize:"12px", marginBottom:"5px"}}>{this.state.dialogFlowBots.length}</p>
-                    <p className={(this.state.dialogFlowIntegrated || this.state.dialogFlowBots.length > 0) ? null:"n-vis" } style={{"color": "#22d674", marginLeft: "5px", marginBottom:"5px"}}>INTEGRATED</p>
+                    <p className={(this.state.listOfIntegratedBots.length > 0) ? null:"n-vis" } style={{"backgroundColor": "#22d674", color: "white", borderRadius: "50%", width: "23px", height: "23px", padding: "3px 0px 0px 0px", marginLeft: "13%", fontSize:"12px", marginBottom:"5px"}}>{this.state.listOfIntegratedBots.length}</p>
+                    <p className={this.state.listOfIntegratedBots.length ? null:"n-vis" } style={{"color": "#22d674", marginLeft: "5px", marginBottom:"5px"}}>INTEGRATED</p>
                   </div>
                 </div>
                 <div style={{textAlign: "center", width:"12.5%"}}>
