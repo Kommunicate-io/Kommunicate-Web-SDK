@@ -101,3 +101,11 @@ exports.getConversationStat = (req, res) => {
         return res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "Something went wrong" });
     })
 }
+
+exports.createConversationFromMail = (req, res) => {
+    return Promise.resolve(conversationService.createConversationFromMail(req)).then(resp => {
+        return res.status(200).json({ message: 'SUCCESS', response: resp })
+    }).catch(err => {
+        return res.status(500).json({ message: 'ERROR', response: err })
+    })
+}

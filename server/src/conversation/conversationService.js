@@ -1,5 +1,5 @@
 const db = require("../models");
-const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY } = require('./conversationUtils');
+const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY, GROUP_INFO } = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const registrationService = require("../register/registrationService");
@@ -360,6 +360,44 @@ const getConversationStat = (query) => {
     }
 }
 
+const createConversationFromMail = (req) => {
+    let applicationId = req.body.applicationId
+    let email = req.body.email || req.body.userId;
+    let groupInfo = GROUP_INFO;
+    let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
+
+    return customerService.getCustomerByApplicationId(applicationId).then(customer => {
+        return applozicClient.getUserDetails([], customer.applications[0].applicationId, customer.apzToken, [email]).then(userDetail => {
+            groupInfo.groupName = customer.name || customer.userName;
+            groupInfo.admin = customer.userName;
+            groupInfo.users[0].userId = customer.userName;
+            groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
+            groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
+            headers['Apz-Token'] = 'Basic ' + customer.apzToken;
+            if (userDetail.length > 0) {
+                //create conversation with first user 
+                groupInfo.users[1].userId = userDetail[0].userId;
+                return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
+                    console.log('conversation : ', result);
+                    return result.response;
+                });
+            } else {
+                //create new user
+                return applozicClient.createApplozicClient(email, null, applicationId, null, null, email, null).then(user => {
+                    if (user) {
+                        groupInfo.users[1].userId = user.userId
+                        return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
+                            console.log('conversation : ', result);
+                            return result.response;
+                        });
+
+                    }
+                })
+            }
+        })
+    })
+}
+
 
 
 module.exports = {
@@ -371,5 +409,6 @@ module.exports = {
     createConversation: createConversation,
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
-    createConversationIntoApplozic: createConversationIntoApplozic
+    createConversationIntoApplozic: createConversationIntoApplozic,
+    createConversationFromMail:createConversationFromMail
 }
