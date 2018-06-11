@@ -1,4 +1,5 @@
 const customerModel = require("../models").customer;
+const applicationModel = require('../models').application;
 const user= require("../models").user;
 const applicationService = require('./applicationService');
 const logger = require('../utils/logger')
@@ -16,19 +17,19 @@ const createCustomer = (customer, application, transaction) => {
 }
 
 const getCustomerByApplicationId = (appId) => {
-    return Promise.resolve(customerModel.findOne({include: [{model: application, attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
+    return Promise.resolve(customerModel.findOne({include: [{model: applicationModel, attributes:['applicationId'], where: {'applicationId': appId }}]})).then(customer => {
         return customer;
     })
 }
 
 const getCustomerByEmail = (email) => {
-    return Promise.resolve(customerModel.findOne({ where: { email: email },  include: [{ model: application }] })).then(customer => {
+    return Promise.resolve(customerModel.findOne({ where: { email: email },  include: [{ model: applicationModel }] })).then(customer => {
         return customer;
     })
 }
 
 const getCustomerByUserName = (userName) => {
-    return Promise.resolve(customerModel.findOne({ where: { userName: userName }, include: [{ model: application }] })).then(customer => {
+    return Promise.resolve(customerModel.findOne({ where: { userName: userName }, include: [{ model: applicationModel }] })).then(customer => {
         return customer;
     })
 }
@@ -39,7 +40,7 @@ const updateCustomer = (userName, customerDetail) => {
     })
 }
 const getCustomerById = (email) => {
-    return Promise.resolve(customerModel.findOne({ include: [{ model: application }] }, { where: { id: id } })).then(customer => {
+    return Promise.resolve(customerModel.findOne({ include: [{ model: applicationModel }] }, { where: { id: id } })).then(customer => {
         return customer;
     })
 }
