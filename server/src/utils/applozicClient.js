@@ -280,22 +280,23 @@ exports.getGroupInfo= (groupId,applicationId,apzToken, isBot)=>{
   });
 }
 
-exports.sendGroupMessage = (groupId,message,apzToken,applicationId,metadata)=>{
-  console.log("sending message to group ",groupId);
-  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,":apz-token:",apzToken,"applicationId",applicationId,"metadata",metadata );
+exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
+  console.log("sending message to group ", groupId);
+  console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
+  headers = headers ? headers : { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true }
   let url = config.getProperties().urls.sendMessageUrl;
-  return Promise.resolve(axios.post(url,{"groupId": groupId,"message": message,"metadata": metadata},
-  {headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
-    console.log("received response from applozic", response.status);
-    if(response.status==200) {
-      return response;
-    }else{
-      throw new Error("ERROR: received response from applozic" +response.status);
-    }
-  }).catch(err=>{
-    console.log("error while sending message ",err);
-    throw err;
-  });
+  return Promise.resolve(axios.post(url, { "groupId": groupId, "message": message, "metadata": metadata },
+    { headers: headers })).then(response => {
+      console.log("received response from applozic", response.status);
+      if (response.status == 200) {
+        return response;
+      } else {
+        throw new Error("ERROR: received response from applozic" + response.status);
+      }
+    }).catch(err => {
+      console.log("error while sending message ", err);
+      throw err;
+    });
 };
 
 exports.updatePassword = (options)=>{
