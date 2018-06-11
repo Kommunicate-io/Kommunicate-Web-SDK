@@ -26,26 +26,29 @@ KommunicateUI={
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
     },
 
-    displayLeadCollectionTemplate: function (data) {
-        if (data && data.messages.length) {
-            let i = 0;
-            data.conversationId && data.messages.map(function (msg) {
-                if (msg.type == 5) {
-                    i++;
+    displayLeadCollectionTemplate: function (messageList) {
+        let countMsg = 0;
+        if (messageList && messageList.length) {
+            let countMsg = 0;
+            for (var i = 0; i < messageList.length; i++) {
+
+                if (messageList[i].type == 5) {
+                    countMsg++;
+                    if (countMsg == 2) { break; }
                 }
-            })
-            if (i == 1) {
+            }
+            if (countMsg == 1) {
                 //displayLeadCollectionTemplate
                 if (KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
                     $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
                 }
             }
-            if (i > 1) {
+            else {
                 $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
 
             }
 
-        } else {
+        } else if (messageList == null) {
             $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         }
     },
