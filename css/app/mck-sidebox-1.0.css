@@ -4780,7 +4780,7 @@ margin-top: 243px;
 
 #mck-away-msg-box{
 	border-top: dashed 1px #bebbbb;
-	border-bottom: solid 1px #bebbbb;
+	/* border-bottom: solid 1px #bebbbb; */
 	padding: 8px 5px;
 }
 /******** Generic list template*************/
