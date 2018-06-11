@@ -12,8 +12,8 @@ KommunicateUI={
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
             // supporting only one away message for now.
-            KommunicateUI.awayMessageStatus = message.data.messageList.length > 0 ? true : false ;
-            KommunicateUI.leadCollectionStatus = message.data.collectEmail
+            KommunicateUI.awayMessageStatus = true;
+            KommunicateUI.leadCollectionStatus = message.data.collectEmail;
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
@@ -27,27 +27,24 @@ KommunicateUI={
     },
 
     displayLeadCollectionTemplate: function (data) {
-        if (data) {
-            if (data.messages.length) {
-                let i = 0;
-                data.conversationId && data.messages.map(function (msg) {
-                    if (msg.type == 5) {
-                        i++;
-                    }
-                })
-                if (i == 1) {
-                    //displayLeadCollectionTemplate
-                    if (KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
-                        $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
-                    }
+        if (data && data.messages.length) {
+            let i = 0;
+            data.conversationId && data.messages.map(function (msg) {
+                if (msg.type == 5) {
+                    i++;
                 }
-                if (i > 1) {
-                    $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
-
+            })
+            if (i == 1) {
+                //displayLeadCollectionTemplate
+                if (KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
+                    $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
                 }
-                
+            }
+            if (i > 1) {
+                $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
 
             }
+
         } else {
             $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         }
@@ -60,11 +57,11 @@ KommunicateUI={
         var mailformat = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
-            return true
+            return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
             $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
-            return false
+            return false;
         }
     },
     
