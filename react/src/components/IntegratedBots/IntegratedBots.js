@@ -244,39 +244,42 @@ export default class IntegratedBots extends Component {
   
 
       saveEditedBotDetails = () => {
-
-        let patchUserData = {
-          name: this.state.editedBotName,
-        }
-    
-        let axiosPostData = {
-          //botName: this.state.editedBotName,
-          aiPlatform: "dialogflow",
-          type:"KOMMUNICATE_SUPPORT",
-          clientToken: this.state.editedClientToken,
-          devToken: this.state.editedDevToken,
-        }
-    
-        // let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
-        let url = getConfig().applozicPlugin.addBotUrl+"/"+this.state.botKey+'/configure'
-    
-        console.log(this.state.botName.toLowerCase());
-        console.log(this.state.editedBotName.toLowerCase());
-    
-        if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
-    
-          Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
-            .then(([patchUserInfoResponse, axiosPostResponse]) => {
-              if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
-                Notification.info("Changes Saved successfully")
-                this.toggleEditBotIntegrationModal()
+        if (this.state.editedBotName && this.state.editedClientToken && this.state.editedDevToken) {
+          let patchUserData = {
+            name: this.state.editedBotName,
+          }
+      
+          let axiosPostData = {
+            //botName: this.state.editedBotName,
+            aiPlatform: "dialogflow",
+            type:"KOMMUNICATE_SUPPORT",
+            clientToken: this.state.editedClientToken,
+            devToken: this.state.editedDevToken,
+          }
+      
+          // let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
+          let url = getConfig().applozicPlugin.addBotUrl+"/"+this.state.botKey+'/configure'
+      
+          console.log(this.state.botName.toLowerCase());
+          console.log(this.state.editedBotName.toLowerCase());
+      
+          if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
+      
+            Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
+              .then(([patchUserInfoResponse, axiosPostResponse]) => {
+                if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
+                  Notification.info("Changes Saved successfully")
+                  this.toggleEditBotIntegrationModal()
+                  this.getIntegratedBotsWrapper()
+                }
                 this.getIntegratedBotsWrapper()
-              }
-              this.getIntegratedBotsWrapper()
-            }).catch(err => {console.log(err)})
-        }else{
-          Notification.info("No Changes to be saved successfully")
+              }).catch(err => {console.log(err)})
+          }else{
+            Notification.info("No Changes to be saved successfully")
+          }
+      
         }
+    
       }
 
       deleteBot = () => {
@@ -422,7 +425,7 @@ export default class IntegratedBots extends Component {
                   </div>
                   {this.state.listOfIntegratedBots.map(bot => (
 
-                    <div className="row km-integrated-bot-list-row" key={bot.id} data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status)}}>
+                    <div className="row km-integrated-bot-list-row" key={bot.id} data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.userKey, bot.name, bot.userName, bot.token||bot.clientToken, bot.devToken, bot.bot_availability_status)}}>
                       <div className="col-md-3 col-sm-6 col-xs-12">
                         {/* <div style={{marginRight: "8px"}}>
                           <img src={Diaglflow} style={{marginTop: "0px"}} className="km-bot-integration-dialogflow-icon km-bot-integration-icon-margin" />
