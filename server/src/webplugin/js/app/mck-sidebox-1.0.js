@@ -2585,6 +2585,14 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_msg_error.html('');
                     $mck_response_text.html('');
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
+                    let sendMsgCount = $applozic("[data-msgtype=5]").length;
+                    //Lead Collection -Email Validation
+                    if ( sendMsgCount == 1 && KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
+                        var isValid =KommunicateUI.validateEmail(messagePxy.message);
+                        if(!isValid){
+                            return false;
+                        }
+                    }
                     _this.sendMessage(messagePxy);
                     return false;
                 });
@@ -2678,8 +2686,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_search.val('');
             };
             _this.sendMessage = function (messagePxy) {
-              var key;
-             	var message;
+                var key;
+                var message;
              	if($("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey') !== undefined){
              	key = $("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey');
             	    message = alMessageService.getReplyMessageByKey(key);
@@ -2965,7 +2973,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                         // Lead Collection (Email)
                         let sendMsgCount = $applozic("[data-msgtype=5]").length;
-                        sendMsgCount == 1 && Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":currentTabId},KommunicateUI.displayLeadCollectionTemplate);
+                        if (sendMsgCount == 1 && KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
+                             KommunicateUI.displayLeadCollectionTemplate(null)
+                        }     
                         sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
                         
                         var displayName = mckMessageLayout.getTabDisplayName(currentTabId, false);
@@ -3138,9 +3148,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     global: false,
                     success: function (data) {
                         var isMessages = true;
-                        let obj = {"messages":data.message,"applicationId":MCK_APP_ID,"conversationId":params.tabId}
                         //Display/hide lead(email) collection template  
-                        KommunicateUI.getLeadStatus(obj);
+                        KommunicateUI.displayLeadCollectionTemplate(data.message)
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {

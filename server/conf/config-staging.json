@@ -1,8 +1,7 @@
-
 {
-    "port": 3999,
+    "port": 3998,
     "db": {
-      "url": "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test",
+      "url": "mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_staging",
       "options": {
         "pool": {
           "threadPoolMax": 5,
@@ -23,11 +22,11 @@
       "createBotUrl": "https://bots-test.applozic.com/bot",
       "updateBotUrl":"http://bots-test.applozic.com/bot/update",
       "sendMessageUrl": "https://apps-test.applozic.com/rest/ws/message/v2/send",
-      "hostUrl": "https://api-test.kommunicate.io",
+      "hostUrl": "https://api-staging.kommunicate.io",
       "kmWebsiteUrl": "https://test.kommunicate.io",
-      "updatePasswordPage" : "https://dashboard-test.kommunicate.io/password/update?code=:code",
+      "updatePasswordPage" : "https://dashboard-staging.kommunicate.io/password/update?code=:code",
       "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-      "dashboardHostUrl":"https://dashboard-test.kommunicate.io",
+      "dashboardHostUrl":"https://dashboard-staging.kommunicate.io",
       "applozicHostUrl": "https://apps-test.applozic.com",
       "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail"
       
@@ -80,9 +79,6 @@
     "updateTicketUrl":"https://[subdomain].zendesk.com/api/v2/tickets/[id].json"
     }
 },
-    "pluginProperties": {
-      "pseduoNameEnabled": false 
-    },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateAdminId": "suraj@applozic.com",
@@ -97,6 +93,3 @@
     "chargebeeSite": "kommunicate-test",
     "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
   }
-  
- 
-  

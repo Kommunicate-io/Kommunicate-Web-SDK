@@ -985,7 +985,7 @@ render() {
                 data-day = {this.state.dataDay} 
                 onClick={this.displayChart}>
                 <h4 className="card-count">{this.state.displayTotalCounts.newConversationCount}</h4>
-                <p className="card-count-title">New Conversations</p>
+                <p className="card-count-title">Incoming Conversations</p>
               </div>
             </div>
           </div>
