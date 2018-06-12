@@ -82,6 +82,8 @@ ALTER TABLE users ADD INDEX `IDX_USER_NAME_APP_KEY` (`user_name` ASC, `applicati
 
 alter table in_app_msgs add column application_id varchar(50);
 
+insert into app_settings(application_id, created_at, updated_at) select application_id, created_at, updated_at from applications;
+
 update in_app_msgs  m join customers c on c.id= m.customer_id set m.application_id=c.application_id;
 
 alter table in_app_msgs drop customer_id;
