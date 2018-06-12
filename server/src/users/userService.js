@@ -99,7 +99,7 @@ const createUser = (user, customer) => {
           "key": user.userKey,
           "brokerUrl": applozicUser.brokerUrl,
           "accessToken": user.accessToken,
-          "applicationKey": customer.applications[0].applicatioId,
+          "applicationKey": customer.applications[0].applicationId,
           "authorization": user.authorization,
           "clientToken": clientToken,
           "devToken": devToken,
