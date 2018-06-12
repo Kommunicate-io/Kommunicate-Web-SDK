@@ -9,10 +9,10 @@ const Sequelize = require("sequelize");
 const constant = require('./utils');
 
 exports.postWelcomeMsg=(options)=>{
-    return db.InAppMsg.find({where:{customerId:options.customer.id}}).then(inAppMessage=>{
+    return db.InAppMsg.find({where:{applicationId:options.customer.applications[0].applicationId}}).then(inAppMessage=>{
         if(!inAppMessage){
             inAppMessage = {
-                customerId:options.customer.id,
+                applicationId:options.customer.applications[0].applicationId,
                 eventId:appUtils.EVENTS.CONVERSATION_STARTED,
                 message:options.message,
                 status:appUtils.EVENT_STATUS.ENABLED,
@@ -20,14 +20,14 @@ exports.postWelcomeMsg=(options)=>{
             }
             return db.InAppMsg.create(inAppMessage);
         }else{
-            return db.InAppMsg.update({message:options.message},{where:{customerId:options.customer.id}});
+            return db.InAppMsg.update({message:options.message},{where:{applicationId:options.customer.applications[0].applicationId}});
         }
     })
 }
 
-const getInAppMessage=(customerId, eventType)=>{
-  console.log('geting data for', customerId );
-  let criteria ={ customerId:customerId, status: appUtils.EVENT_STATUS.ENABLED};
+const getInAppMessage=(appId, eventType)=>{
+  console.log('geting data for', appId );
+  let criteria ={ applicationId:appId, status: appUtils.EVENT_STATUS.ENABLED};
 
   if (eventType){
     criteria.eventId=eventType
@@ -141,7 +141,7 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
   if (!agentName) {
     agentName =agentId||customer.userName;
   }
-    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applications[0].applicationId), getInAppMessage(customer.id, eventType)]).then(([user,inAppMessages])=>{
+    return Promise.all([userService.getByUserNameAndAppId(agentName,customer.applications[0].applicationId), getInAppMessage(customer.applications[0].applicationId, eventType)]).then(([user,inAppMessages])=>{
       if(inAppMessages instanceof Array && inAppMessages.length > 0){
         
           let message1 = inAppMessages[0]
@@ -184,11 +184,11 @@ const processConversationStartedEvent= (eventType, conversationId, customer, age
     })
 }
 
-const countEnableRecordsInAppMsgs = (createdBy, customerId, eventId) => {
+const countEnableRecordsInAppMsgs = (createdBy, appId, eventId) => {
 
     return Promise.resolve(db.InAppMsg.count({where: {
             createdBy: createdBy,
-            customerId:customerId,
+            applicationId:appId,
             eventId:eventId,
             status: 1
         }
@@ -197,11 +197,11 @@ const countEnableRecordsInAppMsgs = (createdBy, customerId, eventId) => {
 
 }
 
-exports.createInAppMsg=(createdBy, customerId, body)=>{
+exports.createInAppMsg=(createdBy, appId, body)=>{
 
   inAppMessage = {
       createdBy: createdBy,
-      customerId:customerId,
+      applicationId:appId,
       eventId:body.eventId,
       message:body.message,
       status:body.status,
@@ -210,7 +210,7 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
       metadata: body.metadata
   }
 
-  return countEnableRecordsInAppMsgs(createdBy, customerId, body.eventId)
+  return countEnableRecordsInAppMsgs(createdBy, appId, body.eventId)
       .then(countRecords => {
           console.log(countRecords)
           if(countRecords  <  3){
@@ -230,8 +230,8 @@ exports.createInAppMsg=(createdBy, customerId, body)=>{
       }).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.disableInAppMessages=(createdBy, customerId, category)=>{
-    let criteria={customerId: customerId, status: 1, category: category};
+exports.disableInAppMessages=(createdBy, appId, category)=>{
+    let criteria={applicationId: appId, status: 1, category: category};
     // if(constant.CATEGORY.AWAY_MESSAGE == category){
     //   //criteria.createdBy = createdBy
     // }
@@ -241,8 +241,8 @@ exports.disableInAppMessages=(createdBy, customerId, category)=>{
 
 }
 
-exports.enableInAppMessages=(createdBy, customerId, category)=>{
-    let criteria={customerId: customerId, status: 2, category: category};
+exports.enableInAppMessages=(createdBy, appId, category)=>{
+    let criteria={applicationId: appId, status: 2, category: category};
     // if(constant.CATEGORY.AWAY_MESSAGE == category){
     //   //criteria.createdBy = createdBy
     // }
@@ -251,20 +251,20 @@ exports.enableInAppMessages=(createdBy, customerId, category)=>{
     });
 }
 
-exports.getInAppMessages2=(createdBy, customerId)=>{
+exports.getInAppMessages2=(createdBy, appId)=>{
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
-            customerId: customerId
+            applicationId: appId
         }
     })).catch(err => {return { code: err.parent.code, message: err.parent.sqlMessage }});
 }
 
-exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
+exports.getInAppMessagesByEventIds=(createdBy, appId, type, eventIds)=>{
 
   let criteria={};
-  if(customerId){
-    criteria.customerId=customerId;
+  if(appId){
+    criteria.applicationId=appId;
   }
   
   if(eventIds.length>0){
@@ -277,10 +277,10 @@ exports.getInAppMessagesByEventIds=(createdBy, customerId, type, eventIds)=>{
   
 }
 
-exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
+exports.getInAppMessagesByEventId=(createdBy, appId, type, eventIds)=>{
 
   logger.info("createdBy", createdBy)
-  logger.info("cusotmerId", customerId)
+  logger.info("cusotmerId", appId)
   logger.info("type", type)
   logger.info("eventIds", eventIds)
   // type = 3 for admin user include messages where createdBy is null
@@ -290,7 +290,7 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
             createdBy:{
               [Sequelize.Op.or]: [null, createdBy]
             },
-            customerId: customerId,
+            applicationId: appId,
             eventId:{ $in:eventIds}
         },
         order: [
@@ -301,7 +301,7 @@ exports.getInAppMessagesByEventId=(createdBy, customerId, type, eventIds)=>{
     return Promise.resolve(db.InAppMsg.findAll({
         where: {
             createdBy: createdBy,
-            customerId: customerId,
+            applicationId: appId,
         },
         order: [
             ['id', 'ASC']

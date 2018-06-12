@@ -4,6 +4,7 @@ window.applozic = window.kommunicate || {};
 var MCK_CONTEXTPATH = ":MCK_CONTEXTPATH";
 var MCK_STATICPATH =":MCK_STATICPATH";
 var MCK_ONINIT = "";
+var KM_PLUGIN_SETTINGS=JSON.parse(':PLUGIN_SETTINGS');
 //window.applozic.PRODUCT_ID= "${productId}"?"${productId}":"applozic-chat";
 window.applozic.PRODUCT_ID =":PRODUCT_ID";
 // $.getScript(MCK_STATICPATH + '/sidebox/js/app/mck-app.js');

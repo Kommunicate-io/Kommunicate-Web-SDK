@@ -491,7 +491,7 @@ const getUsersByCustomerId = (customerId) => {
   });
 }
 const changeBotStatus =(botId, appId, status)=>{
-    return Promise.resolve(userModel.update({allConversations:status},{where:{id:botId, applicatioId:appId}}));
+    return Promise.resolve(userModel.update({allConversations:status},{where:{id:botId, applicationId:appId}}));
 }
 
 const getAgentByUserKey= (userKey) =>{

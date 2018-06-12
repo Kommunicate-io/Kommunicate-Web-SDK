@@ -80,6 +80,9 @@
     "updateTicketUrl":"https://[subdomain].zendesk.com/api/v2/tickets/[id].json"
     }
 },
+    "pluginProperties": {
+      "pseduoNameEnabled": false 
+    },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateAdminId": "suraj@applozic.com",
