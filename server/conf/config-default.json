@@ -88,6 +88,9 @@
             "updateTicketUrl": "https://[subdomain].zendesk.com/api/v2/tickets/[id].json"
         }
     },
+    "pluginProperties":{
+        "pseduoNameEnabled": true 
+    },
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateParentAppName": "suraj",
     "kommunicateAdminId": "suraj@applozic.com",
@@ -100,5 +103,5 @@
     "activeCampaignEnabled": false,
     "pipeDriveEnable": false,
     "chargebeeSite": "kommunicate-test",
-    "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
+    "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"   
 }

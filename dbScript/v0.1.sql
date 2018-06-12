@@ -79,3 +79,9 @@ ALTER TABLE customers ADD UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC);
 ALTER TABLE customers DROP INDEX  IDX_USER_NAME_APP_KEY;
 
 ALTER TABLE users ADD INDEX `IDX_USER_NAME_APP_KEY` (`user_name` ASC, `application_id` ASC);
+
+alter table in_app_msgs add column application_id varchar(50);
+
+update in_app_msgs  m join customers c on c.id= m.customer_id set m.application_id=c.application_id;
+
+alter table in_app_msgs drop customer_id;
