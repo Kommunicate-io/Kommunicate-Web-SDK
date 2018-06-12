@@ -205,18 +205,7 @@ class Sidebar extends Component {
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
           <ul className="nav">
-            {/* Settings Link */}
-            <li className="nav-item">
-              <NavLink to={'/settings/profile'} className={currentPath.includes('/settings/') ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <g data-name="Group 3">
-                    <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 7" />
-                    <path fill="#fff" d="M13.022 22h-2.044l-1.089-2.6a6.927 6.927 0 0 1-1.622-.667l-2.6 1.067-1.445-1.444 1.067-2.6a6.906 6.906 0 0 1-.667-1.622L2 13.022v-2.044l2.6-1.089a6.9 6.9 0 0 1 .667-1.622L4.2 5.667l1.444-1.445 2.6 1.067a6.923 6.923 0 0 1 1.622-.667L10.978 2h2.045l1.089 2.6a6.886 6.886 0 0 1 1.622.667l2.6-1.067 1.444 1.444-1.067 2.6a6.892 6.892 0 0 1 .667 1.622L22 10.978v2.045l-2.6 1.089a6.892 6.892 0 0 1-.667 1.622l1.067 2.6-1.444 1.444-2.6-1.067a6.892 6.892 0 0 1-1.622.667L13.022 22zM12 8.933A3.067 3.067 0 1 0 15.067 12 3.07 3.07 0 0 0 12 8.933z"
-                    data-name="settings icon" />
-                </g>
-            </svg>
-              </NavLink>
-            </li>
+            
             {/* Help Link */}
             <li className="nav-item">
             <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
@@ -233,8 +222,21 @@ class Sidebar extends Component {
             
             </li>
             {/* Profile Link */}
-            <li className="nav-item">
+            <li className="nav-item" style={{marginBottom:"5px",marginTop:"0px"}}>
                 <ProfileImageName profilePicUrl={this.props.profilePicUrl} displayName={this.props.displayName} hideDisplayName={true}/>
+            </li>
+
+            {/* Settings Link */}
+            <li className="nav-item">
+              <NavLink to={'/settings/profile'} className={currentPath.includes('/settings/') ? "nav-link active" : "nav-link"} activeClassName="active" data-tip="Settings" data-effect="solid" data-place="right">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g data-name="Group 3">
+                      <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 7" />
+                      <path fill="#fff" d="M13.022 22h-2.044l-1.089-2.6a6.927 6.927 0 0 1-1.622-.667l-2.6 1.067-1.445-1.444 1.067-2.6a6.906 6.906 0 0 1-.667-1.622L2 13.022v-2.044l2.6-1.089a6.9 6.9 0 0 1 .667-1.622L4.2 5.667l1.444-1.445 2.6 1.067a6.923 6.923 0 0 1 1.622-.667L10.978 2h2.045l1.089 2.6a6.886 6.886 0 0 1 1.622.667l2.6-1.067 1.444 1.444-1.067 2.6a6.892 6.892 0 0 1 .667 1.622L22 10.978v2.045l-2.6 1.089a6.892 6.892 0 0 1-.667 1.622l1.067 2.6-1.444 1.444-2.6-1.067a6.892 6.892 0 0 1-1.622.667L13.022 22zM12 8.933A3.067 3.067 0 1 0 15.067 12 3.07 3.07 0 0 0 12 8.933z"
+                      data-name="settings icon" />
+                  </g>
+                </svg>
+              </NavLink>
             </li>
           </ul>
         </nav>
