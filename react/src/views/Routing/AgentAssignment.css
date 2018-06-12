@@ -172,3 +172,14 @@ div.drop-down-container ul {
     height: 250px;
     overflow-y: auto;
 }
+
+
+/* Lock Badge CSS */
+.badge-design {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.badge-design .startup-badge {
+    margin-right: 15px;
+}
