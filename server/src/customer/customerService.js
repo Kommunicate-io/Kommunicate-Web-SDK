@@ -2,6 +2,7 @@ const customerModel = require("../models").customer;
 const applicationModel = require('../models').application;
 const user= require("../models").user;
 const applicationService = require('./applicationService');
+const appSettingService = require('../setting/application/appSettingService');
 const logger = require('../utils/logger')
 
 
@@ -10,6 +11,7 @@ const createCustomer = (customer, application, transaction) => {
         //logger.info('customer created :', 'created');
         application.customerId = customer[0].id;
         return applicationService.createApplication(application, transaction).then(application => {
+            appSettingService.insertAppSettings({applicationId:application.applicationId});
             return getCustomerByApplicationId(application.applicationId);
         });
 

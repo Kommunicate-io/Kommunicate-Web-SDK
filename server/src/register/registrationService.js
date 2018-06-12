@@ -71,7 +71,6 @@ exports.createCustomer = customer => {
           console.log("err while updating bot plateform..", err);
         });
         //insert appId in to application_settings table
-        appSetting.insertAppSettings({applicationId:customer.applicationId});
         return userModel.bulkCreate([user,/*agentobj,*/botObj,lizObj], {transaction:t}).spread((user,/*agent,*/bot,lizObj)=>{
           console.log("user created",user?user.dataValues:null);
          // console.log("created agent",agent.dataValues);
