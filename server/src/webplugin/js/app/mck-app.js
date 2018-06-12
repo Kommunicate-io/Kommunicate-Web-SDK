@@ -263,6 +263,7 @@ function ApplozicSidebox() {
     function mckInitSidebox(userName) {
         try {
             var options = applozic._globals;
+            var pseduoNameEnabled =KM_PLUGIN_SETTINGS.pseduoNameEnabled;
             if(applozic.PRODUCT_ID =='kommunicate'){
                     if(!options.userId){
                		//  if (Cookies.get("kommunicate-id")) {
@@ -273,7 +274,7 @@ function ApplozicSidebox() {
                			options.userId = KommunicateUtils.getRandomId();
                         //    Cookies.set("kommunicate-id", options.userId);
                         KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
-                        if (KommunicateUtils.getCookie('userName')) {
+                        if (pseduoNameEnabled && KommunicateUtils.getCookie('userName')) {
                             options.userName = KommunicateUtils.getCookie('userName');
                         }else {
                             KommunicateUtils.setCookie('userName',userName, 1);
