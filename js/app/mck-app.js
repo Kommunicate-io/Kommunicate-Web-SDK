@@ -274,11 +274,13 @@ function ApplozicSidebox() {
                			options.userId = KommunicateUtils.getRandomId();
                         //    Cookies.set("kommunicate-id", options.userId);
                         KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
-                        if (pseduoNameEnabled && KommunicateUtils.getCookie('userName')) {
-                            options.userName = KommunicateUtils.getCookie('userName');
-                        }else {
-                            KommunicateUtils.setCookie('userName',userName, 1);
-                            options.userName = userName
+                        if (pseduoNameEnabled) {
+                            if ( KommunicateUtils.getCookie('userName')) {
+                                options.userName = KommunicateUtils.getCookie('userName');
+                            }else {
+                                KommunicateUtils.setCookie('userName',userName, 1);
+                                options.userName = userName
+                            }
                         }
                		}
 
