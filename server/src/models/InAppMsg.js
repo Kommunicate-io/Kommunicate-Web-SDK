@@ -6,10 +6,10 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true,
       allowNull: false
     },
-    customerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      field : "customer_id"
+    applicationId: {
+      type: DataTypes.STRING,
+      //allowNull: false,
+      field : "application_id"
     },
     eventId: {
       type: DataTypes.INTEGER,

@@ -39,7 +39,7 @@ exports.createInAppMsg = (req, res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.createInAppMsg(user.id, user.customerId, req.body).then(response=>{
+        return inAppMsgService.createInAppMsg(user.id, user.applicationId, req.body).then(response=>{
             logger.info("in app message is saved successfully");
             res.status(200).json({code:"SUCCESS",message:response.message, data: response});
         }).catch(err=>{
@@ -71,7 +71,7 @@ exports.getInAppMessages=(req,res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-    inAppMsgService.getInAppMessage(customer.id).then(inAppMessages=>{
+    inAppMsgService.getInAppMessage(appId).then(inAppMessages=>{
         res.status(200).json({code:'success',data:{message:(inAppMessages.length>0) ? inAppMessages[0].message : ""}});
     }).catch(err=>{
         logger.info('error while getting welcome message', err)
@@ -133,7 +133,7 @@ exports.disableInAppMessages=(req, res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.disableInAppMessages(user.id, user.customerId, category).then(response=>{
+        return inAppMsgService.disableInAppMessages(user.id, user.applicationId, category).then(response=>{
             logger.info("in app messages is disabled successfully");
             res.status(200).json({code:"SUCCESS", message:"disabled", data: response});
         }).catch(err=>{
@@ -154,7 +154,7 @@ exports.enableInAppMessages=(req, res)=>{
             res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id"});
             return;
         }
-        return inAppMsgService.enableInAppMessages(user.id, user.customerId, category).then(response=>{
+        return inAppMsgService.enableInAppMessages(user.id, user.applicationId, category).then(response=>{
             logger.info("in app messages is enabled successfully");
             res.status(200).json({code:"SUCCESS", message:"enabled", data: response});
         }).catch(err=>{
@@ -175,7 +175,7 @@ exports.getInAppMessages2 =(req,res)=>{
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessages2(user.id, user.customerId)
+        inAppMsgService.getInAppMessages2(user.id, user.applicationId)
             .then(inAppMessages=>{
                 res.status(200).json({code:'SUCCESS', message:"Got in app messages", data:inAppMessages});
             })
@@ -194,19 +194,19 @@ exports.getInAppMessagesByEventIds = (req, res) => {
     var userName = req.query.userName;
     var eventIds = req.query.eventIds;
     logger.info("request received to get in app messages for appId and userName: ", appId, userName, eventIds);
-    return customerService.getCustomerByApplicationId(appId).then(customer => {
-        return userService.getByUserNameAndAppId(userName, appId).then(user => {
-            if (!user) {
-                return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
+    //return customerService.getCustomerByApplicationId(appId).then(customer => {
+    return userService.getByUserNameAndAppId(userName, appId).then(user => {
+        if (!user) {
+            return res.status(400).json({ code: "BAD_REQUEST", message: "Invalid application Id or user Name" });
+        }
+        return inAppMsgService.getInAppMessagesByEventIds(user.id, user.applicationId, user.type, eventIds).then(inAppMessages => {
+            if (inAppMessages instanceof Array && inAppMessages.length > 0) {
+                return res.status(200).json({ code: 'SUCCESS', message: "message list", data: inAppMessages });
             }
-            return inAppMsgService.getInAppMessagesByEventIds(user.id, user.customerId, user.type, eventIds).then(inAppMessages => {
-                if (inAppMessages instanceof Array && inAppMessages.length > 0) {
-                    return res.status(200).json({ code: 'SUCCESS', message: "message list", data: inAppMessages });
-                }
-                return res.status(200).json({ code: 'SUCCESS', message: "No messege found" });
-            });
+            return res.status(200).json({ code: 'SUCCESS', message: "No messege found" });
+        });
 
-        })
+        //})
 
     }).catch(err => {
         logger.error("error while fatching massges", err)
@@ -226,7 +226,7 @@ exports.getInAppMessagesByEventId =(req,res)=>{
                 res.status(400).json({code:"BAD_REQUEST",message:"Invalid application Id or user Name"});
                 return;
             }
-        inAppMsgService.getInAppMessagesByEventId(user.id, user.customerId, user.type, eventIds)
+        inAppMsgService.getInAppMessagesByEventId(user.id, user.applicationId, user.type, eventIds)
             .then(inAppMessages=>{
                 let message = "Not able to get in app messages"
                 if(inAppMessages instanceof Array && inAppMessages.length > 1){
@@ -240,7 +240,7 @@ exports.getInAppMessagesByEventId =(req,res)=>{
                     messages.push(
                         {"eventId":item.eventId,
                         "messages":[{"id":item.id,
-                                    "customerId":item.customerId,
+                                    "applicationId":item.applicationId,
                                     "message":item.message,
                                     "metadata":item.metadata,
                                     "status":item.status,
