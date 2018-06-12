@@ -362,7 +362,7 @@ const getConversationStat = (query) => {
 
 const createConversationFromMail = (req) => {
     let applicationId = req.body.applicationId
-    let email = req.body.email || req.body.userId;
+    let email = req.body.emailIds || req.body.userId;
     let message = req.body.message;
     let groupInfo = GROUP_INFO;
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
