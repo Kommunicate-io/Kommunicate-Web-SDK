@@ -111,7 +111,7 @@ exports.patchCustomer = (req, res) => {
     })
   }
 
-  registrationService.getCustomerByUserName(userId).then(dbCostomer => {
+  customerService.getCustomerByUserName(userId).then(dbCostomer => {
     console.log("got the user from db", dbCostomer);
     if (activeCampaignEnable) {
       return activeCampaignClient.updateActiveCampaign({
