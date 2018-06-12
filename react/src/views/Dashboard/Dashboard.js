@@ -459,9 +459,20 @@ class Dashboard extends Component {
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     this.getAllUsers(application.applicationId);
-    this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked)
-    
+    this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
+
+    // For Tooltip
+    // var tooltipSpan = document.getElementById('tooltip-span');
+    // var selectDropdown = document.querySelector(".tooltip-for-lock .Select");
+    // selectDropdown.appendChild(tooltipSpan);
+    // window.onmousemove = function (e) {
+    //     var x = e.clientX,
+    //         y = e.clientY;
+    //     tooltipSpan.style.top = (y + 20) + 'px';
+    //     tooltipSpan.style.left = (x + 20) + 'px';
+    // };
   }
+
   filterConversationDetails = (timeFilterSelectedOption, agentFilterSelectedOption, hoursWiseDistribution) => {
     let last30DaysYYYYMMDD = [];
     let last7DaysYYYYMMDD = [];
@@ -957,15 +968,21 @@ render() {
               ]}
             />
           </div>
-          <div className="col-lg-2 col-sm-4">
+          <div className="col-lg-2 col-sm-4 tooltip-for-lock">
+           
             <Select
+              className={(typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? "agent-restriction" : ""}
               name="km-dashboard-agent-filter"
               value={agentFilterSelectedOption}
               clearable={false}
               searchable={false}
               onChange={this.agentFilterHandleChange}
               options={this.state.agentFilterOption}
+              
             />
+            {/* <span id="tooltip-span" className="tooltip-span">
+              Available in Growth Plan
+            </span> */}
           </div>
           <div className="col-lg-8 col-sm-4 dashboard-chart-checkbox-section">
             <div className="dashboard-chart-checkbox-wrapper">
@@ -985,7 +1002,7 @@ render() {
                 data-day = {this.state.dataDay} 
                 onClick={this.displayChart}>
                 <h4 className="card-count">{this.state.displayTotalCounts.newConversationCount}</h4>
-                <p className="card-count-title">New Conversations</p>
+                <p className="card-count-title">Incoming Conversations</p>
               </div>
             </div>
           </div>

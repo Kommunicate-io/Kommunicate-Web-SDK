@@ -256,6 +256,56 @@
     color: #8b8b8e;
 }
 
+/* Styles for Lock in Feature restriction based on Pricing */
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child) {
+	pointer-events: none;
+	position: relative;
+}
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child)::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #fff;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+	opacity: 0.4;
+}
+
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child)::after {
+	content: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0Ij4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPiAgICA8cGF0aCBkPSJNMTggOGgtMVY2YzAtMi43Ni0yLjI0LTUtNS01UzcgMy4yNCA3IDZ2Mkg2Yy0xLjEgMC0yIC45LTIgMnYxMGMwIDEuMS45IDIgMiAyaDEyYzEuMSAwIDItLjkgMi0yVjEwYzAtMS4xLS45LTItMi0yem0tNiA5Yy0xLjEgMC0yLS45LTItMnMuOS0yIDItMiAyIC45IDIgMi0uOSAyLTIgMnptMy4xLTlIOC45VjZjMC0xLjcxIDEuMzktMy4xIDMuMS0zLjEgMS43MSAwIDMuMSAxLjM5IDMuMSAzLjF2MnoiIGZpbGw9IiMyZmMzNTkiLz48L3N2Zz4=);
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 10px;
+	z-index: 5;
+}
+/* .tooltip-for-lock {
+    position: relative;
+}
+.tooltip-for-lock .tooltip-span {
+    display: none;
+}
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child):hover ~ .tooltip-span {
+    display:block;
+    position:fixed;
+    overflow:hidden;
+}
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child):hover + .tooltip-span {
+    display:block;
+    position:fixed;
+    overflow:hidden;
+}
+.agent-restriction .Select-menu-outer .Select-menu .Select-option:not(:first-child):hover  .tooltip-span {
+    display:block;
+    position:fixed;
+    overflow:hidden;
+} */ 
+
+
+
+
 @media only screen and (min-width:992px) {
     .early-bird-card {
         width: 80%;

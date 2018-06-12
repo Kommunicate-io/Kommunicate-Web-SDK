@@ -631,7 +631,7 @@
         left:0; 
         width: 97%;
         background-color: white; */
-    }
+    }  
     .mck-collect-email {
         font-size: 14px;
         font-weight: normal;
@@ -639,10 +639,22 @@
         text-align: left;
         color: #6b6767;
     }
+    #mck-email-error-alert {
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: 0.4px;
+        text-align: left;
+        color: #fffefe;
+    }
     #mck-email-collection-box {
         text-align: center;
         padding: 5px;
         background-color: #d8d8d8;
+    }
+    #mck-email-error-alert-box {
+        text-align: center;
+        padding: 5px;
+        background-color: #f37272;
     }
     /******** Generic list template*************/
     /* FAQ List */

@@ -99,7 +99,7 @@ const createUser = (user, customer) => {
           "key": user.userKey,
           "brokerUrl": applozicUser.brokerUrl,
           "accessToken": user.accessToken,
-          "applicationKey": customer.applicationId,
+          "applicationKey": customer.applications[0].applicatioId,
           "authorization": user.authorization,
           "clientToken": clientToken,
           "devToken": devToken,
@@ -491,7 +491,8 @@ const getUsersByCustomerId = (customerId) => {
   });
 }
 const changeBotStatus =(botId, appId, status)=>{
-    return Promise.resolve(userModel.update({allConversations:status},{where:{id:botId, applicatioId:appId}}));
+    return Promise.resolve(userModel.update({allConversations:status},{where:{userName:botId, applicationId:appId}}));
+
 }
 
 const getAgentByUserKey= (userKey) =>{
