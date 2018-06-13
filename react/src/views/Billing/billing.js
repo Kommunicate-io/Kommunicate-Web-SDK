@@ -305,13 +305,13 @@ class Billing extends Component {
         const billedYearly = (
             <div className="radio-content-container">
                 <h3>Billed Yearly</h3>
-                <p>{SUBSCRIPTION_PLANS['early_bird_yearly'].amount}/month</p>
+                <p>{SUBSCRIPTION_PLANS['per_agent_yearly'].amount}/month</p>
             </div>
         )
         const billedMonthly = (
             <div className="radio-content-container">
                 <h3>Billed Monthly</h3>
-                <p>{SUBSCRIPTION_PLANS['early_bird_monthly'].amount}/month</p>
+                <p>{SUBSCRIPTION_PLANS['per_agent_monthly'].amount}/month</p>
             </div>
         )
         const { modalIsOpen } = this.state;
