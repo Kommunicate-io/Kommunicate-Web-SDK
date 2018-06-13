@@ -384,10 +384,10 @@ class Billing extends Component {
                                     {this.state.showPlanSelection ?
                                        (
                                         <div>
-                                            <button hidden={!this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="early_bird_yearly" data-cb-type="checkout" data-cb-plan-id="early_bird_yearly">
+                                            <button hidden={!this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly">
                                                 Next
                                             </button>
-                                            <button hidden={this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="early_bird_monthly" data-cb-type="checkout" data-cb-plan-id="early_bird_monthly">
+                                            <button hidden={this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly">
                                                 Next
                                             </button>
                                             <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={this.buyThisPlanClick}>Cancel</button>
