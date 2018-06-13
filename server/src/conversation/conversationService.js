@@ -366,7 +366,9 @@ const createConversationFromMail = (req) => {
     let message = req.body.message;
     let groupInfo = GROUP_INFO;
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
-
+    if (!applicationId || !email || !message) {
+        return "INVALID_PARAMETERS"
+    }
     return customerService.getCustomerByApplicationId(applicationId).then(customer => {
         return applozicClient.getUserDetails([email], customer.applications[0].applicationId, customer.apzToken).then(userDetail => {
             groupInfo.groupName = customer.name || customer.userName;
