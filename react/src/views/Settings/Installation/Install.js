@@ -100,7 +100,7 @@ class Install extends Component {
                   }
                 </div>
                 {
-                   (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container">
+                   (currentPath.includes('setUpPage')) ? " " : <div className="app-id-container col-md-10">
                    <div className="app-id-div">
                      <span className="app-id-sub-text">
                        Your App ID:
@@ -114,7 +114,7 @@ class Install extends Component {
                 
 
                 <div className="code-container javascript col-md-10">
-                  <a href="#javascript-code-div" className="outer-box col-md-12 integration-font javascript-card">
+                  <a href="#" className="outer-box col-md-12 integration-font javascript-card">
                     <div className="card-heading">
                     <div className="image-svg-container">
                       <svg xmlns="http://www.w3.org/2000/svg" width="522.468" height="522.469" viewBox="0 0 522.468 522.469">
@@ -146,13 +146,6 @@ class Install extends Component {
                         </button>
                       )}
                       <span className="identify-users">Want to identify your users? <a href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank">Read more here</a></span>
-                    </div>
-                    <div style={{ marginTop: "25px" }}>
-                      <button
-                        type="button"
-                        className="km-button km-button--secondary"
-                        onClick={this.hideJSInstructions}
-                      >Close</button>
                     </div>
                   </div>
                 </div>
