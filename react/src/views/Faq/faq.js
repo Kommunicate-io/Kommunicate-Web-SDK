@@ -55,10 +55,8 @@ class Tabs extends Component {
   }
 
   componentDidMount=()=>{
-
     this.getFaqsWrapper();
     this.getThirdPartyList();
-
   }
 
   getFaqsWrapper = () => {
@@ -244,7 +242,7 @@ class Tabs extends Component {
     return (
       <div className="animated fadeIn" >
       {/* Change showNewBot to false to hide new bot section*/}
-        <div className={(typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? "card n-vis" : "card"}>
+        <div className={((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? "card" : "n-vis"}>
           <div className="card-block">
             <div style={{width: "60%", margin: "0 auto"}}>
               <div className="row">
@@ -392,7 +390,8 @@ class Tabs extends Component {
         </FaqModal>
 
 
-        <div className={(typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? "upgrade-plan-container faq-pricing-restriction" : "n-vis"}>
+        <div className={ 
+          ((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? "n-vis" : "upgrade-plan-container faq-pricing-restriction"}>
           <div className="upgrade-plan-heading-container">
               <div className="upgrade-plan-heading">
                   <h4>Upgrade your plan to create your FAQs</h4> 

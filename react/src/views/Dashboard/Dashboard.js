@@ -971,7 +971,7 @@ render() {
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
            
             <Select
-              className={(typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? "agent-restriction" : ""}
+              className={((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? "" : "agent-restriction"}
               name="km-dashboard-agent-filter"
               value={agentFilterSelectedOption}
               clearable={false}
