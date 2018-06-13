@@ -133,7 +133,7 @@
 .code-div {
   background-color: #f4f5f7;
   z-index: 1;
-  padding-bottom: 25px;
+  padding-bottom: 10px;
   margin-top: -20px;
 }
 .identify-users {
@@ -239,4 +239,7 @@
 }
 .script-text-area, .script-text-area:focus, .script-text-area:active {
   padding: 10px 20px;
+}
+.copy-code-button-div {
+  padding-top: 0px;
 }
