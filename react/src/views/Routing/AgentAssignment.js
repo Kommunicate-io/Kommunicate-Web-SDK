@@ -171,7 +171,7 @@ toggleConversationAssignment = () => {
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
               <div className="col-md-11 col-lg-11">
-                {   ((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? <h4 className="routing-title">Automatic assignment</h4> :  (CommonUtils.getStartupPlan()) ? <div className="badge-design">
+                {   (CommonUtils.isTrialPlan()) ? <h4 className="routing-title">Automatic assignment</h4> :  (CommonUtils.isStartupPlan()) ? <div className="badge-design">
                     <h4 className="routing-title startup-badge">Automatic assignment</h4> <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> </div> : <h4 className="routing-title">Automatic assignment</h4>
                 }
                   {/* <h4 className="routing-title">Automatic assignment</h4> */}
@@ -283,7 +283,7 @@ toggleConversationAssignment = () => {
                                     checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
                                  
                                 <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
-                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan()))?false: (CommonUtils.getStartupPlan()) ? true : false}/>
+                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
                             
                                     {/* automatic message comming soon
                                     <div  >{automaticAssignmentContainer}</div>*/}

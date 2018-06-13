@@ -83,8 +83,11 @@ const CommonUtils = {
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         return diffDays;
     }, 
-    getStartupPlan: function() {
+    isStartupPlan: function() {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
+    }, 
+    isTrialPlan: function() {
+        return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
     }
 
 }

@@ -971,7 +971,7 @@ render() {
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
            
             <Select
-              className={((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? "" : (CommonUtils.getStartupPlan()) ? "agent-restriction" : ""}
+              className={(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
               name="km-dashboard-agent-filter"
               value={agentFilterSelectedOption}
               clearable={false}
