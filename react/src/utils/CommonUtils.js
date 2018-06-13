@@ -81,8 +81,10 @@ const CommonUtils = {
         var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
         var timeDiff = now.getTime() - trialStarted.getTime();
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-        console.log(diffDays);
         return diffDays;
+    }, 
+    getStartupPlan: function() {
+        return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
     }
 
 }
