@@ -245,7 +245,7 @@ const getByUserNameAndAppId = (userName, appId) => {
 
 const processOffBusinessHours = (message, todaysBusinessHours)=>{
   const groupId = message.groupId;
-  const applicatioId = message.applicationKey;
+  const applicationId = message.applicationKey;
   if(!message || !todaysBusinessHours) {
     throw new Error("messsage or userBusinessHoursConfig cant be empty");
   }
@@ -393,7 +393,7 @@ exports.goOnline = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({ availabilityStatus: 1 }, { where: { "userName": userId, applicatioId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({ availabilityStatus: 1 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to online", result[0]);
     return result[0];
   }).catch(err => {
