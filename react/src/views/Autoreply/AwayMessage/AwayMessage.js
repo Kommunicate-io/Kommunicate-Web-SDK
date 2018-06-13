@@ -128,7 +128,7 @@ class AwayMessage extends Component{
     }) 
   } 
   updateUserStatus =() =>{
-    if(this.state.awayMessageKnownCustomers[0].status === 1){
+    if(this.state.awayMessageKnownCustomers[0].status === 1 || this.state.awayMessageAnonymousCustomers[0].status === 1){
       this.setState({
         switchIsEnabled: true,
         status:1,
