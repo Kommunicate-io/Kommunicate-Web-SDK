@@ -2,7 +2,7 @@ const registrationService = require("./registrationService");
 const customerService = require('../customer/customerService')
 const userService = require('../users/userService');
 const joi = require("joi");
-const randomString  = require('randomstring');
+const randomString = require('randomstring');
 const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
@@ -11,91 +11,92 @@ const pipeDrive = require('../pipedrive/pipedrive');
 const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 const logger = require('../utils/logger');
+const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
 //const logger =require("../utils/logger");
-exports.createCustomer = (req,res)=>{
+exports.createCustomer = (req, res) => {
   // userName is the primary parameter. user Id was replaced by userName.
-  const userName = req.body.userName?req.body.userName:req.body.userId;
-  //const userId =  userName; 
+  const userName = req.body.userName ? req.body.userName : req.body.userId;
+  //const userId =  userName;
   const isPreSignUp = req.query.preSignUp;
   const isOAuthSignUp = req.query.OAuthSignUp;
-  const password = isPreSignUp?randomString.generate(6):req.body.password;
+  const password = isPreSignUp ? randomString.generate(6) : req.body.password;
   const name = req.body.name;
-  const email=req.body.email||userName;
-  const subscription = req.body.subscription||'startup';
-  let response={};
-  let userDetail =Object.assign({},req.body);
-  userDetail.email=email;
+  const email = req.body.email || userName;
+  const subscription = req.body.subscription || subscriptionPlan.initialPlan;
+  let response = {};
+  let userDetail = Object.assign({}, req.body);
+  userDetail.email = email;
   userDetail.password = password;
-  userDetail.userName=userName;
+  userDetail.userName = userName;
   userDetail.subscription = subscription;
-  logger.info("userName:", userName, password,isPreSignUp,isOAuthSignUp);
+  logger.info("userName:", userName, password, isPreSignUp, isOAuthSignUp);
   /*
   * When login is done via 'Sign in with Google' make password = 'mi8&zG#0rLyE^$1&MXSe' and loginType = 'oauth'.
   * Making sure that passoword is null for 'Sign in with Google'
   */
-  if(isOAuthSignUp && req.body.loginType === 'oauth'){
+  if (isOAuthSignUp && req.body.loginType === 'oauth') {
     userDetail.password = 'mi8&zG#0rLyE^$1&MXSe'
   }
-  if(userName&&(isPreSignUp||password||isOAuthSignUp)){
-    console.log("request received for pre sign up, EmailId : ",userName);
+  if (userName && (isPreSignUp || password || isOAuthSignUp)) {
+    console.log("request received for pre sign up, EmailId : ", userName);
     //TODO : check the if user exist form communicate Db;
-    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
-      console.log("got the user from db",user);
-      if(customer || user){
-        response.code ="USER_ALREADY_EXISTS";
-        response.message="User Already Exists";
+    Promise.all([customerService.getCustomerByUserName(userName), userService.getUserByName(userName)]).then(([customer, user]) => {
+      console.log("got the user from db", user);
+      if (customer || user) {
+        response.code = "USER_ALREADY_EXISTS";
+        response.message = "User Already Exists";
         res.status(200).json(response);
         return;
-      }else{
+      } else {
         return registrationService.createCustomer(userDetail)
-        .then(result=>{
-         /* inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
-          .catch(err=>{
-            console.log("err while storing welcome message in db");
-          });*/
-         /* registrationService.sendWelcomeMail(email, name||email).catch(err=>{
-            console.log("Error while sending welcom mail to user",err)  
-          });*/
-          if (activeCampaignEnable) {
-            activeCampaignClient.addContact({ "email": email })
-              .then(subscriberId => {
-                return customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
-              })
-              .catch(error => {
-                console.log("Error while sending Email to activeCampaign", error);
-              });
-          }   
-          
-            response.code="SUCCESS";
-              // replacing user Id with user name. can't delete userId from system for backward compatibility.
-              delete result.userId;
-              result.isAdmin=true;
-              result.adminUserName = userName;
-              result.adminDisplayName = name;
-              response.data=result;
-              res.status(200).json(response);
-            }).catch(err=>{
-            console.log("error while creating a customer",err);
-            switch(err.code){
+          .then(result => {
+            /* inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
+             .catch(err=>{
+               console.log("err while storing welcome message in db");
+             });*/
+            /* registrationService.sendWelcomeMail(email, name||email).catch(err=>{
+               console.log("Error while sending welcom mail to user",err)
+             });*/
+            if (activeCampaignEnable) {
+              activeCampaignClient.addContact({ "email": email })
+                .then(subscriberId => {
+                  return customerService.updateCustomer(userName, { activeCampaignId: subscriberId });
+                })
+                .catch(error => {
+                  console.log("Error while sending Email to activeCampaign", error);
+                });
+            }
+
+            response.code = "SUCCESS";
+            // replacing user Id with user name. can't delete userId from system for backward compatibility.
+            delete result.userId;
+            result.isAdmin = true;
+            result.adminUserName = userName;
+            result.adminDisplayName = name;
+            response.data = result;
+            res.status(200).json(response);
+          }).catch(err => {
+            console.log("error while creating a customer", err);
+            switch (err.code) {
               case "USER_ALREADY_EXISTS":
-                response.code ="USER_ALREADY_EXISTS";
-                response.message="user Already Exists";
+                response.code = "USER_ALREADY_EXISTS";
+                response.message = "user Already Exists";
                 res.status(200).json(response);
                 break;
-                default:
-                response.code ="INTERNAL_SERVER_ERROR";
-                response.message="something is broken";
+              default:
+                response.code = "INTERNAL_SERVER_ERROR";
+                response.message = "something is broken";
                 res.status(500).json(response);
                 break;
             }
           });
-        }
-      })
-    }else{
-      response.code = "BAD_REQUEST";
-      response.message="some params are missing";
-      res.status(400).json(response);
-    }
+      }
+    })
+  } else {
+    response.code = "BAD_REQUEST";
+    response.message = "some params are missing";
+    res.status(400).json(response);
+  }
 }
 
 exports.patchCustomer = (req, res) => {
@@ -156,7 +157,7 @@ exports.patchCustomer = (req, res) => {
     //     console.log("Applozic update user response: " + response);
     //   }).catch(err=>{
     //     console.log("error while updating Applozic user");
-    //   }) 
+    //   })
     // });
     if (isUpdated) {
       response.code = "SUCCESS";
@@ -175,115 +176,115 @@ exports.patchCustomer = (req, res) => {
   });
 }
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  */
-exports.getCustomerInformation = (req,res)=>{
+exports.getCustomerInformation = (req, res) => {
   const userName = req.params.userName;
-  console.log("request received to get customer information: ",userName);
-  if(!userName){
-    res.status(400).json({code:"BAD_REQUEST",message:"user name is empty"});
+  console.log("request received to get customer information: ", userName);
+  if (!userName) {
+    res.status(400).json({ code: "BAD_REQUEST", message: "user name is empty" });
     return;
   }
-  customerService.getCustomerByUserName(userName).then(customer=>{
-    if(!customer){
-      console.log("customer not found in db :",userName);
-      res.status(404).json({code:"NOT_FOUND",message:"no customer exists with user name: "+userName});
-    }else{
-      let custInfo =  customer.dataValues;
+  customerService.getCustomerByUserName(userName).then(customer => {
+    if (!customer) {
+      console.log("customer not found in db :", userName);
+      res.status(404).json({ code: "NOT_FOUND", message: "no customer exists with user name: " + userName });
+    } else {
+      let custInfo = customer.dataValues;
       delete custInfo.password;
-      res.status(200).json({code:"SUCCESS",data:custInfo});
+      res.status(200).json({ code: "SUCCESS", data: custInfo });
     }
-  }).catch(err=>{
-    console.log("err while fetching data for customer",err);
-    res.status(500).json({code:"INTERNAL_SERVER_ERROR",message:"something went wrong"});
+  }).catch(err => {
+    console.log("err while fetching data for customer", err);
+    res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
     return;
   })
 
 
-} 
+}
 
-exports.signUpWithAplozic= (req,res)=>{
+exports.signUpWithAplozic = (req, res) => {
   const userName = req.body.userName;
   const password = req.body.password;
   const applicationId = req.body.applicationId;
   const email = req.body.email || userName;
-  let response={};
+  let response = {};
 
   console.log("userName:", userName, password);
-  if(userName&&password){
-    console.log("request received to sign up with Applozic, EmailId : ",userName);
-    Promise.all([customerService.getCustomerByUserName(userName),userService.getUserByName(userName)]).then(([customer,user])=>{
-      console.log("got the user from db",user);
-      if(customer || user){
-        response.code ="USER_ALREADY_EXISTS";
-        response.message="User Already Exists";
+  if (userName && password) {
+    console.log("request received to sign up with Applozic, EmailId : ", userName);
+    Promise.all([customerService.getCustomerByUserName(userName), userService.getUserByName(userName)]).then(([customer, user]) => {
+      console.log("got the user from db", user);
+      if (customer || user) {
+        response.code = "USER_ALREADY_EXISTS";
+        response.message = "User Already Exists";
         res.status(200).json(response);
         return;
-      }else{
-        return registrationService.signUpWithApplozic(req.body).then(result=>{
-          try{
+      } else {
+        return registrationService.signUpWithApplozic(req.body).then(result => {
+          try {
             /*inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
             .catch(err=>{
               console.log("err while storing welcome message in db");
             });*/
-           //registrationService.sendWelcomeMail(email, userName, false,'');
-          }catch(err){
-            console.log("Error while sending welcom mail to user  ",err);
+            //registrationService.sendWelcomeMail(email, userName, false,'');
+          } catch (err) {
+            console.log("Error while sending welcom mail to user  ", err);
           }
-            response.code="SUCCESS";
-              // replacing user Id with user name. can't delete userId from system for backward compatibility.
-              delete result.userId;
-              result.isAdmin=true;
-              result.adminUserName = userName;
-              result.adminDisplayName = userName;
-              response.data=result;
+          response.code = "SUCCESS";
+          // replacing user Id with user name. can't delete userId from system for backward compatibility.
+          delete result.userId;
+          result.isAdmin = true;
+          result.adminUserName = userName;
+          result.adminDisplayName = userName;
+          response.data = result;
+          res.status(200).json(response);
+        }).catch(err => {
+          console.log("error while creating a customer", err);
+          switch (err.code) {
+            case "USER_ALREADY_EXISTS":
+              response.code = "USER_ALREADY_EXISTS";
+              response.message = "user Already Exists";
               res.status(200).json(response);
-            }).catch(err=>{
-            console.log("error while creating a customer",err);
-            switch(err.code){
-              case "USER_ALREADY_EXISTS":
-                response.code ="USER_ALREADY_EXISTS";
-                response.message="user Already Exists";
-                res.status(200).json(response);
-                break;
-              case "APPLICATION_NOT_EXISTS":
-                response.code ="APPLICATION_NOT_EXISTS";
-                response.message="application Not exists";
-                res.status(200).json(response);
               break;
-              default:
-                response.code ="INTERNAL_SERVER_ERROR";
-                response.message="something is broken";
-                res.status(500).json(response);
-                break;
-            }
-          });
-        }
-      })
-    }else{
-      response.code = "BAD_REQUEST";
-      response.message="some params are missing";
-      res.status(400).json(response);
-    }
+            case "APPLICATION_NOT_EXISTS":
+              response.code = "APPLICATION_NOT_EXISTS";
+              response.message = "application Not exists";
+              res.status(200).json(response);
+              break;
+            default:
+              response.code = "INTERNAL_SERVER_ERROR";
+              response.message = "something is broken";
+              res.status(500).json(response);
+              break;
+          }
+        });
+      }
+    })
+  } else {
+    response.code = "BAD_REQUEST";
+    response.message = "some params are missing";
+    res.status(400).json(response);
+  }
 
 
 
 }
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  * will check this one
  * let user = req.params.user+"Routing"
  */
 exports.updateRoutingState = (req, res) => {
   let appId = req.params.appId;
   let routingState = req.params.routingState;
-  let user = req.params.user+"Routing"
+  let user = req.params.user + "Routing"
   let routingInfo = {};
-  routingInfo[user]=routingState;
+  routingInfo[user] = routingState;
 
   return customerService.updateRoutingState(appId, routingInfo).then(response => {
     return res.status(200).json({ code: "SUCCESS", message: response.message });
@@ -294,7 +295,7 @@ exports.updateRoutingState = (req, res) => {
 }
 
 /**
- * 
+ *
  */
 exports.getCustomerByApplicationId = (req, res) => {
   let appId = req.query.applicationId;

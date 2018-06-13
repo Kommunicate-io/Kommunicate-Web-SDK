@@ -16,6 +16,7 @@ const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
 const customerService = require('../customer/customerService.js');
+const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
 
 exports.USER_TYPE = USER_TYPE;
 
@@ -34,7 +35,7 @@ exports.createCustomer = customer => {
       if (customer.password !== null) {
         customer.password = bcrypt.hashSync(customer.password, 10);
       }
-      customer.subscription = "startup";
+      customer.subscription = subscriptionPlan.initialPlan;
       user.password = customer.password;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
@@ -72,7 +73,8 @@ exports.createCustomer = customer => {
           return userModel.bulkCreate([user, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
             console.log("user created", user ? user.dataValues : null);
             console.log("created bot ", bot.dataValues);
-            return getResponse(user.dataValues, application);
+            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription })
+            return getResponse(signupUser, application);
           });
         });
       });
