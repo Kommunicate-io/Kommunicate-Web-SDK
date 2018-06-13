@@ -22,8 +22,9 @@ body {
     border: 1px solid #eaeaea;
     border-radius: 2px;
     padding: 7px;
-
+    background: none !important;
 }
+
 .away-card-header {
     width: 60%;
     border-radius: 2px;
@@ -50,6 +51,7 @@ body {
 .away-text-area-wrapper{
     margin-right: 1px;
     margin-bottom: 3px;
+    background-color: #fff !important;
 }
 .away-msg-collect-email-checkbox .checkbox-input[type='checkbox'] + .checkbox-label {
  margin: 0;

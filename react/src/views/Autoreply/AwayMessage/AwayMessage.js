@@ -347,7 +347,7 @@ class AwayMessage extends Component{
     const textAreaForKnownCustomersMsg = this.state.awayMessageKnownCustomers.map((message, index) => {
       return <div key = {index}>
         <div className = "row away-text-area-wrapper">
-          <textarea rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave a message and I will get back to you as soon as possible."
+          <textarea  rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave a message and I will get back to you as soon as possible."
            value={this.state.awayMessageKnownCustomers[index].messageField}
             onChange={(e) => {
               let awayMessageKnownCustomers = Object.assign([],this.state.awayMessageKnownCustomers);
@@ -368,7 +368,7 @@ class AwayMessage extends Component{
     const textAreaForAnonymousCustomersMsg = this.state.awayMessageAnonymousCustomers.map((message, index) => {
         return <div key = {index}>
           <div className = "row away-text-area-wrapper">
-            <textarea rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave your email ID and your message and I will get back to you as soon as possible."
+            <textarea  rows="5" cols="60" className ="away-msg-text-area" placeholder="Example: Hi, please leave your email ID and your message and I will get back to you as soon as possible."
              value={this.state.awayMessageAnonymousCustomers[index].messageField}
               onChange={(e) => {
                 let awayMessageAnonymousCustomers = Object.assign([],this.state.awayMessageAnonymousCustomers);
