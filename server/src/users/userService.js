@@ -333,11 +333,11 @@ exports.updateUser = (userId, appId, userInfo) => {
       if (user == null) {
         throw new Error("No customer in customer table with appId", appId);
       }
-      if (isvalid) {
-        var error = new Error("user already exist for this email");
-        error.code = 'DUPLICATE_EMAIL';
-        throw error;
-      }
+      // if (isvalid) {
+      //   var error = new Error("user already exist for this email");
+      //   error.code = 'DUPLICATE_EMAIL';
+      //   throw error;
+      // }
       let userDetail = { userId: userId, displayName: userInfo.name, email: userInfo.email, phoneNumber: userInfo.contactNo };
       applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail, null, user.type === registrationService.USER_TYPE.BOT)
         .then(response => {
