@@ -20,7 +20,19 @@ class Integration extends Component {
         emailAddress:""
       };
   }
-
+  componentWillReceiveProps () {
+    this.getUsers();
+  }
+  componentWillMount() {
+    this.getUsers();
+  }
+  getUsers = () => {
+    var _this = this;
+    window.$kmApplozic.fn.applozic("fetchContacts", {roleNameList: ['APPLICATION_ADMIN', 'APPLICATION_WEB_ADMIN'], 'callback': function(response) {
+        _this.setState({result: response.response.users});
+      }
+    });
+  }
   showEmailInput=(e)=>{
     e.preventDefault();
     this.setState({emailInstructions : true})
@@ -91,14 +103,7 @@ class Integration extends Component {
     // console.log(this.state.multipleEmailAddress);
   }
 
-  componentWillMount() {
-    var _this = this;
-    window.$kmApplozic.fn.applozic("fetchContacts", {roleNameList: ['APPLICATION_ADMIN', 'APPLICATION_WEB_ADMIN'], 'callback': function(response) {
-        _this.setState({result: response.response.users});
-      }
-    });
-  }
-
+  
   render() {
     var result = this.state.result.map(function(result,index){
           return <UserItem key={index} user={ result } hideConversation="true" />
