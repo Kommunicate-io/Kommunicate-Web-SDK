@@ -441,7 +441,7 @@ exports.updatePassword = (newPassword, user) => {
       .then(([customer, hash]) => {
         return Promise.all([applozicClient.updatePassword({ newPassword: newPassword, oldPassword: user.accessToken, applicationId: user.applicationId, userName: user.userName }),
         db.user.update({ accessToken: newPassword, password: hash, apzToken: apzToken }, { where: { id: user.id }, transaction: t }),
-        db.customer.update({ accessToken: newPassword, password: hash, apzToken: apzToken }, { where: { userName: user.id }, transaction: t })])
+        db.customer.update({ accessToken: newPassword, password: hash, apzToken: apzToken }, { where: { userName: user.userName }, transaction: t })])
           .then(([res1, res2, res3]) => {
             console.log("password updated successfully in all dbs for agent", user.userName);
             return { "code": "SUCCESS" }
