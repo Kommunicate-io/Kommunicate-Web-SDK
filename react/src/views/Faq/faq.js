@@ -242,7 +242,7 @@ class Tabs extends Component {
     return (
       <div className="animated fadeIn" >
       {/* Change showNewBot to false to hide new bot section*/}
-        <div className={((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? "card" : (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? "n-vis" : "card"}>
+        <div className={(CommonUtils.isTrialPlan()) ? "card" : (CommonUtils.isStartupPlan()) ? "n-vis" : "card"}>
           <div className="card-block">
             <div style={{width: "60%", margin: "0 auto"}}>
               <div className="row">
@@ -391,7 +391,7 @@ class Tabs extends Component {
 
 
         <div className={ 
-          ((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? "n-vis" : (CommonUtils.getStartupPlan()) ?  "upgrade-plan-container faq-pricing-restriction" : "n-vis"}>
+          (CommonUtils.isTrialPlan()) ? "n-vis" : (CommonUtils.isStartupPlan()) ?  "upgrade-plan-container faq-pricing-restriction" : "n-vis"}>
           <div className="upgrade-plan-heading-container">
               <div className="upgrade-plan-heading">
                   <h4>Upgrade your plan to create your FAQs</h4> 

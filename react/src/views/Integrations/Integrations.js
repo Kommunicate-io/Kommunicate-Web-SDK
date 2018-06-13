@@ -102,7 +102,7 @@ class Integrations extends Component {
      });
      
      return <div className="animated fadeIn">
-     <div className={((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? "row card-block integration-container" : (CommonUtils.getStartupPlan()) ? "n-vis" : "row card-block integration-container"}>
+     <div className={(CommonUtils.isTrialPlan()) ? "row card-block integration-container" : (CommonUtils.isStartupPlan()) ? "n-vis" : "row card-block integration-container"}>
         <div className="col-lg-2">
         </div>
         <div className="col-lg-8">
@@ -123,7 +123,7 @@ class Integrations extends Component {
         }
         
      </div>
-     <div className={((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? "n-vis" : (CommonUtils.getStartupPlan()) ? "upgrade-plan-container" : "n-vis"}>
+     <div className={(CommonUtils.isTrialPlan()) ? "n-vis" : (CommonUtils.isStartupPlan()) ? "upgrade-plan-container" : "n-vis"}>
         <div className="upgrade-plan-heading-container">
             <div className="upgrade-plan-heading">
                 <h4>Upgrade your plan to use all integrations</h4> 
