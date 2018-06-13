@@ -47,7 +47,7 @@ const getConversationByGroupId = groupId => {
  *@param {Object} options.createdBy: Applozic userId if comming from plugin. AgentId if comming from dashboard;
  *@param {Object} options.status : "OPEN","ASIGNED","CLOSED","SPAM","REOPENED",
  *@param {Object} options.defaultAgentId: assignee agent Id
- * 
+ *
  */
 const createConversation = (conversation) => {
     console.log("creating new converation, options:", conversation);
@@ -62,7 +62,7 @@ const createConversation = (conversation) => {
 
 }
 /**
- * 
+ *
  * This function create new support group into applozic.
  * on success response,it will make entry of conversation into kommunicate.
  * @param {req} request contain data and headers
@@ -88,7 +88,7 @@ const createConversationIntoApplozic = (req) => {
         }
         userService.getByUserNameAndAppId(defaultAgent[0].userId, headers['application-key']).then(user => {
             conversation.agentId = user.id;
-        createConversation(conversation);
+            createConversation(conversation);
         });
         result.updated = true;
         return result;
@@ -229,7 +229,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
             userIds = arr;
         } else {
             logger.info("received nullfrom cache, adding default agent as assignee");
-            assignee = userIds[userIds.length-1];
+            assignee = userIds[userIds.length - 1];
         }
 
         cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIds });
@@ -335,7 +335,7 @@ const getAllStatistic = (query, agentIds) => {
 const getConversationStat = (query) => {
     let customerId = query.customerId;
     let agentId = query.agentId;
-    let applicationId= query.applicationId;
+    let applicationId = query.applicationId;
     if (applicationId) {
         return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
             if (users.length == 0) {
@@ -376,19 +376,11 @@ const createConversationFromMail = (req) => {
             groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
             headers['Apz-Token'] = 'Basic ' + customer.apzToken;
             if (userDetail && userDetail.length > 0) {
-                //create conversation with first user 
+                //create conversation with first user
                 groupInfo.users[1].userId = userDetail[0].userId;
                 return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
                     console.log('conversation : ', result);
-                    headers = {
-                        "Authorization": 'Basic ' + new Buffer("bot:bot").toString('base64'),
-                        "Application-Key": customer.applications[0].applicationId, "Content-Type": "application/json"
-                    }
-                    headers['Of-User-Id'] = userDetail[0].userId;
-                    return applozicClient.sendGroupMessage(result.response.clientGroupId, message, '', '', {}, headers).then(resp => {
-                        console.log('send ', resp);
-                        return resp.data
-                    })
+                    return sendMessageIntoConversation(result.response.clientGroupId, message, applicationId, userDetail[0]);
                 })
             } else {
                 //create new user
@@ -397,15 +389,7 @@ const createConversationFromMail = (req) => {
                         groupInfo.users[1].userId = user.userId
                         return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
                             console.log('conversation : ', result);
-                            headers = {
-                                "Authorization": 'Basic ' + new Buffer("bot:bot").toString('base64'),
-                                "Application-Key": customer.applications[0].applicationId, "Content-Type": "application/json"
-                            }
-                            headers['Of-User-Id'] = user.userId;
-                            return applozicClient.sendGroupMessage(result.response.clientGroupId, message, '', '', {}, headers).then(resp => {
-                                console.log('send ', resp);
-                                return resp.data
-                            })
+                            return sendMessageIntoConversation(result.response.clientGroupId, message, applicationId, user);
                         });
 
                     }
@@ -415,11 +399,23 @@ const createConversationFromMail = (req) => {
     })
 }
 
+const sendMessageIntoConversation = (groupId, message, applicationId, user) => {
+    let headers = {
+        "Authorization": 'Basic ' + new Buffer("bot:bot").toString('base64'),
+        "Application-Key": applicationId, "Content-Type": "application/json",
+        "Of-User-Id": user.userId
+    };
+    return applozicClient.sendGroupMessage(groupId, message, '', '', {}, headers).then(resp => {
+        console.log('send ', resp);
+        return resp.data
+    });
+}
+
 
 
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
-   // updateTicketIntoConversation: updateTicketIntoConversation,
+    // updateTicketIntoConversation: updateTicketIntoConversation,
     updateConversation: updateConversation,
     getConversationList: getConversationList,
     getConversationByGroupId: getConversationByGroupId,
@@ -427,5 +423,5 @@ module.exports = {
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
     createConversationIntoApplozic: createConversationIntoApplozic,
-    createConversationFromMail:createConversationFromMail
+    createConversationFromMail: createConversationFromMail
 }
