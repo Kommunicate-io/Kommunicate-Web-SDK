@@ -13,8 +13,13 @@ class Users extends Component {
       showEmptyStateImage: true
     };
   }
-
+  componentWillReceiveProps () {
+    this.getUsers();
+  }
   componentWillMount() {
+    this.getUsers();
+  }
+  getUsers = () => {
     var _this = this;
     window.$kmApplozic.fn.applozic("fetchContacts", {"roleNameList":["USER"],'callback':function(response) {
         //console.log("User Response", response);
