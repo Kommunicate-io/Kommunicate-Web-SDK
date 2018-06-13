@@ -15,6 +15,7 @@ const cacheClient = require("../cache/hazelCacheClient");
 const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
 const CONST = require("./constants.js");
+const customerService = require('../customer/customerService');
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -436,7 +437,7 @@ exports.updatePassword = (newPassword, user) => {
   logger.info("updating password for user Id: ", user.id);
   return db.sequelize.transaction(t => {
     let apzToken = new Buffer(user.userName + ":" + newPassword).toString('base64');
-    return Promise.all([customerService.getCustomerById(user.customerId), bcrypt.hash(newPassword, 10)])
+    return Promise.all([customerService.getCustomerByApplicationId(user.applicationId), bcrypt.hash(newPassword, 10)])
       .then(([customer, hash]) => {
         return Promise.all([applozicClient.updatePassword({ newPassword: newPassword, oldPassword: user.accessToken, applicationId: user.applicationId, userName: user.userName }),
         db.user.update({ accessToken: newPassword, password: hash, apzToken: apzToken }, { where: { id: user.id }, transaction: t }),
