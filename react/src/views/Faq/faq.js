@@ -391,7 +391,7 @@ class Tabs extends Component {
 
 
         <div className={ 
-          ((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? "n-vis" : (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ?  "upgrade-plan-container faq-pricing-restriction" : "n-vis"}>
+          ((CommonUtils.getDaysCount() < 31 ) && (CommonUtils.getStartupPlan())) ? "n-vis" : (CommonUtils.getStartupPlan()) ?  "upgrade-plan-container faq-pricing-restriction" : "n-vis"}>
           <div className="upgrade-plan-heading-container">
               <div className="upgrade-plan-heading">
                   <h4>Upgrade your plan to create your FAQs</h4> 
