@@ -38,28 +38,37 @@ KommunicateUI={
                 }
             }
             if (countMsg == 1) {
-                //displayLeadCollectionTemplate
                 if (KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
-                    $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
+                    this.populateLeadCollectionTemplate();
                 }
             }
             else {
-                $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
-
+               this.hideLeadCollectionTemplate();       
             }
 
         } else if (messageList == null) {
-            $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
+            this.populateLeadCollectionTemplate();
         }
+    },
+    populateLeadCollectionTemplate:function() {
+        $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
+        $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
+        $applozic("#mck-btn-smiley-box").removeClass("vis").addClass("n-vis");
+        $applozic("#mck-text-box").blur();  
+        $applozic('#mck-text-box').attr('data-text', "Your email ID");
     },
     hideLeadCollectionTemplate:function(){
         $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
+        $applozic("#mck-btn-attach-box").removeClass("n-vis").addClass("vis");
+        $applozic("#mck-btn-smiley-box").removeClass("n-vis").addClass("vis");
+        $applozic('#mck-text-box').attr('data-text', "Enter your message here...");
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
+            this.hideLeadCollectionTemplate();
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
