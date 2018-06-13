@@ -3529,8 +3529,9 @@ var KM_ASSIGNE_GROUP_MAP =[];
 			}; 
 			_this.emptyStateChange = function() {
 				var contactList = document.getElementById("km-contact-list"),
+					assignedSearchList = document.getElementById("km-assigned-search-list"),
 					emptyStateDiv = document.getElementById("empty-state-conversations-div");
-				if(contactList.getElementsByTagName("li").length !== 0) {
+				if(contactList.getElementsByTagName("li").length !== 0 || assignedSearchList.getElementsByTagName("li").length !== 0) {
 					if(emptyStateDiv.classList.contains("vis")) {
 						emptyStateDiv.classList.add("n-vis");
 					}
