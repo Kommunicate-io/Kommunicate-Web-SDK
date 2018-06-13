@@ -75,6 +75,19 @@ const CommonUtils = {
     },
     getApplicationIds: function() {
         return JSON.parse(localStorage.getItem('KM_USER_SESSION_APP_IDS'));
+    },
+    getDaysCount: function() {
+        var now = new Date();
+        var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
+        var timeDiff = now.getTime() - trialStarted.getTime();
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays;
+    }, 
+    isStartupPlan: function() {
+        return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
+    }, 
+    isTrialPlan: function() {
+        return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
     }
 
 }

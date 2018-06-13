@@ -252,7 +252,7 @@ class Billing extends Component {
 
             if (diffDays < 31) {
                 this.setState({ trialLeft: (31 - diffDays) });
-                this.setState({ currentPlan: SUBSCRIPTION_PLANS['early_bird_monthly'] });
+                this.setState({ currentPlan: SUBSCRIPTION_PLANS['per_agent_monthly'] });
             } else {
                 this.setState({ currentPlan: SUBSCRIPTION_PLANS['startup'] });
             }

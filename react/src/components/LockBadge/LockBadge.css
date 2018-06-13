@@ -1,0 +1,33 @@
+.lock-badge-container {
+    display: inline-block;
+    border-radius: 2px;
+    border: solid 1px #4beb4b;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+.lock-badge.lock-with-text, .lock-badge.lock-only {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.lock-icon {
+    width: 18px;
+    height: auto;
+}
+.lock-text {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.6px;
+    color: #2fc359;
+    margin-bottom: 0px;
+    margin-left: 5px;
+}
+.lock-badge.lock-with-text .lock-text {
+    display: block;
+}
+.lock-badge.lock-only .lock-text {
+    display: none;
+}

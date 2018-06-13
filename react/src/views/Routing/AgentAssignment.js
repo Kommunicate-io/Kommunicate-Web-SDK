@@ -13,18 +13,19 @@ import { Collapse } from 'reactstrap';
 import { getIntegratedBots, conversationHandlingByBot  } from '../../utils/kommunicateClient';
 import Diaglflow from '../Bot/images/dialogflow-icon.png';
 import botPlatformClient from '../../utils/botPlatformClient';
+import LockBadge from '../../components/LockBadge/LockBadge';
 
 class AgentAssignemnt extends Component{
     constructor(props) {
         super(props);
         this.state = {
             checked: 1,
-            checkedNotifyEverybody:1,
-            checkedAutomaticAssignemnt:0,
+            checkedNotifyEverybody:true,
+            checkedAutomaticAssignemnt:false,
             preventMultiCallAutoAssignment:false,
             preventMultiCallNotifyEverybody:false,
             botsAreAvailable: false,
-            assignConversationToBot: 0,
+            assignConversationToBot: false,
             openAgentRoutingRules: false,
             listOfBots: [],
             listOfBotsDropDown: false,
@@ -61,19 +62,19 @@ componentDidMount(){
 }
 getRoutingState = () => {
     return Promise.resolve(getCustomerByApplicationId()).then(response => {
-        response.data.data.botRouting && this.setState({assignConversationToBot:1})
+        response.data.data.botRouting && this.setState({assignConversationToBot:true})
         if (response.data.data.agentRouting === 1) {
             this.setState({
-                checkedNotifyEverybody: 0,
-                checkedAutomaticAssignemnt: 1,
+                checkedNotifyEverybody: false,
+                checkedAutomaticAssignemnt: true,
                 preventMultiCallAutoAssignment: true,
                 preventMultiCallNotifyEverybody: false
             })
         }
         else {
             this.setState({
-                checkedNotifyEverybody: 1,
-                checkedAutomaticAssignemnt: 0,
+                checkedNotifyEverybody: true,
+                checkedAutomaticAssignemnt: false,
                 preventMultiCallNotifyEverybody: true,
                 preventMultiCallAutoAssignment: false
             })
@@ -84,8 +85,8 @@ getRoutingState = () => {
 }
 handleRadioBtnNotifyEverybody = () => {
     this.setState({
-        checkedNotifyEverybody: 1,
-        checkedAutomaticAssignemnt: 0
+        checkedNotifyEverybody: true,
+        checkedAutomaticAssignemnt: false
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
         return Promise.resolve(enableNotifyEveryBody({ routingState: ROUND_ROUBIN.DISABLE }).then(response => {
@@ -106,8 +107,8 @@ handleRadioBtnNotifyEverybody = () => {
 }
 handleRadioBtnAutomaticAssignment = () => {
     this.setState({
-        checkedNotifyEverybody: 0,
-        checkedAutomaticAssignemnt: 1,
+        checkedNotifyEverybody: false,
+        checkedAutomaticAssignemnt: true,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
         return Promise.resolve(enableAutomaticAssignment({ routingState: ROUND_ROUBIN.ENABLE }).then(response => {
@@ -170,7 +171,10 @@ toggleConversationAssignment = () => {
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
               <div className="col-md-11 col-lg-11">
-                  <h4 className="routing-title">Automatic assignment</h4>
+                {   (CommonUtils.isTrialPlan()) ? <h4 className="routing-title">Automatic assignment</h4> :  (CommonUtils.isStartupPlan()) ? <div className="badge-design">
+                    <h4 className="routing-title startup-badge">Automatic assignment</h4> <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> </div> : <h4 className="routing-title">Automatic assignment</h4>
+                }
+                  {/* <h4 className="routing-title">Automatic assignment</h4> */}
                   <p className="routing-description">All new conversations will be automatically assigned to each agent on a round robin basis.</p>
               </div>
           </div>
@@ -279,7 +283,7 @@ toggleConversationAssignment = () => {
                                     checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
                                  
                                 <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
-                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} />
+                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={(CommonUtils.isTrialPlan())?false: (CommonUtils.isStartupPlan()) ? true : false}/>
                             
                                     {/* automatic message comming soon
                                     <div  >{automaticAssignmentContainer}</div>*/}
