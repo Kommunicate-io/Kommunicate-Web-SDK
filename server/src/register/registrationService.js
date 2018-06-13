@@ -35,7 +35,7 @@ exports.createCustomer = customer => {
       if (customer.password !== null) {
         customer.password = bcrypt.hashSync(customer.password, 10);
       }
-      customer.subscription = subscriptionPlan.initialPlan;
+      customer.subscription = customer.subscription || subscriptionPlan.initialPlan;
       user.password = customer.password;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
