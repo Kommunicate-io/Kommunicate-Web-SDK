@@ -326,8 +326,8 @@ const getAdminUserNameFromGroupInfo = response => {
 
 exports.updateUser = (userId, appId, userInfo) => {
   var email = userInfo.email ? userInfo.email : null;
-  return Promise.all([getByUserNameAndAppId(userId, appId), emailValidation(email)])
-    .then(([user, isvalid]) => {
+  return Promise.all([getByUserNameAndAppId(userId, appId)])
+    .then(([user]) => {
       var userKey = user.userKey;
       var authorization = user.authorization;
       if (user == null) {
