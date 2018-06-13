@@ -171,8 +171,8 @@ toggleConversationAssignment = () => {
               <div className="col-radio-btn col-md-1 col-lg-1">
               </div>
               <div className="col-md-11 col-lg-11">
-                {   ((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? <h4 className="routing-title">Automatic assignment</h4> : <div className="badge-design">
-                    <h4 className="routing-title startup-badge">Automatic assignment</h4> <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> </div>
+                {   ((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup")) ? <h4 className="routing-title">Automatic assignment</h4> :  (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? <div className="badge-design">
+                    <h4 className="routing-title startup-badge">Automatic assignment</h4> <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/> </div> : <h4 className="routing-title">Automatic assignment</h4>
                 }
                   {/* <h4 className="routing-title">Automatic assignment</h4> */}
                   <p className="routing-description">All new conversations will be automatically assigned to each agent on a round robin basis.</p>
@@ -283,7 +283,7 @@ toggleConversationAssignment = () => {
                                     checked={this.state.checkedNotifyEverybody} label={notifyEverybodyContainer} />
                                  
                                 <RadioButton idRadioButton={'automatic-assignemnt-radio'} handleOnChange={this.handleRadioBtnAutomaticAssignment}
-                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup"))?false:true}/>
+                                    checked={this.state.checkedAutomaticAssignemnt} label={automaticAssignmentContainer} disabled={((CommonUtils.getDaysCount() < 31 ) && (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup"))?false: (typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup") ? true : false}/>
                             
                                     {/* automatic message comming soon
                                     <div  >{automaticAssignmentContainer}</div>*/}
