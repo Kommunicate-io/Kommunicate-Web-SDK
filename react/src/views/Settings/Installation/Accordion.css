@@ -97,8 +97,14 @@
   margin-bottom: 10px;
   border: 1px solid #e6e6e6;
 }
+.code-container.javascript a {
+  pointer-events: none;
+}
 .code-container:hover {
   box-shadow: 0 2px 11px 3px rgba(171, 166, 166, 0.5);
+}
+.code-container.javascript:hover {
+  box-shadow: none;
 }
 .javascript-card {
   cursor: pointer;
@@ -170,10 +176,12 @@
 .app-id-container {
   margin: 20px 0px 20px;
 }
+.app-id-container.col-md-10 {
+  padding: 0;
+}
 .app-id-div {
   border-radius: 2px;
   background-color: #cce7f8;
-  max-width: 410px;
   padding: 10px 15px;
 }
 .app-id-sub-text {
@@ -228,4 +236,7 @@
 }
 .m-top-10 {
   margin-top: 10px;
+}
+.script-text-area, .script-text-area:focus, .script-text-area:active {
+  padding: 10px 20px;
 }
