@@ -108,6 +108,12 @@ constructor(props){
         })
       })
     }
+
+
+    var sheet = document.createElement('style')
+    sheet.innerHTML = ".mck-sidebox-launcher {display: block;} .mck-sidebox-launcher.force-hide.vis {display: block !important;}";
+    document.body.appendChild(sheet);
+
   }
 
 
