@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define("customer", {
     id: {
       type: DataTypes.INTEGER,
@@ -45,33 +45,34 @@ module.exports = function(sequelize, DataTypes) {
     //   allowNull: false,
     //   unique: "IDX_USER_NAME_APP_KEY",
     //   field: 'application_id'
-    // }, 
+    // },
     apzToken: {
-        type: DataTypes.STRING(200),
-        field: 'apz_token'
+      type: DataTypes.STRING(200),
+      field: 'apz_token'
     },
-    activeCampaignId:{
+    activeCampaignId: {
       type: DataTypes.INTEGER,
       field: 'active_campaign_id'
     },
-    agentRouting:{
+    agentRouting: {
       type: DataTypes.INTEGER,
       field: "agent_routing"
     },
-    botRouting:{
+    botRouting: {
       type: DataTypes.BOOLEAN,
       field: "bot_routing"
     },
-    subscription:{
+    subscription: {
       type: DataTypes.STRING(50),
       field: "subscription" //STARTUP, LAUNCH, GROWTH, ENTERPRISE
     },
-    billingCustomerId:{
+    billingCustomerId: {
       type: DataTypes.STRING(50),
-      field: "billing_cus_id" 
+      field: "billing_cus_id"
     }
   }, {
-    underscored: true,
-    paranoid: true
-  });
+      underscored: true,
+      paranoid: true
+    }
+  );
 }
