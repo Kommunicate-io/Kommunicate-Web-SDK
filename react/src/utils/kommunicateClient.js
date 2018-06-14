@@ -603,19 +603,22 @@ const getInAppMessagesByEventId = (eventIds) => {
     appId: userSession.application.applicationId,
     eventIds: eventIds
   }
-  let url = getConfig().kommunicateBaseUrl + "/applications/events"
-  return Promise.resolve(axios.get(url, { params: userInfo })).then(response => {
-    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
-      if (response.data.data instanceof Object) {
-        return response.data.data
+  if (userInfo.userName && userInfo.appId) {
+    let url = getConfig().kommunicateBaseUrl + "/applications/events"
+    return Promise.resolve(axios.get(url, { params: userInfo })).then(response => {
+      if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+        if (response.data.data instanceof Object) {
+          return response.data.data
+        }
+      } else if (response === undefined) {
+        return [];
       }
-    } else if (response === undefined) {
+    }).catch(err => {
+      console.log("Error in getInAppMessagesByEventId", err)
       return [];
-    }
-  }).catch(err => {
-    console.log("Error in getInAppMessagesByEventId", err)
-    return [];
-  })
+    })
+  }
+
 }
 
 const deleteInAppMsg = (id) => {
