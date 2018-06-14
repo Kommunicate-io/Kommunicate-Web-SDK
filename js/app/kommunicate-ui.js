@@ -3,8 +3,8 @@
  * 
  */
 KommunicateUI={
-    awayMessageStatus : false,
-    leadCollectionStatus: true,
+    awayMessageInfo : {},
+    isLeadCollectionEnabled: false,
     CONSTS:{
 
     },
@@ -12,8 +12,11 @@ KommunicateUI={
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
             // supporting only one away message for now.
-            KommunicateUI.awayMessageStatus = true;
-            KommunicateUI.leadCollectionStatus = message.data.collectEmail;
+            // KommunicateUI.awayMessageStatus = true;
+            // KommunicateUI.leadCollectionStatus = message.data.collectEmail;
+            KommunicateUI.isLeadCollectionEnabled = message.data.collectEmail;
+            KommunicateUI.awayMessageInfo["isEnabled"] = true;
+            KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
@@ -38,7 +41,8 @@ KommunicateUI={
                 }
             }
             if (countMsg == 1) {
-                if (KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
+                if (KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && 
+                    KommunicateUI.awayMessageInfo.eventId == 1) {
                     this.populateLeadCollectionTemplate();
                 }
             }
