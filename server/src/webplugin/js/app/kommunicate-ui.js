@@ -69,6 +69,7 @@ KommunicateUI={
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
             this.hideLeadCollectionTemplate();
+            window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
