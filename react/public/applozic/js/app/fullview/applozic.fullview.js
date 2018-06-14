@@ -4497,7 +4497,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				} else {
 					_this.addContact(contact, sectionId, message, prepend);
-				}
+					}
 			};
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
 				if (list && list.sectionId) {
@@ -5314,9 +5314,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							mckNotificationService.notifyUser(message);
 						}
 						var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-						$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
+						$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
+						$kmApplozic(".km-li-cs-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
 						if (mckMessageLayout.getUnreadCount(ucTabId) > 0) {
-							$kmApplozic(".km-li-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
+							$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
+							$kmApplozic(".km-li-cs-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
