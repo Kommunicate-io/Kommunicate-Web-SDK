@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
         type:DataTypes.BOOLEAN,
         allowNull: false,
         field: 'collect_email',
-        defaultValue: 1
+        defaultValue: 0
       }  
     }, {
       underscored: true,
