@@ -2587,9 +2587,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
                     let sendMsgCount = $applozic("[data-msgtype=5]").length;
                     //Lead Collection -Email Validation
-                    if ( sendMsgCount == 1 && KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
-                        var isValid =KommunicateUI.validateEmail(messagePxy.message);
-                        if(!isValid){
+                    if (sendMsgCount == 1 && KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) {
+                        var isValid = KommunicateUI.validateEmail(messagePxy.message);
+                        if (!isValid) {
                             return false;
                         }
                     }
@@ -2973,8 +2973,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                         // Lead Collection (Email)
                         let sendMsgCount = $applozic("[data-msgtype=5]").length;
-                        if (sendMsgCount == 1 && KommunicateUI.leadCollectionStatus && KommunicateUI.awayMessageStatus) {
-                             KommunicateUI.displayLeadCollectionTemplate(null)
+                        if (sendMsgCount == 1 && KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) {
+                            KommunicateUI.displayLeadCollectionTemplate(null)
                         }     
                         sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
                         
