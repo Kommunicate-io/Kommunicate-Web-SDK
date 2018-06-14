@@ -2770,16 +2770,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.tabViewUnreadCount = function (data, sectionId) {
 				var group = data.response.groupFeeds;
-				// if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu') && group.length != 0) {
-				// 	document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
-				// 	document.getElementById("km-allconvers`atiom-unread-icon").classList.add("vis");
-				// }
 				for (var i = 0; i < group.length; i++) {
 					if (group[i].unreadCount) {
 						document.getElementById(sectionId).classList.remove("n-vis");
 						document.getElementById(sectionId).classList.add("vis");
-						document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
-						document.getElementById("km-allconversatiom-unread-icon").classList.add("vis");
+						if (!$kmApplozic(".active.nav-link").hasClass('conversation-menu')) {
+							document.getElementById("km-allconversatiom-unread-icon").classList.remove("n-vis");
+							document.getElementById("km-allconversatiom-unread-icon").classList.add("vis");
+						}
 						break;
 					}
 				}
