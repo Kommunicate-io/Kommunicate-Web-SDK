@@ -253,7 +253,7 @@ exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
     applozicClient.applozicLogin({ "userName": "bot", "password": "bot", "applicationId": options.applicationId, "roleName": "BOT" }),
     applozicClient.applozicLogin({ "userName": LIZ.userName, "password": LIZ.password, "applicationId": application.applicationId, "roleName": "BOT", displayName: LIZ.name })])
       .then(([customer, bot, liz]) => {
-        return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" })
+        return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" }, null, false, isApplicationWebAdmin + '')
           .then(updatedUser => {
             options.role = "APPLICATION_WEB_ADMIN";
             return populateDataInKommunicateDb(options, application, customer, bot, liz);

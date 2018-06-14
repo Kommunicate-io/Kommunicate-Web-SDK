@@ -22,7 +22,7 @@ exports.login = (userDetail) => {
   return applozicClient.findApplications(userName).then(response => {
     let applicationWebAdminApp = response.APPLICATION_WEB_ADMIN;
     let applicationAdminApp = response.APPLICATION_ADMIN;
-    let applications = Object.assign(applicationWebAdminApp, applicationAdminApp);
+    let applications = Object.assign({}, applicationWebAdminApp, applicationAdminApp);
 
     if (Object.keys(applications).length > 1) {
       return applications;
@@ -32,9 +32,6 @@ exports.login = (userDetail) => {
       userDetail.applicationId = Object.keys(applicationWebAdminApp)[0];
       return this.processLogin(userDetail);
     }
-    // else if (Object.keys(applicationWebAdminApp).length > 1) {
-    //   return applicationWebAdminApp;
-    // }
     else if (Object.keys(applicationAdminApp).length == 1) {
       userDetail.applicationId = Object.keys(applicationAdminApp)[0];
       return kommunicateCustomerAndApplicationValidate(userDetail);

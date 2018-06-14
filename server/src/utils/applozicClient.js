@@ -1,32 +1,32 @@
 const config = require("../../conf/config");
-const axios =require("axios");
+const axios = require("axios");
 const adminUserId = config.getProperties().kommunicateAdminId;
-const adminPassword=config.getProperties().kommunicateAdminPassword;
+const adminPassword = config.getProperties().kommunicateAdminPassword;
 const apzToken = config.getProperties().kommunicateAdminApzToken;
-const constant =require('./constant');
+const constant = require('./constant');
 const logger = require('./logger.js');
-const APP_LIST_URL = config.getProperties().urls.baseUrl +"/rest/ws/user/getlist/v2.1?";
+const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist/v2.1?";
 const utils = require("./utils");
 
 /*
 this method register a user in applozic db with given parameters.
 */
-const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,displayName)=>{
-  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",userId,", password :",password,"applicationId",applicationId,"role",role,"email",email);
+const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName) => {
+  console.log("creating applozic user..url :", config.getProperties().urls.createApplozicClient, "with userId: ", userId, ", password :", password, "applicationId", applicationId, "role", role, "email", email);
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
-    "userId": userId?userId.toLowerCase():"",
+    "userId": userId ? userId.toLowerCase() : "",
     "applicationId": applicationId,
     "password": password,
     "roleName": role,
     "authenticationTypeId": 1,
-    "email":email,
-    "displayName":displayName,
-    "gcmKey":gcmKey,
-    "chatNotificationMailSent":true,
-  })).then(response=>{
+    "email": email,
+    "displayName": displayName,
+    "gcmKey": gcmKey,
+    "chatNotificationMailSent": true,
+  })).then(response => {
     let err = {};
-    console.log("Applozic server returned : ",response.status);
+    console.log("Applozic server returned : ", response.status);
     if (response.status == 200) {
       if (response.data.message == "INVALID_PARAMETER") {
         console.log("INVALID_PARAMETER received from applozic Server");
@@ -39,12 +39,12 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
         console.log("invalid application Id");
         err.code = "NVALID_APPLICATIONID";
         throw err;
-      } else if(response.data.message == "UPDATED"){
+      } else if (response.data.message == "UPDATED") {
         console.log("user already exists in db userName : ", userId, "applicationId : ", applicationId);
         err.code = "USER_ALREADY_EXISTS";
         err.data = response.data;
         throw err;
-      }else if(response.data.message == "PASSWORD_INVALID"){
+      } else if (response.data.message == "PASSWORD_INVALID") {
         console.log("user already exists in db userName : ", userId, "applicationId : ", applicationId);
         err.code = "USER_ALREADY_EXISTS_PWD_INVALID";
         err.data = response.data;
@@ -55,59 +55,59 @@ const createApplozicClient = (userId,password,applicationId,gcmKey,role,email,di
       err.code = "APPLOZIC_ERROR";
       throw err;
     }
-  }).catch(err=>{
+  }).catch(err => {
     console.log(err);
     throw err;
   });
 };
-const createApplozicClientV1 = (options)=>{
-  console.log("creating applozic user..url :",config.getProperties().urls.createApplozicClient,"with userId: ",options.userId,"applicationId",options.applicationId,"role","email",options.email);
-  options.authenticationTypeId = options.authenticationTypeId?options.authenticationTypeId:1;
-  options.roleName = options.roleName?options.roleName:options.role;
-  options.chatNotificationMailSent=true;
-  options.userId =options.userName?options.userName.toLowerCase():"";
-    return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient,options)).then(response=>{
-      let err = {};
-      console.log("Applozic server returned : ",response.status);
-      if (response.status == 200) {
-        if (response.data.message == "INVALID_PARAMETER") {
-          console.log("INVALID_PARAMETER received from applozic Server");
-          err.code = "INVALID_PARAMETER";
-          throw err;
-        } else if (response.data.message == "REGISTERED.WITHOUTREGISTRATIONID") {
-          console.log("received status 200, user created successfully ");
-          return response.data;
-        } else if (response.data.message == "INVALID_APPLICATIONID") {
-          console.log("invalid application Id");
-          err.code = "NVALID_APPLICATIONID";
-          throw err;
-        } else if(response.data.message == "UPDATED"){
-          console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
-          err.code = "USER_ALREADY_EXISTS";
-          err.data = response.data;
-          throw err;
-        }else if(response.data.message == "PASSWORD_INVALID"){
-          console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
-          err.code = "USER_ALREADY_EXISTS_PWD_INVALID";
-          err.data = response.data;
-          throw err;
-        }
-      } else {
-        console.log("received error code  : ", response.status, "from applozic serevr");
-        err.code = "APPLOZIC_ERROR";
+const createApplozicClientV1 = (options) => {
+  console.log("creating applozic user..url :", config.getProperties().urls.createApplozicClient, "with userId: ", options.userId, "applicationId", options.applicationId, "role", "email", options.email);
+  options.authenticationTypeId = options.authenticationTypeId ? options.authenticationTypeId : 1;
+  options.roleName = options.roleName ? options.roleName : options.role;
+  options.chatNotificationMailSent = true;
+  options.userId = options.userName ? options.userName.toLowerCase() : "";
+  return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, options)).then(response => {
+    let err = {};
+    console.log("Applozic server returned : ", response.status);
+    if (response.status == 200) {
+      if (response.data.message == "INVALID_PARAMETER") {
+        console.log("INVALID_PARAMETER received from applozic Server");
+        err.code = "INVALID_PARAMETER";
+        throw err;
+      } else if (response.data.message == "REGISTERED.WITHOUTREGISTRATIONID") {
+        console.log("received status 200, user created successfully ");
+        return response.data;
+      } else if (response.data.message == "INVALID_APPLICATIONID") {
+        console.log("invalid application Id");
+        err.code = "NVALID_APPLICATIONID";
+        throw err;
+      } else if (response.data.message == "UPDATED") {
+        console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
+        err.code = "USER_ALREADY_EXISTS";
+        err.data = response.data;
+        throw err;
+      } else if (response.data.message == "PASSWORD_INVALID") {
+        console.log("user already exists in db userName : ", options.userId, "applicationId : ", options.applicationId);
+        err.code = "USER_ALREADY_EXISTS_PWD_INVALID";
+        err.data = response.data;
         throw err;
       }
-    }).catch(err=>{
-      console.log(err);
+    } else {
+      console.log("received error code  : ", response.status, "from applozic serevr");
+      err.code = "APPLOZIC_ERROR";
       throw err;
-    });
+    }
+  }).catch(err => {
+    console.log(err);
+    throw err;
+  });
 
 }
-exports.createApplozicClient =createApplozicClient;
+exports.createApplozicClient = createApplozicClient;
 
-exports.createUserInApplozic = (options)=>{
+exports.createUserInApplozic = (options) => {
 
-  return  Promise.resolve(createApplozicClientV1(options));
+  return Promise.resolve(createApplozicClientV1(options));
 
 }
 
@@ -115,7 +115,7 @@ exports.createUserInApplozic = (options)=>{
 /*
 this method create an application in applozic db.
 */
-exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
+exports.createApplication = (adminUserId, adminPassword, applicationName) => {
   console.log("going to call applozic url: ", config.getProperties().urls.createApplication, "applicationName:", applicationName);
   const apzToken = "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64');
   let applicationPxy = {
@@ -124,47 +124,47 @@ exports.createApplication = (adminUserId,adminPassword,applicationName)=>{
     companyAddress: config.getCommonProperties().companyDetail.companyAddress,
     mailProviderPxy: config.getProperties().mailProvider,
     applicationWebhookPxys: config.getCommonProperties().applicationWebhooks,
-    websiteUrl:config.getCommonProperties().companyDetail.websiteUrl,
+    websiteUrl: config.getCommonProperties().companyDetail.websiteUrl,
   }
-  
-  return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
-        headers: {
-          "Apz-Token": apzToken,
-          "Content-Type": "application/json",
-        },
-      })).then(response=>{
-        let err = {};
-        if (response.status == 200) {
-          console.log(" applozic response :",response.data);
-          if (response.data.status != "error") {
-            return response.data;
-          } else {
-            console.error("applozic error response : ", applicationName);
-            err.code = "APPLICATION_ALREADY_EXISTS";
-            throw err;
-          }
-        } else {
-          console.error("received error code: ",response );
-          err.code = "APPLOZIC_ERROR";
-          throw err;
-        }
-      }).catch(err => {
-        console.error("Exception : ", err);
-        err.code = "INTERNAL_SERVER_ERROR";
-        throw err;
-      });
-    };
 
-exports.findApplications=(email)=>{
-  let param = utils.isValidEmail(email)?"emailId":"userId";
-    let GET_APP_LIST_URL = APP_LIST_URL +param+"=" + encodeURIComponent(email)
-    return  axios.get(GET_APP_LIST_URL)
-      .then(function(response){
-        if (response.status=200 && response.data!=="Invalid userId or EmailId") {
-          return response.data;
-        }
-        return "error";
-       }
+  return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
+    headers: {
+      "Apz-Token": apzToken,
+      "Content-Type": "application/json",
+    },
+  })).then(response => {
+    let err = {};
+    if (response.status == 200) {
+      console.log(" applozic response :", response.data);
+      if (response.data.status != "error") {
+        return response.data;
+      } else {
+        console.error("applozic error response : ", applicationName);
+        err.code = "APPLICATION_ALREADY_EXISTS";
+        throw err;
+      }
+    } else {
+      console.error("received error code: ", response);
+      err.code = "APPLOZIC_ERROR";
+      throw err;
+    }
+  }).catch(err => {
+    console.error("Exception : ", err);
+    err.code = "INTERNAL_SERVER_ERROR";
+    throw err;
+  });
+};
+
+exports.findApplications = (email) => {
+  let param = utils.isValidEmail(email) ? "emailId" : "userId";
+  let GET_APP_LIST_URL = APP_LIST_URL + param + "=" + encodeURIComponent(email)
+  return axios.get(GET_APP_LIST_URL)
+    .then(function (response) {
+      if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
+        return response.data;
+      }
+      return "error";
+    }
     ).catch(err => {
       logger.info(err);
       return "error";
@@ -210,104 +210,104 @@ exports.getApplication = (customer, isApplicationWebAdmin) => {
   });
 };
 
-exports.applozicLogin =(userDetail)=>{
-      //userName,password,applicationId,role,email
+exports.applozicLogin = (userDetail) => {
+  //userName,password,applicationId,role,email
   //let data ={"userId": userDetail.userName, "applicationId": userDetail.applicationId,"password": userDetail.password,"authenticationTypeId": 1,"email":userDetail.email};
-  userDetail.userId=userDetail.userName?userDetail.userName.toLowerCase():"";
-  userDetail.authenticationTypeId=userDetail.authenticationTypeId?userDetail.authenticationTypeId:1;
+  userDetail.userId = userDetail.userName ? userDetail.userName.toLowerCase() : "";
+  userDetail.authenticationTypeId = userDetail.authenticationTypeId ? userDetail.authenticationTypeId : 1;
 
-  if (userDetail.role){
-    userDetail.roleName= userDetail.role;
+  if (userDetail.role) {
+    userDetail.roleName = userDetail.role;
   }
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, userDetail))
-  .then(response=>{
-    let err={};
-    if(response.status==200) {
-      if(response.data.message =="INVALID_PARAMETER") {
-        console.log("INVALID_PARAMETER received from applozic Server");
-        err.code="INVALID_PARAMETER";
-        err.data=response.data;
-        throw err;
-      }else if(response.data.message=="REGISTERED.WITHOUTREGISTRATIONID" || response.data.message=="UPDATED") {
-        console.log("user logged Insuccessfully ");
-        return response.data;
-      }else if(response.data.message=="INVALID_APPLICATIONID") {
-        console.log("invalid application Id");
-         err.code = "INVALID_APPLICATION_ID";
-         err.data =response.data;
-         throw err;
-      }else if(response.data.message=="PASSWORD_INVALID") {
-        console.log("invalid Password ",response.data);
-        err.code="INVALID_CREDENTIALS";
-        err.data=response.data;
+    .then(response => {
+      let err = {};
+      if (response.status == 200) {
+        if (response.data.message == "INVALID_PARAMETER") {
+          console.log("INVALID_PARAMETER received from applozic Server");
+          err.code = "INVALID_PARAMETER";
+          err.data = response.data;
+          throw err;
+        } else if (response.data.message == "REGISTERED.WITHOUTREGISTRATIONID" || response.data.message == "UPDATED") {
+          console.log("user logged Insuccessfully ");
+          return response.data;
+        } else if (response.data.message == "INVALID_APPLICATIONID") {
+          console.log("invalid application Id");
+          err.code = "INVALID_APPLICATION_ID";
+          err.data = response.data;
+          throw err;
+        } else if (response.data.message == "PASSWORD_INVALID") {
+          console.log("invalid Password ", response.data);
+          err.code = "INVALID_CREDENTIALS";
+          err.data = response.data;
+          throw err;
+        }
+      } else {
+        console.log("received error code  : ", response.status, "from applozic serevr");
+        err.code = "APPLOZIC_ERROR";
+        err.httpStatus = response.status;
         throw err;
       }
-    }else{
-      console.log("received error code  : ",response.status,"from applozic serevr");
-       err.code = "APPLOZIC_ERROR";
-       err.httpStatus = response.status;
+    }).catch(err => {
+      console.log("errror inside catch: ", err.response);
       throw err;
-    }
-  }).catch(err=>{
-    console.log("errror inside catch: ",err.response);
-    throw err;
-  });
+    });
 };
 /**
  * pass isBot = true if using bot headers.
  */
-exports.getGroupInfo= (groupId,applicationId,apzToken, isBot)=>{
-  let url = config.getProperties().urls.groupInfoUrl.replace(":groupId",groupId);
-  console.log("getting group info from applozic url : ",url);
+exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
+  let url = config.getProperties().urls.groupInfoUrl.replace(":groupId", groupId);
+  console.log("getting group info from applozic url : ", url);
   console.log("applicationId", applicationId);
-  let header ={};
-  if(isBot){
-    header ={"Application-Key": applicationId,    "Authorization":"Basic "+apzToken,   "Content-Type":"application/json"}
-  }else{
-    header = {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true, "Content-Type": "application/json"}
+  let header = {};
+  if (isBot) {
+    header = { "Application-Key": applicationId, "Authorization": "Basic " + apzToken, "Content-Type": "application/json" }
+  } else {
+    header = { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true, "Content-Type": "application/json" }
   }
-  return Promise.resolve(axios.get(url,{headers: header})).then(response=>{
+  return Promise.resolve(axios.get(url, { headers: header })).then(response => {
     console.log("got response from Applozic group Api. code :", response.status);
-    if(response&&response.status==200&&response.data.status=="success") {
+    if (response && response.status == 200 && response.data.status == "success") {
       return response.data.response;
-    }else if(response&&response.status==200&&response.data.status=="error") {
-      console.log("ERROR FROM APPLOZIC: ",response.data.errorResponse[0].description);
+    } else if (response && response.status == 200 && response.data.status == "error") {
+      console.log("ERROR FROM APPLOZIC: ", response.data.errorResponse[0].description);
       return null;
     }
-  }).catch(err=>{
-    console.log("error while getting group info from Applozic" ,err);
+  }).catch(err => {
+    console.log("error while getting group info from Applozic", err);
     throw err;
   });
 }
 
-exports.sendGroupMessage = (groupId,message,apzToken,applicationId,metadata)=>{
-  console.log("sending message to group ",groupId);
-  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,":apz-token:",apzToken,"applicationId",applicationId,"metadata",metadata );
+exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata) => {
+  console.log("sending message to group ", groupId);
+  console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
   let url = config.getProperties().urls.sendMessageUrl;
-  return Promise.resolve(axios.post(url,{"groupId": groupId,"message": message,"metadata": metadata},
-  {headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
-    console.log("received response from applozic", response.status);
-    if(response.status==200) {
-      return response;
-    }else{
-      throw new Error("ERROR: received response from applozic" +response.status);
-    }
-  }).catch(err=>{
-    console.log("error while sending message ",err);
-    throw err;
-  });
+  return Promise.resolve(axios.post(url, { "groupId": groupId, "message": message, "metadata": metadata },
+    { headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
+      console.log("received response from applozic", response.status);
+      if (response.status == 200) {
+        return response;
+      } else {
+        throw new Error("ERROR: received response from applozic" + response.status);
+      }
+    }).catch(err => {
+      console.log("error while sending message ", err);
+      throw err;
+    });
 };
 
-exports.updatePassword = (options)=>{
-  console.log("calling Applozic for update password with options: ",options);
-  const url =config.getProperties().urls.passwordResetUrl.replace(":oldPassword",options.oldPassword).replace(":newPassword",options.newPassword);
-  const  apzToken = "Basic "+new Buffer(options.userName+":"+options.oldPassword).toString('base64');
-  return axios.get(url,{headers:{"Apz-AppId":options.applicationId,"Apz-Product-App":true,"Apz-Token":apzToken}}).then(response=>{
-    if(response.data&&response.data.status=="success"){
-      console.log("password upadted for user :",options.userName);
-      return{code:"success"}
-    }else{
-      throw {code:"APPLOZIC_ERROR"}
+exports.updatePassword = (options) => {
+  console.log("calling Applozic for update password with options: ", options);
+  const url = config.getProperties().urls.passwordResetUrl.replace(":oldPassword", options.oldPassword).replace(":newPassword", options.newPassword);
+  const apzToken = "Basic " + new Buffer(options.userName + ":" + options.oldPassword).toString('base64');
+  return axios.get(url, { headers: { "Apz-AppId": options.applicationId, "Apz-Product-App": true, "Apz-Token": apzToken } }).then(response => {
+    if (response.data && response.data.status == "success") {
+      console.log("password upadted for user :", options.userName);
+      return { code: "success" }
+    } else {
+      throw { code: "APPLOZIC_ERROR" }
     }
   });
 }
@@ -316,8 +316,8 @@ exports.updatePassword = (options)=>{
  * update the user in applozic.
  * @example applozicClient.updateApplozicClient("testUser","abcd","kommunicate-support",{"role:USER","name:"newUser"})
  * @param {String} userName - userName of user to be updated, used to generate the access token
- * @param {String} accessToken - access token of user, used to generate the access token 
- * @param {String}applicationId - application Id 
+ * @param {String} accessToken - access token of user, used to generate the access token
+ * @param {String}applicationId - application Id
  * @param {Object}user - userObject you want to update
  * @param {String} user.userId
  * @param {Object} user.roleName
@@ -326,31 +326,32 @@ exports.updatePassword = (options)=>{
  * @return {Object} object having property code.
  * @throws {Object} applozic err, network error
  */
-exports.updateApplozicClient = (userName, accessToken,applicationId,user,options, isBot)=>{
-  let apzToken = options&&options.apzToken?options.apzToken:new Buffer(userName+":"+accessToken).toString('base64');
-  let headers = isBot? {
+exports.updateApplozicClient = (userName, accessToken, applicationId, user, options, isBot, isApplicationWebAdmin) => {
+  let apzToken = options && options.apzToken ? options.apzToken : new Buffer(userName + ":" + accessToken).toString('base64');
+  isApplicationWebAdmin = isApplicationWebAdmin || true;
+  let headers = isBot ? {
     "Access-Token": accessToken,
     "Application-Key": applicationId,
-    "Authorization":"Basic "+ apzToken
-  }: {
-    "Apz-Token":"Basic "+ apzToken,
-    "Content-Type":"application/json",
-    "Apz-AppId":applicationId,
-    'Of-User-Id':user.userId,
-    'Apz-Product-App': 'true'
-   };
-  return axios.patch(config.getProperties().urls.applozicHostUrl+"/rest/ws/user/update?userId="+user.userId, user, {headers:headers})
-   .then(response=>{
-    if(response.data&&response.data.status ==="success"){
-      return {code:"success"};
-    }else {
-      throw {code:"APPLOZIC_ERROR",data:response}
-    }
-   })
-   .catch(err=>{
-    console.log("error while updating user",err);
-    throw err;
-   })
+    "Authorization": "Basic " + apzToken
+  } : {
+      "Apz-Token": "Basic " + apzToken,
+      "Content-Type": "application/json",
+      "Apz-AppId": applicationId,
+      'Of-User-Id': user.userId,
+      'Apz-Product-App': isApplicationWebAdmin
+    };
+  return axios.patch(config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?userId=" + user.userId, user, { headers: headers })
+    .then(response => {
+      if (response.data && response.data.status === "success") {
+        return { code: "success" };
+      } else {
+        throw { code: "APPLOZIC_ERROR", data: response }
+      }
+    })
+    .catch(err => {
+      console.log("error while updating user", err);
+      throw err;
+    })
 }
 
 exports.createSupportGroup = (groupInfo, headers) => {
@@ -370,24 +371,24 @@ exports.createSupportGroup = (groupInfo, headers) => {
 }
 
 
-exports.sendGroupMessageByBot = (groupId,message,authorization,applicationId,metadata)=>{
-  let additionalMetadata = {skipBot:true};
-  metadata = Object.assign(metadata,additionalMetadata);
-  console.log("sending message to group ",groupId);
-  console.log("calling send Message API with info , groupId: ",groupId,"message :",message,"applicationId",applicationId,"metadata",metadata );
+exports.sendGroupMessageByBot = (groupId, message, authorization, applicationId, metadata) => {
+  let additionalMetadata = { skipBot: true };
+  metadata = Object.assign(metadata, additionalMetadata);
+  console.log("sending message to group ", groupId);
+  console.log("calling send Message API with info , groupId: ", groupId, "message :", message, "applicationId", applicationId, "metadata", metadata);
   let url = config.getProperties().urls.sendMessageUrl;
-  return Promise.resolve(axios.post(url,{"groupId": groupId,"message": message,"metadata": metadata},
-  {headers: {"Application-Key": applicationId,"Authorization": "Basic "+authorization,"Content-Type":"application/json"}})).then(response=>{
-    console.log("received response from applozic", response.status);
-    if(response.status==200) {
-      return response;
-    }else{
-      throw new Error("ERROR: received response from applozic" +response.status);
-    }
-  }).catch(err=>{
-    console.log("error while sending message ",err);
-    throw err;
-  });
+  return Promise.resolve(axios.post(url, { "groupId": groupId, "message": message, "metadata": metadata },
+    { headers: { "Application-Key": applicationId, "Authorization": "Basic " + authorization, "Content-Type": "application/json" } })).then(response => {
+      console.log("received response from applozic", response.status);
+      if (response.status == 200) {
+        return response;
+      } else {
+        throw new Error("ERROR: received response from applozic" + response.status);
+      }
+    }).catch(err => {
+      console.log("error while sending message ", err);
+      throw err;
+    });
 };
 
 exports.createGroup = (groupInfo, applicationId, appzToken) => {
@@ -411,15 +412,15 @@ exports.createGroup = (groupInfo, applicationId, appzToken) => {
   });
 }
 
-exports.addMemberIntoConversation=(groupInfo, applicationId, apzToken, ofUserId)=>{
+exports.addMemberIntoConversation = (groupInfo, applicationId, apzToken, ofUserId) => {
   let url = config.getProperties().urls.addMemberIntoConversation.replace(":role", constant.GROUP_ROLE.ADMIN);;
   return Promise.resolve(axios.post(url, groupInfo, {
     headers: {
       "Content-Type": "application/json",
       "Application-Key": applicationId,
       'Authorization': "Basic " + apzToken,
-      'Of-User-Id':ofUserId,
-      'Apz-Product-App':'true'
+      'Of-User-Id': ofUserId,
+      'Apz-Product-App': 'true'
     }
   })).then(response => {
     console.log("received response from applozic", response.status);
@@ -451,19 +452,19 @@ exports.updateApplication = (data) => {
   })
 }
 
-exports.getUserDetails = (userNameList,applicationId,apzToken) => {
+exports.getUserDetails = (userNameList, applicationId, apzToken) => {
   let url = config.getProperties().urls.getUserInfo
   logger.info("getting user info from applozic url : ", url);
-  return Promise.resolve(axios.get(url,{data: {"userIdList" : userNameList}, headers: {"Apz-AppId": applicationId,"Apz-Token": "Basic "+apzToken,"Apz-Product-App": true}})).then(response=>{
+  return Promise.resolve(axios.get(url, { data: { "userIdList": userNameList }, headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
     logger.info("got response from Applozic user info api :", response.status);
-    if(response&&response.status==200&&response.data.status=="success") {
+    if (response && response.status == 200 && response.data.status == "success") {
       return response.data.response;
-    }else if(response&&response.status==200&&response.data.status=="error") {
-      logger.error("ERROR FROM APPLOZIC while fetching user Detail: ",response.data.errorResponse[0].description);
+    } else if (response && response.status == 200 && response.data.status == "error") {
+      logger.error("ERROR FROM APPLOZIC while fetching user Detail: ", response.data.errorResponse[0].description);
       return null;
     }
-  }).catch(err=>{
-    console.log("error while getting user detail from Applozic" ,err);
+  }).catch(err => {
+    console.log("error while getting user detail from Applozic", err);
     throw err;
   });
 
