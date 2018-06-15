@@ -1,12 +1,15 @@
 from rasa_core.channels.custom import *
 from rasa_core.channels.rest import *
 from rasa_core.agent import Agent
+from os import execl
 from rasa_core.interpreter import RasaNLUInterpreter
 import importlib
 import requests
 import json
+import random
 import sys
-
+from pathlib import Path
+from ruamel.yaml import YAML
 from flask import Blueprint, request, jsonify, make_response
 from typing import Text, Optional
 
@@ -19,6 +22,38 @@ def get_cnfg():
 	else:
 		cnfg = importlib.import_module('conf.default')
 	return cnfg
+def update_domain(intent,answer,flag):
+	yaml = YAML(typ='rt')
+	yaml.default_flow_style = False
+	file = Path('faq_domain.yml')
+	data = yaml.load(open("faq_domain.yml"))
+	if(flag==0):
+	 data['intents'].append(intent)
+	 data['actions'].append('utter_' + intent)
+	data['templates']['utter_' + intent] = [answer]
+	yaml.indent(mapping=1,sequence=1,offset=0)
+	yaml.dump(data,file)
+	return
+    
+def update_stories(intent):
+	num = str(random.randint(1,2345678))
+	file = open('faq_stories.md','a')
+	file.write('\n\n## story_' + num)
+	file.write('\n* ' + intent)
+	file.write('\n - utter_' + intent)
+	file.close()
+	return
+	
+def update_nludata(intent,question):
+	data = {}
+	with open('faq_data.json') as json_file:
+		data = json.load(json_file)
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+	with open('faq_data.json','w') as outfile:
+		json.dump(data,outfile,indent=3)
+	return
 
 class KommunicateChatBot(OutputChannel):
     def __init__(self, data):
@@ -31,7 +66,6 @@ class KommunicateChatBot(OutputChannel):
         print(message)
 
         send_message_url = get_cnfg().url + "/rest/ws/message/v2/send"
-        print(send_message_url)
 
         auth_headers = {
             "Accept": "application/json",
@@ -58,7 +92,22 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
             return jsonify({
                 "status": "ok",
             })
-
+			
+        @kommunicate_chat_webhook.route("/faqdata", methods=["POST"])
+        def getfaq():
+	        body = request.json
+	        if(('answer' in body) and ('question' in body) and ('intent' in body)):
+	         update_domain(body['intent'],body['answer'],0)
+	         update_stories(body['intent'])
+	         update_nludata(body['intent'],body['question'])
+	        elif(('intent' in body) and ('answer' in body)):
+	         update_domain(body['intent'],body['answer'],1)
+	        elif(('question' in body) and ('intent' in body)):
+	         update_nludata(body['intent'],body['question'])
+	        #execl("sh","retrain.sh")
+	        return jsonify({"bot trained!":"wow",
+			})
+			
         @kommunicate_chat_webhook.route("/webhook", methods=["GET", "POST"])
         def webhook():
             body = request.json
@@ -68,8 +117,7 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
             on_new_message(user_message)
             return make_response()
         return kommunicate_chat_webhook
-    
-
+	
 def agent_run():
     interpreter = RasaNLUInterpreter("models/nlu/default/faq_model_v1")
     agent = Agent.load("models/dialogue", interpreter)

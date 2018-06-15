@@ -84,6 +84,134 @@
       {
         "text": "That will be all .", 
         "intent": "done"
+      }, 
+      {
+        "text": "How many agents can I add in a particular plan?", 
+        "intent": "agent_number"
+      }, 
+      {
+        "text": "How many agents can I add in a particular plan?", 
+        "intent": "agent_number"
+      }, 
+      {
+        "text": "What is the maximum number of agents?", 
+        "intent": "agent_number"
+      }, 
+      {
+        "text": "What is the maximum number of agents?", 
+        "intent": "agent_number"
+      }, 
+      {
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
+      {
+        "text": "Is there a limit on the numbers of chats and contacts?", 
+        "intent": "chat_limit"
+      }, 
+      {
+        "text": "Is there a limit on the numbers of chats and contacts?", 
+        "intent": "chat_limit"
+      }, 
+      {
+        "text": "What is the maximum no of chats?", 
+        "intent": "chat_limit"
+      }, 
+      {
+        "text": "What is the maximum no of chats?", 
+        "intent": "chat_limit"
+      }, 
+      {
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
+      {
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
+      {
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
+      {
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
+      {
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
+      {
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
+      }, 
+      {
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
+      }, 
+      {
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
       }
     ], 
     "entity_synonyms": [], 
