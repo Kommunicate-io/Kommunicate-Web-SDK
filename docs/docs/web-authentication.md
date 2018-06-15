@@ -36,11 +36,9 @@ Add below setting to allow anonymous user
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
-            "userId": userId,
             "agentId": agentId,
             "userName": userName,
             "conversationTitle":conversationTitle,
-            "email": emailId,
             "isAnonymousChat":true
             };
    
@@ -84,6 +82,9 @@ If the user is already logged in your website, then pass the user details to kom
 |---    |---    |
 |isAnonymousChat| true|
 |userId| Pass your logged in user id|
+|userName | Display name of the user. Agents will identify users by this display name|
+|email | Email ID of logged in user|
+
 
 
 
