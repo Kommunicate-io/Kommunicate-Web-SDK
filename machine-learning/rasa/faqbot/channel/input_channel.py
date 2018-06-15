@@ -6,6 +6,7 @@ from rasa_core.interpreter import RasaNLUInterpreter
 import importlib
 import requests
 import json
+import random
 import sys
 from pathlib import Path
 from ruamel.yaml import YAML
@@ -29,19 +30,17 @@ def update_domain(intent,answer,flag):
 	if(flag==0):
 	 data['intents'].append(intent)
 	 data['actions'].append('utter_' + intent)
-	 data['templates']['utter_' + intent] = [answer]
-	else:
-	 data['templates']['utter_' + intent] = [answer]
+	data['templates']['utter_' + intent] = [answer]
 	yaml.indent(mapping=1,sequence=1,offset=0)
 	yaml.dump(data,file)
 	return
     
 def update_stories(intent):
+	num = str(random.randint(1,2345678))
 	file = open('faq_stories.md','a')
-	file.write('\n\n## story_' + '1')
+	file.write('\n\n## story_' + num)
 	file.write('\n* ' + intent)
 	file.write('\n - utter_' + intent)
-	file.write('\n - utter_anything_else')
 	file.close()
 	return
 	
@@ -94,12 +93,9 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
                 "status": "ok",
             })
 			
-        @kommunicate_chat_webhook.route("/faqdata/", methods=["POST"])
+        @kommunicate_chat_webhook.route("/faqdata", methods=["POST"])
         def getfaq():
 	        body = request.json
-	        '''question = body['question']
-	        answer = body['answer']
-	        intent = body['intent']'''
 	        if(('answer' in body) and ('question' in body) and ('intent' in body)):
 	         update_domain(body['intent'],body['answer'],0)
 	         update_stories(body['intent'])
@@ -112,7 +108,7 @@ class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
 	        return jsonify({"bot trained!":"wow",
 			})
 			
-        @kommunicate_chat_webhook.route("/webhook/", methods=["GET", "POST"])
+        @kommunicate_chat_webhook.route("/webhook", methods=["GET", "POST"])
         def webhook():
             body = request.json
             output = body['message']

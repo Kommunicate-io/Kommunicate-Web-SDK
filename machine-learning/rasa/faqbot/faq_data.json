@@ -127,36 +127,6 @@
             "entities": []
          }, 
          {
-            "text": "How to upgrade or downgrade the plan?", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
-            "text": "How to upgrade or downgrade the plan?", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
-            "text": "How to upgrade or downgrade the plan?", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
-            "text": "I want to upgrade plan", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
-            "text": "I want to upgrade plan", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
-            "text": "I want to upgrade plan", 
-            "intent": "upgrade_plan", 
-            "entities": []
-         }, 
-         {
             "text": "How does the 30 days trial work?", 
             "intent": "trial", 
             "entities": []
@@ -264,6 +234,36 @@
          {
             "text": "Are you real?", 
             "intent": "existence", 
+            "entities": []
+         }, 
+         {
+            "text": "How to upgrade or downgrade the plan?", 
+            "intent": "upgrade_plan", 
+            "entities": []
+         }, 
+         {
+            "text": "How to upgrade or downgrade the plan?", 
+            "intent": "upgrade_plan", 
+            "entities": []
+         }, 
+         {
+            "text": "How to upgrade or downgrade the plan?", 
+            "intent": "upgrade_plan", 
+            "entities": []
+         }, 
+         {
+            "text": "I want to upgrade my plan", 
+            "intent": "upgrade_plan", 
+            "entities": []
+         }, 
+         {
+            "text": "I want to upgrade my plan", 
+            "intent": "upgrade_plan", 
+            "entities": []
+         }, 
+         {
+            "text": "I want to upgrade my plan", 
+            "intent": "upgrade_plan", 
             "entities": []
          }
       ], 

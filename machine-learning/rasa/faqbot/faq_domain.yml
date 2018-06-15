@@ -8,11 +8,11 @@ intents:
 - done
 - not_understood
 - agent_number
-- upgrade_plan
 - trial
 - chat_limit
 - discount
 - existence
+- upgrade_plan
 actions:
 - utter_greet
 - utter_mau
@@ -24,11 +24,11 @@ actions:
 - utter_did_not_get_you
 - utter_thanks
 - utter_agent_number
-- utter_upgrade_plan
 - utter_trial
 - utter_chat_limit
 - utter_discount
 - utter_existence
+- utter_upgrade_plan
 templates:
  utter_mau:
  - We define Monthly Active User (MAU) as any user who 'used' Applozic Chat Messenger,
@@ -52,10 +52,6 @@ templates:
  utter_agent_number:
  - You can add as many agents in Kommunicate as you want. You will be charged on the
   basis of the number of agents you have.
- utter_upgrade_plan:
- - You can upgrade your plan through the dashboard itself. Alternatively, you can
-  drop us a line and we'll be happy to assist you in upgrading or downgrading your
-  plan.
  utter_trial:
  - You can signup for free to avail the benefits of the full-fledged support platform
   for 30 days. Credit card details are not required for the trial period. Post the
@@ -69,3 +65,7 @@ templates:
  - Yes, get in touch with us here.
  utter_existence:
  - Yes, and you, my dear sir, are a pretty neat simulation.
+ utter_upgrade_plan:
+ - You can upgrade your plan through the dashboard itself. Alternatively, you can
+  drop us a line and we'll be happy to assist you in upgrading or downgrading your
+  plan.
