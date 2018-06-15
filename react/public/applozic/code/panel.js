@@ -59,6 +59,7 @@ $(document).ready(function() {
     function getContactDetail(contactId){
         $kmApplozic("#km-sidebar-display-name").html("");
         $kmApplozic("#km-sidebar-user-email").html("");
+        var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
         $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
             var user = response.data[0];
             resetCustomerInfoArea();     
@@ -107,7 +108,7 @@ $(document).ready(function() {
                                 var clearbitData=JSON.parse(user.metadata.kmClearbitData)
                                 displayCustInfo(clearbitData)
                             }else {
-                            clearbit(user.email, user.userId);
+                                userSession.clearbitKey && clearbit(user.email, user.userId);
                             //activeCampaign(user.email);
                             }
                         }
