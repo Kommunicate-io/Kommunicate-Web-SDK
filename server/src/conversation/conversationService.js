@@ -363,24 +363,33 @@ const getConversationStat = (query) => {
 const createConversationFromMail = (req) => {
     let applicationId = req.body.applicationId
     let email = req.body.email || req.body.userId;
+    let message = req.body.message;
     let groupInfo = GROUP_INFO;
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
 
     return customerService.getCustomerByApplicationId(applicationId).then(customer => {
-        return applozicClient.getUserDetails([], customer.applications[0].applicationId, customer.apzToken, [email]).then(userDetail => {
+        return applozicClient.getUserDetails([email], customer.applications[0].applicationId, customer.apzToken).then(userDetail => {
             groupInfo.groupName = customer.name || customer.userName;
             groupInfo.admin = customer.userName;
             groupInfo.users[0].userId = customer.userName;
             groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
             groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
             headers['Apz-Token'] = 'Basic ' + customer.apzToken;
-            if (userDetail.length > 0) {
+            if (userDetail && userDetail.length > 0) {
                 //create conversation with first user 
                 groupInfo.users[1].userId = userDetail[0].userId;
                 return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
                     console.log('conversation : ', result);
-                    return result.response;
-                });
+                    headers = {
+                        "Authorization": 'Basic ' + new Buffer("bot:bot").toString('base64'),
+                        "Application-Key": customer.applications[0].applicationId, "Content-Type": "application/json"
+                    }
+                    headers['Of-User-Id'] = userDetail[0].userId;
+                    return applozicClient.sendGroupMessage(result.response.clientGroupId, message, '', '', {}, headers).then(resp => {
+                        console.log('send ', resp);
+                        return resp.data
+                    })
+                })
             } else {
                 //create new user
                 return applozicClient.createApplozicClient(email, null, applicationId, null, null, email, null).then(user => {
@@ -388,7 +397,15 @@ const createConversationFromMail = (req) => {
                         groupInfo.users[1].userId = user.userId
                         return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
                             console.log('conversation : ', result);
-                            return result.response;
+                            headers = {
+                                "Authorization": 'Basic ' + new Buffer("bot:bot").toString('base64'),
+                                "Application-Key": customer.applications[0].applicationId, "Content-Type": "application/json"
+                            }
+                            headers['Of-User-Id'] = user.userId;
+                            return applozicClient.sendGroupMessage(result.response.clientGroupId, message, '', '', {}, headers).then(resp => {
+                                console.log('send ', resp);
+                                return resp.data
+                            })
                         });
 
                     }
