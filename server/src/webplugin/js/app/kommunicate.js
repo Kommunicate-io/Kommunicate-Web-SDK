@@ -8,7 +8,7 @@ $applozic.extend(true,Kommunicate,{
             case "https://apps-test.applozic.com/":
             case "https://apps-test.applozic.com":
                 return "https://api-test.kommunicate.io";
-                //return "http://localhost:3999"
+                //return "http://localhost:3999";
             default:
                 return "https://api.kommunicate.io";
         }

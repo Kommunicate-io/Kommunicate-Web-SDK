@@ -2640,7 +2640,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-audio-player {
 	width: 180px;
-	height: 40px;
+	/* height: 40px; */
+	margin-bottom: 8px;
 	overflow: hidden;
 	outline: none;
 }

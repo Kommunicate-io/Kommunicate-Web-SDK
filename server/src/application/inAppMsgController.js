@@ -339,7 +339,7 @@ exports.processAwayMessage = function(req,res){
                 Promise.resolve(appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }))
                 .then(response => {  
                      collectEmail = response.data.collectEmail;
-                     return inAppMsgService.getInAppMessage(customer.id,eventId).then(result=>{
+                     return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
                         let data = {"messageList":messageList, "collectEmail":collectEmail}
