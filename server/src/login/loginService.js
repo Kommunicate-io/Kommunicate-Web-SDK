@@ -87,7 +87,7 @@ function prepareResponse(user, application) {
 
 const kommunicateCustomerAndApplicationValidate = (userDetail) => {
   return Promise.all([customeService.isAdmin(userDetail.userName), applicationService.isApplicationExist(userDetail.applicationId)]).then(([isAdminExist, isApplicationExist]) => {
-    if (isAdminExist && isApplicationExist) {
+    if (isApplicationExist) {
       return this.processLogin(userDetail);
     }
     if (!isAdminExist || !isApplicationExist) {
