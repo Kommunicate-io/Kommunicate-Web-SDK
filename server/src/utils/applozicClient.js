@@ -280,12 +280,13 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
   });
 }
 
-exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata) => {
+exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
   console.log("sending message to group ", groupId);
   console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
+  headers = headers ? headers : { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true }
   let url = config.getProperties().urls.sendMessageUrl;
   return Promise.resolve(axios.post(url, { "groupId": groupId, "message": message, "metadata": metadata },
-    { headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
+    { headers: headers })).then(response => {
       console.log("received response from applozic", response.status);
       if (response.status == 200) {
         return response;
@@ -451,11 +452,19 @@ exports.updateApplication = (data) => {
     console.log('error  ', err)
   })
 }
-
-exports.getUserDetails = (userNameList, applicationId, apzToken) => {
+/**
+ *
+ * @param {List} userNameList
+ * @param {String} applicationId
+ * @param {String} apzToken
+ * @param {List} emailIds
+ * it accept either userName list or email list
+ */
+exports.getUserDetails = (userNameList, applicationId, apzToken, emailIds) => {
   let url = config.getProperties().urls.getUserInfo
   logger.info("getting user info from applozic url : ", url);
-  return Promise.resolve(axios.get(url, { data: { "userIdList": userNameList }, headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
+  let data = emailIds ? { emailIds: emailIds } : { "userIdList": userNameList }
+  return Promise.resolve(axios.get(url, { data: data, headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
     logger.info("got response from Applozic user info api :", response.status);
     if (response && response.status == 200 && response.data.status == "success") {
       return response.data.response;
@@ -467,7 +476,6 @@ exports.getUserDetails = (userNameList, applicationId, apzToken) => {
     console.log("error while getting user detail from Applozic", err);
     throw err;
   });
-
 }
 
 exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId, headers) => {
