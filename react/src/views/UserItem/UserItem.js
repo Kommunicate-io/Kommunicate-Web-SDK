@@ -46,7 +46,8 @@ class UserItem extends Component {
             CONVERSATION_ASSIGNEE: conversationDetail.agentId,
             KM_CONVERSATION_TITLE:conversationDetail.groupName,
             //ALERT: "false",
-            HIDE: "true"
+            HIDE: "true",
+            WELCOME_MESSAGE:""
         },
         callback: function (response) {
             console.log("response", response);
