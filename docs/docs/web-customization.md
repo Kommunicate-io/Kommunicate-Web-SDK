@@ -19,3 +19,36 @@ Customize the chat icon by passing  `chatLauncherHtml: your html for chat icon` 
             };
 
 ``` 
+## Top Box Color:
+Add below code to change color of Top Box Color in your css file
+``` 
+.mck-box-top {
+background-color: green;
+}
+``` 
+
+## Start new conversation:
+Add below code to change color of Start new conversation in your css file
+``` 
+#mck-msg-new.mck-btn{
+background-color: green!important;
+}
+``` 
+
+## Recieving message color
+Add below code to change color of Recieving message color in your css file
+``` 
+.mck-msg-right .mck-msg-box{
+background-color: green;
+color:white;
+}
+``` 
+
+## Sender message color:
+Add below code to change color of Sender message color in your css file
+``` 
+mck-msg-left .mck-msg-box{
+background-color: white;
+color:black;
+}
+``` 
