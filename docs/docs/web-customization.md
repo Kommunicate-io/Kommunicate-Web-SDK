@@ -28,7 +28,7 @@ background-color: green;
 ``` 
 
 ## Start new conversation button color:
-Add below code to change color of Start new conversation in your css file
+Add below code to change color of 'Start new conversation' button in your css file
 ``` 
 #mck-msg-new.mck-btn{
 background-color: green!important;
@@ -36,7 +36,7 @@ background-color: green!important;
 ``` 
 
 ## Received messages color:
-Add below code to change color of received messages color in your css file
+Add below code to change color of received messages in your css file
 ``` 
 .mck-msg-right .mck-msg-box{
 background-color: green;
@@ -45,7 +45,7 @@ color:white;
 ``` 
 
 ## Sent messages color:
-Add below code to change color of sent messages color in your css file
+Add below code to change color of sent messages in your css file
 ``` 
 mck-msg-left .mck-msg-box{
 background-color: white;
