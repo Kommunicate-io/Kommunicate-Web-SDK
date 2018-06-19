@@ -18,6 +18,26 @@ Kommunicate.setup(applicationId: <pass your application key>)
 
 Convenient methods are present in Kommunicate class to register a user on Kommunicate.
 
+Currently we support two different types of users on our iOS SDK:
+
+#### 1.Visitors
+
+In this case you don't have any information of the users that can be used as an `userId`. In this case a randomId will be assigned as an `userId`. So first get the userId as described below and pass the same in registration process mentioned below.
+
+`let userId = Kommunicate.randomId()`
+
+#### 2.Registered User
+
+If the user is logged in your app then you can pass the user information in this way.
+
+```
+// Use this while creating a `KMUser` object below.
+let userId = <pass a unique key>
+let emailId = <pass user's emailId> // Optional
+```
+
+#### Register User
+
 To register a user to the Kommunicate server, use below method from `Kommunicate` class:
 
 Create a KMUser object and pass it to the `registerUser` method:
@@ -25,6 +45,7 @@ Create a KMUser object and pass it to the `registerUser` method:
 ```
 let kmUser = KMUser()
 kmUser.userId = userId
+kmUser.email = emailId // Optional
 kmUser.applicationId = applicationKey
 
 // Use this same API for login
