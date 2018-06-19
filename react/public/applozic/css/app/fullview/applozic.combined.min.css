@@ -324,7 +324,6 @@ img.kmemoji {
 .km-emoji-menu {
 	position: absolute;
 	z-index: 22445000 !important;
-	left: 514px !important;
 	min-width : 498px;
 	padding: 0;
 	overflow: hidden;
@@ -332,6 +331,9 @@ img.kmemoji {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	height: 260px;
+	left: 0!important;
+	bottom: 65px !important;
+	right: 0!important;
 }
 
 .km-panel-3.km-emoji-menu, .km-panel-3 .km-emoji-menu {
