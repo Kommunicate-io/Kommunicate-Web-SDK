@@ -13,6 +13,7 @@ intents:
 - discount
 - existence
 - upgrade_plan
+- demo
 actions:
 - utter_greet
 - utter_mau
@@ -29,6 +30,7 @@ actions:
 - utter_discount
 - utter_existence
 - utter_upgrade_plan
+- utter_demo
 templates:
  utter_mau:
  - We define Monthly Active User (MAU) as any user who 'used' Applozic Chat Messenger,
@@ -69,3 +71,5 @@ templates:
  - You can upgrade your plan through the dashboard itself. Alternatively, you can
   drop us a line and we'll be happy to assist you in upgrading or downgrading your
   plan.
+ utter_demo:
+ - You can schedule a demo on our website

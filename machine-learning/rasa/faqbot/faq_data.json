@@ -265,6 +265,36 @@
             "text": "I want to upgrade my plan", 
             "intent": "upgrade_plan", 
             "entities": []
+         }, 
+         {
+            "text": "How does Kommunicate work?", 
+            "intent": "demo", 
+            "entities": []
+         }, 
+         {
+            "text": "How does Kommunicate work?", 
+            "intent": "demo", 
+            "entities": []
+         }, 
+         {
+            "text": "How does Kommunicate work?", 
+            "intent": "demo", 
+            "entities": []
+         }, 
+         {
+            "text": "How do I use Kommunicate?", 
+            "intent": "demo", 
+            "entities": []
+         }, 
+         {
+            "text": "How do I use Kommunicate?", 
+            "intent": "demo", 
+            "entities": []
+         }, 
+         {
+            "text": "How do I use Kommunicate?", 
+            "intent": "demo", 
+            "entities": []
          }
       ], 
       "entity_examples": [], 

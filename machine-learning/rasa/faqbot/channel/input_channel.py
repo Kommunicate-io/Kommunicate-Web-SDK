@@ -10,7 +10,7 @@ import random
 import sys
 from pathlib import Path
 from ruamel.yaml import YAML
-from flask import Blueprint, request, jsonify, make_response
+from flask import Flask, Blueprint, request, jsonify, make_response
 from typing import Text, Optional
 
 from rasa_core.channels.channel import UserMessage, OutputChannel
@@ -34,7 +34,7 @@ def update_domain(intent,answer,flag):
 	yaml.indent(mapping=1,sequence=1,offset=0)
 	yaml.dump(data,file)
 	return
-    
+
 def update_stories(intent):
 	num = str(random.randint(1,2345678))
 	file = open('faq_stories.md','a')
@@ -43,7 +43,7 @@ def update_stories(intent):
 	file.write('\n - utter_' + intent)
 	file.close()
 	return
-	
+
 def update_nludata(intent,question):
 	data = {}
 	with open('faq_data.json') as json_file:
@@ -54,17 +54,20 @@ def update_nludata(intent,question):
 	with open('faq_data.json','w') as outfile:
 		json.dump(data,outfile,indent=3)
 	return
+app = Flask(__name__)
+
+# Load all agents in server startup and pick agent based on body['applicationKey']
+interpreter = RasaNLUInterpreter("models/nlu/default/faq_model_v1")
+agent = Agent.load("models/dialogue", interpreter)
 
 class KommunicateChatBot(OutputChannel):
     def __init__(self, data):
-        self.bot_id = data['botId'] 
+        self.bot_id = data['botId']
         self.group_id = data['groupId']
         self.application_key = data['applicationKey']
         self.authorization = data['authorization']
 
-    def send_text_message(self , recipient_id, message):
-        print(message)
-
+    def send_text_message(self, recipient_id, message):
         send_message_url = get_cnfg().url + "/rest/ws/message/v2/send"
 
         auth_headers = {
@@ -80,48 +83,34 @@ class KommunicateChatBot(OutputChannel):
         response_message = requests.post(url=send_message_url, data=json.dumps(message_data), headers=auth_headers)
         print(response_message.status_code, response_message.reason)
 
-class KommunicateChatInput(HttpInputComponent,HttpInputChannel):
-    def __init__(self, url="http://localhost:5000"):
-        self.url = url
+@app.route('/')
+def index():
+    return "Hello, World!"
 
-    def blueprint(self, on_new_message):
-        kommunicate_chat_webhook = Blueprint('rocketchat_webhook', __name__)
+@app.route("/webhook", methods=["GET", "POST"])
+def webhook():
+    body = request.json
 
-        @kommunicate_chat_webhook.route("/", methods=["GET", "POST"])
-        def health():
-            return jsonify({
-                "status": "ok",
-            })
-			
-        @kommunicate_chat_webhook.route("/faqdata", methods=["POST"])
-        def getfaq():
-	        body = request.json
-	        if(('answer' in body) and ('question' in body) and ('intent' in body)):
-	         update_domain(body['intent'],body['answer'],0)
-	         update_stories(body['intent'])
-	         update_nludata(body['intent'],body['question'])
-	        elif(('intent' in body) and ('answer' in body)):
-	         update_domain(body['intent'],body['answer'],1)
-	        elif(('question' in body) and ('intent' in body)):
-	         update_nludata(body['intent'],body['question'])
-	        #execl("sh","retrain.sh")
-	        return jsonify({"bot trained!":"wow",
-			})
-			
-        @kommunicate_chat_webhook.route("/webhook", methods=["GET", "POST"])
-        def webhook():
-            body = request.json
-            output = body['message']
-            outchannel = KommunicateChatBot(body)
-            user_message = UserMessage(output, outchannel, "default")
-            on_new_message(user_message)
-            return make_response()
-        return kommunicate_chat_webhook
-	
-def agent_run():
-    interpreter = RasaNLUInterpreter("models/nlu/default/faq_model_v1")
-    agent = Agent.load("models/dialogue", interpreter)
-    channel = HttpInputChannel(5001, None , KommunicateChatInput())
-    agent.handle_channel(channel)
-    return agent
-agent_run()
+    reply = agent.handle_message(body['message'])[0]['text']
+
+    outchannel = KommunicateChatBot(body)
+    print ("sending message: " + reply)
+    outchannel.send_text_message('', reply)
+    return reply
+
+@app.route("/faqdata", methods=["POST"])
+def getfaq():
+    body = request.json
+    if(('answer' in body) and ('question' in body) and ('intent' in body)):
+	    update_domain(body['intent'],body['answer'],0)
+	    update_stories(body['intent'])
+	    update_nludata(body['intent'],body['question'])
+    elif(('intent' in body) and ('answer' in body)):
+	    update_domain(body['intent'],body['answer'],1)
+    elif(('question' in body) and ('intent' in body)):
+        update_nludata(body['intent'],body['question'])
+	    #execl("sh","retrain.sh")
+    return jsonify({"bot trained!":"wow"})
+
+if __name__ == '__main__':
+    app.run(port=5001, debug=True)
