@@ -1,0 +1,75 @@
+intents:
+- mau_intent
+- push_notification_not_working
+- host_applozic
+- custom_ui
+- default_ui
+- greet
+- done
+- not_understood
+- agent_number
+- trial
+- chat_limit
+- discount
+- existence
+- upgrade_plan
+- demo
+actions:
+- utter_greet
+- utter_mau
+- utter_push_notification_config
+- utter_host_applozic
+- utter_customize_ui
+- utter_default_ui
+- utter_anything_else
+- utter_did_not_get_you
+- utter_thanks
+- utter_agent_number
+- utter_trial
+- utter_chat_limit
+- utter_discount
+- utter_existence
+- utter_upgrade_plan
+- utter_demo
+templates:
+ utter_mau:
+ - We define Monthly Active User (MAU) as any user who 'used' Applozic Chat Messenger,
+  in a given month.
+ utter_push_notification_config:
+ - Verify if Push Notification is configured.
+ utter_host_applozic:
+ - Yes, you can host applozic in your servers.
+ utter_customize_ui:
+ - Yes Applozic is fully customizable
+ utter_default_ui:
+ - The default UI is not mandatory and is fully customizable
+ utter_greet:
+ - How may i help you?
+ utter_anything_else:
+ - Anything else?
+ utter_did_not_get_you:
+ - Did not get you?
+ utter_thanks:
+ - Have a great day
+ utter_agent_number:
+ - You can add as many agents in Kommunicate as you want. You will be charged on the
+  basis of the number of agents you have.
+ utter_trial:
+ - You can signup for free to avail the benefits of the full-fledged support platform
+  for 30 days. Credit card details are not required for the trial period. Post the
+  30 days period, you can upgrade to your preferred plan or else you will be automatically
+  downgraded to the free forever plan. We will not terminate the services.
+ utter_chat_limit:
+ - You can have unlimited chats and contacts with each plan. You will be able to serve
+  as many customers you want and there is no cap on the number of messages exchanged.
+  Though, we expect you to adhere to our fair usage policy.
+ utter_discount:
+ - Yes, get in touch with us here.
+ utter_existence:
+ - Yes, and you, my dear sir, are a pretty neat simulation.
+ utter_upgrade_plan:
+ - You can upgrade your plan through the dashboard itself. Alternatively, you can
+  drop us a line and we'll be happy to assist you in upgrading or downgrading your
+  plan.
+ utter_demo:
+ - You can schedule a demo on our website
