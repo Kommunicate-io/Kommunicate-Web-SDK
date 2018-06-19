@@ -6,40 +6,40 @@
     "utter_thanks": {
       "slots": []
     },
+    "utter_discount": {
+      "slots": []
+    },
+    "utter_demo": {
+      "slots": []
+    },
+    "utter_host_applozic": {
+      "slots": []
+    },
     "utter_agent_number": {
       "slots": []
     },
     "utter_existence": {
       "slots": []
     },
-    "utter_trial": {
-      "slots": []
-    },
     "utter_default_ui": {
       "slots": []
     },
-    "utter_demo": {
+    "utter_trial": {
       "slots": []
     },
     "utter_mau": {
       "slots": []
     },
-    "utter_customize_ui": {
+    "utter_upgrade_plan": {
       "slots": []
     },
     "utter_chat_limit": {
       "slots": []
     },
-    "utter_upgrade_plan": {
-      "slots": []
-    },
-    "utter_host_applozic": {
-      "slots": []
-    },
     "utter_push_notification_config": {
       "slots": []
     },
-    "utter_discount": {
+    "utter_customize_ui": {
       "slots": []
     }
   },

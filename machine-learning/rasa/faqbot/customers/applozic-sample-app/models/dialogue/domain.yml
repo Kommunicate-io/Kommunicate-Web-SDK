@@ -72,7 +72,7 @@ templates:
   utter_did_not_get_you:
   - text: Did not get you?
   utter_discount:
-  - text: Yes, get in touch with us here.
+  - text: Sorry, we don't have any discount planning running at the moment.
   utter_existence:
   - text: Yes, and you, my dear sir, are a pretty neat simulation.
   utter_greet:

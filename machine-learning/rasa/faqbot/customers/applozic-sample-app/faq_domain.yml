@@ -64,7 +64,7 @@ templates:
   as many customers you want and there is no cap on the number of messages exchanged.
   Though, we expect you to adhere to our fair usage policy.
  utter_discount:
- - Yes, get in touch with us here.
+ - Sorry, we don't have any discount planning running at the moment.
  utter_existence:
  - Yes, and you, my dear sir, are a pretty neat simulation.
  utter_upgrade_plan:

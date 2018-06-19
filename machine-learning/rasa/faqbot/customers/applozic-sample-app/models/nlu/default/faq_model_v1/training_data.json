@@ -155,15 +155,15 @@
       },
       {
         "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
+        "text": "Are there any discounts for multiple plans?"
       },
       {
         "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
+        "text": "Are there any discounts for multiple plans?"
       },
       {
         "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
+        "text": "Are there any discounts for multiple plans?"
       },
       {
         "intent": "existence",
@@ -215,27 +215,27 @@
       },
       {
         "intent": "demo",
-        "text": "How does Kommunicate work?"
+        "text": "How does Applozic work?"
       },
       {
         "intent": "demo",
-        "text": "How does Kommunicate work?"
+        "text": "How does Applozic work?"
       },
       {
         "intent": "demo",
-        "text": "How does Kommunicate work?"
+        "text": "How does Applozic work?"
       },
       {
         "intent": "demo",
-        "text": "How do I use Kommunicate?"
+        "text": "How do I use Applozic?"
       },
       {
         "intent": "demo",
-        "text": "How do I use Kommunicate?"
+        "text": "How do I use Applozic?"
       },
       {
         "intent": "demo",
-        "text": "How do I use Kommunicate?"
+        "text": "How do I use Applozic?"
       }
     ],
     "regex_features": [],

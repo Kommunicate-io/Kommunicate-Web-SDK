@@ -192,17 +192,17 @@
             "entities": []
          }, 
          {
-            "text": "Are there any discounts for mutiple plans?", 
+            "text": "Are there any discounts for multiple plans?", 
             "intent": "discount", 
             "entities": []
          }, 
          {
-            "text": "Are there any discounts for mutiple plans?", 
+            "text": "Are there any discounts for multiple plans?", 
             "intent": "discount", 
             "entities": []
          }, 
          {
-            "text": "Are there any discounts for mutiple plans?", 
+            "text": "Are there any discounts for multiple plans?", 
             "intent": "discount", 
             "entities": []
          }, 
@@ -267,32 +267,32 @@
             "entities": []
          }, 
          {
-            "text": "How does Kommunicate work?", 
+            "text": "How does Applozic work?", 
             "intent": "demo", 
             "entities": []
          }, 
          {
-            "text": "How does Kommunicate work?", 
+            "text": "How does Applozic work?", 
             "intent": "demo", 
             "entities": []
          }, 
          {
-            "text": "How does Kommunicate work?", 
+            "text": "How does Applozic work?", 
             "intent": "demo", 
             "entities": []
          }, 
          {
-            "text": "How do I use Kommunicate?", 
+            "text": "How do I use Applozic?", 
             "intent": "demo", 
             "entities": []
          }, 
          {
-            "text": "How do I use Kommunicate?", 
+            "text": "How do I use Applozic?", 
             "intent": "demo", 
             "entities": []
          }, 
          {
-            "text": "How do I use Kommunicate?", 
+            "text": "How do I use Applozic?", 
             "intent": "demo", 
             "entities": []
          }
