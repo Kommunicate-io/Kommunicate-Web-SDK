@@ -22,7 +22,38 @@ def get_cnfg():
 	else:
 		cnfg = importlib.import_module('conf.default')
 	return cnfg
+def update_domain(intent,answer,flag):
+	yaml = YAML(typ='rt')
+	yaml.default_flow_style = False
+	file = Path('faq_domain.yml')
+	data = yaml.load(open("faq_domain.yml"))
+	if(flag==0):
+	 data['intents'].append(intent)
+	 data['actions'].append('utter_' + intent)
+	data['templates']['utter_' + intent] = [answer]
+	yaml.indent(mapping=1,sequence=1,offset=0)
+	yaml.dump(data,file)
+	return
 
+def update_stories(intent):
+	num = str(random.randint(1,2345678))
+	file = open('faq_stories.md','a')
+	file.write('\n\n## story_' + num)
+	file.write('\n* ' + intent)
+	file.write('\n - utter_' + intent)
+	file.close()
+	return
+
+def update_nludata(intent,question):
+	data = {}
+	with open('faq_data.json') as json_file:
+		data = json.load(json_file)
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
+	with open('faq_data.json','w') as outfile:
+		json.dump(data,outfile,indent=3)
+	return
 app = Flask(__name__)
 
 # Load all agents in server startup and pick agent based on body['applicationKey']
@@ -31,7 +62,7 @@ agent = Agent.load("models/dialogue", interpreter)
 
 class KommunicateChatBot(OutputChannel):
     def __init__(self, data):
-        self.bot_id = data['botId'] 
+        self.bot_id = data['botId']
         self.group_id = data['groupId']
         self.application_key = data['applicationKey']
         self.authorization = data['authorization']
@@ -61,11 +92,10 @@ def webhook():
     body = request.json
 
     reply = agent.handle_message(body['message'])[0]['text']
-    
+
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
     outchannel.send_text_message('', reply)
-
     return reply
 
 @app.route("/faqdata", methods=["POST"])
@@ -84,36 +114,3 @@ def getfaq():
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
-
-def update_domain(intent,answer,flag):
-	yaml = YAML(typ='rt')
-	yaml.default_flow_style = False
-	file = Path('faq_domain.yml')
-	data = yaml.load(open("faq_domain.yml"))
-	if(flag==0):
-	 data['intents'].append(intent)
-	 data['actions'].append('utter_' + intent)
-	data['templates']['utter_' + intent] = [answer]
-	yaml.indent(mapping=1,sequence=1,offset=0)
-	yaml.dump(data,file)
-	return
-    
-def update_stories(intent):
-	num = str(random.randint(1,2345678))
-	file = open('faq_stories.md','a')
-	file.write('\n\n## story_' + num)
-	file.write('\n* ' + intent)
-	file.write('\n - utter_' + intent)
-	file.close()
-	return
-	
-def update_nludata(intent,question):
-	data = {}
-	with open('faq_data.json') as json_file:
-		data = json.load(json_file)
-		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
-		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
-		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
-	with open('faq_data.json','w') as outfile:
-		json.dump(data,outfile,indent=3)
-	return

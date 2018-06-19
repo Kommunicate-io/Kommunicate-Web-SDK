@@ -2,219 +2,219 @@
   "rasa_nlu_data": {
     "common_examples": [
       {
-        "intent": "mau_intent",
-        "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
-      },
+        "text": "How is MAU (Monthly Active Users) calculated in Applozic? ", 
+        "intent": "mau_intent"
+      }, 
       {
-        "intent": "mau_intent",
-        "text": "How is MAU calculated? "
-      },
+        "text": "How is MAU calculated? ", 
+        "intent": "mau_intent"
+      }, 
       {
-        "intent": "mau_intent",
-        "text": "What is MAU? "
-      },
+        "text": "What is MAU? ", 
+        "intent": "mau_intent"
+      }, 
       {
-        "intent": "mau_intent",
-        "text": "How is MAU (Monthly Active Users) calculated in Applozic? "
-      },
+        "text": "How is MAU (Monthly Active Users) calculated in Applozic? ", 
+        "intent": "mau_intent"
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "text": "Why are messages not getting delivered on Applozic?"
-      },
+        "text": "Why are messages not getting delivered on Applozic?", 
+        "intent": "push_notification_not_working"
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "text": "Unable to send messages ?"
-      },
+        "text": "Unable to send messages ?", 
+        "intent": "push_notification_not_working"
+      }, 
       {
-        "intent": "push_notification_not_working",
-        "text": "Not receiving messages?"
-      },
+        "text": "Not receiving messages?", 
+        "intent": "push_notification_not_working"
+      }, 
       {
-        "intent": "host_applozic",
-        "text": "Can I host Applozic Chat on my own server instance?"
-      },
+        "text": "Can I host Applozic Chat on my own server instance?", 
+        "intent": "host_applozic"
+      }, 
       {
-        "intent": "host_applozic",
-        "text": "Can I host Applozic Chat on my own server instance?"
-      },
+        "text": "Can I host Applozic Chat on my own server instance?", 
+        "intent": "host_applozic"
+      }, 
       {
-        "intent": "custom_ui",
-        "text": "Can I build our own UI on Applozic?"
-      },
+        "text": "Can I build our own UI on Applozic?", 
+        "intent": "custom_ui"
+      }, 
       {
-        "intent": "custom_ui",
-        "text": "Can I build our own UI on Applozic?"
-      },
+        "text": "Can I build our own UI on Applozic?", 
+        "intent": "custom_ui"
+      }, 
       {
-        "intent": "custom_ui",
-        "text": "Can I build our own UI on Applozic?"
-      },
+        "text": "Can I build our own UI on Applozic?", 
+        "intent": "custom_ui"
+      }, 
       {
-        "intent": "default_ui",
-        "text": "Can I customise the default UI?"
-      },
+        "text": "Can I customise the default UI?", 
+        "intent": "default_ui"
+      }, 
       {
-        "intent": "default_ui",
-        "text": "Can I customise the default UI?"
-      },
+        "text": "Can I customise the default UI?", 
+        "intent": "default_ui"
+      }, 
       {
-        "intent": "default_ui",
-        "text": "Can I customise the default UI?"
-      },
+        "text": "Can I customise the default UI?", 
+        "intent": "default_ui"
+      }, 
       {
-        "intent": "not_understood",
-        "text": "Pricing of Applozic?"
-      },
+        "text": "Pricing of Applozic?", 
+        "intent": "not_understood"
+      }, 
       {
-        "intent": "greet",
-        "text": "Hi"
-      },
+        "text": "Hi", 
+        "intent": "greet"
+      }, 
       {
-        "intent": "greet",
-        "text": "Hello"
-      },
+        "text": "Hello", 
+        "intent": "greet"
+      }, 
       {
-        "intent": "greet",
-        "text": "Need help"
-      },
+        "text": "Need help", 
+        "intent": "greet"
+      }, 
       {
-        "intent": "done",
-        "text": "Nothing else"
-      },
+        "text": "Nothing else", 
+        "intent": "done"
+      }, 
       {
-        "intent": "done",
-        "text": "That will be all ."
-      },
+        "text": "That will be all .", 
+        "intent": "done"
+      }, 
       {
-        "intent": "agent_number",
-        "text": "How many agents can I add in a particular plan?"
-      },
+        "text": "How many agents can I add in a particular plan?", 
+        "intent": "agent_number"
+      }, 
       {
-        "intent": "agent_number",
-        "text": "How many agents can I add in a particular plan?"
-      },
+        "text": "How many agents can I add in a particular plan?", 
+        "intent": "agent_number"
+      }, 
       {
-        "intent": "agent_number",
-        "text": "What is the maximum number of agents?"
-      },
+        "text": "What is the maximum number of agents?", 
+        "intent": "agent_number"
+      }, 
       {
-        "intent": "agent_number",
-        "text": "What is the maximum number of agents?"
-      },
+        "text": "What is the maximum number of agents?", 
+        "intent": "agent_number"
+      }, 
       {
-        "intent": "trial",
-        "text": "How does the 30 days trial work?"
-      },
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "trial",
-        "text": "How does the 30 days trial work?"
-      },
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "trial",
-        "text": "How does the 30 days trial work?"
-      },
+        "text": "How does the 30 days trial work?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "trial",
-        "text": "What is the free plan?"
-      },
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "trial",
-        "text": "What is the free plan?"
-      },
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "trial",
-        "text": "What is the free plan?"
-      },
+        "text": "What is the free plan?", 
+        "intent": "trial"
+      }, 
       {
-        "intent": "chat_limit",
-        "text": "Is there a limit on the numbers of chats and contacts?"
-      },
+        "text": "Is there a limit on the numbers of chats and contacts?", 
+        "intent": "chat_limit"
+      }, 
       {
-        "intent": "chat_limit",
-        "text": "Is there a limit on the numbers of chats and contacts?"
-      },
+        "text": "Is there a limit on the numbers of chats and contacts?", 
+        "intent": "chat_limit"
+      }, 
       {
-        "intent": "chat_limit",
-        "text": "What is the maximum no of chats?"
-      },
+        "text": "What is the maximum no of chats?", 
+        "intent": "chat_limit"
+      }, 
       {
-        "intent": "chat_limit",
-        "text": "What is the maximum no of chats?"
-      },
+        "text": "What is the maximum no of chats?", 
+        "intent": "chat_limit"
+      }, 
       {
-        "intent": "discount",
-        "text": "Do you offer discounts for using it in multiple websites and apps?"
-      },
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "discount",
-        "text": "Do you offer discounts for using it in multiple websites and apps?"
-      },
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "discount",
-        "text": "Do you offer discounts for using it in multiple websites and apps?"
-      },
+        "text": "Do you offer discounts for using it in multiple websites and apps?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
-      },
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
-      },
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "discount",
-        "text": "Are there any discounts for mutiple plans?"
-      },
+        "text": "Are there any discounts for mutiple plans?", 
+        "intent": "discount"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you a human?"
-      },
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you a human?"
-      },
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you a human?"
-      },
+        "text": "Are you a human?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you real?"
-      },
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you real?"
-      },
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "existence",
-        "text": "Are you real?"
-      },
+        "text": "Are you real?", 
+        "intent": "existence"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "How to upgrade or downgrade the plan?"
-      },
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "How to upgrade or downgrade the plan?"
-      },
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "How to upgrade or downgrade the plan?"
-      },
+        "text": "How to upgrade or downgrade the plan?", 
+        "intent": "upgrade_plan"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "I want to upgrade my plan"
-      },
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "I want to upgrade my plan"
-      },
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
+      }, 
       {
-        "intent": "upgrade_plan",
-        "text": "I want to upgrade my plan"
+        "text": "I want to upgrade my plan", 
+        "intent": "upgrade_plan"
       }
-    ],
-    "regex_features": [],
-    "entity_synonyms": []
+    ], 
+    "entity_synonyms": [], 
+    "regex_features": []
   }
 }
