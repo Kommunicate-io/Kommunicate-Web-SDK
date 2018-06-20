@@ -34,13 +34,39 @@ layout:
     <div id="product-hunt-nav-bar" class="show ">
       {% include nav-header.html %}
     </div>
-    {% include_relative /sections/homepage-landing-page.html %}
-    {% include_relative /sections/homepage-experience-section.html %}
-    {% include_relative /sections/homepage-features-section.html %}
+
+    <!-- Normal page without /?ab=home -->
+    <main class="hide-in-ab-test hide">
+      {% include_relative /sections/homepage-landing-page.html %}
+      {% include_relative /sections/homepage-experience-section.html %}
+      {% include_relative /sections/homepage-features-section.html %}
+      {% include_relative /sections/homepage-customer-testimonial-section.html %}
+      {% include_relative /sections/homepage-integrate-section.html %}
+      {% include footer-section.html %}
+    </main>
     
-    {% include_relative /sections/homepage-customer-testimonial-section.html %}
-    {% include_relative /sections/homepage-integrate-section.html %}
-    {% include footer-section.html %}
+    <!-- AB test homepage with /?ab=home -->
+    <main class="show-in-ab-test hide">
+        <style>
+            .page-links-ul li>a {
+              color: #000;
+            }
+            .nav-signup-button, .nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
+                color: #2DD35C !important;
+                border: solid 1.4px #2DD35C;
+                background-color: transparent;
+            }
+          </style>
+      {% include_relative /sections/homepage-ab-landing-page.html %}
+      {% include_relative /sections/homepage-ab-features-section.html %}
+      {% include_relative /sections/homepage-ab-customer-testimonial-section.html %}
+      {% include_relative /sections/homepage-ab-integrate-section.html %}
+      {% include footer-ab-section.html %}
+    </main> 
+
+    
+
+    
 
 <!-- Start of HubSpot Embed Code -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/4025922.js"></script>
@@ -137,12 +163,9 @@ right.on('click', function() {
 slideInitial();
 
 
-  });
 
-  window.onload = function() {
-    //Product hunt banner code
-// Function to capture only Email Id from URL
-function getQueryVariable(variable) {
+
+  function getQueryVariable(variable) {
         var query = window.location.search.substring(1);
         var vars = query.split("&");
         for (var i = 0; i < vars.length; i++) {
@@ -153,7 +176,8 @@ function getQueryVariable(variable) {
         }
         return (false);
     }
-    var newEmailValueFronURL = getQueryVariable("ref");
+    var newEmailValueFronURL = getQueryVariable("ref"),
+        getABUrl = getQueryVariable("ab");
 
     if (newEmailValueFronURL === "producthunt") {
         $("#product-hunt-nav-bar").addClass("nav-header-sticky");
@@ -161,7 +185,50 @@ function getQueryVariable(variable) {
     } else {
         $("#product-hunt-banner").addClass("hide").removeClass("flex-show");
     }
-  }
+
+    if(getABUrl === "home") {
+      $(".show-in-ab-test").addClass("show").removeClass("hide");
+      $(".hide-in-ab-test").remove();
+    } else {
+      $(".show-in-ab-test").remove();
+      $(".hide-in-ab-test").addClass("show").removeClass("hide");
+    }
+    
+
+  });
+
+//   window.onload = function() {
+//     //Product hunt banner code
+// // Function to capture only Email Id from URL
+// function getQueryVariable(variable) {
+//         var query = window.location.search.substring(1);
+//         var vars = query.split("&");
+//         for (var i = 0; i < vars.length; i++) {
+//             var pair = vars[i].split("=");
+//             if (pair[0] == variable) {
+//                 return pair[1];
+//             }
+//         }
+//         return (false);
+//     }
+//     var newEmailValueFronURL = getQueryVariable("ref"),
+//         getABUrl = getQueryVariable("ab");
+
+//     if (newEmailValueFronURL === "producthunt") {
+//         $("#product-hunt-nav-bar").addClass("nav-header-sticky");
+//         $("#product-hunt-banner").addClass("flex-show").removeClass("hide");
+//     } else {
+//         $("#product-hunt-banner").addClass("hide").removeClass("flex-show");
+//     }
+
+//     if(getABUrl === "home") {
+//       $(".show-in-ab-test").addClass("show").removeClass("hide");
+//       $(".hide-in-ab-test").remove();
+//     } else {
+//       $(".show-in-ab-test").remove();
+//       $(".hide-in-ab-test").addClass("show").removeClass("hide");
+//     }
+//   }
 </script>
 
 
