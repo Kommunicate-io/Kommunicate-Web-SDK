@@ -89,3 +89,7 @@
 ## story_1499961
 * demo
  - utter_demo
+
+## story_585509
+* pricing_plans
+ - utter_pricing_plans

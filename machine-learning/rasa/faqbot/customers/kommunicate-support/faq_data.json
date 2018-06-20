@@ -295,6 +295,36 @@
             "text": "How do I use Kommunicate?", 
             "intent": "demo", 
             "entities": []
+         }, 
+         {
+            "text": "What are the pricing plans?", 
+            "intent": "pricing_plans", 
+            "entities": []
+         }, 
+         {
+            "text": "What are the pricing plans?", 
+            "intent": "pricing_plans", 
+            "entities": []
+         }, 
+         {
+            "text": "What are the pricing plans?", 
+            "intent": "pricing_plans", 
+            "entities": []
+         }, 
+         {
+            "text": "What is the subscription price?", 
+            "intent": "pricing_plans", 
+            "entities": []
+         }, 
+         {
+            "text": "What is the subscription price?", 
+            "intent": "pricing_plans", 
+            "entities": []
+         }, 
+         {
+            "text": "What is the subscription price?", 
+            "intent": "pricing_plans", 
+            "entities": []
          }
       ], 
       "entity_examples": [], 
