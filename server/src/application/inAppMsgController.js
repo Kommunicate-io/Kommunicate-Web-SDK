@@ -317,6 +317,7 @@ exports.processAwayMessage = function(req,res){
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
         let collectEmail = false;
+        let isBotRoutingEnabled = customer.botRouting;
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
@@ -343,7 +344,13 @@ exports.processAwayMessage = function(req,res){
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
                         let data = {"messageList":messageList, "collectEmail":collectEmail}
-                        res.json({"code":"SUCCESS",data:data}).status(200);
+                        // res.json({"code":"SUCCESS",data:data}).status(200);
+                        if (isBotRoutingEnabled) {
+                            data = {"messageList":[], "collectEmail":collectEmail}
+                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
+                        } else {
+                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO AGENT", data:data}).status(200);
+                        }
                     })
                 })
                

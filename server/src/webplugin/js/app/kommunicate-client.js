@@ -58,7 +58,7 @@ Kommunicate.client={
                 DELETED_GROUP_MESSAGE: "",
                 GROUP_USER_ROLE_UPDATED_MESSAGE: "",
                 GROUP_META_DATA_UPDATED_MESSAGE: "",
-                CONVERSATION_ASSIGNEE: conversationDetail.agentId,
+                CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
                 HIDE: "true"

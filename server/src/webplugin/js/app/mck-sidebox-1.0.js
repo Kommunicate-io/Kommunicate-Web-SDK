@@ -3128,8 +3128,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                     }
                    // populate away messsage for support group..
-                    if(params.isGroup){
-                        Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":params.tabId},KommunicateUI.populateAwayMessage);
+                    if (params.isGroup) {
+                        Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, KommunicateUI.populateAwayMessage);
                     }
                   } else {
                     CONTACT_SYNCING = true;
