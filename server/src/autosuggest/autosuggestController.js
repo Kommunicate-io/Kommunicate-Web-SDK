@@ -1,8 +1,8 @@
 const autosuggestService = require("./autosuggestService");
 const logger = require("../utils/logger");
-
+const botchannel = require("./botchannel");
 /**
- * returns all data in db irrespective to customer 
+ * returns all data in db irrespective to customer
  * dont use this API
  */
 exports.getAllSuggestions = (req, res) => {
@@ -63,6 +63,10 @@ exports.createSuggestion = (req, res) => {
 		.then(response => {
 			console.log(response)
 			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
+			/*var customer = customerservice.getCustomerById(response['applicationId'])
+			var appkey = customer.companyName
+			response['applicationKey'] = appkey*/
+			botchannel.insertFaq(response)
 		})
 		.catch(err => {
 			res.status(500).json({

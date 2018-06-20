@@ -93,3 +93,11 @@
 ## story_585509
 * pricing_plans
  - utter_pricing_plans
+
+## story_1993432
+* 1147
+ - utter_1147
+
+## story_2304757
+* 1148
+ - utter_1148

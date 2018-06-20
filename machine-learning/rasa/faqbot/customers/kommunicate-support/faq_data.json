@@ -325,6 +325,36 @@
             "text": "What is the subscription price?", 
             "intent": "pricing_plans", 
             "entities": []
+         }, 
+         {
+            "text": "Question", 
+            "intent": "1147", 
+            "entities": []
+         }, 
+         {
+            "text": "Question", 
+            "intent": "1147", 
+            "entities": []
+         }, 
+         {
+            "text": "Question", 
+            "intent": "1147", 
+            "entities": []
+         }, 
+         {
+            "text": "What is applozic?", 
+            "intent": "1148", 
+            "entities": []
+         }, 
+         {
+            "text": "What is applozic?", 
+            "intent": "1148", 
+            "entities": []
+         }, 
+         {
+            "text": "What is applozic?", 
+            "intent": "1148", 
+            "entities": []
          }
       ], 
       "entity_examples": [], 

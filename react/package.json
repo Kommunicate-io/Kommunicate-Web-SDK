@@ -9,7 +9,7 @@
     "gulp-sass": "^2.3.2",
     "prop-types": "^15.6.0",
     "react-overlays": "^0.8.3",
-    "react-scripts": "1.0.6"
+    "react-scripts": "^1.1.4"
   },
   "dependencies": {
     "@material/tabs": "0.35.0",
