@@ -10,8 +10,9 @@ import random
 import sys
 from pathlib import Path
 from ruamel.yaml import YAML
-from flask import Flask, Blueprint, request, jsonify, make_response
+from flask import Flask, jsonify
 from typing import Text, Optional
+from keras import backend as K
 
 from rasa_core.channels.channel import UserMessage, OutputChannel
 from rasa_core.channels.rest import HttpInputComponent, HttpInputChannel
@@ -54,11 +55,27 @@ def update_nludata(intent,question):
 	with open('faq_data.json','w') as outfile:
 		json.dump(data,outfile,indent=3)
 	return
+
+def load_agent(application_key):
+    print ("loading agent for: " + application_key)
+    #K.clear_session()
+    interpreter = RasaNLUInterpreter("customers/" + application_key + "/models/nlu/default/faq_model_v1")
+    agent = Agent.load("customers/" + application_key + "/models/dialogue", interpreter)
+    agent_map[application_key] = agent
+    return agent
+
+def get_customer_agent(application_key):
+    current_agent = agent_map.get(application_key)
+    if current_agent is None:
+        print("fetching agent for: " + application_key)
+        current_agent = load_agent(application_key)
+    return current_agent
+
 app = Flask(__name__)
 
-# Load all agents in server startup and pick agent based on body['applicationKey']
-interpreter = RasaNLUInterpreter("models/nlu/default/faq_model_v1")
-agent = Agent.load("models/dialogue", interpreter)
+agent_map = {}
+#load_agent("kommunicate-support")
+#load_agent("applozic-sample-app")
 
 class KommunicateChatBot(OutputChannel):
     def __init__(self, data):
@@ -90,8 +107,7 @@ def index():
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     body = request.json
-
-    reply = agent.handle_message(body['message'])[0]['text']
+    reply = get_customer_agent(body['applicationKey']).handle_message(body['message'])[0]['text']
 
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
@@ -113,4 +129,5 @@ def getfaq():
     return jsonify({"bot trained!":"wow"})
 
 if __name__ == '__main__':
-    app.run(port=5001, debug=True)
+    #Note: it is intentionally set to threaded=False because of issue with tensorflow and multiple threads
+    app.run(port=5001, debug=True, threaded=False)

@@ -1,0 +1,56 @@
+{
+  "action_fingerprints": {
+    "action_listen": {
+      "slots": []
+    },
+    "utter_thanks": {
+      "slots": []
+    },
+    "utter_upgrade_plan": {
+      "slots": []
+    },
+    "utter_trial": {
+      "slots": []
+    },
+    "utter_customize_ui": {
+      "slots": []
+    },
+    "utter_chat_limit": {
+      "slots": []
+    },
+    "utter_host_applozic": {
+      "slots": []
+    },
+    "utter_default_ui": {
+      "slots": []
+    },
+    "utter_discount": {
+      "slots": []
+    },
+    "utter_agent_number": {
+      "slots": []
+    },
+    "utter_existence": {
+      "slots": []
+    },
+    "utter_push_notification_config": {
+      "slots": []
+    },
+    "utter_demo": {
+      "slots": []
+    },
+    "utter_mau": {
+      "slots": []
+    }
+  },
+  "rasa_core": "0.9.6",
+  "max_histories": [
+    3,
+    3
+  ],
+  "ensemble_name": "rasa_core.policies.ensemble.SimplePolicyEnsemble",
+  "policy_names": [
+    "rasa_core.policies.memoization.MemoizationPolicy",
+    "rasa_core.policies.keras_policy.KerasPolicy"
+  ]
+}
