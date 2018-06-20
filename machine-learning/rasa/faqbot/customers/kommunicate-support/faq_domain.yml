@@ -14,6 +14,7 @@ intents:
 - existence
 - upgrade_plan
 - demo
+- pricing_plans
 actions:
 - utter_greet
 - utter_mau
@@ -31,6 +32,7 @@ actions:
 - utter_existence
 - utter_upgrade_plan
 - utter_demo
+- utter_pricing_plans
 templates:
  utter_mau:
  - We define Monthly Active User (MAU) as any user who 'used' Applozic Chat Messenger,
@@ -73,3 +75,5 @@ templates:
   plan.
  utter_demo:
  - You can schedule a demo on our website
+ utter_pricing_plans:
+ - The plans are available on the pricing tab

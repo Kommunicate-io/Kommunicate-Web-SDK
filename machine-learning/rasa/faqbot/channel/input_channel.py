@@ -23,11 +23,11 @@ def get_cnfg():
 	else:
 		cnfg = importlib.import_module('conf.default')
 	return cnfg
-def update_domain(intent,answer,flag):
+def update_domain(intent,answer,flag,appkey):
 	yaml = YAML(typ='rt')
 	yaml.default_flow_style = False
-	file = Path('faq_domain.yml')
-	data = yaml.load(open("faq_domain.yml"))
+	file = Path('customers/' + appkey + '/faq_domain.yml')
+	data = yaml.load(open('customers/' + appkey + '/faq_domain.yml'))
 	if(flag==0):
 	 data['intents'].append(intent)
 	 data['actions'].append('utter_' + intent)
@@ -36,23 +36,23 @@ def update_domain(intent,answer,flag):
 	yaml.dump(data,file)
 	return
 
-def update_stories(intent):
+def update_stories(intent,appkey):
 	num = str(random.randint(1,2345678))
-	file = open('faq_stories.md','a')
+	file = open('customers/' + appkey + '/faq_stories.md','a')
 	file.write('\n\n## story_' + num)
 	file.write('\n* ' + intent)
 	file.write('\n - utter_' + intent)
 	file.close()
 	return
 
-def update_nludata(intent,question):
+def update_nludata(intent,question,appkey):
 	data = {}
-	with open('faq_data.json') as json_file:
+	with open('customers/' + appkey + '/faq_data.json') as json_file:
 		data = json.load(json_file)
 		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
 		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
 		data["rasa_nlu_data"]["common_examples"].append({"text":question,"intent":intent,"entities":[]})
-	with open('faq_data.json','w') as outfile:
+	with open('customers/' + appkey + '/faq_data.json','w') as outfile:
 		json.dump(data,outfile,indent=3)
 	return
 
@@ -118,16 +118,16 @@ def webhook():
 def getfaq():
     body = request.json
     if(('answer' in body) and ('question' in body) and ('intent' in body)):
-	    update_domain(body['intent'],body['answer'],0)
-	    update_stories(body['intent'])
-	    update_nludata(body['intent'],body['question'])
+	    update_domain(body['intent'],body['answer'],0,body['applicationKey'])
+	    update_stories(body['intent'],body['applicationKey'])
+	    update_nludata(body['intent'],body['question'],body['applicationKey'])
     elif(('intent' in body) and ('answer' in body)):
-	    update_domain(body['intent'],body['answer'],1)
+	    update_domain(body['intent'],body['answer'],1,body['applicationKey'])
     elif(('question' in body) and ('intent' in body)):
-        update_nludata(body['intent'],body['question'])
+        update_nludata(body['intent'],body['question'],body['applicationKey'])
 	    #execl("sh","retrain.sh")
     return jsonify({"bot trained!":"wow"})
 
 if __name__ == '__main__':
     #Note: it is intentionally set to threaded=False because of issue with tensorflow and multiple threads
-    app.run(port=5001, debug=True, threaded=False)
+    app.run(port=5001, debug=True, threaded=False,host='0.0.0.0')
