@@ -86,7 +86,7 @@ a, a:hover, a:focus, a:active {
     margin-top: 80px;
 }
 .homepage-ab-beta-landing-page-section .bg-girl-img {
-  max-height: 550px;
+  max-height: 600px;
   margin: 0 auto;
 }
 .hero-text {
@@ -114,6 +114,8 @@ a, a:hover, a:focus, a:active {
 .homepage-ab-beta-landing-page-section .hero-text {
   margin-bottom: 50px;
   margin-top: -100px;
+  font-weight: 600;
+  color: #454646;
 }
 .icon-heading {
   font-size: 20px;
