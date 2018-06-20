@@ -3129,21 +3129,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                    // populate away messsage for support group..
                     if (params.isGroup) {
-                        var group = mckGroupUtils.getGroup(params.tabId);
-                        var isConversationAssignedToBot = false;
-                        var conversationAssignee = group.metadata.CONVERSATION_ASSIGNEE;;
-                        for (var userId in group.users) {
-                            var userInfo = mckMessageLayout.fetchContact(userId);
-                            if (userId == conversationAssignee && userInfo.roleType == 1) {
-                                isConversationAssignedToBot = true;
-                                break;
-                            }
-                        }
-
-                        if (!isConversationAssignedToBot) {
-                            Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, KommunicateUI.populateAwayMessage);
-                        }
-
+                        Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, KommunicateUI.populateAwayMessage);
                     }
                   } else {
                     CONTACT_SYNCING = true;
