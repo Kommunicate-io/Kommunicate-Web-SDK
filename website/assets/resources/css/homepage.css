@@ -2740,7 +2740,11 @@ ul.nacc li p {
   max-height: 500px;
 }
 
-.footer-ab-section .footer-cta-section {
+/* .footer-section {
+  opacity: 0;
+} */ 
+
+ .footer-ab-section .footer-cta-section {
   background: transparent;
 }
 .footer-ab-section .footer-cta-section .container {
@@ -2750,7 +2754,7 @@ ul.nacc li p {
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 30px;
-}
+} 
 
 @media only screen and (max-width:767px) {
   .homepage-customer-logos-section {
