@@ -45,6 +45,7 @@ $applozic.extend(true,Kommunicate,{
            "groupName": groupName,
            "type":10,
            "agentId":params.agentId,
+           "assignee":params.assignee,
            "users": user,
            "clientGroupId":params.clientGroupId
        }
