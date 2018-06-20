@@ -1145,10 +1145,14 @@
 var div = $(".naccs .menu div"), fiveSecTimer;
 
   $(window).scroll(function() {
-   var hT = $('.tabs-images-container').offset().top,
-       hH = $('.tabs-images-container').outerHeight(),
-       wH = $(window).height(),
-       wS = $(this).scrollTop();
+    var tabImgContainer = $('.tabs-images-container'), hT, hH, wH, wS;
+    if(tabImgContainer) {
+      hT = tabImgContainer.offset().top,
+      hH = tabImgContainer.outerHeight(),
+      wH = $(window).height(),
+      wS = $(this).scrollTop();
+    }
+      
    if (wS > (hT+hH-wH)){
        //auto-rotate every 5 seconds
       fiveSecTimer = setInterval(startInterval, 5000);
