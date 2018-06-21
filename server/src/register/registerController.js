@@ -115,7 +115,7 @@ exports.patchCustomer = (req, res) => {
   customerService.getCustomerByUserName(userId).then(dbCostomer => {
     console.log("got the user from db", dbCostomer);
     if (activeCampaignEnable) {
-      return activeCampaignClient.updateActiveCampaign({
+      activeCampaignClient.updateActiveCampaign({
         "email": userId,
         "subscriberId": dbCostomer.dataValues.activeCampaignId,
         "name": customer.name,
@@ -132,17 +132,19 @@ exports.patchCustomer = (req, res) => {
       applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applications[0].applicationId, dbCostomer.apzToken).then(users => {
         let integration = users[0].metadata && users[0].metadata.KM_INTEGRATION ? JSON.parse(users[0].metadata.KM_INTEGRATION) : {};
         if (integration.pipeDriveId) {
-          return pipeDrive.updateDeal({ id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo });
+          pipeDrive.updateDeal({ id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo });
         } else {
           let organization = { name: customer.companyName };
           let person = { name: customer.name, email: userId, phone: customer.contactNo, }
           pipeDrive.createDealInPipeDrive(organization, person).then(result => {
             integration['pipeDriveId'] = result.data.data.id;
             let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
-            return applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applications[0].applicationId, user, { apzToken: dbCostomer.apzToken }, false);
+            applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applications[0].applicationId, user, { apzToken: dbCostomer.apzToken }, false);
           });
         }
-      })
+      }).catch(error => {
+        console.log("Error while updating pipedrive ", error);
+      });
     }
   }).catch(error => {
     console.log("Error while getting customer by userId", error);
