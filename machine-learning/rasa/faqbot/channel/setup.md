@@ -15,3 +15,7 @@
                   "message": "messages are not getting delivered"}'
                   ```              
    3. Check for output in `channel/input_channel.py ` tab console
+
+
+### Run gunicorn
+   1. `gunicorn --workers 4 --bind 0.0.0.0:5001 input_channel:app`
