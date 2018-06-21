@@ -202,7 +202,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
 
   let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId }
   kmUser.password = bcrypt.hashSync(options.password, 10);
-  kmUser.apzToken = bcrypt.hashSync(options.password, 10);
+  //kmUser.apzToken = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');
   kmUser.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
 
