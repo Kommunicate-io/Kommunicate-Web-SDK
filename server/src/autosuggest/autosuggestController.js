@@ -63,9 +63,6 @@ exports.createSuggestion = (req, res) => {
 		.then(response => {
 			console.log(response)
 			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
-			/*var customer = customerservice.getCustomerById(response['applicationId'])
-			var appkey = customer.companyName
-			response['applicationKey'] = appkey*/
 			botchannel.insertFaq(response)
 		})
 		.catch(err => {

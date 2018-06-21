@@ -29,8 +29,9 @@
       "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
       "dashboardHostUrl":"https://dashboard-test.kommunicate.io",
       "applozicHostUrl": "https://apps-test.applozic.com",
-      "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail"
-      
+      "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail",
+      "rasafaq":"https://rasa-test.kommunicate.io/faqdata"
+
     },"cache": {
       "hazelCache": {
         "url": "172.31.17.248",
@@ -40,10 +41,10 @@
       }
     },
     "mailProvider":{
-      "accessKey":"AKIAIDIQARZR6CEWS57Q", 
-      "accessPassword":"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+      "accessKey":"AKIAIDIQARZR6CEWS57Q",
+      "accessPassword":"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO",
       "serviceEmail":"support@kommunicatemail.io",
-      "serviceProvider":"2" 
+      "serviceProvider":"2"
     },
     "s3Access": {
       "accessKeyId": "AKIAI67YDIHOPJVDVQHA",
@@ -81,7 +82,7 @@
     }
 },
     "pluginProperties": {
-      "pseduoNameEnabled": false 
+      "pseduoNameEnabled": false
     },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
@@ -97,6 +98,3 @@
     "chargebeeSite": "kommunicate-test",
     "chargebeeApiKey": "test_ukpEZOUpHPfEHVOlHMQvIQl98jRbaKFa"
   }
-  
- 
-  

@@ -2,7 +2,7 @@ export default {
     "development":{
     "baseurl": {
         "applozicAPI": "https://apps-test.applozic.com",
-        "kommunicateAPI": "http://localhost:3999",
+        "kommunicateAPI": "https://api-test.kommunicate.io",
         "botPlatformAPI": "https://bots-test.applozic.com"
     },
     "kommunicateDashboardUrl": "https://dashboard-test.kommunicate.io",
