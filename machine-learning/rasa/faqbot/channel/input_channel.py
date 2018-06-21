@@ -113,7 +113,6 @@ def index():
 def webhook():
     body = request.json
     reply = get_customer_agent(body['applicationKey']).handle_message(body['message'])[0]['text']
-
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
     outchannel.send_text_message('', reply)
@@ -123,13 +122,18 @@ def webhook():
 @app.route("/faqdata", methods=["POST"])
 def getfaq():
     body = request.json
-    if (('answer' in body) and ('question' in body) and ('intent' in body)):
-        update_domain(body['intent'], body['answer'], 0, body['applicationKey'])
-        update_stories(body['intent'], body['applicationKey'])
-        update_nludata(body['intent'], body['question'], body['applicationKey'])
-    elif (('intent' in body) and ('answer' in body)):
-        update_domain(body['intent'], body['answer'], 1, body['applicationKey'])
-    elif (('question' in body) and ('intent' in body)):
-        update_nludata(body['intent'], body['question'], body['applicationKey'])
-        # execl("sh","retrain.sh")
-    return jsonify({"bot trained!": "wow"})
+
+    if(body['referenceId'] is None):
+	    intent = body['id']
+    else:
+	    intent = body['referenceId']
+    if(('content' in body) and ('name' in body)):
+	    update_domain(str(intent),body['content'],0,body['applicationKey'])
+	    update_stories(str(intent),body['applicationKey'])
+	    update_nludata(str(intent),body['name'],body['applicationKey'])
+    elif('answer' in body):
+	    update_domain(str(intent),body['content'],1,body['applicationKey'])
+    elif('question' in body):
+        update_nludata(str(intent),body['name'],body['applicationKey'])
+	    #execl("sh","retrain.sh")
+    return jsonify({"bot trained!":"wow"})
