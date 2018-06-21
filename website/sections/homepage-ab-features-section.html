@@ -11,7 +11,7 @@
     </div> -->
 
     <div class="row naccs">
-        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 tabs-images-container">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 tabs-images-container" id="tabs-images-container">
         
           <ul class="nacc">
             <li class="active">
@@ -299,7 +299,7 @@
                   <pattern id="conversations-pattern-2" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 132 150">
                     <image width="132" height="150" xlink:href="/assets/resources/images/avatars/Group-18-image.jpg"/>
                   </pattern>
-                  <clipPath id="conversations-clip-path-5">
+                  <clipPath id="conversations-bot-integration-clip-path-5">
                     <ellipse id="Mask-5" data-name="Mask" class="conversations-svg-2" cx="17.68" cy="16.999" rx="17.68" ry="16.999" transform="translate(0 0)"/>
                   </clipPath>
                 </defs>
@@ -443,134 +443,102 @@
             </li>
             <li>
              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="Group_18" data-name="Group 18" viewBox="0 0 480 404" class="img-responsive bot-integration-svg">
-                  <defs>
-                    <style>
-                      .bot-integration-svg-1 {
-                        fill: #d8d8d8;
-                      }
-                
-                      .bot-integration-svg-2 {
-                        fill: #c0bdbd;
-                      }
-                
-                      .bot-integration-svg-12, .bot-integration-svg-3 {
-                        fill: #6353d8;
-                      }
-                
-                      .bot-integration-svg-4 {
-                        clip-path: url(#bot-integration-clip-path);
-                      }
-                
-                      .bot-integration-svg-5 {
-                        fill: url(#bot-integration-pattern);
-                      }
-                
-                      .bot-integration-svg-6 {
-                        clip-path: url(#bot-integration-clip-path-3);
-                      }
-                
-                      .bot-integration-svg-10, .bot-integration-svg-7, .bot-integration-svg-8 {
-                        fill: #fff;
-                      }
-                
-                      .bot-integration-svg-10, .bot-integration-svg-11, .bot-integration-svg-12, .bot-integration-svg-8 {
-                        font-size: 14px;
-                        font-family: Roboto-Regular, Roboto;
-                      }
-                
-                      .bot-integration-svg-10, .bot-integration-svg-11, .bot-integration-svg-12, .bot-integration-svg-9 {
-                        letter-spacing: 0.044em;
-                      }
-                
-                      .bot-integration-svg-11 {
-                        fill: #646060;
-                      }
-                
-                      .bot-integration-svg-13 {
-                        fill: none;
-                        stroke: #e2e2e2;
-                        stroke-linecap: square;
-                        stroke-miterlimit: 10;
-                      }
-                
-                      .bot-integration-svg-14 {
-                        filter: url(#Rectangle_18_Copy_2);
-                      }
-                
-                      .bot-integration-svg-15 {
-                        filter: url(#Rectangle_18_Copy);
-                      }
-                    </style>
-                    <clipPath id="bot-integration-clip-path">
-                      <circle id="Mask" class="bot-integration-svg-1" cx="32" cy="32" r="32"/>
-                    </clipPath>
-                    <pattern id="bot-integration-pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 132 150">
-                      <image width="132" height="150" xlink:href="/assets/resources/images/avatars/Group-18-image.jpg"/>
-                    </pattern>
-                    <clipPath id="bot-integration-clip-path-3">
-                      <circle id="Mask-3" data-name="Mask" class="bot-integration-svg-2" cx="22" cy="22" r="22"/>
-                    </clipPath>
-                    <filter id="Rectangle_18_Copy" x="36" y="75" width="250" height="106" filterUnits="userSpaceOnUse">
-                      <feOffset dx="1" dy="5" input="SourceAlpha"/>
-                      <feGaussianBlur stdDeviation="7" result="blur"/>
-                      <feFlood flood-color="#848181" flood-opacity="0.502"/>
-                      <feComposite operator="in" in2="blur"/>
-                      <feComposite in="SourceGraphic"/>
-                    </filter>
-                    <filter id="Rectangle_18_Copy_2" x="96" y="160" width="250" height="205" filterUnits="userSpaceOnUse">
-                      <feOffset dx="1" dy="5" input="SourceAlpha"/>
-                      <feGaussianBlur stdDeviation="7" result="blur-2"/>
-                      <feFlood flood-color="#848181" flood-opacity="0.502"/>
-                      <feComposite operator="in" in2="blur-2"/>
-                      <feComposite in="SourceGraphic"/>
-                    </filter>
-                  </defs>
-                  <g id="Bot_integration_Copy" data-name="Bot integration Copy">
-                    <rect id="Rectangle_18" data-name="Rectangle 18" class="bot-integration-svg-3" width="238" height="62" rx="25" transform="translate(176 32)"/>
-                    <g id="vipin_copy_3" data-name="vipin copy 3" transform="translate(396)">
-                      <circle id="Mask-4" data-name="Mask" class="bot-integration-svg-1" cx="32" cy="32" r="32"/>
-                      <g id="vipin_copy_3-2" data-name="vipin copy 3" class="bot-integration-svg-4">
-                        <rect id="Group-18-image" class="bot-integration-svg-5" width="64" height="73"/>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 646 543" class="img-responsive bot-integration-svg">
+                <defs>
+                  <style>
+                    .bot-integration-svg-1{fill:#d8d8d8}.bot-integration-svg-2{fill:#c0bdbd}.bot-integration-svg-11,.bot-integration-svg-3{fill:#6353d8}.bot-integration-svg-4{clip-path:url(#bot-integration-svg-clip-path)}.bot-integration-svg-9{fill:#fff}.bot-integration-svg-10,.bot-integration-svg-11{font-size:16px;font-family:Roboto-Regular,Roboto}.bot-integration-svg-10,.bot-integration-svg-11,.bot-integration-svg-6{letter-spacing:.044em}.bot-integration-svg-10{fill:#646060}.bot-integration-svg-12{fill:none;stroke:#e2e2e2;stroke-linecap:square;stroke-miterlimit:10}
+                  </style>
+                  <clipPath id="bot-integration-svg-clip-path">
+                    <circle id="Mask" cx="43" cy="43" r="43" class="bot-integration-svg-1"/>
+                  </clipPath>
+                  <clipPath id="bot-integration-svg-clip-path-3">
+                    <circle id="Mask-3" cx="29.5" cy="29.5" r="29.5" class="bot-integration-svg-2" data-name="Mask"/>
+                  </clipPath>
+                  <filter id="bot-integration-svg-rectangle" width="363" height="119" x="55" y="120" filterUnits="userSpaceOnUse">
+                    <feOffset dx="1" dy="5"/>
+                    <feGaussianBlur result="blur" stdDeviation="7"/>
+                    <feFlood flood-color="#848181" flood-opacity=".502"/>
+                    <feComposite in2="blur" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                  <filter id="bot-integration-svg-rectangle_2" width="322" height="261" x="136" y="220" filterUnits="userSpaceOnUse">
+                    <feOffset dx="1" dy="5"/>
+                    <feGaussianBlur result="blur-2" stdDeviation="7"/>
+                    <feFlood flood-color="#848181" flood-opacity=".502"/>
+                    <feComposite in2="blur-2" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                  <image id="image" width="96" height="109" xlink:href="/assets/resources/images/avatars/Group-18-image.jpg"/>
+                </defs>
+                <g id="Group_6" data-name="Group 6" transform="translate(-132 -708)">
+                  <g id="Group_1" data-name="Group 1">
+                    <rect id="Rectangle_18" width="320" height="73" class="bot-integration-svg-3" data-name="Rectangle 18" rx="25" transform="translate(369 751)"/>
+                    <g id="vipin_copy_3" data-name="vipin copy 3" transform="translate(665 708)">
+                      <circle id="Mask-4" cx="43" cy="43" r="43" class="bot-integration-svg-1" data-name="Mask"/>
+                      <g id="vipin_copy_3-2" class="bot-integration-svg-4" data-name="vipin copy 3">
+                        <use id="Group-18-image" transform="translate(-5 -1)" xlink:href="#image"/>
                       </g>
                     </g>
-                    <rect id="Rectangle_18_Copy_3" data-name="Rectangle 18 Copy 3" class="bot-integration-svg-3" width="238" height="49" rx="24.5" transform="translate(196 355)"/>
-                    <g id="vipin_copy_9" data-name="vipin copy 9" transform="translate(416 323)">
-                      <circle id="Mask-5" data-name="Mask" class="bot-integration-svg-1" cx="32" cy="32" r="32"/>
-                      <g id="vipin_copy_9-2" data-name="vipin copy 9" class="bot-integration-svg-4">
-                        <rect id="Group-18-image-2" data-name="Group-18-image" class="bot-integration-svg-5" width="64" height="73"/>
+                    <text id="Hi_I_would_like_to" fill="#fff" data-name="Hi! I would like to" font-family="Roboto-Regular,Roboto" font-size="16" transform="translate(396 767)">
+                      <tspan x="0" y="15" class="bot-integration-svg-6">Hi! I would like to book a movie </tspan><tspan x="0" y="38" class="bot-integration-svg-6">ticket for Interstella</tspan><tspan y="38">r</tspan>
+                    </text>
+                  </g>
+                  <g id="Group_5" data-name="Group 5">
+                    <rect id="bot-integration-svg-rectangle_3" width="281" height="66" class="bot-integration-svg-3" data-name="Rectangle 18 Copy 3" rx="25" transform="translate(435 1185)"/>
+                    <g id="vipin_copy_9" data-name="vipin copy 9" transform="translate(692 1142)">
+                      <circle id="Mask-5" cx="43" cy="43" r="43" class="bot-integration-svg-1" data-name="Mask"/>
+                      <g id="vipin_copy_9-2" class="bot-integration-svg-4" data-name="vipin copy 9">
+                        <use id="Group-18-image-2" data-name="Group-18-image" transform="translate(-5)" xlink:href="#image"/>
                       </g>
                     </g>
-                    <g id="vipin_copy_4" data-name="vipin copy 4" transform="translate(0 93)">
-                      <circle id="Mask-6" data-name="Mask" class="bot-integration-svg-2" cx="22" cy="22" r="22"/>
-                      <g id="vipin_copy_4-2" data-name="vipin copy 4" class="bot-integration-svg-6">
-                        <g id="bot_icon" data-name="bot icon" transform="translate(10.313 7.563)">
-                          <g id="Group">
-                            <path id="Shape" class="bot-integration-svg-7" d="M2.506,25.287h0a14.322,14.322,0,0,1-1.458-.067c.007,0,.722-.155,1.545-1.9a3.68,3.68,0,0,0,.095-3.136c-.087-.139-.174-.285-.257-.434A6.2,6.2,0,0,1,2.46,9.878a10.334,10.334,0,0,1,8.461-5.241V2.9a1.53,1.53,0,0,1-.883-1.375,1.545,1.545,0,0,1,3.089,0,1.52,1.52,0,0,1-.937,1.4V4.64a10.377,10.377,0,0,1,8.289,5.037,6.2,6.2,0,0,1,.029,10.273,10.351,10.351,0,0,1-3.724,3.7,10.53,10.53,0,0,1-9.206.642A11.7,11.7,0,0,1,2.506,25.287ZM6.974,9.7a5.1,5.1,0,0,0,0,10.2h9.273a5.1,5.1,0,0,0,0-10.2Z" transform="translate(0.103 0.018)"/>
-                            <ellipse id="Oval" class="bot-integration-svg-7" cx="1.372" cy="1.352" rx="1.372" ry="1.352" transform="translate(5.591 13.416)"/>
-                            <ellipse id="Oval-2" data-name="Oval" class="bot-integration-svg-7" cx="1.372" cy="1.352" rx="1.372" ry="1.352" transform="translate(15.147 13.416)"/>
+                    <text id="Tomorrow_would_be_pe" fill="#fff" data-name="Tomorrow would be pe" font-family="Roboto-Regular,Roboto" font-size="16" letter-spacing=".044em" transform="translate(462 1209)">
+                      <tspan x="0" y="15">Tomorrow would be perfect</tspan>
+                    </text>
+                  </g>
+                  <g id="Group_4" data-name="Group 4">
+                    <g id="Group_2" data-name="Group 2">
+                      <g id="vipin_copy_4" data-name="vipin copy 4" transform="translate(132 847)">
+                        <circle id="Mask-6" cx="29.5" cy="29.5" r="29.5" class="bot-integration-svg-2" data-name="Mask"/>
+                        <g id="vipin_copy_4-2" clip-path="url(#bot-integration-svg-clip-path-3)" data-name="vipin copy 4">
+                          <g id="bot_icon" data-name="bot icon" transform="translate(13.828 10.141)">
+                            <g id="Group">
+                              <path id="Shape" d="M3.361 33.908a19.192 19.192 0 0 1-1.956-.09c.009 0 .973-.217 2.072-2.552a4.933 4.933 0 0 0 .123-4.205c-.12-.193-.235-.389-.343-.582A8.315 8.315 0 0 1 3.3 13.246a13.927 13.927 0 0 1 11.343-7.028V3.885a2.052 2.052 0 0 1-1.183-1.844 2.071 2.071 0 0 1 4.141 0 2.037 2.037 0 0 1-1.256 1.876v2.306a13.909 13.909 0 0 1 11.114 6.754 8.313 8.313 0 0 1 .041 13.774 13.883 13.883 0 0 1-4.994 4.959 14.118 14.118 0 0 1-12.345.86 15.676 15.676 0 0 1-6.8 1.338zM9.351 13a6.839 6.839 0 0 0 0 13.677h12.434a6.839 6.839 0 0 0 0-13.677z" class="bot-integration-svg-9" transform="translate(.138 .025)"/>
+                              <ellipse id="Oval" cx="1.84" cy="1.813" class="bot-integration-svg-9" rx="1.84" ry="1.813" transform="translate(7.497 17.99)"/>
+                              <ellipse id="Oval-2" cx="1.84" cy="1.813" class="bot-integration-svg-9" data-name="Oval" rx="1.84" ry="1.813" transform="translate(20.311 17.99)"/>
+                            </g>
                           </g>
                         </g>
                       </g>
+                      <g filter="url(#bot-integration-svg-rectangle)" transform="translate(132 708)">
+                        <rect id="bot-integration-svg-rectangle-2" width="321" height="77" class="bot-integration-svg-9" data-name="Rectangle 18 Copy" rx="25" transform="translate(75 136)"/>
+                      </g>
+                      <text id="Hi_Let_s_get_the_de" class="bot-integration-svg-10" data-name="Hi! Let’s get the de" transform="translate(226 872)">
+                        <tspan x="0" y="15">Hi! Let’s get the details sorted first :)</tspan>
+                      </text>
                     </g>
-                    <g class="bot-integration-svg-15" transform="matrix(1, 0, 0, 1, 0, 0)">
-                      <rect id="Rectangle_18_Copy-2" data-name="Rectangle 18 Copy" class="bot-integration-svg-7" width="208" height="64" rx="25" transform="translate(56 91)"/>
+                    <g id="Group_3" data-name="Group 3">
+                      <g filter="url(#bot-integration-svg-rectangle_2)" transform="translate(132 708)">
+                        <rect id="bot-integration-svg-rectangle_2-2" width="280" height="219" class="bot-integration-svg-9" data-name="Rectangle 18 Copy 2" rx="15" transform="translate(156 236)"/>
+                      </g>
+                      <text id="When_would_you_like" class="bot-integration-svg-10" data-name="When would you like" transform="translate(308 957)">
+                        <tspan x="0" y="15">When would you like to</tspan><tspan x="0" y="38">watch the movie?</tspan>
+                      </text>
+                      <text id="Today" class="bot-integration-svg-11" transform="translate(398 1034)">
+                        <tspan x="6.544" y="15">Today</tspan>
+                      </text>
+                      <text id="Tomorrow" class="bot-integration-svg-11" transform="translate(378 1081)">
+                        <tspan x="10.086" y="15">Tomorrow</tspan>
+                      </text>
+                      <text id="Select_from_calendar" class="bot-integration-svg-11" data-name="Select from calendar" transform="translate(328 1128)">
+                        <tspan x="18.659" y="15">Select from calendar</tspan>
+                      </text>
+                      <path id="Line" d="M0 1.5h279" class="bot-integration-svg-12" transform="translate(289 1018)"/>
+                      <path id="Line_Copy" d="M0 1.5h279" class="bot-integration-svg-12" data-name="Line Copy" transform="translate(289 1065)"/>
+                      <path id="Line_Copy_2" d="M0 1.5h279" class="bot-integration-svg-12" data-name="Line Copy 2" transform="translate(289 1112)"/>
                     </g>
-                    <g class="bot-integration-svg-14" transform="matrix(1, 0, 0, 1, 0, 0)">
-                      <rect id="Rectangle_18_Copy_2-2" data-name="Rectangle 18 Copy 2" class="bot-integration-svg-7" width="208" height="163" rx="15" transform="translate(116 176)"/>
-                    </g>
-                    <text id="Hi_I_would_like_to" data-name="Hi! I would like to" class="bot-integration-svg-8" transform="translate(196 43)"><tspan class="bot-integration-svg-9" x="0" y="13">Hi! I would like to book a </tspan><tspan class="bot-integration-svg-9" x="0" y="31">movie ticket for Interstella</tspan><tspan y="31">r</tspan></text>
-                    <text id="Tomorrow_would_be_pe" data-name="Tomorrow would be pe" class="bot-integration-svg-10" transform="translate(219 370)"><tspan x="0" y="13">Tomorrow would be perfect</tspan></text>
-                    <text id="Hi_Let_s_get_the_de" data-name="Hi! Let’s get the de" class="bot-integration-svg-11" transform="translate(70 103)"><tspan x="0" y="13">Hi! Let’s get the details </tspan><tspan x="0" y="31">sorted first :)</tspan></text>
-                    <text id="When_would_you_like" data-name="When would you like" class="bot-integration-svg-11" transform="translate(131 185)"><tspan x="0" y="13">When would you like to</tspan><tspan x="0" y="31">watch the movie?</tspan></text>
-                    <text id="Today" class="bot-integration-svg-12" transform="translate(198 240)"><tspan x="0" y="13">Today</tspan></text>
-                    <text id="Tomorrow" class="bot-integration-svg-12" transform="translate(183 275)"><tspan x="0" y="13">Tomorrow</tspan></text>
-                    <text id="Select_from_calendar" data-name="Select from calendar" class="bot-integration-svg-12" transform="translate(146 310)"><tspan x="0" y="13">Select from calendar</tspan></text>
-                    <path id="Line" class="bot-integration-svg-13" d="M0,1H207" transform="translate(117 231)"/>
-                    <path id="Line_Copy" data-name="Line Copy" class="bot-integration-svg-13" d="M0,1H207" transform="translate(117 266)"/>
-                    <path id="Line_Copy_2" data-name="Line Copy 2" class="bot-integration-svg-13" d="M0,1H207" transform="translate(117 301)"/>
                   </g>
-                </svg>
+                </g>
+              </svg>
              </div>
             </li>
             <li>
@@ -746,360 +714,266 @@
             </li>
             <li>
              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="FAQs" viewBox="0 0 443 421" class="img-responsive faqs-svg">
-                  <defs>
-                    <style>
-                      .faqs-svg-1 {
-                        fill: #d8d8d8;
-                      }
-                
-                      .faqs-svg-2 {
-                        fill: #c0bdbd;
-                      }
-                
-                      .faqs-svg-10, .faqs-svg-3 {
-                        fill: #6353d8;
-                      }
-                
-                      .faqs-svg-4 {
-                        clip-path: url(#faqs-clip-path);
-                      }
-                
-                      .faqs-svg-5 {
-                        fill: url(#faqs-pattern);
-                      }
-                
-                      .faqs-svg-6 {
-                        clip-path: url(#faqs-clip-path-2);
-                      }
-                
-                      .faqs-svg-7, .faqs-svg-8 {
-                        fill: #fff;
-                      }
-                
-                      .faqs-svg-10, .faqs-svg-8, .faqs-svg-9 {
-                        font-size: 14px;
-                        font-family: Roboto-Regular, Roboto;
-                        letter-spacing: 0.044em;
-                      }
-                
-                      .faqs-svg-9 {
-                        fill: #646060;
-                      }
-                
-                      .faqs-svg-11, .faqs-svg-12 {
-                        fill: none;
-                        stroke-miterlimit: 10;
-                      }
-                
-                      .faqs-svg-11 {
-                        stroke: #6353d8;
-                        stroke-width: 0.5px;
-                      }
-                
-                      .faqs-svg-12 {
-                        stroke: #e2e2e2;
-                        stroke-linecap: square;
-                      }
-                
-                      .faqs-svg-13 {
-                        filter: url(#faqs-rectangle_18_Copy_2);
-                      }
-                
-                      .faqs-svg-14 {
-                        filter: url(#faqs-rectangle_18_Copy);
-                      }
-                    </style>
-                    <clipPath id="faqs-clip-path">
-                      <circle id="Mask" class="faqs-svg-1" cx="32" cy="32" r="32"/>
-                    </clipPath>
-                    <pattern id="faqs-pattern" preserveAspectRatio="none" width="100%" height="100%" viewBox="0 0 132 150">
-                      <image width="132" height="150" xlink:href="/assets/resources/images/avatars/Group-18-image.jpg"/>
-                    </pattern>
-                    <clipPath id="faqs-clip-path-2">
-                      <circle id="Mask-2" data-name="Mask" class="faqs-svg-2" cx="22" cy="22" r="22"/>
-                    </clipPath>
-                    <filter id="faqs-rectangle_18_Copy" x="38" y="75" width="250" height="112" filterUnits="userSpaceOnUse">
-                      <feOffset dx="1" dy="5" input="SourceAlpha"/>
-                      <feGaussianBlur stdDeviation="7" result="blur"/>
-                      <feFlood flood-color="#848181" flood-opacity="0.502"/>
-                      <feComposite operator="in" in2="blur"/>
-                      <feComposite in="SourceGraphic"/>
-                    </filter>
-                    <filter id="faqs-rectangle_18_Copy_2" x="98" y="165" width="265" height="256" filterUnits="userSpaceOnUse">
-                      <feOffset dx="1" dy="5" input="SourceAlpha"/>
-                      <feGaussianBlur stdDeviation="7" result="blur-2"/>
-                      <feFlood flood-color="#848181" flood-opacity="0.502"/>
-                      <feComposite operator="in" in2="blur-2"/>
-                      <feComposite in="SourceGraphic"/>
-                    </filter>
-                  </defs>
-                  <rect id="faqs-rectangle_18" data-name="faqs-rectangle 18" class="faqs-svg-3" width="238" height="62" rx="25" transform="translate(159 32)"/>
-                  <g id="vipin_copy_3" data-name="vipin copy 3" transform="translate(379)">
-                    <circle id="Mask-3" data-name="Mask" class="faqs-svg-1" cx="32" cy="32" r="32"/>
-                    <g id="vipin_copy_3-2" data-name="vipin copy 3" class="faqs-svg-4">
-                      <rect id="Group-18-image" class="faqs-svg-5" width="64" height="73" transform="translate(0 -2)"/>
-                    </g>
-                  </g>
-                  <g id="vipin_copy_4" data-name="vipin copy 4" transform="translate(0 93)">
-                    <circle id="Mask-4" data-name="Mask" class="faqs-svg-2" cx="22" cy="22" r="22"/>
-                    <g id="vipin_copy_4-2" data-name="vipin copy 4" class="faqs-svg-6">
-                      <g id="bot_icon_copy_2" data-name="bot icon copy 2" transform="translate(10.313 7.563)">
-                        <g id="Group">
-                          <path id="Shape" class="faqs-svg-7" d="M2.506,25.287h0a14.322,14.322,0,0,1-1.458-.067c.007,0,.722-.155,1.545-1.9a3.68,3.68,0,0,0,.095-3.136c-.087-.139-.174-.285-.257-.434A6.2,6.2,0,0,1,2.46,9.878a10.334,10.334,0,0,1,8.461-5.241V2.9a1.53,1.53,0,0,1-.883-1.375,1.545,1.545,0,0,1,3.089,0,1.52,1.52,0,0,1-.937,1.4V4.64a10.377,10.377,0,0,1,8.289,5.037,6.2,6.2,0,0,1,.029,10.273,10.351,10.351,0,0,1-3.724,3.7,10.53,10.53,0,0,1-9.206.642A11.7,11.7,0,0,1,2.506,25.287ZM6.974,9.7a5.1,5.1,0,0,0,0,10.2h9.273a5.1,5.1,0,0,0,0-10.2Z" transform="translate(0.103 0.018)"/>
-                          <ellipse id="Oval" class="faqs-svg-7" cx="1.372" cy="1.352" rx="1.372" ry="1.352" transform="translate(5.591 13.416)"/>
-                          <ellipse id="Oval-2" data-name="Oval" class="faqs-svg-7" cx="1.372" cy="1.352" rx="1.372" ry="1.352" transform="translate(15.147 13.416)"/>
-                        </g>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 588 537" class="img-responsive faqs-svg">
+                <defs>
+                  <style>
+                    .faqs-svg-1{fill:#d8d8d8}.faqs-svg-6{fill:#6353d8}.faqs-svg-5{fill:#fff}.faqs-svg-6{font-size:16px;font-family:Roboto-Regular,Roboto;letter-spacing:.044em}.faqs-svg-8{fill:none;stroke-miterlimit:10;stroke:#e2e2e2;stroke-linecap:square}.faqs-svg-11{fill:#fdd8c2}.faqs-svg-12{fill:#ee9d70}.faqs-svg-13{fill:#8f4e21}.faqs-svg-16{fill:#bc6e38}.faqs-svg-17{fill:#010101}.faqs-svg-18{opacity:.4}
+                  </style>
+                  <clipPath id="faqs-svg-slip-path">
+                    <ellipse id="Mask" cx="42.474" cy="42.451" class="faqs-svg-1" rx="42.474" ry="42.451"/>
+                  </clipPath>
+                  <filter id="faqs-svg-rectangle" width="337.991" height="325.889" x="136.623" y="211.111" filterUnits="userSpaceOnUse">
+                    <feOffset dx="1" dy="5"/>
+                    <feGaussianBlur result="blur" stdDeviation="7"/>
+                    <feFlood flood-color="#848181" flood-opacity=".502"/>
+                    <feComposite in2="blur" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                  <filter id="bot-integration-svg-rectangle" width="318.081" height="123.86" x="56.984" y="107.719" filterUnits="userSpaceOnUse">
+                    <feOffset dx="1" dy="5"/>
+                    <feGaussianBlur result="blur-2" stdDeviation="7"/>
+                    <feFlood flood-color="#848181" flood-opacity=".502"/>
+                    <feComposite in2="blur-2" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                </defs>
+                <g id="Group_10" data-name="Group 10" transform="translate(-71 -40)">
+                  <g id="Group_9" data-name="Group 9">
+                    <rect id="Rectangle_18" width="315.901" height="64" fill="#6353d8" data-name="Rectangle 18" rx="25" transform="translate(282.043 82.451)"/>
+                    <g id="vipin_copy_3" data-name="vipin copy 3" transform="translate(574.052 40)">
+                      <ellipse id="Mask-2" cx="42.474" cy="42.451" class="faqs-svg-1" data-name="Mask" rx="42.474" ry="42.451"/>
+                      <g id="vipin_copy_3-2" clip-path="url(#faqs-svg-slip-path)" data-name="vipin copy 3">
+                        <image id="Group-18-image" width="96" height="109" transform="translate(-5.052)" xlink:href="/assets/resources/images/avatars/Group-18-image.jpg"/>
                       </g>
                     </g>
+                    <text id="How_to_set_up_FAQs_f" fill="#fff" data-name="How to set up FAQs f" font-family="Roboto-Regular,Roboto" font-size="16" letter-spacing=".044em" transform="translate(308.589 94.043)">
+                      <tspan x="0" y="15">How to set up FAQs from the </tspan><tspan x="0" y="38">dashboard?</tspan>
+                    </text>
                   </g>
-                  <g class="faqs-svg-14" transform="matrix(1, 0, 0, 1, 0, 0)">
-                    <rect id="faqs-rectangle_18_Copy-2" data-name="faqs-rectangle 18 Copy" class="faqs-svg-7" width="208" height="70" rx="25" transform="translate(58 91)"/>
+                  <g id="Group_7" data-name="Group 7">
+                    <g filter="url(#faqs-svg-rectangle)" transform="translate(71 40)">
+                      <rect id="faqs-svg-rectangle" width="295.991" height="283.889" class="faqs-svg-5" data-name="Rectangle 18 Copy 2" rx="15" transform="translate(156.62 227.11)"/>
+                    </g>
+                    <text id="Setup_FAQs_from_the" class="faqs-svg-6" data-name="Setup FAQs from the" transform="translate(250.187 284.03)">
+                      <tspan x="0" y="15">Setup FAQs from the </tspan><tspan x="0" y="37">Kommunicate dashboard</tspan>
+                    </text>
+                    <text id="How_to_integrate_wit" class="faqs-svg-6" data-name="How to integrate wit" transform="translate(250.187 358.319)">
+                      <tspan x="0" y="15">How to integrate with Helpdocs </tspan><tspan x="0" y="37">to integrate FAQs?</tspan>
+                    </text>
+                    <text id="How_do_I_edit_a_FAQ" class="faqs-svg-6" data-name="How do I edit a FAQ" transform="translate(250.187 428.628)">
+                      <tspan x="0" y="15">How do I edit a FAQ which has </tspan><tspan x="0" y="37">been published once?</tspan>
+                    </text>
+                    <text id="I_have_a_different_i" class="faqs-svg-6" data-name="I have a different i" transform="translate(284.698 505.57)">
+                      <tspan x="0" y="15">I have a different issue</tspan>
+                    </text>
+                    <g id="quetion_help_" data-name="quetion help" transform="translate(255.497 508.549)">
+                      <g id="Group" transform="translate(0 .122)">
+                        <path id="Shape" fill="none" stroke="#6353d8" stroke-miterlimit="10" stroke-width=".5" d="M8.436 16.967A8.467 8.467 0 1 1 16.872 8.5a8.461 8.461 0 0 1-8.436 8.467zm0-4.186a.7665.7665 0 1 0 0 1.533.767.767 0 0 0 .767-.766.777.777 0 0 0-.767-.767zm-.012-9.269a3.241 3.241 0 0 1 2.138.826 2.036 2.036 0 0 1 .725 1.856V6.2a2.58 2.58 0 0 1-1.513 2.153l-.236.141a2.959 2.959 0 0 0-1.12 1.049 3.787 3.787 0 0 0-.354 2.2.382.382 0 0 0 .383.391.384.384 0 0 0 .379-.45 3.026 3.026 0 0 1 .257-1.755 2.256 2.256 0 0 1 .857-.778l.1-.06a3.641 3.641 0 0 0 2.01-2.759V6.32a2.811 2.811 0 0 0-.965-2.545 3.984 3.984 0 0 0-2.66-1.03 3.582 3.582 0 0 0-3.638 3.516.3835.3835 0 1 0 .767 0 2.815 2.815 0 0 1 2.87-2.749z"/>
+                      </g>
+                    </g>
+                    <path id="Line" d="M0 1.327h295.54" class="faqs-svg-8" transform="translate(228.287 344.716)"/>
+                    <path id="Line_Copy" d="M0 1.327h295.54" class="faqs-svg-8" data-name="Line Copy" transform="translate(228.287 415.025)"/>
+                    <path id="Line_Copy_2" d="M0 1.327h295.54" class="faqs-svg-8" data-name="Line Copy 2" transform="translate(228.287 485.334)"/>
                   </g>
-                  <g class="faqs-svg-13" transform="matrix(1, 0, 0, 1, 0, 0)">
-                    <rect id="faqs-rectangle_18_Copy_2-2" data-name="faqs-rectangle 18 Copy 2" class="faqs-svg-7" width="223" height="214" rx="15" transform="translate(118 181)"/>
-                  </g>
-                  <text id="How_to_set_up_FAQs_f" data-name="How to set up FAQs f" class="faqs-svg-8" transform="translate(179 43)"><tspan x="0" y="13">How to set up FAQs from</tspan><tspan x="0" y="31">the dashboard?</tspan></text>
-                  <text id="Hi_Here_are_few_art" data-name="Hi! Here are few art" class="faqs-svg-9" transform="translate(72 107)"><tspan x="0" y="13">Hi! Here are few articles</tspan><tspan x="0" y="31">that might help…</tspan></text>
-                  <text id="Setup_FAQs_from_the" data-name="Setup FAQs from the" class="faqs-svg-10" transform="translate(135 193)"><tspan x="0" y="13">Setup FAQs from the </tspan><tspan x="0" y="31">Kommunicate dashboard</tspan></text>
-                  <text id="How_to_integrate_wit" data-name="How to integrate wit" class="faqs-svg-10" transform="translate(135 249)"><tspan x="0" y="13">How to integrate with</tspan><tspan x="0" y="31">Helpdocs to integrate FAQs?</tspan></text>
-                  <text id="How_do_I_edit_a_FAQ" data-name="How do I edit a FAQ" class="faqs-svg-10" transform="translate(135 302)"><tspan x="0" y="13">How do I edit a FAQ which</tspan><tspan x="0" y="31">has been published once?</tspan></text>
-                  <text id="I_have_a_different_i" data-name="I have a different i" class="faqs-svg-10" transform="translate(161 360)"><tspan x="0" y="13">I have a different issue</tspan></text>
-                  <g id="quetion_help_" data-name="quetion help " transform="translate(139 363)">
-                    <g id="Group-2" data-name="Group" transform="translate(0 0.092)">
-                      <path id="Shape-2" data-name="Shape" class="faqs-svg-11" d="M6.356,12.766a6.383,6.383,0,1,1,6.355-6.383A6.377,6.377,0,0,1,6.356,12.766Zm0-3.155a.578.578,0,1,0,0,1.156.578.578,0,0,0,.578-.578A.586.586,0,0,0,6.356,9.61ZM6.347,2.623a2.448,2.448,0,0,1,1.611.623,1.534,1.534,0,0,1,.546,1.4,1.945,1.945,0,0,1-1.14,1.627l-.02.012-.157.094a2.22,2.22,0,0,0-.844.789,2.861,2.861,0,0,0-.266,1.657.289.289,0,0,0,.289.294.284.284,0,0,0,.171-.056.291.291,0,0,0,.113-.283,2.278,2.278,0,0,1,.194-1.323,1.667,1.667,0,0,1,.646-.587l.072-.044A2.745,2.745,0,0,0,9.077,4.744,2.124,2.124,0,0,0,8.35,2.822a3,3,0,0,0-2-.777,2.7,2.7,0,0,0-2.74,2.65.289.289,0,1,0,.578,0A2.121,2.121,0,0,1,6.347,2.623Z" transform="translate(0 0.025)"/>
+                  <g id="Group_8" data-name="Group 8">
+                    <g filter="url(#bot-integration-svg-rectangle)" transform="translate(71 40)">
+                      <rect id="bot-integration-svg-rectangle-2" width="276.081" height="81.86" class="faqs-svg-5" data-name="Rectangle 18 Copy" rx="25" transform="translate(76.98 123.72)"/>
+                    </g>
+                    <text id="Hi_Here_are_few_art" fill="#646060" data-name="Hi! Here are few art" font-family="Roboto-Regular,Roboto" font-size="16" letter-spacing=".044em" transform="translate(166.567 182.944)">
+                      <tspan x="0" y="15">Hi! Here are few articles that </tspan><tspan x="0" y="38">might help…</tspan>
+                    </text>
+                    <g id="Liz" transform="translate(71 150)">
+                      <circle id="Oval" cx="29.5" cy="29.5" r="29.5" fill="#98d0dd" transform="translate(0 16)"/>
+                      <path id="Shape-2" d="M1.568.408a5.255 5.255 0 0 1 1.664-.4c1.056-.093 2.689.835 4 1.669 1.312.8 10.691 7.419 12.644 9.212s4.737 2.782 4 4.791c-.768 2.009-2.657 1.422-4.865.247L4.929 7.456l-1.952-.432L0 3.067z" class="faqs-svg-11" data-name="Shape" transform="translate(32 41)"/>
+                      <path id="Shape-3" d="M1.489 18.629A88 88 0 0 0 .514 6.381C.425 5.509-.4.959.247.959c.739 0 1.3 4.394 1.538 5.173.089.343.089.592.177.966.089-1.371.177-2.742.177-4.051A6.662 6.662 0 0 1 2.377.491c.414-.686.887-.717.887.312.887-1.621 1.153 1.714 1.212 2.337.089 1.278.089 2.68.089 3.958-.089-1.215.828-3.927 1.39-3.615a31.308 31.308 0 0 1-.473 5.267c-.237 1.621-.177 4.55-1.035 4.8A59.576 59.576 0 0 0 5.1 20" class="faqs-svg-11" data-name="Shape" transform="translate(50 24)"/>
+                      <path id="Shape-4" d="M0 6v-.95C0 4.485.071 3.743.143 3 .179 2.257.214 1.515.286.95A5.935 5.935 0 0 0 .357.267 1.536 1.536 0 0 0 .393 0a1.536 1.536 0 0 0 .036.267c0 .178.036.386.036.683C.5 1.515.5 2.257.5 3.03.429 3.772.321 4.515.214 5.079c-.036.267-.107.5-.143.683A1.893 1.893 0 0 1 0 6z" class="faqs-svg-12" data-name="Shape" transform="translate(54 25)"/>
+                      <path id="Shape-5" d="M.188.055c-.809.964 1.169 6.566 2.578 6.9 2.488.512.569-3.253-.18-3.825-.569-.512-.569 0-1.169-.9A7.49 7.49 0 0 1 .668.476c0-.03-.3-.662-.48-.421z" class="faqs-svg-11" data-name="Shape" transform="translate(49 30)"/>
+                      <path id="Shape-6" d="M2.966 4a.876.876 0 0 1-.066-.214c-.034-.061-.034-.153-.069-.244a1.971 1.971 0 0 0-.138-.305 2.822 2.822 0 0 0-.176-.337l-.207-.366c-.069-.122-.138-.244-.241-.4a2.753 2.753 0 0 0-.276-.4c-.1-.122-.172-.244-.276-.366-.034-.061-.1-.122-.138-.183a.552.552 0 0 1-.138-.153A2.391 2.391 0 0 0 .9.794C.793.733.655.7.517.641A.67.67 0 0 1 .241.4 1.71 1.71 0 0 1 .1.183L0 0l.172.153a.841.841 0 0 0 .173.183 1.912 1.912 0 0 0 .276.183 3.962 3.962 0 0 0 .414.092 1.252 1.252 0 0 1 .448.244 1.88 1.88 0 0 1 .379.336 4.5 4.5 0 0 1 .31.4c.1.122.172.275.276.4a1.7 1.7 0 0 1 .207.427c.069.122.1.275.172.4a1.462 1.462 0 0 1 .1.366c.034.122.034.214.069.336v.244a1.232 1.232 0 0 0-.03.236z" class="faqs-svg-12" data-name="Shape" transform="translate(51 33)"/>
+                      <path id="Shape-7" d="M0 .474A4.115 4.115 0 0 1 .459.263Q.662.184.946.105c.081 0 .189-.053.27-.053A.6.6 0 0 0 1.514 0a.6.6 0 0 1 .3.053.676.676 0 0 1 .3.105A1.537 1.537 0 0 1 2.6.474a.553.553 0 0 1 .162.211c.054.053.081.105.135.158A1.2 1.2 0 0 1 3 1a.278.278 0 0 1-.135-.053c-.027 0-.081-.053-.135-.053S2.622.789 2.541.789 2.405.737 2.324.684a.411.411 0 0 0-.243-.052c-.081 0-.162-.053-.27-.053h-.27a7.023 7.023 0 0 1-1.054 0C.189.526 0 .474 0 .474z" class="faqs-svg-12" data-name="Shape" transform="translate(52 31)"/>
+                      <path id="Shape-8" d="M28.872 30c-2.22-1.939-5.353-2.6-9.662-1.251s-7.149.281-9.6.188a41.738 41.738 0 0 0-7.573.657c-4.309-2.658-.49-19.013-.261-20.357C2.04 7.892 17.056-.676 19.635.043s5.125 0 6.039 1.063-.261 12.227 2.35 15.573c2.546 3.377 4.766 9.381.848 13.321z" class="faqs-svg-13" data-name="Shape" transform="translate(13 4)"/>
+                      <path id="Shape-9" d="M3.315 0C3.738 4.751 4.908 11.767 0 14.568 1.853 21.521 13.392 23 13.392 23s2.405-8.023 1.333-9.628c-3.933-.818-3.738-4.657-3.933-9.943C9.914 1.447 3.315 0 3.315 0z" class="faqs-svg-11" data-name="Shape" transform="translate(18 27)"/>
+                      <g id="Group-2" data-name="Group" opacity=".5" transform="translate(21 26)">
+                        <path id="Shape-10" fill="#e89361" d="M8.567 10.6C7.8 8.861 7.8 6.356 7.7 3.331 6.767 1.436 0 0 0 0a43.49 43.49 0 0 1 .4 7.058A18.449 18.449 0 0 0 8.567 10.6z" data-name="Shape" transform="translate(.2 .183)"/>
+                      </g>
+                      <path id="Shape-11" d="M19.235 5.717c-.44 5.618-.346 9.027.629 13.383.44 1.957.189 4.829-6.668 8.838C12.158 28.442 1.746 25.98.362 17.4-1.053 8.558 1.778 1.487 7.125.414 12.472-.627 18.763 0 19.235 5.717z" class="faqs-svg-11" data-name="Shape" transform="translate(18 5)"/>
+                      <path id="Shape-12" d="M11.319 10.717c.247 3.51 5.594 11.866.464 15.283-.34-2.112-1.391-4.162-3.863-3.168-2.441.994-5.254-.124-6.057-1.46-3.616-6.337-1.236-10.779.989-13.7S5.819 0 5.819 0l4.667 5.436" class="faqs-svg-16" data-name="Shape" transform="translate(7 12)"/>
+                      <path id="Shape-13" d="M3.749 1.031A1.99 1.99 0 0 0 .187 2.8C1.182 5.229 3.652 5.524 5 4.283a8.839 8.839 0 0 0-1.251-3.252z" class="faqs-svg-11" data-name="Shape" transform="translate(14 18)"/>
+                      <path id="Shape-14" d="M5.881 3c-.126.03-.284-.355-.567-.888a2.906 2.906 0 0 0-.662-.74A2.534 2.534 0 0 0 3.516.985 18.229 18.229 0 0 1 .869.807 1.189 1.189 0 0 1 .112.334C-.014.156-.014.037.018.008.112-.051.4.245.995.245a7.8 7.8 0 0 0 1.134-.03 8.574 8.574 0 0 1 1.513 0 2.643 2.643 0 0 1 1.514.622A2.386 2.386 0 0 1 5.881 1.9c.189.684.126 1.1 0 1.1z" class="faqs-svg-17" data-name="Shape" transform="translate(20 18)"/>
+                      <path id="Shape-15" d="M.543 0A1.878 1.878 0 0 0 0 1.294 1.613 1.613 0 0 0 1.5 3 1.613 1.613 0 0 0 3 1.294 1.73 1.73 0 0 0 2.489.029C1.819 0 1.181 0 .543 0z" class="faqs-svg-17" data-name="Shape" transform="translate(22 18)"/>
+                      <path id="Shape-16" d="M0 5.993c-.034-.061.41-.215 1.025-.553.273-.154.683-.43.547-.707a1.1 1.1 0 0 0-.444-.43c-.1-.061-.2-.154-.342-.246a1.106 1.106 0 0 1-.273-.369 2.664 2.664 0 0 1-.17-1.505 8.115 8.115 0 0 1 .24-1.167C.753.37.924-.029.992 0c.068 0 0 .43-.1 1.075-.034.338-.1.707-.137 1.137A2.35 2.35 0 0 0 .924 3.5 1.328 1.328 0 0 0 1.4 4a1.72 1.72 0 0 1 .547.614.477.477 0 0 1 0 .43.568.568 0 0 1-.239.307 2.64 2.64 0 0 1-.547.338A2.994 2.994 0 0 1 0 5.993z" class="faqs-svg-12" data-name="Shape" transform="translate(31 19)"/>
+                      <path id="Shape-17" d="M0 2.314A1.084 1.084 0 0 0 .879 3C1.485 3 2 2.257 2 1.343A2.074 2.074 0 0 0 1.545 0 3.167 3.167 0 0 0 0 2.314z" class="faqs-svg-17" data-name="Shape" transform="translate(33 18)"/>
+                      <path id="Shape-18" d="M.007.8C-.029.776.078.583.437.362A3.349 3.349 0 0 1 2.087 0a2.588 2.588 0 0 1 1.579.5c.323.249.359.47.323.5-.072.028-.215-.138-.538-.3a3.027 3.027 0 0 0-1.4-.331A3.471 3.471 0 0 0 .616.583C.258.693.078.831.007.8z" class="faqs-svg-13" data-name="Shape" transform="translate(34 14)"/>
+                      <path id="Shape-19" d="M.138 3C.049 3-.04 2.662.019 2.113a2.874 2.874 0 0 1 .266-.976 1.645 1.645 0 0 1 .977-.915A2.933 2.933 0 0 1 2.505.161a4.521 4.521 0 0 0 .8.092c.355 0 .562-.305.651-.244q.089.046 0 .275A1 1 0 0 1 3.423.8c-.592.214-1.361 0-1.894.183-.5.183-.77.824-.977 1.281-.178.429-.296.765-.414.736z" class="faqs-svg-17" data-name="Shape" transform="translate(33 18)"/>
+                      <path id="Shape-20" d="M20.214 6.142c-.783 4.038-1.348 8.107-5.609 9.4-4.262 1.325-8.461-.063-8.273.883S7.24 20.748 6.3 21c-1.254-1.483-1.254-1.861-1.88-2.524-1-1.1-4.481-.946-4.419-3.975s1.254-9.18 3.667-9.653 5.2-.789 7.521-3.281S20.057-.8 22 4.533c-.846-.473-1.724 1.01-1.786 1.609z" class="faqs-svg-16" data-name="Shape" transform="translate(12)"/>
+                      <path id="Shape-21" d="M0 2.476C2.772-2.191 11.38.444 10.826 4.571s-3.815 7.841-.261 11.81 6.1 9.714 3.13 13.238-2.217 3.714-1.663 4.381c-4.011-1.429-4.076-3.3-1.728-8.191 2.348-4.921-4.435-10.064-4.369-15.524C6.032 4.54 3.978 2.793 0 2.476z" class="faqs-svg-16" data-name="Shape" transform="translate(32 4)"/>
+                      <path id="Shape-22" d="M5 .947c-.03.064-.3-.129-.709-.29A4.059 4.059 0 0 0 2.544.465C1.155.593.061 1.108 0 .98A4.119 4.119 0 0 1 2.515.014a3.694 3.694 0 0 1 1.891.322c.414.322.621.579.594.611z" class="faqs-svg-13" data-name="Shape" transform="translate(22 14)"/>
+                      <path id="Shape-23" d="M4.871 3.91A16.515 16.515 0 0 0 4.626 11a9.923 9.923 0 0 1-.674-3.357C4.014 2.875 2.666.9 0 .208 2.849-.45 5.637.365 4.871 3.91z" class="faqs-svg-13" data-name="Shape" transform="translate(34 6)"/>
+                      <g id="Group-3" data-name="Group" transform="translate(20 15)">
+                        <g id="Group-4" class="faqs-svg-18" data-name="Group" transform="translate(11.29 .321)">
+                          <ellipse id="Oval-2" cx="3.968" cy="3.954" class="faqs-svg-5" data-name="Oval" rx="3.968" ry="3.954" transform="translate(.29 .257)"/>
+                        </g>
+                        <g id="Group-5" class="faqs-svg-18" data-name="Group" transform="translate(0 .321)">
+                          <ellipse id="Oval-3" cx="4.226" cy="4.211" class="faqs-svg-5" data-name="Oval" rx="4.226" ry="4.211" transform="translate(.29)"/>
+                        </g>
+                        <g id="Group-6" data-name="Group">
+                          <path id="Shape-24" d="M4.129 8.229A4.127 4.127 0 0 1 0 4.114 4.109 4.109 0 0 1 4.129 0a4.114 4.114 0 1 1 0 8.229zm0-7.907a3.793 3.793 0 1 0 3.806 3.792A3.8 3.8 0 0 0 4.129.321z" class="faqs-svg-17" data-name="Shape" transform="translate(11.419 .418)"/>
+                          <path id="Shape-25" d="M4.388 8.743a4.371 4.371 0 1 1 4.386-4.372 4.384 4.384 0 0 1-4.386 4.372zm0-8.421a4.05 4.05 0 1 0 4.064 4.05A4.062 4.062 0 0 0 4.388.321z" class="faqs-svg-17" data-name="Shape" transform="translate(.129 .161)"/>
+                          <path id="Shape-26" d="M.194.922L0 .664A3.463 3.463 0 0 1 3.71.439L3.516.7A3.11 3.11 0 0 0 .194.922z" class="faqs-svg-17" data-name="Shape" transform="translate(8.387 2.228)"/>
+                        </g>
+                      </g>
+                      <path id="Shape-27" d="M4.375 17.428c1.205-1.862.469-12.15-.536-16-1-3.819-3.08 1.231-3.08 1.231a33.844 33.844 0 0 0-.235 4.67c0 2.556-.871 6.943-.368 8.71-.033-.031 3.013 3.251 4.219 1.389z" class="faqs-svg-11" data-name="Shape" transform="translate(51 39)"/>
+                      <path id="Shape-28" fill="#e76a48" d="M0 0c3.282 2.43 4.823 2.087 5.325 1.8A12.358 12.358 0 0 0 7 .159C5.66.687 1.574.528 0 0z" data-name="Shape" transform="translate(26 27)"/>
+                      <path id="Shape-29" d="M3.695.233S1.06-.407 0 .435A29.408 29.408 0 0 0 8 7C6.618 4.677 4.98 1.31 3.695.233z" class="faqs-svg-11" data-name="Shape" transform="translate(8 65)"/>
+                      <path id="Shape-30" fill="#443662" d="M2.313 0C1.531 1.183.75 4.8 0 9.785A28.575 28.575 0 0 0 8.125 11 28.209 28.209 0 0 0 18 9.209C17.406 5.116 16.094.064 16.094.064A45.468 45.468 0 0 1 2.313 0z" data-name="Shape" transform="translate(21 64)"/>
+                      <path id="Shape-31" d="M10.5 7.9l1.32-1.477.18-5.107L9.3 0a5.2 5.2 0 0 0-1.566.578c-.89.514-1.657 2.247-2.271 3.659C4.88 5.681 1.1 16.6.522 19.259A22.13 22.13 0 0 0 0 22.694 31.483 31.483 0 0 0 3.161 26a5.476 5.476 0 0 0 .829-2.921z" class="faqs-svg-11" data-name="Shape" transform="translate(7 42)"/>
+                      <path id="Shape-32" fill="#fbb03b" d="M3.184 1.286a5.71 5.71 0 0 1 1.824.659c2.04.471 8.378 4.486 10.634 5.083.866-.534 1.639-3.828 1.052-7.028 7.635 5.02 6.986 15.938 5.006 23.279a30.863 30.863 0 0 1-13.633-.063S2.782 12.518 2.72 8.753A11.966 11.966 0 0 0 0 1.945a27.608 27.608 0 0 1 3.184-.659z" data-name="Shape" transform="translate(15 41)"/>
                     </g>
                   </g>
-                  <path id="Line" class="faqs-svg-12" d="M0,1H222.66" transform="translate(118.5 239.5)"/>
-                  <path id="Line_Copy" data-name="Line Copy" class="faqs-svg-12" d="M0,1H222.66" transform="translate(118.5 292.5)"/>
-                  <path id="Line_Copy_2" data-name="Line Copy 2" class="faqs-svg-12" d="M0,1H222.66" transform="translate(118.5 345.5)"/>
-                </svg>
+                </g>
+              </svg>
              </div>
             </li>
             <li>
              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 571.02 423" class="img-responsive integrations-svg">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 815.588 561.075" class="img-responsive integrations-svg">
                   <defs>
-                      <style>
-                      .integrations-svg-1,.integrations-svg-12,.integrations-svg-20,.integrations-svg-21{fill:#d8d8d8}.integrations-svg-2{fill:#336e83}.integrations-svg-3{fill:#0288d1}.integrations-svg-18,.integrations-svg-5{fill:#fff}.integrations-svg-6{fill:#e8e8e8}.integrations-svg-12{opacity:.47}.integrations-svg-13{fill:#5c5aa7}.integrations-svg-14{fill:#f6f2f2}.integrations-svg-15{fill:#ebebeb}.integrations-svg-17{fill:#bcbcbc;opacity:.448}.integrations-svg-18{opacity:.204}.integrations-svg-20{opacity:.6}.integrations-svg-21{opacity:.519}.integrations-svg-32,.integrations-svg-55{fill:none;stroke-linecap:square;stroke-miterlimit:10}.integrations-svg-26{opacity:.828}.integrations-svg-32,.integrations-svg-55{stroke:#cecece}.integrations-svg-32{opacity:.304}.integrations-svg-33{opacity:.241}.integrations-svg-34{fill:#bab8b8}.integrations-svg-51{font-family:Roboto-Regular,Roboto}.integrations-svg-45{fill:#03363d}.integrations-svg-51{fill:#5a5858;letter-spacing:.037em;font-size:11px}.integrations-svg-60{fill:#767474}
-                      </style>
-                      <filter id="Rectangle_12_Copy" width="538" height="373" x="0" y="32" filterUnits="userSpaceOnUse">
+                    <style>
+                      .integrations-svg-2,.integrations-svg-7{fill:#fff}.integrations-svg-15{fill:#5c5aa7}.integrations-svg-7{opacity:.204}.integrations-svg-17{fill:#4a4a4a;font-size:14px}.integrations-svg-15,.integrations-svg-17,.integrations-svg-18{font-family:SegoeUI,Segoe UI}.integrations-svg-18{fill:#9b9b9b}.integrations-svg-15,.integrations-svg-18{font-size:10px}.integrations-svg-14,.integrations-svg-15,.integrations-svg-18{letter-spacing:.023em}.integrations-svg-16{fill:#03363d}.integrations-svg-17{letter-spacing:.043em}.integrations-svg-21{fill:#499aff}
+                    </style>
+                    <filter id="integrations-svg-rectangle12_Copy" width="739" height="507" x="0" y="0" filterUnits="userSpaceOnUse">
                       <feOffset dx="1" dy="5"/>
                       <feGaussianBlur result="blur" stdDeviation="7.5"/>
                       <feFlood flood-opacity=".502"/>
                       <feComposite in2="blur" operator="in"/>
                       <feComposite in="SourceGraphic"/>
-                      </filter>
-                      <clipPath id="clip-path">
-                      <circle id="Mask" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-1"/>
-                      </clipPath>
-                      <clipPath id="clip-path-5">
-                      <circle id="Mask-5" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-2" data-name="Mask"/>
-                      </clipPath>
-                      <filter id="Rectangle_3" width="322" height="144" x="104" y="279" filterUnits="userSpaceOnUse">
+                    </filter>
+                    <filter id="integrations-svg-rectangle6" width="260.588" height="240.075" x="36" y="86" filterUnits="userSpaceOnUse">
                       <feOffset dx="1" dy="5"/>
                       <feGaussianBlur result="blur-2" stdDeviation="7.5"/>
-                      <feFlood flood-opacity=".502"/>
+                      <feFlood flood-color="#9b9b9b"/>
                       <feComposite in2="blur-2" operator="in"/>
                       <feComposite in="SourceGraphic"/>
-                      </filter>
-                      <filter id="Rectangle_15" width="236.36" height="302" x="318.112" y="0" filterUnits="userSpaceOnUse">
+                    </filter>
+                    <filter id="integrations-svg-rectangle6-2" width="260.588" height="240.075" x="36" y="321" filterUnits="userSpaceOnUse">
                       <feOffset dx="1" dy="5"/>
                       <feGaussianBlur result="blur-3" stdDeviation="7.5"/>
-                      <feFlood flood-opacity=".502"/>
+                      <feFlood flood-color="#9b9b9b"/>
                       <feComposite in2="blur-3" operator="in"/>
                       <feComposite in="SourceGraphic"/>
-                      </filter>
-                      <clipPath id="clip-path-6">
-                      <ellipse id="Mask-6" cx="9.92" cy="9.925" class="integrations-svg-3" data-name="Mask" rx="9.92" ry="9.925" transform="translate(.17 .51)"/>
-                      </clipPath>
+                    </filter>
+                    <filter id="integrations-svg-rectangle6-3" width="260.588" height="240.075" x="294" y="86" filterUnits="userSpaceOnUse">
+                      <feOffset dx="1" dy="5"/>
+                      <feGaussianBlur result="blur-4" stdDeviation="7.5"/>
+                      <feFlood flood-color="#9b9b9b"/>
+                      <feComposite in2="blur-4" operator="in"/>
+                      <feComposite in="SourceGraphic"/>
+                    </filter>
+                    <filter id="integrations-svg-rectangle6-4" width="260.588" height="240.075" x="555" y="86" filterUnits="userSpaceOnUse">
+                      <feOffset dx="1" dy="5"/>
+                      <feGaussianBlur result="blur-5" stdDeviation="7.5"/>
+                      <feFlood flood-color="#9b9b9b"/>
+                      <feComposite in2="blur-5" operator="in"/>
+                      <feComposite in="SourceGraphic"/>
+                    </filter>
                   </defs>
-                  <g id="Group_9" data-name="Group 9" transform="translate(21.5 17.5)">
-                      <g filter="url(#Rectangle_12_Copy)" transform="translate(-21.5 -17.5)">
-                      <rect id="Rectangle_12_Copy-2" width="493" height="328" fill="#efefef" data-name="Rectangle 12 Copy" rx="3" transform="translate(21.5 49.5)"/>
+                  <g id="Group" transform="translate(21.5 17.5)">
+                    <g filter="url(#integrations-svg-rectangle12_Copy)" transform="translate(-21.5 -17.5)">
+                      <rect id="integrations-svg-rectangle12_Copy-2" width="694" height="462" fill="#efefef" data-name="Rectangle 12 Copy" rx="3" transform="translate(21.5 17.5)"/>
+                    </g>
+                    <path id="integrations-svg-rectangle5" d="M0 0h684v415H0z" class="integrations-svg-2" data-name="Rectangle 5" transform="translate(3 39)"/>
+                    <circle id="integrations-svg-ovalCopy_5" cx="7.5" cy="7.5" r="7.5" fill="#ee5f5c" data-name="Oval 5 Copy 5" transform="translate(8 13)"/>
+                    <circle id="integrations-svg-ovalCopy_4" cx="7.5" cy="7.5" r="7.5" fill="#f8bc3f" data-name="Oval 5 Copy 4" transform="translate(31 13)"/>
+                    <circle id="integrations-svg-ovalCopy_3" cx="7.5" cy="7.5" r="7.5" fill="#61ca4c" data-name="Oval 5 Copy 3" transform="translate(55 13)"/>
+                    <g id="Integrations" transform="translate(4 39)">
+                      <path id="Navigation_bar" fill="#5c5aa7" d="M0 0h41.581v415H0z" data-name="Navigation bar"/>
+                      <rect id="Rectangle" width="20" height="20" class="integrations-svg-2" rx="10" transform="translate(11 13)"/>
+                      <rect id="integrations-svg-rectangle4" width="13.86" height="13.845" class="integrations-svg-7" data-name="Rectangle 4" rx="2" transform="translate(14.553 57.789)"/>
+                      <rect id="integrations-svg-rectangle4-2" width="13.86" height="13.845" fill="#fff" data-name="Rectangle 4" opacity=".2" rx="2" transform="translate(14.553 86.865)"/>
+                      <rect id="integrations-svg-rectangle4-3" width="13.86" height="13.845" class="integrations-svg-7" data-name="Rectangle 4" rx="2" transform="translate(14.553 115.94)"/>
+                      <rect id="integrations-svg-rectangle4-4" width="13.86" height="13.845" class="integrations-svg-7" data-name="Rectangle 4" rx="2" transform="translate(14.553 145.015)"/>
+                      <rect id="integrations-svg-rectangle4-5" width="13.86" height="13.845" fill="#fff" data-name="Rectangle 4" opacity=".9" rx="2" transform="translate(14.553 174.091)"/>
+                      <rect id="integrations-svg-rectangle4-6" width="13.86" height="13.845" class="integrations-svg-7" data-name="Rectangle 4" rx="2" transform="translate(14.553 202.091)"/>
+                      <rect id="integrations-svg-rectangle4-7" width="13.86" height="13.845" class="integrations-svg-7" data-name="Rectangle 4" rx="2" transform="translate(14.553 380.31)"/>
+                      <path id="integrations-svg-rectangle8" d="M0 0h143.453v21.46H0z" class="integrations-svg-2" data-name="Rectangle 8" transform="translate(275.125 158.861)"/>
+                      <path id="Line_3_Copy" fill="none" stroke="#c7c2c2" stroke-linecap="square" stroke-miterlimit="10" d="M1.04.017v414.26" data-name="Line 3 Copy" transform="translate(40.888 .483)"/>
+                      <path id="Line_3_Copy-2" fill="none" stroke="#f5f5f5" stroke-linecap="square" stroke-miterlimit="10" d="M.612 1.017h641" data-name="Line 3 Copy" transform="translate(40.888 31.483)"/>
+                    </g>
+                    <g id="Group_4" data-name="Group 4" transform="translate(36 86)">
+                      <g filter="url(#integrations-svg-rectangle6)" transform="translate(-57.5 -103.5)">
+                        <rect id="integrations-svg-rectangle6-5" width="215.588" height="195.075" class="integrations-svg-2" data-name="Rectangle 6" rx="5" transform="translate(57.5 103.5)"/>
                       </g>
-                      <path id="Rectangle_5" d="M0 0h486v295H0z" class="integrations-svg-5" data-name="Rectangle 5" transform="translate(2 60)"/>
-                      <rect id="Rectangle" width="23" height="18" class="integrations-svg-6" rx="2" transform="translate(6 65)"/>
-                      <circle id="Oval_5_Copy_5" cx="5.5" cy="5.5" r="5.5" fill="#ee5f5c" data-name="Oval 5 Copy 5" transform="translate(6 41)"/>
-                      <circle id="Oval_5_Copy_4" cx="5.5" cy="5.5" r="5.5" fill="#f8bc3f" data-name="Oval 5 Copy 4" transform="translate(22 41)"/>
-                      <circle id="Oval_5_Copy_3" cx="5.5" cy="5.5" r="5.5" fill="#61ca4c" data-name="Oval 5 Copy 3" transform="translate(39 41)"/>
-                      <g id="Integrations" transform="translate(3 86)">
-                      <path id="Main_rectangle" fill="#f9f9f9" d="M0 0h101.927v267.374H0z" data-name="Main rectangle" transform="translate(29.544 1)"/>
-                      <path id="Rectangle_2_Copy" fill="#f9f9f9" d="M0 0h124.085v269.416H0z" data-name="Rectangle 2 Copy" opacity=".433" transform="translate(361.915 .927)"/>
-                      <path id="Rectangle_16_Copy" d="M0 0h110.298v4.924H0z" class="integrations-svg-12" data-name="Rectangle 16 Copy" transform="translate(362.407 87.17)"/>
-                      <path id="Rectangle_16_Copy_2" d="M0 0h110.298v4.924H0z" class="integrations-svg-12" data-name="Rectangle 16 Copy 2" transform="translate(362.407 249.663)"/>
-                      <path id="Navigation_bar" d="M0 0h29.544v267.374H0z" class="integrations-svg-13" data-name="Navigation bar" transform="translate(0 1.492)"/>
-                      <circle id="Oval_4" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-14" data-name="Oval 4" transform="translate(73.368 10.356)"/>
-                      <circle id="Oval_4_Copy" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-13" data-name="Oval 4 Copy" transform="translate(46.778 10.356)"/>
-                      <circle id="Oval_4_Copy_2" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-14" data-name="Oval 4 Copy 2" transform="translate(99.957 10.356)"/>
-                      <rect id="Rectangle_7_Copy_4" width="77.307" height="12.802" class="integrations-svg-15" data-name="Rectangle 7 Copy 4" rx="6.401" transform="translate(145.258 163.492)"/>
-                      <rect id="Rectangle_7_Copy" width="57.119" height="8.863" fill="#d8d8d8" data-name="Rectangle 7 Copy" opacity=".7" rx="4.432" transform="translate(34.96 42.362)"/>
-                      <rect id="Rectangle_7_Copy-2" width="46.778" height="3.939" class="integrations-svg-17" data-name="Rectangle 7 Copy" rx="1.97" transform="translate(56.626 63.043)"/>
-                      <rect id="Rectangle_4" width="9.848" height="9.848" class="integrations-svg-18" data-name="Rectangle 4" rx="2" transform="translate(10.34 14.787)"/>
-                      <rect id="Rectangle_4-2" width="9.848" height="9.848" fill="#fff" data-name="Rectangle 4" opacity=".9" rx="2" transform="translate(10.34 35.468)"/>
-                      <rect id="Rectangle_4-3" width="9.848" height="9.848" class="integrations-svg-18" data-name="Rectangle 4" rx="2" transform="translate(10.34 56.149)"/>
-                      <rect id="Rectangle_4-4" width="9.848" height="9.848" class="integrations-svg-18" data-name="Rectangle 4" rx="2" transform="translate(10.34 76.83)"/>
-                      <rect id="Rectangle_4-5" width="9.848" height="9.848" class="integrations-svg-18" data-name="Rectangle 4" rx="2" transform="translate(10.34 97.511)"/>
-                      <rect id="Rectangle_4-6" width="9.848" height="9.848" class="integrations-svg-18" data-name="Rectangle 4" rx="2" transform="translate(10.34 244.191)"/>
-                      <rect id="Rectangle_7_Copy-3" width="69.429" height="2.462" class="integrations-svg-20" data-name="Rectangle 7 Copy" rx="1.231" transform="translate(56.626 73.383)"/>
-                      <rect id="Rectangle_7_Copy-4" width="46.778" height="3.939" class="integrations-svg-17" data-name="Rectangle 7 Copy" rx="1.97" transform="translate(56.626 119.176)"/>
-                      <rect id="Rectangle_7_Copy-5" width="69.429" height="2.462" class="integrations-svg-20" data-name="Rectangle 7 Copy" rx="1.231" transform="translate(56.626 129.024)"/>
-                      <rect id="Rectangle_7_Copy-6" width="46.778" height="3.939" class="integrations-svg-17" data-name="Rectangle 7 Copy" rx="1.97" transform="translate(56.626 147.243)"/>
-                      <rect id="Rectangle_7_Copy-7" width="22.158" height="2.462" class="integrations-svg-20" data-name="Rectangle 7 Copy" rx="1.231" transform="translate(56.626 158.076)"/>
-                      <rect id="Rectangle_7_Copy-8" width="46.778" height="3.939" class="integrations-svg-17" data-name="Rectangle 7 Copy" rx="1.97" transform="translate(56.626 178.264)"/>
-                      <rect id="Rectangle_7_Copy-9" width="54.657" height="2.462" class="integrations-svg-20" data-name="Rectangle 7 Copy" rx="1.231" transform="translate(56.626 187.128)"/>
-                      <rect id="Rectangle_7_Copy-10" width="39.884" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(406.723 49.748)"/>
-                      <rect id="Rectangle_7_Copy-11" width="52.687" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(406.723 58.119)"/>
-                      <rect id="Rectangle_7_Copy-12" width="39.884" height="2.954" class="integrations-svg-6" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(372.255 107.851)"/>
-                      <rect id="Rectangle_7_Copy-13" width="73.86" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(372.255 116.222)"/>
-                      <rect id="Rectangle_7_Copy-14" width="59.088" height="2.954" fill="#e8e8e8" data-name="Rectangle 7 Copy" opacity=".813" rx="1.477" transform="translate(372.255 158.568)"/>
-                      <rect id="Rectangle_7_Copy-15" width="59.088" height="2.954" fill="#d8d8d8" data-name="Rectangle 7 Copy" opacity=".52" rx="1.477" transform="translate(372.255 167.432)"/>
-                      <rect id="Rectangle_7_Copy-16" width="36.438" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(406.723 66.489)"/>
-                      <rect id="Rectangle_7_Copy-17" width="76.322" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(372.748 176.787)"/>
-                      <rect id="Rectangle_7_Copy-18" width="35.945" height="4.924" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="2.462" transform="translate(373.24 196.976)"/>
-                      <rect id="Rectangle_7_Copy-19" width="46.286" height="2.954" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="1.477" transform="translate(372.255 126.07)"/>
-                      <path id="Rectangle_8" d="M0 0h101.927v15.264H0z" class="integrations-svg-5" data-name="Rectangle 8" transform="translate(195.483 86.678)"/>
-                      <path id="Line_3_Copy" fill="none" stroke="#c7c2c2" stroke-linecap="square" stroke-miterlimit="10" d="M.739.246v265.972" data-name="Line 3 Copy" transform="translate(29.052 2.477)"/>
-                      <path id="Rectangle_6_Copy" fill="#65bdde" d="M0 0h101.927v27.574H0z" data-name="Rectangle 6 Copy" transform="translate(29.544 83.723)"/>
-                      <g id="vipin_copy_1" class="integrations-svg-26" data-name="vipin copy 1" transform="translate(36.93 61.565)">
-                          <circle id="Mask-7" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-1" data-name="Mask"/>
-                      </g>
-                      <g id="vipin_copy_3" class="integrations-svg-26" data-name="vipin copy 3" transform="translate(36.93 116.714)">
-                          <circle id="Mask-8" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-1" data-name="Mask"/>
-                      </g>
-                      <g id="vipin_copy_4" class="integrations-svg-26" data-name="vipin copy 4" transform="translate(36.93 145.766)">
-                          <circle id="Mask-9" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-1" data-name="Mask"/>
-                      </g>
-                      <g id="vipin_copy_12" class="integrations-svg-26" data-name="vipin copy 12" transform="translate(36.93 174.818)">
-                          <circle id="Mask-10" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-1" data-name="Mask"/>
-                      </g>
-                      <rect id="Path" width="46.778" height="4.924" fill="#fff" opacity=".8" rx="2.462" transform="translate(56.626 90.125)"/>
-                      <rect id="Path-2" width="56.134" height="3.939" fill="#fff" data-name="Path" opacity=".595" rx="1.97" transform="translate(56.626 100.957)"/>
-                      <g id="vipin_copy_1-3" data-name="vipin copy 1" transform="translate(36.438 88.647)">
-                          <circle id="Mask-11" cx="8.371" cy="8.371" r="8.371" class="integrations-svg-2" data-name="Mask"/>
-                      </g>
-                      <circle id="Oval_3" cx="11.325" cy="11.325" r="11.325" fill="#d8d8d8" data-name="Oval 3" opacity=".631" transform="translate(373.733 47.286)"/>
-                      <path id="Line_2" d="M0 .492h117.191" class="integrations-svg-32" data-name="Line 2" transform="translate(363.392 149.213)"/>
-                      <path id="Line_2_Copy_2" d="M0 .492h117.191" class="integrations-svg-32" data-name="Line 2 Copy 2" transform="translate(360.93 212.733)"/>
-                      <g id="Group_10_Copy_2" class="integrations-svg-33" data-name="Group 10 Copy 2" transform="translate(393.429 221.103)">
-                          <circle id="Oval" cx="7.632" cy="7.632" r="7.632" class="integrations-svg-34" transform="translate(0 .347)"/>
-                      </g>
-                      <g id="Group_11_Copy_2" class="integrations-svg-33" data-name="Group 11 Copy 2" transform="translate(413.617 221.103)">
-                          <circle id="Oval_Copy" cx="7.632" cy="7.632" r="7.632" class="integrations-svg-34" data-name="Oval Copy"/>
-                      </g>
-                      <g id="Group_12_Copy_3" class="integrations-svg-33" data-name="Group 12 Copy 3" transform="translate(372.748 221.103)">
-                          <circle id="Oval_Copy_2" cx="7.632" cy="7.632" r="7.632" class="integrations-svg-34" data-name="Oval Copy 2" transform="translate(.131 .392)"/>
-                      </g>
-                      <rect id="Rectangle_7_Copy-20" width="81.739" height="8.863" class="integrations-svg-21" data-name="Rectangle 7 Copy" rx="4.432" transform="translate(372.748 10.356)"/>
-                      <rect id="Rectangle_7_Copy_16" width="60.073" height="10.833" fill="#d6d5f3" data-name="Rectangle 7 Copy 16" opacity=".63" rx="5.416" transform="translate(220.103 9.863)"/>
-                      <path id="Line_Copy_4" fill="none" stroke="#e8e3e3" stroke-linecap="square" stroke-miterlimit="10" d="M0 .492h207.793" data-name="Line Copy 4" opacity=".563" transform="translate(143.751 102.435)"/>
-                      <rect id="Rectangle_7_Copy-21" width="77.307" height="12.802" class="integrations-svg-15" data-name="Rectangle 7 Copy" rx="6.401" transform="translate(145.258 64.027)"/>
-                      <rect id="Rectangle_7_Copy_2" width="77.307" height="12.802" fill="#b1d0e9" data-name="Rectangle 7 Copy 2" opacity=".549" rx="6.401" transform="translate(279.684 118.684)"/>
-                      <rect id="Rectangle_7_Copy-22" width="91.587" height="6.894" fill="#f8f8f8" data-name="Rectangle 7 Copy" rx="3.447" transform="translate(204.316 99.48)"/>
-                      </g>
-                      <g id="Zendesk" transform="translate(103 279)">
-                      <g filter="url(#Rectangle_3)" transform="translate(-124.5 -296.5)">
-                          <rect id="Rectangle_3-2" width="277" height="99" class="integrations-svg-5" data-name="Rectangle 3" rx="3" transform="translate(125.5 296.5)"/>
-                      </g>
-                      <path id="Rectangle_2_Copy_2" fill="#ece8e8" d="M0 0h278v1H0z" data-name="Rectangle 2 Copy 2" transform="translate(0 37)"/>
-                      <g id="Rectangle_4_Copy_5" fill="#fff" stroke="#5c5aa7" stroke-miterlimit="10" stroke-width="1.5" data-name="Rectangle 4 Copy 5" transform="translate(115 53)">
-                          <rect width="126" height="36" stroke="none" rx="4"/>
-                          <rect width="124.5" height="34.5" x=".75" y=".75" fill="none" rx="3.25"/>
-                      </g>
-                      <g id="Group_2" data-name="Group 2" transform="translate(127 61.969)">
-                          <text id="Zendesk-2" fill="#5c5aa7" data-name="Zendesk" font-family="Roboto-Regular,Roboto" font-size="16" letter-spacing=".026em" transform="translate(35.986 .031)">
-                          <tspan x="0" y="15">Zendesk</tspan>
-                          </text>
-                      </g>
-                      <text id="Forward_to_:" fill="#615f5f" data-name="Forward to :" font-family="Roboto-Regular,Roboto" font-size="14" letter-spacing=".037em" transform="translate(23 63)">
-                          <tspan x="0" y="13">Forward to :</tspan>
+                      <text id="Zendesk" fill="#4a4a4a" font-family="SegoeUI,Segoe UI" font-size="14" letter-spacing=".043em" transform="translate(62.88 81.704)">
+                        <tspan x="17.271" y="15">Zendesk</tspan>
                       </text>
-                      <text id="Reply" fill="#6b6868" font-family="Roboto-Medium,Roboto" font-size="14" font-weight="500" letter-spacing=".037em" transform="translate(18 10)">
-                          <tspan x="0" y="13">Reply</tspan>
+                      <text id="Open_Zendesk_ticket" fill="#9b9b9b" data-name="Open Zendesk ticket" font-family="SegoeUI,Segoe UI" font-size="10" transform="translate(16.682 116.788)">
+                        <tspan x="28.82" y="11" class="integrations-svg-14">Open Zendesk ticket for all </tspan><tspan x="59.463" y="25" class="integrations-svg-14">conversation</tspan><tspan y="25">s</tspan>
                       </text>
-                      <path id="Rectangle_2" d="M0 0h169v2H0z" class="integrations-svg-13" data-name="Rectangle 2" transform="translate(88 36)"/>
-                      <text id="Forward_to_integrati" fill="#6b6868" data-name="Forward to integrati" font-family="Roboto-Medium,Roboto" font-size="14" font-weight="500" letter-spacing=".048em" transform="translate(78 10)">
-                          <tspan x="12.854" y="13">Forward to integrations</tspan>
+                      <text id="SETTINGS" class="integrations-svg-15" transform="translate(16.682 165.557)">
+                        <tspan x="68.627" y="11">SETTINGS</tspan>
                       </text>
-                      <g id="Group_2-2" data-name="Group 2" transform="translate(35.834 11.29)">
-                          <path id="Path_12" d="M165.772 93.22v10.9h-9.032z" class="integrations-svg-45" data-name="Path 12" transform="translate(-62.384 -36.596)"/>
-                          <path id="Path_13" d="M165.772 52.71a4.516 4.516 0 1 1-9.032 0z" class="integrations-svg-45" data-name="Path 13" transform="translate(-62.384)"/>
-                          <path id="Path_14" d="M265.62 163.856a4.516 4.516 0 1 1 9.032 0z" class="integrations-svg-45" data-name="Path 14" transform="translate(-160.744 -96.328)"/>
-                          <path id="Path_15" d="M265.62 63.614V52.71h9.033z" class="integrations-svg-45" data-name="Path 15" transform="translate(-160.744)"/>
+                      <g id="Group_11" data-name="Group 11" transform="translate(-8.4 -15.979)">
+                        <path id="Path_12" d="M177.633 93.22v25.225H156.74z" class="integrations-svg-16" data-name="Path 12" transform="translate(-62.384 -31.456)"/>
+                        <path id="Path_13" d="M177.633 52.71a10.447 10.447 0 1 1-20.893 0z" class="integrations-svg-16" data-name="Path 13" transform="translate(-62.384)"/>
+                        <path id="Path_14" d="M265.62 169.787a10.447 10.447 0 1 1 20.893 0z" class="integrations-svg-16" data-name="Path 14" transform="translate(-146.928 -82.798)"/>
+                        <path id="Path_15" d="M265.62 77.935V52.71h20.9z" class="integrations-svg-16" data-name="Path 15" transform="translate(-146.928)"/>
                       </g>
+                    </g>
+                    <g id="Group_8" data-name="Group 8" transform="translate(36 321)">
+                      <g filter="url(#integrations-svg-rectangle6-2)" transform="translate(-57.5 -338.5)">
+                        <rect id="integrations-svg-rectangle6-6" width="215.588" height="195.075" class="integrations-svg-2" data-name="Rectangle 6" rx="5" transform="translate(57.5 338.5)"/>
                       </g>
-                      <g id="Clearbit" transform="translate(318)">
-                      <g filter="url(#Rectangle_15)" transform="translate(-339.5 -17.5)">
-                          <rect id="Rectangle_15-2" width="191.36" height="257" class="integrations-svg-5" data-name="Rectangle 15" rx="3" transform="translate(339.61 17.5)"/>
+                      <text id="Agile_CRM" class="integrations-svg-17" data-name="Agile CRM" transform="translate(62.88 81.704)">
+                        <tspan x="10.106" y="15">Agile CRM</tspan>
+                      </text>
+                      <text id="Add_leads_to_Agile_C" class="integrations-svg-18" data-name="Add leads to Agile C" transform="translate(16.682 116.788)">
+                        <tspan x="36.262" y="11">Add leads to Agile CRM </tspan><tspan x="74.111" y="25">contact</tspan>
+                      </text>
+                      <text id="SETTINGS-2" class="integrations-svg-15" data-name="SETTINGS" transform="translate(16.682 165.557)">
+                        <tspan x="68.627" y="11">SETTINGS</tspan>
+                      </text>
+                      <path id="path18" fill="#409ce3" d="M512.9 293.2a13 13 0 0 1 6.2 0 14.8 14.8 0 0 1 11 10.6 16.4 16.4 0 0 1 .4 5.4 9 9 0 0 1 6.2 1.4 8.7 8.7 0 0 1 3.9 7.7c-.1 4.4-4.4 8.3-8.8 8.2h-27.2a14 14 0 0 1-5-.5 11.8 11.8 0 0 1-7.3-7c-.9-2.1-.7-4.4-.5-6.5a11.8 11.8 0 0 1 10.3-9.6 14.7 14.7 0 0 1 10.8-9.7zm-6.5 10.5c2.9.5 5.4 2.3 8.2 3.5-.5.8-1.2 3-1.6 3.8-1.5-.8-3.1-1.5-4.6-2.4a8.281 8.281 0 0 0-5.8-1.1c-3.6.8-6.7 3.8-6.3 7.5s4.5 6.8 8.5 6.8h25.5c2.1.1 4.8 0 5.9-1.9a4.58 4.58 0 0 0-1-6 4.8 4.8 0 0 0-5.5-.5 9.8 9.8 0 0 1-2.3 3.4c-.7-.6-2.7-1.9-3.4-2.4a9.9 9.9 0 0 0 2.4-5.4 10.5 10.5 0 0 0-6.6-11c-5.1-2-11.6.7-13.4 5.7z" transform="translate(-409 -256)"/>
+                    </g>
+                    <g id="Group_5" data-name="Group 5" transform="translate(294 86)">
+                      <g filter="url(#integrations-svg-rectangle6-3)" transform="translate(-315.5 -103.5)">
+                        <rect id="integrations-svg-rectangle6-7" width="215.588" height="195.075" class="integrations-svg-2" data-name="Rectangle 6" rx="5" transform="translate(315.5 103.5)"/>
                       </g>
-                      <text id="Mark_Smith" fill="#5a5858" data-name="Mark Smith" font-family="Roboto-Medium,Roboto" font-size="16" font-weight="500" letter-spacing=".037em" transform="translate(11.52 31.855)">
-                          <tspan x="0" y="15">Mark Smith</tspan><tspan x="0" y="34"></tspan>
+                      <text id="Clearbit" class="integrations-svg-17" transform="translate(62.88 81.704)">
+                        <tspan x="18.95" y="15">Clearbit</tspan>
                       </text>
-                      <text id="Product_Manager_at_K" fill="#7a7777" data-name="Product Manager at K" font-family="Roboto-Regular,Roboto" font-size="10" letter-spacing=".037em" transform="translate(11.52 52.786)">
-                          <tspan x="0" y="10">Product Manager at Kommunicate</tspan>
+                      <text id="Get_company_details" class="integrations-svg-18" data-name="Get company details" transform="translate(16.682 116.788)">
+                        <tspan x="25.873" y="11">Get company details of your </tspan><tspan x="46.625" y="25">anonymous visitors</tspan>
                       </text>
-                      <text id="Industry" fill="#898686" font-family="Roboto-Regular,Roboto" font-size="11" letter-spacing=".055em" transform="translate(11.52 115.11)">
-                          <tspan x="0" y="13">Industry</tspan><tspan y="13" font-size="14" letter-spacing=".043em"></tspan>
+                      <text id="SETTINGS-3" class="integrations-svg-15" data-name="SETTINGS" transform="translate(16.682 165.557)">
+                        <tspan x="68.627" y="11">SETTINGS</tspan>
                       </text>
-                      <rect id="Rectangle_16_Copy-2" width="181.12" height="15.368" class="integrations-svg-1" data-name="Rectangle 16 Copy" rx="2" transform="translate(5.12 10.807)"/>
-                      <text id="Bengaluru_KA_India" fill="#898686" data-name="Bengaluru, KA, India" font-family="Roboto-Regular,Roboto" font-size="11" letter-spacing=".037em" transform="translate(25.12 71.872)">
-                          <tspan x="0" y="10">Bengaluru, KA, India</tspan>
-                      </text>
-                      <text id="Internet_Software_" class="integrations-svg-51" data-name="Internet Software &amp;" transform="translate(68.24 118.801)">
-                          <tspan x="0" y="10">Internet Software &amp; </tspan><tspan x="0" y="23">Services</tspan>
-                      </text>
-                      <text id="Founded" fill="#898686" font-family="Roboto-Regular,Roboto" font-size="11" letter-spacing=".043em" transform="translate(11.52 151.838)">
-                          <tspan x="0" y="10">Founded</tspan>
-                      </text>
-                      <text id="Komunicate_powers_be" fill="#898686" data-name="Komunicate powers be" font-family="Roboto-Regular,Roboto" font-size="10" letter-spacing=".043em" transform="translate(11.52 173.838)">
-                          <tspan x="0" y="10">Komunicate powers beautiful </tspan><tspan x="0" y="23">customer conversations to</tspan>
-                      </text>
-                      <text id="_2015" class="integrations-svg-51" data-name="2015" transform="translate(68.24 151.196)">
-                          <tspan x="0" y="10">2015</tspan>
-                      </text>
-                      <text id="https:_www.kommunic" fill="#2f9de5" data-name="https://www.kommunic" font-family="Roboto-Medium,Roboto" font-size="10" font-weight="500" letter-spacing=".037em" transform="translate(26.12 90.153)">
-                          <tspan x="0" y="10">https://www.kommunicate.io/</tspan>
-                      </text>
-                      <text id="Clearbit-2" class="integrations-svg-51" data-name="Clearbit" transform="translate(10.24 11.382)">
-                          <tspan x="0" y="10">Clearbit</tspan>
-                      </text>
-                      <path id="Line_2-2" d="M0 .64h152.32" class="integrations-svg-55" data-name="Line 2" transform="translate(11.52 110.415)"/>
-                      <path id="Line_2_Copy_2-2" d="M0 .64h152.32" class="integrations-svg-55" data-name="Line 2 Copy 2" transform="translate(11.52 215.019)"/>
-                      <g id="Group_10_Copy_4" data-name="Group 10 Copy 4" transform="translate(38.4 225.225)">
-                          <ellipse id="Oval-2" cx="9.92" cy="9.925" fill="#3b5998" data-name="Oval" rx="9.92" ry="9.925" transform="translate(0 .451)"/>
-                          <g id="facebook-logo" transform="translate(-78.448 -4.63)">
-                          <path id="Path_16" d="M27.765 0h-1.418a2.49 2.49 0 0 0-2.622 2.69v1.24H22.3a.223.223 0 0 0-.223.223v1.8a.223.223 0 0 0 .223.223h1.425v4.535a.223.223 0 0 0 .223.223h1.86a.223.223 0 0 0 .223-.223V6.174H27.7a.223.223 0 0 0 .223-.223v-1.8a.223.223 0 0 0-.223-.223h-1.669V2.879c0-.505.12-.762.779-.762h.955a.223.223 0 0 0 .223-.223V.225A.223.223 0 0 0 27.765 0z" class="integrations-svg-5" data-name="Path 16" transform="translate(63 10)"/>
-                          </g>
+                      <g id="Page_1" data-name="Page 1" transform="translate(91.303 34.911)">
+                        <path id="Fill_1" fill="#5ca4ff" d="M0 0v17.992h16.491V6a5.763 5.763 0 0 0-5.5-6z" data-name="Fill 1" transform="translate(16.491)"/>
+                        <path id="Fill_3" d="M0 0v11.994a5.763 5.763 0 0 0 5.5 6h10.991V0z" class="integrations-svg-21" data-name="Fill 3" transform="translate(0 17.992)"/>
+                        <path id="Fill_5" fill="#e7f3ff" d="M0 0v17.992h10.994a5.763 5.763 0 0 0 5.5-6V0z" data-name="Fill 5" transform="translate(16.491 17.992)"/>
+                        <path id="Fill_7" d="M0 6v11.992h16.491V0H5.5A5.763 5.763 0 0 0 0 6" class="integrations-svg-21" data-name="Fill 7"/>
                       </g>
-                      <g id="Group_11" data-name="Group 11" transform="translate(64.64 225.225)">
-                          <ellipse id="Oval_Copy-2" cx="9.92" cy="9.925" fill="#55adee" data-name="Oval Copy" rx="9.92" ry="9.925"/>
-                          <path id="Path_17" d="M12.073 58.6a4.945 4.945 0 0 1-1.422.39 2.487 2.487 0 0 0 1.089-1.369 4.992 4.992 0 0 1-1.574.6 2.478 2.478 0 0 0-4.22 2.258 7.031 7.031 0 0 1-5.1-2.587 2.479 2.479 0 0 0 .763 3.308 2.477 2.477 0 0 1-1.122-.311v.031a2.479 2.479 0 0 0 1.986 2.428 2.508 2.508 0 0 1-.653.087 2.377 2.377 0 0 1-.466-.046 2.478 2.478 0 0 0 2.313 1.72 4.969 4.969 0 0 1-3.075 1.058A5.262 5.262 0 0 1 0 66.133a7 7 0 0 0 3.8 1.114 7 7 0 0 0 7.043-7.047l-.008-.321a4.945 4.945 0 0 0 1.238-1.279z" class="integrations-svg-5" data-name="Path 17" transform="translate(4.153 -51.96)"/>
+                    </g>
+                    <g id="Group_7" data-name="Group 7" transform="translate(555 86)">
+                      <g filter="url(#integrations-svg-rectangle6-4)" transform="translate(-576.5 -103.5)">
+                        <rect id="integrations-svg-rectangle6-8" width="215.588" height="195.075" class="integrations-svg-2" data-name="Rectangle 6" rx="5" transform="translate(576.5 103.5)"/>
                       </g>
-                      <g id="Group_12" data-name="Group 12" transform="translate(11.52 225.225)">
-                          <ellipse id="Oval_Copy_2-2" cx="9.92" cy="9.925" fill="#4875b4" data-name="Oval Copy 2" rx="9.92" ry="9.925" transform="translate(.17 .51)"/>
-                          <path id="LinkedIn" d="M9.423 15.079v3.484H7.4v-3.251c0-.817-.292-1.374-1.023-1.374a1.105 1.105 0 0 0-1.036.739 1.382 1.382 0 0 0-.067.492v3.393H3.257s.027-5.505 0-6.076h2.02v.861l-.013.02h.013v-.02a2.006 2.006 0 0 1 1.821-1c1.329-.003 2.325.865 2.325 2.732zm-8.28-5.521a1.053 1.053 0 1 0-.027 2.1h.014a1.053 1.053 0 1 0 .013-2.1zm-1.023 9h2.02v-6.071H.12z" class="integrations-svg-5" transform="translate(5.709 -3.609)"/>
+                      <text id="Helpdocs" class="integrations-svg-17" transform="translate(62.88 81.704)">
+                        <tspan x="13.95" y="15">Helpdocs</tspan>
+                      </text>
+                      <text id="Import_your_FAQs_fro" class="integrations-svg-18" data-name="Import your FAQs fro" transform="translate(16.682 116.788)">
+                        <tspan x="15.018" y="11">Import your FAQs from Helpdocs</tspan>
+                      </text>
+                      <text id="SETTINGS-4" class="integrations-svg-15" data-name="SETTINGS" transform="translate(16.682 165.557)">
+                        <tspan x="68.627" y="11">SETTINGS</tspan>
+                      </text>
+                      <g id="Group_12" fill="#f44599" data-name="Group 12" transform="translate(150 -68.871)">
+                        <path id="Combined-Shape" d="M13.37.209V27.26a1.235 1.235 0 0 0 2.208.76l2.1-2.688a.309.309 0 0 1 .487 0l2.1 2.688a1.235 1.235 0 0 0 2.208-.76V.245A18.065 18.065 0 0 1 35.706 17.73a17.976 17.976 0 0 1-17.853 18.1A17.976 17.976 0 0 1 0 17.73 18.062 18.062 0 0 1 13.37.209z" transform="translate(-62.305 103.791)"/>
+                        <path id="heart" fill-rule="evenodd" d="M52.226 56.781a.408.408 0 0 1-.6 0 25.5 25.5 0 0 1-2.026-2.346A1.741 1.741 0 0 1 49.784 52a1.272 1.272 0 0 1 1.443-.116 1.431 1.431 0 0 1 .575.611.134.134 0 0 0 .246 0 1.427 1.427 0 0 1 .633-.642 1.26 1.26 0 0 1 1.212.032 1.752 1.752 0 0 1 .339 2.59 26.916 26.916 0 0 1-2.005 2.31" transform="translate(-96.365 68.19)"/>
                       </g>
-                      <g id="Group_12_Copy" data-name="Group 12 Copy" transform="translate(90.88 224.225)">
-                          <g id="crunchbase">
-                          <ellipse id="Mask-12" cx="9.92" cy="9.925" class="integrations-svg-3" data-name="Mask" rx="9.92" ry="9.925" transform="translate(.12 .775)"/>
-                          <g id="Group_1" data-name="Group 1" transform="translate(4.176 5.775)">
-                              <path id="Path_2" d="M10.39 17.371a1.691 1.691 0 1 1 .02-1.393h1.31a2.95 2.95 0 1 0 0 1.393h-1.311z" class="integrations-svg-5" data-name="Path 2" transform="translate(-5.96 -10.94)"/>
-                              <path id="Path_8" d="M120.985 8.006h-.216a2.91 2.91 0 0 0-1.442.508V5.23h-1.2v8.446h1.2v-.308a2.95 2.95 0 1 0 1.652-5.362zm1.691 3.159v.052a1.678 1.678 0 0 1-.046.206 1.675 1.675 0 0 1-.082.213v.026a1.7 1.7 0 0 1-1.183.928l-.161.026h-.036a1.664 1.664 0 0 1-.184 0 1.691 1.691 0 0 1-.229-.016h-.055a1.675 1.675 0 0 1-.429-.131h-.033a1.7 1.7 0 0 1-.38-.256 1.708 1.708 0 0 1-.3-.357 1.687 1.687 0 0 1-.108-.21 1.681 1.681 0 0 1 .02-1.393 1.694 1.694 0 0 1 1.357-.96 1.674 1.674 0 0 1 .174 0 1.694 1.694 0 0 1 1.671 1.645 1.689 1.689 0 0 1 .004.227z" class="integrations-svg-5" data-name="Path 8" transform="translate(-111.229 -5.23)"/>
-                          </g>
-                          </g>
-                      </g>
-                      <g id="location" transform="translate(11.52 74.999)">
-                          <g id="Group">
-                          <path id="Shape" d="M2.56 6.74a.135.135 0 0 1-.1-.044C2.359 6.584 0 3.935 0 2.561a2.56 2.56 0 1 1 5.12 0c0 1.328-2.206 3.849-2.457 4.132a.138.138 0 0 1-.103.047zm0-6.47A2.294 2.294 0 0 0 .269 2.561c0 1.1 1.753 3.218 2.291 3.839.381-.44 2.29-2.694 2.29-3.839A2.294 2.294 0 0 0 2.56.27z" class="integrations-svg-60"/>
-                          <path id="Shape-2" d="M1.212 2.426a1.213 1.213 0 1 1 1.214-1.213 1.214 1.214 0 0 1-1.214 1.213zm0-2.156a.944.944 0 1 0 .943.943.944.944 0 0 0-.943-.943z" class="integrations-svg-60" data-name="Shape" transform="translate(1.347 1.348)"/>
-                          </g>
-                      </g>
-                      <g id="web_icon" data-name="web icon" transform="translate(10.88 92.806)">
-                          <path id="Shape-3" fill="#9c9999" d="M3.52 7.043l-.031-.01A3.51 3.51 0 0 1 .24 4.794C.22 4.746.2 4.692.175 4.611s-.041-.13-.055-.184A3.631 3.631 0 0 1 0 3.516a3.362 3.362 0 0 1 .113-.886c.007-.03.016-.059.028-.1l.007-.02.01-.032.009-.032C.18 2.4.2 2.349.224 2.281l.007-.019A3.547 3.547 0 0 1 3.488 0h.064a3.549 3.549 0 0 1 3.257 2.263c.014.036.027.071.039.105l.011.032.007.022.008.024.009.031c.015.049.032.1.044.153a3.363 3.363 0 0 1 .113.887 3.631 3.631 0 0 1-.12.911c-.014.055-.029.1-.052.175-.017.055-.037.112-.069.192a3.508 3.508 0 0 1-3.248 2.238l-.031.01zm1.89-2.249a3.505 3.505 0 0 1-.821 1.525 3.184 3.184 0 0 1-.251.239A3.187 3.187 0 0 0 6.4 4.794zm-4.771 0A3.184 3.184 0 0 0 2.7 6.558a3.318 3.318 0 0 1-.247-.236 3.5 3.5 0 0 1-.823-1.528zm3.064 0v1.763a2.643 2.643 0 0 0 .63-.5 3.089 3.089 0 0 0 .7-1.259zm-1.692 0a3.12 3.12 0 0 0 .7 1.262 2.636 2.636 0 0 0 .626.5V4.794zM5.487 2.63a5.344 5.344 0 0 1 .076.886 5.179 5.179 0 0 1-.074.912h1.049a3.16 3.16 0 0 0 .007-1.8zm-1.787 0v1.8h1.418a4.616 4.616 0 0 0 .077-.91 4.724 4.724 0 0 0-.081-.887zm-1.783 0a5.221 5.221 0 0 0-.076.886 4.983 4.983 0 0 0 .08.911h1.415V2.63H1.921zM.5 2.63a3.08 3.08 0 0 0-.127.886 3.141 3.141 0 0 0 .127.911h1.05a5.159 5.159 0 0 1-.077-.911 5.282 5.282 0 0 1 .072-.887H.5zM4.329.471c.113.1.19.18.252.246a3.587 3.587 0 0 1 .826 1.544h1A3.19 3.19 0 0 0 4.329.471zM3.7.479v1.784h1.328a3.188 3.188 0 0 0-.7-1.28A2.83 2.83 0 0 0 3.7.479zm-.367 0a2.635 2.635 0 0 0-.626.5 3.12 3.12 0 0 0-.7 1.285h1.329V.476zM2.7.475A3.184 3.184 0 0 0 .629 2.263h1A3.548 3.548 0 0 1 2.456.711 3.043 3.043 0 0 1 2.7.475z" data-name="Shape"/>
-                      </g>
-                      </g>
+                    </g>
+                    <rect id="integrations-svg-rectangle24" width="119" height="11" fill="#ebebeb" data-name="Rectangle 24" rx="5.5" transform="translate(297 50)"/>
                   </g>
-                  </svg>
+                </svg>
              </div>
             </li>
           </ul>
@@ -1144,27 +1018,9 @@
 
 var div = $(".naccs .menu div"), fiveSecTimer;
 
-  $(window).scroll(function() {
-    var tabImgContainer = $('.tabs-images-container'), hT, hH, wH, wS;
-    if(tabImgContainer) {
-      hT = tabImgContainer.offset().top,
-      hH = tabImgContainer.outerHeight(),
-      wH = $(window).height(),
-      wS = $(this).scrollTop();
-    }
-      
-   if (wS > (hT+hH-wH)){
-       //auto-rotate every 5 seconds
-      fiveSecTimer = setInterval(startInterval, 5000);
-      $(window).off('scroll');
-   }
-});
-
-//auto-rotate every 5 seconds
-// var fiveSecTimer = setInterval(startInterval, 5000);
 
  //on click to tab, turn it on, and turn previously-on tab off
-$(div).on("click", function() {
+$(div).on("mouseover", function() {
 	var numberIndex = $(this).index();
 	if (!$(this).is("active")) {
 		$(".naccs .menu div").removeClass("active");
@@ -1174,18 +1030,20 @@ $(div).on("click", function() {
 
     var listItemHeight = $(".naccs ul").find("li:eq(" + numberIndex + ")").innerHeight();
 		$(".naccs .tabs-images-container").height(listItemHeight + "px");
+
+    stopInterval();
+    fiveSecTimer = setInterval(startInterval, 5000);
 	}
-  stopInterval();
-  fiveSecTimer = setInterval(startInterval, 5000);
+
 });
 
 function startInterval() {
   //get currently active tab
-  var tabListDiv = $(".naccs ul li").filter(".active");
+  // var tabListDiv = $(".naccs ul li").filter(".active");
   var mainDiv = $(".naccs .menu div").filter(".active");
   //click either next tab, if exists, else first one
 	var tabListDiv = mainDiv.index() < div.length-1 ? mainDiv.next() : div.first();
-	tabListDiv.click();
+	tabListDiv.mouseover();
 }
 function stopInterval() {
   //Stopping the startInterval()
