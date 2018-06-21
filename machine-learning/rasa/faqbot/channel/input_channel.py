@@ -117,17 +117,22 @@ def webhook():
 @app.route("/faqdata", methods=["POST"])
 def getfaq():
     body = request.json
-    if(('answer' in body) and ('question' in body) and ('intent' in body)):
-	    update_domain(body['intent'],body['answer'],0,body['applicationKey'])
-	    update_stories(body['intent'],body['applicationKey'])
-	    update_nludata(body['intent'],body['question'],body['applicationKey'])
-    elif(('intent' in body) and ('answer' in body)):
-	    update_domain(body['intent'],body['answer'],1,body['applicationKey'])
-    elif(('question' in body) and ('intent' in body)):
-        update_nludata(body['intent'],body['question'],body['applicationKey'])
+    if(body['referenceId'] is None):
+	    intent = body['id']
+    else:
+	    intent = body['referenceId']
+    if(('content' in body) and ('name' in body)):
+	    update_domain(str(intent),body['content'],0,body['applicationKey'])
+	    update_stories(str(intent),body['applicationKey'])
+	    update_nludata(str(intent),body['name'],body['applicationKey'])
+    elif('answer' in body):
+	    update_domain(str(intent),body['content'],1,body['applicationKey'])
+    elif('question' in body):
+        update_nludata(str(intent),body['name'],body['applicationKey'])
 	    #execl("sh","retrain.sh")
     return jsonify({"bot trained!":"wow"})
 
 if __name__ == '__main__':
     #Note: it is intentionally set to threaded=False because of issue with tensorflow and multiple threads
     app.run(port=5001, debug=True, threaded=False,host='0.0.0.0')
+print get_cnfg().url

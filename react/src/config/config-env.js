@@ -44,11 +44,11 @@ export default {
  "prod" :{
 
     "baseurl": {
-        
+
         "applozicAPI": "https://chat.kommunicate.io",
         "kommunicateAPI": "https://api.kommunicate.io",
         "botPlatformAPI":"https://bots.applozic.com"
-           
+
     },
     "kommunicateDashboardUrl": "https://dashboard.kommunicate.io",
     "kommunicateWebsiteUrl": "https://kommunicate.io",
