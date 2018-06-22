@@ -114,6 +114,7 @@ KommunicateUI={
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
         KommunicateUI.showHeader();
+        $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
         $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
         $applozic('.faq-common').removeClass("n-vis").addClass("vis");
@@ -206,6 +207,10 @@ KommunicateUI={
             }
         }
     });
+},
+hideFaq:function(){  
+    $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+    $applozic('.km-faqdiv').removeClass("vis").addClass("n-vis");
 },
 
 showChat :function () {
