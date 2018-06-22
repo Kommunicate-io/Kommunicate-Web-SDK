@@ -3,6 +3,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     align-items: center;
+    margin-top: 60px;
 }
 .download-link-container, .download-image-container {
     width: 50%;
@@ -23,13 +24,12 @@
     margin-left: 35px;
 }
 .appstore-link {
-    cursor: default;
     position: relative;
 }
-.appstore-link svg {
+/* .appstore-link svg {
     opacity: 0.5;
-}
-.appstore-link::after {
+} */
+/* .appstore-link::after {
     content: '(coming soon)';
     position: absolute;
     top: 15px;
@@ -38,8 +38,8 @@
     width: 100%;
     color: #8a8c90;
 
-}
+} */
 .android-screenshot {
-    width: 330px;
+    /* width: 330px; */
     height: auto;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Download.css';
-import AndroidAppScreenshot from './images/kommunicate-agent-app-screenshot.svg';
+import AndroidAppScreenshotImg from './images/kommunicate-agent-app-screenshot.png';
 
 class Download extends Component {
 
@@ -15,7 +15,7 @@ class Download extends Component {
                                     <div className="download-link-container">
                                         <h1>Kommunicate on the Go!</h1>
                                         <p>Download our mobile app to answer customer queries right from your mobile.</p>
-                                        <a href="#/" className="appstore-link">
+                                        <a href="https://itunes.apple.com/us/app/kommunicate-chat/id1375967776" className="appstore-link"  target="_blank">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="135" height="40">
                                                 <path fill="#A6A6A6" d="M130.197 40H4.729C2.122 40 0 37.872 0 35.267V4.726C0 2.12 2.122 0 4.729 0h125.468C132.803 0 135 2.12 135 4.726v30.541c0 2.605-2.197 4.733-4.803 4.733z" />
                                                 <path d="M134.032 35.268c0 2.116-1.714 3.83-3.834 3.83H4.729c-2.119 0-3.839-1.714-3.839-3.83V4.725C.89 2.61 2.61.89 4.729.89h125.468c2.121 0 3.834 1.72 3.834 3.835l.001 30.543z" />
@@ -36,7 +36,7 @@ class Download extends Component {
                                         </a>
                                     </div>
                                     <div className="download-image-container text-center">
-                                        <img src={AndroidAppScreenshot} className="img-responsive android-screenshot"/>
+                                        <img src={AndroidAppScreenshotImg} className="img-responsive android-screenshot"/>
                                     </div>
                                 </div>
 
