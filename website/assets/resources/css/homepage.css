@@ -2767,6 +2767,10 @@ ul.nacc li p {
   margin-bottom: 30px;
 } 
 
+.homepage-ab-beta-landing-page-section .col-divs {
+  margin: 0px -1px;
+}
+
 @media only screen and (max-width:767px) {
   .homepage-customer-logos-section {
     margin-top: 0px;
@@ -2823,6 +2827,9 @@ ul.nacc li p {
   }
   .homepage-ab-beta-landing-page-section .arch {
     margin-top: -120px;
+  }
+  .homepage-ab-beta-landing-page-section .container {
+    width: 100%;
   }
 }
 
