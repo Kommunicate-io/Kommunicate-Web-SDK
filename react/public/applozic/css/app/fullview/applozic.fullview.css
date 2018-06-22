@@ -3338,3 +3338,6 @@ ol, ul {
 	position: absolute;
 	bottom: 12px;
 }
+#km-group-info-close {
+	display: none;
+}

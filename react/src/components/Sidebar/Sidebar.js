@@ -207,7 +207,7 @@ class Sidebar extends Component {
           <ul className="nav">
             
             {/* Help Link */}
-            <li className="nav-item">
+            {/* <li className="nav-item">
             <a href="javascript:void(0)" id="sidebar-sidebox-help-icon"  
             onClick={this.launchSideboxChat} 
                 className="nav-link  n-vis" data-tip="Help" data-effect="solid" data-place="right">
@@ -219,8 +219,7 @@ class Sidebar extends Component {
                 </g>
               </svg>
             </a>
-            
-            </li>
+            </li> */}
             {/* Profile Link */}
             <li className="nav-item" style={{marginBottom:"5px",marginTop:"0px"}}>
                 <ProfileImageName profilePicUrl={this.props.profilePicUrl} displayName={this.props.displayName} hideDisplayName={true}/>
