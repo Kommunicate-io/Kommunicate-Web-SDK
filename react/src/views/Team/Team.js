@@ -8,6 +8,7 @@ import {notifyThatEmailIsSent} from '../../utils/kommunicateClient' ;
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
+import './team.css'
 
 
 class Integration extends Component {
@@ -74,7 +75,7 @@ class Integration extends Component {
       }else{
         notifyThatEmailIsSent({to:this.state.emailAddress,templateName:"INVITE_TEAM_MAIL"}).then(data=>{
           _this.setState({multipleEmailAddress: [],emailAddress:""});
-  
+
         });
       }
     }
@@ -103,48 +104,48 @@ class Integration extends Component {
     // console.log(this.state.multipleEmailAddress);
   }
 
-  
+
   render() {
     var result = this.state.result.map(function(result,index){
           return <UserItem key={index} user={ result } hideConversation="true" />
           });
     return (
-      <div className="animated fadeIn">
+      <div className="animated fadeIn teammate-table">
        <div className="row">
          <div className="col-md-12">
            <div className="card">
              <div className="card-block">
                  <label className="form-control-label invite-team" htmlFor="invite">Invite Your Team</label>
                  <div className="col-md-9 row email-field-wrapper ">
-                 <div className="form-group col-md-5 multiple-email-container">
+                 <div className="form-group col-md-5 multiple-email-box">
                    {this.state.multipleEmailAddress.map((email, i) => (
                      <div className="single-email-container" key={i}>
                        <span>{email}</span>
                        <span className="remove-email" onClick={() => {this.removeEmail(email)}}>| X</span>
                      </div>
                    ))}
-                   <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="You can enter multiple emails here" style={{paddingLeft: "10px"}}/>
+                   <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="You can enter multiple emails here" style={{paddingLeft: "10px", borderRadius: "4px"}}/>
                  </div>
                  </div>
              </div>
               <div className="card-block invite-btn-wrapper">
-                <button type="button" onClick={this.sendMail} className="btn btn-sm btn-primary"><i className="fa fa-dot-circle-o"></i> Invite</button>
+                <button type="button" onClick={this.sendMail} className="km-button km-button--primary"><i className="fa fa-dot-circle-o"></i> Invite</button>
               </div>
-           </div>   
-         </div>  
+           </div>
+         </div>
          <div className="col-md-12">
            <div className="card">
              <div className="card-block">
                <label className="col-md-3 form-control-label invite-team" htmlFor="invite">Team</label>
-               <table className="table table-hover table-outline mb-0 hidden-sm-down">
+               <table className="table table-hover mb-0 hidden-sm-down">
                  <thead className="thead-default">
                    <tr>
-                     <th className="text-center"><i className="icon-people"></i></th>
-                     <th>User</th>
-                      <th>Contact Info</th>
+                      <th className="text-center"><i className="icon-people"></i></th>
+                      <th>Name</th>
+                      <th>Email id</th>
                       <th>Last Activity</th>
                       <th className="text-center n-vis">Add Info</th>
-                      <th className="text-center">Actions</th>
+                      <th className="text-center n-vis">Actions</th>
                       <th className="text-center n-vis">Country</th>
                       <th className="n-vis">Usage</th>
                       <th className="text-center n-vis">Payment Method</th>
