@@ -58,7 +58,7 @@ class UserItem extends Component {
         }
       });
     }
-   
+
     render() {
         var conversationStyle = {
           textDecoration: 'underline',
@@ -66,6 +66,7 @@ class UserItem extends Component {
         };
         var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
+        var emailId = user.email;
         var displayName = CommonUtils.getDisplayName(user);
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
         var latestConversation = user.messagePxy?user.messagePxy.message:null;
@@ -80,7 +81,7 @@ class UserItem extends Component {
         var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastLoggedInAtTime)): '';
         var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastSeenAtTime)):lastLoggedInAtTime;
         return(
-                  <tr>
+                  <tr className="team-data-allign">
                     <td className="text-center">
                       <div className="avatar">
                         <img src={user.imageLink} className= {imageExpr}/>
@@ -94,9 +95,10 @@ class UserItem extends Component {
                         <span>New</span> | Registered: {createdAtTime}
                       </div>
                     </td>
-                     <td className="text-center">
-                      <div className="small text-muted n-vis"></div>
-                      <strong> </strong>
+                    <td>
+                      <div>{emailId}</div>
+                      <div className="small text-muted">
+                      </div>
                     </td>
                     <td>
                       <div className="small text-muted">Last Seen</div>
@@ -107,16 +109,16 @@ class UserItem extends Component {
                     {this.props.hideConversation == "true" ?
                         null
                         :
-                        
+
                         <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
                           <span style={conversationStyle} className="km-truncate-block">
-                          
+
                           {latestConversation == null ?
                             <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
                             :
                             latestConversation
                           }
-                          
+
                           </span>
                           <div className="small text-muted">{lastMessageTime} </div>
                         </td>
@@ -125,17 +127,17 @@ class UserItem extends Component {
                     {this.props.hideConversation == "true" ?
                         null
                         :
-                        <td>
+                        <td className="n-vis">
                           <div>{asignee}</div>
                           <div className="small text-muted">
                           </div>
                         </td>
                     }
-                    
+
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>
                     </td>
-                    <td>
+                    <td className="n-vis">
                       <div className="clearfix n-vis">
                         <div className="float-left">
                           <strong>50%</strong>
