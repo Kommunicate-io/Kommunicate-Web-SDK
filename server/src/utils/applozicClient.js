@@ -498,3 +498,25 @@ exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId, headers) =>
       console.log("error while assign to user", err);
     });
 };
+/**
+ * 
+ * @param {String} userName 
+ * @param {String} applicationId 
+ * @param {Boolean} activate 
+ */
+exports.activateOrDeactivateUser = (userName, applicationId, deactivate) => {
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update/status?userId=" + encodeURIComponent(userName) + "&deactivate=" + deactivate;
+  let headers = {
+    "Content-Type": "application/json",
+    "Apz-AppId": applicationId,
+    "Apz-Token": "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64')
+  }
+  return Promise.resolve(axios.post(url, {}, { headers: headers })).then(response => {
+    if (response.status == 200 && response.data.response == "success") {
+      return response.data;
+    }
+    return { response: "error" };
+  }).catch(err => {
+    return err;
+  })
+}
