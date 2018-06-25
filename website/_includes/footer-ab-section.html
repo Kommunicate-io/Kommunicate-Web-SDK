@@ -108,7 +108,7 @@ function myScrollFunction() {
   }
   </script>
 
-{% if page.url contains "/demo" %}
+{% if page.url contains "/demoaccount" %}
       <script>
         (function(d, m){ 
       let o = {"appId":"e1318f3a9a2e51adfaf4b04f8b68cc7d","isAnonymousChat":true,"agentId":"demo@kommunicate.io","groupName":"John Doe","email":""};
@@ -119,7 +119,7 @@ function myScrollFunction() {
     })(document, window.kommunicate || {});
       </script>
 {% elsif page.url == "/" %}
-<!-- <script type="text/javascript" id="kommunicate-support-chat-script">
+<script type="text/javascript" id="kommunicate-support-chat-script">
   (function(d, m){
        let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Devashish","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
        let s = document.createElement("script");
@@ -131,7 +131,7 @@ function myScrollFunction() {
        window.kommunicate = m;
        m._globals = o;
      })(document, window.kommunicate || {});
-</script> -->
+</script>
 {% else %}
 <script type="text/javascript" id="kommunicate-support-chat-script">
   (function(d, m){

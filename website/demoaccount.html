@@ -18,7 +18,7 @@ layout:
     <title>Customer Communication Software Demo | Kommunicate</title>
     {% include headtag.html %}
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/resources/css/demo.css" type="text/css">
+    <link rel="stylesheet" href="/assets/resources/css/demoaccount.css" type="text/css">
 
 
 </head>
@@ -28,7 +28,7 @@ layout:
       {% include nav-header.html %}
     </div>
     
-    {% include_relative /sections/demo-section.html %}
+    {% include_relative /sections/demoaccount-section.html %}
     {% include /footer-section.html %}
 
 
@@ -42,45 +42,9 @@ layout:
 
       <script>
         window.onload = function()  {
-          $(".bot-launch-button").prop("disabled", false);
-          $(".footer-cta-title").html("Want to know how human + bot hybrid customer support works?");
+          var element = document.getElementById("launch-chat-button");
+          element.disabled=false;
         } 
-
-        $(".integrate-button").on("click", function() {
-          window.open("https://dashboard.kommunicate.io/bot", "_blank");
-        });
-
-        $("#booking-bot").on("click", function() {
-          var conversationDetail = {
-            // agentId: "devashish@kommunicate.io",
-            // botIds: ["Hotel-Booking-Assistant"] //optional
-            agentId: "Hotel-Booking-Assistant"
-          };
-          Kommunicate.startConversation(conversationDetail, function (response) {
-            console.log("new conversation created");
-          });
-        });
-        $("#service-bot").on("click", function() {
-          var conversationDetail = {
-            // agentId: "devashish@kommunicate.io",
-            // botIds: ["movers-packers"] //optional
-            agentId: "movers-packers"
-          };
-          Kommunicate.startConversation(conversationDetail, function (response) {
-            console.log("new conversation created");
-          });
-        });
-        $("#faq-bot").on("click", function() {
-          var conversationDetail = {
-            // agentId: "devashish@kommunicate.io",
-            // botIds: ["FAQ-Bot"] //optional
-            agentId: "FAQ-Bot"
-          };
-          Kommunicate.startConversation(conversationDetail, function (response) {
-            console.log("new conversation created");
-          });
-        });
-
       </script>
 
 </body>
