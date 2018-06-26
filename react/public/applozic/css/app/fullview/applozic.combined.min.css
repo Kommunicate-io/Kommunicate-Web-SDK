@@ -321,19 +321,19 @@ img.kmemoji {
 	margin: 0px 2px
 }
 
-.km-emoji-menu {
-	position: absolute;
-	z-index: 22445000 !important;
-	min-width : 498px;
-	padding: 0;
-	overflow: hidden;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	height: 260px;
-	left: 0!important;
-	bottom: 65px !important;
-	right: 0!important;
+.km-emoji-menu{
+    position: absolute;
+    z-index: 22445000 !important;
+    left: 11px !important;
+    min-width: 755px!important;
+    padding: 0;
+    overflow: hidden;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 261px;
+    right: 358px!important;
+
 }
 
 .km-panel-3.km-emoji-menu, .km-panel-3 .km-emoji-menu {
