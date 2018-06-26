@@ -2734,7 +2734,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_loading.removeClass('n-vis').addClass('vis');
 				}
 
-				// CONTACT_SYNCING = true;
+				CONTACT_SYNCING = true;
 				var data = '?pageSize=60';
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
@@ -2751,7 +2751,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.loadCloseGroup = function (params, callback) {
 				var individual = false;
-				// CONTACT_SYNCING = true;
+				CONTACT_SYNCING = true;
 				var data = '?pageSize=60';
 				if (params.startTime) {
 					data += "&lastFetchTime=" + params.startTime;
