@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-compile 'io.kommunicate:kommunicate:1.5'
+compile 'io.kommunicate:kommunicate:1.5.1'
 ```
 
 Add the following permissions in your `AndroidManifest.xml` file:
