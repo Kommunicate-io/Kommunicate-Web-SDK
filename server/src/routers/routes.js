@@ -142,6 +142,7 @@ conversationRouter.post('/member/add',validate(conversationValidation.addMemberI
 conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
 conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/v2/create', conversationController.createConversationFromMail);
+conversationRouter.post('/assignee/switch', conversationController.switchConversationAssignee);
 
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);
