@@ -4517,7 +4517,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					userIdArray = [],
 					groupIdArray = [];
 				$kmApplozic.each(MCK_CONTACT_ARRAY, function (i, contact) {
-					userIdArray.push(contact.contactId);
+					contact ? userIdArray.push(contact.contactId) : "";
 				});
 				$kmApplozic.each(MCK_CHAT_CONTACT_ARRAY, function (i, contact) {
 					(contact.isGroup) ? groupIdArray.push(contact.contactId) : userIdArray.push(contact.contactId);
