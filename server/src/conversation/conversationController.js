@@ -109,3 +109,16 @@ exports.createConversationFromMail = (req, res) => {
         return res.status(500).json({ message: 'ERROR', response: err })
     })
 }
+
+exports.switchConversationAssignee = (req, res) => {
+  let appId = req.body.applicationId;
+  let groupId = req.body.groupId;
+  return conversationService
+    .switchConversationAssignee(appId, groupId)
+    .then(response => {
+      return res.status(200).json({ code: "success", message: response });
+    })
+    .catch(err => {
+      return res.status(500).json({ code: "error", message: err });
+    });
+};

@@ -508,6 +508,50 @@ const getAgentByUserKey = (userKey) => {
     }
   });
 }
+/**
+ * 
+ * @param {String} userName 
+ * @param {String} applicationId 
+ * @param {boolean} deactivate 
+ */
+const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
+  if (deactivate) {
+    return getByUserNameAndAppId(userName, applicationId).then(user => {
+      if (user) {
+        return userModel.destroy({
+          where: {
+            userName: userName,
+            applicationId: applicationId
+          }
+        }).then(result => {
+          //deactivate user from applozic
+          applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+          return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
+        })
+      } else {
+        return "USER DOES NOT EXIST OR ALREADY DELETED";
+      }
+    })
+  } else {
+    return userModel.update({
+      deleted_at: null
+    }, {
+        where: {
+          userName: userName,
+          applicationId: applicationId,
+          deleted_at: {$ne:null}
+        }
+      }).then(result => {
+        getByUserNameAndAppId(userName, applicationId).then(user => {
+          if(user){
+            applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+          }
+        })
+        return result[0] == 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED";
+      })
+  }
+}
+exports.activateOrDeactivateUser = activateOrDeactivateUser;
 exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;

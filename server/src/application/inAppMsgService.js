@@ -41,24 +41,30 @@ const getInAppMessage=(appId, eventType)=>{
       });
 }
 
-exports.sendWelcomeMessage=(conversationId, customer)=>{
-  return userService.getByUserNameAndAppId("bot",customer.applications[0].applicationId)
-  .then(bot=>{
-    return applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,bot.apzToken,true).then(groupDetail=>{
+exports.sendWelcomeMessage = (conversationId, customer) => {
+  return userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId)
+    .then(users => {
+      let bot = users.filter(user => {
+        return user.userName = "bot";
+      });
+      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, bot.apzToken, true).then(groupDetail => {
         // picking admin id if conversation Assignee is not available
-        let conversationAssignee="";
-        if(groupDetail){
-          let conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
-          groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
-          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer,groupDetail.adminId,conversationAssignee)).then(response => {
-            logger.info("response in sendWelcomeMessage",response);
+        if (groupDetail) {
+          let conversationAssignee = users.filter(user => {
+            return user.userName == groupDetail.metadata.CONVERSATION_ASSIGNEE;
+          });
+          if (conversationAssignee.length == 0 || conversationAssignee[0].type == 2) {
+            return "WELCOME_MESSAGE_SKIPED";
+          }
+          // conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
+          // groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
+          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer, groupDetail.adminId, conversationAssignee[0].userName)).then(response => {
+            logger.info("response in sendWelcomeMessage", response);
             return response;
-          })
+          });
         }
-        
-    })
-  })
- 
+      });
+    });
 }
 
 exports.processEventWrapper = (eventType, conversationId, customer, adminUser, agentName) => {
@@ -354,17 +360,21 @@ exports.checkOnlineAgents=(customer)=>{
 
 exports.isGroupUserAnonymous=(customer,conversationId)=>{
 logger.info("checking if group user is anonymous ");
+let groupDetail = "";
 return userService.getAdminUserByAppId(customer.applications[0].applicationId).then(adminUser=>{
   let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
   return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,apzToken))
   .then(groupInfo => {
+      groupDetail = groupInfo;
       logger.info("successfully got groupInfo from applozic for conversationId : ",conversationId);
       
       let groupUser= groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
       return applozicClient.getUserDetails([groupUser[0].userId],customer.applications[0].applicationId,apzToken)
       .then(userInfo => { 
         logger.info("received group user info...");
-       return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+      //  return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+        let isGroupUserAnonymous = Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+        return {"groupInfo":groupDetail, "isGroupUserAnonymous":isGroupUserAnonymous }
       })
     })
   })

@@ -2657,7 +2657,6 @@ input:-ms-input-placeholder {
 
 .naccs .menu div:hover {
   background: #dbeafb;
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
 }
 
 /* .naccs .menu div span.light {
@@ -2740,6 +2739,18 @@ ul.nacc li p {
   max-height: 500px;
 }
 
+.homepage-ab-beta-landing-page-section .img-cont-pos-rel {
+  position: relative;
+}
+.homepage-ab-beta-landing-page-section .girl-fg-svg-shape{
+  position: absolute;
+  right: 20px;
+  top: 62%;
+  width: 150px;
+  height: auto;
+}
+
+
 /* .footer-section {
   opacity: 0;
 } */ 
@@ -2755,6 +2766,10 @@ ul.nacc li p {
   padding-bottom: 30px;
   margin-bottom: 30px;
 } 
+
+.homepage-ab-beta-landing-page-section .col-divs {
+  margin: 0px -1px;
+}
 
 @media only screen and (max-width:767px) {
   .homepage-customer-logos-section {
@@ -2793,6 +2808,9 @@ ul.nacc li p {
   }.homepage-ab-beta-landing-page-section .hero-section {
     margin-top: 120px;
   }
+  .girl-fg-svg-shape {
+    display: none;
+  }
 }
 
 @media only screen and (min-width:768px) and (max-width:991px) {
@@ -2809,6 +2827,9 @@ ul.nacc li p {
   }
   .homepage-ab-beta-landing-page-section .arch {
     margin-top: -120px;
+  }
+  .homepage-ab-beta-landing-page-section .container {
+    width: 100%;
   }
 }
 

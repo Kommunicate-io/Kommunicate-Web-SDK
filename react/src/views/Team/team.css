@@ -1,0 +1,49 @@
+.multiple-email-box {
+  background-color: #FFF;
+  /* border: 1px solid #C0C0C0; */
+  padding-left: 0;
+}
+
+.multiple-email-box input {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: 1px solid #5C5AA7;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.multiple-email-box input:focus {
+  outline: none;
+}
+
+.teammate-table .thead-default th {
+  background-color: #ffffff;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #97999b;
+}
+
+.teammate-table .thead-default td {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #464748;
+}
+
+.teammate-table .table th, .teammate-table .table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-bottom: 1px solid #cfd8dc;
+  border-top: none;
+  vertical-align: middle;
+}

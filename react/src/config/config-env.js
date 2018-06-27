@@ -41,14 +41,37 @@ export default {
     }
 
 },
+    
+"staging" : {
+
+    "baseurl": {
+        "applozicAPI": "https://apps-test.applozic.com",
+        "kommunicateAPI": "https://api-staging.kommunicate.io",
+        "botPlatformAPI": "https://bots-staging.applozic.com"
+    },
+    "kommunicateDashboardUrl": "https://dashboard-staging.kommunicate.io",
+    "kommunicateWebsiteUrl": "https://test.kommunicate.io",
+    "adminDetails": {
+        "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
+        "kommunicateParentAppName": "suraj",
+        "kommunicateAdminId": "suraj@applozic.com",
+        "kommunicateAdminPassword": "1234567890",
+        "kommunicateAdminApzToken": "c3VyYWpAYXBwbG96aWMuY29tOjEyMzQ1Njc4OTA="
+    },
+    "resources": {
+        "defaultImageUrl": "/img/avatars/default.png"
+    }
+
+},
+    
  "prod" :{
 
     "baseurl": {
-        
+
         "applozicAPI": "https://chat.kommunicate.io",
         "kommunicateAPI": "https://api.kommunicate.io",
         "botPlatformAPI":"https://bots.applozic.com"
-           
+
     },
     "kommunicateDashboardUrl": "https://dashboard.kommunicate.io",
     "kommunicateWebsiteUrl": "https://kommunicate.io",

@@ -388,3 +388,27 @@ exports.getPseudoName = (req,res) => {
   let data = {"userName": userName};
   return res.status(200).json({ code: "SUCCESS", response: data });
 }
+/**
+ * 
+ * @param {Http req object} req 
+ * @param {Http res object} res 
+ */
+exports.activateOrDeactivateUser = (req, res) => {
+  let deactivate = req.query.deactivate == 'true' ? true : false;
+  let appId = req.query.applicationId;
+  let userName = req.query.userName;
+  return userService
+    .activateOrDeactivateUser(userName, appId, deactivate)
+    .then(result => {
+      return res.status(200).json({
+        code: "SUCCESS",
+        message: result
+      });
+    })
+    .catch(err => {
+      return res.status(500).json({
+        code: "ERROR",
+        message: "error"
+      });
+    });
+};
