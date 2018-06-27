@@ -40,6 +40,9 @@ componentWillMount (){
 }
 
 componentDidMount(){
+    this.getIntegratedBots();
+}
+getIntegratedBots = () => {
     getIntegratedBots().then(response => {
         // console.log(response.allBots)
         if (response && response.allBots && response.allBots.length > 0) {
@@ -236,6 +239,7 @@ toggleConversationAssignment = () => {
                                                                             if(response.data.code === "success"){
                                                                                 Notification.info('Conversations assigned to ' + bot.name);
                                                                                 window.Aside.loadAgents();
+                                                                                this.getIntegratedBots();
                                                                             } else {
                                                                                  Notification.info('Conversations not assigned to ' + bot.name)
                                                                             }
