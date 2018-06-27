@@ -1,8 +1,8 @@
 import json
 import random
-
 from flask import Flask
 from pathlib import Path
+from subprocess import call, check_output
 from rasa_core.agent import Agent
 from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
@@ -137,3 +137,15 @@ def getfaq():
         update_nludata(str(intent),body['name'],body['applicationKey'])
 	    #execl("sh","retrain.sh")
     return jsonify({"bot trained!":"wow"})
+
+@app.route("/train",methods=["POST"])
+def train_bots():
+    body = request.json
+    if(body['data'] is None):
+        pass
+    else:
+        for appkey in body['data']:
+            call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+            call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+            agen = load_agent(appkey)
+    return jsonify({"some":"data"})
