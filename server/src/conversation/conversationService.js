@@ -152,9 +152,11 @@ const updateConversationMetadata = (groupId, metadata) => {
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
-    let groupInfo = { userIds: [], clientGroupIds: [data.groupId] }
+    let groupId = data.groupId || data.clientGroupId;
+    let userKey = data.userKey || data.userId;
+    let groupInfo = { userIds: [], clientGroupIds: [groupId] }
     let header = {}
-    return Promise.resolve(customerService.getCustomerByAgentUserKey(data.userId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByAgentUserKey(userKey)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
@@ -180,9 +182,12 @@ const addMemberIntoConversation = (data) => {
                         }
 
                     });*/
-                    if (customer.agentRouting) {
+                    if (customer.botRouting && customer.agentRouting) {
+                        //default assign to bot
+                        agents.assignTo != "" ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                    } else {
                         logger.info("adding assignee in round robin fashion");
-                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applications[0].applicationId, header);
+                        assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
                     }
                     groupInfo.userIds = userIds;
                     logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
@@ -257,11 +262,13 @@ const getAgentsList = (customer, users) => {
     let userIds = [];
     let agentIds = [];
     let header = {};
+    let activeBot = ""
     users.forEach(function (user) {
         if (user.type === 2) {
             if (user.userName === 'bot') {
                 header.apzToken = user.apzToken
             } if (customer.botRouting && user.allConversations == 1) {
+                activeBot = user.userName;
                 userIds.push(user.userName);
             }
         }
@@ -273,7 +280,7 @@ const getAgentsList = (customer, users) => {
             header.ofUserId = user.userName
         }
     });
-    return { userIds: userIds, agentIds: agentIds, header: header };
+    return { userIds: userIds, agentIds: agentIds, header: header, assignTo: activeBot };
 }
 
 const switchConversationAssignee = (appId, groupId) => {
