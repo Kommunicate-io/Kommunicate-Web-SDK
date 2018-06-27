@@ -41,24 +41,30 @@ const getInAppMessage=(appId, eventType)=>{
       });
 }
 
-exports.sendWelcomeMessage=(conversationId, customer)=>{
-  return userService.getByUserNameAndAppId("bot",customer.applications[0].applicationId)
-  .then(bot=>{
-    return applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,bot.apzToken,true).then(groupDetail=>{
+exports.sendWelcomeMessage = (conversationId, customer) => {
+  return userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId)
+    .then(users => {
+      let bot = users.filter(user => {
+        return user.userName = "bot";
+      });
+      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, bot.apzToken, true).then(groupDetail => {
         // picking admin id if conversation Assignee is not available
-        let conversationAssignee="";
-        if(groupDetail){
-          let conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
-          groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
-          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer,groupDetail.adminId,conversationAssignee)).then(response => {
-            logger.info("response in sendWelcomeMessage",response);
+        if (groupDetail) {
+          let conversationAssignee = users.filter(user => {
+            return user.userName == groupDetail.metadata.CONVERSATION_ASSIGNEE;
+          });
+          if (conversationAssignee.length == 0 || conversationAssignee[0].type == 2) {
+            return "WELCOME_MESSAGE_SKIPED";
+          }
+          // conversationAssignee= groupDetail.metadata.CONVERSATION_ASSIGNEE?
+          // groupDetail.metadata.CONVERSATION_ASSIGNEE:groupDetail.adminId;
+          return Promise.resolve(processConversationStartedEvent(constant.EVENT_ID.WELCOME_MESSAGE, conversationId, customer, groupDetail.adminId, conversationAssignee[0].userName)).then(response => {
+            logger.info("response in sendWelcomeMessage", response);
             return response;
-          })
+          });
         }
-        
-    })
-  })
- 
+      });
+    });
 }
 
 exports.processEventWrapper = (eventType, conversationId, customer, adminUser, agentName) => {
