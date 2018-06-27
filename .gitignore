@@ -52,7 +52,7 @@ typings/
 *.tgz
 
 #trained RASA test models
-machine-learning/rasa/faqbot/models/*
+models/*
 
 # Yarn Integrity file
 .yarn-integrity
