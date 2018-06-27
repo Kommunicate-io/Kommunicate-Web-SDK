@@ -12,6 +12,7 @@ const cors =require("cors");
 const validate = require('express-validation');
 var compressor = require('node-minify');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
+const eventProcessor= require("./src/events/eventProcessor");
 //var concat = require('concat-files');
 app.use(cors());
 
@@ -115,6 +116,8 @@ app.use('/settings',routes.setting);
 function startApp() {
     app.listen(port, function () {
         console.log('Express server listening on port : ' + port);
+        //to do: start the event consumers 
+        eventProcessor.initializeEventsConsumers();
     });
 }
 
