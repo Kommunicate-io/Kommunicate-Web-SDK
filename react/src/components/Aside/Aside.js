@@ -14,7 +14,7 @@ import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
 import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE } from '../../utils/Constant'
+import { USER_TYPE, GROUP_ROLE } from '../../utils/Constant'
 
 
 
@@ -145,7 +145,7 @@ class Aside extends Component {
       var assign = window.$kmApplozic("#assign");
       that.setState({ agents: data });
       window.$kmApplozic.each(data, function () {
-        if (this.type == 3) {
+        if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
           assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
         } else if (this.type == 2 && this.name != "bot" && this.name != "Liz" && this.allConversations) {
           assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));

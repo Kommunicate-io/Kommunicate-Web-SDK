@@ -2,7 +2,8 @@ import { getEnvironmentId } from "../config/config";
 
 export{
     USER_TYPE,
-    COOKIES
+    COOKIES,
+    GROUP_ROLE
 }
 
 const USER_TYPE = {
@@ -10,6 +11,11 @@ const USER_TYPE = {
     BOT: 2,
     ADMIN: 3
 }
+const GROUP_ROLE = { 
+    ADMIN: "1", 
+    MODERATOR: "2", 
+    MEMBER: "3" 
+};
 let  getLoggedInCookieName =function(){
     return getEnvironmentId()+"_km_l_u_id";
 }

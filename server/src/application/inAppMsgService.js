@@ -354,17 +354,21 @@ exports.checkOnlineAgents=(customer)=>{
 
 exports.isGroupUserAnonymous=(customer,conversationId)=>{
 logger.info("checking if group user is anonymous ");
+let groupDetail = "";
 return userService.getAdminUserByAppId(customer.applications[0].applicationId).then(adminUser=>{
   let apzToken = new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64');
   return Promise.resolve(applozicClient.getGroupInfo(conversationId,customer.applications[0].applicationId,apzToken))
   .then(groupInfo => {
+      groupDetail = groupInfo;
       logger.info("successfully got groupInfo from applozic for conversationId : ",conversationId);
       
       let groupUser= groupInfo.groupUsers.filter(groupUser => groupUser.role == 3);
       return applozicClient.getUserDetails([groupUser[0].userId],customer.applications[0].applicationId,apzToken)
       .then(userInfo => { 
         logger.info("received group user info...");
-       return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+      //  return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+        let isGroupUserAnonymous = Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+        return {"groupInfo":groupDetail, "isGroupUserAnonymous":isGroupUserAnonymous }
       })
     })
   })
