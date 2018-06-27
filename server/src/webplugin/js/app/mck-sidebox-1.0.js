@@ -1386,6 +1386,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (typeof USER_TYPE_ID == 'number') {
                     userPxy.userTypeId = USER_TYPE_ID;
                 }
+                if (optns.metadata) {
+                    userPxy.metadata = optns.metadata;
+                }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
