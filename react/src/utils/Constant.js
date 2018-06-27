@@ -3,7 +3,9 @@ import { getEnvironmentId } from "../config/config";
 export{
     USER_TYPE,
     COOKIES,
-    GROUP_ROLE
+    GROUP_ROLE,
+    DEFAULT_BOT,
+    LIZ
 }
 
 const USER_TYPE = {
@@ -16,6 +18,12 @@ const GROUP_ROLE = {
     MODERATOR: "2", 
     MEMBER: "3" 
 };
+const DEFAULT_BOT={
+    userName:"bot"
+}
+const LIZ={
+    userName:"liz"
+}
 let  getLoggedInCookieName =function(){
     return getEnvironmentId()+"_km_l_u_id";
 }
@@ -30,5 +38,6 @@ export const CONVERSATION_STATS_FILTER_KEY = {
    
 }
 
-export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec 
+export const MEMORY_CACHING_TIME_DURATION = 120000  //2 mins in Millisec
+
 
