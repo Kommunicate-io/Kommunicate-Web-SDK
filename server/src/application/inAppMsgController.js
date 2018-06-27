@@ -5,8 +5,9 @@ const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
 const constant = require('./utils');
 const customerService=require('../customer/customerService');
-const appSetting = require("../setting/application/appSettingService")
-
+const appSetting = require("../setting/application/appSettingService");
+const GROUP_ROLE = require("../utils/constant").GROUP_ROLE;
+const DEFAULT_BOT = require("../register/bots").DEFAULT_BOT;
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
@@ -318,17 +319,26 @@ exports.processAwayMessage = function(req,res){
         let eventId = 0;
         let collectEmail = false;
         let isBotRoutingEnabled = customer.botRouting;
+        let groupUsers = [];
+        let isBotAddedInGroup = false;
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
-                .then(([onlineUser,isGroupUserAnonymous])=>{
-            
+                .then(([onlineUser,group])=>{
+                 groupUsers = group.groupInfo.groupUsers;
+                    for (var key in groupUsers) {
+                        // bot is added in group. skip away message
+                        if (groupUsers[key].role == GROUP_ROLE.MODERATOR && groupUsers[key].userId != DEFAULT_BOT.userName) {
+                            isBotAddedInGroup = true;
+                            break;
+                        }
+                    }
                if(onlineUser){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");
                 res.json({"code":"AGENTS_ONLINE","message":"skiping away message. some agents are online"}).status(200);
                 return;
-               }else if(isGroupUserAnonymous){
+               }else if(group.isGroupUserAnonymous){
                 // agents are offline. group user is anonymous
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
                 
@@ -336,7 +346,6 @@ exports.processAwayMessage = function(req,res){
                 // agents are offline and user is known.
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
                }
-               //get status of collect email
                 Promise.resolve(appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }))
                 .then(response => {  
                      collectEmail = response.data.collectEmail;
@@ -345,7 +354,7 @@ exports.processAwayMessage = function(req,res){
                         let messageList = result.map(data=>data.dataValues);
                         let data = {"messageList":messageList, "collectEmail":collectEmail}
                         // res.json({"code":"SUCCESS",data:data}).status(200);
-                        if (isBotRoutingEnabled) {
+                        if (isBotRoutingEnabled && isBotAddedInGroup) {
                             data = {"messageList":[], "collectEmail":collectEmail}
                             res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
                         } else {
