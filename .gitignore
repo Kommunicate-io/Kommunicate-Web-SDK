@@ -78,3 +78,5 @@ server/src/webplugin/js/app/mck-sidebox-1.0.min.js
 server/src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js
 message-processor/initial/target/classes/**
 *.pyc
+react/build/**
+

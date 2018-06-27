@@ -82,8 +82,12 @@
           }
       },
       "pluginProperties": {
-        "pseduoNameEnabled": false
-      },
+        "pseduoNameEnabled": false 
+      }, "rabbitmq":{
+        "host":"apps.applozic.com",
+        "userName":"applozic",
+        "password":"@ppl0zic"
+    },
 
         "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
         "kommunicateAdminId": "techdisrupt@applozic.com",
