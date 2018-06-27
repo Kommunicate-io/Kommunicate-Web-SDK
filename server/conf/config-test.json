@@ -82,7 +82,7 @@
     }
 },
     "pluginProperties": {
-      "pseduoNameEnabled": false
+      "pseudoNameEnabled": false
     },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",

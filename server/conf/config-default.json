@@ -90,7 +90,7 @@
         }
     },
     "pluginProperties":{
-        "pseduoNameEnabled": true
+        "pseudoNameEnabled": true
     },
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateParentAppName": "suraj",
