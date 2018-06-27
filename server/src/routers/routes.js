@@ -96,20 +96,21 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
-//userRouter.patch('/:userName/:appId',userController.patchUser);
+userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.get('/chat/plugin/settings', userController.getPseudoName);
-userRouter.patch('/:userName/:appId',userController.patchUser);
+//userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
 userRouter.post('/:userName/subscribe/off-hours-message-notification',userController.subscribeOffHoursNotification);
 userRouter.post('/password-reset', passwordResetController.processPasswordResetRequest);
-userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
+userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
+userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
 //signUpWithApplozicRouter.post('/', validate(loginValidation.login), loginController.signUpWithApplozic);
@@ -141,6 +142,7 @@ conversationRouter.post('/member/add',validate(conversationValidation.addMemberI
 conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
 conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/v2/create', conversationController.createConversationFromMail);
+conversationRouter.post('/assignee/switch', conversationController.switchConversationAssignee);
 
 //application router
 applicationRouter.post('/:appId/welcomemessage',validate(applicationValidation.postWelcomeMessage),inAppMsgController.saveWelcomeMessage);

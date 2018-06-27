@@ -152,15 +152,19 @@ const updateConversationMetadata = (groupId, metadata) => {
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
-    let groupInfo = { userIds: [], clientGroupIds: [data.groupId] }
+    let groupId = data.groupId || data.clientGroupId;
+    let userKey = data.userKey || data.userId;
+    let groupInfo = { userIds: [], clientGroupIds: [groupId] }
     let header = {}
-    return Promise.resolve(customerService.getCustomerByAgentUserKey(data.userId)).then(customer => {
+    return Promise.resolve(customerService.getCustomerByAgentUserKey(userKey)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
-                    let userIds = [];
-                    let agentIds = [];
-                    users.forEach(function (user) {
+                    let agents = getAgentsList(customer, users);
+                    let userIds = agents.userIds;
+                    let agentIds = agents.agentIds;
+                    header = agents.header;
+                    /*users.forEach(function (user) {
                         if (user.type === 2) {
                             if (user.userName === 'bot') {
                                 header.apzToken = user.apzToken
@@ -177,10 +181,13 @@ const addMemberIntoConversation = (data) => {
                             header.ofUserId = user.userName
                         }
 
-                    });
-                    if (customer.agentRouting) {
+                    });*/
+                    if (customer.botRouting || !customer.agentRouting) {
+                        //default assign to bot
+                        agents.assignTo != "" ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                    } else {
                         logger.info("adding assignee in round robin fashion");
-                        assingConversationInRoundRobin(data.groupId, agentIds, customer.applications[0].applicationId, header);
+                        assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
                     }
                     groupInfo.userIds = userIds;
                     logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
@@ -217,6 +224,20 @@ const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
     });
 };
 
+const assignToDefaultAgent=(groupId, appId, assignTo, header)=>{
+    let groupInfo = {
+        groupId: groupId,
+        metadata: { CONVERSATION_ASSIGNEE: assignTo }
+    };
+    logger.info("updating assignee for conversation : ", groupInfo);
+    applozicClient.updateGroup(
+        groupInfo,
+        appId,
+        header.apzToken,
+        header.ofUserId
+    );
+}
+
 const getConversationAssigneeFromMap = (userIds, key) => {
     //store map of appid and userids
     let assignee = "";
@@ -236,6 +257,59 @@ const getConversationAssigneeFromMap = (userIds, key) => {
         return assignee;
     });
 };
+
+const getAgentsList = (customer, users) => {
+    let userIds = [];
+    let agentIds = [];
+    let header = {};
+    let assignTo = customer.userName;
+    users.forEach(function (user) {
+        if (user.type === 2) {
+            if (user.userName === 'bot') {
+                header.apzToken = user.apzToken
+            } if (customer.botRouting && user.allConversations == 1) {
+                activeBot = user.userName;
+                userIds.push(user.userName);
+            }
+        }
+        else {
+            userIds.push(user.userName);
+            agentIds.push(user.userName);
+        }
+        if (user.type === 3) {
+            header.ofUserId = user.userName
+        }
+    });
+    return { userIds: userIds, agentIds: agentIds, header: header, assignTo: activeBot };
+}
+
+const switchConversationAssignee = (appId, groupId) => {
+    return Promise.all([customerService.getCustomerByApplicationId(appId), userService.getUsersByAppIdAndTypes(appId)]).then(([customer, users]) => {
+        let bot = users.filter(user => {
+            return user.userName == "bot";
+        });
+        return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
+            if (group && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
+                let assignee = users.filter(user => {
+                    return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
+                });
+                if (assignee[0].type == 2) {
+                    let agents = getAgentsList(customer, users);
+                    if (customer.agentRouting) {
+                        assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header);
+                    } else {
+                        assignToDefaultAgent(groupId, appId, customer.userName, agents.header);
+                    }
+                    return "success";
+                } else {
+                    return "ASSIGNMENT SKIPED";
+                }
+            }
+        })
+    }).catch(err => {
+        return "error"
+    })
+}
 
 const getConversationStatByAgentId = (agentId, startTime, endTime) => {
     let criteria = { agentId: agentId }
@@ -425,5 +499,6 @@ module.exports = {
     getConversationStats: getConversationStats,
     getConversationStat: getConversationStat,
     createConversationIntoApplozic: createConversationIntoApplozic,
-    createConversationFromMail: createConversationFromMail
+    createConversationFromMail: createConversationFromMail,
+    switchConversationAssignee: switchConversationAssignee
 }
