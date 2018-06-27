@@ -95,13 +95,13 @@
 }
 .icons-main-container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start !important;
     flex-wrap: wrap;
     list-style: none;
     padding: 0;
 }
 .icons-container {
-    min-width: 150px;
+    min-width: 170px;
     padding: 5px 10px;
     border-radius: 6px;
     background-color: #ffffff;
