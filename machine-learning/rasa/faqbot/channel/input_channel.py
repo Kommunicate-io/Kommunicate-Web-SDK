@@ -136,7 +136,7 @@ def getfaq():
     elif('question' in body):
         update_nludata(str(intent),body['name'],body['applicationKey'])
 	    #execl("sh","retrain.sh")
-    return jsonify({"bot trained!":"wow"})
+    return jsonify({"Success":"We have more data!"})
 
 @app.route("/train",methods=["POST"])
 def train_bots():
@@ -148,4 +148,4 @@ def train_bots():
             call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
-    return jsonify({"some":"data"})
+    return jsonify({"Success":"The bots are now sentient!"})
