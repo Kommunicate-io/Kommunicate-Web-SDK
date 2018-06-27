@@ -36,7 +36,7 @@ class Full extends Component {
   constructor (props) {
     super(props)
      //_this =this;
-    let imageLink = CommonUtils.getUserSession().imageLink;
+    let imageLink = CommonUtils.getUserSession().applozicUser.imageLink;
     this.state = { 
       imageLink: imageLink,
       hideInvitedMemberBar: true,
