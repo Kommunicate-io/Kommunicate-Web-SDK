@@ -83,7 +83,7 @@ body {
     width: 29.33333% !important;
 }
 
-[data-key="agilecrm"] {
+/* [data-key="agilecrm"] {
     cursor: default;
     cursor: default;
     color: #6c6a6a;
@@ -94,8 +94,8 @@ body {
     padding-top: 5px;
     padding-left: 8px;
     padding-right: 8px;
-    /* text-transform: lowercase; */
-}
+    text-transform: lowercase;
+} */
 
 .upgrade-plan-container {
     width: 100%;
