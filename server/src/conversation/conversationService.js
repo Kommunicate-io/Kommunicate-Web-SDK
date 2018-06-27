@@ -182,7 +182,7 @@ const addMemberIntoConversation = (data) => {
                         }
 
                     });*/
-                    if (customer.botRouting && customer.agentRouting) {
+                    if (customer.botRouting || !customer.agentRouting) {
                         //default assign to bot
                         agents.assignTo != "" ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                     } else {
@@ -262,7 +262,7 @@ const getAgentsList = (customer, users) => {
     let userIds = [];
     let agentIds = [];
     let header = {};
-    let activeBot = ""
+    let assignTo = customer.userName;
     users.forEach(function (user) {
         if (user.type === 2) {
             if (user.userName === 'bot') {
