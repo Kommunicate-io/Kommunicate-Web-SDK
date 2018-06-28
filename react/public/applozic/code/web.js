@@ -99,6 +99,7 @@ function initAutoSuggestions() {
       swNotification: true,
       messageBubbleAvator: true,
       olStatus: true,
+      autoTypeSearchEnabled :false,
       // awsS3Server :true,
       onInit: onInitialize,
       onTabClicked : function(tabDetail) {
