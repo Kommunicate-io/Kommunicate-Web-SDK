@@ -221,7 +221,7 @@ const getSettings = async function(applicationId){
     let customer = await  customerService.getCustomerByApplicationId(applicationId);
     let settings = await integrationSettingService.getIntegrationSetting(customer.id,AGILE_CRM);
     if(settings.length == 0){
-        logger.info("agile crm is not integrated for Application Id",appId);
+        logger.info("agile crm is not integrated for Application Id",applicationId);
         return null;
     }else{
        return settings[0];  
