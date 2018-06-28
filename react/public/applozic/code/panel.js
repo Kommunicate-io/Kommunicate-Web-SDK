@@ -79,18 +79,6 @@ $(document).ready(function() {
                 // ul.appendChild(li);
                 }
                     if (typeof user !== "undefined") {
-<<<<<<< HEAD
-                        if(!$.isEmptyObject(user.metadata) ){
-                            var user_info = user.metadata;
-                            delete user_info.kmClearbitData;
-                            if(!$.isEmptyObject(user_info)){
-                                if(user.roleType === 3 && user_info.KM_PSEUDO_USER === "true") {
-                                    $("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
-                                }
-                                $("#km-sidebar-user-info-wrapper").removeClass('n-vis').addClass('vis');
-                                $.map( user_info, function( val, i ) {
-                                    $("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+i+'</span>' + " : " +'<span class="km-user-info-meatadata-value">'+user_info[i]+'</span></p>');
-=======
                         if(!$kmApplozic.isEmptyObject(user.metadata) ){
                             var userMetadata = user.metadata;
                             // delete userMetadata.kmClearbitData;
@@ -120,7 +108,6 @@ $(document).ready(function() {
                                         $kmApplozic("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+key+'</span>' + " : " +'<span class="km-user-info-meatadata-value">'+value+'</span></p>');
                                     }
                                     
->>>>>>> dcf1cef2... KM_PSEUDO_USER  updated
                                 });
 
                             }
