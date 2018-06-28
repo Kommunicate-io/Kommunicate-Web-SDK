@@ -82,7 +82,7 @@
     }
 },
     "pluginProperties": {
-      "pseudoNameEnabled": false
+      "pseudoNameEnabled": true
     },
     "rabbitmq":{
         "host":"apps-test.applozic.com",
