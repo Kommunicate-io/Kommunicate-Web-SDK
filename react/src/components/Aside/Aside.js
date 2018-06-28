@@ -210,22 +210,20 @@ class Aside extends Component {
   setUpAgentTakeOver(group) {
     var takeOverEleContainer = document.getElementById("km-take-over-bot-container"), takeOverEleText = document.querySelector("#km-bot-active-text p>strong"), pseudoNameIcon = document.getElementById("pseudo-name-icon");
     takeOverEleContainer.style.display = "none";
+    pseudoNameIcon.classList.remove("vis");
+    pseudoNameIcon.classList.add("n-vis");
     
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-          console.log(user);
-            if(typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 3 && user.metadata.KM_PSEUDO_USER === true) {
-              console.log(user.metadata);
-              pseudoNameIcon.classList.add("vis");
+          // console.log(user);
+            if(typeof user !== "undefined" && user.roleType == 3 && user.metadata.KM_PSEUDO_USER == "true") {
+              // console.log(user.metadata);
               pseudoNameIcon.classList.remove("n-vis");
-              
+              pseudoNameIcon.classList.add("vis");
               return;
-            } else {
-              pseudoNameIcon.classList.add("n-vis");
-              pseudoNameIcon.classList.remove("vis");
             }
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               takeOverEleText.innerHTML = user.displayName; 
