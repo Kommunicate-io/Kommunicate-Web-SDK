@@ -4,7 +4,7 @@ import moment from 'moment';
 const CommonUtils = {
     setUserSession: function(userSession) {
         userSession.isAdmin = userSession.isAdmin | false;
-        userSession.imageLink = (typeof userSession.imageLink === "undefined") ? getResource().defaultImageUrl : userSession.imageLink;
+        userSession.imageLink = (typeof userSession.imageLink === "undefined") ? (userSession.applozicUser.imageLink?userSession.applozicUser.imageLink: getResource().defaultImageUrl) : userSession.imageLink;
         localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
     },
     getUserSession: function() {
