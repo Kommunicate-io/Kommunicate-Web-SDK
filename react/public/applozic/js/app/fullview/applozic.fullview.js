@@ -2793,7 +2793,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=0",
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
@@ -5557,7 +5557,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				kmUtils.ajax({
-					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam),
+					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1" + roleNameListParam,
 					type: 'get',
 					global: false,
 					success: function (response) {
