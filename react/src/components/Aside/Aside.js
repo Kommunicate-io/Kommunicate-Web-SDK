@@ -15,7 +15,8 @@ import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
 import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
-
+import ReactModal from 'react-modal';
+import {PseudoNameImage} from '../../views/Faq/LizSVG';
 
 
 class Aside extends Component {
@@ -38,7 +39,8 @@ class Aside extends Component {
         3: 'Spam',
         4: 'Duplicate'
       },
-      group: null
+      group: null,
+      modalOpen: false,
     };
   }
   toggle(tab) {
@@ -97,6 +99,12 @@ class Aside extends Component {
   openModal = (index) => {
     this.setState({ modalIsOpen: true});
   }
+  onOpenModal = () => {
+    this.setState({ modalOpen: true});
+  }
+  onCloseModal = () => {
+    this.setState({ modalOpen: false});
+  }
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
@@ -124,6 +132,7 @@ class Aside extends Component {
   loadBots() {
     window.$kmApplozic.fn.applozic('fetchContacts', { roleNameList: ['BOT'], callback: function (response) { } });
   }
+ 
 
   initConversation(groupId) {
     var that = this;
@@ -137,7 +146,6 @@ class Aside extends Component {
           that.selectAssignee();
           that.selectStatus();
           that.setUpAgentTakeOver(response);
-          
         }
     });
   }
@@ -181,6 +189,7 @@ class Aside extends Component {
   removeServiceBots() {
     var that = this;
     var group = that.state.group;
+    var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
@@ -188,18 +197,21 @@ class Aside extends Component {
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               that.removeGroupMember(group.groupId, user.userId);  
+              that.changeAssignee(loggedInUserId);
             }
           }
         }); 
       }
     }
-    var takeOverEle = document.getElementById("takeover-from-bot");
-    takeOverEle.style.display = "none";    
+    var takeOverEleContainer = document.getElementById("km-take-over-bot-container");
+    takeOverEleContainer.style.display = "none";    
   }
 
   setUpAgentTakeOver(group) {
-    var takeOverEle = document.getElementById("takeover-from-bot");
-    takeOverEle.style.display = "none";
+    var takeOverEleContainer = document.getElementById("km-take-over-bot-container"), takeOverEleText = document.querySelector("#km-bot-active-text p>strong"), pseudoNameIcon = document.getElementById("pseudo-name-icon");
+    takeOverEleContainer.style.display = "none";
+    pseudoNameIcon.classList.remove("vis");
+    pseudoNameIcon.classList.add("n-vis");
     
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
@@ -207,7 +219,9 @@ class Aside extends Component {
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              takeOverEle.style.display = "block";              
+              takeOverEleText.innerHTML = user.displayName; 
+              takeOverEleContainer.style.display = "flex";          
+              // console.log(user.displayName);         
               return;
             }
           }
@@ -521,18 +535,89 @@ class Aside extends Component {
                     </div>
                     <div className="panel-content">
                       <div id="km-toolbar" className="km-toolbar blk-lg-12 n-vis">
-                          <div className="row">
+                          <div className="km-new-conversation-header">
+
+                            <div id="km-tab-header" className="km-box-top n-vis">
+                              <div id="km-tab-individual"
+                                className="km-tab-individual km-row">
+                                <div className="blk-lg-8 km-box-title">
+                                  <div id="km-group-tab-title" className="n-vis">
+                                    <a id="km-tab-info" href="javascript:void(0)" className="km-tab-info">
+                                      <div className="km-tab-title km-truncate name"></div>
+                                      <div className="km-tab-status km-truncate n-vis km-hide"></div>
+                                      <div className="km-typing-box km-truncate n-vis">
+                                        <span className="name-text"></span><span>typing...</span>
+                                      </div>
+                                    </a>
+                                    
+                                  </div>
+                                  <div id="km-individual-tab-title"
+                                    className="km-individual-tab-title">
+                                    <a id="km-tab-info-individual" href="javascript:void(0)" className="km-tab-info">
+                                      <div className="km-tab-title km-truncate name"></div>
+                                      <div className="km-tab-status km-truncate n-vis km-hide"></div>
+                                      <div className="km-typing-box km-truncate n-vis">
+                                        <span className="name-text"></span><span>typing...</span>
+                                      </div>
+                                    </a>
+                                  </div>
+                                </div>
+                                <div className="blk-lg-4 move-right">
+                                  <div id="km-tab-menu" className="km-menu-item km-text-right n-vis">
+                                    <div className="km-dropdown-toggle" data-toggle="kmdropdown"
+                                      aria-expanded="true">
+                                      <img src="/applozic/images/icon-menu.png" className="km-menu-icon"
+                                        alt="Tab Menu"/>
+                                    </div>
+                                    <ul id="km-tab-menu-list"
+                                      className="km-dropdown-menu km-tab-menu-box menu-right"
+                                      role="menu">
+                                      <li className="km-tab-message-option vis"><a href="javascript:void(0)"
+                                        id="km-delete-button"
+                                        className="km-delete-button menu-item vis"
+                                        title="Clear Messages"> Clear Messages </a></li>
+                                      <li id="km-li-block-user" className="vis"><a href="javascript:void(0)"
+                                        id="km-block-button" className="menu-item" title="Block User">Block
+                                          User</a></li>
+                                      <li id="km-li-group-info"
+                                        className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                        id="km-group-info-btn" className="menu-item km-group-info-btn"
+                                        title="Group Info"> Group Info </a></li>
+                                      <li id="km-li-leave-group"
+                                        className="km-group-menu-options n-vis"><a href="javascript:void(0)"
+                                        id="km-leave-group-btn" className="menu-item" title="Exit Group">
+                                          Exit Group </a></li>
+                                    </ul>
+                                  </div>
+                                  <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
+                                    viewBox="0 0 15.433 13.883">
+                                        <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
+                                      transform="translate(0 5.998)" fill="#42b9e8" />
+                                        <path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z"
+                                      data-name="Shape" transform="translate(1.954 8.626)"
+                                        fill="#42b9e8" />
+                                        <path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z"
+                                        data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
+                                    </svg>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
                             {/*<div className="col-sm-1">
                               <i className="fa fa-user fa-lg mt-2"></i>
                             </div>
                             */}
-
-                            <div className="form-group col-sm-1">
+                            
+                            <div className="form-group col-sm-1 n-vis">
                                 <span className="">Assign</span>
                             </div>
-                            <div className="form-group col-sm-3">
-
-                              <select className="form-control" id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} >
+                            <div className="">
+                              <div className="select-container">
+                                <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
+                              </div>
+                              
                               {/*
                                {
                                   this.state.agents.map(function(user) {
@@ -541,7 +626,7 @@ class Aside extends Component {
                                   })
                                }
                                 */}
-                               </select>
+                               
 
                             </div>
 
@@ -550,77 +635,30 @@ class Aside extends Component {
                               <i className="fa fa-flag-o fa-lg mt-2"></i>
                             </div>
                             */}
-                            <div className="form-group col-sm-1">
+                            <div className="form-group col-sm-1 n-vis">
                                 <span className="">Status</span>
                             </div>
-                            <div className="form-group col-sm-3">
-                              <select className="form-control" id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
-                                <option value="0">Open</option>
-                                <option value="2">Close</option>
-                                <option value="3">Spam</option>
-                                <option value="4">Duplicate</option>
-                              </select>
-                            </div>
-                            <div className="form-group col-sm-2">
-                                <button id="takeover-from-bot" className="btn btn-secondary btn-sm" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
-                            </div>
-
-                          </div>
-                      </div>
-                      <div id="km-tab-header" className="km-box-top n-vis">
-                        <div id="km-tab-individual"
-                          className="km-tab-individual km-row">
-                          <div className="blk-lg-8 km-box-title">
-                            <div id="km-group-tab-title" className="n-vis">
-                              <a id="km-tab-info" href="javascript:void(0)" className="km-tab-info">
-                                <div className="km-tab-title km-truncate name"></div>
-                                <div className="km-tab-status km-truncate n-vis"></div>
-                                <div className="km-typing-box km-truncate n-vis">
-                                  <span className="name-text"></span><span>typing...</span>
-                                </div>
-                              </a>
-                            </div>
-                            <div id="km-individual-tab-title"
-                              className="km-individual-tab-title">
-                              <a id="km-tab-info-individual" href="javascript:void(0)" className="km-tab-info">
-                                <div className="km-tab-title km-truncate name"></div>
-                                <div className="km-tab-status km-truncate n-vis"></div>
-                                <div className="km-typing-box km-truncate n-vis">
-                                  <span className="name-text"></span><span>typing...</span>
-                                </div>
-                              </a>
-                            </div>
-                          </div>
-                          <div className="blk-lg-4 move-right">
-                            <div id="km-tab-menu" className="km-menu-item km-text-right">
-                              <div className="km-dropdown-toggle" data-toggle="kmdropdown"
-                                aria-expanded="true">
-                                <img src="/applozic/images/icon-menu.png" className="km-menu-icon"
-                                  alt="Tab Menu"/>
+                            <div className="">
+                              <div className="select-container">
+                                <select id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
+                                  <option value="0">Open</option>
+                                  <option value="2">Close</option>
+                                  <option value="3">Spam</option>
+                                  <option value="4">Duplicate</option>
+                                </select>
                               </div>
-                              <ul id="km-tab-menu-list"
-                                className="km-dropdown-menu km-tab-menu-box menu-right"
-                                role="menu">
-                                <li className="km-tab-message-option vis"><a href="javascript:void(0)"
-                                  id="km-delete-button"
-                                  className="km-delete-button menu-item vis"
-                                  title="Clear Messages"> Clear Messages </a></li>
-                                <li id="km-li-block-user" className="vis"><a href="javascript:void(0)"
-                                  id="km-block-button" className="menu-item" title="Block User">Block
-                                    User</a></li>
-                                <li id="km-li-group-info"
-                                  className="km-group-menu-options n-vis"><a href="javascript:void(0)"
-                                  id="km-group-info-btn" className="menu-item km-group-info-btn"
-                                  title="Group Info"> Group Info </a></li>
-                                <li id="km-li-leave-group"
-                                  className="km-group-menu-options n-vis"><a href="javascript:void(0)"
-                                  id="km-leave-group-btn" className="menu-item" title="Exit Group">
-                                    Exit Group </a></li>
-                              </ul>
                             </div>
-
+                            
                           </div>
-                        </div>
+                          <hr/>
+                          <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
+                            <div className="km-bot-active-text" id="km-bot-active-text">
+                                <p><span>&#9679;</span> <strong></strong> is active</p>
+                            </div>
+                            <div className="">
+                              <button id="takeover-from-bot" className="km-button km-button--secondary" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
+                            </div>
+                          </div>
                       </div>
                       <div id="km-product-group"
                         className="km-tab-panel km-btn-group km-product-group">
@@ -1070,10 +1108,41 @@ class Aside extends Component {
           
           <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
         </Modal>
+        <ReactModal isOpen={this.state.modalOpen} style={customStyles}  shouldCloseOnOverlayClick={true} ariaHideApp={false}>
+          <div className="row" style={{marginTop:"80px"}}>
+            <div className="col-lg-5 col-md-6 col-sm-12 pseudo-name-intro-text-container">
+              <p className="intro text-center">Introducing</p>
+              <h1 className="pseudo text-center">PSEUDO NAMES</h1>
+              <p className="anonymous text-center">for your anonymous visitors</p>
+              <p className="desc">Pseudo names help identify anonymous visitors easily when they initiate a conversation and facilitates a better cross team collaboration.<br/><br/>Look out for the <span><svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3" viewBox="0 0 15.433 13.883"><path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z" transform="translate(0 5.998)" fill="#42b9e8" /><path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z" data-name="Shape" transform="translate(1.954 8.626)" fill="#42b9e8" /><path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z" data-name="Shape" transform="translate(2.965)" fill="#42b9e8" /></svg></span> icon in the conversation screen to identify visitors with pseudo names.</p>
+              <button className="km-button km-button--primary" onClick={this.onCloseModal}>Cool! Got it</button>
+            </div>
+            <div className="col-lg-7 col-md-6 col-sm-12 pseudo-name-intro-svg-container">
+              <PseudoNameImage />
+            </div>
+          </div>
+          <div className="close-button-container" onClick={this.onCloseModal}>
+            <button className="close-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></button>
+          </div>
+        </ReactModal>
       </aside>
       
     )
   }
 }
+
+const customStyles = {
+  content : {
+    top                   : '80px',
+    // left                  : '50%',
+    // right                 : 'auto',
+    bottom                : '80px',
+    // marginRight           : '-50%',
+    // transform             : 'translate(-50%, -50%)'
+    maxWidth              : '1000px',
+    margin                : '0 auto',
+    overflowY             : 'auto'
+  }
+};
 
 export default Aside;

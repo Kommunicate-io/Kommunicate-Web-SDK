@@ -1,0 +1,116 @@
+<section class="homepage-beta-features-section homepage-ab-beta-features-section" id="homepage-beta-features-section">
+    
+  <div class="container">
+    <!-- <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="section-heading">
+          Features that you will love
+        </h1>
+        <hr class="hr">
+      </div>
+    </div> -->
+
+    <div class="row naccs">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 tabs-images-container" id="tabs-images-container">
+        {% assign svgs = site.data.svgs.homepageFeatures %}
+          <ul class="nacc">
+            <li class="active">
+             <div>
+               {{ svgs.conversations }}
+             </div>
+            </li>
+            <li>
+             <div>
+              {{ svgs.botIntegration }}
+             </div>
+            </li>
+            <li>
+             <div>
+                {{ svgs.reporting }}
+             </div>
+            </li>
+            <li>
+             <div>
+               {{ svgs.faqs }}
+             </div>
+            </li>
+            <li>
+             <div>
+                {{ svgs.integrations }}
+             </div>
+            </li>
+          </ul>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+        
+          <h3 class="features-new-heading">Features you will love.</h3>
+          <a href="/features/" class="see-docs-link">EXPLORE ALL FEATURES ➜</a>
+          <div class="menu">
+            <div class="active">
+              <!-- <span class="light"></span> -->
+              <span>Conversations</span>
+            </div>
+            <div>
+              <!-- <span class="light"></span> -->
+              <span>Bot Integration</span>
+            </div>
+            <div>
+              <!-- <span class="light"></span> -->
+              <span>Agent Wise Reporting</span>
+            </div>
+            <div>
+              <!-- <span class="light"></span> -->
+              <span>FAQs</span>
+            </div>
+            <div>
+              <!-- <span class="light"></span> -->
+              <span>Integrations</span>
+            </div>
+           </div>
+        </div>
+      </div>
+
+    </div>  
+  </div>
+  </div>
+  </div>
+
+</section>
+
+<script>
+
+var div = $(".naccs .menu div"), fiveSecTimer;
+
+
+ //on click to tab, turn it on, and turn previously-on tab off
+$(div).on("mouseover", function() {
+	var numberIndex = $(this).index();
+	if (!$(this).is("active")) {
+		$(".naccs .menu div").removeClass("active");
+		$(".naccs ul li").removeClass("active");
+		$(this).addClass("active");
+		$(".naccs ul").find("li:eq(" + numberIndex + ")").addClass("active");
+
+    var listItemHeight = $(".naccs ul").find("li:eq(" + numberIndex + ")").innerHeight();
+		$(".naccs .tabs-images-container").height(listItemHeight + "px");
+
+    stopInterval();
+    fiveSecTimer = setInterval(startInterval, 5000);
+	}
+
+});
+
+function startInterval() {
+  //get currently active tab
+  // var tabListDiv = $(".naccs ul li").filter(".active");
+  var mainDiv = $(".naccs .menu div").filter(".active");
+  //click either next tab, if exists, else first one
+	var tabListDiv = mainDiv.index() < div.length-1 ? mainDiv.next() : div.first();
+	tabListDiv.mouseover();
+}
+function stopInterval() {
+  //Stopping the startInterval()
+  clearInterval(fiveSecTimer);
+}
+
+</script>

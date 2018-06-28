@@ -45,26 +45,10 @@ To get the user details of logged in user, use this code snippet:
 KMUser user = KMUser.getLoggedInUser(context);
 ```
 
-#### Starting Anonymous chat:
-You can start a chat by generating a Random userId for a user and then logging in the user to Kommunicate. Use the below method to generate a Random userId:
+#### Starting Visitor Chat:
+You can start a visitor's chat by calling the below method from the SDK.
 ```java
-  public String generateUserId() {
-        StringBuilder text = new StringBuilder("");
-        SecureRandom random = new SecureRandom();
-        String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-        for (int i = 0; i < 32; i++) {
-            text.append(possible.charAt(random.nextInt(possible.length())));
-        }
-        return text.toString();
-    }
-```
-Then login the user to Kommunicate:
-```java
-  KMUser user = new KMUser();
-  user.setUserId(generateUserId());
-
-  Kommunicate.login(this, user, new KMLoginHandler() {
+  Kommunicate.loginAsVisitor(this, new KMLoginHandler() {
       @Override
       public void onSuccess(RegistrationResponse registrationResponse, Context context) {
             //do something in on success

@@ -5,8 +5,9 @@ const applicationUtils = require('./utils');
 const logger = require('../utils/logger');
 const constant = require('./utils');
 const customerService=require('../customer/customerService');
-const appSetting = require("../setting/application/appSettingService")
-
+const appSetting = require("../setting/application/appSettingService");
+const GROUP_ROLE = require("../utils/constant").GROUP_ROLE;
+const DEFAULT_BOT = require("../register/bots").DEFAULT_BOT;
 
 exports.saveWelcomeMessage=(req,res)=>{
     logger.info("request received to post weelcome message");
@@ -317,17 +318,20 @@ exports.processAwayMessage = function(req,res){
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
         let collectEmail = false;
+        let isBotRoutingEnabled = customer.botRouting;
+        let groupUsers = [];
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
-                .then(([onlineUser,isGroupUserAnonymous])=>{
-            
+                .then(([onlineUser,group])=>{
+                 groupUsers = group.groupInfo.groupUsers;              
+                 let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;                
                if(onlineUser){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");
                 res.json({"code":"AGENTS_ONLINE","message":"skiping away message. some agents are online"}).status(200);
                 return;
-               }else if(isGroupUserAnonymous){
+               }else if(group.isGroupUserAnonymous){
                 // agents are offline. group user is anonymous
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
                 
@@ -335,15 +339,21 @@ exports.processAwayMessage = function(req,res){
                 // agents are offline and user is known.
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
                }
-               //get status of collect email
-                Promise.resolve(appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }))
-                .then(response => {  
+                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId)])
+                .then(([response,assignedUser]) => {  
                      collectEmail = response.data.collectEmail;
                      return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
                         let data = {"messageList":messageList, "collectEmail":collectEmail}
-                        res.json({"code":"SUCCESS",data:data}).status(200);
+                        // res.json({"code":"SUCCESS",data:data}).status(200);
+                        // conversation assigned to bot, skip away message
+                        if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
+                            data = {"messageList":[], "collectEmail":collectEmail}
+                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
+                        } else {
+                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO AGENT", data:data}).status(200);
+                        }
                     })
                 })
                

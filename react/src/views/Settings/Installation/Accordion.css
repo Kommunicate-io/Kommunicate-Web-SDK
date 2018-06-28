@@ -243,3 +243,7 @@
 .copy-code-button-div {
   padding-top: 0px;
 }
+
+.code-container.javascript .identify-users>a {
+  pointer-events: all;
+}

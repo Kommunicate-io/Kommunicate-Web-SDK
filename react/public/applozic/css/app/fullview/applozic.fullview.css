@@ -3338,3 +3338,156 @@ ol, ul {
 	position: absolute;
 	bottom: 12px;
 }
+#km-group-info-close {
+	display: none;
+}
+
+/* New design for Conversation header to accommodate Pseudo Name icognito icon */
+.km-new-conversation-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.km-new-conversation-header-bot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px 0px;
+}
+.km-bot-active-text p {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.5px;
+	color: #7a7676;
+	margin-bottom: 0px;
+}
+.km-bot-active-text p span {
+	font-size: 18px;
+	color: #1cde14;
+}
+.km-hide {
+	display: none;
+}
+.km-new-conversation-header .km-tab-title-w-status, .km-tab-title-w-typing {
+	line-height: inherit;
+	height: auto;
+}
+.km-new-conversation-header .km-box-top {
+	border: none;
+	min-width: 200px;
+	max-width: 320px;
+}
+.km-new-conversation-header {
+	/* border-bottom: solid 1px #eaeaea; */
+	padding: 10px 0px 7px; 
+}
+.km-toolbar hr {
+	margin: 0px -10px; 
+}
+#km-toolbar {
+	border: none !important;
+}
+.km-new-conversation-header .select-container select{
+	-webkit-appearance: none;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.5px;
+	color: #5a5757;
+	width: 100%;
+}
+.km-new-conversation-header .select-container::after{
+	content: "\25E3";
+	transform: translateY(-60%) rotate(-45deg);
+	font-size: 13px;
+	color:  #b1b3b1;
+}
+.km-new-conversation-header .pseudo-name-icon svg {
+	width: 20px;
+	height: auto;
+	vertical-align: middle;
+}
+.km-new-conversation-header .pseudo-name-icon {
+	cursor: pointer;
+}
+.km-new-conversation-header .km-tab-individual .km-box-title {
+	padding-left: 0px;
+}
+.km-new-conversation-header #km-tab-info {
+	pointer-events: none;
+}
+
+.pseudo-name-intro-text-container .intro {
+	font-size: 22px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.8px;
+	color: #8a8a8d;
+	text-transform: uppercase;
+	margin-bottom: 8px;
+}
+.pseudo-name-intro-text-container .pseudo {
+	font-size: 28px;
+	font-weight: 500;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 1px;
+	color: #595959;
+	text-transform: uppercase;
+	background-color: #eaeced;
+}
+.pseudo-name-intro-text-container .anonymous {
+	font-size: 18px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 1.2px;
+	color: #535357;
+}
+.pseudo-name-intro-text-container .desc {
+	font-size: 18px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.22;
+	letter-spacing: 0.5px;
+	color: #96969b;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+.pseudo-name-intro-text-container .desc span svg {
+	width: 18px;
+    height: auto;
+    vertical-align: middle;
+}
+.pseudo-name-intro-svg-container svg {
+	box-shadow: 0 2px 5px 0 rgba(41, 39, 39, 0.5);
+}
+.close-button-container {
+	position: absolute;
+	top: 20px;
+	right: 15px;
+}
+.close-button-container .close-btn {
+	text-transform: uppercase;
+	background: transparent;
+	outline: none;
+	box-shadow: none;
+	border: none;
+}
+.close-button-container .close-btn svg {
+    width: 30px;
+    height: auto;
+}

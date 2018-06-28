@@ -73,7 +73,7 @@ exports.createCustomer = customer => {
           return userModel.bulkCreate([user, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
             console.log("user created", user ? user.dataValues : null);
             console.log("created bot ", bot.dataValues);
-            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription })
+            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, botRouting: customer.botRouting })
             return getResponse(signupUser, application);
           });
         });
@@ -202,7 +202,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
 
   let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId }
   kmUser.password = bcrypt.hashSync(options.password, 10);
-  kmUser.apzToken = bcrypt.hashSync(options.password, 10);
+  //kmUser.apzToken = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');
   kmUser.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
 

@@ -1386,6 +1386,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (typeof USER_TYPE_ID == 'number') {
                     userPxy.userTypeId = USER_TYPE_ID;
                 }
+                if (optns.metadata) {
+                    userPxy.metadata = optns.metadata;
+                }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
@@ -3128,8 +3131,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         }
                     }
                    // populate away messsage for support group..
-                    if(params.isGroup){
-                        Kommunicate.getAwayMessage({"applicationId":MCK_APP_ID,"conversationId":params.tabId},KommunicateUI.populateAwayMessage);
+                    if (params.isGroup) {
+                        Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, KommunicateUI.populateAwayMessage);
                     }
                   } else {
                     CONTACT_SYNCING = true;

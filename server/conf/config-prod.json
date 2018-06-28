@@ -29,7 +29,8 @@
           "passwordResetUrl": "https://chat.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
           "dashboardHostUrl":"https://dashboard.kommunicate.io",
           "applozicHostUrl" : "https://chat.kommunicate.io",
-          "getUserInfo": "https://chat.kommunicate.io/rest/ws/user/v2/detail"
+          "getUserInfo": "https://chat.kommunicate.io/rest/ws/user/v2/detail",
+          "rasafaq":"https://rasa.kommunicate.io"
         },
         "cache": {
           "hazelCache": {
@@ -40,10 +41,10 @@
           }
         },
         "mailProvider":{
-          "accessKey":"AKIAIDIQARZR6CEWS57Q", 
-          "accessPassword":"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO", 
+          "accessKey":"AKIAIDIQARZR6CEWS57Q",
+          "accessPassword":"AqnvC1bnGjsnYBh5yXLMQF90WpAmEld5yyZezI4vtQiO",
           "serviceEmail":"support@kommunicatemail.io",
-          "serviceProvider":"2" 
+          "serviceProvider":"2"
         },
         "s3Access": {
           "accessKeyId": "AKIAJ7QAZU7R2GPBCXGQ",
@@ -55,7 +56,7 @@
             {"type": 1, "url": "", "notifyVia": "0", "fallbackTime": 300},
             {"type": 2, "url": "", "notifyVia": "0", "fallbackTime": 300}
             ],
-      
+
           "companyDetail":{
             "companyLogo": "https://dashboard.kommunicate.io/img/logo02.png",
             "companyAddress": "Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306",
@@ -81,7 +82,7 @@
           }
       },
       "pluginProperties": {
-        "pseduoNameEnabled": false 
+        "pseudoNameEnabled": false
       },
 
         "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",

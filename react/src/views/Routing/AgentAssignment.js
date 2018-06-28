@@ -40,6 +40,9 @@ componentWillMount (){
 }
 
 componentDidMount(){
+    this.getIntegratedBots();
+}
+getIntegratedBots = () => {
     getIntegratedBots().then(response => {
         // console.log(response.allBots)
         if (response && response.allBots && response.allBots.length > 0) {
@@ -145,8 +148,9 @@ toggleConversationAssignment = () => {
     // }
     return Promise.resolve(enableOrDisableBotRouting({ routingState: status }).then(response => {
         if (response.status === 200 && response.data.code === "SUCCESS") {
-            status == 1 && Notification.success('Bot routing enabled');
-            status == 0 && Notification.success('Bot routing disabled');
+            let userSession = CommonUtils.getUserSession();
+            userSession.botRouting = status;
+            CommonUtils.setUserSession(userSession);
         }
     })).catch(err => {
         console.log("error while updating bot routing", err);
@@ -233,7 +237,9 @@ toggleConversationAssignment = () => {
                                                                         conversationHandlingByBot(bot.userName, 1).then(response => {
                                                                             // console.log(response);
                                                                             if(response.data.code === "success"){
-                                                                                Notification.info('Conversations assigned to ' + bot.name)
+                                                                                Notification.info('Conversations assigned to ' + bot.name);
+                                                                                window.Aside.loadAgents();
+                                                                                this.getIntegratedBots();
                                                                             } else {
                                                                                  Notification.info('Conversations not assigned to ' + bot.name)
                                                                             }

@@ -263,30 +263,28 @@ function ApplozicSidebox() {
     function mckInitSidebox(userName) {
         try {
             var options = applozic._globals;
-            var pseduoNameEnabled =KM_PLUGIN_SETTINGS.pseduoNameEnabled;
-            if(applozic.PRODUCT_ID =='kommunicate'){
-                    if(!options.userId){
-               		//  if (Cookies.get("kommunicate-id")) {
-                        if (KommunicateUtils.getCookie('kommunicate-id')) {
-                            options.userId = KommunicateUtils.getCookie('kommunicate-id');
-               			// options.userId = Cookies.get("kommunicate-id");
-               		    }else {
-               			options.userId = KommunicateUtils.getRandomId();
-                        //    Cookies.set("kommunicate-id", options.userId);
-                        KommunicateUtils.setCookie('kommunicate-id',options.userId,1);
-                        if (pseduoNameEnabled) {
-                            if ( KommunicateUtils.getCookie('userName')) {
+            var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            if (applozic.PRODUCT_ID == 'kommunicate') {
+                if (!options.userId) {
+                    if (KommunicateUtils.getCookie('kommunicate-id')) {
+                        options.userId = KommunicateUtils.getCookie('kommunicate-id');
+                    } else {
+                        options.userId = KommunicateUtils.getRandomId();
+                        KommunicateUtils.setCookie('kommunicate-id', options.userId, 1);
+                        if (pseudoNameEnabled) {
+                            if (KommunicateUtils.getCookie('userName')) {
                                 options.userName = KommunicateUtils.getCookie('userName');
-                            }else {
-                                KommunicateUtils.setCookie('userName',userName, 1);
-                                options.userName = userName
+                            } else {
+                                KommunicateUtils.setCookie('userName', userName, 1);
+                                options.userName = userName;
                             }
+                            options.metadata={"KM_PSEUDO_USER":"true"};
                         }
-               		}
+                    }
 
-            	}else{
-            		// ask for email id;
-            	}
+                } else {
+                    // ask for email id;
+                }
             }
             if (typeof options !== 'undefined') {
                 options.ojq = $original;
@@ -296,7 +294,7 @@ function ApplozicSidebox() {
             }
         } catch (e) {
             console.log(e);
-            console.log("Plugin loading error. Refresh page.",e);
+            console.log("Plugin loading error. Refresh page.", e);
             if (typeof MCK_ONINIT === 'function') {
                 MCK_ONINIT("error");
             }

@@ -22,15 +22,6 @@
         <a href="https://calendly.com/kommunicate/15min" class="km-button km-button--primary cta-signup-btn" target="_blank">Request a demo</a>
 
         <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form" class="pre-signup-form">
-          <div class="signup-success-msg-div hide">
-            <h1 class="signup-success-msg-text">Yay! You've successfully signed up for Kommunicate Beta.</h1>
-          </div>
-          <div class="signup-error-msg-div1 hide">
-            <h1 class="signup-error-msg-text1">Hey! You are already in our beta list :)</h1>
-          </div>
-          <div class="signup-error-msg-div2 hide">
-            <h1 class="signup-error-msg-text1">Unable to process your request. Please try again after sometime.</h1>
-          </div>
           <input type="email" name="email" id="email-pre-signup" placeholder="Your email address" autocomplete="off" class="cta-email-pre-signup" required>
           <br>
           <br>

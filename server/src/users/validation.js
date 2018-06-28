@@ -61,6 +61,13 @@ module.exports.botStatus = {
     status: joi.number().integer().only([0, 1])
   }
 }
+module.exports.userActivation={
+  query: {
+    userName: joi.string().required(),
+    applicationId: joi.string().required(),
+    deactivate: joi.string().only(['true', 'false'])
+  }
+}
 
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;

@@ -300,7 +300,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= '+json.headerImgSrc+'/></div>' 
+            json.headerImgSrc = '<div class="km-faq-list--header_text-img"><img src= "'+json.headerImgSrc+'"  alt = "image" /></div>';
         }if(json.headerText){
             json.headerText ='<p class="km-faq-list--header_text">'+json.headerText+"</p>"
         }
@@ -309,7 +309,7 @@ Kommunicate.markup.getListContainerMarkup = function(metadata){
             json.elements =   json.elements.map(function(item){
                // checking for image
                 if(item.imgSrc){
-                item.imgSrc =  '<img src ='+item.imgSrc +'/>';
+                item.imgSrc =  '<img src ="'+item.imgSrc +'" />';
                }
                //checking for type
                if(item.action && item.action.type=="link"){
