@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 35 35">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #a1a4a7;
+      }
+
+      .cls-2 {
+        clip-path: url(#clip-path);
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+    <clipPath id="clip-path">
+      <circle id="Mask" class="cls-1" cx="17.5" cy="17.5" r="17.5"/>
+    </clipPath>
+  </defs>
+  <g id="Group_4" data-name="Group 4" transform="translate(-70 -185)">
+    <g id="vipin_copy_3" data-name="vipin copy 3" transform="translate(70 185)">
+      <circle id="Mask-2" data-name="Mask" class="cls-1" cx="17.5" cy="17.5" r="17.5"/>
+    </g>
+    <g id="Incognito_Copy" data-name="Incognito Copy" transform="translate(80 195)">
+      <path id="Shape" class="cls-3" d="M7.75,0A12.3,12.3,0,0,0,0,2.83H15.433A12.128,12.128,0,0,0,7.75,0Z" transform="translate(0 5.998)"/>
+      <path id="Shape-2" data-name="Shape" class="cls-3" d="M9.3,5.257A2.564,2.564,0,0,1,6.739,2.7v-.2A2.946,2.946,0,0,0,5.7,2.289a2.355,2.355,0,0,0-.573.07v.269A2.561,2.561,0,1,1,2.561.068,2.58,2.58,0,0,1,4.987,1.685a3.734,3.734,0,0,1,.824-.094,3.641,3.641,0,0,1,1.063.162A2.556,2.556,0,0,1,9.3,0a2.634,2.634,0,0,1,2.561,2.7A2.564,2.564,0,0,1,9.3,5.257ZM9.3.742A1.936,1.936,0,0,0,7.413,2.628,1.889,1.889,0,0,0,9.3,4.515a1.937,1.937,0,0,0,1.887-1.887A1.936,1.936,0,0,0,9.3.742Zm-6.739,0A1.936,1.936,0,0,0,.674,2.628a1.887,1.887,0,1,0,3.774,0,2.066,2.066,0,0,0-.135-.741A1.859,1.859,0,0,0,2.561.742Z" transform="translate(1.954 8.626)"/>
+      <path id="Shape-3" data-name="Shape" class="cls-3" d="M8.289,0,3.707.741,1.483,0,0,4.515H9.772Z" transform="translate(2.965)"/>
+    </g>
+  </g>
+</svg>
