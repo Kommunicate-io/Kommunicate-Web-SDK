@@ -79,6 +79,7 @@ $(document).ready(function() {
                 // ul.appendChild(li);
                 }
                     if (typeof user !== "undefined") {
+<<<<<<< HEAD
                         if(!$.isEmptyObject(user.metadata) ){
                             var user_info = user.metadata;
                             delete user_info.kmClearbitData;
@@ -89,6 +90,37 @@ $(document).ready(function() {
                                 $("#km-sidebar-user-info-wrapper").removeClass('n-vis').addClass('vis');
                                 $.map( user_info, function( val, i ) {
                                     $("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+i+'</span>' + " : " +'<span class="km-user-info-meatadata-value">'+user_info[i]+'</span></p>');
+=======
+                        if(!$kmApplozic.isEmptyObject(user.metadata) ){
+                            var userMetadata = user.metadata;
+                            // delete userMetadata.kmClearbitData;
+                            if(!$kmApplozic.isEmptyObject(userMetadata)){
+                                $kmApplozic("#km-sidebar-user-info-wrapper").removeClass('n-vis').addClass('vis');
+                                $kmApplozic.map( userMetadata, function( value, key ) {
+                                    try{
+                                        value= JSON.parse(userMetadata[key]);
+                                        
+                                    }catch(e){
+                                    
+                                    }
+                                    if (typeof value == 'object') {
+                                        switch (key) {
+                                            case 'KM_PSEUDO_USER':
+                                                if (!value.hidden || value.pseudoName && user.roleType === 3) {
+                                                    $("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
+                                                }
+                                            break;
+                                            case 'kmClearbitData':
+                                                displayCustInfo(value);
+                                            break;
+                                    } 
+                                    
+                                       
+                                    }else if (typeof  value =='string'){
+                                        $kmApplozic("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+key+'</span>' + " : " +'<span class="km-user-info-meatadata-value">'+value+'</span></p>');
+                                    }
+                                    
+>>>>>>> dcf1cef2... KM_PSEUDO_USER  updated
                                 });
 
                             }
@@ -106,14 +138,9 @@ $(document).ready(function() {
                         $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
                         $kmApplozic("#km-sidebar-user-email").html(user.email)
-                        if (typeof user.email !== "undefined") {
-                            if(user.metadata && user.metadata.kmClearbitData){
-                                var clearbitData=JSON.parse(user.metadata.kmClearbitData)
-                                displayCustInfo(clearbitData)
-                            }else {
-                                userSession.clearbitKey && clearbit(user.email, user.userId);
-                            //activeCampaign(user.email);
-                            }
+                        if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
+                            userSession.clearbitKey && clearbit(user.email, user.userId);
+                           
                         }
                     }
                 }
