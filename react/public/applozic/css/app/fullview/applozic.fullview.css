@@ -614,7 +614,7 @@ a:hover {
 	/* padding: 0 10px; */
 	min-height: 49px;
 	text-align: left;
-	border-bottom: 1px solid #F3F3F3;
+	/* border-bottom: 1px solid #F3F3F3; */
 }
 
 .km-box-top .icon {
@@ -3346,7 +3346,7 @@ ol, ul {
 .km-new-conversation-header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 }
 .km-new-conversation-header-bot {
 	display: flex;
@@ -3377,12 +3377,12 @@ ol, ul {
 }
 .km-new-conversation-header .km-box-top {
 	border: none;
-	min-width: 200px;
+	min-width: 180px;
 	max-width: 320px;
 }
 .km-new-conversation-header {
 	/* border-bottom: solid 1px #eaeaea; */
-	padding: 10px 0px 7px; 
+	padding: 13px 0px 13px; 
 }
 .km-toolbar hr {
 	margin: 0px -10px; 
@@ -3403,6 +3403,13 @@ ol, ul {
 	letter-spacing: 0.5px;
 	color: #5a5757;
 	width: 100%;
+	background: transparent;
+}
+.km-new-conversation-header .select-container {
+	border: 1px solid #e3e3e3;
+    padding: 7px 10px;
+	border-radius: 4px;
+	margin-right: 15px;
 }
 .km-new-conversation-header .select-container::after{
 	content: "\25E3";
@@ -3410,16 +3417,19 @@ ol, ul {
 	font-size: 13px;
 	color:  #b1b3b1;
 }
-.km-new-conversation-header .pseudo-name-icon svg {
+.km-new-conversation-header .pseudo-name-icon svg, .pseudo-name-icon svg {
 	width: 20px;
 	height: auto;
 	vertical-align: middle;
+	margin-left: -5px;
 }
-.km-new-conversation-header .pseudo-name-icon {
+.km-new-conversation-header .pseudo-name-icon, .pseudo-name-icon {
 	cursor: pointer;
+	margin-left: 10px;
 }
 .km-new-conversation-header .km-tab-individual .km-box-title {
 	padding-left: 0px;
+	/* margin-right: 10px; */
 }
 .km-new-conversation-header #km-tab-info {
 	pointer-events: none;
@@ -3490,4 +3500,22 @@ ol, ul {
 .close-button-container .close-btn svg {
     width: 30px;
     height: auto;
+}
+.km-new-conversation-header .select-labels span {
+	color: #8e8e8e;
+	font-size: 14px;
+	margin-right: 10px;	
+}
+.km-dispalyname-wrapper {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	margin-bottom: 10px;
+	padding: 0px 10px;
+}
+.km-dispalyname-wrapper div:first-child {
+	width: auto;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
