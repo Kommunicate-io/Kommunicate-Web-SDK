@@ -52,7 +52,7 @@ function initAutoSuggestions() {
     $kmApplozic.fn.applozic("logout");
   }
 
-  function chatLogin() {
+  var chatLogin = function () {
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     var userId = userSession.userName;
     var appId = userSession.application.applicationId;
