@@ -1227,6 +1227,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							});
 							if (result.imageLink && result.imageLink !== "") {
 								w.sessionStorage.setItem('userProfileUrl', result.imageLink);
+								w.localStorage.setItem('imageLink', result.imageLink);
 							}
 							$kmApplozic.ajaxPrefilter(function (options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
