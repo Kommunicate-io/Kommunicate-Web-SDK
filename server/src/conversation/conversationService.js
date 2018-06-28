@@ -154,13 +154,13 @@ const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
     let groupId = data.groupId || data.clientGroupId;
     let userKey = data.userKey || data.userId;
-    let groupInfo = { userIds: [], clientGroupIds: [groupId] }
+    //let groupInfo = { userIds: [], clientGroupIds: [groupId] }
     let header = {}
     return Promise.resolve(customerService.getCustomerByAgentUserKey(userKey)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
                 if (users) {
-                    let agents = getAgentsList(customer, users);
+                    let agents = getAgentsList(customer, users, groupId);
                     let userIds = agents.userIds;
                     let agentIds = agents.agentIds;
                     header = agents.header;
@@ -189,7 +189,7 @@ const addMemberIntoConversation = (data) => {
                         logger.info("adding assignee in round robin fashion");
                         assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
                     }
-                    groupInfo.userIds = userIds;
+                    let groupInfo = { groupDetails: userIds };
                     logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                     return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
                         logger.info('response', response.data)
@@ -258,7 +258,7 @@ const getConversationAssigneeFromMap = (userIds, key) => {
     });
 };
 
-const getAgentsList = (customer, users) => {
+const getAgentsList = (customer, users, groupId) => {
     let userIds = [];
     let agentIds = [];
     let header = {};
@@ -269,11 +269,11 @@ const getAgentsList = (customer, users) => {
                 header.apzToken = user.apzToken
             } if (customer.botRouting && user.allConversations == 1) {
                 activeBot = user.userName;
-                userIds.push(user.userName);
+                userIds.push({groupId: groupId, userId:user.userName, role:2});
             }
         }
         else {
-            userIds.push(user.userName);
+            userIds.push({groupId: groupId, userId:user.userName, role:1});
             agentIds.push(user.userName);
         }
         if (user.type === 3) {
@@ -294,7 +294,7 @@ const switchConversationAssignee = (appId, groupId) => {
                     return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
                 });
                 if (assignee[0].type == 2) {
-                    let agents = getAgentsList(customer, users);
+                    let agents = getAgentsList(customer, users, groupId);
                     if (customer.agentRouting) {
                         assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header);
                     } else {
