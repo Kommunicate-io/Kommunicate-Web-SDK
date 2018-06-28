@@ -13,7 +13,7 @@
 
 .page-links-ul li>a,
 .page-links-ul li>a:hover {
-    color: #000;
+    /* color: #000; */
 }
 
 .nav-signup-button {
@@ -689,5 +689,36 @@
     }
     .hero-subtext {
         font-size: 20px;
+    }
+}
+
+@media all and (max-width:1400px) and (min-width:1367px) {
+    .podcast-earphones {
+        transform: translateX(30%);
+    }
+}
+@media all and (max-width:1550px) and (min-width:1401px) {
+    .podcast-earphones {
+        transform: translateX(41%);
+    }
+}
+@media all and (max-width:1650px) and (min-width:1551px) {
+    .podcast-earphones {
+        transform: translateX(46%);
+    }
+}
+@media all and (max-width:1750px) and (min-width:1651px) {
+    .podcast-earphones {
+        transform: translateX(56%);
+    }
+}
+@media all and (max-width:1850px) and (min-width:1751px) {
+    .podcast-earphones {
+        transform: translateX(66%);
+    }
+}
+@media all and (max-width:1950px) and (min-width:1851px) {
+    .podcast-earphones {
+        transform: translateX(76%);
     }
 }
