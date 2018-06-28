@@ -320,19 +320,12 @@ exports.processAwayMessage = function(req,res){
         let collectEmail = false;
         let isBotRoutingEnabled = customer.botRouting;
         let groupUsers = [];
-        let isBotAddedInGroup = false;
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
                 .then(([onlineUser,group])=>{
-                 groupUsers = group.groupInfo.groupUsers;
-                    for (var key in groupUsers) {
-                        // bot is added in group. skip away message
-                        if (groupUsers[key].role == GROUP_ROLE.MODERATOR && groupUsers[key].userId != DEFAULT_BOT.userName) {
-                            isBotAddedInGroup = true;
-                            break;
-                        }
-                    }
+                 groupUsers = group.groupInfo.groupUsers;              
+                 let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;                
                if(onlineUser){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");
@@ -346,15 +339,16 @@ exports.processAwayMessage = function(req,res){
                 // agents are offline and user is known.
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
                }
-                Promise.resolve(appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }))
-                .then(response => {  
+                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId)])
+                .then(([response,assignedUser]) => {  
                      collectEmail = response.data.collectEmail;
                      return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
                         let data = {"messageList":messageList, "collectEmail":collectEmail}
                         // res.json({"code":"SUCCESS",data:data}).status(200);
-                        if (isBotRoutingEnabled && isBotAddedInGroup) {
+                        // conversation assigned to bot, skip away message
+                        if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
                             data = {"messageList":[], "collectEmail":collectEmail}
                             res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
                         } else {
