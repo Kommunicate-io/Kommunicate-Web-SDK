@@ -69,7 +69,21 @@ class Aside extends Component {
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
      let clearbitKey = userSession.clearbitKey
-     this.setState({clearbitKey: clearbitKey})
+     this.setState({clearbitKey: clearbitKey});
+     if (typeof(Storage) !== "undefined") {
+      if(localStorage.getItem("KM_PSEUDO_INFO") === null ) {
+        this.setState({
+          hideInfoBox: false
+        });
+      } else {
+        this.setState({
+          hideInfoBox: true
+        })
+      }
+      
+    } else {
+        console.log("Please update your browser.");
+    }
   }
   
   getThirdparty = () => {
@@ -344,9 +358,22 @@ class Aside extends Component {
   }
 
   dismissInfo() {
-    this.setState({
-      hideInfoBox: true
-    })
+    if (typeof(Storage) !== "undefined") {
+      if(localStorage.getItem("KM_PSEUDO_INFO") === null) {
+        localStorage.setItem("KM_PSEUDO_INFO", "true");
+        this.setState({
+          hideInfoBox: true
+        });
+      } else {
+        this.setState({
+          hideInfoBox: true
+        })
+      }
+      
+    } else {
+        console.log("Please update your browser.");
+    }
+    
   }
 
   render() {
