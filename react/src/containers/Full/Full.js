@@ -37,8 +37,8 @@ class Full extends Component {
     super(props)
      //_this =this;
     let imageLink = CommonUtils.getUserSession().applozicUser.imageLink;
-    this.state = { 
-      imageLink: imageLink,
+    this.state = {
+      imageLink: imageLink ? imageLink : "/img/avatars/default.png",
       hideInvitedMemberBar: true,
       invitedBy: '',
       displayName: ''
