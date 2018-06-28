@@ -1,6 +1,5 @@
 .customer-list-item .table th, .customer-list-item .table td {
   vertical-align: middle;
-  text-transform: capitalize
 }
 
 .customer-list-item .thead-default th {
@@ -65,13 +64,34 @@
 .customer-list-item .assignee-closed {
   color: #2fc359;
   font-size: 14px;
+  text-transform: capitalize;
 }
 
 .customer-list-item .assignee-open {
   color: #4831d9;
   font-size: 14px;
+  text-transform: capitalize;
 }
 
 .customer-list-item .km-alpha-contact-image .km-contact-icon {
   border-radius: 50%;
+}
+
+.customer-list-item .display-name-customer {
+  margin: 0;
+}
+
+.customer-list-item .email-id-customer {
+  margin: 0;
+  font-size:12px;
+  color: #757779;
+  text-transform: none;
+}
+
+.customer-list-item .avatar .avatar-status{
+  right: 13px;
+}
+
+.customer-list-item .avatar {
+  width: auto;
 }

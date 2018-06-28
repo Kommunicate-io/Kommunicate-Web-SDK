@@ -196,13 +196,13 @@ class CustomerListItem extends Component {
               <span className={online}></span>
 
             </div>
-            <div>
-              <p style={{
-                  marginLeft: "12px",
-                  marginTop: "18px"
+            <div style={{
+                  textAlign: "left"
                 }}>
+              <p className="display-name-customer">
                 {displayName}</p>
-              <p>{emailId}</p>
+              <p className="email-id-customer">
+                {emailId}</p>
             </div>
           </div>
         </div>
