@@ -8,6 +8,9 @@ exports.insertFaq = (data) =>
   var customer = customerservice.getCustomerById(data['applicationId'])
   var appkey = customer.companyName
   data['applicationKey'] ='kommunicate-support'
+  var questions = data['name'].split(",")
+  console.log(questions)
+  data['name'] = questions
 
 request.post(
     config.getProperties().urls.rasafaq,
