@@ -2793,7 +2793,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status=0",
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
