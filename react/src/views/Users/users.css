@@ -1,0 +1,102 @@
+.customer-list-item .table th, .customer-list-item .table td {
+  vertical-align: middle;
+}
+
+.customer-list-item .thead-default th {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #97999b;
+  background-color: #ffffff;
+  text-transform: uppercase;
+}
+
+.customer-list-item .thead-default td {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #4a4b4c;
+}
+
+.customer-list-item .table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #cfd8dc;
+}
+
+.customer-list-item .users-table th {
+  border-top: none;
+}
+
+.customer-list-item .customer-section-design {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.customer-list-item .km-button {
+  height: 42px;
+  letter-spacing: 0.6px;
+  font-weight: 500;
+}
+
+.customer-list-item .km-conversation-tab-link {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #4831d9;
+}
+
+.customer-list-item .assignee-closed {
+  color: #2fc359;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.customer-list-item .assignee-open {
+  color: #4831d9;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.customer-list-item .km-alpha-contact-image .km-contact-icon {
+  border-radius: 50%;
+}
+
+.customer-list-item .display-name-customer {
+  margin: 0;
+}
+
+.customer-list-item .email-id-customer {
+  margin: 0;
+  font-size:12px;
+  color: #757779;
+  text-transform: none;
+}
+
+.customer-list-item .avatar .avatar-status{
+  right: 13px;
+}
+
+.customer-list-item .avatar {
+  width: auto;
+}
+
+.customer-list-item .assignee-open:hover,.customer-list-item .assignee-closed:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
