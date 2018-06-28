@@ -3,8 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation, getUsersByType} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -17,6 +16,7 @@ import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
 import ReactModal from 'react-modal';
 import {PseudoNameImage} from '../../views/Faq/LizSVG';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant'
 
 
 class Aside extends Component {
@@ -25,6 +25,7 @@ class Aside extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       activeTab: '1',
+      applicationId : "",
       assignee: '',
       visibleIntegartion:false,
       visibleReply:true,
@@ -33,6 +34,7 @@ class Aside extends Component {
       disableButton:true,
       agents : new Array(),
       clearbitKey:"",
+      botRouting : false,
       statuses: {
         0: 'Open',
         2: 'Close',
@@ -68,8 +70,29 @@ class Aside extends Component {
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
-     let clearbitKey = userSession.clearbitKey
-     this.setState({clearbitKey: clearbitKey})
+    let applicationId = userSession.application.applicationId;
+    let botRouting = userSession.botRouting;
+    let clearbitKey = userSession.clearbitKey;
+    this.setState({
+       clearbitKey: clearbitKey,
+       applicationId:applicationId,
+       botRouting:botRouting
+      },this.loadAgents)
+     if (typeof(Storage) !== "undefined") {
+      (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
+        this.setState({hideInfoBox: false}) : this.setState({hideInfoBox: true})      
+    } else {
+        console.log("Please update your browser.");
+    }
+  }
+  componentWillReceiveProps () {
+    let userSession = CommonUtils.getUserSession();
+    let botRouting = userSession.botRouting;
+    if (botRouting != this.state.botRouting) {
+      var assign = window.$kmApplozic("#assign");
+      // window.$kmApplozic("#assign").empty();
+      this.setState({botRouting:botRouting},this.loadAgents);
+    }
   }
   
   getThirdparty = () => {
@@ -113,23 +136,49 @@ class Aside extends Component {
   }
 
   loadAgents() {
+      // var that = this;
+      // window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
+      //   if(response.status === 'success') {
+      //         var assign = window.$kmApplozic("#assign");
+      //         that.setState({agents: response.response.users});
+      //         window.$kmApplozic.each(response.response.users, function() {
+      //             assign.append(window.$kmApplozic("<option />").val(this.userId).text(CommonUtils.getDisplayName(this)));
+      //         });
+      //         if(sessionStorage.getItem("userProfileUrl")!=null){
+      //           that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
+      //           let userSession = CommonUtils.getUserSession();
+      //           userSession.imageLink = sessionStorage.getItem("userProfileUrl");
+      //           CommonUtils.setUserSession(userSession);
+      //         }
+      //       }
+      //    }
+      // });
       var that = this;
-      window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
-        if(response.status === 'success') {
-              var assign = window.$kmApplozic("#assign");
-              that.setState({agents: response.response.users});
-              window.$kmApplozic.each(response.response.users, function() {
-                  assign.append(window.$kmApplozic("<option />").val(this.userId).text(CommonUtils.getDisplayName(this)));
-              });
-              if(sessionStorage.getItem("userProfileUrl")!=null){
-                that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
-                let userSession = CommonUtils.getUserSession();
-                userSession.imageLink = sessionStorage.getItem("userProfileUrl");
-                CommonUtils.setUserSession(userSession);
-              }
-            }
-         }
+      window.$kmApplozic("#assign").empty();
+      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
+      this.state.botRouting && users.push(USER_TYPE.BOT);
+      return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
+        var assign = window.$kmApplozic("#assign");
+        that.setState({ agents: data });
+        window.$kmApplozic.each(data, function () {
+          if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
+            assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
+          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName && this.allConversations) {
+            assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
+          }
+  
+        });
+      }).catch(err => {
+        // console.log("err while fetching users list ", err);
       });
+  
+      if (sessionStorage.getItem("userProfileUrl") != null) {
+                  that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
+                  let userSession = CommonUtils.getUserSession();
+                  userSession.imageLink = sessionStorage.getItem("userProfileUrl");
+                  CommonUtils.setUserSession(userSession);
+      }
+  
   }
   loadBots() {
     window.$kmApplozic.fn.applozic('fetchContacts', { roleNameList: ['BOT'], callback: function (response) { } });
@@ -247,8 +296,8 @@ class Aside extends Component {
                                         for(var key in that.state.agents) {
                                           if(that.state.agents.hasOwnProperty(key)) {
                                             var user = that.state.agents[key];
-                                            if (user.userId == userId) {
-                                              displayName = user.displayName ? user.displayName: user.userId;
+                                            if (user.userName == userId) {
+                                              displayName = user.name ? user.name: user.userName;
                                               break;
                                             }
                                           }
