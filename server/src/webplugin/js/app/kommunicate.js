@@ -233,7 +233,7 @@ $applozic.extend(true,Kommunicate,{
             type: "get",
             contentType: "application/json",
             success: function (result) {
-                console.log("got away message data");
+                // console.log("got away message data");
                 typeof callback =='function'?callback(null,result):"";
                 
             },
