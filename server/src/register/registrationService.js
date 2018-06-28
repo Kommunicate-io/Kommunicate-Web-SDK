@@ -31,16 +31,16 @@ exports.createCustomer = customer => {
     ]).then(([applozicCustomer, liz, bot]) => {
 
       customer.apzToken = new Buffer(customer.userName + ":" + customer.password).toString('base64');
-      let user = getUserObject(customer, applozicCustomer, application);
+      let kmUser = getUserObject(customer, applozicCustomer, application);
       if (customer.password !== null) {
         customer.password = bcrypt.hashSync(customer.password, 10);
       }
       customer.subscription = customer.subscription || subscriptionPlan.initialPlan;
-      user.password = customer.password;
+      kmUser.password = customer.password;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
           console.log("persited in db", customer ? customer.dataValues : null);
-          user.customerId = customer ? customer.dataValues.id : null; // will remove
+          kmUser.customerId = customer ? customer.dataValues.id : null; // will remove
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
           let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
           // create default bot plateform
@@ -70,11 +70,11 @@ exports.createCustomer = customer => {
             console.log("err while updating bot plateform..", err);
           });
           //insert appId in to application_settings table
-          return userModel.bulkCreate([user, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
+          return userModel.bulkCreate([kmUser, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
             console.log("user created", user ? user.dataValues : null);
             console.log("created bot ", bot.dataValues);
             let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, botRouting: customer.botRouting })
-            return getResponse(signupUser, application);
+            return getResponse(signupUser, applozicCustomer, application);
           });
         });
       });
@@ -96,9 +96,10 @@ const getUserObject = (customer, applozicCustomer, application) => {
   return user;
 };
 
-const getResponse = (customer, application) => {
-  let response = JSON.parse(JSON.stringify(customer));
-  response.application = JSON.parse(JSON.stringify(application));
+const getResponse = (customer, applozicCustomer, application) => {
+  let response = customer;
+  response.application = application;
+  response.applozicUser = applozicCustomer
   return response;
 };
 
@@ -240,7 +241,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
       return userModel.bulkCreate([kmUser, botObj, lizObj], { transaction: t }).spread((user, bot, liz) => {
         console.log("user created", user ? user.dataValues : null);
         console.log("created bot ", bot.dataValues);
-        return getResponse(user.dataValues, application);
+        return getResponse(user.dataValues, applozicCustomer, application);
       });
     });
   })
