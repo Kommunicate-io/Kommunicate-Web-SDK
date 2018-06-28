@@ -9,7 +9,6 @@ exports.insertFaq = (data) =>
   var appkey = customer.companyName
   data['applicationKey'] ='kommunicate-support'
   var questions = data['name'].split(",")
-  console.log(questions)
   data['name'] = questions
 
 request.post(
