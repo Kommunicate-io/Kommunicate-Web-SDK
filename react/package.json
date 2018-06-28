@@ -21,6 +21,7 @@
     "history": "^4.6.1",
     "jstz": "^1.0.11",
     "memory-cache": "0.2.0",
+    "moment": "2.22.2",
     "moment-timezone": "^0.5.13",
     "react": "15.5.4",
     "react-addons-css-transition-group": "15.5.2",
