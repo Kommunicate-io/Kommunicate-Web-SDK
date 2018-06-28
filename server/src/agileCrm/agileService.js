@@ -1,7 +1,17 @@
 const axios = require("axios");
-const AgileCRMManager = require('./agileCrmClient')
+const AgileCRMManager = require('./agileCrmClient');
+const AGILE_CRM = require('../application/utils').INTEGRATION_PLATFORMS.AGILE_CRM;
+const logger = require('../utils/logger.js');
+const customerService = require('../customer/customerService');
+const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 
-const createContact = (settings, userInfo) => {
+const createContact = async function(settings, userInfo){
+    if(!settings){
+        settings =  await getSettings(userInfo.applicationId);
+        if(!settings){
+            return;
+        }
+    }
     return new Promise(function (resolve, reject) {
         let response = {};
         var obj = new AgileCRMManager(settings.domain, settings.accessToken, settings.accessKey);
@@ -21,10 +31,10 @@ const createContact = (settings, userInfo) => {
         if (userInfo.star_value) {
             contact["star_value"] = userInfo.star_value;
         }
-        userInfo.first_name && contact.properties.push({
+    (userInfo.displayName ||userInfo.userId) && contact.properties.push({
             "type": "SYSTEM",
             "name": "first_name",
-            "value": userInfo.first_name
+            "value": userInfo.displayName || userInfo.userId
         })
 
 
@@ -63,11 +73,22 @@ const createContact = (settings, userInfo) => {
         })
 
 
-        userInfo.customField && userInfo.customField.name && userInfo.customField.value && contact.properties.push({
+       /* userInfo.customField && userInfo.customField.name && userInfo.customField.value && contact.properties.push({
             "type": "CUSTOM",
             "name": userInfo.customField.name,
             "value": userInfo.customField.value
-        })
+        })*/
+        if(userInfo.metadata){
+            for( var i=0; i< Object.keys(userInfo.metadata).length; i++ ) {
+               var field = {    "type" : "CUSTOM",
+                                "name"   :   Object.keys(userInfo.metadata)[i],
+                                "value":  userInfo.metadata[Object.keys(userInfo.metadata)[i]]
+                }
+
+                contact.properties.push(field);
+            }
+        }
+    
 
         obj.contactAPI.add(contact, function (data) {
             // console.log(data);
@@ -84,7 +105,14 @@ const createContact = (settings, userInfo) => {
     });
 
 }
-const updateContact = (settings, contactId, userInfo) => {
+const updateContact = async function(settings, contactId, userInfo){
+   
+    if(!settings){
+        settings =  await getSettings(userInfo.applicationId);
+        if(!settings){
+            return;
+        }
+    }
     return new Promise(function (resolve, reject) {
         let response = {};
         var obj = new AgileCRMManager(settings.domain, settings.accessToken, settings.accessKey);
@@ -92,10 +120,10 @@ const updateContact = (settings, contactId, userInfo) => {
             "id": contactId,
             "properties": []
         };
-        userInfo.first_name && update_contact.properties.push({
+        userInfo.displayName && update_contact.properties.push({
             "type": "SYSTEM",
             "name": "first_name",
-            "value": userInfo.first_name
+            "value": userInfo.displayName
         })
        
         userInfo.last_name && update_contact.properties.push({
@@ -114,7 +142,7 @@ const updateContact = (settings, contactId, userInfo) => {
 
         userInfo.designation && update_contact.properties.push({
             "type": "SYSTEM",
-            "name": "tile",
+            "name": "title",
             "value": userInfo.designation
         })
 
@@ -133,11 +161,18 @@ const updateContact = (settings, contactId, userInfo) => {
         })
 
 
-        userInfo.customField && userInfo.customField.name && userInfo.customField.value && update_contact.properties.push({
-            "type": "CUSTOM",
-            "name": userInfo.customField.name,
-            "value": userInfo.customField.value
-        })
+        if(userInfo.metadata){
+            for( var i=0; i< Object.keys(userInfo.metadata).length; i++ ) {
+                if(typeof userInfo.metadata[Object.keys(userInfo.metadata)[i]] == 'string'){
+               var field = {    "type" : "CUSTOM",
+                                "name"   :   Object.keys(userInfo.metadata)[i],
+                                "value":  userInfo.metadata[Object.keys(userInfo.metadata)[i]]
+                }
+
+                contact.properties.push(field);
+            }
+            }
+        }
 
         obj.contactAPI.update(update_contact, function (data) {
             // console.log(data);
@@ -180,6 +215,18 @@ const updateTag = (settings, contactId, userInfo) => {
 
     });
 
+}
+
+const getSettings = async function(applicationId){
+    let customer = await  customerService.getCustomerByApplicationId(applicationId);
+    let settings = await integrationSettingService.getIntegrationSetting(customer.id,AGILE_CRM);
+    if(settings.length == 0){
+        logger.info("agile crm is not integrated for Application Id",applicationId);
+        return null;
+    }else{
+       return settings[0];  
+    }
+       
 }
 
 

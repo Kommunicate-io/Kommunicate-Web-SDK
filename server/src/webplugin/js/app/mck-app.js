@@ -278,7 +278,7 @@ function ApplozicSidebox() {
                                 KommunicateUtils.setCookie('userName', userName, 1);
                                 options.userName = userName;
                             }
-                            options.metadata={"KM_PSEUDO_USER":"true"};
+                            options.metadata = {"KM_PSEUDO_USER":JSON.stringify({pseudoName: true, hidden: true })};
                         }
                     }
 
