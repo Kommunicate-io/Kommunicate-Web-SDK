@@ -4,17 +4,7 @@ const getEnvId= function() {
 
 const configPath = "./config-"+getEnvId()+".json"
 
-const config = require(configPath);
+module.exports = require(configPath);
 
-module.exports =  config;
-module.exports.getEnvId = getEnvId;
 
-module.exports.getProperties = function() {
-    
-    return config;
-  };
-  module.exports.getCommonProperties = function() {
-    return config["commonProperties"];
-  };
-
-//  console.log("property :",config);
+  

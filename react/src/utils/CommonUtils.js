@@ -1,4 +1,5 @@
 import { getResource } from '../config/config.js'
+import moment from 'moment';
 
 const CommonUtils = {
     setUserSession: function(userSession) {
@@ -59,17 +60,17 @@ const CommonUtils = {
     getDomain:function() {
         var hostName = window.location.hostname;
         var domain = hostName;
-        
+
         if (hostName != null) {
             var parts = hostName.split('.').reverse();
-            
+
             if (parts != null && parts.length > 1) {
                 domain = "."+parts[1] + '.' + parts[0];
             }
         }
-        
+
         return domain;
-    }, 
+    },
     setApplicationIds: function(appID) {
         localStorage.setItem('KM_USER_SESSION_APP_IDS', JSON.stringify(appID));
     },
@@ -82,12 +83,31 @@ const CommonUtils = {
         var timeDiff = now.getTime() - trialStarted.getTime();
         var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
         return diffDays;
-    }, 
+    },
     isStartupPlan: function() {
         return typeof CommonUtils.getUserSession().subscription === 'undefined' || CommonUtils.getUserSession().subscription == '' || CommonUtils.getUserSession().subscription == '0' || CommonUtils.getUserSession().subscription === "startup";
-    }, 
+    },
     isTrialPlan: function() {
         return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
+    },
+    lastSeenTime(lastSeenAtTime) {
+      var lastSeen;
+      var minInTwoDays = 2880;
+      var date = new Date(lastSeenAtTime);
+      var currentDate = new Date();
+      var diff = Math.abs(currentDate - date);
+      var minutes = Math.floor((diff / 1000) / 60);
+      if (minutes < minInTwoDays) {
+        if (minutes < 60) {
+          lastSeen = moment.unix(lastSeenAtTime / 1000).fromNow();
+        } else {
+          var hour = Math.floor(minutes / 60)
+          lastSeen = hour + " hrs ago";
+        }
+      } else {
+        lastSeen = moment.unix(lastSeenAtTime / 1000).format("DD MMMM YYYY");
+      }
+      return lastSeen;
     }
 
 }
