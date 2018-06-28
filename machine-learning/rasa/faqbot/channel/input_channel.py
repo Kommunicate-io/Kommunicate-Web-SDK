@@ -47,13 +47,15 @@ def update_stories(intent, appkey):
     return
 
 
-def update_nludata(intent, question, appkey):
+def update_nludata(intent, questions, appkey):
     data = {}
     with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
+        print get_abs_path('customers/' + appkey + '/faq_data.json')
         data = json.load(json_file)
-        data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
-        data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
-        data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
+        for question in questions:
+            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
     with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
@@ -131,9 +133,9 @@ def getfaq():
 	    update_domain(str(intent),body['content'],0,body['applicationKey'])
 	    update_stories(str(intent),body['applicationKey'])
 	    update_nludata(str(intent),body['name'],body['applicationKey'])
-    elif('answer' in body):
+    elif('content' in body):
 	    update_domain(str(intent),body['content'],1,body['applicationKey'])
-    elif('question' in body):
+    elif('name' in body):
         update_nludata(str(intent),body['name'],body['applicationKey'])
 	    #execl("sh","retrain.sh")
     return jsonify({"Success":"We have more data!"})
