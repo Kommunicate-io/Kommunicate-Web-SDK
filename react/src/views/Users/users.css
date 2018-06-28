@@ -95,3 +95,8 @@
 .customer-list-item .avatar {
   width: auto;
 }
+
+.customer-list-item .assignee-open:hover,.customer-list-item .assignee-closed:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
