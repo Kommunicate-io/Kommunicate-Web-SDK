@@ -8,10 +8,11 @@ exports.processUserCreatedEvent=(user)=>{
     agileService.createContact(null, user).then(data=>{
        if(!data){
            logger.info(" customer not integrated with agile crm, skipping");
+           return;
        }
         let userToBeUpdated = {
             userId :user.userId,
-            metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": data.id,"hide":true})}
+            metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": data.id,"hidden":true})}
         } 
         applozicClient.updateApplozicClient("bot","bot", user.applicationId, userToBeUpdated,null,true).then(data=>{
             logger.info("agile crm id is updated into user metadata");
@@ -31,7 +32,7 @@ exports.processUserUpdatedEvent= (user)=>{
         user.metadata.KM_AGILE_CRM = agileCrm;
         agileService.updateContact(null,contactId, user).then(data=>{
             if(!data){
-                logger.info(" customer not integrated with agile crm, skipping");
+                logger.info(" customer not integrated with agile crm, skipping update user event...");
             }
             logger.info("updated successfully");
 
