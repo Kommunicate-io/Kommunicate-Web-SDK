@@ -218,13 +218,6 @@ class Aside extends Component {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-          // console.log(user);
-            if(typeof user !== "undefined" && user.roleType == 3 && user.metadata.KM_PSEUDO_USER == "true") {
-              // console.log(user.metadata);
-              pseudoNameIcon.classList.remove("n-vis");
-              pseudoNameIcon.classList.add("vis");
-              return;
-            }
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               takeOverEleText.innerHTML = user.displayName; 
               takeOverEleContainer.style.display = "flex";          
