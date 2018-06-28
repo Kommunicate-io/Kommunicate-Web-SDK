@@ -88,8 +88,20 @@
   text-transform: none;
 }
 
-.customer-list-item .avatar .avatar-status{
+.customer-list-item .avatar .avatar-status {
   right: 13px;
+}
+
+.customer-list-item .avatar .img-avatar {
+    cursor: pointer;
+    float: left;
+    width: 43px;
+    height: 43px;
+    margin-right: 12px;
+    border-radius: 50%;
+    font-size: 25px;
+    text-align: center;
+    line-height: 40px;
 }
 
 .customer-list-item .avatar {
