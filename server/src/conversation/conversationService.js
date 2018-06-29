@@ -283,18 +283,31 @@ const getAgentsList = (customer, users, groupId) => {
     return { userIds: userIds, agentIds: agentIds, header: header, assignTo: activeBot };
 }
 
-const switchConversationAssignee = (appId, groupId) => {
+const switchConversationAssignee = (appId, groupId, assignTo) => {
     return Promise.all([customerService.getCustomerByApplicationId(appId), userService.getUsersByAppIdAndTypes(appId)]).then(([customer, users]) => {
         let bot = users.filter(user => {
             return user.userName == "bot";
         });
+        let agents = getAgentsList(customer, users, groupId);
+        //assign direct given userId 
+        if (assignTo && assignTo != "") {
+            let assignee = users.filter(user => {
+                return user.userName == assignTo;
+            });
+            if (assignee.length == 0) {
+                return "user not exist"
+            }
+            return assignToDefaultAgent(groupId, appId, assignTo, agents.header).then(res => {
+                return "success";
+            });
+        }
+        //swich acording to conditions of botRouting and agentRouting
         return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
             if (group && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
                 let assignee = users.filter(user => {
                     return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
                 });
                 if (assignee[0].type == 2) {
-                    let agents = getAgentsList(customer, users, groupId);
                     if (customer.agentRouting) {
                         assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header);
                     } else {
