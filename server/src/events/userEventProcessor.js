@@ -66,7 +66,3 @@ exports.processUserUpdatedEvent= (user)=>{
 
 
 }
-
-
-var user = '{"userId":"WGlrMRPZ1SGVk7j6UiLzlVOnIm1316rL","emailVerified":true,"appVersionCode":108,"applicationId":"kommunicate-support","deviceType":1,"authenticationTypeId":0,"notificationMode":0,"unreadCountType":0,"displayName":"WGlrMRPZ1SGVk7j6UiLzlVOnIm1316rL","state":0,"totalUnreadCount":0,"resetUserStatus":false,"chatNotificationMailSent":false,"enableEncryption":false,"metadata":{}}';
-this.processUserUpdatedEvent(user);
