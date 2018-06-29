@@ -267,7 +267,7 @@ class Forms extends Component {
                           <label className="form-control-label" htmlFor="role-input">Designation</label>
                           <input type="text" id="role-input" name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br />
                           <label className="form-control-label label-contact" htmlFor="number-input">Contact Number (optional)</label>
-                          <input type="text" id="number-input" maxLength="10" name="number-input" onKeyPress={this.handleKeyPress} onChange={(event) => this.setState({ contact: event.target.value })} value={this.state.contact} className="form-control input-field" placeholder="Enter contact no." /><br />
+                          <input type="text" id="number-input" maxLength="20" name="number-input" onKeyPress={this.handleKeyPress} onChange={(event) => this.setState({ contact: event.target.value })} value={this.state.contact} className="form-control input-field" placeholder="Enter contact no." /><br />
                           <button className="btn-primary" autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </button>
                         </div>
                       </div>
