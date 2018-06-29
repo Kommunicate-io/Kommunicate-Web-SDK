@@ -97,6 +97,11 @@
         "userName":"test",
         "password":"test"
     },
+    "rabbitmq":{
+        "host":"localhost",
+        "userName":"test",
+        "password":"test"
+    },
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateParentAppName": "suraj",
     "kommunicateAdminId": "suraj@applozic.com",

@@ -17,7 +17,7 @@
 
 </section>
   <section class="sitemap">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12">
       <a href="/" class="kmLogoFooter">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#5c5aa7" viewBox="0 0 729.5 138.5">
           <path fill="#5c5aa7" d="M148.7 130.6V53c0-28-22.7-50.8-50.8-50.8H51.7C23.7 2.2.9 24.9.9 53c0 28 22.7 50.8 50.8 50.8h50s4.1.2 6.5 1.1c2.3.9 5 2.9 5 2.9l30.9 25.4s2.8 2.4 3.8 1.9.8-4.5.8-4.5zM53.1 63.3c0 3.4-3 6.1-6.6 6.1-3.6 0-6.6-2.7-6.6-6.1V41.5c0-3.4 3-6.1 6.6-6.1 3.6 0 6.6 2.7 6.6 6.1v21.8zm28.3 10.3c0 3.4-3 6.1-6.6 6.1-3.6 0-6.6-2.7-6.6-6.1V31.2c0-3.4 3-6.1 6.6-6.1 3.6 0 6.6 2.7 6.6 6.1v42.4zm28.3-10.3c0 3.4-3 6.1-6.6 6.1-3.6 0-6.6-2.7-6.6-6.1V41.5c0-3.4 3-6.1 6.6-6.1 3.6 0 6.6 2.7 6.6 6.1v21.8z"/>
@@ -33,7 +33,7 @@
         </p>
       </div>
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
       <ul class="footer-links-list">
         <li class="footer-links-listbox">
             <h5>Product</h5>
@@ -42,6 +42,14 @@
               <li><a href="/pricing" class="footer-pricing">Pricing and FAQs</a></li>
               <li><a href="https://docs.kommunicate.io/" target="_blank">Docs</a></li>
               <li><a href="https://calendly.com/kommunicate/15min" target="_blank">Request Demo</a></li>
+            </ul>
+        </li>
+        <li class="footer-links-listbox">
+            <h5>Resources</h5>
+            <ul class="footer-links-listbox-list">
+              <li><a href="/resources/podcast" class="footer-features">Podcast</a></li>
+              <li><a href="/customer-support-standards">Support Metrics</a></li>
+              <li><a href="/resources/icons" class="footer-pricing">Free SaaS Icons</a></li>
             </ul>
         </li>
         <li class="footer-links-listbox">
@@ -109,42 +117,3 @@ function myScrollFunction() {
   }
   </script>
 
-{% if page.url contains "/demo" %}
-      <script>
-        (function(d, m){ 
-      let o = {"appId":"e1318f3a9a2e51adfaf4b04f8b68cc7d","isAnonymousChat":true,"agentId":"demo@kommunicate.io","groupName":"John Doe","email":""};
-      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-      s.src = "https://api.kommunicate.io/kommunicate.app";
-      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
-      window.kommunicate = m; m._globals = o;
-    })(document, window.kommunicate || {});
-      </script>
-{% elsif page.url == "/" %}
-<!-- <script type="text/javascript" id="kommunicate-support-chat-script">
-  (function(d, m){
-       let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Devashish","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
-       let s = document.createElement("script");
-       s.type = "text/javascript";
-       s.async = true;
-       s.src = '{% if jekyll.environment == "production" %} {{site.dashboard.supportSourceUrlProd}}{% else %}{{site.dashboard.supportSourceUrlTest}}{% endif %}';
-       let h = document.getElementsByTagName("head")[0];
-       h.appendChild(s);
-       window.kommunicate = m;
-       m._globals = o;
-     })(document, window.kommunicate || {});
-</script> -->
-{% else %}
-<script type="text/javascript" id="kommunicate-support-chat-script">
-  (function(d, m){
-       let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Devashish","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
-       let s = document.createElement("script");
-       s.type = "text/javascript";
-       s.async = true;
-       s.src = '{% if jekyll.environment == "production" %} {{site.dashboard.supportSourceUrlProd}}{% else %}{{site.dashboard.supportSourceUrlTest}}{% endif %}';
-       let h = document.getElementsByTagName("head")[0];
-       h.appendChild(s);
-       window.kommunicate = m;
-       m._globals = o;
-     })(document, window.kommunicate || {});
-</script>
-{% endif %}

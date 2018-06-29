@@ -10,7 +10,7 @@
         }
       }
     },
-    "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
+    "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate_staging?authSource=admin",
     "urls": {
      "baseUrl": "https://apps-test.applozic.com",
       "getApplicationDetail": "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",
@@ -19,8 +19,8 @@
       "groupInfoUrl": "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
       "addMemberIntoConversation":"https://apps-test.applozic.com/rest/ws/group/add/users?role=:role",
       "createGroup":"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
-      "createBotUrl": "https://bots-test.applozic.com/bot",
-      "updateBotUrl":"http://bots-test.applozic.com/bot/update",
+      "createBotUrl": "https://bots-staging.applozic.com/bot",
+      "updateBotUrl":"http://bots-staging.applozic.com/bot/update",
       "sendMessageUrl": "https://apps-test.applozic.com/rest/ws/message/v2/send",
       "hostUrl": "https://api-staging.kommunicate.io",
       "kmWebsiteUrl": "https://test.kommunicate.io",

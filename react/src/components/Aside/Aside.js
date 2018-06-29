@@ -14,9 +14,9 @@ import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
 import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import ReactModal from 'react-modal';
 import {PseudoNameImage} from '../../views/Faq/LizSVG';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant'
 
 
 class Aside extends Component {
@@ -24,6 +24,7 @@ class Aside extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
+      applicationId : "",
       activeTab: '1',
       applicationId : "",
       assignee: '',
@@ -74,24 +75,25 @@ class Aside extends Component {
     let botRouting = userSession.botRouting;
     let clearbitKey = userSession.clearbitKey;
     this.setState({
-       clearbitKey: clearbitKey,
-       applicationId:applicationId,
-       botRouting:botRouting
-      },this.loadAgents)
+      clearbitKey: clearbitKey,
+      applicationId:applicationId,
+      botRouting:botRouting
+     },this.loadAgents)
+ 
+ }
+ componentWillReceiveProps () {
+   let userSession = CommonUtils.getUserSession();
+   let botRouting = userSession.botRouting;
+   if (botRouting != this.state.botRouting) {
+     var assign = window.$kmApplozic("#assign");
+     // window.$kmApplozic("#assign").empty();
+     this.setState({botRouting:botRouting},this.loadAgents);
+   }
      if (typeof(Storage) !== "undefined") {
       (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
         this.setState({hideInfoBox: false}) : this.setState({hideInfoBox: true})      
     } else {
         console.log("Please update your browser.");
-    }
-  }
-  componentWillReceiveProps () {
-    let userSession = CommonUtils.getUserSession();
-    let botRouting = userSession.botRouting;
-    if (botRouting != this.state.botRouting) {
-      var assign = window.$kmApplozic("#assign");
-      // window.$kmApplozic("#assign").empty();
-      this.setState({botRouting:botRouting},this.loadAgents);
     }
   }
   
@@ -136,7 +138,7 @@ class Aside extends Component {
   }
 
   loadAgents() {
-      // var that = this;
+     // var that = this;
       // window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
       //   if(response.status === 'success') {
       //         var assign = window.$kmApplozic("#assign");
@@ -263,14 +265,15 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
     pseudoNameIcon.classList.remove("vis");
     pseudoNameIcon.classList.add("n-vis");
-    
+    let allBotsInGroup = [];
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              takeOverEleText.innerHTML = user.displayName; 
+              allBotsInGroup.push(user.userId);
+              // takeOverEleText.innerHTML = user.displayName; 
               takeOverEleContainer.style.display = "flex";          
               // console.log(user.displayName);         
               return;
@@ -279,6 +282,13 @@ class Aside extends Component {
         });
       }
     }
+    takeOverEleText.innerHTML = allBotsInGroup.join(', ');
+    if(allBotsInGroup.length>1) {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
+    } else {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
+    }
+    // console.log(allBotsInGroup);
   }
 
   changeAssignee(userId) {
@@ -403,7 +413,6 @@ class Aside extends Component {
     } else {
         console.log("Please update your browser.");
     }
-    
   }
 
   render() {
@@ -747,7 +756,7 @@ class Aside extends Component {
                           <hr/>
                           <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
                             <div className="km-bot-active-text" id="km-bot-active-text">
-                                <p><span>&#9679;</span> <strong></strong> is active</p>
+                                <p><span>&#9679;</span> Active bots <strong></strong></p>
                             </div>
                             <div className="">
                               <button id="takeover-from-bot" className="km-button km-button--secondary" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
