@@ -3,7 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation, getUsersByType} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -26,6 +26,7 @@ class Aside extends Component {
     this.state = {
       applicationId : "",
       activeTab: '1',
+      applicationId : "",
       assignee: '',
       visibleIntegartion:false,
       visibleReply:true,
@@ -412,7 +413,6 @@ class Aside extends Component {
     } else {
         console.log("Please update your browser.");
     }
-    
   }
 
   render() {

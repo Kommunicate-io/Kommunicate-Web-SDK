@@ -18,15 +18,16 @@
 <link rel="stylesheet" type='text/css' href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link rel="stylesheet" type='text/css' href="/assets/resources/css/common-css.css"/>
 
+
 <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 
 
-<script type="text/javascript" src="/assets/resources/js/jquery/jquery-3.1.1.min.js"></script>
-<!-- <script type="text/javascript" src="/assets/resources/js/jquery/jquery-3.2.1.min.js"></script> -->
+<script type="text/javascript" src="/assets/resources/js/jquery/jquery-3.2.1.min.js"></script> 
 <script type="text/javascript" src="/assets/resources/js/bootstrap/bootstrap.min.js"></script>
+
 
 <!-- Tracking Scripts  -->
 
@@ -128,3 +129,30 @@ else {
   f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
   </script>
   <!-- End Visual Website Optimizer Asynchronous Code -->
+
+
+  {% if page.url contains "/demoaccount" %}
+      <script>
+        (function(d, m){ 
+      let o = {"appId":"e1318f3a9a2e51adfaf4b04f8b68cc7d","isAnonymousChat":true,"agentId":"demo@kommunicate.io","groupName":"John Doe","email":""};
+      let s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+      s.src = "https://api.kommunicate.io/kommunicate.app";
+      let h = document.getElementsByTagName("head")[0]; h.appendChild(s);
+      window.kommunicate = m; m._globals = o;
+    })(document, window.kommunicate || {});
+      </script>
+{% else %}
+<script type="text/javascript" id="kommunicate-support-chat-script">
+  (function(d, m){
+       let o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io","groupName":"Devashish","baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
+       let s = document.createElement("script");
+       s.type = "text/javascript";
+       s.async = true;
+       s.src = '{% if jekyll.environment == "production" %} {{site.dashboard.supportSourceUrlProd}}{% else %}{{site.dashboard.supportSourceUrlTest}}{% endif %}';
+       let h = document.getElementsByTagName("head")[0];
+       h.appendChild(s);
+       window.kommunicate = m;
+       m._globals = o;
+     })(document, window.kommunicate || {});
+</script>
+{% endif %}
