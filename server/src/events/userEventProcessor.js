@@ -24,7 +24,7 @@ exports.processUserCreatedEvent=(user)=>{
 
 exports.processUserUpdatedEvent= (user)=>{
     logger.info("processing user updated event.....",user);
-   let  agileCrm = user.metadata && user.metadata.KM_AGILE_CRM && JSON.parse(user.metadata.KM_AGILE_CRM);
+   let agileCrm = user.metadata && user.metadata.KM_AGILE_CRM && JSON.parse(user.metadata.KM_AGILE_CRM);
 
     let contactId =  agileCrm && agileCrm.contactId;
     if(contactId && user.applicationId){
@@ -39,7 +39,34 @@ exports.processUserUpdatedEvent= (user)=>{
         }).catch(e=>{
             logger.error("error while updating contact id", contactId);           
         })
+    }else{
+        logger.info("adding contact in agilecrm");
+        agileService.createContact(null, user).then(data=>{
+            if(!data){
+                logger.info(" customer not integrated with agile crm, skipping");
+                return;
+            }
+             let userToBeUpdated = {
+                 userId :user.userId,
+                 metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": data.id,"hidden":true})}
+             } 
+             if(user.userId){
+                applozicClient.updateApplozicClient("bot","bot", user.applicationId, userToBeUpdated,null,true).then(data=>{
+                    logger.info("agile crm id is updated into user metadata");
+                }).catch(e=>{
+                    logger.info("error while updateing user metadata",e)
+                })
+             }
+             
+            logger.info("contact created successfully ");
+        }).catch(e=>{
+            logger.error("err while creating contact",e);
+        })
     }
 
 
 }
+
+
+var user = '{"userId":"WGlrMRPZ1SGVk7j6UiLzlVOnIm1316rL","emailVerified":true,"appVersionCode":108,"applicationId":"kommunicate-support","deviceType":1,"authenticationTypeId":0,"notificationMode":0,"unreadCountType":0,"displayName":"WGlrMRPZ1SGVk7j6UiLzlVOnIm1316rL","state":0,"totalUnreadCount":0,"resetUserStatus":false,"chatNotificationMailSent":false,"enableEncryption":false,"metadata":{}}';
+this.processUserUpdatedEvent(user);
