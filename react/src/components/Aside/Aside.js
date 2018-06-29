@@ -245,11 +245,15 @@ class Aside extends Component {
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
+        var changeAssignee = true;
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               that.removeGroupMember(group.groupId, user.userId);  
-              that.changeAssignee(loggedInUserId);
+              if (changeAssignee) {
+                that.changeAssignee(loggedInUserId);
+                changeAssignee = false;
+              }
             }
           }
         }); 
