@@ -222,7 +222,7 @@ if (typeof company !== "undefined" && company != null && company != "null") {
        $('#km-user-info-list #description').html(description !== null ? description : '');
       }
       else {
-        $('#km-user-info-list #description').html(company.description !== null ? dcompany.description : '');
+        $('#km-user-info-list #description').html(company.description !== null ? company.description : '');
       }
     }
     var crunchbase = company.crunchbase;
