@@ -20,9 +20,8 @@ class Integration extends Component {
         multipleEmailAddress: [],
         emailAddress:""
       };
-  }
-  componentWillReceiveProps () {
-    this.getUsers();
+    window.addEventListener("kmFullViewInitilized",this.getUsers,true);
+
   }
   componentWillMount() {
     this.getUsers();
