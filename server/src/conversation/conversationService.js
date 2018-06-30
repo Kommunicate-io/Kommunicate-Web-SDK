@@ -156,6 +156,8 @@ const addMemberIntoConversation = (data) => {
     let userKey = data.userKey || data.userId;
     //let groupInfo = { userIds: [], clientGroupIds: [groupId] }
     let header = {}
+
+    //check this one
     return Promise.resolve(customerService.getCustomerByAgentUserKey(userKey)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
@@ -184,7 +186,7 @@ const addMemberIntoConversation = (data) => {
                     });*/
                     if (customer.botRouting || !customer.agentRouting) {
                         //default assign to bot
-                        agents.assignTo != "" ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                        agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                     } else {
                         logger.info("adding assignee in round robin fashion");
                         assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
@@ -268,7 +270,7 @@ const getAgentsList = (customer, users, groupId) => {
             if (user.userName === 'bot') {
                 header.apzToken = user.apzToken
             } if (customer.botRouting && user.allConversations == 1) {
-                activeBot = user.userName;
+                assignTo = user.userName;
                 userIds.push({groupId: groupId, userId:user.userName, role:2});
             }
         }
@@ -280,7 +282,7 @@ const getAgentsList = (customer, users, groupId) => {
             header.ofUserId = user.userName
         }
     });
-    return { userIds: userIds, agentIds: agentIds, header: header, assignTo: activeBot };
+    return { userIds: userIds, agentIds: agentIds, header: header, assignTo: assignTo };
 }
 
 const switchConversationAssignee = (appId, groupId, assignTo) => {
