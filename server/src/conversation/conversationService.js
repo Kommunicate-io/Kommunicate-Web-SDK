@@ -156,8 +156,6 @@ const addMemberIntoConversation = (data) => {
     let userKey = data.userKey || data.userId;
     //let groupInfo = { userIds: [], clientGroupIds: [groupId] }
     let header = {}
-
-    //check this one
     return Promise.resolve(customerService.getCustomerByAgentUserKey(userKey)).then(customer => {
         if (customer) {
             return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
