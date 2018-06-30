@@ -59,6 +59,25 @@ class UserItem extends Component {
       });
     }
 
+    getContactImageByAlphabet() {
+      var displayIconColor;
+      var user = this.props.user;
+      var displayName = CommonUtils.getDisplayName(user);
+      var name = displayName.charAt(0).toUpperCase();
+      if (typeof name !== "string" || typeof name === 'undefined' || name === "") {
+        return <span className="km-contact-icon km-icon-user km-alpha-user">{name}</span>;
+      }
+      var first_alpha = name.charAt(0);
+      var letters = /^[a-zA-Z0-9]+$/;
+      if (first_alpha.match(letters)) {
+        first_alpha = "alpha_" + first_alpha.toUpperCase();
+        return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
+      }
+      else {
+        return <span className="km-contact-icon alpha_user">{name}</span>;
+      }
+    }
+
     render() {
         var conversationStyle = {
           textDecoration: 'underline',
@@ -85,7 +104,9 @@ class UserItem extends Component {
                     <td className="text-center">
                       <div className="avatar">
                         <img src={user.imageLink} className= {imageExpr}/>
-                        <div className ={nameExpr}><span className="km-contact-icon">{name}</span></div>
+                        <div className ={nameExpr}>
+                          {this.getContactImageByAlphabet()}
+                        </div>
                         <span className={online}></span>
                       </div>
                     </td>

@@ -40,6 +40,22 @@
   color: #464748;
 }
 
+.teammate-table .km-alpha-contact-image .km-contact-icon {
+  border-radius: 50%;
+}
+
+.teammate-table .avatar .img-avatar {
+    cursor: pointer;
+    float: left;
+    width: 43px;
+    height: 43px;
+    margin-right: 12px;
+    border-radius: 50%;
+    font-size: 25px;
+    text-align: center;
+    line-height: 40px;
+}
+
 .teammate-table .table th, .teammate-table .table td {
   padding: 0.75rem;
   vertical-align: top;
