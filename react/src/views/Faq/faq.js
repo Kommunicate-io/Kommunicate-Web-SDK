@@ -244,7 +244,7 @@ class Tabs extends Component {
       {/* Change showNewBot to false to hide new bot section*/}
         <div className={(CommonUtils.isTrialPlan()) ? "card" : (CommonUtils.isStartupPlan()) ? "n-vis" : "card"}>
           <div className="card-block">
-            <div style={{width: "60%", margin: "0 auto"}}>
+            <div style={styles}>
               <div className="row">
                 <div className="col-sm-12 km-bot-integration-heading">
                   <p>FAQs help customers find answers faster through self service, and also reduce workload of your team</p>
@@ -626,5 +626,11 @@ class Tabs extends Component {
     )
   }
 }
+
+const styles = {
+  width: "60%", 
+  margin: "0 auto"
+}
+
 
 export default Tabs;
