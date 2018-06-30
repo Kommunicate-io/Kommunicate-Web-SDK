@@ -231,11 +231,10 @@ class Aside extends Component {
     var that = this;
     var group = that.state.group;
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
+    var changeAssignee = true;
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
-        var changeAssignee = true;
-
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               that.removeGroupMember(group.groupId, user.userId);  
