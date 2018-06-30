@@ -239,7 +239,7 @@ class Aside extends Component {
 
         let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
 
-        let groupUserDetail = botAgentMap[groupUser.userId];
+        let groupUserDetail =  botAgentMap && botAgentMap[groupUser.userId];
 
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
               that.removeGroupMember(group.groupId, groupUserDetail.userName);  
@@ -269,7 +269,7 @@ class Aside extends Component {
 
         let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
 
-        let groupUserDetail = botAgentMap[groupUser.userId];
+        let groupUserDetail = botAgentMap && botAgentMap[groupUser.userId];
 
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
           allBotsInGroup.push(groupUserDetail.userName);
