@@ -124,6 +124,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case "addWelcomeMessage":
 						oInstance.addWelcomeMessage(params);
 						break;
+					case "getGroupFeed":
+						oInstance.getGroupFeed(params);
+						break;	
 					case "loadContacts":
 						oInstance.loadContacts(params);
 						break;
@@ -494,6 +497,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 			}
 		};
+		_this.getGroupFeed = function(params) {
+			kmGroupService.getGroupFeed({
+				'groupId': params.groupId,
+				'callback': params.callback
+			});
+        };
 		_this.loadConvTab = function (optns) {
 			if (typeof optns === 'object' && optns.userId && optns.convId) {
 				mckMessageLayout.loadTab({

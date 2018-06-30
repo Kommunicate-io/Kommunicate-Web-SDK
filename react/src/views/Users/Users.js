@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
 import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
-import CustomerListItem from '../UserItem/CustomerListItem'
+import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
+import CommonUtils from '../../utils/CommonUtils';
+
 
 class Users extends Component {
 
@@ -12,56 +14,50 @@ class Users extends Component {
 
     this.state = {
       result: [],
-      showEmptyStateImage: true
+      showEmptyStateImage: true,
     };
 
     window.addEventListener("kmFullViewInitilized",this.getUsers,true);
 
   }
   componentWillMount() {
-    this.getUsers();
+    this.getUsers(); 
   }
+
   getUsers = () => {
     var _this = this;
+    var assingUser=[];
+    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
     window.$kmApplozic.fn.applozic("fetchContacts", {
       "roleNameList": ["USER"],
       'callback': function(response) {
-        //console.log("User Response", response);
-        // if(response&&response.response){
-        // _this.setState({result: response.response.users});
-        // }
         if (response && response.response && (response.response.users.length > 0)) {
-          _this.setState({result: response.response.users, showEmptyStateImage: true});
+          const users=response.response.users.map((user, index)=>{
+            if (user.messagePxy && user.messagePxy.groupId) {
+              window.$kmApplozic.fn.applozic("getGroupFeed", { groupId: user.messagePxy.groupId,
+                callback: function(group) {
+                  if (typeof group !== "undefined" && group !== null && group.data.metadata &&                group.data.metadata.CONVERSATION_ASSIGNEE) {
+                    user.assignee = botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
+                    assingUser.push(user);
+                    _this.setState({result: assingUser, showEmptyStateImage: true})
+                  }
+                }
+              });
+            }
+          });
         } else if (response.response.users.length == 0) {
           _this.setState({showEmptyStateImage: false});
         }
       }
     });
+    
   }
-
   render() {
     const infoText = "The last time someone from your team <br><br/> or the user sent a message.";
-    var result = this.state.result.map(function(result, index) {
-      if (result.messagePxy && result.messagePxy.groupId) {
-        window.$kmApplozic.fn.applozic("getGroup", {
-          groupId: result.messagePxy.groupId,
-          callback: function(group) {
-            if (typeof group !== "undefined" && group !== null && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
-              window.$kmApplozic.fn.applozic("getContactDetail", {
-                "userId": group.metadata.CONVERSATION_ASSIGNEE,
-                callback: function(user) {
-                  if (typeof user !== "undefined") {
-                    result.assignee = user.displayName || user.userId;
-                  }
-                }
-              })
-            }
-          }
-        })
-      }
-      return <CustomerListItem key={index} user={result} hideConversation="false"/>
+    var result = this.state.result.map(function (result, index) {
+      return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
-    return (<div className="animated fadeIn customer-list-item">
+   return (<div className="animated fadeIn customer-list-item">
 
       <div className="row">
         <div className="col-md-12">
