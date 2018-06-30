@@ -82,7 +82,12 @@
     }
 },
     "pluginProperties": {
-      "pseduoNameEnabled": false
+      "pseudoNameEnabled": true
+    },
+    "rabbitmq":{
+        "host":"apps-test.applozic.com",
+        "userName":"applozic",
+        "password":"@ppl0zic"
     },
     "rabbitmq":{
         "host":"apps-test.applozic.com",
