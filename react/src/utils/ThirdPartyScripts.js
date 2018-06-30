@@ -5,71 +5,71 @@ import CommonUtils from './CommonUtils';
 class ThirdPartyScripts extends Component {
     
       componentDidMount(){
-          // // support chat widget
-          // var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
-          // var currentPath = window.location.pathname;
-          // var sideboxHelpIcon = document.getElementById('sidebar-sidebox-help-icon');
-          // // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
+          // support chat widget
+          var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
+          var currentPath = window.location.pathname;
+          var sideboxHelpIcon = document.getElementById('sidebar-sidebox-help-icon');
+          // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
-          // /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
-          //   null
-          // } else {*/
+          /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
+            null
+          } else {*/
            
-          //   (function(d, m){ 
-          //     let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-          //     "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true}
-          //     if(userId){
-          //       o.userId = userId;
-          //       o.password =CommonUtils.getUserSession().password;
-          //     }
-          //     o.onInit=function(response) {   
-          //       var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher'); 
-          //       if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
-          //         console.log("template not loaded"); 
-          //         window.$applozic.template = window.$kmApplozic.kmtemplate;
-          //         window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
-          //        }
+            (function(d, m){ 
+              let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true}
+              if(userId){
+                o.userId = userId;
+                o.password =CommonUtils.getUserSession().password;
+              }
+              o.onInit=function(response) {   
+                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher'); 
+                if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
+                  console.log("template not loaded"); 
+                  window.$applozic.template = window.$kmApplozic.kmtemplate;
+                  window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
+                 }
                  
-          //       if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
-          //         null
-          //       } else {
+                if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
+                  null
+                } else {
 
-          //         if(sideboxHelpIcon) {
-          //           sideboxHelpIcon.classList.add('vis'); 
-          //           sideboxHelpIcon.classList.remove('n-vis'); 
-          //         } else {
-          //           console.log("Sidebox chat not loaded");
-          //         }
+                  if(sideboxHelpIcon) {
+                    sideboxHelpIcon.classList.add('vis'); 
+                    sideboxHelpIcon.classList.remove('n-vis'); 
+                  } else {
+                    console.log("Sidebox chat not loaded");
+                  }
                   
-          //       }
+                }
 
-          //       if (currentPath.includes('/login') && mckSideboxLauncher) {
-          //         mckSideboxLauncher.classList.add('vis'); 
-          //         mckSideboxLauncher.classList.remove('n-vis');
-          //       }
+                if (currentPath.includes('/login') && mckSideboxLauncher) {
+                  mckSideboxLauncher.classList.add('vis'); 
+                  mckSideboxLauncher.classList.remove('n-vis');
+                }
                  
-          //       document.querySelector(".mck-close-sidebox").onclick = function() {
-          //         if(mckSideboxLauncher) {
-          //           mckSideboxLauncher.classList.add('n-vis');
-          //           mckSideboxLauncher.classList.add('force-hide');
-          //           mckSideboxLauncher.classList.remove('vis');
-          //         }
-          //         // mckSideboxLauncher.classList.add('n-vis');
-          //         // mckSideboxLauncher.classList.add('force-hide');
-          //         // mckSideboxLauncher.classList.remove('vis');
-          //       };
+                document.querySelector(".mck-close-sidebox").onclick = function() {
+                  if(mckSideboxLauncher) {
+                    mckSideboxLauncher.classList.add('n-vis');
+                    mckSideboxLauncher.classList.add('force-hide');
+                    mckSideboxLauncher.classList.remove('vis');
+                  }
+                  // mckSideboxLauncher.classList.add('n-vis');
+                  // mckSideboxLauncher.classList.add('force-hide');
+                  // mckSideboxLauncher.classList.remove('vis');
+                };
 
-          //     };
-          //     var s = document.createElement("script");
-          //     s.type = "text/javascript";
-          //     s.async = true;
-          //     s.src = getConfig().kommunicateApi.pluginUrl;
-          //     var h = document.getElementsByTagName("head")[0];
-          //     h.appendChild(s);
-          //     window.kommunicate = m;
-          //     m._globals = o;
-          //   })(document, window.kommunicate || {});
-          // /*}*/
+              };
+              var s = document.createElement("script");
+              s.type = "text/javascript";
+              s.async = true;
+              s.src = getConfig().kommunicateApi.pluginUrl;
+              var h = document.getElementsByTagName("head")[0];
+              h.appendChild(s);
+              window.kommunicate = m;
+              m._globals = o;
+            })(document, window.kommunicate || {});
+          /*}*/
 
             
 
