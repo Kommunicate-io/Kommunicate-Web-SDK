@@ -84,7 +84,7 @@ export let thirdPartyList = {
         integrationType: integration_type.AGILE_CRM,
         docsLink: "https://www.agilecrm.com/api",
         domain:".agilecrm.com",
-        label:"SETTINGS",
+        label:"Coming Soon",
         state:"agilecrmKeys",
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">

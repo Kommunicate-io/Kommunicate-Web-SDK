@@ -4,7 +4,7 @@ import moment from 'moment';
 const CommonUtils = {
     setUserSession: function(userSession) {
         userSession.isAdmin = userSession.isAdmin | false;
-        userSession.imageLink = (typeof userSession.imageLink === "undefined") ? (userSession.applozicUser.imageLink?userSession.applozicUser.imageLink: getResource().defaultImageUrl) : userSession.imageLink;
+        userSession.imageLink = userSession.imageLink ||(userSession.applozicUser&&userSession.applozicUser.imageLink?userSession.applozicUser.imageLink: getResource().defaultImageUrl);
         localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
     },
     getUserSession: function() {
@@ -108,8 +108,23 @@ const CommonUtils = {
         lastSeen = moment.unix(lastSeenAtTime / 1000).format("DD MMMM YYYY");
       }
       return lastSeen;
+    },
+    setItemInLocalStorage: function(key,value){
+        if(key){
+            localStorage.setItem(key, JSON.stringify(value)); 
+        }
+    },
+    getItemFromLocalStorage: function(key){
+        if(key){
+            let data =  localStorage.getItem(key); 
+            try{
+                data=  JSON.parse(data); 
+            }catch(e){
+                // its string
+            }
+            return data;
+        }
     }
-
 }
 
 export default CommonUtils;

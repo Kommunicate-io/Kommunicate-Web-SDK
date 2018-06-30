@@ -1993,6 +1993,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
+                    $applozic("#mck-msg-new").attr("disabled", true);
 
                 });
                 $applozic(d).on('click', '#talk-to-human-link', function () {

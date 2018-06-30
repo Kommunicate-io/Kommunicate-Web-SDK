@@ -3880,12 +3880,10 @@ box-shadow: none!important;
 	width:100% !important;
 }
 #mck-msg-new{
-	background-color: #716fb3 !important;
+	background-color: #716fb3;
     color: white;
-    border-color: #716fb3 !important;
     border-radius: 26px;
     box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
-    background-color: #ffffff;
     border: solid 1px #716fb3;
     height: 42px;
     min-width: 270px;
@@ -5075,3 +5073,9 @@ margin-top: 243px;
 	}
 }
 
+.mck-contact-search:disabled {
+	cursor: default;
+	pointer-events: none;
+	background-color: #a5a5a5;
+	border-color: #a5a5a5;
+}

@@ -3354,6 +3354,9 @@ ol, ul {
 	justify-content: space-between;
 	padding: 10px 0px;
 }
+.km-bot-active-text {
+	padding-right: 15px;
+}
 .km-bot-active-text p {
 	font-size: 14px;
 	font-weight: normal;
@@ -3367,6 +3370,9 @@ ol, ul {
 .km-bot-active-text p span {
 	font-size: 18px;
 	color: #1cde14;
+}
+.take-over-from-bot-btn {
+	min-width: 180px;
 }
 .km-hide {
 	display: none;
@@ -3521,4 +3527,22 @@ ol, ul {
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.select-container select {
+	max-width: 110px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.select-container {
+	min-width: 160px;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.select-container select option {
+    width:110px;
+    text-overflow:ellipsis;
+    overflow:hidden;
 }

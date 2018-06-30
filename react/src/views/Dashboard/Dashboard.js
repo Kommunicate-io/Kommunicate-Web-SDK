@@ -441,13 +441,20 @@ class Dashboard extends Component {
 
 
   getAllUsers = (applicationId) => {
-    let agentFilterOption = this.state.agentFilterOption
-    return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN])).then(data => {
+    // this method also populating BOT_AGENT_MAP in localStorage
+    let agentFilterOption = this.state.agentFilterOption;
+    let agentBotMap ={}; 
+    return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT])).then(data => {
       data.map((user, index) => {
+       user && (agentBotMap[user.userName] = user);
+        // remove below "if" to show bot  in agent filter option
+        if(user && user.type !=USER_TYPE.BOT ){
         let name = user.name ? user.name :  user.email
         agentFilterOption.push({ label: name, value: user.userName })
+      }
       })
       this.setState({ agentFilterOption: agentFilterOption })
+      CommonUtils.setItemInLocalStorage('KM_BOT_AGENT_MAP',agentBotMap);
     }).catch(err => {
       // console.log("err while fetching users list ", err);
     });

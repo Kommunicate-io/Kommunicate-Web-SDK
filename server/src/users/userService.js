@@ -90,6 +90,7 @@ const createUser = (user, customer) => {
     user.accessToken = user.password;
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
+    user.imageLink = applozicUser.imagelink;
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {

@@ -126,6 +126,7 @@ KommunicateUI={
         $applozic("#mck-away-msg-box").addClass("n-vis").removeClass("vis");
         $applozic("#mck-sidebox-ft").addClass("n-vis").removeClass("vis");
         $applozic("#mck-contacts-content").addClass("n-vis").removeClass("vis");
+        $applozic("#mck-msg-new").attr("disabled", false);
     });
 
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
@@ -191,6 +192,7 @@ KommunicateUI={
                 $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
+                $applozic("#mck-msg-new").attr("disabled", false);
                 return;
             }
             if($applozic('#km-faqdiv').hasClass('vis')){
@@ -200,10 +202,12 @@ KommunicateUI={
                 $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
                 $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
+                $applozic("#mck-msg-new").attr("disabled", false);
                 return;
             }
             if($applozic('.mck-conversation').hasClass('vis')){
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+                $applozic("#mck-msg-new").attr("disabled", false);
                 return;
             }
         }
@@ -212,12 +216,14 @@ KommunicateUI={
 hideFaq:function(){  
     $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
     $applozic('.km-faqdiv').removeClass("vis").addClass("n-vis");
+    $applozic("#mck-msg-new").attr("disabled", false);
 },
 
 showChat :function () {
     $applozic('.faq-common').removeClass("vis").addClass("n-vis");
     $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+    $applozic("#mck-msg-new").attr("disabled", false);
     if($applozic('#mck-tab-conversation').hasClass('vis')){
     }
    
@@ -225,6 +231,7 @@ showChat :function () {
 showHeader :function(){
     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
     $applozic('#mck-tab-conversation').removeClass("vis").addClass("n-vis");
+    $applozic("#mck-msg-new").attr("disabled", false);
 },
 
 sendFaqQueryAsMsg: function(groupId){

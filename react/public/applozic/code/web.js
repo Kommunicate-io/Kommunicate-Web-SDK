@@ -48,7 +48,7 @@ function initAutoSuggestions() {
   var $appKey = "applozic-sample-app";
   var $contactNumber = "";
   var $password = "";
-  function logout(){
+  var logout = function(){
     $kmApplozic.fn.applozic("logout");
   }
 
@@ -222,7 +222,7 @@ if (typeof company !== "undefined" && company != null && company != "null") {
        $('#km-user-info-list #description').html(description !== null ? description : '');
       }
       else {
-        $('#km-user-info-list #description').html(company.description !== null ? dcompany.description : '');
+        $('#km-user-info-list #description').html(company.description !== null ? company.description : '');
       }
     }
     var crunchbase = company.crunchbase;
@@ -249,7 +249,7 @@ else if (company != null) {
 }
 }
 
-function getSuggestions(_urlAutoSuggest) {
+var getSuggestions = function(_urlAutoSuggest) {
 
   fetch(_urlAutoSuggest)
     .then(res => res.json())
