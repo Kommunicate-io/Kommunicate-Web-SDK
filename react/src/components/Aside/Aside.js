@@ -751,7 +751,7 @@ class Aside extends Component {
                                 <p><span>&#9679;</span> Active bots <strong></strong></p>
                             </div>
                             <div className="">
-                              <button id="takeover-from-bot" className="km-button km-button--secondary" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
+                              <button id="takeover-from-bot" className="km-button km-button--secondary take-over-from-bot-btn" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
                             </div>
                           </div>
                       </div>
