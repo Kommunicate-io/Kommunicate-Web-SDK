@@ -5560,7 +5560,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				kmUtils.ajax({
-					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=30&orderBy=1" + roleNameListParam,
+					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=50&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam),
 					type: 'get',
 					global: false,
 					success: function (response) {
