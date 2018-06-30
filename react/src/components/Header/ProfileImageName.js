@@ -161,7 +161,7 @@ export default class ProfileImageName extends Component {
 
                 <button className="sidebar-profile-dropdown nav-link dropdown-toggle" onClick={this.showDropdownMenu} data-toggle="dropdown" type="button" aria-haspopup="true">
                   <div style={{ display: "inline-block" }}>
-                    <img src={this.props.profilePicUrl} className="img-avatar" alt={this.props.displayName} />
+                    <img src={this.props.profilePicUrl} className="img-avatar" />
                     <span className={CommonUtils.getUserSession().availabilityStatus === 1 ? "online-indicator-profile-pic" : null}></span>
                   </div>
                   <span className="d-md-down-none" hidden={this.props.hideDisplayName}>{this.props.displayName}</span>

@@ -37,7 +37,7 @@ class Full extends Component {
     super(props)
      //_this =this;
     let imageLink = CommonUtils.getUserSession().imageLink;
-    this.state = { 
+    this.state = {
       imageLink: imageLink,
       hideInvitedMemberBar: true,
       invitedBy: '',

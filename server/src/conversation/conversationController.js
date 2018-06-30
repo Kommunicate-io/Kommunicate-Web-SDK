@@ -111,14 +111,15 @@ exports.createConversationFromMail = (req, res) => {
 }
 
 exports.switchConversationAssignee = (req, res) => {
-  let appId = req.body.applicationId;
-  let groupId = req.body.groupId;
-  return conversationService
-    .switchConversationAssignee(appId, groupId)
-    .then(response => {
-      return res.status(200).json({ code: "success", message: response });
-    })
-    .catch(err => {
-      return res.status(500).json({ code: "error", message: err });
-    });
+    let appId = req.body.applicationId;
+    let groupId = req.body.groupId;
+    let assignTo = req.body.userId
+    return conversationService
+        .switchConversationAssignee(appId, groupId, assignTo)
+        .then(response => {
+            return res.status(200).json({ code: "success", message: response });
+        })
+        .catch(err => {
+            return res.status(500).json({ code: "error", message: err });
+        });
 };

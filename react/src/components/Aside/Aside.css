@@ -378,7 +378,8 @@ ul#km-group-search-list li {
 }*/
 
 #km-message-cell {
-    background-image: url('/applozic/images/chat-bg-horizontal.png');
+    /* background-image: url('/applozic/images/chat-bg-horizontal.png'); */
+    background-color: #f4f5f6;
     margin: 0;
     padding: 0;
     background-size: 500px 600px;
@@ -386,11 +387,11 @@ ul#km-group-search-list li {
 }
 
 .km-container .right .bubble.km-msg-left .km-msg-box {
-  background-color: whitesmoke;
+  background-color: white;
 }
 
 .km-msg-center .km-msg-box {
-    background: whitesmoke;
+    background: white;
 }
 
 /* #takeover-from-bot {
@@ -508,13 +509,15 @@ ul#km-group-search-list li {
     margin-top: 7px;
 }
 .km-sidebar-display-name {
-  font-size: 14px;  
+  font-size: 18px;  
   letter-spacing: 0.5px;
   text-align: left;
   text-align: center;
+  margin-bottom: 0px;
 }
 .km-sidebar-user-email {
     text-align: center;
+    margin-bottom: 0px;
   }
 .km-user-info-metadata-wrapper{
     display: flex;
@@ -570,4 +573,42 @@ ul#km-group-search-list li {
     letter-spacing: 0.5px;
     color: #56565a;
     padding: 16px 0 6px 11px;  
+}
+.km-conversation-heading.breadcrumb {
+    margin-bottom: 0px;
+}
+
+.introducing-text-box-main-container {
+    background-color: #cce7f8;
+    padding: 10px 15px;
+}
+.introducing-text-box-main-container .introducing-text-box-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.introducing-text-box-main-container .introducing-text-container p {
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4f4e4e;
+}
+.introducing-text-box-main-container .introducing-text-container a {
+    font-size: 15px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.5px;
+    text-align: left;
+    color: #456fca;
+    text-decoration: underline;
+    pointer-events: all;
+    cursor: pointer;
+}
+.introducing-text-box-main-container .introducing-close-icon-container {
+    cursor: pointer;
 }

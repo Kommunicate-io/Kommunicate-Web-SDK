@@ -25,12 +25,16 @@ exports.initializeEventsConsumers = function() {
                     return channel.consume(queue, function(msg) {
                         if (msg && msg.content) {
                             logger.info('msg received in queue ', queue);
-                            let data = Buffer.from(msg.content).toString();
                             try {
+                                let data = Buffer.from(msg.content).toString();
                                 data = JSON.parse(data);
-                                registeredEvents[event].handler(data);
+                                Promise.resolve().then(registeredEvents[event].handler(data)).catch(e=>{
+                                    logger.info("error while processing event", e );
+                                });
                             } catch (e) {
-                                logger.info('not able to parse data into JSON Object, skipping data');
+                                //console.log("error while processing event", e);
+
+                                logger.info('data is received as string, skipping.......');
                             }
                         } 
                            // send acknowledgemwnt

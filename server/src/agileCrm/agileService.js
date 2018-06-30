@@ -5,7 +5,7 @@ const logger = require('../utils/logger.js');
 const customerService = require('../customer/customerService');
 const integrationSettingService = require('../setting/thirdPartyIntegration/integrationSettingService');
 
-const createContact = async function(settings, userInfo){
+const createContact = async function( settings, userInfo){
     if(!settings){
         settings =  await getSettings(userInfo.applicationId);
         if(!settings){
@@ -78,15 +78,24 @@ const createContact = async function(settings, userInfo){
             "name": userInfo.customField.name,
             "value": userInfo.customField.value
         })*/
-        if(userInfo.metadata){
+       if(userInfo.metadata){
             for( var i=0; i< Object.keys(userInfo.metadata).length; i++ ) {
+                let key = Object.keys(userInfo.metadata)[i];
+                let value = userInfo.metadata[Object.keys(userInfo.metadata)[i]] 
+                try{
+                    value = JSON.parse(value)
+                }catch(e){
+                    // metadata received as string.
+                }
+                if(typeof value == 'string'){
                var field = {    "type" : "CUSTOM",
-                                "name"   :   Object.keys(userInfo.metadata)[i],
-                                "value":  userInfo.metadata[Object.keys(userInfo.metadata)[i]]
+                                "name"   : key,
+                                "value": value
                 }
 
                 contact.properties.push(field);
             }
+        }
         }
     
 
@@ -163,7 +172,16 @@ const updateContact = async function(settings, contactId, userInfo){
 
         if(userInfo.metadata){
             for( var i=0; i< Object.keys(userInfo.metadata).length; i++ ) {
-                if(typeof userInfo.metadata[Object.keys(userInfo.metadata)[i]] == 'string'){
+                let key = Object.keys(userInfo.metadata)[i];
+                let value = userInfo.metadata[Object.keys(userInfo.metadata)[i]] 
+                try{
+                    //checking if metadata is object
+                    value = JSON.parse(value)
+                
+                }catch(e){
+                    // metadata received as string.
+                }
+                if(typeof value == 'string'){
                var field = {    "type" : "CUSTOM",
                                 "name"   :   Object.keys(userInfo.metadata)[i],
                                 "value":  userInfo.metadata[Object.keys(userInfo.metadata)[i]]
@@ -219,6 +237,7 @@ const updateTag = (settings, contactId, userInfo) => {
 
 const getSettings = async function(applicationId){
     let customer = await  customerService.getCustomerByApplicationId(applicationId);
+    if(customer){
     let settings = await integrationSettingService.getIntegrationSetting(customer.id,AGILE_CRM);
     if(settings.length == 0){
         logger.info("agile crm is not integrated for Application Id",applicationId);
@@ -226,7 +245,32 @@ const getSettings = async function(applicationId){
     }else{
        return settings[0];  
     }
-       
+}else{
+    return null;
+}
+    
+}
+
+const getContactById = async function(contactId,options){
+    return new Promise(async function(resolve,reject){
+        if(options&& !options.settings && options.applicationId){
+            settings = await getSettings(applicationId);
+        }
+
+        var obj = new AgileCRMManager(settings.domain, settings.accessToken, settings.accessKey);
+        var success = function (data) {
+         logger.info("fetched contact from agilecrm")
+         return resolve(data)
+          };
+        var error = function (data) {
+         logger.error()
+          };
+          
+      obj.contactAPI.getContactById(contactId, success, error);
+
+    });
+    
+   
 }
 
 
@@ -234,5 +278,6 @@ const getSettings = async function(applicationId){
 module.exports = {
     createContact,
     updateContact,
-    updateTag
+    updateTag,
+    getContactById
 }
