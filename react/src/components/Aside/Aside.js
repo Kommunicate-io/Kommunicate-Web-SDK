@@ -235,44 +235,50 @@ class Aside extends Component {
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
-        window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-            if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              that.removeGroupMember(group.groupId, user.userId);  
+        var changeAssignee = true;
+
+        let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+
+        let groupUserDetail = botAgentMap[groupUser.userId];
+
+        if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
+              that.removeGroupMember(group.groupId, groupUserDetail.userName);  
               if (changeAssignee) {
                 that.changeAssignee(loggedInUserId);
                 changeAssignee = false;
               }
             }
           }
-        }); 
-      }
-    }
+       
+        }
     var takeOverEleContainer = document.getElementById("km-take-over-bot-container");
     takeOverEleContainer.style.display = "none";    
   }
 
   setUpAgentTakeOver(group) {
-    var takeOverEleContainer = document.getElementById("km-take-over-bot-container"), takeOverEleText = document.querySelector("#km-bot-active-text p>strong"), pseudoNameIcon = document.getElementById("pseudo-name-icon");
+    var takeOverEleContainer = document.getElementById("km-take-over-bot-container"),
+      takeOverEleText = document.querySelector("#km-bot-active-text p>strong"),
+      pseudoNameIcon = document.getElementById("pseudo-name-icon");
     takeOverEleContainer.style.display = "none";
     pseudoNameIcon.classList.remove("vis");
     pseudoNameIcon.classList.add("n-vis");
     let allBotsInGroup = [];
-    for(var key in group.users) {
-      if(group.users.hasOwnProperty(key)) {
+    for (var key in group.users) {
+      if (group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
 
-        window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
-            if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              allBotsInGroup.push(user.userId);
-              // takeOverEleText.innerHTML = user.displayName; 
-              takeOverEleContainer.style.display = "flex";          
-              // console.log(user.displayName);         
-              return;
-            }
-          }
-        });
+        let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+
+        let groupUserDetail = botAgentMap[groupUser.userId];
+
+        if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
+          allBotsInGroup.push(groupUserDetail.userName);
+          // takeOverEleText.innerHTML = user.displayName; 
+          takeOverEleContainer.style.display = "flex";
+          // console.log(user.displayName);         
+        }
       }
-    }
+  }
     takeOverEleText.innerHTML = allBotsInGroup.join(', ');
     if(allBotsInGroup.length>1) {
       document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";

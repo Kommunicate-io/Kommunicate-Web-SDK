@@ -108,8 +108,23 @@ const CommonUtils = {
         lastSeen = moment.unix(lastSeenAtTime / 1000).format("DD MMMM YYYY");
       }
       return lastSeen;
+    },
+    setItemInLocalStorage: function(key,value){
+        if(key){
+            localStorage.setItem(key, JSON.stringify(value)); 
+        }
+    },
+    getItemFromLocalStorage: function(key){
+        if(key){
+            let data =  localStorage.getItem(key); 
+            try{
+                data=  JSON.parse(data); 
+            }catch(e){
+                // its string
+            }
+            return data;
+        }
     }
-
 }
 
 export default CommonUtils;
