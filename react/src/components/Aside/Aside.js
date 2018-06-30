@@ -391,7 +391,7 @@ class Aside extends Component {
                                           });
                                       }
                                     });
-                                    updateConversation({groupId:that.state.group.groupId,status:status});
+                                    //updateConversation({groupId:that.state.group.groupId,status:status});
   }
 
   updateUserContactDetail(userId, params){
