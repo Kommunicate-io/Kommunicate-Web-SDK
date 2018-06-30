@@ -94,7 +94,7 @@ $(document).ready(function() {
                                     if (typeof value == 'object') {
                                         switch (key) {
                                             case 'KM_PSEUDO_USER':
-                                                if (value.hidden != "true" || value.pseudoName && user.roleType === 3) {
+                                                if (value.hidden != "true" || value.pseudoName == "true" && user.roleType === 3) {
                                                     $("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
                                                 }
                                             break;
