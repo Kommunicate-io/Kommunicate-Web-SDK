@@ -3,7 +3,7 @@ const applicationModel = require('../models').application;
 const user = require("../models").user;
 const applicationService = require('./applicationService');
 const appSettingService = require('../setting/application/appSettingService');
-const logger = require('../utils/logger')
+const logger = require('../utils/logger');
 
 
 const createCustomer = (customer, application, transaction) => {

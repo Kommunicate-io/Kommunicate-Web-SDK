@@ -90,7 +90,12 @@
         }
     },
     "pluginProperties":{
-        "pseduoNameEnabled": true
+        "pseudoNameEnabled": true
+    },
+    "rabbitmq":{
+        "host":"localhost",
+        "userName":"test",
+        "password":"test"
     },
     "rabbitmq":{
         "host":"localhost",

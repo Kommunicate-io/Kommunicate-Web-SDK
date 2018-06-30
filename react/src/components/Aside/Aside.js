@@ -3,7 +3,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation, getUsersByType} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -14,9 +14,9 @@ import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
 import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import ReactModal from 'react-modal';
 import {PseudoNameImage} from '../../views/Faq/LizSVG';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant'
 
 
 class Aside extends Component {
@@ -24,8 +24,8 @@ class Aside extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: '1',
       applicationId : "",
+      activeTab: '1',
       assignee: '',
       visibleIntegartion:false,
       visibleReply:true,
@@ -43,7 +43,9 @@ class Aside extends Component {
       },
       group: null,
       modalOpen: false,
+      hideInfoBox: false
     };
+    this.dismissInfo = this.dismissInfo.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -72,16 +74,26 @@ class Aside extends Component {
     let botRouting = userSession.botRouting;
     let clearbitKey = userSession.clearbitKey;
     this.setState({
-       clearbitKey: clearbitKey,
-       applicationId:applicationId,
-       botRouting:botRouting
-      },this.loadAgents)
+      clearbitKey: clearbitKey,
+      applicationId:applicationId,
+      botRouting:botRouting
+     },this.loadAgents);
      if (typeof(Storage) !== "undefined") {
       (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
         this.setState({hideInfoBox: false}) : this.setState({hideInfoBox: true})      
     } else {
         console.log("Please update your browser.");
     }
+ 
+ }
+ componentWillReceiveProps () {
+   let userSession = CommonUtils.getUserSession();
+   let botRouting = userSession.botRouting;
+   if (botRouting != this.state.botRouting) {
+     var assign = window.$kmApplozic("#assign");
+     // window.$kmApplozic("#assign").empty();
+     this.setState({botRouting:botRouting},this.loadAgents);
+   }
   }
   
   getThirdparty = () => {
@@ -125,7 +137,7 @@ class Aside extends Component {
   }
 
   loadAgents() {
-      // var that = this;
+     // var that = this;
       // window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
       //   if(response.status === 'success') {
       //         var assign = window.$kmApplozic("#assign");
@@ -229,14 +241,17 @@ class Aside extends Component {
     var that = this;
     var group = that.state.group;
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
+    var changeAssignee = true;
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
-
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
               that.removeGroupMember(group.groupId, user.userId);  
-              that.changeAssignee(loggedInUserId);
+              if (changeAssignee) {
+                that.changeAssignee(loggedInUserId);
+                changeAssignee = false;
+              }
             }
           }
         }); 
@@ -251,14 +266,15 @@ class Aside extends Component {
     takeOverEleContainer.style.display = "none";
     pseudoNameIcon.classList.remove("vis");
     pseudoNameIcon.classList.add("n-vis");
-    
+    let allBotsInGroup = [];
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
 
         window.$kmApplozic.fn.applozic("getContactDetail", {"userId": groupUser.userId, callback: function(user) {
             if (typeof user !== "undefined" && typeof user.roleType !== "undefined" && user.roleType == 1 && user.userId !== "bot") {
-              takeOverEleText.innerHTML = user.displayName; 
+              allBotsInGroup.push(user.userId);
+              // takeOverEleText.innerHTML = user.displayName; 
               takeOverEleContainer.style.display = "flex";          
               // console.log(user.displayName);         
               return;
@@ -267,6 +283,13 @@ class Aside extends Component {
         });
       }
     }
+    takeOverEleText.innerHTML = allBotsInGroup.join(', ');
+    if(allBotsInGroup.length>1) {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from all bots";
+    } else {
+      document.getElementById("takeover-from-bot").innerHTML = "Take over from bot";
+    }
+    // console.log(allBotsInGroup);
   }
 
   changeAssignee(userId) {
@@ -380,6 +403,20 @@ class Aside extends Component {
     updateApplozicUser(userInfo);
   }
 
+  dismissInfo() {
+    if (typeof(Storage) !== "undefined") {
+      if(localStorage.getItem("KM_PSEUDO_INFO") === null) {
+        localStorage.setItem("KM_PSEUDO_INFO", "true");
+        this.setState({
+          hideInfoBox: true
+        });
+      }       
+    } else {
+        console.log("Please update your browser.");
+    }
+    
+  }
+
   render() {
     const thirdParty = thirdPartyList.map((item,index) => {
          return <button disabled = {this.state.disableButton } key = {index} onClick={() => {this.setState({clickedButton:index,},this.openModal)}}
@@ -398,6 +435,7 @@ class Aside extends Component {
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
                     {/* conversation tab new design */}
+                      
                       <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="km-conversation-header-icons">
                           <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tip="Assigned to me" data-effect="solid" data-place="bottom">
@@ -418,6 +456,34 @@ class Aside extends Component {
                               <path fill='#AAA' d='M13.3 0H.7C.314 0 0 .317 0 .706V3.67c0 .389.314.706.7.706h12.6c.386 0 .7-.317.7-.706V.706A.704.704 0 0 0 13.3 0zM.875 13.76c0 1.34 1.008 2.428 2.25 2.428h7.745c1.241 0 2.249-1.087 2.249-2.427V8.41l.005-.01V5H.875v8.76z'/>
                             </svg>
                             <span id="km-closed-unread-icon"></span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* Introducing Pseudonyms */}
+                      <div className="introducing-text-box-main-container" hidden={this.state.hideInfoBox}>
+                        <div className="introducing-text-box-container">
+                          <div className="introducing-info-icon-container">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" viewBox="0 0 20 20" style={{marginRight:"10px"}}>
+                              <path id="Path_2" data-name="Path 2" d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,15h0a1,1,0,0,1-1-1V12a1,1,0,0,1,1-1h0a1,1,0,0,1,1,1v4A1,1,0,0,1,12,17Zm1-8H11V7h2Z" transform="translate(-2 -2)" fill="#6d6d6d"/>
+                            </svg>
+                          </div>
+                          <div className="introducing-text-container">
+                            <p>Introducing Pseudonyms for anonymous users</p>
+                            <a href="#" onClick={this.onOpenModal}>Learn more</a>
+                          </div>
+                          <div className="introducing-close-icon-container" onClick={this.dismissInfo}>
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 24 24" >
+                              <g id="Bounding_Boxes">
+                                <g id="ui_x5F_spec_x5F_header_copy_3" display="none">
+                                </g>
+                                <path fill="none" d="M0,0h24v24H0V0z"/>
+                              </g>
+                              <g id="Rounded_1_">
+                                <g id="ui_x5F_spec_x5F_header_copy_6" display="none">
+                                </g>
+                                <path d="M18.3,5.71L18.3,5.71c-0.39-0.39-1.02-0.39-1.41,0L12,10.59L7.11,5.7c-0.39-0.39-1.02-0.39-1.41,0l0,0   c-0.39,0.39-0.39,1.02,0,1.41L10.59,12L5.7,16.89c-0.39,0.39-0.39,1.02,0,1.41h0c0.39,0.39,1.02,0.39,1.41,0L12,13.41l4.89,4.89   c0.39,0.39,1.02,0.39,1.41,0l0,0c0.39-0.39,0.39-1.02,0-1.41L13.41,12l4.89-4.89C18.68,6.73,18.68,6.09,18.3,5.71z" fill="#6d6d6d"/>
+                              </g>
+                            </svg>
                           </div>
                         </div>
                       </div>
@@ -576,7 +642,7 @@ class Aside extends Component {
                       <div id="km-toolbar" className="km-toolbar blk-lg-12 n-vis">
                           <div className="km-new-conversation-header">
 
-                            <div id="km-tab-header" className="km-box-top n-vis">
+                            <div id="km-tab-header" className="km-box-top n-vis km-hide">
                               <div id="km-tab-individual"
                                 className="km-tab-individual km-row">
                                 <div className="blk-lg-8 km-box-title">
@@ -628,7 +694,7 @@ class Aside extends Component {
                                           Exit Group </a></li>
                                     </ul>
                                   </div>
-                                  <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
+                                  {/* <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
                                     <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
                                     viewBox="0 0 15.433 13.883">
                                         <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
@@ -639,7 +705,7 @@ class Aside extends Component {
                                         <path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z"
                                         data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
                                     </svg>
-                                  </div>
+                                  </div> */}
                                 </div>
                               </div>
                             </div>
@@ -648,9 +714,21 @@ class Aside extends Component {
                               <i className="fa fa-user fa-lg mt-2"></i>
                             </div>
                             */}
-                            
-                            <div className="form-group col-sm-1 n-vis">
-                                <span className="">Assign</span>
+                            <div className="select-labels">
+                                <span className="">Status:</span>
+                            </div>
+                            <div className="">
+                              <div className="select-container">
+                                <select id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
+                                  <option value="0">Open</option>
+                                  <option value="2">Close</option>
+                                  <option value="3">Spam</option>
+                                  <option value="4">Duplicate</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="select-labels">
+                                <span className="">Assign to:</span>
                             </div>
                             <div className="">
                               <div className="select-container">
@@ -674,25 +752,13 @@ class Aside extends Component {
                               <i className="fa fa-flag-o fa-lg mt-2"></i>
                             </div>
                             */}
-                            <div className="form-group col-sm-1 n-vis">
-                                <span className="">Status</span>
-                            </div>
-                            <div className="">
-                              <div className="select-container">
-                                <select id="conversation-status" onChange = {(event) => this.changeStatus(event.target.value)}>
-                                  <option value="0">Open</option>
-                                  <option value="2">Close</option>
-                                  <option value="3">Spam</option>
-                                  <option value="4">Duplicate</option>
-                                </select>
-                              </div>
-                            </div>
+                            
                             
                           </div>
                           <hr/>
                           <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
                             <div className="km-bot-active-text" id="km-bot-active-text">
-                                <p><span>&#9679;</span> <strong></strong> is active</p>
+                                <p><span>&#9679;</span> Active bots <strong></strong></p>
                             </div>
                             <div className="">
                               <button id="takeover-from-bot" className="km-button km-button--secondary" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
@@ -911,7 +977,7 @@ class Aside extends Component {
                     className="km-group-info-tab km-panel-sm km-panel">
                     <div className="panel-content">
                       <div className="km-box-top">
-                        <div className="km-title-wrapper"> 
+                        <div className="km-title-wrapper n-vis"> 
                           <div className="blk-lg-10">
                             <div className="km-box-title km-truncate" title="Group Info">Details
                             </div>
@@ -948,8 +1014,22 @@ class Aside extends Component {
                           </div>
                         </div>
                         <div className="km-dispalyname-wrapper">
-                          <p id="km-sidebar-display-name"  className="km-sidebar-display-name"></p>
+                        <div>
+                        <p id="km-sidebar-display-name"  className="km-sidebar-display-name km-truncate"></p>
                           <p id="km-sidebar-user-email"  className="km-sidebar-user-email"></p>
+                        </div>
+                          <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
+                            viewBox="0 0 15.433 13.883">
+                                <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
+                              transform="translate(0 5.998)" fill="#42b9e8" />
+                                <path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z"
+                              data-name="Shape" transform="translate(1.954 8.626)"
+                                fill="#42b9e8" />
+                                <path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z"
+                                data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
+                            </svg>
+                          </div>
                         </div>
                       </div>
                       <div>
@@ -1151,9 +1231,9 @@ class Aside extends Component {
           <div className="row" style={{marginTop:"80px"}}>
             <div className="col-lg-5 col-md-6 col-sm-12 pseudo-name-intro-text-container">
               <p className="intro text-center">Introducing</p>
-              <h1 className="pseudo text-center">PSEUDO NAMES</h1>
+              <h1 className="pseudo text-center">PSEUDONYMS</h1>
               <p className="anonymous text-center">for your anonymous visitors</p>
-              <p className="desc">Pseudo names help identify anonymous visitors easily when they initiate a conversation and facilitates a better cross team collaboration.<br/><br/>Look out for the <span><svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3" viewBox="0 0 15.433 13.883"><path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z" transform="translate(0 5.998)" fill="#42b9e8" /><path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z" data-name="Shape" transform="translate(1.954 8.626)" fill="#42b9e8" /><path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z" data-name="Shape" transform="translate(2.965)" fill="#42b9e8" /></svg></span> icon in the conversation screen to identify visitors with pseudo names.</p>
+              <p className="desc">Pseudonyms help identify anonymous visitors easily when they initiate a conversation and facilitates a better cross team collaboration.<br/><br/>Look out for the <span><svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3" viewBox="0 0 15.433 13.883"><path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z" transform="translate(0 5.998)" fill="#42b9e8" /><path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z" data-name="Shape" transform="translate(1.954 8.626)" fill="#42b9e8" /><path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z" data-name="Shape" transform="translate(2.965)" fill="#42b9e8" /></svg></span> icon in the conversation screen to identify visitors with pseudonyms.</p>
               <button className="km-button km-button--primary" onClick={this.onCloseModal}>Cool! Got it</button>
             </div>
             <div className="col-lg-7 col-md-6 col-sm-12 pseudo-name-intro-svg-container">
