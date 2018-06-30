@@ -113,12 +113,15 @@ class Integrations extends Component {
             {thirdParties}
             </div>
         </div>
+        { this.state.activeDiv !== "agilecrm" &&
             <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
             </div>
             </Modal>
+        }
+        
      </div>
      <div className={(CommonUtils.isTrialPlan()) ? "n-vis" : (CommonUtils.isStartupPlan()) ? "upgrade-plan-container" : "n-vis"}>
         <div className="upgrade-plan-heading-container">
