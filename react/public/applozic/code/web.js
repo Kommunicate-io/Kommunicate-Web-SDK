@@ -249,7 +249,7 @@ else if (company != null) {
 }
 }
 
-function getSuggestions(_urlAutoSuggest) {
+var getSuggestions = function(_urlAutoSuggest) {
 
   fetch(_urlAutoSuggest)
     .then(res => res.json())
