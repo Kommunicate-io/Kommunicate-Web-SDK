@@ -26,7 +26,7 @@ class Users extends Component {
 
   getUsers = () => {
     var _this = this;
-    var assingUser=[];
+    var assignedUser=[];
     let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
     window.$kmApplozic.fn.applozic("fetchContacts", {
       "roleNameList": ["USER"],
@@ -38,13 +38,17 @@ class Users extends Component {
                 callback: function(group) {
                   if (botAgentMap && typeof group !== "undefined" && group !== null && group.data.metadata) {
                     user.assignee = (group.data.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
-                    assingUser.push(user);
-                    _this.setState({result: assingUser, showEmptyStateImage: true})
-                  }
+                    assignedUser.push(user);
+                    _this.setState({result: assignedUser, showEmptyStateImage: true})
+                    
+                  } 
                 }
               });
+            } else {
+              assignedUser.push(user);
+              _this.setState({result: assignedUser, showEmptyStateImage: true})
             }
-          });
+          });     
         } else if (response.response.users.length == 0) {
           _this.setState({showEmptyStateImage: false});
         }
