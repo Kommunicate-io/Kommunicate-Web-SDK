@@ -48,7 +48,7 @@ function initAutoSuggestions() {
   var $appKey = "applozic-sample-app";
   var $contactNumber = "";
   var $password = "";
-  function logout(){
+  var logout = function(){
     $kmApplozic.fn.applozic("logout");
   }
 
