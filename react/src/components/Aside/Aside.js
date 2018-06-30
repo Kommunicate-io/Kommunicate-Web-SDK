@@ -85,15 +85,6 @@ class Aside extends Component {
         console.log("Please update your browser.");
     }
   }
-  componentWillReceiveProps () {
-    let userSession = CommonUtils.getUserSession();
-    let botRouting = userSession.botRouting;
-    if (botRouting != this.state.botRouting) {
-      var assign = window.$kmApplozic("#assign");
-      // window.$kmApplozic("#assign").empty();
-      this.setState({botRouting:botRouting},this.loadAgents);
-    }
-  }
   
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
@@ -155,15 +146,14 @@ class Aside extends Component {
       // });
       var that = this;
       window.$kmApplozic("#assign").empty();
-      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
-      this.state.botRouting && users.push(USER_TYPE.BOT);
+      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT];
       return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
         var assign = window.$kmApplozic("#assign");
         that.setState({ agents: data });
         window.$kmApplozic.each(data, function () {
           if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
-          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName && this.allConversations) {
+          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
           }
   
