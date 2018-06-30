@@ -1,3 +1,5 @@
+import 'core-js';
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'

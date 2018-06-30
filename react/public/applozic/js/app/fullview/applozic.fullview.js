@@ -1281,6 +1281,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							kmGroupService.loadGroups({
 								apzCallback: mckGroupLayout.loadGroups
 							});
+							// dispatch fullView initilized Event
+                            window.dispatchEvent(new CustomEvent("kmFullViewInitilized",{detail:{"status": "success"},bubbles: true,cancelable: true}));
 							// kmUtils.manageIdleTime();
 						} else {
 							if (typeof MCK_ON_PLUGIN_INIT === 'function') {

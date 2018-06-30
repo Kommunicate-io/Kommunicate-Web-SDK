@@ -84,16 +84,6 @@ class Aside extends Component {
     } else {
         console.log("Please update your browser.");
     }
- 
- }
- componentWillReceiveProps () {
-   let userSession = CommonUtils.getUserSession();
-   let botRouting = userSession.botRouting;
-   if (botRouting != this.state.botRouting) {
-     var assign = window.$kmApplozic("#assign");
-     // window.$kmApplozic("#assign").empty();
-     this.setState({botRouting:botRouting},this.loadAgents);
-   }
   }
   
   getThirdparty = () => {
@@ -156,15 +146,14 @@ class Aside extends Component {
       // });
       var that = this;
       window.$kmApplozic("#assign").empty();
-      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
-      this.state.botRouting && users.push(USER_TYPE.BOT);
+      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT];
       return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
         var assign = window.$kmApplozic("#assign");
         that.setState({ agents: data });
         window.$kmApplozic.each(data, function () {
           if (this.type == GROUP_ROLE.MEMBER || this.type == GROUP_ROLE.ADMIN) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
-          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName && this.allConversations) {
+          } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
           }
   
@@ -242,6 +231,7 @@ class Aside extends Component {
     var that = this;
     var group = that.state.group;
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
+    var changeAssignee = true;
     for(var key in group.users) {
       if(group.users.hasOwnProperty(key)) {
         var groupUser = group.users[key];
@@ -397,7 +387,7 @@ class Aside extends Component {
                                           });
                                       }
                                     });
-                                    updateConversation({groupId:that.state.group.groupId,status:status});
+                                    //updateConversation({groupId:that.state.group.groupId,status:status});
   }
 
   updateUserContactDetail(userId, params){
@@ -767,7 +757,7 @@ class Aside extends Component {
                                 <p><span>&#9679;</span> Active bots <strong></strong></p>
                             </div>
                             <div className="">
-                              <button id="takeover-from-bot" className="km-button km-button--secondary" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
+                              <button id="takeover-from-bot" className="km-button km-button--secondary take-over-from-bot-btn" onClick= {(event) => this.removeServiceBots(event.target.value)}>Takeover from Bot</button>
                             </div>
                           </div>
                       </div>

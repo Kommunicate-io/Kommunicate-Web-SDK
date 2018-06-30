@@ -14,9 +14,9 @@ class Users extends Component {
       result: [],
       showEmptyStateImage: true
     };
-  }
-  componentWillReceiveProps() {
-    this.getUsers();
+
+    window.addEventListener("kmFullViewInitilized",this.getUsers,true);
+
   }
   componentWillMount() {
     this.getUsers();
