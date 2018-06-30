@@ -89,11 +89,6 @@
         "userName":"applozic",
         "password":"@ppl0zic"
     },
-    "rabbitmq":{
-        "host":"apps-test.applozic.com",
-        "userName":"applozic",
-        "password":"@ppl0zic"
-    },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateAdminId": "suraj@applozic.com",
