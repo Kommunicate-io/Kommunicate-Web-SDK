@@ -60,7 +60,7 @@ def update_nludata(intent, questions, appkey):
     return
 
 
-def create_customer(application_key):
+def load_base_bot(application_key):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     path_customer = os.path.join(parent + "/customers/" + application_key + "/")
 
@@ -73,7 +73,7 @@ def create_customer(application_key):
 
 def load_agent(application_key):
     print ("loading agent for: " + application_key)
-    create_customer(application_key)
+    load_base_bot(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
     AgentMap.agent_map[application_key] = agent
@@ -136,7 +136,7 @@ def webhook():
 def getfaq():
     body = request.json
 
-    create_customer(body["applicationKey"])
+    load_base_bot(body["applicationKey"])
 
     if(body['referenceId'] is None):
 	    intent = body['id']
@@ -160,7 +160,7 @@ def train_bots():
         pass
     else:
         for appkey in body['data']:
-            create_customer(appkey)
+            load_base_bot(appkey)
             call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
