@@ -4,13 +4,13 @@ title: Installation
 sidebar_label: Installation
 ---
 
-### Prerequisites
+## Prerequisites
 
  * Apps using Kommunicate can target iOS 9 or later <br />
  * Xcode 8.0 or later required
 
 
-### Installation
+## Installation
 
 Kommunicate is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:

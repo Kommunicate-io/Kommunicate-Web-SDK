@@ -4,7 +4,7 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-### Setup
+## Setup
 
 There is a setup call that you need to do before registration or login.You can get your application key by signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io).
 Add below line in AppDelegate's launch method or just before the registration:
@@ -13,20 +13,20 @@ Add below line in AppDelegate's launch method or just before the registration:
 Kommunicate.setup(applicationId: <pass your application key>)
 ```
 
-### Registration/Login
+## Registration/Login
 
 
 Convenient methods are present in Kommunicate class to register a user on Kommunicate.
 
 Currently we support two different types of users on our iOS SDK:
 
-#### 1.Visitors
+### 1.Visitors
 
 In this case you don't have any information of the users that can be used as an `userId`. In this case a randomId will be assigned as an `userId`. So first get the userId as described below and pass the same in registration process mentioned below.
 
 `let userId = Kommunicate.randomId()`
 
-#### 2.Registered User
+### 2.Registered User
 
 If the user is logged in your app then you can pass the user information in this way.
 
@@ -36,7 +36,7 @@ let userId = <pass a unique key>
 let emailId = <pass user's emailId> // Optional
 ```
 
-#### Register User
+### Register User
 
 To register a user to the Kommunicate server, use below method from `Kommunicate` class:
 

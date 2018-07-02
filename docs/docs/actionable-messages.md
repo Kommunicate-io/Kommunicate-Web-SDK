@@ -34,7 +34,7 @@ Here is a list of available Actionable Messages:
 * List
 * Cards (coming soon)
 
-# Buttons 
+## Buttons 
 
 You can add any number of Button in your conversations for faster navigation. There are two type of Buttons supported in Kommunicate:
 
@@ -78,7 +78,7 @@ Submit button allows you to post given data on a given URL.
 }
 ```
 
-# Quick Replies
+## Quick Replies
 
 Quick Replies provides a way to send messages on a click without typing them all out manually. You can add any number of Quick Replies by passing values in the metadata as described below:
 
@@ -98,7 +98,7 @@ Quick Replies provides a way to send messages on a click without typing them all
 
 The appearance of the Quick Replies and Buttons will be adjusted automatically.
 
-# List Template
+## List Template
 
 The list template is a list of  structured items  with a optional header image and header text.
 

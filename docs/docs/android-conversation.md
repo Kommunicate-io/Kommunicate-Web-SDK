@@ -4,12 +4,12 @@ title: Conversation
 sidebar_label: Conversation
 ---
 
-#### Open Conversation Screen:
+## Open Conversation Screen:
 You can launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:
 ```java
 Kommunicate.openConversation(context);
 ```
-#### Create a new Conversation: 
+## Create a new Conversation: 
 You can create a new conversation as described below:
 ```java
             List<String> agentIds; //add agentIds to this list
@@ -31,7 +31,7 @@ You can create a new conversation as described below:
                 });
 ```
 
-#### Create a Single unique conversation:
+## Create a Single unique conversation:
 You can create a unique conversation using the below method. A unique conversation is identified by the list of agentIds and botIds used to create the conversation. If the same set of Ids are passed to the below method, then the already created conversation would be returned instead of creating a new conversation:
 
 ```java
@@ -55,7 +55,7 @@ You can create a unique conversation using the below method. A unique conversati
         }
 ```
 
-#### Open a particular conversation thread:
+## Open a particular conversation thread:
 You can open a particular conversation if you have the group ID of that particular conversation by this method.
 ```java
 Kommunicate.openParticularConversation(context, <Group Id (Integer)>);

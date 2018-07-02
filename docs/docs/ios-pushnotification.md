@@ -5,7 +5,7 @@ sidebar_label: Push Notification
 ---
 
 
-### Push Notification Setup
+## Push Notification Setup
 
 
 Add import statement in AppDelegate file to access the methods
@@ -13,7 +13,7 @@ Add import statement in AppDelegate file to access the methods
 import Kommunicate
 ```
 
-##### a) Send device token to Kommunicate server:
+### a) Send device token to Kommunicate server:
 
 In your AppDelegate’s **didRegisterForRemoteNotificationsWithDeviceToken** method send device registration to Kommunicate server after you get deviceToken from APNS. Sample code is as below:             
 
@@ -42,7 +42,7 @@ func application(_ application: UIApplication, didRegisterForRemoteNotifications
 ```
 
 
-##### b) Receiving push notification:
+### b) Receiving push notification:
 
 Once your app receives notification, pass it to Kommunicate handler for chat notification processing.
 
@@ -63,7 +63,7 @@ func application(_ application: UIApplication, didReceiveRemoteNotification user
 ```
 
 
-##### c) Handling app launch on notification click:
+### c) Handling app launch on notification click:
 
 ```
 func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -113,7 +113,7 @@ func registerForNotification() {
 }
 
 ```
-##### d)  AppDelegate changes to observe background/foreground notification:
+### d)  AppDelegate changes to observe background/foreground notification:
 
 ```
 func applicationDidEnterBackground(_ application: UIApplication) {
@@ -132,7 +132,7 @@ func applicationDidEnterBackground(_ application: UIApplication) {
  }
 ```
 
-##### e) Save Context when app terminates:
+### e) Save Context when app terminates:
 
 ```
     func applicationWillTerminate(application: UIApplication) {
@@ -142,7 +142,7 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 
 You can check the sample AppDelegate file [here](https://github.com/Kommunicate-io/Kommunicate-iOS-SDK/blob/master/Example/Kommunicate/AppDelegate.swift).
 
-### Certificates
+## Certificates
 
 Upload development and distribution APNS certificates on Kommunicate dashboard so that we can send the notifications.
 

@@ -1,11 +1,14 @@
 /* your custom css */
-@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700');
+/* @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700'); */
 
-html, body {
+/* html, body {
     font-family: 'Roboto', sans-serif;
-}
+} */
 .text-center {
     text-align: center;
+}
+.fixedHeaderContainer {
+    padding: 9px 0px;
 }
 .fixedHeaderContainer header>a {
     position: relative;
@@ -124,13 +127,14 @@ transition: box-shadow .25s;
   font-weight: 500;
   line-height: 1.72;
   color: #b4b4b4;
+  margin: 0px;
 }
 
 /* .navGroup .navListItem:last-child,.navGroup .navListItem:nth-child(3) {
     display:none;
 } */
 .fixedHeaderContainer header h2 {
-    display: none;
+    display: none !important;
 }
 footer.nav-footer {
     background-color: #5c5aa7;
@@ -222,8 +226,8 @@ footer .copyright {
 
 
 nav.toc:last-child {
-    padding-top: 40px;
-    border-right: 1px solid #cbd5e4;
+    /* padding-top: 40px; */
+    /* border-right: 1px solid #cbd5e4; */
 }
 nav.toc .toggleNav .navGroup.navGroupActive h3 {
     background: #fff;
@@ -244,19 +248,22 @@ nav.toc .toggleNav .navGroup.navGroupActive {
 
 nav.toc .toggleNav ul li a {
     display: block;
-    padding: 7px 12px;
+    padding: 5px 12px;
     margin-left: 5px;
     /* background-color: #eeeeee; */
     border-radius: 20px;
     transition: color, background-color 0.3s;
 }
-nav.toc .toggleNav ul li a.navItemActive {
+nav.toc .toggleNav ul li a.navItemActive, .toc .toggleNav ul li.navListItemActive a {
     background-color: #eeeeee;
 }
 nav.toc .toggleNav ul li a:hover, nav.toc .toggleNav ul li a:focus {
     background-color: #eeeeee;
 }
-
+.toc .toggleNav .navGroup .navListItem {
+    margin: 0;
+    margin-bottom: 4px;
+}
 .mainContainer .wrapper .post h1 {
     font-size: 24px;
     font-weight: 400;
@@ -282,6 +289,15 @@ body {
 }
 .mainContainer {
     background: #ffffff;
+}
+#back-to-top {
+    height: 40px;
+    width: 40px;
+}
+#back-to-top svg {
+    height: 24px;
+    margin: 8px auto 0;
+    width: 24px;
 }
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
@@ -336,7 +352,7 @@ body {
 }
 @media only screen and (min-width: 480px) {
     .mainContainer .wrapper .post h2 {
-        font-size: 28px;
+        /* font-size: 28px; */
     }
 }
 
