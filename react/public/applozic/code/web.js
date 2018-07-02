@@ -21,6 +21,7 @@ function initAutoSuggestions() {
   var appId = userSession.application.applicationId;
 
   for(autoSuggest in autoSuggestions){
+    try{
     $('#km-text-box').atwho({
       at: `/${autoSuggest}`,
       insertTpl: '${content}',
@@ -40,6 +41,9 @@ function initAutoSuggestions() {
         }
       }  
     });
+  }catch(e){
+    console.log("error while initilizing atwho plugin");
+  }
   }
 }
 
