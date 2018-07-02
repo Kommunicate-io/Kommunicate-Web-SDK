@@ -3,6 +3,14 @@ id: web-installation
 title: Installation
 sidebar_label: Installation
 ---
+
+# Install on CMS:
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>
+
+# Manual Installation:
 Kommunicate allows you to add live chat in your website that enables you to serve your website visitors and customers through conversation.<br>
 Installing Kommunicate on your website is easy and fast. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
 
