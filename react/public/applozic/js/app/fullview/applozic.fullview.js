@@ -1799,6 +1799,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							var group = {};
 							group.groupId = tabId;
 							group.userId = MCK_USER_ID;
+							group.role = 1; // adding agents as group admin
 							var conversationDetail = mckMessageService.checkForRoleType(group);
 							conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
 							conversationDetail.callback = function () {
@@ -2705,7 +2706,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						'userId': group.userId,
 						'apzCallback': mckGroupLayout.onAddedGroupMember
 					};
-					if (typeof group === 'object') {
+					group.role&&(conversationDetail.role= group.role);
+					if (typeof group === 'object'&& !group.role) {
 						if (MCK_CONTACT_ARRAY[group.userId] && MCK_CONTACT_ARRAY[group.userId].roleType && MCK_CONTACT_ARRAY[group.userId].roleType === 8) {
 							conversationDetail.role = 1;
 						}
