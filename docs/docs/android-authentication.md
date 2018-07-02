@@ -4,7 +4,7 @@ title: Authentication
 sidebar_label: Authentication
 ---
 
-#### Authorization
+## Authorization
 
 You need to initialise the Kommunicate SDK with your application key obtained from dashboard before accessing any method.
 You can get the application key by Signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io):
@@ -45,7 +45,7 @@ To get the user details of logged in user, use this code snippet:
 KMUser user = KMUser.getLoggedInUser(context);
 ```
 
-#### Starting Visitor Chat:
+## Starting Visitor Chat:
 You can start a visitor's chat by calling the below method from the SDK.
 ```java
   Kommunicate.loginAsVisitor(this, new KMLoginHandler() {

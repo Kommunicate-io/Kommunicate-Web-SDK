@@ -7,7 +7,7 @@ sidebar_label: Installation
 
 Installing Kommunicate in your Android app is easy and fast. We will walk you through the procedure so you can start answering your support queries within few minutes.<br />
 
-### Installation 
+## Installation 
 
 Add the following in your app build.gradle dependency:
 

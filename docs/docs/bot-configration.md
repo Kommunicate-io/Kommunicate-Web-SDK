@@ -4,21 +4,21 @@ title: Bot setup
 sidebar_label: Bot setup
 ---
 
-**Integrate your bot with Kommunicate**
+## Integrate your bot with Kommunicate
 
 * * *
 
 
 You can easily integrate bots with Kommunicate to automate tasks which will reduce the workload on your agents. To integrate bot on your platform, visit kommunicate [dashboard](https://dashboard.kommunicate.io/bots/). Once integrated, the bot can send [actionable messages](https://docs.kommunicate.io/docs/actionable-messages.html) to make a conversation more interactive and design rich.
 
-**Don't have a bot?**
+## Don't have a bot?
 
 * * *
 
 
 If you do not have any prior experience with developing and using bots, we will help to get your bot in place. Let us know your custom bot requirements by clicking on the Request Custom Bot in `dashboard->bots`, we will get in touch to assist you in developing the bot.
 
-**Already have a bot?**
+## Already have a bot?
 
 * * *
 
@@ -33,7 +33,7 @@ Here is the list of supported platforms(we will add more platform in due course)
 
 * [Microsoft Bot Framework](https://dev.botframework.com/) (coming soon)
 
-**To integrate bot built using Dialogflow, follow the below steps:**
+### To integrate bot built using Dialogflow, follow the below steps:
 
 * * *
 
@@ -49,7 +49,7 @@ Here is the list of supported platforms(we will add more platform in due course)
 On successful integration, the bot will be given an ID(botId) and will be listed under My Integrated Bots section. The botId will be used to identify the bot in the Kommunicate system.
 
 
-**Use Actionable messages to make conversations interactive**
+## Use Actionable messages to make conversations interactive
 
 * * *
 
@@ -69,7 +69,7 @@ When setting an intent [response](https://dialogflow.com/docs/intents#response) 
 
 Pass any kind of Kommunicate supported [actionable messages](https://docs.kommunicate.io/docs/actionable-messages.html) inside metadata.
 
-* **Example: Sample JSON for Quick Replies**
+* ### Example: Sample JSON for Quick Replies
 ``` JSON
 {
    "platform": "kommunicate",

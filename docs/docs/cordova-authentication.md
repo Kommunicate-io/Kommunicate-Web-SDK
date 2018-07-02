@@ -17,8 +17,8 @@ To authenticate a user you need to create a user object and then pass it to the 
 |applicationId | Pass your applicationId here |
 |deviceApnsType | 0 for development, 1 for release |
 
-### There are 2 ways to Login
-#### **1. Visitors**
+## There are 2 ways to Login
+### **1. Visitors**
 Whenever users come to your app and starts the chat, you can assign them a random ID. This behaviour is best suited for anonymous user.
 Add below function to generate a random userId:
 

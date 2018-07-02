@@ -5,7 +5,7 @@ sidebar_label: Conversation
 ---
 
 
-### Open Conversation List
+## Open Conversation List
 
 To open a list of conversations use below method. Reference to current view controller needs to be passed.
 
@@ -14,7 +14,7 @@ To open a list of conversations use below method. Reference to current view cont
 ```
 
 
-### New Conversation
+## New Conversation
 
 To create a new conversation use below method. You have to pass the userId, agentId and botIds are optional.
 
@@ -33,7 +33,7 @@ Kommunicate.createConversation(
  ```
 
 
-### Open Conversation
+## Open Conversation
 
 Open any particular conversation by passing the `clientChannelKey` and reference to current view controller.
 
