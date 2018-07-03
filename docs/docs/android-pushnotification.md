@@ -3,7 +3,7 @@ id: android-pushnotification
 title: Push Notification
 sidebar_label: Push Notification
 ---
-### FCM
+## FCM
 
 If you are already using Firebase in your application, add the below code in Kommunicate.login onSuccess() method and pass the FCM registration token as below:
 ```java
@@ -41,7 +41,7 @@ if (MobiComPushReceiver.isMobiComPushNotification(remoteMessage.getData())) {
     return;
 }
 ```
-### GCM
+## GCM
 
 If you already have GCM enabled in your app, add the below code in Kommunicate.login onSuccess() method and pass the GCM registration token as below:
 ```java
@@ -76,7 +76,7 @@ if(MobiComPushReceiver.isMobiComPushNotification(data)) {
 }
 ```
 
-### Don't have Android Push Notification code ?
+## Don't have Android Push Notification code ?
 To Enable Android Push Notification using Firebase Cloud Messaging (FCM) visit the Firebase console and create new project, add the google service json to your app, configure the build.gradle files in your app.
 
 if you don't have the existing FCM related code, then copy the push notification related files from Applozic sample app to your project from [this](https://github.com/AppLozic/Applozic-Android-SDK/tree/master/app/src/main/java/com/applozic/mobicomkit/sample/pushnotification)
@@ -113,7 +113,7 @@ pushNotificationTask = new PushNotificationTask(Applozic.getInstance(context).ge
 pushNotificationTask.execute((Void)null);
 ```
 
-### Custom UI
+## Custom UI
 
 If you are using custom UI setup then you need to follow all the above steps along with an additional step. Add a job service that is going to start the NotificationIntentService to fire notifications.
 

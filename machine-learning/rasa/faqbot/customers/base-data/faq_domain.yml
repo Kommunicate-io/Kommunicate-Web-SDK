@@ -1,0 +1,11 @@
+intents:
+- greet
+- done
+actions:
+- utter_greet
+- utter_thanks
+templates:
+ utter_greet:
+ - How may i help you?
+ utter_thanks:
+ - Have a great day

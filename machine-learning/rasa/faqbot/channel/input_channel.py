@@ -9,7 +9,7 @@ from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
 
 from conf.default import *
-
+from distutils.dir_util import copy_tree
 
 class AgentMap(object):
     agent_map = {}
@@ -50,7 +50,6 @@ def update_stories(intent, appkey):
 def update_nludata(intent, questions, appkey):
     data = {}
     with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
-        print get_abs_path('customers/' + appkey + '/faq_data.json')
         data = json.load(json_file)
         for question in questions:
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
@@ -61,8 +60,20 @@ def update_nludata(intent, questions, appkey):
     return
 
 
+def load_base_bot(application_key):
+    parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+    path_customer = os.path.join(parent + "/customers/" + application_key + "/")
+
+    if (os.path.isdir(path_customer) is False):
+        base_data = os.path.join(parent + "/customers/base-data")
+        os.makedirs(path_customer)
+
+        copy_tree(base_data, path_customer)
+
+
 def load_agent(application_key):
     print ("loading agent for: " + application_key)
+    load_base_bot(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
     AgentMap.agent_map[application_key] = agent
@@ -125,6 +136,8 @@ def webhook():
 def getfaq():
     body = request.json
 
+    load_base_bot(body["applicationKey"])
+
     if(body['referenceId'] is None):
 	    intent = body['id']
     else:
@@ -147,6 +160,7 @@ def train_bots():
         pass
     else:
         for appkey in body['data']:
+            load_base_bot(appkey)
             call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
