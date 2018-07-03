@@ -399,9 +399,23 @@ exports.updateIntegryData = (req, res) => {
       response: data
     });
   }).catch(err => {
-    return res.status(200).json({
-      code: "error",
-      response: err.response && err.response.data ? err.response.data : "Error"
+    let code, message, httpCode;
+    switch(err.code){
+      case "NOT_FOUND": 
+        httpCode= 404;
+        message ="user not exists";
+        code = err.code;
+        break;
+      default : 
+        httpCode= 500;
+        message ="Internal server error";
+        code = "ERROR";
+        break;
+
+    }
+    return res.status(httpCode).json({
+      code: code,
+      response: message
     });
   });
 };

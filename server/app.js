@@ -111,6 +111,7 @@ app.use('/google', routes.googleAuth);
 app.use('/subscription', routes.chargebee);
 app.use('/agilecrm', routes.agile);
 app.use('/settings',routes.setting);
+app.use('/v2/users',routes.v2UserRouter);
 
 
 function startApp() {
