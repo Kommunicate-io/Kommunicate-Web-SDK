@@ -524,7 +524,7 @@ exports.activateOrDeactivateUser = (userName, applicationId, deactivate) => {
 }
 
 exports.updateApplozicUser = (user, headers) => {
-  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?ofUserId="+user.userId;
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?ofUserId="+ encodeURIComponent(user.userId);
   return axios.post(url, user, { headers: headers })
     .then(response => {
       if (response.data && response.data.status === "success") {
