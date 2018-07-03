@@ -110,6 +110,7 @@ userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
+userRouter.patch('/v2/update/metadata/:userName', userController.updateIntegryData);
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
