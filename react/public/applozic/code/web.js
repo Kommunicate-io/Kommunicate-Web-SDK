@@ -15,6 +15,7 @@ var autoSuggestions = {};
 
 
 
+
 function initAutoSuggestions() {
 
   var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
@@ -22,7 +23,7 @@ function initAutoSuggestions() {
 
   for(autoSuggest in autoSuggestions){
     $('#km-text-box').atwho({
-      at: `/${autoSuggest}`,
+      at: '/${autoSuggest}',
       insertTpl: '${content}',
       displayTpl: '<li data-suggestionId="${suggestionId}">${name} <small>${content}</small></li>',
       data: autoSuggestions[autoSuggest],
@@ -252,13 +253,13 @@ else if (company != null) {
 var getSuggestions = function(_urlAutoSuggest) {
 
   fetch(_urlAutoSuggest)
-    .then(res => res.json())
-    .then(response => {
+    .then(function(res){ return res.json()})
+    .then(function(response) {
       autoSuggestions_data = response.data;
       return autoSuggestions_data;
     })
-    .then(autoSuggestions_data => {
-      autoSuggestions = autoSuggestions_data.reduce((prev, curr) => {
+    .then(function(autoSuggestions_data) {
+      autoSuggestions = autoSuggestions_data.reduce(function(prev, curr) {
           if(curr.category in prev){
             prev[curr.category].push({suggestionId: curr.id, name:curr.name, content:curr.content})
           }else{
@@ -269,5 +270,5 @@ var getSuggestions = function(_urlAutoSuggest) {
       let categories = Object.keys(autoSuggestions);
       initAutoSuggestions()
     })
-    .catch(err => {console.log("Error in getting auto suggestions")});
+    .catch(function(err) {console.log("Error in getting auto suggestions")});
 }
