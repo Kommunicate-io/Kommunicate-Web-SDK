@@ -394,12 +394,13 @@ const sendProfileImage = (imageFile, imageFileName) => {
 
 const updateApplozicUser = (userInfo) => {
   let userSession = CommonUtils.getUserSession();
+  let ofUserId = (userInfo && userInfo.userId) || userSession.userName;
   const headers = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
     'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
     'Apz-Product-App': 'true',
-    'Of-User-Id': userSession.userName
+    'Of-User-Id': ofUserId
   }
 
   const updateApplozicUserUrl = getConfig().applozicPlugin.updateApplozicUser;
