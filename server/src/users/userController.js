@@ -17,8 +17,8 @@ const constant =require('../../src/utils/constant');
 const customerService = require('../customer/customerService');
 /**
  *
- * @param {Http request object} req 
- * @param {Http response object} res 
+ * @param {Http request object} req
+ * @param {Http response object} res
  * req.query.type  contain string of type by , separated
  */
 exports.getAllUsers = function (req, res) {
@@ -75,10 +75,10 @@ exports.getByUserNameAndAppId = function(req, res) {
   });
 }
 /**
- * 
- * @param {*} req 
+ *
+ * @param {*} req
  * req.body contain user detail with applicationId
- * @param {*} res 
+ * @param {*} res
  */
 exports.createUser = function (req, res) {
   logger.info("request received to create a user: ", req.body);
@@ -388,6 +388,24 @@ exports.getPseudoName = (req,res) => {
   let data = {"userName": userName};
   return res.status(200).json({ code: "SUCCESS", response: data });
 }
+
+exports.updateIntegryData = (req, res) => {
+  let userName = req.params.userName;
+  let metadata = req.body;
+  let apiKey = req.query.apiKey;
+  return userService.updateThirdPartyData(userName, apiKey, metadata).then(data => {
+    return res.status(200).json({
+      code: "SUCCESS",
+      response: data
+    });
+  }).catch(err => {
+    return res.status(200).json({
+      code: "error",
+      response: err.response && err.response.data ? err.response.data : "Error"
+    });
+  });
+};
+
 /**
  * 
  * @param {Http req object} req 
