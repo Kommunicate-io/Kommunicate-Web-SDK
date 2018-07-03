@@ -66,7 +66,9 @@ Kommunicate.client={
             callback: function (response) {
                 console.log("response", response);
                 if (response.status === 'success' && response.data.clientGroupId) {
-                    callback(response.data.value);
+                    if( typeof callback == 'function'){
+                        callback(response.data.value);
+                    }
                     KommunicateUI.hideFaq();
                        /* conversation table migrated to Applozic
                         Kommunicate.createNewConversation({
