@@ -393,6 +393,7 @@ exports.updateIntegryData = (req, res) => {
   let userName = req.params.userName;
   let metadata = req.body;
   let apiKey = req.query.apiKey;
+  if(apiKey){
   return userService.updateThirdPartyData(userName, apiKey, metadata).then(data => {
     return res.status(200).json({
       code: "SUCCESS",
@@ -406,6 +407,11 @@ exports.updateIntegryData = (req, res) => {
         message ="user not exists";
         code = err.code;
         break;
+      case 401:
+        httpCode= 401;
+        message ="invalid API key";
+        code = "UNAUTHORIZED";
+      break;
       default : 
         httpCode= 500;
         message ="Internal server error";
@@ -418,6 +424,12 @@ exports.updateIntegryData = (req, res) => {
       response: message
     });
   });
+}else{
+  return res.status(401).json({
+    code: "UNAUTHORIZED",
+    response: "apiKey is missing"
+  });
+  }
 };
 
 /**

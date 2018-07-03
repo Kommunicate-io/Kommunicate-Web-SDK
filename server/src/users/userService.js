@@ -541,6 +541,7 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
       }
   })
     .catch(err => {
+      err.code =err.response&& err.response.status;
       throw err;
     });
 };
