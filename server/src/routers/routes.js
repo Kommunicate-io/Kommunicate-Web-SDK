@@ -82,6 +82,7 @@ exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
 exports.chargebee = chargebeeRouter;
 exports.agile = agileRouter;
+exports.v2UserRouter = express.Router();
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -110,7 +111,6 @@ userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
-userRouter.patch('/v2/update/metadata/:userName', userController.updateIntegryData);
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
 // userRouter.patch('/:userName/working-hour',validate(userValidation.businessHours),userController.updateBusinessHours);
 loginRouter.post('/',validate(loginValidation.login),loginController.login);
@@ -217,3 +217,7 @@ settingRouter.post('/application/insert', validate(applicationSettingValidation.
   appSettingController.insertAppSettings);
 settingRouter.patch('/application/:appId', validate(applicationSettingValidation.updateAppSettings),
   appSettingController.updateAppSettings);
+
+
+// v2 user router 
+this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);

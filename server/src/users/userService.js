@@ -518,7 +518,8 @@ const getAgentByUserKey = (userKey) => {
  */
 const updateThirdPartyData = (userName, apiKey, metadata) => {
   return applozicClient.getUserDetails([userName], null, null, null, apiKey).then(result => {
-    userDetail = result[0];
+   let  userDetail = result[0];
+    if(userDetail){
     let kmThirdPartyData =
       userDetail.metadata && userDetail.metadata.KM_THIRD_PARTY_DATA ?
         JSON.parse(userDetail.metadata.KM_THIRD_PARTY_DATA) :
@@ -533,8 +534,14 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
     ).then(result => {
         return result;
        });
+      }else{
+        // user not found
+        let err = {"code":"NOT_FOUND"};
+        throw err;
+      }
   })
     .catch(err => {
+      err.code =err.response&& err.response.status;
       throw err;
     });
 };
