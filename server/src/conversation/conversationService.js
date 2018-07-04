@@ -316,7 +316,7 @@ const getAgentsList = (customer, users, groupId) => {
                 header.ofUserId = user.userName
             }
         });
-        return resolve({ userIds: userIds, agentIds: agentIds, header: header, assignTo: assignTo });
+        return resolve({ "userIds": userIds, "agentIds": agentIds, "header": header, "assignTo": assignTo });
 
     })
 }
@@ -329,21 +329,21 @@ const getAgentsList = (customer, users, groupId) => {
  * If assigTo (userId) prensent then conversation assign to userId.
  * Otherwise assign according to routing rules. 
  */
-const switchConversationAssignee = (appId, groupId, assignTo) => {
+const switchConversationAssignee = (appId, groupId, assignToUserId) => {
     return Promise.all([customerService.getCustomerByApplicationId(appId), userService.getUsersByAppIdAndTypes(appId)]).then(([customer, users]) => {
         let bot = users.filter(user => {
             return user.userName == "bot";
         });
         return getAgentsList(customer, users, groupId).then(agents => {
             //assign direct given userId 
-            if (assignTo && assignTo != "") {
+            if (assignToUserId && assignToUserId != "") {
                 let assignee = users.filter(user => {
-                    return user.userName == assignTo;
+                    return user.userName == assignToUserId;
                 });
                 if (assignee.length == 0) {
                     return "user not exist"
                 }
-                return assignToDefaultAgent(groupId, appId, assignTo, agents.header).then(res => {
+                return assignToDefaultAgent(groupId, appId, assignee[0].userName, agents.header).then(res => {
                     return "success";
                 });
             }
