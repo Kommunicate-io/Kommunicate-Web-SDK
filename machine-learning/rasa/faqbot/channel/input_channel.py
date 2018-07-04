@@ -101,8 +101,8 @@ def load_models(appkey):
     path_model = os.path.join(parent + "/customers/" + appkey + "/models")
     if(os.path.isdir(path_model) is False):
         load_training_data(appkey)
-        call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-        call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+        call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+        call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
     return
 
 
@@ -197,7 +197,7 @@ def train_bots():
     else:
         for appkey in body['data']:
             load_training_data(appkey)
-            call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-            call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+            call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+            call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
     return jsonify({"Success":"The bots are now sentient!"})
