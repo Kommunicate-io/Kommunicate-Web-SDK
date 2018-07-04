@@ -185,16 +185,22 @@ const addMemberIntoConversation = (data) => {
                         if (customer.botRouting || !customer.agentRouting) {
                             //default assign to bot
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                            let groupInfo = { groupDetails: userIds };
+                            logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                            return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
+                                logger.info('response', response.data)
+                                return { code: "SUCCESS", data: 'success' };
+                            });
                         } else {
                             logger.info("adding assignee in round robin fashion");
-                            assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
+                            return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
                         }
-                        let groupInfo = { groupDetails: userIds };
-                        logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                        return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
-                            logger.info('response', response.data)
-                            return { code: "SUCCESS", data: 'success' };
-                        });
+                        // let groupInfo = { groupDetails: userIds };
+                        // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                        // return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
+                        //     logger.info('response', response.data)
+                        //     return { code: "SUCCESS", data: 'success' };
+                        // });
                     })
                 }
             })
@@ -206,25 +212,46 @@ const addMemberIntoConversation = (data) => {
         return { code: "ERROR", data: 'error during adding member into conversation' };
     });
 }
-
+/**
+ * 
+ * @param {Integer} groupId 
+ * @param {Array} userIds  
+ * @param {String} appId 
+ * @param {Object} header 
+ * This method 
+ * 1. get assignee from hazel cache in round robin manner.
+ * 2. Add the assignee into conversation.
+ * 3. assign conversation to assignee
+ */
 const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
-    getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
+    return getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
         logger.info("got conversation agssignee : ", assignTo);
-        let groupInfo = {
-            groupId: groupId,
-            metadata: { CONVERSATION_ASSIGNEE: assignTo }
-        };
-        logger.info("updating assignee for conversation : ", groupInfo);
-        applozicClient.updateGroup(
-            groupInfo,
-            appId,
-            header.apzToken,
-            header.ofUserId
-        );
-        return;
+        let groupInfo = { groupDetails: [{ groupId: groupId, userId: assignTo, role: 1 }] };
+        logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+        return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId)).then(response => {
+            logger.info('response', response.data)
+            applozicClient.updateGroup(
+                {
+                    groupId: groupId,
+                    metadata: { CONVERSATION_ASSIGNEE: assignTo }
+                },
+                appId,
+                header.apzToken,
+                header.ofUserId
+            );
+
+            return { code: "SUCCESS", data: 'success' };
+        });
     });
 };
-
+/**
+ * 
+ * @param {Integer} groupId 
+ * @param {String} appId 
+ * @param {Strig} assignTo 
+ * @param {Object} header 
+ * Assign conversation to given userId
+ */
 const assignToDefaultAgent=(groupId, appId, assignTo, header)=>{
     let groupInfo = {
         groupId: groupId,
@@ -238,7 +265,14 @@ const assignToDefaultAgent=(groupId, appId, assignTo, header)=>{
         header.ofUserId
     );
 }
-
+/**
+ * 
+ * @param {String} userIds 
+ * @param {String} key 
+ * Storing userIds array into map (Map<appId, [userIds]>)
+ * Making first item (userId) of array is current assignee and
+ * shifting that to last item. then storing back to map.
+ */
 const getConversationAssigneeFromMap = (userIds, key) => {
     //store map of appid and userids
     let assignee = "";
@@ -287,6 +321,14 @@ const getAgentsList = (customer, users, groupId) => {
     })
 }
 
+/**
+ * 
+ * @param {String} appId 
+ * @param {Integer} groupId 
+ * @param {String} assignTo 
+ * If assigTo (userId) prensent then conversation assign to userId.
+ * Otherwise assign according to routing rules. 
+ */
 const switchConversationAssignee = (appId, groupId, assignTo) => {
     return Promise.all([customerService.getCustomerByApplicationId(appId), userService.getUsersByAppIdAndTypes(appId)]).then(([customer, users]) => {
         let bot = users.filter(user => {
