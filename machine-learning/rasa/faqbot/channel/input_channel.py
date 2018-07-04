@@ -7,9 +7,12 @@ from rasa_core.agent import Agent
 from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
-
+import boto3
+import botocore
 from conf.default import *
 from distutils.dir_util import copy_tree
+
+s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_access_key)
 
 class AgentMap(object):
     agent_map = {}
@@ -18,6 +21,17 @@ class AgentMap(object):
 def get_abs_path(rel_path):
     return os.path.join(base_customer_path, rel_path)
 
+#To upload data to AWS S3
+def upload_training_data(applicationKey):
+   filename = "../customers/" + applicationKey + "/faq_data.json"
+   #filename[13:] will be "applicationKey + Individual File Name"
+   s3.meta.client.upload_file(filename, bucket_name, filename[13:])
+   filename = "../customers/" + applicationKey + "/faq_domain.yml"
+   s3.meta.client.upload_file(filename, bucket_name, filename[13:])
+   filename = "../customers/" + applicationKey + "/faq_stories.md"
+   s3.meta.client.upload_file(filename, bucket_name, filename[13:])
+   filename = "../customers/" + applicationKey + "/faq_config.yml"
+   s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
 def update_domain(intent, answer, flag, appkey):
     yaml = YAML(typ='rt')
@@ -59,21 +73,42 @@ def update_nludata(intent, questions, appkey):
         json.dump(data, outfile, indent=3)
     return
 
-
-def load_base_bot(application_key):
+def load_training_data(applicationKey):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    path_customer = os.path.join(parent + "/customers/" + application_key + "/")
+    path_customer = os.path.join(parent + "/customers/" + applicationKey)
+    base_data = os.path.join(parent + "/customers/base-data")
+    s3_path = applicationKey + "/"
+    if(os.path.isdir(path_customer) is False):
+        try:
+            os.mkdir('../customers/' + applicationKey)
+            s3.Bucket(bucket_name).download_file(s3_path + 'faq_data.json', '../customers/' + applicationKey + '/faq_data.json')
+            s3.Bucket(bucket_name).download_file(s3_path + 'faq_domain.yml', '../customers/' + applicationKey + '/faq_domain.yml')
+            s3.Bucket(bucket_name).download_file(s3_path + 'faq_stories.md', '../customers/' + applicationKey + '/faq_stories.md')
+            s3.Bucket(bucket_name).download_file(s3_path + 'faq_config.yml', '../customers/' + applicationKey + '/faq_config.yml')
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                #the object does not exist
+                print ("creating new customer files..")
+                copy_tree(base_data, path_customer)
+                upload_training_data(applicationKey)
+                print ('Uploading data to S3..')
+            else:
+                    # Something else has gone wrong.
+                    raise
 
-    if (os.path.isdir(path_customer) is False):
-        base_data = os.path.join(parent + "/customers/base-data")
-        os.makedirs(path_customer)
-
-        copy_tree(base_data, path_customer)
+def load_models(appkey):
+    parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+    path_model = os.path.join(parent + "/customers/" + appkey + "/models")
+    if(os.path.isdir(path_model) is False):
+        load_training_data(appkey)
+        call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+        call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+    return
 
 
 def load_agent(application_key):
     print ("loading agent for: " + application_key)
-    load_base_bot(application_key)
+    load_models(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
     AgentMap.agent_map[application_key] = agent
@@ -131,26 +166,27 @@ def webhook():
     outchannel.send_text_message('', reply)
     return reply
 
-
 @app.route("/faqdata", methods=["POST"])
 def getfaq():
     body = request.json
 
-    load_base_bot(body["applicationKey"])
+    #Check if training data is present
+    load_training_data(body["applicationId"])
 
     if(body['referenceId'] is None):
-	    intent = body['id']
+        intent = body['id']
+        update_domain(str(intent),body['content'],0,body['applicationId'])
+        update_stories(str(intent),body['applicationId'])
+        update_nludata(str(intent),body['name'],body['applicationId'])
     else:
-	    intent = body['referenceId']
-    if(('content' in body) and ('name' in body)):
-	    update_domain(str(intent),body['content'],0,body['applicationKey'])
-	    update_stories(str(intent),body['applicationKey'])
-	    update_nludata(str(intent),body['name'],body['applicationKey'])
-    elif('content' in body):
-	    update_domain(str(intent),body['content'],1,body['applicationKey'])
-    elif('name' in body):
-        update_nludata(str(intent),body['name'],body['applicationKey'])
-	    #execl("sh","retrain.sh")
+        intent = body['referenceId']
+        #update_domain(str(intent),body['content'],1,body['applicationKey'])
+        update_nludata(str(intent),body['name'],body['applicationId'])
+
+    #Upload the training data to s3 after updating
+    print ('Uploading new data to s3..')
+    upload_training_data(body['applicationId'])
+
     return jsonify({"Success":"We have more data!"})
 
 @app.route("/train",methods=["POST"])
@@ -160,7 +196,7 @@ def train_bots():
         pass
     else:
         for appkey in body['data']:
-            load_base_bot(appkey)
+            load_training_data(appkey)
             call(["python -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             call(["python -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)

@@ -63,7 +63,7 @@ exports.createSuggestion = (req, res) => {
 		.then(response => {
 			console.log(response)
 			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
-			//botchannel.insertFaq(response)
+			botchannel.insertFaq(response)
 		})
 		.catch(err => {
 			res.status(500).json({
