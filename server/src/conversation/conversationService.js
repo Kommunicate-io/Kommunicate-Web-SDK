@@ -252,10 +252,10 @@ const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
  * @param {Object} header 
  * Assign conversation to given userId
  */
-const assignToDefaultAgent=(groupId, appId, assignTo, header)=>{
+const assignToDefaultAgent=(groupId, appId, userId, header)=>{
     let groupInfo = {
         groupId: groupId,
-        metadata: { CONVERSATION_ASSIGNEE: assignTo }
+        metadata: { CONVERSATION_ASSIGNEE: userId }
     };
     logger.info("updating assignee for conversation : ", groupInfo);
     applozicClient.updateGroup(
@@ -297,14 +297,14 @@ const getAgentsList = (customer, users, groupId) => {
     let userIds = [];
     let agentIds = [];
     let header = {};
-    let assignTo = customer.userName;
+    let assigneeUserName = customer.userName;
     return new Promise((resolve, reject)=>{
         users.forEach(function (user) {
             if (user.type === 2) {
                 if (user.userName === 'bot') {
                     header.apzToken = user.apzToken
                 } if (customer.botRouting && user.allConversations == 1) {
-                    assignTo = user.userName;
+                    assigneeUserName = user.userName;
                     userIds.push({groupId: groupId, userId:user.userName, role:2});
                 }
             }
@@ -316,7 +316,7 @@ const getAgentsList = (customer, users, groupId) => {
                 header.ofUserId = user.userName
             }
         });
-        return resolve({ "userIds": userIds, "agentIds": agentIds, "header": header, "assignTo": assignTo });
+        return resolve({ "userIds": userIds, "agentIds": agentIds, "header": header, "assignTo": assigneeUserName });
 
     })
 }
