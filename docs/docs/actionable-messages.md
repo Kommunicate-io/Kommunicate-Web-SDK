@@ -175,5 +175,66 @@ metadata: {
 
 
 
+# Autosuggestion
+
+If you wants to ask any question/text message into chat and wants to send possible answer/list of data with that question then you can pass a list of answer/data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from source URL/server if you pass source URL into the message metadata. The format of the message is as below:
+
+![List Template](/img/autosuggest.png)
+
+ * MESSAGE FORMAT
+ 
+ ```
+{
+	"message": "Hey there! Checkout our services. eg. Packers & Movers",
+	"metadata": {
+		"KM_AUTO_SUGGESTION": {
+			"placeholder": "placeholder for text box", //optional
+			"source": [] 
+		}
+	}
+}
+```
+
+The source can be any one of the below formats:
+
+ * **Array of string**
+ ```
+ "source": [
+		"Photography Lessons",
+		"Passport & Visa Services",
+	]
+```
+
+* **Array of object**
+```
+"source": [
+		{
+searchKey:"Photography",
+message:"Photography Lessons",
+Metadata:{}
+},
+{
+searchKey:"passport visa Services",
+message:"Passport & Visa Services",
+                         Metadata:{}
+                         }
+	]
+```
+* **Url**  - Pass the API endpoint to get the data. Kommunicate will send data in the query parameter. 
+
+```
+"source": {
+		"url": "http://localhost:5454/city/v2/search", 
+		"headers": {} // if any auth header required for your api(optional). 
+	}
+```
+API should return data in below format : 
+```
+{
+"searchKey": "searchable value",
+"name": "text message which you want display/send into conversation."
+"metadata": {"key":"value"}//that you want to send with text message.
+}
+```
 
   
