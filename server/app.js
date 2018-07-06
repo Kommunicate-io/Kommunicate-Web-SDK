@@ -13,6 +13,7 @@ const validate = require('express-validation');
 var compressor = require('node-minify');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
 const eventProcessor= require("./src/events/eventProcessor");
+const cronInitializer = require('./src/cron/cronJobInitializer');
 //var concat = require('concat-files');
 app.use(cors());
 
@@ -119,6 +120,7 @@ function startApp() {
         console.log('Express server listening on port : ' + port);
         //to do: start the event consumers 
         eventProcessor.initializeEventsConsumers();
+        cronInitializer.initiatAllCron();
     });
 }
 

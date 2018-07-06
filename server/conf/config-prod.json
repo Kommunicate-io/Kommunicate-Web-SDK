@@ -101,5 +101,8 @@
         "activeCampaignEnabled": true,
         "pipeDriveEnable":true,
         "chargebeeSite": "kommunicate",
-        "chargebeeApiKey": "live_TY45sFsefggFLWQCxIgI5m3rzIK5yWpQ"
+        "chargebeeApiKey": "live_TY45sFsefggFLWQCxIgI5m3rzIK5yWpQ",
+        "crons":[
+          {"time": "2 * * * * *", "job":"sendWeeklyReportsToCustomers", "enable":true },     
+        ]
     }
