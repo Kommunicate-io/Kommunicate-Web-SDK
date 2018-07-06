@@ -16,6 +16,6 @@ appkeys = []
 #testappkeys = ['kommunicate-support','applozic-sample-app']
 for data in collection.find({'created_at':{'$gte':(time.time() - 86400)*1000}}).distinct('applicationId'):
     appkeys.append(str(data))
-
+    
 r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},data=json.dumps({'data':appkeys}))
 print (r.text)

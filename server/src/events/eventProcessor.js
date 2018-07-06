@@ -25,20 +25,20 @@ exports.initializeEventsConsumers = function() {
                     return channel.consume(queue, function(msg) {
                         if (msg && msg.content) {
                             logger.info('msg received in queue ', queue);
+                           
                             try {
-                                let data = Buffer.from(msg.content).toString();
+                               let data = Buffer.from(msg.content).toString();
                                 data = JSON.parse(data);
-                                Promise.resolve().then(registeredEvents[event].handler(data)).catch(e=>{
+                               Promise.resolve().then(registeredEvents[event].handler(data)).catch(e=>{
                                     logger.info("error while processing event", e );
                                 });
                             } catch (e) {
-                                //console.log("error while processing event", e);
-
-                                logger.info('data is received as string, skipping.......');
+                                logger.info('data is received as string, skipping.......',e);
                             }
                         } 
                            // send acknowledgemwnt
                             channel.ack(msg);
+                            logger.info("########## sending ack for queue.............", queue);
                     });
                 });
             });

@@ -69,5 +69,11 @@ module.exports.userActivation={
   }
 }
 
+module.exports.validateMetadata = {
+  params: {
+    userName: joi.string().required(),
+  }
+}
+
 exports.getBusinessHours= getBusinessHours;
 exports.businessHoursInAday=businessHours;

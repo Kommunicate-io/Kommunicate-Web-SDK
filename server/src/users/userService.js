@@ -16,6 +16,7 @@ const logger = require('../utils/logger');
 const botPlatformClient = require("../utils/botPlatformClient");
 const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
+const deepmerge = require('deepmerge');
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -511,6 +512,41 @@ const getAgentByUserKey = (userKey) => {
 }
 /**
  * 
+ * @param {String} userName
+ * @param {String} apiKey
+ * @param {Object} metadata
+ */
+const updateThirdPartyData = (userName, apiKey, metadata) => {
+  return applozicClient.getUserDetails([userName], null, null, null, apiKey).then(result => {
+   let  userDetail = result[0];
+    if(userDetail){
+    let kmThirdPartyData =
+      userDetail.metadata && userDetail.metadata.KM_THIRD_PARTY_DATA ?
+        JSON.parse(userDetail.metadata.KM_THIRD_PARTY_DATA) :
+        null;
+    if (null == kmThirdPartyData) {
+      kmThirdPartyData = metadata;
+    } else {
+      kmThirdPartyData = deepmerge(kmThirdPartyData, metadata);
+    }
+    return applozicClient.updateApplozicUser({ userId: userName, metadata: { KM_THIRD_PARTY_DATA: JSON.stringify(kmThirdPartyData) } },
+      { "Api-Key": apiKey }
+    ).then(result => {
+        return result;
+       });
+      }else{
+        // user not found
+        let err = {"code":"NOT_FOUND"};
+        throw err;
+      }
+  })
+    .catch(err => {
+      err.code =err.response&& err.response.status;
+      throw err;
+    });
+};
+/**
+ * 
  * @param {String} userName 
  * @param {String} applicationId 
  * @param {boolean} deactivate 
@@ -552,6 +588,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       })
   }
 }
+exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;
 exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;

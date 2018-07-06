@@ -17,8 +17,8 @@ const constant =require('../../src/utils/constant');
 const customerService = require('../customer/customerService');
 /**
  *
- * @param {Http request object} req 
- * @param {Http response object} res 
+ * @param {Http request object} req
+ * @param {Http response object} res
  * req.query.type  contain string of type by , separated
  */
 exports.getAllUsers = function (req, res) {
@@ -75,10 +75,10 @@ exports.getByUserNameAndAppId = function(req, res) {
   });
 }
 /**
- * 
- * @param {*} req 
+ *
+ * @param {*} req
  * req.body contain user detail with applicationId
- * @param {*} res 
+ * @param {*} res
  */
 exports.createUser = function (req, res) {
   logger.info("request received to create a user: ", req.body);
@@ -388,6 +388,50 @@ exports.getPseudoName = (req,res) => {
   let data = {"userName": userName};
   return res.status(200).json({ code: "SUCCESS", response: data });
 }
+
+exports.updateIntegryData = (req, res) => {
+  let userName = req.params.userName;
+  let metadata = req.body;
+  let apiKey = req.query.apiKey;
+  if(apiKey){
+  return userService.updateThirdPartyData(userName, apiKey, metadata).then(data => {
+    return res.status(200).json({
+      code: "SUCCESS",
+      response: data
+    });
+  }).catch(err => {
+    let code, message, httpCode;
+    switch(err.code){
+      case "NOT_FOUND": 
+        httpCode= 404;
+        message ="user not exists";
+        code = err.code;
+        break;
+      case 401:
+        httpCode= 401;
+        message ="invalid API key";
+        code = "UNAUTHORIZED";
+      break;
+      default : 
+        httpCode= 500;
+        message ="Internal server error";
+        code = "ERROR";
+        break;
+
+    }
+    return res.status(httpCode).json({
+      code: code,
+      response: message
+    });
+  });
+}else{
+  return res.status(401).json({
+    code: "UNAUTHORIZED",
+    response: "apiKey is missing"
+  });
+  }
+};
+
 /**
  * 
  * @param {Http req object} req 

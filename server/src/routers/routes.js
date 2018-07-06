@@ -82,6 +82,7 @@ exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
 exports.chargebee = chargebeeRouter;
 exports.agile = agileRouter;
+exports.v2UserRouter = express.Router();
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -216,3 +217,7 @@ settingRouter.post('/application/insert', validate(applicationSettingValidation.
   appSettingController.insertAppSettings);
 settingRouter.patch('/application/:appId', validate(applicationSettingValidation.updateAppSettings),
   appSettingController.updateAppSettings);
+
+
+// v2 user router 
+this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);

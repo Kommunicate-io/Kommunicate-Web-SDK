@@ -460,11 +460,13 @@ exports.updateApplication = (data) => {
  * @param {List} emailIds
  * it accept either userName list or email list
  */
-exports.getUserDetails = (userNameList, applicationId, apzToken, emailIds) => {
-  let url = config.getProperties().urls.getUserInfo
+exports.getUserDetails = (userNameList, applicationId, apzToken, emailIds, apiKey) => {
+  let url = config.getProperties().urls.getUserInfo;
+  url = apiKey?url+"?ofUserId="+userNameList[0]:url;
   logger.info("getting user info from applozic url : ", url);
   let data = emailIds ? { emailIds: emailIds } : { "userIdList": userNameList }
-  return Promise.resolve(axios.get(url, { data: data, headers: { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true } })).then(response => {
+  let headers = apiKey ? {"Api-Key":apiKey}:{ "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true };
+  return Promise.resolve(axios.get(url, { data: data, headers: headers })).then(response => {
     logger.info("got response from Applozic user info api :", response.status);
     if (response && response.status == 200 && response.data.status == "success") {
       return response.data.response;
@@ -519,4 +521,20 @@ exports.activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   }).catch(err => {
     return err;
   })
+}
+
+exports.updateApplozicUser = (user, headers) => {
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update?ofUserId="+ encodeURIComponent(user.userId);
+  return axios.post(url, user, { headers: headers })
+    .then(response => {
+      if (response.data && response.data.status === "success") {
+        return { code: "success" };
+      } else {
+        throw { code: "APPLOZIC_ERROR", data: response }
+      }
+    })
+    .catch(err => {
+      console.log("error while updating user", err);
+      throw err;
+    })
 }
