@@ -4,7 +4,7 @@
  
 const functions = require('firebase-functions');
 const {WebhookClient} = require('dialogflow-fulfillment');
-const {Card, Suggestion} = require('dialogflow-fulfillment');
+const {Card, Suggestion, Payload} = require('dialogflow-fulfillment');
  
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
  
@@ -18,26 +18,27 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   }
  
   function fallback(agent) {
-    agent.add(`I didn't understand`);
-    agent.add(`I'm sorry, can you try again?`);
-//     agent.add(JSON.stringify({
-//   "message": "Do you want more updates?",
-//   "platform": "kommunicate",
-//   "metadata": {
-//     "contentType": "300",
-//     "templateId": "6",
-//     "payload": [
-//       {
-//         "title": "Yes",
-//         "message": "Cool! send me more."
-//       },
-//       {
-//         "title": "No ",
-//         "message": "Don't send it to me again"
-//       }
-//     ]
-//   }
-// }));
+    // agent.add(`I didn't understand`);
+    // agent.add(`I'm sorry, can you try again?`);
+    agent.add(`let me try a rich message, see below if its working.`);
+    agent.add(new Payload("kommunicate", {
+      "message": "Do you want more updates?",
+      "platform": "kommunicate",
+      "metadata": {
+        "contentType": "300",
+        "templateId": "6",
+        "payload": [
+          {
+            "title": "Yes",
+            "message": "Cool! send me more."
+          },
+          {
+            "title": "No ",
+            "message": "Don't send it to me again"
+          }
+        ]
+      }
+    }));
 }
 
   // // Uncomment and edit to make your own intent handler
