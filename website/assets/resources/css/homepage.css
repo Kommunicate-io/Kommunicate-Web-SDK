@@ -98,6 +98,8 @@ a, a:hover, a:focus, a:active {
   letter-spacing: normal;
   text-align: left;
   color: #353535;
+  margin-top: 50px;
+  margin-bottom: 70px;
 }
 
 .hero-subtext {
