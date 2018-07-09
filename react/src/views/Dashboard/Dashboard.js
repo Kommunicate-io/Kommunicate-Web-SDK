@@ -34,7 +34,7 @@ class Dashboard extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      
+
       last30Days: [],
       last7days: [],
       disableCheckbox: false ,
@@ -45,10 +45,10 @@ class Dashboard extends Component {
       agentFilterSelectedOption: { label: "All agents", value: "allagents" },
       displayTotalCounts:{newConversationCount:0, closedConversationCount:0},
       dataKey: {  //data-key HTML attribute
-        newConversation: 0, 
-        closedConversation: 1, 
-        responseTime: 2, 
-        resolutionTime: 3 
+        newConversation: 0,
+        closedConversation: 1,
+        responseTime: 2,
+        resolutionTime: 3
       },
       dataDay: 7,
       // newConversationCount: 0,
@@ -238,7 +238,7 @@ class Dashboard extends Component {
           }
         ]
       },
-      
+
       mainChart: {
         labels: [],
         datasets: [
@@ -299,7 +299,7 @@ class Dashboard extends Component {
       legend: {
         display: false
       },
-      
+
       scales: {
         xAxes: [{
           gridLines: {
@@ -370,14 +370,14 @@ class Dashboard extends Component {
     });
 
   }
-  displayInitialChart = (day, isChecked) => { 
+  displayInitialChart = (day, isChecked) => {
     let chartState = "";
     if ((day == 0 || day == 1) || (day == 7 && isChecked == true) || (day == 30 && isChecked == true) ) {
       chartState = "chartFor24Hrs"
     } else {
       chartState = "chartForLast"+day+"Days";
     }
-   
+
     var cards = document.getElementsByClassName("card-stats");
 
     for (var i = 0; i < cards.length; i++) {
@@ -415,7 +415,7 @@ class Dashboard extends Component {
       let s = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime / getTotalNoOfCountAndAvgs.avgResponseTime);
       let ms = this.millisToMinutesAndSeconds(s, timeConverterKey.toDisplayTotalAvg)
       this.setState({ avgResponseTime: ms })
-      
+
       let t = getTotalCount.avgResolutionTime == null ? getTotalCount.avgResolutionTime : (getTotalCount.avgResolutionTime) / getTotalNoOfCountAndAvgs.avgResolutionTime;
       let hms = this.secondsToHms(t, timeConverterKey.toDisplayTotalAvg)
       this.setState({ avgResolutionTime: hms })
@@ -423,8 +423,8 @@ class Dashboard extends Component {
       this.displayInitialChart(day, isChecked)
 
 
-    } 
-    
+    }
+
     else {
       let avgRt = getTotalCount.avgResponseTime == 0 ? getTotalCount.avgResponseTime : (getTotalCount.avgResponseTime/getTotalNoOfCountAndAvgs.avgResponseTime);
       let ms = this.millisToMinutesAndSeconds(avgRt, timeConverterKey.toDisplayTotalAvg)
@@ -436,14 +436,14 @@ class Dashboard extends Component {
       this.setState({ avgResolutionTime: hms });
       this.displayInitialChart(day)
 
-    }   
+    }
   }
 
 
   getAllUsers = (applicationId) => {
     // this method also populating BOT_AGENT_MAP in localStorage
     let agentFilterOption = this.state.agentFilterOption;
-    let agentBotMap ={}; 
+    let agentBotMap ={};
     return Promise.resolve(getUsersByType(applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT])).then(data => {
       data.map((user, index) => {
        user && (agentBotMap[user.userName] = user);
@@ -460,6 +460,21 @@ class Dashboard extends Component {
     });
   }
 
+  updateDetailsToKommunicate (){
+    let userSession = CommonUtils.getUserSession();
+    var userdetail = {
+      "email": userSession.email !== null ? userSession.email: "",
+      "displayName": userSession.displayName !== null ? userSession.displayName: "",
+      "userId": userSession.userName !== null ? userSession.userName: "",
+      "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
+          "billingCustomerId": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+          "created_at": userSession.created_at !== null ? userSession.created_at: "",
+          "subscription": userSession.subscription !== null ? userSession.subscription : "" ,
+          "industry": userSession.industry !== null ? userSession.industry : ""
+      }
+    };
+    window.Kommunicate.updateUser(userdetail);
+  }
 
   componentDidMount() {
     //  var env = getEnvironmentId();
@@ -467,7 +482,7 @@ class Dashboard extends Component {
     var application = userSession.application;
     this.getAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
-
+    window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
     // For Tooltip
     // var tooltipSpan = document.getElementById('tooltip-span');
     // var selectDropdown = document.querySelector(".tooltip-for-lock .Select");
@@ -478,6 +493,10 @@ class Dashboard extends Component {
     //     tooltipSpan.style.top = (y + 20) + 'px';
     //     tooltipSpan.style.left = (x + 20) + 'px';
     // };
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener("kmInitilized",function(){});
   }
 
   filterConversationDetails = (timeFilterSelectedOption, agentFilterSelectedOption, hoursWiseDistribution) => {
@@ -534,15 +553,15 @@ class Dashboard extends Component {
     last30DaysYYYYMMDD = last30days.yyyymmdd
     this.setState({ chartForLast30Days: chartForLast30Days })
     // console.log(last7DaysYYYYMMDD, last30DaysYYYYMMDD)
-     
-      
+
+
     for (let i = 0; i <= 23; i++) {
       hourWiseData.newConversation.push(0);
       hourWiseData.closedConversation.push(0);
       hourWiseData.avgResponseTime.push(null);
       hourWiseData.avgResolutionTime.push(null);
     }
-    
+
     for (let i = 0; i <= 29; i++) {
       last30DaysData.newConversation.push(0);
       last30DaysData.closedConversation.push(0);
@@ -571,7 +590,7 @@ class Dashboard extends Component {
     })
     // console.log(hoursDistribution)
     // this.setState({ hoursDistribution: hoursDistribution })
-    
+
     return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption,hoursWiseDistribution)).then(result => {
       let res=result.response;
       // console.log(res);
@@ -580,27 +599,27 @@ class Dashboard extends Component {
       let newConversationCount = { today: 0, yesterday: 0, last7Days: 0, last30Days: 0 };
       let avgResolutionTime = { today: null, yesterday: null, last7Days: null, last30Days: null };
       let avgResponseTime = { today: null, yesterday: null, last7Days: null, last30Days: null };
-      
+
       let totalNoOfNewCoversations = {dayWise : 0, last7Days:0, last30Days:0 };
       let totalNoOfClosedCoversations = {dayWise : 0, last7Days:0, last30Days:0 };
       let totalNoOfResponse = {dayWise : 0, last7Days:0, last30Days:0 };
       let totalNoOfResolutions = {dayWise : 0, last7Days:0, last30Days:0 };
-      
-      
-    if(res.key == CONVERSATION_STATS_FILTER_KEY.HOUR_WISE_DISTRIBUTION ) {     
+
+
+    if(res.key == CONVERSATION_STATS_FILTER_KEY.HOUR_WISE_DISTRIBUTION ) {
         // today's or yesterday's data
-        // or last 30 days and last 7 Days hour wise data 
+        // or last 30 days and last 7 Days hour wise data
         res.response.newConversation.length && res.response.newConversation.map((item, index) => {
           totalNoOfNewCoversations.dayWise++;
           countForADay.newConversationCount += item.count;
           let getIndex = hoursDistribution.indexOf(item.HOUR);
           hourWiseData.newConversation.splice(getIndex, 1, item.count);
 
-        })    
+        })
         res.response.closedConversation.length && res.response.closedConversation.map((item, index) => {
           totalNoOfClosedCoversations.dayWise++;
           countForADay.closedConversationCount += item.count;
-          let getIndex = hoursDistribution.indexOf(item.HOUR);    
+          let getIndex = hoursDistribution.indexOf(item.HOUR);
           hourWiseData.closedConversation.splice(getIndex, 1, item.count);
 
         })
@@ -612,7 +631,7 @@ class Dashboard extends Component {
           let time = this.millisToMinutesAndSeconds(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
           time = time === "NaN" ? null : parseFloat(time);
           hourWiseData.avgResponseTime.splice(getIndex, 1, time);
-    
+
         })
         res.response.avgResolutionTime.length && res.response.avgResolutionTime.map((item, index) => {
           item.average != null && totalNoOfResolutions.dayWise++;
@@ -620,42 +639,42 @@ class Dashboard extends Component {
           item.average != null && (countForADay.avgResolutionTime += avgResolutionTime);
           let getIndex = hoursDistribution.indexOf(item.HOUR);
           let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
-          time = time === "NaN" ? null : parseFloat(time); 
-          hourWiseData.avgResolutionTime.splice(getIndex, 1, time);  
-          
+          time = time === "NaN" ? null : parseFloat(time);
+          hourWiseData.avgResolutionTime.splice(getIndex, 1, time);
+
         })
 
-        
+
         hourWiseTotalNoOfCountAndAvgs.newConversation = totalNoOfNewCoversations.dayWise;
         hourWiseTotalNoOfCountAndAvgs.closedConversation = totalNoOfClosedCoversations.dayWise;
         hourWiseTotalNoOfCountAndAvgs.avgResponseTime = totalNoOfResponse.dayWise;
         hourWiseTotalNoOfCountAndAvgs.avgResolutionTime = totalNoOfResolutions.dayWise;
-        
+
         hourWiseStats.newConversationCount = countForADay.newConversationCount;
         hourWiseStats.closedConversationCount = countForADay.closedConversationCount;
         hourWiseStats.avgResponseTime = countForADay.avgResponseTime;
         hourWiseStats.avgResolutionTime = countForADay.avgResolutionTime;
         // chartFor24Hrs.labels = hoursDistribution;
         chartFor24Hrs.datasets[0].data = hourWiseData.newConversation;
-        chartFor24Hrs.datasets[1].data = hourWiseData.closedConversation;  
-        chartFor24Hrs.datasets[2].data = hourWiseData.avgResponseTime; 
-        chartFor24Hrs.datasets[3].data = hourWiseData.avgResolutionTime; 
-  
+        chartFor24Hrs.datasets[1].data = hourWiseData.closedConversation;
+        chartFor24Hrs.datasets[2].data = hourWiseData.avgResponseTime;
+        chartFor24Hrs.datasets[3].data = hourWiseData.avgResolutionTime;
+
         this.setState({
           chartFor24Hrs: chartFor24Hrs,
           hourWiseStats: hourWiseStats,
           hourWiseTotalNoOfCountAndAvgs:hourWiseTotalNoOfCountAndAvgs
-        
+
         },this.displayTotalCountCallBack())
-    
+
     }
-    else {    
+    else {
         // Filter new conversation
         res.response.newConversation.length && res.response.newConversation.map((item, index) => {
           let dateInmSec = new Date(item.DATE).getTime();
 
           if (dateInmSec > date8DaysAgoInmSec) { //last 7 days
-            totalNoOfNewCoversations.last7Days++; 
+            totalNoOfNewCoversations.last7Days++;
             newConversationCount.last7Days += item.count;
             let i = last7DaysYYYYMMDD.indexOf(item.DATE);
             last7DaysData.newConversation.splice(i, 1, item.count);
@@ -666,14 +685,14 @@ class Dashboard extends Component {
             let j = last30DaysYYYYMMDD.indexOf(item.DATE);
             last30DaysData.newConversation.splice(j, 1, item.count);
           }
-  
+
         })
         // console.log(totalNoOfNewCoversations)
         // console.log(last30DaysData);
         res.response.closedConversation.length && res.response.closedConversation.map((item, index) => {
           // filter closed conversation
           let dateInmSec = new Date(item.DATE).getTime();
-          
+
           if (dateInmSec > date8DaysAgoInmSec) { //last 7 days
             totalNoOfClosedCoversations.last7Days++;
             closedConversationCount.last7Days += item.count;
@@ -685,36 +704,36 @@ class Dashboard extends Component {
             closedConversationCount.last30Days += item.count;
             let l = last30DaysYYYYMMDD.indexOf(item.DATE);
             last30DaysData.closedConversation.splice(l, 1, item.count);
-            
+
           }
         })
-  
+
         res.response.avgResponseTime.length && res.response.avgResponseTime.map((item, index) => {
           // filter average response time
-          let dateInmSec = new Date(item.DATE).getTime(); 
+          let dateInmSec = new Date(item.DATE).getTime();
           if (dateInmSec > date8DaysAgoInmSec) { //last 7 days days
             totalNoOfResponse.last7Days++;
             avgResponseTime.last7Days += parseFloat(item.average);
-            let m = last7DaysYYYYMMDD.indexOf(item.DATE); 
+            let m = last7DaysYYYYMMDD.indexOf(item.DATE);
             let time = this.millisToMinutesAndSeconds(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
             time = time === "NaN" ? null : parseFloat(time);
             last7DaysData.avgResponseTime.splice(m, 1, time);
             // console.log(last7DaysData.avgResponseTime);
-            
+
           }
           if (dateInmSec > date31DaysAgoInmSec) { //last 30 days data
             totalNoOfResponse.last30Days++;
-            avgResponseTime.last30Days += parseFloat(item.average);  
+            avgResponseTime.last30Days += parseFloat(item.average);
             let n = last30DaysYYYYMMDD.indexOf(item.DATE);
             let time= this.millisToMinutesAndSeconds(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
             time = time === "NaN" ? null : parseFloat(time);
             last30DaysData.avgResponseTime.splice(n, 1, time);
-            
+
           }
         })
-  
+
         res.response.avgResolutionTime.length && res.response.avgResolutionTime.map((item, index) => {
-          //Filter average resolutin time 
+          //Filter average resolutin time
           let dateInmSec = new Date(item.DATE).getTime();
           if (dateInmSec > date8DaysAgoInmSec) { // last 7 days
             item.average != null &&  totalNoOfResolutions.last7Days++ ;
@@ -722,9 +741,9 @@ class Dashboard extends Component {
             item.average != null && (avgResolutionTime.last7Days += avgResolutionTime_7);
             let getIndex = last7DaysYYYYMMDD.indexOf(item.DATE);
             let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
-            time = time === "NaN" ? null : parseFloat(time);  
+            time = time === "NaN" ? null : parseFloat(time);
             last7DaysData.avgResolutionTime.splice(getIndex, 1, time);
-           
+
           }
           if (dateInmSec > date31DaysAgoInmSec) { //last 30 days
             item.average != null && totalNoOfResolutions.last30Days++;
@@ -734,7 +753,7 @@ class Dashboard extends Component {
             let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart)
             time = time === "NaN" ? null : parseFloat(time);
             last30DaysData.avgResolutionTime.splice(getIndex, 1, time);
-           
+
           }
         })
         // console.log(closedConversationCount, newConversationCount, avgResponseTime, avgResolutionTime);
@@ -743,7 +762,7 @@ class Dashboard extends Component {
         last7DaysTotalNoOfCountAndAvgs.closedConversation = totalNoOfClosedCoversations.last7Days;
         last7DaysTotalNoOfCountAndAvgs.avgResponseTime = totalNoOfResponse.last7Days;
         last7DaysTotalNoOfCountAndAvgs.avgResolutionTime = totalNoOfResolutions.last7Days
-        
+
         last7daysStats.newConversationCount =  newConversationCount.last7Days;
         last7daysStats.closedConversationCount = closedConversationCount.last7Days;
         last7daysStats.avgResponseTime = avgResponseTime.last7Days;
@@ -758,16 +777,16 @@ class Dashboard extends Component {
         last30daysStats.closedConversationCount = closedConversationCount.last30Days;
         last30daysStats.avgResponseTime = avgResponseTime.last30Days;
         last30daysStats.avgResolutionTime = avgResolutionTime.last30Days
-        
-        chartForLast30Days.datasets[0].data = last30DaysData.newConversation; 
+
+        chartForLast30Days.datasets[0].data = last30DaysData.newConversation;
         chartForLast30Days.datasets[1].data = last30DaysData.closedConversation;
-        chartForLast30Days.datasets[2].data = last30DaysData.avgResponseTime; 
+        chartForLast30Days.datasets[2].data = last30DaysData.avgResponseTime;
         chartForLast30Days.datasets[3].data = last30DaysData.avgResolutionTime;
-  
-        
+
+
         chartForLast7Days.datasets[0].data = last7DaysData.newConversation;
         chartForLast7Days.datasets[1].data = last7DaysData.closedConversation;
-        chartForLast7Days.datasets[2].data = last7DaysData.avgResponseTime; 
+        chartForLast7Days.datasets[2].data = last7DaysData.avgResponseTime;
         chartForLast7Days.datasets[3].data = last7DaysData.avgResolutionTime;
 
 
@@ -778,17 +797,17 @@ class Dashboard extends Component {
           last7daysStats: last7daysStats,
           last7DaysTotalNoOfCountAndAvgs: last7DaysTotalNoOfCountAndAvgs,
           last30DaysTotalNoOfCountAndAvgs: last30DaysTotalNoOfCountAndAvgs
-        
-        },this.displayTotalCountCallBack()); 
-      
+
+        },this.displayTotalCountCallBack());
+
     }
-   
+
   }).catch(err => {
     console.log(err);
     });
 
   }
-  
+
 showState = () => {
   // console.log(this.state.chartForLast30Days, this.state.chartForLast7Days, this.state.chartFor24Hrs, this.state.chartForYesterda,this.state.last7daysStats, this.state.last30daysStats)
   // console.log(this.state.chartFor24Hrs, this.state.hourWiseStats);
@@ -834,7 +853,7 @@ secondsToHms = (seconds,key) => { // average resolution time converting in to H 
       h = h > 0 ? h : "";
       h === "" && (m = m > 0 ? m : "") ;
       h === "" && m == "" && (s = s >= 0 ? s : "");
-    
+
     var hDisplay = h > 0 ? (h == 1 ? "hr " : "hrs ") : "";
     var mDisplay = m > 0 ? (m == 1 ? "min " : "mins ") : "";
     var sDisplay = s >= 0 ? (s <= 1 ? "sec" : "secs") : "";
@@ -844,7 +863,7 @@ secondsToHms = (seconds,key) => { // average resolution time converting in to H 
       m = "_ ";
       s = "_"
     }
-    
+
     return { hrDigit: h, hrText: hDisplay, minDigit: m, minText: mDisplay, secDigit: s, secText: sDisplay }
   }
   else {
@@ -860,7 +879,7 @@ secondsToHms = (seconds,key) => { // average resolution time converting in to H 
     //   return m + "." + s ;
     // }
   }
-  
+
 }
 millisToMinutesAndSeconds = (millis, key) => { // average response time converting in to M:S format
   let m = Math.floor(millis / 60000);
@@ -879,7 +898,7 @@ millisToMinutesAndSeconds = (millis, key) => { // average response time converti
   }
   else {
     //key == 1 -> time to display inside the chart
-    m = m > 0 ? m : "" 
+    m = m > 0 ? m : ""
     return m + "." + s ;
   }
 }
@@ -889,7 +908,7 @@ timeFilterHandleChange = (timeFilterSelectedOption) => {
   let dataDay = `${timeFilterSelectedOption.value}`; // data-day is an HTML Attribute
   this.setState({ dataDay: dataDay });
   if (`${timeFilterSelectedOption.value}` == this.state.timeFilterSelectedOption.value) {
-    
+
     return this.displayAllTotalCounts(`${timeFilterSelectedOption.value}`);
 
   }
@@ -915,7 +934,7 @@ timeFilterHandleChange = (timeFilterSelectedOption) => {
 
   }
   // this.setState({ timeFilterSelectedOption });
-  // this.displayAllTotalCounts(`${timeFilterSelectedOption.value}`);  
+  // this.displayAllTotalCounts(`${timeFilterSelectedOption.value}`);
 
 }
 
@@ -926,7 +945,7 @@ agentFilterHandleChange = (agentFilterSelectedOption) => {
     // Today or Yesterday
    this.setState({ agentFilterSelectedOption });
    return this.filterConversationDetails(this.state.timeFilterSelectedOption.value, `${agentFilterSelectedOption.value}`, this.state.isChecked );
-  } 
+  }
   else {
     // 7 Days or 30 Days
    this.setState({ agentFilterSelectedOption });
@@ -934,7 +953,7 @@ agentFilterHandleChange = (agentFilterSelectedOption) => {
 
   }
   // this.displayAllTotalCounts(this.state.timeFilterSelectedOption.value);
-  
+
 
 }
 toggleChangeCheckbox = () => {
@@ -976,7 +995,7 @@ render() {
             />
           </div>
           <div className="col-lg-2 col-sm-4 tooltip-for-lock">
-           
+
             <Select
               className={(CommonUtils.isTrialPlan()) ? "" : (CommonUtils.isStartupPlan()) ? "agent-restriction" : ""}
               name="km-dashboard-agent-filter"
@@ -985,7 +1004,7 @@ render() {
               searchable={false}
               onChange={this.agentFilterHandleChange}
               options={this.state.agentFilterOption}
-              
+
             />
             {/* <span id="tooltip-span" className="tooltip-span">
               Available in Growth Plan
@@ -1004,9 +1023,9 @@ render() {
         <div className="row">
           <div className="col-sm-6 col-lg-4 ">
             <div className="card-block pb-0 text-left">
-              <div id="card-new-conversation" className="card-inner-block card-stats active" 
+              <div id="card-new-conversation" className="card-inner-block card-stats active"
                 data-key = {this.state.dataKey.newConversation}
-                data-day = {this.state.dataDay} 
+                data-day = {this.state.dataDay}
                 onClick={this.displayChart}>
                 <h4 className="card-count">{this.state.displayTotalCounts.newConversationCount}</h4>
                 <p className="card-count-title">Incoming Conversations</p>
@@ -1017,7 +1036,7 @@ render() {
           <div className="col-sm-6 col-lg-4">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.closedConversation}
-                data-day = {this.state.dataDay} 
+                data-day = {this.state.dataDay}
                 onClick={this.displayChart}>
                 <h4 className="card-count">{this.state.displayTotalCounts.closedConversationCount}</h4>
                 <p className="card-count-title">Closed Conversations</p>
@@ -1028,7 +1047,7 @@ render() {
           <div className="col-sm-6 col-lg-3 n-vis">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.responseTime}
-                data-day = {this.state.dataDay} 
+                data-day = {this.state.dataDay}
                 onClick = {this.displayChart}>
                 <h4 className="card-count">
                   {/* <span className="card-time-digit">{this.state.avgResponseTime.hrDigit}</span>
@@ -1046,7 +1065,7 @@ render() {
           <div className="col-sm-6 col-lg-4">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.resolutionTime}
-               data-day = { this.state.dataDay} 
+               data-day = { this.state.dataDay}
                onClick = { this.displayChart}>
                 <h4 className="card-count">
                   <span className="card-time-digit">{this.state.avgResolutionTime.hrDigit}</span>
@@ -1132,7 +1151,7 @@ render() {
         {/* <div className="card">
           <div className="card-block">
             <div className="row">
-              
+
             </div>
             <div className="chart-wrapper" style={{ height: 200 + 'px', marginTop: 40 + 'px' }}>
               <Line data={this.state.chart} options={this.mainChartOpts} height={200} />
@@ -1144,7 +1163,7 @@ render() {
       { this.state.isChecked &&
         <div className="time-zone-wrapper"><p className="time-zone-text">Time zone : GMT</p></div>
       }
-        
+
     </div>
   )
 }
