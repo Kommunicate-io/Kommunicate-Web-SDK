@@ -32,7 +32,7 @@ import { COOKIES } from '../../utils/Constant';
 
 class Full extends Component {
 
-  
+
   constructor (props) {
     super(props)
      //_this =this;
@@ -47,7 +47,7 @@ class Full extends Component {
     this.updateUserDisplay  = this.updateUserDisplay.bind(this);
   }
 
-  updateProfilePic(url) { 
+  updateProfilePic(url) {
     this.setState({
       imageLink: url==null ? "/img/avatars/default.png": url
     });
@@ -67,9 +67,9 @@ class Full extends Component {
       this.setState(
         {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName}
       )
-      
+
     }
-    
+
   }
   initilizeSupportChatUser (){
     let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
@@ -87,15 +87,33 @@ class Full extends Component {
     }
 
   }
+
+  updateDetailsToKommunicate (){
+    let userSession = CommonUtils.getUserSession();
+    var userdetail = {
+      "email": userSession.email !== null ? userSession.email: "",
+      "displayName": userSession.displayName !== null ? userSession.displayName: "",
+      "userId": userSession.userName !== null ? userSession.userName: "",
+      "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
+          "billingCustomerId": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+          "created_at": userSession.created_at !== null ? userSession.created_at: "",
+          "subscription": userSession.subscription !== null ? userSession.subscription : "" ,
+          "industry": userSession.industry !== null ? userSession.industry : ""
+      }
+    };
+    window.Kommunicate.updateUser(userdetail);
+  }
+
   componentDidMount() {
     if(CommonUtils.getUserSession()){
       // initilizing full view plugin for dashboard user
     window.chatLogin();
       //listen for kommunicate plugin initilized event. initilized support chat user.
     window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
+    window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
 
     if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
-      // when user logs in this will get called. 
+      // when user logs in this will get called.
       this.initilizeSupportChatUser();
     }
 
@@ -120,15 +138,15 @@ class Full extends Component {
     const currentPath = window.location.pathname;
 
     return (
-      <div className="app" suppressContentEditableWarning={true}> 
-        {/* <Header 
+      <div className="app" suppressContentEditableWarning={true}>
+        {/* <Header
         // profilePicUrl={this.state.imageLink} displayName={this.state.displayName}
         /> */}
-          
+
         <div className="app-body">
           <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
           {currentPath.includes('/settings') ? <SettingsSidebar {...this.props}/> : null}
-          
+
           <main className="main">
             <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
               <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
@@ -157,8 +175,8 @@ class Full extends Component {
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Billing" component={Integrations}/>
                 <Route exact path="/settings/pushnotification" name="PushNotification" component={PushNotification}/>
-                }}/> 
-                
+                }}/>
+
                 <Redirect from="/" to="/dashboard"/>
 
               </Switch>
