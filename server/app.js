@@ -51,7 +51,7 @@ compressor.minify({
   output: './src/webplugin/js/app/kommunicate-plugin-0.2.min.js',
   callback: function (err, min) {
     if(!err)
-    console.log(" kommunicate-plugin-0.1.min.js combined successfully");
+    console.log(" kommunicate-plugin-0.2.min.js combined successfully");
     else {
       console.log("err while minifying kommunicate-plugin-0.2.min.js",err);
     }
@@ -108,7 +108,7 @@ app.use('/zendesk', routes.zendesk);
 app.use('/integration/settings', routes.thirdPartySetting);
 app.use('/kb',routes.faq);
 app.use('/google', routes.googleAuth);
-app.use('/subscription', routes.chargebee);
+app.use('/subscription', routes.subscription);
 app.use('/agilecrm', routes.agile);
 app.use('/settings',routes.setting);
 app.use('/v2/users',routes.v2UserRouter);
