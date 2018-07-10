@@ -14,8 +14,7 @@ exports.sendWeeklyReportsToCustomer = () => {
 const getApplicationRecursively = (criteria) => {
     if (typeof criteria == "undefined") {
         var order = [['id', 'ASC']];
-        //criteria = { where: { id: { $gt: 0 } }, order, limit: 1 }
-        criteria = { where: { applicationId: "29140d01adae27078d228944b6262444b" }, limit: 1 }
+        criteria = { where: { id: { $gt: 0 } }, order, limit: 1 }
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
@@ -27,12 +26,11 @@ const getApplicationRecursively = (criteria) => {
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
-            // let lastApp = applications[applications.length - 1]
-            // criteria.where = { id: { $gt: lastApp.id } }
-            // return getApplicationRecursively(criteria).catch(err => {
-            //     console.log("error in weekly report cron")
-            // })
-            return;
+            let lastApp = applications[applications.length - 1]
+            criteria.where = { id: { $gt: lastApp.id } }
+            return getApplicationRecursively(criteria).catch(err => {
+                console.log("error in weekly report cron")
+            });
         })
     })
 }
