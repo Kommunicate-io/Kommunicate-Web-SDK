@@ -103,6 +103,6 @@
         "chargebeeSite": "kommunicate",
         "chargebeeApiKey": "live_TY45sFsefggFLWQCxIgI5m3rzIK5yWpQ",
         "crons":[
-          {"time": "2 * * * * *", "job":"sendWeeklyReportsToCustomers", "enable":true },     
+          {"time": "0 0 10 * * 1", "job":"sendWeeklyReportsToCustomers", "enable":true }     
         ]
     }

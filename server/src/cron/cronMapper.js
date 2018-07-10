@@ -4,5 +4,5 @@ const weeklyReport = require('../cron/weeklyReport')
  */
 
 exports.cronMapper = {
-    "sendWeeklyReportsToCustomer": weeklyReport.sendWeeklyReportsToCustomer/* weekly report cron*/
+    "sendWeeklyReportsToCustomers": weeklyReport.sendWeeklyReportsToCustomer/* weekly report cron*/
 }
