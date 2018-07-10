@@ -4,6 +4,7 @@ const customerService = require('../customer/customerService');
 const applozicClient = require('../utils/applozicClient');
 const mailService = require('../utils/mailService');
 const path = require('path');
+const dateformat = require('dateformat');
 
 exports.sendWeeklyReportsToCustomer = () => {
     getApplicationRecursively();
@@ -13,7 +14,8 @@ exports.sendWeeklyReportsToCustomer = () => {
 const getApplicationRecursively = (criteria) => {
     if (typeof criteria == "undefined") {
         var order = [['id', 'ASC']];
-        criteria = { where: { id: { $gt: 0 } }, order, limit: 1 }
+        //criteria = { where: { id: { $gt: 0 } }, order, limit: 1 }
+        criteria = { where: { applicationId: "29140d01adae27078d228944b6262444b" }, limit: 1 }
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
@@ -25,11 +27,12 @@ const getApplicationRecursively = (criteria) => {
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
-            let lastApp = applications[applications.length - 1]
-            criteria.where = { id: { $gt: lastApp.id } }
-            return getApplicationRecursively(criteria).catch(err => {
-                console.log("error in weekly report cron")
-            })
+            // let lastApp = applications[applications.length - 1]
+            // criteria.where = { id: { $gt: lastApp.id } }
+            // return getApplicationRecursively(criteria).catch(err => {
+            //     console.log("error in weekly report cron")
+            // })
+            return;
         })
     })
 }
@@ -120,7 +123,7 @@ const sendWelcomeMail = (report, customer) => {
     let templateReplacement = '';
     let subject = '';
     let organization = customer.companyName !== undefined && customer.companyName != null ? customer.companyName : '';
-    subject = "Your weekly conversations report for " + report.overAllReport.startTime + " - " + report.overAllReport.endTime;
+    subject = "Your weekly conversations report for " + dateformat(report.overAllReport.endTime, "mediumDate")+ " - " + dateformat(report.overAllReport.startTime, "mediumDate");
     generatTemplate(report).then(templateList => {
         templatePath = path.join(__dirname, "../mail/weeklyReport.html");
         templateReplacement = {
