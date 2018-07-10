@@ -175,11 +175,15 @@ metadata: {
 
 
 
-# Autosuggestion
+# Use autosuggestions in your chat box
 
-If you wants to ask any question/text message into chat and wants to send possible answer/list of data with that question then you can pass a list of answer/data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from source URL/server if you pass source URL into the message metadata. The format of the message is as below:
+Autosuggestions make your life easier by populating the list of possible answers/data in the chat box itself.
+If you want to ask any question or enter any text message into the chat box and send possible answers or list of data with that question, you can pass a list of answers or data into metadata. It will be displayed in the suggestion list. Suggestion list can also be fetched from source URL/server if you pass source URL into the message. 
+
 
 ![List Template](/img/autosuggest.png)
+
+The format of the message is as below:
 
  * MESSAGE FORMAT
  
@@ -229,6 +233,7 @@ message:"Passport & Visa Services",
 	}
 ```
 API should return data in below format : 
+
 ```
 {
 "searchKey": "searchable value",
