@@ -58,13 +58,12 @@ export default class PlanDetails extends Component {
                         PlanName === 'Free' ?
                             <div className="active-plan-feature-list">
                                 <ul>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited agents</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Up to 2 agents</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Live Chat</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Web and Mobile SDKs</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent apps</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Conversations reporting</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Welcome and offline messages</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integrations</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Basic reporting</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Welcome messages</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Quick replies</li>
                                 </ul>
                             </div> 
@@ -108,14 +107,15 @@ export default class PlanDetails extends Component {
                                 </div>
                                 <div className="active-plan-feature-list">
                                     <ul>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited agents</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integrations</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent reporting</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Conversation routing</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat and email support</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot builder</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQ</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Liz bot</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;All integrations</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Standard SLA</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat and email support</li>
                                     </ul>
                                 </div> 
                             </div> 
@@ -133,8 +133,9 @@ export default class PlanDetails extends Component {
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Whitelabel</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Dedicated server</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Premium support</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agreements</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Routing rules: team based, trigger based agent assignment</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Custom SLA</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot builder</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Routing rules</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;CSAT score</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited scaling</li>
                                     </ul>
