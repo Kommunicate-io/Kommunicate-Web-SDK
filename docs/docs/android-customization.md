@@ -12,9 +12,9 @@ Follow the below steps:
 
 There are a lot of customisation options in the file, refer [this link](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail) for more details.
 
-### Hiding/Showing Attachment options:
-You can hide or show the attachemnt options like camera, emoji, location and file by changing the below values in applozic-settings.json file.
-Make a option false if you want to hide it.
+### Hiding/Showing media attachment and location sharing options:
+You can hide or show the media attachments options like camera, emoji, files and location sharing by changing the below values in applozic-settings.json file.
+Make an option false if you want to hide it.
 
 ```json
 "attachmentOptions": {
@@ -25,7 +25,9 @@ Make a option false if you want to hide it.
   }
 ```
 
-### Location option
+### If location sharing functionality is enabled:
+If you are NOT enabling location sharing functionality, you may go to the next step: [Other properties](https://github.com/AppLozic/Kommunicate/blob/reytum-patch-1/docs/docs/android-customization.md#other-properties)
+
 If you are enabling the location option in the `applozic-settings.json` file, make sure to include the below permissions and geo-API key in your `AndroidManifest.xml` file
 
 Add the following permissions in your `AndroidManifest.xml` file:
@@ -45,7 +47,7 @@ Add your geo-API_KEY in `AndroidManifest.xml` file:
 ```
 
 ### Other properties
-Apart from the properties mentioned in the above Applozic documentation, there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
+Apart from the properties mentioned in the above [Applozic documentation](https://docs.applozic.com/docs/android-chat-theme-and-customization#section-applozic-settings-json-properties-detail), there are some other properties in `applozic-seetings.json` file that are specific to Kommunicate.
 
 ```json
 "hideGroupSubtitle" : true,   //True will hide the subtitle in the support group(for e.g 'Keith, bot and You' will be hidden)
