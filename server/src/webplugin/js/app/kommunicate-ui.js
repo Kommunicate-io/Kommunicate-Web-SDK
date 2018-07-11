@@ -25,7 +25,7 @@ KommunicateUI={
         }
     },
     hideAwayMessage:function(){
-        $applozic("#mck-away-msg").html("");
+        // $applozic("#mck-away-msg").html("");
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
     },
 
@@ -44,20 +44,21 @@ KommunicateUI={
                 if (KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && 
                     KommunicateUI.awayMessageInfo.eventId == 1) {
                     this.populateLeadCollectionTemplate();
+                    this.hideAwayMessage();
                 }
             }
             else {
-               this.hideLeadCollectionTemplate();       
+               this.hideLeadCollectionTemplate();
             }
 
         } else if (messageList == null) {
             this.populateLeadCollectionTemplate();
+            this.hideAwayMessage();
         }
     },
     populateLeadCollectionTemplate:function() {
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
-        $applozic("#mck-btn-smiley-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-text-box").blur();  
         $applozic('#mck-text-box').attr('data-text', "Your email ID");
     },
@@ -65,7 +66,6 @@ KommunicateUI={
         $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-btn-attach-box").removeClass("n-vis").addClass("vis");
-        $applozic("#mck-btn-smiley-box").removeClass("n-vis").addClass("vis");
         $applozic('#mck-text-box').attr('data-text', "Enter your message here...");
     },
     validateEmail: function (sendMsg) {
@@ -74,6 +74,7 @@ KommunicateUI={
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
             this.hideLeadCollectionTemplate();
+            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
             window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
             return true;
         } else {
