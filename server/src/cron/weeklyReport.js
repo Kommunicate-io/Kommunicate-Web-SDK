@@ -5,6 +5,11 @@ const applozicClient = require('../utils/applozicClient');
 const mailService = require('../utils/mailService');
 const path = require('path');
 const dateformat = require('dateformat');
+const config = require('../../conf/config');
+const dashboardUrl = config.getProperties().urls.dashboardHostUrl;
+const kmWebsiteLogoIconUrl = config.getCommonProperties().companyDetail.companyLogo;
+const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-icon.png";
+
 
 exports.sendWeeklyReportsToCustomer = () => {
     getApplicationRecursively();
@@ -14,7 +19,7 @@ exports.sendWeeklyReportsToCustomer = () => {
 const getApplicationRecursively = (criteria) => {
     if (typeof criteria == "undefined") {
         var order = [['id', 'ASC']];
-        criteria = { where: { id: { $gt: 0 } }, order, limit: 1 }
+        criteria = { where: { id: { $gt: 0 } }, order, limit: 5 }
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
@@ -31,6 +36,7 @@ const getApplicationRecursively = (criteria) => {
             return getApplicationRecursively(criteria).catch(err => {
                 console.log("error in weekly report cron")
             });
+
         })
     })
 }
@@ -73,7 +79,7 @@ const generateReport = (stats, users) => {
     let indivisualReportArray = [];
     let overAllReport = { "newConversationCount": 0, "closedCount": 0, "avgResolutionTime": 0, "startTime": new Date(), "endTime": date }
     return new Promise((resolve, reject) => {
-        users.map(user => {
+        users.map((user) => {
             let report = {};
             report["userName"] = userService.getUserDisplayName(user);
 
@@ -94,8 +100,9 @@ const generateReport = (stats, users) => {
             });
             report["avgResolutionTime"] = resolutionTime.length > 0 ? resolutionTime[0].average ? resolutionTime[0].average : 0 : 0;
             overAllReport.avgResolutionTime += report.avgResolutionTime
-
-            indivisualReportArray.push(report)
+            if (indivisualReportArray.length < 5 && user.type != 2) {
+                indivisualReportArray.push(report)
+            }
         })
         return resolve({ "overAllReport": overAllReport, "indivisualReports": indivisualReportArray });
     })
@@ -121,25 +128,28 @@ const sendWelcomeMail = (report, customer) => {
     let templateReplacement = '';
     let subject = '';
     let organization = customer.companyName !== undefined && customer.companyName != null ? customer.companyName : '';
-    subject = "Your weekly conversations report for " + dateformat(report.overAllReport.endTime, "mediumDate")+ " - " + dateformat(report.overAllReport.startTime, "mediumDate");
+    subject = "Kommunicate: Your weekly conversations report for " + dateformat(report.overAllReport.endTime, "longDate") + " - " + dateformat(report.overAllReport.startTime, "longDate");
     generatTemplate(report).then(templateList => {
         templatePath = path.join(__dirname, "../mail/weeklyReport.html");
+        let resolutionTime = convertSecondsToHour(report.overAllReport.avgResolutionTime);
         templateReplacement = {
             "REPORTLIST": templateList,
             "TOTALNEWCONVERSATIONSCOUNT": report.overAllReport.newConversationCount,
             "CLOSEDCONVERSATIONSCOUNT": report.overAllReport.closedCount,
-            "AVGRESOLUTIONTIME": convertSecondsToHour(report.overAllReport.avgResolutionTime),
             "ORGANIZATION": organization,
-            "STARTDATE": report.overAllReport.startTime,
-            "ENDDATE": report.overAllReport.endTime,
+            "STARTDATE": dateformat(report.overAllReport.startTime, "longDate"),
+            "ENDDATE": dateformat(report.overAllReport.endTime, "longDate"),
+            "kmWebsiteLogoIconUrl": kmWebsiteLogoIconUrl,
+            "dashboardUrl": dashboardUrl,
+            "weeklyReportIcon": weeklyReportIcon
         }
+        Object.assign(templateReplacement, resolutionTime);
 
 
         let mailOptions = {
             to: customer.email,
             from: "Devashish From Kommunicate <support@kommunicate.io>",
             subject: subject,
-            //bcc: "techdisrupt@applozic.com",
             templatePath: templatePath,
             templateReplacement: templateReplacement
         }
@@ -148,11 +158,9 @@ const sendWelcomeMail = (report, customer) => {
 }
 
 const convertSecondsToHour = (seconds) => {
-    return Math.floor(seconds / 3600) + " hrs " + Math.floor((seconds % 3600) / 60) + " min " + Math.floor(seconds % 60) + " sec"
-
-    // {
-    //     "HH": Math.floor(seconds / 3600),
-    //     "MM": Math.floor((seconds % 3600) / 60),
-    //     "SS": Math.floor(seconds % 60)
-    // }
+    return {
+        "HOURS": Math.floor(seconds / 3600),
+        "MINUTES": Math.floor((seconds % 3600) / 60),
+        "SECONDS": Math.floor(seconds % 60)
+    };
 }
