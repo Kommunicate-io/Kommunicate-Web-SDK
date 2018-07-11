@@ -548,7 +548,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            mckMessageLayout.initEmojis();
+            // mckMessageLayout.initEmojis();
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -3853,21 +3853,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 $mck_msg_to.focus();
             };
-            _this.initEmojis = function () {
-                try {
-                    $applozic("#mck-text-box").emojiarea({
-                        button: "#mck-btn-smiley",
-                        wysiwyg: true,
-                        menuPosition: 'top'
-                    });
-                } catch (ex) {
-                    if (!emojiTimeoutId) {
-                        emojiTimeoutId = setTimeout(function () {
-                            _this.initEmojis();
-                        }, 30000);
-                    }
-                }
-            };
+            // _this.initEmojis = function () {
+            //     try {
+            //         $applozic("#mck-text-box").emojiarea({
+            //             button: "#mck-btn-smiley",
+            //             wysiwyg: true,
+            //             menuPosition: 'top'
+            //         });
+            //     } catch (ex) {
+            //         if (!emojiTimeoutId) {
+            //             emojiTimeoutId = setTimeout(function () {
+            //                 _this.initEmojis();
+            //             }, 30000);
+            //         }
+            //     }
+            // };
             _this.loadTab = function (params, callback) {
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {

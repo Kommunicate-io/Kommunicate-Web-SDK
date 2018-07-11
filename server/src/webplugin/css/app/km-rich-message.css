@@ -623,9 +623,10 @@
         margin-bottom: 0px !important;  
     }
     #mck-away-msg-box{
-        border-top: dashed 1px #bebbbb;
+        /* border-top: dashed 1px #bebbbb; */
+        border: none;
         /* border-bottom: solid 1px #654df7; */
-        padding: 8px 5px;
+        padding: 0px 25px 10px
         /* position: absolute;
         bottom: 52px;
         left:0; 
@@ -636,25 +637,24 @@
         font-size: 14px;
         font-weight: normal;
         letter-spacing: 0.4px;
-        text-align: left;
         color: #6b6767;
     }
     #mck-email-error-alert {
         font-size: 14px;
         font-weight: normal;
         letter-spacing: 0.4px;
-        text-align: left;
-        color: #fffefe;
+        color: #f1a5a5;
     }
-    #mck-email-collection-box {
+    #mck-email-collection-box, #mck-email-error-alert-box {
         text-align: center;
-        padding: 5px;
-        background-color: #d8d8d8;
+        padding: 0px 25px 10px
+        /* background-color: #d8d8d8; */
     }
-    #mck-email-error-alert-box {
-        text-align: center;
-        padding: 5px;
-        background-color: #f37272;
+    #mck-away-msg-box hr, #mck-email-collection-box hr, #mck-email-error-alert-box hr {
+        border: none;
+        border-top: 1px dashed #c7c4c4;
+        margin-top: 0px;
+        margin-bottom: 8px;
     }
     /******** Generic list template*************/
     /* FAQ List */
@@ -869,3 +869,16 @@
     .km-faq-answer--body .km-faq-answer--body_container {
         color:#646262;
     }
+
+#mck-email-collection-box .svg-container, #mck-email-error-alert-box .svg-container {
+    width: 45px;
+    height: 45px;
+    border-radius: 40px;
+    background-color: #edebeb;
+    line-height: 52px;
+    margin: 5px auto;
+}
+
+#mck-email-error-alert-box .svg-container {
+    background-color: #f1a5a5;
+}

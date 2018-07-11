@@ -1185,6 +1185,8 @@
 	z-index: 1000;
 	display: none;
 	bottom: 32px;
+	right: 0;
+	border-radius: 4px;
 	float: left;
 	min-width: 100px;
 	max-width: 300px;
@@ -1217,7 +1219,7 @@
 
 .mck-dropup-menu:before {
 	bottom: -8px;
-	left: 5px;
+	left: auto;
 	border-right: 8px solid transparent;
 	border-top: 8px solid #fff;
 	border-left: 8px solid transparent;
@@ -1233,7 +1235,7 @@
 
 .mck-dropdown-menu:after, .mck-dropdown-menu:before, .mck-dropup-menu:before,
 	.mck-dropup-menu:after {
-	right: auto;
+	right: 5px;
 	position: absolute;
 	display: inline-block !important;
 	content: '';
@@ -1321,7 +1323,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: relative;
 	display: table-row;
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .mck-box-body .mck-tab-cell {
@@ -1396,12 +1398,17 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-box-ft {
 	text-align: left;
-	border-top: 1px solid #e5e5e5;
-	padding: 10px 5px;
+	/* border-top: 1px solid #e5e5e5; */
+	padding: 0px 15px 10px;
 	/* position: absolute;
     bottom: 8px; */
     background-color: white;
-    width: 98%;
+    width: auto;
+}
+.mck-box-ft .mck-box-form {
+	padding: 10px 5px 10px 0px;
+    border: 0.5px solid #cecbcb;
+    border-radius: 4px;
 }
 
 .mck-box-ft .mck-row {
@@ -1466,13 +1473,13 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-text-box.mck-text {
-	padding: 5px;
+	padding: 5px 5px 5px 10px;
 	min-height: 18px;
 	max-height: 78px;
 	resize: none;
 
 	background-color: white;
-	width: calc(100% - 100px) !important;
+	width: calc(100% - 55px) !important;
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -5078,4 +5085,23 @@ margin-top: 243px;
 	pointer-events: none;
 	background-color: #a5a5a5;
 	border-color: #a5a5a5;
+}
+
+*::-webkit-scrollbar {
+	-webkit-appearance: none;
+}
+*::-webkit-scrollbar:vertical {
+    width: 7px;
+}
+
+*::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	-webkit-border-radius: 4px;
+    border-radius: 4px
+}
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
 }
