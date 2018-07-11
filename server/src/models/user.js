@@ -15,6 +15,7 @@
  * @property {String} companyName
  * @property {String} companySize
  * @property {Number} type  1: AGENT, 2:BOT ,3: ADMIN 
+ * @property {String} roletype
  * @property {String} userKey mqtt topic Id for user. its primary key in applozic user table. 
  * @author <a href="mailto:suraj@applozic.com">Suraj</a>
  */
@@ -66,6 +67,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     role: {
       type: DataTypes.STRING(20)
+    },
+    roletype:{
+      type:DataTypes.STRING(50),
+      field: 'role_type'
     },
     contactNo: {
       type: DataTypes.STRING(20),
