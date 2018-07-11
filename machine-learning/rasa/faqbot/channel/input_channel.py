@@ -8,6 +8,7 @@ from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
 import boto3
+from keras import backend as K
 import botocore
 from conf.default import *
 from distutils.dir_util import copy_tree
@@ -80,6 +81,7 @@ def load_training_data(applicationKey):
     s3_path = applicationKey + "/"
     if(os.path.isdir(path_customer) is False):
         try:
+            print ("Fetching training-data From S3:")
             os.mkdir('../customers/' + applicationKey)
             s3.Bucket(bucket_name).download_file(s3_path + 'faq_data.json', '../customers/' + applicationKey + '/faq_data.json')
             s3.Bucket(bucket_name).download_file(s3_path + 'faq_domain.yml', '../customers/' + applicationKey + '/faq_domain.yml')
@@ -200,4 +202,5 @@ def train_bots():
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
+            K.clear_session()
     return jsonify({"Success":"The bots are now sentient!"})

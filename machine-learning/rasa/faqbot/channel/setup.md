@@ -18,4 +18,4 @@
 
 
 ### Run gunicorn
-   1. `gunicorn --workers 4 --bind 0.0.0.0:5001 input_channel:app`
+   1. `gunicorn --workers 5 --threads 6 --timeout 75 --bind 0.0.0.0:5001 input_channel:app`

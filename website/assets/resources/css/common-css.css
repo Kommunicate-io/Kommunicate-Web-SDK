@@ -582,3 +582,6 @@ footer .copyright {
         top: 140px;
     }
 }
+.footer-lines-shape {
+    display: none;
+}

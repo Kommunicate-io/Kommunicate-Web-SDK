@@ -35,6 +35,10 @@ const chargebeeController= require("../chargebee/chargebeeController");
 const appSettingController = require("../setting/application/appSettingController");
 const applicationSettingValidation = require("../setting/application/validation");
 const seedLiz = require('../users/seed')
+const subscriptionValidation = require("../subscription/subscriptionValidation");
+const subscriptionController = require("../subscription/subscriptionController");
+
+
 
 
 //router declaration
@@ -58,7 +62,7 @@ const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
-const chargebeeRouter = express.Router();
+const subscriptionRouter = express.Router();
 
 
 //export routers
@@ -81,10 +85,10 @@ exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
 exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
-exports.chargebee = chargebeeRouter;
+//exports.chargebee = chargebeeRouter;
+exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
-
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 
@@ -198,10 +202,6 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
 faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
 
 /**
- * Chargebee
- */
-chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
-/**
  * Agile CRM APIs
  */
 agileRouter.post('/:appId/contact', validate(agileValidation.createContact),
@@ -223,3 +223,10 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
 
 // v2 user router 
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
+
+/**
+ * Chargebee subscription
+ */
+// third party Subscription APIs
+subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
+subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);

@@ -28,7 +28,7 @@ function ApplozicSidebox() {
     {
    	 	"name": "km-login-model", "url": MCK_STATICPATH + "/css/app/km-login-model.css"
    }, {
-       "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/tiny-slider.css"
+       "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/css/tiny-slider-2.4.0.css"
    } ];
     var mck_script_loader1 = [ {
             "name": "widget", "url": MCK_STATICPATH + "/lib/js/mck-ui-widget.min.js"
@@ -41,9 +41,9 @@ function ApplozicSidebox() {
     }, {
             "name": "emojis", "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
     }, {
-            "name": "video_howler", "url": "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.2/howler.min.js"
+            "name": "video_howler", "url": MCK_STATICPATH + "/lib/js/howler-2.0.2.min.js"
     }, {
-            "name": "tiny-slider", "url": "https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.4.0/min/tiny-slider.js"
+            "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/js/tiny-slider-2.4.0.js"
     }, {
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
     },/* {
@@ -235,7 +235,7 @@ function ApplozicSidebox() {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.1.min.js";
+            script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.2.min.js";
             //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
