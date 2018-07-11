@@ -422,8 +422,9 @@ class Aside extends Component {
     return (
       <aside className="aside-menu">
         <div className="animated fadeIn applozic-chat-container">
-
-          <div id="tab-chat" className="row tabs hide">
+          {/* hide class is breaking conversation UI, while loading integry */}
+          {/* <div id="tab-chat" className="row tabs hide"> */}
+          <div id="tab-chat" className="row tabs">
             <div id="sec-chat-box" className="col-lg-12 tab-box">
               <div id="chat-box-div" style={{height: '100vh'}}>
 

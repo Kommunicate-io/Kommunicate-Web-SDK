@@ -29,10 +29,9 @@ import CommonUtils from '../../utils/CommonUtils';
 import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
-
+import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
+const enableIntegry = false;
 class Full extends Component {
-
-
   constructor (props) {
     super(props)
      //_this =this;
@@ -53,6 +52,9 @@ class Full extends Component {
     });
    }
   componentWillMount(){
+    
+    enableIntegry && this.initiateIntegry();
+    
     window.appHistory = this.props.history;
     const search = window.location.href;
     let invitedBy = CommonUtils.getUrlParameter(search, 'referer');
@@ -71,6 +73,30 @@ class Full extends Component {
     }
 
   }
+  initiateIntegry = () => {
+    window.appKey = "a85c28bb-40c5-4d6c-b8e5-3e8c4fe4a32f";
+    window.userId = "suraj@integry-demoapp.com";
+    window.hash = "e407c3f9d2520874607e2379a2b2c0e891e2e37e3a2f81c1ef3c5944a528aa27";
+    window.bundleId = "8";
+    window.bundleInstanceId = "";
+    window.callback = function (data) { };
+    window.callback_render_integration_row = callbackFunc_Render_Integration_Row;
+    window.callback_render_template_row = callbackFunc_Render_Template_Row;
+    window.render_templates_container = 'templates'; // id of container where you want to render list of templates 
+    window.render_integrations_container = 'integrations'; // id of container where you want to render list integrations 
+    window.x_integry_configs = {
+        view_container: 'intcontainer',
+        view_url: './integrations/'
+    };
+    window.demo_app_user_api_key = "0c57e8e79e27cd965e75512079f6a6cc"
+    const script = document.createElement("script");
+
+    script.src = "https://app.integry.io/w/assets/sdk.js";
+    script.async = true;
+
+    document.body.appendChild(script);
+}
+
   initilizeSupportChatUser (){
     let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
     // if loggedIn user not present then logout the kommunciate support chat user.
