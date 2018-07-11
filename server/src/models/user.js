@@ -69,7 +69,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(20)
     },
     roletype:{
-      type:DataTypes.TINYINT(2),
+      type:DataTypes.INTEGER(2).ZEROFILL,
       field: 'role_type'
     },
     contactNo: {
