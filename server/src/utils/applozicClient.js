@@ -283,9 +283,10 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
 exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
   console.log("sending message to group ", groupId);
   console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
+  typeof message=="object"?message:{ "groupId": groupId, "message": message, "metadata": metadata }
   headers = headers ? headers : { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true }
   let url = config.getProperties().urls.sendMessageUrl;
-  return Promise.resolve(axios.post(url, { "groupId": groupId, "message": message, "metadata": metadata },
+  return Promise.resolve(axios.post(url, message,
     { headers: headers })).then(response => {
       console.log("received response from applozic", response.status);
       if (response.status == 200) {
@@ -537,4 +538,16 @@ exports.updateApplozicUser = (user, headers) => {
       console.log("error while updating user", err);
       throw err;
     })
+}
+
+exports.getConversationStats = (params, headers) => {
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/stats?applicationId=" + params.applicationId;
+  url = params.days ? url + "&days=" + params.days : url;
+  url = params.groupBy ? url + "&groupBy=" + params.groupBy : url;
+  return axios.get(url, { headers: headers }).then(result => {
+    return result.data.response.response;
+  }).catch(err => {
+    console.log("err", err);
+    return;
+  });
 }
