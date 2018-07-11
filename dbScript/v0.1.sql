@@ -89,8 +89,7 @@ update in_app_msgs  m join customers c on c.id= m.customer_id set m.application_
 alter table in_app_msgs drop customer_id;
 
 ALTER TABLE users
-ADD role_type varchar(50);
-DEFAULT 'ADMIN';
+ADD role_type varchar(50) DEFAULT 'ADMIN';
 
 SET SQL_SAFE_UPDATES=0;
 update users set role_type='SUPER_ADMIN'  where  type='3';
