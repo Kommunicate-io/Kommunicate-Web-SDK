@@ -70,7 +70,7 @@ update users u join customers c on c.id= u.customer_id set u.application_id= c.a
 
 alter table users drop customer_id;
 
-alter table customers drop application_id; 
+alter table customers drop application_id;
 
 ALTER TABLE customers ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC);
 
@@ -87,3 +87,11 @@ insert into app_settings(application_id, created_at, updated_at) select applicat
 update in_app_msgs  m join customers c on c.id= m.customer_id set m.application_id=c.application_id;
 
 alter table in_app_msgs drop customer_id;
+
+ALTER TABLE users
+ADD role_type varchar(50);
+DEFAULT 'ADMIN';
+
+SET SQL_SAFE_UPDATES=0;
+update users set role_type='SUPER_ADMIN'  where  type='3';
+SET SQL_SAFE_UPDATES=1;
