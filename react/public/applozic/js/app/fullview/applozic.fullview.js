@@ -4905,7 +4905,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 				
-				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .km-cont-msg-wrapper");	
+				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");	
 				var msg_preview = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 				(typeof emoji_template === 'object') ? $textMessage.append(msg_preview) : $textMessage.innerHTML =msg_preview;
 				if (!$kmApplozic(".left .person").length) {
