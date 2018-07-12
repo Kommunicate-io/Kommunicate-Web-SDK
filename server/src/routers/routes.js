@@ -34,8 +34,10 @@ const googleAuthController = require('../googleAuth/googleAuthController');
 const chargebeeController= require("../chargebee/chargebeeController");
 const appSettingController = require("../setting/application/appSettingController");
 const applicationSettingValidation = require("../setting/application/validation");
+const seedLiz = require('../users/seed')
 const subscriptionValidation = require("../subscription/subscriptionValidation");
 const subscriptionController = require("../subscription/subscriptionController");
+
 
 
 
@@ -95,6 +97,7 @@ home.get('/',function(req,res){
   res.status(200).json({"message":"Welcome to kommunicate"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
+home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
