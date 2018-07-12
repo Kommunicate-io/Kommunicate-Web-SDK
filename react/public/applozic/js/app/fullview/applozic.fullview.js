@@ -126,7 +126,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						break;
 					case "getGroupFeed":
 						oInstance.getGroupFeed(params);
-						break;	
+						break;
 					case "loadContacts":
 						oInstance.loadContacts(params);
 						break;
@@ -6237,7 +6237,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, displayName));
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, group.displayName));
 						}
 						$mck_group_title.html(group.displayName);
 					}
