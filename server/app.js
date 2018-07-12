@@ -122,8 +122,8 @@ function startApp() {
     app.listen(port, function () {
         console.log('Express server listening on port : ' + port);
         //to do: start the event consumers
-        //eventProcessor.initializeEventsConsumers();
-        //cronInitializer.initiatAllCron();
+        eventProcessor.initializeEventsConsumers();
+        cronInitializer.initiatAllCron();
     });
 }
 
