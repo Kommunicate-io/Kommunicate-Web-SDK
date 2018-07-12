@@ -2,6 +2,8 @@ const agileService= require('../agileCrm/agileService');
 const applozicClient = require('../utils/applozicClient');
 const logger = require('../utils/logger');
 
+const userService = require("../users/userService");
+
 
 exports.processUserCreatedEvent=(user)=>{
     logger.info('processing user created event', user);
