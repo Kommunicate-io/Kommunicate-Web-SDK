@@ -35,6 +35,8 @@ const chargebeeController= require("../chargebee/chargebeeController");
 const appSettingController = require("../setting/application/appSettingController");
 const applicationSettingValidation = require("../setting/application/validation")
 
+//For Cron Time Features
+const cronTime = require("../cron/cronTimeStamp.js")
 
 //router declaration
 const userRouter = express.Router();
@@ -51,7 +53,7 @@ const autoSuggestRouter = express.Router();
 const profileImageRouter = express.Router();
 const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
-const issueTypeReplyRouter = express.Router(); 
+const issueTypeReplyRouter = express.Router();
 const zendeskRouter = express.Router();
 const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
@@ -60,6 +62,8 @@ const googleAuthRouter = express.Router();
 const chargebeeRouter = express.Router();
 
 
+//Router for cron time stamp Features
+const cronRouter = express.Router()
 //export routers
 exports.home = home;
 exports.users=userRouter;
@@ -83,6 +87,11 @@ exports.googleAuth = googleAuthRouter;
 exports.chargebee = chargebeeRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
+
+
+//Cron Time Stamp Route
+exports.cronTimeRouter = cronRouter;
+
 
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
@@ -219,5 +228,10 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
   appSettingController.updateAppSettings);
 
 
-// v2 user router 
+// v2 user router
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
+
+
+//Cron Time Stamp Router
+cronRouter.post('/', cronTime.updateTimeStamp)
+cronRouter.get('/:cronKey', cronTime.getTimeStamp)

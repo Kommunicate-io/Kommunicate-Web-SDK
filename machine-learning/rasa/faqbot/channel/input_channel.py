@@ -4,6 +4,8 @@ from flask import Flask
 from pathlib import Path
 from subprocess import call, check_output
 from rasa_core.agent import Agent
+from rasa_core.policies.keras_policy import KerasPolicy
+from rasa_core.policies.memoization import MemoizationPolicy
 from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
@@ -17,6 +19,9 @@ s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=se
 class AgentMap(object):
     agent_map = {}
 
+# #This is to create Log file to read logs from rasa
+# import logging
+# logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 def get_abs_path(rel_path):
     return os.path.join(base_customer_path, rel_path)
@@ -95,6 +100,7 @@ def load_training_data(applicationKey):
             else:
                     # Something else has gone wrong.
                     raise
+    print('Data Loaded succesfully')
 
 def load_models(appkey):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
@@ -102,7 +108,8 @@ def load_models(appkey):
     if(os.path.isdir(path_model) is False):
         load_training_data(appkey)
         call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-        call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+        train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
+        # call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
     return
 
 
@@ -110,9 +117,21 @@ def load_agent(application_key):
     print ("loading agent for: " + application_key)
     load_models(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
+    # agent = Agent(get_abs_path("customers/" + application_key + "/models/dialogue/domain.yml"), [KerasPolicy(), fallback], interpreter)
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
+
     AgentMap.agent_map[application_key] = agent
     return agent
+
+
+def train_dialogue(domain_file, model_path, training_data_file):
+    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    training_data = agent.load_data(training_data_file)
+
+    #training_data = agent.load_data(training_data_file="data/stories.md")
+
+    agent.train(training_data, epochs=300)
+    agent.persist(model_path)
 
 
 def get_customer_agent(application_key):
@@ -160,7 +179,8 @@ def index():
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     body = request.json
-    reply = get_customer_agent(body['applicationKey']).handle_message(body['message'])[0]['text']
+    agent = get_customer_agent(body['applicationKey'])
+    reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
     outchannel.send_text_message('', reply)
@@ -192,12 +212,19 @@ def getfaq():
 @app.route("/train",methods=["POST"])
 def train_bots():
     body = request.json
+    cron_key = 'FAQ_BOT'
+    time_stamp = body['cron_time_stamp']
     if(body['data'] is None):
         pass
     else:
         for appkey in body['data']:
             load_training_data(appkey)
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-            call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+            train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
+            # call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
             agen = load_agent(appkey)
+        r = requests.post(cron_endpoint,
+                  headers={'content-type':'application/json'},
+                  data=json.dumps({"cronKey": cron_key,
+                                   "timeStamp": time_stamp}))
     return jsonify({"Success":"The bots are now sentient!"})

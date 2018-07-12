@@ -46,7 +46,7 @@ compressor.minify({
 });
 
 compressor.minify({
-  
+
   compressor: 'no-compress',
   input: ['./src/webplugin/js/app/applozic.jquery.js','./src/webplugin/js/app/applozic.chat.min.js','./src/webplugin/js/app/km-chat-combined-0.1.min.js'],
   output: './src/webplugin/js/app/kommunicate-plugin-0.1.min.js',
@@ -114,13 +114,16 @@ app.use('/agilecrm', routes.agile);
 app.use('/settings',routes.setting);
 app.use('/v2/users',routes.v2UserRouter);
 
+//Cron Time Stamp Route
+app.use('/cronTime',routes.cronTimeRouter);
+
 
 function startApp() {
     app.listen(port, function () {
         console.log('Express server listening on port : ' + port);
-        //to do: start the event consumers 
-        eventProcessor.initializeEventsConsumers();
-        cronInitializer.initiatAllCron();
+        //to do: start the event consumers
+        //eventProcessor.initializeEventsConsumers();
+        //cronInitializer.initiatAllCron();
     });
 }
 
