@@ -4787,10 +4787,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					var msg_preview = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
-					(typeof emoji_template === 'object') ? $messageText.append(emoji_template) : $messageText.html(emoji_template);
+					(typeof emoji_template === 'object') ? $messageText.append(msg_preview) : $messageText.html(msg_preview);
 					if (message.conversationId) {
 						var conversationId = message.conversationId;
 						var conversationPxy = MCK_CONVERSATION_MAP[conversationId];
@@ -4903,8 +4904,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				var $textMessage = $kmApplozic("#km-li-" + contHtmlExpr + " .kmMsgTextExpr");
-				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
+				
+				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .km-cont-msg-wrapper");	
+				var msg_preview = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+				(typeof emoji_template === 'object') ? $textMessage.append(msg_preview) : $textMessage.innerHTML =msg_preview;
 				if (!$kmApplozic(".left .person").length) {
 					/* Note; removing because of cyclic dependency where loadTab calls this back.
 					_this.loadTab({
