@@ -5087,21 +5087,21 @@ margin-top: 243px;
 	border-color: #a5a5a5;
 }
 
-*::-webkit-scrollbar {
+#mck-sidebox *::-webkit-scrollbar {
 	-webkit-appearance: none;
 }
-*::-webkit-scrollbar:vertical {
+#mck-sidebox *::-webkit-scrollbar:vertical {
     width: 7px;
 }
 
-*::-webkit-scrollbar:horizontal {
-    height: 10px;
+#mck-sidebox *::-webkit-scrollbar:horizontal {
+    height: 9px;
 }
-*::-webkit-scrollbar-thumb {
+#mck-sidebox *::-webkit-scrollbar-thumb {
 	background-color: rgba(0, 0, 0, 0.2);
 	-webkit-border-radius: 4px;
     border-radius: 4px
 }
-*::-webkit-scrollbar-track {
+#mck-sidebox *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
 }
