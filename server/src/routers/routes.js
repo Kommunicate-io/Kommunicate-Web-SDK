@@ -40,6 +40,8 @@ const subscriptionController = require("../subscription/subscriptionController")
 
 
 
+//For Cron Time Features
+const cronService = require("../cron/cronService.js")
 
 //router declaration
 const userRouter = express.Router();
@@ -56,7 +58,7 @@ const autoSuggestRouter = express.Router();
 const profileImageRouter = express.Router();
 const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
-const issueTypeReplyRouter = express.Router(); 
+const issueTypeReplyRouter = express.Router();
 const zendeskRouter = express.Router();
 const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
@@ -89,6 +91,11 @@ exports.googleAuth = googleAuthRouter;
 exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
+
+//Cron Time Stamp Route
+exports.cronServiceRouter = express.Router();
+
+
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 
@@ -221,9 +228,14 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
   appSettingController.updateAppSettings);
 
 
-// v2 user router 
+// v2 user router
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
 
+
+
+//Cron Time Stamp Router
+this.cronServiceRouter.post('/', cronService.updateLastRunTime)
+this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
 /**
  * Chargebee subscription
  */
