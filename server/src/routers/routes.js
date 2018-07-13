@@ -33,7 +33,12 @@ const thirdPartySettingValidation = require('../setting/thirdPartyIntegration/va
 const googleAuthController = require('../googleAuth/googleAuthController');
 const chargebeeController= require("../chargebee/chargebeeController");
 const appSettingController = require("../setting/application/appSettingController");
-const applicationSettingValidation = require("../setting/application/validation")
+const applicationSettingValidation = require("../setting/application/validation");
+const seedLiz = require('../users/seed')
+const subscriptionValidation = require("../subscription/subscriptionValidation");
+const subscriptionController = require("../subscription/subscriptionController");
+
+
 
 //For Cron Time Features
 const cronService = require("../cron/cronService.js")
@@ -59,7 +64,7 @@ const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
 const faqRouter = express.Router();
 const googleAuthRouter = express.Router();
-const chargebeeRouter = express.Router();
+const subscriptionRouter = express.Router();
 
 
 //export routers
@@ -82,10 +87,10 @@ exports.zendesk = zendeskRouter;
 exports.thirdPartySetting = thirdPartySettingRouter;
 exports.faq=faqRouter;
 exports.googleAuth = googleAuthRouter;
-exports.chargebee = chargebeeRouter;
+//exports.chargebee = chargebeeRouter;
+exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
-
 
 //Cron Time Stamp Route
 exports.cronServiceRouter = express.Router();
@@ -99,6 +104,7 @@ home.get('/',function(req,res){
   res.status(200).json({"message":"Welcome to kommunicate"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
+home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
@@ -203,10 +209,6 @@ thirdPartySettingRouter.delete('/:appId/:type',validate(thirdPartySettingValidat
 faqRouter.get("/search",validate(autoSuggestValidation.searchFAQ),autoSuggestController.searchFAQ);
 
 /**
- * Chargebee
- */
-chargebeeRouter.get('/count', chargebeeController.subscriptionCount);
-/**
  * Agile CRM APIs
  */
 agileRouter.post('/:appId/contact', validate(agileValidation.createContact),
@@ -230,6 +232,13 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
 
 
+
 //Cron Time Stamp Router
 this.cronServiceRouter.post('/', cronService.updateLastRunTime)
 this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
+/**
+ * Chargebee subscription
+ */
+// third party Subscription APIs
+subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
+subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);

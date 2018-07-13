@@ -539,3 +539,15 @@ exports.updateApplozicUser = (user, headers) => {
       throw err;
     })
 }
+
+exports.getConversationStats = (params, headers) => {
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/stats?applicationId=" + params.applicationId;
+  url = params.days ? url + "&days=" + params.days : url;
+  url = params.groupBy ? url + "&groupBy=" + params.groupBy : url;
+  return axios.get(url, { headers: headers }).then(result => {
+    return result.data.response.response;
+  }).catch(err => {
+    console.log("err", err);
+    return;
+  });
+}

@@ -10,6 +10,7 @@ from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
 import boto3
+from keras import backend as K
 import botocore
 from conf.default import *
 from distutils.dir_util import copy_tree
@@ -85,6 +86,7 @@ def load_training_data(applicationKey):
     s3_path = applicationKey + "/"
     if(os.path.isdir(path_customer) is False):
         try:
+            print ("Fetching training-data From S3:")
             os.mkdir('../customers/' + applicationKey)
             s3.Bucket(bucket_name).download_file(s3_path + 'faq_data.json', '../customers/' + applicationKey + '/faq_data.json')
             s3.Bucket(bucket_name).download_file(s3_path + 'faq_domain.yml', '../customers/' + applicationKey + '/faq_domain.yml')
@@ -221,6 +223,9 @@ def train_bots():
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
+
+            K.clear_session()
+
     return jsonify({"Success":"The bots are now sentient!"})
 
 # mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test

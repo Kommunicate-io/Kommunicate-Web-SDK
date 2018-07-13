@@ -90,6 +90,10 @@ class ThirdPartyScripts extends Component {
             function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'AW-828526638');
+
+            if(currentPath.includes('/setUpPage')) {
+              gtag('event', 'conversion', { 'send_to': 'AW-828526638/kVwhCNXz4HsQrqCJiwM', 'value': 10.0, 'currency': 'USD' });
+            } 
             
            //facebook pixel
            !function(f,b,e,v,n,t,s)

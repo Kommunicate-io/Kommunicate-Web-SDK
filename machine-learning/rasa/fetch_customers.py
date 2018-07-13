@@ -29,4 +29,6 @@ for data in collection.find({'created_at':{'$gte':current_time_stamp, '$lte':las
 r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},
                   data=json.dumps({'data':appkeys,
                                    'lastRunTime':str(current_time_stamp)}))
+    
+r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},data=json.dumps({'data':appkeys}))
 print (r.text)

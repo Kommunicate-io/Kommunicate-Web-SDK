@@ -12,7 +12,7 @@ exports.initiatAllCron = () => {
         if (cron.enable && typeof cronMapper[cron.job] == "function") {
             const cronJob = new CronJob(cron.time, cronMapper[cron.job], null, false, 'America/Los_Angeles');
             cronJob.start();
-            console.log( cron.job, 'cron started')
+            console.log(cron.job, 'cron started')
         }
     });
 }
