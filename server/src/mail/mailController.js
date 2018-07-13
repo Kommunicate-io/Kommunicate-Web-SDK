@@ -106,6 +106,7 @@ const getEmailFormat=(options,custInfo)=>{
                 templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.agentName+" from "+custInfo.companyName:options.agentName,
                 templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
                 templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId).replace(":token",custInfo.apzToken).replace(":referer",options.agentId).replace(":email", options.to),
+                templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName? "from "+custInfo.companyName:"";
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;
                 options.subject =  custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName?"Join "+custInfo.companyName+" on Kommunicate": "Invitation to Join Kommunicate ";
