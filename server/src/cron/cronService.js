@@ -1,4 +1,4 @@
-const cronLastRunTimeModel = require("../models").cronTimeStamp;
+const cronLastRunTimeModel = require("../models").cronLastRun;
 
 exports.getLastRunTime = (req, res) => {
   key = req.params.cronKey;
@@ -29,13 +29,13 @@ exports.updateLastRunTime = (req, res) => {
   const message = req.body;
   key = message["cronKey"];
   console.log("request received to update Time Stamp for cron_key : ", key);
-  console.log("Timestamp in req : ",message["timeStamp"]);
+  console.log("Timestamp in req : ",message["lastRunTime"]);
 
-  lastRun = new Date(parseInt(message["timeStamp"])).toISOString();
+  lastRun = new Date(parseInt(message["lastRunTime"])).toISOString();
   console.log("Time Stamp is :", lastRun);
 
   //Checking whether cron_key exist or not
-  cronLastRunTimeModel.findOne({ where: { 'cron_key': key } }).then((user) => {
+  cronLastRunTimeModel.findOne({ where: { cron_key: key } }).then((user) => {
     if (user == null){
       cronLastRunTimeModel.create({'cron_key':key, 'last_run_time':lastRun})
       console.log("New Cron Created with cron_key : ", key);

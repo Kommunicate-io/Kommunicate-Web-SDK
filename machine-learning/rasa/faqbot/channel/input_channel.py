@@ -208,7 +208,7 @@ def getfaq():
 @app.route("/train",methods=["POST"])
 def train_bots():
     body = request.json
-    time_stamp = body['cron_time_stamp']
+    last_run = body['lastRunTime']
     if(body['data'] is None):
         pass
     else:
@@ -220,5 +220,7 @@ def train_bots():
         r = requests.post(cron_endpoint,
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
-                                   "timeStamp": time_stamp}))
+                                   "lastRunTime": last_run}))
     return jsonify({"Success":"The bots are now sentient!"})
+
+# mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test

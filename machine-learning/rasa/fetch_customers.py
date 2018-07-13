@@ -18,14 +18,15 @@ appkeys = []
 current_time_stamp = time.time()*1000
 
 #fetching last update time from Node
-response = requests.get(env.cron_endpoint + env.cron_key)
+response = requests.get(env.cron_endpoint + '/' +env.cron_key)
+print(response.text)
 data = json.loads(response.text)
 last_update_time = int(data['lastRunTime'])
 
-#testappkeys = ['kommunicate-support','applozic-sample-app']
+# appkeys = ['2222','1111']
 for data in collection.find({'created_at':{'$gte':current_time_stamp, '$lte':last_update_time}}).distinct('applicationId'):
     appkeys.append(str(data))
 r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},
                   data=json.dumps({'data':appkeys,
-                                   'cron_time_stamp':str(current_time_stamp)}))
+                                   'lastRunTime':str(current_time_stamp)}))
 print (r.text)
