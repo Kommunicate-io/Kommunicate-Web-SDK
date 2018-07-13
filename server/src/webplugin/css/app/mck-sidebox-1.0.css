@@ -1235,7 +1235,7 @@
 
 .mck-dropdown-menu:after, .mck-dropdown-menu:before, .mck-dropup-menu:before,
 	.mck-dropup-menu:after {
-	right: 5px;
+	left: 5px;
 	position: absolute;
 	display: inline-block !important;
 	content: '';
