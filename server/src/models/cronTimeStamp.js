@@ -1,14 +1,14 @@
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define("cron_time_stamp", {
+  return sequelize.define("cron_last_run", {
     cron_key: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.STRING(15),
       field: 'cron_key',
       primaryKey: true,
       allowNull: false
     },
-    update_time: {
+    last_run_time: {
       type: DataTypes.DATE(6),
-      field: 'update_time',
+      field: 'last_run_time',
       allowNull: true,
       defaultValue: null
     }

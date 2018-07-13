@@ -115,7 +115,7 @@ app.use('/settings',routes.setting);
 app.use('/v2/users',routes.v2UserRouter);
 
 //Cron Time Stamp Route
-app.use('/cronTime',routes.cronTimeRouter);
+app.use('/crontime',routes.cronServiceRouter);
 
 
 function startApp() {

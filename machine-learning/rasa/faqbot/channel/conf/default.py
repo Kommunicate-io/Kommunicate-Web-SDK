@@ -20,4 +20,5 @@ fallback = FallbackPolicy(fallback_action_name="utter_default",
 
 
 #end point of cron time stamp at Node
-cron_endpoint = 'http://localhost:3999/cronTime'
+cron_endpoint = 'http://localhost:3999/crontime'
+cron_key = 'FAQ_BOT'

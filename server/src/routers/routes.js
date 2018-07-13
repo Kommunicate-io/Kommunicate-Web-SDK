@@ -36,7 +36,7 @@ const appSettingController = require("../setting/application/appSettingControlle
 const applicationSettingValidation = require("../setting/application/validation")
 
 //For Cron Time Features
-const cronTime = require("../cron/cronTimeStamp.js")
+const cronService = require("../cron/cronService.js")
 
 //router declaration
 const userRouter = express.Router();
@@ -62,8 +62,6 @@ const googleAuthRouter = express.Router();
 const chargebeeRouter = express.Router();
 
 
-//Router for cron time stamp Features
-const cronRouter = express.Router()
 //export routers
 exports.home = home;
 exports.users=userRouter;
@@ -90,7 +88,7 @@ exports.v2UserRouter = express.Router();
 
 
 //Cron Time Stamp Route
-exports.cronTimeRouter = cronRouter;
+exports.cronServiceRouter = express.Router();
 
 
 var multer  = require('multer')
@@ -233,5 +231,5 @@ this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMe
 
 
 //Cron Time Stamp Router
-cronRouter.post('/', cronTime.updateTimeStamp)
-cronRouter.get('/:cronKey', cronTime.getTimeStamp)
+this.cronServiceRouter.post('/', cronService.updateLastRunTime)
+this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
