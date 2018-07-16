@@ -967,7 +967,19 @@ const getApplication = () => {
   })
 
 }
-
+const deleteUserByUserId = (userName) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  userName = encodeURIComponent(userName);
+  let url = getConfig().kommunicateBaseUrl + '/users/?applicationId=' + appId + '&userName=' + userName + '&deactivate=' + true;
+  return Promise.resolve(axios.patch(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1022,5 +1034,6 @@ export {
   getConversationStatsByDayAndMonth,
   updateAppSetting,
   getAppSetting,
-  getApplication
+  getApplication,
+  deleteUserByUserId
 }
