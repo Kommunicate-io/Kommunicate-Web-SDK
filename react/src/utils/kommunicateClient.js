@@ -33,7 +33,8 @@ const createCustomerOrAgent = (userInfo, userType) => {
 }
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
-  let loginType = 'email'
+  let loginType = 'email';
+  let  roletype =0;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
@@ -44,13 +45,13 @@ const createCustomer = function (email, password, name, userName) {
     password = "VERY SECURE"
     loginType = 'oauth'
   }
-
   const signUrlBodyParameters = {
     userName,
     password,
     name,
     email,
-    loginType
+    loginType,
+    roletype 
   }
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
