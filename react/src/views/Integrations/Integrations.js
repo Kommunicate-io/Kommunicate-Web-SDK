@@ -133,7 +133,7 @@ class Integrations extends Component {
             {thirdParties}
             </div>
         </div>
-        { this.state.activeDiv !== "agilecrm" && !this.state.isIntegrationFromIntegry &&
+        { !this.state.isIntegrationFromIntegry &&
             <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
