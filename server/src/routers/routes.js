@@ -104,7 +104,7 @@ userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUser
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
-userRouter.get('/chat/plugin/settings', userController.getPseudoName);
+userRouter.get('/chat/plugin/settings', userController.defaultPluginSettings);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
@@ -213,6 +213,7 @@ agileRouter.patch('/:appId/contacts/:contactId/tag', validate(agileValidation.up
 /**
  * setting router
  */
+settingRouter.get('/agent/detail')
 settingRouter.get('/application/:appId', validate(applicationSettingValidation.getAppSettingsByApplicationId),
   appSettingController.getAppSettingsByApplicationId);
 settingRouter.post('/application/insert', validate(applicationSettingValidation.insertAppSetting),
