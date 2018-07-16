@@ -226,24 +226,37 @@ const addMemberIntoConversation = (data) => {
 const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
     return getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
         logger.info("got conversation agssignee : ", assignTo);
-        let groupInfo = { groupDetails: [{ groupId: groupId, userId: assignTo, role: 1 }] };
-        logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-        return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId)).then(response => {
-            logger.info('response', response.data)
-            applozicClient.updateGroup(
-                {
-                    groupId: groupId,
-                    metadata: { CONVERSATION_ASSIGNEE: assignTo }
-                },
-                appId,
-                header.apzToken,
-                header.ofUserId
-            );
-
-            return { code: "SUCCESS", data: 'success' };
-        });
+        return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
+            if (group.metadata.CONVERSATION_ASSIGNEE != assignTo) {
+                let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
+                return assignConversationToUser(groupId, assignTo, appId, header).then(res=>{
+                   applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
+                   return res;
+                })
+                
+                    
+            }
+        })
     });
 };
+
+
+const assignConversationToUser = (groupId, assignTo, appId, header) => {
+    let groupInfo = { groupDetails: [{ "groupId": groupId, "userId": assignTo, role: 1 }] };
+    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+    return applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId).then(result => {
+        applozicClient.updateGroup(
+            {
+                groupId: groupId,
+                metadata: { CONVERSATION_ASSIGNEE: assignTo }
+            },
+            appId,
+            header.apzToken,
+            header.ofUserId
+        );
+        return { code: "SUCCESS", data: 'success' };
+    })
+}
 /**
  * 
  * @param {Integer} groupId 
