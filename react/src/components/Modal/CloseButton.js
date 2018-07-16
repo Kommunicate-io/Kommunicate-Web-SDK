@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import './kmModal.css';
-class CloseModal extends Component {
+import './closeButton.css';
+class CloseButton extends Component {
     render() {
 
         return (
@@ -15,4 +15,4 @@ class CloseModal extends Component {
     }
 }
 
-export default CloseModal;
+export default CloseButton;

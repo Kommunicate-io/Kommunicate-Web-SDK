@@ -5,7 +5,7 @@ import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils.js';
 import {deleteUserByUserId} from '../../utils/kommunicateClient';
 import Modal from 'react-modal';
-import CloseModal from './../../components/Modal/CloseModal.js';
+import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
 
 
@@ -222,7 +222,7 @@ class UserItem extends Component {
                         </div>
                       </div>
                       </div>
-                      <span onClick={this.onCloseModal}><CloseModal /></span>
+                      <span onClick={this.onCloseModal}><CloseButton /></span>
                     </Modal>
                     {this.props.hideConversation == "true" ?
                         null
