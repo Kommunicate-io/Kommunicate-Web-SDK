@@ -162,7 +162,7 @@ class Integrations extends Component {
             <p className="p">Easily move data between Kommunicate and your other favorite apps. Integrate with your favorite CRM, knowledge base software and other apps.</p>
         </div>
         <div className="upgrade-plan-available-integrations">
-            <h2>List of integrations available</h2>
+            <h2>List of available integrations</h2>
             <div className="upgrade-plan-available-integrations-icons">
                 <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                 <div className="integrations-icons-container">

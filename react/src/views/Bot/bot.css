@@ -140,12 +140,14 @@
   }
 }
 
-
+.upgrade-plan-bot-integration .upgrade-plan-available-integrations-icons {
+  padding-bottom: 23px;
+}
 .upgrade-plan-bot-integration .integrations-icons-container {
   flex-wrap: nowrap;
 }
 .upgrade-plan-bot-integration .integrations-icons.dialogflow {
-  border-right: 1px solid #cfcaca;
+  /* border-right: 1px solid #cfcaca; */
 }
 .upgrade-plan-bot-integration .integrations-icons {
   padding: 0px 25px;
