@@ -1,0 +1,19 @@
+.km-close-modal-wrapper {
+    position: absolute;
+    top: -30px;
+    right: 0px;
+}
+.km-modal-close-text {
+    text-transform: uppercase;
+    color: #FFF;
+    font-size: 15px;
+}
+.km-modal-close-icon {
+    vertical-align: middle;
+    margin-top: -2px;
+    color: #FFF;
+    height: 19px;
+}
+.km-close-modal-wrapper:hover {
+    cursor: pointer;
+}

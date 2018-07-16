@@ -8,8 +8,8 @@ import {notifyThatEmailIsSent} from '../../utils/kommunicateClient' ;
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
-import './team.css'
-
+import './team.css';
+import CommonUtils from '../../utils/CommonUtils';
 
 class Integration extends Component {
    constructor(props) {
@@ -18,13 +18,18 @@ class Integration extends Component {
         email:'',
         result: [],
         multipleEmailAddress: [],
-        emailAddress:""
+        emailAddress:"",
+        adminUserId:"",
       };
-    window.addEventListener("kmFullViewInitilized",this.getUsers,true);
+      this.getUsers  = this.getUsers.bind(this);
+      window.addEventListener("kmFullViewInitilized",this.getUsers,true);
 
   }
   componentWillMount() {
     this.getUsers();
+    let userSession = CommonUtils.getUserSession();
+    let adminUserName = userSession.adminUserName;
+    this.setState({adminUserId:adminUserName});
   }
   getUsers = () => {
     var _this = this;
@@ -105,9 +110,14 @@ class Integration extends Component {
 
 
   render() {
+    var agentList = this.state.result;
+    var getUsers = this.getUsers;
+    var adminUserId = this.state.adminUserId;
     var result = this.state.result.map(function(result,index){
-          return <UserItem key={index} user={ result } hideConversation="true" />
-          });
+      if (!result.deactivated) {
+        return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} adminUserId = {adminUserId}/>
+      }
+    });
     return (
       <div className="animated fadeIn teammate-table">
        <div className="row">
@@ -143,6 +153,7 @@ class Integration extends Component {
                       <th>Name</th>
                       <th>Email id</th>
                       <th>Last Activity</th>
+                      <th className="team-th-delete-edit">Delete</th>
                       <th className="text-center n-vis">Add Info</th>
                       <th className="text-center n-vis">Actions</th>
                       <th className="text-center n-vis">Country</th>
