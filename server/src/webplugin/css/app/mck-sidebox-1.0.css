@@ -4503,7 +4503,7 @@ color: rgba(0,0,0,0.5);
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
-	color: #a9a4a4;
+	color: #8f8f8f;
 	margin-bottom: 0px;
 
 
@@ -5040,9 +5040,10 @@ margin-top: 243px;
 #mck-btn-attach .mck-icon-upload {
 	background: transparent;
     width: 20px;
-    height: auto;
+    height: 28px;
     margin-bottom: -2px;
-    margin-right: 2px;
+	margin-right: 2px;
+	display: block;
 }
 .mck-attach-menu-main-container {
 	opacity: 1 !important;

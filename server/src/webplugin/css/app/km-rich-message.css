@@ -619,7 +619,7 @@
         font-size: 14px;
         letter-spacing: 0.5px;
         text-align: center;
-        color: #a9a4a4;
+        color: #8f8f8f;
         margin-bottom: 0px !important;  
         font-weight: 300;
         line-height: 17px;
@@ -645,7 +645,7 @@
         font-size: 14px;
         font-weight: normal;
         letter-spacing: 0.4px;
-        color: #f1a5a5;
+        color: #f46262;
     }
     #mck-email-collection-box, #mck-email-error-alert-box {
         text-align: center;

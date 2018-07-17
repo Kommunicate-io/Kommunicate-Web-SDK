@@ -1,9 +1,9 @@
 .settings-sidebar {
     margin-left: 7px;
     margin-top: 0px;
-    width: 200px;
+    /* width: 200px; */
     background-color: #f4f5f7;
-    margin-right: -7px;
+    /* margin-right: -7px; */
     overflow-y: auto;
     height: 100vh;
 }
@@ -16,7 +16,7 @@
 .ss-nav {
     list-style: none;
     list-style-image: none;
-    padding: 0;
+    padding: 0px 7px;
     margin: 0;
 }
 .ss-nav-item {
@@ -41,15 +41,17 @@
     text-align: left;
 }
 .ss-nav-item:hover {
-    background-color: #1cabe2;
+    border-radius: 2px;
+    background-color: #e4e5e7;    
 }
 .ss-nav-item:hover .ss-nav-link {
-    color: #FFFFFF;
+    color: #32b2e4;
     text-decoration: none;
 }
 .ss-nav-link.active {
-    background-color: #1cabe2;
-    color: #FFFFFF;
+    background-color: #e4e5e7;
+    color: #32b2e4;
+    border-radius: 2px;
 }
 .hrr {
     border: 0.5px solid #d4d4d4;
