@@ -5075,7 +5075,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.getScriptMessagePreview = function(message,emoji_template){
-				if (message.message && message.contentType !== 2) {
+				if (message.message && message.contentType !== 2 && message.contentType !== 3) {
 					if (emoji_template.indexOf('emoji-inner') === -1) {
 						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					}
@@ -5091,7 +5091,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.contentType === 2) {
 							emoji_template = '<span class="km-icon-marker"></span>';
-						} else {
+						}else if(message.contentType === 3){
+							emoji_template = message.message;
+						}
+						 else {
 							var msg = message.message;
 							if (kmUtils.startsWith(msg, "<img")) {
 								return '<span class="km-icon-camera"></span>&nbsp;<span>image</span>';
