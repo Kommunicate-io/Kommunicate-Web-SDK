@@ -103,16 +103,15 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def update_domain(intent, answer, flag, appkey):
+def update_domain(intent, answer, appkey):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
     bot_path = 'customers/' + appkey + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
-    if (flag == 0):
-        data['intents'].append(intent)
-        data['actions'].append('utter_' + intent)
+    data['intents'].append(intent)
+    data['actions'].append('utter_' + intent)
     data['templates']['utter_' + intent] = [answer]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
@@ -265,7 +264,7 @@ def getfaq():
 
     if(body['referenceId'] is None):
         intent = body['id']
-        update_domain(str(intent),body['content'],0,body['applicationId'])
+        update_domain(str(intent),body['content'],body['applicationId'])
         update_stories(str(intent),body['applicationId'])
         update_nludata(str(intent),body['name'],body['applicationId'])
     else:
