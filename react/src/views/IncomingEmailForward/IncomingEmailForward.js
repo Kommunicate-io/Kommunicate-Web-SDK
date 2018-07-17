@@ -27,7 +27,7 @@ export default class IncomingEmailForward extends Component {
       };
 
     render () {
-        let incomingEmailForwardEmailId = `support+${CommonUtils.getUserSession().applicationId}@kommunicatemail.io`;
+        let incomingEmailForwardEmailId = `support+app.${CommonUtils.getUserSession().applicationId}@kommunicatemail.io`;
         return(
             <div className="animated fadeIn incoming-email-forward-div">
                 <div className="row">
