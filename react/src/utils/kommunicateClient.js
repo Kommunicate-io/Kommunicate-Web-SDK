@@ -7,7 +7,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
-import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
+import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
 
 
 
@@ -23,9 +23,6 @@ import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
  * @param {String} userType
  */
 
-const SUPER_ADMIN = 0;
-const ADMIN = 1;
-const AGENT = 2;
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
@@ -38,7 +35,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
   let loginType = 'email';
-  let  roletype = SUPER_ADMIN ;
+  let  roletype = ROLE_TYPE.SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
