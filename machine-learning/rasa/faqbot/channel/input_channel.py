@@ -194,7 +194,7 @@ def train_dialogue(domain_file, model_path, training_data_file):
     fallback = FallbackPolicy(fallback_action_name="utter_default",
                           core_threshold=env.nlu_threshold,
                           nlu_threshold=env.core_threshold)
-    agent = Agent(domain_file, policies=[KerasPolicy(), env.fallback, MemoizationPolicy()])
+    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
@@ -249,11 +249,11 @@ def webhook():
     reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
-    
+
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         updateQusInMongo(body['message'], body['applicationKey'])
-    
+
     outchannel.send_text_message('', reply)
     return reply
 
@@ -291,11 +291,10 @@ def train_bots():
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
             agen = load_agent(appkey)
+            #K.clear_session()
         r = requests.post(env.cron_endpoint,
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
-
-            K.clear_session()
 
     return jsonify({"Success":"The bots are now sentient!"})
