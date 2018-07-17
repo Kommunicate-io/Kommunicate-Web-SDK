@@ -9869,7 +9869,7 @@ pointer-events: none;
   color: #5c5aa7;
 }
 .km-button--primary:disabled {
-  background-color: #d4d9e0;
+  background-color: #bbbbbb;
   color: #FFFFFF;
   cursor: default;
 }
