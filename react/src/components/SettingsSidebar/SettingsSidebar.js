@@ -46,8 +46,8 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-title">
                             CONFIGURATION
                         </li>
-                        {/* <li className="ss-nav-item integrations-link">
-                            <NavLink to={'/settings/incoming-email-forward'} className="ss-nav-link" activeClassName="active">Incoming Email Forward</NavLink>
+                        {/* <li className="ss-nav-item connect-support-email-link">
+                            <NavLink to={'/settings/connect-support-email'} className="ss-nav-link" activeClassName="active">Connect Support Email</NavLink>
                         </li> */}
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/settings/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>
