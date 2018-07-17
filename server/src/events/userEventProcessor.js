@@ -29,8 +29,7 @@ exports.processUserCreatedEvent=(user)=>{
              logger.error("error whle creating contact in agilecrm", e);
          })
     }
-    
-};
+
 
 exports.processUserUpdatedEvent= (user)=>{
     logger.info("processing user updated event.....",user);
@@ -77,8 +76,4 @@ exports.processUserUpdatedEvent= (user)=>{
             logger.error("err while creating contact",e);
         })
     }
-    
-    
-
-
 }
