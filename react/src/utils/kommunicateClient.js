@@ -7,7 +7,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
-import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
+import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
 
 
 
@@ -22,6 +22,7 @@ import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
  * @param {Object} userInfo.name
  * @param {String} userType
  */
+
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
@@ -33,7 +34,8 @@ const createCustomerOrAgent = (userInfo, userType) => {
 }
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
-  let loginType = 'email'
+  let loginType = 'email';
+  let  roletype = ROLE_TYPE.SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
@@ -44,13 +46,13 @@ const createCustomer = function (email, password, name, userName) {
     password = "VERY SECURE"
     loginType = 'oauth'
   }
-
   const signUrlBodyParameters = {
     userName,
     password,
     name,
     email,
-    loginType
+    loginType,
+    roletype 
   }
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
