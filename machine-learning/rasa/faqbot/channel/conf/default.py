@@ -1,5 +1,5 @@
 import os
-from rasa_core.policies.fallback import FallbackPolicy
+import boto3
 
 applozic_endpoint = "https://apps-test.applozic.com"
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -11,14 +11,14 @@ bucket_name = "faqbot-test"
 access_key = "AKIAI67YDIHOPJVDVQHA"
 secret_access_key = "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"
 
+s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_access_key)
+
 
 #Fallback action for bot
 #Configuration of threshold answering for bot
-fallback = FallbackPolicy(fallback_action_name="utter_default",
-                          core_threshold=0.55,
-                          nlu_threshold=0.45)
+core_threshold = 0.55
+nlu_threshold = 0.45
 
 
 #end point of cron time stamp at Node
 cron_endpoint = 'http://localhost:3999/crontime'
-cron_key = 'FAQ_BOT'

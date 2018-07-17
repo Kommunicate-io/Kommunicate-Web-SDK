@@ -5,6 +5,7 @@ from pathlib import Path
 from subprocess import call, check_output
 from rasa_core.agent import Agent
 from rasa_core.policies.keras_policy import KerasPolicy
+from rasa_core.policies.fallback import FallbackPolicy
 from rasa_core.policies.memoization import MemoizationPolicy
 from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
@@ -12,10 +13,71 @@ from ruamel.yaml import YAML
 import boto3
 from keras import backend as K
 import botocore
-from conf.default import *
+import os
+import datetime
+from pymongo import MongoClient
 from distutils.dir_util import copy_tree
 
-s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_access_key)
+from conf.config import get_config, cron_key, fallback_reply
+
+app = Flask(__name__)
+
+def environment_setter(*args, **kwargs):
+    global env
+    envi = kwargs['env']
+    print(kwargs, end='\n\n\n\n\n\n\n')
+    if(envi == ''):
+        env = get_config(None)
+        print('environment loaded default')
+        # return app
+    else:
+        env = get_config(envi)
+        print('environment loaded ', envi)
+    return app
+
+
+def getNextSeqenceCount():
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    count = db.counter.find({'_id': 'knowledgebase_id'})
+
+    data = []
+    for i in count:
+        data.append(i)
+    data = data[0]
+
+    counter = data['sequence_value'] + 1
+
+    db.counter.update({
+        '_id': data['_id']
+    }, {
+        '$inc': {
+            'sequence_value': 1
+        }
+    }, upsert=False)
+    return counter
+
+
+def updateQusInMongo(name, applicationId):
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    id = getNextSeqenceCount()
+    data = {
+        "id" : id,
+        "category" : "faq",
+        "name" : name,
+        "content" : None,
+        "created_at" : datetime.datetime.now(),
+        "updated_at" : datetime.datetime.now(),
+        "deleted_at" : None,
+        "user_name" : 'FAQ_Bot',
+        "applicationId" : applicationId,
+        "status": "un_answered",
+        "type": "faq"
+    }
+    db.knowledgebase.insert(data)
+    print("Question added to Mongo Database")
+
 
 class AgentMap(object):
     agent_map = {}
@@ -25,10 +87,12 @@ class AgentMap(object):
 # logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 def get_abs_path(rel_path):
-    return os.path.join(base_customer_path, rel_path)
+    return os.path.join(env.base_customer_path, rel_path)
 
 #To upload data to AWS S3
 def upload_training_data(applicationKey):
+   s3 = env.s3
+   bucket_name = env.bucket_name
    filename = "../customers/" + applicationKey + "/faq_data.json"
    #filename[13:] will be "applicationKey + Individual File Name"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
@@ -80,6 +144,8 @@ def update_nludata(intent, questions, appkey):
     return
 
 def load_training_data(applicationKey):
+    s3 = env.s3
+    bucket_name = env.bucket_name
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     path_customer = os.path.join(parent + "/customers/" + applicationKey)
     base_data = os.path.join(parent + "/customers/base-data")
@@ -125,7 +191,10 @@ def load_agent(application_key):
 
 
 def train_dialogue(domain_file, model_path, training_data_file):
-    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    fallback = FallbackPolicy(fallback_action_name="utter_default",
+                          core_threshold=env.nlu_threshold,
+                          nlu_threshold=env.core_threshold)
+    agent = Agent(domain_file, policies=[KerasPolicy(), env.fallback, MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
@@ -140,7 +209,6 @@ def get_customer_agent(application_key):
     return current_agent
 
 
-app = Flask(__name__)
 
 
 class KommunicateChatBot(OutputChannel):
@@ -151,7 +219,7 @@ class KommunicateChatBot(OutputChannel):
         self.authorization = data['authorization']
 
     def send_text_message(self, recipient_id, message):
-        send_message_url = applozic_endpoint + "/rest/ws/message/v2/send"
+        send_message_url = env.applozic_endpoint + "/rest/ws/message/v2/send"
 
         auth_headers = {
             "Accept": "application/json",
@@ -181,13 +249,17 @@ def webhook():
     reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
+    
+    #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
+    if(reply == fallback_reply):
+        updateQusInMongo(body['message'], body['applicationKey'])
+    
     outchannel.send_text_message('', reply)
     return reply
 
 @app.route("/faqdata", methods=["POST"])
 def getfaq():
     body = request.json
-
     #Check if training data is present
     load_training_data(body["applicationId"])
 
@@ -219,7 +291,7 @@ def train_bots():
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
             agen = load_agent(appkey)
-        r = requests.post(cron_endpoint,
+        r = requests.post(env.cron_endpoint,
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
@@ -227,5 +299,3 @@ def train_bots():
             K.clear_session()
 
     return jsonify({"Success":"The bots are now sentient!"})
-
-# mysql://testdbauser:db@u$er2o16@test-db.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_test

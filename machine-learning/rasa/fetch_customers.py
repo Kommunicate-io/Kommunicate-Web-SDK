@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime, timedelta
-from config.config import get_config
+from config.config import get_config, cron_key
 from sys import argv
 import time
 import datetime
@@ -18,13 +18,13 @@ appkeys = []
 current_time_stamp = time.time()*1000
 
 #fetching last update time from Node
-response = requests.get(env.cron_endpoint + '/' +env.cron_key)
+response = requests.get(env.cron_endpoint + '/' +cron_key)
 print(response.text)
 data = json.loads(response.text)
 last_update_time = int(data['lastRunTime'])
 
 # appkeys = ['2222','1111']
-for data in collection.find({'created_at':{'$gte':current_time_stamp, '$lte':last_update_time}}).distinct('applicationId'):
+for data in collection.find({'created_at':{'$gte':last_update_time, '$lte':current_time_stamp}}).distinct('applicationId'):
     appkeys.append(str(data))
 r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},
                   data=json.dumps({'data':appkeys,
