@@ -14,13 +14,13 @@ module.exports = function(sequelize, DataTypes) {
       },integrationName :{
         type:DataTypes.STRING(20),
         allowNull: false,
-        field: 'integration_id',
+        field: 'integration_name',
         unique: "PLATFORM_INTEGRATION_IDX"
       },
       eventType:{
         type:DataTypes.STRING(20),
         allowNull: false,
-        field: 'event_id',
+        field: 'event_type',
         unique: "PLATFORM_INTEGRATION_IDX"
       },
       triggerUrl:{
