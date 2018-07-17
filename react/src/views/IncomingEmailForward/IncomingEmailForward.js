@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './IncomingEmailForward.css';
 import CommonUtils from '../../utils/CommonUtils';
+import Notification from '../../views/model/Notification';
 
 export default class IncomingEmailForward extends Component {
 
@@ -18,11 +19,11 @@ export default class IncomingEmailForward extends Component {
         this.textArea.select();
         document.execCommand("copy");
         e.target.focus();
-        this.setState({ copySuccess: "Copied" });
-        setTimeout(() => { 
-            this.setState({ copySuccess: "Copy" }); 
-        }, 5000);
-        // Notification.info("Code copied successfully!");
+        this.setState({ copySuccess: "Copy" });
+        // setTimeout(() => { 
+        //     this.setState({ copySuccess: "Copy" }); 
+        // }, 5000);
+        Notification.info("Email copied successfully!");
       };
 
     render () {
