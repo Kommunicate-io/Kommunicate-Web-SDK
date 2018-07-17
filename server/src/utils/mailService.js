@@ -74,6 +74,19 @@ exports.sendMail= (options)=>{
 
 }
 
+const generateHTMLTemplate = (options) => {
+    let template = "";
+    return fileService.readFile(options.templatePath, "utf8").then(rawTemplate => {
+        if (options.templateReplacement) {
+            template = rawTemplate.replace(new RegExp(Object.keys(options.templateReplacement).join("|"), "gi"), function (matched) {
+                console.log("matched: ", matched, "replaced with: ", options.templateReplacement[matched]);
+                return options.templateReplacement[matched];
+            });
+        }
+        return template;
+    });
+}
+exports.generateHTMLTemplate = generateHTMLTemplate;
 
 
 

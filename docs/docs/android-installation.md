@@ -15,22 +15,6 @@ Add the following in your app build.gradle dependency:
 compile 'io.kommunicate:kommunicate:1.5.1'
 ```
 
-Add the following permissions in your `AndroidManifest.xml` file:
-
-```
-<uses-permission android:name="<your package name>.permission.MAPS_RECEIVE" />
-<permission
-        android:name="<your package name>..permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-```
-
-Add your geo-API_KEY in `AndroidManifest.xml` file:
-```
-       <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="<your-geo-API-KEY>" />
-```
-
 After the app has successfully build, open your Application Class(If you do not have an application class, create one) and add implement the ```KmActionCallback``` interface:
 
 ```

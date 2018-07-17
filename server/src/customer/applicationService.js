@@ -55,8 +55,22 @@ const isApplicationExist = (applicationId) => {
     })
 }
 
+/**
+ * 
+ * @param {Object} criteria 
+ */
+const getAllApplications = (criteria) => {
+    return Promise.resolve(application.findAll(criteria)).then(apps => {
+        return apps;
+    }).catch(e => {
+        let err = new Error('No application found');
+        throw err;
+    })
+}
+
 module.exports = {
     getApplication: getApplication,
+    getAllApplications: getAllApplications,
     getApplicationListByCustomerId: getApplicationListByCustomerId,
     createApplication: createApplication,
     isApplicationExist: isApplicationExist

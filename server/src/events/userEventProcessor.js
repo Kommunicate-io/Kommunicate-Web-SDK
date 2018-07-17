@@ -30,7 +30,6 @@ exports.processUserCreatedEvent=(user)=>{
          })
     }
 
-
 exports.processUserUpdatedEvent= (user)=>{
     logger.info("processing user updated event.....",user);
    let agileCrm = user.metadata && user.metadata.KM_AGILE_CRM && JSON.parse(user.metadata.KM_AGILE_CRM);

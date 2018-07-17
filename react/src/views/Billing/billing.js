@@ -472,13 +472,12 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p style={{ opacity: 0 }}>Includes...</p>
                                                         <ul>
-                                                            <li>Unlimited agents</li>
+                                                            <li>Up to 2 agents</li>
                                                             <li>Live Chat</li>
                                                             <li>Web and Mobile SDKs</li>
                                                             <li>Agent apps</li>
-                                                            <li>Conversations reporting</li>
-                                                            <li>Welcome and offline messages</li>
-                                                            <li>Bot integrations</li>
+                                                            <li>Basic reporting</li>
+                                                            <li>Welcome messages</li>
                                                             <li>Quick replies</li>
                                                         </ul>
                                                     </div>
@@ -522,14 +521,15 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
+                                                            <li>Unlimited agents</li>
+                                                            <li>Bot integrations</li>
                                                             <li>Agent reporting</li>
                                                             <li>Conversation routing</li>
-                                                            <li>Chat and email support</li>
-                                                            <li>Bot builder</li>
                                                             <li>FAQ</li>
                                                             <li>Liz bot</li>
                                                             <li>All integrations</li>
                                                             <li>Standard SLA</li>
+                                                            <li>Chat and email support</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -641,7 +641,8 @@ class Billing extends Component {
                                                             <li>Whitelabel</li>
                                                             <li>Dedicated server</li>
                                                             <li>Premium support</li>
-                                                            <li>Agreements</li>
+                                                            <li>Custom SLA</li>
+                                                            <li>Bot builder</li>
                                                             <li>Routing rules</li>
                                                             <li>CSAT score</li>
                                                             <li>Unlimited scaling</li>

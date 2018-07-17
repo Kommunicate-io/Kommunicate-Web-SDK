@@ -126,7 +126,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						break;
 					case "getGroupFeed":
 						oInstance.getGroupFeed(params);
-						break;	
+						break;
 					case "loadContacts":
 						oInstance.loadContacts(params);
 						break;
@@ -4787,6 +4787,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
@@ -4903,8 +4904,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				var $textMessage = $kmApplozic("#km-li-" + contHtmlExpr + " .kmMsgTextExpr");
-				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
+				
+				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
+				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
+				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
 				if (!$kmApplozic(".left .person").length) {
 					/* Note; removing because of cyclic dependency where loadTab calls this back.
 					_this.loadTab({
@@ -5071,6 +5074,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.updateContactList(tabId, isGroup);
 				}
 			};
+			_this.getScriptMessagePreview = function(message,emoji_template){
+				if (message.message && message.contentType !== 2) {
+					if (emoji_template.indexOf('emoji-inner') === -1) {
+						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+					}
+				}
+				return emoji_template;
+			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
 				var emoji_template = "";
 				if (typeof message !== 'undefined') {
@@ -6237,7 +6248,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					group.displayName = mckGroupLayout.getGroupDisplayName(groupId);
 					if ($mck_group_info_tab.hasClass('vis')) {
 						if (group.imageUrl) {
-							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, displayName));
+							$mck_group_info_icon.html(_this.getGroupImage(group.imageUrl, group.displayName));
 						}
 						$mck_group_title.html(group.displayName);
 					}

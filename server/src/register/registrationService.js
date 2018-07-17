@@ -171,14 +171,12 @@ exports.sendWelcomeMail = (email, userName, agent, companyName) => {
   console.log("sending welcome mail to ", email, companyName);
   let tamplatePath = '';
   let templateReplacement = '';
-  let subject = '';
+  let subject = "Welcome to Kommunicate";
   if (agent) {
     let organization = companyName !== undefined && companyName != null ? companyName : '';
-    subject = "Thanks for joining" + organization + " on Kommunicate"
     templatePath = path.join(__dirname, "../mail/agentWelcomeMailTamplate.html"),
-      templateReplacement = { ":USER_NAME": userName, ":ORGANIZATION": organization }
+      templateReplacement = { ":USER_NAME": userName, ":ORGANIZATION": organization, ":DASHBOARDURL":config.getProperties().urls.dashboardHostUrl }
   } else {
-    subject = "Welcome to Kommunicate!"
     templatePath = path.join(__dirname, "../mail/welcomeMailTemplate.html"),
       templateReplacement = { ":USER_NAME": userName }
   }

@@ -3,11 +3,37 @@ import axios from 'axios';
 import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
 import { getConfig } from '../../config/config.js';
 import CommonUtils from '../../utils/CommonUtils.js';
+import {deleteUserByUserId} from '../../utils/kommunicateClient';
+import Modal from 'react-modal';
+import CloseButton from './../../components/Modal/CloseButton.js';
+import Notification from '../model/Notification';
 
+
+
+const customStyles = {
+  content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      maxWidth: '580px',
+      overflow: 'visible'
+  }
+};
 class UserItem extends Component {
 
     constructor(props) {
       super(props);
+      this.state = {
+       index:this.props.index,
+       agentList: this.props.agentList,
+       modalIsOpen:false,
+       userToBeDeleted:{},
+      };
+      this.onOpenModal = this.onOpenModal.bind(this);
+      this.onCloseModal = this.onCloseModal.bind(this);
     }
 
     handleClick() {
@@ -50,7 +76,7 @@ class UserItem extends Component {
             WELCOME_MESSAGE:""
         },
         callback: function (response) {
-            console.log("response", response);
+            // console.log("response", response);
             if (response.status === 'success') {
               window.$kmApplozic.fn.applozic('loadGroupTab', response.groupId);
               window.appHistory.push("/conversations");
@@ -77,12 +103,52 @@ class UserItem extends Component {
         return <span className="km-contact-icon alpha_user">{name}</span>;
       }
     }
+    
+    deleteAgent  = () => {
+      this.onCloseModal();
+      let userId = this.state.userToBeDeleted.userId;
+      return Promise.resolve(deleteUserByUserId(userId)).then(response => {
+        if(response && response.data.code == "SUCCESS") {
+          if (response.data.message == "DELETED SUCCESSFULLY"){
+            Notification.success('Agent Deleted Successfully');
+            this.props.getUsers();
+          } else if (response.data.message == "USER DOES NOT EXIST OR ALREADY DELETED") {
+            Notification.warning('Agent does not exist or already deleted');
+          }
+        }
+      }).catch(err => {
+        console.log(err.message.response.data);
+        Notification.error('There was a problem while deleteing the agent');
+      })
 
+    }
+    onOpenModal = (e) => {
+      let index = e.target.dataset.index;
+      index = parseInt(index.replace('delete', ''));
+      let user = this.state.agentList[index].displayName || this.state.agentList[index].userId;
+      let userToBeDeleted = {
+        displayName: this.state.agentList[index].displayName,
+        userId: this.state.agentList[index].userId
+      }
+      this.setState({ 
+        modalIsOpen: true, 
+        userToBeDeleted:user,
+        userToBeDeleted:userToBeDeleted 
+      });
+    };
+
+    onCloseModal = () => {
+      this.setState({ modalIsOpen: false });
+    };
     render() {
         var conversationStyle = {
           textDecoration: 'underline',
           color: '#0000EE'
         };
+        var index= this.props.index;
+        var adminUserId = this.props.adminUserId;
+        var deleteRef = "delete"+index;
+        var agentList = this.props.agentList;
         var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
         var emailId = user.email;
@@ -99,8 +165,8 @@ class UserItem extends Component {
         var createdAtTime = window.$kmApplozic.fn.applozic('getDateTime',user.createdAtTime);
         var lastLoggedInAtTime = (typeof user.lastLoggedInAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastLoggedInAtTime)): '';
         var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastSeenAtTime)):lastLoggedInAtTime;
-        return(
-                  <tr className="team-data-allign">
+        return( 
+                  <tr className="team-data-allign" >
                     <td className="text-center">
                       <div className="avatar">
                         <img src={user.imageLink} className= {imageExpr}/>
@@ -126,7 +192,38 @@ class UserItem extends Component {
                       <strong>{lastSeenAt}</strong>
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
                     </td>
-
+                    
+                    <td className= "teammates-delete-icon"  >
+                      { adminUserId != user.userId && 
+                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 10 12">
+                            <g fill="#8B8888" fillRule="nonzero">
+                              <path d="M.357 2.5a.357.357 0 0 1 0-.714h9.286a.357.357 0 1 1 0 .714H.357zM5.357 8.929a.357.357 0 1 1-.714 0v-5a.357.357 0 0 1 .714 0v5zM3.928 8.903a.357.357 0 1 1-.713.051l-.357-5a.357.357 0 0 1 .713-.05l.357 5zM6.785 8.954a.357.357 0 1 1-.713-.05l.357-5a.357.357 0 1 1 .713.05l-.357 5z"/>
+                              <path d="M3.214 2.143a.357.357 0 1 1-.714 0v-.714C2.5.837 2.98.357 3.571.357H6.43C7.02.357 7.5.837 7.5 1.43v.714a.357.357 0 1 1-.714 0v-.714a.357.357 0 0 0-.357-.358H3.57a.357.357 0 0 0-.357.358v.714z"/>
+                              <path d="M.716 2.173a.357.357 0 0 1 .355-.387H8.93c.209 0 .373.178.355.387l-.66 7.916c-.046.555-.51.982-1.067.982H2.443a1.071 1.071 0 0 1-1.068-.982l-.66-7.916zm.744.327l.627 7.53c.015.185.17.327.356.327h5.114c.186 0 .34-.142.356-.327L8.54 2.5H1.46z"/>
+                            </g>
+                          </svg>
+                          Delete
+                        </span>
+                      }
+                    </td>
+                    <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
+                    <div>
+                      <div className="team-delete-modal-header">
+                        <p className="team-delete-modal-header-title" >Delete - <span className="team-delete-modal-header-title-user-name">{this.state.userToBeDeleted.displayName || this.state.userToBeDeleted.userId}</span></p>
+                      </div>
+                      <hr className="team-delete-modal-divider" />
+                      <div className="team-delete-modal-content">
+                        <p>On deleting this account, the user will not be able to log into this Kommunicate account. Though, this profile shall be visible in all existing conversations this user has been a part of.</p>
+                        <p>Are you sure?</p>
+                        <div className="team-delete-modal-btn">
+                        <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
+                        <button className="km-button km-button--primary" onClick= {this.deleteAgent}>Yes, Delete</button>
+                        </div>
+                      </div>
+                      </div>
+                      <span onClick={this.onCloseModal}><CloseButton /></span>
+                    </Modal>
                     {this.props.hideConversation == "true" ?
                         null
                         :

@@ -7,22 +7,44 @@ import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient
 import { THIRD_PARTY_INTEGRATION_TYPE }  from '../../utils/Constant'
 import CommonUtils from '../../utils/CommonUtils';
 import LockBadge from '../../components/LockBadge/LockBadge';
+import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from './Integry';
+import Integration from '../Team/Team';
+// import Integry from './integry'
+import {integryModalHtmlContent} from './integryModalTemplate'
 class Integrations extends Component {
     constructor(props){
         super(props);
         this.state = {
             modalIsOpen: false,      
             activeDiv:'zendesk',
-            hideHelpdocsOfferBanner: false
+            hideHelpdocsOfferBanner: false,
+            isIntegrationFromIntegry: false
+
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        
+        window.addEventListener("kmIntegryInitilized",this.getThirdPartyList, true);
     }
     componentDidMount () {
-        this.getThirdPartyList();
+        this.getUrl ();
+        this.getThirdPartyList();           
     }
-    getThirdPartyList = () =>{
+    getUrl = () => {
+        //check url if url contains #template_inline in case of integry, open model()
+        let url = window.location.href;
+        const newRegex = new RegExp('integrations/#templates_inline');
+        const isIntegryUrl = url.match(newRegex);
+        if (isIntegryUrl) {
+           this.openIntegryModal();
+        }
+    }
+    openIntegryModal = () => {
+        this.setState({
+            modalIsOpen: true,
+            isIntegrationFromIntegry:true
+        });
+    }
+    getThirdPartyList = () =>{    
         let integratedThirdParties={}
         let enable = {};
         for (const key of Object.keys(thirdPartyList)) {
@@ -34,7 +56,7 @@ class Integrations extends Component {
             this.setState(integratedThirdParties);
         }
         return Promise.resolve(getThirdPartyListByApplicationId()).then(response =>{
-            this.setState({hideHelpdocsOfferBanner: false})
+            // this.setState({hideHelpdocsOfferBanner: false})
             response.data.message.forEach(element => {
                 let type = element.type
                 //todo get state variable from third party list. then set it in state.
@@ -57,26 +79,24 @@ class Integrations extends Component {
         });
         this.setState(enable);
         this.setState(integratedThirdParties);
-        
-            
         }).catch(err => {
             console.log("Error while fetching third patry intgration list", err);
         })
         
   
     }
-    
     openModal = (event) => {
         this.setState({
             activeDiv:event.target.getAttribute("data-key"),
             modalIsOpen: true
         });
+        
     }
     
     closeModal = () => {
         this.setState({ modalIsOpen: false });
     }
-    
+   
  render (){
      const thirdParties = [thirdPartyList].map((party) => {
          var party = thirdPartyList;
@@ -92,7 +112,8 @@ class Integrations extends Component {
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.label}</span>
+                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.label}
+                         </span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
                  </div>);
@@ -100,7 +121,6 @@ class Integrations extends Component {
          }
          return result;
      });
-     
      return <div className="animated fadeIn">
      <div className={(CommonUtils.isTrialPlan()) ? "row card-block integration-container" : (CommonUtils.isStartupPlan()) ? "n-vis" : "row card-block integration-container"}>
         <div className="col-lg-2">
@@ -113,12 +133,21 @@ class Integrations extends Component {
             {thirdParties}
             </div>
         </div>
+        { !this.state.isIntegrationFromIntegry &&
             <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
             </div>
             </Modal>
+        }
+        { this.state.isIntegrationFromIntegry &&        
+          
+            <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
+                <h1>Integry Modal</h1>
+                <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
+            </Modal>
+        }  
      </div>
      <div className={(CommonUtils.isTrialPlan()) ? "n-vis" : (CommonUtils.isStartupPlan()) ? "upgrade-plan-container" : "n-vis"}>
         <div className="upgrade-plan-heading-container">

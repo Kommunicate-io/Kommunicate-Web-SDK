@@ -1,8 +1,9 @@
 from pymongo import MongoClient
 from datetime import datetime, timedelta
-from config.config import get_config
+from config.config import get_config, cron_key
 from sys import argv
 import time
+import datetime
 import requests
 import json
 if(len(argv) < 2):
@@ -13,9 +14,21 @@ client = MongoClient(env.mongo_url)
 db = client['kommunicate']
 collection = db['knowledgebase']
 appkeys = []
-#testappkeys = ['kommunicate-support','applozic-sample-app']
-for data in collection.find({'created_at':{'$gte':(time.time() - 86400)*1000}}).distinct('applicationId'):
+
+current_time_stamp = time.time()*1000
+
+#fetching last update time from Node
+response = requests.get(env.cron_endpoint + '/' +cron_key)
+print(response.text)
+data = json.loads(response.text)
+last_update_time = int(data['lastRunTime'])
+
+# appkeys = ['2222','1111']
+for data in collection.find({'created_at':{'$gte':last_update_time, '$lte':current_time_stamp}}).distinct('applicationId'):
     appkeys.append(str(data))
+r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},
+                  data=json.dumps({'data':appkeys,
+                                   'lastRunTime':str(current_time_stamp)}))
     
 r = requests.post(env.rasa_endpoint,headers={'content-type':'application/json'},data=json.dumps({'data':appkeys}))
 print (r.text)
