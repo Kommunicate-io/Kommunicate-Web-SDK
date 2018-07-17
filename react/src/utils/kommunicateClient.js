@@ -22,6 +22,10 @@ import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
  * @param {Object} userInfo.name
  * @param {String} userType
  */
+
+const SUPER_ADMIN = 0;
+const ADMIN = 1;
+const AGENT = 2;
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
@@ -34,7 +38,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
   let loginType = 'email';
-  let  roletype =0;
+  let  roletype = SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
