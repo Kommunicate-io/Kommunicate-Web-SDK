@@ -52,7 +52,7 @@ typings/
 *.tgz
 
 #trained RASA test models
-models/*
+machine-learning/rasa/faqbot/customers/*
 
 # Yarn Integrity file
 .yarn-integrity
@@ -79,5 +79,3 @@ server/src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js
 message-processor/initial/target/classes/**
 *.pyc
 react/build/**
-
-

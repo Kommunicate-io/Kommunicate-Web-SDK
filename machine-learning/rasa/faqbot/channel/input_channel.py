@@ -103,16 +103,15 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def update_domain(intent, answer, flag, appkey):
+def update_domain(intent, answer, appkey):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
     bot_path = 'customers/' + appkey + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
-    if (flag == 0):
-        data['intents'].append(intent)
-        data['actions'].append('utter_' + intent)
+    data['intents'].append(intent)
+    data['actions'].append('utter_' + intent)
     data['templates']['utter_' + intent] = [answer]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
@@ -194,7 +193,7 @@ def train_dialogue(domain_file, model_path, training_data_file):
     fallback = FallbackPolicy(fallback_action_name="utter_default",
                           core_threshold=env.nlu_threshold,
                           nlu_threshold=env.core_threshold)
-    agent = Agent(domain_file, policies=[KerasPolicy(), env.fallback, MemoizationPolicy()])
+    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
@@ -249,11 +248,11 @@ def webhook():
     reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
-    
+
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         updateQusInMongo(body['message'], body['applicationKey'])
-    
+
     outchannel.send_text_message('', reply)
     return reply
 
@@ -265,7 +264,7 @@ def getfaq():
 
     if(body['referenceId'] is None):
         intent = body['id']
-        update_domain(str(intent),body['content'],0,body['applicationId'])
+        update_domain(str(intent),body['content'],body['applicationId'])
         update_stories(str(intent),body['applicationId'])
         update_nludata(str(intent),body['name'],body['applicationId'])
     else:
@@ -291,11 +290,10 @@ def train_bots():
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
             agen = load_agent(appkey)
+            #K.clear_session()
         r = requests.post(env.cron_endpoint,
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
-
-            K.clear_session()
 
     return jsonify({"Success":"The bots are now sentient!"})
