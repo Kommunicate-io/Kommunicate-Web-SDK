@@ -3236,7 +3236,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-loading {
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color:#fff;
 	top: 0;
 	left: 0;
 	width: 100%;
