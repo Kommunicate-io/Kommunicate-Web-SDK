@@ -260,9 +260,11 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function mckInitSidebox(userName) {
+    function mckInitSidebox(data) {
         try {
             var options = applozic._globals;
+            options["agentId"]= data.agentId;
+            options["agentName"]=data.agentName;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
@@ -275,8 +277,8 @@ function ApplozicSidebox() {
                             if (KommunicateUtils.getCookie('userName')) {
                                 options.userName = KommunicateUtils.getCookie('userName');
                             } else {
-                                KommunicateUtils.setCookie('userName', userName, 1);
-                                options.userName = userName;
+                                KommunicateUtils.setCookie('userName', data.userName, 1);
+                                options.userName = data.userName;
                             }
                             options.metadata = {"KM_PSEUDO_USER":JSON.stringify({pseudoName: "true", hidden: "true" })};
                         }
@@ -305,8 +307,9 @@ function ApplozicSidebox() {
         $applozic.ajax({
             url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
             method: 'GET',
+            data: applozic._globals,
             success: function (data) {
-                mckInitSidebox(data.response.userName);
+                mckInitSidebox(data.response);
             },
             error: function (error) {
                 console.log(error);
