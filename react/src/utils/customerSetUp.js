@@ -11,21 +11,22 @@ function getJsCode (){
   if (userSession) {
     options.appId = userSession.application.applicationId;
     options.isAnonymousChat=true;
-    options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
+    //options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
     
     if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){
-      options.agentName = userSession.adminDisplayName;
+      options.conversationTitle = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
-      options.agentName = localStorage.getItem("agentName");
+      options.conversationTitle = localStorage.getItem("agentName");
     }
   } else {
     const search = window.location.href;
     options.appId = CommonUtils.getUrlParameter(search, "applicationId");
-    options.agentId = CommonUtils.getUrlParameter(search, "agentId");
-    options.agentName = CommonUtils.getUrlParameter(search, "displayName");
+    options.conversationTitle=CommonUtils.getUrlParameter(search, "displayName")||CommonUtils.getUrlParameter(search, "agentId");
+    // options.agentId = CommonUtils.getUrlParameter(search, "agentId");
+    // options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
   
-   options.conversationTitle=options.agentName||options.agentId;
+   
   var env = getEnvironmentId();
   
   if(env=="test"||env=="development"){

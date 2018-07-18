@@ -377,16 +377,18 @@ exports.changeBotStatus = (req, res) => {
     return res.status(500).json({ code: 'INTERNAL_SERVER_ERROR', message: 'something went wrong!' });
   })
 }
-exports.getPseudoName = (req,res) => {
-  let name = constant.NAME;
-  let adjective = constant.ADJECTIVE;
-  let randomPositionForName = Math.floor(Math.random()*name.length);
-  let randomName = name[randomPositionForName];
-  let randomPositionForAdjective = Math.floor(Math.random()*adjective.length);
-  let randomAdjective = adjective[randomPositionForAdjective]
-  let userName = randomAdjective + " " + randomName ;
-  let data = {"userName": userName};
-  return res.status(200).json({ code: "SUCCESS", response: data });
+const getPseudoName = () => {
+  return new Promise((resolve, reject) => {
+    let name = constant.NAME;
+    let adjective = constant.ADJECTIVE;
+    let randomPositionForName = Math.floor(Math.random() * name.length);
+    let randomName = name[randomPositionForName];
+    let randomPositionForAdjective = Math.floor(Math.random() * adjective.length);
+    let randomAdjective = adjective[randomPositionForAdjective];
+    let userName = randomAdjective + " " + randomName;
+    return resolve({ userName: userName });
+  });
+  // return res.status(200).json({ code: "SUCCESS", response: data });
 }
 
 exports.updateIntegryData = (req, res) => {
@@ -456,3 +458,16 @@ exports.activateOrDeactivateUser = (req, res) => {
       });
     });
 };
+
+exports.defaultPluginSettings=(req, res)=>{
+  return userService.getAdminUserByAppId(req.query.appId).then(user=>{
+    if(user){
+      return getPseudoName().then(result=>{
+        let response=Object.assign(result, {"agentId": user.userName, "agentName":user.name});
+        return res.status(200).json({ "code": "SUCCESS", "response": response });
+      })
+    }
+  }).catch(err=>{
+    return res.status(500).json({code: "ERROR", message: "error" });
+  })
+}
