@@ -5075,8 +5075,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.getScriptMessagePreview = function(message,emoji_template){
-				if (message.message && message.contentType !== 2 && message.contentType !== 3) {
-					if (emoji_template.indexOf('emoji-inner') === -1) {
+				if (message && message.message && message.contentType !== 2 && message.contentType !== 3) {
+					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
 						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 					}
 				}
