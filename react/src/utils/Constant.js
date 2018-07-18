@@ -17,7 +17,8 @@ const USER_TYPE = {
 const ROLE_TYPE = {
     SUPER_ADMIN : "0",
     ADMIN : "1",
-    AGENT : "2"
+    AGENT : "2",
+    BOT : "3"
 }
 const GROUP_ROLE = { 
     ADMIN: "1", 
