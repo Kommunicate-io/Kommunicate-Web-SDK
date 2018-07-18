@@ -7,6 +7,7 @@ import {deleteUserByUserId} from '../../utils/kommunicateClient';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import Notification from '../model/Notification';
+import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js'
 
 
 
@@ -22,6 +23,7 @@ const customStyles = {
       overflow: 'visible'
   }
 };
+
 class UserItem extends Component {
 
     constructor(props) {
@@ -31,11 +33,26 @@ class UserItem extends Component {
        agentList: this.props.agentList,
        modalIsOpen:false,
        userToBeDeleted:{},
+       userStatus:""
       };
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
     }
+    componentDidMount() {
+      this.getUserStatus()
+    }
+    getUserStatus = () => {
+      let availabilityStatus = this.props.availabilityStatus;
+      let isOnline = this.props.user.connected
+      if(availabilityStatus && isOnline){
+        //agent is online
+      } else if (!availabilityStatus && isOnline){
+        //agent is away
+      } else {
+        //agent is offline
+      }
 
+    }
     handleClick() {
       var user = this.props.user;
       var groupName = CommonUtils.getDisplayName(user);
@@ -97,7 +114,7 @@ class UserItem extends Component {
       var letters = /^[a-zA-Z0-9]+$/;
       if (first_alpha.match(letters)) {
         first_alpha = "alpha_" + first_alpha.toUpperCase();
-        return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
+        // return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
       }
       else {
         return <span className="km-contact-icon alpha_user">{name}</span>;
@@ -151,6 +168,9 @@ class UserItem extends Component {
         var agentList = this.props.agentList;
         var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
+        let isOnline = this.props.isOnline;
+        // let isOffline = this.props.isOffline;
+        let isAway = this.props.isAway;
         var emailId = user.email;
         var displayName = CommonUtils.getDisplayName(user);
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
@@ -167,30 +187,38 @@ class UserItem extends Component {
         var lastSeenAt = (typeof user.lastSeenAtTime !== 'undefined') ?(window.$kmApplozic.fn.applozic('getDateTime',user.lastSeenAtTime)):lastLoggedInAtTime;
         return( 
                   <tr className="team-data-allign" >
-                    <td className="text-center">
-                      <div className="avatar">
-                        <img src={user.imageLink} className= {imageExpr}/>
-                        <div className ={nameExpr}>
-                          {this.getContactImageByAlphabet()}
-                        </div>
-                        <span className={online}></span>
-                      </div>
-                    </td>
                     <td>
-                      <div>{displayName}</div>
-                      <div className="small text-muted">
-                        <span>New</span> | Registered: {createdAtTime}
-                      </div>
+                      <div className="team-name-avatar-wrapper">
+                        <div className="avatar">
+                          <img src={user.imageLink} className= {imageExpr}/>
+                          <div className ={nameExpr}>
+                            {this.getContactImageByAlphabet()}
+                          </div>
+                          <span className={online}></span>
+                        </div>
+                        <div className="team-displayname">{displayName}</div>
+                      </div>  
                     </td>
                     <td>
                       <div>{emailId}</div>
                       <div className="small text-muted">
                       </div>
                     </td>
+                    {/* Last Actitvity
                     <td>
                       <div className="small text-muted">Last Seen</div>
                       <strong>{lastSeenAt}</strong>
                       <div className="small text-muted">Last Loggedin at {lastLoggedInAtTime} </div>
+                    </td> */}
+                    <td>
+                      <div className="small text-muted">Admin</div>
+                    </td>
+                    <td>{ !isAway &&
+                          <div className="small text-muted">  <StatusIndicator label = { isOnline ? "Online" : "Offline"} color={isOnline ? "success" : "muted"} /> </div>
+                        }
+                        { isAway &&
+                           <div className="small text-muted">  <StatusIndicator label = {"away"} color={"muted"} /> </div>
+                        }
                     </td>
                     
                     <td className= "teammates-delete-icon"  >
