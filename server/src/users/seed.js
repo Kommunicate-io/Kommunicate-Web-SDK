@@ -32,7 +32,7 @@ const getApplicationRecursively = (criteria) => {
             let lastApp = applications[applications.length - 1]
             criteria.where = { id: { $gt: lastApp.id } }
             return getApplicationRecursively(criteria).catch(err => {
-                console.log("error while fetching all app")
+                console.log("error while fetching all app: ", lastApp.applicationId )
             });
 
         })
@@ -65,8 +65,11 @@ const createLiz = (application) => {
                         console.log("success");
                         return user;
                     })
-                });
-            })
+                })
+            }).catch(err=>{
+                console.log("error: ", application.applicationId, err);
+                return;
+            });
 
         } else {
             console.log("liz already exist for customerId :", application.applicationId)
