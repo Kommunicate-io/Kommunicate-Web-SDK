@@ -10183,7 +10183,9 @@ input:required {
 .km-bot-integration-icon-margin {
   /*margin: 10px*/
 }
-
+.modal-header button {
+  visibility: hidden;
+}
 .km-bot-integration-heading {
   font-size: 18px;
   font-weight: normal;
@@ -10556,7 +10558,7 @@ input:required {
   letter-spacing: 0.3px;
   text-align: left;
   color: #6c6a6a;
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
 }
 .km-bot-list-of-faqs-container {
     height: auto;
