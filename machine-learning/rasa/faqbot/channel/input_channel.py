@@ -243,12 +243,11 @@ def index():
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     body = request.json
+    K.clear_session()
     agent = get_customer_agent(body['applicationKey'])
     reply = agent.handle_message(body['message'])[0]['text']
-    K.clear_session()
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
-    K.clear_session()
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         updateQusInMongo(body['message'], body['applicationKey'])
@@ -289,7 +288,6 @@ def train_bots():
             load_training_data(appkey)
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
             train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
-            agen = load_agent(appkey)
             #K.clear_session()
         r = requests.post(env.cron_endpoint,
                   headers={'content-type':'application/json'},
