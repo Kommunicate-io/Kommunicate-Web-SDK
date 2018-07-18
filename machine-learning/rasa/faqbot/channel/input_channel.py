@@ -246,6 +246,7 @@ def webhook():
     body = request.json
     agent = get_customer_agent(body['applicationKey'])
     reply = agent.handle_message(body['message'])[0]['text']
+    K.clear_session()
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
 
