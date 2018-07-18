@@ -79,8 +79,8 @@ def updateQusInMongo(name, applicationId):
     print("Question added to Mongo Database")
 
 
-class AgentMap(object):
-    agent_map = {}
+'''class AgentMap(object):
+    agent_map = {}'''
 
 # #This is to create Log file to read logs from rasa
 # import logging
@@ -184,8 +184,7 @@ def load_agent(application_key):
     load_models(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
-
-    AgentMap.agent_map[application_key] = agent
+    #AgentMap.agent_map[application_key] = agent
     return agent
 
 
@@ -201,10 +200,10 @@ def train_dialogue(domain_file, model_path, training_data_file):
 
 
 def get_customer_agent(application_key):
-    current_agent = AgentMap.agent_map.get(application_key)
-    if current_agent is None:
-        print("fetching agent for: " + application_key)
-        current_agent = load_agent(application_key)
+    #current_agent = AgentMap.agent_map.get(application_key)
+    #if current_agent is None:
+    print("fetching agent for: " + application_key)
+    current_agent = load_agent(application_key)
     return current_agent
 
 
@@ -249,7 +248,7 @@ def webhook():
     K.clear_session()
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
-
+    K.clear_session()
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         updateQusInMongo(body['message'], body['applicationKey'])
