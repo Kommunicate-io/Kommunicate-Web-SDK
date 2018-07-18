@@ -213,7 +213,6 @@ agileRouter.patch('/:appId/contacts/:contactId/tag', validate(agileValidation.up
 /**
  * setting router
  */
-settingRouter.get('/agent/detail')
 settingRouter.get('/application/:appId', validate(applicationSettingValidation.getAppSettingsByApplicationId),
   appSettingController.getAppSettingsByApplicationId);
 settingRouter.post('/application/insert', validate(applicationSettingValidation.insertAppSetting),
