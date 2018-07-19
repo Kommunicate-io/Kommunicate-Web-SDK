@@ -1477,9 +1477,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	min-height: 18px;
 	max-height: 78px;
 	resize: none;
-
 	background-color: white;
-	width: calc(100% - 55px) !important;
+	width: auto;
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -3551,7 +3550,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 @media (min-width : 310px) {
 	.emoji-menu{
-		width:300px !important;
+		/* width:300px !important; */
 	}
 
 	.mck-sidebox {
@@ -3682,7 +3681,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width: 500px;
 	}
 	.emoji-menu{
-		width:379px !important;
+		/* width:379px !important; */
 	}
 	.mck-sidebox.fade.in{
 		width:379px;
@@ -3877,14 +3876,16 @@ box-shadow: none!important;
 	display:inline-block;
 }
 .emoji-menu{
-	right:10px !important;
-	width:379px;
+	right:0px !important;
+	width:100%;
+	left: auto;
+	bottom: 70px !important;
 }
 .emoji-menu>.group-selector{
 	width:100% !important;
 }
 .emoji-menu div {
-	width:100% !important;
+	/* width:100% !important; */
 }
 #mck-msg-new{
 	background-color: #716fb3;
@@ -4910,7 +4911,7 @@ margin-top: 243px;
 }
 
 /********  dialog box template *************/
-/* FAQ Answer 
+/* FAQ Answer
 // duplicate css. if any thing is getting used in faq  need to rename that class.
 .message.received.faq-answer {
     padding: 0px;
@@ -5075,7 +5076,7 @@ margin-top: 243px;
 		height:100% !important;
 	}
 	.emoji-menu {
-		width: 100% !important;
+		/* width: 100% !important; */
 		right: 0px !important;
 	}
 }
