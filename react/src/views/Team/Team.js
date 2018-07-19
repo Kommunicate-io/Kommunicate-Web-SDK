@@ -38,10 +38,12 @@ class Integration extends Component {
         result: [],
         multipleEmailAddress: [],
         emailAddress:"",
-        adminUserId:"",
+        loggedInUserId:"",
+        loggedInUserRoleType:"",
         agentsInfo:[],
         applicationId:"",
-        hideErrorMessage:true
+        hideErrorMessage:true,
+        existingAndActiveUsers : []
       };
       this.getUsers  = this.getUsers.bind(this);
       window.addEventListener("kmFullViewInitilized",this.getUsers,true);
@@ -54,16 +56,29 @@ class Integration extends Component {
     
     let userSession = CommonUtils.getUserSession();
     let adminUserName = userSession.adminUserName;
+    let loggedInUserRoleType = userSession.roletype;
     let applicationId = userSession.application.applicationId;
     this.setState({
-      adminUserId:adminUserName,
-      applicationId:applicationId
+      loggedInUserId:adminUserName,
+      applicationId:applicationId,
+      loggedInUserRoleType:loggedInUserRoleType
     },this.getAgents);
   }
   getUsers = () => {
     var _this = this;
     window.$kmApplozic.fn.applozic("fetchContacts", {roleNameList: ['APPLICATION_ADMIN', 'APPLICATION_WEB_ADMIN'], 'callback': function(response) {
-        _this.setState({result: response.response.users});
+        let users = response.response.users;
+        let existingAndActiveUsers = []
+        users.map(function(user,index){
+          if (!user.deactivated) {
+              existingAndActiveUsers.push(user.userId);
+            }
+          })
+        
+        _this.setState({
+          result: response.response.users,
+          existingAndActiveUsers:existingAndActiveUsers
+        });
       }
     });
   }
@@ -78,27 +93,28 @@ class Integration extends Component {
   onCloseModal = () => {
     this.setState({ modalIsOpen: false });
   };
-  validateEmail = (e) => {
+
+  sendEmail = (e) => {
     let email = this.state.email;
+    let existingAndActiveUsers = this.state.existingAndActiveUsers;
+    let isUserExists = existingAndActiveUsers.indexOf(email);
     var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-
-    if (email.match(mailformat)) {
-      this.CloseButton();
-      notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL" }).then(data => {
-        console.log(data);
-        email = "";
-        this.setState({ email: email })
-      });
-
+    
+    if (isUserExists == -1) {
+      if (email.match(mailformat)) {
+        this.onCloseModal();
+        notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL" }).then(data => {
+        });
+      } else {
+        Notification.error(email + " is an invalid Email");
+        return false;
+      }
     } else {
-      Notification.error(email + " is an invalid Email");
-      email = "";
-      this.setState({email:email})
-      return false;
+      Notification.warning("Teammate with this email already exists");
     }
   }
 
-
+  // this method can be use in case of sending multiple invitation 
   sendMail=(e)=>{
      const _this =this;
      console.log(_this.state.email);
@@ -149,7 +165,7 @@ class Integration extends Component {
        let agentsInfo = data;
        this.setState({agentsInfo:agentsInfo})
      }).catch(err => {
-       // console.log("err while fetching users list ", err);
+      //  console.log("err while fetching users list ", err);
      });
   }
   multipleEmailHandler=(e)=>{
@@ -181,11 +197,13 @@ class Integration extends Component {
   render() {
     var agentList = this.state.result;
     var getUsers = this.getUsers;
-    var adminUserId = this.state.adminUserId;
+    var loggedInUserId = this.state.loggedInUserId;
+    var loggedInUserRoleType = this.state.loggedInUserRoleType;
     var agentsInfo = this.state.agentsInfo;
     // var availabilityStatus = 0;
     var isAway = false;
     var isOnline = false;
+    var roleType ;
     // var isOffline = false;
     var result = this.state.result.map(function(result,index){
       let userId = result.userId;
@@ -193,22 +211,26 @@ class Integration extends Component {
       if (!result.deactivated) {
         agentsInfo.map(function(user,i){
           if(userId == user.userName){
+            roleType = user.roletype
             // console.log(user.availabilityStatus);
             // availabilityStatus = user.availabilityStatus;
             if(user.availabilityStatus && isOnline ){
               //agent is online
               isOnline = true;
+              isAway = false;
             } else if (!user.availabilityStatus && isOnline){
               //agent is away
               isAway= true;
+              isOnline = false;
             } else {
               //agent is offline
-              isOnline = false
+              isOnline = false;
+              isAway = false;
 
             }
           }
         })
-        return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} adminUserId = {adminUserId} isOnline= {isOnline} isAway ={isAway} />
+        return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} loggedInUserId = {loggedInUserId} isOnline= {isOnline} isAway ={isAway} roleType = {roleType} loggedInUserRoleType = {loggedInUserRoleType} />
       }
     });
     return (
@@ -218,31 +240,29 @@ class Integration extends Component {
            <div className="card">
              <div className="card-block">
                  <h5 className="form-control-label teammates-description">See the list of all the team members, their roles, add new team members and edit member details.</h5>
-                  <button className="km-button km-button--primary teammates-add-member-btn" onClick= {this.onOpenModal}>+Add a team member</button>
+                  <button className="km-button km-button--primary teammates-add-member-btn" onClick= {this.onOpenModal}>+ Add a team member</button>
                  
              </div>
              <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
                 <div className="teammates-add-member-modal-wrapper">
                   <div className="teammates-add-member-modal-header">
-                    <p className="teammates-add-member-modal-header-title" >New team member</p>
+                    <p className="teammates-add-member-modal-header-title" >Adding new team member</p>
                   </div>
                   <hr className="teammates-add-member-modal-divider" />
                   <div className="teammates-add-member-modal-content-wrapper">
                     <h5 className="teammates-add-member-modal-content-title">Whom do you want to add?</h5>
-                    {/* <InputField inputType={'email'}  title={'Email Id'} name={'email'} controlFunc={this.setEmail} content={this.state.email} errorMessage={this.state.errorMessageText} 
-                   hideErrorMessage={this.state.hideErrorMessage} required={'required'} blurFunc ={this.state.handleUserNameBlur} keyPressFunc={this.onKeyPress} />  */}
-                   <input type="text" className="form-control email-field" id="email-field" 
-								  onChange={(e) => {
-									let email = this.state.email;
-									email = e.target.value;
-									this.setState({ email: email  })
-								  }}
+                    <input type="text" className="form-control email-field" id="email-field" 
+								      onChange={(e) => {
+								      	let email = this.state.email;
+									      email = e.target.value;
+									      this.setState({ email: email  })
+								      }}
 									
-								 placeholder="Enter your email" />
+								    placeholder="Enter email address" />
                   </div>
                   <div className="teammates-add-member-modal-btn">
                     <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
-                    <button className="km-button km-button--primary teammates-add-member-modal-add-btn" onClick= {this.validateEmail}>Add member</button>
+                    <button className="km-button km-button--primary teammates-add-member-modal-add-btn" onClick= {this.sendEmail}>Add member</button>
                   </div>  
                 </div>  
               <span onClick={this.onCloseModal}><CloseButton /></span>
@@ -270,7 +290,7 @@ class Integration extends Component {
            <div className="card">
              <div className="card-block">
                {/* <label className="col-md-3 form-control-label invite-team" htmlFor="invite">Team</label> */}
-               <table className="table table-hover mb-0 hidden-sm-down">
+               <table className= "table table-hover mb-0 hidden-sm-down teammates-table">
                  <thead className="thead-default">
                    <tr>
                       {/* <th className="text-center"><i className="icon-people"></i></th> */}

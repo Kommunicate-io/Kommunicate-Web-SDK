@@ -68,13 +68,14 @@
 }
 .team-data-allign:hover .teammates-delete-icon span{
   display: block;
+  width: 55px;
   
 }
 .team-data-allign:hover {
   border-radius: 3px;
   background-color: #ffffff;
   box-shadow: 0 2px 11px 3px rgba(171, 166, 166, 0.5);
-  cursor: pointer;
+  cursor: default;
   border-bottom: 1px solid transparent;
 }
 .team-th-delete-edit {
@@ -149,15 +150,15 @@
   display: flex;
 }
 .team-displayname {
-  margin-left: 10px;
-  padding-top: 10px;
+  margin-left: 14px;
+  padding-top: 14px;
 }
 .teammates-description {
   font-size: 18px;
   font-weight: normal;
   letter-spacing: 1.3px;
   color: #354052;
-  padding-bottom: 33px;
+  padding-bottom: 18px;
 }
 .teammates-add-member-modal-header-title {
   font-size: 20px;
@@ -175,6 +176,21 @@
 }
 .teammates-add-member-modal-content-wrapper input  {
   max-width: 73%;
-  border: solid 1px #a1a1a1;
-  margin-bottom: 10px; 
+  border: solid 1px #d8d8d8;
+  margin-bottom: 40px; 
+}
+.km-status-indicator-text {
+  font-size: 16px !important;
+}
+.team-name-avatar-wrapper span {
+  visibility: hidden;
+}
+.teammates-table td{
+  width: 315px;
+}
+.km-truncate {
+	white-space: nowrap;
+	overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
 }
