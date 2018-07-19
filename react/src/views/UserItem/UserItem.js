@@ -115,7 +115,7 @@ class UserItem extends Component {
       var letters = /^[a-zA-Z0-9]+$/;
       if (first_alpha.match(letters)) {
         first_alpha = "alpha_" + first_alpha.toUpperCase();
-        // return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
+        return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>;
       }
       else {
         return <span className="km-contact-icon alpha_user">{name}</span>;
@@ -197,7 +197,7 @@ class UserItem extends Component {
                           <div className ={nameExpr}>
                             {this.getContactImageByAlphabet()}
                           </div>
-                          <span className={online}></span>
+                          {/* <span className={online}></span> */}
                         </div>
                         <div className="team-displayname">{displayName}</div>
                       </div>  
