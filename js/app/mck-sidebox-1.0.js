@@ -14,6 +14,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         notificationSoundLink: '',
         mapStaticAPIkey: 'AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw',
         launcher: 'applozic-launcher',
+        emojilibrary: false,
         userId: null,
         appId: null,
         userName: null,
@@ -370,6 +371,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var EMOJI_LIBRARY = appOptions.emojilibrary;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
@@ -488,7 +490,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
             KommunicateUI.showChat();
             var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis"); 
+            $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
                 mckMessageService.loadConversationWithAgents({
                     groupName: DEFAULT_GROUP_NAME,
                     agentId: DEFAULT_AGENT_ID,
@@ -548,7 +550,11 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckInit.initializeApp(appOptions, false);
             mckNotificationService.init();
             mckMapLayout.init();
-            // mckMessageLayout.initEmojis();
+            if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
+              mckMessageLayout.initEmojis();
+            else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
+              document.getElementById('mck-btn-smiley-box').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
+            }
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
                 ringToneService = new RingToneService();
@@ -1468,7 +1474,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 if (MCK_ACCESS_TOKEN) {
                                     result.accessToken = userPxy.password;
                                 }
-                                
+
                                 _this.onInitApp(result);
                                 // mckUtils.manageIdleTime();
                             } else {
@@ -1577,7 +1583,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                    }
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
-                 // dispatch an event "kmInitilized". 
+                 // dispatch an event "kmInitilized".
                 w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
             };
             _this.validateAppSession = function (userPxy) {
@@ -1976,8 +1982,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     $mck_sidebox_content.css('height', '0%');
                     $mck_sidebox_content.addClass("minimized");
                 }
-            });            
-            
+            });
+
             _this.init = function () {
                 $applozic.template("oflTemplate", offlineblk);
                 ALStorage.clearMckMessageArray();
@@ -2004,15 +2010,15 @@ var MCK_CLIENT_GROUP_MAP = [];
                         KommunicateUI.showChat();
                     } else {
                         mckMessageService.createNewConversation({
-                            groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS 
+                            groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS
                         }, function (conversationId) {
                             KommunicateUI.sendFaqQueryAsMsg(conversationId);
                             KommunicateUI.showChat();
                         });
                     }
-                    
+
                     $applozic('#mck-contact-list').removeClass("vis").addClass("n-vis");
-                    
+
                 });
 
 
@@ -2177,7 +2183,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         return;
                     }
                     $applozic.fn.applozic("mckLaunchSideboxChat");
-                    
+
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
                     var $submit_chat_login = $("#km-submit-chat-login");
@@ -2191,7 +2197,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     }
                     if(email){
                         userId = email;
-                    } 
+                    }
                     $submit_chat_login.attr('disabled', true);
                     $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
@@ -2979,9 +2985,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                         let sendMsgCount = $applozic("[data-msgtype=5]").length;
                         if (sendMsgCount == 1 && KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) {
                             KommunicateUI.displayLeadCollectionTemplate(null)
-                        }     
+                        }
                         sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
-                        
+
                         var displayName = mckMessageLayout.getTabDisplayName(currentTabId, false);
                             if (!MCK_USER_DETAIL_MAP[currentTabId] && currentTabId !== displayName) {
                                 mckContactService.updateDisplayName(currentTabId, displayName);
@@ -3152,7 +3158,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     global: false,
                     success: function (data) {
                         var isMessages = true;
-                        //Display/hide lead(email) collection template  
+                        //Display/hide lead(email) collection template
                         KommunicateUI.displayLeadCollectionTemplate(data.message)
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
@@ -3853,21 +3859,21 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 $mck_msg_to.focus();
             };
-            // _this.initEmojis = function () {
-            //     try {
-            //         $applozic("#mck-text-box").emojiarea({
-            //             button: "#mck-btn-smiley",
-            //             wysiwyg: true,
-            //             menuPosition: 'top'
-            //         });
-            //     } catch (ex) {
-            //         if (!emojiTimeoutId) {
-            //             emojiTimeoutId = setTimeout(function () {
-            //                 _this.initEmojis();
-            //             }, 30000);
-            //         }
-            //     }
-            // };
+             _this.initEmojis = function () {
+                 try {
+                     $applozic("#mck-text-box").emojiarea({
+                         button: "#mck-btn-smiley",
+                         wysiwyg: true,
+                         menuPosition: 'top'
+                     });
+                 } catch (ex) {
+                     if (!emojiTimeoutId) {
+                         emojiTimeoutId = setTimeout(function () {
+                             _this.initEmojis();
+                         }, 30000);
+                     }
+                 }
+             };
             _this.loadTab = function (params, callback) {
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
@@ -4358,7 +4364,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }];
 
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
-                
+
                 if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
                     var autosuggetionMetadata = {}
                     try {
@@ -4377,8 +4383,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         $mck_autosuggest_search_input.data('source-url', autosuggetionMetadata.source.url);
                         $mck_autosuggest_search_input.data('method', autosuggetionMetadata.source.method ? autosuggetionMetadata.source.method : 'get');
                         $mck_autosuggest_search_input.data('headers', autosuggetionMetadata.source.headers ? autosuggetionMetadata.source.headers : {});
-                    } 
-                        
+                    }
+
                 }
 
                 // if(msg.metadata["KM_AUTO_SUGGESTIONS"]){
@@ -4976,7 +4982,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             };
 
             /**
-             * 
+             *
              * @param {*} params will contain source function/array of object and object will
              * contain message string that will be displayed into message box and metadata
              * will contain that we want to send with message.
