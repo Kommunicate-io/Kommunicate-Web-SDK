@@ -184,7 +184,7 @@ function ApplozicSidebox() {
                 else if (data.name === "emojis"){
                   try {
                       var options = applozic._globals;
-                      if (typeof options !== 'undefined' && !options.howlerScriptLoaded ) {
+                      if (typeof options !== 'undefined' && options.emojilibrary ) {
                         mckLoadScript(data.url);
                       }
                   } catch (e) {
