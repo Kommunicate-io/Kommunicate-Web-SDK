@@ -223,7 +223,7 @@ const notifyThatEmailIsSent = (options) => {
   return callSendEmailAPI(options)
     .then((response) => {
       if (response.data.code === 'SUCCESS') {
-        Notification.success('Email Sent successfully');
+        Notification.success('Invitation sent successfully');
         return "SUCCESS";
       }
     }).catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });

@@ -24,6 +24,7 @@ import Modal  from 'react-responsive-modal'  ;
 import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
+import CloseButton from './../../components/Modal/CloseButton.js';
 
 class Tabs extends Component {
 
@@ -387,6 +388,7 @@ class Tabs extends Component {
               </div> 
             </div>
           </ModalBody>
+          <span onClick={this.toggleFaqModal} ><CloseButton /></span>
         </FaqModal>
 
 
