@@ -36,7 +36,7 @@
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.4px;
-  text-align: left;
+  /* text-align: left; */
   color: #464748;
 }
 
@@ -182,9 +182,9 @@
 .km-status-indicator-text {
   font-size: 16px !important;
 }
-.team-name-avatar-wrapper span {
+/* .team-name-avatar-wrapper span {
   visibility: hidden;
-}
+} */
 .teammates-table td{
   width: 315px;
 }
