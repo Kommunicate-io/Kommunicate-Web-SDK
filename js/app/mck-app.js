@@ -52,7 +52,7 @@ function ApplozicSidebox() {
             "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
     },*/
     /*{
-            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js" 
+            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js"
     },*/ {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     }, {
@@ -180,7 +180,18 @@ function ApplozicSidebox() {
                     } catch (e) {
                         mckLoadScript(data.url, mckLoadAppScript);
                     }
-                } else if (data.name === "maps") {
+                }
+                else if (data.name === "emojis"){
+                  try {
+                      var options = applozic._globals;
+                      if (typeof options !== 'undefined' && !options.howlerScriptLoaded ) {
+                        mckLoadScript(data.url);
+                      }
+                  } catch (e) {
+                      mckLoadScript(data.url, mckLoadAppScript);
+                  }
+                }
+                 else if (data.name === "maps") {
                     try {
                         var options = applozic._globals;
                         if (typeof options !== 'undefined') {
