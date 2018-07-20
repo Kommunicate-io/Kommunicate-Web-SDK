@@ -1478,7 +1478,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	max-height: 78px;
 	resize: none;
 	background-color: white;
-	width: auto;
+	width: calc(100% - 70px);
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
