@@ -552,6 +552,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckMapLayout.init();
             if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
               mckMessageLayout.initEmojis();
+            }  
             else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
               document.getElementById('mck-btn-smiley-box').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
             }
