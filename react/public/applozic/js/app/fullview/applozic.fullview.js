@@ -2575,9 +2575,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var isMessages = true;
 				var currTabId = $mck_msg_inner.data('km-id');
 				var isGroupTab = $mck_msg_inner.data('isgroup');
-				// if (CONTACT_SYNCING && !params.startTime) {
-				// 	_this.initSearch();
-				// }
+				if (CONTACT_SYNCING && !params.startTime) {
+					_this.initSearch();
+				}
 				if (data && data.message && data.message.length === 0) {
 					mckMessageService.emptyStateChange();
 				}
@@ -4558,6 +4558,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						contactsArray.push(contact);
 					}
 				}
+
 				_this.initAutoSuggest({
 					'contactsArray': contactsArray,
 					'$searchId': $mck_search,
@@ -4658,7 +4659,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				for (var j = 0; j < contactsArray.length; j++) {
 					var contact = contactsArray[j];
 					contact.displayName = _this.getTabDisplayName(contact.contactId, contact.isGroup);
-					typeaheadEntry = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
+					var displayName = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
+					typeaheadEntry = (contact.isGroup) ? displayName + $kmApplozic.trim(contact.groupId) : displayName + $kmApplozic.trim(contact.contactId);
 					typeaheadMap[typeaheadEntry] = contact;
 					typeaheadArray.push(typeaheadEntry);
 					contactSuggestionsArray.push(typeaheadEntry);
