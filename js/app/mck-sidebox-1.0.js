@@ -553,7 +553,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
               mckMessageLayout.initEmojis();
             else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
-              document.getElementById('mck-btn-smiley-box').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
+              $("#mck-textbox-container .mck-text-box-panel:first-child").addClass("n-vis");
             }
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
