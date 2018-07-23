@@ -66,7 +66,7 @@ KommunicateUI={
         $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-btn-attach-box").removeClass("n-vis").addClass("vis");
-        $applozic('#mck-text-box').attr('data-text', "Enter your message here...");
+        $applozic('#mck-text-box').attr('data-text', "Type your message...");
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;

@@ -8657,13 +8657,13 @@ app-root {
 
 .sidebar-fixed .sidebar {
   position: fixed;
-  max-width: 260px;
+  max-width: 285px;
   min-width: 60px;
   /* Below two lines are HACK for SAFARI BROWSERS */
   [;min-width: 60px;];
   (;min-width: 60px;);
 
-  padding: 0px 7px 15px 7px;
+  /* padding: 0px 7px 15px 7px; */
   height: 100%;
   display: flex; }
   .sidebar-fixed .sidebar .sidebar-nav {
@@ -8672,10 +8672,11 @@ app-root {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    margin-left: 7px;
  }
 
 .sidebar-fixed .main, .sidebar-fixed .app-footer {
-  margin-left: 60px; }
+  margin-left: 53px; }
 
 .sidebar-fixed.sidebar-hidden .main, .sidebar-fixed.sidebar-hidden .app-footer {
   margin-left: 0; }
@@ -9868,7 +9869,7 @@ pointer-events: none;
   color: #5c5aa7;
 }
 .km-button--primary:disabled {
-  background-color: #d4d9e0;
+  background-color: #bbbbbb;
   color: #FFFFFF;
   cursor: default;
 }
