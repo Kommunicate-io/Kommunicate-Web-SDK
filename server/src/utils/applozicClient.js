@@ -36,7 +36,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
         console.log("received status 200, user created successfully ");
         return response.data;
       } else if (response.data.message == "INVALID_APPLICATIONID") {
-        console.log("invalid application Id");
+        console.log("invalid application Id ", applicationId);
         err.code = "NVALID_APPLICATIONID";
         throw err;
       } else if (response.data.message == "UPDATED") {
