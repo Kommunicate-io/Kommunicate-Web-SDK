@@ -18,3 +18,12 @@ exports.createSubscription= async function(data){
     logger.info("creating sucscription..");
     return Promise.resolve(db.AppSubscription.create(data));
 }
+
+/**
+ * 
+ * @param {AppSubscription} criteria 
+ */
+exports.getSubscription= async function(criteria){
+      logger.info("geting subscription by criteria", criteria);
+      return Promise.resolve(db.AppSubscription.find({$where: criteria}));
+  }
