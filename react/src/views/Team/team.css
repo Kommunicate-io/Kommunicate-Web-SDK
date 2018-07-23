@@ -15,7 +15,9 @@
 .multiple-email-box input:focus {
   outline: none;
 }
-
+.teammate-table {
+  margin-right: 140px;
+}
 .teammate-table .thead-default th {
   background-color: #ffffff;
   text-transform: uppercase;
@@ -177,7 +179,7 @@
 .teammates-add-member-modal-content-wrapper input  {
   max-width: 73%;
   border: solid 1px #d8d8d8;
-  margin-bottom: 40px; 
+  margin-bottom: 26px; 
 }
 .km-status-indicator-text {
   font-size: 16px !important;
@@ -193,4 +195,33 @@
 	overflow: hidden;
   text-overflow: ellipsis;
   max-width: 300px;
+}
+.radio-btn-agent-title, .radio-btn-admin-title {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #787474;
+}
+.radio-btn-agent-description , .radio-btn-admin-description {
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0.6px;
+  color: #a6a3a3;
+}
+.radion-btn-agent-wrapper, .radion-btn-admin-wrapper {
+  margin-left: 19px;
+}
+.teammates-add-member-modal-radio-btn-wrapper  .checkmark{
+  top: 14% !important;
+}
+.teammates-add-member-modal-role {
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: 0.3px;
+  color: #57595b;
+  margin-bottom: 12px;
+}
+.teammates-admin-permission-alert-wrapper {
+  border-radius: 2px;
+  background-color: #f4d480;
 }

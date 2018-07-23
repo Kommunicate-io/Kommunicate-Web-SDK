@@ -14,7 +14,11 @@ import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import { Agent } from 'https';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
-import InputField from '../../components/InputField/InputField.js';
+import RadioButton from '../../components/RadioButton/RadioButton';
+import Banner from '../../components/Banner/Banner';
+import { ROLE_TYPE } from '../../utils/Constant';
+
+
 
 const customStyles = {
   content: {
@@ -43,7 +47,9 @@ class Integration extends Component {
         agentsInfo:[],
         applicationId:"",
         hideErrorMessage:true,
-        existingAndActiveUsers : []
+        existingAndActiveUsers : [],
+        isAgentSelected:true,
+        isAdminSelected:false
       };
       this.getUsers  = this.getUsers.bind(this);
       window.addEventListener("kmFullViewInitilized",this.getUsers,true);
@@ -92,6 +98,7 @@ class Integration extends Component {
 
   onCloseModal = () => {
     this.setState({ modalIsOpen: false });
+    this.handleAgentRadioBtn();
   };
 
   sendEmail = (e) => {
@@ -189,8 +196,19 @@ class Integration extends Component {
     this.setState({multipleEmailAddress: filteredEmails})
     // console.log(this.state.multipleEmailAddress);
   }
-  onKeyPress = (e) => {
-    console.log(e.target.value);
+  handleAgentRadioBtn = (e) => {
+    // e.preventDefault();
+    this.setState({
+        isAdminSelected: false,
+        isAgentSelected: true
+    })
+  }
+  handleAdminRadioBtn = (e) => {
+    // e.preventDefault();
+    this.setState({
+        isAdminSelected: true,
+        isAgentSelected: false,
+    })
   }
 
   render() {
@@ -199,11 +217,9 @@ class Integration extends Component {
     var loggedInUserId = this.state.loggedInUserId;
     var loggedInUserRoleType = this.state.loggedInUserRoleType;
     var agentsInfo = this.state.agentsInfo;
-    // var availabilityStatus = 0;
     var isAway = false;
     var isOnline = false;
     var roleType ;
-    // var isOffline = false;
     var result = this.state.result.map(function(result,index){
       let userId = result.userId;
       let isOnline = result.connected;
@@ -211,8 +227,6 @@ class Integration extends Component {
         agentsInfo.map(function(user,i){
           if(userId == user.userName){
             roleType = user.roletype
-            // console.log(user.availabilityStatus);
-            // availabilityStatus = user.availabilityStatus;
             if(user.availabilityStatus && isOnline ){
               //agent is online
               isOnline = true;
@@ -232,14 +246,37 @@ class Integration extends Component {
         return <UserItem key={index} user={result} agentList={agentList} index={index} hideConversation="true" getUsers={getUsers} loggedInUserId = {loggedInUserId} isOnline= {isOnline} isAway ={isAway} roleType = {roleType} loggedInUserRoleType = {loggedInUserRoleType} />
       }
     });
+    const agentRadioBtnContainer = (
+     <div className="row">
+       <div className="col-radio-btn col-md-2 col-lg-2">
+        </div>
+      <div className="radion-btn-agent-wrapper col-md-9 col-lg-9">
+        <h5 className="radio-btn-agent-title">Agent</h5>
+        <p className="radio-btn-agent-description">Have full access to edit all the settings and features in the dashboard</p>
+      </div>
+    </div>  
+    )
+    const adminRadioBtnContainer = (
+     <div className="row">
+       <div className="col-radio-btn col-md-1 col-lg-1">
+        </div>
+       <div className="radion-btn-admin-wrapper col-md-9 col-lg-9">
+        <h5 className="radio-btn-agent-title">Admin</h5>
+        <p className="radio-btn-admin-description">Have access to only key features and information in the dashboard </p>
+      </div>
+     </div>  
+    )
     return (
       <div className="animated fadeIn teammate-table">
        <div className="row">
          <div className="col-md-12">
            <div className="card">
+             {  this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
+               <Banner  indicator = {"warning"} isVisible= {false} text = {"You need Admin permissions to edit this section"}/>
+             }
              <div className="card-block">
                  <h5 className="form-control-label teammates-description">See the list of all the team members, their roles, add new team members and edit member details.</h5>
-                  <button className="km-button km-button--primary teammates-add-member-btn" onClick= {this.onOpenModal}>+ Add a team member</button>
+                  <button className="km-button km-button--primary teammates-add-member-btn" onClick= {this.onOpenModal} disabled = {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? true : false }>+ Add a team member</button>
                  
              </div>
              <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
@@ -259,6 +296,12 @@ class Integration extends Component {
 									
 								    placeholder="Enter email address" />
                   </div>
+                  <h5 className="teammates-add-member-modal-role">Role</h5>
+                  <div className="teammates-add-member-modal-radio-btn-wrapper">
+                    <RadioButton idRadioButton={'teammates-admin-radio'} handleOnChange={this.handleAgentRadioBtn}checked={this.state.isAgentSelected} label={agentRadioBtnContainer} />
+                                 
+                    <RadioButton idRadioButton={'teammates-agent-radio'} handleOnChange={this.handleAdminRadioBtn} checked={this.state.isAdminSelected} label={adminRadioBtnContainer} />
+                  </div>  
                   <div className="teammates-add-member-modal-btn">
                     <button className="km-button km-button--secondary teammates-add-member-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
                     <button className="km-button km-button--primary teammates-add-member-modal-add-btn" onClick= {this.sendEmail}>Add member</button>
