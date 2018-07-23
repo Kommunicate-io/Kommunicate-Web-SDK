@@ -215,12 +215,12 @@ The source can be any one of the below formats:
 		{
 searchKey:"Photography",
 message:"Photography Lessons",
-Metadata:{}
+metadata:{key:value}//that you want to send with text message
 },
 {
 searchKey:"passport visa Services",
 message:"Passport & Visa Services",
-                         Metadata:{}
+metadata:{key:value}//that you want to send with text message
                          }
 	]
 ```
@@ -235,10 +235,15 @@ message:"Passport & Visa Services",
 API should return data in below format : 
 
 ```
+[
 {
 "searchKey": "searchable value",
 "name": "text message which you want display/send into conversation."
 "metadata": {"key":"value"}//that you want to send with text message.
+},
+.
+.
+.
 }
 ```
 
