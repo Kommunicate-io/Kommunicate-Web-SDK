@@ -27,7 +27,7 @@ const getApplicationRecursively = (criteria) => {
             return;
         }
         let apps = applications.map((app, index) => {
-            console.log("application: ", app.id, index);
+            console.log("weekly report processing for application: ", app.applicationId);
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
@@ -58,6 +58,7 @@ const processOneApp = (app) => {
                     return "no stats for this app"
                 }
                 return generateReport(stats, users).then(report => {
+                    console.log("sending weekly report for application: ", app.applicationId);
                     return sendWelcomeMail(report, customer);
                 })
 
@@ -65,6 +66,7 @@ const processOneApp = (app) => {
         });
     }).catch(err => {
         console.log("err :", err)
+        return;
     });
 }
 
