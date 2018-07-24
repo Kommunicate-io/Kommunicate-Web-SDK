@@ -299,9 +299,9 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="faq-list--header_text-img"><img src= "'+json.headerImgSrc+'" /></div>' 
+            json.headerImgSrc = '<div class="km-dash-faq-list--header_text-img"><img class="km-list-image" src= "'+json.headerImgSrc+'" /></div>' 
         }if(json.headerText){
-            json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
+            json.headerText ='<p class="km-dash-faq-list--header_text">'+json.headerText+"</p>"
         }
         if(json.elements&&json.elements.length){
             json.elements =   json.elements.map(function(item){

@@ -673,6 +673,10 @@
     .km-faq-list--body, .km-faq-list--footer {
         /*background-color: #e5e5e5;*/
     }
+    .km-list-image {
+        max-width: 100%;
+        object-fit: contain;
+    }
     .km-faq-list--header_text-img {
         background-color: rgba(103, 103, 103, 0);
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255, 255, 255, 0)), color-stop(100%,rgba(0, 0, 0, 0.75)));
