@@ -67,8 +67,8 @@ Submit button allows you to post given data on a given URL.
   "contentType": "300",
   "templateId": "3",
   "payload": [{
-      "name ": "Submit",
-      "handlerId ": "km-eh-001"
+      "name": "Submit",
+      "handlerId": "km-eh-001"
   }],
   "formData": {
       "name":"Tom Marvolo Riddle",
