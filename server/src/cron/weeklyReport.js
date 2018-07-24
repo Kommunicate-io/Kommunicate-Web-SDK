@@ -12,6 +12,7 @@ const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-
 
 
 exports.sendWeeklyReportsToCustomer = () => {
+    console.log("sendWeeklyReportsToCustomer cron started at: ", new Date());
     getApplicationRecursively();
 }
 
@@ -23,7 +24,7 @@ const getApplicationRecursively = (criteria) => {
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
-            console.log("message", "all application processed")
+            console.log("sendWeeklyReportsToCustomer : all application processed")
             return;
         }
         let apps = applications.map((app, index) => {

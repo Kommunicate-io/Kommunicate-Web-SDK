@@ -10,7 +10,7 @@ const crons = require('../../conf/config').getProperties().crons;
 exports.initiatAllCron = () => {
     crons.map((cron, index) => {
         if (cron.enable && typeof cronMapper[cron.job] == "function") {
-            const cronJob = new CronJob(cron.time, cronMapper[cron.job], null, false, 'America/Los_Angeles');
+            const cronJob = new CronJob(cron.time, cronMapper[cron.job], null, false);
             cronJob.start();
             console.log(cron.job, 'cron started')
         }
