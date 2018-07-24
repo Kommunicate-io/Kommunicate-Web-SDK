@@ -6,15 +6,6 @@ exports.isAPIKeyValid = async function(){
 } 
 
 exports.createSubscription= async function(data){
-  /*let subscriptionList =   data.events && data.events.map((item)=>{
-      return {
-        "platform" : data.platform,
-        "integrationId":data.integrationId,
-        "eventId": item.eventId,
-        "triggerUrl":item.triggerUrl
-        
-      }
-  })*/
     logger.info("creating sucscription..");
     return Promise.resolve(db.AppSubscription.create(data));
 }
@@ -25,5 +16,13 @@ exports.createSubscription= async function(data){
  */
 exports.getSubscription= async function(criteria){
       logger.info("geting subscription by criteria", criteria);
-      return Promise.resolve(db.AppSubscription.find({$where: criteria}));
+      return Promise.resolve(db.AppSubscription.find({where: criteria}));
   }
+exports.deleteSubscriptionById= async function(subscriptionId){
+    let subscription =  await Promise.resolve(db.AppSubscription.find({where:{id:subscriptionId}}));
+    if(subscription){
+        return subscription.destroy({ force: true });
+    }
+    return 0;
+}
+
