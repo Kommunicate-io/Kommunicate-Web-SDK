@@ -3637,13 +3637,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
 
 
-			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
-				'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +
+			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear">'+ '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +'<div class="blk-lg-12">'+
+			'<div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
 				'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' +
 				'<div class="km-msg-text km-msg-content"></div>' +
-				'</div></div>' +
-				'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '{{html kmRichTextMarkup}}</div>' +
-				'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
+				'</div>'+'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '{{html kmRichTextMarkup}}</div>'+'</div>' +
+			    '</div>'+'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div> '+'<div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
@@ -4165,7 +4164,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						target: '_blank'
 					});
 				}
-
+				if (x.innerHTML == "") {
+					$kmApplozic(".km-msg-box").addClass("n-vis")
+				}
 				if (richText) {
 					kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic(".km-container div[data-msgkey='" + msg.key + "'] .km-div-slider"));
 				}
