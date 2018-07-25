@@ -6,7 +6,8 @@
 /*css for ask number of rooms in hotel booking */
 
 .km-dashboard-msg-box-rich-text-container{
-	top: 0;
+    top: 0;
+    width: 90%;
     min-width: 40%;
     max-width: 100%;
 	margin: 0 0px 0px 7px;
@@ -661,7 +662,7 @@ cursor: pointer;
     .km-dash-faq-list--body_img {
         padding: 10px 0px 10px 12px;
         /*width: 70px;*/
-        height: 50px;
+        
     }
     .km-dash-faq-list--body_img img {
         width: 50px;
