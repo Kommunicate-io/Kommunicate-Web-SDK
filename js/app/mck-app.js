@@ -181,16 +181,6 @@ function ApplozicSidebox() {
                         mckLoadScript(data.url, mckLoadAppScript);
                     }
                 }
-                else if (data.name === "emojis"){
-                  try {
-                      var options = applozic._globals;
-                      if (typeof options !== 'undefined' && options.emojilibrary ) {
-                        mckLoadScript(data.url);
-                      }
-                  } catch (e) {
-                      mckLoadScript(data.url, mckLoadAppScript);
-                  }
-                }
                  else if (data.name === "maps") {
                     try {
                         var options = applozic._globals;
