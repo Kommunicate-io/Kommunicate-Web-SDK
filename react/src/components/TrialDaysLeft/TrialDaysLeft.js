@@ -47,11 +47,10 @@ export default class TrialDaysLeft extends Component {
         let daysLeft;
         if(CommonUtils.isTrialPlan())
         {
-            daysLeft = ["trial ", <span>{CommonUtils.getDaysCount()} days</span>, " left"];
+            daysLeft = ["trial ", <span key="0">{31 - CommonUtils.getDaysCount()} days</span>, " left"];
         } else {
             daysLeft = ["", <span key="0">upgrade plan</span>, ""];
         }
-        console.log(CommonUtils.isStartupPlan())
 
         return(
             <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis" } onMouseOver={this.showPopup}>
