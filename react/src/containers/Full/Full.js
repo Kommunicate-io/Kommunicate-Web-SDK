@@ -184,7 +184,7 @@ class Full extends Component {
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Integrations" component={Integrations}/>
                 <Route exact path="/settings/pushnotification" name="PushNotification" component={PushNotification}/>
-                <Route exact path="/settings/incoming-email-forward" name="IncomingEmailForward" component={IncomingEmailForward}/>
+                <Route exact path="/settings/connect-support-email" name="IncomingEmailForward" component={IncomingEmailForward}/>
                 }}/>
 
                 <Redirect from="/" to="/dashboard"/>

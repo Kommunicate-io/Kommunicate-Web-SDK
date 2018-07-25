@@ -20,7 +20,7 @@ const routes = {
   '/settings/billing': 'Billing',
   '/integrations': 'Integrations',
   '/settings/pushnotification': 'Push Notifications',
-  '/settings/incoming-email-forward': 'Incoming Email Forward',
+  '/settings/connect-support-email': 'Connect Support Email',
 };
 
 export default routes;

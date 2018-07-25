@@ -59,3 +59,19 @@
     vertical-align: text-top;
     margin-right: 3px;
 }
+.incoming-email-forward-helper-text-conntainer {
+    padding: 20px
+}
+.incoming-email-forward-helper-text-conntainer p {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: 0.3px;
+    color: #969393;
+}
+.incoming-email-forward-helper-text-conntainer p>a {
+    font-weight: 500;
+    color: #4831d9;
+}
