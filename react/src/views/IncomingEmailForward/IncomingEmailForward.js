@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './IncomingEmailForward.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
+import { Link } from 'react-router-dom';
 
 export default class IncomingEmailForward extends Component {
 
@@ -34,9 +35,9 @@ export default class IncomingEmailForward extends Component {
                     <div className="col-sm-12 col-md-8">
                         <div className="incoming-email-forward-container">
                             <h2 className="incoming-email-forward-heading">
-                            Incoming email address:
+                            You can reply to support emails from Kommunicate
                             </h2>
-                            <p className="incoming-email-forward-description">Forward all emails from your support email address (example: support@yourcompany.com) to this email address and your support emails will show up in the conversation section.</p>
+                            <p className="incoming-email-forward-description">In your email service provider settings, set up email forwarding from your support email address (example: support@yourcompany.com) to this email address:</p>
                         </div>
                         <div className="incoming-email-forward-email-id-container">
                             {/* <div className="incoming-email-forward-email-id"  > */}
@@ -52,6 +53,9 @@ export default class IncomingEmailForward extends Component {
                             </button>
                                 
                             </div>
+                        </div>
+                        <div className="incoming-email-forward-helper-text-conntainer">
+                            <p>Once this setup is done, your support emails will show up in the <Link to="/conversations">Conversation section.</Link></p>
                         </div>
                     </div>
                 </div>
