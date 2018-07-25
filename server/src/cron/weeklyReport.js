@@ -45,10 +45,14 @@ const getApplicationRecursively = (criteria) => {
 
 const processOneApp = (app) => {
     return userService.getUsersByAppIdAndTypes(app.applicationId).then(users => {
+        let adminAgent = users.filter(user => {
+            return user.type == 3
+        });
+        if (!adminAgent[0].emailSubscription) {
+            console.log("unsubscribed for user: ", adminAgent[0].userName)
+            return;
+        }
         return customerService.getCustomerByApplicationId(app.applicationId).then(customer => {
-            let adminAgent = users.filter(user => {
-                return user.type == 3
-            });
             if (adminAgent.length < 1) {
                 return "No admin ";
             }
