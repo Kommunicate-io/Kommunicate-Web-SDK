@@ -1,4 +1,4 @@
-<div id="mck-sidebox" class="mck-sidebox mck-box fade">
+<div id="mck-sidebox" class="mck-sidebox mck-box fade" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
 		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
 			<div id="mck-conversation-header" class="mck-conversation-header mck-truncate n-vis"></div>
@@ -533,7 +533,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false">
+<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false" style="visibility: hidden;" onload="js_Load()">
 	<div class="mck-box-dialog mck-box-md">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -572,7 +572,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false">
+<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false" style="visibility: hidden;" onload="js_Load()">
 	<div class="mck-box-dialog mck-box-sm">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -614,7 +614,7 @@
 	</div>
 </div>
 
-<div id="mck-video-box fade">
+<div id="mck-video-box fade" style="visibility: hidden;" onload="js_Load()">
 	<div class="container applozic-vid-container n-vis">
 		<div class="row">
 			<div id="mck-vid-media" class="col-lg-12">
@@ -654,7 +654,7 @@
 		</div>
 	</div>
 </div>
-<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false">
+<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false" style="visibility: hidden;" onload="js_Load()">
 	<div class="km-modal-dialog km-modal-sm">
 		<div class="km-modal-content">
 				<div class="mck-box-top mck-title">
@@ -710,3 +710,22 @@
 		</div>
 	</div>
 </div>
+
+<!-- DO NOT REMOVE THE BELOW CODE -->
+<script>
+window.onload = js_Load();
+function js_Load(){
+	// fixed FOUC
+	document.getElementById("mck-sidebox").style.visibility='visible';
+	document.getElementById("mck-loc-box").style.visibility='visible';
+	document.getElementById("mck-gm-search-box").style.visibility='visible';
+	document.getElementById("mck-video-box fade").style.visibility='visible';
+	document.getElementById("km-chat-login-modal").style.visibility='visible';
+}
+</script>
+
+<noscript>
+	<style>
+		#mck-sidebox, #mck-loc-box, #mck-gm-search-box, #mck-video-box, #km-chat-login-modal { visibility: visible; }
+	</style>
+</noscript>
