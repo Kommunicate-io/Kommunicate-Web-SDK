@@ -1587,7 +1587,7 @@ ol, ul {
 
 .km-msg-left .km-msg-box:after, .km-msg-left .km-msg-box:before,
 	.km-msg-right .km-msg-box:after, .km-msg-right .km-msg-box:before {
-	border: solid transparent;
+	/* border: solid transparent; */
 	content: " ";
 	pointer-events: none;
 }
@@ -1625,6 +1625,7 @@ ol, ul {
 
 .km-text-muted {
 	color: #999;
+	margin-bottom: 10px;
 }
 
 .km-msg-left-muted {
@@ -1699,7 +1700,7 @@ ol, ul {
 
 .km-msg-avator-bubble .km-msg-avator {
 	display: block;
-	top: 50%;
+	top : 15px;
 	position: absolute;
 	margin-top: -21.5px;
 }
@@ -2229,7 +2230,7 @@ ol, ul {
 	color: #1a1a1a;
 	font-size: 14px;
 	margin-left: 15px;
-	min-height: 44px;
+	min-height: 37px;
 	padding: 10px 14px 12px;
 	max-width: 85%;
 	border-radius: 5px;
@@ -2403,6 +2404,8 @@ ol, ul {
 
 .km-text-user {
 	color: #DDA185;
+	margin-left: 57px;
+    font-size: 12px;
 }
 
 .km-text-a {

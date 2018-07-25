@@ -159,7 +159,6 @@ class Integration extends Component {
   }
   getAgents() {
      var that = this;
-     window.$kmApplozic("#assign").empty();
      let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT];
      return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
        let agentsInfo = data;

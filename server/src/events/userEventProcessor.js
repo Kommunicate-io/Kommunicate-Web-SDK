@@ -2,10 +2,11 @@ const agileService= require('../agileCrm/agileService');
 const applozicClient = require('../utils/applozicClient');
 const logger = require('../utils/logger');
 
-const userService = require("../users/userService");
+// const userService = require("../users/userService");
+const integryService = require("../thirdpartyintegrations/integry/integryService");
 
-const roleName= {APPLICATION_WEB_ADMIN:""}
 
+/* eslint-disable */
 exports.processUserCreatedEvent=(user)=>{
     logger.info('processing user created event', user);
     
@@ -13,6 +14,21 @@ exports.processUserCreatedEvent=(user)=>{
                 logger.info('user identified as agent or bot. skipping record..'); 
                 return;
         }
+        return Promise.all([processUserCreatedEventInKommunicate(user)
+        .catch(e=>{
+            logger.error("error while processing user event in kommunicate");
+        }),integryService.sendUserEventToIntegry("USER_CREATED",user)
+        .catch(e=>{
+            logger.error("error while craeting user in Integry",e);
+        })
+        ]).then(([kmResult,IntegryResult])=>{
+            logger.info("user created event processed successfully");
+        }).catch(e=>{
+            logger.error("error while processing user event",e);
+        })
+    }
+
+    const  processUserCreatedEventInKommunicate = (user)=>{
         return agileService.createContact(null, user).then(data=>{
             if(!data){
                 logger.info(" customer not integrated with agile crm, skipping");
@@ -22,7 +38,7 @@ exports.processUserCreatedEvent=(user)=>{
                  userId :user.userId,
                  metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": data.id,"hidden":true})}
              } 
-             applozicClient.updateApplozicClient("bot","bot", user.applicationId, userToBeUpdated,null,true).then(data=>{
+            return applozicClient.updateApplozicClient("bot","bot", user.applicationId, userToBeUpdated,null,true).then(data=>{
                  logger.info("agile crm id is updated into user metadata");
              })
          }).catch(e=>{
@@ -51,28 +67,10 @@ exports.processUserUpdatedEvent= (user)=>{
         }).catch(e=>{
             logger.error("error while updating contact id", contactId);           
         })
+        integryService.sendUserEventToIntegry("USER_UPDATED",usser)
     }else{
         logger.info("adding contact in agilecrm");
-        agileService.createContact(null, user).then(data=>{
-            if(!data){
-                logger.info(" customer not integrated with agile crm, skipping");
-                return;
-            }
-             let userToBeUpdated = {
-                 userId :user.userId,
-                 metadata:{"KM_AGILE_CRM":JSON.stringify({"contactId": data.id,"hidden":true})}
-             } 
-             if(user.userId){
-                applozicClient.updateApplozicClient("bot","bot", user.applicationId, userToBeUpdated,null,true).then(data=>{
-                    logger.info("agile crm id is updated into user metadata");
-                }).catch(e=>{
-                    logger.info("error while updateing user metadata",e)
-                })
-             }
-             
-            logger.info("contact created successfully ");
-        }).catch(e=>{
-            logger.error("err while creating contact",e);
-        })
+        processUserCreatedEventInKommunicate(user);
+        integryService.sendUserEventToIntegry("USER_CREATED",user)
     }
 }
