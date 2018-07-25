@@ -478,7 +478,7 @@ class Billing extends Component {
                                                             <li>Agent apps</li>
                                                             <li>Basic reporting</li>
                                                             <li>Welcome messages</li>
-                                                            <li>Quick replies</li>
+                                                            <li>90 days chat history</li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -523,13 +523,16 @@ class Billing extends Component {
                                                         <ul>
                                                             <li>Unlimited agents</li>
                                                             <li>Bot integrations</li>
+                                                            <li>Quick Replies</li>
+                                                            <li>Away Messages</li>
+                                                            <li>Lead Collection</li>
                                                             <li>Agent reporting</li>
+                                                            <li>Support email integration</li>
+                                                            <li>Customizations</li>
                                                             <li>Conversation routing</li>
                                                             <li>FAQ</li>
-                                                            <li>Liz bot</li>
                                                             <li>All integrations</li>
                                                             <li>Standard SLA</li>
-                                                            <li>Chat and email support</li>
                                                         </ul>
                                                     </div>
                                                 </div>
