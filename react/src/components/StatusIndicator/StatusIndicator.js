@@ -3,7 +3,8 @@
 // label : Offline -> indicator : muted
 // label : Away -> indicator : warning
 // label : Disabled -> indicator : danger
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import './StatusIndicator.css';
 class StatusIndicator extends Component {
 
@@ -23,7 +24,7 @@ class StatusIndicator extends Component {
     }
 }
 StatusIndicator.propTypes = {
-    indicator: React.PropTypes.oneOf(["success", "warning", "danger", "muted"]).isRequired,
-    label: React.PropTypes.string.isRequired,
+    indicator: PropTypes.oneOf(["success", "warning", "danger", "muted"]).isRequired,
+    label: PropTypes.string.isRequired,
 };
 export default StatusIndicator;
