@@ -135,6 +135,16 @@
     max-width: 100px;
     margin: 25px auto 0px;
 }
+.km-trial-days-left-container .km-trial-days-left .trial-over {
+    display: block;
+    line-height: 36px;
+    text-decoration: none;
+    font-weight: 500;
+    max-width: 100px;
+    margin: 0px auto;
+    min-width: 140px;
+    text-transform: uppercase;
+}
 
 .km-trial-days-left-popup-buy-plan p {
     font-size: 20px;
