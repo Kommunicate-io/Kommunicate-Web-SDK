@@ -23,7 +23,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "email": email,
     "displayName": displayName,
     "gcmKey": gcmKey,
-    "chatNotificationMailSent": true,
+    "state":4
   })).then(response => {
     let err = {};
     console.log("Applozic server returned : ", response.status);
