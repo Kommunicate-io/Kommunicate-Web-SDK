@@ -14,12 +14,15 @@ export default class TrialDaysLeft extends Component {
 
         this.showPopup = this.showPopup.bind(this);
         this.hidePopup = this.hidePopup.bind(this);
+        this.showPopupContainer = this.showPopupContainer.bind(this);
     }
     
     componentDidMount() {
         if (typeof(Storage) !== "undefined") {
+            // (localStorage.getItem("KM_TRIAL_OVER") === null ) ?
+            //   document.querySelector(".km-trial-days-left-popup-container").classList.add("shown") : document.querySelector(".km-trial-days-left-popup-container").classList.add("hidden")   
             (localStorage.getItem("KM_TRIAL_OVER") === null ) ?
-              document.querySelector(".km-trial-days-left-popup-container").classList.add("shown") : document.querySelector(".km-trial-days-left-popup-container").classList.add("hidden")   
+            this.setState({showPopupBox: false}) : this.setState({showPopupBox: true})   
           } else {
               console.log("Please update your browser.");
           }
@@ -29,16 +32,25 @@ export default class TrialDaysLeft extends Component {
         document.querySelector(".km-trial-days-left-popup-container").removeAttribute("style");
     }
 
+    showPopupContainer(elem) {
+        this.setState({
+            showPopupBox: false
+        })
+    }
+
     hidePopup(elem){
         if (typeof(Storage) !== "undefined") {
             if(localStorage.getItem("KM_TRIAL_OVER") === null) {
                 localStorage.setItem("KM_TRIAL_OVER", "true");
-                document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
-            } else {
-                document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
+                // document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
+                this.setState({showPopupBox: true})
+            } 
+            else {
+                // document.querySelector(".km-trial-days-left-popup-container").style.display = "none";
+                this.setState({showPopupBox: true})
             }
-            } else {
-                console.log("Please update your browser.");
+        } else {
+            console.log("Please update your browser.");
         }
     }
 
@@ -47,13 +59,15 @@ export default class TrialDaysLeft extends Component {
         let daysLeft;
         if(CommonUtils.isTrialPlan())
         {
-            daysLeft = ["trial ", <span key="0">{31 - CommonUtils.getDaysCount()} days</span>, " left"];
+            daysLeft = ["trial ", <span key="0" onClick={this.showPopupContainer}>{31 - CommonUtils.getDaysCount()} days</span>, " left"];
         } else {
             daysLeft = ["", <span key="0">upgrade plan</span>, ""];
         }
 
         return(
-            <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis" } onMouseOver={this.showPopup}>
+            <div className={(CommonUtils.isTrialPlan() || CommonUtils.isStartupPlan()) ? "km-trial-days-left-container" : "n-vis" } 
+            // onMouseOver={this.showPopup}
+            >
                 { (CommonUtils.isTrialPlan()) ?
                     <div className="km-trial-days-left">
                         <p>{daysLeft}</p>
@@ -63,7 +77,7 @@ export default class TrialDaysLeft extends Component {
                     </div> 
                 }
                 
-                        <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center">
+                        <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center" hidden={this.state.showPopupBox}>
                         {
                         (CommonUtils.isTrialPlan()) ?
                         <div>
@@ -79,7 +93,7 @@ export default class TrialDaysLeft extends Component {
                                 <p className="km-quote mid">your support efficiency by 27%?</p>
                                 <p className="km-quote last">Schedule a demo with me!</p>
 
-                                <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn">Get demo</a>
+                                <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn" rel="noopener noreferrer">Get demo</a>
                             </div>
                             <div className="km-trial-days-left-popup-buy-plan">
                                 <p>Ready to improve your customer support?</p>
