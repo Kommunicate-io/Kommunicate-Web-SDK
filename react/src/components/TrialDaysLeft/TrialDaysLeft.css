@@ -29,6 +29,7 @@
     padding-bottom: 2px;
     border-bottom: 1.5px dashed;
     margin-bottom: 0px;
+    cursor: pointer;
     -webkit-backface-visibility: hidden;
 }
 .km-trial-days-left .trial-over>span {
@@ -39,11 +40,11 @@
     padding-top: 25px;
     top: 15px;
     right: 0;
-    display: none;
+    /* display: none; */
 }
-.km-trial-days-left-container:hover .km-trial-days-left-popup-container {
+/* .km-trial-days-left-container:hover .km-trial-days-left-popup-container {
     display: block;
-}
+} */
 .km-trial-days-left-popup-container .triangle-before {
     border-color: transparent;
     border-style: dashed dashed solid;
