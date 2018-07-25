@@ -128,6 +128,12 @@ module.exports = function(sequelize, DataTypes) {
      field:'login_type',
      values: ['email', 'oauth']
     },
+    emailSubscription:{
+      type:DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+      field: 'email_subscription',
+    }
   }, {
     underscored: true,
     paranoid: true,

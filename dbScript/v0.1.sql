@@ -94,3 +94,5 @@ add role_type tinyint(2)  default 1;
 SET SQL_SAFE_UPDATES=0;
 update users set role_type=0  where  type='3';
 SET SQL_SAFE_UPDATES=1;
+
+alter table users add column email_subscription tinyint default 1;
