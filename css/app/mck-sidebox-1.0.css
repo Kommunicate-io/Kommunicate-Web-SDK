@@ -2,6 +2,10 @@
     Created on : Mar 20, 2015, 5:28:06 PM
     Author     : devashish
 */
+
+@import
+	url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
+
 .mck-box {
 	position: fixed;
 	right: 0;
@@ -24,7 +28,7 @@
 }
 
 .mck-videocall-btn {
-        background-image: url(images/mck-videocall-icon.png);
+        background-image: url(../css/app/images/mck-videocall-icon.png);
         background-repeat: no-repeat;
         float :right !important;
         margin-top: 14px;
@@ -36,7 +40,7 @@
 }
 
 .mck-mike-btn {
-        background-image: url(images/mck-mike.png);
+        background-image: url(../images/mck-mike.png);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -48,7 +52,7 @@
 }
 
 .mck-stop-btn {
-        background-image: url(images/mck-stop.png);
+        background-image: url(../css/app/images/mck-stop.png);
         background-repeat: no-repeat;
         float :left !important;
        /* margin-top: 4px;*/
@@ -61,7 +65,7 @@
 }
 
 .mck-loading-btn {
-        background-image: url(images/ring.gif);
+        background-image: url(../css/app/images/ring.gif);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -3224,7 +3228,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-group-icon-default {
-	background-image: url(images/mck-icon-group150x150.png);
+	background-image: url(../css/app/images/mck-icon-group150x150.png);
 	width: 150px;
 	height: 150px;
 	top: 0px;
@@ -3329,7 +3333,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	.mck-icon-marker, .mck-icon-delivered, .mck-icon-read, .mck-icon-sent,
 	.mck-icon-time {
 	display: inline-block;
-	background: url(images/mck-plugin-sprite.png) no-repeat;
+	background: url(../css/app/images/mck-plugin-sprite.png) no-repeat;
 	overflow: hidden;
 	text-indent: -9999px;
 	text-align: left;
@@ -3350,7 +3354,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-camera-icon {
 	display: block;
-	background-image: url(images/mck-icon-camera.png);
+	background-image: url(../css/app/images/mck-icon-camera.png);
 	background-repeat: no-repeat;
 	margin-top: 10px;
 	height: 20px;
@@ -4066,7 +4070,7 @@ color: rgba(0,0,0,0.5);
     object-fit: cover;
 }
 .km-image-card-2 {
-    background-image: url('/images/card-message-img-2.jpg');
+    background-image: url('../css/app/images/card-message-img-2.jpg');
 }
 .km-card-message-image-price-container {
     position: absolute;
@@ -4538,7 +4542,7 @@ color: rgba(0,0,0,0.5);
 	height: 33px;
     width: 33px;
     margin-right: 10px;
-    background-image: url(images/km-faqicon1.png);
+    background-image: url(../css/app/images/km-faqicon1.png);
     background-size: contain;
 	background-repeat: no-repeat;
 	opacity: 0.6;
