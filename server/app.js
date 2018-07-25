@@ -11,12 +11,51 @@ const homeRouter = require("./src/models");
 const cors =require("cors");
 const validate = require('express-validation');
 var compressor = require('node-minify');
+var cleanCss = require ('clean-css');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
 const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
 //var concat = require('concat-files');
 app.use(cors());
 
+// minify applozic plugin code files into a single file
+compressor.minify({
+  compressor: 'gcc',
+  //compressor: 'no-compress',
+  input: ['./src/webplugin/lib/js/jquery-3.2.1.min.js','./src/webplugin/lib/js/mck-ui-widget.min.js', './src/webplugin/lib/js/mck-ui-plugins.min.js', './src/webplugin/lib/js/mqttws31.js', './src/webplugin/lib/js/mck-emojis.min.js',
+  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js'],
+  output: './src/webplugin/js/kommunicatepluginrequirements.min.js',
+  callback: function (err, min) {
+    if(!err){
+    console.log(" kommunicatepluginrequirements.min.js combined successfully");
+    }
+    else {
+      console.log("err while minifying kommunicatepluginrequirements.min.js",err);
+    }
+  }
+});
+
+// minify applozic css files into a single file
+compressor.minify({
+  compressor: 'clean-css',
+  //compressor: 'no-compress',
+  input: ['./src/webplugin/lib/css/mck-combined.min.css', './src/webplugin/css/app/mck-sidebox-1.0.css', './src/webplugin/css/app/km-rich-message.css', './src/webplugin/css/app/km-login-model.css',
+  './src/webplugin/lib/css/tiny-slider-2.4.0.css'],
+  output: './src/webplugin/css/kommunicatepluginrequirements.min.css',
+  options: {
+  advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
+  aggressiveMerging: true, // set to false to disable aggressive merging of properties.
+  sourceMap: true
+  },
+  callback: function (err, min) {
+    if(!err){
+    console.log(" kommunicatepluginrequirements.min.css combined successfully");
+    }
+    else {
+      console.log("err while minifying kommunicatepluginrequirements.min.css",err);
+    }
+  }
+});
 
 compressor.minify({
   compressor: 'gcc',
