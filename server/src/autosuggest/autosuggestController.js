@@ -46,8 +46,8 @@ exports.getSuggestionsByAppId = (req, res) => {
 
 exports.createSuggestion = (req, res) => {
 
-	console.log('Request received ', req.body);
-
+	logger.info('Request received ', req.body);
+	present_time = new Date().getTime()
 	const suggestion = {
 		applicationId: req.body.applicationId,
 		userName:req.body.userName,
@@ -56,26 +56,30 @@ exports.createSuggestion = (req, res) => {
 		content: req.body.content,
 		type: req.body.type ? req.body.type:null,
 		status: req.body.status ? req.body.status:null,
-		referenceId: req.body.referenceId ? req.body.referenceId : null
+		referenceId: req.body.referenceId ? req.body.referenceId : null,
+		created_at: present_time,
+		updated_at: present_time,
+		deleted:false
 	}
 
 	autosuggestService.createSuggestion(suggestion)
 		.then(response => {
 			console.log(response)
 			res.status(200).json({code:"SUGESSTION_CREATED", data:response})
-			botchannel.insertFaq(response)
+			logger.log("FAQ added to the bot")
 		})
 		.catch(err => {
+			logger.error("error detail for create suggetion: ", err)
 			res.status(500).json({
 				code:"INTERNAL_SERVER_ERROR",
 				message:"Something in auto suggest went wrong!",
 				error: err
 			})
-		})
+		});
 }
 
 exports.updateSuggestion = (req, res) => {
-	console.log('Request received ', req.body);
+	logger.info('Request received ', req.body);
 
 	const suggestion = { id: req.body.id };
 	if (null !== req.body.category) {
@@ -90,9 +94,14 @@ exports.updateSuggestion = (req, res) => {
 	if (null !== req.body.status) {
 		suggestion['status'] = req.body.status
 	}
+	// To update updated_at attribute in Knowledgebase
+	suggestion['updated_at'] = new Date().getTime()
+
 	autosuggestService.updateSuggetion(suggestion).then(response => {
+		logger.info("FAQ updated in db")
 		res.status(200).json({ code: "SUGESSTION_UPDATED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
+		logger.error("error detail for update suggetion: ", err)
 		res.status(500).json({
 			code: "INTERNAL_SERVER_ERROR",
 			message: "Something in auto suggest went wrong!",
@@ -102,12 +111,14 @@ exports.updateSuggestion = (req, res) => {
 }
 
 exports.deleteSuggetion = (req, res) => {
-	console.log("delete req: ",req)
+	logger.info("delete req: ",req)
 	const suggestion = req.body;
+	
 	autosuggestService.deleteSuggetion(suggestion).then(response => {
+		logger.info("FAQ deleted from db")
 		res.status(200).json({ code: "SUGESSTION_DELETED_SUCCESSFULLY", data: "success" })
 	}).catch(err => {
-		console.log("error detail for delete suggetion: ", err)
+		logger.error("error detail for delete suggetion: ", err)
 		res.status(500).json({
 			code: "INTERNAL_SERVER_ERROR",
 			message: "Something in auto suggest went wrong!",

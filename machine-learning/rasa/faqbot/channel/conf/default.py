@@ -24,4 +24,4 @@ nlu_threshold = 0.45
 cron_endpoint = 'http://localhost:3999/crontime'
 
 #Credentials for MongoDB
-uri = "mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate?authSource=admin"
+uri = "mongodb://localhost:27017/kommunicate"
