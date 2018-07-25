@@ -36,7 +36,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
         console.log("received status 200, user created successfully ");
         return response.data;
       } else if (response.data.message == "INVALID_APPLICATIONID") {
-        console.log("invalid application Id");
+        console.log("invalid application Id ", applicationId);
         err.code = "NVALID_APPLICATIONID";
         throw err;
       } else if (response.data.message == "UPDATED") {
@@ -280,7 +280,7 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
   });
 }
 
-exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
+const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
   console.log("sending message to group ", groupId);
   console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
   typeof message=="object"?message:{ "groupId": groupId, "message": message, "metadata": metadata }
@@ -551,3 +551,26 @@ exports.getConversationStats = (params, headers) => {
     return;
   });
 }
+
+const sendMessageListRecursively = (msgList, groupId, headers) => {
+
+  if (msgList && msgList.length < 1) {
+    return Promise.resolve("success");
+  }
+  let msg = msgList.splice(0, 1);
+  let message={"groupId":groupId};
+  message= Object.assign(message, msg[0])
+  return Promise.resolve(sendGroupMessage(null, message, null, null, {}, headers)).then(resp => {
+    console.log('send ', resp);
+    return resp.data
+  }).then(response => {
+    return sendMessageListRecursively(msgList, groupId, headers).catch(err => {
+      logger.error("error while sending messages", err);
+      return;
+    })
+
+  })
+}
+
+exports.sendMessageListRecursively =sendMessageListRecursively 
+exports.sendGroupMessage=sendGroupMessage

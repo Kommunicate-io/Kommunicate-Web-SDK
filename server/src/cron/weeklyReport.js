@@ -12,6 +12,7 @@ const weeklyReportIcon = "https://s3.amazonaws.com/kommunicate.io/weekly-report-
 
 
 exports.sendWeeklyReportsToCustomer = () => {
+    console.log("sendWeeklyReportsToCustomer cron started at: ", new Date());
     getApplicationRecursively();
 }
 
@@ -23,11 +24,11 @@ const getApplicationRecursively = (criteria) => {
     }
     return applicationService.getAllApplications(criteria).then(applications => {
         if (applications.length < 1) {
-            console.log("message", "all application processed")
+            console.log("sendWeeklyReportsToCustomer : all application processed")
             return;
         }
         let apps = applications.map((app, index) => {
-            console.log("application: ", app.id, index);
+            console.log("weekly report processing for application: ", app.applicationId);
             return processOneApp(app);
         })
         return Promise.all(apps).then(result => {
@@ -58,6 +59,7 @@ const processOneApp = (app) => {
                     return "no stats for this app"
                 }
                 return generateReport(stats, users).then(report => {
+                    console.log("sending weekly report for application: ", app.applicationId);
                     return sendWelcomeMail(report, customer);
                 })
 
@@ -65,6 +67,7 @@ const processOneApp = (app) => {
         });
     }).catch(err => {
         console.log("err :", err)
+        return;
     });
 }
 
