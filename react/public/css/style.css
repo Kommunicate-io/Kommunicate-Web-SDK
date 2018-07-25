@@ -10185,6 +10185,9 @@ input:required {
   /*margin: 10px*/
 }
 .modal-header button {
+  visibility: visible;
+}
+.modal-dialog--add-faq-modal .modal-header button {
   visibility: hidden;
 }
 .km-bot-integration-heading {
