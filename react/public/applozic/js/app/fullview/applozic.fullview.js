@@ -2575,7 +2575,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var isMessages = true;
 				var currTabId = $mck_msg_inner.data('km-id');
 				var isGroupTab = $mck_msg_inner.data('isgroup');
-				if (CONTACT_SYNCING && !params.startTime) {
+				if (!params.startTime) {
 					_this.initSearch();
 				}
 				if (data && data.message && data.message.length === 0) {
@@ -5005,7 +5005,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				});
-				mckMessageService.initSearch();
+				// mckMessageService.initSearch();
 			};
 			_this.getStatusIcon = function (msg) {
 				return '<span class="' + _this.getStatusIconName(msg) + ' move-right ' + msg.key + '_status status-icon"></span>';
