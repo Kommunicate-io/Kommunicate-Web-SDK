@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './DeleteIcon.css';
 
 class DeleteIcon extends Component {
@@ -16,7 +17,7 @@ class DeleteIcon extends Component {
 }
 
 DeleteIcon.propTypes = {
-    handleOnClick: React.PropTypes.func.isRequired,
+    handleOnClick: PropTypes.func.isRequired,
 
 };
 
