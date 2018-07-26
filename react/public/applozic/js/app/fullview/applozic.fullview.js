@@ -2861,9 +2861,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var isMessages = true;
 						var currTabId = $mck_msg_inner.data('km-id');
 						var isGroupTab = $mck_msg_inner.data('isgroup');
-						if (CONTACT_SYNCING && !params.startTime) {
-							_this.initSearch();
-						}
+						// if (CONTACT_SYNCING && !params.startTime) {
+						// 	// _this.initSearch();
+						// }
 						// if(data.message.length === 0) {
 						// 	mckMessageService.emptyStateChange();
 						// }
@@ -4164,6 +4164,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						target: '_blank'
 					});
 				}
+
 				if (msg.contentType == 0 && x.innerHTML == "") {
 					$kmApplozic(".km-msg-box").addClass("n-vis")
 				}
@@ -4661,7 +4662,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var contact = contactsArray[j];
 					contact.displayName = _this.getTabDisplayName(contact.contactId, contact.isGroup);
 					var displayName = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
-					typeaheadEntry = (contact.isGroup) ? displayName + $kmApplozic.trim(contact.groupId) : displayName + $kmApplozic.trim(contact.contactId);
+					if(contact.isGroup){
+					typeaheadEntry =  displayName + $kmApplozic.trim(contact.groupId);
+					}
 					typeaheadMap[typeaheadEntry] = contact;
 					typeaheadArray.push(typeaheadEntry);
 					contactSuggestionsArray.push(typeaheadEntry);
