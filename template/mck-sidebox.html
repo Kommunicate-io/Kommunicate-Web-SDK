@@ -710,29 +710,6 @@
 	</div>
 </div>
 
-<!-- DO NOT REMOVE THE BELOW CODE -->
-<script>
-
-		// eventlistener to tigger setContentVisible function after page is loaded
-		window.addEventListener('load', function() {
-			 setContentVisible();
-		}, false);
-
-		/* // Below is the alternate method to fix the hide UI element until page loads
-		setTimeout(function() {
-			console.log("abc")
-			setContentVisible(); }, 50000); */
-
-		function setContentVisible(){
-			// fixed FOUC
-			document.getElementById("mck-sidebox").style.visibility='visible';
-			document.getElementById("mck-loc-box").style.visibility='visible';
-			document.getElementById("mck-gm-search-box").style.visibility='visible';
-			document.getElementById("mck-video-box fade").style.visibility='visible';
-			document.getElementById("km-chat-login-modal").style.visibility='visible';
-		}
-</script>
-
 <noscript>
 	<style>
 		#mck-sidebox, #mck-loc-box, #mck-gm-search-box, #mck-video-box, #km-chat-login-modal { visibility: visible; }
