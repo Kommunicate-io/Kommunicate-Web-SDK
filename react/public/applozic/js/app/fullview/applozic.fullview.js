@@ -4004,7 +4004,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
-				var messageClass = '';
+				var messageClass = (msg.contentType == 0 && typeof(msg.message) != "string") ? "n-vis" : 'vis';
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
 				var contactExpr = "vis";
@@ -4165,9 +4165,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					});
 				}
 
-				if (msg.contentType == 0 && x.innerHTML == "") {
-					$kmApplozic(".km-msg-box").addClass("n-vis")
-				}
 				if (richText) {
 					kommunicateDashboard.richMsgEventHandler.initializeSlick($kmApplozic(".km-container div[data-msgkey='" + msg.key + "'] .km-div-slider"));
 				}
