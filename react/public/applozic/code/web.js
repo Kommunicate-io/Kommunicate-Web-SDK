@@ -24,7 +24,7 @@ function initAutoSuggestions() {
   for(autoSuggest in autoSuggestions){
     try{
     $('#km-text-box').atwho({
-      at: '/${autoSuggest}',
+      at: "/" + autoSuggest,
       insertTpl: '${content}',
       displayTpl: '<li data-suggestionId="${suggestionId}">${name} <small>${content}</small></li>',
       data: autoSuggestions[autoSuggest],

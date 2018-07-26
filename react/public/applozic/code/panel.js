@@ -31,7 +31,7 @@ $(document).ready(function() {
         var tabId = $('#km-group-tab-title').attr('data-km-id');
         group = kmGroupUtils.getGroup(tabId);
 		var keys = Object.keys(group.users);	
-		keys.every((userId, index) => {
+		keys.every(function(userId, index) {
 			var user = group.users[userId];
 			if(user.role == 3){
                 getContactDetail(userId)
