@@ -15,30 +15,35 @@ var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
 function ApplozicSidebox() {
 	var googleApiKey = (typeof applozic._globals !== 'undefined' && applozic._globals.googleApiKey)?(applozic._globals.googleApiKey):"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-    var mck_style_loader = [ {
+    var mck_style_loader = [
+    {
+            "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/kommunicatepluginrequirements.min.css"
+    } /*, {
             "name": "mck-combined", "url": MCK_STATICPATH + "/lib/css/mck-combined.min.css"
     }, {
             "name": "mck-sidebox", "url": MCK_STATICPATH + "/css/app/mck-sidebox-1.0.css"
-    },{
+    }, {
             "name": "km-richmessages", "url": MCK_STATICPATH + "/css/app/km-rich-message.css"
-        }, {
+    }, {
             "name": "robotocss", "url": "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700"
-
-        },
-    {
+    }, {
    	 	"name": "km-login-model", "url": MCK_STATICPATH + "/css/app/km-login-model.css"
-   }, {
+    }, {
        "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/css/tiny-slider-2.4.0.css"
-   } ];
-    var mck_script_loader1 = [ {
+    }*/ ];
+    var mck_script_loader1 = [
+      {
+            "name": "km-utils", "url": MCK_STATICPATH + "/js/kommunicatepluginrequirements.min.js"
+    },
+      /*    {
             "name": "widget", "url": MCK_STATICPATH + "/lib/js/mck-ui-widget.min.js"
     }, {
             "name": "plugins", "url": MCK_STATICPATH + "/lib/js/mck-ui-plugins.min.js"
     }, {
             "name": "socket", "url": MCK_STATICPATH + "/lib/js/mqttws31.js"
-    }, {
+    },*/{
             "name": "maps", "url": "https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"
-    }, {
+    } /*, {
             "name": "emojis", "url": MCK_STATICPATH + "/lib/js/mck-emojis.min.js"
     }, {
             "name": "video_howler", "url": MCK_STATICPATH + "/lib/js/howler-2.0.2.min.js"
@@ -46,18 +51,20 @@ function ApplozicSidebox() {
             "name": "tiny-slider", "url": MCK_STATICPATH + "/lib/js/tiny-slider-2.4.0.js"
     }, {
             "name": "mustache", "url": MCK_STATICPATH + "/lib/js/mustache.js"
-    },/* {
+    },*/
+    /* {
            "name": "video_ringtone", "url": MCK_STATICPATH + "/js/app/mck-ringtone-service.js"
     }, {
             "name": "jquery-template", "url": MCK_STATICPATH + "/js/app/applozic.jquery.js"
     },*/
     /*{
-            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js" 
-    },*/ {
+            "name": "modules", "url": MCK_STATICPATH + "/js/app/applozic.chat.min.js"
+    },*/
+  /*  {
            "name": "aes", "url": MCK_STATICPATH + "/lib/js/aes.js"
     }, {
         "name": "km-utils", "url": MCK_STATICPATH + "/js/app/km-utils.js"
-    }
+    }*/
     /*, {
             "name": "slick", "url": MCK_STATICPATH + "/lib/js/mck-slick.min.js"
     }*/];
@@ -165,7 +172,17 @@ function ApplozicSidebox() {
     function mckInitPluginScript() {
         try {
         	if(applozic.PRODUCT_ID =='kommunicate'){
-       		 applozic._globals.locShare = ((applozic._globals.locShare)=== false) ? false : true;
+       		 //applozic._globals.locShare = ((applozic._globals.locShare)=== false) ? false : true;
+           if (typeof applozic._globals.locShare === 'undefined') {
+             applozic._globals.locShare = false;
+           } else if (typeof applozic._globals.locShare === 'string') {
+             throw new Error("locShare should be a boolean value");
+           }
+           if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
+             applozic._globals.excludeGoogleMap = true;
+           } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
+             throw new Error("excludeGoogleMap should be a boolean value");
+           }
        		 applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
        	 }
             $.each(mck_script_loader1, function(i, data) {
@@ -180,11 +197,12 @@ function ApplozicSidebox() {
                     } catch (e) {
                         mckLoadScript(data.url, mckLoadAppScript);
                     }
-                } else if (data.name === "maps") {
+                }
+                 else if (data.name === "maps") {
                     try {
                         var options = applozic._globals;
                         if (typeof options !== 'undefined') {
-                            if (options.googleMapScriptLoaded) {
+                            if (options.excludeGoogleMap) {
                                 return true;
                             }
                             if (options.googleApiKey) {

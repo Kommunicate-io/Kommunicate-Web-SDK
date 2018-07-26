@@ -2,6 +2,10 @@
     Created on : Mar 20, 2015, 5:28:06 PM
     Author     : devashish
 */
+
+@import
+	url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
+
 .mck-box {
 	position: fixed;
 	right: 0;
@@ -24,7 +28,7 @@
 }
 
 .mck-videocall-btn {
-        background-image: url(images/mck-videocall-icon.png);
+        background-image: url(../css/app/images/mck-videocall-icon.png);
         background-repeat: no-repeat;
         float :right !important;
         margin-top: 14px;
@@ -36,7 +40,7 @@
 }
 
 .mck-mike-btn {
-        background-image: url(images/mck-mike.png);
+        background-image: url(../images/mck-mike.png);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -48,7 +52,7 @@
 }
 
 .mck-stop-btn {
-        background-image: url(images/mck-stop.png);
+        background-image: url(../css/app/images/mck-stop.png);
         background-repeat: no-repeat;
         float :left !important;
        /* margin-top: 4px;*/
@@ -61,7 +65,7 @@
 }
 
 .mck-loading-btn {
-        background-image: url(images/ring.gif);
+        background-image: url(../css/app/images/ring.gif);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -128,17 +132,18 @@
 }
 .mck-powered-by{
 	text-decoration: none;
-	color:grey !important;
+	color: #aeaaaa !important;
 }
 
 #mck-text-box[contenteditable=true]:empty:not(:focus):before {
     content: attr(data-text);
-	color: black;
+	color: #949494;
 	opacity:0.6;
 }
 
 .mck-powered-by:hover{
-	text-decoration:line
+	text-decoration:underline;
+	color: #5c5aa7 !important
 }
 #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
@@ -1240,6 +1245,10 @@
 	display: inline-block !important;
 	content: '';
 }
+#mck-upload-menu-list.mck-dropup-menu:before, #mck-upload-menu-list.mck-dropup-menu:after {
+	right: 5px;
+	left: auto;
+}
 
 .mck-dropdown-menu li, .mck-dropup-menu li {
 	height: inherit;
@@ -1477,9 +1486,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	min-height: 18px;
 	max-height: 78px;
 	resize: none;
-
 	background-color: white;
-	width: calc(100% - 55px) !important;
+	width: calc(100% - 70px);
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -2311,9 +2319,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-running-on {
 	text-align: center;
-	padding: 7px 0;
+	padding: 0px 0px 7px;
 	vertical-align: middle;
-	border-top: 1px solid #E5E5E5;
+	color: #aeaaaa;
+	/* border-top: 1px solid #E5E5E5; */
 }
 
 .mck-conversation-tab-search img {
@@ -3219,7 +3228,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-group-icon-default {
-	background-image: url(images/mck-icon-group150x150.png);
+	background-image: url(../css/app/images/mck-icon-group150x150.png);
 	width: 150px;
 	height: 150px;
 	top: 0px;
@@ -3231,7 +3240,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-loading {
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: #fff;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -3242,7 +3251,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: #fff;
 }
 
-.mck-loading>img {
+.mck-loading>img, .mck-loading>svg {
 	top: 0;
 	bottom: 0;
 	margin: auto;
@@ -3324,7 +3333,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	.mck-icon-marker, .mck-icon-delivered, .mck-icon-read, .mck-icon-sent,
 	.mck-icon-time {
 	display: inline-block;
-	background: url(images/mck-plugin-sprite.png) no-repeat;
+	background: url(../css/app/images/mck-plugin-sprite.png) no-repeat;
 	overflow: hidden;
 	text-indent: -9999px;
 	text-align: left;
@@ -3345,7 +3354,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-camera-icon {
 	display: block;
-	background-image: url(images/mck-icon-camera.png);
+	background-image: url(../css/app/images/mck-icon-camera.png);
 	background-repeat: no-repeat;
 	margin-top: 10px;
 	height: 20px;
@@ -3551,7 +3560,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 @media (min-width : 310px) {
 	.emoji-menu{
-		width:300px !important;
+		/* width:300px !important; */
 	}
 
 	.mck-sidebox {
@@ -3682,7 +3691,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width: 500px;
 	}
 	.emoji-menu{
-		width:379px !important;
+		/* width:379px !important; */
 	}
 	.mck-sidebox.fade.in{
 		width:379px;
@@ -3877,14 +3886,16 @@ box-shadow: none!important;
 	display:inline-block;
 }
 .emoji-menu{
-	right:10px !important;
-	width:379px;
+	right:0px !important;
+	width:100%;
+	left: auto;
+	bottom: 70px !important;
 }
 .emoji-menu>.group-selector{
 	width:100% !important;
 }
 .emoji-menu div {
-	width:100% !important;
+	/* width:100% !important; */
 }
 #mck-msg-new{
 	background-color: #716fb3;
@@ -4059,7 +4070,7 @@ color: rgba(0,0,0,0.5);
     object-fit: cover;
 }
 .km-image-card-2 {
-    background-image: url('/images/card-message-img-2.jpg');
+    background-image: url('../css/app/images/card-message-img-2.jpg');
 }
 .km-card-message-image-price-container {
     position: absolute;
@@ -4496,7 +4507,7 @@ color: rgba(0,0,0,0.5);
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
-	color: #a9a4a4;
+	color: #8f8f8f;
 	margin-bottom: 0px;
 
 
@@ -4531,7 +4542,7 @@ color: rgba(0,0,0,0.5);
 	height: 33px;
     width: 33px;
     margin-right: 10px;
-    background-image: url(images/km-faqicon1.png);
+    background-image: url(../css/app/images/km-faqicon1.png);
     background-size: contain;
 	background-repeat: no-repeat;
 	opacity: 0.6;
@@ -4910,7 +4921,7 @@ margin-top: 243px;
 }
 
 /********  dialog box template *************/
-/* FAQ Answer 
+/* FAQ Answer
 // duplicate css. if any thing is getting used in faq  need to rename that class.
 .message.received.faq-answer {
     padding: 0px;
@@ -5030,6 +5041,14 @@ margin-top: 243px;
 #mck-btn-attach {
 	opacity: 0.6;
 }
+#mck-btn-attach .mck-icon-upload, #mck-attachfile-box #mck-file-up2 .mck-icon-upload {
+	background: transparent;
+    width: 20px;
+    height: 28px;
+    margin-bottom: -2px;
+	margin-right: 2px;
+	display: block;
+}
 .mck-attach-menu-main-container {
 	opacity: 1 !important;
 }
@@ -5075,7 +5094,7 @@ margin-top: 243px;
 		height:100% !important;
 	}
 	.emoji-menu {
-		width: 100% !important;
+		/* width: 100% !important; */
 		right: 0px !important;
 	}
 }
@@ -5105,3 +5124,106 @@ margin-top: 243px;
 #mck-sidebox *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
 }
+
+
+.spinner {
+	-webkit-animation: rotator 1.4s linear infinite;
+			animation: rotator 1.4s linear infinite;
+  }
+  
+  @-webkit-keyframes rotator {
+	0% {
+	  -webkit-transform: rotate(0deg);
+			  transform: rotate(0deg);
+	}
+	100% {
+	  -webkit-transform: rotate(270deg);
+			  transform: rotate(270deg);
+	}
+  }
+  
+  @keyframes rotator {
+	0% {
+	  -webkit-transform: rotate(0deg);
+			  transform: rotate(0deg);
+	}
+	100% {
+	  -webkit-transform: rotate(270deg);
+			  transform: rotate(270deg);
+	}
+  }
+  .path {
+	stroke-dasharray: 187;
+	stroke-dashoffset: 0;
+	-webkit-transform-origin: center;
+			transform-origin: center;
+	-webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+			animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+  }
+  
+  @-webkit-keyframes colors {
+	0% {
+	  stroke: #4285F4;
+	}
+	25% {
+	  stroke: #DE3E35;
+	}
+	50% {
+	  stroke: #F7C223;
+	}
+	75% {
+	  stroke: #1B9A59;
+	}
+	100% {
+	  stroke: #4285F4;
+	}
+  }
+  
+  @keyframes colors {
+	0% {
+	  stroke: #4285F4;
+	}
+	25% {
+	  stroke: #DE3E35;
+	}
+	50% {
+	  stroke: #F7C223;
+	}
+	75% {
+	  stroke: #1B9A59;
+	}
+	100% {
+	  stroke: #4285F4;
+	}
+  }
+  @-webkit-keyframes dash {
+	0% {
+	  stroke-dashoffset: 187;
+	}
+	50% {
+	  stroke-dashoffset: 46.75;
+	  -webkit-transform: rotate(135deg);
+			  transform: rotate(135deg);
+	}
+	100% {
+	  stroke-dashoffset: 187;
+	  -webkit-transform: rotate(450deg);
+			  transform: rotate(450deg);
+	}
+  }
+  @keyframes dash {
+	0% {
+	  stroke-dashoffset: 187;
+	}
+	50% {
+	  stroke-dashoffset: 46.75;
+	  -webkit-transform: rotate(135deg);
+			  transform: rotate(135deg);
+	}
+	100% {
+	  stroke-dashoffset: 187;
+	  -webkit-transform: rotate(450deg);
+			  transform: rotate(450deg);
+	}
+  }
+  
