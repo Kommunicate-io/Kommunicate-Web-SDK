@@ -56,10 +56,11 @@ class Billing extends Component {
         this.selectMonthly = this.selectMonthly.bind(this);
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
         this.buyThisPlanClick = this.buyThisPlanClick.bind(this);
+
+        window.addEventListener("openBillingModal",this.onOpenModal,true);
     };
 
     componentDidMount() {
-
         const search = this.props.location.search;
         const earlyBirdOffer = CommonUtils.getUrlParameter(search, 'offer');
 
@@ -90,15 +91,6 @@ class Billing extends Component {
         });
 
         this.chargebeeInit();
-    }
-
-    componentDidUpdate() {
-        const search = this.props.location.search;
-        const earlyBirdOffer = CommonUtils.getUrlParameter(search, 'offer');
-
-        if(earlyBirdOffer === 'early-bird') {
-            this.onOpenModal();
-        }
     }
 
     buyThisPlanClick = () => {

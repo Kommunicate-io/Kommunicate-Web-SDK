@@ -54,6 +54,11 @@ export default class TrialDaysLeft extends Component {
         }
     }
 
+
+    customEventListener() {
+        window.dispatchEvent(new CustomEvent("openBillingModal",{detail:{"status": "success"},bubbles: true,cancelable: true}));
+    }
+
     render() {
         let currentPath = window.location.pathname;
         let daysLeft;
@@ -74,7 +79,7 @@ export default class TrialDaysLeft extends Component {
                     </div> 
                     :  
                     <div className="km-trial-days-left">
-                        <Link to="/settings/billing?offer=early-bird" className="km-button km-button--secondary trial-over">{daysLeft}</Link>
+                        <Link to="/settings/billing?offer=early-bird" className="km-button km-button--secondary trial-over" onClick={this.customEventListener}>{daysLeft}</Link>
                     </div>
                 }
                 
@@ -99,7 +104,7 @@ export default class TrialDaysLeft extends Component {
                             
                             <div className="km-trial-days-left-popup-buy-plan">
                                 <p>Ready to improve your customer support?</p>
-                                <Link to="/settings/billing?offer=early-bird" className="km-button km-button--primary km-demo-btn">See plans</Link>
+                                <Link to="/settings/billing?offer=early-bird" className="km-button km-button--primary km-demo-btn" onClick={this.customEventListener}>See plans</Link>
                             </div>
                             
                             <div className="km-trial-days-left-close-btn" onClick={this.hidePopup}>
