@@ -1585,7 +1585,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
-                w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
+                //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
+                KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
             };
             _this.validateAppSession = function (userPxy) {
                 mckGroupLayout.init();
