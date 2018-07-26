@@ -47,18 +47,19 @@ exports.getSuggestionsByAppId = (req, res) => {
 exports.createSuggestion = (req, res) => {
 
 	logger.info('Request received ', req.body);
-	present_time = new Date().getTime()
+	presentTime = new Date().getTime()
+
 	const suggestion = {
 		applicationId: req.body.applicationId,
 		userName:req.body.userName,
 		category: req.body.category,
-		name:req.body.name,
+		name: req.body.name,
 		content: req.body.content,
 		type: req.body.type ? req.body.type:null,
 		status: req.body.status ? req.body.status:null,
 		referenceId: req.body.referenceId ? req.body.referenceId : null,
-		created_at: present_time,
-		updated_at: present_time,
+		created_at: presentTime,
+		updated_at: presentTime,
 		deleted:false
 	}
 
