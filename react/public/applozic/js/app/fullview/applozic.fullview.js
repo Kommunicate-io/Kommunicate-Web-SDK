@@ -4164,7 +4164,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						target: '_blank'
 					});
 				}
-				if (x.innerHTML == "") {
+				if (msg.contentType == 0 && x.innerHTML == "") {
 					$kmApplozic(".km-msg-box").addClass("n-vis")
 				}
 				if (richText) {
