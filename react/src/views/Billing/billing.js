@@ -43,7 +43,8 @@ class Billing extends Component {
             billingCustomerId: CommonUtils.getUserSession().billingCustomerId,
             currentPlan: SUBSCRIPTION_PLANS['startup'],
             trialLeft: 0,
-            showPlanSelection: false
+            showPlanSelection: false,
+            currentPlanDetailsText: "Trial period plan details"
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -91,9 +92,24 @@ class Billing extends Component {
         this.chargebeeInit();
     }
 
-    buyThisPlanClick = () => {
-        this.setState({showPlanSelection: !this.state.showPlanSelection}, () => this.chargebeeInit());
+    componentDidUpdate() {
+        const search = this.props.location.search;
+        const earlyBirdOffer = CommonUtils.getUrlParameter(search, 'offer');
+
+        if(earlyBirdOffer === 'early-bird') {
+            this.onOpenModal();
+        }
     }
+
+    buyThisPlanClick = () => {
+        this.setState({showPlanSelection: !this.state.showPlanSelection, currentPlanDetailsText: "Select your billing cycle and enter the number of agents in the next window"}, () => this.chargebeeInit());
+    }
+
+    cancelThisPlan = () => {
+        this.setState({
+            currentPlanDetailsText: "Trial period plan details"
+        })
+    } 
 
     onOpenModal = () => {
         this.setState({ modalIsOpen: true });
@@ -305,13 +321,13 @@ class Billing extends Component {
         const billedYearly = (
             <div className="radio-content-container">
                 <h3>Billed Yearly</h3>
-                <p>${SUBSCRIPTION_PLANS['per_agent_yearly'].amount}/month</p>
+                <p>${SUBSCRIPTION_PLANS['per_agent_yearly'].amount} PER AGENT/MONTH</p>
             </div>
         )
         const billedMonthly = (
             <div className="radio-content-container">
                 <h3>Billed Monthly</h3>
-                <p>${SUBSCRIPTION_PLANS['per_agent_monthly'].amount}/month</p>
+                <p>${SUBSCRIPTION_PLANS['per_agent_monthly'].amount} PER AGENT/MONTH</p>
             </div>
         )
         const { modalIsOpen } = this.state;
@@ -363,7 +379,9 @@ class Billing extends Component {
 
                                 <div className="current-plan-container flexi">
                                     <div className="col-md-6">
-                                        <p className="current-plan-details-text">Current plan details</p>
+                                    {(CommonUtils.isTrialPlan()) ? <p className="current-plan-details-text">{this.state.currentPlanDetailsText}</p> : <p className="current-plan-details-text">Current plan details</p>
+                                        
+                                    }
                                     </div>
                                     <div className="col-md-6 text-right">
 
@@ -390,7 +408,7 @@ class Billing extends Component {
                                             <button hidden={this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly">
                                                 Next
                                             </button>
-                                            <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={this.buyThisPlanClick}>Cancel</button>
+                                            <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={() => {this.buyThisPlanClick(); this.cancelThisPlan()}}>Cancel</button>
                                         </div>
                                        ) : null
                                     }
