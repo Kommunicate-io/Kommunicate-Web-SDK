@@ -72,10 +72,10 @@ export default class TrialDaysLeft extends Component {
                     <div className="km-trial-days-left">
                         <p>{daysLeft}</p>
                     </div> 
-                    : (!currentPath.includes('/settings/billing')) ? 
-                        <div className="km-trial-days-left">
-                            <Link to="/settings/billing?offer=early-bird" className="km-button km-button--secondary trial-over">{daysLeft}</Link>
-                        </div> : " "
+                    :  
+                    <div className="km-trial-days-left">
+                        <Link to="/settings/billing?offer=early-bird" className="km-button km-button--secondary trial-over">{daysLeft}</Link>
+                    </div>
                 }
                 
                         <div id="km-trial-days-left-popup-container" className="km-trial-days-left-popup-container text-center" hidden={this.state.showPopupBox}>
@@ -96,12 +96,11 @@ export default class TrialDaysLeft extends Component {
 
                                 <a href="https://calendly.com/kommunicate/15min" target="_blank" className="km-button km-button--secondary km-demo-btn" rel="noopener noreferrer">Get demo</a>
                             </div>
-                            { (!currentPath.includes('/settings/billing')) ?
-                                <div className="km-trial-days-left-popup-buy-plan">
-                                    <p>Ready to improve your customer support?</p>
-                                    <Link to="/settings/billing?offer=early-bird" className="km-button km-button--primary km-demo-btn">See plans</Link>
-                                </div> : ""
-                            }
+                            
+                            <div className="km-trial-days-left-popup-buy-plan">
+                                <p>Ready to improve your customer support?</p>
+                                <Link to="/settings/billing?offer=early-bird" className="km-button km-button--primary km-demo-btn">See plans</Link>
+                            </div>
                             
                             <div className="km-trial-days-left-close-btn" onClick={this.hidePopup}>
                                 <svg className="km-modal-close-icon" xmlns="http://www.w3.org/2000/svg" fill="#8d8888" height="24" viewBox="0 0 24 24" width="24">
