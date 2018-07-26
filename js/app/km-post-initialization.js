@@ -64,12 +64,3 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
         }, error: function () { }
     });
 }
-
-// eventlistener to make ContentVisible after page is loaded
-window.addEventListener('kmInitilized', function() {
-  document.getElementById("mck-sidebox").style.visibility='visible';
-  document.getElementById("mck-loc-box").style.visibility='visible';
-  document.getElementById("mck-gm-search-box").style.visibility='visible';
-  document.getElementById("mck-video-box fade").style.visibility='visible';
-  document.getElementById("km-chat-login-modal").style.visibility='visible';
-}, false);
