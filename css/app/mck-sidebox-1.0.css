@@ -5130,7 +5130,7 @@ margin-top: 243px;
 	-webkit-animation: rotator 1.4s linear infinite;
 			animation: rotator 1.4s linear infinite;
   }
-  
+
   @-webkit-keyframes rotator {
 	0% {
 	  -webkit-transform: rotate(0deg);
@@ -5141,7 +5141,7 @@ margin-top: 243px;
 			  transform: rotate(270deg);
 	}
   }
-  
+
   @keyframes rotator {
 	0% {
 	  -webkit-transform: rotate(0deg);
@@ -5160,7 +5160,7 @@ margin-top: 243px;
 	-webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
 			animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
   }
-  
+
   @-webkit-keyframes colors {
 	0% {
 	  stroke: #4285F4;
@@ -5178,7 +5178,7 @@ margin-top: 243px;
 	  stroke: #4285F4;
 	}
   }
-  
+
   @keyframes colors {
 	0% {
 	  stroke: #4285F4;
@@ -5226,4 +5226,7 @@ margin-top: 243px;
 			  transform: rotate(450deg);
 	}
   }
-  
+
+	button {
+		min-width: 0;
+	}
