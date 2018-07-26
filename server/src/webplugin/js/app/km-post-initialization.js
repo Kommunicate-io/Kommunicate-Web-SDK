@@ -1,7 +1,7 @@
 /**
  * This file responsible for the all operations being performed after chat plugin initialized.
  * eg. subscribing the events etc.
- * this file use Kommunicate Object. Put this file after kommunicate.js while combining. 
+ * this file use Kommunicate Object. Put this file after kommunicate.js while combining.
  */
 
 Kommunicate.postPluginInitialization = function (err, data) {
@@ -17,7 +17,7 @@ Kommunicate.postPluginInitialization = function (err, data) {
             }
         }
     });
-    // get the third party settings 
+    // get the third party settings
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());
     var helpdocsAccessKey = KommunicateUtils.getDataFromKmSession("HELPDOCS_KEY");
@@ -52,7 +52,7 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
         helpdocsKey = null;
     }
     KommunicateKB.getArticles({
-        data: { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey }, 
+        data: { appId: data.appId, query: '', helpdocsAccessKey: helpdocsKey },
         success: function (response) {
             if (response.data && response.data.length > 0 && $applozic(".km-kb-container").hasClass("n-vis")) {
                 $applozic(".km-kb-container").removeClass('n-vis').addClass('vis');
@@ -65,5 +65,11 @@ Kommunicate.helpdocsInitialization = function (data, helpdocsKey) {
     });
 }
 
-
-   
+// eventlistener to make ContentVisible after page is loaded
+window.addEventListener('kmInitilized', function() {
+  document.getElementById("mck-sidebox").style.visibility='visible';
+  document.getElementById("mck-loc-box").style.visibility='visible';
+  document.getElementById("mck-gm-search-box").style.visibility='visible';
+  document.getElementById("mck-video-box fade").style.visibility='visible';
+  document.getElementById("km-chat-login-modal").style.visibility='visible';
+}, false);
