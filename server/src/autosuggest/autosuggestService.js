@@ -10,7 +10,7 @@ const mongoClient = require("../mongodb/client");
 const collections = require("../mongodb/collections").COLLECTIONS;
 
 const getAllSuggestions = () => {
-		return mongoClient.find({"collectionName":collections.KNOWLEDGE_BASE, query:{deleted:false, status:{'$nin':['un_answered']}}});
+		return mongoClient.find({"collectionName":collections.KNOWLEDGE_BASE});
 }
 
 const getSuggestionsByUser = (userName) => {
@@ -80,13 +80,13 @@ exports.searchFAQ =(options)=>{
 	var data;
 	if(options.id){
 		options.id=parseInt(options.id);
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId,deleted:false, status:{'$nin':['un_answered']}},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	} else if (options.referenceId) {
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{referenceId:parseInt(options.referenceId),type:"learning",status:"published",applicationId:options.appId,deleted:false, status:{'$nin':['un_answered']}},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{referenceId:parseInt(options.referenceId),type:"learning",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}else if(options.text){
 		data = mongoClient.searchFAQ(options);
 	}else{
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId,deleted:false, status:{'$nin':['un_answered']}},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}
 
 	for(var i = 0; i < data.length; i += 1) {
