@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import CommonUtils from '../../utils/CommonUtils';
 
 export default class PlanDetails extends Component {
 
@@ -39,11 +40,15 @@ export default class PlanDetails extends Component {
                     </div>
                 </div>
                 <div className="col-md-6 text-right">
+                {(CommonUtils.isTrialPlan()) ? " " :
                     <div className="active-plan-pricing">
+                    
                         <p className="active-plan-pricing-text">${PlanAmount}
                         </p>
                         <p className="active-plan-mau">Billed Monthly</p>
+                    
                     </div>
+                    }
                     {/* <div className="active-plan-dropdown">
                         <div className="select-container">
                             <select className="monthly-yearly-select" id="monthly-yearly-select">
