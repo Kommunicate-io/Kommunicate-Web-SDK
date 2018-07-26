@@ -2799,9 +2799,9 @@ ul.nacc li p {
     margin-right: 10px;
     margin-left: 10px;
   }
-  /* .naccs .tabs-images-container {
-    min-height: 500px;
-  } */
+  .naccs .tabs-images-container {
+    min-height: 250px;
+  }
   .homepage-ab-beta-features-section {
     padding-bottom: 50px;
   }
