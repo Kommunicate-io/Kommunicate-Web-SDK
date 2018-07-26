@@ -12,6 +12,7 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
  ``` JSON
  {
     "message":"Do you want more updates?",
+    "platform":"kommunicate",
     "metadata": {
         "contentType": "300",
         "templateId": "6",
@@ -43,19 +44,23 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 
 ``` JSON
 {
-  "contentType": "300",
-  "templateId": "3",
-  "payload": [{
-          "type": "link",
-          "url": "www.google.com",
-          "name": "Go To Google",
-      },
-      {
-          "type": "link",
-          "url": "www.facebook.com",
-          "name": "Go To Facebook"
-      }
-  ]
+    "message": "click on the buttons",
+    "platform":"kommunicate",
+	"metadata": {
+		"contentType": "300",
+		"templateId": "3",
+		"payload": [{
+				"type": "link",
+				"url": "www.google.com",
+				"name": "Go To Google"
+			},
+			{
+				"type": "link",
+				"url": "www.facebook.com",
+				"name": "Go To Facebook"
+			}
+		]
+	}
 }
 ```
 
@@ -64,17 +69,21 @@ Submit button allows you to post given data on a given URL.
 
 ``` JSON 
 {
-  "contentType": "300",
-  "templateId": "3",
-  "payload": [{
-      "name": "Submit",
-      "handlerId": "km-eh-001"
-  }],
-  "formData": {
-      "name":"Tom Marvolo Riddle",
-              "nickName":"Voldemort"
-  },
-  "formAction": "https://example.com/users"
+	"message": "click the pay button",
+	"platform": "kommunicate",
+	"metadata": {
+		"contentType": "300",
+		"templateId": "3",
+		"payload": [{
+			"name": "Pay",
+			"handlerId": "km-eh-001"
+		}],
+		"formData": {
+			"amount": "1000",
+			"discription": "movie ticket"
+		},
+		"formAction": "https://example.com/book"
+	}
 }
 ```
 
@@ -84,15 +93,19 @@ Quick Replies provides a way to send messages on a click without typing them all
 
 ``` JSON
 {
-    "contentType": "300",
-    "templateId": "6",
-    "payload": [{
-        "title": "Yes",
-        "message": "Cool! send me more."
-    }, {
-        "title": "No ",
-        "message": "Don't send it to me again"
-    }]
+	"message": "Do you want more updates?",
+	"platform": "kommunicate",
+	"metadata": {
+		"contentType": "300",
+		"templateId": "6",
+		"payload": [{
+			"title": "Yes",
+			"message": "Cool! send me more."
+		}, {
+			"title": "No ",
+			"message": "Don't send it to me again"
+		}]
+	}
 }
 ```
 
@@ -128,13 +141,13 @@ The list template is a list of  structured items  with a optional header image a
 
 ```javascript
 // for quick reply action object will be like this:  
-action: {
+"action": {
 	"type": "quick_reply",
 	"text": "text will be sent as message" 
        	}
 
 // for navigation link action object will look like this
-action: {
+"action": {
 	"type": "link",	
        "url": "url to navigate other page" 
        // page will be opened in new tab 
@@ -145,16 +158,18 @@ action: {
 
 Here is the sample JSON for the list :
 
-```javascript
-metadata: {
+```json
+{
+	"message": "this is the sample json for list template",
+	"platform": "kommunicate",
+	"metadata": {
 		"contentType": "300",
 		"templateId": "7",
 		"payload": {
 			"headerImgSrc": "url for header image",
 			"headerText": "header text.",
-// headerText Will appear below the header image
 			"elements": [{
-			  	"imgSrc": "thumbnail icon for list item",
+				"imgSrc": "thumbnail icon for list item",
 				"title": "list item 1",
 				"description": " description for list item",
 				"action": {
@@ -163,14 +178,15 @@ metadata: {
 				}
 			}],
 			"buttons": [{
-                        "name": "See us on facebook",
+				"name": "See us on facebook",
 				"action": {
 					"url": "https://www.facebook.com",
 					"type": "link"
-					}
+				}
 			}]
 		}
 	}
+}
 ```
 
 
@@ -187,13 +203,13 @@ The format of the message is as below:
 
  * MESSAGE FORMAT
  
- ```
+ ```javascript
 {
-	"message": "Hey there! Checkout our services. eg. Packers & Movers",
+	"message": "Where you wanna go this summer?",
 	"metadata": {
 		"KM_AUTO_SUGGESTION": {
-			"placeholder": "placeholder for text box", //optional
-			"source": [] 
+			"placeholder": "enter city name ", //optional, this will apear in chat box as placeholder
+			"source": []  // check the supported format below 
 		}
 	}
 }
@@ -202,49 +218,48 @@ The format of the message is as below:
 The source can be any one of the below formats:
 
  * **Array of string**
- ```
- "source": [
-		"Photography Lessons",
-		"Passport & Visa Services",
-	]
+ ```json
+{
+ 	"source": [
+ 		"London",
+ 		"New York",
+ 		"Delhi"
+ 	]
+ }
 ```
 
 * **Array of object**
-```
-"source": [
-		{
-searchKey:"Photography",
-message:"Photography Lessons",
-metadata:{key:value}//that you want to send with text message
-},
+```json
 {
-searchKey:"passport visa Services",
-message:"Passport & Visa Services",
-metadata:{key:value}//that you want to send with text message
-                         }
+	"source": [{
+			"searchKey": "Photography",
+			"message": "Photography Lessons"
+		},
+		{
+			"searchKey": "passport visa Services",
+			"message": "Passport & Visa Services"
+		}
 	]
+}
 ```
 * **Url**  - Pass the API endpoint to get the data. Kommunicate will send data in the query parameter. 
 
-```
-"source": {
-		"url": "http://localhost:5454/city/v2/search", 
-		"headers": {} // if any auth header required for your api(optional). 
+```json
+{
+	"source": {
+		"url": "http://localhost:5454/city/v2/search",
+		"headers": {}
 	}
+}
 ```
 API should return data in below format : 
 
-```
-[
-{
-"searchKey": "searchable value",
-"name": "text message which you want display/send into conversation."
-"metadata": {"key":"value"}//that you want to send with text message.
-},
-.
-.
-.
-}
+```javascript
+[{
+    "searchKey": "searchable value",
+    "name": "text message which you want display/send into conversation.",
+    "metadata": {"key":"value"}//optional, any extra information you want to send with message
+}]
 ```
 
   
