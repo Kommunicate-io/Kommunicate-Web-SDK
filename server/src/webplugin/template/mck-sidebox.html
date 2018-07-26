@@ -710,8 +710,18 @@
 	</div>
 </div>
 
-<noscript>
-	<style>
-		#mck-sidebox, #mck-loc-box, #mck-gm-search-box, #mck-video-box, #km-chat-login-modal { visibility: visible; }
-	</style>
-</noscript>
+<script>
+// eventlistener to make ContentVisible after page is loaded
+window.addEventListener('kmInitilized', function() {
+  var mckSidebox = document.getElementById("mck-sidebox");
+  mckSidebox.style.visibility='visible';
+  var mckLocBox = document.getElementById("mck-loc-box");
+  mckLocBox.style.visibility='visible';
+  var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+  mckGmSearchBox.style.visibility='visible';
+  var mckVideoBox = document.getElementById("mck-video-box fade");
+  mckVideoBox.style.visibility='visible';
+  var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+  kmChatLoginModal.style.visibility='visible';
+}, false);
+</script>
