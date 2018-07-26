@@ -96,6 +96,7 @@ update users set role_type=0  where  type='3';
 SET SQL_SAFE_UPDATES=1;
 
 
+
 -- 23-july-2018
 
 -- create table if not exists team_invitation(id char(36) NOT NULL ,
@@ -104,3 +105,4 @@ SET SQL_SAFE_UPDATES=1;
 -- PRIMARY KEY (id)
 -- );
 alter table users add column email_subscription tinyint default 1;
+

@@ -2,7 +2,7 @@ const agileService= require('../agileCrm/agileService');
 const applozicClient = require('../utils/applozicClient');
 const logger = require('../utils/logger');
 
-// const userService = require("../users/userService");
+const userService = require("../users/userService");
 const integryService = require("../thirdpartyintegrations/integry/integryService");
 
 
