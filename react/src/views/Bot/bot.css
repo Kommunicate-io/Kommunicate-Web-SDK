@@ -139,3 +139,39 @@
     width: 100%;
   }
 }
+
+
+.upgrade-plan-bot-integration .integrations-icons-container {
+  flex-wrap: nowrap;
+}
+.upgrade-plan-bot-integration .integrations-icons.dialogflow {
+  border-right: 1px solid #cfcaca;
+}
+.upgrade-plan-bot-integration .integrations-icons {
+  padding: 0px 25px;
+}
+.upgrade-plan-bot-integration .upgrade-plan-available-integrations .bot-heading {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.2px;
+  color: #5c5a5a;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.upgrade-plan-bot-integration .upgrade-plan-available-integrations .bot-description, .upgrade-plan-bot-integration .upgrade-plan-available-integrations .bot-description>a {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.21;
+  letter-spacing: 0.2px;
+  color: #8a8989;
+}
+.upgrade-plan-bot-integration .upgrade-plan-available-integrations .bot-description>a {
+  font-weight: 500;
+  color: #5c5aa7;
+}
+
