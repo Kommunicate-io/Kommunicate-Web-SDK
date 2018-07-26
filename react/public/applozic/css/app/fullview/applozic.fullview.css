@@ -3392,6 +3392,7 @@ ol, ul {
 .km-new-conversation-header {
 	/* border-bottom: solid 1px #eaeaea; */
 	padding: 13px 0px 13px; 
+	margin-right: -10px;
 }
 .km-toolbar hr {
 	margin: 0px -10px; 
