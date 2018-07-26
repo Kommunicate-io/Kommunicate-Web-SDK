@@ -33,6 +33,9 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
+        if(!params.agentId){
+            params.agentId  = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
+        }
         var user=[{"userId":params.agentId,"groupRole":1},{"userId":"bot","groupRole":2}];
     
         if(params.botIds){
@@ -40,12 +43,13 @@ $applozic.extend(true,Kommunicate,{
                 user.push({"userId":params.botIds[i],"groupRole":2});
             }
         }
-        var groupName = params.groupName||kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId;
-       var conversationDetail = {
+        var groupName = params.conversationTitle || params.groupName||kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId;
+       var assignee = params.assignee || params.agentId;
+        var conversationDetail = {
            "groupName": groupName,
            "type":10,
            "agentId":params.agentId,
-           "assignee":params.assignee,
+           "assignee":assignee,
            "users": user,
            "clientGroupId":params.clientGroupId
        }

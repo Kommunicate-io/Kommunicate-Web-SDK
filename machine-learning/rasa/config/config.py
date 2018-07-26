@@ -4,3 +4,5 @@ def get_config(param):
         return import_module('config.default')
     else:
         return import_module('config.' + param)
+
+cron_key = 'FAQ_BOT'

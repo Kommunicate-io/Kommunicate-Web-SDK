@@ -109,6 +109,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 1
     },
     /**
+     * allconversation is being used for bot assignment. if value is 1, assign conversation to that bot.
      * available(1)/unavailable(0) to add into conversation.
      */
     allConversations: {

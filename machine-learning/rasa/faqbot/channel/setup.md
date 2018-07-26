@@ -18,4 +18,6 @@
 
 
 ### Run gunicorn
-   1. `gunicorn --workers 5 --threads 6 --timeout 75 --bind 0.0.0.0:5001 input_channel:app`
+   1. `gunicorn --workers 5 --threads 6 --timeout 90 --bind 0.0.0.0:5001 'input_channel:environment_setter(env = "")'`
+   2. `gunicorn --workers 5 --threads 6 --timeout 90 --bind 0.0.0.0:5001 'input_channel:environment_setter(env = "test")'`
+   3. `gunicorn --workers 5 --threads 6 --timeout 90 --bind 0.0.0.0:5001 'input_channel:environment_setter(env = "prod")'`

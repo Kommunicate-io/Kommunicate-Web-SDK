@@ -3,7 +3,7 @@ import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
 
 class ThirdPartyScripts extends Component {
-    
+
       componentDidMount(){
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
@@ -14,40 +14,40 @@ class ThirdPartyScripts extends Component {
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
-           
-            (function(d, m){ 
+
+            (function(d, m){
               let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true}
+              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true, emojilibrary : false}
               if(userId){
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().password;
               }
-              o.onInit=function(response) {   
-                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher'); 
+              o.onInit=function(response) {
+                var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
                 if (typeof window.$applozic !== "undefined" && typeof window.$applozic.template === "undefined" && typeof window.$kmApplozic !== "undefined" && typeof window.$kmApplozic.kmtemplate !== "undefined") {
-                  console.log("template not loaded"); 
+                  console.log("template not loaded");
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
                   window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
                  }
-                 
+
                 if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
                   null
                 } else {
 
                   if(sideboxHelpIcon) {
-                    sideboxHelpIcon.classList.add('vis'); 
-                    sideboxHelpIcon.classList.remove('n-vis'); 
+                    sideboxHelpIcon.classList.add('vis');
+                    sideboxHelpIcon.classList.remove('n-vis');
                   } else {
                     console.log("Sidebox chat not loaded");
                   }
-                  
+
                 }
 
                 if (currentPath.includes('/login') && mckSideboxLauncher) {
-                  mckSideboxLauncher.classList.add('vis'); 
+                  mckSideboxLauncher.classList.add('vis');
                   mckSideboxLauncher.classList.remove('n-vis');
                 }
-                 
+
                 document.querySelector(".mck-close-sidebox").onclick = function() {
                   if(mckSideboxLauncher) {
                     mckSideboxLauncher.classList.add('n-vis');
@@ -71,7 +71,7 @@ class ThirdPartyScripts extends Component {
             })(document, window.kommunicate || {});
           /*}*/
 
-            
+
 
           // hot jar script
             (function(h,o,t,j,a,r){
@@ -82,8 +82,8 @@ class ThirdPartyScripts extends Component {
                 r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
                 a.appendChild(r);
             })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-           
-           
+
+
            // Google Remarketing Tags
 
             window.dataLayer = window.dataLayer || [];
@@ -93,8 +93,8 @@ class ThirdPartyScripts extends Component {
 
             if(currentPath.includes('/setUpPage')) {
               gtag('event', 'conversion', { 'send_to': 'AW-828526638/kVwhCNXz4HsQrqCJiwM', 'value': 10.0, 'currency': 'USD' });
-            } 
-            
+            }
+
            //facebook pixel
            !function(f,b,e,v,n,t,s)
            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -103,7 +103,7 @@ class ThirdPartyScripts extends Component {
            n.queue=[];t=b.createElement(e);t.async=!0;
            t.src=v;s=b.getElementsByTagName(e)[0];
            s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-            window.fbq('init', '282023555639912'); 
+            window.fbq('init', '282023555639912');
             window.fbq('track', 'PageView');
 
             //Active Campaign script
@@ -129,7 +129,7 @@ class ThirdPartyScripts extends Component {
         document.body.appendChild(script);
 
 
-        //Start of HubSpot Embed Code 
+        //Start of HubSpot Embed Code
          const hubSpotScript = document.createElement("script");
          hubSpotScript.src = "//js.hs-scripts.com/4025922.js";
          hubSpotScript.async = true;
@@ -141,12 +141,12 @@ class ThirdPartyScripts extends Component {
         return (
           <div>
             <noscript>
-                <img height="1" width="1" 
+                <img height="1" width="1"
                     src="https://www.facebook.com/tr?id=282023555639912&ev=PageView&noscript=1"/>
             </noscript>
           </div>
         );
       }
     }
-    
+
     export default ThirdPartyScripts;

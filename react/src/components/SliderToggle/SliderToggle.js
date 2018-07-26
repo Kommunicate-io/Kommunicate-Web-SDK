@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 class SliderToggle extends Component {
   static defaultProps = {
@@ -24,9 +25,9 @@ class SliderToggle extends Component {
 }
 
 SliderToggle.propTypes = {
-	checked: React.PropTypes.bool,
-    disabled: React.PropTypes.bool,
-    handleOnChange: React.PropTypes.func.isRequired,
+	checked: PropTypes.bool,
+    disabled: PropTypes.bool,
+    handleOnChange: PropTypes.func.isRequired,
 };
 
 export default SliderToggle;

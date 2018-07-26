@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 export default class PlanDetails extends Component {
 
@@ -64,7 +65,7 @@ export default class PlanDetails extends Component {
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent apps</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Basic reporting</li>
                                     <li><i className="fa fa-check"></i> &nbsp;&nbsp;Welcome messages</li>
-                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;Quick replies</li>
+                                    <li><i className="fa fa-check"></i> &nbsp;&nbsp;90 days chat history</li>
                                 </ul>
                             </div> 
                         : PlanName === 'Launch' ? 
@@ -109,13 +110,16 @@ export default class PlanDetails extends Component {
                                     <ul>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Unlimited agents</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Bot integrations</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Quick Replies</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Away Messages</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Lead Collection</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Agent reporting</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Support email integration</li>
+                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Customizations</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Conversation routing</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;FAQ</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Liz bot</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;All integrations</li>
                                         <li><i className="fa fa-check"></i> &nbsp;&nbsp;Standard SLA</li>
-                                        <li><i className="fa fa-check"></i> &nbsp;&nbsp;Chat and email support</li>
                                     </ul>
                                 </div> 
                             </div> 

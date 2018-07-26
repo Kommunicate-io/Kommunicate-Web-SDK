@@ -7,7 +7,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
-import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
+import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
 
 
 
@@ -22,6 +22,7 @@ import { MEMORY_CACHING_TIME_DURATION } from '../utils/Constant'
  * @param {Object} userInfo.name
  * @param {String} userType
  */
+
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
@@ -33,7 +34,8 @@ const createCustomerOrAgent = (userInfo, userType) => {
 }
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
-  let loginType = 'email'
+  let loginType = 'email';
+  let  roletype = ROLE_TYPE.SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
@@ -44,13 +46,13 @@ const createCustomer = function (email, password, name, userName) {
     password = "VERY SECURE"
     loginType = 'oauth'
   }
-
   const signUrlBodyParameters = {
     userName,
     password,
     name,
     email,
-    loginType
+    loginType,
+    roletype 
   }
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
@@ -221,7 +223,7 @@ const notifyThatEmailIsSent = (options) => {
   return callSendEmailAPI(options)
     .then((response) => {
       if (response.data.code === 'SUCCESS') {
-        Notification.success('Email Sent successfully');
+        Notification.success('Invitation sent successfully');
         return "SUCCESS";
       }
     }).catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
@@ -967,7 +969,19 @@ const getApplication = () => {
   })
 
 }
-
+const deleteUserByUserId = (userName) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  userName = encodeURIComponent(userName);
+  let url = getConfig().kommunicateBaseUrl + '/users/?applicationId=' + appId + '&userName=' + userName + '&deactivate=' + true;
+  return Promise.resolve(axios.patch(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1022,5 +1036,6 @@ export {
   getConversationStatsByDayAndMonth,
   updateAppSetting,
   getAppSetting,
-  getApplication
+  getApplication,
+  deleteUserByUserId
 }

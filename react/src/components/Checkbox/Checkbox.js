@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 class Checkbox extends Component {
   static defaultProps = {
@@ -29,11 +30,11 @@ class Checkbox extends Component {
 }
 
 Checkbox.propTypes = {
-  checked: React.PropTypes.bool,
-  disabled: React.PropTypes.bool,
-  idCheckbox: React.PropTypes.string.isRequired,
-  label: React.PropTypes.string.isRequired,
-  handleOnChange: React.PropTypes.func.isRequired,
+  checked: PropTypes.bool,
+  disabled: PropTypes.bool,
+  idCheckbox: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
 };
 
 export default Checkbox;

@@ -4,26 +4,95 @@ from flask import Flask
 from pathlib import Path
 from subprocess import call, check_output
 from rasa_core.agent import Agent
+from rasa_core.policies.keras_policy import KerasPolicy
+from rasa_core.policies.fallback import FallbackPolicy
+from rasa_core.policies.memoization import MemoizationPolicy
 from rasa_core.channels.custom import *
 from rasa_core.interpreter import RasaNLUInterpreter
 from ruamel.yaml import YAML
 import boto3
 from keras import backend as K
 import botocore
-from conf.default import *
+import os
+import datetime
+from pymongo import MongoClient
 from distutils.dir_util import copy_tree
 
-s3 = boto3.resource('s3', aws_access_key_id=access_key, aws_secret_access_key=secret_access_key)
+from conf.config import get_config, cron_key, fallback_reply
 
-class AgentMap(object):
-    agent_map = {}
+app = Flask(__name__)
 
+def environment_setter(*args, **kwargs):
+    global env
+    envi = kwargs['env']
+    print(kwargs, end='\n\n\n\n\n\n\n')
+    if(envi == ''):
+        env = get_config(None)
+        print('environment loaded default')
+        # return app
+    else:
+        env = get_config(envi)
+        print('environment loaded ', envi)
+    return app
+
+
+def getNextSeqenceCount():
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    count = db.counter.find({'_id': 'knowledgebase_id'})
+
+    data = []
+    for i in count:
+        data.append(i)
+    data = data[0]
+
+    counter = data['sequence_value'] + 1
+
+    db.counter.update({
+        '_id': data['_id']
+    }, {
+        '$inc': {
+            'sequence_value': 1
+        }
+    }, upsert=False)
+    return counter
+
+
+def addQusInMongo(name, applicationId):
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    id = getNextSeqenceCount()
+    data = {
+        "id" : id,
+        "category" : "faq",
+        "name" : name,
+        "content" : None,
+        "created_at" : datetime.datetime.now(),
+        "updated_at" : datetime.datetime.now(),
+        "deleted_at" : None,
+        "user_name" : 'FAQ_Bot',
+        "applicationId" : applicationId,
+        "status": "un_answered",
+        "type": "faq"
+    }
+    db.knowledgebase.insert(data)
+    print("Question added to Mongo Database")
+
+
+'''class AgentMap(object):
+    agent_map = {}'''
+
+# #This is to create Log file to read logs from rasa
+# import logging
+# logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
 def get_abs_path(rel_path):
-    return os.path.join(base_customer_path, rel_path)
+    return os.path.join(env.base_customer_path, rel_path)
 
 #To upload data to AWS S3
 def upload_training_data(applicationKey):
+   s3 = env.s3
+   bucket_name = env.bucket_name
    filename = "../customers/" + applicationKey + "/faq_data.json"
    #filename[13:] will be "applicationKey + Individual File Name"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
@@ -34,23 +103,22 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def update_domain(intent, answer, flag, appkey):
+def add_domain(intent, answer, appkey):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
     bot_path = 'customers/' + appkey + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
-    if (flag == 0):
-        data['intents'].append(intent)
-        data['actions'].append('utter_' + intent)
+    data['intents'].append(intent)
+    data['actions'].append('utter_' + intent)
     data['templates']['utter_' + intent] = [answer]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
 
 
-def update_stories(intent, appkey):
+def add_stories(intent, appkey):
     num = str(random.randint(1, 2345678))
     bot_stories_path = 'customers/' + appkey + '/faq_stories.md'
 
@@ -62,7 +130,7 @@ def update_stories(intent, appkey):
     return
 
 
-def update_nludata(intent, questions, appkey):
+def add_nludata(intent, questions, appkey):
     data = {}
     with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
         data = json.load(json_file)
@@ -74,7 +142,84 @@ def update_nludata(intent, questions, appkey):
         json.dump(data, outfile, indent=3)
     return
 
+
+
+def update_domain(body):
+    delete_domain(intent=str(body['id']), appkey=body['applicationId'])
+    add_domain(intent=str(body['id']), answer=body['content'], appkey=body['applicationId'])
+    return
+
+
+def update_nludata(body):
+    delete_nludata(intent=str(body['id']), appkey=body['applicationId'])
+    add_nludata(intent=str(body['id']), questions=body['name'], appkey=body['applicationId'])
+    return
+
+
+def delete_domain(intent, appkey):
+    yaml = YAML(typ='rt')
+    yaml.default_flow_style = False
+    bot_path = 'customers/' + appkey + '/faq_domain.yml'
+    abs_bot_path = get_abs_path(bot_path)
+    file = Path(abs_bot_path)
+    data = yaml.load(open(abs_bot_path))
+    print(data['intents'])
+    index = data['intents'].index(intent)
+    del data['intents'][index]
+    index = data['actions'].index('utter_' + str(intent))
+    del data['actions'][index]
+    del data['templates']['utter_' + str(intent)]
+    yaml.indent(mapping=1, sequence=1, offset=0)
+    yaml.dump(data, file)
+    return
+
+
+def delete_story(intent, appkey):
+    base_path = 'customers/' + appkey
+    story_file = open(get_abs_path(base_path + '/faq_stories.md'), 'r')
+    story = story_file.read().split('\n')
+    temp_list = []
+    for i in range(0, len(story), 4):
+        temp_list.append(story[i:i + 3])
+    action = '* ' + str(intent)
+    index = -1
+    for i in range(len(temp_list)):
+        if temp_list[i][1] == action:
+            index = i
+            break
+    del temp_list[index]
+    a = []
+    for i in temp_list:
+        a.extend(i)
+    story_file = open(get_abs_path(base_path + '/faq_stories.md'), 'w')
+    print(a)
+    for i in range(1, len(a)+1):
+        story_file.write(a[i-1])
+        if(i != len(a)):
+            story_file.write('\n')
+            if(i%3 == 0):
+                story_file.write('\n')
+
+def delete_nludata(intent, appkey):
+    data = {}
+    with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
+        data = json.load(json_file)
+        temp_list = data["rasa_nlu_data"]["common_examples"]
+        c = []
+        for i in range(len(temp_list)):
+            if temp_list[i]['intent'] == intent:
+                c.append(i)
+        c.reverse()
+        for i in c:
+            del data["rasa_nlu_data"]["common_examples"][i]
+    with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
+        json.dump(data, outfile, indent=3)
+    return
+
+
 def load_training_data(applicationKey):
+    s3 = env.s3
+    bucket_name = env.bucket_name
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     path_customer = os.path.join(parent + "/customers/" + applicationKey)
     base_data = os.path.join(parent + "/customers/base-data")
@@ -97,6 +242,7 @@ def load_training_data(applicationKey):
             else:
                     # Something else has gone wrong.
                     raise
+    print('Data Loaded succesfully')
 
 def load_models(appkey):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
@@ -104,7 +250,7 @@ def load_models(appkey):
     if(os.path.isdir(path_model) is False):
         load_training_data(appkey)
         call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-        call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
+        train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
     return
 
 
@@ -113,19 +259,29 @@ def load_agent(application_key):
     load_models(application_key)
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
-    AgentMap.agent_map[application_key] = agent
+    #AgentMap.agent_map[application_key] = agent
     return agent
 
 
+def train_dialogue(domain_file, model_path, training_data_file):
+    fallback = FallbackPolicy(fallback_action_name="utter_default",
+                          core_threshold=env.nlu_threshold,
+                          nlu_threshold=env.core_threshold)
+    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    training_data = agent.load_data(training_data_file)
+
+    agent.train(training_data, epochs=300)
+    agent.persist(model_path)
+
+
 def get_customer_agent(application_key):
-    current_agent = AgentMap.agent_map.get(application_key)
-    if current_agent is None:
-        print("fetching agent for: " + application_key)
-        current_agent = load_agent(application_key)
+    #current_agent = AgentMap.agent_map.get(application_key)
+    #if current_agent is None:
+    print("fetching agent for: " + application_key)
+    current_agent = load_agent(application_key)
     return current_agent
 
 
-app = Flask(__name__)
 
 
 class KommunicateChatBot(OutputChannel):
@@ -136,7 +292,7 @@ class KommunicateChatBot(OutputChannel):
         self.authorization = data['authorization']
 
     def send_text_message(self, recipient_id, message):
-        send_message_url = applozic_endpoint + "/rest/ws/message/v2/send"
+        send_message_url = env.applozic_endpoint + "/rest/ws/message/v2/send"
 
         auth_headers = {
             "Accept": "application/json",
@@ -162,28 +318,35 @@ def index():
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     body = request.json
-    reply = get_customer_agent(body['applicationKey']).handle_message(body['message'])[0]['text']
+    K.clear_session()
+    agent = get_customer_agent(body['applicationKey'])
+    reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
     print ("sending message: " + reply)
+    #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
+    if(reply == fallback_reply):
+        addQusInMongo(body['message'], body['applicationKey'])
+
     outchannel.send_text_message('', reply)
     return reply
 
-@app.route("/faqdata", methods=["POST"])
-def getfaq():
+@app.route("/faq/add", methods=["POST"])
+def addfaq():
     body = request.json
-
+    body = body['data']
+    print(body)
     #Check if training data is present
     load_training_data(body["applicationId"])
 
     if(body['referenceId'] is None):
         intent = body['id']
-        update_domain(str(intent),body['content'],0,body['applicationId'])
-        update_stories(str(intent),body['applicationId'])
-        update_nludata(str(intent),body['name'],body['applicationId'])
+        add_domain(str(intent),body['content'],body['applicationId'])
+        add_stories(str(intent),body['applicationId'])
+        add_nludata(str(intent),body['name'],body['applicationId'])
     else:
         intent = body['referenceId']
         #update_domain(str(intent),body['content'],1,body['applicationKey'])
-        update_nludata(str(intent),body['name'],body['applicationId'])
+        add_nludata(str(intent),body['name'],body['applicationId'])
 
     #Upload the training data to s3 after updating
     print ('Uploading new data to s3..')
@@ -191,16 +354,70 @@ def getfaq():
 
     return jsonify({"Success":"We have more data!"})
 
+
+@app.route("/faq/delete",methods=["POST"])
+def deletefaq():
+    body = request.json
+    body = body['data']
+    print(body)
+     
+    #Check if training data is present
+    load_training_data(body['applicationId'])
+    
+    #Delete data for specified applicationId with id as intent
+    intent = str(body["id"])
+
+    delete_domain(intent, body['applicationId'])
+    delete_nludata(intent, body['applicationId'])
+    delete_story(intent, body['applicationId'])
+    
+    print("Data deleted succesfully")
+    
+    upload_training_data(body['applicationId'])
+    
+    return jsonify({"Success":"FAQ data has been deleted"})
+
+@app.route("/faq/update",methods=["POST"])
+def updatefaq():
+    body = request.json
+    body = body['data']
+    print(body)
+
+    #Check if training data is present
+    load_training_data(body['applicationId'])
+    
+    #To find the application id of request as it was not passed from node
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    data = db.knowledgebase.find_one({'id':body['id']})
+    print(data)
+    data = data['applicationId']
+    body['applicationId'] = data
+    #Check if training data is present
+    load_training_data(body["applicationId"])
+    
+    update_domain(body)
+    update_nludata(body)
+
+    upload_training_data(body['applicationId'])
+
+    return jsonify({"Success":"FAQ data has been updated"})
+
 @app.route("/train",methods=["POST"])
 def train_bots():
     body = request.json
+    last_run = body['lastRunTime']
     if(body['data'] is None):
         pass
     else:
         for appkey in body['data']:
             load_training_data(appkey)
             call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-            call(["python3 -m rasa_core.train -d ../customers/" + appkey + "/faq_domain.yml -s ../customers/" + appkey + "/faq_stories.md -o ../customers/" + appkey + "/models/dialogue --epochs 300"], shell=True)
-            agen = load_agent(appkey)
-            K.clear_session()
+            train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
+            #K.clear_session()
+        r = requests.post(env.cron_endpoint,
+                  headers={'content-type':'application/json'},
+                  data=json.dumps({"cronKey": cron_key,
+                                   "lastRunTime": last_run}))
+
     return jsonify({"Success":"The bots are now sentient!"})

@@ -17,6 +17,7 @@ import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import ReactModal from 'react-modal';
 import {PseudoNameImage} from '../../views/Faq/LizSVG';
+import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft'
 
 
 class Aside extends Component {
@@ -43,7 +44,8 @@ class Aside extends Component {
       },
       group: null,
       modalOpen: false,
-      hideInfoBox: false
+      hideInfoBox: false,
+      trialDaysLeftComponent: ""
     };
     this.dismissInfo = this.dismissInfo.bind(this);
   }
@@ -66,6 +68,10 @@ class Aside extends Component {
        //window.appHistory.push('/dashboard');
      }
      window.Aside = this;
+
+     this.setState({
+      trialDaysLeftComponent: <TrialDaysLeft />
+     })
      
   }
   componentWillMount() {
@@ -749,6 +755,9 @@ class Aside extends Component {
                               <i className="fa fa-flag-o fa-lg mt-2"></i>
                             </div>
                             */}
+                            <div className="trial-period-container">
+                              {this.state.trialDaysLeftComponent}
+                            </div>
                             
                             
                           </div>

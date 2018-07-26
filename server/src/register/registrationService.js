@@ -12,6 +12,7 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPassword;
 const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
+const ROLE_TYPE ={"SUPER_ADMIN": 0,"ADMIN":1,"AGENT":2,"BOT":3};
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
@@ -42,7 +43,7 @@ exports.createCustomer = customer => {
           console.log("persited in db", customer ? customer.dataValues : null);
           kmUser.customerId = customer ? customer.dataValues.id : null; // will remove
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
-          let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
+          let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
           // create default bot plateform
 
           Promise.all([botPlatformClient.createBot({
@@ -141,6 +142,7 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   userObject.name = applozicUser.displayName;
   userObject.brokerUrl = applozicUser.brokerUrl;
   userObject.userKey = applozicUser.userKey;
+  userObject.roletype =(type === 2)? ROLE_TYPE.BOT :ROLE_TYPE.ADMIN;
 
   return userObject;
 };

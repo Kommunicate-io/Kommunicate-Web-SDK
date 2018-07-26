@@ -12,7 +12,7 @@ function getJsCode (){
     options.appId = userSession.application.applicationId;
     options.isAnonymousChat=true;
     //options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
-    
+
     if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){
       options.conversationTitle = userSession.adminDisplayName;
     } else if(localStorage.getItem("agentName")&& localStorage.getItem("agentName")!="undefined"&& localStorage.getItem("agentName")!="null"){
@@ -25,10 +25,10 @@ function getJsCode (){
     // options.agentId = CommonUtils.getUrlParameter(search, "agentId");
     // options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
-  
-   
+
+
   var env = getEnvironmentId();
-  
+
   if(env=="test"||env=="development"){
     options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
   }
@@ -36,7 +36,7 @@ function getJsCode (){
   console.log(options);
 
 var jsScript= `<script type="text/javascript">
-    (function(d, m){ 
+    (function(d, m){
       var o = ${JSON.stringify(options)};
       var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
       s.src = "${getConfig().kommunicateApi.pluginUrl}";

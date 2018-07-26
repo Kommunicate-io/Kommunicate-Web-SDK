@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import routes from '../../routes';
+import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft'
 
 const findRouteName = url => routes[url];
 
@@ -45,6 +46,7 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
   return (
     <Breadcrumb>
       {items}
+      { paths[1] === '/conversations' ? " " : <TrialDaysLeft />}    
     </Breadcrumb>
   );
 };

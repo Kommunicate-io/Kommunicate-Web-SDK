@@ -556,7 +556,7 @@ export default class IntegratedBots extends Component {
                 </Modal>
 
                 {/* Modal for deleting already created bot */}
-                <Modal isOpen={this.state.deleteBotIntegrationModal} toggle={this.toggleDeleteBotIntegrationModal} className="modal-dialog">
+                <Modal isOpen={this.state.deleteBotIntegrationModal} toggle={this.toggleDeleteBotIntegrationModal} className="modal-dialog modal-dialog--delete-bot">
                   <ModalHeader toggle={this.toggleDeleteBotIntegrationModal}>
                     <span className="km-bot-delete-bot-modal-heading">Delete Integration</span>
                   </ModalHeader>

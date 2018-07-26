@@ -95,4 +95,14 @@ SET SQL_SAFE_UPDATES=0;
 update users set role_type=0  where  type='3';
 SET SQL_SAFE_UPDATES=1;
 
+
+
+-- 23-july-2018
+
+-- create table if not exists team_invitation(id char(36) NOT NULL ,
+-- status tinyint(2),
+-- invited_by varchar(50),
+-- PRIMARY KEY (id)
+-- );
 alter table users add column email_subscription tinyint default 1;
+

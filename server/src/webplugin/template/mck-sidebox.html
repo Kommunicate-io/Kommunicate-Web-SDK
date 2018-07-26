@@ -1,4 +1,4 @@
-<div id="mck-sidebox" class="mck-sidebox mck-box fade">
+<div id="mck-sidebox" class="mck-sidebox mck-box fade" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
 		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
 			<div id="mck-conversation-header" class="mck-conversation-header mck-truncate n-vis"></div>
@@ -175,7 +175,10 @@
 					</div>
 
 					<div id="mck-contact-loading" class="mck-loading">
-						<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" />
+						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
+						<svg class="spinner" width="48px" height="48px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+							<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+						 </svg>
 					</div>
 					<div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
 						<h3>No conversations yet!</h3>
@@ -206,7 +209,7 @@
 						<path d="M512 26c-.021-14.449-12.555-26-27-26L26 1c-7 .009-13.053 2.04-18 7a27.439 27.439 0 0 0-8 19v258c.009 7.005 3.04 13.053 8 18a27.514 27.514 0 0 0 19 8l459-1a25.874 25.874 0 0 0 26-26zm-55 0L256 166 55 27zM304.486 158.416L460 284l-408 1 155.333-126.584c5.722-4.439-11.276-25.438-17-21L27 271 26 39l223 153c2.244 1.551 4.394 3 7 3s5.751-1.437 8-3L485 38l1 233-165.514-133.584c-5.719-4.437-21.724 16.562-16 21z" data-name="Path 1" fill="#6b6767"/>
 					</svg>
 				</div>
-				
+
 				<div id="mck-collect-email" class="mck-collect-email">How may we reach you?</div>
 			</div>
 			<div id="mck-email-error-alert-box" class="n-vis">
@@ -216,7 +219,7 @@
 						<path d="M512 26c-.021-14.449-12.555-26-27-26L26 1c-7 .009-13.053 2.04-18 7a27.439 27.439 0 0 0-8 19v258c.009 7.005 3.04 13.053 8 18a27.514 27.514 0 0 0 19 8l459-1a25.874 25.874 0 0 0 26-26zm-55 0L256 166 55 27zM304.486 158.416L460 284l-408 1 155.333-126.584c5.722-4.439-11.276-25.438-17-21L27 271 26 39l223 153c2.244 1.551 4.394 3 7 3s5.751-1.437 8-3L485 38l1 233-165.514-133.584c-5.719-4.437-21.724 16.562-16 21z" data-name="Path 1" fill="#fff"/>
 					</svg>
 				</div>
-				<div id="mck-email-error-alert" class="mck-email-error-alert">Please enter a valid email ID</div>
+				<div id="mck-email-error-alert" class="mck-email-error-alert">It seems you have entered an invalid email</div>
 			</div>
 			<!-- Footer With Input Field -->
 			<div id="mck-sidebox-ft" class="mck-box-ft">
@@ -247,7 +250,7 @@
 							<div class="mck-form-group last last-child">
 								<label class="sr-only placeholder-text control-label" for="mck-textbox">Message</label>
 								<div id="mck-textbox-container" class="mck-textbox-container">
-									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-left n-vis">
+									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right">
 										<div class="mck-blk-12">
 											<button type="button" id="mck-btn-smiley" class="mck-btn mck-btn-smiley mck-btn-text-panel" title="Smiley">
 												<span class="mck-icon-smiley-blue"></span>
@@ -258,7 +261,8 @@
 										<div id="mck-attachmenu-box" class="mck-attach-menu">
 											<div id="mck-btn-attach" class="mck-dropdown-toggle mck-btn-attach mck-file-attach-label mck-btn mck-btn-text-panel" data-toggle="mckdropdown"
 											 aria-expanded="true" title="Attach File">
-												<span class="mck-icon-upload"></span>
+											 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.79 10.492" class="mck-icon-upload"><path fill="rgba(38,50,56,.52)" d="M0 7.212A3.278 3.278 0 0 0 5.6 9.53l5.57-5.57a2.05 2.05 0 0 0 .614-1.642 2.552 2.552 0 0 0-.769-1.574A2.287 2.287 0 0 0 7.796.591L3.177 5.207a1.31 1.31 0 0 0 .125 1.9 1.358 1.358 0 0 0 1.9.125l3.215-3.216a.4.4 0 0 0 .031-.546l-.142-.142a.369.369 0 0 0-.558.023l-3.21 3.217c-.105.105-.37.074-.569-.125-.057-.057-.336-.358-.124-.568l4.617-4.618a1.349 1.349 0 0 1 1.884.153 1.61 1.61 0 0 1 .5.983 1.11 1.11 0 0 1-.344.9l-5.57 5.571a2.335 2.335 0 0 1-3.3-3.3l4.201-4.209A.369.369 0 0 0 5.849.88l-.2-.2a.334.334 0 0 0-.487.011l-4.2 4.2a3.254 3.254 0 0 0-.96 2.317z" data-name="Path 3"/></svg>
+												<!-- <span class="mck-icon-upload"></span> -->
 											</div>
 											<ul id="mck-upload-menu-list" class="mck-dropup-menu mck-upload-menu-list mck-menu-right" role="menu">
 												<li>
@@ -280,7 +284,7 @@
 										</div>
 										<div id="mck-attachfile-box" class="mck-blk-12 n-vis">
 											<button id="mck-file-up2" type="button" class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel" title="Attach File">
-												<span class="mck-icon-upload"></span>
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.79 10.492" class="mck-icon-upload"><path fill="rgba(38,50,56,.52)" d="M0 7.212A3.278 3.278 0 0 0 5.6 9.53l5.57-5.57a2.05 2.05 0 0 0 .614-1.642 2.552 2.552 0 0 0-.769-1.574A2.287 2.287 0 0 0 7.796.591L3.177 5.207a1.31 1.31 0 0 0 .125 1.9 1.358 1.358 0 0 0 1.9.125l3.215-3.216a.4.4 0 0 0 .031-.546l-.142-.142a.369.369 0 0 0-.558.023l-3.21 3.217c-.105.105-.37.074-.569-.125-.057-.057-.336-.358-.124-.568l4.617-4.618a1.349 1.349 0 0 1 1.884.153 1.61 1.61 0 0 1 .5.983 1.11 1.11 0 0 1-.344.9l-5.57 5.571a2.335 2.335 0 0 1-3.3-3.3l4.201-4.209A.369.369 0 0 0 5.849.88l-.2-.2a.334.334 0 0 0-.487.011l-4.2 4.2a3.254 3.254 0 0 0-.96 2.317z" data-name="Path 3"/></svg>
 											</button>
 										</div>
 									</div>
@@ -304,8 +308,9 @@
 				</div>
 			</div>
 			<div class="mck-running-on n-vis">
+					<svg xmlns="http://www.w3.org/2000/svg" width="10" height="15" style="vertical-align: middle;"><path fill="#513DD8" fill-rule="nonzero" d="M7.69879975.54941587L5.81596948 6.3447902l3.87961917.47635733c.13377998.01642612.19891133.17720919.10092463.28401145l-7.24573967 7.4456573c-.05838132.06073652-.1713319.01291556-.14228864-.0853757l1.54838036-5.83643965-3.71239422-.45582469C.11069114 8.15675014.0455598 7.99596707.1435465 7.8891648L7.55445767.48076424c.06043478-.07746063.17133188-.01291553.14434208.06865163z"/></svg> by
 				<a class="mck-powered-by" href="https://www.kommunicate.io" target="_blank">
-					<span class="n-vis">Applozic Chat SDK</span>Powered by Kommunicate.io
+					<span class="n-vis">Applozic Chat SDK</span> Kommunicate.io
 				</a>
 			</div>
 		</div>
@@ -528,7 +533,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false">
+<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-md">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -567,7 +572,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false">
+<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -608,8 +613,7 @@
 		</div>
 	</div>
 </div>
-
-<div id="mck-video-box fade">
+<div id="mck-video-box fade" style="visibility: hidden;">
 	<div class="container applozic-vid-container n-vis">
 		<div class="row">
 			<div id="mck-vid-media" class="col-lg-12">
@@ -649,13 +653,13 @@
 		</div>
 	</div>
 </div>
-<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false">
+<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false" style="visibility: hidden;">
 	<div class="km-modal-dialog km-modal-sm">
 		<div class="km-modal-content">
 				<div class="mck-box-top mck-title">
 						<div class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate">
 							<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">
-								Kommunicate Support</div>		
+								Kommunicate Support</div>
 					</div>
 				<div class="blk-lg-2 mck-close-btn">
 					<button type="button" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
@@ -705,3 +709,9 @@
 		</div>
 	</div>
 </div>
+
+<noscript>
+	<style>
+		#mck-sidebox, #mck-loc-box, #mck-gm-search-box, #mck-video-box, #km-chat-login-modal { visibility: visible; }
+	</style>
+</noscript>
