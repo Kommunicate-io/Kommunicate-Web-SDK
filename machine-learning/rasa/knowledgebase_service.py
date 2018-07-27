@@ -53,7 +53,7 @@ for data in new_data:
             if data['deleted'] == True:
                 #raise req for faq bot to faq/delete
                 r = requests.post(env.rasa_endpoint+'faq/delete',headers={'content-type':'application/json'},data=data)
-                print('Data deleted from bot\'s database for applicationId :', data['applocationId'])
+                print('Data deleted from bot\'s database for applicationId :', data['applicationId'])
                 #delete data from knowledgebase
                 collection.remove({'_id':data_id})
             else:
