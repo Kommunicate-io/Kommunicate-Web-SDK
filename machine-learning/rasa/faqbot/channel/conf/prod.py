@@ -17,6 +17,8 @@ nlu_threshold = 0.45
 #end point of cron time stamp at Node
 cron_endpoint = 'https://api.kommunicate.io/crontime'
 
+#Kommunicate end  point (node address)
+node_endpoint = 'https://api-test.kommunicate.io/autosuggest/message'
 
 ###############################The data below is yet to be filled###############################
 
