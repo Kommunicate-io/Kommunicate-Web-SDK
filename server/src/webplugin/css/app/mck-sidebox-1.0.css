@@ -3240,7 +3240,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-loading {
 	position: absolute;
-	background-color:#fff;
+	background-color: #fff;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -3251,7 +3251,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: #fff;
 }
 
-.mck-loading>img {
+.mck-loading>img, .mck-loading>svg {
 	top: 0;
 	bottom: 0;
 	margin: auto;
@@ -5124,3 +5124,109 @@ margin-top: 243px;
 #mck-sidebox *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
 }
+
+
+.spinner {
+	-webkit-animation: rotator 1.4s linear infinite;
+			animation: rotator 1.4s linear infinite;
+  }
+
+  @-webkit-keyframes rotator {
+	0% {
+	  -webkit-transform: rotate(0deg);
+			  transform: rotate(0deg);
+	}
+	100% {
+	  -webkit-transform: rotate(270deg);
+			  transform: rotate(270deg);
+	}
+  }
+
+  @keyframes rotator {
+	0% {
+	  -webkit-transform: rotate(0deg);
+			  transform: rotate(0deg);
+	}
+	100% {
+	  -webkit-transform: rotate(270deg);
+			  transform: rotate(270deg);
+	}
+  }
+  .path {
+	stroke-dasharray: 187;
+	stroke-dashoffset: 0;
+	-webkit-transform-origin: center;
+			transform-origin: center;
+	-webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+			animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+  }
+
+  @-webkit-keyframes colors {
+	0% {
+	  stroke: #4285F4;
+	}
+	25% {
+	  stroke: #DE3E35;
+	}
+	50% {
+	  stroke: #F7C223;
+	}
+	75% {
+	  stroke: #1B9A59;
+	}
+	100% {
+	  stroke: #4285F4;
+	}
+  }
+
+  @keyframes colors {
+	0% {
+	  stroke: #4285F4;
+	}
+	25% {
+	  stroke: #DE3E35;
+	}
+	50% {
+	  stroke: #F7C223;
+	}
+	75% {
+	  stroke: #1B9A59;
+	}
+	100% {
+	  stroke: #4285F4;
+	}
+  }
+  @-webkit-keyframes dash {
+	0% {
+	  stroke-dashoffset: 187;
+	}
+	50% {
+	  stroke-dashoffset: 46.75;
+	  -webkit-transform: rotate(135deg);
+			  transform: rotate(135deg);
+	}
+	100% {
+	  stroke-dashoffset: 187;
+	  -webkit-transform: rotate(450deg);
+			  transform: rotate(450deg);
+	}
+  }
+  @keyframes dash {
+	0% {
+	  stroke-dashoffset: 187;
+	}
+	50% {
+	  stroke-dashoffset: 46.75;
+	  -webkit-transform: rotate(135deg);
+			  transform: rotate(135deg);
+	}
+	100% {
+	  stroke-dashoffset: 187;
+	  -webkit-transform: rotate(450deg);
+			  transform: rotate(450deg);
+	}
+  }
+
+	button {
+		min-width: 0;
+	}

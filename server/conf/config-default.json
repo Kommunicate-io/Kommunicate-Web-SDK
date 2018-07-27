@@ -29,7 +29,7 @@
         "dashboardHostUrl": "http://localhost:3000",
         "applozicHostUrl": "https://apps-test.applozic.com",
         "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail",
-        "rasafaq":"https://rasa-test.kommunicate.io/faqdata"
+        "rasaUrl":"https://rasa-test.kommunicate.io/"
     },
     "cache": {
         "hazelCache": {
@@ -91,11 +91,6 @@
     },
     "pluginProperties":{
         "pseudoNameEnabled": true
-    },
-    "rabbitmq":{
-        "host":"localhost",
-        "userName":"test",
-        "password":"test"
     },
     "rabbitmq":{
         "host":"localhost",

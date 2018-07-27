@@ -582,7 +582,9 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
-            applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+            applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
+              console.log("message: ", err.code)
+            });
           }
         })
         return result[0] == 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED";

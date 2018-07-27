@@ -7,5 +7,5 @@
   - utter_thanks
 
 ## story_3
-  * default
-    - utter_default
+* default
+  - utter_default

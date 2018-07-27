@@ -552,7 +552,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckMapLayout.init();
             if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
               mckMessageLayout.initEmojis();
-            }  
+            }
             else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
               document.getElementById('mck-btn-smiley-box').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
             }
@@ -1335,7 +1335,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             		return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+CUSTOM_CHAT_LAUNCHER+'</a></div>';
             	}else{
                 return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
               <style type="text/css">
                   .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
                   .km-launcher-logo-1{fill:#FFFFFF;}
@@ -1585,7 +1585,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
-                w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
+                //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
+                KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
             };
             _this.validateAppSession = function (userPxy) {
                 mckGroupLayout.init();

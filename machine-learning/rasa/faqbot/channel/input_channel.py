@@ -58,7 +58,7 @@ def getNextSeqenceCount():
     return counter
 
 
-def updateQusInMongo(name, applicationId):
+def addQusInMongo(name, applicationId):
     conn = MongoClient(env.uri)
     db = conn.kommunicate
     id = getNextSeqenceCount()
@@ -103,7 +103,7 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def update_domain(intent, answer, appkey):
+def add_domain(intent, answer, appkey):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
     bot_path = 'customers/' + appkey + '/faq_domain.yml'
@@ -118,7 +118,7 @@ def update_domain(intent, answer, appkey):
     return
 
 
-def update_stories(intent, appkey):
+def add_stories(intent, appkey):
     num = str(random.randint(1, 2345678))
     bot_stories_path = 'customers/' + appkey + '/faq_stories.md'
 
@@ -130,7 +130,7 @@ def update_stories(intent, appkey):
     return
 
 
-def update_nludata(intent, questions, appkey):
+def add_nludata(intent, questions, appkey):
     data = {}
     with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
         data = json.load(json_file)
@@ -141,6 +141,81 @@ def update_nludata(intent, questions, appkey):
     with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
+
+
+
+def update_domain(body):
+    delete_domain(intent=str(body['id']), appkey=body['applicationId'])
+    add_domain(intent=str(body['id']), answer=body['content'], appkey=body['applicationId'])
+    return
+
+
+def update_nludata(body):
+    delete_nludata(intent=str(body['id']), appkey=body['applicationId'])
+    add_nludata(intent=str(body['id']), questions=body['name'], appkey=body['applicationId'])
+    return
+
+
+def delete_domain(intent, appkey):
+    yaml = YAML(typ='rt')
+    yaml.default_flow_style = False
+    bot_path = 'customers/' + appkey + '/faq_domain.yml'
+    abs_bot_path = get_abs_path(bot_path)
+    file = Path(abs_bot_path)
+    data = yaml.load(open(abs_bot_path))
+    print(data['intents'])
+    index = data['intents'].index(intent)
+    del data['intents'][index]
+    index = data['actions'].index('utter_' + str(intent))
+    del data['actions'][index]
+    del data['templates']['utter_' + str(intent)]
+    yaml.indent(mapping=1, sequence=1, offset=0)
+    yaml.dump(data, file)
+    return
+
+
+def delete_story(intent, appkey):
+    base_path = 'customers/' + appkey
+    story_file = open(get_abs_path(base_path + '/faq_stories.md'), 'r')
+    story = story_file.read().split('\n')
+    temp_list = []
+    for i in range(0, len(story), 4):
+        temp_list.append(story[i:i + 3])
+    action = '* ' + str(intent)
+    index = -1
+    for i in range(len(temp_list)):
+        if temp_list[i][1] == action:
+            index = i
+            break
+    del temp_list[index]
+    a = []
+    for i in temp_list:
+        a.extend(i)
+    story_file = open(get_abs_path(base_path + '/faq_stories.md'), 'w')
+    print(a)
+    for i in range(1, len(a)+1):
+        story_file.write(a[i-1])
+        if(i != len(a)):
+            story_file.write('\n')
+            if(i%3 == 0):
+                story_file.write('\n')
+
+def delete_nludata(intent, appkey):
+    data = {}
+    with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
+        data = json.load(json_file)
+        temp_list = data["rasa_nlu_data"]["common_examples"]
+        c = []
+        for i in range(len(temp_list)):
+            if temp_list[i]['intent'] == intent:
+                c.append(i)
+        c.reverse()
+        for i in c:
+            del data["rasa_nlu_data"]["common_examples"][i]
+    with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
+        json.dump(data, outfile, indent=3)
+    return
+
 
 def load_training_data(applicationKey):
     s3 = env.s3
@@ -250,32 +325,83 @@ def webhook():
     print ("sending message: " + reply)
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
-        updateQusInMongo(body['message'], body['applicationKey'])
+        addQusInMongo(body['message'], body['applicationKey'])
 
     outchannel.send_text_message('', reply)
     return reply
 
-@app.route("/faqdata", methods=["POST"])
-def getfaq():
+@app.route("/faq/add", methods=["POST"])
+def addfaq():
     body = request.json
+    body = body['data']
+    print(body)
     #Check if training data is present
     load_training_data(body["applicationId"])
 
     if(body['referenceId'] is None):
         intent = body['id']
-        update_domain(str(intent),body['content'],body['applicationId'])
-        update_stories(str(intent),body['applicationId'])
-        update_nludata(str(intent),body['name'],body['applicationId'])
+        add_domain(str(intent),body['content'],body['applicationId'])
+        add_stories(str(intent),body['applicationId'])
+        add_nludata(str(intent),body['name'],body['applicationId'])
     else:
         intent = body['referenceId']
         #update_domain(str(intent),body['content'],1,body['applicationKey'])
-        update_nludata(str(intent),body['name'],body['applicationId'])
+        add_nludata(str(intent),body['name'],body['applicationId'])
 
     #Upload the training data to s3 after updating
     print ('Uploading new data to s3..')
     upload_training_data(body['applicationId'])
 
     return jsonify({"Success":"We have more data!"})
+
+
+@app.route("/faq/delete",methods=["POST"])
+def deletefaq():
+    body = request.json
+    body = body['data']
+    print(body)
+     
+    #Check if training data is present
+    load_training_data(body['applicationId'])
+    
+    #Delete data for specified applicationId with id as intent
+    intent = str(body["id"])
+
+    delete_domain(intent, body['applicationId'])
+    delete_nludata(intent, body['applicationId'])
+    delete_story(intent, body['applicationId'])
+    
+    print("Data deleted succesfully")
+    
+    upload_training_data(body['applicationId'])
+    
+    return jsonify({"Success":"FAQ data has been deleted"})
+
+@app.route("/faq/update",methods=["POST"])
+def updatefaq():
+    body = request.json
+    body = body['data']
+    print(body)
+
+    #Check if training data is present
+    load_training_data(body['applicationId'])
+    
+    #To find the application id of request as it was not passed from node
+    conn = MongoClient(env.uri)
+    db = conn.kommunicate
+    data = db.knowledgebase.find_one({'id':body['id']})
+    print(data)
+    data = data['applicationId']
+    body['applicationId'] = data
+    #Check if training data is present
+    load_training_data(body["applicationId"])
+    
+    update_domain(body)
+    update_nludata(body)
+
+    upload_training_data(body['applicationId'])
+
+    return jsonify({"Success":"FAQ data has been updated"})
 
 @app.route("/train",methods=["POST"])
 def train_bots():

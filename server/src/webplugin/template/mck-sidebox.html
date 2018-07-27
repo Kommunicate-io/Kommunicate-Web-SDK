@@ -1,4 +1,4 @@
-<div id="mck-sidebox" class="mck-sidebox mck-box fade">
+<div id="mck-sidebox" class="mck-sidebox mck-box fade" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
 		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
 			<div id="mck-conversation-header" class="mck-conversation-header mck-truncate n-vis"></div>
@@ -175,7 +175,10 @@
 					</div>
 
 					<div id="mck-contact-loading" class="mck-loading">
-						<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" />
+						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
+						<svg class="spinner" width="48px" height="48px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+							<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+						 </svg>
 					</div>
 					<div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
 						<h3>No conversations yet!</h3>
@@ -530,7 +533,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false">
+<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-md">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -569,7 +572,7 @@
 		</div>
 	</div>
 </div>
-<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false">
+<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm">
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
@@ -610,8 +613,7 @@
 		</div>
 	</div>
 </div>
-
-<div id="mck-video-box fade">
+<div id="mck-video-box fade" style="visibility: hidden;">
 	<div class="container applozic-vid-container n-vis">
 		<div class="row">
 			<div id="mck-vid-media" class="col-lg-12">
@@ -651,7 +653,7 @@
 		</div>
 	</div>
 </div>
-<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false">
+<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false" style="visibility: hidden;">
 	<div class="km-modal-dialog km-modal-sm">
 		<div class="km-modal-content">
 				<div class="mck-box-top mck-title">
@@ -707,3 +709,19 @@
 		</div>
 	</div>
 </div>
+
+<script>
+// eventlistener to make ContentVisible after page is loaded
+window.addEventListener('kmInitilized', function() {
+  var mckSidebox = document.getElementById("mck-sidebox");
+  mckSidebox.style.visibility='visible';
+  var mckLocBox = document.getElementById("mck-loc-box");
+  mckLocBox.style.visibility='visible';
+  var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+  mckGmSearchBox.style.visibility='visible';
+  var mckVideoBox = document.getElementById("mck-video-box fade");
+  mckVideoBox.style.visibility='visible';
+  var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+  kmChatLoginModal.style.visibility='visible';
+}, false);
+</script>
