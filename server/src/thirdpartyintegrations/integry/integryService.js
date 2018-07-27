@@ -15,12 +15,11 @@ exports.sendUserEventToIntegry = async function(eventName, data){
         logger.info('No subscription found for event ', eventName );
         return;
     }
-    return Promise.resolve(subscription.triggerUrl,getFormatedData(data)).then(response=>{
-        logger.info("respose received from Integry ", response);
+    return axios.post(subscription.triggerUrl,getFormatedData(data)).then(response=>{
+        logger.info("respose received from Integry ", response.status, response.data);
     }).catch(e=>{
         logger.error("error while creating user in integry", e);
     })
-
 }
 
 const getFormatedData=(data)=>{
