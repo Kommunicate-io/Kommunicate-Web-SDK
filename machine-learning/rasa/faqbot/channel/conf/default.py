@@ -23,5 +23,9 @@ nlu_threshold = 0.45
 #end point of cron time stamp at Node
 cron_endpoint = 'http://localhost:3999/crontime'
 
+#Kommunicate end  point (node address)
+node_endpoint = 'http://localhost:3999/autosuggest/message'
+
+
 #Credentials for MongoDB
 uri = "mongodb://localhost:27017/kommunicate"
