@@ -56,7 +56,7 @@ export default class TrialDaysLeft extends Component {
 
 
     customEventListener() {
-        window.dispatchEvent(new CustomEvent("openBillingModal",{detail:{"status": "success"},bubbles: true,cancelable: true}));
+        CommonUtils.triggerCustomEvent("openBillingModal",{detail:{"status": "success"},bubbles: true,cancelable: true});
     }
 
     render() {
