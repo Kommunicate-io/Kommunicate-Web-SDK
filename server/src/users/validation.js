@@ -14,6 +14,20 @@ const getBusinessHours ={
     applicationId:joi.string().required()
   }
 }
+module.exports.updatingInviteApiStatus ={
+  body:{
+    invitedBy: joi.string().required(),
+    invitedUser: joi.string().required(),
+    applicationId : joi.string().required(),
+	}
+}
+
+module.exports.getInvitedUser ={
+  query:{
+    appId :joi.string().required(),
+    userId :joi.string().required()
+  }
+}
 module.exports.createUser= {
   body:{
     name: joi.string(),
