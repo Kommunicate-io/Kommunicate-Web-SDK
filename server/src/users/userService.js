@@ -44,7 +44,7 @@ const getInvitedUser = (appId, userName) => {
   return getByUserNameAndAppId(userName,appId).then(user => {
     let criteria = {
       applicationId: appId,
-      invitedBy: user.id,
+      invitedBy: user.userKey,
     };
     return teammateInviteModel.findAll({ where: criteria }).then(result => {
       return result;
