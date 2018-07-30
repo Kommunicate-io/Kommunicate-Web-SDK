@@ -36,10 +36,11 @@ exports.getAllUsers = function (req, res) {
   })
 };
 
-exports.updatingInviteApiStatus = function(req,res){
+exports.inviteteam = function(req,res){
   var inviteobj = req.body;
-  var userName = req.query.userId;
-  return Promise.resolve(userService.updatingInviteApiStatus(inviteobj)).then(data =>{
+  var userName = req.body.userId;
+  var roleType =req.body.roleType;
+  return Promise.resolve(userService.inviteteam(inviteobj)).then(data =>{
     logger.info("Updated UserList",data);
     return res.status(200).json({ code: "SUCCESS", data: data });
   })
@@ -47,7 +48,7 @@ exports.updatingInviteApiStatus = function(req,res){
 
 exports.getInvitedUser = function(req,res){
   var appId = req.query.appId;
-  var userName = req.query.userId;
+  var userName = req.query.userName;
   return Promise.resolve(userService.getInvitedUser(appId,userName)).then(data =>{
     return res.status(200).json({ code: "SUCCESS", data: data });
     logger.info("Invited UserList",data);

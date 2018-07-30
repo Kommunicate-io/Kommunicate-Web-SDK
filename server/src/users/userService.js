@@ -54,7 +54,7 @@ const getInvitedUser = (appId, userName) => {
   });
 };
 
-const updatingInviteApiStatus =(inviteteam) =>{
+const inviteteam =(inviteteam) =>{
   return getByUserNameAndAppId(inviteteam.invitedBy,inviteteam.applicationId).then(user => {  
     inviteteam.invitedBy = user.userKey;
     inviteteam.status= 0;
@@ -628,7 +628,7 @@ exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;
-exports.updatingInviteApiStatus = updatingInviteApiStatus;
+exports.inviteteam = inviteteam;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

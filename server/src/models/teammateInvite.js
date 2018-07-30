@@ -25,6 +25,10 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.STRING(50),
         field: 'invited_user'
       },
+      roleType :{
+        type :DataTypes.INTEGER,
+        field: 'role_type'
+      },
       applicationId:{
           type: DataTypes.STRING(150),
           field: 'application_id'
