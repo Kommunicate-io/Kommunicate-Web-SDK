@@ -124,6 +124,25 @@ const CommonUtils = {
             }
             return data;
         }
+    },
+    triggerCustomEvent: function(eventName, options) {
+        options = typeof options != 'object' ? options : {}
+        options.bubbles = options.bubbles || true;
+        options.cancelable = options.cancelable || true;
+        if (navigator.userAgent.indexOf('MSIE') !== -1 ||
+        navigator.appVersion.indexOf('Trident/') > 0) {
+            /* Microsoft Internet Explorer detected in. */
+            var evt = document.createEvent('Event');
+            evt.initEvent(eventName, options.bubbles, options.cancelable);
+            window.dispatchEvent(evt);
+        } else {
+            //Custom event trigger
+            window.dispatchEvent(new CustomEvent(eventName, {
+                detail: options.data || {},
+                bubbles: options.bubbles || true,
+                cancelable: options.cancelable || true
+            }));
+        }	         
     }
 }
 

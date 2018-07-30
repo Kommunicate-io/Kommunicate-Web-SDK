@@ -22,7 +22,12 @@
 								<span id="mck-typing-label">typing...</span>
 							</div>
 						</div>
-						<div id="mck-btn-video-call" class="mck-videocall-btn  blk-lg-2 n-vis"></div>
+						<div id="mck-btn-video-call" class="mck-videocall-btn  blk-lg-2 n-vis">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+								<path d="M0 0h24v24H0z" fill="none"/>
+								<path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+							</svg>
+						</div>
 					</div>
 					<div id="mck-tab-conversation" class="mck-row">
 						<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
@@ -80,7 +85,10 @@
 					<div class="mck-row">
 						<div class="blk-lg-2 move-right">
 							<div class="mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
-								<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-menu.png" alt="Tab Menu">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+									<path d="M0 0h24v24H0z" fill="none"/>
+									<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+								</svg>
 							</div>
 							<ul id="mck-tab-menu-list" class="mck-dropdown-menu mck-tab-menu-box menu-right" role="menu">
 								<li class="mck-tab-message-option">
@@ -175,10 +183,10 @@
 					</div>
 
 					<div id="mck-contact-loading" class="mck-loading">
+							<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+								<circle class="mck-spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+							</svg>
 						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
-						<svg class="spinner" width="48px" height="48px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-							<circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-						 </svg>
 					</div>
 					<div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
 						<h3>No conversations yet!</h3>
@@ -267,14 +275,22 @@
 											<ul id="mck-upload-menu-list" class="mck-dropup-menu mck-upload-menu-list mck-menu-right" role="menu">
 												<li>
 													<a id="mck-file-up" href="#" class="mck-file-upload menu-item" title="File &amp; Photos">
-														<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-photo.png" class="menu-icon" alt="File &amp; Photos">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="menu-icon" fill="#818181">
+																<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+																<path d="M0 0h24v24H0z" fill="none"/>
+															</svg>
+														<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-photo.png" class="menu-icon" alt="File &amp; Photos"> -->
 														<span id="mck-file-up-label">Files &amp; Photos</span>
 													</a>
 												</li>
 												<li>
 													<a id="mck-btn-loc" href="#" class="menu-item mck-btn-loc" title="Share Location">
 														<div class="mck-menu-icon">
-															<span class="mck-icon-marker-blue"></span>
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mck-icon-marker-blue" fill="#818181">
+																	<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+																	<path d="M0 0h24v24H0z" fill="none"/>
+																</svg>
+															<!-- <span class="mck-icon-marker-blue"></span> -->
 														</div>
 														<span id="mck-share-loc-label">Share Location</span>
 													</a>
@@ -326,7 +342,10 @@
 				</div>
 				<div class="blk-lg-3 move-right mck-start-new-menu-item mck-tab-menu-box" style="display:none">
 					<div class="mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
-						<img src="MCK_STATICPATH/sidebox/css/app/images/icon-menu.png" alt="Tab Menu">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+							<path d="M0 0h24v24H0z" fill="none"/>
+							<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+						</svg>
 					</div>
 					<ul id="mck-start-new-menu-list" class="mck-dropdown-menu  menu-right" role="menu">
 						<li>
@@ -381,7 +400,10 @@
 						<div id="mck-no-search-contacts" class="mck-no-data-text mck-text-mutedn n-vis">No contacts yet!
 						</div>
 						<div id="mck-search-loading" class="mck-loading n-vis">
-							<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" />
+							<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+								<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+							</svg>
+							<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
 						</div>
 					</div>
 				</div>
@@ -411,7 +433,10 @@
 										<span id="mck-gc-overlay-label" class="mck-overlay-label">Add Group Icon</span>
 									</div>
 									<div id="mck-group-create-icon-loading" class="mck-loading n-vis">
-										<img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" />
+										<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+											<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+										</svg>
+										<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" /> -->
 									</div>
 									<input id="mck-group-icon-upload" class="mck-group-icon-upload n-vis" type="file" name="files[]">
 								</span>
@@ -471,14 +496,21 @@
 								<span id="mck-gi-overlay-label" class="mck-overlay-label">Change Group Icon</span>
 							</div>
 							<div id="mck-group-info-icon-loading" class="mck-loading vis">
-								<img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" />
+								<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+									<circle class="mck-spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" /> -->
 							</div>
 							<input id="mck-group-icon-change" class="mck-group-icon-change n-vis" type="file" name="file[]" />
 						</span>
 					</div>
 					<div class="mck-text-center">
 						<a id="mck-btn-group-icon-save" href="#" role="link" class="mck-btn-group-icon-save n-vis" title="Save">
-							<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+								<path fill="none" d="M0 0h24v24H0z"/>
+								<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+							</svg>
+							<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save"> -->
 						</a>
 					</div>
 				</div>
@@ -489,10 +521,18 @@
 						</div>
 						<div class="blk-lg-3 mck-group-name-edit-icon">
 							<a id="mck-group-name-edit" href="#" role="link" class="mck-group-name-edit vis" title="Edit">
-								<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-write.png" alt="Edit">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+									<path d="M0 0h24v24H0z" fill="none"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-write.png" alt="Edit"> -->
 							</a>
 							<a id="mck-group-name-save" href="#" role="link" class="mck-group-name-save n-vis" title="Save">
-								<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path fill="none" d="M0 0h24v24H0z"/>
+									<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save"> -->
 							</a>
 						</div>
 					</div>
@@ -504,7 +544,11 @@
 					<div id="mck-group-add-member-box" class="mck-row mck-group-admin-options mck-group-add-member-box n-vis">
 						<a id="mck-group-add-member" class="mck-group-add-member" href="#">
 							<div class="blk-lg-3">
-								<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M0 0h24v24H0z" fill="none"/>
+									<path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member"> -->
 							</div>
 							<div class="blk-lg-9">Add Member</div>
 						</a>
@@ -577,7 +621,11 @@
 		<div class="mck-box-content">
 			<div class="mck-box-top mck-row">
 				<div class="blk-lg-3">
-					<img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<path d="M0 0h24v24H0z" fill="none"/>
+						<path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+					</svg>
+					<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member"> -->
 				</div>
 				<div class="blk-lg-7">
 					<h4 class="mck-box-title">Add Member</h4>
@@ -606,7 +654,10 @@
 						</div>
 					</div>
 					<div id="mck-gms-loading" class="mck-loading n-vis">
-						<img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" />
+						<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+							<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+						</svg>
+						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
 					</div>
 				</div>
 			</div>
@@ -711,17 +762,33 @@
 </div>
 
 <script>
-// eventlistener to make ContentVisible after page is loaded
-window.addEventListener('kmInitilized', function() {
-  var mckSidebox = document.getElementById("mck-sidebox");
-  mckSidebox.style.visibility='visible';
-  var mckLocBox = document.getElementById("mck-loc-box");
-  mckLocBox.style.visibility='visible';
-  var mckGmSearchBox = document.getElementById("mck-gm-search-box");
-  mckGmSearchBox.style.visibility='visible';
-  var mckVideoBox = document.getElementById("mck-video-box fade");
-  mckVideoBox.style.visibility='visible';
-  var kmChatLoginModal = document.getElementById("km-chat-login-modal");
-  kmChatLoginModal.style.visibility='visible';
-}, false);
+	if(navigator.userAgent.indexOf('MSIE')!==-1
+|| navigator.appVersion.indexOf('Trident/') > 0){
+	var mckSidebox = document.getElementById("mck-sidebox");
+	mckSidebox.style.visibility='visible';
+	var mckLocBox = document.getElementById("mck-loc-box");
+	mckLocBox.style.visibility='visible';
+	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+	mckGmSearchBox.style.visibility='visible';
+	var mckVideoBox = document.getElementById("mck-video-box fade");
+	mckVideoBox.style.visibility='visible';
+	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+	kmChatLoginModal.style.visibility='visible';
+} else {
+	// eventlistener to make ContentVisible after page is loaded
+	window.addEventListener('kmInitilized', function() {
+	var mckSidebox = document.getElementById("mck-sidebox");
+	mckSidebox.style.visibility='visible';
+	var mckLocBox = document.getElementById("mck-loc-box");
+	mckLocBox.style.visibility='visible';
+	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+	mckGmSearchBox.style.visibility='visible';
+	var mckVideoBox = document.getElementById("mck-video-box fade");
+	mckVideoBox.style.visibility='visible';
+	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+	kmChatLoginModal.style.visibility='visible';
+	}, false);
+
+}
+
 </script>
