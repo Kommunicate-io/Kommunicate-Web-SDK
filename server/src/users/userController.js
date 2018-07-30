@@ -37,7 +37,6 @@ exports.getAllUsers = function (req, res) {
 };
 
 exports.updatingInviteApiStatus = function(req,res){
-  logger.info("request received ");
   var inviteobj = req.body;
   var userName = req.query.userId;
   return Promise.resolve(userService.updatingInviteApiStatus(inviteobj)).then(data =>{
@@ -47,7 +46,6 @@ exports.updatingInviteApiStatus = function(req,res){
 }
 
 exports.getInvitedUser = function(req,res){
-  logger.info("request received ");
   var appId = req.query.appId;
   var userName = req.query.userId;
   return Promise.resolve(userService.getInvitedUser(appId,userName)).then(data =>{
