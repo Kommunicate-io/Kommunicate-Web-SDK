@@ -29,8 +29,7 @@ module.exports.updateInviteStatus ={
 
 module.exports.getInvitedUser ={
   query:{
-    appId :joi.string().required(),
-    userName :joi.string().required()
+    appId :joi.string().required()
   }
 }
 module.exports.createUser= {

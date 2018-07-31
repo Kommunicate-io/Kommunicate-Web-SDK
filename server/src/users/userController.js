@@ -55,8 +55,7 @@ exports.updateInviteStatus =function(req,res){
 
 exports.getInvitedUser = function(req,res){
   var appId = req.query.appId;
-  var userName = req.query.userName;
-  return Promise.resolve(userService.getInvitedUser(appId,userName)).then(data =>{
+  return Promise.resolve(userService.getInvitedUser(appId)).then(data =>{
     return res.status(200).json({ code: "SUCCESS", data: data });
     logger.info("Invited UserList",data);
   })

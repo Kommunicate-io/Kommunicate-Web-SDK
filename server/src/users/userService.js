@@ -40,15 +40,10 @@ const getUserByName = userName => {
     });
   });
 };
-const getInvitedUser = (appId, userName) => {
-  return getByUserNameAndAppId(userName,appId).then(user => {
-    let criteria = {
-      applicationId: appId,
-      invitedBy: user.userKey,
-    };
-    return teammateInviteModel.findAll({ where: criteria }).then(result => {
+const getInvitedUser = (appId) => {
+
+    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
       return result;
-    })
   }).catch(err => {
     throw err;
   });
