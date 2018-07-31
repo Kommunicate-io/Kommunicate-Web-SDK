@@ -3,8 +3,9 @@ import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } fr
 import isEmail from 'validator/lib/isEmail';
 import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
-import UserItem from '../UserItem/'
-import {notifyThatEmailIsSent, getUsersByType} from '../../utils/kommunicateClient' ;
+import UserItem from '../UserItem/';
+import InvitedUsersList from './InvitedUsersList';
+import {notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId} from '../../utils/kommunicateClient' ;
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
@@ -49,7 +50,8 @@ class Integration extends Component {
         hideErrorMessage:true,
         existingAndActiveUsers : [],
         isAgentSelected:true,
-        isAdminSelected:false
+        isAdminSelected:false,
+        invitedUser :[]
       };
       this.getUsers  = this.getUsers.bind(this);
       window.addEventListener("kmFullViewInitilized",this.getUsers,true);
@@ -58,8 +60,8 @@ class Integration extends Component {
 
   }
   componentWillMount() {
+    this.getInvitedUsers();
     this.getUsers();
-    
     let userSession = CommonUtils.getUserSession();
     let adminUserName = userSession.adminUserName;
     let loggedInUserRoleType = userSession.roletype;
@@ -88,6 +90,17 @@ class Integration extends Component {
       }
     });
   }
+  getInvitedUsers = () => {
+    let invitedUser = [];
+    return Promise.resolve(getInvitedUserByApplicationId()).then(response => {
+      response.forEach(item => {
+        invitedUser.push({userId:item.invitedUser, roleType:item.roleType, status:item.status});
+      })
+      this.setState({invitedUser:invitedUser});
+    }).catch(err => {
+      console.log("error while fetching welcome message", err);
+    })
+  }
   showEmailInput=(e)=>{
     e.preventDefault();
     this.setState({emailInstructions : true})
@@ -100,7 +113,6 @@ class Integration extends Component {
     this.setState({ modalIsOpen: false });
     this.handleAgentRadioBtn();
   };
-
   sendEmail = (e) => {
     let email = this.state.email;
     let existingAndActiveUsers = this.state.existingAndActiveUsers;
@@ -266,6 +278,9 @@ class Integration extends Component {
       </div>
      </div>  
     )
+    var invitedUserList = this.state.invitedUser.map((user,index)=> {
+      return <InvitedUsersList key={index} user={user} index={index} />
+    }) 
     return (
       <div className="animated fadeIn teammate-table">
        <div className="row">
@@ -309,23 +324,6 @@ class Integration extends Component {
                 </div>  
               <span onClick={this.onCloseModal}><CloseButton /></span>
               </Modal>
-             {/* <div className="card-block">
-                 <label className="form-control-label invite-team" htmlFor="invite">Invite Your Team</label>
-                 <div className="col-md-9 row email-field-wrapper ">
-                 <div className="form-group col-md-5 multiple-email-box">
-                   {this.state.multipleEmailAddress.map((email, i) => (
-                     <div className="single-email-container" key={i}>
-                       <span>{email}</span>
-                       <span className="remove-email" onClick={() => {this.removeEmail(email)}}>| X</span>
-                     </div>
-                   ))}
-                   <input className="input-email" value={this.state.emailAddress} onKeyDown={this.checkForSpace} onChange={this.multipleEmailHandler}  placeholder="You can enter multiple emails here" style={{paddingLeft: "10px", borderRadius: "4px"}}/>
-                 </div>
-                 </div>
-             </div> */}
-              {/* <div className="card-block invite-btn-wrapper">
-                <button type="button" onClick={this.sendMail} className="km-button km-button--primary"><i className="fa fa-dot-circle-o"></i> Invite</button>
-              </div> */}
            </div>
          </div>
          <div className="col-md-12">
@@ -351,6 +349,7 @@ class Integration extends Component {
                    </tr>
                  </thead>
                  <tbody>
+                   {invitedUserList}
                    {result}
                  </tbody>
                </table>

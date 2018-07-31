@@ -154,6 +154,7 @@
 .team-displayname {
   margin-left: 14px;
   padding-top: 14px;
+  display: flex;
 }
 .teammates-description {
   font-size: 18px;
@@ -224,4 +225,9 @@
 .teammates-admin-permission-alert-wrapper {
   border-radius: 2px;
   background-color: #f4d480;
+}
+.team-data-allign .km-icon-wrapper {
+  padding-bottom: 12px;
+  padding-top: 12px;
+  margin-left: 15px;
 }

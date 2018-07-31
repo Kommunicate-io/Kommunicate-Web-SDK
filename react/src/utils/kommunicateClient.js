@@ -982,6 +982,33 @@ const deleteUserByUserId = (userName) => {
     throw { message: err };
   })
 }
+const getInvitedUserByApplicationId = () => {
+  let data =  [
+    {
+        "id": "558ee970-93d0-11e8-95d5-3d2bfed312a8",
+        "status": 0,
+        "roleType":2,
+        "invitedBy": "ac536fa0-f7ae-43e4-a23e-6cb977bb1547",
+        "invitedUser": "kusum@applozic.com",
+        "applicationId": "kommunicate-support",
+        "created_at": "2018-07-30T08:12:43.000Z",
+        "updated_at": "2018-07-30T08:12:43.000Z",
+        "deleted_at": null
+    },
+    {
+        "id": "c6c8f720-93d0-11e8-8b77-dd62bb3299fb",
+        "status": 0,
+        "roleType":2,
+        "invitedBy": "ac536fa0-f7ae-43e4-a23e-6cb977bb1547",
+        "invitedUser": "jithin@applozic.com",
+        "applicationId": "kommunicate-support",
+        "created_at": "2018-07-30T08:15:53.000Z",
+        "updated_at": "2018-07-30T08:15:53.000Z",
+        "deleted_at": null
+    }
+]
+return data
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1037,5 +1064,6 @@ export {
   updateAppSetting,
   getAppSetting,
   getApplication,
-  deleteUserByUserId
+  deleteUserByUserId,
+  getInvitedUserByApplicationId
 }
