@@ -45,11 +45,17 @@ exports.inviteteam = function(req,res){
     return res.status(200).json({ code: "SUCCESS", data: data });
   })
 }
+exports.inviteStatusUpdate =function(req,res){
+  var reqId = req.query.reqId;
+  var status = req.query.status;
+  return Promise.resolve(userService.inviteStatusUpdate(reqId,status)).then(data =>{
+    return res.status(200).json({code:"Success"});
+  })
+}
 
 exports.getInvitedUser = function(req,res){
   var appId = req.query.appId;
-  var userName = req.query.userName;
-  return Promise.resolve(userService.getInvitedUser(appId,userName)).then(data =>{
+  return Promise.resolve(userService.getInvitedUser(appId)).then(data =>{
     return res.status(200).json({ code: "SUCCESS", data: data });
     logger.info("Invited UserList",data);
   })

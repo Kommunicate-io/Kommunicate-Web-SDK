@@ -40,15 +40,10 @@ const getUserByName = userName => {
     });
   });
 };
-const getInvitedUser = (appId, userName) => {
-  return getByUserNameAndAppId(userName,appId).then(user => {
-    let criteria = {
-      applicationId: appId,
-      invitedBy: user.userKey,
-    };
-    return teammateInviteModel.findAll({ where: criteria }).then(result => {
+const getInvitedUser = (appId) => {
+
+    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
       return result;
-    })
   }).catch(err => {
     throw err;
   });
@@ -59,13 +54,22 @@ const inviteteam =(inviteteam) =>{
     inviteteam.invitedBy = user.userKey;
     inviteteam.status= 0;
     return teammateInviteModel.create(inviteteam).then(result=>{
-      return result.dataValues;
     }).catch(err => {
       logger.error("error while creating bot", err);
     });
   }).catch(err => {
     throw err;
   });
+}
+
+const inviteStatusUpdate = (reqId, reqstatus) => {
+  if (reqstatus) {
+    return teammateInviteModel.update({ status: reqstatus }, { where: { id: reqId } }).catch(err => {
+      throw err;
+    });
+  }
+  return "status not found";
+
 }
 
 /**
@@ -625,6 +629,7 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
+exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;

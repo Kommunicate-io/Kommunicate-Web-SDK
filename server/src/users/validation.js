@@ -21,11 +21,15 @@ module.exports.inviteteam ={
     applicationId : joi.string().required(),
 	}
 }
+module.exports.inviteStatusUpdate ={
+  query:{
+    reqId:joi.string().required(),
+  }
+}
 
 module.exports.getInvitedUser ={
   query:{
-    appId :joi.string().required(),
-    userName :joi.string().required()
+    appId :joi.string().required()
   }
 }
 module.exports.createUser= {
