@@ -551,10 +551,8 @@ var MCK_CLIENT_GROUP_MAP = [];
             mckNotificationService.init();
             mckMapLayout.init();
             if(EMOJI_LIBRARY) { // EMOJI_LIBRARY = true -> if we want to include the emoticons and the emoticon library
+              document.getElementById('mck-btn-smiley-box').classList.remove("n-vis");
               mckMessageLayout.initEmojis();
-            }
-            else {              // EMOJI_LIBRARY = false ->hide emoticon from chat widget
-              document.getElementById('mck-btn-smiley-box').getElementsByTagName('div')[0].setAttribute('class', 'n-vis');
             }
             if (IS_CALL_ENABLED) {
                 notificationtoneoption.loop = true;
@@ -1413,7 +1411,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                                 $applozic("#" + KM_ASK_USER_DETAILS_MAP[KM_ASK_USER_DETAILS[i]]).prop('required',true);
                             }
                         }
-                        $applozic("#km-chat-login-modal").css("display", "block");
+                        var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+                        kmChatLoginModal.style.visibility='visible';
+                        kmChatLoginModal.style.display='block';
                     } else {
                         _this.initialize(userPxy);
                     }
