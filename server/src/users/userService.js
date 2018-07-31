@@ -7,6 +7,7 @@ const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
 const registrationService = require("../register/registrationService");
 const bcrypt = require("bcrypt");
+const teammateInviteModel = require("../models").teammateInvite;
 let moment = require('moment-timezone');
 const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
@@ -39,6 +40,33 @@ const getUserByName = userName => {
     });
   });
 };
+const getInvitedUser = (appId, userName) => {
+  return getByUserNameAndAppId(userName,appId).then(user => {
+    let criteria = {
+      applicationId: appId,
+      invitedBy: user.userKey,
+    };
+    return teammateInviteModel.findAll({ where: criteria }).then(result => {
+      return result;
+    })
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const inviteteam =(inviteteam) =>{
+  return getByUserNameAndAppId(inviteteam.invitedBy,inviteteam.applicationId).then(user => {  
+    inviteteam.invitedBy = user.userKey;
+    inviteteam.status= 0;
+    return teammateInviteModel.create(inviteteam).then(result=>{
+      return result.dataValues;
+    }).catch(err => {
+      logger.error("error while creating bot", err);
+    });
+  }).catch(err => {
+    throw err;
+  });
+}
 
 /**
  * This method will catch USER_ALREADY_EXIST error, and update the role of that user to APPLICATION_WEB_ADMIN.
@@ -599,6 +627,8 @@ exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
+exports.getInvitedUser = getInvitedUser;
+exports.inviteteam = inviteteam;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

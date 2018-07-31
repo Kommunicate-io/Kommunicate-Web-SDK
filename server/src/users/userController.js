@@ -36,6 +36,25 @@ exports.getAllUsers = function (req, res) {
   })
 };
 
+exports.inviteteam = function(req,res){
+  var inviteobj = req.body;
+  var userName = req.body.userId;
+  var roleType =req.body.roleType;
+  return Promise.resolve(userService.inviteteam(inviteobj)).then(data =>{
+    logger.info("Updated UserList",data);
+    return res.status(200).json({ code: "SUCCESS", data: data });
+  })
+}
+
+exports.getInvitedUser = function(req,res){
+  var appId = req.query.appId;
+  var userName = req.query.userName;
+  return Promise.resolve(userService.getInvitedUser(appId,userName)).then(data =>{
+    return res.status(200).json({ code: "SUCCESS", data: data });
+    logger.info("Invited UserList",data);
+  })
+}
+
 exports.getUserByName = function(req,res) {
   const userName = req.params.userName;
   logger.info("request received to get a users : ",userName);
