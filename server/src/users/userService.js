@@ -59,13 +59,19 @@ const inviteteam =(inviteteam) =>{
     inviteteam.invitedBy = user.userKey;
     inviteteam.status= 0;
     return teammateInviteModel.create(inviteteam).then(result=>{
-      return result.dataValues;
     }).catch(err => {
       logger.error("error while creating bot", err);
     });
   }).catch(err => {
     throw err;
   });
+}
+
+const updateInviteStatus =(reqId,reqstatus)=>{
+  let status ={};
+  status.status = reqstatus;
+return teammateInviteModel.update(status,{where: {id:reqId}});
+
 }
 
 /**
@@ -625,6 +631,7 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
+exports.updateInviteStatus =updateInviteStatus;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;

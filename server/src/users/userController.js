@@ -45,6 +45,13 @@ exports.inviteteam = function(req,res){
     return res.status(200).json({ code: "SUCCESS", data: data });
   })
 }
+exports.updateInviteStatus =function(req,res){
+  var reqId = req.query.reqId;
+  var status = req.query.status;
+  return Promise.resolve(userService.updateInviteStatus(reqId,status)).then(data =>{
+    return res.status(200).json({code:"Success"});
+  })
+}
 
 exports.getInvitedUser = function(req,res){
   var appId = req.query.appId;
