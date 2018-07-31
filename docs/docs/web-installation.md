@@ -6,14 +6,8 @@ sidebar_label: Installation
 
 ## Overview:
 Kommunicate allows you to add live chat in your website that enables you to serve your website visitors and customers through conversation.<br>
-Installing Kommunicate is easy and fast. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
-Kommunicate can also be used with any of CMS.
-
-## Install on CMS:
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>
+Installing Kommunicate is fast and easy. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
+Kommunicate can also be used with any of [Website Builder](#install-on-website-builder).
 
 ## Install on web:  
 
@@ -67,3 +61,9 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |email | Email ID of the user. User will be notified on this email if not online|
 |chatLauncherHtml | Pass html for customize chat icon|
 |onInit| This takes a function which will be called after plugin initialized. it takes two parameter error and data.|
+
+## Install on website Builder:
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>
