@@ -94,9 +94,6 @@ class invitedUsersList extends Component {
                       </div>
                     </td>
                     <td>
-                      { roleType == ROLE_TYPE.SUPER_ADMIN &&
-                        <div className="teammates-user-role">Super Admin</div>
-                      }
                       { roleType == ROLE_TYPE.ADMIN &&
                         <div className="teammates-user-role">Admin</div>
                       }
@@ -105,9 +102,7 @@ class invitedUsersList extends Component {
                       }
                     </td>
                     <td>
-                        { status == 0 &&
-                          <span>Haven't signed up</span>
-                        }
+                        <span>Haven't signed up</span>
                     </td>
                     
                     <td className= "teammates-delete-icon"  >

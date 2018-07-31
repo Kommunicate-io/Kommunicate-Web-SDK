@@ -223,7 +223,6 @@ const notifyThatEmailIsSent = (options) => {
   return callSendEmailAPI(options)
     .then((response) => {
       if (response.data.code === 'SUCCESS') {
-        Notification.success('Invitation sent successfully');
         return "SUCCESS";
       }
     }).catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
@@ -983,31 +982,39 @@ const deleteUserByUserId = (userName) => {
   })
 }
 const getInvitedUserByApplicationId = () => {
-  let data =  [
-    {
-        "id": "558ee970-93d0-11e8-95d5-3d2bfed312a8",
-        "status": 0,
-        "roleType":2,
-        "invitedBy": "ac536fa0-f7ae-43e4-a23e-6cb977bb1547",
-        "invitedUser": "kusum@applozic.com",
-        "applicationId": "kommunicate-support",
-        "created_at": "2018-07-30T08:12:43.000Z",
-        "updated_at": "2018-07-30T08:12:43.000Z",
-        "deleted_at": null
-    },
-    {
-        "id": "c6c8f720-93d0-11e8-8b77-dd62bb3299fb",
-        "status": 0,
-        "roleType":2,
-        "invitedBy": "ac536fa0-f7ae-43e4-a23e-6cb977bb1547",
-        "invitedUser": "jithin@applozic.com",
-        "applicationId": "kommunicate-support",
-        "created_at": "2018-07-30T08:15:53.000Z",
-        "updated_at": "2018-07-30T08:15:53.000Z",
-        "deleted_at": null
+  
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let url = getConfig().kommunicateBaseUrl + '/users/invited/list?appId=' + appId 
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response.data.data;
     }
-]
-return data
+  }).catch(err => {
+    throw { message: err };
+  })
+}
+const assignRoleForInvitedUSer = (invitedUserEmail, roleType) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let loggedInUserId = userSession.userName
+  let url = getConfig().kommunicateBaseUrl + '/users/inviteteam'
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    data: {
+      "applicationId": userSession.application.applicationId,
+      "invitedBy": loggedInUserId,
+      "invitedUser":invitedUserEmail,
+      "roleType":roleType     
+    }
+  })).then((response) => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
 }
 export {
   createCustomer,
@@ -1065,5 +1072,6 @@ export {
   getAppSetting,
   getApplication,
   deleteUserByUserId,
-  getInvitedUserByApplicationId
+  getInvitedUserByApplicationId,
+  assignRoleForInvitedUSer
 }

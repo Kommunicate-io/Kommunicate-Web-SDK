@@ -5,7 +5,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import UserItem from '../UserItem/';
 import InvitedUsersList from './InvitedUsersList';
-import {notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId} from '../../utils/kommunicateClient' ;
+import {notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId, assignRoleForInvitedUSer} from '../../utils/kommunicateClient' ;
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
@@ -60,7 +60,7 @@ class Integration extends Component {
 
   }
   componentWillMount() {
-    this.getInvitedUsers();
+    // this.getInvitedUsers();
     this.getUsers();
     let userSession = CommonUtils.getUserSession();
     let adminUserName = userSession.adminUserName;
@@ -98,7 +98,7 @@ class Integration extends Component {
       })
       this.setState({invitedUser:invitedUser});
     }).catch(err => {
-      console.log("error while fetching welcome message", err);
+      console.log("error while fetching invited users list", err.message);
     })
   }
   showEmailInput=(e)=>{
@@ -115,15 +115,27 @@ class Integration extends Component {
   };
   sendEmail = (e) => {
     let email = this.state.email;
+    let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT ;
     let existingAndActiveUsers = this.state.existingAndActiveUsers;
     let isUserExists = existingAndActiveUsers.indexOf(email);
-    var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+    let mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
     
     if (isUserExists == -1) {
       if (email.match(mailformat)) {
         this.onCloseModal();
-        notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL" }).then(data => {
-        });
+        //  Old method to call API used to send email
+        // notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL" }).then(data => {
+        // });
+        return Promise.resolve(assignRoleForInvitedUSer(email,roleType)).then(response => {
+          // console.response(response);
+          this.onCloseModal();
+          Notification.success('Invitation sent successfully');
+          // this.getInvitedUsers();
+        }).catch(err => {
+          this.onCloseModal();
+          Notification.error("Something went wrong!")
+          console.log("error while inviting an user", err.message.response.data);
+        })
       } else {
         Notification.error(email + " is an invalid Email");
         return false;
@@ -133,7 +145,7 @@ class Integration extends Component {
     }
   }
 
-  // this method can be use in case of sending multiple invitation 
+  //this method not using now. this can be use in case of sending multiple invitation 
   sendMail=(e)=>{
      const _this =this;
      console.log(_this.state.email);
@@ -349,7 +361,7 @@ class Integration extends Component {
                    </tr>
                  </thead>
                  <tbody>
-                   {invitedUserList}
+                   {/* {invitedUserList} */}
                    {result}
                  </tbody>
                </table>
