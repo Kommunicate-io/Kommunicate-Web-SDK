@@ -21,7 +21,7 @@ module.exports.inviteteam ={
     applicationId : joi.string().required(),
 	}
 }
-module.exports.updateInviteStatus ={
+module.exports.inviteStatusUpdate ={
   query:{
     reqId:joi.string().required(),
   }

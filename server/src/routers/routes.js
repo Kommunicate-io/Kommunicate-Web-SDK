@@ -107,7 +107,7 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
-userRouter.get('/invite/updatestatus',validate(userValidation.updateInviteStatus),userController.updateInviteStatus);
+userRouter.get('/invite/updatestatus',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
 userRouter.get('/invited/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);

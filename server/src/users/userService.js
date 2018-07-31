@@ -62,10 +62,13 @@ const inviteteam =(inviteteam) =>{
   });
 }
 
-const updateInviteStatus =(reqId,reqstatus)=>{
-  let status ={};
-  status.status = reqstatus;
-return teammateInviteModel.update(status,{where: {id:reqId}});
+const inviteStatusUpdate = (reqId, reqstatus) => {
+  if (reqstatus) {
+    return teammateInviteModel.update({ status: reqstatus }, { where: { id: reqId } }).catch(err => {
+      throw err;
+    });
+  }
+  return "status not found";
 
 }
 
@@ -626,7 +629,7 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
-exports.updateInviteStatus =updateInviteStatus;
+exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;
