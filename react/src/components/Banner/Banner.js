@@ -9,7 +9,8 @@
 //isVisible = false(hide)/true(visible) 
 
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import './Banner.css';
 
 export default class Banner extends Component {

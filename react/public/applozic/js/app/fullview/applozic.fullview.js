@@ -1565,7 +1565,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.initSearch = function () {
 				$mck_contacts_content.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_content.removeClass('vis').addClass('n-vis');
-				$mck_group_info_tab.removeClass('vis').addClass('n-vis');
+				// $mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_search.removeClass('n-vis').addClass('vis');
 				$mck_search_inner.html('<ul id="km-search-list" class="km-search-list km-contact-list km-nav km-nav-tabs km-nav-stacked"></ul>');
 				if (MCK_CONTACT_ARRAY.length !== 0) {
@@ -1752,6 +1752,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					resetCustomerInfoTab();
+					resetClearbitInfoAndUserInfo();
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis');
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");

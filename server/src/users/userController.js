@@ -36,15 +36,12 @@ exports.getAllUsers = function (req, res) {
   })
 };
 
-exports.inviteteam = function(req,res){
-  var inviteobj = req.body;
-  var userName = req.body.userId;
-  var roleType =req.body.roleType;
-  return Promise.resolve(userService.inviteteam(inviteobj)).then(data =>{
-    logger.info("Updated UserList",data);
-    return res.status(200).json({ code: "SUCCESS", data: data });
-  })
-}
+exports.getInvitedAgentDetail = function(req,res){
+  var reqId = req.query.token;
+  return Promise.resolve(userService.getInvitedAgentDetail(reqId).then(data =>{
+    return res.status(200).json({code:"success",data:data});
+  }))
+};
 exports.inviteStatusUpdate =function(req,res){
   var reqId = req.query.reqId;
   var status = req.query.status;
