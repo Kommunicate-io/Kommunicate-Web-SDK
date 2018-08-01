@@ -507,11 +507,6 @@
 	background: #fff !important;
 }
 
-.mck-btn.focus, .mck-btn:focus, .mck-btn:hover {
-	color: #333;
-	text-decoration: none;
-}
-
 .mck-btn.active, .mck-btn:active {
 	background-image: none;
 	outline: 0;
@@ -5163,7 +5158,7 @@ margin-top: 243px;
 	transform-origin: center center;
 	margin: auto;
   }
-  
+
 .mck-spinner-path {
 	stroke-dasharray: 1, 200;
 	stroke-dashoffset: 0;
@@ -5171,14 +5166,14 @@ margin-top: 243px;
 	animation: mckSpinnerDash 1.5s ease-in-out infinite, mckSpinnerColor 6s ease-in-out infinite;
 	stroke-linecap: round;
 }
-  
+
 @-webkit-keyframes mckSpinnerRotate {
 	100% {
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
 	}
 }
-  
+
 @keyframes mckSpinnerRotate {
 	100% {
 		-webkit-transform: rotate(360deg);
@@ -5268,4 +5263,16 @@ margin-top: 243px;
 
 button {
 	min-width: 0;
+}
+
+.km-hide-logo {
+position: fixed;
+z-index: 2243000;
+bottom: 45px;
+right: 35px;
+-webkit-transform: translateZ(0);
+height: 56px;
+width: 56px;
+border-radius: 50%;
+box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
