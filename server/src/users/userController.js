@@ -36,6 +36,28 @@ exports.getAllUsers = function (req, res) {
   })
 };
 
+exports.getInvitedAgentDetail = function(req,res){
+  var reqId = req.query.token;
+  return Promise.resolve(userService.getInvitedAgentDetail(reqId).then(data =>{
+    return res.status(200).json({code:"success",data:data});
+  }))
+};
+exports.inviteStatusUpdate =function(req,res){
+  var reqId = req.query.reqId;
+  var status = req.query.status;
+  return Promise.resolve(userService.inviteStatusUpdate(reqId,status)).then(data =>{
+    return res.status(200).json({code:"Success"});
+  })
+}
+
+exports.getInvitedUser = function(req,res){
+  var appId = req.query.appId;
+  return Promise.resolve(userService.getInvitedUser(appId)).then(data =>{
+    return res.status(200).json({ code: "SUCCESS", data: data });
+    logger.info("Invited UserList",data);
+  })
+}
+
 exports.getUserByName = function(req,res) {
   const userName = req.params.userName;
   logger.info("request received to get a users : ",userName);

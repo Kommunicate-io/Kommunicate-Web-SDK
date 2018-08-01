@@ -7,6 +7,7 @@ const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
 const registrationService = require("../register/registrationService");
 const bcrypt = require("bcrypt");
+const teammateInviteModel = require("../models").teammateInvite;
 let moment = require('moment-timezone');
 const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
@@ -39,6 +40,58 @@ const getUserByName = userName => {
     });
   });
 };
+const getInvitedUser = (appId) => {
+
+    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
+      return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const getInvitedAgentDetail = (reqId) => {
+  return teammateInviteModel.find({ where: { id: reqId } }).then(result => {
+    return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const inviteTeam = (inviteteam) => {
+  return getByUserNameAndAppId(inviteteam.agentId, inviteteam.applicationId).then(user => {
+    var invites = []
+    inviteteam.invitedBy = user.userKey;
+    inviteteam.status = 0;
+
+    for (var i = 0; i < inviteteam.to.length; i++) {
+      inviteteam.invitedUser = inviteteam.to[i];
+      invites.push(inviteteam);
+    }
+    if (invites.length > 0) {
+      return teammateInviteModel.bulkCreate(invites).then(result => {//spread
+        logger.info("error while creating bot", result);
+        return result;
+      }).catch(err => {
+        logger.error("error while creating bot", err);
+        throw err;
+      });
+    }
+    return invites;
+
+  }).catch(err => {
+    throw err;
+  });
+}
+
+const inviteStatusUpdate = (reqId, reqstatus) => {
+  if (reqstatus) {
+    return teammateInviteModel.update({ status: reqstatus }, { where: { id: reqId } }).catch(err => {
+      throw err;
+    });
+  }
+  return "status not found";
+
+}
 
 /**
  * This method will catch USER_ALREADY_EXIST error, and update the role of that user to APPLICATION_WEB_ADMIN.
@@ -597,8 +650,12 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
+exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
+exports.getInvitedUser = getInvitedUser;
+exports.inviteTeam = inviteTeam;
+exports.getInvitedAgentDetail = getInvitedAgentDetail;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

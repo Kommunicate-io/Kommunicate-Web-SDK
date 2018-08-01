@@ -171,7 +171,6 @@ class UserItem extends Component {
         var conversationClass = this.props.hideConversation ? 'n-vis': 'vis';
         var user = this.props.user;
         let isOnline = this.props.isOnline;
-        // let isOffline = this.props.isOffline;
         let isAway = this.props.isAway;
         let roleType = this.props.roleType;
         var emailId = user.email;

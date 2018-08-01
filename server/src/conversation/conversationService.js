@@ -9,6 +9,7 @@ const logger = require('../utils/logger');
 const Sequelize = require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
 const { SQL_QUERIES } = require('../../query/query');
+const inAppMessageService = require('../application/inAppMsgService');
 
 /**
  * returns conversation list of given participent_user_Id
@@ -182,8 +183,16 @@ const addMemberIntoConversation = (data) => {
                             }
     
                         });*/
-                        if (customer.botRouting || !customer.agentRouting) {
-                            //default assign to bot
+                        if (customer.botRouting) {
+                            agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                            return { code: "SUCCESS", data: 'success' }
+                            // let groupInfo = { groupDetails: userIds };
+                            // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                            // return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
+                            //     logger.info('response', response.data)
+                            //     return { code: "SUCCESS", data: 'success' };
+                            // });
+                        } else if (!customer.agentRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                             let groupInfo = { groupDetails: userIds };
                             logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
@@ -193,7 +202,15 @@ const addMemberIntoConversation = (data) => {
                             });
                         } else {
                             logger.info("adding assignee in round robin fashion");
-                            return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header);
+                            return inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
+                                let onlineUser = onlineUsers.find(agent => agent.connected);
+                                if (onlineUser) {
+                                    console.log("online user: ", onlineUser)
+                                    return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
+                                } else {
+                                    return assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                                }
+                            });
                         }
                         // let groupInfo = { groupDetails: userIds };
                         // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
@@ -223,8 +240,8 @@ const addMemberIntoConversation = (data) => {
  * 2. Add the assignee into conversation.
  * 3. assign conversation to assignee
  */
-const assingConversationInRoundRobin = (groupId, userIds, appId, header) => {
-    return getConversationAssigneeFromMap(userIds, appId).then(assignTo => {
+const assingConversationInRoundRobin = (groupId, userIds, appId, header, onlineUsers) => {
+    return getConversationAssigneeFromMap(userIds, appId, onlineUsers).then(assignTo => {
         logger.info("got conversation agssignee : ", assignTo);
         let groupInfo = { groupDetails: [{ groupId: groupId, userId: assignTo, role: 1 }] };
         logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
@@ -273,23 +290,38 @@ const assignToDefaultAgent=(groupId, appId, userId, header)=>{
  * Making first item (userId) of array is current assignee and
  * shifting that to last item. then storing back to map.
  */
-const getConversationAssigneeFromMap = (userIds, key) => {
+const getConversationAssigneeFromMap = (userIds, key, users) => {
     //store map of appid and userids
-    let assignee = "";
+    let assignee = [];
     var mapPrifix = "userRoutingMap";
+    let userIdsArray = [];
     return cacheClient.getDataFromMap(mapPrifix, key).then(value => {
         if (value != null && value.userIds.length == userIds.length) {
-            let arr = value.userIds;
-            assignee = arr.shift();
-            arr.push(assignee);
-            userIds = arr;
+            // let arr = value.userIds;
+            // assignee = arr.shift();
+            // arr.push(assignee);
+            // userIds = arr;
+            userIdsArray = value.userIds;
         } else {
             logger.info("received nullfrom cache, adding default agent as assignee");
-            assignee = userIds[userIds.length - 1];
-        }
+            //assignee = userIds[userIds.length - 1];
+            userIdsArray = userIds;
+        } 
+        for (var i = 0; i < userIdsArray.length; i++) {
+            for (var index = 0; index < users.length; index++) {
 
-        cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIds });
-        return assignee;
+                if (userIdsArray[i] == users[index].userId&&users[index].connected) {
+                    assignee = userIdsArray.splice(i, 1);
+                    userIdsArray.push(assignee[0]);
+                    break;
+                }
+            }
+            if (assignee.length > 0) {
+                break;
+            }
+        }
+        cacheClient.setDataIntoMap(mapPrifix, key, { userIds: userIdsArray });
+        return assignee[0];
     });
 };
 
@@ -355,7 +387,16 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     });
                     if (assignee[0].type == 2) {
                         if (customer.agentRouting) {
-                            assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header);
+                            inAppMessageService.checkOnlineAgents(customer).then(onlineUsers=>{
+                                let onlineUser = onlineUsers.find(agent=>agent.connected);
+                                if(onlineUser){
+                                    console.log("online user: ", onlineUser)
+                                    assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
+                                }else{
+                                    assignToDefaultAgent(groupId, appId, customer.userName, agents.header);
+                                }
+                               return "success";
+                            });
                         } else {
                             assignToDefaultAgent(groupId, appId, customer.userName, agents.header);
                         }

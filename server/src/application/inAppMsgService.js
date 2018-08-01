@@ -354,7 +354,7 @@ exports.checkOnlineAgents=(customer)=>{
   }).then(agentsDetail=>{
     agentsDetail=agentsDetail||[];
     logger.info("got agent detail from applozic. checking if any agent is online..");
-    return agentsDetail.find(agent=>agent.connected);
+    return agentsDetail
   })
 }
 

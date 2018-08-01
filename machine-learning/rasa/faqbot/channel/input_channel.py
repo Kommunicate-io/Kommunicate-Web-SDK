@@ -36,47 +36,18 @@ def environment_setter(*args, **kwargs):
     return app
 
 
-def getNextSeqenceCount():
-    conn = MongoClient(env.uri)
-    db = conn.kommunicate
-    count = db.counter.find({'_id': 'knowledgebase_id'})
-
-    data = []
-    for i in count:
-        data.append(i)
-    data = data[0]
-
-    counter = data['sequence_value'] + 1
-
-    db.counter.update({
-        '_id': data['_id']
-    }, {
-        '$inc': {
-            'sequence_value': 1
-        }
-    }, upsert=False)
-    return counter
-
-
 def addQusInMongo(name, applicationId):
-    conn = MongoClient(env.uri)
-    db = conn.kommunicate
-    id = getNextSeqenceCount()
     data = {
-        "id" : id,
         "category" : "faq",
         "name" : name,
         "content" : None,
-        "created_at" : datetime.datetime.now(),
-        "updated_at" : datetime.datetime.now(),
-        "deleted_at" : None,
         "user_name" : 'FAQ_Bot',
         "applicationId" : applicationId,
         "status": "un_answered",
         "type": "faq"
     }
-    db.knowledgebase.insert(data)
-    print("Question added to Mongo Database")
+    resp = requests.post(url=env.node_endpoint, data=data)
+    print("Question added to Mongo Database : ", resp)
 
 
 '''class AgentMap(object):
@@ -333,7 +304,6 @@ def webhook():
 @app.route("/faq/add", methods=["POST"])
 def addfaq():
     body = request.json
-    body = body['data']
     print(body)
     #Check if training data is present
     load_training_data(body["applicationId"])
@@ -358,7 +328,6 @@ def addfaq():
 @app.route("/faq/delete",methods=["POST"])
 def deletefaq():
     body = request.json
-    body = body['data']
     print(body)
      
     #Check if training data is present
@@ -380,7 +349,6 @@ def deletefaq():
 @app.route("/faq/update",methods=["POST"])
 def updatefaq():
     body = request.json
-    body = body['data']
     print(body)
 
     #Check if training data is present

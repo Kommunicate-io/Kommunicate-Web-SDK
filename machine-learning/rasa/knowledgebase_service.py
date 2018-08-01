@@ -47,19 +47,19 @@ for data in new_data:
                 continue
             else:
                 #raise req to faq/add
-                r = requests.post(env.rasa_endpoint+'faq/add',headers={'content-type':'application/json'},data=json.dumps({'data':data}))
+                r = requests.post(env.rasa_endpoint+'faq/add',headers={'content-type':'application/json'},data=data)
                 print('Data added for applicationId :', data['applicationId'])
         else:
             if data['deleted'] == True:
                 #raise req for faq bot to faq/delete
-                r = requests.post(env.rasa_endpoint+'faq/delete',headers={'content-type':'application/json'},data=json.dumps({'data':data}))
-                print('Data deleted from bot\'s database for applicationId :', data['applocationId'])
+                r = requests.post(env.rasa_endpoint+'faq/delete',headers={'content-type':'application/json'},data=data)
+                print('Data deleted from bot\'s database for applicationId :', data['applicationId'])
                 #delete data from knowledgebase
                 collection.remove({'_id':data_id})
             else:
                 #raise req to faq/update
-                r = requests.post(env.rasa_endpoint+'faq/update',headers={'content-type':'application/json'},data=json.dumps({'data':data}))
-                print('Data updated for applicationId :', data['applocationId'])
+                r = requests.post(env.rasa_endpoint+'faq/update',headers={'content-type':'application/json'},data=data)
+                print('Data updated for applicationId :', data['applicationId'])
         print('\n\n\n\n')
 
 appkeys = list(appkeys)
