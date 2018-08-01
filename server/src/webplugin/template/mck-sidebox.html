@@ -261,7 +261,13 @@
 									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right">
 										<div class="mck-blk-12">
 											<button type="button" id="mck-btn-smiley" class="mck-btn mck-btn-smiley mck-btn-text-panel" title="Smiley">
-												<span class="mck-icon-smiley-blue"></span>
+												<!-- <span class="mck-icon-smiley-blue"></span> -->
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  class="mck-icon-smiley-blue">
+													<path fill="none" d="M0 0h24v24H0V0z"/>
+													<circle cx="15.5" cy="9.5" r="1.5" fill="rgba(38,50,56,.52)"/>
+													<circle cx="8.5" cy="9.5" r="1.5" fill="rgba(38,50,56,.52)"/>
+													<path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-6c.78 2.34 2.72 4 5 4s4.22-1.66 5-4H7z" fill="rgba(38,50,56,.52)"/>
+												</svg>
 											</button>
 										</div>
 									</div>
@@ -762,8 +768,7 @@
 </div>
 
 <script>
-	if(navigator.userAgent.indexOf('MSIE')!==-1
-|| navigator.appVersion.indexOf('Trident/') > 0){
+function getUserData(){
 	var mckSidebox = document.getElementById("mck-sidebox");
 	mckSidebox.style.visibility='visible';
 	var mckLocBox = document.getElementById("mck-loc-box");
@@ -774,21 +779,15 @@
 	mckVideoBox.style.visibility='visible';
 	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
 	kmChatLoginModal.style.visibility='visible';
+};
+	if(navigator.userAgent.indexOf('MSIE')!==-1
+|| navigator.appVersion.indexOf('Trident/') > 0){
+	getUserData();
 } else {
 	// eventlistener to make ContentVisible after page is loaded
 	window.addEventListener('kmInitilized', function() {
-	var mckSidebox = document.getElementById("mck-sidebox");
-	mckSidebox.style.visibility='visible';
-	var mckLocBox = document.getElementById("mck-loc-box");
-	mckLocBox.style.visibility='visible';
-	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
-	mckGmSearchBox.style.visibility='visible';
-	var mckVideoBox = document.getElementById("mck-video-box fade");
-	mckVideoBox.style.visibility='visible';
-	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
-	kmChatLoginModal.style.visibility='visible';
+		getUserData();
 	}, false);
-
 }
 
 </script>
