@@ -254,7 +254,7 @@ class Billing extends Component {
             }
         } else {
             var now = new Date();
-            var trialStarted = new Date(CommonUtils.getUserSession().application.createdAtTime);
+            var trialStarted = new Date(CommonUtils.getUserSession().applicationCreatedAt);
             var timeDiff = now.getTime() - trialStarted.getTime();
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
