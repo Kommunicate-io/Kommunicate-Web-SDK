@@ -5,7 +5,7 @@ import axios from 'axios';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import UserItem from '../UserItem/';
 import InvitedUsersList from './InvitedUsersList';
-import {notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId, assignRoleForInvitedUSer} from '../../utils/kommunicateClient' ;
+import {notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId} from '../../utils/kommunicateClient' ;
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
@@ -123,16 +123,11 @@ class Integration extends Component {
     if (isUserExists == -1) {
       if (email.match(mailformat)) {
         this.onCloseModal();
-        //  Old method to call API used to send email
-        // notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL" }).then(data => {
-        // });
-        return Promise.resolve(assignRoleForInvitedUSer(email,roleType)).then(response => {
+        return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
           // console.response(response);
-          this.onCloseModal();
           Notification.success('Invitation sent successfully');
           // this.getInvitedUsers();
         }).catch(err => {
-          this.onCloseModal();
           Notification.error("Something went wrong!")
           console.log("error while inviting an user", err.message.response.data);
         })
