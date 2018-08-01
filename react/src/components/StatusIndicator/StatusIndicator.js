@@ -1,10 +1,14 @@
-//display the user/bot status using StatusIndiactor
-// label : Online/Enable/Active -> indicator : success
-// label : Offline -> indicator : muted
-// label : Away -> indicator : warning
-// label : Disabled -> indicator : danger
-import React, { Component } from 'react';
-import PropTypes from 'prop-types'
+// display the user/bot status using StatusIndiactor. how to use ???
+
+//import StatusIndicator from '../../components/StatusIndicator/StatusIndicator.js';
+//Ex: <StatusIndicator label = {"Away"} indicator={"warning"} />
+
+// label = "Online"/"Enable"/"Active" -> indicator = "success"
+// label = "Offline" -> indicator = "muted"
+// label = "Away" -> indicator = "warning"
+// label = "Disabled" -> indicator = "danger"
+
+import React, { Component, PropTypes } from 'react';
 import './StatusIndicator.css';
 class StatusIndicator extends Component {
 

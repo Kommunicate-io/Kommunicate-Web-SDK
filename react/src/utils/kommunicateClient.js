@@ -223,7 +223,6 @@ const notifyThatEmailIsSent = (options) => {
   return callSendEmailAPI(options)
     .then((response) => {
       if (response.data.code === 'SUCCESS') {
-        Notification.success('Invitation sent successfully');
         return "SUCCESS";
       }
     }).catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
@@ -982,6 +981,41 @@ const deleteUserByUserId = (userName) => {
     throw { message: err };
   })
 }
+const getInvitedUserByApplicationId = () => {
+  
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let url = getConfig().kommunicateBaseUrl + '/users/invited/list?appId=' + appId 
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response.data.data;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
+const assignRoleForInvitedUSer = (invitedUserEmail, roleType) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let loggedInUserId = userSession.userName
+  let url = getConfig().kommunicateBaseUrl + '/users/inviteteam'
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    data: {
+      "applicationId": userSession.application.applicationId,
+      "invitedBy": loggedInUserId,
+      "invitedUser":invitedUserEmail,
+      "roleType":roleType     
+    }
+  })).then((response) => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
+      return response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1037,5 +1071,7 @@ export {
   updateAppSetting,
   getAppSetting,
   getApplication,
-  deleteUserByUserId
+  deleteUserByUserId,
+  getInvitedUserByApplicationId,
+  assignRoleForInvitedUSer
 }
