@@ -2337,7 +2337,7 @@ input:-ms-input-placeholder {
 
 @media screen and (min-width:1200px) and (max-width:1289px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 338px;
     background-repeat: no-repeat;
     background-position: right -5px top -4px;
@@ -2345,7 +2345,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1290px) and (max-width:1400px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 400px;
     background-repeat: no-repeat;
     background-position: right -5px top -34px;
@@ -2353,7 +2353,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1400px) and (max-width:1450px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 440px;
     background-repeat: no-repeat;
     background-position: right -5px top -44px;
@@ -2361,7 +2361,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1451px) and (max-width:1550px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 460px;
     background-repeat: no-repeat;
     background-position: right -5px top -84px;
@@ -2369,7 +2369,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1551px) and (max-width:1630px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 500px;
     background-repeat: no-repeat;
     background-position: right -5px top -94px;
@@ -2377,7 +2377,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1631px) and (max-width:1710px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 536px;
     background-repeat: no-repeat;
     background-position: right -5px top -164px;
@@ -2385,7 +2385,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1711px) and (max-width:1800px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 576px;
     background-repeat: no-repeat;
     background-position: right -5px top -204px;
@@ -2393,7 +2393,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1801px) and (max-width:1880px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 620px;
     background-repeat: no-repeat;
     background-position: right -5px top -254px;
@@ -2401,7 +2401,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:1881px) and (max-width:1990px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 660px;
     background-repeat: no-repeat;
     background-position: right -5px top -234px;
@@ -2409,7 +2409,7 @@ input:-ms-input-placeholder {
 }
 @media screen and (min-width:768px) and (max-width:1199px) {
   .homepage-beta-landing-page-section {
-    background-image: url(/assets/resources/images/colorful-bg2.svg);
+    /* background-image: url(/assets/resources/images/colorful-bg2.svg); */
     background-size: 320px;
     background-repeat: no-repeat;
     background-position: right -5px top -4px;
@@ -2445,17 +2445,22 @@ input:-ms-input-placeholder {
   left: 0;
 }
 
-.page-links-ul li:first-child>a, .page-links-ul li:nth-child(2)>a {
+.page-links-ul li>a, .page-links-ul li>a:visited, .page-links-ul li>a:active {
   color: #000
 }
-.page-links-ul li:first-child>a:hover, .page-links-ul li:nth-child(2)>a:hover {
+.page-links-ul li>a:hover {
   color: rgba(0, 0, 0, 0.5)
 }
-.sticky .page-links-ul li:first-child>a, .sticky .page-links-ul li:nth-child(2)>a {
+.sticky .page-links-ul li>a {
   color: #5c5aa7;
 }
-.sticky .page-links-ul li:first-child>a:hover, .sticky .page-links-ul li:nth-child(2)>a:hover {
+.sticky .page-links-ul li>a:hover {
   color: rgba(92, 90, 167, 0.5);
+}
+.nav-signup-button, .nav-signup-button:hover {
+  color: #2dd35c !important;
+    border: solid 1.4px #2dd35c;
+    background-color:transparent;
 }
 
 .features-cards-container {

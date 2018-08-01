@@ -7,6 +7,7 @@ const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
 const registrationService = require("../register/registrationService");
 const bcrypt = require("bcrypt");
+const teammateInviteModel = require("../models").teammateInvite;
 let moment = require('moment-timezone');
 const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
@@ -39,6 +40,37 @@ const getUserByName = userName => {
     });
   });
 };
+const getInvitedUser = (appId) => {
+
+    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
+      return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const inviteteam =(inviteteam) =>{
+  return getByUserNameAndAppId(inviteteam.invitedBy,inviteteam.applicationId).then(user => {  
+    inviteteam.invitedBy = user.userKey;
+    inviteteam.status= 0;
+    return teammateInviteModel.create(inviteteam).then(result=>{
+    }).catch(err => {
+      logger.error("error while creating bot", err);
+    });
+  }).catch(err => {
+    throw err;
+  });
+}
+
+const inviteStatusUpdate = (reqId, reqstatus) => {
+  if (reqstatus) {
+    return teammateInviteModel.update({ status: reqstatus }, { where: { id: reqId } }).catch(err => {
+      throw err;
+    });
+  }
+  return "status not found";
+
+}
 
 /**
  * This method will catch USER_ALREADY_EXIST error, and update the role of that user to APPLICATION_WEB_ADMIN.
@@ -597,8 +629,11 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
+exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
+exports.getInvitedUser = getInvitedUser;
+exports.inviteteam = inviteteam;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

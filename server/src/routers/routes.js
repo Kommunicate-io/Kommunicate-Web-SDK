@@ -107,12 +107,15 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
+userRouter.get('/invite/status/update',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
+userRouter.get('/invited/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.get('/chat/plugin/settings', userController.defaultPluginSettings);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
+userRouter.post('/inviteteam',validate(userValidation.inviteteam),userController.inviteteam);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
 userRouter.post('/:userName/subscribe/off-hours-message-notification',userController.subscribeOffHoursNotification);

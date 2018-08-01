@@ -258,7 +258,7 @@
 							<div class="mck-form-group last last-child">
 								<label class="sr-only placeholder-text control-label" for="mck-textbox">Message</label>
 								<div id="mck-textbox-container" class="mck-textbox-container">
-									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right">
+									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right n-vis">
 										<div class="mck-blk-12">
 											<button type="button" id="mck-btn-smiley" class="mck-btn mck-btn-smiley mck-btn-text-panel" title="Smiley">
 												<span class="mck-icon-smiley-blue"></span>
@@ -762,8 +762,8 @@
 </div>
 
 <script>
-	if(navigator.userAgent.indexOf('MSIE')!==-1
-|| navigator.appVersion.indexOf('Trident/') > 0){
+
+function showAfterLoad(){
 	var mckSidebox = document.getElementById("mck-sidebox");
 	mckSidebox.style.visibility='visible';
 	var mckLocBox = document.getElementById("mck-loc-box");
@@ -774,21 +774,14 @@
 	mckVideoBox.style.visibility='visible';
 	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
 	kmChatLoginModal.style.visibility='visible';
+};
+	if(navigator.userAgent.indexOf('MSIE')!==-1
+|| navigator.appVersion.indexOf('Trident/') > 0){
+	showAfterLoad();
 } else {
 	// eventlistener to make ContentVisible after page is loaded
 	window.addEventListener('kmInitilized', function() {
-	var mckSidebox = document.getElementById("mck-sidebox");
-	mckSidebox.style.visibility='visible';
-	var mckLocBox = document.getElementById("mck-loc-box");
-	mckLocBox.style.visibility='visible';
-	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
-	mckGmSearchBox.style.visibility='visible';
-	var mckVideoBox = document.getElementById("mck-video-box fade");
-	mckVideoBox.style.visibility='visible';
-	var kmChatLoginModal = document.getElementById("km-chat-login-modal");
-	kmChatLoginModal.style.visibility='visible';
+		showAfterLoad();
 	}, false);
-
 }
-
 </script>
