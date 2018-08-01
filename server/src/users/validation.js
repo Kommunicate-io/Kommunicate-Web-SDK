@@ -14,7 +14,7 @@ const getBusinessHours ={
     applicationId:joi.string().required()
   }
 }
-module.exports.inviteteam ={
+module.exports.inviteTeam ={
   body:{
     invitedBy: joi.string().required(),
     invitedUser: joi.string().required(),
@@ -24,6 +24,12 @@ module.exports.inviteteam ={
 module.exports.inviteStatusUpdate ={
   query:{
     reqId:joi.string().required(),
+  }
+}
+
+module.exports.getInvitedAgentDetail ={
+  query:{
+    token:joi.string().required()
   }
 }
 

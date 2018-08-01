@@ -7,7 +7,7 @@ const userService = require("../users/userService");
 const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl+"/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl+"/assets/resources/images/km-logo-new.png";
-let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&applicationId=:applicationId&token=:token?referer=:referer&email=:email"
+let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?invite=true&token=:token&referer=:referer"
 /*exports.sendMail =(req,res)=>{
     console.log("received request to send mail", req.body.to);
     if(!req.body.text && !req.body.html && !req.body.templateName){
@@ -61,21 +61,33 @@ let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl+"/signup?i
         res.status(500).json({code:"INTERNAL_SERVER_ERROR","message": "something went wrong"});
     });
 }*/
-exports.sendMail =(req,res)=>{
+exports.sendMail = (req, res) => {
     console.log("received request to send mail", req.body.to);
-    if(!req.body.text && !req.body.html && !req.body.templateName){
-        res.status(400).json({code:"BAD_REQUEST",message:"please provide text or html or templateName"});
+    if (!req.body.text && !req.body.html && !req.body.templateName) {
+        res.status(400).json({ code: "BAD_REQUEST", message: "please provide text or html or templateName" });
     }
-    let options = req.body;
-    return Promise.resolve(
-        options.templateName==='INVITE_TEAM_MAIL'? userService.getByUserNameAndAppId(options.agentId,options.applicationId):'').then(agent=>{
-            options=getEmailFormat(options, agent);
-        return mailService.sendMail(options).then(response=>{
-            res.status(200).json({code:"SUCCESS","message": "mail sent successfully to user "+req.body.to});
-        })
-    }).catch(err=>{
-        console.log("error while sending Email", err);
-        res.status(500).json({code:"INTERNAL_SERVER_ERROR","message": "something went wrong"});
+    var options = req.body;
+    var userName = req.body.agentId;
+    var roleType = req.body.roleType;
+    return Promise.resolve(userService.inviteTeam(options)).then(data => {
+        logger.info("Updated UserList", data);
+        return data;
+    }).then(data => {
+        let options = req.body;
+        for (var i = 0; i < data.length; i++) {
+            logger.info("data", data);
+            options.token = data[i].id;
+            Promise.resolve(
+                options.templateName === 'INVITE_TEAM_MAIL' ? userService.getByUserNameAndAppId(options.agentId, options.applicationId) : '').then(agent => {
+                    options = getEmailFormat(options, agent);
+                    return mailService.sendMail(options).then(response => {
+                    })
+                }).catch(err => {
+                    console.log("error while sending Email", err);
+                    res.status(500).json({ code: "INTERNAL_SERVER_ERROR", "message": "something went wrong" });
+                });
+        }
+        return res.status(200).json({ code: "SUCCESS", "message": "mail sent successfully to user " });
     });
 
 }
@@ -105,7 +117,7 @@ const getEmailFormat=(options,custInfo)=>{
                 templatePath = path.join(__dirname,"/inviteTeamTemplate.html"),
                 templateReplacement[":adminName"] = custInfo.companyName&&custInfo.companyName!=='' && null!==custInfo.companyName?options.agentName+" from "+custInfo.companyName:options.agentName,
                 templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
-                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":applicationId",options.applicationId).replace(":token",custInfo.apzToken).replace(":referer",options.agentId).replace(":email", options.to),
+                templateReplacement[":joinKommunicateUrl"] =joinKommunicateUrl.replace(":token",options.token).replace(":referer",options.agentId),
                 templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName!=='' && null!==custInfo.companyName? "from "+custInfo.companyName:"";
                 options.templatePath = templatePath,
                 options.templateReplacement = templateReplacement;

@@ -49,14 +49,35 @@ const getInvitedUser = (appId) => {
   });
 };
 
-const inviteteam =(inviteteam) =>{
-  return getByUserNameAndAppId(inviteteam.invitedBy,inviteteam.applicationId).then(user => {  
+const getInvitedAgentDetail = (reqId) => {
+  return teammateInviteModel.find({ where: { id: reqId } }).then(result => {
+    return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const inviteTeam = (inviteteam) => {
+  return getByUserNameAndAppId(inviteteam.agentId, inviteteam.applicationId).then(user => {
+    var invites = []
     inviteteam.invitedBy = user.userKey;
-    inviteteam.status= 0;
-    return teammateInviteModel.create(inviteteam).then(result=>{
-    }).catch(err => {
-      logger.error("error while creating bot", err);
-    });
+    inviteteam.status = 0;
+
+    for (var i = 0; i < inviteteam.to.length; i++) {
+      inviteteam.invitedUser = inviteteam.to[i];
+      invites.push(inviteteam);
+    }
+    if (invites.length > 0) {
+      return teammateInviteModel.bulkCreate(invites).then(result => {//spread
+        logger.info("error while creating bot", result);
+        return result;
+      }).catch(err => {
+        logger.error("error while creating bot", err);
+        throw err;
+      });
+    }
+    return invites;
+
   }).catch(err => {
     throw err;
   });
@@ -633,7 +654,8 @@ exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
 exports.getInvitedUser = getInvitedUser;
-exports.inviteteam = inviteteam;
+exports.inviteTeam = inviteTeam;
+exports.getInvitedAgentDetail = getInvitedAgentDetail;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;
