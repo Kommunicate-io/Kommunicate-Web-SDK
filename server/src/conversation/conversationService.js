@@ -1,5 +1,5 @@
 //const db = require("../models");
-//const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY, GROUP_INFO } = require('./conversationUtils');
+const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY, GROUP_INFO } = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 //const registrationService = require("../register/registrationService");
@@ -510,7 +510,7 @@ const createConversationFromMail = (req) => {
     let toAddresses = req.body.tos;
     let fromEmail = req.body.from;
     let messages = req.body.messages || [];
-    let groupInfo = GROUP_INFO;
+    let groupInfo = Object.assign({}, GROUP_INFO);
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
     if (!applicationId || messages.length == 0) {
         return "INVALID_PARAMETERS"
