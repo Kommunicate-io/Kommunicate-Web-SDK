@@ -1421,7 +1421,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                           kmAnonymousChatLauncher.classList.remove('n-vis');
                           kmAnonymousChatLauncher.classList.add('vis');
                         });
-                        document.getElementById("km-anonymous-chat-launcher").addEventListener("click", function(event){
+                        kmAnonymousChatLauncher.addEventListener("click", function(event){
                           event.preventDefault();
                           kmChatLoginModal.style.display='block';
                           kmAnonymousChatLauncher.classList.remove('vis');
