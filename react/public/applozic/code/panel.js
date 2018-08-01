@@ -57,12 +57,11 @@ $(document).ready(function() {
     });
 
     function getContactDetail(contactId){
-        $kmApplozic("#km-sidebar-display-name").html("");
-        $kmApplozic("#km-sidebar-user-email").html("");
+        resetCustomerInfoTab();
         var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
         $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
             var user = response.data[0];
-            resetCustomerInfoArea();     
+            resetClearbitInfoAndUserInfo();     
             var ul = document.getElementById("km-user-info-list");
            
             for (key in user.metadata) {
@@ -148,7 +147,7 @@ $(document).ready(function() {
 
 });
 
-function resetCustomerInfoArea(){
+function resetClearbitInfoAndUserInfo(){
     $("#km-user-info-list .km-clearbit-field").html('');
     $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
     $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
@@ -158,4 +157,9 @@ function resetCustomerInfoArea(){
     $("#km-user-info-metadata-wrapper").children('p').remove();
 
 }
+function resetCustomerInfoTab() {
+    $kmApplozic("#km-sidebar-display-name").html("");
+    $kmApplozic("#km-sidebar-user-email").html("");
+}
+
 
