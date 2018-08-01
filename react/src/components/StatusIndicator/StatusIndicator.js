@@ -8,7 +8,8 @@
 // label = "Away" -> indicator = "warning"
 // label = "Disabled" -> indicator = "danger"
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import './StatusIndicator.css';
 class StatusIndicator extends Component {
 
