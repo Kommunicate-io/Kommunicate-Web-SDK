@@ -1,4 +1,4 @@
-const CONVERSATION_STATUS_ARRAY = require('../conversation/conversationUtils').CONVERSATION_STATUS_ARRAY;
+/*const CONVERSATION_STATUS_ARRAY = require('../conversation/conversationUtils').CONVERSATION_STATUS_ARRAY;
 module.exports = (sequalize, DataTypes) => {
   return sequalize.define(
     "conversations",
@@ -17,7 +17,7 @@ module.exports = (sequalize, DataTypes) => {
       },
       /**
        * applozic group_id. fetch the group detail from applozic db using this Id 
-       */
+       *
       groupId: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -27,7 +27,7 @@ module.exports = (sequalize, DataTypes) => {
       /***
        *  this is the user who is involved in this conversation.
        * this is the user_name in applozic user table.
-       */
+       *
      participantUserId: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -67,3 +67,4 @@ module.exports = (sequalize, DataTypes) => {
     }
   );
 };
+*/

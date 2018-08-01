@@ -148,13 +148,13 @@ chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 
 //conversation router
-conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
-conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
-conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
-conversationRouter.get('/', conversationController.getConversationStats);
+// conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
+// conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
+// conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
+// conversationRouter.get('/', conversationController.getConversationStats);
+// conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
+//conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
-conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
-conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/v2/create', conversationController.createConversationFromMail);
 conversationRouter.post('/assignee/switch', conversationController.switchConversationAssignee);
 

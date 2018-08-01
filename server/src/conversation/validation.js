@@ -1,7 +1,7 @@
 const joi = require("joi");
 
 
-module.exports.getConversationList= {
+/* module.exports.getConversationList= {
     query:{
      userId:joi.string().required()
       }
@@ -17,7 +17,7 @@ module.exports.getConversationList= {
     }
   }
 
-  module.exports.getConversationListOfParticipent= {
+ module.exports.getConversationListOfParticipent= {
       param:{
         participantUserId:joi.string().required()
       },
@@ -26,7 +26,7 @@ module.exports.getConversationList= {
         // TODO type : user or agent. single API will work for bot user and agent  
         type:joi.string()
       }
-  }
+  }*/
 
   module.exports.addMemberIntoConversation= {
     body:{
@@ -34,7 +34,7 @@ module.exports.getConversationList= {
         userId:joi.string().required()
     }
   }
-  module.exports.updateConversation= {
+ /* module.exports.updateConversation= {
     body:{
         groupId:joi.number().integer().required(),
         appId:joi.string().required(),
@@ -60,4 +60,4 @@ module.exports.createConversationV2 = {
         'application-key': joi.string().required(),
         'authorization': joi.string().required()
     }
-}
+}*/

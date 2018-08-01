@@ -1,30 +1,30 @@
-const db = require("../models");
-const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY, GROUP_INFO } = require('./conversationUtils');
+//const db = require("../models");
+//const { CONVERSATION_STATUS, CONVERSATION_STATUS_ARRAY, GROUP_INFO } = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
-const registrationService = require("../register/registrationService");
+//const registrationService = require("../register/registrationService");
 const customerService = require('../customer/customerService');
 const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
-const Sequelize = require("sequelize");
+//const Sequelize = require("sequelize");
 const cacheClient = require("../cache/hazelCacheClient");
-const { SQL_QUERIES } = require('../../query/query');
+//const { SQL_QUERIES } = require('../../query/query');
 const inAppMessageService = require('../application/inAppMsgService');
 
 /**
  * returns conversation list of given participent_user_Id
  * @userId
  */
-const getConversationList = (participantUserId) => {
+// const getConversationList = (participantUserId) => {
 
-    console.log("request received to get conversation list of participent user: ", participantUserId);
-    return Promise.resolve(db.Conversation.findAll({ where: { participantUserId: participantUserId } }));
+//     console.log("request received to get conversation list of participent user: ", participantUserId);
+//     return Promise.resolve(db.Conversation.findAll({ where: { participantUserId: participantUserId } }));
 
-}
+// }
 
-const getConversationByGroupId = groupId => {
-    return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } }));
-}
+// const getConversationByGroupId = groupId => {
+//     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } }));
+// }
 
 /*const updateTicketIntoConversation = (groupId, options) => {
     return Promise.resolve(db.Conversation.find({ where: { groupId: groupId } })).then(conversation => {
@@ -50,24 +50,24 @@ const getConversationByGroupId = groupId => {
  *@param {Object} options.defaultAgentId: assignee agent Id
  *
  */
-const createConversation = (conversation) => {
-    console.log("creating new converation, options:", conversation);
-    conversation.status = CONVERSATION_STATUS.OPEN;
-    return userService.getByUserNameAndAppId(conversation.defaultAgentId, conversation.applicationId).then(user => {
-        conversation.agentId = user.id
-        return Promise.resolve(db.Conversation.create(conversation)).then(result => {
-            console.log("conversation created successfully", result);
-            return result;
-        })
-    });
+// const createConversation = (conversation) => {
+//     console.log("creating new converation, options:", conversation);
+//     conversation.status = CONVERSATION_STATUS.OPEN;
+//     return userService.getByUserNameAndAppId(conversation.defaultAgentId, conversation.applicationId).then(user => {
+//         conversation.agentId = user.id
+//         return Promise.resolve(db.Conversation.create(conversation)).then(result => {
+//             console.log("conversation created successfully", result);
+//             return result;
+//         })
+//     });
 
-}
+// }
 /**
  *
  * This function create new support group into applozic.
  * on success response,it will make entry of conversation into kommunicate.
  * @param {req} request contain data and headers
- */
+ *
 const createConversationIntoApplozic = (req) => {
     let headers = req.headers;
     delete headers['host'];
@@ -101,7 +101,7 @@ const createConversationIntoApplozic = (req) => {
 
 /**
  * update conversation
- */
+ *
 const updateConversation = (options) => {
     let conversation = {};
     if (options.participantUserId) {
@@ -149,7 +149,7 @@ const updateConversationMetadata = (groupId, metadata) => {
         console.log('error while updating conversation metadata', err);
     });
 
-}
+}*/
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -165,33 +165,9 @@ const addMemberIntoConversation = (data) => {
                         let userIds = agents.userIds;
                         let agentIds = agents.agentIds;
                         header = agents.header;
-                        /*users.forEach(function (user) {
-                            if (user.type === 2) {
-                                if (user.userName === 'bot') {
-                                    header.apzToken = user.apzToken
-                                } if (customer.botRouting && user.allConversations == 1) {
-                                    userIds.push(user.userName);
-                                }
-                            }
-                            else {
-                                userIds.push(user.userName);
-                                agentIds.push(user.userName);
-                                // groupInfo.userIds.push(user.userName);
-                            }
-                            if (user.type === 3) {
-                                header.ofUserId = user.userName
-                            }
-    
-                        });*/
                         if (customer.botRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                             return { code: "SUCCESS", data: 'success' }
-                            // let groupInfo = { groupDetails: userIds };
-                            // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                            // return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
-                            //     logger.info('response', response.data)
-                            //     return { code: "SUCCESS", data: 'success' };
-                            // });
                         } else if (!customer.agentRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                             let groupInfo = { groupDetails: userIds };
@@ -212,12 +188,6 @@ const addMemberIntoConversation = (data) => {
                                 }
                             });
                         }
-                        // let groupInfo = { groupDetails: userIds };
-                        // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                        // return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
-                        //     logger.info('response', response.data)
-                        //     return { code: "SUCCESS", data: 'success' };
-                        // });
                     })
                 }
             })
@@ -411,7 +381,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
         return "error"
     })
 }
-
+/*
 const getConversationStatByAgentId = (agentId, startTime, endTime) => {
     let criteria = { agentId: agentId }
     if (startTime && endTime) {
@@ -533,7 +503,7 @@ const getConversationStat = (query) => {
             throw err;
         })
     }
-}
+}*/
 
 const createConversationFromMail = (req) => {
     let applicationId = req.body.applicationId
@@ -609,13 +579,13 @@ const sendMessageIntoConversation = (groupId, messages, applicationId, user) => 
 module.exports = {
     addMemberIntoConversation: addMemberIntoConversation,
     // updateTicketIntoConversation: updateTicketIntoConversation,
-    updateConversation: updateConversation,
-    getConversationList: getConversationList,
-    getConversationByGroupId: getConversationByGroupId,
-    createConversation: createConversation,
-    getConversationStats: getConversationStats,
-    getConversationStat: getConversationStat,
-    createConversationIntoApplozic: createConversationIntoApplozic,
+    //updateConversation: updateConversation,
+    //getConversationList: getConversationList,
+    //getConversationByGroupId: getConversationByGroupId,
+    //createConversation: createConversation,
+    //getConversationStats: getConversationStats,
+    //getConversationStat: getConversationStat,
+    //createConversationIntoApplozic: createConversationIntoApplozic,
     createConversationFromMail: createConversationFromMail,
     switchConversationAssignee: switchConversationAssignee
 }
