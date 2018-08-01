@@ -145,7 +145,7 @@ const createUser = (user, customer) => {
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
     user.imageLink = applozicUser.imagelink;
-    user.roletype = (user.type === 2)? CONST.ROLE_TYPE.BOT:CONST.ROLE_TYPE.ADMIN;
+    user.roleType = (user.type === 2)? CONST.ROLE_TYPE.BOT:user.roleType;
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {

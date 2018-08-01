@@ -131,7 +131,6 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   let userObject = {};
   let password = pwd || applozicUser.userId;
   userObject.userName = applozicUser.userId;
-  console.log("data", applozicUser);
   userObject.password = bcrypt.hashSync(password, 10);
   userObject.apzToken = new Buffer(applozicUser.userId + ":" + password).toString('base64');
   userObject.customerId = customer.id;
@@ -142,7 +141,7 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   userObject.name = applozicUser.displayName;
   userObject.brokerUrl = applozicUser.brokerUrl;
   userObject.userKey = applozicUser.userKey;
-  userObject.roletype =(type === 2)? ROLE_TYPE.BOT :ROLE_TYPE.ADMIN;
+  type === 2? userObject.roleType = ROLE_TYPE.BOT :"";
 
   return userObject;
 };
@@ -201,7 +200,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
   kmCustomer.password = bcrypt.hashSync(options.password, 10);
   kmCustomer.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
 
-  let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId }
+  let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId,roleType:options.roleType }
   kmUser.password = bcrypt.hashSync(options.password, 10);
   //kmUser.apzToken = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');
