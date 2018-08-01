@@ -64,7 +64,7 @@ class Integration extends Component {
     this.getUsers();
     let userSession = CommonUtils.getUserSession();
     let adminUserName = userSession.adminUserName;
-    let loggedInUserRoleType = userSession.roletype;
+    let loggedInUserRoleType = userSession.roleType;
     let applicationId = userSession.application.applicationId;
     this.setState({
       loggedInUserId:adminUserName,
@@ -245,7 +245,7 @@ class Integration extends Component {
       if (!result.deactivated) {
         agentsInfo.map(function(user,i){
           if(userId == user.userName){
-            roleType = user.roletype
+            roleType = user.roleType
             if(user.availabilityStatus && isOnline ){
               //agent is online
               isOnline = true;
