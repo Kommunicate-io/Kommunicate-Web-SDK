@@ -1414,6 +1414,19 @@ var MCK_CLIENT_GROUP_MAP = [];
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         kmChatLoginModal.style.visibility='visible';
                         kmChatLoginModal.style.display='block';
+                        var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
+                        document.getElementById("km-modal-close").addEventListener("click", function(event){
+                          event.preventDefault();
+                          kmChatLoginModal.style.display='none';
+                          kmAnonymousChatLauncher.classList.remove('n-vis');
+                          kmAnonymousChatLauncher.classList.add('vis');
+                        });
+                        kmAnonymousChatLauncher.addEventListener("click", function(event){
+                          event.preventDefault();
+                          kmChatLoginModal.style.display='block';
+                          kmAnonymousChatLauncher.classList.remove('vis');
+                          kmAnonymousChatLauncher.classList.add('n-vis');
+                        });
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -1587,6 +1600,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                  // dispatch an event "kmInitilized".
                 //w.dispatchEvent(new CustomEvent("kmInitilized",{detail:data,bubbles: true,cancelable: true}));
                 KommunicateUtils.triggerCustomEvent("kmInitilized",{detail:data, bubbles:true, cancelable: true});
+                var kmChatLoginModal = document.getElementById("km-chat-login-modal");
+                kmChatLoginModal.style.visibility='hidden';
             };
             _this.validateAppSession = function (userPxy) {
                 mckGroupLayout.init();
