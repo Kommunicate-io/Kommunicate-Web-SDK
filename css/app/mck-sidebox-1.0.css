@@ -507,21 +507,6 @@
 	background: #fff !important;
 }
 
-.mck-btn.focus, .mck-btn:focus, .mck-btn:hover, .mck-btn:active, .mck-btn:visited{
-	color: #fbfbfb;
-  text-decoration: none;
-	background-color: #474586 !important;
-  outline: none !important;
-	border: none;
-}
-
-.mck-btn[disabled], .mck-btn[disabled]:focus, .mck-btn[disabled]:hover, .mck-btn[disabled]:active, .mck-btn[disabled]:visited{
-	pointer-events: none;
-	background-color: #474586 !important;
-  outline: none !important;
-	border: none;
-}
-
 .mck-btn.active, .mck-btn:active {
 	background-image: none;
 	outline: 0;
