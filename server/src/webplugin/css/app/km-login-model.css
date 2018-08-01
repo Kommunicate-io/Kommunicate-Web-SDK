@@ -98,6 +98,22 @@ background-color: #fff;
 	margin-top: 45px;
 	color:white;
 }
+
+.km-start-conversation.focus, .km-start-conversation:focus, .km-start-conversation:hover, .km-start-conversation:active, .km-start-conversation:visited{
+	color: #fbfbfb;
+  text-decoration: none;
+	background-color: #474586 !important;
+  outline: none !important;
+	border: none;
+}
+
+.km-start-conversation[disabled], .km-start-conversation[disabled]:focus, .km-start-conversation[disabled]:hover, .km-start-conversation[disabled]:active, .km-start-conversation[disabled]:visited{
+	pointer-events: none;
+	background-color: #474586 !important;
+  outline: none !important;
+	border: none;
+}
+
 #km-form-chat-login{
 	margin:15px;
 }
