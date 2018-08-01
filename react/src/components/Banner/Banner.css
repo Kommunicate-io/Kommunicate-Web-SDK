@@ -1,0 +1,46 @@
+.km-banner {
+    padding: 15px;
+    border-radius: 2px;
+}
+.km-default-banner {
+    background-color: #cce7f8;
+}
+.km-error-banner {
+    background-color: #ed222a; 
+}
+.km-success-banner {
+    background-color: #2dd35c; 
+}
+.km-warning-banner {
+    background-color: #ffab00; 
+}
+.km-banner p {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.7px;
+    text-align: left;
+    margin: 0px;
+}
+.km-banner.km-default-banner p{
+    color: #6a6b6d;
+}
+.km-banner.km-success-banner p{
+    color: #6a6b6d;
+}
+.km-banner.km-warning-banner p{
+    color: #253858;
+}
+.km-banner.km-error-banner p{
+    color: #FFF;
+}
+.warning-icon-svg {
+    vertical-align: middle;
+    margin-right: 15px;
+}
+.teammate-table .km-banner-component {
+    margin-left: 12px;
+    margin-bottom: 20px;
+}

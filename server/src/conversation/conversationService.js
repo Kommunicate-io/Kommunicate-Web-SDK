@@ -183,8 +183,16 @@ const addMemberIntoConversation = (data) => {
                             }
     
                         });*/
-                        if (customer.botRouting || !customer.agentRouting) {
-                            //default assign to bot
+                        if (customer.botRouting) {
+                            agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                            return { code: "SUCCESS", data: 'success' }
+                            // let groupInfo = { groupDetails: userIds };
+                            // logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                            // return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
+                            //     logger.info('response', response.data)
+                            //     return { code: "SUCCESS", data: 'success' };
+                            // });
+                        } else if (!customer.agentRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                             let groupInfo = { groupDetails: userIds };
                             logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
