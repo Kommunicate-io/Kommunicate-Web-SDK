@@ -6,7 +6,8 @@ export{
     GROUP_ROLE,
     DEFAULT_BOT,
     LIZ,
-    ROLE_TYPE
+    ROLE_TYPE,
+    INVITED_USER_STATUS
 }
 
 const USER_TYPE = {
@@ -30,6 +31,10 @@ const DEFAULT_BOT={
 }
 const LIZ={
     userName:"liz"
+}
+const INVITED_USER_STATUS = {
+    INVITED:0,
+    SIGNED_UP:1
 }
 let  getLoggedInCookieName =function(){
     return getEnvironmentId()+"_km_l_u_id";

@@ -7,7 +7,7 @@ import Notification from '../views/model/Notification'
 import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
-import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
+import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
 
 
 
@@ -28,7 +28,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
     case "AGENT":
     case "ADMIN":
     case "BOT":
-      return createAgent(userInfo);
+      return createAgent(userInfo,userType);
     default:
       return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName);
   }
@@ -250,16 +250,17 @@ const postAutoReply = (formData) => {
   });
 }
 
-const createAgent = (agent) => {
+const createAgent = (userInfo, userType) => {
   try {
-    if (!(agent && agent.userName && agent.applicationId && agent.password && agent.type && agent.roleType)) {
+    if (!(userInfo && userInfo.userName && userInfo.applicationId && userInfo.password && userInfo.type && userInfo.roleType)) {
       throw new Error("missing mendatory fields");
     }
     const url = getConfig().kommunicateApi.createUser;
-    console.debug("creating agent :", agent, "url: ", url);
-    return axios.post(url, agent).then(agent => {
-      console.debug("agent created successfully", agent);
-      return agent;
+    console.debug("creating agent :", userInfo, "url: ", url);
+    return axios.post(url, userInfo).then(user => {
+      console.debug("user created successfully", user);
+      userType != "BOT" && updateInvitedUserStatus(userInfo.token, INVITED_USER_STATUS.SIGNED_UP);
+      return user;
     }).catch(err => {
       let error = err.response && err.response.data ? err.response.data : err;
       return Promise.reject(error);
@@ -1008,6 +1009,16 @@ const getUserDetailsByToken = (token) => {
   })
 
 }
+const updateInvitedUserStatus = (token,status) => {
+  let url = getConfig().kommunicateBaseUrl + '/users/invite/status/update?reqId='+token +'&status='+status;
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 &&   response.data.code.toLowerCase() === "success") {
+      return true;
+    }
+  }).catch(err => {
+    console.log("There is a problem while updating the invited user status", err);
+  })
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1065,5 +1076,6 @@ export {
   getApplication,
   deleteUserByUserId,
   getInvitedUserByApplicationId,
-  getUserDetailsByToken
+  getUserDetailsByToken,
+  updateInvitedUserStatus
 }
