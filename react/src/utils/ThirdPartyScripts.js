@@ -8,7 +8,6 @@ class ThirdPartyScripts extends Component {
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
-          var sideboxHelpIcon = document.getElementById('sidebar-sidebox-help-icon');
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
@@ -29,19 +28,6 @@ class ThirdPartyScripts extends Component {
                   window.$applozic.template = window.$kmApplozic.kmtemplate;
                   window.$applozic.tmpl = window.$kmApplozic.kmtmpl;
                  }
-
-                if(currentPath.includes('/signup') || currentPath.includes('/setUpPage') || currentPath.includes('/installation') || currentPath.includes('/login')) {
-                  null
-                } else {
-
-                  if(sideboxHelpIcon) {
-                    sideboxHelpIcon.classList.add('vis');
-                    sideboxHelpIcon.classList.remove('n-vis');
-                  } else {
-                    console.log("Sidebox chat not loaded");
-                  }
-
-                }
 
                 if (currentPath.includes('/login') && mckSideboxLauncher) {
                   mckSideboxLauncher.classList.add('vis');
