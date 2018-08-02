@@ -1,0 +1,55 @@
+@mixin clearfix {
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+@mixin absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//0-600 phone
+//600-900 tablet portrait
+// 900-1200 tablet landscape
+// 1200-1800 normal styles
+//1800+ big screens
+//1em = 16px
+// ORDER: Base + typhography + general layout + grid > page layout > components 
+
+@mixin respond($breakpoint) {
+    @if $breakpoint==phone-sm {
+        @media (max-width: 22.5em) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==phone {
+        @media (max-width: 37.5em) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tab-por {
+        @media (max-width: 56.25em) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==tab-lan {
+        @media (max-width: 75em) {
+            @content
+        }
+        ;
+    }
+    @if $breakpoint==big {
+        @media (min-width: 113.5em) {
+            @content
+        }
+        ;
+    }
+}
