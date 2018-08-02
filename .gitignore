@@ -79,3 +79,9 @@ server/src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js
 message-processor/initial/target/classes/**
 *.pyc
 react/build/**
+
+website/Gemfile
+website/Gemfile.lock
+website/_config.yml
+website/_site
+
