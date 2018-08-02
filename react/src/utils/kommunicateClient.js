@@ -26,6 +26,7 @@ import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
+    case "ADMIN":
     case "BOT":
       return createAgent(userInfo);
     default:
