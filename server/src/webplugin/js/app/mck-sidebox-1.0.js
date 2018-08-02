@@ -6246,8 +6246,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     };
             _this.loadContacts = function () {
                 var mckContactNameArray = [];
+                var url = '/rest/ws/user/v3/filter?startIndex=0&pageSize=50&orderBy=1';
                 window.Applozic.ALApiService.getContactList({
-									url:'?startIndex=0&pageSize=50&orderBy=1',
+									url:url,
 									baseUrl: MCK_BASE_URL,
                     success: function (data) {
                         if ($mck_sidebox_search.hasClass('vis')) {
