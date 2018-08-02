@@ -19,7 +19,7 @@ const createCustomer = (customer, application, transaction) => {
 }
 
 const getCustomerByApplicationId = (appId) => {
-    return Promise.resolve(customerModel.findOne({ include: [{ model: applicationModel, attributes: ['applicationId'], where: { 'applicationId': appId } }] })).then(customer => {
+    return Promise.resolve(customerModel.findOne({ include: [{ model: applicationModel, attributes: ['applicationId', 'created_at'], where: { 'applicationId': appId } }] })).then(customer => {
         return customer;
     })
 }

@@ -26,6 +26,7 @@ import { MEMORY_CACHING_TIME_DURATION,ROLE_TYPE } from '../utils/Constant'
 const createCustomerOrAgent = (userInfo, userType) => {
   switch (userType) {
     case "AGENT":
+    case "ADMIN":
     case "BOT":
       return createAgent(userInfo);
     default:
@@ -35,7 +36,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
 const createCustomer = function (email, password, name, userName) {
   let signUpUrl = getConfig().kommunicateApi.signup;
   let loginType = 'email';
-  let  roletype = ROLE_TYPE.SUPER_ADMIN ;
+  let  roleType = ROLE_TYPE.SUPER_ADMIN ;
 
   /*
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
@@ -52,7 +53,7 @@ const createCustomer = function (email, password, name, userName) {
     name,
     email,
     loginType,
-    roletype 
+    roleType 
   }
 
   return Promise.resolve(axios.post(signUpUrl, signUrlBodyParameters))
@@ -185,6 +186,7 @@ const callSendEmailAPI = (options) => {
   const emails = [].concat(...[emailAddress])
   let userSession = CommonUtils.getUserSession();
   let userId = userSession.userName;
+  let roleType = options.roleType;
   let data = {}
 
   if (options.templateName === "BOT_USE_CASE_EMAIL") {
@@ -203,7 +205,8 @@ const callSendEmailAPI = (options) => {
       "kommunicateScript": getJsCode(),
       "applicationId": userSession.application.applicationId,
       "agentName": userSession.name || userSession.name || userId,
-      "agentId": userId
+      "agentId": userId,
+      "roleType":roleType
     }
   }
 
@@ -249,7 +252,7 @@ const postAutoReply = (formData) => {
 
 const createAgent = (agent) => {
   try {
-    if (!(agent && agent.userName && agent.applicationId && agent.password && agent.type)) {
+    if (!(agent && agent.userName && agent.applicationId && agent.password && agent.type && agent.roleType)) {
       throw new Error("missing mendatory fields");
     }
     const url = getConfig().kommunicateApi.createUser;
@@ -985,7 +988,7 @@ const getInvitedUserByApplicationId = () => {
   
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
-  let url = getConfig().kommunicateBaseUrl + '/users/invited/list?appId=' + appId 
+  let url = getConfig().kommunicateBaseUrl + '/users/invite/list?appId=' + appId 
   return Promise.resolve(axios.get(url)).then(response => {
     if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
       return response.data.data;
@@ -994,27 +997,16 @@ const getInvitedUserByApplicationId = () => {
     throw { message: err };
   })
 }
-const assignRoleForInvitedUSer = (invitedUserEmail, roleType) => {
-  let userSession = CommonUtils.getUserSession();
-  let appId = userSession.application.applicationId;
-  let loggedInUserId = userSession.userName
-  let url = getConfig().kommunicateBaseUrl + '/users/inviteteam'
-  return Promise.resolve(axios({
-    method: 'post',
-    url: url,
-    data: {
-      "applicationId": userSession.application.applicationId,
-      "invitedBy": loggedInUserId,
-      "invitedUser":invitedUserEmail,
-      "roleType":roleType     
-    }
-  })).then((response) => {
-    if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
-      return response;
+const getUserDetailsByToken = (token) => {
+  let url = getConfig().kommunicateBaseUrl + '/users/invite/detail?token='+token;
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 &&   response.data.code.toLowerCase() === "success") {
+      return response.data.data;
     }
   }).catch(err => {
     throw { message: err };
   })
+
 }
 export {
   createCustomer,
@@ -1073,5 +1065,5 @@ export {
   getApplication,
   deleteUserByUserId,
   getInvitedUserByApplicationId,
-  assignRoleForInvitedUSer
+  getUserDetailsByToken
 }

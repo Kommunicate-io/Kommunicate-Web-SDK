@@ -1752,6 +1752,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					resetCustomerInfoTab();
+					resetClearbitInfoAndUserInfo();
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis');
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
@@ -5619,7 +5621,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var data = response.response;
 						$mck_search_loading.removeClass('vis').addClass('n-vis');
 						if ($mck_sidebox_search.length == 0 || $mck_sidebox_search.hasClass('vis')) {
-							if (data === null || data.length === 0) {
+							if (typeof data=="undefined" || data === null || data.length === 0) {
 								$mck_search_inner.html('<div class="km-no-data-text km-text-muted">No contacts yet!</div>');
 							} else if (typeof data === 'object' && data.users.length > 0) {
 								var mckContactNameArray = [];

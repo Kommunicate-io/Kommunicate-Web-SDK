@@ -107,15 +107,15 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
+userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
 userRouter.get('/invite/status/update',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
-userRouter.get('/invited/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
+userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
 userRouter.get('/password/reset-form',passwordResetController.processUpdatePasswordRequest);
 userRouter.get('/chat/plugin/settings', userController.defaultPluginSettings);
 //userRouter.patch('/:userName/:appId',userController.patchUser);
-userRouter.post('/inviteteam',validate(userValidation.inviteteam),userController.inviteteam);
 userRouter.post('/:userName/business-hours',validate(userValidation.updateBusinessHours),userController.updateBusinessHours);
 userRouter.post('/',validate(userValidation.createUser),userController.createUser);
 userRouter.post('/:userName/subscribe/off-hours-message-notification',userController.subscribeOffHoursNotification);
@@ -151,13 +151,7 @@ chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 
 //conversation router
-conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
-conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
-conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
-conversationRouter.get('/', conversationController.getConversationStats);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
-conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
-conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/v2/create', conversationController.createConversationFromMail);
 conversationRouter.post('/assignee/switch', conversationController.switchConversationAssignee);
 
