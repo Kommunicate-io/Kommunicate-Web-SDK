@@ -147,10 +147,10 @@
 	text-decoration:underline;
 	color: #5c5aa7 !important
 }
-#mck-textbox-container .mck-text-box-panel{
+/* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
-}
+} */
 
 .mck-box .mck-row {
 	margin-right: -15px;
@@ -1823,6 +1823,13 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
+.mck-attachement-icon {
+	margin-right: 5px;
+}
+.mck-attachement-icon svg {
+	vertical-align: bottom;
+}
+
 .mck-file-upload .mck-btn img {
 	vertical-align: middle;
 	height: 30px;
@@ -2134,12 +2141,22 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-message-status {
 	width: 14px;
 	height: 14px;
-	opacity: 0.6;
+	opacity: 1;
 	display: inline-block;
+}
+.mck-message-status svg {
+	vertical-align: sub;
+	opacity: 0.7;
+}
+.mck-message-status--icon-read {
+	opacity: 1 !important;
 }
 
 .mck-message-status.mck-icon-read {
 	opacity: 1;
+}
+.mck-created-at-time {
+	opacity: 0.4;
 }
 
 .mck-sidebox-launcher {
@@ -3395,11 +3412,11 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	height: 25px;
 }
 
-.mck-icon-smiley-blue {
+/* .mck-icon-smiley-blue {
 	background-position: -10px -403px;
 	width: 25px;
 	height: 25px;
-}
+} */
 
 .mck-icon-upload {
 	background-position: -10px -438px;
@@ -3450,21 +3467,36 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: relative;
 	vertical-align: middle;
 }
-
+/* 
 .mck-icon-camera {
 	background-position: -10px -662px;
 	width: 18px;
 	height: 20px;
 	position: relative;
 	vertical-align: middle;
+} */
+
+.mck-icon--camera {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.mck-icon--camera svg {
+	vertical-align: sub
 }
 
-.mck-icon-marker {
+/* .mck-icon-marker {
 	background-position: -10px -690px;
 	width: 18px;
 	height: 18px;
 	position: relative;
 	vertical-align: middle;
+} */
+.mck-icon--location {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.mck-icon--location svg {
+	vertical-align: sub;
 }
 
 .mck-icon-delivered {
@@ -5035,9 +5067,9 @@ margin-top: 243px;
 	padding-left: 0px;
 }
 
-#mck-btn-attach {
+/* #mck-btn-attach {
 	opacity: 0.6;
-}
+} */
 #mck-btn-attach .mck-icon-upload, #mck-attachfile-box #mck-file-up2 .mck-icon-upload {
 	background: transparent;
     width: 20px;
@@ -5108,6 +5140,16 @@ margin-top: 243px;
 	background-color: #a5a5a5;
 	border-color: #a5a5a5;
 }
+
+.mck-message-status--svg_path, 
+.mck-message-status--icon-sent .mck-message-status--svg_path, .mck-message-status--icon-delivered .mck-message-status--svg_path  {
+	fill: #263238;
+}
+.mck-message-status--icon-read .mck-message-status--svg_path {
+	fill: #4FC3F7;
+}
+
+
 
 .mck-circular-spinner {
 	-webkit-animation: mckSpinnerRotate 2s linear infinite;
