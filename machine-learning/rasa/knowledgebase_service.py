@@ -29,7 +29,7 @@ appkeys = set()
 # print(datetime.datetime.fromtimestamp(last_update_time).isoformat(), end='\n\n\n')
 # print(datetime.datetime.fromtimestamp(current_time_stamp).isoformat())
 new_data = collection.find({'updated_at':{'$gte':last_update_time, 
-                                          '$lte':current_time_stamp}})
+                                          '$lte':current_time_stamp}, 'type':'faq'})
 print(new_data)
 print('\n\n\n\n\n')
 print(env.rasa_endpoint+'faq/add')
