@@ -681,3 +681,7 @@ body {
 	margin-left: 2px;
 	font-weight: bold;
 }
+.km-mail-fixed-view{
+	background-color: white;
+	width: 500px;
+}

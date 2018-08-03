@@ -4006,7 +4006,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
-				var messageClass = (msg.contentType == 0 && typeof(msg.message) != "string") ? "n-vis" : 'vis';
+				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
 				var contactExpr = "vis";
@@ -4068,7 +4068,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					fileName = msg.fileMeta.name;
 					fileSize = msg.fileMeta.size;
 				}
-				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata);
+				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+				var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+				var kmRichTextMarkup = richText ? kommunicateDashboard.getRichTextMessageTemplate(msg) : ""
+				var containerType = kommunicateDashboard.getConatainerTypeForRichMessage(msg);
 
 				var msgList = [{
 					msgKeyExpr: msg.key,
@@ -4100,9 +4103,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					downloadIconVisibleExpr: downloadIconVisible,
 					fileNameExpr: fileName,
 					fileSizeExpr: fileSize,
-					kmRichTextMarkupVisibility: richText ? 'vis' : 'n-vis',
-					kmRichTextMarkup: richText ? kommunicateDashboard.getRichTextMessageTemplate(msg.metadata) : "",
-					containerType: kommunicateDashboard.getConatainerTypeForRichMessage(msg.metadata)
+					kmRichTextMarkupVisibility: kmRichTextMarkupVisibility,
+					kmRichTextMarkup: kmRichTextMarkup,
+					containerType: containerType,
 				}];
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");

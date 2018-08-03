@@ -356,3 +356,10 @@ kommunicateDashboard.markup.getDialogboxContainer = function(metadata){
          return "";
      }
 }
+kommunicateDashboard.markup.getHtmlMessageMarkups = function (message) {
+    if (message.message && message.source == 7) {
+        return "<pre class='km-mail-fixed-view'>" + message.message + "</pre>";
+    } else {
+        return "";
+    }
+}
