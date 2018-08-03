@@ -1,7 +1,7 @@
 .features_carousel {
     @include respond(tab-por) {
         display: block;
-        margin: 4rem auto 4rem auto;
+        margin: 2rem auto 4rem auto;
     }
     display: none; // height: 100rem;
     width: 100%;
