@@ -1,0 +1,14 @@
+.features {
+    display: flex;
+    padding:5rem 6rem 14rem 6rem;
+    align-content: center;
+
+    @include respond(tab-lan) {
+        padding: 0rem 2rem;
+        background-size: 120%;
+    }
+    @include respond(tab-por) {
+       display: none;
+    }
+   
+}

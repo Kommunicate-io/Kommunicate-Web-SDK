@@ -1,0 +1,47 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+html {
+    // 1 rem base
+    font-size: 62.5%;
+    // background: red;
+
+    @include respond(tab-lan) {
+        font-size: 56.25%;
+    }
+    @include respond(tab-por) {
+        font-size: 50%;
+    }
+    // @include respond(big) {
+    //     font-size: 75%;
+    // }
+}
+
+body {
+    box-sizing: border-box;
+    background: $color-white;
+    margin: 0 auto;
+}
+
+.container{
+    // background: orangered;
+    display: block;
+    max-width: 140rem;
+    margin: 0 auto;
+    position: relative;
+    padding: 1rem 2rem;
+
+}
+

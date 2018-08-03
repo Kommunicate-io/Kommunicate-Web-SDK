@@ -10,7 +10,7 @@ import ApplozicClient from '../../../utils/applozicClient';
 import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
-import { ROLE_TYPE } from '../../../utils/Constant';
+import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 
 class Register extends Component {
   constructor(props){
@@ -31,7 +31,7 @@ class Register extends Component {
       subscription: 'startup',
       googleOAuth :false,
       isInvited:false,
-      roleType:'',
+      roleType:null,
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -52,7 +52,8 @@ class Register extends Component {
     // }
     this.setState({
       isInvited:isInvited,
-      invitedBy:invitedBy
+      invitedBy:invitedBy,
+      token:token
     });
     
     localStorage.removeItem('Google_OAuth');
@@ -90,8 +91,8 @@ class Register extends Component {
    }
     //console.log("location",this.props.location);
   }
-  getUserDetails= (toekn) => {
-    return Promise.resolve(getUserDetailsByToken(toekn)).then(response => {
+  getUserDetails= (token) => {
+    return Promise.resolve(getUserDetailsByToken(token)).then(response => {
       // console.log(response);
       let email = response.invitedUser;
       let applicationId = response.applicationId;
@@ -146,12 +147,13 @@ class Register extends Component {
     let userInfo={};
     userInfo.userName=_this.state.userName||email;
     userInfo.email= email;
-    userInfo.type = userType=="CUSTOMER"? 3 : 1;
+    userInfo.type = userType == "CUSTOMER"? 3 : 1;
     userInfo.applicationId = this.state.applicationId;
     userInfo.password = password;
     userInfo.name=_this.state.name || _this.state.userName;
     userInfo.subscription = _this.state.subscription;
     userInfo.roleType = this.state.roleType;
+    userInfo.token = this.state.token;
 
     if (window.heap) {
       window.heap.identify(email);

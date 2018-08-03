@@ -1,0 +1,12 @@
+.customers{
+  &_bg{
+    background: url(../images/customer-bg.svg) no-repeat;
+    background-size: contain;
+    background-position: 0% center;
+  }
+  // margin: 0;
+    padding: 5rem 0;
+    @include respond(phone){
+        padding: 10rem 0;
+    }
+}

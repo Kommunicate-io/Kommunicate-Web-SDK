@@ -1,0 +1,34 @@
+---
+# Main sass file/
+---
+
+@charset "utf-8";
+
+// @import "abstracts/functions";
+@import "abstracts/mixins";
+@import "abstracts/variables";
+//
+@import "base/base";
+@import "base/animations";
+@import "base/typography";
+@import "base/utilities";
+//
+@import "components/button";
+@import "components/form";
+@import "components/tabs";
+@import "components/carousel";
+@import "components/carousel_tab";
+//
+@import "layout/footer";
+@import "layout/brand";
+@import "layout/features";
+@import "layout/navigation";
+@import "layout/header";
+@import "layout/hero";
+@import "layout/services";
+@import "layout/customers";
+//
+@import "pages/home";
+
+
+
