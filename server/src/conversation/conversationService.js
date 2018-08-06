@@ -1,4 +1,4 @@
-const { GROUP_INFO } = require('./conversationUtils');
+const GroupInfo = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const customerService = require('../customer/customerService');
@@ -237,7 +237,7 @@ const createConversationFromMail = (req) => {
     let toAddresses = req.body.tos;
     let fromEmail = req.body.from;
     let messages = req.body.messages || [];
-    let groupInfo = Object.assign({}, GROUP_INFO);
+    let groupInfo = new GroupInfo();
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
     if (!applicationId || messages.length == 0) {
         return "INVALID_PARAMETERS"
