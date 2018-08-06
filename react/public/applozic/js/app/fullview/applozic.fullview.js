@@ -393,7 +393,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
-			'onConnectFailed': function () { },
+			'onConnectFailed': function () {
+				if (navigator.onLine) { 
+					mckInitializeChannel.reconnect();
+				}
+				
+			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
 			'onMessageRead': function () { },
@@ -7338,10 +7343,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 					checkConnectedIntervalId = setInterval(function () {
 						_this.connectToSocket(isFetchMessages);
-					}, 600000);
+					}, 60000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 1200000);
+					}, 12000);
 				} else {
 					_this.connectToSocket(isFetchMessages);
 				}
@@ -7379,7 +7384,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.disconnect();
 			};
 			_this.disconnect = function () {
-				if (stompClient && stompClient.connected) {
+				if (stompClient) {
 					_this.sendStatus(0);
 					stompClient.disconnect();
 					SOCKET.close();
