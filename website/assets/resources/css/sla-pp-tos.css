@@ -2,6 +2,9 @@
     padding-bottom: 80px;
     padding-top: 120px;
 }
+.font-normal{
+    font-weight: 400!important;
+}
 .heading-base-line {
     border-bottom: solid 1px #222;
     text-align: center;
@@ -37,6 +40,15 @@
     text-transform: none;
     color: #313f48;
     margin-bottom: 20px;
+}
+.terms-topic-subheading-2 {
+    font-size: 18px;
+    margin-top: 0px;
+    line-height: 1.3em;
+    font-weight: 500;
+    text-transform: none;
+    color: #313f48;
+    margin-bottom: 10px;
 }
 #terms-conditions p, #terms-conditions li, #privacy p, #privacy li, #sla p, #sla li {
     font-size: 16px;
