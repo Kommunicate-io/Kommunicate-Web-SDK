@@ -10758,15 +10758,15 @@ input:required {
 }
 
 /* dropdown CSS */
-.Select-control { 
+.dashboard-card .Select-control { 
   border: 0px !important;
 }
-.Select:focus, .Select:hover, .Select:active, .Select-control:hover, .Select-control:focus, .Select-control:active, .is-focused, .is-pseudo-focused, .has-value {
+.dashboard-card .Select:focus, .Select:hover, .dashboard-card .Select:active, .dashboard-card .Select-control:hover, .dashboard-card .Select-control:focus, .dashboard-card .Select-control:active, .dashboard-card .is-focused, .dashboard-card .is-pseudo-focused, .has-value {
   outline: none !important;
   box-shadow: none !important;
 
 }
-.Select.is-focused:not(.is-open) > .Select-control {
+.dashboard-card .Select.is-focused:not(.is-open) > .dashboard-card .Select-control {
   border-color: transparent !important;
   box-shadow: none !important;
   background: #fff !important;
