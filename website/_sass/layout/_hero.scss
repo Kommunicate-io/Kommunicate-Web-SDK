@@ -5,13 +5,14 @@
         overflow: visible;
         border-radius: 4px;
         background: url(../images/jeremy.png), url(../images/hero1.svg);
-        height: 95rem;
+        height: 85rem;
         background-position: 161% 75.3%, 1% 59%;
         background-size: 91.8%, 98%;
         background-repeat: no-repeat, no-repeat;
         @media (max-width: 1400px) and (min-width:1200px) {
             width: 1200px;
-            background-position: 182.5% 68.4%, 100% 59%;
+            margin: 0 auto;
+            background-position: 171.5% 66.4%, 53% 59%;
             background-size: 91.8%, 98%;
         }
         @include respond(tab-lan) {
