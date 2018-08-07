@@ -50,7 +50,12 @@
   letter-spacing: 0.4px;
   text-align: left;
   color: #a8a8ab;
-
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
 }
 .d-pop:hover {
     background: #f2f2f2!important;

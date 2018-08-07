@@ -25,7 +25,8 @@ const quickReply = {
           textBoxContent = textBoxContent.replace(/\//g, "");
           for (var i = 0; i < text.length; i++) {
             if ((text[i].label).indexOf(textBoxContent) !== -1) {
-              textInput = (text[i].label).split(' ').join('-');
+              //textInput = (text[i].label).split(' ').join('-');
+              textInput = text[i].randomId;
               console.log(textInput);
               suggestion = suggestion + "<div id= " + textInput + " class=\"d-pop auto-suggest\"> <span class=\"auto_reply auto-suggest\"> " + "/" + text[i].label + "</span> <br/> <span class=\"auto_suggestion auto-suggest\">" + text[i].value + "</span> </div>\n";
             }
@@ -74,7 +75,8 @@ const quickReply = {
       for (var i=0 ; i < autoSuggestions_data.length;i++){
         var object = {
           label:autoSuggestions_data[i].category,
-          value: autoSuggestions_data[i].content
+          value: autoSuggestions_data[i].content,
+          randomId: autoSuggestions_data[i].id
         }
         quickReplyIndex[i]= object;
       }
