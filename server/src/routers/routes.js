@@ -108,7 +108,6 @@ home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
 userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
-userRouter.get('/invite/status/update',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
 userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
@@ -123,6 +122,7 @@ userRouter.post('/password-reset', passwordResetController.processPasswordResetR
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
+userRouter.patch('/invite/status',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
 userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
