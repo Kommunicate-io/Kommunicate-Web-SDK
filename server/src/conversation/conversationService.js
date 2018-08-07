@@ -6,6 +6,7 @@ const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
 const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
+const { EMAIL_NOTIFY } = require('../users/constants');
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -272,7 +273,7 @@ const createConversationFromMail = (req) => {
                     });
                 } else {
                     //create new user
-                    return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null).then(user => {
+                    return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
                         if (user) {
                             groupInfo.users[1].userId = user.userId
                             return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
