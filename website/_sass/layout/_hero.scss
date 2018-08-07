@@ -6,14 +6,14 @@
         border-radius: 4px;
         background: url(../images/jeremy.png), url(../images/hero1.svg);
         height: 85rem;
-        background-position: 161% 75.3%, 1% 59%;
-        background-size: 91.8%, 98%;
+        background-position: 123% 122.3%, 1% 59%;
+        background-size: 83.8%, 98%;
         background-repeat: no-repeat, no-repeat;
         @media (max-width: 1400px) and (min-width:1200px) {
             width: 1200px;
             margin: 0 auto;
-            background-position: 171.5% 66.4%, 53% 59%;
-            background-size: 91.8%, 98%;
+            background-position: 130.5% 75.4%, 53% 59%;
+            background-size: 83.8%, 98%;
         }
         @include respond(tab-lan) {
             background: url(../images/hero2.svg) no-repeat, url(../images/jeremy2.png) no-repeat, linear-gradient(to right bottom, $primary-light, $primary) no-repeat;
@@ -114,7 +114,7 @@
         width: 40%;
         color: $color-white;
         position: absolute;
-        top: 35rem;
+        top: 30rem;
         font-style: italic;
         font-weight: 300;
         left: 18rem;
@@ -136,7 +136,7 @@
         font-size: 3rem;
         color: $color-white;
         position: absolute;
-        top: 58rem;
+        top: 48rem;
         left: 18rem;
         @include respond(tab-lan) {
             top: 35rem;

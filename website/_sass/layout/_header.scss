@@ -6,14 +6,14 @@
         color: $color-heading;
         width: 70%;
         text-align: center;
-        padding-top: 7rem;
+        padding-top: 5rem;
         margin: 0 auto;
         animation: fade-in-top .8s; // padding-top: 5rem;
         @include respond(tab-lan) {
             width: 85%;
         }
         @include respond(tab-por) {
-            padding-top: 10rem;
+            padding-top: 2rem;
             width: 85%;
         }
         @include respond(phone) {
