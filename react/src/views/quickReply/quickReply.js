@@ -49,14 +49,7 @@ const quickReply = {
                   textBox.textContent = "";
                   textBox.textContent = (text[i].value);
                   dBox.style.display = 'none'; // hide dropup
-                  console.log((text[i].value));
-                  var range = document.createRange();
-                  var sel = window.getSelection();
-                  var endValue = textBox.childNodes[0].length;
-                  range.setStart(textBox.childNodes[0], endValue);
-                  range.collapse(true);
-                  sel.removeAllRanges();
-                  sel.addRange(range);
+                  quickReply.setCursorToEnd(textBox);
                   textBox.focus();
                 }
               }
@@ -70,7 +63,7 @@ const quickReply = {
                   textBox.textContent = "";
                   textBox.textContent = (text[i].value);
                   dBox.style.display = 'none'; // hide dropup
-                  quickReply.setCursorToEnd(textBox,dBox,text[i]);
+                  quickReply.setCursorToEnd(textBox);
                   textBox.focus();
                 }
               }
@@ -94,7 +87,8 @@ const quickReply = {
       }
     });
   },
-  setCursorToEnd: function (textBox,dBox,text){
+
+  setCursorToEnd: function (textBox){
     var range = document.createRange();
     var sel = window.getSelection();
     var endValue = textBox.childNodes[0].length;
@@ -103,11 +97,11 @@ const quickReply = {
     sel.removeAllRanges();
     sel.addRange(range);
   },
+
   getQuickReplies: function (){
   let quickReplyIndex = [];
   let userSession = CommonUtils.getUserSession();
-  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userSession.application.applicationId
-
+  const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userSession.application.applicationId;
   getSuggestionsByAppId(userSession.application.applicationId,'shortcut')
     .then(function(autoSuggestions_data) {
       for (var i=0 ; i < autoSuggestions_data.length;i++){
