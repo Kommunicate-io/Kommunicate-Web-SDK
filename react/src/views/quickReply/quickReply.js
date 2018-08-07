@@ -5,7 +5,6 @@ import { getAllSuggestions, getSuggestionsByAppId} from '../../utils/kommunicate
 const quickReply = {
 
   edValueKeyPress: function(quickReplyIndex) {
-    console.log(quickReplyIndex.length);
     var autoCompleteFlag = false;
     var textBoxContent;
     var textInput;
@@ -23,35 +22,66 @@ const quickReply = {
         if ((textBoxContent).indexOf("/") !== -1 && textBoxContent.charAt(0) === "/") {
           dBox.style.display = 'block';
           textBoxContent = textBoxContent.replace(/\//g, "");
-          for (var i = 0; i < text.length; i++) {
-            if ((text[i].label).indexOf(textBoxContent) !== -1) {
-              //textInput = (text[i].label).split(' ').join('-');
-              textInput = text[i].randomId;
-              console.log(textInput);
-              suggestion = suggestion + "<div id= " + textInput + " class=\"d-pop auto-suggest\"> <span class=\"auto_reply auto-suggest\"> " + "/" + text[i].label + "</span> <br/> <span class=\"auto_suggestion auto-suggest\">" + text[i].value + "</span> </div>\n";
+          if (text.length !== 0){
+            for (var i = 0; i < text.length; i++) {
+              if ((text[i].label).indexOf(textBoxContent) !== -1) {
+              //  textInput = (text[i].label).split(' ').join('-');
+                textInput = text[i].randomId.toString();
+                console.log(textInput);
+                suggestion = suggestion + "<div id= " + textInput + " class=\"d-pop auto-suggest-pro\"> <span class=\"auto_reply auto-suggest\"> " + "/" + text[i].label + "</span> <br/> <span class=\"auto_suggestion auto-suggest\">" + text[i].value + "</span> </div>\n";
+              }
             }
+          }
+          else {
+            dBox.style.display = 'none';
           }
           var hasClass = function(el, className) {
             return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
           }
           document.addEventListener('click', function(e) {
-            if (hasClass(e.target, 'auto-suggest')) {
+            if (hasClass(e.target, 'auto-suggest-pro')) {
               e.preventDefault();
-              var data = (e.target.id).split('-').join(' ');
+            //  var data = (e.target.id).split('-').join(' ');
+              var data = e.target.id;
+
               for (var i = 0; i < text.length; i++) {
-                if ((text[i].label).indexOf(data) !== -1) {
-                  textBox.focus();
+                if ((text[i].randomId.toString()).indexOf(data) !== -1) {
                   textBox.textContent = "";
                   textBox.textContent = (text[i].value);
                   dBox.style.display = 'none'; // hide dropup
                   console.log((text[i].value));
+                  var range = document.createRange();
+                  var sel = window.getSelection();
+                  var endValue = textBox.childNodes[0].length;
+                  range.setStart(textBox.childNodes[0], endValue);
+                  range.collapse(true);
+                  sel.removeAllRanges();
+                  sel.addRange(range);
+                  textBox.focus();
+                }
+              }
+            }
+            else if (hasClass(e.target, 'auto-suggest')){
+              e.preventDefault();
+              // var data = (e.target.parentElement.id).split('-').join(' ');
+              var data = e.target.parentElement.id;
+              for (var i = 0; i < text.length; i++) {
+                if ((text[i].randomId.toString()).indexOf(data) !== -1) {
+                  textBox.textContent = "";
+                  textBox.textContent = (text[i].value);
+                  dBox.style.display = 'none'; // hide dropup
+                  quickReply.setCursorToEnd(textBox,dBox,text[i]);
+                  textBox.focus();
                 }
               }
             }
           });
-          if (suggestion !== undefined)
+          if (suggestion !== undefined && suggestion !== "") {
             dBox.innerHTML = suggestion;
-          console.log(autoCompleteFlag);
+          }
+          else if (suggestion === "") {
+            dBox.style.display = 'none';
+          }
         }
       }
       if (key === 32 || key === 8 || key === 46 || textBox.textContent === "") {
@@ -64,7 +94,15 @@ const quickReply = {
       }
     });
   },
-
+  setCursorToEnd: function (textBox,dBox,text){
+    var range = document.createRange();
+    var sel = window.getSelection();
+    var endValue = textBox.childNodes[0].length;
+    range.setStart(textBox.childNodes[0], endValue);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  },
   getQuickReplies: function (){
   let quickReplyIndex = [];
   let userSession = CommonUtils.getUserSession();
