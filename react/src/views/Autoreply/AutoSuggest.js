@@ -348,7 +348,7 @@ class AutoSuggest extends Component {
 						{
 							this.state.activeTextField === index &&
 							<div className="shortcut-button-group">
-								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary dhabidaddy" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
+								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
 								<button type="submit" autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--secondary" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</button>
 							</div>
 						}
