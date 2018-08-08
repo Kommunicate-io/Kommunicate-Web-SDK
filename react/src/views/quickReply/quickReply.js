@@ -89,37 +89,6 @@ const quickReply = {
   },
 
   setCursorToEnd: function (el){
-    /*
-    if(document.body.createTextRange) {
-        //var range = document.body.createTextRange();
-        // var sel = window.getSelection();
-        // var endValue = textBox.childNodes[0].length;
-        // // range.moveStart("textedit", 5);
-        // // range.moveStart("character", endValue);
-        // range.moveEnd("character", 0);
-        // range.collapse(true);
-        // range.select();
-        // textBox.focus();
-        // input.select();
-        var SelectionStart = 0;
-        var SelectionEnd = textBox.childNodes[0].length;
-        var sel = document.selection.createRange();
-        sel.collapse();
-        sel.moveStart('character', this.SelectionStart);
-        sel.collapse();
-        sel.moveEnd('character', this.SelectionEnd - this.SelectionStart);
-        sel.select();
-      }
-    else {
-        var range = document.createRange();
-        var sel = window.getSelection();
-        var endValue = textBox.childNodes[0].length;
-        range.setStart(textBox.childNodes[0], endValue);
-        range.collapse(true);
-        sel.removeAllRanges();
-        sel.addRange(range);
-    }
-    */
     el.focus();
     if (typeof window.getSelection != "undefined"
             && typeof document.createRange != "undefined") {
