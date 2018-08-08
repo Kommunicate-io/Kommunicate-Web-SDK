@@ -16,7 +16,7 @@ const quickReply = {
       var key = event.which || event.keyCode;
       var suggestion = "";
 
-      if (key === 191 || key === 47 || key === 191 || autoCompleteFlag === true) { // 13 is enter
+      if (key === 191 || key === 47 || key === 111 || autoCompleteFlag === true) { // 13 is enter
         autoCompleteFlag = true;
         textBoxContent = textBox.textContent;
         if ((textBoxContent).indexOf("/") !== -1 && textBoxContent.charAt(0) === "/") {
