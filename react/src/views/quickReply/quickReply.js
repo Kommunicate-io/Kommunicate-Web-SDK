@@ -74,7 +74,11 @@ const quickReply = {
               dBox.style.display = 'none';
               window.appHistory.push("/settings/message-shortcuts");
             }
+            else {
+              dBox.style.display = 'none';
+            }
           });
+          
           if (suggestion !== undefined && suggestion !== "") {
             dBox.innerHTML = suggestion;
           }
