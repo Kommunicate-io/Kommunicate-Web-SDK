@@ -88,15 +88,53 @@ const quickReply = {
     });
   },
 
-  setCursorToEnd: function (textBox){
-    var range = document.createRange();
-    var sel = window.getSelection();
-    var endValue = textBox.childNodes[0].length;
-    range.setStart(textBox.childNodes[0], endValue);
-    range.collapse(true);
-  //  sel.removeAllRanges();
-    sel.empty();
-    sel.addRange(range);
+  setCursorToEnd: function (el){
+    /*
+    if(document.body.createTextRange) {
+        //var range = document.body.createTextRange();
+        // var sel = window.getSelection();
+        // var endValue = textBox.childNodes[0].length;
+        // // range.moveStart("textedit", 5);
+        // // range.moveStart("character", endValue);
+        // range.moveEnd("character", 0);
+        // range.collapse(true);
+        // range.select();
+        // textBox.focus();
+        // input.select();
+        var SelectionStart = 0;
+        var SelectionEnd = textBox.childNodes[0].length;
+        var sel = document.selection.createRange();
+        sel.collapse();
+        sel.moveStart('character', this.SelectionStart);
+        sel.collapse();
+        sel.moveEnd('character', this.SelectionEnd - this.SelectionStart);
+        sel.select();
+      }
+    else {
+        var range = document.createRange();
+        var sel = window.getSelection();
+        var endValue = textBox.childNodes[0].length;
+        range.setStart(textBox.childNodes[0], endValue);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    }
+    */
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+    }
   },
 
   getQuickReplies: function (){
