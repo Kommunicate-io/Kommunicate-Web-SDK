@@ -1330,35 +1330,30 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
-                if(CUSTOM_CHAT_LAUNCHER){
-            		return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+CUSTOM_CHAT_LAUNCHER+'</a></div>';
-            	}else{
-                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-              <style type="text/css">
-                  .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
-                  .km-launcher-logo-1{fill:#FFFFFF;}
-              </style>
-              <g>
-                  <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
-                      <stop offset="0" style="stop-color:#3A3C80"/>
-                      <stop offset="0.1658" style="stop-color:#4B4C93"/>
-                      <stop offset="0.3516" style="stop-color:#5858A2"/>
-                      <stop offset="0.5063" style="stop-color:#5C5CA7"/>
-                      <stop offset="0.6795" style="stop-color:#53549D"/>
-                      <stop offset="0.9706" style="stop-color:#3D3E83"/>
-                      <stop offset="1" style="stop-color:#3A3C80"/>
-                  </linearGradient>
-                  <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
-                  <g>
-                      <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
-                  </g>
-              </g>
-              </svg>`
-             +'</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
-
-                 } //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
-            };
+                var defaultHtml=  `<div><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+                <style type="text/css">
+                    .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
+                    .km-launcher-logo-1{fill:#FFFFFF;}
+                </style>
+                <g>
+                    <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
+                        <stop offset="0" style="stop-color:#3A3C80"/>
+                        <stop offset="0.1658" style="stop-color:#4B4C93"/>
+                        <stop offset="0.3516" style="stop-color:#5858A2"/>
+                        <stop offset="0.5063" style="stop-color:#5C5CA7"/>
+                        <stop offset="0.6795" style="stop-color:#53549D"/>
+                        <stop offset="0.9706" style="stop-color:#3D3E83"/>
+                        <stop offset="1" style="stop-color:#3A3C80"/>
+                    </linearGradient>
+                    <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
+                    <g>
+                        <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
+                    </g>
+                </g>
+                </svg></div>`;
+               
+            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a></div>'+ '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+            	  };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {

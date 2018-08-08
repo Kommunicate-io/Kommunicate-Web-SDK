@@ -8,14 +8,14 @@
     text-align: center;
     font-size: 1.8rem;
     color: $color-text;
-    padding: 4rem 12rem 6rem 12rem;
+    padding: 1rem 12rem 6rem 12rem;
     display: flex;
-    margin-top: 5rem;
+    margin-top: 1rem;
     flex-wrap: wrap;
     min-height: 1px;
     justify-content: space-between;
     @include respond(tab-lan) {
-        padding: 6rem;
+        padding: 3rem;
         font-size: 1.8rem;
     }
     @include respond(tab-por) {
@@ -52,7 +52,7 @@
         }
     } //
     &_block_image {
-        padding: 9rem;
+        padding: 5.5rem;
         @include respond(tab-lan) {
             padding: 2rem;
         }

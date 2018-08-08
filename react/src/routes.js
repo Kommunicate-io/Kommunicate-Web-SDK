@@ -21,6 +21,7 @@ const routes = {
   '/integrations': 'Integrations',
   '/settings/pushnotification': 'Push Notifications',
   '/settings/connect-support-email': 'Connect Support Email',
+  '/settings/email-notifications': 'Email Notifications',
 };
 
 export default routes;

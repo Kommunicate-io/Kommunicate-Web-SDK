@@ -22,6 +22,9 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/settings/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>
+                        <li className="ss-nav-item profile-link">
+                            <NavLink to={'/settings/email-notifications'} className="ss-nav-link" activeClassName="active">Email Notifications</NavLink>
+                        </li>
                         {/* <li className="ss-nav-item autoreply-link">
                             <NavLink to={'/autoreply'} className="ss-nav-link" activeClassName="active">Auto replies</NavLink>
                         </li> */}

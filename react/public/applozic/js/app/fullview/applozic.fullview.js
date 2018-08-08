@@ -393,7 +393,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
-			'onConnectFailed': function () { },
+			'onConnectFailed': function () {
+				if (navigator.onLine) { 
+					mckInitializeChannel.reconnect();
+				}
+				
+			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
 			'onMessageRead': function () { },
@@ -7325,6 +7330,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						w.addEventListener("beforeunload", function (e) {
 							_this.disconnect();
 						});
+						w.addEventListener('online', function () {
+							console.log("online")
+							mckInitializeChannel.reconnect();
+						});
+						w.addEventListener('offline', function () {
+							console.log("offline");
+						});
 					}
 				}
 			};
@@ -7338,10 +7350,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 					checkConnectedIntervalId = setInterval(function () {
 						_this.connectToSocket(isFetchMessages);
-					}, 600000);
+					}, 60000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 1200000);
+					}, 12000);
 				} else {
 					_this.connectToSocket(isFetchMessages);
 				}
@@ -7349,6 +7361,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				if (!stompClient.connected) {
+					console.log("socket connected",new Date());
 					if (isFetchMessages) {
 						var currTabId = $mck_message_inner.data('km-id');
 						if (currTabId) {
@@ -7379,7 +7392,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.disconnect();
 			};
 			_this.disconnect = function () {
-				if (stompClient && stompClient.connected) {
+				console.log("socket disconnect",new Date());
+				if (stompClient) {
 					_this.sendStatus(0);
 					stompClient.disconnect();
 					SOCKET.close();
@@ -7483,6 +7497,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.reconnect = function () {
+				console.log("socket trying to reconnect",new Date());
 				_this.unsubscibeToTypingChannel();
 				_this.unsubscibeToNotification();
 				_this.disconnect();
@@ -7500,6 +7515,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.onConnect = function () {
+				console.log("socket trying to connect",new Date());
 				if (stompClient.connected) {
 					if (subscriber) {
 						_this.unsubscibeToNotification();
