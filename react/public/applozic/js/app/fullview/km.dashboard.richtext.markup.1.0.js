@@ -358,7 +358,7 @@ kommunicateDashboard.markup.getDialogboxContainer = function(metadata){
 }
 kommunicateDashboard.markup.getHtmlMessageMarkups = function (message) {
     if (message.message && message.source == 7) {
-        return "<pre class='km-mail-fixed-view'>" + message.message + "</pre>";
+        return "<pre class='km-mail-fixed-view'>" + message.message.replace(/\n/g, " ") + "</pre>";
     } else {
         return "";
     }
