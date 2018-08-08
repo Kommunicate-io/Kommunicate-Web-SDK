@@ -4,12 +4,13 @@ import './AutoSuggest.css'
 import Notification from '../model/Notification';
 import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
+import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
 
 
 class AutoSuggest extends Component {
-	
+
 	state = {
 		category: '',
 		shortcut: '',
@@ -31,7 +32,7 @@ class AutoSuggest extends Component {
 	componentDidMount() {
 		this.getSuggestions();
 	}
-	
+
 	getSuggestions = () => {
 		let userSession = CommonUtils.getUserSession();
 		getSuggestionsByAppId(userSession.application.applicationId, AUTOREPLY.SUGGESTION)
@@ -44,21 +45,21 @@ class AutoSuggest extends Component {
 						messageField: item.content,
 						suggestionId: item.id
 					})
-					
+
 					userShortcutsCopy.push({
 						shortcutField: item.category,
 						messageField: item.content,
 						suggestionId: item.id
-					}) 
-					
+					})
+
 				})
 				this.setState({
 					userShortcuts: userShortcuts.reverse(),
-					userShortcutsCopy: userShortcutsCopy.reverse()	
+					userShortcutsCopy: userShortcutsCopy.reverse()
 				})
 
-				this.setState({ 
-					autoSuggestions: autoSuggestions 
+				this.setState({
+					autoSuggestions: autoSuggestions
 				})
 
 				if (userShortcuts.length === 0) {
@@ -82,7 +83,7 @@ class AutoSuggest extends Component {
 			})
 	}
 
-	
+
 	suggestionMethod =(e) => {
 		e.preventDefault();
 		let index = this.state.activeTextField;
@@ -90,10 +91,10 @@ class AutoSuggest extends Component {
 		this.setState({
 			visibleButtons: false
 		})
-		if(this.state.userShortcuts[index] && this.state.userShortcuts[index].suggestionId){	
+		if(this.state.userShortcuts[index] && this.state.userShortcuts[index].suggestionId){
 			this.updateSuggestion(index);
 		}
-		else{	
+		else{
 			this._createSuggestion();
 		}
 	}
@@ -120,9 +121,10 @@ class AutoSuggest extends Component {
 					console.log(response)
 					if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
 						Notification.info("Shortcut created")
-						this.refs[shortcutRef].blur();	
-						this.refs[messageRef].blur();	
+						this.refs[shortcutRef].blur();
+						this.refs[messageRef].blur();
 						this.getSuggestions();
+						quickReply.loadQuickReplies();
 						this.setState({
 							visibleButtons: false,
 							activeTextField: -1
@@ -135,25 +137,25 @@ class AutoSuggest extends Component {
 					console.log(err)
 				})
 
-		}	
+		}
 
 	}
 	editSuggestion =() => {
 		let index = this.state.activeMenu;
 		let shortcutRef ="shortcut"+index;
 		this.refs[shortcutRef].focus();
-	
+
 	}
-	
+
 	focusEllipsisDropdownMenu = (_this) => {
 		let index = this.state.activeMenu;
 		let ellipsisMenu = "ellipsis" + index;
 		setTimeout(function () {
 			_this.refs[ellipsisMenu].focus();
 		}, 1);
-		
+
 	}
-	
+
 	updateSuggestion = (index) => {
 		let shortcutRef ="shortcut"+index;
 		let messageRef = "message" + index;
@@ -161,55 +163,57 @@ class AutoSuggest extends Component {
 		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
-		} 
+		}
 		else {
 			const updatedSuggestion = {
 				id : this.state.userShortcuts[index].suggestionId,
 				category: this.state.userShortcuts[index].shortcutField,
 				content: this.state.userShortcuts[index].messageField,
 				name: " ",
-				
-			}	
+
+			}
 			updateSuggestionsById(updatedSuggestion)
 			.then(response => {
 				console.log(response)
 				if(response.status === 200 && response.data.code === "SUGESSTION_UPDATED_SUCCESSFULLY"){
 					Notification.info("Suggestion updated")
 					this.getSuggestions();
+					quickReply.loadQuickReplies();
 					this.setState({
 						visibleButtons: false,
 						activeTextField: -1
 					})
-					this.refs[shortcutRef].blur();	
+					this.refs[shortcutRef].blur();
 					this.refs[messageRef].blur();
-						
-					
+
+
 				}else{
 					Notification.info("There was problem in updating the suggestion.");
 				}
 			})
 			.catch(err => {
 				console.log(err)
-			})					
-		}				
+			})
+		}
 	}
 
 	deleteSuggestion = () => {
 		let index = this.state.activeMenu;
-		let userShortcuts = Object.assign([], this.state.userShortcuts);	
+		let userShortcuts = Object.assign([], this.state.userShortcuts);
 		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		let userSession = CommonUtils.getUserSession();
-		
+
 		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId,applicationId:userSession.application.applicationId} };
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
 			if(response.status === 200 && response.data.code === "SUGESSTION_DELETED_SUCCESSFULLY"){
-				Notification.info("Suggestion deleted")		
+				Notification.info("Suggestion deleted")
 				this.getSuggestions();
-				this.setState({			
-					visibleButtons: false		
-				})	
+				quickReply.loadQuickReplies();
+				this.setState({
+					visibleButtons: false
+				})
 
 			}else{
 				Notification.info("There was problem in deleting the suggestion.");
@@ -217,8 +221,8 @@ class AutoSuggest extends Component {
 		})
 		.catch(err => {
 			console.log(err)
-		})		
-			
+		})
+
 	}
 	cancelSuggestion = () =>{
 		let index = this.state.activeTextField;
@@ -226,7 +230,7 @@ class AutoSuggest extends Component {
 		let messageRef = "message" + index;
 		let userShortcuts = Object.assign([], this.state.userShortcuts);
 		let userShortcutsCopy = Object.assign([],this.state.userShortcutsCopy);
-		
+
 		if(index === 0 && this.state.userShortcuts.length > this.state.userShortcutsCopy.length){
 			userShortcuts.splice(0, 1);
 			this.setState({
@@ -254,7 +258,7 @@ class AutoSuggest extends Component {
 			activeTextField: -1
 			// showEmptyState: false
 		})
-		
+
 	}
 	removeEmptyInputField = () => {
 		let index = this.state.activeTextField;
@@ -264,7 +268,7 @@ class AutoSuggest extends Component {
 			if(validator.isEmpty(userShortcuts[0].shortcutField) && validator.isEmpty(userShortcuts[0].messageField)){
 				userShortcuts.splice(0, 1);
 				this.setState({
-				 	userShortcuts: userShortcuts				
+				 	userShortcuts: userShortcuts
 				})
 				this.refs[shortcutRef].focus();
 			}
@@ -272,9 +276,9 @@ class AutoSuggest extends Component {
 				this.refs["shortcut0"].focus();
 				Notification.info("Please save your changes");
 			}
-		}		
+		}
 	}
-	
+
 	appendShorcutFields = () => {
 
 		let fieldGroup = Object.assign([], this.state.userShortcuts);
@@ -292,9 +296,9 @@ class AutoSuggest extends Component {
 			visibleMenu : false,
 			userShortcuts: fieldGroup,
 			activeTextField: activeTextField,
-			showEmptyState: true	
+			showEmptyState: true
 		}, (e) => { this.refs.shortcut0.focus()})
-	
+
 
 	}
 
@@ -321,10 +325,10 @@ class AutoSuggest extends Component {
 								}} onFocus={(e) => {
 									this.setState({ activeTextField: index, visibleButtons:true},this.removeEmptyInputField)
 								}}
-									
+
 								onKeyPress={(e) => {
 									if (e.charCode === 13) { this.refs[messageRef].focus() }}} placeholder="" />
-							
+
 						</div>
 					</div>
 					<div className="col-md-1 input-link"></div>
@@ -336,25 +340,25 @@ class AutoSuggest extends Component {
 								this.setState({ userShortcuts: userShortcuts, visibleButtons:true })
 							}} onFocus={(e) =>{
 								this.setState({ activeTextField: index, visibleButtons:true },this.removeEmptyInputField)
-								
+
 							} }
 							onKeyPress={(e) => { if (e.charCode === 13) { this.suggestionMethod(e); this.refs[messageRef].blur(); } this.setState({visibleButtons:true}) }} placeholder="" />
 
 
 						{
-							this.state.activeTextField === index && 
+							this.state.activeTextField === index &&
 							<div className="shortcut-button-group">
-								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
-								<button type="submit" autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--secondary" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</button> 
+								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary dhabidaddy" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
+								<button type="submit" autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--secondary" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</button>
 							</div>
 						}
 
 					</div>
-					
+
 					<div className="col-md-2 tooltip-wrapper">
-						{ this.state.activeTextField === index && 
+						{ this.state.activeTextField === index &&
 						<p className="edit-tag" >Editing</p>
-						}	
+						}
 						{  this.state.activeTextField !== index &&
 								<div className="tooltip-btn" onClick={() => {this.setState({ activeMenu: index, visibleMenu: !this.state.visibleMenu})}}>
 									<div className="ellipsis" ></div>
@@ -374,11 +378,11 @@ class AutoSuggest extends Component {
 
 						}
 					</div>
-				
+
 				</div>
 			</div>
 		</div>;
-		}		
+		}
 		);
 
 		return (
@@ -400,7 +404,7 @@ class AutoSuggest extends Component {
 				</div>
 
 				<div className="field-header">
-					<div className="row"> 
+					<div className="row">
 							<div className="empty-state-message-shortcuts-div text-center col-lg-9" hidden={this.state.showEmptyState}>
 								<img src={EmptyStateImage} alt="Message Shortcut Empty State" className="empty-state-message-shortcuts-img"/>
 								<p className="empty-state-message-shortcuts-first-text">
@@ -425,7 +429,7 @@ class AutoSuggest extends Component {
 				</div>
 
 				{textFields}
-				
+
 			</div>
 		)
 	}
