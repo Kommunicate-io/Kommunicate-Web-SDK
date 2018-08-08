@@ -10,7 +10,7 @@
 }
 .dropup #d-box {
   position: absolute;
-  width: 100%;
+  width: 103%;
   bottom: 3rem;
   left:-8px;
   background-color: #ffffff;
@@ -60,36 +60,49 @@
 .d-pop:hover {
     background: #f2f2f2!important;
 }
-/* .dropup .d-pop:nth-child(1) {
-  top: -0px;
+.faq-converstion-routing-link {
+  color : #5C5AA7 ;
+  text-decoration : none !important ;
 }
-.dropup .d-pop:nth-child(2) {
-  top: -17px;
+.faq-converstion-routing-link:hover {
+  color : #5C5AA7 !important ;
 }
-.dropup .d-pop:nth-child(3) {
-  top: -34px;
+.km-no-reply-heading {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: center;
+  color: #474748;
 }
-.dropup .d-pop:nth-child(4) {
-  top: -51px;
+
+.km-no-reply-content {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  text-align: center;
+  color: #818084;
+  display: inline;
 }
-.dropup .d-pop:nth-child(5) {
-  top: -68px;
-}
-.dropup .d-pop:nth-child(6) {
-  top: -85px;
-}
-.dropup .d-pop:nth-child(7) {
-  top: -102px;
-}
-.dropup .d-pop:nth-child(8) {
-  top: -119px;
-}
-.dropup .d-pop:nth-child(9) {
-  top: -136px;
-}
-.dropup .d-pop:nth-child(10) {
-  top: -153px;
-}
-.dropup .txtbox {
+
+.km-no-quick-reply {
   width: 100%;
-} */
+  border-radius: 4px;
+  background-color: #ffffff;
+  color: black;
+  position: relative;
+  cursor: pointer;
+  transition: all .3s;
+  margin-bottom: .2rem;
+  padding: 50px 69px;
+  text-align: center;
+}
+
+.km-no-reply-color {
+  color: #4831d9;
+}
