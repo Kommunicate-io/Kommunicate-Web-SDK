@@ -24,7 +24,6 @@ const quickReply = {
           if (text.length !== 0){
             for (var i = 0; i < text.length; i++) {
               if ((text[i].label).indexOf(textBoxContent) !== -1) {
-              //  textInput = (text[i].label).split(' ').join('-');
                 textInput = text[i].randomId.toString();
                 suggestion = suggestion + "<div id= " + textInput + " class=\"d-pop auto-suggest-pro\"> <span class=\"auto_reply auto-suggest\"> " + "/" + text[i].label + "</span> <br/> <span class=\"auto_suggestion auto-suggest\">" + text[i].value + "</span> </div>\n";
               }
@@ -34,7 +33,6 @@ const quickReply = {
             var replyMessage = "Quickly reply to common user queries by setting up your";
             var link = "<div id=\"km-no-suggestion\" class=\" km-no-suggestion km-no-quick-reply \"> <span class=\"km-no-reply-heading km-no-suggestion\">You haven’t set up any quick replies yet</span> <br/><br/> <span class=\"km-no-reply-content auto_reply km-no-suggestion\">"+replyMessage+"</span> <span class=\" auto_suggestion km-no-reply-content km-no-reply-color km-quick-reply-link\">Quick replies</span></div>\n";
             suggestion = link;
-            // dBox.style.display = 'none';
           }
           var hasClass = function(el, className) {
             return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
@@ -42,7 +40,6 @@ const quickReply = {
           document.addEventListener('click', function(e) {
             if (hasClass(e.target, 'auto-suggest-pro')) {
               e.preventDefault();
-            //  var data = (e.target.id).split('-').join(' ');
               var data = e.target.id;
 
               for (var i = 0; i < text.length; i++) {
@@ -57,7 +54,6 @@ const quickReply = {
             }
             else if (hasClass(e.target, 'auto-suggest')){
               e.preventDefault();
-              // var data = (e.target.parentElement.id).split('-').join(' ');
               var data = e.target.parentElement.id;
               for (var i = 0; i < text.length; i++) {
                 if ((text[i].randomId.toString()).indexOf(data) !== -1) {
@@ -78,7 +74,7 @@ const quickReply = {
               dBox.style.display = 'none';
             }
           });
-          
+
           if (suggestion !== undefined && suggestion !== "") {
             dBox.innerHTML = suggestion;
           }
@@ -116,7 +112,7 @@ const quickReply = {
     }
   },
 
-  getQuickReplies: function() {
+  loadQuickReplies: function() {
     let quickReplyIndex = [];
     let userSession = CommonUtils.getUserSession();
     const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userSession.application.applicationId;

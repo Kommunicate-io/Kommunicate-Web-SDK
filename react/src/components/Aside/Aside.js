@@ -60,7 +60,7 @@ class Aside extends Component {
 
   componentDidMount() {
     this.getThirdparty ();
-    quickReply.getQuickReplies();
+    quickReply.loadQuickReplies();
      if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
