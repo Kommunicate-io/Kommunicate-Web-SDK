@@ -9,14 +9,14 @@ class Conversations extends Component {
     document.body.classList.toggle('aside-menu-hidden');
     let userSession = CommonUtils.getUserSession();
     const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest + '/' + userSession.application.applicationId
-    window.getSuggestions(autoSuggestUrl);
+    // window.getSuggestions(autoSuggestUrl);
 
     /*if (window.$kmApplozic(".left .person").length > 0 && window.$kmApplozic(".left .person.active").length === 0) {
       window.$kmApplozic(".left .person:first").trigger('click');
     }*/
     var prevSelection = window.$kmApplozic("#km-contact-list .person.prev-selection");
     if (prevSelection.length === 1) {
-      prevSelection.removeClass('prev-selection');      
+      prevSelection.removeClass('prev-selection');
       prevSelection.trigger('click');
     }
   }
