@@ -75,10 +75,6 @@ const quickReply = {
               window.appHistory.push("/settings/message-shortcuts");
             }
           });
-          textBox.addEventListener('blur', function() {
-            dBox.style.display = 'none';
-              // Do whatever you want with the input
-          });
           if (suggestion !== undefined && suggestion !== "") {
             dBox.innerHTML = suggestion;
           }
