@@ -94,7 +94,9 @@ const quickReply = {
     var endValue = textBox.childNodes[0].length;
     range.setStart(textBox.childNodes[0], endValue);
     range.collapse(true);
+    if (sel.rangeCount > 0 && sel.getRangeAt(0).getClientRects().length > 0) {
     sel.removeAllRanges();
+    }
     sel.addRange(range);
   },
 
