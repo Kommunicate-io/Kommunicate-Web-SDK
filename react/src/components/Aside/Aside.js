@@ -383,6 +383,7 @@ class Aside extends Component {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : that.state.group.groupId,
                                             'message' : "Status changed to " + that.state.statuses[status],
+                                            'type':10,
                                             'metadata':{
                                               'KM_STATUS' :that.state.statuses[status],
                                               skipBot:true,
