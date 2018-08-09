@@ -263,6 +263,7 @@ const createConversationFromMail = (req) => {
                 groupInfo.users[0].userId = customer.userName;
                 groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
                 groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
+                groupInfo.metadata.WELCOME_MESSAGE = "disable";
                 headers['Apz-Token'] = 'Basic ' + customer.apzToken;
                 if (userDetail && userDetail.length > 0) {
                     //create conversation with first user
