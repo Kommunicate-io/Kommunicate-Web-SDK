@@ -105,6 +105,12 @@
             margin: 0 auto;
             height: auto;
         }
+        @include respond(tab-por){
+            height: 72rem;
+        }
+        @include respond(phone){
+            height: 60rem;
+        }
     }
     &_card {
         position: absolute;
