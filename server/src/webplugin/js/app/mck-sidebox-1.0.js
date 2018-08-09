@@ -2221,7 +2221,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         onInit: loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
-                        googleApiKey: MCK_GOOGLE_API_KEY
+                        googleApiKey: MCK_GOOGLE_API_KEY,
+                        chatNotificationMailSent: true
                     }
                     if (email) {
                         options.email = email;
