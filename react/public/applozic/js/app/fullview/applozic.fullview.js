@@ -1245,6 +1245,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								userSession.imageLink=result.imageLink;
 								w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 							}
+							
+							let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
+							userSession.notifyState=result.notifyState;
+							w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+
 							$kmApplozic.ajaxPrefilter(function (options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
 									// _this.manageIdleTime();
