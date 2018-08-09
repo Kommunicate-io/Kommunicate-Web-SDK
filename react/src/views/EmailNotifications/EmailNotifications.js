@@ -19,7 +19,7 @@ export default class EmailNotification extends Component {
 
     componentDidMount() {
         this.setState({
-            selectedOption: { value: this.state.emailNotificationState, label: (this.state.emailNotificationState == 1) ? 'All conversations' : (this.state.emailNotificationState == 4) ? 'Only conversations assigned to me' : 'Do not send me any message notifications'}
+            selectedOption: { value: this.state.emailNotificationState, label: (this.state.emailNotificationState == 1) ? 'All conversations' : (this.state.emailNotificationState == 4) ? 'Only conversations assigned to me' : 'Do not email me any message notifications'}
         })
         console.log(this.state.emailNotificationState);
     }
@@ -84,7 +84,7 @@ export default class EmailNotification extends Component {
                                 options={[
                                     { value: 1, label: 'All conversations' },
                                     { value: 4, label: 'Only conversations assigned to me' },
-                                    { value: 0, label: 'Do not send me any message notifications' }
+                                    { value: 0, label: 'Do not email me any message notifications' }
                                 ]}
                             />
                         </div>
