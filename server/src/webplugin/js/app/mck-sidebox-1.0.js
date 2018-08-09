@@ -1351,7 +1351,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                     </g>
                 </g>
                 </svg></div>`;
-               
+
             return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a></div>'+ '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
             	  };
             _this.initializeApp = function (optns, isReInit) {
@@ -1392,6 +1392,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
+                userPxy.deviceType= 0;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
                 userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';

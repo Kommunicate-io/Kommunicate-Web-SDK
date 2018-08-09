@@ -21,6 +21,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "password": password,
     "roleName": role,
     "authenticationTypeId": 1,
+    "deviceType":0,
     "email": email,
     "displayName": displayName,
     "gcmKey": gcmKey,
@@ -66,6 +67,7 @@ const createApplozicClientV1 = (options) => {
   options.authenticationTypeId = options.authenticationTypeId ? options.authenticationTypeId : 1;
   options.roleName = options.roleName ? options.roleName : options.role;
   options.chatNotificationMailSent = true;
+  options.deviceType=0;
   options.userId = options.userName ? options.userName.toLowerCase() : "";
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, options)).then(response => {
     let err = {};
@@ -216,7 +218,7 @@ exports.applozicLogin = (userDetail) => {
   //let data ={"userId": userDetail.userName, "applicationId": userDetail.applicationId,"password": userDetail.password,"authenticationTypeId": 1,"email":userDetail.email};
   userDetail.userId = userDetail.userName ? userDetail.userName.toLowerCase() : "";
   userDetail.authenticationTypeId = userDetail.authenticationTypeId ? userDetail.authenticationTypeId : 1;
-
+  userDetail.deviceType =0;
   if (userDetail.role) {
     userDetail.roleName = userDetail.role;
   }
@@ -503,10 +505,10 @@ exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId, headers) =>
     });
 };
 /**
- * 
- * @param {String} userName 
- * @param {String} applicationId 
- * @param {Boolean} activate 
+ *
+ * @param {String} userName
+ * @param {String} applicationId
+ * @param {Boolean} activate
  */
 exports.activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/delete?reset=false";
@@ -554,10 +556,10 @@ exports.getConversationStats = (params, headers) => {
   });
 }
 /**
- * 
+ *
  * @param {object} params  { params.userIds:["userId1","userId2","userId3"],
                             params.clientGroupIds:["groupId1","groupId2"]}
- * @param {object} headers 
+ * @param {object} headers
  */
 exports.removeGroupMembers = (params, applicationId, apzToken, ofUserId) => {
   let headers = {
@@ -595,5 +597,5 @@ const sendMessageListRecursively = (msgList, groupId, headers) => {
   })
 }
 
-exports.sendMessageListRecursively =sendMessageListRecursively 
+exports.sendMessageListRecursively =sendMessageListRecursively
 exports.sendGroupMessage=sendGroupMessage
