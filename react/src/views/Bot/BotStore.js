@@ -15,6 +15,7 @@ import Microsoft from './images/microsoft-icon.png'
 import Tick from './images/tick-icon.png'
 import KmIcon from './images/km-icon.png'
 import NoteIcon from './images/note-icon.png';
+import { ROLE_TYPE } from '../../utils/Constant';
 
 
 export default class BotStore extends Component {
@@ -362,7 +363,9 @@ export default class BotStore extends Component {
             applicationId:applicationId,
             password:userId,
             name:this.state.botName,
-            aiPlatform:aiPlatform
+            aiPlatform:aiPlatform,
+            roleType: ROLE_TYPE.BOT
+            
           },"BOT")).then( bot => {
             Notification.info("Bot successfully created");
             return bot;
