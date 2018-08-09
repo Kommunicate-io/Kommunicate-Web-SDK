@@ -23,7 +23,7 @@ const addMemberIntoConversation = (data) => {
                         header = agents.header;
                         if (customer.botRouting) {
                             if (agents.assignTo != customer.userName) {
-                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: user.userName, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
+                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
                                 assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                             }
                             return { code: "SUCCESS", data: 'success' }
