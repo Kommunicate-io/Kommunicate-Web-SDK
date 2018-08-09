@@ -7400,8 +7400,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				console.log("socket disconnect",new Date());
 				if (stompClient && stompClient.connected) {
 					_this.sendStatus(0);
-					stompClient.disconnect();
-
+					stompClient.connected && stompClient.disconnect();
 					if (SOCKET) {
 						SOCKET.close();
 						SOCKET = '';
