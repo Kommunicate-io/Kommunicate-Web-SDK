@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="314px" height="429px" viewBox="0 0 314 429" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 37</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="244" height="297" rx="10"></rect>
+        <filter x="-20.9%" y="-17.2%" width="144.3%" height="136.4%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="3" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="17.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.439215686   0 0 0 0 0.439215686   0 0 0 0 0.564705882  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <rect id="path-3" x="0" y="317" width="209" height="42" rx="8"></rect>
+        <filter x="-24.4%" y="-121.4%" width="151.7%" height="357.1%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="3" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="17.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.439215686   0 0 0 0 0.439215686   0 0 0 0 0.564705882  0 0 0 0.15 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Live-Chat-Software2-Copy" transform="translate(-548.000000, -2874.000000)">
+            <g id="Group-37" transform="translate(580.000000, 2906.000000)">
+                <g id="Group-6">
+                    <g id="Rectangle-5">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="Rectangle-6">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                        <rect stroke="#CACACA" stroke-width="1" stroke-linejoin="square" fill="#FFFFFF" fill-rule="evenodd" x="0.5" y="317.5" width="208" height="41" rx="8"></rect>
+                    </g>
+                    <text id="/g" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="400" line-spacing="34" letter-spacing="0.159999996" fill="#4A4A4A">
+                        <tspan x="20" y="339">/g</tspan>
+                    </text>
+                    <text id="/great" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="400" line-spacing="34" letter-spacing="0.159999996" fill="#4A4A4A">
+                        <tspan x="20" y="28">/great</tspan>
+                    </text>
+                    <text id="Thank-you-for-your-p" font-family="Roboto-Regular, Roboto" font-size="14" font-weight="normal" line-spacing="34" letter-spacing="0.112000003" fill="#9B9B9B">
+                        <tspan x="20" y="50">Thank you for your patience.</tspan>
+                    </text>
+                    <text id="/go" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="400" line-spacing="34" letter-spacing="0.159999996" fill="#4A4A4A">
+                        <tspan x="20" y="100">/go</tspan>
+                    </text>
+                    <text id="I-will-be-right-back" font-family="Roboto-Regular, Roboto" font-size="14" font-weight="normal" line-spacing="34" letter-spacing="0.112000003" fill="#9B9B9B">
+                        <tspan x="20" y="122">I will be right back.</tspan>
+                    </text>
+                    <text id="/greet" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="400" line-spacing="34" letter-spacing="0.159999996" fill="#4A4A4A">
+                        <tspan x="20" y="173">/greet</tspan>
+                    </text>
+                    <text id="Hello!-How-can-I-hel" font-family="Roboto-Regular, Roboto" font-size="14" font-weight="normal" line-spacing="34" letter-spacing="0.112000003" fill="#9B9B9B">
+                        <tspan x="20" y="195">Hello! How can I help you?</tspan>
+                    </text>
+                    <text id="/goodbye" font-family="Roboto-Medium, Roboto" font-size="20" font-weight="400" line-spacing="34" letter-spacing="0.159999996" fill="#4A4A4A">
+                        <tspan x="20" y="248">/goodbye</tspan>
+                    </text>
+                    <text id="Thank-you.-Bye!" font-family="Roboto-Regular, Roboto" font-size="14" font-weight="normal" line-spacing="34" letter-spacing="0.112000003" fill="#9B9B9B">
+                        <tspan x="20" y="270">Thank you. Bye!</tspan>
+                    </text>
+                    <path d="M7.5,223.5 L236.502183,223.5" id="Line-2" stroke="#EBEBEB" stroke-linecap="square"></path>
+                    <path d="M7.5,148.5 L236.502183,148.5" id="Line-2" stroke="#EBEBEB" stroke-linecap="square"></path>
+                    <path d="M7.5,74.5 L236.502183,74.5" id="Line-2" stroke="#EBEBEB" stroke-linecap="square"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
