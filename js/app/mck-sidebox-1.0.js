@@ -1423,6 +1423,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                           kmAnonymousChatLauncher.classList.remove('vis');
                           kmAnonymousChatLauncher.classList.add('n-vis');
                         });
+                        if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
+                            $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
+                        }
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -1431,6 +1434,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                     }
                 }
+
             };
             _this.initialize =function(userPxy){
                 window.Applozic.ALApiService.login(
@@ -2199,20 +2203,19 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
-                    var $submit_chat_login = $("#km-submit-chat-login");
-                    var $error_chat_login = $("#km-error-chat-login");
-                    var userId = $("#km-userId").val();
-                    var email = $("#km-email").val();
-                    var userName = $("#km-userName").val();
-                    var contactNumber = $("#km-contact").val();
+                    var $submit_chat_login = $applozic("#km-submit-chat-login");
+                    var $error_chat_login = $applozic("#km-error-chat-login");
+                    var userId = $applozic("#km-userId").val();
+                    var email = $applozic("#km-email").val();
+                    var userName = $applozic("#km-userName").val();
+                    var contactNumber = $applozic("#km-contact").val();
+
                     if(contactNumber){
                         userId =contactNumber;
                     }
                     if(email){
                         userId = email;
                     }
-                    $submit_chat_login.attr('disabled', true);
-                    $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
                     $error_chat_login.html('');
                     var options = {
@@ -2232,6 +2235,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (contactNumber) {
                         options.contactNumber = contactNumber;
                     }
+                    $submit_chat_login.attr('disabled', true);
+                    $submit_chat_login.html('Initiating chat...');
                      mckInit.initialize(options);
 
                     return false;
@@ -5574,7 +5579,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (msg.type === 7 || msg.type === 6 || msg.type === 4 || msg.type === 0) {
                     return '';
                 }
-                if (msg.status === 5) {                 
+                if (msg.status === 5) {
                     return 'mck-icon-read';
                     // return '<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15" class="mck-message-status--icon-read"><path fill="#4FC3F7" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path></svg>';
                     // return {a:'M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z', b:'mck-message-status--icon-read'};
