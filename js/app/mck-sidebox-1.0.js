@@ -1428,6 +1428,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                           kmAnonymousChatLauncher.classList.remove('vis');
                           kmAnonymousChatLauncher.classList.add('n-vis');
                         });
+                        if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
+                            $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
+                        }
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -1436,6 +1439,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                     }
                 }
+
             };
             _this.initialize =function(userPxy){
                 window.Applozic.ALApiService.login(
@@ -2204,12 +2208,13 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
-                    var $submit_chat_login = $("#km-submit-chat-login");
-                    var $error_chat_login = $("#km-error-chat-login");
-                    var userId = $("#km-userId").val();
-                    var email = $("#km-email").val();
-                    var userName = $("#km-userName").val();
-                    var contactNumber = $("#km-contact").val();
+                    var $submit_chat_login = $applozic("#km-submit-chat-login");
+                    var $error_chat_login = $applozic("#km-error-chat-login");
+                    var userId = $applozic("#km-userId").val();
+                    var email = $applozic("#km-email").val();
+                    var userName = $applozic("#km-userName").val();
+                    var contactNumber = $applozic("#km-contact").val();
+
                     if(contactNumber){
                         userId =contactNumber;
                     }
@@ -2227,27 +2232,12 @@ var MCK_CLIENT_GROUP_MAP = [];
                         googleApiKey: MCK_GOOGLE_API_KEY
                     }
                     if (email) {
-                      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                          if (!filter.test(email)) {
-                            alert('Please provide a valid email address');
-                            $submit_chat_login.attr('disabled', false);
-                            $submit_chat_login.html('Start Conversation');
-                            return false;
-                          }
                         options.email = email;
                     }
                     if (userName) {
                         options.displayName = userName;
                     }
                     if (contactNumber) {
-                      var phoneRe = /^[0-9]+$/;
-                      var digits = contactNumber.replace(/\D/g, "");
-                      if(!phoneRe.test(digits) && digits.length > 5 && digits.length < 14){
-                        alert('Please provide a valid contact number');
-                        $submit_chat_login.attr('disabled', false);
-                        $submit_chat_login.html('Start Conversation');
-                        return false;
-                      }
                         options.contactNumber = contactNumber;
                     }
                     $submit_chat_login.attr('disabled', true);
