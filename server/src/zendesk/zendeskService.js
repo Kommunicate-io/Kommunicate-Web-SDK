@@ -54,9 +54,34 @@ const getTicket = (id, settings) => {
   })
 
 }
+const uploadAttachment = (id, file, settings) => {
+  let url = zendesk.uploadAttachmentsUrl.replace('[subdomain]', settings.domain) + file.originalname;
+  let auth = "Basic " + new Buffer(settings.accessKey + "/token:" + settings.accessToken).toString('base64');
+  return Promise.resolve(axios.post(url, file, {
+    headers: {
+      "Content-Type": "application/binary",
+      "Authorization": auth
+    }
+  })).then(response => {
+    console.log("response from zendesk", response);
+    let ticket = {
+      "ticket": {
+        "comment": { "body": "see attachments.", "uploads": [response.data.upload.token] }
+      }
+    }
+    if (id && id != "") {
+      return updateTicket(id, ticket, settings);
+    }
+    return response.data.upload.token;
+  }).catch(err => {
+    console.log('error  ', err)
+    throw err;
+  })
+}
 
 module.exports = {
   createZendeskTicket: createZendeskTicket,
   updateTicket: updateTicket,
-  getTicket: getTicket
+  getTicket: getTicket,
+  uploadAttachment: uploadAttachment
 }
