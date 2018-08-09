@@ -40,6 +40,8 @@ const subscriptionController = require("../subscription/subscriptionController")
 
 
 
+//For Cron Time Features
+const cronService = require("../cron/cronService.js")
 
 //router declaration
 const userRouter = express.Router();
@@ -56,7 +58,7 @@ const autoSuggestRouter = express.Router();
 const profileImageRouter = express.Router();
 const groupRouter = express.Router();
 const issueTypeRouter = express.Router();
-const issueTypeReplyRouter = express.Router(); 
+const issueTypeReplyRouter = express.Router();
 const zendeskRouter = express.Router();
 const agileRouter = express.Router();
 const thirdPartySettingRouter = express.Router();
@@ -89,6 +91,11 @@ exports.googleAuth = googleAuthRouter;
 exports.subscription = subscriptionRouter;
 exports.agile = agileRouter;
 exports.v2UserRouter = express.Router();
+
+//Cron Time Stamp Route
+exports.cronServiceRouter = express.Router();
+
+
 var multer  = require('multer')
 var upload = multer({ dest: 'uploads/' })
 
@@ -100,6 +107,8 @@ home.get('/kommunicate.app',webpluginController.getPlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
+userRouter.get('/invite/detail',validate(userValidation.getInvitedAgentDetail),userController.getInvitedAgentDetail);
+userRouter.get('/invite/list',validate(userValidation.getInvitedUser),userController.getInvitedUser);
 userRouter.get('/',validate(userValidation.getAllUser),userController.getAllUsers);
 userRouter.get('/:userName',userController.getUserByName);
 userRouter.get('/:userName/:appId',userController.getByUserNameAndAppId);
@@ -113,6 +122,7 @@ userRouter.post('/password-reset', passwordResetController.processPasswordResetR
 userRouter.post('/password-update',passwordResetController.updatePassword);
 userRouter.post('/:userName/password-reset', passwordResetController.processPasswordResetRequest);
 userRouter.post('/password/update',validate(userValidation.updatePassword),userController.updatePassword);
+userRouter.patch('/invite/status',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
 userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
@@ -141,13 +151,7 @@ chatRouter.get('/visitor',chatController.visitorChat);
 profileImageRouter.post('/', upload.single('file'), profileImageController.uploadImageToS3);
 
 //conversation router
-conversationRouter.post('/', validate(conversationValidation.createConversation),conversationController.createConversation);
-conversationRouter.patch('/update', validate(conversationValidation.updateConversation),conversationController.updateConversation);
-conversationRouter.get('/participent/:participantId',validate(conversationValidation.getConversationListOfParticipent),conversationController.getConversationList);
-conversationRouter.get('/', conversationController.getConversationStats);
 conversationRouter.post('/member/add',validate(conversationValidation.addMemberIntoConversation),conversationController.addMemberIntoConversation);
-conversationRouter.get('/stats',validate(conversationValidation.getConversationStats),conversationController.getConversationStat);
-conversationRouter.post('/create', validate(conversationValidation.createConversationV2), conversationController.createSupportGroup);
 conversationRouter.post('/v2/create', conversationController.createConversationFromMail);
 conversationRouter.post('/assignee/switch', conversationController.switchConversationAssignee);
 
@@ -213,7 +217,6 @@ agileRouter.patch('/:appId/contacts/:contactId/tag', validate(agileValidation.up
 /**
  * setting router
  */
-settingRouter.get('/agent/detail')
 settingRouter.get('/application/:appId', validate(applicationSettingValidation.getAppSettingsByApplicationId),
   appSettingController.getAppSettingsByApplicationId);
 settingRouter.post('/application/insert', validate(applicationSettingValidation.insertAppSetting),
@@ -222,12 +225,18 @@ settingRouter.patch('/application/:appId', validate(applicationSettingValidation
   appSettingController.updateAppSettings);
 
 
-// v2 user router 
+// v2 user router
 this.v2UserRouter.patch('/:userName/metadata',validate(userValidation.validateMetadata), userController.updateIntegryData);
 
+
+
+//Cron Time Stamp Router
+this.cronServiceRouter.post('/', cronService.updateLastRunTime)
+this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
 /**
  * Chargebee subscription
  */
 // third party Subscription APIs
 subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
 subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);
+subscriptionRouter.delete('/:subscriptionId', validate(subscriptionValidation.deleteSubscription), subscriptionController.deleteSubscription);

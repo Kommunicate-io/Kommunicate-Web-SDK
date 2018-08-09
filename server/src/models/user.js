@@ -15,7 +15,7 @@
  * @property {String} companyName
  * @property {String} companySize
  * @property {Number} type  1: AGENT, 2:BOT ,3: ADMIN 
- * @property {String} roletype
+ * @property {String} roleType
  * @property {String} userKey mqtt topic Id for user. its primary key in applozic user table. 
  * @author <a href="mailto:suraj@applozic.com">Suraj</a>
  */
@@ -68,7 +68,7 @@ module.exports = function(sequelize, DataTypes) {
     role: {
       type: DataTypes.STRING(20)
     },
-    roletype:{
+    roleType:{
       type:DataTypes.INTEGER(2).ZEROFILL,
       field: 'role_type'
     },
@@ -109,6 +109,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 1
     },
     /**
+     * allconversation is being used for bot assignment. if value is 1, assign conversation to that bot.
      * available(1)/unavailable(0) to add into conversation.
      */
     allConversations: {
@@ -127,6 +128,12 @@ module.exports = function(sequelize, DataTypes) {
      field:'login_type',
      values: ['email', 'oauth']
     },
+    emailSubscription:{
+      type:DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+      field: 'email_subscription',
+    }
   }, {
     underscored: true,
     paranoid: true,

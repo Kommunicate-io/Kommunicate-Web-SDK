@@ -6,12 +6,14 @@
 /*css for ask number of rooms in hotel booking */
 
 .km-dashboard-msg-box-rich-text-container{
-	top: 0;
-	float: left;
+    top: 0;
+    width: 90%;
+    min-width: 40%;
+    max-width: 100%;
 	margin: 0 0px 0px 7px;
-    /* width:100%;  */
-	color:#7766B5;
-	overflow-x:hidden;
+    overflow-x:hidden;
+    padding-top: 5px;
+    margin-left: 55px;
 }
 .km-container .right .chat.active-chat {
 	overflow-x: hidden !important;
@@ -359,10 +361,9 @@ cursor: pointer;
 
 .km-dashboard-cta-multi-button-container {
     width: 100%;
-    display: flex;
     flex-flow: row;
 	justify-content: center;
-	flex-wrap: wrap;
+    flex-wrap: wrap;
 
 }
 .km-dashboard-cta-multi-button-container .km-dashboard-cta-button-many {
@@ -370,15 +371,16 @@ cursor: pointer;
 }
 .km-dashboard-cta-multi-button-container .km-dashboard-cta-button-1{
 	/* margin-top: 10px; */
-	/* width:50%; */
+    /* width:50%; */
+    margin-left: 0px;
 }
 .km-dashboard-cta-multi-button-container .km-dashboard-cta-button-2{
 	margin-top: 10px;
-	width:33%;
+    margin-top: 10px;
+    min-width: 10%;
 }
 .km-dashboard-cta-button {
-	/* width: 100%; */
-	margin-left: 50px;
+	margin-left: 10px;
 	margin-bottom: 15px;
 	color: #7766B5;
     border: 1px solid #7766B5;
@@ -607,8 +609,7 @@ cursor: pointer;
     .km-dash-message.km-dash-received.km-dash-faq-list {
         padding: 0px;
         background: transparent;
-        width: 70%;
-        border:1px solid;
+        width: 70%;   
     }
     .km-dash-faq-list--body, .km-dash-faq-list--footer {
         background-color: #fff;
@@ -660,7 +661,7 @@ cursor: pointer;
     .km-dash-faq-list--body_img {
         padding: 10px 0px 10px 12px;
         /*width: 70px;*/
-        height: 50px;
+        
     }
     .km-dash-faq-list--body_img img {
         width: 50px;
@@ -725,7 +726,7 @@ cursor: pointer;
     }
     
     .km-dash-faq-list--header_text-container {
-        background-color: #fff;
+        background-color: #e6e5ec;
         border: none !important;
         min-height:10px;
     }
@@ -776,11 +777,11 @@ cursor: pointer;
         color: #646262;
     }
     .km-dash-faq-answer--footer {
-        padding: 10px 10px;
+        padding: 10px 0px;
     }
     .km-dash-faq-answer--footer_button-text-container {
         display: flex;
-        justify-content: center;
+        /* justify-content: center; */
         align-items: center;
     }
     .km-dash-faq-answer--footer_button-text-container p {

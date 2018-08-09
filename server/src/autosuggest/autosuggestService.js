@@ -16,7 +16,9 @@ const getAllSuggestions = () => {
 const getSuggestionsByUser = (userName) => {
 	return autoSuggestModel.findAll({
 		where: {
-			userName: userName
+			userName: userName,
+			deleted:false,
+			status:{'$nin':['un_answered']}
 		}})
 		.then(suggestions => {
 			return suggestions
@@ -25,7 +27,7 @@ const getSuggestionsByUser = (userName) => {
 }
 
 const getSuggestionsByAppId = (applicationId, type) => {
-	let criteria = { applicationId: applicationId }
+	let criteria = { applicationId: applicationId, deleted:false ,status:{'$nin':['un_answered']}}
 	if (type) {
 		criteria.type = type
 	}
@@ -33,7 +35,7 @@ const getSuggestionsByAppId = (applicationId, type) => {
 }
 
 const getSuggestionsByCriteria = (criteria, value, applicationId) => {
-	let criteriaObj = {};
+	let criteriaObj = {deleted:false, status:{'$nin':['un_answered']}};
 	criteriaObj[criteria] = value;
 	if(criteria == 'id'){
 		criteriaObj[criteria] = parseInt(value, 10);
@@ -43,7 +45,6 @@ const getSuggestionsByCriteria = (criteria, value, applicationId) => {
 }
 
 const createSuggestion = (suggestion) => {
-	suggestion.created_at = new Date().getTime();
 	return mongoClient.getNextSequence(collections.KNOWLEDGE_BASE,"id").then(value=>{
 		suggestion.id= value;
 		 return mongoClient.insertOne(collections.KNOWLEDGE_BASE,suggestion).then(mongoResult=>{
@@ -64,31 +65,34 @@ const updateSuggetion = (suggestion) => {
 
 const deleteSuggetion = (suggestion) => {
 	// todo needto restrict delete on customer basic
-	 return mongoClient.deleteOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id,applicationId:suggestion.applicationId}})
-	.then(deleteResult=>{
-		logger.info("dataDeleted successfully");
-	   return deleteResult;
-	});
-	
+	//  return mongoClient.deleteOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id,applicationId:suggestion.applicationId}})
+	// .then(deleteResult=>{
+	// 	logger.info("dataDeleted successfully");
+	//    return deleteResult;
+	// });
+
+	return mongoClient.updateOne({collectionName:collections.KNOWLEDGE_BASE,criteria:{"id":suggestion.id},update:{'deleted':true}}).then(mongoResult=>{
+		return mongoResult;
+	})
 }
 exports.searchFAQ =(options)=>{
 	options.collectionName = collections.KNOWLEDGE_BASE;
 	var data;
 	if(options.id){
 		options.id=parseInt(options.id);
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:options.id,type:"faq",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	} else if (options.referenceId) {
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{referenceId:parseInt(options.referenceId),type:"learning",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{referenceId:parseInt(options.referenceId),type:"learning",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}else if(options.text){
 		data = mongoClient.searchFAQ(options);
 	}else{
-		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
+		data = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{type:"faq",status:"published",applicationId:options.appId,deleted:false},options:{projection:{name:1,content:1,referenceId:1,id:1,_id:0}}});
 	}
 
 	for(var i = 0; i < data.length; i += 1) {
 		var knowledge = data[i];
 		if (knowledge.referenceId != null && (knowledge.content == null || knowledge.content == "")) {
-			var result = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:knowledge.referenceId},options:{projection:{name:1,content:1,id:1,_id:0}}});
+			var result = mongoClient.find({collectionName:collections.KNOWLEDGE_BASE,query:{id:knowledge.referenceId, deleted:false, status:{'$nin':['un_answered']}},options:{projection:{name:1,content:1,id:1,_id:0}}});
 			data[i].content = result[0].content;
 		}
 	}

@@ -7,6 +7,7 @@ const applozicClient = require("../utils/applozicClient");
 const config = require("../../conf/config");
 const registrationService = require("../register/registrationService");
 const bcrypt = require("bcrypt");
+const teammateInviteModel = require("../models").teammateInvite;
 let moment = require('moment-timezone');
 const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
@@ -39,6 +40,58 @@ const getUserByName = userName => {
     });
   });
 };
+const getInvitedUser = (appId) => {
+
+    return teammateInviteModel.findAll({ where:{ applicationId: appId}}).then(result => {
+      return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const getInvitedAgentDetail = (reqId) => {
+  return teammateInviteModel.find({ where: { id: reqId } }).then(result => {
+    return result;
+  }).catch(err => {
+    throw err;
+  });
+};
+
+const inviteTeam = (inviteteam) => {
+  return getByUserNameAndAppId(inviteteam.agentId, inviteteam.applicationId).then(user => {
+    var invites = []
+    inviteteam.invitedBy = user.userKey;
+    inviteteam.status = 0;
+
+    for (var i = 0; i < inviteteam.to.length; i++) {
+      inviteteam.invitedUser = inviteteam.to[i];
+      invites.push(inviteteam);
+    }
+    if (invites.length > 0) {
+      return teammateInviteModel.bulkCreate(invites).then(result => {//spread
+        logger.info("error while creating bot", result);
+        return result;
+      }).catch(err => {
+        logger.error("error while creating bot", err);
+        throw err;
+      });
+    }
+    return invites;
+
+  }).catch(err => {
+    throw err;
+  });
+}
+
+const inviteStatusUpdate = (reqId, reqstatus) => {
+  if (reqstatus) {
+    return teammateInviteModel.update({ status: reqstatus }, { where: { id: reqId } }).catch(err => {
+      throw err;
+    });
+  }
+  return "status not found";
+
+}
 
 /**
  * This method will catch USER_ALREADY_EXIST error, and update the role of that user to APPLICATION_WEB_ADMIN.
@@ -51,7 +104,7 @@ let handleCreateUserError = (user, customer, err) => {
   if (err && err.code == "USER_ALREADY_EXISTS" && err.data) {
     console.log("updating role to application web admin");
     const data = err.data;
-    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: "APPLICATION_WEB_ADMIN" }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") })).then(response => {
+    return Promise.resolve(applozicClient.updateApplozicClient(user.userName, user.password, customer.applications[0].applicationId, { userId: user.userName, roleName: "APPLICATION_WEB_ADMIN" }, { apzToken: new Buffer(KOMMUNICATE_ADMIN_ID + ":" + KOMMUNICATE_ADMIN_PASSWORD).toString("base64") }, false, "false")).then(response => {
       return err.data;
     })
   } else {
@@ -92,6 +145,7 @@ const createUser = (user, customer) => {
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
     user.imageLink = applozicUser.imagelink;
+    user.roleType = (user.type === 2)? CONST.ROLE_TYPE.BOT:user.roleType;
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
@@ -581,7 +635,9 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
-            applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+            applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
+              console.log("message: ", err.code)
+            });
           }
         })
         return result[0] == 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED";
@@ -594,8 +650,12 @@ exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
 exports.getUserByName = getUserByName;
+exports.inviteStatusUpdate =inviteStatusUpdate;
 exports.updateBusinessHoursOfUser = updateBusinessHoursOfUser;
 exports.createUser = createUser;
+exports.getInvitedUser = getInvitedUser;
+exports.inviteTeam = inviteTeam;
+exports.getInvitedAgentDetail = getInvitedAgentDetail;
 exports.getAdminUserByAppId = getAdminUserByAppId;
 exports.getByUserNameAndAppId = getByUserNameAndAppId;
 exports.processOffBusinessHours = processOffBusinessHours;

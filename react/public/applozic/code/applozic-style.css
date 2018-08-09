@@ -537,7 +537,7 @@ body {
 
 .km-container .right .km-group-inner .bubble.km-msg-left .km-msg-box
 	{
-	padding: 4px 8px;
+	padding: 7px 8px;
 	/*color: #333;
 	background: white;*/
 }
@@ -680,4 +680,16 @@ body {
 .invite-team {
 	margin-left: 2px;
 	font-weight: bold;
+}
+.km-mail-fixed-view{
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px 14px 12px;
+	width: 100%;
+	white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	overflow: hidden;
 }

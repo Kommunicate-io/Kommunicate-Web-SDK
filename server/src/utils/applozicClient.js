@@ -7,13 +7,14 @@ const constant = require('./constant');
 const logger = require('./logger.js');
 const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist/v2.1?";
 const utils = require("./utils");
+const { EMAIL_NOTIFY } = require('../users/constants');
 
 /*
 this method register a user in applozic db with given parameters.
 */
-const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName) => {
+const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName, notifyState) => {
   console.log("creating applozic user..url :", config.getProperties().urls.createApplozicClient, "with userId: ", userId, ", password :", password, "applicationId", applicationId, "role", role, "email", email);
-
+  notifyState = typeof notifyState != "undefined" ? notifyState : EMAIL_NOTIFY.ONLY_ASSIGNED_CONVERSATION;
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
     "userId": userId ? userId.toLowerCase() : "",
     "applicationId": applicationId,
@@ -23,7 +24,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "email": email,
     "displayName": displayName,
     "gcmKey": gcmKey,
-    "chatNotificationMailSent": true,
+    "state": notifyState
   })).then(response => {
     let err = {};
     console.log("Applozic server returned : ", response.status);
@@ -36,7 +37,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
         console.log("received status 200, user created successfully ");
         return response.data;
       } else if (response.data.message == "INVALID_APPLICATIONID") {
-        console.log("invalid application Id");
+        console.log("invalid application Id ", applicationId);
         err.code = "NVALID_APPLICATIONID";
         throw err;
       } else if (response.data.message == "UPDATED") {
@@ -280,7 +281,7 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
   });
 }
 
-exports.sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
+const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
   console.log("sending message to group ", groupId);
   console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
   typeof message=="object"?message:{ "groupId": groupId, "message": message, "metadata": metadata }
@@ -508,13 +509,14 @@ exports.updateGroup = (groupInfo, applicationId, apzToken, ofUserId, headers) =>
  * @param {Boolean} activate 
  */
 exports.activateOrDeactivateUser = (userName, applicationId, deactivate) => {
-  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/update/status?userId=" + encodeURIComponent(userName) + "&deactivate=" + deactivate;
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/user/delete?reset=false";
   let headers = {
     "Content-Type": "application/json",
     "Apz-AppId": applicationId,
-    "Apz-Token": "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64')
+    "Apz-Token": "Basic " + new Buffer(adminUserId + ":" + adminPassword).toString('base64'),
+    "Of-User-Id": userName
   }
-  return Promise.resolve(axios.post(url, {}, { headers: headers })).then(response => {
+  return Promise.resolve(axios.post(url, {"reset":false}, { headers: headers })).then(response => {
     if (response.status == 200 && response.data.response == "success") {
       return response.data;
     }
@@ -572,3 +574,26 @@ exports.removeGroupMembers = (params, applicationId, apzToken, ofUserId) => {
     return;
   });
 }
+
+const sendMessageListRecursively = (msgList, groupId, headers) => {
+
+  if (msgList && msgList.length < 1) {
+    return Promise.resolve("success");
+  }
+  let msg = msgList.splice(0, 1);
+  let message={"groupId":groupId};
+  message= Object.assign(message, msg[0])
+  return Promise.resolve(sendGroupMessage(null, message, null, null, {}, headers)).then(resp => {
+    console.log('send ', resp);
+    return resp.data
+  }).then(response => {
+    return sendMessageListRecursively(msgList, groupId, headers).catch(err => {
+      logger.error("error while sending messages", err);
+      return;
+    })
+
+  })
+}
+
+exports.sendMessageListRecursively =sendMessageListRecursively 
+exports.sendGroupMessage=sendGroupMessage

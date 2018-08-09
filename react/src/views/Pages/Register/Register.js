@@ -3,13 +3,14 @@ import validator from 'validator';
 import axios from 'axios';
 import {getConfig} from '../../../config/config.js';
 import isEmail from 'validator/lib/isEmail';
-import  {createCustomer, saveToLocalStorage,createCustomerOrAgent} from '../../../utils/kommunicateClient'
+import  {createCustomer, saveToLocalStorage,createCustomerOrAgent, getUserDetailsByToken} from '../../../utils/kommunicateClient'
 import Notification from '../../model/Notification';
 import CommonUtils from '../../../utils/CommonUtils';
 import ApplozicClient from '../../../utils/applozicClient';
 import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
+import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 
 class Register extends Component {
   constructor(props){
@@ -28,7 +29,9 @@ class Register extends Component {
       invitedBy:'',
       signupButtonTxt:'Create Account',
       subscription: 'startup',
-      googleOAuth :false
+      googleOAuth :false,
+      isInvited:false,
+      roleType:null,
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
@@ -41,11 +44,18 @@ class Register extends Component {
     
     const search = this.props.location.search;
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
-    const email = CommonUtils.getUrlParameter(search, 'email');
-    if (email) {
-      this.setState({email:email});
-    }
-
+    const token = CommonUtils.getUrlParameter(search, 'token');
+    const invitedBy = CommonUtils.getUrlParameter(search, 'referer')
+    // const email = CommonUtils.getUrlParameter(search, 'email');
+    // if (email) {
+    //   this.setState({email:email});
+    // }
+    this.setState({
+      isInvited:isInvited,
+      invitedBy:invitedBy,
+      token:token
+    });
+    
     localStorage.removeItem('Google_OAuth');
 
     const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
@@ -68,19 +78,36 @@ class Register extends Component {
     }
     
    if(isInvited){
+     this.getUserDetails(token);
      this.state.isInvited=true;
      //this.state.invitedUserEmail=invitedUserEmail;
      //this.state.email = invitedUserEmail;
-     this.state.signupButtonTxt='Join Team';
-     this.state.isEmailReadonly =false;
-     this.state.isBackBtnHidden =true;
-     this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
-     this.state.token = CommonUtils.getUrlParameter(search, 'token');
-    this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
+    //  this.state.signupButtonTxt='Join Team';
+    //  this.state.isEmailReadonly =false;
+    //  this.state.isBackBtnHidden =true;
+    //  this.state.applicationId = CommonUtils.getUrlParameter(search, 'applicationId'); 
+    //  this.state.token = CommonUtils.getUrlParameter(search, 'token');
+    // this.state.invitedBy = CommonUtils.getUrlParameter(search, 'referer')
    }
     //console.log("location",this.props.location);
   }
-
+  getUserDetails= (token) => {
+    return Promise.resolve(getUserDetailsByToken(token)).then(response => {
+      // console.log(response);
+      let email = response.invitedUser;
+      let applicationId = response.applicationId;
+      let roleType = response.roleType;
+      this.setState({
+        email:email,
+        applicationId:applicationId,
+        signupButtonTxt:'Join Team',
+        isEmailReadonly:false,
+        roleType:roleType
+      })
+    }).catch(err => {
+      console.log(err.message);
+    })
+  }
   showHide(e){
     e.preventDefault();
     e.stopPropagation();
@@ -112,17 +139,21 @@ class Register extends Component {
     var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
+  
 
    // creating user
-    let userType = this.state.isInvited?"AGENT":"CUSTOMER";
+    let userType = this.state.isInvited ? (this.state.roleType == ROLE_TYPE.AGENT ? "AGENT" : "ADMIN"):"CUSTOMER";
+    // let userType = this.state.isInvited?"AGENT":"CUSTOMER";
     let userInfo={};
     userInfo.userName=_this.state.userName||email;
     userInfo.email= email;
-    userInfo.type = userType=="AGENT"?1:3;
+    userInfo.type = userType == "CUSTOMER"? 3 : 1;
     userInfo.applicationId = this.state.applicationId;
     userInfo.password = password;
     userInfo.name=_this.state.name || _this.state.userName;
     userInfo.subscription = _this.state.subscription;
+    userInfo.roleType = this.state.roleType;
+    userInfo.token = this.state.token;
 
     if (window.heap) {
       window.heap.identify(email);

@@ -538,16 +538,16 @@ position: relative;
     fill: #5d5aa786 !important;
 }
 
-.page-links-ul li:first-child>a, .page-links-ul li:nth-child(2)>a {
+.page-links-ul li:first-child>a, .page-links-ul li:nth-child(2)>a, .page-links-ul li:nth-child(3)>a {
     color: #000
   }
-  .page-links-ul li:first-child>a:hover, .page-links-ul li:nth-child(2)>a:hover {
+  .page-links-ul li:first-child>a:hover, .page-links-ul li:nth-child(2)>a:hover, .page-links-ul li:nth-child(3)>a:hover {
     color: rgba(0, 0, 0, 0.5)
   }
-  .sticky .page-links-ul li:first-child>a, .sticky .page-links-ul li:nth-child(2)>a {
+  .sticky .page-links-ul li:first-child>a, .sticky .page-links-ul li:nth-child(2)>a, .sticky .page-links-ul li:nth-child(3)>a {
     color: #5c5aa7;
   }
-  .sticky .page-links-ul li:first-child>a:hover, .sticky .page-links-ul li:nth-child(2)>a:hover {
+  .sticky .page-links-ul li:first-child>a:hover, .sticky .page-links-ul li:nth-child(2)>a:hover, .sticky .page-links-ul li:nth-child(3)>a:hover {
     color: rgba(92, 90, 167, 0.5);
   }
 
@@ -576,7 +576,7 @@ position: relative;
 }
 @media (min-width:992px) and (max-width:1199px) {
     .pricing-table-container {
-        min-height: 910px;
+        min-height: 920px;
     }
     .startup .pricing-table-footer {
         padding-bottom: 30px;

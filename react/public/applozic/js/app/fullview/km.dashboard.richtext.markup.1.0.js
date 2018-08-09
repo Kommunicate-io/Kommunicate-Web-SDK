@@ -218,7 +218,7 @@ getListMarkup:function(){
          <div class="km-dash-faq-answer--body">
              <div class="km-dash-faq-answer--body_container">
                  <p class="km-dash-faq-answer--body_que">{{title}}</p>
-                 <p class="km-dash-faq-answer--body_ans"> {{description}}</p>
+                 <p class="km-dash-faq-answer--body_ans"> {{{description}}}</p>
              </div>
          </div>
          <div class="km-dash-faq-answer--footer">
@@ -299,9 +299,9 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
     if(metadata && metadata.payload){
        var json = JSON.parse(metadata.payload);
         if(json.headerImgSrc){
-            json.headerImgSrc = '<div class="faq-list--header_text-img"><img src= "'+json.headerImgSrc+'" /></div>' 
+            json.headerImgSrc = '<div class="km-dash-faq-list--header_text-img"><img class="km-list-image" src= "'+json.headerImgSrc+'" /></div>' 
         }if(json.headerText){
-            json.headerText ='<p class="faq-list--header_text">'+json.headerText+"</p>"
+            json.headerText ='<p class="km-dash-faq-list--header_text">'+json.headerText+"</p>"
         }
         if(json.elements&&json.elements.length){
             json.elements =   json.elements.map(function(item){
@@ -317,8 +317,9 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                 item.href = item.action.url;
                }
                
-               item.dataType=item.action.type||"";
-               item.dataReply = item.action.text||item.title||"";
+               item.dataType= item.action ? (item.action.type||"") : "";
+               item.dataReply = item.action ? (item.action.text||item.title||"") : "";
+               
                item.dataArticleId = item.articleId||"";
                item.dataSource = item.source||"";
                // TODO : add post url in data.
@@ -354,4 +355,11 @@ kommunicateDashboard.markup.getDialogboxContainer = function(metadata){
      }else{
          return "";
      }
+}
+kommunicateDashboard.markup.getHtmlMessageMarkups = function (message) {
+    if (message.message && message.source == 7) {
+        return "<pre class='km-mail-fixed-view'>" + message.message.replace(/\n/g, " ") + "</pre>";
+    } else {
+        return "";
+    }
 }

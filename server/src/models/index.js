@@ -12,7 +12,9 @@ sequelize.authenticate().then(function () {
 })
 var db = {};
 
-const models = ['user', 'customer', 'BusinessHour', 'PasswordResetRequest', 'AutoSuggest', "Conversation", "InAppMsg", "IssueType", "IssueTypeAutoReply", 'InAppEvent', 'ThirdPartyIntegrationSettings', "AppSetting", "application"];
+
+const models = ['user', 'customer', 'BusinessHour', 'PasswordResetRequest', 'AutoSuggest', "InAppMsg", "IssueType", "IssueTypeAutoReply", 'InAppEvent', 'ThirdPartyIntegrationSettings', "AppSetting", "application","cronLastRun","AppSubscription","teammateInvite"];
+
 models.forEach(function (model) {
   db[model] = sequelize.import(path.join(__dirname, model));
 });

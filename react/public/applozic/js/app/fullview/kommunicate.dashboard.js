@@ -8,9 +8,10 @@ kommunicateDashboard ={
                 return "https://api.kommunicate.io";
         }
     },
-    getConatainerTypeForRichMessage : function(metadata){
-        if(metadata){
-            switch(metadata.templateId){
+    getConatainerTypeForRichMessage: function (message) {
+        let metadata = message.metadata;
+        if (metadata.templateId) {
+            switch (metadata.templateId) {
                 // add template Id to enable slick effsect
                 // 2 for get room pax info template
                 case "2":
@@ -21,6 +22,8 @@ kommunicateDashboard ={
                     break;
 
             }
+        } else if (message.contentType == 3 && message.source == 7) {
+            return "km-fixed-container";
         }
 
     },
@@ -44,8 +47,9 @@ kommunicateDashboard ={
         $kmApplozic.fn.applozic('sendGroupMessage',messagePxy);
 
     },
-    getRichTextMessageTemplate: function(metadata){
-        if (metadata){
+    getRichTextMessageTemplate: function(message){
+        let metadata = message.metadata;
+        if (metadata.templateId){
             switch(metadata.templateId){
                 // 1 for get room pax info template
                 case "1":
@@ -79,7 +83,9 @@ kommunicateDashboard ={
                     return "";
                     break;
             }
-        }else{
+        } else if (message.contentType == 3 && message.source == 7) {
+            return kommunicateDashboard.markup.getHtmlMessageMarkups(message);
+        } else {
             return "";
         }
     }

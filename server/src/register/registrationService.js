@@ -12,6 +12,7 @@ const KOMMUNICATE_APPLICATION_KEY = config.getProperties().kommunicateParentKey;
 const KOMMUNICATE_ADMIN_ID = config.getProperties().kommunicateAdminId;
 const KOMMUNICATE_ADMIN_PASSWORD = config.getProperties().kommunicateAdminPassword;
 const USER_TYPE = { "AGENT": 1, "BOT": 2, "ADMIN": 3 };
+const ROLE_TYPE ={"SUPER_ADMIN": 0,"ADMIN":1,"AGENT":2,"BOT":3};
 const logger = require("../utils/logger");
 const LIZ = require("./bots.js").LIZ;
 const appSetting = require("../setting/application/appSettingService")
@@ -42,7 +43,7 @@ exports.createCustomer = customer => {
           console.log("persited in db", customer ? customer.dataValues : null);
           kmUser.customerId = customer ? customer.dataValues.id : null; // will remove
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
-          let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
+          let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
           // create default bot plateform
 
           Promise.all([botPlatformClient.createBot({
@@ -73,7 +74,7 @@ exports.createCustomer = customer => {
           return userModel.bulkCreate([kmUser, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
             console.log("user created", user ? user.dataValues : null);
             console.log("created bot ", bot.dataValues);
-            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, botRouting: customer.botRouting })
+            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, botRouting: customer.botRouting, applicationCreatedAt: customer.applications[0].created_at })
             return getResponse(signupUser, applozicCustomer, application);
           });
         });
@@ -130,7 +131,6 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   let userObject = {};
   let password = pwd || applozicUser.userId;
   userObject.userName = applozicUser.userId;
-  console.log("data", applozicUser);
   userObject.password = bcrypt.hashSync(password, 10);
   userObject.apzToken = new Buffer(applozicUser.userId + ":" + password).toString('base64');
   userObject.customerId = customer.id;
@@ -141,6 +141,7 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   userObject.name = applozicUser.displayName;
   userObject.brokerUrl = applozicUser.brokerUrl;
   userObject.userKey = applozicUser.userKey;
+  type === 2? userObject.roleType = ROLE_TYPE.BOT :"";
 
   return userObject;
 };
@@ -199,7 +200,7 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
   kmCustomer.password = bcrypt.hashSync(options.password, 10);
   kmCustomer.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
 
-  let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId }
+  let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId,roleType:options.roleType }
   kmUser.password = bcrypt.hashSync(options.password, 10);
   //kmUser.apzToken = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');

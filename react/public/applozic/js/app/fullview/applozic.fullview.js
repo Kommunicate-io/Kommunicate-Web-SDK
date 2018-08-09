@@ -393,7 +393,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
-			'onConnectFailed': function () { },
+			'onConnectFailed': function () {
+				if (navigator.onLine) { 
+					mckInitializeChannel.reconnect();
+				}
+				
+			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
 			'onMessageRead': function () { },
@@ -1565,7 +1570,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.initSearch = function () {
 				$mck_contacts_content.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_content.removeClass('vis').addClass('n-vis');
-				$mck_group_info_tab.removeClass('vis').addClass('n-vis');
+				// $mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_search.removeClass('n-vis').addClass('vis');
 				$mck_search_inner.html('<ul id="km-search-list" class="km-search-list km-contact-list km-nav km-nav-tabs km-nav-stacked"></ul>');
 				if (MCK_CONTACT_ARRAY.length !== 0) {
@@ -1752,6 +1757,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				});
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
+					resetCustomerInfoTab();
+					resetClearbitInfoAndUserInfo();
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis');
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
@@ -2575,9 +2582,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var isMessages = true;
 				var currTabId = $mck_msg_inner.data('km-id');
 				var isGroupTab = $mck_msg_inner.data('isgroup');
-				// if (CONTACT_SYNCING && !params.startTime) {
-				// 	_this.initSearch();
-				// }
+				if (!params.startTime) {
+					_this.initSearch();
+				}
 				if (data && data.message && data.message.length === 0) {
 					mckMessageService.emptyStateChange();
 				}
@@ -2861,9 +2868,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var isMessages = true;
 						var currTabId = $mck_msg_inner.data('km-id');
 						var isGroupTab = $mck_msg_inner.data('isgroup');
-						if (CONTACT_SYNCING && !params.startTime) {
-							_this.initSearch();
-						}
+						// if (CONTACT_SYNCING && !params.startTime) {
+						// 	// _this.initSearch();
+						// }
 						// if(data.message.length === 0) {
 						// 	mckMessageService.emptyStateChange();
 						// }
@@ -3637,13 +3644,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var LINK_MATCHER = new RegExp(LINK_EXPRESSION);
 
 
-			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear"><div class="blk-lg-12"><div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
-				'<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +
+			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear">'+ '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +'<div class="blk-lg-12">'+
+			'<div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
 				'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' +
 				'<div class="km-msg-text km-msg-content"></div>' +
-				'</div></div>' +
-				'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '{{html kmRichTextMarkup}}</div>' +
-				'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div>' + '</div><div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
+				'</div>'+'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '{{html kmRichTextMarkup}}</div>'+'</div>' +
+			    '</div>'+'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div> '+'<div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
 
 
 			var searchContactbox = '<li id="km-li-${contHtmlExpr}" class="${contIdExpr}"><span class="km-contact-search-tab" href="#" data-km-id="${contIdExpr}" data-isgroup="${contTabExpr}"><div class="km-row" title="${contNameExpr}">' + '<div class="blk-lg-3">{{html contImgExpr}}</div><div class="blk-lg-9"><div class="km-row"><div class="blk-lg-12 km-cont-name km-truncate"><strong>${contNameExpr}</strong></div><div class="blk-lg-12 km-text-muted">${contLastSeenExpr}</div></div></div></div></span></li>';
@@ -4005,7 +4011,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
-				var messageClass = '';
+				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
 				var contactExpr = "vis";
@@ -4067,7 +4073,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					fileName = msg.fileMeta.name;
 					fileSize = msg.fileMeta.size;
 				}
-				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata);
+				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+				var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+				var kmRichTextMarkup = richText ? kommunicateDashboard.getRichTextMessageTemplate(msg) : ""
+				var containerType = kommunicateDashboard.getConatainerTypeForRichMessage(msg);
 
 				var msgList = [{
 					msgKeyExpr: msg.key,
@@ -4099,9 +4108,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					downloadIconVisibleExpr: downloadIconVisible,
 					fileNameExpr: fileName,
 					fileSizeExpr: fileSize,
-					kmRichTextMarkupVisibility: richText ? 'vis' : 'n-vis',
-					kmRichTextMarkup: richText ? kommunicateDashboard.getRichTextMessageTemplate(msg.metadata) : "",
-					containerType: kommunicateDashboard.getConatainerTypeForRichMessage(msg.metadata)
+					kmRichTextMarkupVisibility: kmRichTextMarkupVisibility,
+					kmRichTextMarkup: kmRichTextMarkup,
+					containerType: containerType,
 				}];
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
@@ -4558,6 +4567,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						contactsArray.push(contact);
 					}
 				}
+
 				_this.initAutoSuggest({
 					'contactsArray': contactsArray,
 					'$searchId': $mck_search,
@@ -4658,7 +4668,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				for (var j = 0; j < contactsArray.length; j++) {
 					var contact = contactsArray[j];
 					contact.displayName = _this.getTabDisplayName(contact.contactId, contact.isGroup);
-					typeaheadEntry = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
+					var displayName = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
+					if(contact.isGroup){
+					typeaheadEntry =  displayName + $kmApplozic.trim(contact.groupId);
+					}
 					typeaheadMap[typeaheadEntry] = contact;
 					typeaheadArray.push(typeaheadEntry);
 					contactSuggestionsArray.push(typeaheadEntry);
@@ -4787,6 +4800,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
@@ -4903,8 +4917,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				var $textMessage = $kmApplozic("#km-li-" + contHtmlExpr + " .kmMsgTextExpr");
-				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
+				
+				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
+				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
+				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
 				if (!$kmApplozic(".left .person").length) {
 					/* Note; removing because of cyclic dependency where loadTab calls this back.
 					_this.loadTab({
@@ -4999,7 +5015,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				});
-				mckMessageService.initSearch();
+				// mckMessageService.initSearch();
 			};
 			_this.getStatusIcon = function (msg) {
 				return '<span class="' + _this.getStatusIconName(msg) + ' move-right ' + msg.key + '_status status-icon"></span>';
@@ -5071,6 +5087,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.updateContactList(tabId, isGroup);
 				}
 			};
+			_this.getScriptMessagePreview = function(message,emoji_template){
+				if (message && message.message && message.contentType !== 2 && message.contentType !== 3) {
+					if ((typeof emoji_template ==="string")&& emoji_template.indexOf('emoji-inner') === -1) {
+						emoji_template = emoji_template.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+					}
+				}
+				return emoji_template;
+			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
 				var emoji_template = "";
 				if (typeof message !== 'undefined') {
@@ -5080,7 +5104,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.contentType === 2) {
 							emoji_template = '<span class="km-icon-marker"></span>';
-						} else {
+						}else if(message.contentType === 3){
+							emoji_template = message.message;
+						}
+						 else {
 							var msg = message.message;
 							if (kmUtils.startsWith(msg, "<img")) {
 								return '<span class="km-icon-camera"></span>&nbsp;<span>image</span>';
@@ -5602,7 +5629,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var data = response.response;
 						$mck_search_loading.removeClass('vis').addClass('n-vis');
 						if ($mck_sidebox_search.length == 0 || $mck_sidebox_search.hasClass('vis')) {
-							if (data === null || data.length === 0) {
+							if (typeof data=="undefined" || data === null || data.length === 0) {
 								$mck_search_inner.html('<div class="km-no-data-text km-text-muted">No contacts yet!</div>');
 							} else if (typeof data === 'object' && data.users.length > 0) {
 								var mckContactNameArray = [];
@@ -7303,6 +7330,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						w.addEventListener("beforeunload", function (e) {
 							_this.disconnect();
 						});
+						w.addEventListener('online', function () {
+							console.log("online")
+							mckInitializeChannel.reconnect();
+						});
+						w.addEventListener('offline', function () {
+							console.log("offline");
+						});
 					}
 				}
 			};
@@ -7316,10 +7350,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 					checkConnectedIntervalId = setInterval(function () {
 						_this.connectToSocket(isFetchMessages);
-					}, 600000);
+					}, 60000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 1200000);
+					}, 12000);
 				} else {
 					_this.connectToSocket(isFetchMessages);
 				}
@@ -7327,6 +7361,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 				if (!stompClient.connected) {
+					console.log("socket connected",new Date());
 					if (isFetchMessages) {
 						var currTabId = $mck_message_inner.data('km-id');
 						if (currTabId) {
@@ -7357,11 +7392,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.disconnect();
 			};
 			_this.disconnect = function () {
+				console.log("socket disconnect",new Date());
 				if (stompClient && stompClient.connected) {
 					_this.sendStatus(0);
 					stompClient.disconnect();
+					if(SOCKET){
 					SOCKET.close();
 					SOCKET = '';
+					}
 				}
 			};
 			_this.unsubscibeToTypingChannel = function () {
@@ -7461,6 +7499,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.reconnect = function () {
+				console.log("socket trying to reconnect",new Date());
 				_this.unsubscibeToTypingChannel();
 				_this.unsubscibeToNotification();
 				_this.disconnect();
@@ -7478,6 +7517,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.onConnect = function () {
+				console.log("socket trying to connect",new Date());
 				if (stompClient.connected) {
 					if (subscriber) {
 						_this.unsubscibeToNotification();

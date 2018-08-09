@@ -4,19 +4,14 @@ title: Installation
 sidebar_label: Installation
 ---
 
-## Install on CMS:
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>
-
-## Manual Installation:
+## Overview:
 Kommunicate allows you to add live chat in your website that enables you to serve your website visitors and customers through conversation.<br>
-Installing Kommunicate on your website is easy and fast. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
+Installing Kommunicate is fast and easy. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
+Kommunicate can also be used with any of [Website Builder](#install-on-website-builder).
 
-### Step 1: 
-**Get the customized plugin script from [Kommunicate dashboard](https://dashboard.kommunicate.io/dashboard).**
-<hr>
+## Install on web:  
+
+### Step 1 : Get the customized plugin script from [Kommunicate dashboard](https://dashboard.kommunicate.io/dashboard).
 
 Create your account by signing up for [Kommunicate](https://dashboard.kommunicate.io/signup). If you already have a Kommunicate account, log in to your account and go to `Settings -> Install` section and copy the script.
 
@@ -48,9 +43,8 @@ Script
 
 ```
 
-### Step 2: 
-**Add the customized Kommunicate plugin to your website**
-<hr>
+### Step 2: Add the customized Kommunicate plugin to your website
+
 We recommend adding it to your website template so that it automatically goes into each page of your website. Make sure to place Kommunicate plugin code before the closing Body tag.
 
 You can customize the plugin by passing below parameter in option object. Visit `Settings -> Install` section in Kommunicate dashboard to get default values for your account.
@@ -67,3 +61,9 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |email | Email ID of the user. User will be notified on this email if not online|
 |chatLauncherHtml | Pass html for customize chat icon|
 |onInit| This takes a function which will be called after plugin initialized. it takes two parameter error and data.|
+
+## Install on website Builder:
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
+  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>

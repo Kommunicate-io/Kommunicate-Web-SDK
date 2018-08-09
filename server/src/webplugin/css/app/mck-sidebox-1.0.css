@@ -2,6 +2,9 @@
     Created on : Mar 20, 2015, 5:28:06 PM
     Author     : devashish
 */
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
+
 .mck-box {
 	position: fixed;
 	right: 0;
@@ -24,19 +27,22 @@
 }
 
 .mck-videocall-btn {
-        background-image: url(images/mck-videocall-icon.png);
-        background-repeat: no-repeat;
-        float :right !important;
-        margin-top: 14px;
-        position: absolute;
-	overflow: hidden;
-        opacity: 0.4;
-        background-size: 20px;
-        cursor: pointer;
+	/* background-image: url(../css/app/images/mck-videocall-icon.png); */
+	/* background-repeat: no-repeat; */
+	float :right !important;
+	/* margin-top: 14px; */
+	/* position: absolute; */
+	/* overflow: hidden; */
+	/* opacity: 0.4; */
+	/* background-size: 20px; */
+	cursor: pointer;
+}
+.mck-videocall-btn svg {
+    vertical-align: middle;
 }
 
 .mck-mike-btn {
-        background-image: url(images/mck-mike.png);
+        background-image: url(../images/mck-mike.png);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -48,7 +54,7 @@
 }
 
 .mck-stop-btn {
-        background-image: url(images/mck-stop.png);
+        background-image: url(../css/app/images/mck-stop.png);
         background-repeat: no-repeat;
         float :left !important;
        /* margin-top: 4px;*/
@@ -61,7 +67,7 @@
 }
 
 .mck-loading-btn {
-        background-image: url(images/ring.gif);
+        background-image: url(../css/app/images/ring.gif);
         background-repeat: no-repeat;
         float :left !important;
         margin-top: 7px;
@@ -128,22 +134,23 @@
 }
 .mck-powered-by{
 	text-decoration: none;
-	color:grey !important;
+	color: #aeaaaa !important;
 }
 
 #mck-text-box[contenteditable=true]:empty:not(:focus):before {
     content: attr(data-text);
-	color: black;
+	color: #949494;
 	opacity:0.6;
 }
 
 .mck-powered-by:hover{
-	text-decoration:line
+	text-decoration:underline;
+	color: #5c5aa7 !important
 }
-#mck-textbox-container .mck-text-box-panel{
+/* #mck-textbox-container .mck-text-box-panel{
 	filter:grayscale(100);
 	opacity:0.6;
-}
+} */
 
 .mck-box .mck-row {
 	margin-right: -15px;
@@ -498,11 +505,6 @@
 
 .mck-sidebox .mck-btn-light:hover {
 	background: #fff !important;
-}
-
-.mck-btn.focus, .mck-btn:focus, .mck-btn:hover {
-	color: #333;
-	text-decoration: none;
 }
 
 .mck-btn.active, .mck-btn:active {
@@ -1240,6 +1242,10 @@
 	display: inline-block !important;
 	content: '';
 }
+#mck-upload-menu-list.mck-dropup-menu:before, #mck-upload-menu-list.mck-dropup-menu:after {
+	right: 5px;
+	left: auto;
+}
 
 .mck-dropdown-menu li, .mck-dropup-menu li {
 	height: inherit;
@@ -1477,9 +1483,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	min-height: 18px;
 	max-height: 78px;
 	resize: none;
-
 	background-color: white;
-	width: calc(100% - 55px) !important;
+	width: calc(100% - 70px);
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
@@ -1818,6 +1823,13 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: rgba(0, 0, 0, 0.2);
 }
 
+.mck-attachement-icon {
+	margin-right: 5px;
+}
+.mck-attachement-icon svg {
+	vertical-align: bottom;
+}
+
 .mck-file-upload .mck-btn img {
 	vertical-align: middle;
 	height: 30px;
@@ -2129,12 +2141,22 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-message-status {
 	width: 14px;
 	height: 14px;
-	opacity: 0.6;
+	opacity: 1;
 	display: inline-block;
+}
+.mck-message-status svg {
+	vertical-align: sub;
+	opacity: 0.7;
+}
+.mck-message-status--icon-read {
+	opacity: 1 !important;
 }
 
 .mck-message-status.mck-icon-read {
 	opacity: 1;
+}
+.mck-created-at-time {
+	opacity: 0.4;
 }
 
 .mck-sidebox-launcher {
@@ -2311,9 +2333,10 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-running-on {
 	text-align: center;
-	padding: 7px 0;
+	padding: 0px 0px 7px;
 	vertical-align: middle;
-	border-top: 1px solid #E5E5E5;
+	color: #aeaaaa;
+	/* border-top: 1px solid #E5E5E5; */
 }
 
 .mck-conversation-tab-search img {
@@ -3219,7 +3242,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-group-icon-default {
-	background-image: url(images/mck-icon-group150x150.png);
+	background-image: url(../css/app/images/mck-icon-group150x150.png);
 	width: 150px;
 	height: 150px;
 	top: 0px;
@@ -3231,7 +3254,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-loading {
 	position: absolute;
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: #fff;
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -3242,7 +3265,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: #fff;
 }
 
-.mck-loading>img {
+.mck-loading>img, .mck-loading>svg {
 	top: 0;
 	bottom: 0;
 	margin: auto;
@@ -3324,7 +3347,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	.mck-icon-marker, .mck-icon-delivered, .mck-icon-read, .mck-icon-sent,
 	.mck-icon-time {
 	display: inline-block;
-	background: url(images/mck-plugin-sprite.png) no-repeat;
+	background: url(../css/app/images/mck-plugin-sprite.png) no-repeat;
 	overflow: hidden;
 	text-indent: -9999px;
 	text-align: left;
@@ -3345,7 +3368,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-camera-icon {
 	display: block;
-	background-image: url(images/mck-icon-camera.png);
+	background-image: url(../css/app/images/mck-icon-camera.png);
 	background-repeat: no-repeat;
 	margin-top: 10px;
 	height: 20px;
@@ -3389,11 +3412,11 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	height: 25px;
 }
 
-.mck-icon-smiley-blue {
+/* .mck-icon-smiley-blue {
 	background-position: -10px -403px;
 	width: 25px;
 	height: 25px;
-}
+} */
 
 .mck-icon-upload {
 	background-position: -10px -438px;
@@ -3444,21 +3467,36 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	position: relative;
 	vertical-align: middle;
 }
-
+/* 
 .mck-icon-camera {
 	background-position: -10px -662px;
 	width: 18px;
 	height: 20px;
 	position: relative;
 	vertical-align: middle;
+} */
+
+.mck-icon--camera {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.mck-icon--camera svg {
+	vertical-align: sub
 }
 
-.mck-icon-marker {
+/* .mck-icon-marker {
 	background-position: -10px -690px;
 	width: 18px;
 	height: 18px;
 	position: relative;
 	vertical-align: middle;
+} */
+.mck-icon--location {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.mck-icon--location svg {
+	vertical-align: sub;
 }
 
 .mck-icon-delivered {
@@ -3551,7 +3589,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 @media (min-width : 310px) {
 	.emoji-menu{
-		width:300px !important;
+		/* width:300px !important; */
 	}
 
 	.mck-sidebox {
@@ -3682,7 +3720,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width: 500px;
 	}
 	.emoji-menu{
-		width:379px !important;
+		/* width:379px !important; */
 	}
 	.mck-sidebox.fade.in{
 		width:379px;
@@ -3877,14 +3915,16 @@ box-shadow: none!important;
 	display:inline-block;
 }
 .emoji-menu{
-	right:10px !important;
-	width:379px;
+	right:0px !important;
+	width:100%;
+	left: auto;
+	bottom: 70px !important;
 }
 .emoji-menu>.group-selector{
 	width:100% !important;
 }
 .emoji-menu div {
-	width:100% !important;
+	/* width:100% !important; */
 }
 #mck-msg-new{
 	background-color: #716fb3;
@@ -4059,7 +4099,7 @@ color: rgba(0,0,0,0.5);
     object-fit: cover;
 }
 .km-image-card-2 {
-    background-image: url('/images/card-message-img-2.jpg');
+    background-image: url('../css/app/images/card-message-img-2.jpg');
 }
 .km-card-message-image-price-container {
     position: absolute;
@@ -4496,7 +4536,7 @@ color: rgba(0,0,0,0.5);
     font-size: 14px;
     letter-spacing: 0.5px;
     text-align: center;
-	color: #a9a4a4;
+	color: #8f8f8f;
 	margin-bottom: 0px;
 
 
@@ -4531,7 +4571,7 @@ color: rgba(0,0,0,0.5);
 	height: 33px;
     width: 33px;
     margin-right: 10px;
-    background-image: url(images/km-faqicon1.png);
+    background-image: url(../css/app/images/km-faqicon1.png);
     background-size: contain;
 	background-repeat: no-repeat;
 	opacity: 0.6;
@@ -4910,7 +4950,7 @@ margin-top: 243px;
 }
 
 /********  dialog box template *************/
-/* FAQ Answer 
+/* FAQ Answer
 // duplicate css. if any thing is getting used in faq  need to rename that class.
 .message.received.faq-answer {
     padding: 0px;
@@ -5027,8 +5067,16 @@ margin-top: 243px;
 	padding-left: 0px;
 }
 
-#mck-btn-attach {
+/* #mck-btn-attach {
 	opacity: 0.6;
+} */
+#mck-btn-attach .mck-icon-upload, #mck-attachfile-box #mck-file-up2 .mck-icon-upload {
+	background: transparent;
+    width: 20px;
+    height: 28px;
+    margin-bottom: -2px;
+	margin-right: 2px;
+	display: block;
 }
 .mck-attach-menu-main-container {
 	opacity: 1 !important;
@@ -5075,9 +5123,15 @@ margin-top: 243px;
 		height:100% !important;
 	}
 	.emoji-menu {
-		width: 100% !important;
+		/* width: 100% !important; */
 		right: 0px !important;
 	}
+}
+
+#mck-btn-loc .mck-icon-marker-blue {
+	background: transparent;
+	width: auto;
+	height: auto;
 }
 
 .mck-contact-search:disabled {
@@ -5087,21 +5141,138 @@ margin-top: 243px;
 	border-color: #a5a5a5;
 }
 
-*::-webkit-scrollbar {
+.mck-message-status--svg_path, 
+.mck-message-status--icon-sent .mck-message-status--svg_path, .mck-message-status--icon-delivered .mck-message-status--svg_path  {
+	fill: #263238;
+}
+.mck-message-status--icon-read .mck-message-status--svg_path {
+	fill: #4FC3F7;
+}
+
+
+
+.mck-circular-spinner {
+	-webkit-animation: mckSpinnerRotate 2s linear infinite;
+	animation: mckSpinnerRotate 2s linear infinite;
+	-webkit-transform-origin: center center;
+	transform-origin: center center;
+	margin: auto;
+  }
+
+.mck-spinner-path {
+	stroke-dasharray: 1, 200;
+	stroke-dashoffset: 0;
+	-webkit-animation: mckSpinnerDash 1.5s ease-in-out infinite, mckSpinnerColor 6s ease-in-out infinite;
+	animation: mckSpinnerDash 1.5s ease-in-out infinite, mckSpinnerColor 6s ease-in-out infinite;
+	stroke-linecap: round;
+}
+
+@-webkit-keyframes mckSpinnerRotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes mckSpinnerRotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes mckSpinnerDash {
+	0% {
+	  stroke-dasharray: 1, 200;
+	  stroke-dashoffset: 0;
+	}
+	50% {
+	  stroke-dasharray: 89, 200;
+	  stroke-dashoffset: -35px;
+	}
+	100% {
+	  stroke-dasharray: 89, 200;
+	  stroke-dashoffset: -124px;
+	}
+}
+@keyframes mckSpinnerDash {
+	0% {
+	  stroke-dasharray: 1, 200;
+	  stroke-dashoffset: 0;
+	}
+	50% {
+	  stroke-dasharray: 89, 200;
+	  stroke-dashoffset: -35px;
+	}
+	100% {
+	  stroke-dasharray: 89, 200;
+	  stroke-dashoffset: -124px;
+	}
+}
+@-webkit-keyframes mckSpinnerColor {
+	100%,
+	0% {
+	  stroke: #d62d20;
+	}
+	40% {
+	  stroke: #0057e7;
+	}
+	66% {
+	  stroke: #008744;
+	}
+	80%,
+	90% {
+	  stroke: #ffa700;
+	}
+}
+@keyframes mckSpinnerColor {
+	100%,
+	0% {
+		stroke: #d62d20;
+	}
+	40% {
+		stroke: #0057e7;
+	}
+	66% {
+		stroke: #008744;
+	}
+	80%,
+	90% {
+		stroke: #ffa700;
+	}
+}
+
+
+#mck-sidebox *::-webkit-scrollbar {
 	-webkit-appearance: none;
 }
-*::-webkit-scrollbar:vertical {
+#mck-sidebox *::-webkit-scrollbar:vertical {
     width: 7px;
 }
 
-*::-webkit-scrollbar:horizontal {
-    height: 10px;
+#mck-sidebox *::-webkit-scrollbar:horizontal {
+    height: 9px;
 }
-*::-webkit-scrollbar-thumb {
+#mck-sidebox *::-webkit-scrollbar-thumb {
 	background-color: rgba(0, 0, 0, 0.2);
 	-webkit-border-radius: 4px;
     border-radius: 4px
 }
-*::-webkit-scrollbar-track {
+#mck-sidebox *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
+}
+
+button {
+	min-width: 0;
+}
+
+.km-hide-logo {
+position: fixed;
+z-index: 2243000;
+bottom: 45px;
+right: 35px;
+-webkit-transform: translateZ(0);
+height: 56px;
+width: 56px;
+border-radius: 50%;
+box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }

@@ -61,15 +61,16 @@
 			</li>
 			<!-- <li>
 				<a href="https://blog.kommunicate.io/" target="_blank">Blog</a>
-			</li>
-			<li>
-				<a href="/about">About</a>
 			</li> -->
 			<li>
-				<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %}  class="nav-login-button">Login</a>
+				<a href="https://calendly.com/kommunicate/15min" target="_blank">Get Demo</a>
 			</li>
+			
 			<li>
 				<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-button">Sign Up for Free</a>
+			</li>
+			<li>
+				<a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %}  class="nav-login-button">Login</a>
 			</li>
 		</ul>
 		<!-- <button></button> -->
@@ -100,11 +101,13 @@
 				<ul class="mobile-nav-links">
 						<li><a href="/features">Features</a></li>
 						<li><a href="/pricing">Pricing</a></li>
+						<li><a href="https://calendly.com/kommunicate/15min" target="_blank">Get Demo</a></li>
 						<!-- <li><a href="https://blog.kommunicate.io/" target="_blank">Blog</a></li> -->
 						<!-- <li><a href="/about">About Us</a></li> -->
-						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %} class="nav-login-mobile-button">Login</a></li>
+						
 						<li class="signup-mobile"><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Sign Up for Free</a></li>
 						<li class="try-kommunicate-mobile"><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/signup"{% else %} href="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} class="nav-signup-mobile-button">Try Kommunicate</a></li>
+						<li><a {% if jekyll.environment == "production" %} href="{{site.dashboard.dashboardPathProd}}/login"{% else %} href="{{site.dashboard.dashboardPathTest}}/login"{% endif %} class="nav-login-mobile-button">Login</a></li>
 					</ul>
 		</div>
 	</div>

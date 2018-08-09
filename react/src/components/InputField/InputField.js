@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Label, Input } from 'reactstrap';
 
 
@@ -28,20 +29,20 @@ const InputField = (props) => (
 );
 
 InputField.propTypes = {
-    inputType: React.PropTypes.oneOf(['text', 'number', 'email', 'url', 'password']).isRequired,
-    id: React.PropTypes.string.isRequired,
-    title: React.PropTypes.string.isRequired,
-	name: React.PropTypes.string.isRequired,
-	onChange: React.PropTypes.func.isRequired,
-	onKeyPress: React.PropTypes.func.isRequired,
-	onBlur: React.PropTypes.func.isRequired,
-	value: React.PropTypes.oneOfType([
-		React.PropTypes.string,
-        React.PropTypes.number,
+    inputType: PropTypes.oneOf(['text', 'number', 'email', 'url', 'password']).isRequired,
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
+	onChange: PropTypes.func.isRequired,
+	onKeyPress: PropTypes.func.isRequired,
+	onBlur: PropTypes.func.isRequired,
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+        PropTypes.number,
 	]).isRequired,
-    placeholder: React.PropTypes.string,
-    errorMessage: React.PropTypes.string.isRequired,
-    hideErrorMessage: React.PropTypes.bool.isRequired,
+    placeholder: PropTypes.string,
+    errorMessage: PropTypes.string.isRequired,
+    hideErrorMessage: PropTypes.bool.isRequired,
 };
 
 export default InputField;

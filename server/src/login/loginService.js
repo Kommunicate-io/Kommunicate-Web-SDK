@@ -63,6 +63,7 @@ exports.processLogin = (userDetail) => {
           user.subscription = customer.subscription;
           user.billingCustomerId = customer.billingCustomerId;
           user.clearbitKey = key.length > 0 ? key[0].accessKey : "";
+          user.applicationCreatedAt=customer.applications[0].created_at
           return prepareResponse(user, application);
         })
       });

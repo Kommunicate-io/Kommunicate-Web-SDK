@@ -323,9 +323,10 @@ exports.processAwayMessage = function(req,res){
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
                 inAppMsgService.isGroupUserAnonymous(customer,conversationId)])
-                .then(([onlineUser,group])=>{
+                .then(([agentsDetail,group])=>{
                  groupUsers = group.groupInfo.groupUsers;              
-                 let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;                
+                 let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;  
+                 let onlineUser = agentsDetail.find(agent=>agent.connected);              
                if(onlineUser){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");

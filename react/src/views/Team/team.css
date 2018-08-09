@@ -15,7 +15,9 @@
 .multiple-email-box input:focus {
   outline: none;
 }
-
+.teammate-table {
+  margin-right: 140px;
+}
 .teammate-table .thead-default th {
   background-color: #ffffff;
   text-transform: uppercase;
@@ -29,14 +31,14 @@
   color: #97999b;
 }
 
-.teammate-table .thead-default td {
+.teammate-table .team-data-allign td div {
   font-size: 14px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.4px;
-  text-align: left;
+  /* text-align: left; */
   color: #464748;
 }
 
@@ -62,4 +64,170 @@
   border-bottom: 1px solid #cfd8dc;
   border-top: none;
   vertical-align: middle;
+}
+.team-data-allign .teammates-delete-icon span{
+  display: none;
+}
+.team-data-allign:hover .teammates-delete-icon span{
+  display: block;
+  width: 55px;
+  
+}
+.team-data-allign:hover {
+  border-radius: 3px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 11px 3px rgba(171, 166, 166, 0.5);
+  cursor: default;
+  border-bottom: 1px solid transparent;
+}
+.team-th-delete-edit {
+  visibility: hidden
+}
+.team-delete-modal-btn {
+  text-align: right;
+}
+.teammates-add-member-modal-btn {
+  text-align: right;
+}
+.team-delete-modal-cancel-btn {
+  margin-right: 16px;
+}
+.teammates-add-member-modal-cancel-btn {
+  margin-right: 16px;
+}
+.team-delete-modal-header-title {
+  font-size: 20px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #6c6a6a;
+}
+.team-delete-modal-header-title-user-name {
+  color: #aeaeae;
+}
+.team-delete-modal-content {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #505152;
+}
+.team-delete-modal-divider {
+  margin-left: -20px;
+  margin-right: -20px;
+  height: 2px;
+  opacity: 0.36;
+  border: none;
+  border-top: 1px solid #a5b0bd;
+}
+.teammates-add-member-modal-divider {
+  margin-left: -20px;
+  margin-right: -20px;
+  height: 2px;
+  opacity: 0.36;
+  border: none;
+  border-top: 1px solid #a5b0bd;
+}
+.teammates-delete-wrapper {
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  color: #8b8c8e;
+}
+.teammates-delete-wrapper > svg {
+  vertical-align: middle ;
+  margin-bottom: 2px;
+  margin-right: 4px;
+}
+.teammates-delete-wrapper:hover {
+  cursor: pointer;
+  color: #434344;
+}
+.team-name-avatar-wrapper {
+  display: flex;
+}
+.team-displayname {
+  margin-left: 14px;
+  padding-top: 14px;
+  display: flex;
+}
+.teammates-description {
+  font-size: 18px;
+  font-weight: normal;
+  letter-spacing: 1.3px;
+  color: #354052;
+  padding-bottom: 18px;
+}
+.teammates-add-member-modal-header-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: #6c6a6a;
+
+}
+.teammates-add-member-modal-content-title {
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: 0.3px;
+  color: #57595b;
+  padding-bottom: 10px;
+}
+.teammates-add-member-modal-content-wrapper input  {
+  max-width: 73%;
+  border: solid 1px #d8d8d8;
+  margin-bottom: 26px; 
+}
+.km-status-indicator-text {
+  font-size: 16px !important;
+}
+/* .team-name-avatar-wrapper span {
+  visibility: hidden;
+} */
+.teammates-table td{
+  width: 315px;
+}
+.km-truncate {
+	white-space: nowrap;
+	overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+.radio-btn-agent-title, .radio-btn-admin-title {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: #787474;
+}
+.radio-btn-agent-description , .radio-btn-admin-description {
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0.6px;
+  color: #a6a3a3;
+}
+.radion-btn-agent-wrapper, .radion-btn-admin-wrapper {
+  margin-left: 19px;
+}
+.teammates-add-member-modal-radio-btn-wrapper  .checkmark{
+  top: 14% !important;
+}
+.teammates-add-member-modal-role {
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: 0.3px;
+  color: #57595b;
+  margin-bottom: 12px;
+}
+.teammates-admin-permission-alert-wrapper {
+  border-radius: 2px;
+  background-color: #f4d480;
+}
+.team-data-allign .km-icon-wrapper {
+  padding-bottom: 12px;
+  padding-top: 12px;
+  margin-left: 15px;
 }
