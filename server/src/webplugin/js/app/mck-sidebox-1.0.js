@@ -2240,6 +2240,14 @@ var MCK_CLIENT_GROUP_MAP = [];
                         options.displayName = userName;
                     }
                     if (contactNumber) {
+                      var phoneRe = /^[0-9]+$/;
+                      var digits = contactNumber.replace(/\D/g, "");
+                      if(!phoneRe.test(digits) && digits.length > 5 && digits.length < 14){
+                        alert('Please provide a valid contact number');
+                        $submit_chat_login.attr('disabled', false);
+                        $submit_chat_login.html('Start Conversation');
+                        return false;
+                      }
                         options.contactNumber = contactNumber;
                     }
                     $submit_chat_login.attr('disabled', true);
