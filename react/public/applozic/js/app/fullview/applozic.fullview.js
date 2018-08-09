@@ -394,10 +394,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var mckNotificationTone = null;
 		_this.events = {
 			'onConnectFailed': function () {
-				if (navigator.onLine) { 
+				if (navigator.onLine) {
 					mckInitializeChannel.reconnect();
 				}
-				
+
 			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
@@ -1167,6 +1167,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					userPxy.resetUserStatus = true;
 				}
 				userPxy.appVersionCode = 108;
+				userPxy.deviceType =0;
 				userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
 				AUTH_CODE = '';
 				USER_DEVICE_KEY = '';
@@ -1245,7 +1246,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								userSession.imageLink=result.imageLink;
 								w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 							}
-							
+
 							let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
 							userSession.notifyState=result.notifyState;
 							w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
@@ -4929,7 +4930,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				
+
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
@@ -7359,9 +7360,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
 					}, 120000);
-				} 
+				}
 					_this.connectToSocket(isFetchMessages);
-				
+
 			};
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
