@@ -1268,6 +1268,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								(isReInit) ? mckInitializeChannel.reconnect() : mckInitializeChannel.init();
 								// kmGroupService.loadGroups();
 							}
+							w.addEventListener('online', function () {
+								console.log("online")
+								mckInitializeChannel.reconnect();
+							});
+							w.addEventListener('offline', function () {
+								console.log("offline");
+							});
 							mckMessageLayout.loadTab({
 								tabId: '',
 								'isGroup': false,
@@ -7335,13 +7342,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						w.addEventListener("beforeunload", function (e) {
 							_this.disconnect();
 						});
-						w.addEventListener('online', function () {
-							console.log("online")
-							mckInitializeChannel.reconnect();
-						});
-						w.addEventListener('offline', function () {
-							console.log("offline");
-						});
 					}
 				}
 			};
@@ -7355,17 +7355,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 					checkConnectedIntervalId = setInterval(function () {
 						_this.connectToSocket(isFetchMessages);
-					}, 60000);
+					}, 600000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 12000);
-				} else {
+					}, 120000);
+				} 
 					_this.connectToSocket(isFetchMessages);
-				}
+				
 			};
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
-				if (!stompClient.connected) {
+				if (stompClient.connected) {
 					console.log("socket connected",new Date());
 					if (isFetchMessages) {
 						var currTabId = $mck_message_inner.data('km-id');
@@ -7401,10 +7401,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (stompClient && stompClient.connected) {
 					_this.sendStatus(0);
 					stompClient.disconnect();
-					if(SOCKET){
-					SOCKET.close();
-					SOCKET = '';
-					}
+
+					if (SOCKET) {
+						SOCKET.close();
+						SOCKET = '';
 				}
 			};
 			_this.unsubscibeToTypingChannel = function () {
