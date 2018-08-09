@@ -1,4 +1,4 @@
-const { GROUP_INFO } = require('./conversationUtils');
+const GroupInfo = require('./conversationUtils');
 const applozicClient = require("../utils/applozicClient");
 const userService = require("../users/userService");
 const customerService = require('../customer/customerService');
@@ -6,6 +6,7 @@ const config = require('../../conf/config.js')
 const logger = require('../utils/logger');
 const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
+const { EMAIL_NOTIFY } = require('../users/constants');
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -68,24 +69,37 @@ const addMemberIntoConversation = (data) => {
 const assingConversationInRoundRobin = (groupId, userIds, appId, header, onlineUsers) => {
     return getConversationAssigneeFromMap(userIds, appId, onlineUsers).then(assignTo => {
         logger.info("got conversation agssignee : ", assignTo);
-        let groupInfo = { groupDetails: [{ groupId: groupId, userId: assignTo, role: 1 }] };
-        logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-        return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId)).then(response => {
-            logger.info('response', response.data)
-            applozicClient.updateGroup(
-                {
-                    groupId: groupId,
-                    metadata: { CONVERSATION_ASSIGNEE: assignTo }
-                },
-                appId,
-                header.apzToken,
-                header.ofUserId
-            );
-
-            return { code: "SUCCESS", data: 'success' };
-        });
+        return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
+            if (group.metadata.CONVERSATION_ASSIGNEE != assignTo) {
+                let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
+                return assignConversationToUser(groupId, assignTo, appId, header).then(res=>{
+                   applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
+                   return res;
+                })
+                
+                    
+            }
+        })
     });
 };
+
+
+const assignConversationToUser = (groupId, assignTo, appId, header) => {
+    let groupInfo = { groupDetails: [{ "groupId": groupId, "userId": assignTo, role: 1 }] };
+    logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', appId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+    return applozicClient.addMemberIntoConversation(groupInfo, appId, header.apzToken, header.ofUserId).then(result => {
+        applozicClient.updateGroup(
+            {
+                groupId: groupId,
+                metadata: { CONVERSATION_ASSIGNEE: assignTo }
+            },
+            appId,
+            header.apzToken,
+            header.ofUserId
+        );
+        return { code: "SUCCESS", data: 'success' };
+    })
+}
 /**
  * 
  * @param {Integer} groupId 
@@ -237,7 +251,7 @@ const createConversationFromMail = (req) => {
     let toAddresses = req.body.tos;
     let fromEmail = req.body.from;
     let messages = req.body.messages || [];
-    let groupInfo = Object.assign({}, GROUP_INFO);
+    let groupInfo = new GroupInfo();
     let headers = { "Apz-AppId": applicationId, "Content-Type": "application/json", "Apz-Product-App": true }
     if (!applicationId || messages.length == 0) {
         return "INVALID_PARAMETERS"
@@ -272,7 +286,7 @@ const createConversationFromMail = (req) => {
                     });
                 } else {
                     //create new user
-                    return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null).then(user => {
+                    return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
                         if (user) {
                             groupInfo.users[1].userId = user.userId
                             return applozicClient.createSupportGroup(groupInfo, headers).then(result => {

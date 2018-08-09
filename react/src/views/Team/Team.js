@@ -294,7 +294,7 @@ class Integration extends Component {
          <div className="col-md-12">
            <div className="card">
              {  this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-               <Banner  indicator = {"warning"} isVisible= {false} text = {"You need Admin permissions to edit this section"}/>
+               <Banner  indicator = {"warning"} isVisible= {false} text = {"You need admin permissions to manage your team"}/>
              }
              <div className="card-block">
                  <h5 className="form-control-label teammates-description">See the list of all the team members, their roles, add new team members and edit member details.</h5>

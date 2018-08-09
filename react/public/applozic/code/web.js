@@ -13,42 +13,6 @@ $(document).ready(function() {
 
 var autoSuggestions = {};
 
-
-
-
-function initAutoSuggestions() {
-
-  var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
-  var appId = userSession.application.applicationId;
-
-  for(autoSuggest in autoSuggestions){
-    try{
-    $('#km-text-box').atwho({
-      at: "/" + autoSuggest,
-      insertTpl: '${content}',
-      displayTpl: '<li data-suggestionId="${suggestionId}">${name} <small>${content}</small></li>',
-      data: autoSuggestions[autoSuggest],
-      callbacks: {
-        beforeInsert: function(value, $li, e) {
-          var machineInput = {"text": $(".active-chat .km-msg-left .km-msg-content div").last().html(), "appId": appId, "label": $li.attr('data-suggestionId')};
-          $('#km-text-box').data("metadata", encodeURIComponent(JSON.stringify(machineInput)));
-          return value;
-        },
-        beforeReposition: function(offset) {
-          return offset;
-        },
-        afterMatchFailed: function(at, el) {
-
-        }
-      }  
-    });
-  }catch(e){
-    console.log("error while initilizing atwho plugin");
-  }
-  }
-}
-
-
   var $userId = "";
   var $appKey = "applozic-sample-app";
   var $contactNumber = "";
@@ -83,7 +47,6 @@ function initAutoSuggestions() {
         // write your logic exectute after plugin initialize.
         $('#chat').css('display', 'none');
         $('#chat-box-div').css('display', 'block');
-        initAutoSuggestions();
         //$("#li-chat a").trigger('click');
         // window.Aside.loadAgents();
         window.Aside.loadBots();
@@ -122,20 +85,19 @@ function initAutoSuggestions() {
               } else {
                 window.$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
               }
-            }             
+            }
 					},
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
       launchOnUnreadMessage: true,
       topicBox: topicBoxEnabled,
-      authenticationTypeId: 1,
-      initAutoSuggestions : initAutoSuggestions     
+      authenticationTypeId: 1
       // topicDetail: function(topicId) {}
     });
     return false;
   //});
   }
-  
+
 function activeCampaign(email) {
   $.ajax({
     url: 'https://applozic.api-us1.com/admin/api.php?api_action=contact_view&api_key=aa87aefccdb0f33344e88fc6c8764df8512427a3a84fc0431c3fed9691dab83cac9394b3&api_output=json&id=autoforosyurii@gmail.com',
@@ -145,7 +107,7 @@ function activeCampaign(email) {
   });
 }
 function clearbit(email, userId) {
-    
+
     //Todo: clear all fields
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
         //Authorization: Bearer sk_8235cd13e90bd6b84260902b98c64aba
@@ -180,7 +142,7 @@ function displayCustInfo(clearbitData) {
     if(person.location !== null){
       $('#km-user-info-list #location').html(person.location !== null ? person.location : '');
       $("#km-user-info-list #location-icon").removeClass('n-vis');
-    }  
+    }
     var linkedin = person.linkedin;
     if (typeof linkedin.handle !== "undefined" && linkedin.handle != null && linkedin.handle != "null") {
         info = info + " " + linkedin.handle;
@@ -197,8 +159,8 @@ function displayCustInfo(clearbitData) {
         $("#km-user-info-list #twitter").attr('href', 'https://twitter.com/' + twitter.handle);
         $("#km-user-info-list #km-cl-tw-icon-box").removeClass('n-vis');
     }
-    
-   
+
+
 }
 if (typeof company !== "undefined" && company != null && company != "null") {
     info = info + " " + company.domain;
@@ -214,11 +176,11 @@ if (typeof company !== "undefined" && company != null && company != "null") {
       $("#km-user-info-list #domain").text('http://www.'+company.domain);
       $("#km-user-info-list #domain-icon").removeClass('n-vis');
     }
-   
+
     if(company.category.industry !== null || company.foundedYear !== null || company.description !== null) {
-      $('#km-user-info-list #industry').html(company.category.industry !== null ? 
+      $('#km-user-info-list #industry').html(company.category.industry !== null ?
         '<span class="clearbit-industry-details">Industry</span>'+ company.category.industry : '');
-      $('#km-user-info-list #foundedYear').html(company.foundedYear !== null ? 
+      $('#km-user-info-list #foundedYear').html(company.foundedYear !== null ?
         '<span class="clearbit-industry-details">Founded</span>'+company.foundedYear : '');
     }
     if(typeof company.description != "undefined" && company.description != null && company.description != "null") {
@@ -233,7 +195,7 @@ if (typeof company !== "undefined" && company != null && company != "null") {
     var crunchbase = company.crunchbase;
     if (typeof crunchbase.handle !== "undefined" && crunchbase.handle != null && crunchbase.handle != "null") {
         $("#km-user-info-list #crunchbase").attr('href', 'https://crunchbase.com/' + crunchbase.handle);
-        $("#km-user-info-list #km-cl-cb-icon-box").removeClass('n-vis');    
+        $("#km-user-info-list #km-cl-cb-icon-box").removeClass('n-vis');
     }
 }
 if(person != null){
@@ -252,27 +214,4 @@ else if (company != null) {
     $("#km-user-info-list #divider-2").removeClass('n-vis');
   }
 }
-}
-
-var getSuggestions = function(_urlAutoSuggest) {
-
-  fetch(_urlAutoSuggest)
-    .then(function(res){ return res.json()})
-    .then(function(response) {
-      autoSuggestions_data = response.data;
-      return autoSuggestions_data;
-    })
-    .then(function(autoSuggestions_data) {
-      autoSuggestions = autoSuggestions_data.reduce(function(prev, curr) {
-          if(curr.category in prev){
-            prev[curr.category].push({suggestionId: curr.id, name:curr.name, content:curr.content})
-          }else{
-            prev[curr.category] = [{suggestionId: curr.id, name:curr.name, content:curr.content}]
-          }
-        return prev;
-      }, {});
-      let categories = Object.keys(autoSuggestions);
-      initAutoSuggestions()
-    })
-    .catch(function(err) {console.log("Error in getting auto suggestions")});
 }

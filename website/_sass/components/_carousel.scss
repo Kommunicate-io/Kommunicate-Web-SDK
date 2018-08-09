@@ -1,5 +1,5 @@
 .carousel {
-    height: 40rem;
+    height: 35rem;
     width: 100%;
     margin: 0 auto;
     position: relative;
@@ -130,6 +130,9 @@
             @include respond(tab-por) {
                 left: 15%;
             }
+            @include respond(phone) {
+                left: 10%;
+            }
         }
         &_text {
             color: $carousel-text;
@@ -170,7 +173,9 @@
                 bottom: 22%;
             }
             @include respond(phone) {
-                left: 40%;
+                left: 32%;
+              bottom: 15%;
+                line-height: 2rem;
             }
         }
         &_name {
@@ -183,17 +188,19 @@
         &_company {
             font-size: 1.8rem; // color: $primary-light;
             @include respond(tab-por) {
-                bottom: 17%;
+                bottom: 15%;
+            }
+            @include respond(phone) {
+                bottom: 13%;
             }
         }
     }
     &_indicator {
         cursor: pointer;
         display: block;
-        @include respond(tab-por){
-           display: none;
+        @include respond(tab-por) {
+            display: none;
         }
-      
         a {
             // height: 6rem; // width: 3rem;
             background: url(../images/carousel-inactive.svg);
@@ -215,7 +222,7 @@
             }
         }
     }
-    .disbled{
+    .disbled {
         opacity: .3 !important;
     }
 }

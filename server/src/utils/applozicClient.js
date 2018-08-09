@@ -7,13 +7,14 @@ const constant = require('./constant');
 const logger = require('./logger.js');
 const APP_LIST_URL = config.getProperties().urls.baseUrl + "/rest/ws/user/getlist/v2.1?";
 const utils = require("./utils");
+const { EMAIL_NOTIFY } = require('../users/constants');
 
 /*
 this method register a user in applozic db with given parameters.
 */
-const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName) => {
+const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName, notifyState) => {
   console.log("creating applozic user..url :", config.getProperties().urls.createApplozicClient, "with userId: ", userId, ", password :", password, "applicationId", applicationId, "role", role, "email", email);
-
+  notifyState = typeof notifyState != "undefined" ? notifyState : EMAIL_NOTIFY.ONLY_ASSIGNED_CONVERSATION;
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
     "userId": userId ? userId.toLowerCase() : "",
     "applicationId": applicationId,
@@ -23,7 +24,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "email": email,
     "displayName": displayName,
     "gcmKey": gcmKey,
-    "state":4
+    "state": notifyState
   })).then(response => {
     let err = {};
     console.log("Applozic server returned : ", response.status);
@@ -547,6 +548,27 @@ exports.getConversationStats = (params, headers) => {
   url = params.groupBy ? url + "&groupBy=" + params.groupBy : url;
   return axios.get(url, { headers: headers }).then(result => {
     return result.data.response.response;
+  }).catch(err => {
+    console.log("err", err);
+    return;
+  });
+}
+/**
+ * 
+ * @param {object} params  { params.userIds:["userId1","userId2","userId3"],
+                            params.clientGroupIds:["groupId1","groupId2"]}
+ * @param {object} headers 
+ */
+exports.removeGroupMembers = (params, applicationId, apzToken, ofUserId) => {
+  let headers = {
+    "Content-Type": "application/json",
+    "Application-Key": applicationId,
+    'Authorization': "Basic " + apzToken,
+    'Of-User-Id': ofUserId
+  }
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/remove/users";
+  return axios.post(url, params, { headers: headers }).then(result => {
+    return result.data.response;
   }).catch(err => {
     console.log("err", err);
     return;
