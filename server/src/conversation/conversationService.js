@@ -22,7 +22,10 @@ const addMemberIntoConversation = (data) => {
                         let agentIds = agents.agentIds;
                         header = agents.header;
                         if (customer.botRouting) {
-                            agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                            if (agents.assignTo != customer.userName) {
+                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: user.userName, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
+                                assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                            }
                             return { code: "SUCCESS", data: 'success' }
                         } else if (!customer.agentRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
