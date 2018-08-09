@@ -553,6 +553,27 @@ exports.getConversationStats = (params, headers) => {
     return;
   });
 }
+/**
+ * 
+ * @param {object} params  { params.userIds:["userId1","userId2","userId3"],
+                            params.clientGroupIds:["groupId1","groupId2"]}
+ * @param {object} headers 
+ */
+exports.removeGroupMembers = (params, applicationId, apzToken, ofUserId) => {
+  let headers = {
+    "Content-Type": "application/json",
+    "Application-Key": applicationId,
+    'Authorization': "Basic " + apzToken,
+    'Of-User-Id': ofUserId
+  }
+  let url = config.getProperties().urls.applozicHostUrl + "/rest/ws/group/remove/users";
+  return axios.post(url, params, { headers: headers }).then(result => {
+    return result.data.response;
+  }).catch(err => {
+    console.log("err", err);
+    return;
+  });
+}
 
 const sendMessageListRecursively = (msgList, groupId, headers) => {
 
