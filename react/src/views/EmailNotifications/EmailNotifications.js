@@ -12,7 +12,7 @@ export default class EmailNotification extends Component {
     super(props);
         this.state = {
             selectedOption: { value: 4, label: 'Only conversations assigned to me' },
-            emailNotificationState: CommonUtils.getUserSession().applozicUser.notifyState
+            emailNotificationState: CommonUtils.getUserSession().notifyState
         }
     };
     
@@ -27,7 +27,7 @@ export default class EmailNotification extends Component {
 
     updateEmailNotification = (selectedOption) => {
         let emailNotifyState = CommonUtils.getUserSession();
-        emailNotifyState.applozicUser.notifyState = selectedOption.value;
+        emailNotifyState.notifyState = selectedOption.value;
         var postData = {
             state: selectedOption.value,
             userId: CommonUtils.getUserSession().email
