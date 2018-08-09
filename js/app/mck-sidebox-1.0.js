@@ -24,7 +24,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         mode: 'standard',
         visitor: false,
         olStatus: false,
-        // unreadCountOnchatLauncher: true,
+        unreadCountOnchatLauncher: true,
 //      awsS3Server :false,
         groupUserCount: false,
         desktopNotification: true,
@@ -1352,7 +1352,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 </g>
                 </svg></div>`;
                
-            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a></div>'+ '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container applozic-launcher n-vis">' + '<div class="mck-close-btn">' + '<span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div>' + '<div class="mck-msg-preview-visual-indicator-text"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
             	  };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -7913,6 +7913,8 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_sidebox_launcher;
             var $mck_preview_msg_content;
             var $mck_preview_file_content;
+            var $mck_msg_preview_visual_indicator;
+            var $mck_msg_preview_visual_indicator_text;
             var MCK_SW_REGISTER_URL = "/rest/ws/plugin/update/sw/id";
             _this.init = function () {
                 $mck_sidebox = $applozic("#mck-sidebox");
@@ -7924,6 +7926,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                 $mck_preview_name = $applozic("#mck-msg-preview .mck-preview-cont-name");
                 $mck_preview_msg_content = $applozic("#mck-msg-preview .mck-preview-msg-content");
                 $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
+                $mck_msg_preview_visual_indicator = $applozic("#mck-msg-preview-visual-indicator");
+                $mck_msg_preview_visual_indicator_text = $applozic("#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text");
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {
@@ -7986,30 +7990,50 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (message.message) {
                     var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 100);
                     $mck_preview_msg_content.html('');
-                    (typeof msg === 'object') ? $mck_preview_msg_content.append(msg) : $mck_preview_msg_content.html(msg);
+                    $mck_msg_preview_visual_indicator_text.html('');
+                    if((typeof msg === 'object')) { 
+                        $mck_preview_msg_content.append(msg);
+                        $mck_msg_preview_visual_indicator_text.append(msg);
+                    } else {
+                        $mck_preview_msg_content.html(msg);
+                        $mck_msg_preview_visual_indicator_text.html(msg);
+                    }
                     $mck_preview_msg_content.removeClass('n-vis').addClass('vis');
+                    $mck_msg_preview_visual_indicator.removeClass('n-vis').addClass('vis');
                 } else {
                     $mck_preview_msg_content.html('');
+                    $mck_msg_preview_visual_indicator_text.html('');
                 }
                 if (message.fileMetaKey) {
                     $mck_preview_file_content.html(alFileService.getFileIcon(message));
+                    $mck_msg_preview_visual_indicator_text.html(alFileService.getFileIcon(message));
                     $mck_preview_file_content.removeClass('n-vis').addClass('vis');
-                    if ($mck_preview_msg_content.html() === '') {
+                    $mck_msg_preview_visual_indicator.removeClass('n-vis').addClass('vis');
+                    if ($mck_preview_msg_content.html() === '' || $mck_msg_preview_visual_indicator_text.html() === '') {
                         $mck_preview_msg_content.removeClass('vis').addClass('n-vis');
+                        $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     }
                 } else {
                     $mck_preview_file_content.html('');
                     $mck_preview_file_content.removeClass('vis').addClass('n-vis');
+                    // $mck_msg_preview_visual_indicator_text.html('');
+                    // $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                 }
                 if (contact.isGroup === true && contact.type !== 10) {
                     $mck_preview_name.html(displayName);
                 }
                 $mck_preview_icon.html(imgsrctag);
                 $mck_msg_preview.data('mck-id', contact.contactId);
+                $mck_msg_preview_visual_indicator.data('mck-id', contact.contactId);
                 $mck_msg_preview.show();
+                // $mck_msg_preview_visual_indicator.show();
                 setTimeout(function () {
                     $mck_msg_preview.fadeOut(3000);
                 }, 10000);
+                $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn", function() {
+                    $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
+                    $mck_msg_preview_visual_indicator_text.html('');
+                });
             };
 
         }

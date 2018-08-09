@@ -3907,9 +3907,9 @@ fill:white;
 #mck-vid-receive-btn, #mck-vid-reject-btn{
 	width:40%;
 }
-.launchershadow{
+/* .launchershadow{
 box-shadow: none!important;
-}
+} */
 .mck-vid-scr-controls{
 	width:60%;
 	display:inline-block;
@@ -5275,4 +5275,70 @@ height: 56px;
 width: 56px;
 border-radius: 50%;
 box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
+}
+
+.mck-badge-count {
+    width: auto;
+    height: auto;
+    border-radius: 50px;
+    background-color: #ec3838;
+    border: 3px solid #fff;
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: -7px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0px 4px;
+    z-index: 2243001;
+    right: 0;
+    min-width: 12px;
+}
+.mck-msg-preview-visual-indicator-container {
+    background-color: #fff;
+    min-width: 60px;
+    max-width: 230px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 18px 0 rgba(219,219,219,.5), 0 2px 4px 0 rgba(176,174,174,.5);
+    position: absolute;
+    top: 50%;
+    padding: 5px 10px;
+    right: 70px;
+    min-height: 19px;
+    max-height: 60px;
+    transform: translateY(-50%);
+}
+.mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.36;
+	letter-spacing: 0.4px;
+	color: #646262;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    border-radius: 18px;
+    background-color: #cbc8c8;
+    padding: 2px 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
+	vertical-align: middle;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-text {
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.4px;
+	color: #ffffff;
 }

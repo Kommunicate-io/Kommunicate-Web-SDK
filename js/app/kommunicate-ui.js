@@ -87,7 +87,7 @@ KommunicateUI={
    faqEvents:function (data, helpdocsKey) {
     var mcktimer;
 
-    $applozic(d).on("click", "#mck-msg-preview", function () {
+    $applozic(d).on("click", "#mck-msg-preview, #mck-msg-preview-visual-indicator", function () {
         KommunicateUI.showChat();
     });
 
