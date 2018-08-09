@@ -36,7 +36,7 @@ class Users extends Component {
             if (user.messagePxy && user.messagePxy.groupId) {
               window.$kmApplozic.fn.applozic("getGroupFeed", { groupId: user.messagePxy.groupId,
                 callback: function(group) {
-                  if (botAgentMap && typeof group !== "undefined" && group !== null && group.data.metadata) {
+                  if (botAgentMap && group.status == "success" && typeof group !== "undefined" && group !== null && group.data.metadata) {
                     user.assignee = (group.data.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
                     assignedUser.push(user);
                     _this.setState({result: assignedUser, showEmptyStateImage: true})
