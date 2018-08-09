@@ -11,3 +11,16 @@ exports.readFile = (path,encoding)=>{
         });
     });
 }
+
+exports.deleteFile = (path) => {
+    return new Promise(function (resolve, reject) {
+        console.log("deleting file from path: ", path);
+        fs.unlink(path, function (err, data) {
+            if (err) {
+                return reject(err);
+            } else {
+                return resolve(data);
+            };
+        });
+    });
+}

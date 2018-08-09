@@ -99,8 +99,10 @@ exports.uploadAttachment = (req, res) => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
         }
-        return Promise.all([integrationSettingService.getIntegrationSetting(customer.id, ZENDESK)]).then(([settings]) => {
-            return zendeskService.uploadAttachment(ticketId, req.file, settings[0]);
+        return integrationSettingService.getIntegrationSetting(customer.id, ZENDESK).then(settings => {
+            return zendeskService.uploadAttachment(ticketId, req.file, settings[0]).then(result => {
+                return res.status(200).json({ code: "SUCCESS", data: result.data });
+            });
         })
     }).catch(err => {
         console.log('error while getting ticket', err);
