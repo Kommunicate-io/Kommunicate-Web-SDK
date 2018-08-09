@@ -18,7 +18,6 @@ body {
         font-weight: 600;
         width: 60%;
         margin: 0 auto;
-        margin-bottom: 6rem;
         @include respond(tab-por){
             width: 90%;
         }

@@ -12,13 +12,12 @@
             background: linear-gradient(to right bottom, $primary-light, $primary) no-repeat;
         }
         @include respond(phone) {
-            margin-top: 15rem;
+            margin-top: 20rem;
         }
     }
     svg{
         padding-top: 4.5rem;
         max-width: 22rem;
-        max-height: 9rem;
     }
     &_account {
         width: 85%;
@@ -36,7 +35,7 @@
             width: 95%;
             position: absolute;
             left: 50%;
-            top: -5%;
+            top: -12%;
             transform: translateX(-50%);
         }
         @include respond(phone) {

@@ -151,31 +151,4 @@
         font-size: 2.5rem;
         font-weight: lighter;
     }
-    &_landing_chat {
-        background-image: url(../images/landing_bg.svg);
-        background-repeat: no-repeat;
-        background-size: contain;
-        height: 66rem;
-        background-position: center;
-        padding-top: 6rem;
-        @include respond(tab-lan){
-            height: auto;
-            // background: none;
-            padding: 6rem;
-        }
-        @include respond(phone){
-            padding: 2rem 0 6rem 0;
-         }
-        img {
-            width: 65%;
-            display: block;
-            margin: 0 auto;
-            @include respond(tab-lan){
-               width: 85%;
-            }
-            @include respond(phone){
-               width: 95%;
-            }
-        }
-    }
 }

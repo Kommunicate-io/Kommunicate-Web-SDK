@@ -38,22 +38,13 @@ dashboard:
 permalink: pretty
 markdown: kramdown
 theme: minima
-# livereload: true 
-# reload_port: 7264
 
-plugins:
+gems:
   - jekyll-feed
   - jemoji
   - jekyll-redirect-from
   - jekyll-sitemap
-  # - jekyll-autoprefixer
-  # - octopress-autoprefixer
-
 
 exclude:
   - Gemfile
   - Gemfile.lock
-
-sass:
-  # sass_dir:          _scss
-  style: compressed
