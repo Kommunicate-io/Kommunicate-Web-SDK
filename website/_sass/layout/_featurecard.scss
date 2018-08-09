@@ -15,7 +15,7 @@
     &_last{
         // background: red;
         @include respond(tab-por) {
-            margin-bottom: 0rem!important;
+            margin-bottom: 10rem!important;
         } 
     }
     &_main_heading {

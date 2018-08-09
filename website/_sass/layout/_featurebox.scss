@@ -14,6 +14,9 @@
         background-position: 120% 0;
         // background-size: contain;
         padding: 2rem 0;
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            background-image:none; 
+                    }
     }
     &_bg2{
         background-image: url(../images/landing_bdrop3.svg);
@@ -21,6 +24,9 @@
         background-position: left;
         // background-size: contain;
         padding: 2rem 0;
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+            background-image:none; 
+                    }
     }
     &_text {
         padding: 2rem 6rem ; 
@@ -33,6 +39,7 @@
             flex-direction: column;
             flex: auto;
             padding: 1rem 2rem;
+            margin-top: -2rem;
             text-align: center;
             width: 100%;
         }

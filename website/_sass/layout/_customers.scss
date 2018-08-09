@@ -3,6 +3,9 @@
     background: url(../images/customer-bg.svg) no-repeat;
     background-size: contain;
     background-position: 0% center;
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      background-image:none; 
+              }
   }
   // margin: 0;
     padding:0;
