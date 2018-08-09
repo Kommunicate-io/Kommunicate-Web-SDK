@@ -7393,11 +7393,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.disconnect = function () {
 				console.log("socket disconnect",new Date());
-				if (stompClient) {
+				if (stompClient && stompClient.connected) {
 					_this.sendStatus(0);
 					stompClient.disconnect();
+					if(SOCKET){
 					SOCKET.close();
 					SOCKET = '';
+					}
 				}
 			};
 			_this.unsubscibeToTypingChannel = function () {
