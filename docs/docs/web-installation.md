@@ -15,7 +15,7 @@ Kommunicate can also be used with any of [Website Builder](#install-on-website-b
 
 Create your account by signing up for [Kommunicate](https://dashboard.kommunicate.io/signup). If you already have a Kommunicate account, log in to your account and go to `Settings -> Install` section and copy the script.
 
-Or 
+Or
 
 You can copy the below script and replace required parameters manually.
 
@@ -29,7 +29,7 @@ Script
      var kommunicateSettings = {"appId": appId,"agentId":agentId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
 
     /*----------------- Kommunicate settings end ------------------*/
-     
+
      var s = document.createElement("script");
       s.type = "text/javascript";
       s.async = true;
@@ -51,9 +51,9 @@ You can customize the plugin by passing below parameter in option object. Visit 
 
 |parameters|Descriptions|
 |---	   |---	    |
-|appId |A unique application ID assigned to your Kommunicate account| 
+|appId |A unique application ID assigned to your Kommunicate account|
 |agentId |This agent will be the default support agent. Default agent is registered when you sign up for Kommunicate|
-|botIds|Array of bot ids will be added in conversation. eg. botIds=['bot1','bot2']. Bot Ids will be visible in bot section in dashboard if you have created any bot.| 
+|botIds|Array of bot ids will be added in conversation. eg. botIds=['bot1','bot2']. Bot Ids will be visible in bot section in dashboard if you have created any bot.|
 |conversationTitle |All conversation will have this title|
 |isAnonymousChat| Allow your users to chat in Anonymous mode. User will be asked to enter email when he/she starts a conversation|
 |userId| This is your user’s/visiter's user ID. Kommunicate will generate a random Id if this is not defined|
@@ -64,6 +64,6 @@ You can customize the plugin by passing below parameter in option object. Visit 
 
 ## Install on website Builder:
   - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
-  - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" target="_blank">Squarespace</a>
+  - <a href="https://www.kommunicate.io/blog/squarespace-live-chat-software-for-website/" target="_blank">Squarespace</a>
   - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>
   - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-in-shopify-websites/" target="_blank">Shopify</a>

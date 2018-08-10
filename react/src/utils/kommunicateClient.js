@@ -1010,8 +1010,8 @@ const getUserDetailsByToken = (token) => {
 
 }
 const updateInvitedUserStatus = (token,status) => {
-  let url = getConfig().kommunicateBaseUrl + '/users/invite/status/update?reqId='+token +'&status='+status;
-  return Promise.resolve(axios.get(url)).then(response => {
+  let url = getConfig().kommunicateBaseUrl + '/users/invite/status?reqId='+token +'&status='+status;
+  return Promise.resolve(axios.patch(url)).then(response => {
     if (response !== undefined && response.data !== undefined && response.status === 200 &&   response.data.code.toLowerCase() === "success") {
       return true;
     }

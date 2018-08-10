@@ -1330,35 +1330,30 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
-                if(CUSTOM_CHAT_LAUNCHER){
-            		return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+CUSTOM_CHAT_LAUNCHER+'</a></div>';
-            	}else{
-                return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><div>'+
-              `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-              <style type="text/css">
-                  .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
-                  .km-launcher-logo-1{fill:#FFFFFF;}
-              </style>
-              <g>
-                  <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
-                      <stop offset="0" style="stop-color:#3A3C80"/>
-                      <stop offset="0.1658" style="stop-color:#4B4C93"/>
-                      <stop offset="0.3516" style="stop-color:#5858A2"/>
-                      <stop offset="0.5063" style="stop-color:#5C5CA7"/>
-                      <stop offset="0.6795" style="stop-color:#53549D"/>
-                      <stop offset="0.9706" style="stop-color:#3D3E83"/>
-                      <stop offset="1" style="stop-color:#3A3C80"/>
-                  </linearGradient>
-                  <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
-                  <g>
-                      <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
-                  </g>
-              </g>
-              </svg>`
-             +'</div></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
+                var defaultHtml=  `<div><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+                <style type="text/css">
+                    .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
+                    .km-launcher-logo-1{fill:#FFFFFF;}
+                </style>
+                <g>
+                    <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
+                        <stop offset="0" style="stop-color:#3A3C80"/>
+                        <stop offset="0.1658" style="stop-color:#4B4C93"/>
+                        <stop offset="0.3516" style="stop-color:#5858A2"/>
+                        <stop offset="0.5063" style="stop-color:#5C5CA7"/>
+                        <stop offset="0.6795" style="stop-color:#53549D"/>
+                        <stop offset="0.9706" style="stop-color:#3D3E83"/>
+                        <stop offset="1" style="stop-color:#3A3C80"/>
+                    </linearGradient>
+                    <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
+                    <g>
+                        <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
+                    </g>
+                </g>
+                </svg></div>`;
 
-                 } //return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher">' + '<a href="#" target="_self" class="applozic-launcher mck-button-launcher" ' + (MCK_MODE === 'support' ? MCK_SUPPORT_ID_DATA_ATTR : '') + '><span class="mck-icon-chat"></span></a></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</reject></div></div>';
-            };
+            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a></div>'+ '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+            	  };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {
@@ -1397,6 +1392,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
+                userPxy.deviceType= 0;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
                 userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
@@ -1428,6 +1424,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                           kmAnonymousChatLauncher.classList.remove('vis');
                           kmAnonymousChatLauncher.classList.add('n-vis');
                         });
+                        if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
+                            $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
+                        }
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -1436,6 +1435,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                     }
                 }
+
             };
             _this.initialize =function(userPxy){
                 window.Applozic.ALApiService.login(
@@ -2204,20 +2204,19 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
-                    var $submit_chat_login = $("#km-submit-chat-login");
-                    var $error_chat_login = $("#km-error-chat-login");
-                    var userId = $("#km-userId").val();
-                    var email = $("#km-email").val();
-                    var userName = $("#km-userName").val();
-                    var contactNumber = $("#km-contact").val();
+                    var $submit_chat_login = $applozic("#km-submit-chat-login");
+                    var $error_chat_login = $applozic("#km-error-chat-login");
+                    var userId = $applozic("#km-userId").val();
+                    var email = $applozic("#km-email").val();
+                    var userName = $applozic("#km-userName").val();
+                    var contactNumber = $applozic("#km-contact").val();
+
                     if(contactNumber){
                         userId =contactNumber;
                     }
                     if(email){
                         userId = email;
                     }
-                    $submit_chat_login.attr('disabled', true);
-                    $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
                     $error_chat_login.html('');
                     var options = {
@@ -2226,7 +2225,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                         onInit: loadChat,
                         baseUrl: MCK_BASE_URL,
                         locShare: IS_MCK_LOCSHARE,
-                        googleApiKey: MCK_GOOGLE_API_KEY
+                        googleApiKey: MCK_GOOGLE_API_KEY,
+                        chatNotificationMailSent: true
                     }
                     if (email) {
                         options.email = email;
@@ -2237,6 +2237,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (contactNumber) {
                         options.contactNumber = contactNumber;
                     }
+                    $submit_chat_login.attr('disabled', true);
+                    $submit_chat_login.html('Initiating chat...');
                      mckInit.initialize(options);
 
                     return false;
@@ -5579,7 +5581,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (msg.type === 7 || msg.type === 6 || msg.type === 4 || msg.type === 0) {
                     return '';
                 }
-                if (msg.status === 5) {                 
+                if (msg.status === 5) {
                     return 'mck-icon-read';
                     // return '<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15" class="mck-message-status--icon-read"><path fill="#4FC3F7" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path></svg>';
                     // return {a:'M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z', b:'mck-message-status--icon-read'};

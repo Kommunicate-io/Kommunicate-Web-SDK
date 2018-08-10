@@ -17,7 +17,8 @@ import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import ReactModal from 'react-modal';
 import {PseudoNameImage} from '../../views/Faq/LizSVG';
-import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft'
+import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
+import quickReply from '../../views/quickReply/quickReply';
 
 
 class Aside extends Component {
@@ -59,6 +60,7 @@ class Aside extends Component {
 
   componentDidMount() {
     this.getThirdparty ();
+    quickReply.loadQuickReplies();
      if(CommonUtils.getUserSession() === null){
        //window.location ="#/login";
        window.appHistory.replace('/login');
@@ -72,7 +74,7 @@ class Aside extends Component {
      this.setState({
       trialDaysLeftComponent: <TrialDaysLeft />
      })
-     
+
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
@@ -86,25 +88,25 @@ class Aside extends Component {
      },this.loadAgents);
      if (typeof(Storage) !== "undefined") {
       (localStorage.getItem("KM_PSEUDO_INFO") === null ) ?
-        this.setState({hideInfoBox: false}) : this.setState({hideInfoBox: true})      
+        this.setState({hideInfoBox: false}) : this.setState({hideInfoBox: true})
     } else {
         console.log("Please update your browser.");
     }
   }
-  
+
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
       if(response !== undefined ) {
         let zendeskKeys = response.data.message.filter(function (integration) {
           return integration.type == 2;});
           if(zendeskKeys.length > 0 ){
-            this.setState({disableButton:false}) 
+            this.setState({disableButton:false})
           }
-      }     
+      }
     }).catch(err => {
       console.log("erroe while fetching zendesk integration keys",err)
     });
-    
+
   }
   changeTabToIntegration = () => {
     this.setState({
@@ -162,24 +164,24 @@ class Aside extends Component {
           } else if (this.type == GROUP_ROLE.MODERATOR && this.name != DEFAULT_BOT.userName && this.name != LIZ.userName) {
             assign.append(window.$kmApplozic("<option />").val(this.userName).text(this.name || this.userName));
           }
-  
+
         });
       }).catch(err => {
         // console.log("err while fetching users list ", err);
       });
-  
+
       if (sessionStorage.getItem("userProfileUrl") != null) {
                   that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
                   let userSession = CommonUtils.getUserSession();
                   userSession.imageLink = sessionStorage.getItem("userProfileUrl");
                   CommonUtils.setUserSession(userSession);
       }
-  
+
   }
   loadBots() {
     window.$kmApplozic.fn.applozic('fetchContacts', { roleNameList: ['BOT'], callback: function (response) { } });
   }
- 
+
 
   initConversation(groupId) {
     var that = this;
@@ -196,7 +198,7 @@ class Aside extends Component {
         }
     });
   }
-  
+
   getGroupAdmin(group) {
     var assignee = this.state.group.adminName;
     for(var key in this.state.group.users) {
@@ -229,7 +231,7 @@ class Aside extends Component {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
       window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
     } else {
-      window.$kmApplozic("#conversation-status").val(0);      
+      window.$kmApplozic("#conversation-status").val(0);
     }
   }
 
@@ -248,17 +250,17 @@ class Aside extends Component {
         let groupUserDetail =  botAgentMap && botAgentMap[groupUser.userId];
 
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
-              that.removeGroupMember(group.groupId, groupUserDetail.userName);  
+              that.removeGroupMember(group.groupId, groupUserDetail.userName);
               if (changeAssignee) {
                 that.changeAssignee(loggedInUserId);
                 changeAssignee = false;
               }
             }
           }
-       
+
         }
     var takeOverEleContainer = document.getElementById("km-take-over-bot-container");
-    takeOverEleContainer.style.display = "none";    
+    takeOverEleContainer.style.display = "none";
   }
 
   setUpAgentTakeOver(group) {
@@ -279,9 +281,9 @@ class Aside extends Component {
 
         if (groupUserDetail && groupUserDetail.type == 2 && groupUserDetail.userName != "bot") {
           allBotsInGroup.push(groupUserDetail.userName);
-          // takeOverEleText.innerHTML = user.displayName; 
+          // takeOverEleText.innerHTML = user.displayName;
           takeOverEleContainer.style.display = "flex";
-          // console.log(user.displayName);         
+          // console.log(user.displayName);
         }
       }
   }
@@ -342,7 +344,7 @@ class Aside extends Component {
                                                   }
                                                 }
                                               });
-    
+
   }
 
   addGroupMember(groupId, userId, callback) {
@@ -383,6 +385,7 @@ class Aside extends Component {
                                         window.$kmApplozic.fn.applozic('sendGroupMessage', {
                                             'groupId' : that.state.group.groupId,
                                             'message' : "Status changed to " + that.state.statuses[status],
+                                            'type':10,
                                             'metadata':{
                                               'KM_STATUS' :that.state.statuses[status],
                                               skipBot:true,
@@ -412,11 +415,11 @@ class Aside extends Component {
         this.setState({
           hideInfoBox: true
         });
-      }       
+      }
     } else {
         console.log("Please update your browser.");
     }
-    
+
   }
 
   render() {
@@ -438,7 +441,7 @@ class Aside extends Component {
                   <div className="left km-message-inner-left">
                     <div className="panel-content">
                     {/* conversation tab new design */}
-                      
+
                       <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="km-conversation-header-icons">
                           <div id="km-assigned" className="km-conversation-header-icon km-conversation-icon-active km-conversation-tabView" data-tip="Assigned to me" data-effect="solid" data-place="bottom">
@@ -494,7 +497,7 @@ class Aside extends Component {
                         <h4 id="assign-selected" className="km-conversation-tab-selected km-assigned">Assigned to me</h4>
                         <h4 id="all-conversatios-selected" className="km-conversation-tab-selected km-allconversation n-vis">All Conversations</h4>
                         <h4 id="closed-conversatios-selected"className="km-conversation-tab-selected km-closed n-vis">Closed Conversations</h4>
-                      </div>  
+                      </div>
                       {/* conversation tab old design */}
                       {/* <div className="km-box-top km-row km-wt-user-icon km-conversation-header">
                         <div className="blk-lg-3">
@@ -657,7 +660,7 @@ class Aside extends Component {
                                         <span className="name-text"></span><span>typing...</span>
                                       </div>
                                     </a>
-                                    
+
                                   </div>
                                   <div id="km-individual-tab-title"
                                     className="km-individual-tab-title">
@@ -737,7 +740,7 @@ class Aside extends Component {
                               <div className="select-container">
                                 <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
                               </div>
-                              
+
                               {/*
                                {
                                   this.state.agents.map(function(user) {
@@ -746,7 +749,7 @@ class Aside extends Component {
                                   })
                                }
                                 */}
-                               
+
 
                             </div>
 
@@ -758,8 +761,8 @@ class Aside extends Component {
                             <div className="trial-period-container">
                               {this.state.trialDaysLeftComponent}
                             </div>
-                            
-                            
+
+
                           </div>
                           <hr/>
                           <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
@@ -830,7 +833,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       <div className="write">
-                        
+
                         <div id="km-sidebox-ft" className="km-box-ft km-panel-ft">
                           <div className="km-box-form km-row n-vis">
                             <div className="blk-lg-12">
@@ -839,8 +842,8 @@ class Aside extends Component {
                             <div className="blk-lg-12">
                               <p id="km-msg-response" className="km-box-response n-vis"></p>
                             </div>
-                            <div className="km-sidebox-tab">       
-                              <span className={ this.state.visibleReply ? "km-sidebox-tab-reply active-tab-reply" : "km-sidebox-tab-reply"} 
+                            <div className="km-sidebox-tab">
+                              <span className={ this.state.visibleReply ? "km-sidebox-tab-reply active-tab-reply" : "km-sidebox-tab-reply"}
                               onClick={this.changeTabToIntegration}>Reply</span>
                               <span className= {this.state.visibleIntegartion ? "km-sidebox-forward-tab-integration active-tab-integration" : "km-sidebox-forward-tab-integration"}
                               onClick={this.changeTabToReply}>Forward to integrations</span>
@@ -885,7 +888,14 @@ class Aside extends Component {
                                 </div>
                                 <a href="javascript:void(0)" id="km-file-up2" type="button"
                                   className="write-link attach n-vis km-file-upload km-btn-text-panel"
-                                  title="Attach File"> </a> <span id="km-text-box"
+                                  title="Attach File"> </a>
+
+                                <div id="dropup" className="dropup">
+                                  <div id="d-box">
+                                  </div>
+                                </div>
+
+                                <span id="km-text-box"
                                   contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required"></span>
 
                                 <a href="javascript:void(0)" type="button" id="km-btn-smiley"
@@ -895,7 +905,7 @@ class Aside extends Component {
                                   title="Send Message"></a>
                               </form>
                             </div>
-                            
+
                             <div className="blk-lg-12">
                               <div id="km-file-box" className="n-vis"></div>
                             </div>
@@ -983,7 +993,7 @@ class Aside extends Component {
                     className="km-group-info-tab km-panel-sm km-panel">
                     <div className="panel-content">
                       <div className="km-box-top">
-                        <div className="km-title-wrapper n-vis"> 
+                        <div className="km-title-wrapper n-vis">
                           <div className="blk-lg-10">
                             <div className="km-box-title km-truncate" title="Group Info">Details
                             </div>
@@ -1055,7 +1065,7 @@ class Aside extends Component {
                                   <img src={DomainIcon} className="km-clearbit-domain-icon" />
                                   <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
                                     <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
-                                  </a>          
+                                  </a>
                               </div>
                               </div>
                               <div id="divider-1" className="km-clearbit-divider n-vis"></div>
@@ -1077,18 +1087,18 @@ class Aside extends Component {
                                   </a>
                                 </div>
                                 <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">  
+                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">
                                     <img src={TwitterIcon} className="km-clearbit-social-icon" />
-                                  </a>  
+                                  </a>
                                 </div>
                                 <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">  
+                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">
                                     <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
                                   </a>
-                                </div>  
+                                </div>
                               </div>
-                            
-                            </div>        
+
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1096,7 +1106,7 @@ class Aside extends Component {
                       <div id="km-sidebar-user-info-wrapper" className="n-vis" >
                         <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
                         <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper"></div>
-                      </div>     
+                      </div>
                       <div id="km-group-info-panel" className="km-sidebar-info-panel">
                         Group Info</div>
                       <div id="km-group-detail-panel" className="km-group-detail-box">
@@ -1133,7 +1143,7 @@ class Aside extends Component {
                           title="Exit Group">Exit Group</button>
                       </div>
                     </div>
-                  </div> 
+                  </div>
                 </div>
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">
@@ -1230,7 +1240,7 @@ class Aside extends Component {
           <ReactTooltip />
         </div>
         <Modal open={this.state.modalIsOpen} onClose={this.closeModal} >
-          
+
           <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
         </Modal>
         <ReactModal isOpen={this.state.modalOpen} style={customStyles}  shouldCloseOnOverlayClick={true} ariaHideApp={false}>
@@ -1251,7 +1261,7 @@ class Aside extends Component {
           </div>
         </ReactModal>
       </aside>
-      
+
     )
   }
 }

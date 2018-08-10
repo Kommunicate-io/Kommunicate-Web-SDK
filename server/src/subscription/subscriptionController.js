@@ -4,12 +4,16 @@ const Boom = require('boom');
 exports.createSubscription = async function (req,res) {
     logger.info("request received to create Subscription from : ",req.body);
     let response={};
+    let subscriptionData = req.body;
     let isAuthenticated =  await subscriptionService.isAPIKeyValid();
     if(!isAuthenticated){
         logger.info("request received with invalid API key : ",req.param.apiKey);
         return res.status(401,Boom.unAuthorized("Invalid API Key"));
     }
-
+    if(!subscriptionData.applicationId){
+        //ToDo: for now applicationId is mendatory field. figure out a way to get applicationId from application Key
+        // populate ApplicationId in subscriptionData. 
+    }
     return subscriptionService.createSubscription(req.body).then((data)=>{
         return res.status(201).json(data);
     }).catch((err)=>{

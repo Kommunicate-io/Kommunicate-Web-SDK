@@ -9,10 +9,9 @@ const platform ={INTEGRY:"integry"}
  */
 exports.sendUserEventToIntegry = async function(eventName, data){
     logger.info('sending event to integry', eventName );
-    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:eventName});
-    //let subscription ={triggerUrl :"http://requestbin.fullcontact.com/15deda61" };
+    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:eventName,applicationId:data.applicationId});
     if(!subscription || ! subscription.triggerUrl){
-        logger.info('No subscription found for event ', eventName );
+        logger.info('No subscription found for event ', eventName ,"applicationId :",data.applicationId);
         return;
     }
     return axios.post(subscription.triggerUrl,getFormatedData(data)).then(response=>{

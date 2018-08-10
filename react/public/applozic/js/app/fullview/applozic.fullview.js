@@ -393,7 +393,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var ringToneService;
 		var mckNotificationTone = null;
 		_this.events = {
-			'onConnectFailed': function () { },
+			'onConnectFailed': function () {
+				if (navigator.onLine) {
+					mckInitializeChannel.reconnect();
+				}
+
+			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
 			'onMessageRead': function () { },
@@ -1162,6 +1167,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					userPxy.resetUserStatus = true;
 				}
 				userPxy.appVersionCode = 108;
+				userPxy.deviceType =0;
 				userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
 				AUTH_CODE = '';
 				USER_DEVICE_KEY = '';
@@ -1240,6 +1246,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								userSession.imageLink=result.imageLink;
 								w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 							}
+
+							let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
+							userSession.notifyState=result.notifyState;
+							w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
+
 							$kmApplozic.ajaxPrefilter(function (options) {
 								if (options.kommunicateDashboard && options.url.indexOf(KM_BASE_URL) !== -1) {
 									// _this.manageIdleTime();
@@ -1258,6 +1269,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								(isReInit) ? mckInitializeChannel.reconnect() : mckInitializeChannel.init();
 								// kmGroupService.loadGroups();
 							}
+							w.addEventListener('online', function () {
+								console.log("online")
+								mckInitializeChannel.reconnect();
+							});
+							w.addEventListener('offline', function () {
+								console.log("offline");
+							});
 							mckMessageLayout.loadTab({
 								tabId: '',
 								'isGroup': false,
@@ -4006,7 +4024,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
-				var messageClass = (msg.contentType == 0 && typeof(msg.message) != "string") ? "n-vis" : 'vis';
+				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
 				var contactExpr = "vis";
@@ -4068,7 +4086,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					fileName = msg.fileMeta.name;
 					fileSize = msg.fileMeta.size;
 				}
-				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata);
+				var richText = kommunicateDashboard.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+				var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
+				var kmRichTextMarkup = richText ? kommunicateDashboard.getRichTextMessageTemplate(msg) : ""
+				var containerType = kommunicateDashboard.getConatainerTypeForRichMessage(msg);
 
 				var msgList = [{
 					msgKeyExpr: msg.key,
@@ -4100,9 +4121,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					downloadIconVisibleExpr: downloadIconVisible,
 					fileNameExpr: fileName,
 					fileSizeExpr: fileSize,
-					kmRichTextMarkupVisibility: richText ? 'vis' : 'n-vis',
-					kmRichTextMarkup: richText ? kommunicateDashboard.getRichTextMessageTemplate(msg.metadata) : "",
-					containerType: kommunicateDashboard.getConatainerTypeForRichMessage(msg.metadata)
+					kmRichTextMarkupVisibility: kmRichTextMarkupVisibility,
+					kmRichTextMarkup: kmRichTextMarkup,
+					containerType: containerType,
 				}];
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
 				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
@@ -4909,7 +4930,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				
+
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
@@ -7338,14 +7359,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}, 600000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 1200000);
-				} else {
-					_this.connectToSocket(isFetchMessages);
+					}, 120000);
 				}
+					_this.connectToSocket(isFetchMessages);
+
 			};
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
-				if (!stompClient.connected) {
+				if (stompClient.connected) {
+					console.log("socket connected",new Date());
 					if (isFetchMessages) {
 						var currTabId = $mck_message_inner.data('km-id');
 						if (currTabId) {
@@ -7376,11 +7398,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.disconnect();
 			};
 			_this.disconnect = function () {
+				console.log("socket disconnect",new Date());
 				if (stompClient && stompClient.connected) {
 					_this.sendStatus(0);
-					stompClient.disconnect();
-					SOCKET.close();
-					SOCKET = '';
+					stompClient.connected && stompClient.disconnect();
+					if (SOCKET) {
+						SOCKET.close();
+						SOCKET = '';
 				}
 			};
 			_this.unsubscibeToTypingChannel = function () {
@@ -7480,6 +7504,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.reconnect = function () {
+				console.log("socket trying to reconnect",new Date());
 				_this.unsubscibeToTypingChannel();
 				_this.unsubscibeToNotification();
 				_this.disconnect();
@@ -7497,6 +7522,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 			_this.onConnect = function () {
+				console.log("socket trying to connect",new Date());
 				if (stompClient.connected) {
 					if (subscriber) {
 						_this.unsubscibeToNotification();

@@ -14,6 +14,10 @@ module.exports = function(sequelize, DataTypes) {
       }, integrationName: {
         type:DataTypes.STRING(20),
         field: 'integration_name'
+      }, applicationId:{
+        type:DataTypes.STRING(150),
+        allowNull: false,
+        field: 'application_id'
       },
       eventType:{
         type:DataTypes.STRING(20),
