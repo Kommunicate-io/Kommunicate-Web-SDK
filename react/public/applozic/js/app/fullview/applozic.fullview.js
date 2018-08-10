@@ -7405,6 +7405,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (SOCKET) {
 						SOCKET.close();
 						SOCKET = '';
+					}
 				}
 			};
 			_this.unsubscibeToTypingChannel = function () {
