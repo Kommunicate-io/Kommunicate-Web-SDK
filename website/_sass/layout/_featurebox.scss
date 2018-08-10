@@ -50,9 +50,11 @@
         color:#4A4A4A;
         line-height: 4.5rem;
         font-weight: 300;
+
         @include respond(tab-por){
             font-size: 2.8rem;
             font-weight: 600;
+
         }
     }
     &_heading_big{
