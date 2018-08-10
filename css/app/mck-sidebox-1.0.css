@@ -166,7 +166,7 @@
 	font-weight: inherit;
 }
 
-.mck-box *:before, *:after {
+.mck-box *:before, .mck-box *:after {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -5296,39 +5296,57 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 .mck-msg-preview-visual-indicator-container {
     background-color: #fff;
-    min-width: 60px;
-    max-width: 230px;
-    height: auto;
     border-radius: 5px;
     box-shadow: 0 0 18px 0 rgba(219,219,219,.5), 0 2px 4px 0 rgba(176,174,174,.5);
     position: absolute;
     top: 50%;
-    padding: 5px 10px;
     right: 70px;
-    min-height: 19px;
-    max-height: 60px;
     transform: translateY(-50%);
 }
 .mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
-	font-size: 14px;
-	font-weight: normal;
-	font-style: normal;
-	font-stretch: normal;
-	line-height: 1.36;
-	letter-spacing: 0.4px;
-	color: #646262;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.36;
+    letter-spacing: .4px;
+    color: #646262;
+    padding: 5px 10px;
+    min-width: 60px;
+    max-width: 210px;
+    min-height: 19px;
+    max-height: 60px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    cursor: pointer;
+    box-sizing: content-box;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn {
+.mck-flexi {
+	display: flex;
+    align-items: center;
+	justify-content: flex-start;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn-container {
+	width: 100%;
+    height: 30px;
     position: absolute;
     top: -30px;
-    left: 0;
+	left: 0;
+	display: none;
+	transition: all 0.3s ease-in-out;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn {
     border-radius: 18px;
     background-color: #cbc8c8;
     padding: 2px 10px;
     height: auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+	justify-content: space-between;
+	cursor: pointer;
+}
+.mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
+	display: block;
 }
 .mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
 	vertical-align: middle;
@@ -5341,4 +5359,14 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	line-height: normal;
 	letter-spacing: 0.4px;
 	color: #ffffff;
+}
+
+#launcher-agent-img-container {
+	overflow: hidden;
+	width: 56px;
+	height: 56px;
+}
+#launcher-agent-img-container img {
+	width: 56px;
+	height: auto;
 }
