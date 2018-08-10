@@ -17,7 +17,8 @@ function GroupInfo() {
             GROUP_META_DATA_UPDATED_MESSAGE: "",
             CONVERSATION_ASSIGNEE: "agentId",
             KM_CONVERSATION_TITLE: "agentId",
-            HIDE: "true"
+            HIDE: "true",
+            WELCOME_MESSAGE: ""
         }
 };
 module.exports = GroupInfo;

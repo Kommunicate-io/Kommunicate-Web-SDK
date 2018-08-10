@@ -9,7 +9,6 @@
  * @property {String} apzToken Base64 encoded 
  * @property {String} authorization base64 encoder
  * @property {String} accessToken  plain text password for user
- * @property {Number} customerId  primary key in customer table
  * @property {String} role user's within orgnization
  * @property {String} contactNo 
  * @property {String} companyName
@@ -54,11 +53,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       field: 'access_token'
     },
-    // customerId: {
-    //   type: DataTypes.INTEGER(),
-    //   field: 'customer_id',
-    //   unique: "IDX_USER_CUSTOMER"
-    // },
     applicationId: {
       type: DataTypes.STRING(150),
       field: 'application_id',
