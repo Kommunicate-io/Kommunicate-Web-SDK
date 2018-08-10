@@ -211,6 +211,11 @@
         }
         &_block {
             display: inline-block;
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select: none;
+            user-select: none;
             &.active {
                 background: url(../images/carousel-active.svg);
                 background-repeat: no-repeat;
