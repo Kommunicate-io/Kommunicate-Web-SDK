@@ -7399,7 +7399,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.disconnect = function () {
 				console.log("socket disconnect",new Date());
-				if (stompClient && stompClient.connected) {
+				if (stompClient) {
 					_this.sendStatus(0);
 					stompClient.connected && stompClient.disconnect();
 					if (SOCKET) {
