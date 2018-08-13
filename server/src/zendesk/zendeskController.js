@@ -94,7 +94,7 @@ exports.uploadAttachment = (req, res) => {
         })
     }
     let appId = req.params.appId;
-    let ticketId = req.params.id;
+    let ticketId = req.query.id;
     return customerService.getCustomerByApplicationId(appId).then(customer => {
         if (!customer) {
             return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });

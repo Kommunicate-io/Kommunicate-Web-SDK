@@ -191,7 +191,7 @@ googleAuthRouter.get('/authCode', googleAuthController.authCode);
 /*
 *zendesk APIs
 */
-zendeskRouter.post('/attachment/upload/:appId/:id', upload.single('file'), zendeskController.uploadAttachment)
+zendeskRouter.post('/attachment/upload/:appId', upload.single('file'), zendeskController.uploadAttachment)
 zendeskRouter.post('/:appId/ticket/:groupId/create', validate(zendeskValidation.createTicket), zendeskController.createZendeskTicket);
 zendeskRouter.put('/:appId/ticket/:ticketId/update', validate(zendeskValidation.updateTicket), zendeskController.updateZendeskTicket);
 zendeskRouter.get('/:appId/ticket/:ticketId', validate(zendeskValidation.getTicket),zendeskController.getTicket)
