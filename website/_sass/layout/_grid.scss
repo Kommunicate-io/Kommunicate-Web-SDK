@@ -1,0 +1,77 @@
+.row{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+}
+
+
+
+
+  @for $i from 1 through $columns{
+    .col-xs-#{$i}{
+      flex-basis: 100% / $columns *$i;
+      max-width: 100% / $columns *$i;
+      box-sizing: border-box;
+      padding: 0.5em;
+    }
+  }
+  @for $i from 1 through $columns{
+    .col-xs-offset-#{$i}{
+      margin-left:100% / $columns *$i;
+      box-sizing: border-box;
+    }
+  }
+
+@include respond(phone){
+  @for $i from 1 through $columns{
+    .col-s-#{$i}{
+      flex-basis: 100% / $columns *$i;
+      max-width: 100% / $columns *$i;
+      box-sizing: border-box;
+      padding: 0.5em;
+    }
+  }
+  @for $i from 1 through $columns{
+    .col-s-offset-#{$i}{
+      margin-left:100% / $columns *$i;
+      box-sizing: border-box;
+    }
+  }
+
+}
+
+@include respond(tab-por){
+  @for $i from 1 through $columns{
+    .col-med-#{$i}{
+      flex-basis: 100% / $columns *$i;
+      max-width: 100% / $columns *$i;
+      box-sizing: border-box;
+      padding: 0.5em;
+    }
+  }
+  @for $i from 1 through $columns{
+    .col-med-offset-#{$i}{
+      margin-left:100% / $columns *$i;
+      box-sizing: border-box;
+    }
+  }
+
+}
+
+ @include respond(tab-lan){
+   @for $i from 1 through $columns{
+     .col-large-#{$i}{
+       flex-basis: 100% / $columns *$i;
+       max-width: 100% / $columns *$i;
+       box-sizing: border-box;
+       padding: 0.5em;
+     }
+   }
+   @for $i from 1 through $columns{
+     .col-large-offset-#{$i}{
+       margin-left:100% / $columns *$i;
+       box-sizing: border-box;
+     }
+   }
+ }

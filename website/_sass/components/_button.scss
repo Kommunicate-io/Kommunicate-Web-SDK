@@ -10,15 +10,16 @@
       appearance: none;
       border: none;
     //   margin-top: 15rem;
-      padding: 1rem 4.5rem;
+      padding: 1rem 4rem;
       font-size: 1.8rem;
       border-radius: 4px;
       transition: all .3s;
     }
     &:hover{
-        // background: darken($highlight,10);
-        transform: translateY(-3px);
-        box-shadow: 0px 4px 3px .5px rgba($color-black,.3);
+        cursor: pointer;
+        background: darken($highlight,10);
+        // transform: translateY(-3px);
+        // box-shadow: 0px 4px 3px .5px rgba($color-black,.3);
     }
     &:active{
         // background: darken($highlight,10);

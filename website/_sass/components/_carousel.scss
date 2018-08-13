@@ -3,6 +3,9 @@
     width: 100%;
     margin: 0 auto;
     position: relative;
+    @include respond(phone){
+        height: 45rem;
+    }
     &_control {
         width: 100%;
         &_left,
@@ -32,6 +35,7 @@
             }
             @include respond(phone) {
                 transform: translateY(160%);
+
                 &:hover {
                     transform: translateY(160%) scale(1.2);
                 }
@@ -125,7 +129,7 @@
         &_img {
             position: absolute;
             max-width: 7rem;
-            bottom: 15%;
+            bottom: 13%;
             left: 10%;
             @include respond(tab-por) {
                 left: 15%;
@@ -183,6 +187,9 @@
             bottom: 24%;
             @include respond(tab-por) {
                 bottom: 22%;
+            }
+            @include respond(phone) {
+                bottom: 22%!important;
             }
         }
         &_company {
