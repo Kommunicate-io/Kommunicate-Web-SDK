@@ -166,7 +166,7 @@
 	font-weight: inherit;
 }
 
-.mck-box *:before, *:after {
+.mck-box *:before, .mck-box *:after {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -3907,9 +3907,9 @@ fill:white;
 #mck-vid-receive-btn, #mck-vid-reject-btn{
 	width:40%;
 }
-.launchershadow{
+/* .launchershadow{
 box-shadow: none!important;
-}
+} */
 .mck-vid-scr-controls{
 	width:60%;
 	display:inline-block;
@@ -5275,4 +5275,98 @@ height: 56px;
 width: 56px;
 border-radius: 50%;
 box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
+}
+
+.mck-badge-count {
+    width: auto;
+    height: auto;
+    border-radius: 50px;
+    background-color: #ec3838;
+    border: 3px solid #fff;
+    text-align: center;
+    color: white;
+    position: absolute;
+    top: -7px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0px 4px;
+    z-index: 2243001;
+    right: 0;
+    min-width: 12px;
+}
+.mck-msg-preview-visual-indicator-container {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 18px 0 rgba(219,219,219,.5), 0 2px 4px 0 rgba(176,174,174,.5);
+    position: absolute;
+    top: 50%;
+    right: 70px;
+    transform: translateY(-50%);
+}
+.mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.36;
+    letter-spacing: .4px;
+    color: #646262;
+    padding: 5px 10px;
+    min-width: 60px;
+    max-width: 210px;
+    min-height: 19px;
+    max-height: 60px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    cursor: pointer;
+    box-sizing: content-box;
+}
+.mck-flexi {
+	display: flex;
+    align-items: center;
+	justify-content: flex-start;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn-container {
+	width: 100%;
+    height: 30px;
+    position: absolute;
+    top: -30px;
+	left: 0;
+	display: none;
+	transition: all 0.3s ease-in-out;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn {
+    border-radius: 18px;
+    background-color: #cbc8c8;
+    padding: 2px 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+}
+.mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
+	display: block;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-icon-svg svg {
+	vertical-align: middle;
+}
+.mck-msg-preview-visual-indicator-container .mck-close-btn .mck-close-text {
+	font-size: 12px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.4px;
+	color: #ffffff;
+}
+
+#launcher-agent-img-container {
+	overflow: hidden;
+	width: 56px;
+	height: 56px;
+}
+#launcher-agent-img-container img {
+	width: 56px;
+	height: auto;
 }
