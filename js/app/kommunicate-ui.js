@@ -94,6 +94,7 @@ KommunicateUI={
     // On Click of Individual List Items their respective answers will show.
     $applozic(d).on("click", ".km-faq-list", function () {
         $applozic('#km-faqanswer').empty();
+        MCK_EVENT_HISTORY.push("km-faq-answer-list");
         var articleId = $(this).attr('data-articleid');
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
@@ -116,6 +117,7 @@ KommunicateUI={
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
         KommunicateUI.showHeader();
+        MCK_EVENT_HISTORY.push("km-faq-list");
         $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
         $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
@@ -187,30 +189,41 @@ KommunicateUI={
 
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
-        if($applozic('.km-kb-container').hasClass('vis')){
-            if ($applozic('#km-faqanswer').hasClass('vis')) {
+        if (MCK_EVENT_HISTORY.length >= 2) {
+            if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
                 KommunicateUI.showHeader();
                 $applozic('#km-faqdiv').removeClass("n-vis").addClass("vis");
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
                 $applozic("#mck-msg-new").attr("disabled", false);
+                MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
                 return;
-            }
-            if($applozic('#km-faqdiv').hasClass('vis')){
-                $applozic('#mck-tab-individual').removeClass("vis").addClass("n-vis");
-                $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
-                $applozic('.faq-common').removeClass("vis").addClass("n-vis");
+            } else if (typeof (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2]) == "object") {
                 $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
+                $applozic('#mck-tab-conversation').removeClass("n-vis").addClass("vis");
+                $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
+                $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+                $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+                let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
+                $applozic.fn.applozic("openChat", elem);
+                MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
+                return;
+            } else {
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
-                $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
                 $applozic("#mck-msg-new").attr("disabled", false);
+                MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
+                MCK_EVENT_HISTORY.length = 0 ;
                 return;
             }
-            if($applozic('.mck-conversation').hasClass('vis')){
-                $applozic('#km-faq').removeClass("n-vis").addClass("vis");
-                $applozic("#mck-msg-new").attr("disabled", false);
-                return;
-            }
+        } else {
+            $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
+            $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
+            $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
+            $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+            $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+            $applozic("#mck-msg-new").attr("disabled", false);
+            MCK_EVENT_HISTORY.length = 0 ;
+            return;
         }
     });
 },
