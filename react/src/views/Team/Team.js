@@ -271,7 +271,7 @@ class Integration extends Component {
         </div>
       <div className="radion-btn-agent-wrapper col-md-9 col-lg-9">
         <h5 className="radio-btn-agent-title">Agent</h5>
-        <p className="radio-btn-agent-description">Have full access to edit all the settings and features in the dashboard</p>
+        <p className="radio-btn-agent-description">Have access to only key features and information in the dashboard </p>
       </div>
     </div>  
     )
@@ -280,8 +280,8 @@ class Integration extends Component {
        <div className="col-radio-btn col-md-1 col-lg-1">
         </div>
        <div className="radion-btn-admin-wrapper col-md-9 col-lg-9">
-        <h5 className="radio-btn-agent-title">Admin</h5>
-        <p className="radio-btn-admin-description">Have access to only key features and information in the dashboard </p>
+        <h5 className="radio-btn-admin-title">Admin</h5>   
+        <p className="radio-btn-admin-description">Have full access to edit all the settings and features in the dashboard</p>
       </div>
      </div>  
     )
