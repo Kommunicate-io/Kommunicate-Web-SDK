@@ -24,7 +24,7 @@ var MCK_CLIENT_GROUP_MAP = [];
         mode: 'standard',
         visitor: false,
         olStatus: false,
-        // unreadCountOnchatLauncher: true,
+        unreadCountOnchatLauncher: true,
 //      awsS3Server :false,
         groupUserCount: false,
         desktopNotification: true,
@@ -499,6 +499,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }, function () {
                     console.log("conversation created successfully");
                 });
+            ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
 
         _this.events = {
@@ -1330,7 +1331,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function () {
-                var defaultHtml=  `<div><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+                var defaultHtml=  `<div id="launcher-svg-container"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                 <style type="text/css">
                     .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
                     .km-launcher-logo-1{fill:#FFFFFF;}
@@ -1351,8 +1352,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     </g>
                 </g>
                 </svg></div>`;
-               
-            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'</a></div>'+ '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'<div id="launcher-agent-img-container"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+
             	  };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -1392,6 +1393,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 }
                 userPxy.enableEncryption = true;
                 userPxy.appVersionCode = 108;
+                userPxy.deviceType= 0;
                 userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
                 userPxy.chatNotificationMailSent = true;
                 AUTH_CODE = '';
@@ -1423,6 +1425,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                           kmAnonymousChatLauncher.classList.remove('vis');
                           kmAnonymousChatLauncher.classList.add('n-vis');
                         });
+                        if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
+                            $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
+                        }
                     } else {
                         _this.initialize(userPxy);
                     }
@@ -1431,6 +1436,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                         mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                     }
                 }
+
             };
             _this.initialize =function(userPxy){
                 window.Applozic.ALApiService.login(
@@ -2199,20 +2205,19 @@ var MCK_CLIENT_GROUP_MAP = [];
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
-                    var $submit_chat_login = $("#km-submit-chat-login");
-                    var $error_chat_login = $("#km-error-chat-login");
-                    var userId = $("#km-userId").val();
-                    var email = $("#km-email").val();
-                    var userName = $("#km-userName").val();
-                    var contactNumber = $("#km-contact").val();
+                    var $submit_chat_login = $applozic("#km-submit-chat-login");
+                    var $error_chat_login = $applozic("#km-error-chat-login");
+                    var userId = $applozic("#km-userId").val();
+                    var email = $applozic("#km-email").val();
+                    var userName = $applozic("#km-userName").val();
+                    var contactNumber = $applozic("#km-contact").val();
+
                     if(contactNumber){
                         userId =contactNumber;
                     }
                     if(email){
                         userId = email;
                     }
-                    $submit_chat_login.attr('disabled', true);
-                    $submit_chat_login.html('Initiating chat...');
                     $error_chat_login.removeClass('show').addClass('hide');
                     $error_chat_login.html('');
                     var options = {
@@ -2233,6 +2238,8 @@ var MCK_CLIENT_GROUP_MAP = [];
                     if (contactNumber) {
                         options.contactNumber = contactNumber;
                     }
+                    $submit_chat_login.attr('disabled', true);
+                    $submit_chat_login.html('Initiating chat...');
                      mckInit.initialize(options);
 
                     return false;
@@ -5575,7 +5582,7 @@ var MCK_CLIENT_GROUP_MAP = [];
                 if (msg.type === 7 || msg.type === 6 || msg.type === 4 || msg.type === 0) {
                     return '';
                 }
-                if (msg.status === 5) {                 
+                if (msg.status === 5) {
                     return 'mck-icon-read';
                     // return '<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 15" width="16" height="15" class="mck-message-status--icon-read"><path fill="#4FC3F7" d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z"></path></svg>';
                     // return {a:'M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z', b:'mck-message-status--icon-read'};
@@ -7914,17 +7921,21 @@ var MCK_CLIENT_GROUP_MAP = [];
             var $mck_sidebox_launcher;
             var $mck_preview_msg_content;
             var $mck_preview_file_content;
+            var $mck_msg_preview_visual_indicator;
+            var $mck_msg_preview_visual_indicator_text;
             var MCK_SW_REGISTER_URL = "/rest/ws/plugin/update/sw/id";
             _this.init = function () {
                 $mck_sidebox = $applozic("#mck-sidebox");
-                $mck_msg_preview = $applozic("#mck-msg-preview");
+                // $mck_msg_preview = $applozic("#mck-msg-preview");
                 $mck_group_info_tab = $applozic('#mck-group-info-tab');
                 $mck_sidebox_launcher = $applozic("#mck-sidebox-launcher");
                 $mck_msg_inner = $applozic("#mck-message-cell .mck-message-inner");
-                $mck_preview_icon = $applozic("#mck-msg-preview .mck-preview-icon");
-                $mck_preview_name = $applozic("#mck-msg-preview .mck-preview-cont-name");
-                $mck_preview_msg_content = $applozic("#mck-msg-preview .mck-preview-msg-content");
-                $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
+                // $mck_preview_icon = $applozic("#mck-msg-preview .mck-preview-icon");
+                // $mck_preview_name = $applozic("#mck-msg-preview .mck-preview-cont-name");
+                // $mck_preview_msg_content = $applozic("#mck-msg-preview .mck-preview-msg-content");
+                // $mck_preview_file_content = $applozic("#mck-msg-preview .mck-preview-file-content");
+                $mck_msg_preview_visual_indicator = $applozic("#mck-msg-preview-visual-indicator");
+                $mck_msg_preview_visual_indicator_text = $applozic("#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text");
             };
             _this.notifyUser = function (message) {
                 if (message.alert === false) {
@@ -7980,37 +7991,78 @@ var MCK_CLIENT_GROUP_MAP = [];
                         return;
                     }
                 }
-                $mck_msg_preview.data('isgroup', contact.isGroup);
+                $mck_msg_preview_visual_indicator_text.data('isgroup', contact.isGroup);
+                // $mck_msg_preview.data('isgroup', contact.isGroup);
                 var conversationId = (message.conversationId) ? message.conversationId : '';
-                $mck_msg_preview.data('mck-conversationid', conversationId);
+                $mck_msg_preview_visual_indicator_text.data('mck-conversationid', conversationId);
+                // $mck_msg_preview.data('mck-conversationid', conversationId);
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
                 if (message.message) {
-                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 100);
-                    $mck_preview_msg_content.html('');
-                    (typeof msg === 'object') ? $mck_preview_msg_content.append(msg) : $mck_preview_msg_content.html(msg);
-                    $mck_preview_msg_content.removeClass('n-vis').addClass('vis');
+                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 82);
+                    (msg.length > 81) ? msg = msg + "..." : msg;
+                    // $mck_preview_msg_content.html('');
+                    $mck_msg_preview_visual_indicator_text.html('');
+                    $mck_msg_preview_visual_indicator_text.removeClass('mck-flexi');
+                    if((typeof msg === 'object')) {
+                        // $mck_preview_msg_content.append(msg);
+                        $mck_msg_preview_visual_indicator_text.append(msg);
+                    } else {
+                        // $mck_preview_msg_content.html(msg);
+                        $mck_msg_preview_visual_indicator_text.html(msg);
+                    }
+                    // $mck_preview_msg_content.removeClass('n-vis').addClass('vis');
+                    $mck_msg_preview_visual_indicator.removeClass('n-vis').addClass('vis');
                 } else {
-                    $mck_preview_msg_content.html('');
+                    // $mck_preview_msg_content.html('');
+                    $mck_msg_preview_visual_indicator_text.html('');
                 }
                 if (message.fileMetaKey) {
-                    $mck_preview_file_content.html(alFileService.getFileIcon(message));
-                    $mck_preview_file_content.removeClass('n-vis').addClass('vis');
-                    if ($mck_preview_msg_content.html() === '') {
-                        $mck_preview_msg_content.removeClass('vis').addClass('n-vis');
-                    }
+                    // $mck_preview_file_content.html(alFileService.getFileIcon(message));
+                    $mck_msg_preview_visual_indicator_text.html(alFileService.getFileIcon(message));
+                    // $mck_preview_file_content.removeClass('n-vis').addClass('vis');
+                    $mck_msg_preview_visual_indicator.removeClass('n-vis').addClass('vis');
+                    $mck_msg_preview_visual_indicator_text.addClass('mck-flexi');
+                    // if ($mck_preview_msg_content.html() === '' || $mck_msg_preview_visual_indicator_text.html() === '') {
+                    //     $mck_preview_msg_content.removeClass('vis').addClass('n-vis');
+                    //     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
+                    // }
+                } 
+                else if(message.contentType === 2) {
+                    while (msg[msg.length-1] === ".")
+                        msg = msg.slice(0,-1);
+                        $mck_msg_preview_visual_indicator_text.html(msg);
+                        $mck_msg_preview_visual_indicator.removeClass('n-vis').addClass('vis');
+                        $mck_msg_preview_visual_indicator_text.addClass('mck-flexi');
+                }
+                // else {
+                //     // $mck_preview_file_content.html('');
+                //     // $mck_preview_file_content.removeClass('vis').addClass('n-vis');
+                //     // $mck_msg_preview_visual_indicator_text.html('');
+                //     // $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
+                // }
+                // if (contact.isGroup === true && contact.type !== 10) {
+                //     $mck_preview_name.html(displayName);
+                // }
+                // $mck_preview_icon.html(imgsrctag);
+                if(!imgsrctag.includes('/avatars/default.png')) {
+                    $applozic("#launcher-agent-img-container").html(imgsrctag);
+                    $applozic("#launcher-svg-container").addClass('n-vis').removeClass('vis');
                 } else {
-                    $mck_preview_file_content.html('');
-                    $mck_preview_file_content.removeClass('vis').addClass('n-vis');
+                    $applozic("#launcher-agent-img-container").html('').addClass('n-vis').removeClass('vis');
+                    $applozic("#launcher-svg-container").addClass('vis').removeClass('n-vis');
                 }
-                if (contact.isGroup === true && contact.type !== 10) {
-                    $mck_preview_name.html(displayName);
-                }
-                $mck_preview_icon.html(imgsrctag);
-                $mck_msg_preview.data('mck-id', contact.contactId);
-                $mck_msg_preview.show();
-                setTimeout(function () {
-                    $mck_msg_preview.fadeOut(3000);
-                }, 10000);
+                
+                // $mck_msg_preview.data('mck-id', contact.contactId);
+                $mck_msg_preview_visual_indicator_text.data('mck-id', contact.contactId);
+                // $mck_msg_preview.show();
+                // $mck_msg_preview_visual_indicator.show();
+                // setTimeout(function () {
+                //     $mck_msg_preview.fadeOut(1000);
+                // }, 10000);
+                $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
+                    $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
+                    $mck_msg_preview_visual_indicator_text.html('');
+                });
             };
 
         }

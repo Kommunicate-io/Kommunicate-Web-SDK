@@ -394,10 +394,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var mckNotificationTone = null;
 		_this.events = {
 			'onConnectFailed': function () {
-				if (navigator.onLine) { 
+				if (navigator.onLine) {
 					mckInitializeChannel.reconnect();
 				}
-				
+
 			 },
 			'onConnect': function () { },
 			'onMessageDelivered': function () { },
@@ -1167,6 +1167,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					userPxy.resetUserStatus = true;
 				}
 				userPxy.appVersionCode = 108;
+				userPxy.deviceType =0;
 				userPxy.authenticationTypeId = MCK_AUTHENTICATION_TYPE_ID;
 				AUTH_CODE = '';
 				USER_DEVICE_KEY = '';
@@ -1245,7 +1246,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								userSession.imageLink=result.imageLink;
 								w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
 							}
-							
+
 							let userSession = JSON.parse(w.localStorage.getItem('KM_USER_SESSION'));
 							userSession.notifyState=result.notifyState;
 							w.localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
@@ -1268,6 +1269,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								(isReInit) ? mckInitializeChannel.reconnect() : mckInitializeChannel.init();
 								// kmGroupService.loadGroups();
 							}
+							w.addEventListener('online', function () {
+								console.log("online")
+								mckInitializeChannel.reconnect();
+							});
+							w.addEventListener('offline', function () {
+								console.log("offline");
+							});
 							mckMessageLayout.loadTab({
 								tabId: '',
 								'isGroup': false,
@@ -4929,7 +4937,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
-				
+
 				var $textMessage =document.querySelector("#km-li-" + contHtmlExpr +" .kmMsgTextExpr");
 				emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 				(typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.innerHTML =emoji_template;
@@ -7349,13 +7357,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						w.addEventListener("beforeunload", function (e) {
 							_this.disconnect();
 						});
-						w.addEventListener('online', function () {
-							console.log("online")
-							mckInitializeChannel.reconnect();
-						});
-						w.addEventListener('offline', function () {
-							console.log("offline");
-						});
 					}
 				}
 			};
@@ -7369,17 +7370,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 					checkConnectedIntervalId = setInterval(function () {
 						_this.connectToSocket(isFetchMessages);
-					}, 60000);
+					}, 600000);
 					sendConnectedStatusIntervalId = setInterval(function () {
 						_this.sendStatus(1);
-					}, 12000);
-				} else {
-					_this.connectToSocket(isFetchMessages);
+					}, 120000);
 				}
+					_this.connectToSocket(isFetchMessages);
+
 			};
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
-				if (!stompClient.connected) {
+				if (stompClient.connected) {
 					console.log("socket connected",new Date());
 					if (isFetchMessages) {
 						var currTabId = $mck_message_inner.data('km-id');
@@ -7412,12 +7413,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.disconnect = function () {
 				console.log("socket disconnect",new Date());
-				if (stompClient && stompClient.connected) {
+				if (stompClient) {
 					_this.sendStatus(0);
-					stompClient.disconnect();
-					if(SOCKET){
-					SOCKET.close();
-					SOCKET = '';
+					stompClient.connected && stompClient.disconnect();
+					if (SOCKET) {
+						SOCKET.close();
+						SOCKET = '';
 					}
 				}
 			};

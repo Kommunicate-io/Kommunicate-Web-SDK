@@ -11,6 +11,14 @@
       }
     },
     "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-184-72-95-64.compute-1.amazonaws.com:27017/kommunicate_staging?authSource=admin",
+    "mongoConfig":{
+      "poolSize":20,
+      "autoReconnect":true,
+      "connectTimeoutMS":30000,
+      "socketTimeoutMS":360000,
+      "reconnectTries":	30,
+      "reconnectInterval":	1000
+    },
     "urls": {
      "baseUrl": "https://apps-test.applozic.com",
       "getApplicationDetail": "https://apps-test.applozic.com/rest/ws/application/get?applicationId=:applicationId",

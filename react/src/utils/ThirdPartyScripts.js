@@ -105,6 +105,75 @@ class ThirdPartyScripts extends Component {
               var trackcmp_h = document.getElementsByTagName("head");
               trackcmp_h.length && trackcmp_h[0].appendChild(trackcmp);
             }
+
+
+
+            // Active Campaign Custom Event Tracking
+
+            let activeCampaignTriggerLinks = document.getElementsByClassName('ac-trigger-links');
+
+            function clickEvent(link) {
+
+              // what we do here, is log a successful event to the console
+              // or catch any errors we have
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function () {
+                  if (this.readyState == 4 && this.status == 200) {
+                      console.log(this.responseText + "test");
+                  }
+                  else{
+                      console.log(this.readyState+this.status);
+                  }
+              };
+          
+          
+              // change these to match your ActiveCampaign settings
+          
+              // your ActiveCampaign id. You can get this from your AC settings 
+              var actid = "66105982";
+          
+              // your event key, also in AC settings
+              var eventKey = "6fcd6450068b76b0eb4e03c32f22cedbd7c5b545";
+          
+              // Name for event you want to track.
+              var event = "_onclick";
+          
+              var visit = {
+                  email: "parth+9aug@kommunicate.io" // the user's email address
+              }
+          
+              // get the url of the page and send it as event data
+              var eventData = link;
+          
+              // build the eventString based on the variables you just edited above 
+              var eventString = "actid=" + actid +
+                  "&key=" + eventKey +
+                  "&event=" + event +
+                  "&visit=" + encodeURIComponent(visit) +
+                  "&eventdata" + eventData;
+          console.log(eventString)
+              // send the event to the ActiveCampaign API with our event values
+              xhttp.open("POST", "https://trackcmp.net/event", true);
+              // xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+              // xhttp.setRequestHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE"); // If needed
+              // xhttp.setRequestHeader("Access-Control-Allow-Headers", "X-Requested-With,contenttype"); // If needed
+              // xhttp.setRequestHeader("Access-Control-Allow-Credentials", true); // If needed
+              xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              // xhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+              
+              xhttp.send(eventString);
+          }
+          
+          
+          for (var i = 0; i < activeCampaignTriggerLinks.length; i++) {
+              console.log(activeCampaignTriggerLinks[i]);
+              activeCampaignTriggerLinks[i].addEventListener("click", function (e) {
+                  clickEvent(e.toElement.text);
+              });
+          }
+
+
+
       }
 
       componentWillMount(){

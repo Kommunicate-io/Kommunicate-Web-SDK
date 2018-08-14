@@ -313,10 +313,10 @@ a, a:hover, a:focus, a:active {
  }
 }
 @media (min-width:768px) {
-    .feature-actionable-message-section .flex, .feature-conversation-section .flex, .feature-integrations-section .flex, .feature-message-shortcut-section .flex, .feature-reporting-section .flex {
+   .feature-mailbox-section .flex, .feature-actionable-message-section .flex, .feature-bot-integration-section .flex, .feature-integrations-section .flex, .feature-message-shortcut-section .flex, .feature-reporting-section .flex {
         flex-direction: row-reverse;
     }
-    .feature-actionable-message-section .flex-cell, .feature-conversation-section .flex-cell, .feature-integrations-section .flex-cell, .feature-message-shortcut-section .flex-cell, .feature-reporting-section .flex-cell{
+    .feature-bot-integration-section .flex-cell ,.feature-actionable-message-section .flex-cell,  .feature-integrations-section .flex-cell, .feature-message-shortcut-section .flex-cell, .feature-reporting-section .flex-cell{
         text-align: left;
         padding-left: 50px;
     }

@@ -32,25 +32,25 @@ class SettingsSidebar extends Component {
                             TEAM
                         </li>
                         <li className="ss-nav-item welcome-link">
-                            <NavLink to={'/settings/welcome-message'} className="ss-nav-link" activeClassName="active">Welcome Message</NavLink>
+                            <NavLink to={'/settings/welcome-message'} className="ss-nav-link ac-trigger-links" activeClassName="active">Welcome Message</NavLink>
                         </li>
                         <li className="ss-nav-item welcome-link">
-                            <NavLink to={'/settings/away-message'} className="ss-nav-link" activeClassName="active">Away Message</NavLink>
+                            <NavLink to={'/settings/away-message'} className="ss-nav-link ac-trigger-links" activeClassName="active">Away Message</NavLink>
                         </li>
                         <li className="ss-nav-item message-shortcut-link">
-                            <NavLink to={'/settings/message-shortcuts'} className="ss-nav-link" activeClassName="active">Quick Replies</NavLink>
+                            <NavLink to={'/settings/message-shortcuts'} className="ss-nav-link ac-trigger-links" activeClassName="active">Quick Replies</NavLink>
                         </li>
                         <li className="ss-nav-item team-link">
-                            <NavLink to={'/settings/team'} className="ss-nav-link" activeClassName="active">Teammates</NavLink>
+                            <NavLink to={'/settings/team'} className="ss-nav-link ac-trigger-links" activeClassName="active">Teammates</NavLink>
                         </li>
                         <li className="ss-nav-item agent-assignment-link">
-                            <NavLink to={'/settings/agent-assignment'} className="ss-nav-link" activeClassName="active">Conversation Routing</NavLink>
+                            <NavLink to={'/settings/agent-assignment'} className="ss-nav-link ac-trigger-links" activeClassName="active">Conversation Routing</NavLink>
                         </li>
                         <li className="ss-nav-title">
                             CONFIGURATION
                         </li>
                         <li className="ss-nav-item connect-support-email-link">
-                            <NavLink to={'/settings/connect-support-email'} className="ss-nav-link" activeClassName="active">Connect Support Email</NavLink>
+                            <NavLink to={'/settings/connect-support-email'} className="ss-nav-link ac-trigger-links" activeClassName="active">Connect Support Email</NavLink>
                         </li>
                         <li className="ss-nav-item integrations-link">
                             <NavLink to={'/settings/install'} className="ss-nav-link" activeClassName="active">Install</NavLink>

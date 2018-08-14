@@ -72,7 +72,7 @@ const createLiz = (application) => {
             });
 
         } else {
-            console.log("liz already exist for customerId :", application.applicationId)
+            console.log("liz already exist for application :", application.applicationId)
             return;
         }
     })

@@ -41,7 +41,6 @@ exports.createCustomer = customer => {
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
           console.log("persited in db", customer ? customer.dataValues : null);
-          kmUser.customerId = customer ? customer.dataValues.id : null; // will remove
           let botObj = getFromApplozicUser(bot, customer, USER_TYPE.BOT);
           let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password);
           // create default bot plateform
@@ -87,8 +86,7 @@ exports.createCustomer = customer => {
 };
 const getUserObject = (customer, applozicCustomer, application) => {
   let user = JSON.parse(JSON.stringify(customer));
-  user.customerId = customer.id; // will remove
-  //user.apzToken=new Buffer(customer.userName+":"+customer.password).toString('base64');
+  user.apzToken=new Buffer(customer.userName+":"+customer.password).toString('base64');
   user.authorization = new Buffer(customer.userName + ":" + applozicCustomer.deviceKey).toString('base64');
   user.accessToken = customer.password;
   user.type = USER_TYPE.ADMIN;
@@ -114,26 +112,12 @@ exports.updateCustomer = (userId, customer) => {
   })
 }
 
-// exports.getCustomerByApplicationId = appId => {
-//   console.log("getting application by application Id", appId);
-//   return Promise.resolve(customerModel.find({include: [{model: db.application, attributes:['applicationId'], where: {applicationId: appId }}]}))
-//     .then(customer => {
-//       customer.applicationId=customer.applications[0].applicationId;
-//       console.log("found data for customer : ", customer == null ? null : customer.dataValues);
-//       return customer !== null ? customer.dataValues : null;
-//     }).catch(err => {
-//       console.log("err while getting customer by application Id", err);
-//       throw err;
-//     });
-// };
-
 const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   let userObject = {};
   let password = pwd || applozicUser.userId;
   userObject.userName = applozicUser.userId;
   userObject.password = bcrypt.hashSync(password, 10);
   userObject.apzToken = new Buffer(applozicUser.userId + ":" + password).toString('base64');
-  userObject.customerId = customer.id;
   userObject.applicationId = customer.applications[0].applicationId;
   userObject.authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
   userObject.accessToken = password;
@@ -146,28 +130,6 @@ const getFromApplozicUser = (applozicUser, customer, type, pwd) => {
   return userObject;
 };
 
-// exports.getCustomerByUserName = userName=>{
-//   console.log("getting customer by UserName",userName);
-//   return Promise.resolve(db.customer.findOne({where: {userName: userName}}));
-// };
-
-// exports.isAdmin = (userName)=>{
-//   console.log("checkig if user is an admin", userName);
-//   return db.customer.findOne({where: {userName: userName}}).then(customer=>{
-//     return customer?true:false;
-//   });
-// }
-/**
- * this method returns the customer information by id,
- * @param {Number} id
- * @return {Object} sequalize db object
- */
-// exports.getCustomerById = (id)=>{
-//   console.log("fetching customer information by Id", id);
-//   return db.customer.findOne({include: [{model: db.application, attributes:['applicationId'] }], where: {id: id}}).then(customer=>{
-//     return customer;
-//   });
-// }
 exports.sendWelcomeMail = (email, userName, agent, companyName) => {
   console.log("sending welcome mail to ", email, companyName);
   let tamplatePath = '';
@@ -202,14 +164,12 @@ const populateDataInKommunicateDb = (options, application, applozicCustomer, app
 
   let kmUser = { name: applozicCustomer.displayName, userName: options.userName, email: options.email, accessToken: options.password, role: options.role, type: USER_TYPE.ADMIN, userKey: applozicCustomer.userKey, applicationId: application.applicationId,roleType:options.roleType }
   kmUser.password = bcrypt.hashSync(options.password, 10);
-  //kmUser.apzToken = bcrypt.hashSync(options.password, 10);
   kmUser.authorization = new Buffer(options.userName + ":" + applozicCustomer.deviceKey).toString('base64');
   kmUser.apzToken = new Buffer(options.userName + ":" + options.password).toString('base64');
 
   return db.sequelize.transaction(t => {
     return customerService.createCustomer(kmCustomer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
       console.log("persited in db", customer ? customer.dataValues : null);
-      kmUser.customerId = customer ? customer.dataValues.id : null; // will remove
       // update bot plateform
       let botObj = getFromApplozicUser(applozicBot, customer, USER_TYPE.BOT);
       let lizObj = getFromApplozicUser(liz, customer, USER_TYPE.BOT, LIZ.password)
@@ -267,29 +227,3 @@ exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
     throw e;
   })
 }
-
-// exports.getCustomerByAgentUserKey= (userKey) =>{
-//   logger.info("getting user detail from userKey : ",userKey);
-//   return userModel.findOne({where:{userKey:userKey}}).then(user=>{
-//     if(user){
-//       return customerModel.findOne({where:{id:user.customerId}});
-//     }else{
-//      throw new Error("User Not found");
-//     }
-//   });
-// }
-
-// exports.updateRoutingState = (applicationId, routingInfo) => {
-//   return customerModel.update(routingInfo, { where: { applicationId: applicationId } }).then(res => {
-//     return { message:"routing successfully updated" };
-//   }).catch(err => {
-//     return { message:"routing update error " }
-//   });
-// }
-
-
-
-
-// exports.updateOnlyCustomer=(userId, customer)=>{
-//   return customerModel.update(customer, { where: { "userName": userId } });
-// }

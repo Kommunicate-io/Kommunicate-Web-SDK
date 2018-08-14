@@ -30,7 +30,9 @@ exports.getSuggestionsByAppId = (req, res) => {
 					res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_CRITERIA_" + req.query.criteria , data:suggestions});
 				}
 			})
-			.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
+			.catch(err => {
+				logger.info("error while fetching autosugesstion", err);
+				res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 	}else{
 		autosuggestService.getSuggestionsByAppId(req.params.applicationId, req.query.type)
 			.then(suggestions => {
@@ -40,7 +42,9 @@ exports.getSuggestionsByAppId = (req, res) => {
 					res.status(200).json({code:"GOT_ALL_SUGGESTIONS_BY_APPLICATION_ID", data:suggestions});
 				}
 			})
-			.catch(err => {res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
+			.catch(err => {
+				logger.info("error",err );
+				res.status(500).json({code:"INTERNAL_SERVER_ERROR", message:"Something in auto suggest went wrong!"})});
 	}
 }
 

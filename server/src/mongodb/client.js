@@ -1,9 +1,35 @@
+/* eslint-disable */
 var  config = require("../../conf/config.js");
 const mongoClient = require("mongodb").MongoClient;
 const mongoURL = config.getProperties().mongoDbUrl;
+const mongoConfig = config.mongoConfig;
 const logger = require("../utils/logger");
 
 const DEFAULT_SCHEMA ="kommunicate";
+let db =null;
+
+const getDb = (dbUrl, callback) => {
+    return new Promise((resolve,reject)=>{
+        if (db) {
+            logger.info("returning cached db object");
+            return typeof callback == 'function'? callback(null, db) :  resolve(db);
+        } else {
+            logger.info("crerating a new connection to db..");
+            mongoClient.connect(dbUrl, mongoConfig).then((dbObj)=>{
+                logger.info("connected to dbsuccessfully");
+                db = dbObj;
+                return typeof callback == 'function'? callback(null,db):resolve(db);
+            }).catch(err=>{
+                logger.info("error while connecting to db..",err);
+                return typeof callback == 'function'? callback(err):reject(err);
+            });
+        
+        }
+
+    })
+    
+}
+exports.getDb =getDb;
 
 /**
  * return a next value for a autoincremented filed.
@@ -13,7 +39,7 @@ const DEFAULT_SCHEMA ="kommunicate";
 exports.getNextSequence = (collectionName,fieldName)=>{
     logger.info("fetching next sequence for: ",fieldName," in: ",collectionName); 
     return new Promise((resolve,reject)=>{
-        mongoClient.connect(mongoURL,(err,client)=>{
+        getDb(mongoURL,(err,client)=>{
             if(err){
                 logger.info("error while connecting to db: "+mongoURL,err);
                 return reject(err);
@@ -42,7 +68,7 @@ exports.insertOne =(collectionName, document)=>{
     //console.log("db",db);
     logger.info("inserting new record in collection", collectionName); 
     return new Promise((resolve,reject)=>{
-        mongoClient.connect(mongoURL,(err,client)=>{
+        getDb(mongoURL,(err,client)=>{
             if(err){
                 logger.info("error while connecting to db: "+mongoURL,err);
                 return reject(err);
@@ -71,7 +97,7 @@ exports.insertOne =(collectionName, document)=>{
 exports.searchFAQ=(options)=>{
     logger.info("searching faq in mongo db");
     return new Promise((resolve,reject)=>{
-        mongoClient.connect(mongoURL,(err,client)=>{
+        getDb(mongoURL,(err,client)=>{
             if(err){
                 logger.info("error while connecting to db: "+mongoURL,err);
                 return reject(err);
@@ -103,7 +129,7 @@ exports.searchFAQ=(options)=>{
  exports.find= (options)=>{
     return new Promise((resolve,reject)=>{
         logger.info("fetching records from collection "+options.collectionName);
-        mongoClient.connect(mongoURL).then(client=>{
+        getDb(mongoURL).then(client=>{
             var db = client.db(DEFAULT_SCHEMA);
             return db.collection(options.collectionName).find(options.query,options.options).toArray(function(err,data){
                 if(err){
@@ -131,7 +157,7 @@ exports.searchFAQ=(options)=>{
             if (!options.collectionName) {
                 return reject(new Error("collection name can't be null"));
               } else {
-                mongoClient.connect(mongoURL, function(err, client) {
+                getDb(mongoURL, function(err, client) {
                   if (err) {
                     logger.info("error while connecting to db: " + mongoURL, err);
                     return reject(err);
@@ -159,7 +185,7 @@ exports.searchFAQ=(options)=>{
             if (!options.collectionName) {
                 return reject(new Error("collection name can't be null"));
               } else {
-                mongoClient.connect(mongoURL, function(err, client) {
+                getDb(mongoURL, function(err, client) {
                   if (err) {
                     logger.info("error while connecting to db: " + mongoURL, err);
                     return reject(err);
@@ -175,29 +201,3 @@ exports.searchFAQ=(options)=>{
         });
 
     }
-
-  var   test = {
-		"TraceId" : "fuvgaeurkvh",
-		"Status" : "done",
-		"HotelBookingStatus" : "ihfabvl",
-		"InvoiceNumber" : "kjcifw;",
-		"ConfirmationNo" : "ihcfbwl",
-		"BookingRefNo" : "q;orcj",
-		"BookingId" : "",
-		"IsPriceChanged" : "",
-		"IsCancellationPolicyChanged" : ""
-	}
-
-
-    /*updateOne({collectionName:'hotelBooking',criteria:{SessionId:"b9d72a40-e1ac-11e7-ae9c-91126d8be9b7"},update:{"HotelBookResponse":HotelBookResponse}})
-    .then(result=>{
-        console.log("success",result);
-    }).catch(err=>{
-        console.log("error",err);
-    })*/
-
-
-    /*find({collectionName:'hotelBooking'}).then(result=>{
-
-        console.log(result);
-    })*/
