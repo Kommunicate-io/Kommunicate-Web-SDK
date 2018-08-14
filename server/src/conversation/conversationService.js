@@ -278,7 +278,8 @@ const createConversationFromMail = (req) => {
                 groupInfo.admin = customer.userName;
                 groupInfo.users[0].userId = customer.userName;
                 groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
-                groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
+                groupInfo.metadata.KM_CONVERSATION_TITLE = req.body.subject;
+                groupInfo.metadata['KM_CONVERSATION_SUBJECT'] = req.body.subject;
                 headers['Apz-Token'] = 'Basic ' + customer.apzToken;
                 if (userDetail && userDetail.length > 0) {
                     //create conversation with first user
