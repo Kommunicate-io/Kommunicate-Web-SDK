@@ -1,5 +1,7 @@
 var MCK_GROUP_MAP = [];
 var MCK_CLIENT_GROUP_MAP = [];
+var MCK_EVENT_HISTORY = [];
+var count = 0 ;
 (function ($applozic, w, d) {
     "use strict";
     if (!w.applozic) {
@@ -281,6 +283,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                     case 'mckLaunchSideboxChat':
                         return oInstance.mckLaunchSideboxChat();
                         break;
+                    case 'openChat':
+                        return oInstance.openChat(params);
+                        break;
 
                 }
             } else if ($applozic.type(appOptions) === 'object') {
@@ -501,6 +506,9 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
             ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
+        _this.openChat = function (params) {
+            mckMessageService.openChat(params)
+        }
 
         _this.events = {
             'onConnectFailed': function () { },
@@ -521,6 +529,7 @@ var MCK_CLIENT_GROUP_MAP = [];
             'onUserActivated': function () { },
             'onUserDeactivated': function () { }
         };
+
         _this.loadConversationWithAgent = function (params) {
 
             if (params && params.agentId) {
@@ -2187,9 +2196,11 @@ var MCK_CLIENT_GROUP_MAP = [];
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
+                    count++; 
                     var $this = $applozic(this);
                     var elem = this;
                     var userId =$this.data('mck-id')
+                    count > 1  && MCK_EVENT_HISTORY.push(elem);
                     if (userId) {
                         if ($this.parents(".mck-search-list").length) {
                             $mck_search.bind('blur');
