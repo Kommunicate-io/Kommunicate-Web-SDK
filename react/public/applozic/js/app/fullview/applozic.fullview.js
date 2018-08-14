@@ -2145,7 +2145,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					_this.sendMessage(messagePxy);
 					var currTab = $mck_msg_inner.data('km-id');
 					var group = kmGroupUtils.getGroup(currTab);
-					if (group && group.metadata.KM_ZENDESK_TICKET_ID) {
+					if (group && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
 						KmZendesk.updateZendeskTicket(group.metadata.KM_ZENDESK_TICKET_ID);
 					} else {
 						console.log("Zendesk ticket not attached to this conversation");
@@ -6843,7 +6843,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 					var currTab = $mck_msg_inner.data('km-id');
 					var group = kmGroupUtils.getGroup(currTab);
-					if (group && group.metadata.KM_ZENDESK_TICKET_ID) {
+					if (group && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
 						KmZendesk.uplaodFileToZendesk(file);
 					}
 					(MCK_AWS_S3_SERVER === true) ? _this.uploadAttachment2AWS(params) : _this.uploadFile(params)
