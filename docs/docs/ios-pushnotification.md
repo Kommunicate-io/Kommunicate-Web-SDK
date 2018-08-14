@@ -144,6 +144,6 @@ You can check the sample AppDelegate file [here](https://github.com/Kommunicate-
 
 ## Certificates
 
-Upload development and distribution APNS certificates on Kommunicate dashboard so that we can send the notifications.
+Upload development and distribution APNS certificates on [Kommunicate dashboard](https://dashboard.kommunicate.io/settings/pushnotification) so that we can send the notifications.
 
 Note: Make sure `Push Notification` is `On`. Also, select the `Background fetch` and `Remote notifications` options in `Background Modes`. This you need to do in your target's capabilities section.
