@@ -662,7 +662,8 @@ a:hover {
 	vertical-align: middle;
 	line-height: 35px !important;
 	color: #3b5998;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
 	overflow: hidden;
 }
 
@@ -3399,6 +3400,7 @@ ol, ul {
 }
 #km-toolbar {
 	border: none !important;
+	border-right: 1px solid #e6e6e6 !important;
 }
 .km-new-conversation-header .select-container select{
 	-webkit-appearance: none;
@@ -3591,4 +3593,35 @@ ol, ul {
     width:110px;
     text-overflow:ellipsis;
     overflow:hidden;
+}
+
+.km-dashboard-msg-box-rich-text-container .email-message-indicator, .km-msg-box .email-message-indicator {
+	margin-bottom: 15px;
+}
+.write .email-conversation-indicator {
+	background-color: #e7e7e7;
+	padding: 6px 10px;
+}
+.km-dashboard-msg-box-rich-text-container .email-message-indicator span:first-child, .write .email-conversation-indicator span:first-child, .km-msg-box .email-message-indicator span:first-child {
+	margin-right: 10px;
+}
+.km-dashboard-msg-box-rich-text-container .email-message-indicator span:first-child svg .write .email-conversation-indicator span:first-child svg, .km-msg-box .email-message-indicator span:first-child svg{
+	vertical-align: middle;
+}
+.km-dashboard-msg-box-rich-text-container .email-message-indicator span:last-child, .write .email-conversation-indicator span:last-child, .km-msg-box .email-message-indicator span:last-child {
+	font-size: 14px;
+	font-weight: 300;
+	font-style: italic;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.6px;
+	text-align: left;
+	color: #414243;
+}
+
+.km-dashboard-msg-box-rich-text-container .email-message-indicator {
+	padding: 5px 14px 10px;
+    margin-bottom: -5px;
+    background-color: #fff;
+    border-radius: 5px 5px 0px 0px;
 }
