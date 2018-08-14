@@ -18,11 +18,12 @@ Kommunicate.openConversationList();
 
 ## Create a new Conversation:
 
-You can create a new conversation as described below:
-```
+A conversation can be created using `startConversation` method.
+```javascript
 var conversationDetail = {
-    agentId: AGENT_ID,
-    botIds: [BOTID1, BOTID2] //optional
+    "agentId": "agentId", // optinal, if you dont pass agent Id, default agent will automatically get selected.
+    "botIds": ["bot1"], // optional, pass bot Ids you want to add in conversation.
+    "assignee":"bot1 or agentId" // optional, who you want to assign this conversation. If not passed conversation will assigned to default agent. if you an bot or agentId,  that bot or agent must be present in conversation.  
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");

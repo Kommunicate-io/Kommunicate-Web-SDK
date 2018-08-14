@@ -26,7 +26,7 @@ Script
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": appId,"agentId":agentId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
+     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
 
     /*----------------- Kommunicate settings end ------------------*/
 
@@ -52,7 +52,6 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |parameters|Descriptions|
 |---	   |---	    |
 |appId |A unique application ID assigned to your Kommunicate account|
-|agentId |This agent will be the default support agent. Default agent is registered when you sign up for Kommunicate|
 |botIds|Array of bot ids will be added in conversation. eg. botIds=['bot1','bot2']. Bot Ids will be visible in bot section in dashboard if you have created any bot.|
 |conversationTitle |All conversation will have this title|
 |isAnonymousChat| Allow your users to chat in Anonymous mode. User will be asked to enter email when he/she starts a conversation|
