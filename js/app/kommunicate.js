@@ -33,6 +33,7 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
+        params= typeof params=='object' ?params:{};
         if(!params.agentId){
             params.agentId  = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
