@@ -210,7 +210,8 @@
   color: #a6a3a3;
 }
 .radion-btn-agent-wrapper, .radion-btn-admin-wrapper {
-  margin-left: 19px;
+  margin-left: 14px;
+  padding-top: 1px;
 }
 .teammates-add-member-modal-radio-btn-wrapper  .checkmark{
   top: 14% !important;
