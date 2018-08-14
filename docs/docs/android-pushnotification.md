@@ -3,8 +3,10 @@ id: android-pushnotification
 title: Push Notification
 sidebar_label: Push Notification
 ---
-## FCM
+For push notifications, you must have a firebase account. Signup on [Firebase](https://console.firebase.google.com).
+Go to [Kommunicate dashboard](https://dashboard.kommunicate.io/settings/pushnotification) and update the GCM/FCM server key under GCM/FCM key. Make sure you update the FCM server key and not the FCM legacy key or FCM sender Id.
 
+## FCM
 If you are already using Firebase in your application, add the below code in Kommunicate.login onSuccess() method and pass the FCM registration token as below:
 ```java
 if(MobiComUserPreference.getInstance(context).isRegistered()) {
