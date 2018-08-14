@@ -23,7 +23,7 @@ const addMemberIntoConversation = (data) => {
                         header = agents.header;
                         if (customer.botRouting) {
                             if (agents.assignTo != customer.userName) {
-                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
+                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: user.userName, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
                                 assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                             }
                             return { code: "SUCCESS", data: 'success' }
@@ -278,7 +278,8 @@ const createConversationFromMail = (req) => {
                 groupInfo.admin = customer.userName;
                 groupInfo.users[0].userId = customer.userName;
                 groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
-                groupInfo.metadata.KM_CONVERSATION_TITLE = customer.userName;
+                groupInfo.metadata.KM_CONVERSATION_TITLE = req.body.subject;
+                groupInfo.metadata['KM_CONVERSATION_SUBJECT'] = req.body.subject;
                 headers['Apz-Token'] = 'Basic ' + customer.apzToken;
                 if (userDetail && userDetail.length > 0) {
                     //create conversation with first user

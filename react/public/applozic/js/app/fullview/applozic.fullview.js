@@ -2151,6 +2151,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_response_text.html("");
 					$mck_msg_response.removeClass('vis').addClass('n-vis');
 					_this.sendMessage(messagePxy);
+					var currTab = $mck_msg_inner.data('km-id');
+					var group = kmGroupUtils.getGroup(currTab);
+					if (group && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
+						KmZendesk.updateZendeskTicket(group.metadata.KM_ZENDESK_TICKET_ID);
+					} else {
+						console.log("Zendesk ticket not attached to this conversation");
+					}
 					return false;
 				});
 				$mck_form_field.on('click', function () {
@@ -6841,6 +6848,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var params = {};
 					params.file = file;
 					params.name = file.name;
+					$mck_msg_inner = mckMessageLayout.getMckMessageInner();
+					var currTab = $mck_msg_inner.data('km-id');
+					var group = kmGroupUtils.getGroup(currTab);
+					if (group && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
+						KmZendesk.uplaodFileToZendesk(file);
+					}
 					(MCK_AWS_S3_SERVER === true) ? _this.uploadAttachment2AWS(params) : _this.uploadFile(params)
 				});
 				_this.uploadFile = function (params) {
@@ -7110,6 +7123,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						$kmApplozic.each(FILE_META, function (i, fileMeta) {
 							if (typeof fileMeta !== 'undefined' && fileMeta.blobKey === currFileMeta.blobKey) {
 								FILE_META.splice(i, 1);
+								KM_ZENDESK_ATTACHMENTS.splice(i, 1);
 							}
 						});
 					}

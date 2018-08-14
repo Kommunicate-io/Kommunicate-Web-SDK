@@ -85,3 +85,27 @@ exports.getTicket = (req, res) => {
     })
 
 }
+
+exports.uploadAttachment = (req, res) => {
+    if (!req.file) {
+        return res.status(403).json({
+            code: 'FAILED_TO_UPLOAD',
+            message: 'file missing in the request'
+        })
+    }
+    let appId = req.params.appId;
+    let ticketId = req.query.id;
+    return customerService.getCustomerByApplicationId(appId).then(customer => {
+        if (!customer) {
+            return res.status(200).json({ code: "SUCCESS", message: 'no customer found for this applicationId' });
+        }
+        return integrationSettingService.getIntegrationSetting(customer.id, ZENDESK).then(settings => {
+            return zendeskService.uploadAttachment(ticketId, req.file, settings[0]).then(result => {
+                return res.status(200).json({ code: "SUCCESS", data: result.data });
+            });
+        })
+    }).catch(err => {
+        console.log('error while getting ticket', err);
+        return res.status(500).json({ code: "ERROR", message: err.message });
+    })
+}
