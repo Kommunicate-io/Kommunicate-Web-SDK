@@ -1,5 +1,4 @@
-@import
-	url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
+@import	url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600);
 
 *, *:before, *:after {
 	box-sizing: border-box;
@@ -98,7 +97,7 @@ body {
 	width: 300px;
 	/*height: calc(100% - 60px);*/
 	height: 100%;
-	border-right: 1px solid #e6e6e6;
+	/* border-right: 1px solid #e6e6e6; */
 	background-color: #fff;
 	display: flex;
 	position: relative;
@@ -325,7 +324,7 @@ body {
 	float: left;
 	width: calc(100% - 300px);
 	height: 100%;
-	border-right: 1px solid #e6e6e6;
+	/* border-right: 1px solid #e6e6e6; */
 }
 
 .km-container.km-panel-3 .right {
@@ -632,7 +631,7 @@ body {
 	float: left;
 	display: flex;
 	position: relative;
-	border-right: 1px solid #e5e5e5;
+	/* border-right: 1px solid #e5e5e5; */
 	overflow-y: auto;
 }
 

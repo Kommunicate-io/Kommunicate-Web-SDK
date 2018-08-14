@@ -1835,7 +1835,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							mckMessageLayout.loadTab(groupDetail);
 						}
 						$mck_search.val("");
-					}
+					} 
+						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -3666,9 +3667,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 			var markup = '<div name="message" class="bubble km-m-b ${msgKeyExpr} ${msgFloatExpr} ${msgAvatorClassExpr}" data-msgdelivered="${msgDeliveredExpr}" data-msgsent="${msgSentExpr}" data-msgtype="${msgTypeExpr}" data-msgtime="${msgCreatedAtTime}" data-msgcontent="${replyIdExpr}" data-msgkey="${msgKeyExpr}" data-contact="${toExpr}"><div class="km-clear">'+ '<div class="${nameTextExpr} ${showNameExpr}">${msgNameExpr}</div>' +'<div class="blk-lg-12">'+
 			'<div class="km-msg-avator blk-lg-3">{{html msgImgExpr}}</div><div class="km-msg-box ${msgClassExpr}">' +
-				'<div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' +
+				'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div><div class="km-file-text notranslate km-attachment ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}" data-filename="${fileNameExpr}" data-filesize="${fileSizeExpr}"><div>{{html fileExpr}}</div>  {{html downloadMediaUrlExpr}}</div>' +
 				'<div class="km-msg-text km-msg-content"></div>' +
-				'</div>'+'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '{{html kmRichTextMarkup}}</div>'+'</div>' +
+				'</div>'+'<div class="km-dashboard-msg-box-rich-text-container km-dashboard-fixed-container ${kmRichTextMarkupVisibility}" >' + '<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+'</div>' +
 			    '</div>'+'<div class="${msgFloatExpr}-muted km-text-light km-text-muted km-text-xs km-t-xs">${createdAtTimeExpr} <span class="${statusIconExpr} km-message-status"></span></div> '+'<div class="n-vis km-context-menu">' + '<ul><li><a class="km-message-delete">Delete</a></li></ul></div></div>';
 
 
@@ -4031,6 +4032,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if ($kmApplozic("#km-message-cell .km-no-data-text").length > 0) {
 					$kmApplozic(".km-no-data-text").remove();
 				}
+				
+				var emailMsgIndicator = "n-vis";
+				if(msg.source == 7) {
+					emailMsgIndicator = "vis"; 
+				} else {
+					emailMsgIndicator = "n-vis"; 
+				}
+				if(msg.source == 7) {
+					$kmApplozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
+				} 
+
 				var messageClass = (msg.contentType == 3 && msg.source == 7) || (msg.contentType == 0 && typeof (msg.message) != "string") ? "n-vis" : 'vis';
 				var floatWhere = "km-msg-right";
 				var statusIcon = "km-icon-time";
@@ -4119,6 +4131,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					msgFeatExpr: msgFeatExpr,
 					replyMessageParametersExpr: replyMessageParameters,
 					msgClassExpr: messageClass,
+					emailMsgIndicatorExpr: emailMsgIndicator,
 					msgExpr: frwdMsgExpr,
 					selfDestructTimeExpr: msg.timeToLive,
 					fileMetaKeyExpr: msg.fileMetaKey,
