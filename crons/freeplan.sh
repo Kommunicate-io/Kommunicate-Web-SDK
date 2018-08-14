@@ -23,12 +23,12 @@ fi
 SQL_QUERY_BOT_STATUS="update users set bot_availability_status = 0 where type = 2 and bot_availability_status = 1 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and c.created_at < (now() - interval 31 day));"
 SQL_QUERY_ROUTING="update customers set agent_routing = 0, bot_routing = 0 where (agent_routing = 1 or bot_routing = 1) and subscription = 'startup' and created_at < (now() - interval 31 day);"
 SQL_QUERY_COLLECT_EMAIL="update app_settings set collect_email = 0 where collect_email = 1 and application_id in (select a.application_id  from customers c join applications a on c.id = a.customer_id where c.subscription = 'startup' and c.created_at < (now() - interval 31 day));"
-
 #mysql command to connect to database
 
-MYSQL -u$MASTER_DB_USER -p$MASTER_DB_PASSWD -h$MASTER_DB_HOST  -D$MASTER_DB_NAME <<EOF 
+MYSQL -u$MASTER_DB_USER -p$MASTER_DB_PASSWD -h$MASTER_DB_HOST  -D$MASTER_DB_NAME <<EOF  
 $SQL_QUERY_BOT_STATUS
 $SQL_QUERY_ROUTING
 $SQL_QUERY_COLLECT_EMAIL
+CALL expire_agent_in_free_plan('$MASTER_DB_NAME');
 EOF
 echo "End of script"
