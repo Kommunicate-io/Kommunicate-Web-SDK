@@ -216,19 +216,20 @@ const callSendEmailAPI = (options) => {
     data: { ...data }
   }))
     .then((response) => {
-      if (response.status === 200 && response.data.code === 'SUCCESS') {
+      if (response.status === 200) {
         return response;
       }
+    }).catch(err=>{
+      throw err;
     });
 }
 
 const notifyThatEmailIsSent = (options) => {
-  return callSendEmailAPI(options)
-    .then((response) => {
-      if (response.data.code === 'SUCCESS') {
-        return "SUCCESS";
-      }
-    }).catch(err => { Notification.error(err.response.data.code || "Something went wrong!") });
+  return callSendEmailAPI(options).then(response => {
+    return response;
+  }).catch(err => {
+    Notification.error(err.response.data.code || "Something went wrong!")
+  });
 }
 
 const postAutoReply = (formData) => {

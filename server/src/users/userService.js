@@ -644,6 +644,18 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       })
   }
 }
+
+const isDeletedUser= (userName, applicationId) => {
+  let criteria = {
+    userName: userName,
+    applicationId: applicationId,
+  }
+  return userModel.findOne({ where: criteria, paranoid: false }).then(user => {
+    return user && user.deleted_at != null;
+  })
+}
+
+exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;
 exports.getAgentByUserKey = getAgentByUserKey;
