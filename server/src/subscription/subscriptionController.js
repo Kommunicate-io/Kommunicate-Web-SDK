@@ -24,7 +24,7 @@ exports.createSubscription = async function (req,res) {
             break;
 
             default:
-            code = "ERROR"; response = "Internal server error";httpCode= 500;
+            code = "SERVER_ERROR"; response = "Internal server error";httpCode= 500;
             break;
         }
             logger.error("err while creating subscription : ",err);
@@ -55,10 +55,41 @@ exports.deleteSubscription = async function (req, res) {
         }
     } catch (e) {
         return res.status(500).json({
-            code: "SERVER ERROR",
+            code: "SERVER_ERROR",
             response: "something went wrong"
         });
     }
 
 
 }
+exports.getAllSubscriptionByApiKey = async (req,res)=>{
+    try{
+    logger.info("request received to get all Subscriptions : ");
+    let isAuthenticated =  await subscriptionService.isAPIKeyValid(req.query);
+    if(!isAuthenticated){
+        logger.info("request received with invalid API key : ",req.param.apiKey);
+        return res.status(401,Boom.unAuthorized("Invalid API Key"));
+    }
+    let applicationId  = getAppIdByAppKey();
+    let subscriptions = await subscriptionService.getAllSubscriptionByApiKey(applicationId);
+    return res.status(200).json({
+        code: "SUCCESS",
+        response:subscriptions
+    });
+}catch(e){
+    logger.info("error while fetching data", e);
+    return res.status(500).json({
+        code: "SERVER_ERROR",
+        response: "something went wrong"
+    });
+
+}
+    
+}
+
+const getAppIdByAppKey =()=>{
+    // todo : create authentication service. get Authentication object from request and return AppId 
+    return "";
+}
+
+

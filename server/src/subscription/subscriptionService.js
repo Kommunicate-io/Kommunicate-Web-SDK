@@ -1,6 +1,6 @@
 const logger = require("../utils/logger");
 const db = require("../models");
-exports.isAPIKeyValid = async function(){
+exports.isAPIKeyValid = async function(key){
     // todo validate API key
     return true;
 } 
@@ -24,5 +24,11 @@ exports.deleteSubscriptionById= async function(subscriptionId){
         return subscription.destroy({ force: true });
     }
     return 0;
+}
+
+exports.getAllSubscriptionByApiKey = async (applicationId)=>{
+    let criteria ={}
+    applicationId && (criteria.applicationId = applicationId);
+    return Promise.resolve(db.AppSubscription.findAll({where:criteria}));
 }
 
