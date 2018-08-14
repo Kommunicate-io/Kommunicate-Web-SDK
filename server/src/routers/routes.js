@@ -1,3 +1,4 @@
+/*eslint-disable */
 const app = require("../../app.js");
 const express = require("express");
 const userController = require("../users/userController.js");
@@ -239,5 +240,6 @@ this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
  */
 // third party Subscription APIs
 subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
+subscriptionRouter.get('/',validate(subscriptionValidation.getAllSubscriptionByApiKey), subscriptionController.getAllSubscriptionByApiKey);
 subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);
 subscriptionRouter.delete('/:subscriptionId', validate(subscriptionValidation.deleteSubscription), subscriptionController.deleteSubscription);

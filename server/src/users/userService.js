@@ -138,7 +138,6 @@ const createUser = (user, customer) => {
     }
   }).then(applozicUser => {
     console.log("created user in applozic db", applozicUser.userId);
-    user.customerId = customer.id;
     user.apzToken = new Buffer(user.userName + ":" + user.password).toString('base64');
     user.authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
     user.accessToken = user.password;
@@ -486,7 +485,6 @@ const getUsersByAppIdAndTypes = (applicationId, type) => {
  * @param {String} newPassword
  * @param {Object} user
  * @param {Number} user.id
- * @param {Number} user.customerId
  * @param {String} user.userName
  */
 exports.updatePassword = (newPassword, user) => {
@@ -514,22 +512,6 @@ const getUserDisplayName = (user) => {
     return user.email;
   }
 }
-/**
- * returns list of the all agents whos avaibility status is 1.
- *
- * @param {Object} customer
- * @param {Number} customer.id
- */
-const getAvailableAgents = (customer) => {
-  logger.info("fetching list of available agents for customer", customer.id);
-  let criteria = {
-    customerId: customer.id,
-    type: { [Op.or]: [registrationService.USER_TYPE.ADMIN, registrationService.USER_TYPE.AGENT] },
-    availabilityStatus: CONST.AVAIBILITY_STATUS.AVAILABLE
-  };
-  return Promise.resolve(userModel.findAll({ where: criteria }));
-
-}
 
 const emailValidation = (email) => {
   if (email == null) {
@@ -540,15 +522,6 @@ const emailValidation = (email) => {
   });
 }
 
-const getUsersByCustomerId = (customerId) => {
-  let criteria = {
-    customerId: customerId,
-    type: { [Op.or]: [registrationService.USER_TYPE.ADMIN, registrationService.USER_TYPE.AGENT] }
-  };
-  return Promise.resolve(userModel.findAll({ where: criteria })).then(users => {
-    return users;
-  });
-}
 const changeBotStatus = (botId, appId, status) => {
   return Promise.resolve(userModel.update({ allConversations: status }, { where: { userName: botId, applicationId: appId } }));
 
@@ -678,5 +651,3 @@ exports.isIntervalExceeds = isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
-exports.getAvailableAgents = getAvailableAgents;
-exports.getUsersByCustomerId = getUsersByCustomerId;

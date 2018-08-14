@@ -154,7 +154,7 @@ class Sidebar extends Component {
             </li>
             {/* Bot Link */}
             <li className="nav-item">
-              <NavLink to={'/bot'} className="nav-link" activeClassName="active" data-tip="Bot Integration" data-effect="solid" data-place="right">
+              <NavLink to={'/bot'} className="nav-link ac-trigger-links" activeClassName="active" data-tip="Bot Integration" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 9">
                     <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 5" />
@@ -172,7 +172,7 @@ class Sidebar extends Component {
             </li>
             {/* Integrations Link */}
             <li className="nav-item">
-              <NavLink to={'/integrations'} className="nav-link" activeClassName="active" data-tip="Integrations" data-effect="solid" data-place="right">
+              <NavLink to={'/integrations'} className="nav-link ac-trigger-links" activeClassName="active" data-tip="Integrations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.363 25.363">
               <g data-name="Group 10">
                   <path fill="none" d="M.707.707h24v24h-24z" data-name="Rectangle 4" />
@@ -192,7 +192,7 @@ class Sidebar extends Component {
             </li>
             {/* FAQ Link */}
             <li className="nav-item">
-              <NavLink to={'/faq'} className="nav-link" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right">
+              <NavLink to={'/faq'} className="nav-link ac-trigger-links" activeClassName="active" data-tip="FAQ" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
                   <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 3"/>

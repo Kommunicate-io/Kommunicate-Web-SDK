@@ -58,10 +58,10 @@ class Step2 extends Component {
     });
     console.log("profilePicUrl updated", this.state.imageLink)
   }
- 
+
   handleChange(event) {
     document.getElementById("number-input").required = false;
-    const number = (event.target.validity.valid) ? event.target.value : this.state.contact_no ;  
+    const number = (event.target.validity.valid) ? event.target.value : this.state.contact_no ;
     this.setState({ contact_no: number})
     document.getElementById("number-input").required = true;
   }
@@ -85,7 +85,7 @@ class Step2 extends Component {
     //   document.getElementById("number-input").className = 'input km-error-input';
     //   return;
     // }
-    if(!isURL(this.state.websiteUrl)) {    
+    if(!isURL(this.state.websiteUrl)) {
         this.websiteUrlCheck();
         return;
         }
@@ -112,6 +112,7 @@ class Step2 extends Component {
       }).catch(err => { console.log('userInfo not saved') });
       applozicClient.createKommunicateSupportUser({
         "userId": userSession.userName,
+        "deviceType":0,
         "applicationId": "kommunicate-support",
         "authenticationTypeId": 1,
         "email":userSession.email||userSession.userName,
@@ -274,7 +275,7 @@ hideAllErrors (){
                               <input className="input" type="text" id="role-input" required name="role-input" placeholder=" " onFocus={this.onFocus} value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
                               <label className="label-for-input email-label">Designation <span className="km-italic">(Optional)</span></label>
                             </div> */}
-                            
+
                             {/* <div className="group form-group email-form-group">
                             <input className="input" type="text" pattern="[0-9]*" id="number-input"required name="number-input" placeholder=" " onInput={this.handleChange.bind(this)}  onFocus={this.onContactNumberFocus} value={this.state.contact_no} />
                               <label className="label-for-input email-label">Contact No.</label>
@@ -293,7 +294,7 @@ hideAllErrors (){
                               <span className="input-error-message">This field is mandatory</span>
                             </div>
                             </div> */}
-                            
+
                             <div className="group form-group selectt">
                               <select className="select" id="industry" name="industry" onChange={(event) => { document.getElementById("km-industry1").className = 'n-vis'; document.getElementById("km-industry2").className = 'n-vis';this.setState({ industry: event.target.value }) }} value={this.state.industry}>
                                 <option value="0" >Please select a value</option>
@@ -328,13 +329,13 @@ hideAllErrors (){
                                 <option value="100">100</option>
                                 <option value="500">500</option>
                               </select>
-                              
+
                               <label id ="km-label1"className="label-for-input email-label km-label1">Company Size</label>
                               <label id ="km-label2" className="label-for-input email-label km-label2">(Optional)</label>
                             </div> */}
                             <div className="form-group setup-btn-group">
                               <div>
-                                <button className="km-button km-button--primary step-1-submit-btn"onClick={this.finishSetUp}>Continue </button>                               
+                                <button className="km-button km-button--primary step-1-submit-btn"onClick={this.finishSetUp}>Continue </button>
                                 {/* <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a> */}
                               </div>
                             </div>

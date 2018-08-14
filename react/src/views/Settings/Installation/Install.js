@@ -38,12 +38,12 @@ class Install extends Component {
       <li><strong>groupName</strong> - Conversation Title.</li>
       <li><strong>isAnonymousChat</strong> - allow your users to chat in Anonymous mode.</li>
       <li><strong>userId</strong> - Unique Id for user.</li>
-      <li><strong>userName</strong> - Display name of the user. Agents will know users by Display name</li> 
+      <li><strong>userName</strong> - Display name of the user. Agents will know users by Display name</li>
       <li><strong>email</strong> - allow your users to register email id (optional).</li>
     </ul>`};
   }
 
-  
+
 
   componentDidMount() {
     // document.getElementById('instruction-display-area').innerHTML=getJsInstructions();
@@ -111,7 +111,7 @@ class Install extends Component {
                    </div>
                  </div>
                 }
-                
+
 
                 <div className="code-container javascript col-md-10">
                   <a href="#" className="outer-box col-md-12 integration-font javascript-card">
@@ -242,7 +242,7 @@ class Install extends Component {
 
                 {/* Squarespace */}
                 <div className="code-container col-md-10">
-                  <a href="http://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-squarespace-websites-798de1989487/" id="squarespace-div" target="_blank" className="outer-box col-md-12 integration-font javascript-card">
+                  <a href="https://www.kommunicate.io/blog/squarespace-live-chat-software-for-website/" id="squarespace-div" target="_blank" className="outer-box col-md-12 integration-font javascript-card">
                     <div className="card-heading">
                       <div className="image-svg-container">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" viewBox="0 0 25 20">
