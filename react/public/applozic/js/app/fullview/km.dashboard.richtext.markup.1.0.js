@@ -231,6 +231,18 @@ getListMarkup:function(){
          </div>
      </div>
  </div>`;
+ },
+ getImageTemplate : function(){
+     return `<div>
+     {{#payload}}
+     <div class="km-dashboard-image-template">
+        <img class="km-dashboard-template-img" src="{{url}}"></img>
+        <div class="km-dashboard-template-image-caption-wrapper">
+            <p class="km-dashboard-template-img-caption">{{caption}}</p>
+        </div>
+    </div>
+    {{/payload}}
+    </div>`
  }
 };
 
@@ -253,6 +265,15 @@ kommunicateDashboard.markup.buttonContainerTemplate= function(options){
     }
     containerMarkup+='</form></div>';
     return containerMarkup;
+}
+kommunicateDashboard.markup.getImageContainer = function(options) {
+    if (options && options.payload) {
+        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        return Mustache.to_html(kommunicateDashboard.markup.getImageTemplate(), options);
+    } else {
+        return "";
+    }
 }
 kommunicateDashboard.markup.quickRepliesContainerTemplate= function(options){
     var containerMarkup = '<div class="km-dashboard-cta-multi-button-container">';

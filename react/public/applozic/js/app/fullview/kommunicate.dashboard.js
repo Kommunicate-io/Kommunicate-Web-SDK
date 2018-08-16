@@ -79,6 +79,9 @@ kommunicateDashboard ={
                 case "8":
                     return kommunicateDashboard.markup.getDialogboxContainer(metadata);
                     break;
+                case "9":
+                    return kommunicateDashboard.markup.getImageContainer(metadata);
+                    break;
                 default:
                     return "";
                     break;

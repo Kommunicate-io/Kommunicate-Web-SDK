@@ -336,6 +336,9 @@ $applozic.extend(true,Kommunicate,{
                     
                 case "8":
                     return Kommunicate.markup.getDialogboxContainer(metadata);
+                case "9":
+                    return Kommunicate.markup.getImageContainer(metadata);
+                    break;    
                 default:
                     return "";
                     break;

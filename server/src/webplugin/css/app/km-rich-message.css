@@ -895,3 +895,16 @@
 #mck-email-error-alert-box .svg-container {
     background-color: #f1a5a5;
 }
+.km-template-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+.km-template-img-caption {
+    margin-top: 5px;
+    font-weight: 400;
+    text-align: center;
+    color: #6f6e6e;
+    letter-spacing: 0.3px;
+    font-size: 15px;
+}

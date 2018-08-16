@@ -792,9 +792,21 @@ cursor: pointer;
         margin-left: 10px;
         margin-right: 10px;
     }
-
-
-
     .km-dash-faq-list--header .km-dash-faq-list--header_text-container:first-child{
         border-radius: 16px 16px 0px 0px;
+    }
+    .km-dashboard-image-template {
+        width: 340px;
+    }
+    .km-dashboard-template-img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    .km-dashboard-template-img-caption {
+        margin-top: 5px;
+        font-weight: 400;
+        text-align: center;
+        color: #6f6e6e;
+        letter-spacing: 0.3px;
     }
