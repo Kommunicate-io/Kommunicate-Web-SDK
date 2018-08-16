@@ -581,20 +581,15 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-      if (user) {
         return userModel.destroy({
           where: {
             userName: userName,
             applicationId: applicationId
           }
         }).then(result => {
-          //deactivate user from applozic
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
           return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
         })
-      } else {
-        return "USER DOES NOT EXIST OR ALREADY DELETED";
-      }
     })
   } else {
     return userModel.update({
