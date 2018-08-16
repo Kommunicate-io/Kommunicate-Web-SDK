@@ -104,7 +104,7 @@ $(document).ready(function() {
                                     
                                        
                                     }else if (typeof  value =='string'){
-                                        $kmApplozic("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+key+'</span>' + " : " +'<span class="km-user-info-meatadata-value">'+value+'</span></p>');
+                                        $kmApplozic("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+key+'</span><span class="km-user-info-meatadata-value">'+value+'</span></p>');
                                     }
                                     
                                 });
@@ -124,6 +124,7 @@ $(document).ready(function() {
                         $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
                         $kmApplozic("#km-sidebar-user-email").html(user.email)
+                        $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
                             userSession.clearbitKey && clearbit(user.email, user.userId);
                            
