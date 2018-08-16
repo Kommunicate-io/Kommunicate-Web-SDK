@@ -1838,6 +1838,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					} 
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
 						$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
+						$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();

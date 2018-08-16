@@ -94,12 +94,17 @@ $(document).ready(function() {
                                         switch (key) {
                                             case 'KM_PSEUDO_USER':
                                                 if (value.hidden != "true" || value.pseudoName == "true" && user.roleType === 3) {
-                                                    $("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
+                                                    $kmApplozic("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
                                                 }
+                                                $kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
                                             break;
                                             case 'kmClearbitData':
+                                                $kmApplozic("#km-clearbit-title-panel, .km-user-info-inner").addClass("vis").removeClass("n-vis");
+                                                $kmApplozic("#km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
                                                 displayCustInfo(value);
                                             break;
+                                            default :
+                                                $kmApplozic("#km-sidebar-user-info-wrapper").addClass("vis").removeClass("n-vis");
                                     } 
                                     
                                        
@@ -111,7 +116,7 @@ $(document).ready(function() {
 
                             }
                         }
-
+                        console.log(user);
                         $("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
                             $("#km-user-info-list .email").html(user.email);                       
@@ -121,10 +126,13 @@ $(document).ready(function() {
                         //$("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
                         var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
                         imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
-                        $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
+                        $kmApplozic("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
-                        $kmApplozic("#km-sidebar-user-email").html(user.email)
-                        $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
+                        
+                        if(typeof user.email !== 'undefined') {
+                            $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
+                            $kmApplozic("#km-sidebar-user-email").html(user.email);
+                        }
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
                             userSession.clearbitKey && clearbit(user.email, user.userId);
                            

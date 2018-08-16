@@ -83,7 +83,6 @@ span.km-contact-search-tab img {
     text-overflow: ellipsis;
     letter-spacing: 0.5px;
     color: #5a5858;
-    font-family: 'OpenSans', sans-serif;
 }
 .km-user-name-sec a {
     border-left: 1px solid #ddd;
@@ -150,21 +149,17 @@ span.km-contact-search-tab img {
     background-color: #d8d8d8;
     font-size: 12px;
     letter-spacing: 0.4px;
-    text-align: left;
     color: #5a5858;
     padding-left: 13px;
-    font-family: 'OpenSans', sans-serif;
 }
 .km-clearbit-title-panel {
     background-color: #d8d8d8;
     font-size: 12px;
     letter-spacing: 0.4px;
-    text-align: left;
     color: #5a5858;
     padding-left: 13px;
-    font-family: 'OpenSans', sans-serif;
 }
-.km-sidebar-info-panel {
+.km-sidebar-info-panel, .km-clearbit-title-panel {
     background-color: #efefef;
     font-size: 14px;
     letter-spacing: 0.4px;
@@ -210,14 +205,14 @@ span.km-contact-search-tab img {
     margin-bottom: 0;
 }
 .km-clearbit-user-data {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.4px;
     text-align: left;
     color: #898686;
     margin-bottom: 0;
 }
 .km-clearbit-user-industry {
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: 0.4px;
     color: #5a5858;
 }
@@ -247,6 +242,8 @@ span.km-contact-search-tab img {
 }
 .km-clearbit-user-domain{
     margin-bottom: 0;
+    font-size: 14px;
+    color: #2f9de5;
 }
 .km-clearbit-logo-wrapper > #domain-link {
     text-decoration: none;
@@ -257,8 +254,8 @@ span.km-contact-search-tab img {
 .km-clearbit-divider{
     margin-bottom: 15px;
     margin-top: 15px;
-    height: 2px;
-    border: solid 1px #cecece;
+    /* height: 2px; */
+    border-top: solid 1px #cecece;
 }
 .km-clearbit-company-description-wrapper{
     padding-top: 16px;
@@ -469,7 +466,6 @@ ul#km-group-search-list li {
 }
 
 .conversation-integration-modal-title {
-    font-family: 'OpenSans', sans-serif;
     font-size: 20px;
     font-weight: 600;
     letter-spacing: 0.3px;
