@@ -1,5 +1,6 @@
 const ThirdPartyIntegrationSettings = require('../../models').ThirdPartyIntegrationSettings;
-const customerService = require('../../customer/customerService')
+const customerService = require('../../customer/customerService');
+const botPlatformClient = require("../../utils/botPlatformClient");
 const LIZ = require("../../register/bots.js").LIZ;
 const INTEGRATION_PLATFORMS = require('../../application/utils').INTEGRATION_PLATFORMS;
 
