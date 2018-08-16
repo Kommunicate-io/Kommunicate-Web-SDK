@@ -38,7 +38,7 @@ var count = 0 ;
         maxGroupSize: 100,
         authenticationTypeId: 0,
         isAnonymousChat: true,
-        groupName: "Kommunicate",
+        groupName: "Conversations",
         agentId: "",
         agentName: "",
         labels: {
@@ -1434,6 +1434,7 @@ var count = 0 ;
                           kmAnonymousChatLauncher.classList.remove('vis');
                           kmAnonymousChatLauncher.classList.add('n-vis');
                         });
+                        document.getElementById("km-tab-title").innerHTML = optns.conversationTitle;
                         if ($applozic("#km-form-chat-login .km-form-group input").hasClass("n-vis")){
                             $applozic("#km-form-chat-login .km-form-group .km-form-control.n-vis").prop('required',null);
                         }
@@ -8037,7 +8038,7 @@ var count = 0 ;
                     //     $mck_preview_msg_content.removeClass('vis').addClass('n-vis');
                     //     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     // }
-                } 
+                }
                 else if(message.contentType === 2) {
                     while (msg[msg.length-1] === ".")
                         msg = msg.slice(0,-1);
@@ -8062,7 +8063,7 @@ var count = 0 ;
                     $applozic("#launcher-agent-img-container").html('').addClass('n-vis').removeClass('vis');
                     $applozic("#launcher-svg-container").addClass('vis').removeClass('n-vis');
                 }
-                
+
                 // $mck_msg_preview.data('mck-id', contact.contactId);
                 $mck_msg_preview_visual_indicator_text.data('mck-id', contact.contactId);
                 // $mck_msg_preview.show();
