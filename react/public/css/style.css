@@ -10703,7 +10703,10 @@ input:required {
   border: 0;
 }
 .sidebar-profile-dropdown button img, .sidebar-profile-dropdown img {
-  height: 30px;
+  height: 38px;
+  width: 38px;
+  object-fit: cover;
+  margin: 0 auto;
 }
 .sidebar-profile-dropdown .nav-link, .sidebar-profile-dropdown.nav-link {
   margin-top: 10px;
@@ -10712,7 +10715,7 @@ input:required {
   content: none;
 }
 .sidebar-profile-dropdown .online-indicator-profile-pic {
-  left: 22px;
+  left: 30px;
   width: 10px;
   height: 10px;
 }
@@ -10731,6 +10734,9 @@ input:required {
   background: transparent !important;
   text-decoration: none;
   color: #1c2429;
+}
+.sidebar .nav .nav-item .sidebar-profile-dropdown:hover {
+  border-radius: 50%;
 }
 /* .mck-sidebox-launcher {
   display: none;

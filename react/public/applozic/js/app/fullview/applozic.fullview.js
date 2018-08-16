@@ -1837,6 +1837,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						$mck_search.val("");
 					} 
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
+						$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -6512,6 +6513,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_group_name_save.removeClass('vis').addClass('n-vis');
 					$mck_group_name_edit.removeClass('n-vis').addClass('vis');
 					$mck_group_info_tab.data('km-id', params.groupId);
+					$mck_group_info_tab.addClass("km-visibility-shown").removeClass("km-visibility-hidden");
 					$mck_btn_group_icon_save.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon_loading.removeClass('vis').addClass('n-vis');
 					$mck_group_info_icon.data('iconurl', "");
