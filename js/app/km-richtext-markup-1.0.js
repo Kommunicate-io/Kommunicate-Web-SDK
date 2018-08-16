@@ -230,7 +230,19 @@ getListMarkup:function(){
          </div>
      </div>
  </div>`;
- }
+ },
+ getImageTemplate : function(){
+    return `<div>
+    {{#payload}}
+    <div class="km-image-template">
+       <img class="km-template-img" src="{{url}}"></img>
+       <div class="km-template-image-caption-wrapper">
+           <p class="km-template-img-caption">{{caption}}</p>
+       </div>
+   </div>
+   {{/payload}}
+   </div>`
+}
 
 };
 
@@ -361,4 +373,13 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
      }else{
          return "";
      }
+}
+Kommunicate.markup.getImageContainer = function(options) {
+    if (options && options.payload) {
+        let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
+        options.payload = payload;
+        return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
+    } else {
+        return "";
+    }
 }
