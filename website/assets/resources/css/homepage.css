@@ -2519,7 +2519,12 @@ input:-ms-input-placeholder {
 .homepage-beta-landing-page-section .category-links, .homepage-customer-logos-section .category-links {
   padding-top: 90px;
   list-style: none;
+  display: flex;
   padding-left: 0;
+  justify-content: space-around;
+  align-items: center;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
 }
 .homepage-customer-logos-section .category-links {
   padding-top: 15px;
@@ -2527,11 +2532,16 @@ input:-ms-input-placeholder {
 }
 
 .homepage-beta-landing-page-section .category-links li, .homepage-customer-logos-section .category-links li {
-  display: inline-block;
+  /* display: inline-block; */
   width: auto;
   height: 60px;
   margin-right: 60px;
   margin-bottom: 20px;
+}
+@media (max-width:400px){
+  .homepage-beta-landing-page-section .category-links li, .homepage-customer-logos-section .category-links li {
+    margin-right: 10px;
+  }
 }
 .homepage-beta-landing-page-section .category-links li:last-child, .homepage-customer-logos-section .category-links li:last-child {
   height: 60px;
@@ -2746,8 +2756,19 @@ ul.nacc li p {
   max-height: 500px;
 }
 
-.homepage-ab-beta-landing-page-section .img-cont-pos-rel {
-  position: relative;
+
+@media (min-width:1600px){
+  .homepage-ab-beta-landing-page-section .img-cont-pos-rel {
+    position: relative;
+    bottom:-85px;
+  }
+  .homepage-ab-beta-features-section .faqs-svg, .homepage-ab-beta-features-section .bot-integration-svg, .homepage-ab-beta-features-section .conversations-svg {
+    max-height: 700px;
+  }
+  .homepage-ab-beta-landing-page-section .hero-text{
+    margin-top: -56px;
+  }
+
 }
 .homepage-ab-beta-landing-page-section .girl-fg-svg-shape{
   position: absolute;
