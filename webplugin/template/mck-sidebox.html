@@ -1,0 +1,852 @@
+<Html>
+	<head>
+		<!-- <link href="../css/app/mck-sidebox-1.0.min.css" rel="stylesheet"> -->
+		<!-- <link href="../css/kommunicatepluginrequirements.min.css" rel="stylesheet"> -->
+		<link href='../lib/css/mck-combined.min.css' rel="stylesheet">
+		<link href='../css/app/mck-sidebox-1.0.css' rel="stylesheet">
+		<link href='../css/app/km-rich-message.css' rel="stylesheet">
+		<link href='../css/app/km-login-model.css' rel="stylesheet">
+		<script type="text/javascript">
+			var $original;
+			if (typeof jQuery !== 'undefined') {
+				$original = jQuery.noConflict(true);
+				$ = $original;
+				jQuery = $original;
+			}
+		</script>
+		<script type ="text/javascript" src="../lib/js/jquery-2.2.2.min.js"></script>
+	</head>
+	<body>
+<div id="mck-sidebox" class="mck-sidebox mck-box fade" style="visibility: hidden;">
+	<div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
+		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
+			<div id="mck-conversation-header" class="mck-conversation-header mck-truncate n-vis"></div>
+			<div class="mck-box-top mck-title">
+				<div class="blk-lg-10">
+					<div id="mck-tab-individual" class="mck-row">
+						<div class="mck-tab-link blk-lg-2 mck-back-btn-container">
+							<a id="mck-conversation-back-btn" href="#" target="_self" role="link" class="mck-conversation-tab-link">
+								<svg class="mck-msg-list-icon" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="30" viewBox="0 0 24 24" width="30">
+									<path d="M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z" />
+									<path d="M0-.5h24v24H0z" fill="none" />
+								</svg>
+
+							</a>
+						</div>
+						<div class="blk-lg-7 mck-name-status-container mck-box-title mck-truncate">
+							<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">
+								Conversations</div>
+							<div id="mck-tab-status" class="mck-tab-status mck-truncate n-vis" style="display:none !important;"></div>
+							<div class="mck-typing-box mck-truncate n-vis">
+								<span id="mck-typing-label">typing...</span>
+							</div>
+						</div>
+						<div id="mck-btn-video-call" class="mck-videocall-btn  blk-lg-2 n-vis">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+								<path d="M0 0h24v24H0z" fill="none"/>
+								<path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
+							</svg>
+						</div>
+					</div>
+					<div id="mck-tab-conversation" class="mck-row">
+						<h4 id="mck-conversation-title" class="mck-box-title mck-truncate">Conversations</h4>
+					</div>
+
+				</div>
+				<div class="km-kb-container n-vis">
+					<button id="km-faq" class="km-faq" type="button">FAQ</button>
+				</div>
+				<div class="blk-lg-2 mck-close-btn">
+					<button type="button" class="mck-minimize-icon mck-box-close mck-close icon n-vis">
+						<span aria-hidden="true">&minus;</span>
+					</button>
+					<button type="button" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+							<path d="M0 0h24v24H0z" fill="none" />
+						</svg>
+					</button>
+				</div>
+			</div>
+			<div id="mck-product-group" class="mck-tab-panel mck-btn-group mck-product-group">
+				<div id="mck-product-box" class="mck-product-box n-vis mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
+					<div class="mck-row">
+						<div class="blk-lg-10">
+							<div class="mck-row">
+								<div class="blk-lg-3 mck-product-icon"></div>
+								<div class="blk-lg-9">
+									<div class="mck-row">
+										<div class="blk-lg-8 mck-product-title mck-truncate"></div>
+										<div class="move-right mck-product-rt-up mck-truncate blk-lg-4">
+											<strong class="mck-product-key"></strong>
+											<span class="mck-product-value"></span>
+										</div>
+									</div>
+									<div class="mck-row">
+										<div class="blk-lg-8 mck-truncate mck-product-subtitle"></div>
+										<div class="move-right mck-product-rt-down mck-truncate blk-lg-4">
+											<strong class="mck-product-key"></strong>
+											<span class="mck-product-value"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="blk-lg-2">
+							<span class="mck-caret n-vis"></span>
+						</div>
+					</div>
+				</div>
+				<ul id="mck-conversation-list" class="mck-dropdown-menu menu-right mck-conversation-list n-vis" role="menu"></ul>
+			</div>
+			<div id="mck-tab-option-panel" class="mck-tab-panel mck-top-btn-panel " style="display:none !important;">
+				<div id="mck-tab-menu-box" class="mck-tab-menu-box vis">
+					<div class="mck-row">
+						<div class="blk-lg-2 move-right">
+							<div class="mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+									<path d="M0 0h24v24H0z" fill="none"/>
+									<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+								</svg>
+							</div>
+							<ul id="mck-tab-menu-list" class="mck-dropdown-menu mck-tab-menu-box menu-right" role="menu">
+								<li class="mck-tab-message-option">
+									<a href="#" id="mck-btn-clear-messages" class="mck-btn-clear-messages menu-item" title="Clear Messages">
+										Clear Messages </a>
+								</li>
+								<li id="li-mck-block-user">
+									<a href="#" id="mck-block-button" class="menu-item" title="Block User">
+										Block User </a>
+								</li>
+								<li id="li-mck-group-info" class="mck-group-menu-options">
+									<a href="#" id="mck-group-info-btn" class="menu-item" title="Group Info"> Group Info </a>
+								</li>
+								<li id="li-mck-leave-group" class="mck-group-menu-options">
+									<a href="#" id="mck-btn-leave-group" class="menu-item" title="Exit Group"> Exit Group </a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mck-box-body">
+				<div id="mck-video-call-indicator" class="applozic-launchar n-vis">
+					<div id="mck-call-indicator-header" class="mck-row">
+						<div id="mck-video-call-icon" class="blk-lg-3 videocall-image">
+							<span class="mck-contact-icon"></span>
+						</div>
+						<div class="blk-lg-9">
+							<div id="mck-video-call-controls">
+								<div id="mck-vid-btn" class="mck-row ">
+									<div id="mck-video-call-indicator-txt" class="mck-video-call-indicator-txt blk-lg-9"></div>
+								</div>
+								<div class="mck-row justify-content-md-center">
+									<div id="mck-call-btn-div" class="mck-centered blk-lg-6">
+										<button id="mck-vid-receive-btn" class="mck-btn">Accept</button>
+										<button id="mck-vid-reject-btn" class="mck-btn">Reject</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div id="mck-message-cell" class="mck-tab-cell mck-message-cell">
+					<div id="mck-price-widget" class="mck-row mck-price-widget mck-top-widget n-vis">
+						<div class="mck-widget-panel">
+							<input type="text" id="mck-price-text-box" placeholder="Enter final agreed price">
+							<button type="button" id="mck-price-submit" class="mck-btn mck-btn-green mck-price-submit" title="Submit">
+								<span>Submit</span>
+							</button>
+						</div>
+					</div>
+					<div class="mck-conversation">
+						<div class="mck-message-inner"></div>
+						<div id="mck-contacts-content" class="mck-contacts-content mck-text-center">
+							<button type="button" id="mck-msg-new" class="mck-contact-search mck-btn" title="Start New">
+								<span>Start New</span>
+							</button>
+						</div>
+						<!-- mck-sidebox-ft box was here previously -->
+					</div>
+					<div class="faq-common">
+							<div class="km-no-results-found-container n-vis">
+									<div class="km-no-results-found">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+											<path d="M18.01 22H6a2 2 0 0 1-2-2V8l6-6h8a2 2 0 0 1 1.991 2l.01 16a2 2 0 0 1-1.991 2zM6.037 16v1.5h7V16zm0-3v1.5h10V13zM11 3.5L5.5 9H11V3.5z" data-name="Subtraction 1" fill="#c5c5c7"/>
+											<path fill="none" d="M24 0H0v24h24z" data-name="Path 2"/>
+										</svg>
+										<p>NO RESULTS FOUND</p>
+									</div>
+								</div>
+						<div id="km-faqdiv" class="mck-faq-inner km-faqdiv">
+						</div>
+						<div id="km-faqanswer" class="km-faqanswer"></div>
+						<div id="km-contact-search-input-box" class="km-faqsearch blk-lg-12">
+							<div class="km-talk-to-human-div n-vis">
+								<p>Looking for something else?</p>
+								<a href="#" class="talk-to-human-link" id="talk-to-human-link">Talk to an agent</a>
+							</div>
+							<div class="km-contact-input-container">
+								<span class="km-faqsearch-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+										<path fill="#585555" fill-rule="nonzero" d="M10.557 9.573l5.162 5.162-.984.984-5.162-5.162a5.913 5.913 0 1 1 .984-.984zm-4.644.862a4.522 4.522 0 1 0 0-9.044 4.522 4.522 0 0 0 0 9.044z"
+											opacity=".618" />
+									</svg>
+								</span>
+								<input id="km-faq-search-input" class="km-faqsearch-input" type="text" data-provide="typeahead" placeholder="Search in FAQs..." class="mck-typeahead">
+							</div>
+						</div>
+
+					</div>
+
+					<div id="mck-contact-loading" class="mck-loading">
+							<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+								<circle class="mck-spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+							</svg>
+						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
+					</div>
+					<div id="mck-no-conversations" class="mck-no-data-text mck-text-muted n-vis">
+						<h3>No conversations yet!</h3>
+					</div>
+					<div id="mck-no-messages" class="mck-no-data-text mck-text-muted n-vis">
+						<h3>No messages yet!</h3>
+					</div>
+					<div id="mck-no-more-conversations" class="mck-show-more-icon n-vis">
+						<h3>No more conversations!</h3>
+					</div>
+					<div id="mck-no-more-messages" class="mck-show-more-icon n-vis">
+						<h3>No more messages!</h3>
+					</div>
+				</div>
+			</div>
+			<div id="mck-offline-message-box" class="mck-offline-message-box n-vis">SET DEFAULT OFFLINE MESSAGE!
+			</div>
+
+			<div id="mck-away-msg-box" class="n-vis">
+				<hr>
+				<p id="mck-away-msg" class="mck-away-msg"></p>
+			</div>
+			<!-- banner for email collection -->
+			<div id="mck-email-collection-box" class="n-vis">
+				<hr>
+				<div class="svg-container">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 311" width="23px">
+						<path d="M512 26c-.021-14.449-12.555-26-27-26L26 1c-7 .009-13.053 2.04-18 7a27.439 27.439 0 0 0-8 19v258c.009 7.005 3.04 13.053 8 18a27.514 27.514 0 0 0 19 8l459-1a25.874 25.874 0 0 0 26-26zm-55 0L256 166 55 27zM304.486 158.416L460 284l-408 1 155.333-126.584c5.722-4.439-11.276-25.438-17-21L27 271 26 39l223 153c2.244 1.551 4.394 3 7 3s5.751-1.437 8-3L485 38l1 233-165.514-133.584c-5.719-4.437-21.724 16.562-16 21z" data-name="Path 1" fill="#6b6767"/>
+					</svg>
+				</div>
+
+				<div id="mck-collect-email" class="mck-collect-email">How may we reach you?</div>
+			</div>
+			<div id="mck-email-error-alert-box" class="n-vis">
+				<hr>
+				<div class="svg-container">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 311" width="23px">
+						<path d="M512 26c-.021-14.449-12.555-26-27-26L26 1c-7 .009-13.053 2.04-18 7a27.439 27.439 0 0 0-8 19v258c.009 7.005 3.04 13.053 8 18a27.514 27.514 0 0 0 19 8l459-1a25.874 25.874 0 0 0 26-26zm-55 0L256 166 55 27zM304.486 158.416L460 284l-408 1 155.333-126.584c5.722-4.439-11.276-25.438-17-21L27 271 26 39l223 153c2.244 1.551 4.394 3 7 3s5.751-1.437 8-3L485 38l1 233-165.514-133.584c-5.719-4.437-21.724 16.562-16 21z" data-name="Path 1" fill="#fff"/>
+					</svg>
+				</div>
+				<div id="mck-email-error-alert" class="mck-email-error-alert">It seems you have entered an invalid email</div>
+			</div>
+			<!-- Footer With Input Field -->
+			<div id="mck-sidebox-ft" class="mck-box-ft">
+				<!-- <div id="mck-away-msg-box" class="n-vis">
+					<p id="mck-away-msg" class="mck-away-msg"></p>
+				</div> -->
+
+				<div class="mck-box-form mck-row n-vis">
+					<div class="blk-lg-12">
+						<p id="mck-msg-error" class="mck-sidebox-error n-vis"></p>
+					</div>
+					<div id="mck-msg-response" class="blk-lg-12 mck-box-response n-vis">
+						<div id="mck-response-text" class="response-text"></div>
+					</div>
+					<div class="blk-lg-12">
+						<form id="mck-msg-form" class="vertical mck-msg-form">
+							<div class="mck-form-group n-vis">
+								<label class="sr-only placeholder-text control-label" for="mck-msg-to">To:</label>
+								<input class="mck-form-cntrl" id="mck-msg-to" name="mck-msg-to" placeholder="To" required>
+							</div>
+							<div id="mck-reply-to-div" class="n-vis">
+								<button type="button" id="close" class="mck-box-close mck-close-panel move-right">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<div id="mck-reply-to" class=" mck-msgto "></div>
+								<div id="mck-reply-msg"> </div>
+							</div>
+							<div class="mck-form-group last last-child">
+								<label class="sr-only placeholder-text control-label" for="mck-textbox">Message</label>
+								<div id="mck-textbox-container" class="mck-textbox-container">
+									<div id="mck-btn-smiley-box" class="mck-blk-2 mck-text-box-panel move-right n-vis">
+										<div class="mck-blk-12">
+											<button type="button" id="mck-btn-smiley" class="mck-btn mck-btn-smiley mck-btn-text-panel" title="Smiley">
+												<!-- <span class="mck-icon-smiley-blue"></span> -->
+												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"  class="mck-icon-smiley-blue">
+													<path fill="none" d="M0 0h24v24H0V0z"/>
+													<circle cx="15.5" cy="9.5" r="1.5" fill="rgba(38,50,56,.52)"/>
+													<circle cx="8.5" cy="9.5" r="1.5" fill="rgba(38,50,56,.52)"/>
+													<path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-6c.78 2.34 2.72 4 5 4s4.22-1.66 5-4H7z" fill="rgba(38,50,56,.52)"/>
+												</svg>
+											</button>
+										</div>
+									</div>
+									<div id="mck-btn-attach-box" class="mck-blk-2 mck-text-box-panel mck-mid-panel move-right mck-attach-menu-main-container vis">
+										<div id="mck-attachmenu-box" class="mck-attach-menu">
+											<div id="mck-btn-attach" class="mck-dropdown-toggle mck-btn-attach mck-file-attach-label mck-btn mck-btn-text-panel" data-toggle="mckdropdown"
+											 aria-expanded="true" title="Attach File">
+											 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.79 10.492" class="mck-icon-upload"><path fill="rgba(38,50,56,.52)" d="M0 7.212A3.278 3.278 0 0 0 5.6 9.53l5.57-5.57a2.05 2.05 0 0 0 .614-1.642 2.552 2.552 0 0 0-.769-1.574A2.287 2.287 0 0 0 7.796.591L3.177 5.207a1.31 1.31 0 0 0 .125 1.9 1.358 1.358 0 0 0 1.9.125l3.215-3.216a.4.4 0 0 0 .031-.546l-.142-.142a.369.369 0 0 0-.558.023l-3.21 3.217c-.105.105-.37.074-.569-.125-.057-.057-.336-.358-.124-.568l4.617-4.618a1.349 1.349 0 0 1 1.884.153 1.61 1.61 0 0 1 .5.983 1.11 1.11 0 0 1-.344.9l-5.57 5.571a2.335 2.335 0 0 1-3.3-3.3l4.201-4.209A.369.369 0 0 0 5.849.88l-.2-.2a.334.334 0 0 0-.487.011l-4.2 4.2a3.254 3.254 0 0 0-.96 2.317z" data-name="Path 3"/></svg>
+												<!-- <span class="mck-icon-upload"></span> -->
+											</div>
+											<ul id="mck-upload-menu-list" class="mck-dropup-menu mck-upload-menu-list mck-menu-right" role="menu">
+												<li>
+													<a id="mck-file-up" href="#" class="mck-file-upload menu-item" title="File &amp; Photos">
+															<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="menu-icon" fill="#818181">
+																<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+																<path d="M0 0h24v24H0z" fill="none"/>
+															</svg>
+														<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-photo.png" class="menu-icon" alt="File &amp; Photos"> -->
+														<span id="mck-file-up-label">Files &amp; Photos</span>
+													</a>
+												</li>
+												<li>
+													<a id="mck-btn-loc" href="#" class="menu-item mck-btn-loc" title="Share Location">
+														<div class="mck-menu-icon">
+																<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="mck-icon-marker-blue" fill="#818181">
+																	<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+																	<path d="M0 0h24v24H0z" fill="none"/>
+																</svg>
+															<!-- <span class="mck-icon-marker-blue"></span> -->
+														</div>
+														<span id="mck-share-loc-label">Share Location</span>
+													</a>
+												</li>
+
+											</ul>
+										</div>
+										<div id="mck-attachfile-box" class="mck-blk-12 n-vis">
+											<button id="mck-file-up2" type="button" class="mck-file-upload mck-file-attach-label mck-btn mck-btn-text-panel" title="Attach File">
+												<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.79 10.492" class="mck-icon-upload"><path fill="rgba(38,50,56,.52)" d="M0 7.212A3.278 3.278 0 0 0 5.6 9.53l5.57-5.57a2.05 2.05 0 0 0 .614-1.642 2.552 2.552 0 0 0-.769-1.574A2.287 2.287 0 0 0 7.796.591L3.177 5.207a1.31 1.31 0 0 0 .125 1.9 1.358 1.358 0 0 0 1.9.125l3.215-3.216a.4.4 0 0 0 .031-.546l-.142-.142a.369.369 0 0 0-.558.023l-3.21 3.217c-.105.105-.37.074-.569-.125-.057-.057-.336-.358-.124-.568l4.617-4.618a1.349 1.349 0 0 1 1.884.153 1.61 1.61 0 0 1 .5.983 1.11 1.11 0 0 1-.344.9l-5.57 5.571a2.335 2.335 0 0 1-3.3-3.3l4.201-4.209A.369.369 0 0 0 5.849.88l-.2-.2a.334.334 0 0 0-.487.011l-4.2 4.2a3.254 3.254 0 0 0-.96 2.317z" data-name="Path 3"/></svg>
+											</button>
+										</div>
+									</div>
+									<input id="mck-autosuggest-search-input" type="text" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead"
+									 autocomplete="off">
+									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
+									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required" data-text="Type your message..."></div>
+									<div class="mck-blk-2 mck-text-box-panel move-right n-vis">
+										<div class="mck-blk-12">
+											<button type="submit" id="mck-msg-sbmt" class="mck-btn mck-btn-text-panel" title="Send Message">
+												<span class="mck-icon-send"></span>
+											</button>
+										</div>
+									</div>
+									<input id="mck-file-input" class="mck-file-input n-vis" type="file" name="files[]">
+									<div id="mck-file-box" class="n-vis"></div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="mck-running-on n-vis">
+					<svg xmlns="http://www.w3.org/2000/svg" width="10" height="15" style="vertical-align: middle;"><path fill="#513DD8" fill-rule="nonzero" d="M7.69879975.54941587L5.81596948 6.3447902l3.87961917.47635733c.13377998.01642612.19891133.17720919.10092463.28401145l-7.24573967 7.4456573c-.05838132.06073652-.1713319.01291556-.14228864-.0853757l1.54838036-5.83643965-3.71239422-.45582469C.11069114 8.15675014.0455598 7.99596707.1435465 7.8891648L7.55445767.48076424c.06043478-.07746063.17133188-.01291553.14434208.06865163z"/></svg> by
+				<a class="mck-powered-by" href="https://www.kommunicate.io" target="_blank">
+					<span class="n-vis">Applozic Chat SDK</span> Kommunicate.io
+				</a>
+			</div>
+		</div>
+		<div id="mck-sidebox-search" class="mck-sidebox-search mck-sidebox-content mck-box-content n-vis">
+			<div class="mck-box-top">
+				<div class="mck-tab-link blk-lg-4">
+					<a href="#" target="_self" role="link" class="mck-conversation-tab-link">
+						<span class="mck-icon-backward"></span>
+					</a>
+				</div>
+				<div class="blk-lg-5">
+					<div class="mck-box-title mck-truncate" title="Start New">Start New Conversation</div>
+				</div>
+				<div class="blk-lg-3 move-right mck-start-new-menu-item mck-tab-menu-box" style="display:none">
+					<div class="mck-dropdown-toggle" data-toggle="mckdropdown" aria-expanded="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#fff">
+							<path d="M0 0h24v24H0z" fill="none"/>
+							<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+						</svg>
+					</div>
+					<ul id="mck-start-new-menu-list" class="mck-dropdown-menu  menu-right" role="menu">
+						<li>
+							<a href="#" id="mck-new-group" class="mck-new-group-button menu-item" title="Create Group">Create Group
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div id="mck-search-tab-box" class="mck-search-tab-box mck-row">
+				<div class="blk-lg-12" style="display:none">
+					<ul class="mck-nav mck-nav-panel">
+						<li class="mck-nav-item mck-nav-divider">
+							<a id="mck-contact-search-tab" class="mck-nav-link mck-contact-search active" href="#">
+								<strong>Contacts</strong>
+							</a>
+						</li>
+						<li class="mck-nav-item">
+							<a id="mck-group-search-tab" class="mck-nav-link mck-group-search" href="#">
+								<strong>Groups</strong>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="mck-box-top mck-search-box-top">
+				<div id="mck-contact-search-input-box" class="mck-input-group blk-lg-12">
+					<input id="mck-contact-search-input" type="text" data-provide="typeahead" placeholder="Search..." />
+					<span class="mck-search-icon">
+						<a href="#" role="link" class="mck-contact-search-link">
+							<span class="mck-icon-search"></span>
+						</a>
+					</span>
+				</div>
+				<div id="mck-group-search-input-box" class="mck-input-group blk-lg-12 n-vis">
+					<input id="mck-group-search-input" type="text" data-provide="typeahead" placeholder="Search..." />
+					<span class="mck-search-icon">
+						<a href="#" role="link" class="mck-group-search-link">
+							<span class="mck-icon-search"></span>
+						</a>
+					</span>
+				</div>
+			</div>
+			<div class="mck-box-body">
+
+				<div id="mck-search-cell" class="mck-tab-cell">
+					<div class="mck-message-inner">
+						<ul id="mck-contact-search-list" class="mck-contact-search-list mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked"></ul>
+						<ul id="mck-group-search-list" class="mck-contact-list mck-group-search-list mck-nav mck-nav-tabs mck-nav-stacked n-vis"></ul>
+						<div id="mck-no-search-groups" class="mck-no-data-text mck-text-muted n-vis">No groups yet!
+						</div>
+						<div id="mck-no-search-contacts" class="mck-no-data-text mck-text-mutedn n-vis">No contacts yet!
+						</div>
+						<div id="mck-search-loading" class="mck-loading n-vis">
+							<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+								<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+							</svg>
+							<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mck-group-create-tab" class="mck-group-create-tab mck-sidebox-content mck-box-content n-vis">
+			<div class="mck-box-top">
+				<div class="mck-tab-link blk-lg-4">
+					<a id="mck-search-tab-link" href="#" target="_self" role="link" class="mck-contact-search">
+						<span class="mck-icon-backward"></span>
+					</a>
+				</div>
+				<div class="blk-lg-8">
+					<div class="mck-box-title mck-truncate" title="Create Group">Create Group
+					</div>
+				</div>
+			</div>
+			<div class="mck-box-body">
+				<div class="mck-tab-cell">
+					<div id="mck-group-create-panel" class="mck-tab-panel mck-message-inner mck-group-create-inner">
+						<div class="mck-group-sub-sec">
+							<div id="mck-group-create-icon-box" class="mck-group-create-icon-box mck-group-icon-box mck-hover-on">
+								<div class="mck-group-icon"></div>
+								<span class="mck-overlay-box">
+									<div class="mck-overlay">
+										<span class="mck-camera-icon"></span>
+										<span id="mck-gc-overlay-label" class="mck-overlay-label">Add Group Icon</span>
+									</div>
+									<div id="mck-group-create-icon-loading" class="mck-loading n-vis">
+										<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+											<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+										</svg>
+										<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" /> -->
+									</div>
+									<input id="mck-group-icon-upload" class="mck-group-icon-upload n-vis" type="file" name="files[]">
+								</span>
+							</div>
+						</div>
+						<div id="mck-group-create-name-sec" class="mck-group-sub-sec">
+							<div id="mck-group-create-name-box" class="mck-row mck-group-name-box">
+								<div class="blk-lg-12">
+									<div id="mck-gc-title-label" class="mck-label">Group Title
+									</div>
+								</div>
+								<div class="blk-lg-12">
+									<div id="mck-group-create-title" class="mck-group-create-title mck-group-title" contenteditable="true">Group title</div>
+								</div>
+							</div>
+						</div>
+						<div id="mck-group-create-type-sec" class="mck-group-sub-sec">
+							<div id="mck-group-create-type-box" class="mck-row mck-group-type-box">
+								<div class="blk-lg-12">
+									<div id="mck-gc-type-label" class="mck-label">Group Type</div>
+								</div>
+								<div class="blk-lg-12">
+									<select id="mck-group-create-type" class="mck-select">
+										<option value="2" selected>Public</option>
+										<option value="1">Private</option>
+										<option value="6">Open</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div id="mck-group-create-btn-sec" class="mck-group-sub-sec">
+							<button type="button" id="mck-btn-group-create" class="mck-btn mck-btn-green mck-btn-group-create" title="Create Group">Create Group</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mck-group-info-tab" class="mck-group-info-tab mck-sidebox-content mck-box-content">
+			<div class="mck-box-top">
+				<div class="mck-tab-link blk-lg-4">
+					<a id="mck-group-back-link" href="#" role="link" target="_self" class="mck-group-back-link">
+						<span class="mck-icon-backward"></span>
+					</a>
+				</div>
+				<div class="blk-lg-8">
+					<div class="mck-box-title mck-truncate" title="Group Info">Group Info
+					</div>
+				</div>
+			</div>
+			<div id="mck-group-info-panel" class="mck-tab-panel mck-group-info-panel">
+				<div class="mck-group-icon-sec">
+					<div id="mck-group-info-icon-box" class="mck-group-icon-box mck-group-info-icon-box mck-hover-on">
+						<div class="mck-group-icon"></div>
+						<span class="mck-overlay-box n-vis">
+							<div class="mck-overlay">
+								<span class="mck-camera-icon"></span>
+								<span id="mck-gi-overlay-label" class="mck-overlay-label">Change Group Icon</span>
+							</div>
+							<div id="mck-group-info-icon-loading" class="mck-loading vis">
+								<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+									<circle class="mck-spinner-path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-loading.gif" alt="Loading" /> -->
+							</div>
+							<input id="mck-group-icon-change" class="mck-group-icon-change n-vis" type="file" name="file[]" />
+						</span>
+					</div>
+					<div class="mck-text-center">
+						<a id="mck-btn-group-icon-save" href="#" role="link" class="mck-btn-group-icon-save n-vis" title="Save">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+								<path fill="none" d="M0 0h24v24H0z"/>
+								<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+							</svg>
+							<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save"> -->
+						</a>
+					</div>
+				</div>
+				<div id="mck-group-name-sec" class="mck-group-name-sec">
+					<div id="mck-group-name-box" class="mck-row mck-group-name-box">
+						<div class="blk-lg-9">
+							<div id="mck-group-title" class="mck-group-title" contenteditable="false">Group title</div>
+						</div>
+						<div class="blk-lg-3 mck-group-name-edit-icon">
+							<a id="mck-group-name-edit" href="#" role="link" class="mck-group-name-edit vis" title="Edit">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+									<path d="M0 0h24v24H0z" fill="none"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-write.png" alt="Edit"> -->
+							</a>
+							<a id="mck-group-name-save" href="#" role="link" class="mck-group-name-save n-vis" title="Save">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path fill="none" d="M0 0h24v24H0z"/>
+									<path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-save.png" alt="Save"> -->
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="mck-group-member-panel" class="mck-tab-panel mck-group-member-panel vis">
+				<div class="mck-group-md-sec">
+					<div id="mck-group-member-title" class="mck-row mck-group-member-text">Members</div>
+					<div id="mck-group-add-member-box" class="mck-row mck-group-admin-options mck-group-add-member-box n-vis">
+						<a id="mck-group-add-member" class="mck-group-add-member" href="#">
+							<div class="blk-lg-3">
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+									<path d="M0 0h24v24H0z" fill="none"/>
+									<path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+								</svg>
+								<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member"> -->
+							</div>
+							<div class="blk-lg-9">Add Member</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="mck-box-body">
+				<div class="mck-tab-cell">
+					<div class="mck-group-member-inner">
+						<ul id="mck-group-member-list" class="mck-group-member-list mck-contact-list mck-nav mck-nav-tabs mck-nav-stacked">
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div id="mck-group-update-panel" class="mck-tab-panel mck-group-update-panel n-vis">
+				<div class="mck-group-bottom-sec">
+					<div class="mck-row mck-group-update-sec">
+						<button type="button" id="mck-btn-group-update" class="mck-btn mck-btn-green mck-btn-group-update" title="Update">Update</button>
+					</div>
+				</div>
+			</div>
+			<div id="mck-group-info-ft" class="mck-group-info-ft">
+				<button type="button" id="mck-btn-group-exit" class="mck-btn mck-btn-blue mck-btn-group-exit" title="Exit Group">Exit Group
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="mck-loc-box" class="mck-box mck-loc-box fade" aria-hidden="false" style="visibility: hidden;">
+	<div class="mck-box-dialog mck-box-md">
+		<div class="mck-box-content">
+			<div class="mck-box-top mck-row">
+				<div class="blk-lg-10">
+					<h4 class="mck-box-title">Share Location</h4>
+				</div>
+				<div class="blk-lg-2">
+					<button type="button" class="mck-box-close" data-dismiss="mckbox" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			</div>
+			<div class="mck-box-body">
+				<div class="mck-form-group">
+					<div class="blk-lg-12">
+						<input id="mck-loc-address" type="text" class="mck-form-control" placeholder="Enter a location" autocomplete="off">
+					</div>
+				</div>
+				<div id="mck-map-content" class="mck-loc-content"></div>
+				<div class="n-vis">
+					<label class="blk-sm-2 mck-control-label">Lat.:</label>
+					<div class="blk-sm-3">
+						<input type="text" id="mck-loc-lat" class="mck-form-control">
+					</div>
+					<label class="blk-sm-2 mck-control-label">Long.:</label>
+					<div class="blk-sm-3">
+						<input type="text" id="mck-loc-lon" class="mck-form-control">
+					</div>
+				</div>
+			</div>
+			<div class="mck-box-footer">
+				<button id="mck-my-loc" type="button" class="mck-my-loc mck-btn mck-btn-green">My Location</button>
+				<button id="mck-loc-submit" type="button" class="mck-btn mck-btn-blue mck-loc-submit move-right">Send</button>
+				<button id="mck-btn-close-loc-box" type="button" class="mck-btn mck-btn-default move-right" data-dismiss="mckbox">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="mck-gm-search-box" class="mck-box mck-gm-search-box fade" aria-hidden="false" style="visibility: hidden;">
+	<div class="mck-box-dialog mck-box-sm">
+		<div class="mck-box-content">
+			<div class="mck-box-top mck-row">
+				<div class="blk-lg-3">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+						<path d="M0 0h24v24H0z" fill="none"/>
+						<path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+					</svg>
+					<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/mck-icon-add-member.png" alt="Add Member"> -->
+				</div>
+				<div class="blk-lg-7">
+					<h4 class="mck-box-title">Add Member</h4>
+				</div>
+				<div class="blk-lg-2">
+					<button type="button" class="mck-box-close" data-dismiss="mckbox" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			</div>
+			<div class="mck-box-body">
+				<div class="mck-form-group">
+					<div class="mck-input-group blk-lg-12">
+						<input id="mck-group-member-search" type="text" data-provide="typeahead" placeholder="Search..." />
+						<span class="mck-search-icon">
+							<a href="#" role="link" class="mck-group-member-search-link">
+								<span class="mck-icon-search"></span>
+							</a>
+						</span>
+					</div>
+				</div>
+				<div class="mck-tab-cell">
+					<div class="mck-message-inner">
+						<ul id="mck-group-member-search-list" class=" mck-contact-list mck-group-member-search-list mck-nav mck-nav-tabs mck-nav-stacked"></ul>
+						<div id="mck-no-gsm-text" class="mck-no-data-text mck-text-muted n-vis">No contacts yet!
+						</div>
+					</div>
+					<div id="mck-gms-loading" class="mck-loading n-vis">
+						<svg class="mck-circular-spinner"  viewBox="25 25 50 50" width="50" height="50">
+							<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+						</svg>
+						<!-- <img src="MCK_STATICPATH/sidebox/css/app/images/ring.gif" alt="Loading" /> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="km-chat-login-modal" class="km-sidemodal km-modal" aria-hidden="false" style="visibility: hidden;">
+	<div class="km-modal-dialog km-modal-sm">
+		<div class="km-modal-content">
+				<div class="km-sidemodal--modal-header">
+						<div class="blk-lg-7 mck-name-status-container mck-box-title km-modal-title mck-truncate">
+							<div id="mck-tab-title" class="mck-tab-title mck-truncate mck-display-name">
+								Kommunicate Support</div>
+					</div>
+				<div class="blk-lg-2 mck-close-btn">
+					<button type="button" id="km-modal-close" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
+							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+							<path d="M0 0h24v24H0z" fill="none" />
+						</svg>
+					</button>
+				</div>
+			</div>
+			<div class="km-modal-body">
+				<div class="km-section-title">
+					<p class="km-modal-span">Before starting, we just need a few details so that we may serve you better</p>
+				</div>
+				<p id="km-error-chat-login" class="km-modal-error n-vis"></p>
+				<div class="km-modal-form">
+					<form id="km-form-chat-login" class="km-vertical">
+						<div class="km-form-group">
+								<input class="km-form-control n-vis" id="km-userId" name="km-userId"/>
+							</div>
+						<div class="km-form-group">
+								<input type="km-email" class="km-form-control n-vis" id="km-email" name="email" placeholder="Email" />
+						</div>
+						<div class="km-form-group">
+							<input class="km-form-control n-vis" id="km-userName" name="km-userName" placeholder="Name"/>
+						</div>
+						<!--  <div class="form-group">
+							<input type="password" class="form-control" id="password"
+								name="password" placeholder="Password" required />
+						</div>-->
+						<div class="km-form-group">
+							<input class="km-form-control n-vis" id="km-contact" name="km-contact" placeholder="Contact Number" />
+						</div>
+						<div class="km-form-group km-last km-last-child km-text-center">
+							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation">Start Conversation</button>
+						</div>
+					</form>
+				</div>
+				<!--<div class="section-title section-separator">
+					<h3>Or</h3>
+				</div>
+				  <div class="form-group last last-child text-center">
+					<button type="button" id="guestLogin" class="btn btn-default">
+						Chat as guest</button>
+				</div>-->
+			</div>
+		</div>
+	</div>
+</div>
+<div id="km-anonymous-chat-launcher" class="km-hide-logo n-vis">
+	<a href="#" target="_self">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="56" height="56">
+				<style type="text/css">
+					.km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-12);}
+					.km-launcher-logo-1{fill:#FFFFFF;}
+				</style>
+				<g>
+					<linearGradient id="km-launcher-logo-gradient-12" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
+						<stop offset="0" style="stop-color:#3A3C80"/>
+						<stop offset="0.1658" style="stop-color:#4B4C93"/>
+						<stop offset="0.3516" style="stop-color:#5858A2"/>
+						<stop offset="0.5063" style="stop-color:#5C5CA7"/>
+						<stop offset="0.6795" style="stop-color:#53549D"/>
+						<stop offset="0.9706" style="stop-color:#3D3E83"/>
+						<stop offset="1" style="stop-color:#3A3C80"/>
+					</linearGradient>
+					<circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
+					<g>
+						<path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
+					</g>
+				</g>
+			</svg>
+		</div>
+	</a>
+</div>
+</body>
+<script type="text/javascript" src="../js/kommunicatepluginrequirements.min.js"></script>
+<script type="text/javascript" src="../js/app/kommunicate-plugin-0.2.min.js"></script>
+<script type="text/javascript" src='../knowledgebase/kommunicate-kb-0.1.min.js'></script>
+<script type="text/javascript" src='../js/app/kommunicate-client.js'></script>
+<script type="text/javascript" src='../js/app/kommunicate.js'></script>
+<script type="text/javascript" src='../js/app/km-richtext-markup-1.0.js'></script>
+<script type="text/javascript" src='../js/app/kommunicate-ui.js'></script>
+<script type="text/javascript" src='../js/app/km-post-initialization.js'></script>
+<script type="text/javascript" src='../js/app/mck-ringtone-service.js'></script>
+<script type="text/javascript" src="../js/app/kommunicate.js"></script>
+<script type="text/javascript" src="../js/app/km-post-initialization.js"></script>
+<script type="text/javascript" src="../js/app/mck-ringtone-service.js"></script>
+<script type="text/javascript" src="../js/app/km-richtext-markup-1.0.js"></script>
+<script type="text/javascript" src="../js/app/applozic.chat.min.js"></script>
+<script type="text/javascript" src="../js/app/mck-sidebox-1.0.js"></script>
+
+<script type="text/javascript">
+	var oModal = "";
+	if (typeof $original !== 'undefined') {
+		$ = $original;
+		jQuery = $original;
+		if (typeof $.fn.modal === 'function') {
+			oModal = $.fn.modal.noConflict();
+		}
+	} else {
+		$ = $applozic;
+		jQuery = $applozic;
+		if (typeof $applozic.fn.modal === 'function') {
+			oModal = $applozic.fn.modal.noConflict();
+		}
+	}
+</script>
+<!-- <script type="text/javascript" src="https://maps.google.com/maps/api/js?key="+googleApiKey+"&libraries=places"></script> -->
+<!-- <script type="text/javascript" src="../../applozic.chat.min.js"></script> -->
+<!-- <script type="text/javascript" src="../js/kommunicatepluginrequirements.min.js"></script> -->
+<script>
+function showAfterLoad(){
+	var mckSidebox = document.getElementById("mck-sidebox");
+	mckSidebox.style.visibility='visible';
+	var mckLocBox = document.getElementById("mck-loc-box");
+	mckLocBox.style.visibility='visible';
+	var mckGmSearchBox = document.getElementById("mck-gm-search-box");
+	mckGmSearchBox.style.visibility='visible';
+};
+	if(navigator.userAgent.indexOf('MSIE')!==-1
+|| navigator.appVersion.indexOf('Trident/') > 0){
+
+	showAfterLoad();
+} else {
+	// eventlistener to make ContentVisible after page is loaded
+	window.addEventListener('kmInitilized', function() {
+		showAfterLoad();
+	}, false);
+}
+
+$(document)
+	.ready(
+		function() {
+			//Function to initialize plugin
+
+			$applozic.fn
+				.applozic({
+					baseUrl:'https://apps.applozic.com',
+					userId : 'debug456', //TODO: replace with actual userId
+					userName : 'debug456',    //TODO: replace with actual userName
+					appId : 'applozic-sample-app',  //TODO: replace with actual appId
+					// onInit : onInitialize, //callback function execute on plugin initialize
+					desktopNotification : true
+				});
+
+				// var contactjson = {"contacts": [{"userId": "user1", "displayName": "Devashish", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}, {"userId": "user2", "displayName": "Adarsh", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}, {"userId": "user3", "displayName": "Shanki", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}]};
+				// To load contact list use below function and pass contacts json in format shown above in variable 'contactjson'.
+				// $applozic.fn.applozic('loadContacts', contactjson);
+
+		});
+		</script>
+</html>
