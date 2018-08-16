@@ -7575,6 +7575,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var messageType = resp.type;
 				var list = {};
 				mckMessageService.emptyStateChange();
+				if (messageType === "APPLOZIC_34"){
+					w.localStorage.removeItem('KM_USER_SESSION');
+					location.reload();
+				}
 				if (messageType === "APPLOZIC_04" || messageType === "MESSAGE_DELIVERED") {
 					$kmApplozic("." + resp.message.split(",")[0] + " .km-message-status").removeClass('km-icon-time').removeClass('km-icon-sent').addClass('km-icon-delivered');
 					mckMessageLayout.addTooltip(resp.message.split(",")[0]);
