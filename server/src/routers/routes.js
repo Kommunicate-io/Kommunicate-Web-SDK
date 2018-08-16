@@ -143,6 +143,7 @@ customerRouter.get('/',validate(customerValidation.searchCustomer), registerCont
 miscRouters.get('/tz',userController.getTimezone);
 miscRouters.post('/process-off-business-hours',userController.processOffBusinessHours);
 miscRouters.post('/mail', validate(mailValidation.sendMail),mailController.sendMail);
+miscRouters.post("/invite/mail", validate(mailValidation.sendMail), mailController.sendInvitationMail)
 autoSuggestRouter.get('/', autoSuggestController.getAllSuggestions);
 autoSuggestRouter.get('/:applicationId', autoSuggestController.getSuggestionsByAppId);
 autoSuggestRouter.post('/', validate(autoSuggestValidation.createSuggestion), autoSuggestController.createSuggestion);
