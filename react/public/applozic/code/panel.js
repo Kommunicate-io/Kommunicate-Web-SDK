@@ -1,11 +1,11 @@
 $(document).ready(function() {
 
 
-    $(".km-group-search").on('click', function(e) {
-        $("#km-customers-cell-link").trigger('click');
+    $kmApplozic(".km-group-search").on('click', function(e) {
+        $kmApplozic("#km-customers-cell-link").trigger('click');
     });
 
-    $("#km-user-info-close").on('click', function(e) {
+    $kmApplozic("#km-user-info-close").on('click', function(e) {
         e.preventDefault();
         // $kmApplozic("#km-user-info-tab").removeClass('vis').addClass('n-vis');
         $kmApplozic(".km-container").removeClass('km-panel-3');
@@ -13,22 +13,22 @@ $(document).ready(function() {
         $kmApplozic('body').removeClass('km-panel-3');
     });
 
-    $("#kommunicate-panel-tabs li a").on('click', function(e) {
-        var $this = $(this);
-        $("#kommunicate-panel-tabs li").toggleClass('active');
-        $("#kommunicate-panel-body .km-panel-cell").removeClass('vis').addClass('n-vis');
-        $("#" + $this.data('tab')).removeClass('n-vis').addClass('vis');
+    $kmApplozic("#kommunicate-panel-tabs li a").on('click', function(e) {
+        var $this = $kmApplozic(this);
+        $kmApplozic("#kommunicate-panel-tabs li").toggleClass('active');
+        $kmApplozic("#kommunicate-panel-body .km-panel-cell").removeClass('vis').addClass('n-vis');
+        $kmApplozic("#" + $this.data('tab')).removeClass('n-vis').addClass('vis');
 
         if ($this.data('tab') == "km-customers-cell") {
-            $(".km-contact-search").trigger('click');
+            $kmApplozic(".km-contact-search").trigger('click');
         }
     });
 
-    $(document).on('click', '#km-new-group', function(event) {
-        // $('.km-user-info-tab').removeClass("vis").addClass('n-vis');
+    $kmApplozic(document).on('click', '#km-new-group', function(event) {
+        // $kmApplozic('.km-user-info-tab').removeClass("vis").addClass('n-vis');
     });
-    $(document).on('click', '#km-group-tab-title', function(event) {
-        var tabId = $('#km-group-tab-title').attr('data-km-id');
+    $kmApplozic(document).on('click', '#km-group-tab-title', function(event) {
+        var tabId = $kmApplozic('#km-group-tab-title').attr('data-km-id');
         group = kmGroupUtils.getGroup(tabId);
 		var keys = Object.keys(group.users);	
 		keys.every(function(userId, index) {
@@ -43,14 +43,14 @@ $(document).ready(function() {
 		})			
         
     });
-    $(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
-        $("#km-user-name-sec .km-user-title").html("");
-        $("#km-user-info-list .email").html("");
-        $("#km-user-info-icon-box .km-user-icon img").attr('src', "");
+    $kmApplozic(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
+        $kmApplozic("#km-user-name-sec .km-user-title").html("");
+        $kmApplozic("#km-user-info-list .email").html("");
+        $kmApplozic("#km-user-info-icon-box .km-user-icon img").attr('src', "");
 
-        var contactId = $(this).data('km-id');
+        var contactId = $kmApplozic(this).data('km-id');
         if (typeof contactId == "undefined" || typeof contactId == "") {
-            contactId = $("#km-msg-to").val();
+            contactId = $kmApplozic("#km-msg-to").val();
         }
         getContactDetail(contactId);
         
@@ -94,12 +94,17 @@ $(document).ready(function() {
                                         switch (key) {
                                             case 'KM_PSEUDO_USER':
                                                 if (value.hidden != "true" || value.pseudoName == "true" && user.roleType === 3) {
-                                                    $("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
+                                                    $kmApplozic("#pseudo-name-icon").addClass("vis").removeClass("n-vis");
                                                 }
+                                                $kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
                                             break;
                                             case 'kmClearbitData':
+                                                $kmApplozic("#km-clearbit-title-panel, .km-user-info-inner").addClass("vis").removeClass("n-vis");
+                                                $kmApplozic("#km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
                                                 displayCustInfo(value);
                                             break;
+                                            default :
+                                                $kmApplozic("#km-sidebar-user-info-wrapper").addClass("vis").removeClass("n-vis");
                                     } 
                                     
                                        
@@ -111,20 +116,23 @@ $(document).ready(function() {
 
                             }
                         }
-
-                        $("#km-user-name-sec .km-user-title").html(user.userName);
+                        console.log(user);
+                        $kmApplozic("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
-                            $("#km-user-info-list .email").html(user.email);                       
+                            $kmApplozic("#km-user-info-list .email").html(user.email);                       
                         } else {
-                            $("#km-user-info-list .email").html(user.userId);
+                            $kmApplozic("#km-user-info-list .email").html(user.userId);
                         }
-                        //$("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
+                        //$kmApplozic("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
                         var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
                         imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
-                        $("#km-group-info-tab .km-group-contact-icon").html(imageLink);
+                        $kmApplozic("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
-                        $kmApplozic("#km-sidebar-user-email").html(user.email)
-                        $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
+                        
+                        if(typeof user.email !== 'undefined') {
+                            $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
+                            $kmApplozic("#km-sidebar-user-email").html(user.email);
+                        }
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
                             userSession.clearbitKey && clearbit(user.email, user.userId);
                            
@@ -134,28 +142,28 @@ $(document).ready(function() {
         });
     }
 
-	$(".side-nav li a").click(function() {
-		var $this = $(this);
+	$kmApplozic(".side-nav li a").click(function() {
+		var $this = $kmApplozic(this);
         if ($this.parent().hasClass('active')) {
             return;
         }
         var tab = $this.data('tab');
-        $(".side-nav li").removeClass('active');
+        $kmApplozic(".side-nav li").removeClass('active');
         $this.parent().addClass('active');
-        $(".tabs").removeClass('show').addClass('hide');
-        $("#tab-" + tab).removeClass('hide').addClass('show');
+        $kmApplozic(".tabs").removeClass('show').addClass('hide');
+        $kmApplozic("#tab-" + tab).removeClass('hide').addClass('show');
 	});
 
 });
 
 function resetClearbitInfoAndUserInfo(){
-    $("#km-user-info-list .km-clearbit-field").html('');
-    $("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
-    $("#km-user-info-list .km-clearbit-link").attr('href', '');
-    $("#km-sidebar-user-info-wrapper").removeClass('vis').addClass('n-vis');
-    $("#km-user-info-metadata-wrapper").children('p').remove();
+    $kmApplozic("#km-user-info-list .km-clearbit-field").html('');
+    $kmApplozic("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
+    $kmApplozic("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
+    $kmApplozic("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
+    $kmApplozic("#km-user-info-list .km-clearbit-link").attr('href', '');
+    $kmApplozic("#km-sidebar-user-info-wrapper").removeClass('vis').addClass('n-vis');
+    $kmApplozic("#km-user-info-metadata-wrapper").children('p').remove();
 
 }
 function resetCustomerInfoTab() {

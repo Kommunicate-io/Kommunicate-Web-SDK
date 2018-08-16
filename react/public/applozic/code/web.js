@@ -196,6 +196,7 @@ if (typeof company !== "undefined" && company != null && company != "null") {
     if (typeof crunchbase.handle !== "undefined" && crunchbase.handle != null && crunchbase.handle != "null") {
         $("#km-user-info-list #crunchbase").attr('href', 'https://crunchbase.com/' + crunchbase.handle);
         $("#km-user-info-list #km-cl-cb-icon-box").removeClass('n-vis');
+        $("#km-user-info-list #divider-2").removeClass('n-vis');
     }
 }
 if(person != null){
