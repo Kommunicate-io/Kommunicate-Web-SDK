@@ -22,7 +22,7 @@ export default {
         SIGN_UP_APPLOZIC: "/signUpWithApplozic",
         CREATE_USER: "/users",
         LOGO: "/img/logo1.png",
-        SEND_MAIL: "/misc/mail",
+        SEND_MAIL: "/misc/invite/mail",
         AUTO_SUGGEST: "/autosuggest/message",
         PROFILE_IMAGE: "/profileImage",
         SUBSCRIPTION_COUNT: '/subscription/count',
