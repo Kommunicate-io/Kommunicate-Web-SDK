@@ -69,27 +69,37 @@ exports.sendMail = (req, res) => {
     var options = req.body;
     var userName = req.body.agentId;
     var roleType = req.body.roleType;
-    return Promise.resolve(userService.inviteTeam(options)).then(data => {
-        logger.info("Updated UserList", data);
-        return data;
-    }).then(data => {
-        let options = req.body;
-        for (var i = 0; i < data.length; i++) {
-            logger.info("data", data);
-            options.token = data[i].id;
-            Promise.resolve(
-                options.templateName === 'INVITE_TEAM_MAIL' ? userService.getByUserNameAndAppId(options.agentId, options.applicationId) : '').then(agent => {
-                    options = getEmailFormat(options, agent);
-                    return mailService.sendMail(options).then(response => {
-                    })
-                }).catch(err => {
-                    console.log("error while sending Email", err);
-                    res.status(500).json({ code: "INTERNAL_SERVER_ERROR", "message": "something went wrong" });
-                });
+    return userService.isDeletedUser(options.to[0], options.applicationId).then(isDeleted => {
+        console.log("user is deleted: ", isDeleted)
+        if (isDeleted) {
+            userService.activateOrDeactivateUser(options.to[0], options.applicationId, false);
         }
-        return res.status(200).json({ code: "SUCCESS", "message": "mail sent successfully to user " });
+        return isDeleted;
+    }).then(isDeleted => {
+        if (isDeleted) {
+            return res.status(200).json({"code": "USER_ALREADY_EXIST", "message": "activated existing user"});
+        }
+        return userService.inviteTeam(options).then(data => {
+            logger.info("Updated UserList", data);
+            return data;
+        }).then(data => {
+            let options = req.body;
+            for (var i = 0; i < data.length; i++) {
+                logger.info("data", data);
+                options.token = data[i].id;
+                Promise.resolve(
+                    options.templateName === 'INVITE_TEAM_MAIL' ? userService.getByUserNameAndAppId(options.agentId, options.applicationId) : '').then(agent => {
+                        options = getEmailFormat(options, agent);
+                        return mailService.sendMail(options).then(response => {
+                        })
+                    }).catch(err => {
+                        console.log("error while sending Email", err);
+                        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", "message": "something went wrong" });
+                    });
+            }
+            return res.status(200).json({ code: "SUCCESS", "message": "mail sent successfully to user " });
+        });
     });
-
 }
 
 const getEmailFormat=(options,custInfo)=>{

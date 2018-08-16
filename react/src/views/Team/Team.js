@@ -124,9 +124,12 @@ class Integration extends Component {
       if (email.match(mailformat)) {
         this.onCloseModal();
         return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
-          // console.response(response);
-          Notification.success('Invitation sent successfully');
-          // this.getInvitedUsers();
+          if (response.data && response.data.code === "SUCCESS") {
+            Notification.success('Invitation sent successfully');
+          } else if (response.data && response.data.code === "USER_ALREADY_EXIST") {
+            this.getUsers();
+            Notification.success(response.data.message);
+          }
         }).catch(err => {
           Notification.error("Something went wrong!")
           console.log("error while inviting an user", err.message.response.data);
