@@ -3826,7 +3826,7 @@ var count = 0 ;
 
 
             var $mck_attachfile_box = $applozic("#mck-attachfile-box");
-            var $mck_atttachmenu_box = $applozic("#mck-attachmenu-box");
+            var $mck_atttachmenu_box = $applozic("#mck-location-sharing-box");
             var $mck_sidebox_content = $applozic("#mck-sidebox-content");
 
 

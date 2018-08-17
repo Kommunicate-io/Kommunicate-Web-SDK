@@ -1484,15 +1484,14 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	max-height: 78px;
 	resize: none;
 	background-color: white;
-	width: calc(100% - 70px);
+	width: auto;
 	outline: none;
 	margin: 0px;
 	font-size: 14px;
 	overflow: auto;
 	line-height: 1.2em;
-	vertical-align: middle;
 	overflow-x: hidden;
-	display: inline-block !important;
+	display: block !important;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-align: left;
 	box-shadow: none !important;
@@ -1502,6 +1501,9 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-text-box-panel {
 	width: 25px !important;
+}
+#mck-btn-attach-box.mck-text-box-panel {
+	width: auto !important;
 }
 
 .mck-text-box-panel .mck-blk-12 {
@@ -5070,13 +5072,18 @@ margin-top: 243px;
 /* #mck-btn-attach {
 	opacity: 0.6;
 } */
-#mck-btn-attach .mck-icon-upload, #mck-attachfile-box #mck-file-up2 .mck-icon-upload {
+#mck-btn-attach .mck-icon-upload, #mck-attachfile-box #mck-file-up2 .mck-icon-upload, #mck-file-up .mck-icon-upload {
 	background: transparent;
     width: 20px;
     height: 28px;
     margin-bottom: -2px;
 	margin-right: 2px;
 	display: block;
+}
+#mck-file-up .mck-icon-upload, #mck-file-up2 .mck-icon-upload {
+    width: auto!important;
+	height: auto!important;
+	display: inline-block!important;
 }
 .mck-attach-menu-main-container {
 	opacity: 1 !important;
@@ -5369,4 +5376,20 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 #launcher-agent-img-container img {
 	width: 56px;
 	height: auto;
+}
+
+.mck-location-sharing-box {
+	display: flex !important;
+	align-items: center;
+	justify-content: space-between;
+}
+.mck-location-sharing-box button {
+	appearance: none;
+	-webkit-appearance: none;
+	cursor: pointer;
+	background: transparent;
+	outline: none;
+	border: none;
+	box-shadow: none;
+	line-height: inherit;
 }
