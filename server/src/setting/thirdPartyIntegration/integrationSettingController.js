@@ -12,7 +12,7 @@ exports.updateOrCreate = (req, res) => {
         }
         settings.customerId = customer.id;
         settings.type = type;
-        return integrationSettingService.updateOrCreate(customer.id, type, settings).then(response => {
+        return integrationSettingService.updateOrCreate(customer.id, appId, type, settings).then(response => {
             console.log('response of creating settings', response);
            return res.status(200).json({ code: "SUCCESS", message: response })
         });
@@ -49,7 +49,7 @@ exports.deleteIntegrationSetting = (req, res) => {
         if (!customer) {
           return res.status(200).json({ code: "SUCCESS", message: "no user found" })
         }
-       return integrationSettingService.deleteIntegrationSetting(customer.id, type).then(response => {
+       return integrationSettingService.deleteIntegrationSetting(customer.id, appId, type).then(response => {
             console.log('response', response);
           return res.status(200).json({ code: "SUCCESS", message: response })
         })
