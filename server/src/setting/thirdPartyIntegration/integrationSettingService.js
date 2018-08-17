@@ -4,28 +4,20 @@ const botPlatformClient = require("../../utils/botPlatformClient");
 const LIZ = require("../../register/bots.js").LIZ;
 const INTEGRATION_PLATFORMS = require('../../application/utils').INTEGRATION_PLATFORMS;
 
-const updateOrCreate = (customerId, type, setting) => {
-
-
+const updateOrCreate = (customerId, appId, type, setting) => {
     return Promise.resolve(ThirdPartyIntegrationSettings.find({ where: { customerId: customerId, type: type } })).then(existingSetting => {
         if (!existingSetting) {
             // Item not found, create a new one
             return Promise.resolve(ThirdPartyIntegrationSettings.create(setting))
                 .then(item => { 
                     if (type == INTEGRATION_PLATFORMS.HELPDOCS) {
-                        customerService.getCustomerById(customerId).then(customer => {
-                            console.log("got the user from db", customer);
-                            botPlatformClient.updateBot({
-                                "name": LIZ.userName,
-                                "applicationKey": customer.applicationId,
-                                "handlerModule": "HELP_DOCS_HANDLER"
-                              }).catch(err => {
-                                logger.error("error while updating bot platform for liz", err);
-                              });  
-
-                          }).catch(error => {
-                            console.log("Error while getting customer by userId", error);
-                          });  
+                        botPlatformClient.updateBot({
+                            "name": LIZ.userName,
+                            "applicationKey": appId,
+                            "handlerModule": "HELP_DOCS_HANDLER"
+                          }).catch(err => {
+                            logger.error("error while updating bot platform for liz", err);
+                          });
                     }
                     return { data: item, created: true }; 
                 })
@@ -47,23 +39,17 @@ const getIntegrationSetting = (customerId, type) => {
     });
 }
 
-const deleteIntegrationSetting = (customerId, type) => {
+const deleteIntegrationSetting = (customerId, appId, type) => {
 
     return Promise.resolve(ThirdPartyIntegrationSettings.destroy({ where: { customerId: customerId, type: type } })).then(response => {
          if (type == INTEGRATION_PLATFORMS) {
-            customerService.getCustomerById(customerId).then(customer => {
-                console.log("got the user from db", customer);
-                botPlatformClient.updateBot({
-                    "name": LIZ.userName,
-                    "applicationKey": customer.applicationId,
-                    "handlerModule": "SUPPORT_BOT_HANDLER"
-                  }).catch(err => {
-                    logger.error("error while updating bot platform for liz", err);
-                  });  
-
-              }).catch(error => {
-                console.log("Error while getting customer by userId", error);
-              });  
+            botPlatformClient.updateBot({
+                "name": LIZ.userName,
+                "applicationKey": appId,
+                "handlerModule": "SUPPORT_BOT_HANDLER"
+              }).catch(err => {
+                logger.error("error while updating bot platform for liz", err);
+              }); 
         }
 
         return response;
