@@ -299,7 +299,7 @@ class Aside extends Component {
   changeAssignee(userId) {
     var that = this;
     this.setState({assignee:userId});
-    var groupId = window.$kmApplozic(".left .person.active").data('km-id');
+    var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
     window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': this.state.group.groupId,
@@ -330,9 +330,6 @@ class Aside extends Component {
                                           });
                                       }
                                     });
-
-                                    updateConversation({groupId:this.state.group.groupId,agentId:userId});
-
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
                                                   if (group.members.indexOf(userId) == -1) {
