@@ -89,7 +89,7 @@ var autoSuggestions = {};
 					},
       locShare: true,
       googleApiKey: 'AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI',
-      launchOnUnreadMessage: true,
+      launchOnUnreadMessage: false,
       topicBox: topicBoxEnabled,
       authenticationTypeId: 1
       // topicDetail: function(topicId) {}
