@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { Dropdown, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Link} from 'react-router-dom' ;
 import { NavLink } from 'react-router-dom';
-import {goAway, goOnline} from '../../utils/kommunicateClient'
+import {goAway, goOnline, updateUserStatus} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
-import { COOKIES } from '../../utils/Constant';
+import { COOKIES, USER_STATUS } from '../../utils/Constant';
 
 class TurnOnAwayMode extends Component {
   render() {
@@ -32,9 +32,10 @@ export default class ProfileImageName extends Component {
     
         this.toggle = this.toggle.bind(this);
         let userSession = CommonUtils.getUserSession();
+        let status = CommonUtils.getUserStatus();
         this.state = {
-          changeStatusLabel: userSession.availabilityStatus === 1 ? <TurnOnAwayMode />: <TurnOnOnlineMode />,
-          status: userSession.availabilityStatus,
+          changeStatusLabel: status === USER_STATUS.ONLINE ? <TurnOnAwayMode />: <TurnOnOnlineMode />,
+          status: status,
           dropdownOpen: false,
           showDropdownMenu: false,
         };
@@ -65,26 +66,17 @@ export default class ProfileImageName extends Component {
 
       toggleStatus = (e) => {
         let userSession = CommonUtils.getUserSession();
-        if(this.state.status === 1){
-          goAway(userSession.userName, userSession.application.applicationId).then(response => {
-            console.log(response);
-            userSession.availabilityStatus = 0
-            this.setState({
-              status: userSession.availabilityStatus,
-              changeStatusLabel: <TurnOnOnlineMode />
-            });
-          });
-        }else{
-          goOnline(userSession.userName, userSession.application.applicationId).then(response => {
-            userSession.availabilityStatus = 1
-            this.setState({
-              status: userSession.availabilityStatus,
-              changeStatusLabel: <TurnOnAwayMode />
-            });
-          });
-        }
+        let status = !this.state.status ? USER_STATUS.ONLINE : USER_STATUS.AWAY;
+        return Promise.resolve(updateUserStatus(status)).then(response => {
+          CommonUtils.updateUserStatus(status);
+          this.setState({
+            status: status,
+            changeStatusLabel: status ? <TurnOnOnlineMode /> : <TurnOnAwayMode />
+          })
+        }).catch(err => {
+          console.log("Error while updating user status")
+        });
       }
-
       goToProfile(e) {
         window.appHistory.push("/settings/profile");
       }
@@ -162,7 +154,7 @@ export default class ProfileImageName extends Component {
                 <button className="sidebar-profile-dropdown nav-link dropdown-toggle" onClick={this.showDropdownMenu} data-toggle="dropdown" type="button" aria-haspopup="true">
                   <div style={{ display: "inline-block", padding: "3px"}}>
                     <img src={this.props.profilePicUrl} className="img-avatar" />
-                    <span className={CommonUtils.getUserSession().availabilityStatus === 1 ? "online-indicator-profile-pic" : null}></span>
+                    <span className={CommonUtils.getUserStatus() === 1 ? "online-indicator-profile-pic" : null}></span>
                   </div>
                   <span className="d-md-down-none" hidden={this.props.hideDisplayName}>{this.props.displayName}</span>
                 </button>
@@ -189,7 +181,7 @@ export default class ProfileImageName extends Component {
                 </button>                
 
                 <button className="dropdown-item" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
-                  {CommonUtils.getUserSession().availabilityStatus === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />}
+                  {CommonUtils.getUserStatus() === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />}
                 </button>
 
                 <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button>

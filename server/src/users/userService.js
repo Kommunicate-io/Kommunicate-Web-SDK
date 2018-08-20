@@ -423,6 +423,15 @@ exports.updateUser = (userId, appId, userInfo) => {
       throw err;
     });
 };
+const updateUserStatus = (userId, appId, status) => {
+  return Promise.resolve(userModel.update({status: status }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+    console.log("successfully updated user status ", result[0]);
+    return result[0];
+  }).catch(err => {
+    console.log("error while updating user status", err);
+    throw err;
+  });
+}
 
 exports.goAway = (userId, appId) => {
   // return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
@@ -430,7 +439,7 @@ exports.goAway = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({availabilityStatus: 0}, { where: { "userName": userId, applicationId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({ status: 0 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to offline", result[0]);
     return result[0];
   }).catch(err => {
@@ -447,7 +456,7 @@ exports.goOnline = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({ availabilityStatus: 1 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({ status: 1 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to online", result[0]);
     return result[0];
   }).catch(err => {
@@ -579,7 +588,7 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-        return userModel.destroy({
+        return userModel.update({ deleted_at: new Date(), status:  CONST.USER_STATUS.DELETED},{
           where: {
             userName: userName,
             applicationId: applicationId
@@ -590,9 +599,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
         })
     })
   } else {
-    return userModel.update({
-      deleted_at: null
-    }, {
+    return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
         where: {
           userName: userName,
           applicationId: applicationId,
@@ -644,3 +651,4 @@ exports.isIntervalExceeds = isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
+exports.updateUserStatus = updateUserStatus;

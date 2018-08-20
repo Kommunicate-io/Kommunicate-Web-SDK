@@ -90,6 +90,15 @@ const CommonUtils = {
     isTrialPlan: function() {
         return CommonUtils.getDaysCount() < 31 && CommonUtils.isStartupPlan();
     },
+    getApplicationExpiryDate () {
+        var applicationCreatedAt = CommonUtils.getUserSession().applicationCreatedAt ;
+        if (applicationCreatedAt) {
+            applicationCreatedAt = new Date(CommonUtils.getUserSession().applicationCreatedAt).getTime();
+            var applicationExpiryDate = applicationCreatedAt += 1000 * 60 * 60 * 24 * 30;
+            applicationExpiryDate = new Date(applicationExpiryDate);
+            return applicationExpiryDate
+        }     
+    },
     lastSeenTime(lastSeenAtTime) {
       var lastSeen;
       var minInTwoDays = 2880;
@@ -143,6 +152,15 @@ const CommonUtils = {
                 cancelable: options.cancelable || true
             }));
         }	         
+    },
+    getUserStatus:function() {
+        let userSession = CommonUtils.getUserSession();
+        return typeof userSession.availabilityStatus != "undefined" ? userSession.availabilityStatus : userSession.status;
+    },
+    updateUserStatus:function(status) {
+        let userSession = CommonUtils.getUserSession();
+        userSession.availabilityStatus ? userSession.availabilityStatus = status : userSession.status = status;
+        CommonUtils.setUserSession(userSession);
     }
 }
 

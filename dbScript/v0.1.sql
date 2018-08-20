@@ -104,3 +104,6 @@ SET SQL_SAFE_UPDATES=1;
 -- PRIMARY KEY (id)
 -- );
 alter table users add column email_subscription tinyint default 1;
+-- modified column name availability_status to status, ticket KM-1308  
+alter table users change availability_status  status INTEGER;
+

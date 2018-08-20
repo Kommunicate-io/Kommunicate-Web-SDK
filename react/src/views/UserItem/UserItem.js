@@ -39,21 +39,6 @@ class UserItem extends Component {
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
     }
-    componentDidMount() {
-      this.getUserStatus()
-    }
-    getUserStatus = () => {
-      let availabilityStatus = this.props.availabilityStatus;
-      let isOnline = this.props.user.connected
-      if(availabilityStatus && isOnline){
-        //agent is online
-      } else if (!availabilityStatus && isOnline){
-        //agent is away
-      } else {
-        //agent is offline
-      }
-
-    }
     handleClick() {
       var user = this.props.user;
       var groupName = CommonUtils.getDisplayName(user);
@@ -122,7 +107,7 @@ class UserItem extends Component {
       }
     }
     
-    deleteAgent  = () => {
+    deleteUser  = () => {
       this.onCloseModal();
       let userId = this.state.userToBeDeleted.userId;
       return Promise.resolve(deleteUserByUserId(userId)).then(response => {
@@ -174,7 +159,8 @@ class UserItem extends Component {
         let isAway = this.props.isAway;
         let roleType = this.props.roleType;
         var emailId = user.email;
-        var displayName = CommonUtils.getDisplayName(user);
+        var displayName = user.displayName
+        // var displayName = CommonUtils.getDisplayName(user);
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
         var latestConversation = user.messagePxy?user.messagePxy.message:null;
         var lastMessageTime = user.messagePxy?(window.$kmApplozic.fn.applozic('getDateTime',user.messagePxy.createdAtTime)):'';
@@ -270,7 +256,7 @@ class UserItem extends Component {
                         <p>Are you sure?</p>
                         <div className="team-delete-modal-btn">
                         <button className="km-button km-button--secondary team-delete-modal-cancel-btn" onClick = {this.onCloseModal}>Cancel</button>
-                        <button className="km-button km-button--primary" onClick= {this.deleteAgent}>Yes, Delete</button>
+                        <button className="km-button km-button--primary" onClick= {this.deleteUser}>Yes, Delete</button>
                         </div>
                       </div>
                       </div>
