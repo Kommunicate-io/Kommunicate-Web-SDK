@@ -1,3 +1,4 @@
+/*eslint-disable */
 const routes = require("../routers/routes.js");
 const userModel = require("../models").user;
 const db = require("../models");
@@ -138,8 +139,7 @@ const createUser = (user, customer) => {
     }
   }).then(applozicUser => {
     console.log("created user in applozic db", applozicUser.userId);
-    user.apzToken = new Buffer(user.userName + ":" + user.password).toString('base64');
-    user.authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
+    let authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
     user.accessToken = user.password;
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
@@ -156,7 +156,7 @@ const createUser = (user, customer) => {
           "brokerUrl": applozicUser.brokerUrl,
           "accessToken": user.accessToken,
           "applicationKey": customer.applications[0].applicationId,
-          "authorization": user.authorization,
+          "authorization": authorization,
           "clientToken": clientToken,
           "devToken": devToken,
           "aiPlatform": aiPlatform,
@@ -385,7 +385,6 @@ exports.updateUser = (userId, appId, userInfo) => {
   return Promise.all([getByUserNameAndAppId(userId, appId)])
     .then(([user]) => {
       var userKey = user.userKey;
-      var authorization = user.authorization;
       if (user == null) {
         throw new Error("No customer in customer table with appId", appId);
       }
@@ -409,7 +408,6 @@ exports.updateUser = (userId, appId, userInfo) => {
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken": userInfo.devToken,
-            "authorization": authorization,
 
           }).catch(err => {
             logger.error("error while updating bot platform", err);
@@ -425,6 +423,15 @@ exports.updateUser = (userId, appId, userInfo) => {
       throw err;
     });
 };
+const updateUserStatus = (userId, appId, status) => {
+  return Promise.resolve(userModel.update({status: status }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+    console.log("successfully updated user status ", result[0]);
+    return result[0];
+  }).catch(err => {
+    console.log("error while updating user status", err);
+    throw err;
+  });
+}
 
 exports.goAway = (userId, appId) => {
   // return Promise.resolve(getCustomerInfoByApplicationId(appId)).then(customer=>{
@@ -432,7 +439,7 @@ exports.goAway = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({ availabilityStatus: 0 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({ status: 0 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to offline", result[0]);
     return result[0];
   }).catch(err => {
@@ -449,7 +456,7 @@ exports.goOnline = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({ availabilityStatus: 1 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({ status: 1 }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to online", result[0]);
     return result[0];
   }).catch(err => {
@@ -581,7 +588,7 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-        return userModel.destroy({
+        return userModel.update({ deleted_at: new Date(), status:  CONST.USER_STATUS.DELETED},{
           where: {
             userName: userName,
             applicationId: applicationId
@@ -592,9 +599,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
         })
     })
   } else {
-    return userModel.update({
-      deleted_at: null
-    }, {
+    return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
         where: {
           userName: userName,
           applicationId: applicationId,
@@ -646,3 +651,4 @@ exports.isIntervalExceeds = isIntervalExceeds;
 exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
+exports.updateUserStatus = updateUserStatus;

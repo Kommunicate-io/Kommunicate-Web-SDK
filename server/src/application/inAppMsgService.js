@@ -47,7 +47,7 @@ exports.sendWelcomeMessage = (conversationId, customer) => {
       let bot = users.filter(user => {
         return user.userName = "bot";
       });
-      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, bot.apzToken, true).then(groupDetail => {
+      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, new buffer(bot.userName+":"+bot.accessToken).toString('base64'), true).then(groupDetail => {
         // picking admin id if conversation Assignee is not available
         if (groupDetail) {
           let conversationAssignee = users.filter(user => {
@@ -87,8 +87,8 @@ exports.processEventWrapper = (eventType, conversationId, customer, adminUser, a
             return userService.getByUserNameAndAppId(groupUser.agentUserName,customer.applications[0].applicationId)
             .then(res => {
               logger.info(res);
-              logger.info(res.availabilityStatus)
-              if(res.availabilityStatus == 1){
+              logger.info(res.status)
+              if(res.status == 1){
                 offline = false
               }
               groupUser.agentId= res.id;
@@ -344,7 +344,7 @@ exports.editInAppMsg=(body)=>{
  */
 exports.checkOnlineAgents=(customer)=>{
   return userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId,[registrationService.USER_TYPE.ADMIN,registrationService.USER_TYPE.AGENT]).then(userList=>{
-    let userIdList = userList.filter(user=>user.availabilityStatus==1).map(user=>user.userName);
+    let userIdList = userList.filter(user=>user.status ==1).map(user=>user.userName);
     let defaultAgent = userList.filter(user=> user.type==3);
     //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
     logger.info("fetching detail of all agents from applozic");

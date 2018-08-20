@@ -25,19 +25,18 @@ exports.createCustomer = customer => {
   return Promise.resolve(applozicClient.createApplication(KOMMUNICATE_ADMIN_ID, KOMMUNICATE_ADMIN_PASSWORD, "km-" + customer.userName + "-" + Math.floor(new Date().valueOf() * Math.random()))).then(application => {
     console.log("successfully created ApplicationId: ", application.applicationId, " creating applozic client");
     customer.applicationId = application.applicationId;
+    // 
     customer.role = "APPLICATION_WEB_ADMIN";
     return Promise.all([applozicClient.createUserInApplozic(customer),
     applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, "BOT", null, LIZ.name),
     applozicClient.createApplozicClient("bot", "bot", application.applicationId, null, "BOT")
     ]).then(([applozicCustomer, liz, bot]) => {
 
-      customer.apzToken = new Buffer(customer.userName + ":" + customer.password).toString('base64');
       let kmUser = getUserObject(customer, applozicCustomer, application);
       if (customer.password !== null) {
-        customer.password = bcrypt.hashSync(customer.password, 10);
+        kmUser.password  = bcrypt.hashSync(customer.password, 10);
       }
       customer.subscription = customer.subscription || subscriptionPlan.initialPlan;
-      kmUser.password = customer.password;
       return db.sequelize.transaction(t => {
         return customerService.createCustomer(customer, { applicationId: application.applicationId }, { transaction: t }).then(customer => {
           console.log("persited in db", customer ? customer.dataValues : null);

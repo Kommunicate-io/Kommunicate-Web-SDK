@@ -5,6 +5,7 @@ import  {getConfig} from '../../.../../../config/config.js';
 import CommonUtils from '../../../utils/CommonUtils';
 import Notification from '../../model/Notification';
 import './ApplicationList.css';
+import {USER_STATUS} from '../../../utils/Constant';
 
 
 class ApplicationList extends Component {
@@ -83,6 +84,9 @@ class ApplicationList extends Component {
           .then(function(response){
             if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
               Notification.error("Invalid Password");
+            }else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
+              Notification.error("Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.");
+              return
             } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
               return;
             }

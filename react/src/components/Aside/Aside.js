@@ -16,9 +16,10 @@ import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import ReactModal from 'react-modal';
-import {PseudoNameImage} from '../../views/Faq/LizSVG';
+import {PseudoNameImage, ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
+import { getConfig } from '../../config/config';
 
 
 class Aside extends Component {
@@ -299,7 +300,7 @@ class Aside extends Component {
   changeAssignee(userId) {
     var that = this;
     this.setState({assignee:userId});
-    var groupId = window.$kmApplozic(".left .person.active").data('km-id');
+    var groupId = window.$kmApplozic(".left .person.active").data('km-id') || this.state.group.groupId ;
     window.$kmApplozic.fn.applozic('updateGroupInfo',
                                     {
                                       'groupId': this.state.group.groupId,
@@ -330,9 +331,6 @@ class Aside extends Component {
                                           });
                                       }
                                     });
-
-                                    updateConversation({groupId:this.state.group.groupId,agentId:userId});
-
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
                                                   if (group.members.indexOf(userId) == -1) {
@@ -827,9 +825,9 @@ class Aside extends Component {
                           </div>
                         </div>
                         <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
-                            <img src="/img/empty-conversations.png" alt="Conversations Empty State" className="empty-state-conversations-img"/>
-                            <p className="empty-state-message-shortcuts-first-text">No message notification</p>
-                            <p className="empty-state-message-shortcuts-second-text">Add chat widget into your webpage to<br></br>engage more with your users</p>
+                            <ConversationsEmptyStateImage />
+                            <p className="empty-state-message-shortcuts-first-text">You have no pending conversations</p>
+                            <p className="empty-state-message-shortcuts-second-text">You may check how a conversation looks like by starting a <a href={`${getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl}?appId=${CommonUtils.getUserSession().applicationId}&title=${CommonUtils.getUserSession().adminDisplayName}`} target="_blank">demo conversation</a> </p>
                         </div>
                       </div>
                       <div className="write">
