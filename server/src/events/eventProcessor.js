@@ -24,7 +24,7 @@ const initializeEventsConsumers = function() {
         conn.on('close', function(e) {
             logger.error('[AMQP] connection closed: ', e);
             logger.info('[AMQP] Tryig to reconnect to rabbitmq...');
-            setTimeout(initializeEventsConsumers, 30000); // reconnect after 30 minute
+            setTimeout(initializeEventsConsumers, 30000); // reconnect after 30 sec.
         });
         /** *
          * get the number of registered events,

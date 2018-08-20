@@ -6,8 +6,6 @@
  * @property {String} userName unique for an application.
  * @property {String} email email of the User
  * @property {String} password 
- * @property {String} apzToken Base64 encoded 
- * @property {String} authorization base64 encoder
  * @property {String} accessToken  plain text password for user
  * @property {String} role user's within orgnization
  * @property {String} contactNo 
@@ -42,13 +40,6 @@ module.exports = function(sequelize, DataTypes) {
     password: {
       type: DataTypes.STRING(200)
     },
-    apzToken: {
-      type: DataTypes.STRING(200),
-      field: 'apz_token'
-    },
-    authorization: {
-      type: DataTypes.STRING(200)
-    },
     accessToken: {
       type: DataTypes.STRING(50),
       field: 'access_token'
@@ -59,9 +50,6 @@ module.exports = function(sequelize, DataTypes) {
       unique: "IDX_USER_NAME_APP_KEY",
       allowNull: false
     },
-    role: {
-      type: DataTypes.STRING(20)
-    },
     roleType:{
       type:DataTypes.INTEGER(2).ZEROFILL,
       field: 'role_type'
@@ -69,17 +57,6 @@ module.exports = function(sequelize, DataTypes) {
     contactNo: {
       type: DataTypes.STRING(20),
       field: 'contact_no'
-    },
-    industry: {
-      type: DataTypes.STRING(20)
-    },
-    companyName: {
-      type: DataTypes.STRING(50),
-      field: 'company_name'
-    },
-    companySize: {
-      type: DataTypes.STRING(15),
-      field: 'company_size'
     },
    // user is bot or agent. 1:Agent, 2:bot, 3: admin
     type: {
@@ -111,7 +88,7 @@ module.exports = function(sequelize, DataTypes) {
       field: 'all_conversations',
       defaultValue: 0
     },
-    // todo change name into camelcase
+    // todo change name into camelcase. 
     bot_availability_status: {
       type: DataTypes.INTEGER(),
       field: 'bot_availability_status',

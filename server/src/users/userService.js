@@ -1,3 +1,4 @@
+/*eslint-disable */
 const routes = require("../routers/routes.js");
 const userModel = require("../models").user;
 const db = require("../models");
@@ -138,8 +139,7 @@ const createUser = (user, customer) => {
     }
   }).then(applozicUser => {
     console.log("created user in applozic db", applozicUser.userId);
-    user.apzToken = new Buffer(user.userName + ":" + user.password).toString('base64');
-    user.authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
+    let authorization = new Buffer(applozicUser.userId + ":" + applozicUser.deviceKey).toString('base64');
     user.accessToken = user.password;
     user.userKey = applozicUser.userKey;
     user.password = bcrypt.hashSync(user.password, 10);
@@ -156,7 +156,7 @@ const createUser = (user, customer) => {
           "brokerUrl": applozicUser.brokerUrl,
           "accessToken": user.accessToken,
           "applicationKey": customer.applications[0].applicationId,
-          "authorization": user.authorization,
+          "authorization": authorization,
           "clientToken": clientToken,
           "devToken": devToken,
           "aiPlatform": aiPlatform,
@@ -385,7 +385,6 @@ exports.updateUser = (userId, appId, userInfo) => {
   return Promise.all([getByUserNameAndAppId(userId, appId)])
     .then(([user]) => {
       var userKey = user.userKey;
-      var authorization = user.authorization;
       if (user == null) {
         throw new Error("No customer in customer table with appId", appId);
       }
@@ -409,7 +408,6 @@ exports.updateUser = (userId, appId, userInfo) => {
             "key": userKey,
             "clientToken": userInfo.clientToken,
             "devToken": userInfo.devToken,
-            "authorization": authorization,
 
           }).catch(err => {
             logger.error("error while updating bot platform", err);
