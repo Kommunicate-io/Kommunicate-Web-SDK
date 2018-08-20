@@ -430,7 +430,7 @@ exports.goAway = (userId, appId) => {
   //     console.log("No customer in customer table with appId", appId);
   //     return null;
   //   }else {
-  return Promise.resolve(userModel.update({ status: CONST.a }, { where: { "userName": userId, applicationId: appId } })).then(result => {
+  return Promise.resolve(userModel.update({availabilityStatus: 0}, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status to offline", result[0]);
     return result[0];
   }).catch(err => {
