@@ -340,6 +340,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
 		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+		var MCK_DEFAULT_MESSAGE_METADATA = (typeof appOptions.defaultMessageMetaData === 'undefined') ? {} : appOptions.defaultMessageMetaData;
 		var MCK_AWS_S3_SERVER = (appOptions.awsS3Server) ? appOptions.awsS3Server : false;
 		var IS_SW_NOTIFICATION_ENABLED = (typeof appOptions.swNotification === "boolean") ? appOptions.swNotification : false;
 		var MCK_SOURCE = (typeof appOptions.source === 'undefined') ? 1 : appOptions.source;
@@ -635,6 +636,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			MCK_INIT_AUTO_SUGGESTION = optns.initAutoSuggestions;
 			MCK_GETCONVERSATIONDETAIL = optns.getConversationDetail;
 			MCK_AUTHENTICATION_TYPE_ID = optns.authenticationTypeId;
+		    MCK_DEFAULT_MESSAGE_METADATA = (typeof optns.defaultMessageMetaData === 'undefined') ? {} : optns.defaultMessageMetaData;
 			MCK_USER_ID = (IS_MCK_VISITOR) ? 'guest' : $kmApplozic.trim(optns.userId);
 			MCK_GOOGLE_API_KEY = (IS_MCK_LOCSHARE) ? optns.googleApiKey : "NO_ACCESS";
 			IS_MCK_OL_STATUS = (typeof optns.olStatus === 'boolean') ? (optns.olStatus) : false;
@@ -939,7 +941,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					"to": to,
 					"type": params.messageType,
 					"contentType": params.type,
-					"message": message
+					"message": message,
+					'metadata': params.metadata
 				};
 				mckMessageService.sendMessage(messagePxy);
 				return "success";
@@ -2356,12 +2359,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.submitMessage = function (messagePxy, optns) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
+				var metadata = messagePxy.metadata ? messagePxy.metadata : {};
 				var randomId = messagePxy.key;
 				if (MCK_CHECK_USER_BUSY_STATUS) {
-					messagePxy.metadata = {
-						userStatus: 4
-					};
+					metadata = $kmApplozic.extend(messagePxy.metadata, { userStatus: 4 });
 				}
+				metadata = $kmApplozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
+				messagePxy.metadata = metadata;
 				messagePxy.source = MCK_SOURCE;
 				var $mck_msg_div = $kmApplozic("#km-message-cell div[name='message']." + randomId);
 				kmUtils.ajax({

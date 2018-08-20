@@ -2952,10 +2952,8 @@ var count = 0 ;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
 
                 if (MCK_CHECK_USER_BUSY_STATUS) {
-                    messagePxy.metadata = {
-                        userStatus: 4
-                    };
-                }
+					metadata = $applozic.extend(messagePxy.metadata, { userStatus: 4 });
+				}
                 var msgKeys = $applozic("#mck-text-box").data("AL_REPLY");
                 if (typeof msgKeys !== 'undefined' && msgKeys !== '' && !(messagePxy.forward)) {
                     metadata.AL_REPLY = msgKeys;
@@ -2964,7 +2962,7 @@ var count = 0 ;
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
                 if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    messagePxy.metadata = MCK_DEFAULT_MESSAGE_METADATA;
+                    metadata = $applozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
                 }
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
