@@ -17,7 +17,7 @@ import InputField from '../../../components/InputField/InputField';
 import GoogleLogo from '../Register/logo_google.svg';
 import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
-import {COOKIES} from '../../../utils/Constant';
+import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 
 
 class Login extends Component {
@@ -194,11 +194,14 @@ submitForm = ()=>{
       if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
         // Notification.warning("Invalid credentials");
         _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Invalid Email Id or Password", loginButtonDisabled:false});
+      } else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
+        _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.", loginButtonDisabled:false});
+        return
       } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
         CommonUtils.setApplicationIds(response.data.result);
         _this.checkForMultipleApps(response.data.result);
         return;
-      }
+      } 
       
       if (response.status == 200 && response.data.code == 'SUCCESS') {
         console.log("logged in successfully");

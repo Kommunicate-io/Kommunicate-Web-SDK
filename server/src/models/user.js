@@ -97,9 +97,9 @@ module.exports = function(sequelize, DataTypes) {
      * it is used in case of:
      * user:- goonline(1)/goaway(0) 
      */
-    availabilityStatus: {
+    status: {
       type: DataTypes.INTEGER(),
-      field: 'availability_status',
+      field: 'status',
       defaultValue: 1
     },
     /**

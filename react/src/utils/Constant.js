@@ -7,13 +7,20 @@ export{
     DEFAULT_BOT,
     LIZ,
     ROLE_TYPE,
-    INVITED_USER_STATUS
+    INVITED_USER_STATUS,
+    USER_STATUS
 }
 
 const USER_TYPE = {
     AGENT: 1,
     BOT: 2,
     ADMIN: 3
+}
+const USER_STATUS = {
+    AWAY:0,
+    ONLINE:1,
+    EXPIRED:2,
+    DELETED:3
 }
 const ROLE_TYPE = {
     SUPER_ADMIN : "0",

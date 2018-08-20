@@ -126,6 +126,7 @@ userRouter.post('/password/update',validate(userValidation.updatePassword),userC
 userRouter.patch('/invite/status',validate(userValidation.inviteStatusUpdate),userController.inviteStatusUpdate);
 userRouter.patch('/:userName/:appId',userController.patchUser);
 userRouter.patch('/goAway/:userName/:appId',userController.goAway);
+userRouter.patch('/status',userController.updateUserStatus);
 userRouter.patch('/goOnline/:userName/:appId',userController.goOnline);
 userRouter.patch('/:botId/:appId/:status',validate(userValidation.botStatus), userController.changeBotStatus);
 userRouter.patch("/", validate(userValidation.userActivation), userController.activateOrDeactivateUser);
