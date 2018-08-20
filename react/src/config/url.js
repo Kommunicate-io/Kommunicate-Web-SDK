@@ -34,5 +34,8 @@ export default {
     },
     dashboard:{
         ACTIVATE_ACCOUNT: "/register?invite=true&applicationId=:applicationId"
+    },
+    kommunicateWebsite: {
+        KM_WEBSITE_CONVERSATIONS_TEST: "/test"
     }
 }
