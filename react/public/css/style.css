@@ -9781,23 +9781,36 @@ pointer-events: none;
   height: 200px;
 }
 .empty-state-message-shortcuts-first-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: #a5a5a5;
+  font-size: 20px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  color: #2f2e30;
   margin-bottom: 0px;
   margin-top: 15px;
 }
 .empty-state-message-shortcuts-second-text {
-  font-size: 16px;
-  font-weight: 400;
-  color: #a5a5a5;
+  font-size: 15px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.4px;
+  color: #868687;
 }
+.empty-state-message-shortcuts-second-text a, .empty-state-message-shortcuts-second-text a:hover {
+  font-weight: 500;
+  color: #4831d9;
+}
+
 .empty-state-customers-div {
   margin-top: 20px;
 }
 .empty-state-conversations-div {
   position: absolute;
-  top: 50%;
+  top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
 }

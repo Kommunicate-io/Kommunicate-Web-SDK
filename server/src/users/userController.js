@@ -15,6 +15,7 @@ const integrationSettingService = require('../setting/thirdPartyIntegration/inte
 const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 const constant =require('../../src/utils/constant');
 const customerService = require('../customer/customerService');
+const CONSTANT = require("./constants.js");
 /**
  *
  * @param {Http request object} req
@@ -223,7 +224,7 @@ exports.processOffBusinessHours=(req,res)=>{
         logger.info("no Bot exists in db with UserKey",message.botId);
         return;
       }
-      return Promise.resolve(applozicClient.getGroupInfo(message.groupId,message.applicationId,bot.apzToken)).then(groupInfo=>{
+      return Promise.resolve(applozicClient.getGroupInfo(message.groupId,message.applicationId,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'))).then(groupInfo=>{
         // logger.info("groupInfo",groupInfo);
         return Promise.resolve(userService.getUserBusinessHoursByUserNameAndAppId(userService.getAdminUserNameFromGroupInfo(groupInfo),message.applicationId)).then(userBusinessHours=>{
           if(userBusinessHours.length<1) {
@@ -350,6 +351,27 @@ exports.createGroupOfAllAgents = (req, res) => {
   });
 }
 
+exports.updateUserStatus = (req, res) => {
+  let response = {};
+  const userId = req.body.userName;
+  const appId = req.body.applicationId;
+  const status = req.body.status;
+  userService.updateUserStatus(userId, appId, status).then(isUpdated => {
+    if(isUpdated){
+      response.code="SUCCESS";
+      response.message="user status updated successfully";
+      res.status(200).json(response);
+    }else{
+      response.code="NOT_FOUND";
+      response.message="resource not found by userId " + userId + " and appId: " + appId;
+      res.status(404).json(response);
+    }
+  }).catch(err => {
+    response.code="INTERNAL_SERVER_ERROR";
+    response.message="something went wrong!";
+    res.status(500).json(response);
+  })
+}
 exports.goAway = (req, res) => {
   let response = {};
   const action = req.params.action;

@@ -1020,6 +1020,26 @@ const updateInvitedUserStatus = (token,status) => {
     console.log("There is a problem while updating the invited user status", err);
   })
 }
+const updateUserStatus = (status) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  let userName = userSession.userName
+  let url = getConfig().kommunicateBaseUrl + '/users/status';
+  let data = {
+    "status": status,
+    "applicationId": appId,
+    "userName": userName
+  }
+  return Promise.resolve(axios({
+    method: 'PATCH',
+    url: url,
+    data: data
+  })).then(response => {
+    if(response && response.data.code == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { throw { message: err }; })
+}
 export {
   createCustomer,
   getCustomerInfo,
@@ -1078,5 +1098,6 @@ export {
   deleteUserByUserId,
   getInvitedUserByApplicationId,
   getUserDetailsByToken,
-  updateInvitedUserStatus
+  updateInvitedUserStatus,
+  updateUserStatus
 }

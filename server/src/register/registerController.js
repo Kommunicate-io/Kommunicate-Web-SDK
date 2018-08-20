@@ -12,11 +12,10 @@ const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 const logger = require('../utils/logger');
 const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
-//const logger =require("../utils/logger");
+
 exports.createCustomer = (req, res) => {
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName ? req.body.userName : req.body.userId;
-  //const userId =  userName;
   const isPreSignUp = req.query.preSignUp;
   const isOAuthSignUp = req.query.OAuthSignUp;
   const password = isPreSignUp ? randomString.generate(6) : req.body.password;
@@ -50,13 +49,6 @@ exports.createCustomer = (req, res) => {
       } else {
         return registrationService.createCustomer(userDetail)
           .then(result => {
-            /* inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
-             .catch(err=>{
-               console.log("err while storing welcome message in db");
-             });*/
-            /* registrationService.sendWelcomeMail(email, name||email).catch(err=>{
-               console.log("Error while sending welcom mail to user",err)
-             });*/
             if (activeCampaignEnable) {
               activeCampaignClient.addContact({ "email": email })
                 .then(subscriberId => {
@@ -112,7 +104,7 @@ exports.patchCustomer = (req, res) => {
     })
   }
 
-  customerService.getCustomerByUserName(userId).then(dbCostomer => {
+customerService.getCustomerByUserName(userId).then(async dbCostomer => {
     console.log("got the user from db", dbCostomer);
     if (activeCampaignEnable) {
       activeCampaignClient.updateActiveCampaign({
@@ -128,8 +120,9 @@ exports.patchCustomer = (req, res) => {
         console.log("Error while updating company URL to activeCampaign", error);
       });
     }
+    let adminUser=  await userService.getByUserNameAndAppId(dbCostomer.userName,dbCostomer.applications[0].applicationId);
     if (pipeDriveEnable) {
-      applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applications[0].applicationId, dbCostomer.apzToken).then(users => {
+      applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applications[0].applicationId, new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64')).then(users => {
         let integration = users[0].metadata && users[0].metadata.KM_INTEGRATION ? JSON.parse(users[0].metadata.KM_INTEGRATION) : {};
         if (integration.pipeDriveId) {
           pipeDrive.updateDeal({ id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo });
@@ -139,7 +132,7 @@ exports.patchCustomer = (req, res) => {
           pipeDrive.createDealInPipeDrive(organization, person).then(result => {
             integration['pipeDriveId'] = result.data.data.id;
             let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
-            applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applications[0].applicationId, user, { apzToken: dbCostomer.apzToken }, false);
+            applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applications[0].applicationId, user, { apzToken: new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64') }, false);
           });
         }
       }).catch(error => {
@@ -150,17 +143,6 @@ exports.patchCustomer = (req, res) => {
     console.log("Error while getting customer by userId", error);
   });
   registrationService.updateCustomer(userId, customer).then(isUpdated => {
-    // userService.getAdminUserByAppId(customer.applicationId).then(user=>{
-    //   let userobj =  {};
-    //   userId?userobj.userId=userId:"";
-    //   customer.name? userobj.displayName = customer.name:"";
-    //   customer.email?userobj.email =customer.email:"";
-    // applozicClient.updateApplozicClient(user.userName,user.accessToken,customer.applicationId,userobj).then(response=>{
-    //     console.log("Applozic update user response: " + response);
-    //   }).catch(err=>{
-    //     console.log("error while updating Applozic user");
-    //   })
-    // });
     if (isUpdated) {
       response.code = "SUCCESS";
       response.message = "Updated";

@@ -1,3 +1,4 @@
+/*eslint-disable*/
 const userEventProcessor = require('./userEventProcessor');
 const config = require('../../conf');
 const logger = require('../utils/logger');
@@ -16,13 +17,14 @@ const amqpProperties = {
 const initializeEventsConsumers = function() {
     amqp.connect(amqpProperties).then((conn) => {
         logger.info('[AMQP] connection initilized...');
+       
         conn.on('error', function(e) {
             logger.error('[AMQP] error in connection', e);
         });
         conn.on('close', function(e) {
             logger.error('[AMQP] connection closed: ', e);
             logger.info('[AMQP] Tryig to reconnect to rabbitmq...');
-            setTimeout(initializeEventsConsumers, 1000);
+            setTimeout(initializeEventsConsumers, 30000); // reconnect after 30 sec.
         });
         /** *
          * get the number of registered events,
@@ -35,7 +37,9 @@ const initializeEventsConsumers = function() {
     }).catch((e) => {
         logger.error('[AMQP] error while connecting with rabbitmq ', e);
         logger.info('[AMQP] reconecting....');
-        setTimeout(initializeEventsConsumers, 1000);
+       if (!amqpConn){
+        setTimeout(initializeEventsConsumers,30000); // reconnect after 30 sec
+       }
     });
 };
 

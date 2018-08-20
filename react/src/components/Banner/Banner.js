@@ -26,21 +26,23 @@ export default class Banner extends Component {
     const { indicator, text, isVisible } = this.props;
 
     return (
-      <div className="km-banner-component" aria-hidden={!isVisible} hidden={isVisible} role="alert">
-        <div className={indicator === 'default' ? "km-banner km-default-banner" : 
-                        indicator === 'success' ? "km-banner km-success-banner" :
-                        indicator === 'warning' ? "km-banner km-warning-banner" :
-                        indicator === 'error' ? "km-banner km-error-banner" : "km-banner"
+      <div className="container km-banner-component" aria-hidden={!isVisible} hidden={isVisible} role="alert">
+        <div className={indicator === 'default' ? "km-banner km-default-banner row" : 
+                        indicator === 'success' ? "km-banner km-success-banner row" :
+                        indicator === 'warning' ? "km-banner km-warning-banner row" :
+                        indicator === 'error' ? "km-banner km-error-banner row" : "km-banner"
                         } >
 
-            {   indicator == "warning" &&
-            <svg className="warning-icon-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-            <path fill="#464444" fill-rule="nonzero" d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zM6.8 6.96v5.28a1.2 1.2 0 1 0 2.4 0V6.96a1.2 1.2 0 1 0-2.4 0zm1.2-2a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/>
-            </svg>
-            }
-            
-            {text}
-
+            <div className="col-lg-1">
+              {   indicator == "warning" &&
+              <svg className="warning-icon-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+              <path fill="#464444" fill-rule="nonzero" d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zM6.8 6.96v5.28a1.2 1.2 0 1 0 2.4 0V6.96a1.2 1.2 0 1 0-2.4 0zm1.2-2a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4z"/>
+              </svg>
+              }        
+            </div>
+            <div className="col-lg-11">
+              {text}
+            </div>
         </div>
       </div>
     );
