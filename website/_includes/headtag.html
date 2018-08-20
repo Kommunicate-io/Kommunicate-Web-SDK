@@ -27,7 +27,8 @@
 
 <script type="text/javascript" src="/assets/resources/js/jquery/jquery-3.2.1.min.js"></script> 
 <script type="text/javascript" src="/assets/resources/js/bootstrap/bootstrap.min.js"></script>
-
+<!-- <script type="text/javascript" src="/assets/resources/js/jquery-bootstrap.js"></script>  -->
+<!-- <script type="text/javascript" src="/assets/resources/js/bootstrap/bootstrap.min.js"></script> -->
 
 <!-- Tracking Scripts  -->
 
@@ -141,6 +142,10 @@ else {
       window.kommunicate = m; m._globals = o;
     })(document, window.kommunicate || {});
       </script>
+{% elsif page.url contains "/test" %}
+<script type="text/javascript">
+  console.log("No KM Script from Head tag will run on '/test' url.");
+</script>
 {% else %}
 <script type="text/javascript" id="kommunicate-support-chat-script">
   (function(d, m){
