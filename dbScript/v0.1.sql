@@ -107,3 +107,8 @@ alter table users add column email_subscription tinyint default 1;
 -- modified column name availability_status to status, ticket KM-1308  
 alter table users change availability_status  status INTEGER;
 
+/*KM-1319*/
+
+alter table customers drop `password`,drop `apz_token`;
+alter table users drop `authorization`, drop `apz_token`, drop 'role', drop `industry`, drop `company_name`, drop `company_size`;  
+
