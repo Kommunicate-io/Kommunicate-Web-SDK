@@ -10,15 +10,7 @@ const updateOrCreate = (customerId, appId, type, setting) => {
             // Item not found, create a new one
             return Promise.resolve(ThirdPartyIntegrationSettings.create(setting))
                 .then(item => { 
-                    if (type == INTEGRATION_PLATFORMS.HELPDOCS) {
-                        botPlatformClient.updateBot({
-                            "name": LIZ.userName,
-                            "applicationKey": appId,
-                            "handlerModule": "HELP_DOCS_HANDLER"
-                          }).catch(err => {
-                            logger.error("error while updating bot platform for liz", err);
-                          });
-                    }
+                    updateLizBotHandler(type, appId, "HELP_DOCS_HANDLER");
                     return { data: item, created: true }; 
                 })
         }
@@ -26,6 +18,22 @@ const updateOrCreate = (customerId, appId, type, setting) => {
         return Promise.resolve(ThirdPartyIntegrationSettings
             .update(setting, { where: { customerId: customerId, type: type } }))
             .then(item => { return { data: item, created: false } });
+    });
+}
+
+const updateLizBotHandler = (type, appId, handler) => {
+    if (type != INTEGRATION_PLATFORMS.HELPDOCS) {
+        return;
+    }
+    userService.getByUserNameAndAppId(LIZ.userName, appId).then(user=>{
+        botPlatformClient.updateBot({
+            "key": user.userKey,
+            "name": LIZ.userName,
+            "applicationKey": appId,
+            "handlerModule": handler
+        }).catch(err => {
+            logger.error("error while updating bot platform for liz", err);
+        });
     });
 }
 
@@ -40,18 +48,8 @@ const getIntegrationSetting = (customerId, type) => {
 }
 
 const deleteIntegrationSetting = (customerId, appId, type) => {
-
     return Promise.resolve(ThirdPartyIntegrationSettings.destroy({ where: { customerId: customerId, type: type } })).then(response => {
-         if (type == INTEGRATION_PLATFORMS) {
-            botPlatformClient.updateBot({
-                "name": LIZ.userName,
-                "applicationKey": appId,
-                "handlerModule": "SUPPORT_BOT_HANDLER"
-              }).catch(err => {
-                logger.error("error while updating bot platform for liz", err);
-              }); 
-        }
-
+        updateLizBotHandler(type, appId, "SUPPORT_BOT_HANDLER");
         return response;
     });
 }
