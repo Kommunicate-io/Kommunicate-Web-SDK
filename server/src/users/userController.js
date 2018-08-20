@@ -223,7 +223,7 @@ exports.processOffBusinessHours=(req,res)=>{
         logger.info("no Bot exists in db with UserKey",message.botId);
         return;
       }
-      return Promise.resolve(applozicClient.getGroupInfo(message.groupId,message.applicationId,bot.apzToken)).then(groupInfo=>{
+      return Promise.resolve(applozicClient.getGroupInfo(message.groupId,message.applicationId,new Buffer(bot.userName+":"+bot.accessToken).toString('base64'))).then(groupInfo=>{
         // logger.info("groupInfo",groupInfo);
         return Promise.resolve(userService.getUserBusinessHoursByUserNameAndAppId(userService.getAdminUserNameFromGroupInfo(groupInfo),message.applicationId)).then(userBusinessHours=>{
           if(userBusinessHours.length<1) {

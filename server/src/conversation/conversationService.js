@@ -171,7 +171,7 @@ const getAgentsList = (customer, users, groupId) => {
         users.forEach(function (user) {
             if (user.type === 2) {
                 if (user.userName === 'bot') {
-                    header.apzToken = user.apzToken
+                    header.apzToken = new Buffer(user.userName+':'+user.accessToken).toString('base64');
                 } if (customer.botRouting && user.allConversations == 1) {
                     assigneeUserName = user.userName;
                     userIds.push({ groupId: groupId, userId: user.userName, role: 2 });
@@ -217,7 +217,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                 });
             }
             //swich acording to conditions of botRouting and agentRouting
-            return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
+            return applozicClient.getGroupInfo(groupId, appId, new Buffer(bot[0].userName+":"+bot[0].accessToken).toString('base64'), true).then(group => {
                 if (group && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
                     let assignee = users.filter(user => {
                         return user.userName == group.metadata.CONVERSATION_ASSIGNEE;

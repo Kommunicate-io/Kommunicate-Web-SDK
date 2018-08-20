@@ -10,17 +10,15 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(50)
     },
     userName: {
+      // user name can be different than email for applozic users. 
       type: DataTypes.STRING(50),
       allowNull: false,
-      unique: "user_name_UNIQUE",
+      unique: 'user_name_UNIQUE',
       field: 'user_name'
     },
     email: {
       type: DataTypes.STRING(50),
-      unique: "email_UNIQUE",
-    },
-    password: {
-      type: DataTypes.STRING(200)
+      unique: 'email_UNIQUE',
     },
     role: {
       type: DataTypes.STRING(50)
@@ -39,16 +37,6 @@ module.exports = function (sequelize, DataTypes) {
     companySize: {
       type: DataTypes.STRING(15),
       field: 'company_size'
-    },
-    // applicationId: {
-    //   type: DataTypes.STRING(50),
-    //   allowNull: false,
-    //   unique: "IDX_USER_NAME_APP_KEY",
-    //   field: 'application_id'
-    // },
-    apzToken: {
-      type: DataTypes.STRING(200),
-      field: 'apz_token'
     },
     activeCampaignId: {
       type: DataTypes.INTEGER,

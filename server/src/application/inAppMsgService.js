@@ -47,7 +47,7 @@ exports.sendWelcomeMessage = (conversationId, customer) => {
       let bot = users.filter(user => {
         return user.userName = "bot";
       });
-      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, bot.apzToken, true).then(groupDetail => {
+      return applozicClient.getGroupInfo(conversationId, customer.applications[0].applicationId, new buffer(bot.userName+":"+bot.accessToken).toString('base64'), true).then(groupDetail => {
         // picking admin id if conversation Assignee is not available
         if (groupDetail) {
           let conversationAssignee = users.filter(user => {
