@@ -18,20 +18,31 @@ function getDescription(type){
 
 
 
-class BotDescription extends Component{
+const BotDescription = {
 
-    constructor(props){
-        super(props);
+    dialogflowV1: function() {
+
+          return(
+            <p>
+              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br />
+             2. Select your Agent from dropdown in left panel.<br />
+             3. Click on setting button. It will open a setting page for agent.<br />
+             4. Inside general tab search for <b>API KEYS</b>.<br />
+             5. Copy <b>Client access token</b> and <b>Developer access token</b> and paste here .<br />
+          </p>);
+    },
+
+    dialogflowV2 : function(){
+          return(
+            <p>
+              1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br />
+              2. Select your Agent from dropdown in left panel.<br />
+              3. Click on setting button. It will open a setting page for agent.<br />
+              4. Inside general tab search for <b>GOOGLE PROJECTS</b> and click on your service account.<br />
+              5. After getting redirected to your <b>SERIVICE ACCOUNT</b>, create key in JSON format for your project from <b>actions</b> section and it will get automatically downloaded.<br/>
+              5. Now upload the <b>key file</b>.<br />
+            </p>);
     }
-    render(){
-        return(<p>
-            1. Login to  <a href ="https://console.dialogflow.com/api-client/#/login">Dialogflow console</a> <br /> 
-         2. Select your Agent from dropdown in left panel.<br />
-         3. Click on setting button. It will open a setting page for agent.<br />
-         4. Inside general tab search for <b>API KEYS</b>.<br />
-         5. Copy <b>Client access token</b> and <b>Developer access token</b> and paste here .<br />
-        </p>);
-    }
+
 }
-
 export default BotDescription;

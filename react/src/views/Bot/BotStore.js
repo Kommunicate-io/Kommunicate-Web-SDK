@@ -7,7 +7,6 @@ import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
-
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
 import Diaglflow from './images/dialogflow-icon.png'
@@ -16,13 +15,15 @@ import Tick from './images/tick-icon.png'
 import KmIcon from './images/km-icon.png'
 import NoteIcon from './images/note-icon.png';
 import { ROLE_TYPE } from '../../utils/Constant';
-
+import RadioButton from '../../components/RadioButton/RadioButton';
+import InputFile from '../../components/InputFile/InputFile';
 
 export default class BotStore extends Component {
-
     constructor(props) {
         super(props);
+
         this.state = {
+          botPlatformVersion :'DialogflowVersion1',
           activeTab: '1',
           descriptionType :"ADD_BOT",
           descriptionHeader:"Step 1",
@@ -65,6 +66,9 @@ export default class BotStore extends Component {
           editedClientToken: '',
           editedDevToken: '',
           botUserName: '',
+          googleClientEmail:'',
+          googlePrivateKey:'',
+          projectId:'',
           dialogFlowBots: [],
           botAvailable: true,
           conversationsAssignedToBot: null,
@@ -72,18 +76,18 @@ export default class BotStore extends Component {
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
-    
+
       this.toggle = this.toggle.bind(this);
        };
 
        componentWillMount =()=>{
         //this.populateBotOptions();
        }
-    
+
       componentDidMount=()=>{
         this.getIntegratedBotsWrapper()
       }
-    
+
       clearBotDetails = ()=>{
         this.setState({
           devToken: '',
@@ -122,7 +126,7 @@ export default class BotStore extends Component {
       }
 
       handleClickOnConfigureTab=()=>{
-        this.toggle('2'); 
+        this.toggle('2');
         this.state.descriptionType = "CONFIGURE_BOT";
         this.state.descriptionHeader="Step 2";
         this.state.botOptionList=[];
@@ -130,15 +134,14 @@ export default class BotStore extends Component {
      }
 
      handleOnChangeforBotId =(e)=>{
-        
         this.setState({userid:e.target.value});
-  }
+      }
 
-  toggleUseCaseModal = () => {
-      this.setState({
-          useCaseModal: !this.state.useCaseModal
-      });
-    }
+    toggleUseCaseModal = () => {
+        this.setState({
+            useCaseModal: !this.state.useCaseModal
+        });
+      }
 
      toggleDialogFlowModalWrapper = () => {
         if(this.state.dialogFlowBots.length < 1){
@@ -153,7 +156,7 @@ export default class BotStore extends Component {
           listOfDialogFlowModal: !this.state.listOfDialogFlowModal
         });
       }
-    
+
       getIntegratedBotsWrapper = () => {
         getIntegratedBots().then(response => {
           this.setState({
@@ -174,13 +177,13 @@ export default class BotStore extends Component {
       submitEmail = (type) => {
 
         if(type === "USE_CASE_REQUEST" && this.state.botUseCaseText.trim().length > 0){
-    
+
           let options = {
            templateName: "BOT_USE_CASE_EMAIL",
            botUseCase: this.state.botUseCaseText,
            subject: "Custom Bot Request"
           }
-    
+
           callSendEmailAPI(options).then(response => {
             console.log(response);
             if(response.status ==  200 && response.data.code == "SUCCESS"){
@@ -193,13 +196,13 @@ export default class BotStore extends Component {
             }
           });
         }else if(type === "BOT_PLATFORM_REQUEST" && this.state.otherPlatformText.trim().length > 0){
-    
+
           let options = {
            templateName: "BOT_USE_CASE_EMAIL",
            botUseCase: this.state.otherPlatformText,
            subject: "Other Bot Platform Request"
           }
-    
+
           callSendEmailAPI(options).then(response => {
             console.log(response);
             if(response.status ==  200 && response.data.code == "SUCCESS"){
@@ -219,16 +222,57 @@ export default class BotStore extends Component {
         // }else{
         //   this.toggleListOfDialogFlowModal()
         // }
-        this.toggleDialogFlowModal()
+        this.toggleDialogFlowModal();
       }
-    
+
+      handleVersion = (e) => {
+        // e.preventDefault();
+        if (e.target.id === "teammates-admin-radio-v1"){
+          this.setState({
+              botPlatformVersion:"DialogflowVersion1"
+          })
+        }
+        else {
+          this.setState({
+              botPlatformVersion:"DialogflowVersion2"
+          })
+        }
+      }
+
+      uploadDialogFlowV2File = () => {
+        var file = {};
+        let fileValue = {};
+        var dialogflowJSON
+        file.json = document.getElementById("uploadJson").files[0];
+        var reader = new FileReader();
+        let that=this;
+        reader.onloadend = function(evt) {
+          if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+            fileValue = evt.target.result;
+            dialogflowJSON = JSON.parse(fileValue);
+            that.setStateForDialogFlow(dialogflowJSON);
+          }
+        }
+        reader.readAsText(file.json);
+      }
+
+      setStateForDialogFlow = (dialogflowJSON) => {
+        this.setState({
+          googleClientEmail:dialogflowJSON.client_email,
+          googlePrivateKey:dialogflowJSON.private_key_id,
+          projectId:dialogflowJSON.project_id
+        });
+        this.toggleDialogFlowModal();
+        this.toggleBotProfileModal();
+      }
+
       toggleDialogFlowModal = () => {
         // this.clearBotDetails()
         this.setState({
           dialogFlowModal: !this.state.dialogFlowModal
         });
       }
-    
+
       toggleBotProfileModal = () => {
         this.setState({
             botProfileModal: !this.state.botProfileModal
@@ -237,32 +281,38 @@ export default class BotStore extends Component {
 
       integrateBot = (aiPlatform) => {
 
-        if(!this.state.botName){
-          Notification.info("Bot name missing");
-          return;
-        }else if(!this.state.clientToken){
-          Notification.info("Client token missing");
-          return;
-        }else if(!this.state.devToken){
-          Notification.info("Dev Token missing");
-          return;
-        }
-    
+          if(!this.state.botName){
+            Notification.info("Bot name missing");
+            return;
+          }
+
         let _this =this;
-    
-        let data = {
-          clientToken : this.state.clientToken,
-          devToken : this.state.devToken,
-          aiPlatform : aiPlatform,
-          type:'KOMMUNICATE_SUPPORT'
+        let data;
+
+        if(this.state.botPlatformVersion === "DialogflowVersion1"){
+          data = {
+            clientToken : this.state.clientToken,
+            devToken : this.state.devToken,
+            aiPlatform : aiPlatform,
+            type:'KOMMUNICATE_SUPPORT'
+          }
         }
-    
+        else {
+          data = {
+            googleClientEmail:this.state.googleClientEmail,
+            googlePrivateKey:this.state.googlePrivateKey,
+            projectId:this.state.projectId,
+            aiPlatform : aiPlatform,
+            type:'KOMMUNICATE_SUPPORT'
+          }
+          console.log(data);
+        }
         // let uuid_holder = uuid();
-    
+
         let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
-    
+
         // this.setState({uuid: uuid_holder})
-    
+
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
         let authorization = userSession.authorization;
@@ -272,9 +322,9 @@ export default class BotStore extends Component {
         let env = getEnvironmentId();
         let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
         let userIdList = {"userIdList" : [userId]}
-    
+
         this.setState({disableIntegrateBotButton: true})
-    
+
         this.checkBotNameAvailability(userId,aiPlatform).then( bot => {
           axios({
           method: 'post',
@@ -300,13 +350,13 @@ export default class BotStore extends Component {
                 if(response.status==200 ){
                   _this.clearBotDetails();
                   Notification.info("Bot integrated successfully");
-                  _this.setState({disableIntegrateBotButton: false}) 
+                  _this.setState({disableIntegrateBotButton: false})
                   if(aiPlatform === "dialogflow"){
                     _this.setState({dialogFlowIntegrated: true})
                   }else if( aiPlatform === "microsoft"){
                     _this.setState({microsoftIntegrated: true})
                   }else{
-    
+
                   }
                   _this.toggleBotProfileModal()
                   _this.getIntegratedBotsWrapper()
@@ -325,7 +375,6 @@ export default class BotStore extends Component {
           this.setState({disableIntegrateBotButton: false})
         })
       }
-    
       toggleOtherPlatformModal = () => {
         this.setState({
           otherPlatformModal: !this.state.otherPlatformModal
@@ -333,29 +382,39 @@ export default class BotStore extends Component {
       }
 
       openBotProfileModal = () => {
-        if(this.state.clientToken.trim().length < 1){
-          Notification.info("Client Token is empty");
-          return;
-        }else if(this.state.devToken.trim().length < 1){
-          Notification.info("Dev Token is empty");
-          return;
-        }else if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
-          this.toggleDialogFlowModal()
-          this.toggleBotProfileModal()
+        if(this.state.botPlatformVersion === "DialogflowVersion1"){
+          if(this.state.clientToken.trim().length < 1){
+            Notification.info("Client Token is empty");
+            return;
+          }else if(this.state.devToken.trim().length < 1){
+            Notification.info("Dev Token is empty");
+            return;
+          }else if( this.state.clientToken.trim().length > 0 && this.state.devToken.trim().length > 0 ){
+            this.toggleDialogFlowModal();
+            this.toggleBotProfileModal();
+          }
+        }
+        else {
+          if(typeof document.getElementById("uploadJson").files[0] === 'undefined'){
+            Notification.info("No file uploaded");
+            return;
+          }
+          else{
+            this.uploadDialogFlowV2File();
+          }
         }
       }
-    
+
       checkBotNameAvailability(userId,aiPlatform) {
-    
         if(!this.state.botName){
           Notification.info("Please enter a bot name !!");
           return;
         }
-    
+
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-    
-    
+
+
         return Promise.resolve(
           createCustomerOrAgent({
             userName: userId,
@@ -365,7 +424,7 @@ export default class BotStore extends Component {
             name:this.state.botName,
             aiPlatform:aiPlatform,
             roleType: ROLE_TYPE.BOT
-            
+
           },"BOT")).then( bot => {
             Notification.info("Bot successfully created");
             return bot;
@@ -383,7 +442,7 @@ export default class BotStore extends Component {
                 <div className={this.state.listOfIntegratedBots.length >0 ?"banner-container" : "banner-container n-vis"}>
                   <div className="banner-div">
                     <span className="banner-sub-text">You have <span className="banner-main-text" style={{marginRight:"0px", paddingLeft:"0px"}}>{this.state.listOfIntegratedBots.length} bots</span>  integrated</span>
-                    
+
                     <a className="bot-routing-link" onClick={this.gotoBotIntegration} style={{marginLeft:"20px"}}>Manage</a>
                   </div>
                 </div>
@@ -497,7 +556,7 @@ export default class BotStore extends Component {
                 <button className="btn btn-primary" onClick={ () => {this.submitEmail("USE_CASE_REQUEST")} }>
                   Submit Usecase
                 </button>
-              </div>  
+              </div>
             </div>
           </ModalBody>
         </Modal>
@@ -533,31 +592,58 @@ export default class BotStore extends Component {
             <span className="km-bot-integration-use-case-modal-text">Integrating your Dialogflow bot with Kommunicate</span>
           </ModalHeader>
           <ModalBody>
-            <div className="row">
-              <div className="col-sm-12">
-                <p className="km-bot-integration-use-case-modal-text">Instructions:</p>
-                <BotDescription />
+              <div className="km-dialogflow-version-select">
+                Select your Dialogflow version:
+                <div className="km-dialogflow-radio">
+                    <RadioButton className = "km-dialogflow-radio-v1" idRadioButton={'teammates-admin-radio-v1'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion1"} label="Dialogflow V1" />
+                    <RadioButton className = "km-dialogflow-radio-v2" idRadioButton={'teammates-agent-radio-v2'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion2"} label="Dialogflow V2" />
+                </div>
+              </div>
+              {
+                this.state.botPlatformVersion === "DialogflowVersion1" ?
+            <div>
+              <div className="row">
+                <div className="col-sm-12">
+                  <p className="km-bot-integration-use-case-modal-text">Instructions:</p>
+                  {BotDescription.dialogflowV1()}
+                </div>
+              </div>
+              <div className="row">
+                <label className="col-sm-3" htmlFor="hf-password">Client Token:</label>
+                <div className="col-sm-9">
+                  <input type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
+                </div>
+              </div>
+              <div className="row mt-4">
+                <label className="col-sm-3" htmlFor="hf-password">Dev Token:</label>
+                <div className="col-sm-9">
+                  <input type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
+                </div>
               </div>
             </div>
-            <div className="row">
-              <label className="col-sm-3" htmlFor="hf-password">Client Token:</label>
-              <div className="col-sm-9">
-                <input type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
+              :
+              <div>
+                <div className="row">
+                  <div className="col-sm-12">
+                    <p className="km-bot-integration-use-case-modal-text">Instructions:</p>
+                    {BotDescription.dialogflowV2()}
+                  </div>
+                </div>
+                <div className="row form-group km-pushNotification-development">
+                  <div className="km-dialog-flow-upload">Service account private key file :<span className="customer-type"> </span></div>
+                  <div className="col-sm-6 col-md-6 km-input-component">
+                    <InputFile id={'uploadJson'} className={'secondary'} text={"Upload File"} accept={'.json'} />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row mt-4">
-              <label className="col-md-3" htmlFor="hf-password">Dev Token:</label>
-              <div className="col-md-9">
-                <input type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
+            }
+              <div className="row" style={{marginTop: "66px"}}>
+                <div className="col-sm-12 text-right">
+                  <button className="btn btn-primary" onClick={this.openBotProfileModal} disabled={this.state.enableButton}>
+                    Next
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="row" style={{marginTop: "66px"}}>
-              <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={this.openBotProfileModal}>
-                  Next
-                </button>
-              </div>  
-            </div>
           </ModalBody>
         </Modal>
 
@@ -590,7 +676,7 @@ export default class BotStore extends Component {
                 <button className="btn btn-primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
                   Integrate and Setup Bot Profile
                 </button>
-              </div>  
+              </div>
             </div>
           </ModalBody>
         </Modal>
@@ -610,7 +696,7 @@ export default class BotStore extends Component {
                             <p className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</p>
                         </div>
                         <div className="col-sm-3">
-                          { 
+                          {
                             bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
                           }
                         </div>
@@ -628,19 +714,19 @@ export default class BotStore extends Component {
             </div>
             <div className="row" style={{marginTop: "66px", padding: "10px"}}>
               <div className="col-sm-6">
-              </div> 
+              </div>
               <div className="col-sm-6 text-right">
                 <button className="btn btn-primary" onClick={() => {this.toggleDialogFlowModal(); this.toggleListOfDialogFlowModal()}}>
                   New Integration
                 </button>
-              </div>  
+              </div>
             </div>
           </ModalBody>
         </Modal> */}
 
             </div>
 
-            
+
         );
     }
 }

@@ -176,4 +176,62 @@
   font-weight: 500;
   color: #5c5aa7;
 }
+.km-dialogflow-version-select {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #565758;
+  margin-bottom: 20px;
+}
+.km-dialogflow-radio {
+  display: inline-flex;
+  padding: 0px 5px;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #565758;
+}
 
+.km-dialogflow-radio-v1 {
+  margin: 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #504e4e;
+}
+.km-dialogflow-radio-v2 {
+  margin: 0 5px;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  text-align: left;
+  color: #504e4e;
+}
+
+.km-dialogflow-radio .radiobutton .radio-button-container .radio-wrapper {
+  margin-left: 30px;
+}
+
+.km-dialog-flow-upload {
+  margin-top: 29px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: normal;
+  letter-spacing: 0.6px;
+  margin-left: 15px;
+}
