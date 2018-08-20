@@ -21,9 +21,9 @@ app.use(cors());
 // minify applozic plugin code files into a single file
 compressor.minify({
   compressor: 'gcc',
-  //compressor: 'no-compress',
+  // compressor: 'no-compress',
   input: ['./src/webplugin/lib/js/jquery-3.2.1.min.js','./src/webplugin/lib/js/mck-ui-widget.min.js', './src/webplugin/lib/js/mck-ui-plugins.min.js', './src/webplugin/lib/js/mqttws31.js', './src/webplugin/lib/js/mck-emojis.min.js',
-  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js'],
+  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js', './src/webplugin/lib/js/moment.js'],
   output: './src/webplugin/js/kommunicatepluginrequirements.min.js',
   callback: function (err, min) {
     if(!err){
@@ -38,7 +38,7 @@ compressor.minify({
 // minify applozic css files into a single file
 compressor.minify({
   compressor: 'clean-css',
-  //compressor: 'no-compress',
+  // compressor: 'no-compress',
   input: ['./src/webplugin/lib/css/mck-combined.min.css', './src/webplugin/css/app/mck-sidebox-1.0.css', './src/webplugin/css/app/km-rich-message.css', './src/webplugin/css/app/km-login-model.css',
   './src/webplugin/lib/css/tiny-slider-2.4.0.css'],
   output: './src/webplugin/css/kommunicatepluginrequirements.min.css',
@@ -59,7 +59,7 @@ compressor.minify({
 
 compressor.minify({
   compressor: 'gcc',
-  //compressor: 'no-compress',
+  // compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/common.js', './src/webplugin/knowledgebase/helpdocs.js', './src/webplugin/knowledgebase/kb.js'],
   output: './src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
   callback: function (err, min) {
@@ -72,7 +72,7 @@ compressor.minify({
 });
 compressor.minify({
   compressor: 'gcc',
-  //compressor: 'no-compress',
+  // compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/km-post-initialization.js', './src/webplugin/js/app/mck-ringtone-service.js'],
   output: './src/webplugin/js/app/km-chat-combined-0.1.min.js',
   callback: function (err, min) {

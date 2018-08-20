@@ -3648,7 +3648,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width: 55px;
 	}
 	.mck-contact-list .blk-lg-8 {
-		width: calc(100% - 85px);
+		width: calc(100% - 95px);
 	}
 	.mck-sidebox-content .mck-box-top .mck-tab-individual .blk-lg-2 {
 		width: 30px;
@@ -3677,7 +3677,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 		width: 100%;
 	}
 	.mck-contact-list .blk-lg-4 {
-		max-width: 80px;
+		max-width: 100px;
 	}
 	.mck-group-member-list .blk-lg-4 {
 		width: 65px;
