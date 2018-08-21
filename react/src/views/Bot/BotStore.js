@@ -227,7 +227,7 @@ export default class BotStore extends Component {
 
       handleVersion = (e) => {
         // e.preventDefault();
-        if (e.target.id === "teammates-admin-radio-v1"){
+        if (e.target.id === "km-dialogflow-radio-v1'"){
           this.setState({
               botPlatformVersion:"DialogflowVersion1"
           })
@@ -595,8 +595,8 @@ export default class BotStore extends Component {
               <div className="km-dialogflow-version-select">
                 Select your Dialogflow version:
                 <div className="km-dialogflow-radio">
-                    <RadioButton className = "km-dialogflow-radio-v1" idRadioButton={'teammates-admin-radio-v1'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion1"} label="Dialogflow V1" />
-                    <RadioButton className = "km-dialogflow-radio-v2" idRadioButton={'teammates-agent-radio-v2'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion2"} label="Dialogflow V2" />
+                    <RadioButton className = "km-dialogflow-radio-v1" idRadioButton={'km-dialogflow-radio-v1'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion1"} label="Dialogflow V1" />
+                    <RadioButton className = "km-dialogflow-radio-v2" idRadioButton={'km-dialogflow-radio-v2'} handleOnChange={this.handleVersion} checked={this.state.botPlatformVersion == "DialogflowVersion2"} label="Dialogflow V2" />
                 </div>
               </div>
               {
