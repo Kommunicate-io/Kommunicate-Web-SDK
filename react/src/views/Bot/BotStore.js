@@ -227,7 +227,7 @@ export default class BotStore extends Component {
 
       handleVersion = (e) => {
         // e.preventDefault();
-        if (e.target.id === "km-dialogflow-radio-v1'"){
+        if (e.target.id === "km-dialogflow-radio-v1"){
           this.setState({
               botPlatformVersion:"DialogflowVersion1"
           })
@@ -257,6 +257,18 @@ export default class BotStore extends Component {
       }
 
       setStateForDialogFlow = (dialogflowJSON) => {
+        if(typeof dialogflowJSON.client_email === 'undefined'){
+          Notification.info("Client email missing in JSON file. Please upload a valid JSON file.");
+          return;
+        }
+        else if(typeof dialogflowJSON.private_key_id === 'undefined'){
+          Notification.info("Private key id missing in JSON file. Please upload a valid JSON file.");
+          return;
+        }
+        else if(typeof dialogflowJSON.project_id === 'undefined'){
+          Notification.info("Project id missing in JSON file. Please upload a valid JSON file.");
+          return;
+        }
         this.setState({
           googleClientEmail:dialogflowJSON.client_email,
           googlePrivateKey:dialogflowJSON.private_key_id,
@@ -315,10 +327,7 @@ export default class BotStore extends Component {
 
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-        let authorization = userSession.authorization;
         let password = CommonUtils.getUserSession().password;
-        let device = atob(authorization);
-        let devicekey = device.split(":")[1];
         let env = getEnvironmentId();
         let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
         let userIdList = {"userIdList" : [userId]}
