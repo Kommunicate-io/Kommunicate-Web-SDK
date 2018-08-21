@@ -1,5 +1,5 @@
 .navbar {
-    background: $color-white;
+    // background: $color-white;
     display: flex;
     justify-content: space-between;
     flex: 1;
@@ -147,4 +147,5 @@
 .nav_open {
     height: 43rem !important;
     border-bottom: 1px solid rgba($primary-light, .2);
+    background: $color-white;
 }
