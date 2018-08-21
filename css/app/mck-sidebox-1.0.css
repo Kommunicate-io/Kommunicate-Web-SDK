@@ -2137,6 +2137,46 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	background-color: #AED581;
 	color: rgb(221, 237, 202);
 }
+.alpha_0 {
+	background-color: #E8C9A5;
+	color: rgb(20, 20, 20);
+}
+.alpha_1 {
+	background-color: #80B4F0;
+	color: rgb(20, 20, 20);
+}
+.alpha_2 {
+	background-color: #F6DF6E;
+	color: rgb(20, 20, 20);
+}
+.alpha_3 {
+	background-color: rgb(146, 184, 10);
+	color: rgb(20, 20, 20);
+}
+.alpha_4 {
+	background-color: #C03869;
+	color: rgb(246, 248, 244);
+}
+.alpha_5 {
+	background-color: #41F1A9;
+	color: rgb(20, 20, 20);
+}
+.alpha_6 {
+	background-color: #11AA48;
+	color: rgb(237, 241, 232);
+}
+.alpha_7 {
+	background-color: #202848;
+	color: rgb(221, 237, 202);
+}
+.alpha_8 {
+	background-color: #D4D052;
+	color: rgb(20, 20, 20);
+}
+.alpha_9 {
+	background-color: #7FFCDE;
+	color: rgb(20, 20, 20);
+}
 
 .alpha_user i {
 	font-size: 24px;
@@ -3376,7 +3416,7 @@ display: none;
 	.mck-icon-marker, .mck-icon-delivered, .mck-icon-read, .mck-icon-sent,
 	.mck-icon-time {
 	display: inline-block;
-	background: url(../css/app/images/mck-plugin-sprite.png) no-repeat;
+	/* background: url(../css/app/images/mck-plugin-sprite.png) no-repeat; */
 	overflow: hidden;
 	text-indent: -9999px;
 	text-align: left;
@@ -3947,7 +3987,7 @@ box-shadow: none!important;
 	right:0px !important;
 	width:100%;
 	left: auto;
-	bottom: 70px !important;
+	bottom: 62px !important;
 }
 .emoji-menu>.group-selector{
 	width:100% !important;
