@@ -259,48 +259,46 @@ const createConversationFromMail = (req) => {
     if (!applicationId || messages.length == 0) {
         return "INVALID_PARAMETERS"
     }
-    return customerService.getCustomerByApplicationId(applicationId).then(customer => {
-        return userService.getUsersByAppIdAndTypes(applicationId, [1, 2]).then(users => {
-            toAddresses.map(tos => {
-                let toUser = JSON.parse(tos);
-                let userAdded = false;
-                for (var user in users) {
-                    if (toUser.address == user.userName) {
-                        groupInfo.users.push({ "userId": user.userName, "role": 1 })
-                        userAdded = true;
+    return userService.getUsersByAppIdAndTypes(applicationId).then(users => {
+        toAddresses.map(tos => {
+            let toUser = JSON.parse(tos);
+            let userAdded = false;
+            for (var user in users) {
+                if (toUser.address == user.userName) {
+                    groupInfo.users.push({ "userId": user.userName, "role": 1 })
+                    userAdded = true;
+                }
+            }
+            if (!userAdded) { groupInfo.users.push({ "userId": toUser.address, "role": 3 }) }
+        });
+        let adminUser = users.find(user => user.type == 3);
+        return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, new Buffer(adminUser.userName + ":" + adminUser.accessToken).toString('base64')).then(userDetail => {
+            groupInfo.groupName = adminUser.name || adminUser.userName;
+            groupInfo.admin = adminUser.userName;
+            groupInfo.users[0].userId = adminUser.userName;
+            groupInfo.metadata.CONVERSATION_ASSIGNEE = adminUser.userName;
+            groupInfo.metadata.KM_CONVERSATION_TITLE = req.body.subject;
+            groupInfo.metadata['KM_CONVERSATION_SUBJECT'] = req.body.subject;
+            headers['Apz-Token'] = 'Basic ' + new Buffer(adminUser.userName + ":" + adminUser.accessToken).toString('base64');
+            if (userDetail && userDetail.length > 0) {
+                //create conversation with first user
+                groupInfo.users[1].userId = userDetail[0].userId;
+                return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
+                    console.log('conversation : ', result);
+                    return sendMessageIntoConversation(result.response.clientGroupId, messages, applicationId, userDetail[0]);
+                });
+            } else {
+                //create new user
+                return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
+                    if (user) {
+                        groupInfo.users[1].userId = user.userId
+                        return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
+                            console.log('conversation : ', result);
+                            return sendMessageIntoConversation(result.response.clientGroupId, messages, applicationId, user);
+                        });
                     }
-                }
-                if (!userAdded) { groupInfo.users.push({ "userId": toUser.address, "role": 3 }) }
-            });
-
-            return applozicClient.getUserDetails([fromEmail], customer.applications[0].applicationId, customer.apzToken).then(userDetail => {
-                groupInfo.groupName = customer.name || customer.userName;
-                groupInfo.admin = customer.userName;
-                groupInfo.users[0].userId = customer.userName;
-                groupInfo.metadata.CONVERSATION_ASSIGNEE = customer.userName;
-                groupInfo.metadata.KM_CONVERSATION_TITLE = req.body.subject;
-                groupInfo.metadata['KM_CONVERSATION_SUBJECT'] = req.body.subject;
-                headers['Apz-Token'] = 'Basic ' + customer.apzToken;
-                if (userDetail && userDetail.length > 0) {
-                    //create conversation with first user
-                    groupInfo.users[1].userId = userDetail[0].userId;
-                    return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
-                        console.log('conversation : ', result);
-                        return sendMessageIntoConversation(result.response.clientGroupId, messages, applicationId, userDetail[0]);
-                    });
-                } else {
-                    //create new user
-                    return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
-                        if (user) {
-                            groupInfo.users[1].userId = user.userId
-                            return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
-                                console.log('conversation : ', result);
-                                return sendMessageIntoConversation(result.response.clientGroupId, messages, applicationId, user);
-                            });
-                        }
-                    });
-                }
-            })
+                });
+            }
         })
     }).catch(err => {
         throw err;

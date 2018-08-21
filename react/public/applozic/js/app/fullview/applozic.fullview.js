@@ -7547,7 +7547,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.onError = function (err) {
 				w.console.log("Error in channel notification. " + err);
-				events.onConnectFailed();
+				setTimeout(function () {
+					events.onConnectFailed();
+				}, 30000);
 			};
 			_this.sendStatus = function (status) {
 				if (stompClient && stompClient.connected) {
