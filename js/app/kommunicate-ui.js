@@ -204,6 +204,7 @@ KommunicateUI={
                 $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+                $applozic('#km-faq').removeClass("n-vis").addClass("vis");
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
