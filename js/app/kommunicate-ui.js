@@ -94,7 +94,7 @@ KommunicateUI={
     // On Click of Individual List Items their respective answers will show.
     $applozic(d).on("click", ".km-faq-list", function () {
         $applozic('#km-faqanswer').empty();
-        MCK_EVENT_HISTORY.push("km-faq-answer-list");
+        MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-answer-list" && MCK_EVENT_HISTORY.push("km-faq-answer-list");
         var articleId = $(this).attr('data-articleid');
         var source = $(this).attr('data-source');
         KommunicateKB.getArticle({
@@ -117,7 +117,7 @@ KommunicateUI={
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
         KommunicateUI.showHeader();
-        MCK_EVENT_HISTORY.push("km-faq-list");
+        MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-list" && MCK_EVENT_HISTORY.push("km-faq-list");
         $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
         $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
