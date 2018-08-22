@@ -152,10 +152,14 @@ $(document).ready(function() {
                         $kmApplozic("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
                         
-                        if(typeof user.email !== 'undefined') {
                             $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
-                            $kmApplozic("#km-sidebar-user-email").html(user.email);
-                        }
+                            
+                             var emailtext = typeof user.email !== 'undefined' ? (user.email) :"email not available";
+                            if(typeof user.email === 'undefined'){
+                                $kmApplozic("#km-sidebar-user-email").removeClass("km-sidebar-user-email").addClass("km-sidebar-user-emailnotfound");
+                            }
+                            $kmApplozic("#km-sidebar-user-email").html(emailtext);
+                        
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
                             userSession.clearbitKey && clearbit(user.email, user.userId);
                            

@@ -727,3 +727,39 @@ body {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
+
+.km-sidebar-user-emailnotfound{
+	font-size: 14px!important;
+    font-weight: 300!important;
+    font-style: normal!important;
+    font-stretch: normal!important;
+    line-height: normal!important;
+    letter-spacing: 0.4px!important;
+    color: #8a8989!important;
+    white-space: nowrap!important;
+    overflow: hidden!important;
+    -o-text-overflow: ellipsis!important;
+	text-overflow: ellipsis!important;
+	font-size: 14px!important;
+    font-weight: 300!important;
+    font-style: normal!important;
+    font-stretch: normal!important;
+    line-height: normal!important;
+    letter-spacing: 0.4px!important;
+    color: #8a8989!important;
+    white-space: nowrap!important;
+    overflow: hidden!important;
+	text-align: center;
+    margin-bottom: 0px;
+}
+
+.km-email-hr{
+	width: 90%;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.km-tooltipsvg{
+	vertical-align: bottom;
+	margin-bottom: 2px;
+	margin-left: 6px;
+}
