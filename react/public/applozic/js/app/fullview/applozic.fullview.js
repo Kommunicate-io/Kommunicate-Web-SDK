@@ -221,6 +221,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					case 'reset':
 						oInstance.reset(params);
 						break;
+					case 'getLastSeenAtStatus':
+						oInstance.getLastSeenAtStatus(params);
+						break;
 				}
 			} else if ($kmApplozic.type(appOptions) === "object") {
 				oInstance.reInit(appOptions);
@@ -702,6 +705,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				params.callback(mckUserUtils.getUserDetail(params.userId));
 			}
 		};
+		_this.getLastSeenAtStatus = function (params) {
+			if(params.callback){
+				params.callback(kmDateUtils.getLastSeenAtStatus(params.lastseenTime));
+			}
+			return kmDateUtils.getLastSeenAtStatus(params.lastseenTime);
+		}
 		_this.getContactImage = function (user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
 			var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, false);
@@ -4133,7 +4142,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					nameTextExpr: nameTextExpr,
 					msgFloatExpr: floatWhere,
 					replyIdExpr: replyId,
-					createdAtTimeExpr: mckDateUtils.getDate(msg.createdAtTime),
+					createdAtTimeExpr: kmDateUtils.getDate(msg.createdAtTime),
 					msgFeatExpr: msgFeatExpr,
 					replyMessageParametersExpr: replyMessageParameters,
 					msgClassExpr: messageClass,
@@ -4840,7 +4849,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var unreadCount = _this.getUnreadCount(ucTabId);
 					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
 					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
-					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
+					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : kmDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
 					$messageText.html("");
 					(typeof emoji_template === 'object') ? $messageText.append(emoji_template) : $messageText.html(emoji_template);
@@ -4938,7 +4947,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					contHtmlExpr1: contHtmlExpr,
 					tabViewIdExpr: $listId,
 
-					msgCreatedDateExpr: message ? mckDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
+					msgCreatedDateExpr: message ? kmDateUtils.getTimeOrDate(message.createdAtTime, true) : ""
 				}];
 				if ($listId === "km-contact-search-list") {
 					$kmApplozic.kmtmpl("KMcontactTemplate", contactList).prependTo('#' + $listId);
@@ -4982,7 +4991,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (w.MCK_OL_MAP[contact.contactId]) {
 						lastSeenStatus = "online";
 					} else if (MCK_LAST_SEEN_AT_MAP[contact.contactId]) {
-						lastSeenStatus = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
+						lastSeenStatus = kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
 					}
 				}
 				var contactList = [{
@@ -5570,7 +5579,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							$mck_tab_status.html("Online");
 							$mck_tab_status.attr('title', "Online");
 						} else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
-							var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
+							var lastSeenAt = kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
 							$mck_tab_status.html(lastSeenAt);
 							$mck_tab_status.attr('title', lastSeenAt);
 						}
@@ -5638,8 +5647,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						roleNameListParam += "&" + "roleNameList=" + params.roleNameList[i];
 					}
 				}
+				var url = "?startIndex=0&pageSize=50&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam);
 				kmUtils.ajax({
-					url: KM_BASE_URL + CONTACT_LIST_URL + "?startIndex=0&pageSize=50&" + (roleNameListParam == "" ? "orderBy=1" : roleNameListParam),
+					url: KM_BASE_URL + CONTACT_LIST_URL + url+(typeof params.userId !=='undefined'?"&userId="+params.userId :''),
 					type: 'get',
 					global: false,
 					success: function (response) {
@@ -6440,7 +6450,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (w.MCK_OL_MAP[contact.contactId]) {
 						lastSeenStatus = "online";
 					} else if (MCK_LAST_SEEN_AT_MAP[contact.contactId]) {
-						lastSeenStatus = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
+						lastSeenStatus = kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
 					}
 				}
 				if (contact.contactId === group.adminName) {

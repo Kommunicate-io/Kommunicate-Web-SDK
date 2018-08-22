@@ -1121,6 +1121,16 @@ class Aside extends Component {
                           </div>
                         </div>
                       </div>
+                      <div className ="km-user-lastseen-info">
+                      <p className="km-user-info-metadata">
+                      <span className="km-user-info-meatadata-key">Last seen</span>
+                      <span className="km-user-info-meatadata-value km-lastseen"></span>
+                      </p>
+                      <p className="km-user-info-metadata">
+                      <span className="km-user-info-meatadata-key">Last contacted</span>
+                      <span className="km-user-info-meatadata-value km-lastMessageAtTime"></span>
+                      </p>
+                      </div>
                       {/* user metadata */}
                       <div id="km-sidebar-user-info-wrapper" className="n-vis" >
                         <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>

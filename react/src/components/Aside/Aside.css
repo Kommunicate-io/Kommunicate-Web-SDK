@@ -662,3 +662,10 @@ ul#km-group-search-list li {
 .aside-menu *::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.08);
 }
+
+.km-user-lastseen-info{
+      display: flex;
+      padding: 8px 14px 5px 14px;
+      -ms-flex-direction: column;
+      flex-direction: column;
+}

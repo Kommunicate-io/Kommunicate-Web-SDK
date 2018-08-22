@@ -59,9 +59,36 @@ $(document).ready(function() {
     function getContactDetail(contactId){
         resetCustomerInfoTab();
         var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
-        $kmApplozic.fn.applozic("getUserDetail", {"userIds": [contactId], callback: function(response) { 
-            var user = response.data[0];
-            resetClearbitInfoAndUserInfo();     
+            $kmApplozic.fn.applozic("fetchContacts", {
+                "roleNameList": ["USER"],
+                "userId": contactId,
+                'callback': function(response) {
+            var user = response.response.users[0];
+            resetClearbitInfoAndUserInfo(); 
+            if(user && user.lastSeenAtTime) {
+                // This code will convert millisecond into date and time string 
+                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.lastSeenAtTime,callback:function(resp){
+                    //This code will remove last seen on from above string 
+                    if (resp.includes("Last seen on ")) {
+                        $kmApplozic(".km-lastseen").html(resp.split("Last seen on "));
+                    } else {
+                        $kmApplozic(".km-lastseen").html(resp.split("Last seen "));
+                    }
+                }});
+            }  
+            
+            if(user && user.messagePxy.createdAtTime) {
+                 // This code will convert millisecond into date and time string 
+                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.messagePxy.createdAtTime,callback:function(resp){
+                      //This code will remove last seen on from above string 
+                    if (resp.includes("Last seen on ")) {
+                        $kmApplozic(".km-lastMessageAtTime").html(resp.split("Last seen on "));
+                    }
+                   else{
+                        $kmApplozic(".km-lastMessageAtTime").html(resp.split("Last seen "));
+                    }
+                }});
+            }      
             var ul = document.getElementById("km-user-info-list");
            
             for (key in user.metadata) {
@@ -73,9 +100,6 @@ $(document).ready(function() {
                 li.setAttribute("class","customli");
                 div1.setAttribute("class","km-userinfo-keydiv");
                 div2.setAttribute("class","km-userinfo-valuediv");
-                // li.appendChild(div1);
-                // li.appendChild(div2);
-                // ul.appendChild(li);
                 }
                     if (typeof user !== "undefined") {
                         if(!$kmApplozic.isEmptyObject(user.metadata) ){
@@ -116,7 +140,6 @@ $(document).ready(function() {
 
                             }
                         }
-                        console.log(user);
                         $kmApplozic("#km-user-name-sec .km-user-title").html(user.userName);
                         if (user.email) {
                             $kmApplozic("#km-user-info-list .email").html(user.email);                       
