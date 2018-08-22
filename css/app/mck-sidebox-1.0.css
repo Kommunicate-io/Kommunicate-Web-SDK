@@ -1660,7 +1660,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-cont-name strong {
 	vertical-align: middle;
 	font-size: 14px;
-    font-weight: 500;
+    font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: normal;
