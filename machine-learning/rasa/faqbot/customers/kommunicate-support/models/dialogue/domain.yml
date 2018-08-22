@@ -16,6 +16,9 @@ action_names:
 - utter_existence
 - utter_upgrade_plan
 - utter_demo
+- utter_pricing_plans
+- utter_1147
+- utter_1148
 actions:
 - utter_greet
 - utter_mau
@@ -33,6 +36,9 @@ actions:
 - utter_existence
 - utter_upgrade_plan
 - utter_demo
+- utter_pricing_plans
+- utter_1147
+- utter_1148
 config:
   store_entities_as_slots: true
 entities: []
@@ -52,8 +58,15 @@ intents:
 - existence
 - upgrade_plan
 - demo
+- pricing_plans
+- '1147'
+- '1148'
 slots: {}
 templates:
+  utter_1147:
+  - text: Answer
+  utter_1148:
+  - text: Applozic is a chat plugin for websites.
   utter_agent_number:
   - text: You can add as many agents in Kommunicate as you want. You will be charged
       on the basis of the number of agents you have.
@@ -82,6 +95,8 @@ templates:
   utter_mau:
   - text: We define Monthly Active User (MAU) as any user who 'used' Applozic Chat
       Messenger, in a given month.
+  utter_pricing_plans:
+  - text: The plans are available on the pricing tab
   utter_push_notification_config:
   - text: Verify if Push Notification is configured.
   utter_thanks:
