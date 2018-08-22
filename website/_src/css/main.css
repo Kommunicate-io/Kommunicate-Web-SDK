@@ -13,6 +13,9 @@ button:focus {
 
 html {
   font-size: 62.5%; }
+  @media (max-width: 1400px) and (min-width: 1200px) {
+    html {
+      font-size: 52%; } }
   @media (max-width: 75em) {
     html {
       font-size: 56.25%; } }
@@ -705,36 +708,42 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10rem 0 5rem 0; }
+  margin: 10rem 0 2rem 0;
+  padding: 0 5rem; }
   @media (max-width: 56.25em) {
     .automation_hero_wrapper {
       flex-direction: column;
       text-align: center;
-      margin-top: 14rem; } }
+      margin-top: 14rem;
+      padding: 0; } }
 
 .automation_hero_content h1 {
+  line-height: 4.9rem;
+  font-weight: 800;
   font-size: 3.5rem;
-  color: #4A4A4A;
-  font-weight: 400; }
+  color: #4A4A4A; }
   @media (max-width: 56.25em) {
     .automation_hero_content h1 {
       margin-bottom: 4rem; } }
 
 .automation_hero_content span {
+  font-weight: 400;
   display: block;
   font-size: 2.2rem;
   color: #9B9B9B;
   margin-bottom: 2rem; }
 
 .automation_hero_content img {
-  width: 100%; }
+  width: 80%;
+  margin: 0 0 auto auto;
+  display: block; }
 
 .scaling {
   color: #4A4A4A; }
   .scaling_heading h1 {
     text-align: center;
     font-size: 3.2rem;
-    font-weight: 400;
+    font-weight: 800;
     margin: 6rem 0 12rem 0; }
     @media (max-width: 56.25em) {
       .scaling_heading h1 {
@@ -756,7 +765,8 @@ body {
     padding: 4rem 10rem;
     text-align: center; }
     .scaling_text-heading {
-      font-size: 2rem; }
+      font-size: 2rem;
+      font-weight: 800; }
     .scaling_text-content {
       color: #858585;
       padding-top: 2rem;
@@ -770,7 +780,7 @@ body {
     padding: 0 9rem;
     margin-bottom: 8rem; }
     .km_bots_heading h1 {
-      font-weight: 400;
+      font-weight: 800;
       font-size: 3.2rem;
       margin-bottom: 3rem; }
   .km_bots_box {
@@ -781,6 +791,7 @@ body {
   .km_bots_title {
     font-size: 2.2rem;
     color: #4A4A4A;
+    font-weight: 800;
     margin: 3rem 0; }
   .km_bots_content {
     margin-bottom: 10rem;
@@ -811,8 +822,9 @@ body {
       padding: 0 9rem;
       font-size: 3.2rem;
       color: #4A4A4A;
-      font-weight: 400; }
+      font-weight: 800; }
       .automation_steps_heading h1 span {
+        font-weight: 400;
         color: #858585;
         font-size: 1.8rem;
         display: block;
@@ -845,7 +857,8 @@ body {
   .automation_steps_title {
     color: #4A4A4A;
     font-size: 2.4rem;
-    margin: 4rem; }
+    margin: 4rem;
+    font-weight: 800; }
     @media (max-width: 56.25em) {
       .automation_steps_title {
         margin: 1rem; } }
@@ -854,13 +867,14 @@ body {
   font-size: 2.8rem;
   color: #4A4A4A;
   text-align: center;
-  font-weight: 400;
+  font-weight: 300;
   margin: 3rem auto;
   padding: 4rem; }
   .custom_bots a {
     font-size: 2.5rem;
     color: #5F65D0;
     display: block;
+    font-weight: 800;
     text-decoration: none;
     transition: .3s; }
     .custom_bots a:hover {
@@ -898,9 +912,11 @@ body {
   @media (max-width: 75em) {
     .footer_account {
       width: 90%;
-      padding: 3.5rem 9rem; } }
+      padding: 3.5rem 9rem;
+      margin-top: -5rem; } }
   @media (max-width: 56.25em) {
     .footer_account {
+      margin-top: 0;
       width: 95%;
       position: absolute;
       left: 50%;
@@ -911,7 +927,7 @@ body {
       padding: 2rem 3rem; } }
   .footer_account_text {
     font-size: 4.2rem;
-    font-weight: 400;
+    font-weight: 600;
     display: block;
     color: #000;
     text-align: center; }
@@ -1005,7 +1021,7 @@ body {
       margin: 0 auto;
       text-align: center; } }
   .footer_column:first-child {
-    width: 40%;
+    width: 50%;
     color: #fff;
     font-weight: 600; }
     @media (max-width: 75em) {
@@ -1025,7 +1041,7 @@ body {
         width: 15%; } }
 
 .footer_list {
-  padding: 2rem;
+  padding: 1rem;
   color: #fff;
   list-style: none;
   margin-top: 2.3rem; }
@@ -1042,6 +1058,9 @@ body {
   color: #fff;
   font-size: 1.4rem;
   font-weight: 300; }
+  @media (max-width: 1400px) and (min-width: 1200px) {
+    .footer_link {
+      font-size: 14px; } }
   @media (max-width: 37.5em) {
     .footer_link {
       font-size: 1.9rem; } }
@@ -1056,6 +1075,9 @@ body {
   font-size: 1.2rem;
   font-weight: 800;
   padding: 4rem 0; }
+  @media (max-width: 1400px) and (min-width: 1200px) {
+    .footer_copyright {
+      font-size: 14px; } }
   @media (max-width: 75em) {
     .footer_copyright {
       padding: 3rem 0;
@@ -1070,9 +1092,6 @@ body {
     .brand {
       margin-top: 3rem;
       margin-bottom: 3rem; } }
-  .brand_automation {
-    justify-content: space-between !important;
-    margin-left: -1rem !important; }
   .brand_strip {
     list-style: none;
     margin: 0 auto;
@@ -1084,6 +1103,7 @@ body {
     opacity: .5; }
     .brand_img img {
       max-width: 20rem;
+      margin: 0 auto;
       padding: 2rem;
       max-height: 10rem; }
 

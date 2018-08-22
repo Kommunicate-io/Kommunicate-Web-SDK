@@ -17,6 +17,9 @@ html {
     // 1 rem base
     font-size: 62.5%;
     // background: red;
+    @media  (max-width:1400px) and (min-width:1200px) {
+        font-size: 52%;
+    }
 
     @include respond(tab-lan) {
         font-size: 56.25%;

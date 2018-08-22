@@ -4,7 +4,7 @@
         h1 {
             text-align: center;
             font-size: 3.2rem;
-            font-weight: 400;
+            font-weight: 800;
             margin: 6rem 0 12rem 0;
             @include respond(tab-por){
                 margin: 1rem 0 5rem 0;
@@ -35,6 +35,7 @@
         text-align: center;
         &-heading {
             font-size: 2rem;
+            font-weight: 800;
         }
         &-content {
             color: #858585;
