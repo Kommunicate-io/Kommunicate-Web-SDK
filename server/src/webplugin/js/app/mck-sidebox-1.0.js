@@ -2201,7 +2201,7 @@ var count = 0 ;
                     var $this = $applozic(this);
                     var elem = this;
                     var userId =$this.data('mck-id')
-                    count > 1  && MCK_EVENT_HISTORY.push(elem);
+                    count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem); 
                     if (userId) {
                         if ($this.parents(".mck-search-list").length) {
                             $mck_search.bind('blur');
