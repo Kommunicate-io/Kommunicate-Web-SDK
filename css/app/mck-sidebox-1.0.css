@@ -5342,8 +5342,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 
 .mck-badge-count {
-    width: auto;
-    height: auto;
+	min-width: 25px;
+    height: 25px;
     border-radius: 50px;
     background-color: #ec3838;
     border: 3px solid #fff;
@@ -5356,7 +5356,6 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     padding: 0px 4px;
     z-index: 2243001;
     right: 0;
-    min-width: 12px;
 }
 .mck-msg-preview-visual-indicator-container {
     background-color: #fff;
@@ -5403,7 +5402,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-msg-preview-visual-indicator-container .mck-close-btn {
     border-radius: 18px;
     background-color: #cbc8c8;
-    padding: 2px 10px;
+	padding: 2px 10px;
+	min-width: 65px;
     height: auto;
     display: flex;
     align-items: center;
@@ -5430,6 +5430,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	overflow: hidden;
 	width: 56px;
 	height: 56px;
+	border-radius: 56px;
 }
 #launcher-agent-img-container img {
 	width: 56px;
