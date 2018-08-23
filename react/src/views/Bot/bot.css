@@ -235,3 +235,9 @@
   letter-spacing: 0.6px;
   margin-left: 15px;
 }
+
+.km-dialog-flow-edit {
+    margin: 25px;
+    font-size: 15px;
+    text-align: center;
+}
