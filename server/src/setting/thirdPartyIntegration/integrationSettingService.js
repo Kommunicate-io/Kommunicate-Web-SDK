@@ -3,6 +3,7 @@ const customerService = require('../../customer/customerService');
 const botPlatformClient = require("../../utils/botPlatformClient");
 const LIZ = require("../../register/bots.js").LIZ;
 const INTEGRATION_PLATFORMS = require('../../application/utils').INTEGRATION_PLATFORMS;
+const userService = require('../../users/userService');
 
 const updateOrCreate = (customerId, appId, type, setting) => {
     return Promise.resolve(ThirdPartyIntegrationSettings.find({ where: { customerId: customerId, type: type } })).then(existingSetting => {
