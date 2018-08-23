@@ -3536,7 +3536,7 @@ display: none;
 	position: relative;
 	vertical-align: middle;
 }
-/* 
+/*
 .mck-icon-camera {
 	background-position: -10px -662px;
 	width: 18px;
@@ -5367,23 +5367,25 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     transform: translateY(-50%);
 }
 .mck-msg-preview-visual-indicator-container .mck-msg-preview-visual-indicator-text {
-    font-size: 14px;
-    font-weight: 400;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.36;
-    letter-spacing: .4px;
-    color: #646262;
+	font-size: 14px;
+	font-weight: 400;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: 1.36;
+	letter-spacing: .4px;
+	color: #646262;
 	padding: 5px 10px;
-	width: 100%;
-    min-width: 60px;
-    max-width: 210px;
-    min-height: 19px;
-    /* max-height: 60px; */
-    /* word-wrap: break-word; */
-    white-space: normal;
-    cursor: pointer;
-    box-sizing: content-box;
+	min-width: 60px;
+	max-width: 210px;
+	height: 28px;
+	white-space: nowrap;
+	cursor: pointer;
+	box-sizing: content-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
 }
 .mck-flexi {
 	display: flex;
