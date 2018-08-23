@@ -5058,12 +5058,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var contact = _this.getContact('' + data.userId);
 						contact = (typeof contact === 'undefined') ? _this.createContactWithDetail(data) : _this.updateContactDetail(contact, data);
 						if (typeof contact !== 'undefined') {
-							MCK_CONTACT_ARRAY.push(contact);
-								if (contact.isGroup) {
-									MCK_CONTACT_ARRAY[contact.groupId] = contact;
-								} else {
-									MCK_CONTACT_ARRAY[contact.contactId] = contact;
-								}
+								mckContactService.pushDataInContactArray(contact);
 							MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 						}
 					}
@@ -5605,6 +5600,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var USER_DETAIL_URL = "/rest/ws/user/detail";
 			var CONTACT_LIST_URL = "/rest/ws/user/v3/filter";
 			var USER_STATUS_URL = "/rest/ws/user/chat/status";
+			_this.pushDataInContactArray = function(contact){
+				if (typeof contact !== 'undefined') {
+					MCK_CONTACT_ARRAY[(contact.isGroup) ? contact.groupId : contact.contactId] = contact;
+				}
+			}
 			_this.getContactDisplayName = function (userIdArray) {
 				var mckContactNameArray = [];
 				if (userIdArray.length > 0 && userIdArray[0]) {
@@ -5692,13 +5692,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 										userIdArray.push(user.userId);
 										var contact = mckMessageLayout.getContact('' + user.userId);
 										contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-										if (typeof contact !== 'undefined') {
-											if (contact.isGroup) {
-												MCK_CONTACT_ARRAY[contact.groupId] = contact;
-											} else {
-												MCK_CONTACT_ARRAY[contact.contactId] = contact;
-											}
-										}
+										mckContactService.pushDataInContactArray(contact);
 										mckContactNameArray.push([user.userId, contact.displayName]);
 										if (user.connected) {
 											w.MCK_OL_MAP[user.userId] = true;
@@ -5769,13 +5763,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									w.MCK_OL_MAP[userDetail.userId] = (userDetail.connected);
 									var contact = mckMessageLayout.getContact('' + userDetail.userId);
 									contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
-									if (typeof contact !== 'undefined') {
-										if (contact.isGroup) {
-											MCK_CONTACT_ARRAY[contact.groupId] = contact;
-										} else {
-											MCK_CONTACT_ARRAY[contact.contactId] = contact;
-										}
-									}
+									mckContactService.pushDataInContactArray(contact);
 								});
 								if (params) {
 									if (params.setStatus) {
