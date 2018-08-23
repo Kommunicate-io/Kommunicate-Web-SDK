@@ -261,7 +261,7 @@ export default class BotStore extends Component {
           Notification.info("Client email missing in JSON file. Please upload a valid JSON file.");
           return;
         }
-        else if(typeof dialogflowJSON.private_key_id === 'undefined'){
+        else if(typeof dialogflowJSON.private_key === 'undefined'){
           Notification.info("Private key id missing in JSON file. Please upload a valid JSON file.");
           return;
         }
@@ -271,7 +271,7 @@ export default class BotStore extends Component {
         }
         this.setState({
           googleClientEmail:dialogflowJSON.client_email,
-          googlePrivateKey:dialogflowJSON.private_key_id,
+          googlePrivateKey:dialogflowJSON.private_key,
           projectId:dialogflowJSON.project_id
         });
         this.toggleDialogFlowModal();
