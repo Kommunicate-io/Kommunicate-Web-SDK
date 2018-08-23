@@ -88,7 +88,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				'GROUP_NAME_CHANGE_MESSAGE': 'Group name changed to :groupName',
 				'GROUP_ICON_CHANGE_MESSAGE': 'Group icon changed',
 				'GROUP_LEFT_MESSAGE': ':userName left'
-			}
+			},
+			'online.now':'Online now'
 		}
 	};
 	var message_default_options = {
