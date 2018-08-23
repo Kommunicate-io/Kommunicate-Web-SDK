@@ -241,7 +241,7 @@ class Integration extends Component {
     });
   }
   restrictInvite = () => {
-    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >1) {
+    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 1) {
       this.setState({restrictInvite:true})
     }
   }
