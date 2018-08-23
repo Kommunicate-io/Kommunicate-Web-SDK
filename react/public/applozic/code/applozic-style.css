@@ -756,10 +756,10 @@ body {
 .km-email-hr{
 	width: 90%;
     margin-top: 20px;
-    margin-bottom: 0;
+	margin-bottom: 20px;
 }
 .km-tooltipsvg{
-	vertical-align: bottom;
+	vertical-align: middle;
 	margin-bottom: 2px;
 	margin-left: 6px;
 }

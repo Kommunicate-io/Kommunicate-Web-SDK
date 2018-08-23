@@ -70,7 +70,7 @@ export default class IntegratedBots extends Component {
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
-    
+
        };
 
     componentDidMount=()=>{
@@ -100,9 +100,9 @@ export default class IntegratedBots extends Component {
           Notification.info("Dev Token missing");
           return;
         }
-    
+
         let _this =this;
-    
+
         let data = {
           clientToken : this.state.clientToken,
           devToken : this.state.devToken,
@@ -110,13 +110,13 @@ export default class IntegratedBots extends Component {
           botName : this.state.botName,
           type:'KOMMUNICATE_SUPPORT'
         }
-    
+
         // let uuid_holder = uuid();
-    
+
         let userId = this.state.botName.toLowerCase().replace(/ /g, '-')
-    
+
         // this.setState({uuid: uuid_holder})
-    
+
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
         let authorization = userSession.authorization;
@@ -126,9 +126,9 @@ export default class IntegratedBots extends Component {
         let env = getEnvironmentId();
         let userDetailUrl =getConfig().applozicPlugin.userDetailUrl;
         let userIdList = {"userIdList" : [userId]}
-    
+
         this.setState({disableIntegrateBotButton: true})
-    
+
         this.checkBotNameAvailability(userId,aiPlatform).then( bot => {
           axios({
           method: 'post',
@@ -146,7 +146,7 @@ export default class IntegratedBots extends Component {
               axios({
                 method: 'post',
                 url:getConfig().applozicPlugin.addBotUrl+"/"+response.data.response[0].id+'/configure',
-                // url:"http://localhost:5454/bot/"+response.data.response[0].id+'/configure', 
+                // url:"http://localhost:5454/bot/"+response.data.response[0].id+'/configure',
                 data:JSON.stringify(data),
                 headers: {
                   "Content-Type": "application/json",
@@ -155,13 +155,13 @@ export default class IntegratedBots extends Component {
                 if(response.status==200 ){
                   _this.clearBotDetails();
                   Notification.info("Bot integrated successfully");
-                  _this.setState({disableIntegrateBotButton: false}) 
+                  _this.setState({disableIntegrateBotButton: false})
                   if(aiPlatform === "dialogflow"){
                     _this.setState({dialogFlowIntegrated: true})
                   }else if( aiPlatform === "microsoft"){
                     _this.setState({microsoftIntegrated: true})
                   }else{
-    
+
                   }
                   _this.toggleBotProfileModal()
                   _this.getIntegratedBotsWrapper()
@@ -187,11 +187,11 @@ export default class IntegratedBots extends Component {
           Notification.info("Please enter a bot name !!");
           return;
         }
-    
+
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
-    
-    
+
+
         return Promise.resolve(
           createCustomerOrAgent({
             userName: userId,
@@ -237,34 +237,32 @@ export default class IntegratedBots extends Component {
         botDevToken?updatedState.editedDevToken=botDevToken:"";
         botUserName?updatedState.botUserName =botUserName:"";
         updatedState.botAvailable =Boolean(botAvailable);
-        
+
         this.setState(updatedState)
       }
 
-  
+
 
       saveEditedBotDetails = () => {
-        if (this.state.editedBotName && this.state.editedClientToken && this.state.editedDevToken) {
+        if (this.state.editedBotName || this.state.editedClientToken || this.state.editedDevToken) {
           let patchUserData = {
             name: this.state.editedBotName,
           }
-      
-          let axiosPostData = {
-            //botName: this.state.editedBotName,
+          let axiosPostData ={
             aiPlatform: "dialogflow",
-            type:"KOMMUNICATE_SUPPORT",
-            clientToken: this.state.editedClientToken,
-            devToken: this.state.editedDevToken,
-          }
-      
+            type:"KOMMUNICATE_SUPPORT"
+          };
+          this.state.editedClientToken && (axiosPostData.clientToken = this.state.editedClientToken);
+          this.state.editedDevToken && (axiosPostData.editedDevToken = this.state.editedDevToken);
+
           // let url = "http://localhost:5454/bot"+"/"+this.state.botKey+'/configure'
           let url = getConfig().applozicPlugin.addBotUrl+"/"+this.state.botKey+'/configure'
-      
+
           console.log(this.state.botName.toLowerCase());
           console.log(this.state.editedBotName.toLowerCase());
-      
+
           if(this.state.botName.trim().toLowerCase() !== this.state.editedBotName.trim().toLowerCase() || this.state.clientToken.trim().toLowerCase() !== this.state.editedClientToken.trim().toLowerCase() || this.state.devToken.trim().toLowerCase() !== this.state.editedDevToken.trim().toLowerCase()){
-      
+
             Promise.all([patchUserInfo(patchUserData, this.state.botUserName, this.applicationId), axios({method: 'post',url: url,data:JSON.stringify(axiosPostData),headers: {"Content-Type": "application/json",}})])
               .then(([patchUserInfoResponse, axiosPostResponse]) => {
                 if (patchUserInfoResponse.data.code === 'SUCCESS' && axiosPostResponse.status==200 ) {
@@ -277,9 +275,9 @@ export default class IntegratedBots extends Component {
           }else{
             Notification.info("No Changes to be saved successfully")
           }
-      
+
         }
-    
+
       }
 
       deleteBot = () => {
@@ -287,7 +285,7 @@ export default class IntegratedBots extends Component {
         let patchUserData = {
           deleted_at:new Date()
         }
-    
+
         patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
           if(response.data.code === 'SUCCESS'){
             Notification.info("Deleted successfully")
@@ -317,13 +315,13 @@ export default class IntegratedBots extends Component {
         })
       }
 
-      
+
       enableBot = () => {
 
         let patchUserData = {
           bot_availability_status: 1
         }
-    
+
         patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
           if(response.data.code === 'SUCCESS'){
             Notification.info("Enabled successfully")
@@ -332,7 +330,7 @@ export default class IntegratedBots extends Component {
             this.getIntegratedBotsWrapper()
           }
         })
-    
+
       }
 
 
@@ -341,7 +339,7 @@ export default class IntegratedBots extends Component {
         let patchUserData = {
           bot_availability_status: 0
         }
-    
+
         patchUserInfo(patchUserData, this.state.botUserName, this.applicationId).then(response => {
           if(response.data.code === 'SUCCESS'){
             Notification.info("Disabled successfully")
@@ -359,9 +357,9 @@ export default class IntegratedBots extends Component {
             Notification.info('Disabled bot removed from converstaions')
           }
         })
-    
+
       }
-    
+
 
 
     render() {
@@ -369,7 +367,7 @@ export default class IntegratedBots extends Component {
           <div>
             <div className=" ui tab loading show-loader" hidden={this.state.showLoader}></div>
             <div className={this.state.listOfIntegratedBots.length > 0 ? "mt-4 km-bot-integrated-bots-container":"n-vis"}>
-                
+
                 <div style={{padding: "10px"}} className={this.state.conversationsAssignedToBot ? null:"n-vis"}>
                     <div className="banner-container">
                       <div className="banner-div">
@@ -381,11 +379,11 @@ export default class IntegratedBots extends Component {
                     {/* <div style={{marginTop: "20px"}}>
                         <span className="integrated-bot-assigned-bot-text">All new conversations are assigned to : </span>
                         <span style={{display: "inline-block", border: "1px dashed #d0cccc", padding: "5px"}}>
-                        <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} /> 
-                        <span>{this.state.conversationsAssignedToBot ? this.state.conversationsAssignedToBot:'No Bot'}</span> 
-                        </span> 
+                        <img src={Diaglflow} style={{ width: "39px", height: "37.5px"}} />
+                        <span>{this.state.conversationsAssignedToBot ? this.state.conversationsAssignedToBot:'No Bot'}</span>
+                        </span>
                     </div> */}
-                    
+
                 </div>
                 <div className={this.state.conversationsAssignedToBot ? "n-vis":null}>
                   <div className="banner-container">
@@ -420,7 +418,7 @@ export default class IntegratedBots extends Component {
                       <p className="km-bot-list-table-heading">BOT PLATFORM</p>
                     </div>
                     <div className="col-md-2 col-sm-6 col-xs-12">
-                      <p className="km-bot-list-table-heading">STATUS</p> 
+                      <p className="km-bot-list-table-heading">STATUS</p>
                     </div>
                   </div>
                   {this.state.listOfIntegratedBots.map(bot => (
@@ -432,7 +430,7 @@ export default class IntegratedBots extends Component {
                         </div> */}
                         <div>
                             <span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span>
-                        </div> 
+                        </div>
                       </div>
 
                       <div className="col-md-4 col-sm-6 col-xs-12">
@@ -456,7 +454,7 @@ export default class IntegratedBots extends Component {
                       </div>
 
                       <div className="col-md-2 col-sm-6 col-xs-12">
-                      { 
+                      {
                             bot.bot_availability_status == 1 ?
                             <div className="badge-container badge-container--success">
                               <div className="badge-circle"></div>
@@ -473,7 +471,7 @@ export default class IntegratedBots extends Component {
                     // <div className="container" key={bot.id}>
                     //   <div className="row">
                     //     <div className="col-sm-2">
-                    //       { 
+                    //       {
                     //         bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
                     //       }
                     //     </div>
@@ -487,7 +485,7 @@ export default class IntegratedBots extends Component {
                     //           <br />
                     //           <span className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</span>
                     //         </span>
-                    //       </div> 
+                    //       </div>
                     //     </div>
                     //     <div className="col-sm-4">
                     //       <span className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</span>
@@ -519,7 +517,9 @@ export default class IntegratedBots extends Component {
                   <div style={{width:"100%"}} className={this.state.botAvailable ? "n-vis":"km-bot-integration-third-container"}>
                     <p>Your bot will not reply to conversations in disabled state</p>
                   </div>
-                  <ModalBody>
+                  <ModalBody>{
+                      this.state.editedClientToken !== "" ?
+                  <div>
                     <div className="row">
                       <label className="col-sm-3">Client Token:</label>
                       <div className="col-sm-6">
@@ -540,7 +540,7 @@ export default class IntegratedBots extends Component {
                     </div>
                     <div className="row" style={{marginTop: "66px"}}>
                       <div className="col-sm-4">
-                      </div> 
+                      </div>
                       <div className="col-sm-4 text-right">
                         <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal();}}>
                           Delete Integration
@@ -550,8 +550,36 @@ export default class IntegratedBots extends Component {
                         <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
                           Save Changes
                         </button>
-                      </div> 
+                      </div>
                     </div>
+                  </div>
+                  :
+                  <div>
+                    <div className="row km-dialog-flow-edit">
+                      <label className="col-sm-12">This bot was created using dialogflow v2.</label>
+                    </div>
+                    <div className="row mt-4"style={{alignItems: "center"}}>
+                      <label className="col-sm-3">Bot Name:</label>
+                      <div className="col-sm-6">
+                        <input type="text" onChange = {(event) => this.setState({editedBotName:event.target.value})} value={this.state.editedBotName} className="form-control input-field" />
+                      </div>
+                    </div>
+                    <div className="row" style={{marginTop: "66px"}}>
+                      <div className="col-sm-4">
+                      </div>
+                      <div className="col-sm-4 text-right">
+                        <button className="btn btn-outline-primary" onClick={ () => {this.toggleDeleteBotIntegrationModal();}}>
+                          Delete Integration
+                        </button>
+                      </div>
+                      <div className="col-sm-3 text-right">
+                        <button className="btn btn-primary" onClick={this.saveEditedBotDetails}>
+                          Save Changes
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                }
                   </ModalBody>
                 </Modal>
 
@@ -575,10 +603,10 @@ export default class IntegratedBots extends Component {
                         </div>
                         <div className="col-sm-4">
                           <span style={{whiteSpace: "nowrap"}}>{this.state.botAiPlatform['dialogflow']}<br />{this.state.botName}</span>
-                        </div> 
+                        </div>
                       </div>
                       <div className="col-sm-2" style={{textAlign: "left"}}>
-                        { 
+                        {
                           this.state.botAvailable ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
                         }
                       </div>
@@ -597,7 +625,7 @@ export default class IntegratedBots extends Component {
                         <button className="btn btn-primary" onClick={this.deleteBot}>
                           Delete
                         </button>
-                      </div>  
+                      </div>
                     </div>
                   </ModalBody>
                 </Modal>

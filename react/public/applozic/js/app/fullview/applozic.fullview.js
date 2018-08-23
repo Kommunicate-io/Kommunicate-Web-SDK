@@ -774,10 +774,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				if (params.groupId) {
 					var group = kmGroupUtils.getGroup(params.groupId);
-					var member = group.members.includes(MCK_USER_ID);
+					var member = group.members.includes(params.userId);
 					var group = {};
 					group.groupId = params.groupId;
-					group.userId = MCK_USER_ID;
+					group.userId = params.userId;
 					var conversationDetail = mckMessageService.checkForRoleType(group);
 					if (!member) {
 						kmGroupService.addGroupMember(conversationDetail);
@@ -5059,6 +5059,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						contact = (typeof contact === 'undefined') ? _this.createContactWithDetail(data) : _this.updateContactDetail(contact, data);
 						if (typeof contact !== 'undefined') {
 							MCK_CONTACT_ARRAY.push(contact);
+								if (contact.isGroup) {
+									MCK_CONTACT_ARRAY[contact.groupId] = contact;
+								} else {
+									MCK_CONTACT_ARRAY[contact.contactId] = contact;
+								}
 							MCK_GROUP_SEARCH_ARRAY.push(contact.contactId);
 						}
 					}
@@ -5688,7 +5693,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 										var contact = mckMessageLayout.getContact('' + user.userId);
 										contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
 										if (typeof contact !== 'undefined') {
-											MCK_CONTACT_ARRAY.push(contact);
+											if (contact.isGroup) {
+												MCK_CONTACT_ARRAY[contact.groupId] = contact;
+											} else {
+												MCK_CONTACT_ARRAY[contact.contactId] = contact;
+											}
 										}
 										mckContactNameArray.push([user.userId, contact.displayName]);
 										if (user.connected) {
@@ -5761,7 +5770,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									var contact = mckMessageLayout.getContact('' + userDetail.userId);
 									contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(userDetail) : mckMessageLayout.updateContactDetail(contact, userDetail);
 									if (typeof contact !== 'undefined') {
-										MCK_CONTACT_ARRAY.push(contact);
+										if (contact.isGroup) {
+											MCK_CONTACT_ARRAY[contact.groupId] = contact;
+										} else {
+											MCK_CONTACT_ARRAY[contact.contactId] = contact;
+										}
 									}
 								});
 								if (params) {
@@ -7408,7 +7421,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					_this.connectToSocket(isFetchMessages);
 
 			};
-			
 			_this.connectToSocket = function (isFetchMessages) {
 				$mck_message_inner = mckMessageLayout.getMckMessageInner();
 					console.log("socket connected",new Date());
@@ -7733,7 +7745,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								if (w.MCK_OL_MAP[tabId]) {
 									$mck_tab_status.html('Online');
 								} else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
-									$mck_tab_status.html(mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
+									$mck_tab_status.html(kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
 								}
 								$mck_tab_title.addClass('km-tab-title-w-status');
 								$mck_tab_status.removeClass('n-vis').addClass('vis');

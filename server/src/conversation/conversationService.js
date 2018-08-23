@@ -23,7 +23,7 @@ const addMemberIntoConversation = (data) => {
                         header = agents.header;
                         if (customer.botRouting) {
                             if (agents.assignTo != customer.userName) {
-                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: user.userName, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
+                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
                                 assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                             }
                             return { code: "SUCCESS", data: 'success' }
@@ -54,7 +54,7 @@ const addMemberIntoConversation = (data) => {
             return { code: "SUCCESS", data: 'customer not found' };
         }
     }).catch(err => {
-        logger.info("error during creating group", err)
+        logger.info("error during adding member into conversation" , err)
         return { code: "ERROR", data: 'error during adding member into conversation' };
     });
 }
@@ -171,7 +171,7 @@ const getAgentsList = (customer, users, groupId) => {
         users.forEach(function (user) {
             if (user.type === 2) {
                 if (user.userName === 'bot') {
-                    header.apzToken = new Buffer(user.userName+':'+user.accessToken).toString('base64');
+                    header.apzToken = user.apzToken;
                 } if (customer.botRouting && user.allConversations == 1) {
                     assigneeUserName = user.userName;
                     userIds.push({ groupId: groupId, userId: user.userName, role: 2 });
@@ -272,14 +272,14 @@ const createConversationFromMail = (req) => {
             if (!userAdded) { groupInfo.users.push({ "userId": toUser.address, "role": 3 }) }
         });
         let adminUser = users.find(user => user.type == 3);
-        return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, new Buffer(adminUser.userName + ":" + adminUser.accessToken).toString('base64')).then(userDetail => {
+        return applozicClient.getUserDetails([fromEmail], adminUser.applicationId, adminUser.apzToken).then(userDetail => {
             groupInfo.groupName = adminUser.name || adminUser.userName;
             groupInfo.admin = adminUser.userName;
             groupInfo.users[0].userId = adminUser.userName;
             groupInfo.metadata.CONVERSATION_ASSIGNEE = adminUser.userName;
             groupInfo.metadata.KM_CONVERSATION_TITLE = req.body.subject;
             groupInfo.metadata['KM_CONVERSATION_SUBJECT'] = req.body.subject;
-            headers['Apz-Token'] = 'Basic ' + new Buffer(adminUser.userName + ":" + adminUser.accessToken).toString('base64');
+            headers['Apz-Token'] = 'Basic ' + adminUser.apzToken;
             if (userDetail && userDetail.length > 0) {
                 //create conversation with first user
                 groupInfo.users[1].userId = userDetail[0].userId;
@@ -289,7 +289,8 @@ const createConversationFromMail = (req) => {
                 });
             } else {
                 //create new user
-                return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
+                let name = fromEmail.substring(0, fromEmail.indexOf('@'));
+                return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, name, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
                     if (user) {
                         groupInfo.users[1].userId = user.userId
                         return applozicClient.createSupportGroup(groupInfo, headers).then(result => {

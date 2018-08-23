@@ -110,7 +110,9 @@ module.exports = function(sequelize, DataTypes) {
     paranoid: true,
     setterMethods: {},
     getterMethods: {
-
-    }
+      apzToken() {
+        return new Buffer(this.userName + ":" + this.accessToken).toString('base64');
+      }
+    },
   });
 }
