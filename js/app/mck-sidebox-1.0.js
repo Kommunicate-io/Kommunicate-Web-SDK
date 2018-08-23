@@ -571,16 +571,18 @@ var count = 0 ;
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
-            document.getElementById('mck-sidebox-launcher').addEventListener("click", function(event){
-              event.preventDefault();
-              document.getElementById('launcher-agent-img-container').classList.add('n-vis');
-              if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
-                document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
-              }
-              else {
-                document.getElementById('launcher-svg-container').classList.remove('n-vis');
-              }
-            });
+            document.addEventListener('click', function(event) {
+                  if (event.target.id == 'mck-sidebox-launcher') {
+                    event.preventDefault();
+                    document.getElementById('launcher-agent-img-container').classList.add('n-vis');
+                    if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
+                      document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
+                    }
+                    else {
+                      document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                    }
+                  }
+              });
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
