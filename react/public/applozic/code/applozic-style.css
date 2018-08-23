@@ -759,7 +759,7 @@ body {
     margin-bottom: 0;
 }
 .km-tooltipsvg{
-	vertical-align: bottom;
+	vertical-align: middle;
 	margin-bottom: 2px;
 	margin-left: 6px;
 }
