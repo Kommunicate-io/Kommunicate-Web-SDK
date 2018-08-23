@@ -763,3 +763,7 @@ body {
 	margin-bottom: 2px;
 	margin-left: 6px;
 }
+
+.km-lastseen-online{
+	color : #22d674 !important;
+}

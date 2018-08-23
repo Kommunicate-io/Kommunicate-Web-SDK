@@ -64,19 +64,21 @@ $(document).ready(function() {
                 "userId": contactId,
                 'callback': function(response) {
             var user = response.response.users[0];
-            resetClearbitInfoAndUserInfo(); 
-            if(user && user.lastSeenAtTime) {
+            resetClearbitInfoAndUserInfo();
+            var lastSeenAtText ="";
+            if(user&& user.connected){
+                lastSeenAtText = KM_LABELS["online.now"];
+                $kmApplozic(".km-lastseen").addClass("km-lastseen-online");
+            } 
+            else if(user && user.lastSeenAtTime) {
                 // This code will convert millisecond into date and time string 
                 $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.lastSeenAtTime,callback:function(resp){
                     //This code will remove last seen on from above string 
-                    if (resp.includes("Last seen on ")) {
-                        $kmApplozic(".km-lastseen").html(resp.split("Last seen on "));
-                    } else {
-                        $kmApplozic(".km-lastseen").html(resp.split("Last seen "));
-                    }
+                    lastSeenAtText = resp.includes(KM_LABELS["last.seen.on"])?resp.split(KM_LABELS["last.seen.on"]):resp.split(KM_LABELS["last.seen"]);
+                    $kmApplozic(".km-lastseen").removeClass("km-lastseen-online");
                 }});
             }  
-            
+            $kmApplozic(".km-lastseen").html(lastSeenAtText);
             if(user && user.messagePxy.createdAtTime) {
                  // This code will convert millisecond into date and time string 
                 $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.messagePxy.createdAtTime,callback:function(resp){
