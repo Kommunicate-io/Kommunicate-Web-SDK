@@ -92,18 +92,18 @@ $(document).ready(function() {
                 }});
             }      
             var ul = document.getElementById("km-user-info-list");
-           
-            for (key in user.metadata) {
-                var li = document.createElement("li");
-                var div1 = document.createElement('div');
-                var div2 = document.createElement('div');
-                div1.appendChild(document.createTextNode(key +":"));
-                div2.appendChild(document.createTextNode(user.metadata[key]));
-                li.setAttribute("class","customli");
-                div1.setAttribute("class","km-userinfo-keydiv");
-                div2.setAttribute("class","km-userinfo-valuediv");
-                }
+            
                     if (typeof user !== "undefined") {
+                        for (key in user.metadata) {
+                            var li = document.createElement("li");
+                            var div1 = document.createElement('div');
+                            var div2 = document.createElement('div');
+                            div1.appendChild(document.createTextNode(key +":"));
+                            div2.appendChild(document.createTextNode(user.metadata[key]));
+                            li.setAttribute("class","customli");
+                            div1.setAttribute("class","km-userinfo-keydiv");
+                            div2.setAttribute("class","km-userinfo-valuediv");
+                            }
                         if(!$kmApplozic.isEmptyObject(user.metadata) ){
                             var userMetadata = user.metadata;
                             // delete userMetadata.kmClearbitData;
