@@ -1988,6 +1988,7 @@ var count = 0 ;
                 $minutesLabel.html("0");
                 clearInterval(refreshIntervalId);
             };
+
             $applozic(d).on("click", ".mck-message-delete", function () {
                 _this.deleteMessage($applozic(this).parents('.mck-m-b').data("msgkey"));
             });
@@ -2197,11 +2198,11 @@ var count = 0 ;
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    count++; 
+                    count++;
                     var $this = $applozic(this);
                     var elem = this;
                     var userId =$this.data('mck-id')
-                    count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem); 
+                    count > 1  && typeof MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "object" &&   MCK_EVENT_HISTORY.push(elem);
                     if (userId) {
                         if ($this.parents(".mck-search-list").length) {
                             $mck_search.bind('blur');
@@ -4729,43 +4730,45 @@ var count = 0 ;
             _this.getImageUrlForGroupType = function (contact, displayName) {
                 return contact.imageUrl? '<img src="' + contact.imageUrl + '"/>' :  _this.getContactImageByAlphabet(displayName);
             };
-			_this.getContactImageLink = function(contact, displayName) {
-				var imgsrctag = '';
-        var contact;
-				if(contact.members && contact.type==10){
-					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
-                } else if (contact.isGroup && contact.type !== 7) {
-                    imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
-                } else {
-                    if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
-                        mckGroupService.getContactFromGroupOfTwo(contact, function(user){
-                      contact = mckMessageLayout.fetchContact(user);
-                    });
-                    }
-                    if (typeof (MCK_GETUSERIMAGE) === "function") {
-                        var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
-                        if (imgsrc && typeof imgsrc !== 'undefined') {
-                            imgsrctag = '<img src="' + imgsrc + '"/>';
-                        }
-                    }
-                    if (!imgsrctag) {
-                        if (contact.photoSrc) {
-                            imgsrctag = '<img src="' + contact.photoSrc + '"/>';
-                        } else if (contact.photoData) {
-                            imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
-                        } else if (contact.photoLink) {
-                            imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
-                        } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
-                            imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '"/>';
-                        } else {
-                            if (!displayName) {
-                                displayName = contact.displayName;
-                            }
-                            imgsrctag = _this.getContactImageByAlphabet(displayName);
-                        }
-                    }
-                }
-                return imgsrctag;
+      			_this.getContactImageLink = function(contact, displayName) {
+      				var imgsrctag = '';
+              var contact;
+      				if(contact.members && contact.type==10){
+      					imgsrctag=_this.getImageUrlForGroupType(contact, displayName);
+              }
+              else if (contact.isGroup && contact.type !== 7) {
+                  imgsrctag = mckGroupService.getGroupImage(contact.imageUrl);
+              }
+              else {
+                  if (contact.isGroup && contact.type === 7 && contact.members.length > 1) {
+                      mckGroupService.getContactFromGroupOfTwo(contact, function(user){
+                    contact = mckMessageLayout.fetchContact(user);
+                  });
+                  }
+                  if (typeof (MCK_GETUSERIMAGE) === "function") {
+                      var imgsrc = MCK_GETUSERIMAGE(contact.contactId);
+                      if (imgsrc && typeof imgsrc !== 'undefined') {
+                          imgsrctag = '<img src="' + imgsrc + '"/>';
+                      }
+                  }
+                  if (!imgsrctag) {
+                      if (contact.photoSrc) {
+                          imgsrctag = '<img src="' + contact.photoSrc + '"/>';
+                      } else if (contact.photoData) {
+                          imgsrctag = '<img src="data:image/jpeg;base64,' + contact.photoData + '"/>';
+                      } else if (contact.photoLink) {
+                          imgsrctag = '<img src="' + MCK_BASE_URL + '/contact.image?photoLink=' + contact.photoLink + '"/>';
+                      } else if (contact.contactId == "bot") { //Todo: replace this with role once its build at Applozic side.
+                          imgsrctag = '<img src="' + 'https://api.kommunicate.io/img/logo02.svg' + '"/>';
+                      } else {
+                          if (!displayName) {
+                              displayName = contact.displayName;
+                          }
+                          imgsrctag = _this.getContactImageByAlphabet(displayName);
+                      }
+                  }
+              }
+              return imgsrctag;
             };
             _this.getContactImageByAlphabet = function (name) {
                 if (typeof name === 'undefined' || name === '') {
@@ -8031,11 +8034,17 @@ var count = 0 ;
                 // $mck_preview_icon.html(imgsrctag);
                 if(!imgsrctag.includes('/avatars/default.png')) {
                     $applozic("#launcher-agent-img-container").html(imgsrctag);
+                    $applozic("#launcher-agent-img-container").addClass('vis').removeClass('n-vis');
                     $applozic("#launcher-svg-container").addClass('n-vis').removeClass('vis');
                 } else {
                     $applozic("#launcher-agent-img-container").html('').addClass('n-vis').removeClass('vis');
                     $applozic("#launcher-svg-container").addClass('vis').removeClass('n-vis');
                 }
+                document.getElementById('mck-sidebox-launcher').addEventListener("click", function(event){
+                  event.preventDefault();
+                  document.getElementById('launcher-agent-img-container').classList.add('n-vis');
+                  document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                });
 
                 // $mck_msg_preview.data('mck-id', contact.contactId);
                 $mck_msg_preview_visual_indicator_text.data('mck-id', contact.contactId);
