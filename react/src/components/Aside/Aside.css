@@ -668,4 +668,5 @@ ul#km-group-search-list li {
       padding: 8px 14px 5px 14px;
       -ms-flex-direction: column;
       flex-direction: column;
+      margin-bottom: 8px;
 }
