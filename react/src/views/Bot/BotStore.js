@@ -435,6 +435,10 @@ export default class BotStore extends Component {
             roleType: ROLE_TYPE.BOT
 
           },"BOT")).then( bot => {
+            var bot = bot.data.data;
+            let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+            botAgentMap[bot.userName] = bot;
+            CommonUtils.setItemInLocalStorage("KM_BOT_AGENT_MAP",botAgentMap);
             Notification.info("Bot successfully created");
             return bot;
           })
