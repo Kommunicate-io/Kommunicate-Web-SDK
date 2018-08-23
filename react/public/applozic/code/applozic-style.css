@@ -756,7 +756,7 @@ body {
 .km-email-hr{
 	width: 90%;
     margin-top: 20px;
-    margin-bottom: 0;
+	margin-bottom: 20px;
 }
 .km-tooltipsvg{
 	vertical-align: middle;
