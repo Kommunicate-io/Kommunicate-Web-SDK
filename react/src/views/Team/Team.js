@@ -229,7 +229,7 @@ class Integration extends Component {
       let usersList = data;
       data.map((user => {
         user.status == USER_STATUS.EXPIRED && disabledUsers.push(user);
-        user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE && kmActiveUsers.push(user);
+        (user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE) && kmActiveUsers.push(user);
       }))
       this.setState({
         usersList: usersList,
@@ -241,7 +241,7 @@ class Integration extends Component {
     });
   }
   restrictInvite = () => {
-    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >1) {
+    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >= 2) {
       this.setState({restrictInvite:true})
     }
   }
