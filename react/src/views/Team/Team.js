@@ -290,7 +290,7 @@ class Integration extends Component {
     var status;
     var result = this.state.result.map(function (result, index) {
       let userId = result.userId;
-      let isOnline = userId == this.state.loggedInUserId || result.connected;
+      let isOnline = userId == loggedInUserId || result.connected;
       if (!result.deactivated) {
         usersList.map(function (user, i) {
           if (userId == user.userName) {
