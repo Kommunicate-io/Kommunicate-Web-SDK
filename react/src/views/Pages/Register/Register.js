@@ -46,14 +46,15 @@ class Register extends Component {
     const isInvited = CommonUtils.getUrlParameter(search, 'invite');
     const token = CommonUtils.getUrlParameter(search, 'token');
     const invitedBy = CommonUtils.getUrlParameter(search, 'referer')
-    // const email = CommonUtils.getUrlParameter(search, 'email');
-    // if (email) {
-    //   this.setState({email:email});
-    // }
+    const email = CommonUtils.getUrlParameter(search, 'email');
+    if (email) {
+      this.setState({email:email});
+    }
     this.setState({
       isInvited:isInvited,
       invitedBy:invitedBy,
-      token:token
+      token:token,
+      email:email
     });
     
     localStorage.removeItem('Google_OAuth');
