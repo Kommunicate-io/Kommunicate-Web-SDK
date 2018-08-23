@@ -289,7 +289,8 @@ const createConversationFromMail = (req) => {
                 });
             } else {
                 //create new user
-                return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, null, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
+                let name = fromEmail.substring(0, fromEmail.indexOf('@'));
+                return applozicClient.createApplozicClient(fromEmail, null, applicationId, null, null, fromEmail, name, EMAIL_NOTIFY.SUBSCRIBE_ALL).then(user => {
                     if (user) {
                         groupInfo.users[1].userId = user.userId
                         return applozicClient.createSupportGroup(groupInfo, headers).then(result => {
