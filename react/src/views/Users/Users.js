@@ -57,7 +57,7 @@ class Users extends Component {
     
   }
   render() {
-    const infoText = "The last time someone from your team <br><br/> or the user sent a message.";
+    const infoText = "Time of last message by the user";
     var result = this.state.result.map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
