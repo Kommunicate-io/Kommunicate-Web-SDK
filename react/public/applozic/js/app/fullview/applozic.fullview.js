@@ -6523,7 +6523,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (w.MCK_OL_MAP[contact.contactId]) {
 						lastSeenStatus = "online";
 					} else if (MCK_LAST_SEEN_AT_MAP[contact.contactId]) {
-						lastSeenStatus = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
+						lastSeenStatus = kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[contact.contactId]);
 					}
 				}
 				var contactList = [{
@@ -7672,7 +7672,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						$kmApplozic(".km-user-ol-status." + contact.htmlId).next().html('(Offline)');
 						$kmApplozic("#km-li-user-" + contact.htmlId + " .km-ol-status").removeClass('vis').addClass('n-vis');
 						if (tabId === contact.contactId && !$mck_message_inner.data('isgroup')) {
-							$kmApplozic("#km-tab-individual .km-tab-status").html(mckDateUtils.getLastSeenAtStatus(lastSeenAtTime));
+							$kmApplozic("#km-tab-individual .km-tab-status").html(kmDateUtils.getLastSeenAtStatus(lastSeenAtTime));
 						}
 						mckUserUtils.updateUserStatus({
 							'userId': userId,
@@ -7745,7 +7745,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								if (w.MCK_OL_MAP[tabId]) {
 									$mck_tab_status.html('Online');
 								} else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
-									$mck_tab_status.html(mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
+									$mck_tab_status.html(kmDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
 								}
 								$mck_tab_title.addClass('km-tab-title-w-status');
 								$mck_tab_status.removeClass('n-vis').addClass('vis');
