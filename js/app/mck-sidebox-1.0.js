@@ -1447,7 +1447,6 @@ var count = 0 ;
                     }
                 }
                 document.getElementById("mck-sidebox-launcher").addEventListener('click', function(event) {
-                  console.log(event.target);
                         event.preventDefault();
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
                         if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
