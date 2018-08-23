@@ -159,7 +159,7 @@ class UserItem extends Component {
         let isAway = this.props.isAway;
         let roleType = this.props.roleType;
         var emailId = user.email;
-        var displayName = CommonUtils.getDisplayName(user);
+        var displayName = user.displayName || "";
         // var displayName = CommonUtils.getDisplayName(user);
         var online = (user.connected === true) ? 'avatar-status badge-success ':'n-vis';
         var latestConversation = user.messagePxy?user.messagePxy.message:null;
