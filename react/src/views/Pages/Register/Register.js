@@ -54,7 +54,6 @@ class Register extends Component {
       isInvited:isInvited,
       invitedBy:invitedBy,
       token:token,
-      email:email
     });
     
     localStorage.removeItem('Google_OAuth');
