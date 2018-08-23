@@ -56,7 +56,7 @@ const processOneApp = (app) => {
             if (adminAgent.length < 1) {
                 return "No admin ";
             }
-            let headers = { "Apz-Token": "Basic " + adminAgent[0].apzToken, "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
+            let headers = { "Apz-Token": "Basic " + new Buffer(adminAgent[0].userName+":"+adminAgent[0].accessToken).toString('base64'), "Apz-AppId": adminAgent[0].applicationId, "Content-Type": "application/json", "Apz-Product-App": true };
             let params = { "applicationId": adminAgent[0].applicationId, "days": 7, "groupBy": "assignee_key" }
             return applozicClient.getConversationStats(params, headers).then(stats => {
                 if (!stats) {

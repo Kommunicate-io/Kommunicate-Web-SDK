@@ -349,7 +349,7 @@ exports.checkOnlineAgents=(customer)=>{
     //let avalableUserList = userList.filter(user=>user.availabilityStatus==1)
     logger.info("fetching detail of all agents from applozic");
     if(userIdList.length>0){
-      return applozicClient.getUserDetails(userIdList,customer.applications[0].applicationId, defaultAgent[0].apzToken);
+      return applozicClient.getUserDetails(userIdList,customer.applications[0].applicationId, new Buffer(defaultAgent[0].userName+":"+defaultAgent[0].accessToken).toString('base64'));
     }else return Promise.resolve([]);
   }).then(agentsDetail=>{
     agentsDetail=agentsDetail||[];

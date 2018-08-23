@@ -333,11 +333,13 @@ exports.createGroupOfAllAgents = (req, res) => {
     groupInfo.groupName = customer.name;
     return Promise.resolve(userService.getUsersByAppIdAndTypes(customer.applications[0].applicationId, undefined)).then(users => {
       if (users) {
+        let adminUser={};
         users.forEach(function (user) {
           console.log(user);
           groupInfo.users.push({ userId: user.userName, groupRole: user.type === 3 ? 1 : 2 });
+          adminUser = user.type === 3?user:{}
         });
-        return Promise.resolve(applozicClient.createGroup(groupInfo, customer.applications[0].applicationId, customer.apzToken)).then(response => {
+        return Promise.resolve(applozicClient.createGroup(groupInfo, customer.applications[0].applicationId, new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64'))).then(response => {
           return res.status(200).json(response.data);
         }).catch(err => {
           return res.status(500).json({ code: "UNABLE_TO_CREATE_GROUP", message: "unable to create group" });
