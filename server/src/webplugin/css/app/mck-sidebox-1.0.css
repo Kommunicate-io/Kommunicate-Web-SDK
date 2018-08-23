@@ -5525,3 +5525,6 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 		font-size: 16px!important;
 	}
 }
+.vis-table{
+	display: table-cell!important;
+}

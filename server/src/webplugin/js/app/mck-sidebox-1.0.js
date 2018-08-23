@@ -2,6 +2,7 @@ var MCK_GROUP_MAP = [];
 var MCK_CLIENT_GROUP_MAP = [];
 var MCK_EVENT_HISTORY = [];
 var count = 0 ;
+var isFirstLaunch = true;
 (function ($applozic, w, d) {
     "use strict";
     if (!w.applozic) {
