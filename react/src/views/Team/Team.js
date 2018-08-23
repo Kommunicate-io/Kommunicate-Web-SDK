@@ -62,6 +62,8 @@ class Integration extends Component {
       isDisabledUsersListHidden: true,
       activeUsersList: [],
       restrictInvite:false,
+      hideSeeDisabledAccounts : true,
+      kmActiveUsers: []
     };
     this.getUsers = this.getUsers.bind(this);
     window.addEventListener("kmFullViewInitilized", this.getUsers, true);
@@ -107,6 +109,7 @@ class Integration extends Component {
         _this.setState({
           result: response.response.users,
           activeUsers: activeUsers,
+          hideSeeDisabledAccounts:false
 
         });
       }
@@ -219,27 +222,28 @@ class Integration extends Component {
   }
   getAgents() {
     var that = this;
-    let restrictInvite = this.state.restrictInvite;
     let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
     let disabledUsers = this.state.disabledUsers;
-    let enabledAndNotExpiredUsers =[];
+    let kmActiveUsers =[];
     return Promise.resolve(getUsersByType(this.state.applicationId, users)).then(data => {
       let usersList = data;
       data.map((user => {
         user.status == USER_STATUS.EXPIRED && disabledUsers.push(user);
-        user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE && enabledAndNotExpiredUsers.push(user);
+        user.status == USER_STATUS.AWAY || user.status == USER_STATUS.ONLINE && kmActiveUsers.push(user);
       }))
-      if (enabledAndNotExpiredUsers.length >= 2 ) {
-        restrictInvite = true;
-      }
       this.setState({
         usersList: usersList,
         disabledUsers: disabledUsers,
-        restrictInvite:restrictInvite
-      });
+        kmActiveUsers,kmActiveUsers
+      },this.restrictInvite);
     }).catch(err => {
        console.log("err while fetching users list");
     });
+  }
+  restrictInvite = () => {
+    if(!this.state.isTrialPlan && this.state.isStartupPlan && this.state.kmActiveUsers.length >1) {
+      this.setState({restrictInvite:true})
+    }
   }
   multipleEmailHandler = (e) => {
     if (e.target.value.includes(' ')) {
@@ -350,7 +354,7 @@ class Integration extends Component {
       }))
 
       return <DisabledUsersList key={index} user={user} index={index} moreUserInfo={moreUserInfo}
-        loggedInUserRoleType={loggedInUserRoleType} disabledUsers={this.state.disabledUsers} isDisabledUsersListHidden={this.state.isDisabledUsersListHidden} />
+        loggedInUserRoleType={loggedInUserRoleType} disabledUsers={this.state.disabledUsers} isDisabledUsersListHidden={this.state.isDisabledUsersListHidden} getUsers={getUsers} />
     })
     return (
       <div className="animated fadeIn teammate-table">
@@ -365,13 +369,15 @@ class Integration extends Component {
                 <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? true : false}>+ Add a team member</button>
               </div>
               <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
-                { !this.state.restrictInvite && this.state.isTrialPlan &&
+                { !this.state.restrictInvite &&
                   <div className="teammates-add-member-modal-wrapper">
                     <div className="teammates-add-member-modal-header">
                       <p className="teammates-add-member-modal-header-title" >Adding new team member</p>
                     </div>
                     <hr className="teammates-add-member-modal-divider" />
-                    <Banner indicator={"warning"} isVisible={false} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
+                    { this.state.isTrialPlan &&
+                      <Banner indicator={"warning"} isVisible={false} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
+                    }
                     <div className="teammates-add-member-modal-content-wrapper">
                       <h5 className="teammates-add-member-modal-content-title">Whom do you want to add?</h5>
                       <input type="text" className="form-control email-field" id="email-field"
@@ -395,7 +401,7 @@ class Integration extends Component {
                     </div>
                   </div>
                 }
-                { this.state.restrictInvite && this.state.isTrialPlan &&
+                { this.state.restrictInvite &&
                   <div className="tm-upgrade-plan-container">
                     <div className="tm-upgrade-plan-title">Upgrade your plan to add more teammates!</div>
                     <div className="tm-upgrade-plan-logo">
@@ -423,7 +429,7 @@ class Integration extends Component {
           </div>
           <div className="col-md-12 new">
             <div className="card">
-              { this.state.isStartupPlan && this.state.disabledUsers.length > 0 &&
+              { !this.state.isTrialPlan && this.state.isStartupPlan && this.state.disabledUsers.length > 0 &&
                 <div className="card-block">
                   <div className="container disabled-account-info-container">
                     <div className="row">
@@ -438,7 +444,9 @@ class Integration extends Component {
                         <p className="tm-disabled-accounts-description-2">Till then, they will not be able to sign in and conversations will not be assigned to them.</p><br />
                         <div className="tm-disabled-link-btn">
                           <Link to="/settings/billing" className="km-button km-button--secondary tm-upgrade-btn" >Upgrade plan</Link>
-                          <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
+                          { !this.state.hideSeeDisabledAccounts && 
+                            <span onClick={this.showAndHideDisabledUsers} className="hide-disabled-accounts-btn">{this.state.isDisabledUsersListHidden ? "See disabled accounts" : "Hide disabled accounts"}</span>
+                          }
                         </div>
                       </div>
                     </div>
