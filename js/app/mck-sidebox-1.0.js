@@ -1446,16 +1446,6 @@ var count = 0 ;
                         mckCallService.InitilizeVideoClient(MCK_USER_ID, USER_DEVICE_KEY);
                     }
                 }
-                document.getElementById("mck-sidebox-launcher").addEventListener('click', function(event) {
-                        event.preventDefault();
-                        document.getElementById('launcher-agent-img-container').classList.add('n-vis');
-                        if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
-                          document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
-                        }
-                        else {
-                          document.getElementById('launcher-svg-container').classList.remove('n-vis');
-                        }
-                  });
             };
             _this.initialize =function(userPxy){
                 window.Applozic.ALApiService.login(
@@ -2041,6 +2031,15 @@ var count = 0 ;
                     $applozic("#mck-msg-new").attr("disabled", true);
 
                 });
+                $applozic(d).on('click', '#mck-sidebox-launcher', function () {
+                        document.getElementById('launcher-agent-img-container').classList.add('n-vis');
+                        if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
+                          document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
+                        }
+                        else {
+                          document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                        }
+                  });
                 $applozic(d).on('click', '#talk-to-human-link', function () {
                     if($applozic('#km-faq-search-input').val()=== "") {
                         mckMessageService.createNewConversation({ groupName: DEFAULT_GROUP_NAME, agentId: DEFAULT_AGENT_ID, botIds: DEFAULT_BOT_IDS }, function (conversationId) {
