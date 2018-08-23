@@ -8043,9 +8043,16 @@ var count = 0 ;
                 document.getElementById('mck-sidebox-launcher').addEventListener("click", function(event){
                   event.preventDefault();
                   document.getElementById('launcher-agent-img-container').classList.add('n-vis');
-                  document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                  if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
+                    document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
+                  }
+                  else {
+                    document.getElementById('launcher-svg-container').classList.remove('n-vis');
+                  }
                 });
-
+                if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined') {
+                  document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.add('n-vis');
+                }
                 // $mck_msg_preview.data('mck-id', contact.contactId);
                 $mck_msg_preview_visual_indicator_text.data('mck-id', contact.contactId);
                 // $mck_msg_preview.show();
