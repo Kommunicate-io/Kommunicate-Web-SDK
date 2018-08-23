@@ -5496,6 +5496,15 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .mck-read-icon  .mck-delivery-report--pending, .mck-delivered-icon .mck-delivery-report--pending, .mck-sent-icon .mck-delivery-report--pending {
 	display: none;
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+	select,
+	textarea,
+	input {
+	  font-size: 16px;
+	}
+  }
+
 @media (max-width:600px) {
 	input[type="color"],
 	input[type="date"],
