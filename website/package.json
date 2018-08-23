@@ -8,6 +8,7 @@
     "init-jekyll": "bundle exec jekyll serve --incremental",
     "optimize-images": "gulp imageMinify",
     "minify-html": "gulp html",
+    "minify-css": "gulp css-prod",
     "web-deploy": "bundle exec jekyll serve --detach"
   },
   "author": "Akshat Dhabi",

@@ -93,6 +93,7 @@ gulp.task('css', (e) => {
             .pipe(sass().on('error', sass.logError))
             .pipe(gulp.dest("_src/css")).on('end', e).on('error', e)
             .pipe(postcss(plugins))
+            .pipe(gulp.dest('assets/resources/css'))
             .pipe(gulp.dest('_site/assets/resources/css'));
     }, 400);
 
