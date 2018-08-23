@@ -61,7 +61,7 @@ $(document).ready(function() {
         var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
             $kmApplozic.fn.applozic("fetchContacts", {
                 "roleNameList": ["USER"],
-                "userId": contactId,
+                "userId": encodeURIComponent(contactId),
                 'callback': function(response) {
             var user = response.response.users[0];
             resetClearbitInfoAndUserInfo();
