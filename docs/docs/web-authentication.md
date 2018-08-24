@@ -18,6 +18,7 @@ Here are the parameters you can pass in [initialization script](https://docs.kom
 |imageLink | This image will be visible to the user |
 |isAnonymousChat | true/false|
 |conversationTitle | Conversation Title|
+|defaultMessageMetaData |This will send defaultMessageMetaData with every message.|
 
 ## There are 3 ways to Login
 
