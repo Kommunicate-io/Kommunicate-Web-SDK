@@ -32,6 +32,7 @@ Here is a list of available Actionable Messages:
     * Link Buttons
     * Submit Buttons
 * Quick Replies
+* Images
 * List
 * Cards (coming soon)
 
@@ -111,6 +112,25 @@ Quick Replies provides a way to send messages on a click without typing them all
 
 The appearance of the Quick Replies and Buttons will be adjusted automatically.
 
+## Images
+An image can be rendered in conversation using below JSON. An image object contains a caption(optional) and image url. You can send a list of image object in payload. There is no action supported on image template.
+
+```json
+{
+  "message": "Hey I am Kommunicate support bot",
+  "platform":"kommunicate",
+  "metadata": {
+    "contentType": "300",
+    "templateId": "9",
+    "payload": [
+      {
+        "caption": "image caption",
+        "url": "image url"
+      }]
+  }
+}
+
+```
 ## List Template
 
 The list template is a list of  structured items  with a optional header image and header text.
