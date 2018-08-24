@@ -52,3 +52,20 @@ background-color: white;
 color:black;
 }
 ``` 
+
+## Default metadata :
+Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
+
+###Example
+
+``` 
+var kommunicateSettings = {"appId": appId,
+            "isAnonymousChat": true,
+            "agentId": agentId,
+            "defaultMessageMetaData":{"hide":"true"}
+            "groupName": groupName,
+            "email":email
+            };
+
+``` 
+
