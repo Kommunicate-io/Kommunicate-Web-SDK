@@ -74,9 +74,9 @@
     outline: none;
 }
 .nav-signup-button {
-    color: #fff;
+    color: #000;
     border-radius: 4px;
-    border: solid 1.4px #FFF;
+    border: solid 1.4px #000;
     text-align: center;
     font-size: 16px;
     background-color: transparent;
@@ -89,14 +89,14 @@
     transition: all 0.3s ease;
 }
 .nav-signup-button:hover, .nav-signup-button:focus, .nav-signup-button:active {
-    color: #FFF !important;
-    border: solid 1.4px #FFF;
+    color: #000;
+    border: solid 1.4px #000;
     background-color: transparent;
 }
 .nav-login-button {
     font-size: 16px;
     font-weight: 500;
-    color: #5C5AA7;
+    color: #000!important;
     transition: all 0.3s ease;
     padding-right: 20px;
 }
@@ -339,6 +339,9 @@
     color: #fff !important;
     border: solid 1.4px #1e923f;
     background-color: #1e923f;
+  }
+  .sticky .nav-login-button {
+    color: #5c5aa7 !important;
   }
 
 

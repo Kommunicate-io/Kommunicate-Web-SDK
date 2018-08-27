@@ -19,8 +19,12 @@
 .nav-signup-button {
     /* background-color: #2dd35c; */
     color: #fff !important;
-    /* border-color: #2dd35c; */
+    border-color: #fff;
     transition: all 0.3s ease !important;
+}
+
+.nav-login-button{
+    color:#fff!important;
 }
 
 .nav-signup-button:hover {

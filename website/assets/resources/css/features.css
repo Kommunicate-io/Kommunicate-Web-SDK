@@ -371,12 +371,20 @@ a, a:hover, a:focus, a:active {
 
 
 .nav-login-button {
-    color: #ffffff;
+    color: #fff!important;
 }
 .nav-login-button:hover {
-    color: rgba(255, 255, 255, 0.5);
+    color: #fff;
 }
-
+.nav-signup-button, .nav-signup-button:hover {
+    color: #fff;
+    border: solid 1.4px #fff;
+    background-color: transparent;
+}
+.nav-signup-button:hover{
+    background-color: white;
+    color:#fff;
+}
 
 .hr {
     width: 50%;
