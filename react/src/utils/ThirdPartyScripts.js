@@ -139,11 +139,13 @@ class ThirdPartyScripts extends Component {
         "&key=" + eventKey +
         "&event=" + event +
         "&visit=" + encodeURIComponent(JSON.stringify(visit)) +
-        "&eventdata" + eventData;
+        "&eventdata=" + eventData;
       // console.log(eventString)
 
       let axiosConfig = {
         headers: {
+          "crossDomain": true,
+          "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/x-www-form-urlencoded"
         }
       };
