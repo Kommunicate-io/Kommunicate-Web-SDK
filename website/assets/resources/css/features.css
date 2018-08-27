@@ -383,7 +383,7 @@ a, a:hover, a:focus, a:active {
 }
 .nav-signup-button:hover{
     background-color: white;
-    color:#fff;
+    color:#000!important;
 }
 
 .hr {
