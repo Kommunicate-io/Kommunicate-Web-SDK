@@ -101,7 +101,7 @@ class Integration extends Component {
         let users = response.response.users;
         let activeUsers = []
         users.map(function (user, index) {
-          if (!user.deactivated) {
+          if (user &&(!user.deactivated && !user.deletedAtTime)) {
             activeUsers.push(user.userId);
           }
         })
