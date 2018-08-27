@@ -31,8 +31,11 @@
         @include respond(tab-lan) {
             width: 90%;
             padding: 3.5rem 9rem;
+            margin-top: -5rem;
         }
         @include respond(tab-por) {
+            margin-top: 0;
+
             width: 95%;
             position: absolute;
             left: 50%;
@@ -44,7 +47,7 @@
         }
         &_text {
             font-size: 4.2rem;
-            font-weight: 400;
+            font-weight: 600;
             display: block;
             color: $color-black; // margin-right: 9rem;
             text-align: center;
@@ -144,7 +147,7 @@
             text-align: center;
         }
         &:first-child {
-            width: 40%;
+            width: 50%;
             color: $footer-text1;
             font-weight: 600;
             @include respond(tab-lan) {
@@ -166,7 +169,7 @@
         }
     }
     &_list {
-        padding: 2rem;
+        padding: 1rem;
         color: $footer-text2;
         list-style: none;
         margin-top: 2.3rem;
@@ -187,6 +190,9 @@
         color: $footer-text2;
         font-size: 1.4rem;
         font-weight: 300;
+        @media  (max-width:1400px) and (min-width:1200px) {
+            font-size: 14px;
+        }
         @include respond(phone) {
             font-size: 1.9rem;
         }
@@ -202,6 +208,9 @@
         font-size: 1.2rem;
         font-weight: 800;
         padding: 4rem 0;
+        @media  (max-width:1400px) and (min-width:1200px) {
+            font-size: 14px;
+        }
         @include respond (tab-lan){
             padding: 3rem 0;
             font-size: 1.4rem;

@@ -1,6 +1,3 @@
----
-# Main sass file/
----
 
 @charset "utf-8";
 
@@ -20,6 +17,10 @@
 @import "components/carousel";
 @import "components/carousel_tab";
 //
+@import "layout/automation-hero";
+@import "layout/features_scaling";
+@import "layout/kom_bots";
+@import "layout/automation_steps";
 @import "layout/footer";
 @import "layout/brand";
 @import "layout/features";
