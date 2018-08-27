@@ -50,8 +50,9 @@ def addQusInMongo(name, applicationId):
     print("Question added to Mongo Database : ", resp)
 
 
-'''class AgentMap(object):
-    agent_map = {}'''
+class AgentMap(object):
+    agent_map = {}
+    interpreter_map = {}
 
 # #This is to create Log file to read logs from rasa
 # import logging
@@ -228,6 +229,12 @@ def load_models(appkey):
 def load_agent(application_key):
     print ("loading agent for: " + application_key)
     load_models(application_key)
+
+    interpreter = AgentMap.interpreter_map.get(application_key)
+    if interpreter is None:
+        interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
+        AgentMap.interpreter_map[application_key] = interpreter
+
     interpreter = RasaNLUInterpreter(get_abs_path("customers/" + application_key + "/models/nlu/default/faq_model_v1"))
     agent = Agent.load(get_abs_path("customers/" + application_key + "/models/dialogue"), interpreter)
     #AgentMap.agent_map[application_key] = agent
