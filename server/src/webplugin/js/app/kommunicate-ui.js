@@ -89,6 +89,8 @@ KommunicateUI={
 
     $applozic(d).on("click", "#mck-msg-preview, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function () {
         KommunicateUI.showChat();
+        setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
+        
     });
 
     // On Click of Individual List Items their respective answers will show.
@@ -213,6 +215,7 @@ KommunicateUI={
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
+                setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
                 return;
             } else {
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
@@ -240,8 +243,9 @@ hideFaq:function(){
 },
 
 showChat :function () {
+
     $applozic('.faq-common').removeClass("vis").addClass("n-vis");
-    $applozic('.mck-conversation ').removeClass("n-vis").addClass("vis");
+    $applozic('.mck-conversation').removeClass("n-vis").addClass("vis");
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     $applozic("#mck-msg-new").attr("disabled", false);
     if ($applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 && isFirstLaunch == true) {
@@ -253,6 +257,8 @@ showChat :function () {
     
     if($applozic('#mck-tab-conversation').hasClass('vis')){
     }
+    setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
+
 },
 showHeader :function(){
     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
