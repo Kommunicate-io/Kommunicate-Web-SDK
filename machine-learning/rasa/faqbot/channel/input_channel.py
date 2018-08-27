@@ -221,7 +221,6 @@ def load_models(appkey):
     path_model = os.path.join(parent + "/customers/" + appkey + "/models")
     if(os.path.isdir(path_model) is False):
         load_training_data(appkey)
-        #K.clear_session()
         call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
         train_dialogue(get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
     return
@@ -251,7 +250,6 @@ def train_dialogue(domain_file, model_path, training_data_file):
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
-    #K.clear_session()
     agent.persist(model_path)
 
 
@@ -299,7 +297,6 @@ def index():
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
     body = request.json
-    #K.clear_session()
     agent = get_customer_agent(body['applicationKey'])
     reply = agent.handle_message(body['message'])[0]['text']
     outchannel = KommunicateChatBot(body)
