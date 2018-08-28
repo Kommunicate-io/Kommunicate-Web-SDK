@@ -8,7 +8,7 @@ export{
     LIZ,
     ROLE_TYPE,
     INVITED_USER_STATUS,
-    USER_STATUS,
+    USER_STATUS
 }
 
 const USER_TYPE = {

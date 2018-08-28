@@ -14,7 +14,7 @@ import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
 import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, KM_LABELS} from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT} from '../../utils/Constant';
 import ReactModal from 'react-modal';
 import {PseudoNameImage, ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
