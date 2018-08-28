@@ -505,6 +505,7 @@ var isFirstLaunch = true;
                 }, function () {
                     console.log("conversation created successfully");
                     KommunicateUI.activateTypingField();
+
                 });
             ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
@@ -2031,7 +2032,6 @@ var isFirstLaunch = true;
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
-                    setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
 
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
