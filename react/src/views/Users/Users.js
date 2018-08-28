@@ -5,7 +5,7 @@ import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
 import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
-
+import Labels from '../../utils/Labels';
 
 class Users extends Component {
 
@@ -57,7 +57,7 @@ class Users extends Component {
     
   }
   render() {
-    const infoText = "Time of last message by the user";
+    const infoText = Labels["lastcontacted.tooltip"];
     var result = this.state.result.map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
