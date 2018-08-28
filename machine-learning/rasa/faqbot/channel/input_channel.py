@@ -75,10 +75,10 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def add_domain(intent, answer, appkey):
+def add_domain(intent, answer, app_key):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
-    bot_path = 'customers/' + appkey + '/faq_domain.yml'
+    bot_path = 'customers/' + app_key + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
@@ -90,9 +90,9 @@ def add_domain(intent, answer, appkey):
     return
 
 
-def add_stories(intent, appkey):
+def add_stories(intent, app_key):
     num = str(random.randint(1, 2345678))
-    bot_stories_path = 'customers/' + appkey + '/faq_stories.md'
+    bot_stories_path = 'customers/' + app_key + '/faq_stories.md'
 
     file = open(get_abs_path(bot_stories_path), 'a')
     file.write('\n\n## story_' + num)
@@ -102,36 +102,36 @@ def add_stories(intent, appkey):
     return
 
 
-def add_nludata(intent, questions, appkey):
+def add_nludata(intent, questions, app_key):
     data = {}
-    with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
+    with open(get_abs_path('customers/' + app_key + '/faq_data.json')) as json_file:
         data = json.load(json_file)
         for question in questions:
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
-    with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
+    with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
 
 
 
 def update_domain(body):
-    delete_domain(intent=str(body['id']), appkey=body['applicationId'])
-    add_domain(intent=str(body['id']), answer=body['content'], appkey=body['applicationId'])
+    delete_domain(intent=str(body['id']), app_key=body['applicationId'])
+    add_domain(intent=str(body['id']), answer=body['content'], app_key=body['applicationId'])
     return
 
 
 def update_nludata(body):
-    delete_nludata(intent=str(body['id']), appkey=body['applicationId'])
-    add_nludata(intent=str(body['id']), questions=body['name'], appkey=body['applicationId'])
+    delete_nludata(intent=str(body['id']), app_key=body['applicationId'])
+    add_nludata(intent=str(body['id']), questions=body['name'], app_key=body['applicationId'])
     return
 
 
-def delete_domain(intent, appkey):
+def delete_domain(intent, app_key):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
-    bot_path = 'customers/' + appkey + '/faq_domain.yml'
+    bot_path = 'customers/' + app_key + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
@@ -146,8 +146,8 @@ def delete_domain(intent, appkey):
     return
 
 
-def delete_story(intent, appkey):
-    base_path = 'customers/' + appkey
+def delete_story(intent, app_key):
+    base_path = 'customers/' + app_key
     story_file = open(get_abs_path(base_path + '/faq_stories.md'), 'r')
     story = story_file.read().split('\n')
     temp_list = []
@@ -172,9 +172,9 @@ def delete_story(intent, appkey):
             if(i%3 == 0):
                 story_file.write('\n')
 
-def delete_nludata(intent, appkey):
+def delete_nludata(intent, app_key):
     data = {}
-    with open(get_abs_path('customers/' + appkey + '/faq_data.json')) as json_file:
+    with open(get_abs_path('customers/' + app_key + '/faq_data.json')) as json_file:
         data = json.load(json_file)
         temp_list = data["rasa_nlu_data"]["common_examples"]
         c = []
@@ -184,7 +184,7 @@ def delete_nludata(intent, appkey):
         c.reverse()
         for i in c:
             del data["rasa_nlu_data"]["common_examples"][i]
-    with open(get_abs_path('customers/' + appkey + '/faq_data.json'), 'w') as outfile:
+    with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
 
@@ -216,13 +216,13 @@ def load_training_data(applicationKey):
                     raise
     print('Data Loaded succesfully')
 
-def load_models(appkey):
+def load_models(app_key):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-    path_model = os.path.join(parent + "/customers/" + appkey + "/models")
+    path_model = os.path.join(parent + "/customers/" + app_key + "/models")
     if(os.path.isdir(path_model) is False):
-        load_training_data(appkey)
-        call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-        train_dialogue(appkey, get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
+        load_training_data(app_key)
+        call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+        train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
     return
 
 
@@ -385,10 +385,10 @@ def train_bots():
     if(body['data'] is None):
         pass
     else:
-        for appkey in body['data']:
-            load_training_data(appkey)
-            call(["python3 -m rasa_nlu.train --config ../customers/" + appkey + "/faq_config.yml --data ../customers/" + appkey + "/faq_data.json --path ../customers/" + appkey + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-            train_dialogue(appkey, get_abs_path("customers/" + appkey + "/faq_domain.yml"), get_abs_path("customers/" + appkey + "/models/dialogue"), get_abs_path("customers/" + appkey + "/faq_stories.md"))
+        for app_key in body['data']:
+            load_training_data(app_key)
+            call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+            train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
         r = requests.post(env.cron_endpoint,
                   headers={'content-type':'application/json'},
                   data=json.dumps({"cronKey": cron_key,
