@@ -17,7 +17,6 @@ export default {
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
     }
-
 },
 
 "test" : {
@@ -39,7 +38,6 @@ export default {
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
     }
-
 },
     
 "staging" : {
@@ -61,7 +59,6 @@ export default {
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
     }
-
 },
     
  "prod" :{
@@ -84,6 +81,24 @@ export default {
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
     }
+},
+    
+"prod_ca" :{
+   "baseurl": {
+       "applozicAPI": "https://chat-ca.kommunicate.io",
+       "kommunicateAPI": "https://api-ca.kommunicate.io",
+       "botPlatformAPI":"https://bot-ca.kommunicate.io"
+   },
+   "kommunicateDashboardUrl": "https://dashboard-ca.kommunicate.io",
+   "kommunicateWebsiteUrl": "https://kommunicate.io",
+   "adminDetails":{
+       "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
+       "kommunicateAdminId": "techdisrupt@applozic.com",
+       "kommunicateAdminPassword": "techdisrupt",
+       "kommunicateAdminApzToken": "dGVjaGRpc3J1cHRAYXBwbG96aWMuY29tOnRlY2hkaXNydXB0"
+     },
+   "resources": {
+       "defaultImageUrl": "/img/avatars/default.png"
+   }
+}
 
-}
-}

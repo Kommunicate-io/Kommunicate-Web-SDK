@@ -54,6 +54,7 @@ var config ={
   }
 }
 }
+config["prod-ca"]= config.prod;
 exports.getProperties = function(){
   var envId = getEnvId()?getEnvId():"default";
   return config[envId];
