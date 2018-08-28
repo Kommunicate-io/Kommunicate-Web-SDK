@@ -284,10 +284,9 @@ exports.getGroupInfo = (groupId, applicationId, apzToken, isBot) => {
 }
 
 const sendGroupMessage = (groupId, message, apzToken, applicationId, metadata, headers) => {
-  console.log("sending message to group ", groupId);
-  console.log("calling send Message API with info , groupId: ", groupId, "message :", message, ":apz-token:", apzToken, "applicationId", applicationId, "metadata", metadata);
-  typeof message=="object"?message:{ "groupId": groupId, "message": message, "metadata": metadata }
+  message = typeof message == "object" ? message : { "groupId": groupId, "message": message, "metadata": metadata }
   headers = headers ? headers : { "Apz-AppId": applicationId, "Apz-Token": "Basic " + apzToken, "Apz-Product-App": true }
+  console.log("calling send Message API with info message", message, "headerd: ", headers);
   let url = config.getProperties().urls.sendMessageUrl;
   return Promise.resolve(axios.post(url, message,
     { headers: headers })).then(response => {

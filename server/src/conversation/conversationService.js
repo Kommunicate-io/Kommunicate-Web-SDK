@@ -77,12 +77,14 @@ const assingConversationInRoundRobin = (groupId, userIds, appId, header, onlineU
                 let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
                 return assignConversationToUser(groupId, assignTo, appId, header).then(res=>{
                    applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
-                   return res;
-                })
-                
-                    
+                   return assignTo;
+                })  
             }
+            return;
         })
+    }).catch(err=>{
+        console.log("error: user fetching from cache", err)
+        return;
     });
 };
 
@@ -117,7 +119,7 @@ const assignToDefaultAgent = (groupId, appId, userId, header) => {
         metadata: { CONVERSATION_ASSIGNEE: userId }
     };
     logger.info("updating assignee for conversation : ", groupInfo);
-    applozicClient.updateGroup(
+   return applozicClient.updateGroup(
         groupInfo,
         appId,
         header.apzToken,
@@ -228,9 +230,13 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                 let onlineUser = onlineUsers.find(agent => agent.connected);
                                 if (onlineUser) {
                                     console.log("online user: ", onlineUser)
-                                    assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers);
+                                    assingConversationInRoundRobin(groupId, agents.agentIds, appId, agents.header, onlineUsers).then(assignTo => {
+                                        assignTo ? sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
+                                    });
                                 } else {
-                                    assignToDefaultAgent(groupId, appId, customer.userName, agents.header);
+                                    assignToDefaultAgent(groupId, appId, customer.userName, agents.header).then(response => {
+                                        sendAssigneeChangedNotification(groupId, appId, customer.userName, assignee[0].apzToken);
+                                    });
                                 }
                                 return "success";
                             });
@@ -247,6 +253,31 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
     }).catch(err => {
         return "error"
     })
+}
+/**
+ * send assignment notification
+ * @param {String} groupId groupId
+ * @param {String} appId  appId
+ * @param {String} assignTo conversation will assign to this user
+ * @param {String} apzToken sender apzToken
+ */
+const sendAssigneeChangedNotification = (groupId, appId, assignTo, apzToken) => {
+    let botHeaders = {
+        "Content-Type": "application/json",
+        "Application-Key": appId,
+        "Authorization": "Basic " + apzToken,
+    }
+    return userService.getByUserNameAndAppId(assignTo, appId).then(user => {
+        return applozicClient.sendGroupMessage(groupId, "Assigned to " + user.name || user.userName, null, null, {
+            BADGE_COUNT: false,
+            KM_ASSIGN: user.userName,
+            NO_ALERT: true,
+            category: "ARCHIVE",
+            skipBot: true
+        }, botHeaders);
+    }).catch(err=>{
+        return;
+    });
 }
 
 const createConversationFromMail = (req) => {
