@@ -504,6 +504,8 @@ var isFirstLaunch = true;
                     botIds: DEFAULT_BOT_IDS
                 }, function () {
                     console.log("conversation created successfully");
+                    KommunicateUI.activateTypingField();
+
                 });
             ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
@@ -3994,6 +3996,7 @@ var isFirstLaunch = true;
                         $li_mck_block_user.removeClass('vis').addClass('n-vis');
                         $li_mck_video_call.removeClass('vis').addClass('n-vis');
                         $mck_videocall_btn.removeClass('vis').addClass('n-vis');
+                        KommunicateUI.activateTypingField();
                     } else {
                         $li_mck_block_user.removeClass('n-vis').addClass('vis');
                         $li_mck_video_call.removeClass('n-vis').addClass('vis')
