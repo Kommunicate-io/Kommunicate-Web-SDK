@@ -1340,7 +1340,7 @@ var isFirstLaunch = true;
             var $mck_tab_individual = $applozic("#mck-tab-individual");
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
-            _this.getLauncherHtml = function () {
+            _this.getLauncherHtml = function (isannoynouschat) {
                 var defaultHtml=  `<div id="launcher-svg-container"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                 <style type="text/css">
                     .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
@@ -1362,7 +1362,11 @@ var isFirstLaunch = true;
                     </g>
                 </g>
                 </svg></div>`;
-            return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">'+(CUSTOM_CHAT_LAUNCHER?CUSTOM_CHAT_LAUNCHER:defaultHtml)+'<div id="launcher-agent-img-container"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                if (isannoynouschat) {
+                    return '<a href="#" target="_self">' + (CUSTOM_CHAT_LAUNCHER ? CUSTOM_CHAT_LAUNCHER : defaultHtml) + '</a>';
+                } else {
+                    return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">' + (CUSTOM_CHAT_LAUNCHER ? CUSTOM_CHAT_LAUNCHER : defaultHtml) + '<div id="launcher-agent-img-container"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
+                }
 
             	  };
             _this.initializeApp = function (optns, isReInit) {
@@ -1422,6 +1426,7 @@ var isFirstLaunch = true;
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         kmChatLoginModal.style.visibility='visible';
                         kmChatLoginModal.style.display='block';
+                        $('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         document.getElementById("km-modal-close").addEventListener("click", function(event){
                           event.preventDefault();
