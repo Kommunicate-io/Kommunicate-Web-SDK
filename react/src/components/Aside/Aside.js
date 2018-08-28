@@ -20,6 +20,7 @@ import {PseudoNameImage, ConversationsEmptyStateImage} from '../../views/Faq/Liz
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
+import Labels from '../../utils/Labels';
 
 
 class Aside extends Component {
@@ -426,7 +427,7 @@ class Aside extends Component {
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
-    const infoText = KM_LABELS["lastcontacted.tooltip"];
+    const infoText = Labels["lastcontacted.tooltip"];
     return (
       <aside className="aside-menu">
         <div className="animated fadeIn applozic-chat-container">
