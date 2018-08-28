@@ -207,6 +207,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
         });
         return getAgentsList(customer, users, groupId).then(agents => {
             //assign direct given userId 
+            let isValidUser = false;
             if (assignToUserId && assignToUserId != "") {
                 let assignee = users.filter(user => {
                     return user.userName == assignToUserId;
@@ -214,9 +215,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                 if (assignee.length == 0) {
                     return "user not exist"
                 }
-                return assignToDefaultAgent(groupId, appId, assignee[0].userName, agents.header).then(res => {
-                    return "success";
-                });
+                isValidUser = true;
             }
             //swich acording to conditions of botRouting and agentRouting
             return applozicClient.getGroupInfo(groupId, appId, new Buffer(bot[0].userName+":"+bot[0].accessToken).toString('base64'), true).then(group => {
@@ -225,7 +224,12 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                         return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
                     });
                     if (assignee[0].type == 2) {
-                        if (customer.agentRouting) {
+                        if(isValidUser || !customer.agentRouting){
+                            return assignToDefaultAgent(groupId, appId, assignToUserId || customer.userName, agents.header).then(res => {
+                                sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.userName, assignee[0].apzToken);
+                                return "success";
+                            });
+                        }else if (customer.agentRouting) {
                             inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
                                 let onlineUser = onlineUsers.find(agent => agent.connected);
                                 if (onlineUser) {
@@ -240,8 +244,6 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                 }
                                 return "success";
                             });
-                        } else {
-                            assignToDefaultAgent(groupId, appId, customer.userName, agents.header);
                         }
                         return "success";
                     } else {
