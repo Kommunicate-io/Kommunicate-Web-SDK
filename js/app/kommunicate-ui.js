@@ -89,8 +89,6 @@ KommunicateUI={
 
     $applozic(d).on("click", "#mck-msg-preview, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function () {
         KommunicateUI.showChat();
-        setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
-        
     });
 
     // On Click of Individual List Items their respective answers will show.
@@ -215,7 +213,7 @@ KommunicateUI={
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);
-                setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
+                KommunicateUI.activateTypingField();
                 return;
             } else {
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
@@ -257,8 +255,6 @@ showChat :function () {
     
     if($applozic('#mck-tab-conversation').hasClass('vis')){
     }
-    setTimeout(function() { $applozic('#mck-text-box').focus() }, 1000);
-
 },
 showHeader :function(){
     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
@@ -281,6 +277,9 @@ sendFaqQueryAsMsg: function(groupId){
     } else {
         return;
     }
+},
+activateTypingField: function(){
+        $applozic('#mck-text-box').focus();
 }
   
 }
