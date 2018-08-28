@@ -56,7 +56,7 @@
        "s3Access": {
          "accessKeyId": "AKIAJ7QAZU7R2GPBCXGQ",
          "secretAccessKey": "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",
-         "region": "ap-south-1"
+         "region": "ca-central-1"
        },
        "commonProperties": {
          "applicationWebhooks":[
