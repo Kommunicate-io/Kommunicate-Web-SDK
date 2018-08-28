@@ -75,6 +75,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			'close': 'Close',
 			'edit': 'Edit',
 			'save': 'Save',
+			'lastcontacted.tooltip':"The last time somebody from your team or the user sent a message",
 			'file.attachment': 'Files & Photos',
 			'file.attach.title': 'Attach File',
 			'last.seen': 'Last seen',

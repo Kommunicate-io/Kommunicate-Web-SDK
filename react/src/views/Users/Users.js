@@ -5,6 +5,7 @@ import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
 import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
+import { KM_LABELS } from '../../utils/Constant';
 
 
 class Users extends Component {
@@ -57,7 +58,7 @@ class Users extends Component {
     
   }
   render() {
-    const infoText = "The last time somebody from your team or the user sent a message";
+    const infoText = KM_LABELS["lastcontacted.tooltip"];
     var result = this.state.result.map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });

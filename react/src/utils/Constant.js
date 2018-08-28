@@ -8,7 +8,11 @@ export{
     LIZ,
     ROLE_TYPE,
     INVITED_USER_STATUS,
-    USER_STATUS
+    USER_STATUS,
+    KM_LABELS
+}
+const KM_LABELS = {
+    'lastcontacted.tooltip': "The last time somebody from your team or the user sent a message"
 }
 
 const USER_TYPE = {
