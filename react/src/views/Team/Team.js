@@ -72,7 +72,7 @@ class Integration extends Component {
 
   }
   componentWillMount() {
-    // this.getInvitedUsers();
+    this.getInvitedUsers();
     this.getUsers();
     let userSession = CommonUtils.getUserSession();
     let adminUserName = userSession.adminUserName;
@@ -160,6 +160,7 @@ class Integration extends Component {
         return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
           if (response.data && response.data.code === "SUCCESS") {
             Notification.success('Invitation sent successfully');
+            this.getInvitedUsers();
           } else if (response.data && response.data.code === "USER_ALREADY_EXIST") {
             this.getUsers();
             Notification.success(response.data.message);
@@ -342,7 +343,7 @@ class Integration extends Component {
       </div>
     )
     var invitedUserList = this.state.invitedUser.map((user, index) => {
-      return <InvitedUsersList key={index} user={user} index={index} />
+      return <InvitedUsersList key={index} user={user} index={index} loggedInUserRoleType={loggedInUserRoleType}/>
     })
     var disabledUsersList = this.state.disabledUsers.map((user, index) => {
       let moreUserInfo;
@@ -494,7 +495,7 @@ class Integration extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {invitedUserList} */}
+                    {invitedUserList}
                     {result}
                   </tbody>
                 </table>

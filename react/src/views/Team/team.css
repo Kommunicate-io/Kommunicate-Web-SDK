@@ -303,7 +303,7 @@
 .hide-disabled-accounts-btn:hover {
   cursor: pointer;
 }
-.team-expired-data-allign:hover{
+.team-expired-data-allign:hover, .team-invite:hover{
   border-radius: none !important;
   background-color: #f9f9f9 !important;
   box-shadow: none !important;
@@ -326,4 +326,14 @@
 }
 .tm-disabled-link-btn {
   margin-bottom: 15px;
+}
+.tm-invite-status-havent-signed-up {
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: 0.4px;
+  text-align: center;
+  color: #858687;
+}
+.team-invite {
+  background-color: #f9f9f9;
 }
