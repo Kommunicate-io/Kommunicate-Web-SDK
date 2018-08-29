@@ -158,7 +158,7 @@ class Integration extends Component {
     this.setState({ isDisabledUsersListHidden: !isDisabledUsersListHidden });
   }
   sendEmail = (e) => {
-    let email = this.state.email;
+    let email = this.state.email.trim();
     let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT;
     let activeUsers = this.state.activeUsers;
     let invitedUsersEmail = this.state.invitedUsersEmail;
