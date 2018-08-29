@@ -386,12 +386,15 @@ def train_bots():
         pass
     else:
         for app_key in body['data']:
-            load_training_data(app_key)
-            call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
-            train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
-        r = requests.post(env.cron_endpoint,
-                  headers={'content-type':'application/json'},
-                  data=json.dumps({"cronKey": cron_key,
+            try:
+                load_training_data(app_key)
+                call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+                train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
+                r = requests.post(env.cron_endpoint,
+                    headers={'content-type':'application/json'},
+                    data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
+            except:
+                print("error while training for app_key:" + app_key)
 
     return jsonify({"Success":"The bots are now sentient!"})
