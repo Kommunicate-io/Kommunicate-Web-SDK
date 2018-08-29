@@ -1646,6 +1646,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	letter-spacing: 0.4px;
 	text-align: left;
 	color: #6d6b6b;
+	height:20px;
 }
 
 .mck-file-text .mck-file-name img:hover {
@@ -5402,16 +5403,17 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	display: none;
 	transition: all 0.3s ease-in-out;
 }
-.mck-msg-preview-visual-indicator-container .mck-close-btn {
-    border-radius: 18px;
-    background-color: #cbc8c8;
-	padding: 2px 10px;
-	min-width: 65px;
-    height: auto;
-    display: flex;
-    align-items: center;
-	justify-content: space-between;
-	cursor: pointer;
+.km-mail-fixed-view{
+	background-color: white;
+	border-radius: 5px;
+	padding: 10px 14px 12px;
+	width: 100%;
+	white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	overflow: auto;
 }
 .mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
 	display: block;

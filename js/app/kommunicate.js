@@ -263,9 +263,10 @@ $applozic.extend(true,Kommunicate,{
         // contentType should be 300 for rich text message in metadata
         return metadata && metadata.contentType == 300;
     },
-    getConatainerTypeForRichMessage: function (metadata) {
+    getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
-        if (metadata) {
+        var metadata = message.metadata;
+        if (metadata.templateId) {
             switch (metadata.templateId) {
                 // add template Id to enable slick effect
                 // 2 for get room pax info template
@@ -282,6 +283,8 @@ $applozic.extend(true,Kommunicate,{
                     break;
 
             }
+        }else if (message.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+            return "km-fixed-container";
         }
 
     },
@@ -306,8 +309,9 @@ $applozic.extend(true,Kommunicate,{
         $applozic.fn.applozic('sendGroupMessage', messagePxy);
 
     },
-    getRichTextMessageTemplate: function (metadata) {
-        if (metadata) {
+    getRichTextMessageTemplate: function (message) {
+        var metadata = message.metadata;
+        if (metadata.templateId) {
             switch (metadata.templateId) {
                 // 1 for get room pax info template
                 case "1":
@@ -343,7 +347,10 @@ $applozic.extend(true,Kommunicate,{
                     return "";
                     break;
             }
-        } else {
+        }else if (message.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+            return Kommunicate.markup.getHtmlMessageMarkups(message); 
+        }    
+        else {
             return "";
         }
     },

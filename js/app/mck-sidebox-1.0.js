@@ -3,6 +3,11 @@ var MCK_CLIENT_GROUP_MAP = [];
 var MCK_EVENT_HISTORY = [];
 var count = 0 ;
 var isFirstLaunch = true;
+const MESSAGE_SOURCE = { DEVICE: 0, WEB: 1, ANDROID: 2, IOS: 3, PLATFORM: 4, DESKTOP_BROWSER: 5, MOBILE_BROWSER: 6, MAIL_INTERCEPTOR: 7 };
+const MESSAGE_CONTENT_TYPE = {
+    DEFAULT: 0, ATTACHMENT: 1, LOCATION: 2, TEXT_HTML: 3, PRICE: 4, IMAGELINK: 5, HYPERLINK: 6, CONTACT: 7, AUDIO: 8, VIDEO: 9, NOTIFY_MESSAGE: 10, HIDDEN_MESSAGE: 11, RECEIVER_ONLY: 12, BLOCK_NOTIFY_MESSAGE: 13, AUDIO_VIDEO_CALL: 102, MISSED_CALL: 103
+};
+
 (function ($applozic, w, d) {
     "use strict";
     if (!w.applozic) {
@@ -3875,7 +3880,7 @@ var isFirstLaunch = true;
                                 '</div>'+
                                 '<div class="mck-msg-text mck-msg-content"></div>'+
                                 '</div>'+
-                                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}">{{html kmRichTextMarkup}}</div>'+
+                                '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}">'+'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+
                             '</div>'+
                         '</div>'+
                         '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs"><span class="mck-created-at-time">${createdAtTimeExpr}</span> <span class="mck-message-status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg></span></div>'+
@@ -4258,6 +4263,7 @@ var isFirstLaunch = true;
                 var msgpreviewVis = 'n-vis';
                 var replyTo = '';
                 var msgReplyToVisible = 'n-vis';
+                var emailMsgIndicator = "n-vis";
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
                     metadatarepiledto = msg.metadata.AL_REPLY;
                     replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
@@ -4295,10 +4301,16 @@ var isFirstLaunch = true;
                 if ($applozic("#mck-message-cell ." + msg.key).length > 0) {
                     return;
                 }
+                if (msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+                    emailMsgIndicator = "vis";
+                    $applozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
+                } 
+				
                 // if ($mck_no_messages.hasClass('vis')) {
                 //     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 // }
-                var messageClass = (msg.message || msg.fileMeta) ? "vis":"n-vis";
+                var messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") || msg.fileMeta ? "n-vis" : 'vis';
+                
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var statusIcon = 'mck-pending-icon';
@@ -4364,7 +4376,10 @@ var isFirstLaunch = true;
                     olStatus = 'vis';
                 }
 
-                var richText = Kommunicate.isRichTextMessage(msg.metadata);
+                var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
+                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis'; 
+                var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
+                var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -4408,9 +4423,10 @@ var isFirstLaunch = true;
                     fileNameExpr: fileName,
                     fileSizeExpr: fileSize,
                     contOlExpr: olStatus,
-                    kmRichTextMarkupVisibility:richText?'vis':'n-vis',
-                    kmRichTextMarkup: richText?Kommunicate.getRichTextMessageTemplate(msg.metadata):"",
-                    containerType: Kommunicate.getConatainerTypeForRichMessage(msg.metadata)
+                    kmRichTextMarkupVisibility:kmRichTextMarkupVisibility,
+                    kmRichTextMarkup: kmRichTextMarkup,
+                    containerType: containerType,
+                    emailMsgIndicatorExpr: emailMsgIndicator
 
                 }];
 
@@ -5439,9 +5455,9 @@ var isFirstLaunch = true;
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
                 } else {
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
-                }
+                }     
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
-                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
+                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);         
             };
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
@@ -5738,7 +5754,7 @@ var isFirstLaunch = true;
                     }
                 }
                 return emoji_template;
-            };
+            };          
             _this.getTextForMessagePreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
