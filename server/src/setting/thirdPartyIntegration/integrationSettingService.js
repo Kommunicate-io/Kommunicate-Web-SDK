@@ -29,8 +29,6 @@ const updateLizBotHandler = (type, appId, handler) => {
     userService.getByUserNameAndAppId(LIZ.userName, appId).then(user=>{
         botPlatformClient.updateBot({
             "key": user.userKey,
-            "name": LIZ.userName,
-            "applicationKey": appId,
             "handlerModule": handler
         }).catch(err => {
             logger.error("error while updating bot platform for liz", err);

@@ -27,6 +27,7 @@
       "groupInfoUrl": "https://apps-test.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
       "addMemberIntoConversation":"https://apps-test.applozic.com/rest/ws/group/add/users?role=:role",
       "createGroup":"https://apps-test.applozic.com/rest/ws/group/v2.1/create",
+      "botPlatformAPI": "https://bots-staging.applozic.com",
       "createBotUrl": "https://bots-staging.applozic.com/bot",
       "updateBotUrl":"http://bots-staging.applozic.com/bot/update",
       "sendMessageUrl": "https://apps-test.applozic.com/rest/ws/message/v2/send",

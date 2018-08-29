@@ -28,6 +28,7 @@
           "groupInfoUrl": "https://chat.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
           "addMemberIntoConversation":"https://chat.kommunicate.io/rest/ws/group/add/users?role=:role",
           "createGroup":"https://chat.kommunicate.io/rest/ws/group/v2.1/create",
+          "botPlatformAPI": "https://bots.applozic.com",
           "createBotUrl": "https://bots.applozic.com/bot",
           "updateBotUrl":"http://bots.applozic.com/bot/update",
           "sendMessageUrl": "https://chat.kommunicate.io/rest/ws/message/v2/send",
