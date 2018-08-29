@@ -2226,6 +2226,7 @@ display: none;
 }
 
 .mck-sidebox-launcher {
+	overflow: hidden;
 	white-space: pre;
 	position: fixed;
 	z-index: 2243000;
