@@ -370,16 +370,20 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
         var json = JSON.parse(metadata.payload);
         
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
-     }else{
-         return "";
      }
+     return "";
 }
 Kommunicate.markup.getImageContainer = function(options) {
     if (options && options.payload) {
         let payload = typeof options.payload == 'string' ? JSON.parse(options.payload) : {};
         options.payload = payload;
         return Mustache.to_html(Kommunicate.markup.getImageTemplate(), options);
-    } else {
-        return "";
     }
+    return ""; 
+}
+Kommunicate.markup.getHtmlMessageMarkups = function (message) {
+    if (message && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+        return "<pre class='km-mail-fixed-view'>" + message.message.replace(/\n/g, " ") + "</pre>";
+    }
+    return ""; 
 }
