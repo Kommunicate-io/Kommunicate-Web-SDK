@@ -101,4 +101,5 @@ export default {
        "defaultImageUrl": "/img/avatars/default.png"
    }
 }
+}
 
