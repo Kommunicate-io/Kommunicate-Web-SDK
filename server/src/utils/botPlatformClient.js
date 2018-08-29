@@ -21,7 +21,9 @@ exports.createBot = (bot) => {
 }
 exports.updateBot = (bot) => {
 console.log("calling update bot API...", bot);
-var url = config.getProperties().urls.updateBotUrl;
+
+var url = config.getProperties().urls.botPlatformAPI + "/bot/" + bot.key + "/configure";
+
 return Promise.resolve(axios.patch(url, bot)).then(response => {
   console.log("received response from bot", response.status);
   if (response.status === 200) {
