@@ -2067,7 +2067,6 @@ const MESSAGE_CONTENT_TYPE = {
                             KommunicateUI.showChat();
                         });
                     }
-
                     $applozic('#mck-contact-list').removeClass("vis").addClass("n-vis");
 
                 });
@@ -2219,6 +2218,7 @@ const MESSAGE_CONTENT_TYPE = {
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
+                    !isFirstLaunch ? $applozic("#mck-conversation-back-btn").addClass("vis-table").removeClass('n-vis'): null;
                     count++;
                     var $this = $applozic(this);
                     var elem = this;
