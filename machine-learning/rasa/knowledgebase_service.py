@@ -37,7 +37,7 @@ for data in new_data:
     if data['status'] != 'un_answered':
         data_id = data['_id']
         del data['_id']
-        print(data)
+        #print(data)
 
         try:
             appkeys.add(data['applicationId'])
