@@ -38,7 +38,7 @@ for data in new_data:
         data_id = data['_id']
         del data['_id']
         print(data)
-        if data['applicationId'] in appkeys:
+        if data['applicationId'] is None:
             appkeys.add(data['applicationId'])
         else:
             print("applicationId not found, this might happen if its very old record. id: " + data_id)
