@@ -39,10 +39,10 @@ for data in new_data:
         del data['_id']
         print(data)
         if data['applicationId'] is None:
-            appkeys.add(data['applicationId'])
-        else:
             print("applicationId not found, this might happen if its very old record. id: " + data_id)
             continue
+        else:
+            appkeys.add(data['applicationId'])
         
         if data['created_at']>=last_update_time:
             if data['deleted'] == True:
