@@ -52,7 +52,8 @@ const siteConfig = {
   // projectName: 'test-site', // or set an env variable PROJECT_NAME
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks
-    theme: 'vs2015',
+    // theme: 'vs2015',
+    themeUrl:['css/vs2015.css']
   },
   scripts: ['js/activeCampaignScript.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
