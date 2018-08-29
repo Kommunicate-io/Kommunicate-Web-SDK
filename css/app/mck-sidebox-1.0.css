@@ -1491,7 +1491,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	width: auto;
 	outline: none;
 	margin: 0px;
-	font-size: 14px;
+	font-size: 17px;
 	overflow: auto;
 	line-height: 1.2em;
 	overflow-x: hidden;
@@ -5508,7 +5508,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	}
   }
 
-@media (max-width:600px) {
+@media (max-width:700px) {
 	input[type="color"],
 	input[type="date"],
 	input[type="datetime"],
