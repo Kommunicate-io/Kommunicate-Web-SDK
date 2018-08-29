@@ -11,7 +11,7 @@ import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 import './team.css';
 import CommonUtils from '../../utils/CommonUtils';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
+import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, INVITED_USER_STATUS } from '../../utils/Constant';
 import { Agent } from 'https';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
@@ -63,7 +63,8 @@ class Integration extends Component {
       activeUsersList: [],
       restrictInvite:false,
       hideSeeDisabledAccounts : true,
-      kmActiveUsers: []
+      kmActiveUsers: [],
+      invitedUsersEmail: []
     };
     this.getUsers = this.getUsers.bind(this);
     window.addEventListener("kmFullViewInitilized", this.getUsers, true);
@@ -117,11 +118,20 @@ class Integration extends Component {
   }
   getInvitedUsers = () => {
     let invitedUser = [];
+    let invitedUsersEmail = [];
     return Promise.resolve(getInvitedUserByApplicationId()).then(response => {
       response.forEach(item => {
-        invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status });
+        if (item.status == INVITED_USER_STATUS.INVITED) {
+          invitedUser.push({ userId: item.invitedUser, roleType: item.roleType, status: item.status });
+          invitedUsersEmail.push(item.invitedUser);
+        }
+         
       })
-      this.setState({ invitedUser: invitedUser });
+      this.setState({
+        invitedUsersEmail:invitedUsersEmail, 
+        invitedUser: invitedUser
+         
+      });
     }).catch(err => {
       console.log("error while fetching invited users list", err.message);
     })
@@ -151,10 +161,12 @@ class Integration extends Component {
     let email = this.state.email;
     let roleType = this.state.isAdminSelected ? ROLE_TYPE.ADMIN : ROLE_TYPE.AGENT;
     let activeUsers = this.state.activeUsers;
-    let isUserExists = activeUsers.indexOf(email);
+    let invitedUsersEmail = this.state.invitedUsersEmail;
+    let isUserExists = activeUsers.indexOf(email) == -1 ? false : true ;
+    let isInvitationExists = invitedUsersEmail.indexOf(email) == -1 ? false : true ;
     let mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-
-    if (isUserExists == -1) {
+    
+    if (!isUserExists && !isInvitationExists) {
       if (email.match(mailformat)) {
         this.onCloseModal();
         return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
@@ -174,7 +186,8 @@ class Integration extends Component {
         return false;
       }
     } else {
-      Notification.warning("Teammate with this email already exists");
+      isInvitationExists && Notification.warning(email +" already invited");
+      isUserExists && Notification.warning("Teammate with this email already exists");
     }
   }
 
