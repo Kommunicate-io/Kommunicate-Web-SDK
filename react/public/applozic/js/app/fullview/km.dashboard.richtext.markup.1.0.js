@@ -337,8 +337,8 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                 item.href = item.action.url;
                }
                
-               item.dataType= item.action ? (item.action.type||"") : "";
-               item.dataReply = item.action ? (item.action.text||item.title||"") : "";
+               item.dataType = item.action && item.action.type ? item.action.type : "";
+               item.dataReply = (item.action && item.action.text) ? item.action.text : (item.title || "");
                
                item.dataArticleId = item.articleId||"";
                item.dataSource = item.source||"";
@@ -353,12 +353,12 @@ kommunicateDashboard.markup.getListContainerMarkup = function(metadata){
                 button.hadlerClass= "km-list-button-item-handler";
                }else{
                 button.href = button.action.url;
-               }
-               
-               button.dataType=button.action.type||"";
-               button.dataReply = button.action.text||button.name||"";
-               // TODO : add post url in data.
-                return button;
+               }            
+            
+            button.dataType = button.action && button.action.type ? button.action.type : "";
+            button.dataReply = (button.action && button.action.text) ? button.action.text : (button.name || "");         
+            
+            return button;
         })
     }
         
