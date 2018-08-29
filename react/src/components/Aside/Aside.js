@@ -1071,7 +1071,7 @@ class Aside extends Component {
                       </div>
                       <hr className="km-email-hr"></hr>
                       <div className ="km-user-lastseen-info">
-                      <p className="km-user-info-metadata">
+                     <p className="km-user-info-metadata">
                       <span className="km-user-info-meatadata-key">
                       Last seen</span>
                       <span className="km-user-info-meatadata-value km-lastseen"></span>
@@ -1140,10 +1140,7 @@ class Aside extends Component {
                         </div>
                       </div>
                       {/* user metadata */}
-                      <div id="km-sidebar-user-info-wrapper" className="n-vis" >
-                        <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
-                        <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper"></div>
-                      </div>
+                     
                       {/* <div id="km-group-info-panel" className="km-sidebar-info-panel">Group Info</div> */}
                       {/* <div id="km-group-detail-panel" className="km-group-detail-box">
                         <div id="km-group-member-panel"
