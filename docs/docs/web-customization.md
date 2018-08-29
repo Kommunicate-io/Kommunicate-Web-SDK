@@ -19,6 +19,14 @@ Customize the chat icon by passing  `chatLauncherHtml: your html for chat icon` 
             };
 
 ``` 
+Add the custom CSS on `mck-sidebox-launcher` class to change the look and feel of chat launcher icon. Mark your CSS important if it is being overriden by plugin's CSS.
+``` css
+.mck-sidebox-launcher {
+overflow: "hidden" !important; /* change to 'visible' to allow custom shaped icons*/
+box-shadow: "none" !important;  /* change to 'none' to remove underlying shadow */
+background: "#6350A9" !important; /* if user is using an image with transparency they can add this property and define a background color*/
+}
+```
 ## Top Header color:
 Add below code to change color of Top header Color in your css file
 ``` 
@@ -56,7 +64,7 @@ color:black;
 ## Default metadata :
 Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
 
-###Example
+### Example
 
 ``` 
 var kommunicateSettings = {"appId": appId,
