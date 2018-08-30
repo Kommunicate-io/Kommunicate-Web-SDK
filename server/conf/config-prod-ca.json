@@ -10,7 +10,7 @@
            }
          }
        },
-       "mongoDbUrl":"mongodb://applozicdba:ec2-35-183-11-21.ca-central-1.compute.amazonaws.com:27017/kommunicate_caplet?authSource=admin",
+       "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-35-183-11-21.ca-central-1.compute.amazonaws.com:27017/kommunicate_caplet?authSource=admin",
        "mongoConfig":{
          "poolSize":20,
          "autoReconnect":true,
@@ -41,7 +41,7 @@
        },
        "cache": {
          "hazelCache": {
-           "url": "172.31.3.41",
+           "url": "172.31.25.192",
            "port": "5701",
            "user": "dev",
            "password": "dev"
@@ -64,7 +64,7 @@
            {"type": 2, "url": "", "notifyVia": "0", "fallbackTime": 300}
            ],
          "companyDetail":{
-           "companyLogo": "https://dashboard-ca.kommunicate.io/img/logo02.png",
+           "companyLogo": "https://dashboard-cn.kommunicate.io/img/logo02.png",
            "companyAddress": "Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306",
            "websiteUrl":"https://www.kommunicate.io/"
          },
@@ -90,9 +90,10 @@
      },
      "pluginProperties": {
        "pseudoNameEnabled": true,
-       "kommunicateApiUrl":"https://api-ca.kommunicate.io"
+       "kommunicateApiUrl":"https://api-ca.kommunicate.io",
+       "applozicBaseUrl":"https://chat-ca.kommunicate.io"
      }, "rabbitmq":{
-       "host":"chat-ca.kommunicate.io",
+       "host":"chat-cn.kommunicate.io",
        "userName":"applozic",
        "password":"@ppl0zic"
    },
