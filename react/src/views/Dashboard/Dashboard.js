@@ -1021,7 +1021,7 @@ render() {
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-6 col-lg-4 ">
+          <div className="col-sm-6 col-lg-3 ">
             <div className="card-block pb-0 text-left">
               <div id="card-new-conversation" className="card-inner-block card-stats active"
                 data-key = {this.state.dataKey.newConversation}
@@ -1033,7 +1033,7 @@ render() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-lg-3">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.closedConversation}
                 data-day = {this.state.dataDay}
@@ -1044,7 +1044,7 @@ render() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-3 n-vis">
+          <div className="col-sm-6 col-lg-3">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.responseTime}
                 data-day = {this.state.dataDay}
@@ -1062,7 +1062,7 @@ render() {
             </div>
           </div>
 
-          <div className="col-sm-6 col-lg-4">
+          <div className="col-sm-6 col-lg-3">
             <div className="card-block pb-0 text-left">
               <div className="card-inner-block card-stats" data-key = {this.state.dataKey.resolutionTime}
                data-day = { this.state.dataDay}
