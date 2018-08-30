@@ -32,11 +32,13 @@ exports.login = function(req, res) {
       response.message= "wrong userName or password or applicationId";
       status =200;
       break;
+    case "APPLICATION_NOT_EXISTS":
     case "INVALID_APPLICATION_ID":
       response.code = "INVALID_APPLICATION_ID";
-      response.message= "Invalid application Id or Name";
+      response.message= "Invalid application Id or userName";
       status =400;
       break;
+  
     default:
     response.code = "INTERNAL_SERVER_ERROR";
     response.message= "oops! something went wrong";
