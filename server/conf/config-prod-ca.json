@@ -10,7 +10,7 @@
            }
          }
        },
-       "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-35-183-87-22.ca-central-1.compute.amazonaws.com:27017/kommunicate_caplet?authSource=admin",
+       "mongoDbUrl":"mongodb://applozicdba:ec2-35-183-11-21.ca-central-1.compute.amazonaws.com:27017/kommunicate_caplet?authSource=admin",
        "mongoConfig":{
          "poolSize":20,
          "autoReconnect":true,
@@ -89,7 +89,8 @@
          }
      },
      "pluginProperties": {
-       "pseudoNameEnabled": true 
+       "pseudoNameEnabled": true,
+       "kommunicateApiUrl":"https://api-ca.kommunicate.io"
      }, "rabbitmq":{
        "host":"chat-ca.kommunicate.io",
        "userName":"applozic",
