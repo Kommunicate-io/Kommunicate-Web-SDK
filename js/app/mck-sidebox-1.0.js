@@ -15,7 +15,7 @@ const MESSAGE_CONTENT_TYPE = {
         $applozic.extend(true, w.applozic, { applozic: { PRODUCT_ID: "applozic-chat" } });
     }
     var default_options = {
-        baseUrl: 'https://chat.kommunicate.io',
+        baseUrl: KM_PLUGIN_SETTINGS.applozicBaseUrl ||'https://chat.kommunicate.io',
         fileBaseUrl: 'https://applozic.appspot.com',
         customFileUrl:'https://googleupload.applozic.com',
         notificationIconLink: '',
