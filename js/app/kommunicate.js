@@ -4,14 +4,7 @@
  */
 $applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
-        switch (MCK_BASE_URL) {
-            case "https://apps-test.applozic.com/":
-            case "https://apps-test.applozic.com":
-                return "https://api-test.kommunicate.io";
-                //return "http://localhost:3999";
-            default:
-                return "https://api.kommunicate.io";
-        }
+        KM_PLUGIN_SETTINGS.kommunicateApiUrl;
     },
     setDefaultAgent: function (agentName) {
         //kommunicate.defaultAgent  = agentName;
