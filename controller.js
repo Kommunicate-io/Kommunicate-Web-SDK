@@ -6,6 +6,7 @@ exports.getPlugin =(req,res)=>{
   const MCK_CONTEXTPATH = config.getProperties().urls.hostUrl;
   const MCK_STATICPATH = MCK_CONTEXTPATH+"/plugin";
   const PLUGIN_SETTING = config.getProperties().pluginProperties;
+  PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || MCK_CONTEXTPATH;
 
   console.log("setting context and static path",MCK_CONTEXTPATH);
   fs.readFile(path.join(__dirname,"/plugin.js"), 'utf8', function (err,data) {
