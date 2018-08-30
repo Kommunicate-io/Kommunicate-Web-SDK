@@ -7679,6 +7679,7 @@ var isFirstLaunch = true;
                             if (typeof responseJson.fileMeta === "object") {
                                 var file_meta = responseJson.fileMeta;
                                 var fileExpr = alFileService.getFilePreviewPath(file_meta);
+                                file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
                                 var name = file_meta.name;
                                 var size = file_meta.size;
                                 var currTabId = $mck_msg_inner.data('mck-id');
