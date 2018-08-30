@@ -64,7 +64,7 @@
            {"type": 2, "url": "", "notifyVia": "0", "fallbackTime": 300}
            ],
          "companyDetail":{
-           "companyLogo": "https://dashboard-cn.kommunicate.io/img/logo02.png",
+           "companyLogo": "https://dashboard-ca.kommunicate.io/img/logo02.png",
            "companyAddress": "Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306",
            "websiteUrl":"https://www.kommunicate.io/"
          },
@@ -91,7 +91,7 @@
      "pluginProperties": {
        "pseudoNameEnabled": true 
      }, "rabbitmq":{
-       "host":"chat-cn.kommunicate.io",
+       "host":"chat-ca.kommunicate.io",
        "userName":"applozic",
        "password":"@ppl0zic"
    },
