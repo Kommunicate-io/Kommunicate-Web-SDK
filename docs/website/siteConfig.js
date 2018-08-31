@@ -55,7 +55,7 @@ const siteConfig = {
     // theme: 'vs2015',
     themeUrl:['css/vs2015.css']
   },
-  scripts: ['js/activeCampaignScript.js'],
+  scripts: ['js/thirdPartyScripts.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
   // repoUrl: 'https://github.com/facebook/test-site',
   onPageNav: 'separate',
