@@ -5088,7 +5088,7 @@ const MESSAGE_CONTENT_TYPE = {
                             url: params.sourceUrl + query,
                             type: params.method,
                             header:params.headers,
-                            success: (data) => {
+                            success: function (data) {
                                 var items = _this.processAutosuggestData(data.data);
                                 process(items);
                             }
