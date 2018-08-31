@@ -6,6 +6,7 @@ import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
+import {acEventTrigger} from '../../../utils/ActiveCampaign'
 
 class Welcome extends Component{
   constructor(props){
@@ -101,6 +102,7 @@ class Welcome extends Component{
     } else {
       this.createWelcomeMessage(index);
     }
+    acEventTrigger('ac-welcome-message');
   }
   updateWelcomeMessage = (index) => {
     let welcomeMessages = Object.assign([], this.state.welcomeMessages);
@@ -287,11 +289,13 @@ class Welcome extends Component{
                 }                
                 <div className="btn-group">
                   <button disabled={this.state.disableButton} className="km-button km-button--primary save-changes-btn"
+                    id = "ac-welcome-message"
                     onClick={(e) => {
                       this.setState({
                         disableButton: true
                       }, this.welcomeMessagesMethod)
-                    }} >Save</button>
+                    }}
+                    >Save</button>
                   <button disabled = {this.state.disableButton} className="km-button km-button--secondary discard-btn" onClick={this.discardWelcomeMessage}>Discard</button>
                 </div>
               </div>

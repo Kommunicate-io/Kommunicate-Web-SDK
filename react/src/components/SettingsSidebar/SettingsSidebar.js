@@ -32,7 +32,7 @@ class SettingsSidebar extends Component {
                             TEAM
                         </li>
                         <li className="ss-nav-item welcome-link">
-                            <NavLink to={'/settings/welcome-message'} className="ss-nav-link ac-trigger-links"id="ac-welcome-message" activeClassName="active">Welcome Message</NavLink>
+                            <NavLink to={'/settings/welcome-message'} className="ss-nav-link ac-trigger-links" activeClassName="active">Welcome Message</NavLink>
                         </li>
                         <li className="ss-nav-item welcome-link">
                             <NavLink to={'/settings/away-message'} className="ss-nav-link ac-trigger-links" id="ac-away-message" activeClassName="active">Away Message</NavLink>

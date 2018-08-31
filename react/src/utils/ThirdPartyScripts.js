@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
+import {acEventTrigger} from './ActiveCampaign';
 import axios from 'axios';
 // import Notification from '../views/model/Notification';
 
@@ -112,59 +113,12 @@ class ThirdPartyScripts extends Component {
 
    
     // Active Campaign Custom Event Tracking
-
     let activeCampaignTriggerLinks = document.querySelectorAll('a[id^="ac-"]');
-
-    function clickEvent(link) {
-      // change these to match your ActiveCampaign settings
-
-      // your ActiveCampaign id. You can get this from your AC settings 
-      var actid = "66105982";
-
-      // your event key, also in AC settings
-      var eventKey = "6fcd6450068b76b0eb4e03c32f22cedbd7c5b545";
-
-      // Name for event you want to track.
-      var event = "_onclick";
-
-      var visit = {
-        email: CommonUtils.getUserSession().email // the user's email address
-      }
-
-      // get the url of the page and send it as event data
-      var eventData = link;
-
-      // build the eventString based on the variables you just edited above 
-      var eventString = "actid=" + actid +
-        "&key=" + eventKey +
-        "&event=" + event +
-        "&visit=" + encodeURIComponent(JSON.stringify(visit)) +
-        "&eventdata=" + eventData;
-      // console.log(eventString)
-
-      let axiosConfig = {
-        headers: {
-          "crossDomain": true,
-          "Access-Control-Allow-Origin": "*",
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      };
-
-      axios.post("https://trackcmp.net/event", eventString, axiosConfig)
-        .then((res) => {
-          // console.log("RESPONSE RECEIVED: ", res);
-        })
-        .catch((err) => {
-          // console.log("AXIOS ERROR: ", err);
-        })
-
-    }
-
     for (var i = 0; i < activeCampaignTriggerLinks.length; i++) {
       activeCampaignTriggerLinks[i].addEventListener("click", function (e) {
-       clickEvent(this.id);
+        acEventTrigger(this.id);
         })
-
+  
       }
     
       }
