@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --require --config config/webpack.js"
+    "dev": "webpack --config ./conf/webpack.js --mode development",
+    "build": "webpack --config ./conf/webpack.js --mode production" 
   },
   "author": "Suraj <suraj@applozic.com>",
   "license": "ISC",
@@ -45,11 +46,11 @@
     "sequelize": "4.13.5",
     "underscore.string": "3.3.4",
     "uuid": "3.1.0",
-    "webpack": "^4.14.0",
     "webpack-command": "^0.4.0",
-    "winston": "2.4.0",
     "babel-minify": "0.4.3",
-    "babel-preset-minify": "0.4.3"
+    "babel-preset-minify": "0.4.3",
+    "webpack-node-externals": "^1.7.2",
+    "winston": "2.4.0"
   },
   "devDependencies": {
     "eslint-config-google": "0.9.1",
@@ -57,6 +58,7 @@
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-node": "5.1.1",
     "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-standard": "3.0.1"
+    "eslint-plugin-standard": "3.0.1",
+    "webpack": "^4.17.1"
   }
 }
