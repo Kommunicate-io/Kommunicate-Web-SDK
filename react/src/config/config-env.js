@@ -71,7 +71,7 @@ export default {
 
     },
     "kommunicateDashboardUrl": "https://dashboard.kommunicate.io",
-    "kommunicateWebsiteUrl": "https://kommunicate.io",
+    "kommunicateWebsiteUrl": "https://www.kommunicate.io",
     "adminDetails":{
         "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
         "kommunicateAdminId": "techdisrupt@applozic.com",
@@ -90,7 +90,7 @@ export default {
        "botPlatformAPI":"https://bot-ca.kommunicate.io"
    },
    "kommunicateDashboardUrl": "https://dashboard-ca.kommunicate.io",
-   "kommunicateWebsiteUrl": "https://kommunicate.io",
+   "kommunicateWebsiteUrl": "https://www.kommunicate.io",
    "adminDetails":{
        "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
        "kommunicateAdminId": "techdisrupt@applozic.com",
