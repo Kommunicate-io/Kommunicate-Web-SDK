@@ -31,6 +31,14 @@ var config ={
     password:"knowledge123"
   }
   },
+  development:{
+    hostUrl:"smtp.gmail.com",
+    port:587,
+    auth:{
+    userName : "support@kommunicate.io",
+    password:"knowledge123"
+  }
+  },
   dashboard:{
 
       hostUrl:"smtp.gmail.com",
@@ -56,7 +64,7 @@ var config ={
 }
 config["prod-ca"]= config.prod;
 exports.getProperties = function(){
-  var envId = getEnvId()?getEnvId():"default";
+  var envId = process.env.NODE_ENV || "default";
   return config[envId];
 }
 var getEnvId= function(){

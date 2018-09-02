@@ -17,7 +17,7 @@
  * @author <a href="mailto:suraj@applozic.com">Suraj</a>
  */
 
-module.exports = function(sequelize, DataTypes) {
+const user = function (sequelize, DataTypes) {
   return sequelize.define("user", {
     id: {
       type: DataTypes.INTEGER,
@@ -50,21 +50,21 @@ module.exports = function(sequelize, DataTypes) {
       unique: "IDX_USER_NAME_APP_KEY",
       allowNull: false
     },
-    roleType:{
-      type:DataTypes.INTEGER(2).ZEROFILL,
+    roleType: {
+      type: DataTypes.INTEGER(2).ZEROFILL,
       field: 'role_type'
     },
     contactNo: {
       type: DataTypes.STRING(20),
       field: 'contact_no'
     },
-   // user is bot or agent. 1:Agent, 2:bot, 3: admin
+    // user is bot or agent. 1:Agent, 2:bot, 3: admin
     type: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
     //it is primary key in applozic db. used as mqtt topic for user. 
-    userKey:{
+    userKey: {
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
@@ -95,24 +95,25 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 1
     },
     loginType: {
-     type:DataTypes.ENUM,
-     field:'login_type',
-     values: ['email', 'oauth']
+      type: DataTypes.ENUM,
+      field: 'login_type',
+      values: ['email', 'oauth']
     },
-    emailSubscription:{
-      type:DataTypes.BOOLEAN,
+    emailSubscription: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
       field: 'email_subscription',
     }
   }, {
-    underscored: true,
-    paranoid: true,
-    setterMethods: {},
-    getterMethods: {
-      apzToken() {
-        return new Buffer(this.userName + ":" + this.accessToken).toString('base64');
-      }
-    },
-  });
+      underscored: true,
+      paranoid: true,
+      setterMethods: {},
+      getterMethods: {
+        apzToken() {
+          return new Buffer(this.userName + ":" + this.accessToken).toString('base64');
+        }
+      },
+    });
 }
+module.exports = user

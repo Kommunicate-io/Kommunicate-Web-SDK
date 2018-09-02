@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+let applicationEvent = function (sequelize, DataTypes) {
   return sequelize.define("applicationEvent", {
     id: {
       type: DataTypes.INTEGER,
@@ -14,11 +14,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT(LONG)
     }
   }, {
-    underscored: true,
-    paranoid: true,
-    setterMethods: {},
-    getterMethods: {
+      underscored: true,
+      paranoid: true,
+      setterMethods: {},
+      getterMethods: {
 
-    }
-  });
+      }
+    });
 }
+module.exports = applicationEvent

@@ -12,17 +12,37 @@ sequelize.authenticate().then(function () {
 })
 var db = {};
 
+/**
+ * db model include here
+ */
+const modules = [
+  require('./user'),
+  require('./customer'),
+  require('./BusinessHour'),
+  require('./PasswordResetRequest'),
+  require('./AutoSuggest'),
+  require('./InAppMsg'),
+  require('./IssueType'),
+  require('./IssueTypeAutoReply'),
+  require('./InAppEvent'),
+  require('./ThirdPartyIntegrationSettings'),
+  require('./AppSetting'),
+  require('./application'),
+  require('./cronLastRun'),
+  require('./AppSubscription'),
+  require('./teammateInvite')
+];
 
-const models = ['user', 'customer', 'BusinessHour', 'PasswordResetRequest', 'AutoSuggest', "InAppMsg", "IssueType", "IssueTypeAutoReply", 'InAppEvent', 'ThirdPartyIntegrationSettings', "AppSetting", "application","cronLastRun","AppSubscription","teammateInvite"];
-
-models.forEach(function (model) {
-  db[model] = sequelize.import(path.join(__dirname, model));
+modules.forEach(function (module) {
+  // db[model] = sequelize.import(path.join(__dirname, './'+model+".js"));
+  db[module.name] = module(sequelize, Sequelize);
 });
 
-db['customer'].hasMany(db['application'], { targetKey: 'customerId' });
-db['application'].belongsTo(db['customer'], { sourceKey: 'customerId' });
-//dont use foreign keys
-//db.OffBusinessHoursConfig.belongsTo(db.BusinessHour,{constraints:false});
+/**
+ * mapping
+ */
+db.customer.hasMany(db.application, { targetKey: 'customerId' })
+db.application.belongsTo(db.customer, { sourceKey: 'customerId' })
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

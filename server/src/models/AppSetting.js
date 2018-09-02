@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+let AppSetting= function(sequelize, DataTypes) {
     return sequelize.define("app_settings", {
       id: {
         type: DataTypes.INTEGER,
@@ -22,4 +22,5 @@ module.exports = function(sequelize, DataTypes) {
       paranoid: true
     });
   }
+  module.exports = AppSetting
   

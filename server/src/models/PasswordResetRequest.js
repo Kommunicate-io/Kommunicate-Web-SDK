@@ -1,4 +1,4 @@
-module.exports = (sequelize,DataTypes)=>{
+let PasswordResetRequest =(sequelize,DataTypes)=>{
   return sequelize.define('password_reset_request',{
     id: {
       type: DataTypes.INTEGER,
@@ -34,3 +34,4 @@ module.exports = (sequelize,DataTypes)=>{
     paranoid: true
   });
 }
+module.exports = PasswordResetRequest;

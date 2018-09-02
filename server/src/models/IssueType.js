@@ -10,40 +10,45 @@
  * @author <a href="mailto:anand@applozic.com">Anand</a>
  */
 
-module.exports = function (sequelize, DataTypes) {
-  return sequelize.define("issue_type", {
-    id: {
-      type: DataTypes.INTEGER(11),
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false
+let IssueType = function(sequelize, DataTypes) {
+  return sequelize.define(
+    "issue_type",
+    {
+      id: {
+        type: DataTypes.INTEGER(11),
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false
+      },
+      issueName: {
+        type: DataTypes.STRING(100),
+        field: "issue_name",
+        unique: "IDX_ISSUE_NAME_CUSTOMER_ID"
+      },
+      description: {
+        type: DataTypes.STRING(500)
+      },
+      createdBy: {
+        type: DataTypes.INTEGER,
+        field: "created_by"
+      },
+      status: {
+        type: DataTypes.ENUM,
+        values: ["active", "pending", "deleted"],
+        allowNull: false
+      },
+      customerId: {
+        type: DataTypes.INTEGER(),
+        field: "customer_id",
+        unique: "IDX_ISSUE_NAME_CUSTOMER_ID"
+      }
     },
-    issueName: {
-      type: DataTypes.STRING(100),
-      field: 'issue_name',
-      unique: "IDX_ISSUE_NAME_CUSTOMER_ID"
-    },
-    description: {
-      type: DataTypes.STRING(500),
-    },
-    createdBy: {
-      type: DataTypes.INTEGER,
-      field: 'created_by'
-    },
-    status: {
-      type: DataTypes.ENUM,
-      values: ['active', 'pending', 'deleted'],
-      allowNull: false
-    },
-    customerId: {
-      type: DataTypes.INTEGER(),
-      field: 'customer_id',
-      unique: "IDX_ISSUE_NAME_CUSTOMER_ID"
-    },
-  }, {
+    {
       underscored: true,
       paranoid: true,
       setterMethods: {},
       getterMethods: {}
-    });
-}
+    }
+  );
+};
+module.exports = IssueType;
