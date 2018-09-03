@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from './utils/ThirdPartyScripts';
+import {ActiveCampaign} from './utils/ActiveCampaign';
 
 // Containers
 import Full from './containers/Full/'

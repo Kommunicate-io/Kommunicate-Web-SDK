@@ -20,6 +20,7 @@ import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
+import { acEventTrigger } from '../../utils/ActiveCampaign';
 
 
 
@@ -169,6 +170,7 @@ class Integration extends Component {
     if (!isUserExists && !isInvitationExists) {
       if (email.match(mailformat)) {
         this.onCloseModal();
+        acEventTrigger('ac-added-agent');
         return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
           if (response.data && response.data.code === "SUCCESS") {
             Notification.success('Invitation sent successfully');

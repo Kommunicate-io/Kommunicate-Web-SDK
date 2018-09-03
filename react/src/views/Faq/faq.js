@@ -25,6 +25,8 @@ import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CloseButton from './../../components/Modal/CloseButton.js';
+import {acEventTrigger} from '../../utils/ActiveCampaign'
+
 
 class Tabs extends Component {
 
@@ -171,6 +173,7 @@ class Tabs extends Component {
         }).catch(err => {
           console.log(err)
         })
+      acEventTrigger('ac-created-faq');
   }
 
   toggleDeleteFaq = () => {

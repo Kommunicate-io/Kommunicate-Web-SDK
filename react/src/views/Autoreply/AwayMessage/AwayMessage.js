@@ -7,6 +7,7 @@ import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import Checkbox from '../../../components/Checkbox/Checkbox';
+import {acEventTrigger} from '../../../utils/ActiveCampaign';
 
 class AwayMessage extends Component{
   constructor(props){
@@ -152,6 +153,7 @@ class AwayMessage extends Component{
     } else {
       this.createAwayMessageKnownCustomers(index);
     }
+    acEventTrigger('ac-away-message');
   }
   updateAwayMessageKnownCustomers = (index) => {
     let awayMessageKnownCustomers = Object.assign([], this.state.awayMessageKnownCustomers);
@@ -246,6 +248,7 @@ class AwayMessage extends Component{
     } else {
       this.createAwayMessageAnonymousCustomers(index);
     }
+    acEventTrigger('ac-away-message');
   }
   updateAwayMessageAnonymousCustomers = (index) => {
     let awayMessageAnonymousCustomers = Object.assign([], this.state.awayMessageAnonymousCustomers);

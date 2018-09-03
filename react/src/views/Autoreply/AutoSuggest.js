@@ -7,6 +7,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
+import {acEventTrigger} from '../../utils/ActiveCampaign';
 
 
 class AutoSuggest extends Component {
@@ -97,6 +98,7 @@ class AutoSuggest extends Component {
 		else{
 			this._createSuggestion();
 		}
+		acEventTrigger('ac-created-quickreply');
 	}
 	_createSuggestion = (e) => {
 		let index = this.state.activeTextField;
