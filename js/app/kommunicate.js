@@ -4,7 +4,7 @@
  */
 $applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
-        KM_PLUGIN_SETTINGS.kommunicateApiUrl;
+       return KM_PLUGIN_SETTINGS.kommunicateApiUrl;
     },
     setDefaultAgent: function (agentName) {
         //kommunicate.defaultAgent  = agentName;
