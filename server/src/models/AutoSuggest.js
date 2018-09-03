@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+let AutoSuggest = function (sequelize, DataTypes) {
   return sequelize.define("auto_suggest", {
     id: {
       type: DataTypes.INTEGER,
@@ -32,15 +32,16 @@ module.exports = function(sequelize, DataTypes) {
       field: 'content'
     },
     type: {
-     type:DataTypes.ENUM,
-     values: ['faq', 'shortcut']
+      type: DataTypes.ENUM,
+      values: ['faq', 'shortcut']
     },
     status: {
-     type:DataTypes.ENUM,
-     values: ['draft', 'published']
+      type: DataTypes.ENUM,
+      values: ['draft', 'published']
     }
   }, {
-    underscored: true,
-    paranoid: true
-  });
+      underscored: true,
+      paranoid: true
+    });
 }
+module.exports = AutoSuggest;

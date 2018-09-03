@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+let InAppMsg = function (sequelize, DataTypes) {
   return sequelize.define("in_app_msg", {
     id: {
       type: DataTypes.INTEGER,
@@ -8,8 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     applicationId: {
       type: DataTypes.STRING,
-      //allowNull: false,
-      field : "application_id"
+      field: "application_id"
     },
     eventId: {
       type: DataTypes.INTEGER,
@@ -31,20 +30,21 @@ module.exports = function(sequelize, DataTypes) {
       field: 'created_by',
       allowNull: true
     },
-    metadata:{
-        type:DataTypes.JSON,
-        allowNull: true
-      },
-    category:{
-      type:DataTypes.INTEGER,
+    metadata: {
+      type: DataTypes.JSON,
+      allowNull: true
+    },
+    category: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
-    underscored: true,
-    paranoid: true,
-    setterMethods: {},
-    getterMethods: {
+      underscored: true,
+      paranoid: true,
+      setterMethods: {},
+      getterMethods: {
 
-    }
-  });
+      }
+    });
 }
+module.exports = InAppMsg;

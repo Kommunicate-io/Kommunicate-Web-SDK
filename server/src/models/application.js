@@ -1,4 +1,4 @@
-module.exports = function (sequelize, DataTypes) {
+let application = function (sequelize, DataTypes) {
   return sequelize.define("applications", {
     id: {
       type: DataTypes.INTEGER,
@@ -23,3 +23,4 @@ module.exports = function (sequelize, DataTypes) {
       getterMethods: {}
     });
 }
+module.exports = application

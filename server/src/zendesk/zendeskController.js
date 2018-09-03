@@ -33,6 +33,9 @@ exports.createZendeskTicket = (req, res) => {
 
     }).catch(err => {
         console.log('error while creating ticket', err);
+        if (err.response && err.response.status == 422) {
+            return res.status(err.response.status).json({ code: "ERROR", message: err.response.data.description });
+        }
         return res.status(500).json({ code: "ERROR", message: "ticket creation error" });
     });
 }
@@ -61,6 +64,9 @@ exports.updateZendeskTicket = (req, res) => {
         });
     }).catch(err => {
         console.log('error while updating ticket', err);
+        if (err.response && err.response.status == 422) {
+            return res.status(err.response.status).json({ code: "ERROR", message: err.response.data.description });
+        }
         return res.status(err.response.status).json({ code: "ERROR", message: err.message });
     })
 
@@ -81,6 +87,9 @@ exports.getTicket = (req, res) => {
         })
     }).catch(err => {
         console.log('error while getting ticket', err);
+        if (err.response && err.response.status == 422) {
+            return res.status(err.response.status).json({ code: "ERROR", message: err.response.data.description });
+        }
         return res.status(500).json({ code: "ERROR", message: err.message });
     })
 
@@ -106,6 +115,9 @@ exports.uploadAttachment = (req, res) => {
         })
     }).catch(err => {
         console.log('error while getting ticket', err);
+        if (err.response && err.response.status == 422) {
+            return res.status(err.response.status).json({ code: "ERROR", message: err.response.data.description });
+        }
         return res.status(500).json({ code: "ERROR", message: err.message });
     })
 }
