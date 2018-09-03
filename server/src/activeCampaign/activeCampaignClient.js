@@ -63,7 +63,7 @@ exports.updateActiveCampaign = (options) => {
             }
         };
         if(options.tags){
-            addTags(options)
+            addTags(option)
         }
         request(option, function (error, response, data) {
             //if (error) throw new Error(error);
@@ -84,15 +84,26 @@ exports.updateActiveCampaign = (options) => {
 
 const addTags = (options) => {
     return new Promise(function (resolve, reject) {
-        options.url = "https://applozic.api-us1.com/admin/api.php?api_action=contact_tag_add";
-        options.form.api_action="contact_tag_add";
-        request(options, function (error, response, data) {
+        var data = {
+            method: 'POST',
+            url: "https://applozic.api-us1.com/admin/api.php?api_action=contact_tag_add",
+            headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            form: {
+                api_action: 'contact_tag_add',
+                api_key: apiKey,
+                api_output: 'json',
+                id: options.subscriberId,
+                email: options.email,
+                tags: options.tags
+            }
+        };
+        request(data, function (error, responseData, response) {
             if (error) {
-                logger.error("error while updating Active campaign", error);
+                logger.error("error while add tags", error);
                 return reject(error);
             } else {
-                logger.info("response received for updating Active Campaign", data);
-                return resolve(data)
+                logger.info("response received for updating Active Campaign", response);
+                return resolve(response)
             }
         });
     }).catch(err=>{
