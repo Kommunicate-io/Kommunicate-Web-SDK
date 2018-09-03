@@ -43,7 +43,6 @@ export function acEventTrigger(trigger) {
         break;
     }
   
-    console.log(event);
     //  ActiveCampaign id. 
     var actid = "66105982";
   
