@@ -1432,7 +1432,7 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         kmChatLoginModal.style.visibility='visible';
-                        kmChatLoginModal.style.display='block';
+                        kmChatLoginModal.style.display='none';
                         $('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         document.getElementById("km-modal-close").addEventListener("click", function(event){
