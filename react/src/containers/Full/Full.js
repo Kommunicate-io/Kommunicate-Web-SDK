@@ -32,7 +32,7 @@ import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
 import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
-const enableIntegry = false;
+const enableIntegry = true;
 class Full extends Component {
   constructor (props) {
     super(props)
