@@ -53,6 +53,7 @@ exports.updateActiveCampaign = (options) => {
                 email: options.email,
                 orgname: options.companyUrl,
                 name: options.name,
+                tags: options.tags,
                 phone: options.contactNo,
                 'field[%role%,0]': options.role,
                 'field[%industry%,0]': options.industry,
@@ -61,6 +62,9 @@ exports.updateActiveCampaign = (options) => {
                 'status[1]': '1'
             }
         };
+        if(options.tags){
+            addTags(options)
+        }
         request(option, function (error, response, data) {
             //if (error) throw new Error(error);
 
@@ -76,6 +80,24 @@ exports.updateActiveCampaign = (options) => {
 
     });
 
+}
+
+const addTags = (options) => {
+    return new Promise(function (resolve, reject) {
+        options.url = "https://applozic.api-us1.com/admin/api.php?api_action=contact_tag_add";
+        options.form.api_action="contact_tag_add";
+        request(options, function (error, response, data) {
+            if (error) {
+                logger.error("error while updating Active campaign", error);
+                return reject(error);
+            } else {
+                logger.info("response received for updating Active Campaign", data);
+                return resolve(data)
+            }
+        });
+    }).catch(err=>{
+        return;
+    })
 }
 
 

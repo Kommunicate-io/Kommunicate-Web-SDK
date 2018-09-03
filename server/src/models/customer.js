@@ -60,7 +60,12 @@ let customer = function (sequelize, DataTypes) {
     }
   }, {
       underscored: true,
-      paranoid: true
+      paranoid: true,
+      getterMethods: {
+        isPaidCustomer: function () {
+          return this.subscription != "startup";
+        }
+      }
     }
   );
 }

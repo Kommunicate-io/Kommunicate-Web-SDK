@@ -1,9 +1,7 @@
 const registrationService = require("./registrationService");
 const customerService = require('../customer/customerService')
 const userService = require('../users/userService');
-const joi = require("joi");
 const randomString = require('randomstring');
-const inAppMessageService = require("../application/inAppMsgService");
 const applozicClient = require("../utils/applozicClient");
 const activeCampaignClient = require("../activeCampaign/activeCampaignClient")
 const config = require("../../conf/config");
@@ -93,9 +91,9 @@ exports.createCustomer = (req, res) => {
 
 exports.patchCustomer = (req, res) => {
   let response = {};
-  let status;
   const customer = req.body;
   const userId = req.params.userId;
+  let subscribed = customer.subscription && customer.subscription != "startup";
   console.log("request recieved to update customer: ", userId, "body", customer);
   if (customer.websiteUrl) {
     let appName = (customer.companyName) ? customer.companyName : "";
@@ -115,7 +113,8 @@ customerService.getCustomerByUserName(userId).then(async dbCostomer => {
         "companyUrl": customer.websiteUrl,
         "contactNo": customer.contactNo,
         "industry": customer.industry,
-        "companySize": customer.companySize
+        "companySize": customer.companySize,
+        "tags": subscribed || dbCostomer.isPaidCustomer ? "K-customer" : undefined
       }).catch(error => {
         console.log("Error while updating company URL to activeCampaign", error);
       });
@@ -125,10 +124,12 @@ customerService.getCustomerByUserName(userId).then(async dbCostomer => {
       applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applications[0].applicationId, new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64')).then(users => {
         let integration = users[0].metadata && users[0].metadata.KM_INTEGRATION ? JSON.parse(users[0].metadata.KM_INTEGRATION) : {};
         if (integration.pipeDriveId) {
-          pipeDrive.updateDeal({ id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo });
+          let deal = { id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo }
+          subscribed || dbCostomer.isPaidCustomer ? deal.status = "won" : undefined;
+          pipeDrive.updateDeal(deal); 
         } else {
           let organization = { name: customer.companyName };
-          let person = { name: customer.name, email: userId, phone: customer.contactNo, }
+          let person = { name: customer.name, email: userId, phone: customer.contactNo, } 
           pipeDrive.createDealInPipeDrive(organization, person).then(result => {
             integration['pipeDriveId'] = result.data.data.id;
             let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
