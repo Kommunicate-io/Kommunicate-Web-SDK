@@ -132,7 +132,7 @@ KommunicateUI={
         $applozic("#mck-contacts-content").addClass("n-vis").removeClass("vis");
         $applozic("#mck-msg-new").attr("disabled", false);
         $applozic('.km-contact-input-container').removeClass("n-vis").addClass("vis");
-        $applozic("#mck-conversation-back-btn").removeClass("n-vis").addClass('vis-table');
+        $applozic("#mck-conversation-back-btn").removeClass("km-visibility-hidden").addClass('vis-table');
     });
 
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
@@ -247,10 +247,10 @@ showChat :function () {
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     $applozic("#mck-msg-new").attr("disabled", false);
     if ($applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 && isFirstLaunch == true) {
-        $applozic("#mck-conversation-back-btn").addClass("n-vis");
+        $applozic("#mck-conversation-back-btn").addClass("km-visibility-hidden");
         isFirstLaunch = false;
     }else{
-        $applozic("#mck-conversation-back-btn").removeClass("n-vis");
+        $applozic("#mck-conversation-back-btn").removeClass("km-visibility-hidden");
     }
     
     if($applozic('#mck-tab-conversation').hasClass('vis')){
