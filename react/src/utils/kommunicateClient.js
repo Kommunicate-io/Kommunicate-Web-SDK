@@ -691,12 +691,13 @@ const getIntegratedBots = () => {
 }
 const enableNotifyEveryBody = (data) => {
   let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/agent/routing/" + data.routingState;
-
+let url = getConfig().kommunicateBaseUrl+"/settings/application/"+userSession.application.applicationId;
+  var formdata ={};
+  formdata.botRouting =data.routingState;
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
+    data:formdata
   })).then(result => {
     // console.log(result);
     return result;
@@ -704,12 +705,13 @@ const enableNotifyEveryBody = (data) => {
 }
 const enableAutomaticAssignment = (data) => {
   let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/agent/routing/" + data.routingState;
-
+  let url = getConfig().kommunicateBaseUrl+"/settings/application/"+userSession.application.applicationId;
+  var formdata ={};
+  formdata.botRouting = data.routingState;
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
+    data:formdata
   })).then(result => {
     // console.log(result);
     return result;
@@ -717,12 +719,13 @@ const enableAutomaticAssignment = (data) => {
 }
 const enableOrDisableBotRouting = (data) => {
   let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/bot/routing/" + data.routingState;
-
+  let url =getConfig().kommunicateBaseUrl+ "/settings/application/"+userSession.application.applicationId;
+  var formdata ={};
+  formdata.botRouting =data.routingState;
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
+    data:formdata
   })).then(result => {
     // console.log(result);
     return result;
@@ -751,7 +754,18 @@ const getCustomerByApplicationId = () => {
     method: 'get',
     url: url,
   })).then(result => {
-    // console.log(result);
+    return result;
+  }).catch(err => { console.log("Error while fetching customer by applicationId", err) })
+
+}
+
+const getAgentandBotRouting =() =>{
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
+  return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+  })).then(result => {
     return result;
   }).catch(err => { console.log("Error while fetching customer by applicationId", err) })
 
@@ -1083,6 +1097,7 @@ export {
   enableOrDisableBotRouting,
   getSuggestionsByCriteria,
   getCustomerByApplicationId,
+  getAgentandBotRouting,
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
   deleteThirdPartyByIntegrationType,

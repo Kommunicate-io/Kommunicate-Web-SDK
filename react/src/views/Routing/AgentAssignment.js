@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import { enableNotifyEveryBody, enableAutomaticAssignment, enableOrDisableBotRouting, getCustomerByApplicationId} from '../../utils/kommunicateClient'
+import { enableNotifyEveryBody, enableAutomaticAssignment, enableOrDisableBotRouting, getCustomerByApplicationId,getAgentandBotRouting} from '../../utils/kommunicateClient'
 import axios from 'axios';
 import { ROUND_ROUBIN } from './Constants.js';
 import CommonUtils from '../../utils/CommonUtils';
@@ -64,9 +64,9 @@ getIntegratedBots = () => {
     })
 }
 getRoutingState = () => {
-    return Promise.resolve(getCustomerByApplicationId()).then(response => {
-        response.data.data.botRouting && this.setState({assignConversationToBot:true})
-        if (response.data.data.agentRouting === 1) {
+    return Promise.resolve(getAgentandBotRouting()).then(response => {
+        response.data.response.botRouting && this.setState({assignConversationToBot:true})
+        if (response.data.response.agentRouting === 1) {
             this.setState({
                 checkedNotifyEverybody: false,
                 checkedAutomaticAssignemnt: true,
