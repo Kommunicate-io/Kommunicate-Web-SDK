@@ -48,10 +48,8 @@ const getCustomerById = (id) => {
 }
 
 const updateRoutingState = (applicationId, routingInfo) => {
-    return getCustomerByApplicationId(applicationId).then(customer => {
-        return Promise.resolve(customerModel.update(routingInfo, { where: { id: customer.id } })).then(res => {
-            return { message: "routing successfully updated" };
-        })
+    return Promise.resolve(appSettingService.update(routingInfo, { where: { applicationId: applicationId } })).then(res => {
+        return { message: "routing successfully updated" };
     }).catch(err => {
         return { message: "routing update error   " }
     });
