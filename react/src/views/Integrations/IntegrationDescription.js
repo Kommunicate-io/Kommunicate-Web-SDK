@@ -5,6 +5,7 @@ import { createAndUpdateThirdPArtyIntegration, deleteThirdPartyByIntegrationType
 import { thirdPartyList } from './ThirdPartyList'
 import Notification from '../model/Notification';
 import CommonUtils from '../../utils/CommonUtils';
+import { acEventTrigger } from '../../utils/ActiveCampaign';
 
 class IntegrationDescription extends Component {
 
@@ -102,8 +103,9 @@ class IntegrationDescription extends Component {
             case 'helpdocs':
             case 'clearbit':
                 if (this.state.accessKey !== "") {
-
                     this.createandUpdateThirdPartyIntegration();
+                    this.state.activeModal == 'helpdocs' && acEventTrigger('ac-integrated-helpdocs');
+                    this.state.activeModal == 'clearbit' && acEventTrigger('ac-integrated-clearbit');
                 }
                 else {
                     Notification.info("API Key is mandtory")
@@ -114,6 +116,7 @@ class IntegrationDescription extends Component {
                 if (this.state.email !== "" && this.state.accessToken !== "" && this.state.subdoamin !== "") {
 
                     this.createandUpdateThirdPartyIntegration();
+                    acEventTrigger('ac-integrated-zendesk');
                 }
                 else {
                     Notification.info("All fields are mandatory");
@@ -121,7 +124,7 @@ class IntegrationDescription extends Component {
                 break;
             case 'agilecrm':
                 if (this.state.email !== "" && this.state.accessKey !== "" && this.state.subdoamin !== "") {
-
+                    acEventTrigger('ac-integrated-agilecrm');
                     this.createandUpdateThirdPartyIntegration();
                 }
                 else {

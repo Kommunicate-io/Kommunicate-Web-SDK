@@ -108,18 +108,6 @@ class ThirdPartyScripts extends Component {
               var trackcmp_h = document.getElementsByTagName("head");
               trackcmp_h.length && trackcmp_h[0].appendChild(trackcmp);
             }
-
-
-
-   
-    // Active Campaign Custom Event Tracking
-    let activeCampaignTriggerLinks = document.querySelectorAll('a[id^="ac-"]');
-    for (var i = 0; i < activeCampaignTriggerLinks.length; i++) {
-      activeCampaignTriggerLinks[i].addEventListener("click", function (e) {
-        acEventTrigger(this.id);
-        })
-  
-      }
     
       }
 

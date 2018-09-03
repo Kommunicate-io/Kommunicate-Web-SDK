@@ -17,6 +17,7 @@ import NoteIcon from './images/note-icon.png';
 import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
+import {acEventTrigger} from '../../../src/utils/ActiveCampaign';
 
 export default class BotStore extends Component {
     constructor(props) {
@@ -412,6 +413,7 @@ export default class BotStore extends Component {
             this.uploadDialogFlowV2File();
           }
         }
+        acEventTrigger('ac-integrated-bot');
       }
 
       checkBotNameAvailability(userId,aiPlatform) {

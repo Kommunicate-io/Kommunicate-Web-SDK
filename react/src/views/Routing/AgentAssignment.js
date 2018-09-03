@@ -14,6 +14,7 @@ import { getIntegratedBots, conversationHandlingByBot  } from '../../utils/kommu
 import Diaglflow from '../Bot/images/dialogflow-icon.png';
 import botPlatformClient from '../../utils/botPlatformClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
+import { acEventTrigger } from '../../utils/ActiveCampaign';
 
 class AgentAssignemnt extends Component{
     constructor(props) {
@@ -135,6 +136,7 @@ toggleConversationAssignment = () => {
     this.setState({
         assignConversationToBot: !this.state.assignConversationToBot
     })
+    acEventTrigger("ac-configured-routing");
     // console.log("state",this.state);
     // let status = !this.state.assignConversationToBot?"enabled":"disabled";
     let status = !this.state.assignConversationToBot

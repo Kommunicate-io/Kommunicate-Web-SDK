@@ -1,26 +1,46 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
 
-export function acEventTrigger(link) {
+export function acEventTrigger(trigger) {
     var event;
     // Changing the event name 
-    switch(link){
-      case 'ac-faq':
-        event = "createdFAQ";
-        break;
-      case 'ac-integrations':
-        event = "integratedBot" 
-        break;
+    switch(trigger){
       case 'ac-away-message':
         event = "configuredAwayMessage"
         break;
       case 'ac-welcome-message':
         event = "configuredWelcomeMessage"
         break;
-      case 'ac-quick-replies':
+      case 'ac-created-faq':
+        event = "createdFAQ"
+        break;
+      case 'ac-created-quickreply':
         event = "createdQuickReply"
         break;
-  
+      case 'ac-integrated-bot':
+        event = "integratedBot"
+        break;
+      case 'ac-configure-mailbox':
+        event = "configuredMailbox"
+        break;
+      case 'ac-integrated-zendesk':
+        event = "integratedZendesk"
+        break;
+      case 'ac-integrated-helpdocs':
+        event = "integratedHelpdocs"
+        break;
+      case 'ac-integrated-clearbit':
+        event = "integratedClearbit"
+        break;
+      case 'ac-integrated-agilecrm':
+        event = "integratedAgileCRM"
+        break;
+      case 'ac-added-agent':
+        event = "addedAgent"
+        break;
+      case 'ac-configured-routing':
+        event = "configuredRouting"
+        break;
     }
   
     console.log(event);
