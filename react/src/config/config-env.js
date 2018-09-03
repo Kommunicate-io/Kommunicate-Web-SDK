@@ -87,7 +87,8 @@ export default {
    "baseurl": {
        "applozicAPI": "https://chat-ca.kommunicate.io",
        "kommunicateAPI": "https://api-ca.kommunicate.io",
-       "botPlatformAPI":"https://bot-ca.kommunicate.io"
+       "botPlatformAPI":"https://bot-ca.kommunicate.io",
+       "komunicateSupportUrl": "https://chat.kommunicate.io"
    },
    "kommunicateDashboardUrl": "https://dashboard-ca.kommunicate.io",
    "kommunicateWebsiteUrl": "https://www.kommunicate.io",

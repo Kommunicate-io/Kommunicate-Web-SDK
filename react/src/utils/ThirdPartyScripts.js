@@ -16,10 +16,10 @@ class ThirdPartyScripts extends Component {
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
-
+            var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
             (function(d, m){
               let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "groupName":"Kommunicate Support","baseUrl":getConfig().homeUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true, emojilibrary : false}
+              "groupName":"Kommunicate Support","baseUrl":kommunicateSupportChatUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true, emojilibrary : false}
               if(userId){
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().password;

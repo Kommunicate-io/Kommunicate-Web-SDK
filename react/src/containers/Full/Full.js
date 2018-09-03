@@ -31,8 +31,10 @@ import CommonUtils from '../../utils/CommonUtils';
 import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
+import config from '../../config/index';
 import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
 const enableIntegry = true;
+const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
   constructor (props) {
     super(props)
@@ -118,7 +120,7 @@ class Full extends Component {
   componentDidMount() {
     if(CommonUtils.getUserSession()){
       // initilizing full view plugin for dashboard user
-    window.chatLogin();
+    window.chatLogin(chatUrl);
       //listen for kommunicate plugin initilized event. initilized support chat user.
     window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
 

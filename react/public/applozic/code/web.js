@@ -21,16 +21,13 @@ var autoSuggestions = {};
     $kmApplozic.fn.applozic("logout");
   }
 
-  var chatLogin = function () {
+  var chatLogin = function (chatUrl) {
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     var userId = userSession.userName;
     var appId = userSession.application.applicationId;
     var userPassword = userSession.password;
     var userContactNumber = "";
     var topicBoxEnabled = true;
-    var applozicBaseUrl = (window.location.origin=="http://localhost:3000"||window.location.origin=="https://dashboard-test.kommunicate.io")?"https://apps-test.applozic.com":"https://chat.kommunicate.io";
-    /*var displayName = '';
-    displayName = '${param.displayName}';*/
     if (typeof userId === "undefined" || userId == null) {
       return;
     }
@@ -54,7 +51,7 @@ var autoSuggestions = {};
     }
 
     $kmApplozic.fn.applozic({
-      baseUrl: applozicBaseUrl,
+      baseUrl: chatUrl,
       notificationIconLink:
           'https://dashboard.kommunicate.io/favicon.ico',
       notificationSoundLink: 'https://api.kommunicate.io/plugin/audio/notification_tone.mp3',
