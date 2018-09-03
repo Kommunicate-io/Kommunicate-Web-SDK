@@ -2218,7 +2218,7 @@ const MESSAGE_CONTENT_TYPE = {
                 });
                 $applozic(d).on("click", "." + MCK_LAUNCHER + ", .mck-contact-list ." + MCK_LAUNCHER, function (e) {
                     e.preventDefault();
-                    !isFirstLaunch && $applozic("#mck-conversation-back-btn").addClass("vis-table").removeClass('n-vis');
+                    !isFirstLaunch && $applozic("#mck-conversation-back-btn").addClass("vis-table").removeClass('km-visibility-hidden');
                     count++;
                     var $this = $applozic(this);
                     var elem = this;
