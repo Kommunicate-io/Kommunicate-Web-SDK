@@ -43,7 +43,6 @@ const MESSAGE_CONTENT_TYPE = {
         loadOwnContacts: false,
         maxGroupSize: 100,
         authenticationTypeId: 0,
-        isAnonymousChat: true,
         groupName: "Conversations",
         agentId: "",
         agentName: "",
@@ -490,8 +489,7 @@ const MESSAGE_CONTENT_TYPE = {
         var lastFetchTime;
         var isUserDeleted = false;
         var mckVideoCallringTone = null;
-        var IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
-        var KM_ASK_USER_DETAILS =appOptions.askUserDetails;
+        var KM_ASK_USER_DETAILS = mckMessageService.checkArray(appOptions.askUserDetails);
         var DEFAULT_GROUP_NAME = appOptions.conversationTitle;
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
@@ -865,7 +863,6 @@ const MESSAGE_CONTENT_TYPE = {
             IS_AUTO_TYPE_SEARCH_ENABLED = (typeof optns.autoTypeSearchEnabled === "boolean") ? optns.autoTypeSearchEnabled : true;
             MCK_CHECK_USER_BUSY_STATUS = (typeof optns.checkUserBusyWithStatus === "boolean") ? (optns.checkUserBusyWithStatus) : false;
             IS_LAUNCH_ON_UNREAD_MESSAGE_ENABLED = (typeof optns.launchOnUnreadMessage === "boolean") ? optns.launchOnUnreadMessage : false;
-            IS_ANONYMOUS_CHAT = appOptions.isAnonymousChat;
             KM_ASK_USER_DETAILS =appOptions.askUserDetails;
         }
         _this.logout = function () {
@@ -1347,34 +1344,36 @@ const MESSAGE_CONTENT_TYPE = {
             var $mck_tab_individual = $applozic("#mck-tab-individual");
             var MCK_IDLE_TIME_COUNTER = MCK_IDLE_TIME_LIMIT;
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
-            _this.getLauncherHtml = function (isannoynouschat) {
-                var defaultHtml=  `<div id="launcher-svg-container"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-                <style type="text/css">
-                    .km-launcher-logo-0{fill:url(#km-launcher-logo-gradient-1);}
-                    .km-launcher-logo-1{fill:#FFFFFF;}
-                </style>
-                <g>
-                    <linearGradient id="km-launcher-logo-gradient-1" gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
-                        <stop offset="0" style="stop-color:#3A3C80"/>
-                        <stop offset="0.1658" style="stop-color:#4B4C93"/>
-                        <stop offset="0.3516" style="stop-color:#5858A2"/>
-                        <stop offset="0.5063" style="stop-color:#5C5CA7"/>
-                        <stop offset="0.6795" style="stop-color:#53549D"/>
-                        <stop offset="0.9706" style="stop-color:#3D3E83"/>
-                        <stop offset="1" style="stop-color:#3A3C80"/>
-                    </linearGradient>
-                    <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
-                    <g>
-                        <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
-                    </g>
-                </g>
-                </svg></div>`;
-                if (isannoynouschat) {
+            _this.getLauncherHtml = function (isAnonymousChat) {
+
+              var anonymousCheck = isAnonymousChat ? "km-launcher-logo-gradient-2" : "km-launcher-logo-gradient-1";
+              var defaultHtml=  `<div id="launcher-svg-container"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+              <style type="text/css">
+                  .km-launcher-logo-0{fill:url(#`+anonymousCheck+`);}
+                  .km-launcher-logo-1{fill:#FFFFFF;}
+              </style>
+              <g>
+                  <linearGradient id=`+anonymousCheck+` gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
+                      <stop offset="0" style="stop-color:#3A3C80"/>
+                      <stop offset="0.1658" style="stop-color:#4B4C93"/>
+                      <stop offset="0.3516" style="stop-color:#5858A2"/>
+                      <stop offset="0.5063" style="stop-color:#5C5CA7"/>
+                      <stop offset="0.6795" style="stop-color:#53549D"/>
+                      <stop offset="0.9706" style="stop-color:#3D3E83"/>
+                      <stop offset="1" style="stop-color:#3A3C80"/>
+                  </linearGradient>
+                  <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
+                  <g>
+                      <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
+                  </g>
+              </g>
+              </svg></div>`;
+                if (isAnonymousChat) {
                     return '<a href="#" target="_self">' + (CUSTOM_CHAT_LAUNCHER ? CUSTOM_CHAT_LAUNCHER : defaultHtml) + '</a>';
                 } else {
                     return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">' + (CUSTOM_CHAT_LAUNCHER ? CUSTOM_CHAT_LAUNCHER : defaultHtml) + '<div id="launcher-agent-img-container"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                 }
-
+                
             	  };
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -1422,7 +1421,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var isValidated = _this.validateAppSession(userPxy);
                 if (!isValidated) {
                     var KM_ASK_USER_DETAILS_MAP = { 'name': 'km-userName', 'email': 'km-email', 'phone': 'km-contact' };
-                    if (!IS_ANONYMOUS_CHAT && KM_ASK_USER_DETAILS.length !==0 ) {
+                    if (Array.isArray(KM_ASK_USER_DETAILS) && KM_ASK_USER_DETAILS.length !==0 ) {
                         $applozic("#km-userId").val(MCK_USER_ID);
                         if (KM_ASK_USER_DETAILS.length > 0) {
                             for (var i = 0; i < KM_ASK_USER_DETAILS.length; i++) {
@@ -1432,9 +1431,11 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         kmChatLoginModal.style.visibility='visible';
-                        kmChatLoginModal.style.display='block';
+                        kmChatLoginModal.style.display='none';
                         $('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
+                        kmAnonymousChatLauncher.classList.remove('n-vis');
+                        kmAnonymousChatLauncher.classList.add('vis');
                         document.getElementById("km-modal-close").addEventListener("click", function(event){
                           event.preventDefault();
                           kmChatLoginModal.style.display='none';
@@ -1616,9 +1617,9 @@ const MESSAGE_CONTENT_TYPE = {
                 mckGroupService.loadGroups({
                     apzCallback: mckGroupLayout.loadGroups
                 });
-                if(!IS_ANONYMOUS_CHAT){
-                    $applozic.fn.applozic("mckLaunchSideboxChat");
-                   }
+                if(typeof KM_ASK_USER_DETAILS !== 'undefined'){
+                  $applozic.fn.applozic("mckLaunchSideboxChat");
+                 }
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
@@ -1942,6 +1943,14 @@ const MESSAGE_CONTENT_TYPE = {
             var $minutesLabel = $applozic("#mck-minutes");
             var $secondsLabel = $applozic("#mck-seconds");
 
+            _this.checkArray = function(askUserDetails) {
+              if(askUserDetails && Array.isArray(askUserDetails) === false) {
+                throw new Error("askUserDetails should be an array");
+              }
+              else {
+                return askUserDetails;
+              }
+            };
             _this.createNewConversation = function (params, callback) {
                 Kommunicate.startConversation(params,callback);
             }
@@ -4304,13 +4313,13 @@ const MESSAGE_CONTENT_TYPE = {
                 if (msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
                     emailMsgIndicator = "vis";
                     $applozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
-                } 
-				
+                }
+
                 // if ($mck_no_messages.hasClass('vis')) {
                 //     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 // }
                 var messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") || msg.fileMeta ? "n-vis" : 'vis';
-                
+
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var statusIcon = 'mck-pending-icon';
@@ -4377,7 +4386,7 @@ const MESSAGE_CONTENT_TYPE = {
                 }
 
                 var richText = Kommunicate.isRichTextMessage(msg.metadata) || msg.contentType == 3;
-                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis'; 
+                var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
 
@@ -5455,9 +5464,9 @@ const MESSAGE_CONTENT_TYPE = {
                     $applozic.tmpl('contactTemplate', contactList).prependTo('#' + $listId);
                 } else {
                     $applozic.tmpl("contactTemplate", contactList).appendTo('#' + $listId);
-                }     
+                }
                 var $textMessage = $applozic("#li-" + contHtmlExpr + " .msgTextExpr");
-                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);         
+                (typeof emoji_template === 'object') ? $textMessage.append(emoji_template) : $textMessage.html(emoji_template);
             };
             _this.addContactsToContactSearchList = function () {
                 var contactsArray = [],
@@ -5754,7 +5763,7 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 }
                 return emoji_template;
-            };          
+            };
             _this.getTextForMessagePreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
