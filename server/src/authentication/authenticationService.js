@@ -3,7 +3,7 @@ const kongClient = require("./kongClient");
 const config = require("../../conf");
 exports.getApplicationIdByApplicationkey = async function (application) {}
 
-exports.createConsumerAndGenerateKey = async (applicationId) => {
+exports.createConsumerAndGenerateKey = async (applicationId, apiKey) => {
     if (!config.kong || !config.kong.enabled) {
         return "";
     }
@@ -16,7 +16,7 @@ exports.createConsumerAndGenerateKey = async (applicationId) => {
     // TODO : check for CONFLICT status
     if (consumer && consumer.code != "CONFLICT") {
         let consumerId = consumer.username;
-        let creds = await kongClient.generateAPIKey(consumerId);
+        let creds = await kongClient.registerOrCreateAPIKey(consumerId,apiKey);
         return creds ? creds.key : "";
     }
     return "";

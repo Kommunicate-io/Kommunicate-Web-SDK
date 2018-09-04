@@ -29,13 +29,16 @@ const endPoints = {
 
  }
 /**
- * Genrerate a new API Key for Application.   
+ * Register a key in kong. it will create a new key if none is passed.
  * @param {String} applicationId it can be either application Id or consumerId provided by kong 
+ * @param {String} apiKey it can be either application Id or consumerId provided by kong
  */
- module.exports.generateAPIKey= async (applicationId) => {
+ module.exports.registerOrCreateAPIKey= async (applicationId,apiKey) => {
     logger.info("generating a  key for application ",applicationId);
     let generateKeyUrl = config.kong.adminUrl+endPoints.GENERATE_KEY.replace("{consumerId}", applicationId);
-    return axios.post(generateKeyUrl).then(response=>{
+    let data = apiKey? {"key":apiKey}:{};
+
+    return axios.post(generateKeyUrl,data).then(response=>{
         logger.info("generated Key for application", applicationId);
         return response.data;
     }).catch(e=>{

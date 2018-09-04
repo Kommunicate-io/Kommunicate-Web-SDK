@@ -57,7 +57,7 @@ exports.createCustomer = async (req, res) => {
                   console.log("Error while sending Email to activeCampaign", error);
                 });
             }
-            let apiKey = await authenticationService.createConsumerAndGenerateKey(result.application&&result.application.applicationId)
+            let apiKey = await authenticationService.createConsumerAndGenerateKey(result.application&&result.application.applicationId, result.application&&result.application.apiKey)
 
             response.code = "SUCCESS";
             // replacing user Id with user name. can't delete userId from system for backward compatibility.
