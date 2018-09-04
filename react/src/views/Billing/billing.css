@@ -2,6 +2,7 @@
     padding: 15px;
     border-radius: 2px;
     background-color: #cce7f8;
+    margin-bottom: 20px;
 }
 
 .info-bar-text {
@@ -9,7 +10,7 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
+    ;
     letter-spacing: 0.7px;
     text-align: left;
     color: #6a6b6d;
@@ -38,7 +39,7 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
+    ;
     letter-spacing: 1.2px;
     text-align: left;
     color: #515050;
@@ -69,7 +70,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.2px;
     text-align: left;
     color: #515050;
@@ -81,7 +81,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.1px;
     /* text-align: left; */
     color: #868383;
@@ -95,6 +94,7 @@
     font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.5px;
+    margin-top: 10px;
 }
 
 .see-plan-details:hover,
@@ -113,7 +113,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.2px;
     color: #515050;
 }
@@ -140,7 +139,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.1px;
     text-align: left;
     color: #6a6868;
@@ -154,7 +152,6 @@
     font-weight: 600;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 0.3px;
     text-align: left;
     color: #6c6a6a;
@@ -217,12 +214,8 @@
 .pricing-table-container {
     border-radius: 5px;
     padding: 15px 9px 25px;
-    background-color: #ffffff;
-    -webkit-box-shadow: 1px 1px 6px 0 rgba(74, 74, 74, .2);
-    box-shadow: 1px 1px 6px 0 rgba(74, 74, 74, .2);
-    /* -webkit-box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02);
-        box-shadow: 0px 10px 13px -6px rgba(0, 0, 0, 0.08), 0px 20px 31px 3px rgba(0, 0, 0, 0.09), 0px 8px 20px 7px rgba(0, 0, 0, 0.02); */
-    /* min-height: 630px; */
+    border-radius: 3px;
+    background-color: #fcfcfc;
 }
 
 .pricing-table-header {
@@ -230,27 +223,22 @@
 }
 
 .pricing-table-plan-title {
-    margin-top: 0;
-    font-size: 24px;
+    margin-top: 25px;
+    font-size: 20px;
     font-weight: 500;
     font-style: normal;
     font-stretch: normal;
-    line-height: 1.68;
-    letter-spacing: normal;
-    color: #4a4a4a;
-    margin-bottom: 0;
+    letter-spacing: 0.9px;
+    color: #554d56;
     text-transform: uppercase;
-    /* letter-spacing: 1px; */
 }
 .pricing-table-plan-subtitle {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: normal;
-    font-style: normal;
+    font-style: italic;
     font-stretch: normal;
-    line-height: 1.83;
     letter-spacing: 0.3px;
-    color: #7b7b7b;
-    margin-top: 0;
+    color: #1fbb66;
 }
 .enterprise .price-image-container {
     margin-bottom: 19px;
@@ -260,7 +248,7 @@
     margin-top: 45px;
 }
 .launch .pricing-value h2, .startup .pricing-value h2 {
-    font-size: 50px;
+    font-size: 38px;
     font-weight: 600;
     font-style: normal;
     font-stretch: normal;
@@ -269,7 +257,16 @@
     text-align: center;
     color: #4a4a4a;
 }
-
+.enterprise .pricing-value h2 {
+    font-size: 30px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 0.47;
+    letter-spacing: 2px;
+    text-align: center;
+    color: #4a4a4a;
+}
 .price-image-container svg {
     width: auto;
     height: 120px;
@@ -308,9 +305,13 @@
 
 .per-month-span {
     margin-bottom: 4px;
-    color: #5c5aa7;
-    font-size: 12px;
-    line-height: 16px;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.56;
+    letter-spacing: 0.5px;
+    color: #9b979b;
 }
 
 .pricing-table-body-footer {
@@ -334,6 +335,10 @@
     margin-left: 25px;
     line-height: 25px;
     margin-bottom: 12px;
+}
+
+.enterprise .pricing-table-body-footer {
+    padding: 0px
 }
 
 .pricing-table-footer {
@@ -363,20 +368,45 @@
 }
 
 .launch .pricing-table-body-footer ul {
-    margin-bottom:156px;
+    /* margin-bottom:156px; */
 }
 .growth .pricing-table-body-footer ul {
     margin-bottom: 36px;
 }
 .startup .pricing-table-body-footer ul {
-    margin-bottom: 230px;
+    margin-bottom: 205px;
 }
 .enterprise .pricing-table-body-footer ul {
-    margin-bottom: 45px;
+    /* margin-bottom: 45px; */
 }
 
+.plan-breif-container span {
+    border-radius: 2px;
+    background-color: rgba(244, 211, 128, 0.55);
+    font-size: 13px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.6px;    color: #282928;
+    padding: 3px 10px;
+}
+.plan-agent-details {
+    font-size: 18px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.8px;
+    color: #565356;
+    margin-bottom: 30px;
+}
+.plan-agent-details.upgrade-text {
+    font-size: 17px;
+    margin-bottom: 0px;
+}
 
-
+.billings-section .km-button {
+    text-transform: uppercase;
+}
 
 /* Pricing Toggle */
 
@@ -393,15 +423,29 @@
 }
 
 .toggler {
-    color: #ddd;
+    color: #706c6c;
     transition: .2s;
-    font-weight: bold;
-    font-size: 18px;
+    font-weight: normal;
+    font-size: 16px;
     cursor: pointer;
+    padding: 4px 20px;
+    border-radius: 18px;
+    transition: 0.25s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    transition-property: left, right;
+    transition-delay: .08s, 0s;
 }
 
 .toggler--is-active {
-    color: #5C5AA7;
+    background-color: #5C5AA7;
+    color: #fff;
+    border-radius: 18px;
+    padding: 4px 20px;
+}
+.toggler > span {
+    color: #1fbb66;
+}
+.toggler--is-active > span {
+    color: #f8e6b8
 }
 
 .b {
@@ -452,6 +496,9 @@
     transition-delay: 0s, .08s;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
+
+
+
 .ReactModal__Overlay--after-open {
     background-color: rgba(0, 0, 0, 0.75) !important;
     z-index: 5000 !important;
@@ -494,7 +541,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.2px;
     text-align: left;
     color: #515050;
@@ -504,13 +550,39 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: 1.2px;
     text-align: left;
     color: #7e7c7c;
     margin-bottom: 0px;
 }
 
+
+/* FAQ Section in billings page */
+.billings-faq-question, .billings-faq-answer {
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.5px;
+}
+.billings-faq-question {
+    color: #222122;
+    margin-bottom: 10px; 
+}
+.billings-faq-answer {
+    color: #9e9b9b;
+    letter-spacing: .5px;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+.billings-faq-answer a {
+    color: #4831d9;
+    text-decoration: none;
+}
+.billings-faq-answer a:not([href]):not([tabindex]) {
+    color: #4831d9;
+    cursor: pointer;
+}
 
 /* Subscribe Success Error */
 .subscribe-success-error-container {
@@ -525,7 +597,6 @@
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
-    line-height: normal;
     letter-spacing: normal;
     color: #383939;
     margin-top: 20px;
@@ -547,6 +618,190 @@
     height: 90px;
 }
 .enterprise .price-image-container {
-    margin-bottom: 39px;
+    margin-bottom: 33px;
     margin-top: 35px;
+}
+
+.ReactModal__Content {
+    opacity: 0;
+}
+
+.ReactModal__Content--after-open {
+    opacity: 1;
+    transition: opacity 150ms;
+}
+
+.ReactModal__Content--before-close {
+    opacity: 0;
+}
+
+
+.seat-selection-modal {
+
+}
+.seat-selection-modal--header {
+
+}
+.seat-selection-modal--header h2 {
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.3px;
+    color: #6c6a6a;
+}
+.seat-selection-modal--header > hr {
+    margin: 15px -20px;
+}
+.seat-selector-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.seat-selector--text p, .amount-payable-container p:first-child, .renewal-date-container p:first-child {
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    ;
+    letter-spacing: 0.5px;
+    color: #4a4d4b;
+    min-width: 150px;
+}
+.seat-selector--text p {
+    margin-top: 10px;
+}
+.seat-selector--input input {
+    text-align: center;
+    border-radius: 3px;
+    border: solid 1px #c2bfbf;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    ;
+    letter-spacing: 0.8px;
+    color: #767978;
+    padding: 9px;
+    max-width: 100px;
+}
+.seat-selector--input p {
+    max-width: 350px;
+    font-size: 13px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.15;
+    letter-spacing: 0.4px;
+    color: #373837;
+    margin-top: 7px;
+}
+
+.amount-payable-container p:last-child, .renewal-date-container p:last-child {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    ;
+    letter-spacing: 0.7px;
+    color: #000000;
+}
+.amount-payable-container p:last-child>span {
+    font-size: 13px;
+    font-weight: 300;
+    font-style: italic;
+    font-stretch: normal;
+    ;
+    letter-spacing: 0.6px;
+    color: #3f4241;
+    border-radius: 2px;
+    background-color: rgba(34, 214, 115, 0.36);
+    padding: 3px 6px;
+    margin-left: 25px;
+}
+
+.seat-selection-modal--body hr {
+    border: none;
+    border-top: dashed 1px #a5b0bd;
+    margin: 15px 0px 35px; 
+}
+
+.seat-selection-modal--footer {
+    margin-top: 20px;
+}
+.seat-selection-modal--footer button {
+    margin-left: 20px;
+}
+
+
+/* Subscription-success-warning desgin */
+.subscription-complete-container {
+
+}
+.subscription-current-plan-container, .subscription-success-checkmark, .subscription-success-purchased-plan-name, .subscription-success-purchased-plan-billing, .subscription-current-plan-warning-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.subscription-current-plan-container {
+    align-items: flex-start;
+}
+.subscription-success-checkmark {
+    margin-right: 20px;
+}
+.subscription-success-purchased-plan-name p:first-child, .subscription-success-purchased-plan-name p:last-child, .subscription-success-purchased-plan-billing p:first-child, .subscription-success-purchased-plan-billing p:last-child {
+    font-size: 18px;
+    letter-spacing: 0.9px;
+    color: #121212;
+    margin-bottom: 10px;
+}
+.subscription-success-purchased-plan-name p:first-child,  .subscription-success-purchased-plan-billing p:first-child {
+    min-width: 125px;
+}
+.subscription-success-purchased-plan-name p:last-child span {
+    border-radius: 2px;
+    background-color: rgba(204, 231, 248, 0.7);
+    padding: 3px 12px;
+}
+.subscription-success-purchased-plan-billing p:last-child {
+    color: #8c8989;
+}
+.subscription-success-purchased-plan-billing p:last-child strong {
+    color: #2d2b2b;
+}
+.subscription-current-plan-warning-container {
+    align-items: flex-start;
+    background-color: #f9f9f9;
+    padding: 35px;
+    margin-bottom: 25px;
+}
+.subscription-warning-icon {
+    margin-right: 40px;
+}
+.subscription-current-plan-warning-container p:first-child {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+    color: #333434;
+}
+.subscription-current-plan-warning-container p:last-child, .subscription-add-delete-agent-text {
+    font-size: 15px;
+    line-height: 1.2;
+    letter-spacing: 0.4px;
+    color: #858687;
+    margin-bottom: 0px;
+}
+.subscription-add-delete-agent-text {
+    font-size: 16px;
+    letter-spacing: 0.4px;
+    color: #8a8686;
+    margin-top: 35px;
+    margin-bottom: 20px;
+}
+.subscription-add-delete-agent-text strong{
+    color: #2d2b2b;
+}
+.subscription-current-plan-warning-container p:last-child > a, .subscription-add-delete-agent-text a {
+    color: #4831d9;
 }
