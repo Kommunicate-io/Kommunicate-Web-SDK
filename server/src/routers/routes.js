@@ -242,6 +242,8 @@ this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
  */
 // third party Subscription APIs
 subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
+subscriptionRouter.get('/detail/:userId', validate(subscriptionValidation.getSubscription), chargebeeController.getSubscriptionDetail);
 subscriptionRouter.get('/',validate(subscriptionValidation.getAllSubscriptionByApiKey), subscriptionController.getAllSubscriptionByApiKey);
 subscriptionRouter.post('/',validate(subscriptionValidation.createSubscription), subscriptionController.createSubscription);
+subscriptionRouter.patch('/update/:userId', validate(subscriptionValidation.updateSubscription), chargebeeController.updateSubscribedAgentCount)
 subscriptionRouter.delete('/:subscriptionId', validate(subscriptionValidation.deleteSubscription), subscriptionController.deleteSubscription);
