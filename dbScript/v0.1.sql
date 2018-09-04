@@ -104,11 +104,31 @@ SET SQL_SAFE_UPDATES=1;
 -- PRIMARY KEY (id)
 -- );
 alter table users add column email_subscription tinyint default 1;
--- modified column name availability_status to status, ticket KM-1308  
+-- modified column name availability_status to status, ticket KM-1308
 alter table users change availability_status  status INTEGER;
 
 /*KM-1319*/
 
 alter table customers drop `password`,drop `apz_token`;
-alter table users drop `authorization`, drop `apz_token`, drop 'role', drop `industry`, drop `company_name`, drop `company_size`;  
+alter table users drop `authorization`, drop `apz_token`, drop 'role', drop `industry`, drop `company_name`, drop `company_size`;
 
+/* KM-1318*/
+-- script to add agent_routing and bot_routing in app_settings
+ALTER TABLE app_settings
+ADD agent_routing int(11);
+
+ALTER TABLE app_settings
+ADD bot_routing tinyint(1);
+
+/*Script to migrate data from customer bot_routing and agent_routing to app_setting*/
+update app_settings a join applications app on a.application_id=app.application_id join customers c on app.customer_id=c.id
+set a.bot_routing=c.bot_routing ,a.agent_routing =c.agent_routing
+where
+a.application_id in (select app.application_id from applications app where app.customer_id=c.id)
+
+-- script to drop agent_routing and bot_routing from customer table
+ALTER TABLE customers
+DROP COLUMN agent_routing;
+
+ALTER TABLE customers
+DROP COLUMN bot_routing;
