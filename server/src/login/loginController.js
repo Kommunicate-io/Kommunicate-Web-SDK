@@ -1,7 +1,8 @@
 const loginService = require("./loginService");
 const kommunicateApplicationName= require('../../conf/config').getProperties().kommunicateParentAppName;
 const kommunicateApplicationId = require('../../conf/config').getProperties().kommunicateParentKey;
-exports.login = function(req, res) {
+const authorizationService =require("../authentication/authenticationService");
+exports.login = async function(req, res) {
   const userName= req.body.userName;
   let password = req.body.password;
   //const applicationName =req.body.applicationName?req.body.applicationName:kommunicateApplicationName;
@@ -13,10 +14,12 @@ exports.login = function(req, res) {
   }
  
 
-  Promise.resolve(loginService.login(userDetail)).then(result=>{
+  Promise.resolve(loginService.login(userDetail)).then(async result=>{
     let response={};
     if (result.application) {
       response.code="SUCCESS";
+      let apiKey = await authorizationService.getAPIKey(result.application.applicationId)
+      result.apiKey = apiKey || "";
     } else {
       response.code="MULTIPLE_APPS";
     }

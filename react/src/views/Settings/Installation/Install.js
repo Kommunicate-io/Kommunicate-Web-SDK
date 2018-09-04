@@ -24,7 +24,6 @@ class Install extends Component {
       displayAndroidInstructions: true,
       displayiOSInstructions: true
     };
-
     this.script = getJsCode()[0];
     this.yourApplicationId = getJsCode()[1];
     this.data = {
@@ -79,6 +78,11 @@ class Install extends Component {
   showiOSInstructions = e => {
     this.setState({ displayJSInstructions: true, displayAndroidInstructions: true, displayiOSInstructions: false });
   };
+  getApiKey(){
+    let apiKey = CommonUtils.getUserSession().apiKey;
+    return apiKey? apiKey:"Please contact to Kommunicate support to get api key";
+
+  }
 
   render() {
     const currentPath = window.location.pathname;
@@ -107,6 +111,14 @@ class Install extends Component {
                      </span>
                      <span className="app-id-main-text">
                        {this.yourApplicationId}
+                     </span>
+                   </div>
+                   <div className="app-id-div">
+                     <span className="app-id-sub-text">
+                       API Key:
+                     </span>
+                     <span className="app-id-main-text">
+                       {this.getApiKey()}
                      </span>
                    </div>
                  </div>
