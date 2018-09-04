@@ -57,8 +57,6 @@ exports.processLogin = (userDetail) => {
           user.isAdmin = customer.userName == user.userName;
           user.adminUserName = customer.userName;
           user.adminDisplayName = customer.name;
-          user.routingState = customer.agentRouting;
-          user.botRouting = customer.botRouting;
           user.applozicUser = applozicUser;
           user.subscription = customer.subscription;
           user.billingCustomerId = customer.billingCustomerId;
