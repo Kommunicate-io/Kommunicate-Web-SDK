@@ -30,3 +30,8 @@ module.exports.createSubscription = {
           apiKey: joi.string().required()
     }
   }
+  module.exports.getSubscription={
+    params:{
+        userId: joi.string().required()
+     } 
+  }
