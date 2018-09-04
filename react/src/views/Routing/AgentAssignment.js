@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
-import { enableNotifyEveryBody, enableAutomaticAssignment, enableOrDisableBotRouting, getCustomerByApplicationId,getAgentandBotRouting} from '../../utils/kommunicateClient'
+import { getCustomerByApplicationId,getAgentandBotRouting,updateAgentAndBotRouting} from '../../utils/kommunicateClient'
 import axios from 'axios';
 import { ROUND_ROUBIN } from './Constants.js';
 import CommonUtils from '../../utils/CommonUtils';
@@ -92,7 +92,7 @@ handleRadioBtnNotifyEverybody = () => {
         checkedAutomaticAssignemnt: false
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
-        return Promise.resolve(enableNotifyEveryBody({ routingState: ROUND_ROUBIN.DISABLE }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({ user:'agent', routingState: ROUND_ROUBIN.DISABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUND_ROUBIN.DISABLE;
@@ -114,7 +114,7 @@ handleRadioBtnAutomaticAssignment = () => {
         checkedAutomaticAssignemnt: true,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
-        return Promise.resolve(enableAutomaticAssignment({ routingState: ROUND_ROUBIN.ENABLE }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({ user:'agent',routingState: ROUND_ROUBIN.ENABLE }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
                 userSession.routingState = ROUND_ROUBIN.ENABLE;
@@ -146,7 +146,7 @@ toggleConversationAssignment = () => {
     //     }
     //     })
     // }
-    return Promise.resolve(enableOrDisableBotRouting({ routingState: status }).then(response => {
+    return Promise.resolve(updateAgentAndBotRouting({user:'bot' , routingState: status }).then(response => {
         if (response.status === 200 && response.data.code === "SUCCESS") {
             let userSession = CommonUtils.getUserSession();
             userSession.botRouting = status;

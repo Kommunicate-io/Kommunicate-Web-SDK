@@ -689,45 +689,21 @@ const getIntegratedBots = () => {
     }).catch(err => { console.log(err) })
 
 }
-const enableNotifyEveryBody = (data) => {
+
+const updateAgentAndBotRouting = (data) => {
   let userSession = CommonUtils.getUserSession();
-let url = getConfig().kommunicateBaseUrl+"/settings/application/"+userSession.application.applicationId;
-  var formdata ={};
-  formdata.botRouting =data.routingState;
+  let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
+  var formdata = {};
+  if (data.user === 'bot') {
+    formdata.botRouting = data.routingState;
+  } else {
+    formdata.agentRouting = data.routingState;
+  }
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
-    data:formdata
+    data: formdata
   })).then(result => {
-    // console.log(result);
-    return result;
-  }).catch(err => { console.log("Error while enable notify everybody", err) })
-}
-const enableAutomaticAssignment = (data) => {
-  let userSession = CommonUtils.getUserSession();
-  let url = getConfig().kommunicateBaseUrl+"/settings/application/"+userSession.application.applicationId;
-  var formdata ={};
-  formdata.botRouting = data.routingState;
-  return Promise.resolve(axios({
-    method: 'patch',
-    url: url,
-    data:formdata
-  })).then(result => {
-    // console.log(result);
-    return result;
-  }).catch(err => { console.log("Error while enable automatic assignemnt", err) })
-}
-const enableOrDisableBotRouting = (data) => {
-  let userSession = CommonUtils.getUserSession();
-  let url =getConfig().kommunicateBaseUrl+ "/settings/application/"+userSession.application.applicationId;
-  var formdata ={};
-  formdata.botRouting =data.routingState;
-  return Promise.resolve(axios({
-    method: 'patch',
-    url: url,
-    data:formdata
-  })).then(result => {
-    // console.log(result);
     return result;
   }).catch(err => { console.log(err) })
 }
@@ -1092,12 +1068,10 @@ export {
   deleteInAppMsg,
   editInAppMsg,
   getIntegratedBots,
-  enableNotifyEveryBody,
-  enableAutomaticAssignment,
-  enableOrDisableBotRouting,
   getSuggestionsByCriteria,
   getCustomerByApplicationId,
   getAgentandBotRouting,
+  updateAgentAndBotRouting,
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
   deleteThirdPartyByIntegrationType,

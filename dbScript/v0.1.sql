@@ -127,6 +127,7 @@ where
 a.application_id in (select app.application_id from applications app where app.customer_id=c.id)
 
 -- script to drop agent_routing and bot_routing from customer table
+-- data migration script must be applied before drop column
 ALTER TABLE customers
 DROP COLUMN agent_routing;
 
