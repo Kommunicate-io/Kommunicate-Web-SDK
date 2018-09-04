@@ -22,11 +22,11 @@ exports.getSubscriptionDetail = async function (req, res) {
 }
 
 exports.updateSubscribedAgentCount = async function (req, res) {
-    let addAgnetCount = req.body.addAgnetCount;
+    let addPlanQuantity = req.body.addPlanQuantity;
     try {
         let customer = await customerService.getCustomerByUserName(req.params.userId);
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        let response = await chargebeeService.updateSubscription(customer.billingCustomerId, { "plan_quantity": addAgnetCount + result.subscription.plan_quantity });
+        let response = await chargebeeService.updateSubscription(customer.billingCustomerId, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
         return response ? res.status(200).json({ "code": "success", "response": response })
             : res.status(500).json({ "code": "error", "message": "updation error" });;
 
