@@ -24,7 +24,7 @@ const quickReply = {
           textBoxContent = textBoxContent.replace(/\//g, "");
           if (text.length !== 0){
             for (var i = 0; i < text.length; i++) {
-              if ((text[i].label).indexOf(textBoxContent) !== -1) {
+              if ((text[i].label).toLowerCase().indexOf(textBoxContent.toLowerCase()) !== -1) {
                 textInput = text[i].randomId.toString();
                 suggestion = suggestion + "<div id= " + textInput + " class=\"d-pop auto-suggest-pro\"> <span class=\"auto_reply auto-suggest\"> " + "/" + text[i].label + "</span> <br/> <span class=\"auto_suggestion auto-suggest\">" + text[i].value + "</span> </div>\n";
               }
