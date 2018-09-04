@@ -246,7 +246,8 @@ def train_dialogue(app_key, domain_file, model_path, training_data_file):
     fallback = FallbackPolicy(fallback_action_name="utter_default",
                           core_threshold=env.nlu_threshold,
                           nlu_threshold=env.core_threshold)
-    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    #agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    agent = Agent(domain_file, policies=[KerasPolicy(), MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
