@@ -364,16 +364,28 @@ class Billing extends Component {
         })
         if(states === "per_agent_monthly") {
             var elem = document.getElementById('checkout-monthly');
-            elem.parentNode.removeChild(elem);
-            elem.setAttribute("data-cb-plan-quantity", e.target.value);
-            elem.cbProduct.planQuantity = e.target.value;
-            document.querySelector(".seat-selection-modal--footer").appendChild(elem);
+            if(e.target.value <= 0 ) {
+                elem.disabled = true;
+            } else {
+                elem.parentNode.removeChild(elem);
+                elem.disabled = false;
+                elem.setAttribute("data-cb-plan-quantity", e.target.value);
+                elem.cbProduct.planQuantity = e.target.value;
+                document.querySelector(".seat-selection-modal--footer").appendChild(elem);
+            }
+           
+            
         } else {
             var elem = document.getElementById('checkout-yearly');
-            elem.parentNode.removeChild(elem);
-            elem.setAttribute("data-cb-plan-quantity", e.target.value);
-            elem.cbProduct.planQuantity = e.target.value;
-            document.querySelector(".seat-selection-modal--footer").appendChild(elem);
+            if(e.target.value <= 0 ) {
+                elem.disabled = true;
+            } else {
+                elem.disabled = false;
+                elem.parentNode.removeChild(elem);
+                elem.setAttribute("data-cb-plan-quantity", e.target.value);
+                elem.cbProduct.planQuantity = e.target.value;
+                document.querySelector(".seat-selection-modal--footer").appendChild(elem);
+            }
         }
     }
 
@@ -594,7 +606,7 @@ class Billing extends Component {
                                             <p>Number of seats:</p>
                                         </div>
                                         <div className="seat-selector--input">
-                                            <input type="number" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)}/>
+                                            <input type="number" min="1" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)}/>
                                             <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
                                         </div>
                                     </div>
