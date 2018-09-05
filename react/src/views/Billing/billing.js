@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { getConfig } from '../.../../../config/config.js';
-import { patchCustomerInfo, getCustomerInfo } from '../../utils/kommunicateClient'
+import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
@@ -22,7 +22,6 @@ import RadioButton from '../../components/RadioButton/RadioButton';
 import CloseButton from '../../components/Modal/CloseButton';
 import { Link } from 'react-router-dom';
 import { USER_TYPE, USER_STATUS } from '../../utils/Constant';
-import { getUsersByType } from '../../utils/kommunicateClient';
 
 class Billing extends Component {
 
@@ -54,7 +53,8 @@ class Billing extends Component {
             choosePlan: "growth-yearly",
             boughtSubscription: "",
             kmActiveUsers: 0,
-            boughtQuantity: 0
+            boughtQuantity: 0,
+            totalPlanQuantity: 0
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -69,6 +69,7 @@ class Billing extends Component {
         this.seatSelectionModal = this.seatSelectionModal.bind(this);
         this.closeSeatSelectionModal = this.closeSeatSelectionModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.abc = this.abc.bind(this);
         // this.setPlanQuantity = this.setPlanQuantity.bind(this);
 
         window.addEventListener("openBillingModal",this.onOpenModal,true);
@@ -108,6 +109,7 @@ class Billing extends Component {
 
         this.chargebeeInit();
         this.getAgents();
+        this.abc();
     }
 
     buyThisPlanClick = () => {
@@ -166,7 +168,7 @@ class Billing extends Component {
         e.stopPropagation();
         this.setState({
             hideFeatureList: !this.state.hideFeatureList,
-            showFeatures: this.state.showFeatures === 'Show Features' ? 'Hide Features' : 'Show Features'
+            showFeatures: this.state.showFeatures === 'See plan details' ? 'Hide plan details' : 'See plan details'
         });
     }
     handleToggleSliderChange = () => {
@@ -392,7 +394,15 @@ class Billing extends Component {
       }
 
       abc() {
-
+          let currentUserName = CommonUtils.getUserSession().userName;
+        return Promise.resolve(getSubscriptionDetail(currentUserName)).then(data => {
+            let response = data;
+            this.setState({
+                totalPlanQuantity: response.plan_quantity
+            })
+        }).catch(err => {
+            console.log("Error while fetching subscription list of user");
+        })
       }
 
     //   buyAgents() {
@@ -475,7 +485,7 @@ class Billing extends Component {
                                             </svg>
                                         </div>
                                         <div className="subscription-warning-detail">
-                                            <p>You have bought {this.state.seatsBillable - this.state.boughtQuantity} seats less than your number of agents</p>
+                                            <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of agents</p>
                                             <p>To make sure all the right agents can log in to their Kommunicate account, delete the extra agents from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
                                     </div> : <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
@@ -680,7 +690,7 @@ class Billing extends Component {
                                                     <h4 className="pricing-table-plan-subtitle">most preferred</h4>
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
-                                                            <div id="growth-pricing-monthly" className="a hide" hidden={this.state.pricingMonthlyHidden}>
+                                                            <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
                                                                 <h2> $10</h2>
                                                                 <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
