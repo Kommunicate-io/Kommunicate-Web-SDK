@@ -70,7 +70,7 @@ class Billing extends Component {
         this.closeSeatSelectionModal = this.closeSeatSelectionModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.getPlanDetails = this.getPlanDetails.bind(this);
-        // this.setPlanQuantity = this.setPlanQuantity.bind(this);
+        this.keyPress = this.keyPress.bind(this);
 
         window.addEventListener("openBillingModal",this.onOpenModal,true);
     };
@@ -389,6 +389,17 @@ class Billing extends Component {
         }
     }
 
+    keyPress(e) {
+        var a = [];
+        var k = e.which;
+    
+        for (var i = 48; i < 58; i++)
+            a.push(i);
+    
+        if (!(a.indexOf(k,a)>=0))
+            e.preventDefault();
+    }
+
     getAgents() {
         var that = this;
         let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
@@ -606,7 +617,7 @@ class Billing extends Component {
                                             <p>Number of seats:</p>
                                         </div>
                                         <div className="seat-selector--input">
-                                            <input type="number" min="1" max="10000" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)}/>
+                                            <input maxlength="4" min="1" max="10000" type="text" value={this.state.seatsBillable} pattern="^[0-9]*$" onChange={(e) => this.handleChange(this.state.choosePlan, e)} onKeyPress={this.keyPress}/>
                                             <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
                                         </div>
                                     </div>
