@@ -12,14 +12,7 @@ exports.subscriptionCount = function (req, res) {
 
 exports.getSubscriptionDetail = async function (req, res) {
     try {
-        let customer = await customerService.getCustomerByUserName(req.params.userId);
-        if(!customer){
-            return res.status(200).json({ "code": "success", "message": "customer not found" });
-        }
-        if(!customer.billingCustomerId){
-            return res.status(200).json({ "code": "success", "message": "not subscribe" });
-        }
-        let response = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+        let response = await getSubscription(req.params.userId);;
         return response ? res.status(200).json({ "code": "success", "response": response.subscription })
             : res.status(200).json({ "code": "success", "message": "record not found" });
     } catch (err) {
@@ -30,19 +23,31 @@ exports.getSubscriptionDetail = async function (req, res) {
 exports.updateSubscribedAgentCount = async function (req, res) {
     let addPlanQuantity = req.body.addPlanQuantity;
     try {
-        let customer = await customerService.getCustomerByUserName(req.params.userId);
-        if(!custommer){
+        let result = await getSubscription(req.params.userId);
+        if (result) {
+            let response = await chargebeeService.updateSubscription(result.subscription.customer_id, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
+            return res.status(200).json({ "code": "success", "response": response });
+        } else {
+            return res.status(500).json({ "code": "error", "message": "updation error" });
+        }
+    } catch (err) {
+        return res.status(500).json({ "code": "error", "response": err.message });
+    }
+}
+
+const getSubscription = async function (userId) {
+    try {
+        let customer = await customerService.getCustomerByUserName(userId);
+        if (!customer) {
             return res.status(200).json({ "code": "success", "message": "customer not found" });
         }
-        if(!customer.billingCustomerId){
+        if (!customer.billingCustomerId) {
             return res.status(200).json({ "code": "success", "message": "not subscribe" });
         }
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        let response = await chargebeeService.updateSubscription(customer.billingCustomerId, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
-        return response ? res.status(200).json({ "code": "success", "response": response })
-            : res.status(500).json({ "code": "error", "message": "updation error" });
-
+        return result;
     } catch (err) {
-        return res.status(500).json({ "code": "error", "response": err.message });
+        console.log('error while getting subscription detail', err);
+        return;
     }
 }
