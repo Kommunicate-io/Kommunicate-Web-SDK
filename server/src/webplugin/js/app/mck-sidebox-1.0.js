@@ -3884,12 +3884,13 @@ const MESSAGE_CONTENT_TYPE = {
                                     '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>'+
                                     '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>'+
                                 '</div>'+
-                                '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}"'+
-                                'data-filename="${fileNameExpr}" data-fileurl="${fileUrlExpr}" data-filesize="${fileSizeExpr}">'+
-                                    '<div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}'+
-                                '</div>'+
+                            //    '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}"'+
+                            //    'data-filename="${fileNameExpr}" data-fileurl="${fileUrlExpr}" data-filesize="${fileSizeExpr}">'+
+                            //        '<div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}'+
+                            //     '</div>'+
+                                // '<div>{{html attachmentTemplate}}</div>'+
                                 '<div class="mck-msg-text mck-msg-content"></div>'+
-                                '</div>'+
+                                '</div>'+ '<div class="km-msg-box-attachment">{{html attachmentTemplate}}</div>'+
                                 '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}">'+'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+
                             '</div>'+
                         '</div>'+
@@ -4379,6 +4380,9 @@ const MESSAGE_CONTENT_TYPE = {
                 if (typeof msg.fileMeta === "object") {
                     if (msg.fileMeta.contentType.indexOf("audio") || (msg.fileMeta.contentType.indexOf("image")) || (msg.fileMeta.contentType.indexOf("video"))) {
                         downloadIconVisible = 'vis';
+                        if(!msg.fileMeta.isUploaded) {
+
+                        }
                     }
                 }
                 var olStatus = 'n-vis';
@@ -4390,6 +4394,8 @@ const MESSAGE_CONTENT_TYPE = {
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
+                var isAttachment = Kommunicate.isAttachment(msg);
+                var attachmentTemplate = isAttachment ? Kommunicate.messageTemplate.getAttachmentTemplate(msg,mckMessageLayout.getFilePath(msg)):"";
 
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
@@ -4436,7 +4442,8 @@ const MESSAGE_CONTENT_TYPE = {
                     kmRichTextMarkupVisibility:kmRichTextMarkupVisibility,
                     kmRichTextMarkup: kmRichTextMarkup,
                     containerType: containerType,
-                    emailMsgIndicatorExpr: emailMsgIndicator
+                    emailMsgIndicatorExpr: emailMsgIndicator,
+                    attachmentTemplate:attachmentTemplate
 
                 }];
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
@@ -7501,9 +7508,34 @@ const MESSAGE_CONTENT_TYPE = {
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[1]);
                     return false;
                 });
-                $mck_file_input.on('change', function (e) {
-                                        e.preventDefault();
-										var file = $applozic(this)[0].files[0];
+                $mck_file_input.on('change', function () {
+                                        var file = $applozic(this)[0].files[0];
+                                        if(file.type == "image/jpeg"){
+                                            var reader = new FileReader();
+                                            reader.onload = (function(theFile) {
+                                            return function(e) {
+                                              var span = document.createElement('span');
+                                              span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                                                                '" title="', escape(theFile.name), '"/>'].join('');
+                                            };
+                                          })(file);
+                                          reader.readAsDataURL(file);
+                                          let dataUrl = reader.result;
+                                          let groupId = "";
+                                          var tabId = $mck_msg_inner.data('mck-id');
+                                        //   FILE_META.push(dataUrl);
+                                          FILE_META.push({"thumbnailUrl":dataUrl,contentType: "image/jpeg",isUploaded:false});
+                                          let messagePxy = {
+                                              groupId : tabId,
+                                              contentType : 1,
+                                              type:5,
+                                              message:"",
+
+                                            }
+                                          mckMessageService.sendMessage(messagePxy);
+                                        }
+
+
 										var params = {};
 										params.file = file;
 										params.name = file.name;
