@@ -606,7 +606,7 @@ class Billing extends Component {
                                             <p>Number of seats:</p>
                                         </div>
                                         <div className="seat-selector--input">
-                                            <input type="number" min="1" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)}/>
+                                            <input type="number" min="1" max="10000" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)}/>
                                             <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
                                         </div>
                                     </div>
