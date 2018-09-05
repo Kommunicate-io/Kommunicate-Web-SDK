@@ -4318,7 +4318,7 @@ const MESSAGE_CONTENT_TYPE = {
                 // if ($mck_no_messages.hasClass('vis')) {
                 //     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 // }
-                var messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") || msg.fileMeta ? "n-vis" : 'vis';
+                var messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
 
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
