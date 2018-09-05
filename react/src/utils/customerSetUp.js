@@ -10,7 +10,6 @@ function getJsCode (){
 
   if (userSession) {
     options.appId = userSession.application.applicationId;
-    options.isAnonymousChat=true;
     //options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
 
     if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){

@@ -7,7 +7,7 @@ sidebar_label: Authentication
 
 ## kommunicateSettings in plugin script
 
-Here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'): 
+Here are the parameters you can pass in [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script'):
 
 |parameters | description|
 |---    |---    |
@@ -16,7 +16,6 @@ Here are the parameters you can pass in [initialization script](https://docs.kom
 |email | Email ID of logged in user|
 |password | User's password|
 |imageLink | This image will be visible to the user |
-|isAnonymousChat | true/false|
 |conversationTitle | Conversation Title|
 |defaultMessageMetaData |This will send defaultMessageMetaData with every message.|
 
@@ -30,7 +29,6 @@ Add below setting to allow anonymous user
 
 |parameters | description|
 |---    |---    |
-|isAnonymousChat | true|
 
 
 ### Example:
@@ -39,10 +37,9 @@ Add below setting to allow anonymous user
     var kommunicateSettings = {"appId": applicationId,
             "agentId": agentId,
             "userName": userName,
-            "conversationTitle":conversationTitle,
-            "isAnonymousChat":true
+            "conversationTitle":conversationTitle
             };
-   
+
 
 ```
 
@@ -54,7 +51,6 @@ Once configured, user will see the form on click of the chat widget launch icon
 
 |parameters | description| required |
 |---    |---    |---    |
-|isAnonymousChat | false| yes |
 |askUserDetails  | ['name', 'email', 'phone']| atleast one is required |
 
 
@@ -68,10 +64,9 @@ Once configured, user will see the form on click of the chat widget launch icon
             "agentId": agentId,
             "userName": userName,
             "conversationTitle":conversationTitle,
-            "isAnonymousChat":false,
             "askUserDetails":['name', 'email', 'phone']
             };
-   
+
 
 ```
 
@@ -81,7 +76,6 @@ If the user is already logged in your website, then pass the user details to kom
 
 |parameters | description|
 |---    |---    |
-|isAnonymousChat| true|
 |userId| Pass your logged in user id|
 |userName | Display name of the user. Agents will identify users by this display name|
 |email | Email ID of logged in user|
@@ -97,10 +91,9 @@ If the user is already logged in your website, then pass the user details to kom
             "agentId": agentId,
             "userName": userName,
             "conversationTitle":conversationTitle,
-            "email": emailId,
-            "isAnonymousChat":true
+            "email": emailId
             };
-   
+
 
 ```
 

@@ -54,7 +54,7 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |appId |A unique application ID assigned to your Kommunicate account|
 |botIds|Array of bot ids will be added in conversation. eg. botIds=['bot1','bot2']. Bot Ids will be visible in bot section in dashboard if you have created any bot.|
 |conversationTitle |All conversation will have this title|
-|isAnonymousChat| Allow your users to chat in Anonymous mode. User will be asked to enter email when he/she starts a conversation|
+|askUserDetails| Enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a>, user will be asked to enter name, email and phone details when he/she starts a conversation|
 |userId| This is your user’s/visiter's user ID. Kommunicate will generate a random Id if this is not defined|
 |userName | Display name of the user. Agents will identify users by this display name|
 |email | Email ID of the user. User will be notified on this email if not online|
