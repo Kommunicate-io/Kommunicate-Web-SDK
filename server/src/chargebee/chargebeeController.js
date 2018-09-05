@@ -13,6 +13,12 @@ exports.subscriptionCount = function (req, res) {
 exports.getSubscriptionDetail = async function (req, res) {
     try {
         let customer = await customerService.getCustomerByUserName(req.params.userId);
+        if(!customer){
+            return res.status(200).json({ "code": "success", "message": "customer not found" });
+        }
+        if(!customer.billingCustomerId){
+            return res.status(200).json({ "code": "success", "message": "not subscribe" });
+        }
         let response = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         return response ? res.status(200).json({ "code": "success", "response": response.subscription })
             : res.status(200).json({ "code": "success", "message": "record not found" });
@@ -25,10 +31,16 @@ exports.updateSubscribedAgentCount = async function (req, res) {
     let addPlanQuantity = req.body.addPlanQuantity;
     try {
         let customer = await customerService.getCustomerByUserName(req.params.userId);
+        if(!custommer){
+            return res.status(200).json({ "code": "success", "message": "customer not found" });
+        }
+        if(!customer.billingCustomerId){
+            return res.status(200).json({ "code": "success", "message": "not subscribe" });
+        }
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let response = await chargebeeService.updateSubscription(customer.billingCustomerId, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
         return response ? res.status(200).json({ "code": "success", "response": response })
-            : res.status(500).json({ "code": "error", "message": "updation error" });;
+            : res.status(500).json({ "code": "error", "message": "updation error" });
 
     } catch (err) {
         return res.status(500).json({ "code": "error", "response": err.message });
