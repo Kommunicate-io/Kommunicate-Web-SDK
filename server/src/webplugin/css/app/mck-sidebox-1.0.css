@@ -284,6 +284,7 @@
 
 .mck-sidebox .mck-box-title {
 	color:white;
+	max-width: 170px;
 }
 
 .mck-box .move-right {
