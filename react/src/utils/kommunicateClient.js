@@ -1030,6 +1030,18 @@ const updateUserStatus = (status) => {
     }   
   }).catch(err => { throw { message: err }; })
 }
+
+const getSubscriptionDetail = (userId) => {
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail/'+ userId;
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 &&   response.data.code.toLowerCase() === "success") {
+      return response.data.response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -1088,5 +1100,6 @@ export {
   getInvitedUserByApplicationId,
   getUserDetailsByToken,
   updateInvitedUserStatus,
-  updateUserStatus
+  updateUserStatus,
+  getSubscriptionDetail
 }
