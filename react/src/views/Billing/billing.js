@@ -69,7 +69,7 @@ class Billing extends Component {
         this.seatSelectionModal = this.seatSelectionModal.bind(this);
         this.closeSeatSelectionModal = this.closeSeatSelectionModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.abc = this.abc.bind(this);
+        this.getPlanDetails = this.getPlanDetails.bind(this);
         // this.setPlanQuantity = this.setPlanQuantity.bind(this);
 
         window.addEventListener("openBillingModal",this.onOpenModal,true);
@@ -109,7 +109,7 @@ class Billing extends Component {
 
         this.chargebeeInit();
         this.getAgents();
-        this.abc();
+        this.getPlanDetails();
     }
 
     buyThisPlanClick = () => {
@@ -393,7 +393,7 @@ class Billing extends Component {
         });
       }
 
-      abc() {
+      getPlanDetails() {
           let currentUserName = CommonUtils.getUserSession().userName;
         return Promise.resolve(getSubscriptionDetail(currentUserName)).then(data => {
             let response = data;
@@ -611,7 +611,7 @@ class Billing extends Component {
                                         <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button> :
                                         <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
                                     }
-                                    {/* <button onClick={() => this.abc}>Continue</button> */}
+                                    
                                 </div>
                                 <CloseButton onClick={this.closeSeatSelectionModal}/>
                             </Modal>
