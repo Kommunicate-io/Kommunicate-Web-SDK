@@ -16,6 +16,9 @@ export default {
     },
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
+    },
+    "services":{
+        'baseurl':"https://kong-api.applozic.com"
     }
 },
 
@@ -80,6 +83,9 @@ export default {
       },
     "resources": {
         "defaultImageUrl": "/img/avatars/default.png"
+    },
+    "services":{
+        'baseurl':"https://services.kommunicate.io"
     }
 },
     
@@ -100,6 +106,9 @@ export default {
      },
    "resources": {
        "defaultImageUrl": "/img/avatars/default.png"
+   },
+   "services":{
+       'baseurl':"https://services.kommunicate.io"
    }
 }
 }
