@@ -11,6 +11,13 @@ if (typeof jQuery !== 'undefined') {
     }
 }
 
+(function (window) {
+    if (typeof Applozic !== "undefined"){
+      throw new Error(" Kommunicate script is already loaded, please check if you're loading it more than once.");
+      return;
+    }
+})(window);
+
 var applozicSideBox = new ApplozicSidebox();
 applozicSideBox.load();
 function ApplozicSidebox() {
