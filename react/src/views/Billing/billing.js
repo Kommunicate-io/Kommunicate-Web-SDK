@@ -50,7 +50,7 @@ class Billing extends Component {
             showPlanSelection: false,
             currentPlanDetailsText: "Trial period plan details",
             seatsBillable: "",
-            choosePlan: "growth-yearly",
+            choosePlan: "per_agent_yearly",
             boughtSubscription: "",
             kmActiveUsers: 0,
             boughtQuantity: 0,
@@ -97,7 +97,7 @@ class Billing extends Component {
             let quantity = CommonUtils.getUrlParameter(window.location.href, 'quantity');
             this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false, boughtSubscription: subscription, boughtQuantity: quantity});
-            console.log(this.state.boughtSubscription);
+            // console.log(this.state.boughtSubscription);
         }
 
         document.getElementById("portal").addEventListener("click", function (event) {
@@ -128,7 +128,7 @@ class Billing extends Component {
 
     afterOpenModal = () => {
         this.chargebeeInit();
-        if(this.state.choosePlan === "growth-monthly") {
+        if(this.state.choosePlan === "per_agent_monthly") {
             var elem = document.getElementById('checkout-monthly');
             elem.cbProduct.planQuantity = this.state.seatsBillable;
         } else {
@@ -152,13 +152,17 @@ class Billing extends Component {
         }
 
         let subscribeElems = document.getElementsByClassName("chargebee");
+        let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
         for (var i = 0; i < subscribeElems.length; i++) {
 
             if (subscribeElems[i].classList.contains('n-vis')) {
                 subscribeElems[i].click();
             }
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
-                // subscribeElems[i].disabled = true;
+                subscribeElems[i].value = "Current Plan";
+            }
+            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription) {
+                currentPlanElems[i].textContent = "Current Plan";
             }
         }
     }
@@ -358,7 +362,7 @@ class Billing extends Component {
         this.setState({
             seatsBillable: e.target.value
         })
-        if(states === "growth-monthly") {
+        if(states === "per_agent_monthly") {
             var elem = document.getElementById('checkout-monthly');
             elem.parentNode.removeChild(elem);
             elem.setAttribute("data-cb-plan-quantity", e.target.value);
@@ -406,7 +410,7 @@ class Billing extends Component {
       }
 
     //   buyAgents() {
-    //     if(this.state.choosePlan === "growth-monthly") {
+    //     if(this.state.choosePlan === "per_agent_monthly") {
     //         return <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" data-cb-plan-quantity={this.state.seatsBillable}>Continue</button>
     //     } else {
     //         return <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" data-cb-plan-quantity={this.state.seatsBillable}>Continue</button>
@@ -456,7 +460,8 @@ class Billing extends Component {
 
                                 {/* Subscribe successfully box */}
 
-                                <div className="subscription-complete-container" hidden={this.state.hideSubscribedSuccess}>
+                                <div className="subscription-complete-container">
+                                {this.state.subscription == '' || this.state.subscription == 'startup' ? "" :
                                     <div className="subscription-current-plan-container">
                                         <div className="subscription-success-checkmark">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 56 56">
@@ -469,16 +474,17 @@ class Billing extends Component {
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
                                                 <p>Your plan:</p>
-                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - {this.state.boughtQuantity < 2 ? this.state.boughtQuantity + " seat" : this.state.boughtQuantity + " seats"}</span></p>
+                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - {this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></p>
                                             </div>
                                             <div className="subscription-success-purchased-plan-billing">
                                                 <p>Next billing:</p>
-                                                <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.boughtQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.boughtQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(365) : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(30) : 0}</strong></p>
+                                                <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.totalPlanQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.totalPlanQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(365) : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(30) : 0}</strong></p>
                                             </div>
                                         </div>
                                     </div>
+                                    }
                                     {
-                                        this.state.seatsBillable > this.state.boughtQuantity ? <div className="subscription-current-plan-warning-container">
+                                        this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className="subscription-current-plan-warning-container">
                                         <div className="subscription-warning-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 512 512">
                                                 <path d="M507.494 426.066L282.864 53.537c-5.677-9.415-15.87-15.172-26.865-15.172s-21.188 5.756-26.865 15.172L4.506 426.066c-5.842 9.689-6.015 21.774-.451 31.625 5.564 9.852 16.001 15.944 27.315 15.944h449.259c11.314 0 21.751-6.093 27.315-15.944 5.564-9.852 5.392-21.936-.45-31.625zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="#f8ba36"/>
@@ -488,7 +494,7 @@ class Billing extends Component {
                                             <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of agents</p>
                                             <p>To make sure all the right agents can log in to their Kommunicate account, delete the extra agents from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
-                                    </div> : <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
+                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
                                     }
                                     
                                 </div>
@@ -596,18 +602,18 @@ class Billing extends Component {
                                     <div className="seat-selector--amount-container">
                                         <div className="amount-payable-container flexi">
                                             <p>Amount payable:</p>
-                                            <p>${(this.state.choosePlan === "growth-monthly") ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={this.state.choosePlan === "growth-monthly" ? false : true}>Save ${(this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)} in yearly plan!</span></p>
+                                            <p>${(this.state.choosePlan === "per_agent_monthly") ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={this.state.choosePlan === "per_agent_monthly" ? false : true}>Save ${(this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)} in yearly plan!</span></p>
                                         </div>
                                         <div className="renewal-date-container flexi">
                                             <p>Auto renewal date:</p>
-                                            <p>{(this.state.choosePlan === "growth-monthly") ?CommonUtils.countDaysForward(30) : CommonUtils.countDaysForward(365)}</p>
+                                            <p>{(this.state.choosePlan === "per_agent_monthly") ?CommonUtils.countDaysForward(30) : CommonUtils.countDaysForward(365)}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="seat-selection-modal--footer text-right">
                                     <button className="km-button km-button--secondary" onClick={this.closeSeatSelectionModal}>Cancel</button>
                                     {
-                                        (this.state.choosePlan === "growth-monthly") ?
+                                        (this.state.choosePlan === "per_agent_monthly") ?
                                         <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button> :
                                         <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
                                     }
@@ -647,7 +653,7 @@ class Billing extends Component {
                                                         </div>
                                                     </div>
 
-                                                    <p className="plan-agent-details">Up to 2 agents</p>
+                                                    <p className="plan-agent-details n-vis">Up to 2 agents</p>
 
                                                 </div>
                                                 <div className="pricing-table-body">
@@ -702,15 +708,15 @@ class Billing extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details">Unlimited agents</p>
+                                                    <p className="plan-agent-details n-vis">Unlimited agents</p>
                                                 </div>
                                                 <div className="pricing-table-body">
-                                                    <button hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="growth-monthly">
+                                                    <button hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_monthly">
                                                         {
                                                             (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Choose Plan"
                                                         }
                                                      </button>
-                                                    <button hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="growth-yearly">
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_yearly">
                                                         {
                                                             (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Choose Plan"
                                                         }
@@ -765,7 +771,7 @@ class Billing extends Component {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details">Unlimited agents</p>
+                                                    <p className="plan-agent-details n-vis">Unlimited agents</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     {
@@ -806,7 +812,7 @@ class Billing extends Component {
                             <div className="card-block billings-faq-container">
                                 <div className="billings-faq-qa">
                                     <h4 className="billings-faq-question">How can I add or delete agents later?</h4>
-                                    <p className="billings-faq-answer">You may add or delete agents any time from <Link to="/settings/team">Teammates</Link> section. Your bill will be updated from the next month onwards.</p>
+                                    <p className="billings-faq-answer">You may add or delete agents any time from <Link to="/settings/team">Teammates</Link> section. The number of seats in your plan will be updated accordingly and the bill will be adjusted on a prorated basis.</p>
                                 </div>
                                 <div className="billings-faq-qa">
                                     <h4 className="billings-faq-question">How many agents can I add in a particular plan?</h4>
