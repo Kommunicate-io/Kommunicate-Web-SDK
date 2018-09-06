@@ -431,12 +431,21 @@ class Billing extends Component {
                 nextBillingDate: response.next_billing_at,
                 
             })
+            if((this.state.subscription === "" || this.state.subscription === "startup")) {
+                this.setState({
+                    totalPlanQuantity: 2
+                })
+            }
         }).catch(err => {  
             if(this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly") {
                 this.setState({
                     totalPlanQuantity: 5
                 })
-            }        
+            } else if((this.state.subscription === "" || this.state.subscription === "startup")) {
+                this.setState({
+                    totalPlanQuantity: 2
+                })
+            }       
             console.log("Error while fetching subscription list of user");
         })
 
@@ -499,7 +508,7 @@ class Billing extends Component {
 
                                 {/* Subscribe successfully box */}
 
-                                <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("subscription-complete-container")): "subscription-complete-container"}>
+                                <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")): "subscription-complete-container"}>
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ? "" :
                                     <div className="subscription-current-plan-container">
                                         <div className="subscription-success-checkmark">
@@ -519,7 +528,7 @@ class Billing extends Component {
                                             {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
                                             <div className="subscription-success-purchased-plan-billing">
                                                 <p>Next billing:</p>
-                                                <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.totalPlanQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.totalPlanQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(365) : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(30) : 0}</strong></p>
+                                                <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.totalPlanQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.totalPlanQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp") : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp") : 0}</strong></p>
                                             </div>
                                             }
                                         </div>
@@ -536,10 +545,35 @@ class Billing extends Component {
                                             <p>You have bought {this.state.seatsBillable - this.state.totalPlanQuantity} seats less than your number of agents</p>
                                             <p>To make sure all the right agents can log in to their Kommunicate account, delete the extra agents from <Link to="/settings/team">Teammates</Link> section.</p>
                                         </div>
-                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
+                                    </div> : this.state.kmActiveUsers <= this.state.totalPlanQuantity ? <p className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")) :"subscription-add-delete-agent-text"}>Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p> : ""
                                     }
                                     
                                 </div>
+
+                                {
+                                    this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? "" : 
+                                <div className="subscription-complete-container">
+                                    <div className="subscription-current-plan-container">
+                                        <div className="subscription-success-checkmark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 56 56">
+                                                <g fill="#2DD35C" fillRule="nonzero">
+                                                    <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z"/>
+                                                    <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z"/>
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        
+                                        <div className="subscription-success-plan-billing">
+                                            <div className="subscription-success-purchased-plan-name">
+                                                <p>Your plan:</p>
+                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent", paddingLeft: "0px"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> </p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <p className="subscription-add-delete-agent-text">Want to <strong>add</strong> or <strong>delete</strong> agents in your current plan? Just invite or delete members from the <Link to="/settings/team">Teammates</Link> section and your bill will be updated automatically.</p>
+                                </div>) : ""
+                                }
 
 
                                 {/* <div className="subscribe-success-error-container text-center" hidden={this.state.hideSubscribedSuccess}>
@@ -648,7 +682,7 @@ class Billing extends Component {
                                         </div>
                                         <div className="renewal-date-container flexi">
                                             <p>Auto renewal date:</p>
-                                            <p>{(this.state.choosePlan === "per_agent_monthly") ?CommonUtils.countDaysForward(30) : CommonUtils.countDaysForward(365)}</p>
+                                            <p>{(this.state.choosePlan === "per_agent_monthly") ?CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
                                         </div>
                                     </div>
                                 </div>
