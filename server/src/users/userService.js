@@ -130,7 +130,7 @@ const createUser = (user, customer) => {
   let userId = user.userId ? user.userId.toLowerCase() : "";
   user.userName ? (user.userName = user.userName.toLowerCase()) : "";
   let role = user.type == 2 ? "BOT" : "APPLICATION_WEB_ADMIN";
-  return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name).catch(err => {
+  return applozicClient.createApplozicClient(user.userName, user.password, user.applicationId, null, role, user.email, user.name, undefined, user.imageLink).catch(err => {
     if (user.type === registrationService.USER_TYPE.AGENT) {
       return handleCreateUserError(user, customer, err);
     } else {
