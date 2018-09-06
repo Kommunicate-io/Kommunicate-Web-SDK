@@ -747,7 +747,7 @@
 }
 
 .subscription-current-plan-container {
-    align-items: flex-start;
+    align-items: center;
 }
 .subscription-success-checkmark {
     margin-right: 20px;
@@ -771,6 +771,10 @@
 }
 .subscription-success-purchased-plan-billing p:last-child strong {
     color: #2d2b2b;
+}
+
+.subscription-success-purchased-plan-billing p {
+    margin-bottom: 7px;
 }
 .subscription-current-plan-warning-container {
     align-items: flex-start;
