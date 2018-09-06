@@ -22,6 +22,8 @@ exports.createCustomer = async (req, res) => {
   const email = req.body.email || userName;
   const subscription = req.body.subscription || subscriptionPlan.initialPlan;
   let response = {};
+  userName = userName.toLowerCase();
+  userName = userName.toLowerCase();
   let userDetail = Object.assign({}, req.body);
   userDetail.email = email;
   userDetail.password = password;
