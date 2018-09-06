@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import CommonUtils from '../../utils/CommonUtils';
-import {sendProfileImage, updateApplozicUser, getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot} from '../../utils/kommunicateClient';
+import {sendProfileImage, updateApplozicUser, getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot, getAgentandBotRouting} from '../../utils/kommunicateClient';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import Notification from '../../views/model/Notification';
@@ -23,6 +23,7 @@ export default class IntegratedBots extends Component {
     constructor(props) {
         super(props);
         this.state = {
+          checkedBotRoutingStatus:false,
           setbotImageLink:'',
           botImagefileObject:[],
           canvas: '',
@@ -82,7 +83,8 @@ export default class IntegratedBots extends Component {
        };
 
     componentDidMount=()=>{
-        this.getIntegratedBotsWrapper()
+        this.getIntegratedBotsWrapper();
+        this.getRoutingState();
     }
 
     clearBotDetails = ()=>{
@@ -221,7 +223,7 @@ export default class IntegratedBots extends Component {
             }, () => {
                 this.getBotDetailsFromUserId(this.state.listOfIntegratedBots);
                 this.state.listOfIntegratedBots.map(bot => {
-                    if(bot.allConversations == 1){
+                    if(bot.allConversations == 1 && this.state.checkedBotRoutingStatus === true){
                         this.setState({
                             conversationsAssignedToBot: bot.name
                         })
@@ -230,6 +232,24 @@ export default class IntegratedBots extends Component {
             }
            )
         });
+    }
+
+    getRoutingState = () => {
+        return Promise.resolve(getAgentandBotRouting()).then(response => {
+            // response.data.response.botRouting && this.setState({assignConversationToBot:true})
+            if (response.data.response.botRouting === false) {
+                this.setState({
+                    checkedBotRoutingStatus: false
+                })
+            }
+            else {
+                this.setState({
+                  checkedBotRoutingStatus: true
+                })
+            }
+        }).catch(err => {
+            console.log("error while fetching routing state/round roubin state", err);
+        })
     }
 
     toggleEditBotIntegrationModal = (botIdInUserTable, botKey,  botName, botUserName, botToken, botDevToken, botAvailable, botImageLink) => {
@@ -298,7 +318,6 @@ export default class IntegratedBots extends Component {
           if(response.data.code === 'SUCCESS'){
             Notification.info("Deleted successfully")
             this.toggleDeleteBotIntegrationModal()
-            this.toggleEditBotIntegrationModal()
             this.getIntegratedBotsWrapper()
           }
         })
@@ -395,7 +414,7 @@ export default class IntegratedBots extends Component {
       botImageFileInput = (e) => {
         e.preventDefault();
         var botUserNameUpload = this.state.botUserName;
-        var inputDiv = document.getElementById('test101');
+        var inputDiv = document.getElementById('km-bot-image-file-input-id');
         const fileSelector = document.createElement('input');
         fileSelector.setAttribute( 'id', this.state.botUserName);
         fileSelector.setAttribute('type', 'file');
@@ -479,7 +498,7 @@ export default class IntegratedBots extends Component {
           if(response.status==200 && response.data.response[0]){
             var responseData = that.sortByKey(response.data.response, "userId");
             var sortedListOfIntegratedBots = that.sortByKey(that.state.listOfIntegratedBots, "userName");
-            console.log(responseData);
+            // console.log(responseData);
             console.log(sortedListOfIntegratedBots);
             for(var j = 0; j < sortedListOfIntegratedBots.length; j++){
               if(sortedListOfIntegratedBots[j].userName === responseData[j].userId){
@@ -489,7 +508,7 @@ export default class IntegratedBots extends Component {
             that.setState({
               listOfIntegratedBots: sortedListOfIntegratedBots
             });
-            console.log(that.state.listOfIntegratedBots);
+            // console.log(that.state.listOfIntegratedBots);
           }
         });
       }
@@ -540,10 +559,10 @@ export default class IntegratedBots extends Component {
                         <div className="km-liz-section-textcontent">
                           Let Liz answer common queries and let your team concentrate on more complex ones. Just fill up your <Link className="km-liz-link" to='/faq'>FAQs</Link> and then <Link className="km-liz-link" to='/settings/agent-assignment'>Assign</Link> conversatons to Liz.
                         </div>
-                        <div className="km-edit-bot-name-container">
-                            <label className="km-bot-edit-name-font km-restrict-bootstrap-margin " style={{width:"60px"}}>Bot ID:</label>
-                            <div className="incoming-email-forward-email-id-container-test " style={{width:"120px", border:"1px dashed #bcb7b7"}}>
-                                      <textarea className="km-textArea-custom-color" id="bot202" value='liz' readOnly/>
+                        <div className="km-edit-bot-name-container" style={{border:"1px dashed #bcb7b7",width:'184px',paddingLeft:"8px",marginLeft:"3px"}}>
+                           <label className="km-bot-edit-name-font km-restrict-bootstrap-margin" >Bot ID:</label>
+                               <div className="incoming-email-forward-email-id-container-test " style={{width:"190px"}}>
+                                     <textarea className="km-textArea-custom-color" style={{marginBottom : "3px" , width:"25px"}} id="bot202" value='liz' readOnly/>
                                   <div className="incoming-email-forward-copy-icon">
                                     <button onClick={this.copyToClipboard} style={{display:"block",opacity:1,visibility:"visible"}}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -561,6 +580,7 @@ export default class IntegratedBots extends Component {
 
                 {/* Already created bot List */}
                 <div className="km-bot-list-of-integrated-bots-container">
+                {listOfIntegratedBotWithoutLiz.length >= 1  ?
                   <div className="row" style={{borderBottom: "1px solid #e2e2e5"}}>
                     <div className="col-md-3 col-sm-6 col-xs-12">
                       <p className="km-bot-list-table-heading">BOT NAME</p>
@@ -571,7 +591,7 @@ export default class IntegratedBots extends Component {
                     <div className="col-md-3 col-sm-6 col-xs-12">
                       <p className="km-bot-list-table-heading">BOT PLATFORM</p>
                     </div>
-                  </div>
+                  </div> : "" }
 
                   {listOfIntegratedBotWithoutLiz.map(bot => (
 
@@ -651,7 +671,7 @@ export default class IntegratedBots extends Component {
                           :
                           <BotDefaultImage/>
                         }
-                          <div id= "test101" className="km-edit-section-hover" onClick={this.botImageFileInput}>Update
+                          <div id= "km-bot-image-file-input-id" className="km-edit-section-hover" onClick={this.botImageFileInput}>Update
                           </div>
                     </div>
                       <div className="km-bot-detail-design">
@@ -665,7 +685,7 @@ export default class IntegratedBots extends Component {
                           <div className="km-edit-bot-name-container">
                             <label className="km-bot-edit-name-font km-restrict-bootstrap-margin">Bot ID:</label>
                             <div className="incoming-email-forward-email-id-container-test" style={{marginLeft:"-25px", border:"1px dashed #bcb7b7"}}>
-                                      <textarea className="km-textArea-custom-color" id="bot202" value={this.state.botUserName} readOnly/>
+                                      <textarea className="km-textArea-custom-color" id="km-copy-liz-text" value={this.state.botUserName} readOnly/>
                                   <div style={{opacity:1,visibility:"visible",display:'block'}} className="incoming-email-forward-copy-icon">
                                     <button onClick={this.copyToClipboard} style={{opacity:1,visibility:'visible'}}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

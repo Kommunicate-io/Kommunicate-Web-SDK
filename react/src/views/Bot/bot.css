@@ -412,6 +412,7 @@ border-bottom: 1px solid #cfd8dc;
    border-radius: 61%;
    position: relative;
    width: 105px;
+   height: 105px;
    cursor: pointer;
 
 }
@@ -489,7 +490,7 @@ border-bottom: 1px solid #cfd8dc;
 }
 
 .km-liz-container{
-  width: 97%;
+  width: 97.5%;
   padding: 20px 10px;
   border-radius: 3px;
   border: solid 1px #dedede;
