@@ -25,7 +25,8 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "email": email,
     "displayName": displayName,
     "gcmKey": gcmKey,
-    "state": notifyState
+    "state": notifyState,
+    "imageLink": user.imageLink ? user.imageLink : undefined,
   })).then(response => {
     let err = {};
     console.log("Applozic server returned : ", response.status);
