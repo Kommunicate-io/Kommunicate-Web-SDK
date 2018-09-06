@@ -108,7 +108,6 @@ class Billing extends Component {
             }
         });
 
-
         this.chargebeeInit();
         this.getAgents();
         this.getPlanDetails();
@@ -161,12 +160,12 @@ class Billing extends Component {
                 subscribeElems[i].click();
             }
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
-                subscribeElems[i].value = "Current Plan";
+                    subscribeElems[i].value = "Current Plan";
             }
-            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription || currentPlanElems[i].getAttribute('data-cb-plan-id') == that.state.subscription) {
+            if(currentPlanElems[i].getAttribute('data-choose-plan') == that.state.subscription) {
                 currentPlanElems[i].textContent = "Current Plan";
                 currentPlanElems[i].disabled = true;
-            }
+            } 
         }
     }
 
@@ -429,7 +428,8 @@ class Billing extends Component {
             let response = data;
             this.setState({
                 totalPlanQuantity: response.plan_quantity,
-                nextBillingDate: response.next_billing_at
+                nextBillingDate: response.next_billing_at,
+                
             })
         }).catch(err => {  
             if(this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly") {
@@ -439,10 +439,12 @@ class Billing extends Component {
             }        
             console.log("Error while fetching subscription list of user");
         })
+
       }
 
     render() {
         //Todo: set this dynamically based on current plan
+        let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
         const billedYearly = (
             <div className="radio-content-container">
                 <h3>Billed Yearly</h3>
@@ -456,6 +458,20 @@ class Billing extends Component {
             </div>
         )
         const { modalIsOpen } = this.state;
+
+
+        for(var i = 0; i < currentPlanElems.length; i++) {
+            if(currentPlanElems[i].getAttribute('data-cb-plan-id') == this.state.subscription) {
+                if(this.state.trialLeft > 0 && this.state.trialLeft <= 31) {
+                    currentPlanElems[i].textContent = "Choose Plan";
+                    currentPlanElems[i].disabled = false;
+                } else {
+                    currentPlanElems[i].textContent = "Current Plan";
+                    currentPlanElems[i].disabled = true;
+                }
+                
+            }
+        }
 
         return (
             <div className="animated fadeIn billings-section">
@@ -483,7 +499,7 @@ class Billing extends Component {
 
                                 {/* Subscribe successfully box */}
 
-                                <div className="subscription-complete-container">
+                                <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("subscription-complete-container")): "subscription-complete-container"}>
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ? "" :
                                     <div className="subscription-current-plan-container">
                                         <div className="subscription-success-checkmark">
@@ -620,7 +636,7 @@ class Billing extends Component {
                                             <p>Number of seats:</p>
                                         </div>
                                         <div className="seat-selector--input">
-                                            <input maxlength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)} onKeyPress={this.keyPress}/>
+                                            <input maxLength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)} onKeyPress={this.keyPress}/>
                                             <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
                                         </div>
                                     </div>
@@ -686,9 +702,7 @@ class Billing extends Component {
                                                     
                                                     {
                                                         <button className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup">
-                                                            {
-                                                                (this.state.subscription == 'startup') ? "Current Plan" : "Select Plan"
-                                                            }
+                                                            Choose Plan
                                                         </button>
                                                     }
                                                 </div>
@@ -738,14 +752,10 @@ class Billing extends Component {
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     <button hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_monthly">
-                                                        {
-                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Choose Plan"
-                                                        }
+                                                        Choose Plan
                                                      </button>
                                                     <button hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_yearly">
-                                                        {
-                                                            (this.state.subscription.indexOf('launch') != -1) ? "Current Plan" : "Choose Plan"
-                                                        }
+                                                        Choose Plan
                                                     </button>
                                                 </div>
                                                 <div className="pricing-table-footer">
