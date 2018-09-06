@@ -73,7 +73,8 @@ export default class BotStore extends Component {
           dialogFlowBots: [],
           botAvailable: true,
           conversationsAssignedToBot: null,
-          hideIntegratedBots: true
+          hideIntegratedBots: true,
+          defaultBotUrl:'https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_apps/applozic-sample-app/_Attachment/c9147780c06eb5e592d4db4f5d0b39e48725cc09_defaultBotImage.png'
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -434,7 +435,8 @@ export default class BotStore extends Component {
             password:userId,
             name:this.state.botName,
             aiPlatform:aiPlatform,
-            roleType: ROLE_TYPE.BOT
+            roleType: ROLE_TYPE.BOT,
+            imageLink: this.state.defaultBotUrl
 
           },"BOT")).then( bot => {
             var bot = bot.data.data;

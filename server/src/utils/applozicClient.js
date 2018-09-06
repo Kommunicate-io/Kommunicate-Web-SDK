@@ -12,7 +12,7 @@ const { EMAIL_NOTIFY } = require('../users/constants');
 /*
 this method register a user in applozic db with given parameters.
 */
-const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName, notifyState) => {
+const createApplozicClient = (userId, password, applicationId, gcmKey, role, email, displayName, notifyState, imageLink) => {
   console.log("creating applozic user..url :", config.getProperties().urls.createApplozicClient, "with userId: ", userId, ", password :", password, "applicationId", applicationId, "role", role, "email", email);
   notifyState = typeof notifyState != "undefined" ? notifyState : EMAIL_NOTIFY.ONLY_ASSIGNED_CONVERSATION;
   return Promise.resolve(axios.post(config.getProperties().urls.createApplozicClient, {
@@ -26,7 +26,7 @@ const createApplozicClient = (userId, password, applicationId, gcmKey, role, ema
     "displayName": displayName,
     "gcmKey": gcmKey,
     "state": notifyState,
-    "imageLink": user.imageLink ? user.imageLink : undefined,
+    "imageLink": imageLink
   })).then(response => {
     let err = {};
     console.log("Applozic server returned : ", response.status);
