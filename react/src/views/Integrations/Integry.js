@@ -2,6 +2,7 @@ import { thirdPartyList, integryThirdPartyList } from '../Integrations/ThirdPart
 import React, { Component } from 'react';
 import Integrations from './Integrations';
 import { Link } from 'react-router-dom';
+import CommonUtils from '../../utils/CommonUtils';
     function callbackFunc(data) { 
         //in this method you can perform integration post-save actions 
         //for example you can save bundle instance id returned in your database 
@@ -67,7 +68,8 @@ import { Link } from 'react-router-dom';
             instructions:""
             // label :<span href= {template.link} data-key = {key} target="_blank" className="integration-settings">Add</span> 
         }
-         window.dispatchEvent(new CustomEvent("kmIntegryInitilized",{detail:{"status": "success","list":thirdPartyList},bubbles: true,cancelable: true}));
+        CommonUtils.triggerCustomEvent("kmIntegryInitilized",{detail:{"status": "success","list":thirdPartyList},bubbles: true,cancelable: true})
+        //  window.dispatchEvent(new CustomEvent("kmIntegryInitilized",{detail:{"status": "success","list":thirdPartyList},bubbles: true,cancelable: true}));
         // var row = window.$kmApplozic('<tr class="bg-whiteuuyuy"/>'); 
         // row.append(window.$kmApplozic.parseHTML(html)); 
         // return row;
