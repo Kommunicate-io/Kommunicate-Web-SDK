@@ -6,17 +6,17 @@ sidebar_label: Authentication
 
 ## Authorization
 
-You need to initialise the Kommunicate SDK with your application key obtained from dashboard before accessing any method.
-You can get the application key by Signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io):
+You need to initialise the Kommunicate SDK with your [App ID](https://dashboard.kommunicate.io/settings/install) obtained from dashboard before accessing any method.
+You can get the App ID by Signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io):
 
 ```java
-Kommunicate.init(context, <your-app-key>);
+Kommunicate.init(context, <your-app-id>);
 ```
 You can authorize a user as described below:
 ```java
         KMUser user = new KMUser();
         user.setUserId("reytum_01");  //unique userId
-        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your application key
+        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your app id
 ```
 Post this, call the method described below:
 ```java

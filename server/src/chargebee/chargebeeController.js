@@ -12,10 +12,12 @@ exports.subscriptionCount = function (req, res) {
 
 exports.getSubscriptionDetail = async function (req, res) {
     try {
-        let customer = await customerService.getCustomerByUserName(req.params.userId);
-        let response = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        return response ? res.status(200).json({ "code": "success", "response": response.subscription })
-            : res.status(200).json({ "code": "success", "message": "record not found" });
+        let response = await getSubscription(req.params.userId);;
+        if (typeof response == 'object') {
+            return res.status(200).json({ "code": "success", "response": response.subscription })
+        } else {
+            return res.status(200).json({ "code": "success", "message": response });
+        }
     } catch (err) {
         return res.status(500).json({ "code": "error", "response": err.message });
     }
@@ -24,13 +26,31 @@ exports.getSubscriptionDetail = async function (req, res) {
 exports.updateSubscribedAgentCount = async function (req, res) {
     let addPlanQuantity = req.body.addPlanQuantity;
     try {
-        let customer = await customerService.getCustomerByUserName(req.params.userId);
-        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        let response = await chargebeeService.updateSubscription(customer.billingCustomerId, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
-        return response ? res.status(200).json({ "code": "success", "response": response })
-            : res.status(500).json({ "code": "error", "message": "updation error" });;
-
+        let result = await getSubscription(req.params.userId);
+        if (typeof result=='object') {
+            let response = await chargebeeService.updateSubscription(result.subscription.customer_id, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
+            return res.status(200).json({ "code": "success", "response": response });
+        } else {
+            return res.status(500).json({ "code": "error", "message": result});
+        }
     } catch (err) {
         return res.status(500).json({ "code": "error", "response": err.message });
+    }
+}
+
+const getSubscription = async function (userId) {
+    try {
+        let customer = await customerService.getCustomerByUserName(userId);
+        if (!customer) {
+            return "customer not found";
+        }
+        if (!customer.billingCustomerId) {
+            return "not subscribe";
+        }
+        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+        return result;
+    } catch (err) {
+        console.log('error while getting subscription detail', err);
+        return;
     }
 }
