@@ -718,9 +718,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		};
 		_this.getLastSeenAtStatus = function (params) {
 			if(params.callback){
-				params.callback(kmDateUtils.getLastSeenAtStatus(params.lastseenTime));
+				params.callback(kmDateUtils.getLastSeenAtStatus(params.lastseenTime,params.dateFormat));
 			}
-			return kmDateUtils.getLastSeenAtStatus(params.lastseenTime);
+			return kmDateUtils.getLastSeenAtStatus(params.lastseenTime,params.dateFormat);
 		}
 		_this.getContactImage = function (user) {
 			var contact = mckMessageLayout.fetchContact(user.userId);
