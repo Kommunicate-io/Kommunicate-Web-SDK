@@ -309,11 +309,11 @@ class Integration extends Component {
     var roleType;
     var status;
     var result = this.state.result.map(function (result, index) {
-      let userId = result.userId;
+      let userId = result.userId.toLowerCase();;
       let isOnline = userId == loggedInUserId || result.connected;
       if (!result.deactivated) {
         usersList.map(function (user, i) {
-          if (userId == user.userName) {
+          if (userId == user.userName.toLowerCase()) {
             roleType = user.roleType
             status = user.status;
             if (user.status && isOnline) {
