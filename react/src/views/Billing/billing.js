@@ -163,7 +163,7 @@ class Billing extends Component {
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
                 subscribeElems[i].value = "Current Plan";
             }
-            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription) {
+            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription || currentPlanElems[i].getAttribute('data-cb-plan-id') == that.state.subscription) {
                 currentPlanElems[i].textContent = "Current Plan";
                 currentPlanElems[i].disabled = true;
             }
@@ -498,7 +498,7 @@ class Billing extends Component {
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
                                                 <p>Your plan:</p>
-                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> <span style={{textTransform: "uppercase"}}>{SUBSCRIPTION_PLANS[this.state.subscription].term} BILLING</span></p>
+                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent", paddingLeft: "0px"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> <span style={{textTransform: "uppercase"}}>{SUBSCRIPTION_PLANS[this.state.subscription].term} BILLING</span></p>
                                             </div>
                                             {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
                                             <div className="subscription-success-purchased-plan-billing">
@@ -510,7 +510,7 @@ class Billing extends Component {
                                         
                                     </div>
                                     }
-                                    {  this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className="subscription-current-plan-warning-container">
+                                    {  this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? "n-vis" : "subscription-current-plan-warning-container"}>
                                         <div className="subscription-warning-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 512 512">
                                                 <path d="M507.494 426.066L282.864 53.537c-5.677-9.415-15.87-15.172-26.865-15.172s-21.188 5.756-26.865 15.172L4.506 426.066c-5.842 9.689-6.015 21.774-.451 31.625 5.564 9.852 16.001 15.944 27.315 15.944h449.259c11.314 0 21.751-6.093 27.315-15.944 5.564-9.852 5.392-21.936-.45-31.625zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="#f8ba36"/>
@@ -753,7 +753,6 @@ class Billing extends Component {
                                                     <div className="pricing-table-body-footer" hidden={this.state.hideFeatureList}>
                                                         <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
-                                                            <li>Unlimited agents</li>
                                                             <li>Bot integrations</li>
                                                             <li>Quick Replies</li>
                                                             <li>Away Messages</li>
