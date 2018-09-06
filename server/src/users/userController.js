@@ -108,6 +108,8 @@ exports.createUser = function (req, res) {
   if (!req.body.applicationId) {
     return res.status(400).json({ code: "BAD_REQUEST", message: "ApplicationId can't be Empty" });
   }
+  req.body.userName = req.body.userName.includes('@') ? req.body.userName.toLowerCase() : req.body.userName;
+  req.body.email = req.body.email ? req.body.email.toLowerCase() : undefined;
   Promise.all([customerService.getCustomerByApplicationId(req.body.applicationId),
   userService.getByUserNameAndAppId(req.body.userName, req.body.applicationId),
   userService.getAdminUserByAppId(req.body.applicationId)])
