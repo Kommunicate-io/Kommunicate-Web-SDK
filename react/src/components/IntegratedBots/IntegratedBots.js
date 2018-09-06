@@ -467,13 +467,6 @@ export default class IntegratedBots extends Component {
         }
       }
 
-      sortByKey = (array, key) => {
-          return array.sort(function(a, b) {
-              var x = a[key]; var y = b[key];
-              return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-          });
-      }
-
       getBotDetailsFromUserId = (userId) => {
         let that=this;
         var userIdListArray = [];
@@ -496,19 +489,19 @@ export default class IntegratedBots extends Component {
           "Apz-AppId":applicationId
         }}).then(function(response) {
           if(response.status==200 && response.data.response[0]){
-            var responseData = that.sortByKey(response.data.response, "userId");
-            var sortedListOfIntegratedBots = that.sortByKey(that.state.listOfIntegratedBots, "userName");
-            // console.log(responseData);
-            console.log(sortedListOfIntegratedBots);
-            for(var j = 0; j < sortedListOfIntegratedBots.length; j++){
-              if(sortedListOfIntegratedBots[j].userName === responseData[j].userId){
-                sortedListOfIntegratedBots[j].imageLink = responseData[j].imageLink;
-              }
+            var responseData = response.data.response;
+            var sortedListOfIntegratedBots = that.state.listOfIntegratedBots;
+            var arr = [];
+            for(var j = 0; j < responseData.length; j++){
+              arr[responseData[j].userId] = responseData[j];
             };
+            for (var j = 0; j< sortedListOfIntegratedBots.length; j++) {
+              sortedListOfIntegratedBots[j].imageLink = arr[sortedListOfIntegratedBots[j].userName].imageLink;
+            }
+
             that.setState({
               listOfIntegratedBots: sortedListOfIntegratedBots
             });
-            // console.log(that.state.listOfIntegratedBots);
           }
         });
       }

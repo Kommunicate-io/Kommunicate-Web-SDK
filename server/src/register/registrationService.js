@@ -210,7 +210,7 @@ exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
   return applozicClient.getApplication({ "applicationId": options.applicationId, "userName": options.userName, "accessToken": options.password }, isApplicationWebAdmin).then(application => {
     return Promise.all([applozicClient.applozicLogin({ "userName": options.userName, "password": options.password, "applicationId": options.applicationId, "roleName": "APPLICATION_WEB_ADMIN", "email": options.email }),
     applozicClient.applozicLogin({ "userName": "bot", "password": "bot", "applicationId": options.applicationId, "roleName": "BOT" }),
-    applozicClient.applozicLogin({ "userName": LIZ.userName, "password": LIZ.password, "applicationId": application.applicationId, "roleName": "BOT", displayName: LIZ.name })])
+    applozicClient.applozicLogin({ "userName": LIZ.userName, "password": LIZ.password, "applicationId": application.applicationId, "roleName": "BOT", displayName: LIZ.name,imageLink: LIZ.imageLink })])
       .then(([customer, bot, liz]) => {
         return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" }, null, false, isApplicationWebAdmin + '')
           .then(updatedUser => {

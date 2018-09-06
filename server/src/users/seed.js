@@ -42,7 +42,7 @@ const createLiz = (application) => {
     return userService.getByUserNameAndAppId('liz', application.applicationId).then(existingliz => {
         if (!existingliz) {
             // create liz
-            return Promise.resolve(applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, "BOT", null, LIZ.name).catch(e => {
+            return Promise.resolve(applozicClient.createApplozicClient(LIZ.userName, LIZ.password, application.applicationId, null, "BOT", null, LIZ.name, undefined, LIZ.imageLink).catch(e => {
                 if (e.code == "USER_ALREADY_EXISTS") {
                     console.log("user already exists in applozic db");
                     return e.data;

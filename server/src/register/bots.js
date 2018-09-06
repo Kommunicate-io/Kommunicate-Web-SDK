@@ -10,5 +10,5 @@ module.exports.LIZ={
     userName:"liz",
     password:"kmLiz",
     role:"BOT",
-    imageLink:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/56728a52d775ae22c1702fc8e287ce8487afb08a_defaultLizImage.png"
+    imageLink:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/1288d76205438b7883db41f2737b41d4218937d0_Liz_front%20%282%29.jpg"
 }
