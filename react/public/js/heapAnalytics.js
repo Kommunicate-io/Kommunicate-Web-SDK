@@ -2,7 +2,7 @@ var QUERYSTRINGTEST = '-test',
 QUERYSTRINGLOCAL = 'localhost',
 CURRENTURL = window.location.href;
 let KM_USER_SESSION = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
-const currentPath = window.location.pathname;
+
 if((CURRENTURL.indexOf(QUERYSTRINGTEST) != -1) || (CURRENTURL.indexOf(QUERYSTRINGLOCAL) != -1)) {
   //No Heap Analytics and Google analytics code here
 }
@@ -35,8 +35,6 @@ f=false,d=document;return{use_existing_jquery:function(){return use_existing_jqu
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
   })(window,document,'script','https://dna8twue3dlxq.cloudfront.net/js/profitwell.js','profitwell');
   profitwell('auth_token', '71e77c6a8d59f50233d1705120049bf1'); // Your unique Profitwell public API token
-  if(currentPath.includes('/signup') || currentPath.includes('/login')){
-    null
-  } else {
+  if(KM_USER_SESSION){
     profitwell('user_email', KM_USER_SESSION.adminUserName);
   }
