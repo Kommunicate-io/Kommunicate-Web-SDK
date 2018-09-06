@@ -165,6 +165,7 @@ class Billing extends Component {
             }
             if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription) {
                 currentPlanElems[i].textContent = "Current Plan";
+                currentPlanElems[i].disabled = true;
             }
         }
     }
@@ -416,7 +417,7 @@ class Billing extends Component {
           this.setState({
             kmActiveUsers: kmActiveUsers.length,
             seatsBillable: kmActiveUsers.length
-          },this.restrictInvite);
+          });
         }).catch(err => {
            console.log("err while fetching users list");
         });
@@ -497,7 +498,7 @@ class Billing extends Component {
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
                                                 <p>Your plan:</p>
-                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - {this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></p>
+                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> <span style={{textTransform: "uppercase"}}>{SUBSCRIPTION_PLANS[this.state.subscription].term} BILLING</span></p>
                                             </div>
                                             {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
                                             <div className="subscription-success-purchased-plan-billing">
@@ -672,7 +673,7 @@ class Billing extends Component {
                                                         <div className="pricing-value">
                                                             <div>
                                                                 <h2> $0 </h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">free forever</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">up to 2 agents</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
@@ -876,61 +877,71 @@ const SUBSCRIPTION_PLANS = {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
-        'amount': '49'
+        'amount': '49',
+        'term': 'monthly'
     },
     'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
-        'amount': '39'
+        'amount': '39',
+        'term': 'Yearly'
     },
     'growth_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '199'
+        'amount': '199',
+        'term': 'Monthly'
     },
     'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '149'
+        'amount': '149',
+        'term': 'Yearly'
     },
      'early_bird_monthly': {
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
-        'amount': '49'
+        'amount': '49',
+        'term': 'Monthly'
     },
     'early_bird_yearly': {
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
-        'amount': '39'
+        'amount': '39',
+        'term': 'Yearly'
     },
     'enterprise_monthly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Unlimited',
-        'amount': 'Custom'
+        'amount': 'Custom',
+        'term': 'Monthly'
     },
     'enterprise_yearly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Unlimited',
-        'amount': 'Custom'
+        'amount': 'Custom',
+        'term': 'Yearly'
     },
     'per_agent_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '10'
+        'amount': '10',
+        'term': 'Monthly'
     },
     'per_agent_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '8'
+        'amount': '8',
+        'term': 'Yearly'
     }
 };
 
