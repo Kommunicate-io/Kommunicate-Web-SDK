@@ -220,7 +220,7 @@ class UserItem extends Component {
                     <td className= "teammates-delete-icon"  >
                       {/* show delete btn for agents and admins if loggedin user is an super admin */}
                       { loggedInUserRoleType ==  ROLE_TYPE.SUPER_ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN &&
-                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper">
+                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper km-teammates-delete-visibility">
                           <svg data-index= {deleteRef} xmlns="http://www.w3.org/2000/svg" width="10"    height="12" viewBox="0 0 10 12">
                             <g fill="#8B8888" fillRule="nonzero">
                               <path d="M.357 2.5a.357.357 0 0 1 0-.714h9.286a.357.357 0 1 1 0 .714H.357zM5.357 8.929a.357.357 0 1 1-.714 0v-5a.357.357 0 0 1 .714 0v5zM3.928 8.903a.357.357 0 1 1-.713.051l-.357-5a.357.357 0 0 1 .713-.05l.357 5zM6.785 8.954a.357.357 0 1 1-.713-.05l.357-5a.357.357 0 1 1 .713.05l-.357 5z"/>
@@ -233,7 +233,7 @@ class UserItem extends Component {
                       }
                       {/* show delete btn only for agents if loggedin user is an admin */}
                       { loggedInUserRoleType ==  ROLE_TYPE.ADMIN && roleType != ROLE_TYPE.SUPER_ADMIN &&         roleType != ROLE_TYPE.ADMIN &&
-                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper">
+                        <span onClick ={this.onOpenModal}  data-index= {deleteRef}    className="teammates-delete-wrapper km-teammates-delete-visibility">
                           <svg xmlns="http://www.w3.org/2000/svg" width="10" height="12" viewBox="0 0 10 12">
                             <g fill="#8B8888" fillRule="nonzero">
                               <path d="M.357 2.5a.357.357 0 0 1 0-.714h9.286a.357.357 0 1 1 0 .714H.357zM5.357 8.929a.357.357 0 1 1-.714 0v-5a.357.357 0 0 1 .714 0v5zM3.928 8.903a.357.357 0 1 1-.713.051l-.357-5a.357.357 0 0 1 .713-.05l.357 5zM6.785 8.954a.357.357 0 1 1-.713-.05l.357-5a.357.357 0 1 1 .713.05l-.357 5z"/>
