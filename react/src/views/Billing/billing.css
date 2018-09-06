@@ -747,7 +747,7 @@
 }
 
 .subscription-current-plan-container {
-    align-items: flex-start;
+    align-items: center;
 }
 .subscription-success-checkmark {
     margin-right: 20px;
@@ -765,12 +765,17 @@
     border-radius: 2px;
     background-color: rgba(204, 231, 248, 0.7);
     padding: 3px 12px;
+    text-transform: uppercase
 }
 .subscription-success-purchased-plan-billing p:last-child {
     color: #8c8989;
 }
 .subscription-success-purchased-plan-billing p:last-child strong {
     color: #2d2b2b;
+}
+
+.subscription-success-purchased-plan-billing p {
+    margin-bottom: 7px;
 }
 .subscription-current-plan-warning-container {
     align-items: flex-start;
@@ -802,6 +807,7 @@
 }
 .subscription-add-delete-agent-text strong{
     color: #2d2b2b;
+    font-weight: 500;
 }
 .subscription-current-plan-warning-container p:last-child > a, .subscription-add-delete-agent-text a {
     color: #4831d9;

@@ -54,7 +54,8 @@ class Billing extends Component {
             boughtSubscription: "",
             kmActiveUsers: 0,
             boughtQuantity: 0,
-            totalPlanQuantity: 0
+            totalPlanQuantity: 0,
+            nextBillingDate: 0
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -106,6 +107,7 @@ class Billing extends Component {
                 return;
             }
         });
+
 
         this.chargebeeInit();
         this.getAgents();
@@ -163,6 +165,7 @@ class Billing extends Component {
             }
             if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription) {
                 currentPlanElems[i].textContent = "Current Plan";
+                currentPlanElems[i].disabled = true;
             }
         }
     }
@@ -414,32 +417,29 @@ class Billing extends Component {
           this.setState({
             kmActiveUsers: kmActiveUsers.length,
             seatsBillable: kmActiveUsers.length
-          },this.restrictInvite);
+          });
         }).catch(err => {
            console.log("err while fetching users list");
         });
       }
 
       getPlanDetails() {
-          let currentUserName = CommonUtils.getUserSession().userName;
+          let currentUserName = CommonUtils.getUserSession().adminUserName;
         return Promise.resolve(getSubscriptionDetail(currentUserName)).then(data => {
             let response = data;
             this.setState({
-                totalPlanQuantity: response.plan_quantity
+                totalPlanQuantity: response.plan_quantity,
+                nextBillingDate: response.next_billing_at
             })
-        }).catch(err => {
+        }).catch(err => {  
+            if(this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly") {
+                this.setState({
+                    totalPlanQuantity: 5
+                })
+            }        
             console.log("Error while fetching subscription list of user");
         })
       }
-
-    //   buyAgents() {
-    //     if(this.state.choosePlan === "per_agent_monthly") {
-    //         return <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" data-cb-plan-quantity={this.state.seatsBillable}>Continue</button>
-    //     } else {
-    //         return <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" data-cb-plan-quantity={this.state.seatsBillable}>Continue</button>
-    //     }
-    //   }
-
 
     render() {
         //Todo: set this dynamically based on current plan
@@ -494,20 +494,23 @@ class Billing extends Component {
                                                 </g>
                                             </svg>
                                         </div>
+                                        
                                         <div className="subscription-success-plan-billing">
                                             <div className="subscription-success-purchased-plan-name">
                                                 <p>Your plan:</p>
-                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - {this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></p>
+                                                <p><span>{SUBSCRIPTION_PLANS[this.state.subscription].name} - <span style={{textTransform: "lowercase", background:"transparent"}}>{this.state.totalPlanQuantity < 2 ? this.state.totalPlanQuantity + " seat" : this.state.totalPlanQuantity + " seats"}</span></span> <span style={{textTransform: "uppercase"}}>{SUBSCRIPTION_PLANS[this.state.subscription].term} BILLING</span></p>
                                             </div>
+                                            {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
                                             <div className="subscription-success-purchased-plan-billing">
                                                 <p>Next billing:</p>
                                                 <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.totalPlanQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.totalPlanQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(365) : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(30) : 0}</strong></p>
                                             </div>
+                                            }
                                         </div>
+                                        
                                     </div>
                                     }
-                                    {
-                                        this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className="subscription-current-plan-warning-container">
+                                    {  this.state.kmActiveUsers > this.state.totalPlanQuantity ? <div className="subscription-current-plan-warning-container">
                                         <div className="subscription-warning-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="68" height="68" viewBox="0 0 512 512">
                                                 <path d="M507.494 426.066L282.864 53.537c-5.677-9.415-15.87-15.172-26.865-15.172s-21.188 5.756-26.865 15.172L4.506 426.066c-5.842 9.689-6.015 21.774-.451 31.625 5.564 9.852 16.001 15.944 27.315 15.944h449.259c11.314 0 21.751-6.093 27.315-15.944 5.564-9.852 5.392-21.936-.45-31.625zM256.167 167.227c12.901 0 23.817 7.278 23.817 20.178 0 39.363-4.631 95.929-4.631 135.292 0 10.255-11.247 14.554-19.186 14.554-10.584 0-19.516-4.3-19.516-14.554 0-39.363-4.63-95.929-4.63-135.292 0-12.9 10.584-20.178 24.146-20.178zm.331 243.791c-14.554 0-25.471-11.908-25.471-25.47 0-13.893 10.916-25.47 25.471-25.47 13.562 0 25.14 11.577 25.14 25.47 0 13.562-11.578 25.47-25.14 25.47z" fill="#f8ba36"/>
@@ -617,7 +620,7 @@ class Billing extends Component {
                                             <p>Number of seats:</p>
                                         </div>
                                         <div className="seat-selector--input">
-                                            <input maxlength="4" min="1" max="10000" type="text" value={this.state.seatsBillable} pattern="^[0-9]*$" onChange={(e) => this.handleChange(this.state.choosePlan, e)} onKeyPress={this.keyPress}/>
+                                            <input maxlength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={(e) => this.handleChange(this.state.choosePlan, e)} onKeyPress={this.keyPress}/>
                                             <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
                                         </div>
                                     </div>
@@ -670,7 +673,7 @@ class Billing extends Component {
                                                         <div className="pricing-value">
                                                             <div>
                                                                 <h2> $0 </h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">free forever</p>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">up to 2 agents</p>
                                                                 <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
@@ -874,61 +877,71 @@ const SUBSCRIPTION_PLANS = {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
-        'amount': '49'
+        'amount': '49',
+        'term': 'monthly'
     },
     'launch_yearly': {
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
-        'amount': '39'
+        'amount': '39',
+        'term': 'Yearly'
     },
     'growth_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '199'
+        'amount': '199',
+        'term': 'Monthly'
     },
     'growth_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '149'
+        'amount': '149',
+        'term': 'Yearly'
     },
      'early_bird_monthly': {
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
-        'amount': '49'
+        'amount': '49',
+        'term': 'Monthly'
     },
     'early_bird_yearly': {
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
-        'amount': '39'
+        'amount': '39',
+        'term': 'Yearly'
     },
     'enterprise_monthly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Unlimited',
-        'amount': 'Custom'
+        'amount': 'Custom',
+        'term': 'Monthly'
     },
     'enterprise_yearly': {
         'icon': EnterprisePlanIcon,
         'name': 'Enterprise',
         'mau': 'Unlimited',
-        'amount': 'Custom'
+        'amount': 'Custom',
+        'term': 'Yearly'
     },
     'per_agent_monthly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '10'
+        'amount': '10',
+        'term': 'Monthly'
     },
     'per_agent_yearly': {
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
-        'amount': '8'
+        'amount': '8',
+        'term': 'Yearly'
     }
 };
 
