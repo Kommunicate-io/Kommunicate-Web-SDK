@@ -1,5 +1,5 @@
 .bot-main-card-container {
-  width: 60%;
+  width: 65%;
   margin: 0 auto;
 }
 .integrated-bot-converstaion-routing-text {
@@ -178,14 +178,10 @@
 }
 .km-dialogflow-version-select {
   font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
   letter-spacing: 0.3px;
   text-align: left;
-  color: #565758;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  color: #717374;
 }
 .km-dialogflow-radio {
   display: inline-flex;
@@ -236,8 +232,331 @@
   margin-left: 15px;
 }
 
-.km-dialog-flow-edit {
-    margin: 25px;
-    font-size: 15px;
-    text-align: center;
+.km-integrated-bot-list-row:hover .teammates-delete-wrapper{
+  visibility:visible;
+  opacity: 1;
+
+}
+
+.teammates-delete-wrapper {
+  visibility: hidden;
+  opacity: 0;
+  padding-top: 3px;
+  transition: all 0.3s cubic-bezier(1, 0, 0, 1);
+
+}
+
+.km-bot-edit-delete {
+  display: contents;
+}
+
+.km-image-name {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.incoming-email-forward-email-id-container-test {
+  padding: 5px 0px 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 2px;
+  transition: all .3s cubic-bezier(1, 0, 0, 1);
+  border: 1px dashed #FFF;
+
+}
+.km-integrated-bot-list-row:hover .incoming-email-forward-email-id-container-test{
+  border: 1px dashed #bcb7b7;
+
+}
+.incoming-email-forward-email-id-container-test textarea {
+  overflow: hidden;
+  width: 100%;
+  resize: none;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  border: none;
+  height: 25px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: 0.4px;
+  color: #666464;
+
+}
+.incoming-email-forward-copy-icon button {
+  min-width: 80px;
+  background: transparent;
+  height:30px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  color: #969393;
+  visibility: hidden;
+  opacity: 0;
+  transition: all .3s cubic-bezier(1, 0, 0, 1);
+
+}
+.km-integrated-bot-list-row:hover .incoming-email-forward-copy-icon button {
+  visibility: visible;
+  opacity: 1;
+}
+.incoming-email-forward-copy-icon button svg {
+  width: 16px;
+  height: auto;
+  vertical-align: text-top;
+  margin-right: 3px;
+}
+
+.km-bot-name-size-restriction{
+  width: 65%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
+}
+
+.km-selected-bot-name{
+  font-size: 20px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #aeaeae;
+  text-transform: capitalize;
+}
+.km-delete-box-header{
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #cfd8dc;
+}
+
+.km-cancel-delete{
+  margin-top: 20px;
+  margin-left: 60%;
+  display: flex;
+}
+
+.km-delete-bot-position{
+  margin-top: 160px;
+}
+
+.km-bot-integration-use-case-modal-text-style{
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.43;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #505152;
+}
+
+.km-bot-delete-text{
+  margin-top: 15px;
+}
+
+.km-textArea-custom-color{
+  font-size: 16px !important;
+  color: #464748 !important;
+  overflow: -webkit-paged-x !important;
+}
+
+.km-edit-section-header{
+display: block;
+padding-right: 75px;
+display: flex;
+justify-content: space-between;
+padding: 15px;
+border-bottom: 1px solid #cfd8dc;
+}
+
+.km-default-bot-dp{
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.km-edit-bot-name-container{
+  display: flex;
+}
+
+.km-bot-edit-name-font{
+  width: 50%;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.3px;
+  text-align: left;
+  color: #57595b;
+}
+
+.km-bot-detail-design{
+  width: 60%;
+  margin-right: 64px;
+  padding: 9px 0px;
+}
+
+.km-edit-bot-image{
+   overflow: hidden;
+   border-radius: 61%;
+   position: relative;
+   width: 105px;
+   cursor: pointer;
+
+}
+.km-edit-bot-image:hover .km-edit-section-hover{
+  opacity: 0.7;
+}
+
+.km-edit-section-hover{
+  text-align: center;
+  position: absolute;
+  background: black;
+  opacity: 0;
+  z-index: 100;
+  color: white;
+  bottom: -2px;
+  left: 50%;
+  display: block;
+  width: 100%;
+  transform: translate(-50%);
+  text-transform: capitalize;
+  height: 31px;
+  padding: 4px 0 0 0;
+  font-size: 14px;
+  transition: .3s;
+  letter-spacing: 0.8px;
+}
+
+.km-restrict-bootstrap-margin {
+  margin-bottom: 0px !important;
+}
+
+.km-edit-bot-credentials{
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+}
+.km-edit-bot-credentials-text{
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  color: #57595b;
+  width: 30%;
+}
+
+.km-edit-section-body {
+  display: block;
+  padding-right: 75px;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 15px;
+  border-bottom: 1px solid #cfd8dc;
+  margin: 0 auto;
+  width: 95%;
+}
+
+.km-dialogflow-version-select-edit {
+  text-align: left;
+  margin-bottom: 40px;
+  font-size: 18px;
+  color: #6c6a6a;
+}
+.km-dialogflowV2-key-file{
+  margin-right: 20px;
+  font-size: 16px;
+  letter-spacing: 0.3px;
+  color: #57595b;
+}
+
+.km-dialogflowV2-key-file-btn{
+  border-radius: 2px !important;
+  background-color: #f6f6f6 !important;
+  border: none !important;
+  color: #abacad !important;
+}
+
+.km-liz-container{
+  width: 97%;
+  padding: 20px 10px;
+  border-radius: 3px;
+  border: solid 1px #dedede;
+  margin-bottom: 38px;
+}
+
+.km-liz-img{
+  padding-left: 60px;
+}
+.km-liz-img svg{
+  display: block;
+    width: 100%;
+}
+
+.km-pre-integrated{
+  border-radius: 1px;
+  background-color: #cce7f8;
+  display: inline;
+  padding: 2px 15px 2px 5px;
+  color: #605e5e;
+  font-size: 16px;
+}
+
+.km-liz-section-heading{
+  letter-spacing: 1.2px;
+    text-align: left;
+    color: #5f5d5d;
+    font-size: 20px;
+    padding-top: 10px;
+}
+.km-liz-section-heading span{
+  font-weight: 500;
+  color: #333232;
+}
+
+.km-liz-section-textcontent{
+  width: 80%;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.29;
+  letter-spacing: 0.4px;
+  text-align: left;
+  color: #626365;
+  padding:6px 0 15px 0;
+}
+
+.km-liz-link{
+  text-decoration: none;
+  color:#4831d9;
+  font-weight: 400;
+}
+
+.km-bot-image-circle{
+  margin-top: 0px;
+  width: auto;
+  height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.km-bot-image-edit-section{
+  margin-right: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
 }
