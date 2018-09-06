@@ -368,13 +368,13 @@
 }
 
 .launch .pricing-table-body-footer ul {
-    /* margin-bottom:156px; */
+    margin-bottom:78px;
 }
 .growth .pricing-table-body-footer ul {
     margin-bottom: 36px;
 }
 .startup .pricing-table-body-footer ul {
-    margin-bottom: 205px;
+    margin-bottom: 226px;
 }
 .enterprise .pricing-table-body-footer ul {
     /* margin-bottom: 45px; */
@@ -772,6 +772,7 @@
 }
 .subscription-success-purchased-plan-billing p:last-child strong {
     color: #2d2b2b;
+    font-weight: 500;
 }
 
 .subscription-success-purchased-plan-billing p {
@@ -811,4 +812,12 @@
 }
 .subscription-current-plan-warning-container p:last-child > a, .subscription-add-delete-agent-text a {
     color: #4831d9;
+}
+
+.pricing-table-body button:disabled {
+    height: 30px;
+    border-radius: 0;
+    background-color: #e8e8e8;
+    color: #908e8e;
+    margin: 6px 0px 0px;
 }
