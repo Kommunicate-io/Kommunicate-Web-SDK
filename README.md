@@ -30,6 +30,7 @@ Dynamic FAQs: Curate a customer-driven knowledge base that is based on the frequ
 To get started with Kommunicate plugin, head over to Kommunicate website and Signup to get your Application ID.
 
 To integrate kommunicate plugin you have to include below file in your project:
+
 https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/template/km-sidebox.html
 
 https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/js/app/km-login.js
