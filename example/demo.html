@@ -1,0 +1,13 @@
+<html>
+<head>
+<link rel="import" href="../template/km-sidebox.html">
+</head>
+<body>
+<script>
+          var link = document.querySelector('link[rel="import"]');
+          var content = link.import;
+          var el = content.querySelector('#kommunicate');
+          document.body.appendChild(el.cloneNode(true));
+          </script>
+</body>
+</html>

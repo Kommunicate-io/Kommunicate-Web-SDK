@@ -17,6 +17,7 @@
 		<script type ="text/javascript" src="../lib/js/jquery-2.2.2.min.js"></script>
 	</head>
 	<body>
+<div id ="kommunicate">
 <div id="mck-sidebox" class="mck-sidebox mck-box fade" style="visibility: hidden;">
 	<div class="mck-box-dialog mck-box-sm mck-right mck-bg-white">
 		<div id="mck-sidebox-content" class="mck-sidebox-content mck-box-content">
@@ -772,6 +773,7 @@
 		</div>
 	</a>
 </div>
+</div>
 </body>
 <script type="text/javascript" src="../js/kommunicatepluginrequirements.min.js"></script>
 <script type="text/javascript" src="../js/app/kommunicate-plugin-0.2.min.js"></script>
@@ -788,6 +790,7 @@
 <script type="text/javascript" src="../js/app/km-richtext-markup-1.0.js"></script>
 <script type="text/javascript" src="../js/app/applozic.chat.min.js"></script>
 <script type="text/javascript" src="../js/app/mck-sidebox-1.0.js"></script>
+<script type="text/javascript" src="../js/app/km-login.js"></script>
 
 <script type="text/javascript">
 	var oModal = "";
@@ -828,25 +831,12 @@ function showAfterLoad(){
 	}, false);
 }
 
-$(document)
-	.ready(
-		function() {
-			//Function to initialize plugin
-
-			$applozic.fn
-				.applozic({
-					baseUrl:'https://apps.applozic.com',
-					userId : 'debug456', //TODO: replace with actual userId
-					userName : 'debug456',    //TODO: replace with actual userName
-					appId : 'applozic-sample-app',  //TODO: replace with actual appId
-					// onInit : onInitialize, //callback function execute on plugin initialize
-					desktopNotification : true
-				});
-
-				// var contactjson = {"contacts": [{"userId": "user1", "displayName": "Devashish", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}, {"userId": "user2", "displayName": "Adarsh", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}, {"userId": "user3", "displayName": "Shanki", "imageLink": "https://www.applozic.com/resources/images/applozic_icon.png"}]};
-				// To load contact list use below function and pass contacts json in format shown above in variable 'contactjson'.
-				// $applozic.fn.applozic('loadContacts', contactjson);
-
-		});
+$(document).ready(function () {
+    var setting = {};
+    setting.userId = "suraj@kommunicate.io";
+    setting.userName = "kommunicate-support";
+    setting.appId = "kommunicate-support";
+    kmLogin(setting);
+});
 		</script>
 </html>
