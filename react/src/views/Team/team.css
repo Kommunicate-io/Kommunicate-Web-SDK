@@ -73,6 +73,10 @@
   width: 55px;
   
 }
+.teammates-delete-icon .km-teammates-delete-visibility{
+  visibility: visible;
+  opacity: 1;
+}
 .team-data-allign:hover {
   border-radius: 3px;
   background-color: #ffffff;
