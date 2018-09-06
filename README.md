@@ -27,7 +27,7 @@ Dynamic FAQs: Curate a customer-driven knowledge base that is based on the frequ
 
 ### Getting Started :
 
-To get started with Kommunicate plugin, head over to Kommunicate website and Signup to get your Application ID.
+To get started with Kommunicate plugin, head over to Kommunicate website and [Signup](https://dashboard.kommunicate.io/signup?utm_source=github&utm_medium=readme&utm_campaign=ios) to get your Application ID. 
 
 To integrate kommunicate plugin you have to include below file in your project:
 
