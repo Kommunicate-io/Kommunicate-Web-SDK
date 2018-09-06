@@ -163,7 +163,7 @@ class Billing extends Component {
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
                 subscribeElems[i].value = "Current Plan";
             }
-            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription) {
+            if(currentPlanElems[i].getAttribute('data-choose-plan') == this.state.subscription || currentPlanElems[i].getAttribute('data-cb-plan-id') == that.state.subscription) {
                 currentPlanElems[i].textContent = "Current Plan";
                 currentPlanElems[i].disabled = true;
             }
