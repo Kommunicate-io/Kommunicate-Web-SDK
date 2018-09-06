@@ -7512,19 +7512,15 @@ const MESSAGE_CONTENT_TYPE = {
                                         var file = $applozic(this)[0].files[0];
                                         if(file.type == "image/jpeg"){
                                             var reader = new FileReader();
-                                            reader.onload = (function(theFile) {
+                                            reader.onload = function(theFile) {
                                             return function(e) {
                                               var span = document.createElement('span');
                                               span.innerHTML = ['<img class="thumb" src="', e.target.result,
                                                                 '" title="', escape(theFile.name), '"/>'].join('');
                                             };
-                                          })(file);
+                                          }
                                           reader.readAsDataURL(file);
-                                          let dataUrl = reader.result;
-                                          let groupId = "";
                                           var tabId = $mck_msg_inner.data('mck-id');
-                                        //   FILE_META.push(dataUrl);
-                                          FILE_META.push({"thumbnailUrl":dataUrl,contentType: "image/jpeg",isUploaded:false});
                                           let messagePxy = {
                                               groupId : tabId,
                                               contentType : 1,
@@ -7532,7 +7528,14 @@ const MESSAGE_CONTENT_TYPE = {
                                               message:"",
 
                                             }
-                                          mckMessageService.sendMessage(messagePxy);
+                                            reader.onloadend = function () {
+                                                console.log(reader.result);
+                                                FILE_META.push({ thumbnailUrl: reader.result, contentType: "image/jpeg", isUploaded: false });
+                                                if (FILE_META[0].thumbnailUrl) {
+                                                    mckMessageService.sendMessage(messagePxy);
+                                                }              
+                                            }
+                                                    
                                         }
 
 
@@ -7579,7 +7582,9 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 });
             };
+            // _this.generateDataURl =function (params) {
 
+            // }
             _this.audioRecoder = function(params) {
              if(MCK_CUSTOM_UPLOAD_SETTINGS === "awsS3Server"){
              _this.uploadAttachment2AWS(params);
