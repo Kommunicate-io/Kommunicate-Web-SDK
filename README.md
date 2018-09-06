@@ -43,6 +43,6 @@ CSS: https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/
 JS: https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/js/app/mck-sidebox-1.0.js
 
 
-Docs:
+### Docs:
 
 Please checkout [Documentation](https://docs.kommunicate.io/docs/web-installation.html) for more details.
