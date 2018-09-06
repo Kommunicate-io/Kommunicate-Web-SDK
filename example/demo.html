@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="import" href="../template/km-sidebox.html">
+<script type="text/javascript" src="../js/app/km-login.js"></script>
 </head>
 <body>
 <script>
@@ -8,6 +9,13 @@
           var content = link.import;
           var el = content.querySelector('#kommunicate');
           document.body.appendChild(el.cloneNode(true));
+          $(document).ready(function () {
+              var setting = {};
+              setting.userId = "suraj@kommunicate.io"; // Replace with your id
+              setting.userName = "kommunicate-support";// Replace with your userName
+              setting.appId = "kommunicate-support";   // Replace with applicationId
+              kmLogin(setting);
+          });
           </script>
 </body>
 </html>

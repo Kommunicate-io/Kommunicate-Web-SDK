@@ -5,9 +5,9 @@ function kmLogin(options) {
   $applozic.fn
     .applozic({
       baseUrl:'https://apps.applozic.com',
-      userId : options.userId, //TODO: replace with actual userId
-      userName : options.userName,    //TODO: replace with actual userName
-      appId : options.appId,  //TODO: replace with actual appId
+      userId : options.userId,
+      userName : options.userName,
+      appId : options.appId, 
       // onInit : onInitialize, //callback function execute on plugin initialize
       desktopNotification : true
     });
