@@ -554,7 +554,7 @@ export default class IntegratedBots extends Component {
                         <div className="km-liz-text">
                         <div className="km-pre-integrated">Pre-integrated</div>
                         <div className="km-liz-section-heading">
-                          <span>Liz </span> - FAQ bot by Kommunikate</div>
+                          <span>Liz </span> - FAQ bot by Kommunicate</div>
                         </div>
                         <div className="km-liz-section-textcontent">
                           Let Liz answer common queries and let your team concentrate on more complex ones. Just fill up your <Link className="km-liz-link" to='/faq'>FAQs</Link> and then <Link className="km-liz-link" to='/settings/agent-assignment'>Assign</Link> conversatons to Liz.

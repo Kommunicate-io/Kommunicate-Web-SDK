@@ -74,7 +74,7 @@ export default class BotStore extends Component {
           botAvailable: true,
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
-          defaultBotUrl:'https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_apps/applozic-sample-app/_Attachment/c9147780c06eb5e592d4db4f5d0b39e48725cc09_defaultBotImage.png'
+          defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png"
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;

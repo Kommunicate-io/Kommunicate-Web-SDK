@@ -14,13 +14,13 @@ const authenticationService = require("../authentication/authenticationService.j
 
 exports.createCustomer = async (req, res) => {
   // userName is the primary parameter. user Id was replaced by userName.
-  const userName = req.body.userName ? req.body.userName : req.body.userId;
-  const isPreSignUp = req.query.preSignUp;
-  const isOAuthSignUp = req.query.OAuthSignUp;
-  const password = isPreSignUp ? randomString.generate(6) : req.body.password;
-  const name = req.body.name;
-  const email = req.body.email || userName;
-  const subscription = req.body.subscription || subscriptionPlan.initialPlan;
+  let userName = req.body.userName ? req.body.userName : req.body.userId;
+  let isPreSignUp = req.query.preSignUp;
+  let isOAuthSignUp = req.query.OAuthSignUp;
+  let password = isPreSignUp ? randomString.generate(6) : req.body.password;
+  let name = req.body.name;
+  let email = req.body.email || userName;
+  let subscription = req.body.subscription || subscriptionPlan.initialPlan;
   let response = {};
   userName = userName.toLowerCase();
   userName = userName.toLowerCase();
@@ -96,8 +96,8 @@ exports.createCustomer = async (req, res) => {
 
 exports.patchCustomer = (req, res) => {
   let response = {};
-  const customer = req.body;
-  const userId = req.params.userId;
+  let customer = req.body;
+  let userId = req.params.userId;
   let subscribed = customer.subscription && customer.subscription != "startup";
   console.log("request recieved to update customer: ", userId, "body", customer);
   if (customer.websiteUrl) {
@@ -131,10 +131,10 @@ customerService.getCustomerByUserName(userId).then(async dbCostomer => {
         if (integration.pipeDriveId) {
           let deal = { id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo }
           subscribed || dbCostomer.isPaidCustomer ? deal.status = "won" : undefined;
-          pipeDrive.updateDeal(deal); 
+          pipeDrive.updateDeal(deal);
         } else {
           let organization = { name: customer.companyName };
-          let person = { name: customer.name, email: userId, phone: customer.contactNo, } 
+          let person = { name: customer.name, email: userId, phone: customer.contactNo, }
           pipeDrive.createDealInPipeDrive(organization, person).then(result => {
             integration['pipeDriveId'] = result.data.data.id;
             let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
@@ -171,7 +171,7 @@ customerService.getCustomerByUserName(userId).then(async dbCostomer => {
  * @param {*} res
  */
 exports.getCustomerInformation = (req, res) => {
-  const userName = req.params.userName;
+  let userName = req.params.userName;
   console.log("request received to get customer information: ", userName);
   if (!userName) {
     res.status(400).json({ code: "BAD_REQUEST", message: "user name is empty" });
@@ -196,10 +196,10 @@ exports.getCustomerInformation = (req, res) => {
 }
 
 exports.signUpWithAplozic = (req, res) => {
-  const userName = req.body.userName;
-  const password = req.body.password;
-  const applicationId = req.body.applicationId;
-  const email = req.body.email || userName;
+  let userName = req.body.userName;
+  let password = req.body.password;
+  let applicationId = req.body.applicationId;
+  let email = req.body.email || userName;
   let response = {};
 
   console.log("userName:", userName, password);
