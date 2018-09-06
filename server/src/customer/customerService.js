@@ -21,11 +21,14 @@ const createCustomer = (customer, application, transaction) => {
 const getCustomerByApplicationId = (appId) => {
     let settings = { applicationId: appId };
     return Promise.resolve(customerModel.findOne({ include: [{ model: applicationModel, attributes: ['applicationId', 'created_at'], where: { 'applicationId': appId } }] })).then(customer => {
-        return appSettingService.getAppSettingsByApplicationId(settings).then(response => {
-            customer.agentRouting = response.data.agentRouting;
-            customer.botRouting = response.data.botRouting;
-            return customer;
-        })
+        if (customer) {
+            return appSettingService.getAppSettingsByApplicationId(settings).then(response => {
+                customer.agentRouting = response.data.agentRouting;
+                customer.botRouting = response.data.botRouting;
+                return customer;
+            })
+        }
+        return null;
     })
 }
 
