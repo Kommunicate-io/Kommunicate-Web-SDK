@@ -94,7 +94,10 @@ class ThirdPartyScripts extends Component {
            s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
             window.fbq('init', '282023555639912');
             window.fbq('track', 'PageView');
-
+            if(currentPath.includes('/setUpPage')) {
+              window.fbq('track', 'CompleteRegistration');
+            }
+            
             //Active Campaign script
             var trackcmp_email = '';
             var trackcmp = document.createElement("script");

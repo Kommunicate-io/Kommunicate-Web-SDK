@@ -6,11 +6,11 @@ sidebar_label: Authentication
 
 ## Setup
 
-There is a setup call that you need to do before registration or login.You can get your application key by signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io).
+There is a setup call that you need to do before registration or login. You can get your [App ID](https://dashboard.kommunicate.io/settings/install) by signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io).
 Add below line in AppDelegate's launch method or just before the registration:
 
 ```
-Kommunicate.setup(applicationId: <pass your application key>)
+Kommunicate.setup(applicationId: <pass your App ID>)
 ```
 
 ## Registration/Login
@@ -46,7 +46,7 @@ Create a KMUser object and pass it to the `registerUser` method:
 let kmUser = KMUser()
 kmUser.userId = userId
 kmUser.email = emailId // Optional
-kmUser.applicationId = applicationKey
+kmUser.applicationId = appId
 
 // Use this same API for login
 Kommunicate.registerUser(kmUser, completion: {

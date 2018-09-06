@@ -16,9 +16,11 @@ function getEnvironmentId() {
   const kommunicateBaseUrl = config.baseurl.kommunicateAPI;
   const botPlatformAPI =config.baseurl.botPlatformAPI;
   const kmWebsiteUrl = config.kommunicateWebsiteUrl;
+  const serviceUrl = config.services.baseurl;
   config.homeUrl = applozicBaseUrl;
   config.kommunicateBaseUrl = kommunicateBaseUrl;
   config.baseurl.baseUrl = applozicBaseUrl;
+  config.serviceUrl = serviceUrl;
   config.applozicPlugin = {
     "applozicHosturl": applozicBaseUrl,
     "baseUrl": kommunicateBaseUrl + url.kommunicateApi.PLUGIN_URL,
@@ -56,6 +58,7 @@ function getEnvironmentId() {
   config.kommunicateWebsiteUrls = {
     "kmConversationsTestUrl": kmWebsiteUrl + url.kommunicateWebsite.KM_WEBSITE_CONVERSATIONS_TEST
   }
+  
 
 export function get(env) {
   return config;

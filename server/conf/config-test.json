@@ -98,7 +98,11 @@
         "host":"apps-test.applozic.com",
         "userName":"applozic",
         "password":"@ppl0zic"
-    },
+    },"kong":{
+      "adminUrl":"https://kong-admin.applozic.com",
+      "apiUrl":"https://kong-api.applozic.com",
+      "enabled":true
+  },
 
     "kommunicateParentKey": "applozic2de64d50463586b9568467a1df9d21102",
     "kommunicateAdminId": "suraj@applozic.com",

@@ -9,8 +9,8 @@ base_customer_path = os.path.abspath(os.path.join(base_dir, "..", ".."))
 
 #Fallback action for bot
 #Configuration of threshold answering for bot
-core_threshold = 0.55
-nlu_threshold = 0.45
+core_threshold = 0.10
+nlu_threshold = 0.10
 
 
 #end point of cron time stamp at Node

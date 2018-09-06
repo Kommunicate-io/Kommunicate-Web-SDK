@@ -161,6 +161,19 @@ const CommonUtils = {
         let userSession = CommonUtils.getUserSession();
         userSession.availabilityStatus ? userSession.availabilityStatus = status : userSession.status = status;
         CommonUtils.setUserSession(userSession);
+    },
+    //pass number of days you want to calculate forward to in countTo variable.
+    countDaysForward: function(countTo) {
+        var currentDate = new Date();
+        var numberOfDaysToAdd = countTo;
+        var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+        currentDate.setDate(currentDate.getDate() + numberOfDaysToAdd);
+        var dd = currentDate.getDate();
+        var mm = currentDate.getMonth() + 1;
+        mm = months[mm - 1];
+        var y = currentDate.getFullYear();
+        var calculatedDate = dd + ' ' + mm + ', '+ y;
+        return calculatedDate;
     }
 }
 

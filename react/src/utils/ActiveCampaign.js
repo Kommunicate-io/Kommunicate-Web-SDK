@@ -1,5 +1,6 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
+import  { getConfig }  from '../../src/config/config';
 
 export function acEventTrigger(trigger) {
     var event;
@@ -63,6 +64,7 @@ export function acEventTrigger(trigger) {
       "&event=" + event +
       "&visit=" + encodeURIComponent(JSON.stringify(visit)) +
       "&eventdata=" + eventData;
+      
     // console.log(eventString)
   
     let axiosConfig = {
@@ -72,8 +74,8 @@ export function acEventTrigger(trigger) {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     };
-  
-    axios.post("https://trackcmp.net/event", eventString, axiosConfig)
+    let trackingURL = getConfig().serviceUrl+"/track?";
+    axios.post(trackingURL, eventString, axiosConfig)
       .then((res) => {
         // console.log("RESPONSE RECEIVED: ", res);
       })

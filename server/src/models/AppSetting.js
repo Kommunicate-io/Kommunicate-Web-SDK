@@ -10,6 +10,13 @@ let AppSetting= function(sequelize, DataTypes) {
         type:DataTypes.STRING(150),
         allowNull: false,
         field: 'application_id'
+      }, agentRouting: {
+        type: DataTypes.INTEGER,
+        field: "agent_routing"
+      },
+      botRouting: {
+        type: DataTypes.BOOLEAN,
+        field: "bot_routing"
       },
       collectEmail:{
         type:DataTypes.BOOLEAN,
@@ -17,7 +24,8 @@ let AppSetting= function(sequelize, DataTypes) {
         field: 'collect_email',
         defaultValue: 0
       }  
-    }, {
+    },
+    {
       underscored: true,
       paranoid: true
     });

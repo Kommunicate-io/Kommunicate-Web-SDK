@@ -42,14 +42,6 @@ let customer = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       field: 'active_campaign_id'
     },
-    agentRouting: {
-      type: DataTypes.INTEGER,
-      field: "agent_routing"
-    },
-    botRouting: {
-      type: DataTypes.BOOLEAN,
-      field: "bot_routing"
-    },
     subscription: {
       type: DataTypes.STRING(50),
       field: "subscription" //STARTUP, LAUNCH, GROWTH, ENTERPRISE

@@ -106,7 +106,11 @@ def add_nludata(intent, questions, app_key):
     data = {}
     with open(get_abs_path('customers/' + app_key + '/faq_data.json')) as json_file:
         data = json.load(json_file)
-        for question in questions:
+
+        if(isinstance(questions, str)):
+            ques =[questions]
+
+        for question in ques:
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
@@ -221,7 +225,13 @@ def load_models(app_key):
     path_model = os.path.join(parent + "/customers/" + app_key + "/models")
     if(os.path.isdir(path_model) is False):
         load_training_data(app_key)
+    
+    path_nlu = os.path.join(parent + "/customers/" + app_key + "/models/nlu")
+    if(os.path.isdir(path_nlu) is False):
         call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
+    
+    path_dialogue = os.path.join(parent + "/customers/" + app_key + "/models/dialogue")
+    if(os.path.isdir(path_dialogue) is False):
         train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
     return
 
@@ -247,6 +257,7 @@ def train_dialogue(app_key, domain_file, model_path, training_data_file):
                           core_threshold=env.nlu_threshold,
                           nlu_threshold=env.core_threshold)
     agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
+    #agent = Agent(domain_file, policies=[KerasPolicy(), MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)

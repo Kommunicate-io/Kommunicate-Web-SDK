@@ -72,7 +72,7 @@ exports.createCustomer = customer => {
           return userModel.bulkCreate([kmUser, botObj, lizObj], { transaction: t }).spread((user, bot, lizObj) => {
             console.log("user created", user ? user.dataValues : null);
             console.log("created bot ", bot.dataValues);
-            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, botRouting: customer.botRouting, applicationCreatedAt: customer.applications[0].created_at })
+            let signupUser = Object.assign(user.dataValues, { subscription: customer.subscription, applicationCreatedAt: customer.applications[0].created_at })
             return getResponse(signupUser, applozicCustomer, application);
           });
         });

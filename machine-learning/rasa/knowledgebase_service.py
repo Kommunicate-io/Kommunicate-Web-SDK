@@ -22,6 +22,7 @@ response = requests.get(env.cron_endpoint + '/' +cron_key)
 print(response.text)
 data = json.loads(response.text)
 last_update_time = int(data['lastRunTime'])
+print("last run time: " + data['lastRunTime'])
 
 # appkeys = ['2222','1111']
 appkeys = set()
@@ -33,6 +34,7 @@ new_data = collection.find({'updated_at':{'$gte':last_update_time,
 print(new_data)
 print('\n\n\n\n\n')
 print(env.rasa_endpoint+'faq/add')
+
 for data in new_data:
     if data['status'] != 'un_answered':
         data_id = data['_id']
@@ -44,8 +46,8 @@ for data in new_data:
         except KeyError:
             print("applicationId not found, this might happen if its very old record.")
             continue
-        
-        if data['created_at']>=last_update_time:
+
+        if int(round(data['created_at']))>=last_update_time:
             if data['deleted'] == True:
                 #new create is placed and then deleted, so no need to do anything for that
                 #simply remove that entity from Mongo
@@ -53,18 +55,22 @@ for data in new_data:
                 continue
             else:
                 #raise req to faq/add
-                r = requests.post(env.rasa_endpoint+'faq/add',headers={'content-type':'application/json'},data=data)
+                r = requests.post(env.rasa_endpoint+'faq/add',headers={'content-type':'application/json'},data=json.dumps(data))
+                print(r.text)
                 print('Data added for applicationId :', data['applicationId'])
+                print(data)
         else:
             if data['deleted'] == True:
                 #raise req for faq bot to faq/delete
-                r = requests.post(env.rasa_endpoint+'faq/delete',headers={'content-type':'application/json'},data=data)
+                r = requests.post(env.rasa_endpoint+'faq/delete',headers={'content-type':'application/json'},data=json.dumps(data))
+                print(r.text)
                 print('Data deleted from bot\'s database for applicationId :', data['applicationId'])
                 #delete data from knowledgebase
                 collection.remove({'_id':data_id})
             else:
                 #raise req to faq/update
-                r = requests.post(env.rasa_endpoint+'faq/update',headers={'content-type':'application/json'},data=data)
+                r = requests.post(env.rasa_endpoint+'faq/update',headers={'content-type':'application/json'},data=json.dumps(data))
+                print(r.text)
                 print('Data updated for applicationId :', data['applicationId'])
         print('\n\n\n\n')
 

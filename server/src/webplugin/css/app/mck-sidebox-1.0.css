@@ -284,6 +284,7 @@
 
 .mck-sidebox .mck-box-title {
 	color:white;
+	max-width: 170px;
 }
 
 .mck-box .move-right {
@@ -4697,10 +4698,9 @@ color: rgba(0,0,0,0.5);
 .km-faq{
 	color: white;
 	border: none;
-	width: 76px;
 	color: white;
     height: 15px;
-    width: 30px;
+    width: auto;
     margin-right: 10px!important;
     font-size: 16px!important;
     background-color: rgba(255, 255, 255, 0.15)!important;

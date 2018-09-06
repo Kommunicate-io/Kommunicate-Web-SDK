@@ -10,8 +10,9 @@ const pipeDriveEnable = config.getProperties().pipeDriveEnable;
 const activeCampaignEnable = config.getProperties().activeCampaignEnabled;
 const logger = require('../utils/logger');
 const subscriptionPlan = require('../utils/utils').SUBSCRIPTION_PLAN;
+const authenticationService = require("../authentication/authenticationService.js");
 
-exports.createCustomer = (req, res) => {
+exports.createCustomer = async (req, res) => {
   // userName is the primary parameter. user Id was replaced by userName.
   const userName = req.body.userName ? req.body.userName : req.body.userId;
   const isPreSignUp = req.query.preSignUp;
@@ -46,7 +47,7 @@ exports.createCustomer = (req, res) => {
         return;
       } else {
         return registrationService.createCustomer(userDetail)
-          .then(result => {
+          .then(async result => {
             if (activeCampaignEnable) {
               activeCampaignClient.addContact({ "email": email })
                 .then(subscriberId => {
@@ -56,6 +57,7 @@ exports.createCustomer = (req, res) => {
                   console.log("Error while sending Email to activeCampaign", error);
                 });
             }
+            let apiKey = await authenticationService.createConsumerAndGenerateKey(result.application&&result.application.applicationId, result.application&&result.application.apiKey)
 
             response.code = "SUCCESS";
             // replacing user Id with user name. can't delete userId from system for backward compatibility.
@@ -63,6 +65,7 @@ exports.createCustomer = (req, res) => {
             result.isAdmin = true;
             result.adminUserName = userName;
             result.adminDisplayName = name;
+            result.apiKey = apiKey ||"";
             response.data = result;
             res.status(200).json(response);
           }).catch(err => {

@@ -689,42 +689,21 @@ const getIntegratedBots = () => {
     }).catch(err => { console.log(err) })
 
 }
-const enableNotifyEveryBody = (data) => {
+
+const updateAgentAndBotRouting = (data) => {
   let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/agent/routing/" + data.routingState;
-
+  let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
+  var formdata = {};
+  if (data.user === 'bot') {
+    formdata.botRouting = data.routingState;
+  } else {
+    formdata.agentRouting = data.routingState;
+  }
   return Promise.resolve(axios({
     method: 'patch',
     url: url,
+    data: formdata
   })).then(result => {
-    // console.log(result);
-    return result;
-  }).catch(err => { console.log("Error while enable notify everybody", err) })
-}
-const enableAutomaticAssignment = (data) => {
-  let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/agent/routing/" + data.routingState;
-
-  return Promise.resolve(axios({
-    method: 'patch',
-    url: url,
-  })).then(result => {
-    // console.log(result);
-    return result;
-  }).catch(err => { console.log("Error while enable automatic assignemnt", err) })
-}
-const enableOrDisableBotRouting = (data) => {
-  let userSession = CommonUtils.getUserSession();
-
-  let url = getConfig().kommunicateBaseUrl + "/customers/" + userSession.application.applicationId + "/bot/routing/" + data.routingState;
-
-  return Promise.resolve(axios({
-    method: 'patch',
-    url: url,
-  })).then(result => {
-    // console.log(result);
     return result;
   }).catch(err => { console.log(err) })
 }
@@ -751,7 +730,18 @@ const getCustomerByApplicationId = () => {
     method: 'get',
     url: url,
   })).then(result => {
-    // console.log(result);
+    return result;
+  }).catch(err => { console.log("Error while fetching customer by applicationId", err) })
+
+}
+
+const getAgentandBotRouting =() =>{
+  let userSession = CommonUtils.getUserSession();
+  let url = getConfig().kommunicateBaseUrl + "/settings/application/" + userSession.application.applicationId;
+  return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+  })).then(result => {
     return result;
   }).catch(err => { console.log("Error while fetching customer by applicationId", err) })
 
@@ -1040,6 +1030,18 @@ const updateUserStatus = (status) => {
     }   
   }).catch(err => { throw { message: err }; })
 }
+
+const getSubscriptionDetail = (userId) => {
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail/'+ userId;
+  return Promise.resolve(axios.get(url)).then(response => {
+    if (response !== undefined && response.data !== undefined && response.status === 200 &&   response.data.code.toLowerCase() === "success") {
+      return response.data.response;
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
+
 export {
   createCustomer,
   getCustomerInfo,
@@ -1078,11 +1080,10 @@ export {
   deleteInAppMsg,
   editInAppMsg,
   getIntegratedBots,
-  enableNotifyEveryBody,
-  enableAutomaticAssignment,
-  enableOrDisableBotRouting,
   getSuggestionsByCriteria,
   getCustomerByApplicationId,
+  getAgentandBotRouting,
+  updateAgentAndBotRouting,
   createAndUpdateThirdPArtyIntegration,
   getThirdPartyListByApplicationId,
   deleteThirdPartyByIntegrationType,
@@ -1099,5 +1100,6 @@ export {
   getInvitedUserByApplicationId,
   getUserDetailsByToken,
   updateInvitedUserStatus,
-  updateUserStatus
+  updateUserStatus,
+  getSubscriptionDetail
 }

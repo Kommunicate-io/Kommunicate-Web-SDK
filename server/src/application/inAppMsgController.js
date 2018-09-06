@@ -318,7 +318,6 @@ exports.processAwayMessage = function(req,res){
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
         let collectEmail = false;
-        let isBotRoutingEnabled = customer.botRouting;
         let groupUsers = [];
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
