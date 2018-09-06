@@ -35,7 +35,7 @@ https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/templ
 
 https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/js/app/km-login.js
 
-Take reference from  https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/example/demo.html(Please run this file on any server like python,tomcat.)
+Take reference from  https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/example/demo.html  (Please run this file on any server like python,tomcat.)
 
 For any feature and design modification, following 2 file can be modified:
 
