@@ -216,6 +216,7 @@
     padding: 15px 9px 25px;
     border-radius: 3px;
     background-color: #fcfcfc;
+
 }
 
 .pricing-table-header {
@@ -340,6 +341,10 @@
 .enterprise .pricing-table-body-footer {
     padding: 0px
 }
+.enterprise .pricing-table-body-footer p {
+    margin-right: -5px;
+    margin-left: -5px;
+}
 
 .pricing-table-footer {
     padding-left: 10px;
@@ -377,7 +382,7 @@
     margin-bottom: 226px;
 }
 .enterprise .pricing-table-body-footer ul {
-    /* margin-bottom: 45px; */
+    margin-bottom: 41px;
 }
 
 .plan-breif-container span {

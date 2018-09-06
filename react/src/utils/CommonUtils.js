@@ -163,17 +163,31 @@ const CommonUtils = {
         CommonUtils.setUserSession(userSession);
     },
     //pass number of days you want to calculate forward to in countTo variable.
-    countDaysForward: function(countTo) {
+    countDaysForward: function(countTo, type) {
         var currentDate = new Date();
-        var numberOfDaysToAdd = countTo;
+        var numberOfDaysToAdd, timeStamp, diff, now;
         var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
-        currentDate.setDate(currentDate.getDate() + numberOfDaysToAdd);
-        var dd = currentDate.getDate();
-        var mm = currentDate.getMonth() + 1;
-        mm = months[mm - 1];
-        var y = currentDate.getFullYear();
-        var calculatedDate = dd + ' ' + mm + ', '+ y;
-        return calculatedDate;
+
+        if(type === "days") {
+            numberOfDaysToAdd = countTo;
+            currentDate.setDate(currentDate.getDate() + numberOfDaysToAdd);
+            var dd = currentDate.getDate();
+            var mm = currentDate.getMonth() + 1;
+            mm = months[mm - 1];
+            var y = currentDate.getFullYear();
+            var calculatedDate = dd + ' ' + mm + ', '+ y;
+            return calculatedDate;
+        } else if(type === "timestamp") {
+            countTo = countTo*1000;
+            var date = new Date(countTo)
+            date.setDate(date.getDate());
+            var dd = date.getDate();
+            var mm = date.getMonth() + 1;
+            mm = months[mm - 1];
+            var y = date.getFullYear();
+            var calculatedDate = dd + ' ' + mm + ', '+ y;
+            return calculatedDate;
+        }
     }
 }
 
