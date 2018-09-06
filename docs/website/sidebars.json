@@ -4,6 +4,7 @@
     "Android": ["android-installation","android-authentication","android-conversation","android-pushnotification","android-logout","android-customization"],
     "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"],
     "Ionic/Cordova/Phonegap":["cordova-installation","cordova-authentication","cordova-conversation","cordova-pushnotification","cordova-logout","cordova-resolving-errors"],
+    "Platform APIs":["api-authentication","api-detail"],
     "Configration":["bot-configration"]
     
     

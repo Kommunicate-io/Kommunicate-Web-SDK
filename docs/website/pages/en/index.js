@@ -66,7 +66,7 @@ const ProjectTitle = props => (
     <p className="projectSubtexts">
       Kommunicate brings a hybrid chatbots + human powered customer messaging solution for proactive and delightful customer support.
 </p>
-<DocsCards />
+    <DocsCards />
     <p className="projectSubtexts">
       Installing a free live chat on your website is easy. You can create a free account by <a className="link-para" href="https://dashboard.kommunicate.io/signup">signing up</a> for Kommunicate.
 </p>
@@ -192,11 +192,11 @@ class DocsCards extends React.Component {
                   <div className="cards-logo">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 147.028 147.021">
                       <g data-name="Group 1" transform="translate(-729 -2245)">
-                          <path fill="#5c5aa7" d="M802.514 2285.04a33.5 33.5 0 1 0 33.5 33.5 33.5 33.5 0 0 0-33.5-33.5z"
+                        <path fill="#5c5aa7" d="M802.514 2285.04a33.5 33.5 0 1 0 33.5 33.5 33.5 33.5 0 0 0-33.5-33.5z"
                           className="cls-1" data-name="Path 1" />
-                          <circle fill="#5c5aa7" cx="15.26" cy="15.26" r="15.26" className="cls-1" data-name="Ellipse 1"
+                        <circle fill="#5c5aa7" cx="15.26" cy="15.26" r="15.26" className="cls-1" data-name="Ellipse 1"
                           transform="translate(835.354 2257.49)" />
-                          <path fill="#5c5aa7" d="M869.404 2288.09l-.64-1.4-1 1.16a23 23 0 0 1-9.21 6.34l-1 .36.4 1a60.09 60.09 0 1 1-29.71-31.21l.94.45.41-1a23 23 0 0 1 6.78-8.89l1.2-1-1.37-.71a72.68 72.68 0 0 0-33.7-8.19 73.51 73.51 0 1 0 66.89 43z"
+                        <path fill="#5c5aa7" d="M869.404 2288.09l-.64-1.4-1 1.16a23 23 0 0 1-9.21 6.34l-1 .36.4 1a60.09 60.09 0 1 1-29.71-31.21l.94.45.41-1a23 23 0 0 1 6.78-8.89l1.2-1-1.37-.71a72.68 72.68 0 0 0-33.7-8.19 73.51 73.51 0 1 0 66.89 43z"
                           className="cls-1" data-name="Path 2" />
                       </g>
                     </svg>
@@ -205,6 +205,30 @@ class DocsCards extends React.Component {
                 <div className="cards-footer">
                   <h3 className="cards-title">
                     Ionic
+                  </h3>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href={docUrl('api-authentication.html', language)} className="cards-link cards-link--apis">
+              <div className="cards-container">
+                <div className="cards-body">
+                  <div className="cards-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.00531 455.61567">
+                      <g data-name="Layer 2">
+                        <g data-name="Layer 1">
+                          <g data-name="Group 1">
+                            <path fill="#5c5aa7" d="M512.00341 227.80713a28.25006 28.25006 0 0 0-15.694-25.4l-38.122-19.061 38.122-19.06a28.4 28.4 0 0 0 0-50.794l-215.216-107.605a56.419 56.419 0 0 0-50.185 0l-215.214 107.611a28.4 28.4 0 0 0 0 50.791l38.121 19.06-38.123 19.058a28.4 28.4 0 0 0 .005 50.793l38.121 19.061-38.115 19.064a28.4 28.4 0 0 0 0 50.8l215.209 107.604a56.424 56.424 0 0 0 50.185 0l215.215-107.609a28.4 28.4 0 0 0 0-50.791l-38.122-19.061 38.123-19.061a28.25 28.25 0 0 0 15.69-25.4zm-485.775-84.569a4.857 4.857 0 0 1 0-8.689l215.208-107.6a32.767 32.767 0 0 1 29.14 0l215.207 107.6a4.857 4.857 0 0 1 0 8.691l-215.2 107.6a32.76 32.76 0 0 1-29.139 0zm459.558 169.144a4.858 4.858 0 0 1 0 8.686l-215.208 107.6a32.75706 32.75706 0 0 1-29.139 0l-215.211-107.599a4.857 4.857 0 0 1 0-8.689l53.912-26.956 150.772 75.383a56.42207 56.42207 0 0 0 50.184 0l150.772-75.386zm0-80.23l-215.207 107.6a32.75706 32.75706 0 0 1-29.139 0l-215.212-107.598a4.857 4.857 0 0 1 0-8.689l53.908-26.958 150.776 75.387a56.416 56.416 0 0 0 50.183 0l150.774-75.387 53.908 26.954a4.858 4.858 0 0 1 0 8.69z" data-name="Path 1" />
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+                <div className="cards-footer">
+                  <h3 className="cards-title">
+                    Platform Apis
                   </h3>
                 </div>
               </div>
