@@ -82,9 +82,12 @@ export default class IntegratedBots extends Component {
 
        };
 
+     componentWillMount= ()=>{
+         this.getRoutingState();
+     }
+
     componentDidMount=()=>{
         this.getIntegratedBotsWrapper();
-        this.getRoutingState();
     }
 
     clearBotDetails = ()=>{
