@@ -2818,7 +2818,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + "&status=2",
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data + "&status=2&status=3&status=4&status=5",
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
