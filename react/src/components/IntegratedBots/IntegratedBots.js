@@ -496,7 +496,9 @@ export default class IntegratedBots extends Component {
               arr[responseData[j].userId] = responseData[j];
             };
             for (var j = 0; j< sortedListOfIntegratedBots.length; j++) {
-              sortedListOfIntegratedBots[j].imageLink = arr[sortedListOfIntegratedBots[j].userName].imageLink;
+              if (arr[sortedListOfIntegratedBots[j].userName]) {
+                sortedListOfIntegratedBots[j].imageLink = arr[sortedListOfIntegratedBots[j].userName].imageLink;
+              }
             }
 
             that.setState({
