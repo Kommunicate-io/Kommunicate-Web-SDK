@@ -21,8 +21,9 @@ print('request sent to : ', env.rasa_endpoint)
 response = requests.get(env.cron_endpoint + '/' +cron_key)
 print(response.text)
 data = json.loads(response.text)
-last_update_time = int(data['lastRunTime'])
-print("last run time: " + data['lastRunTime'])
+last_update_time = int(data['lastRunTime']) - 1536410635038
+#last_update_time = int(1000)
+print(last_update_time)
 
 # appkeys = ['2222','1111']
 appkeys = set()
@@ -42,19 +43,22 @@ for data in new_data:
         #print(data)
 
         try:
-            appkeys.add(data['applicationId'])
+            #appkeys.add(data['applicationId'])
+            appkeys.add("kommunicate-support")
         except KeyError:
             print("applicationId not found, this might happen if its very old record.")
             continue
-
+        print(data['created_at'])
+        #time.mktime(data['created_at'].timetuple())
         if int(round(data['created_at']))>=last_update_time:
-            if data['deleted'] == True:
+            if data['deleted'] == True or 'deleetd-at' in data:
                 #new create is placed and then deleted, so no need to do anything for that
                 #simply remove that entity from Mongo
                 collection.remove({'_id':data_id})
                 continue
             else:
                 #raise req to faq/add
+                print (data)
                 r = requests.post(env.rasa_endpoint+'faq/add',headers={'content-type':'application/json'},data=json.dumps(data))
                 print(r.text)
                 print('Data added for applicationId :', data['applicationId'])

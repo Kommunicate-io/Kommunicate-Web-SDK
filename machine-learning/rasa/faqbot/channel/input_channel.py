@@ -78,13 +78,14 @@ def upload_training_data(applicationKey):
 def add_domain(intent, answer, app_key):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
+    #yaml.preserve_quotes = True
     bot_path = 'customers/' + app_key + '/faq_domain.yml'
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
     data['intents'].append(intent)
     data['actions'].append('utter_' + intent)
-    data['templates']['utter_' + intent] = [answer]
+    data['templates']['utter_' + intent] = [json.dumps({'message': answer})]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
@@ -133,20 +134,24 @@ def update_nludata(body):
 
 
 def delete_domain(intent, app_key):
-    yaml = YAML(typ='rt')
-    yaml.default_flow_style = False
-    bot_path = 'customers/' + app_key + '/faq_domain.yml'
-    abs_bot_path = get_abs_path(bot_path)
-    file = Path(abs_bot_path)
-    data = yaml.load(open(abs_bot_path))
-    print(data['intents'])
-    index = data['intents'].index(intent)
-    del data['intents'][index]
-    index = data['actions'].index('utter_' + str(intent))
-    del data['actions'][index]
-    del data['templates']['utter_' + str(intent)]
-    yaml.indent(mapping=1, sequence=1, offset=0)
-    yaml.dump(data, file)
+    try:
+        yaml = YAML(typ='rt')
+        yaml.default_flow_style = False
+        bot_path = 'customers/' + app_key + '/faq_domain.yml'
+        abs_bot_path = get_abs_path(bot_path)
+        file = Path(abs_bot_path)
+        data = yaml.load(open(abs_bot_path))
+        print(data['intents'])
+        index = data['intents'].index(intent)
+        del data['intents'][index]
+        index = data['actions'].index('utter_' + str(intent))
+        del data['actions'][index]
+        del data['templates']['utter_' + str(intent)]
+        yaml.indent(mapping=1, sequence=1, offset=0)
+        yaml.dump(data, file)
+    except Exception as e:
+        print("exception while deleting intent: " + intent + " for app: " + app_key)
+        print(e)
     return
 
 
@@ -223,15 +228,16 @@ def load_training_data(applicationKey):
 def load_models(app_key):
     parent = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
     path_model = os.path.join(parent + "/customers/" + app_key + "/models")
-    if(os.path.isdir(path_model) is False):
+    model_exists = os.path.isdir(path_model)
+    if(model_exists is False):
         load_training_data(app_key)
     
     path_nlu = os.path.join(parent + "/customers/" + app_key + "/models/nlu")
-    if(os.path.isdir(path_nlu) is False):
+    if(model_exists is False or os.path.isdir(path_nlu) is False):
         call(["python3 -m rasa_nlu.train --config ../customers/" + app_key + "/faq_config.yml --data ../customers/" + app_key + "/faq_data.json --path ../customers/" + app_key + "/models/nlu --fixed_model_name faq_model_v1"], shell=True)
     
     path_dialogue = os.path.join(parent + "/customers/" + app_key + "/models/dialogue")
-    if(os.path.isdir(path_dialogue) is False):
+    if(model_exists is False or os.path.isdir(path_dialogue) is False):
         train_dialogue(app_key, get_abs_path("customers/" + app_key + "/faq_domain.yml"), get_abs_path("customers/" + app_key + "/models/dialogue"), get_abs_path("customers/" + app_key + "/faq_stories.md"))
     return
 
@@ -309,9 +315,11 @@ def index():
 def webhook():
     body = request.json
     agent = get_customer_agent(body['applicationKey'])
-    reply = agent.handle_message(body['message'])[0]['text']
+    reply_message = json.loads(agent.handle_message(body['message'])[0]['text'])
     outchannel = KommunicateChatBot(body)
-    print ("sending message: " + reply)
+    print ("sending message: ")
+    print (reply_message)
+    reply = reply_message['message']
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         addQusInMongo(body['message'], body['applicationKey'])
@@ -328,7 +336,8 @@ def addfaq():
 
     if(body['referenceId'] is None):
         intent = body['id']
-        add_domain(str(intent),body['content'],body['applicationId'])
+        #add_domain(str(intent),body['content'],body['applicationId'])
+        update_domain(body)
         add_stories(str(intent),body['applicationId'])
         add_nludata(str(intent),body['name'],body['applicationId'])
     else:
@@ -405,7 +414,8 @@ def train_bots():
                     headers={'content-type':'application/json'},
                     data=json.dumps({"cronKey": cron_key,
                                    "lastRunTime": last_run}))
-            except:
+            except Exception as e:
                 print("error while training for app_key:" + app_key)
+                print(e)
 
     return jsonify({"Success":"The bots are now sentient!"})
