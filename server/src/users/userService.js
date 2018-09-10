@@ -19,6 +19,7 @@ const botPlatformClient = require("../utils/botPlatformClient");
 const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
+const chargebeeService = require('../chargebee/chargebeeService');
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -148,6 +149,7 @@ const createUser = (user, customer) => {
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
+      updateSubscriptionQuantity(user, 1);
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
         botPlatformClient.createBot({
@@ -595,6 +597,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
           }
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+          updateSubscriptionQuantity(user, -1);
           return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
         })
     })
@@ -608,6 +611,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
+            updateSubscriptionQuantity(user, 1);
             applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
               console.log("message: ", err.code)
             });
@@ -626,6 +630,17 @@ const isDeletedUser= (userName, applicationId) => {
   return userModel.findOne({ where: criteria, paranoid: false }).then(user => {
     return user && user.deleted_at != null;
   })
+}
+
+const updateSubscriptionQuantity = (user, count) => {
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
+    return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+      if (customer.billingCustomerId) {
+        return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
+      }
+      return;
+    });
+  }
 }
 
 exports.isDeletedUser = isDeletedUser;

@@ -40,6 +40,6 @@ module.exports.updateSubscription = {
         userId: joi.string().required()
     },
     body: {
-        addPlanQuantity: joi.number().integer().required()
+        planQuantity: joi.number().integer().required()
     }
 }
