@@ -19,6 +19,7 @@ const botPlatformClient = require("../utils/botPlatformClient");
 const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
+const chargebeeService = require('../chargebee/chargebeeService');
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -148,6 +149,14 @@ const createUser = (user, customer) => {
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
+      if (user.type == registrationService.USER_TYPE.AGENT) {
+        customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+          if(customer.billingCustomerId){
+            return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, 1);
+          }
+          return;
+        })
+      }
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
         botPlatformClient.createBot({
