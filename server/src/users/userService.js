@@ -150,12 +150,7 @@ const createUser = (user, customer) => {
       logger.error("error while creating bot", err);
     }).then(user => {
       if (user.type == registrationService.USER_TYPE.AGENT) {
-        customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
-          if(customer.billingCustomerId){
-            return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, 1);
-          }
-          return;
-        })
+        updateSubscriptionQuantity(user, 1);
       }
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
@@ -604,6 +599,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
           }
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
+          updateSubscriptionQuantity(user, -1);
           return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
         })
     })
@@ -617,6 +613,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
+            updateSubscriptionQuantity(user, 1);
             applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
               console.log("message: ", err.code)
             });
@@ -634,6 +631,15 @@ const isDeletedUser= (userName, applicationId) => {
   }
   return userModel.findOne({ where: criteria, paranoid: false }).then(user => {
     return user && user.deleted_at != null;
+  })
+}
+
+const updateSubscriptionQuantity = (user, count) => {
+  return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+    if (customer.billingCustomerId) {
+      return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
+    }
+    return;
   })
 }
 
