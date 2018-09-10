@@ -149,9 +149,7 @@ const createUser = (user, customer) => {
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
-      if (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN) {
-        updateSubscriptionQuantity(user, 1);
-      }
+      updateSubscriptionQuantity(user, 1);
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
         botPlatformClient.createBot({
@@ -599,9 +597,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
           }
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
-          if(user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)){
-            updateSubscriptionQuantity(user, -1);
-          }
+          updateSubscriptionQuantity(user, -1);
           return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
         })
     })
@@ -615,9 +611,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
-            if(user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN){
-              updateSubscriptionQuantity(user, -1);
-            }
+            updateSubscriptionQuantity(user, 1);
             applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
               console.log("message: ", err.code)
             });
@@ -639,12 +633,14 @@ const isDeletedUser= (userName, applicationId) => {
 }
 
 const updateSubscriptionQuantity = (user, count) => {
-  return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
-    if (customer.billingCustomerId) {
-      return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
-    }
-    return;
-  })
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
+    return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+      if (customer.billingCustomerId) {
+        return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
+      }
+      return;
+    });
+  }
 }
 
 exports.isDeletedUser = isDeletedUser;
