@@ -56,9 +56,9 @@ const updateSubscription = (subscriptionId, options) => {
     })
 }
 
-const updateSubscriptionQuantity = (subscriptionId, addPlanQuantity) => {
+const updateSubscriptionQuantity = (subscriptionId, planQuantity) => {
     return getSubscriptionDetail(subscriptionId).then(result => {
-        return updateSubscription(result.subscription.customer_id, { "plan_quantity": addPlanQuantity + result.subscription.plan_quantity });
+        return updateSubscription(result.subscription.customer_id, { "plan_quantity": planQuantity + result.subscription.plan_quantity });
     })
 
 }
