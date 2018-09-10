@@ -599,7 +599,9 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
           }
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
-          updateSubscriptionQuantity(user, -1);
+          if(user){
+            updateSubscriptionQuantity(user, -1);
+          }
           return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
         })
     })
