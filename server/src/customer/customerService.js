@@ -11,8 +11,9 @@ const createCustomer = (customer, application, transaction) => {
         //logger.info('customer created :', 'created');
         application.customerId = customer[0].id;
         return applicationService.createApplication(application, transaction).then(application => {
-            appSettingService.insertAppSettings({ applicationId: application.applicationId });
-            return getCustomerByApplicationId(application.applicationId);
+            return appSettingService.insertAppSettings({ applicationId: application.applicationId }).then(ersult => {
+                return getCustomerByApplicationId(application.applicationId);
+            }); 
         });
 
     })
