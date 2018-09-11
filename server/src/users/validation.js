@@ -87,7 +87,7 @@ module.exports.botStatus = {
 }
 module.exports.userActivation={
   body:{
-    userName: joi.array().required(),
+    userNames: joi.array().required(),
   },
   query: {
     applicationId: joi.string().required(),

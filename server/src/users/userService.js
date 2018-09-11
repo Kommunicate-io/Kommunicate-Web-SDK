@@ -587,8 +587,8 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
  * @param {String} applicationId 
  * @param {boolean} deactivate 
  */
-const activateOrDeactivateUserMultipleUser = (userName, applicationId, deactivate) => {
-  let func = userName.map(user => {
+const activateOrDeactivate = (userNames, applicationId, deactivate) => {
+  let func = userNames.map(user => {
     return activateOrDeactivateUser(user, applicationId, deactivate);
   })
   return Promise.all(func).then(data => {
@@ -657,7 +657,7 @@ const updateSubscriptionQuantity = (user, count) => {
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;
-exports.activateOrDeactivateUserMultipleUser =activateOrDeactivateUserMultipleUser;
+exports.activateOrDeactivate =activateOrDeactivate;
 exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
