@@ -41,7 +41,7 @@ class Dashboard extends Component {
       last7days: [],
       disableCheckbox: false ,
       isChecked : false,
-      unanswedConversation:0,
+      unansweredConversation:0,
       tabSelected: tab.newConversation,
       agentFilterOption: [{ label: "All Agents", value: "allagents" }],
       timeFilterSelectedOption: { label: "Last 7 days", value: 7 },
@@ -523,8 +523,8 @@ class Dashboard extends Component {
     this.setState({chartFor24Hrs: chartFor24Hrs});
     return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption,hoursWiseDistribution)).then(result => {
       let res=result.response;
-      if (res.unanswedConversation) {
-        this.setState({ unanswedConversation: res.unanswedConversation })
+      if (res.unansweredConversation) {
+        this.setState({ unansweredConversation: res.unansweredConversation })
       }
       // console.log(res);
       let countForADay ={newConversationCount:0, closedConversationCount:0, avgResponseTime:null, avgResolutionTime:null};
@@ -930,7 +930,7 @@ render() {
                   <span className="card-time-text">{this.state.avgResponseTime.secText}</span>
                 </h4>
                 <p className="card-count-title">First Response Time</p>
-                <Link class={this.state.unanswedConversation > 0 ? "vis" : "n-vis"} to="/conversations" >{this.state.unanswedConversation} users waiting for a reply</Link>
+                <Link class={this.state.unansweredConversation > 0 ? "vis" : "n-vis"} to="/conversations" >{this.state.unansweredConversation} users waiting for a reply</Link>
               </div>
             </div>
           </div>
