@@ -587,6 +587,17 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
  * @param {String} applicationId 
  * @param {boolean} deactivate 
  */
+const activateOrDeactivate = (userNames, applicationId, deactivate) => {
+  let func = userNames.map(user => {
+    return activateOrDeactivateUser(user, applicationId, deactivate);
+  })
+  return Promise.all(func).then(data => {
+    return { result: 'success', data: data };
+  }).catch(err => {
+    console.log(err);
+    throw err;
+  })
+}
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
@@ -598,7 +609,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
           updateSubscriptionQuantity(user, -1);
-          return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
+          return{"userId": userName ,"result":result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED"};
         })
     })
   } else {
@@ -617,7 +628,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
             });
           }
         })
-        return result[0] == 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED";
+        return{"userId": userName ,"result":result = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
       })
   }
 }
@@ -646,6 +657,7 @@ const updateSubscriptionQuantity = (user, count) => {
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;
+exports.activateOrDeactivate =activateOrDeactivate;
 exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
