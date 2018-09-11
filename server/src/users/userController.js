@@ -490,9 +490,9 @@ exports.updateIntegryData = (req, res) => {
 exports.activateOrDeactivateUser = (req, res) => {
   let deactivate = req.query.deactivate == 'true' ? true : false;
   let appId = req.query.applicationId;
-  let userName = req.query.userName;
+  let userName = req.body.userName;
   return userService
-    .activateOrDeactivateUser(userName, appId, deactivate)
+    .activateOrDeactivateUserMultipleUser(userName, appId, deactivate)
     .then(result => {
       return res.status(200).json({
         code: "SUCCESS",
