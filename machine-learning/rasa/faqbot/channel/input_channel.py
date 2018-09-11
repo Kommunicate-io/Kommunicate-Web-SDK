@@ -62,8 +62,6 @@ class Question:
         self.content = data["content"]
         self.reference_id = str(data["referenceId"])
 
-    
-
 # #This is to create Log file to read logs from rasa
 # import logging
 # logging.basicConfig(filename='example.log',level=logging.DEBUG)
@@ -124,9 +122,6 @@ def add_nludata(questions, app_key):
     data = {}
     with open(get_abs_path('customers/' + app_key + '/faq_data.json')) as json_file:
         data = json.load(json_file)
-
-        #if(isinstance(questions, str)):
-         #   ques =[questions]
 
         for question in questions:
             intent = question.id
