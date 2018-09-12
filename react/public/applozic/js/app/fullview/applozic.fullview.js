@@ -3789,8 +3789,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						delete TAB_MESSAGE_DRAFT[currTabId];
 					}
 				}
-				_this.clearMessageField();
-				_this.addDraftMessage(params.tabId);
+				if (!params.reconnect) {
+					_this.clearMessageField();
+					_this.addDraftMessage(params.tabId);
+				}
 				$mck_msg_error.html("");
 				$mck_msg_error.removeClass('vis').addClass('n-vis');
 				$mck_response_text.html("");
@@ -7436,7 +7438,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								'tabId': currTabId,
 								'isGroup': isGroup,
 								'conversationId': conversationId,
-								'topicId': topicId
+								'topicId': topicId,
+								'reconnect':true
 							});
 						}
 					}
