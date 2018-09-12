@@ -7308,14 +7308,14 @@ const MESSAGE_CONTENT_TYPE = {
                     $mck_btn_attach.on('click', function () {
                         _this.fileMenuToggle();
                     });
-                    $mck_btn_loc.on('click', function () {
+                    $mck_btn_loc.on('click', function (e) {
+                        e.preventDefault();
                         if (IS_LOC_SHARE_INIT) {
                             $mck_loc_box.mckModal();
                         } else {
                             mckMapUtils.getCurrentLocation(_this.onGetCurrLocation, _this.onErrorCurrLocation);
                             IS_LOC_SHARE_INIT = true;
                         }
-
                     });
                 }
                 $mck_my_loc.on('click', function () {
@@ -7486,7 +7486,8 @@ const MESSAGE_CONTENT_TYPE = {
                 $applozic.template("fileboxTemplate", mck_filebox_tmpl);
                 //ataching events for rich msh templates
                 Kommunicate.attachEvents ($applozic);
-                $mck_file_upload.on('click', function () {
+                $mck_file_upload.on('click', function (e) {
+                    e.preventDefault();
                     $mck_file_input.trigger('click');
                 });
 
@@ -7500,7 +7501,8 @@ const MESSAGE_CONTENT_TYPE = {
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[1]);
                     return false;
                 });
-                $mck_file_input.on('change', function () {
+                $mck_file_input.on('change', function (e) {
+                                        e.preventDefault();
 										var file = $applozic(this)[0].files[0];
 										var params = {};
 										params.file = file;
