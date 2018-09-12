@@ -66,10 +66,9 @@ class Question:
         print("id: ")
         print(self.id)
         print (self.reference_id)
-        #if self.reference_id is None:
-         #   return self.id
-        #return self.reference_id
-        return self.id
+        if self.reference_id is None:
+            return self.id
+        return self.reference_id
 
 # #This is to create Log file to read logs from rasa
 # import logging
