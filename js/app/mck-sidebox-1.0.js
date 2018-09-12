@@ -1576,11 +1576,12 @@ const MESSAGE_CONTENT_TYPE = {
                         };
                     }
                 });
-                if (data.betaPackage) {
+                // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
+                // if (data.betaPackage) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
-                }
+                // }
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
                     for (var i = 0; i < mckContactNameArray.length; i++) {
