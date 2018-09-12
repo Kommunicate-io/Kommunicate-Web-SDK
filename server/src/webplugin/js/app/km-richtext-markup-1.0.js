@@ -131,11 +131,11 @@ getRoomDetailTemplate: function (options, sessionId) {
             </div>`;
 },
 
-getButtonTemplate:function(options,elemWidthClass){
+getButtonTemplate:function(options,requestType, elemWidthClass){
     if(options.type=="link"){
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+'"><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+    return'<button title= "'+ options.replyText +'" class= "km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+' "><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
     }else{
-    return'<button data-eventhandlerid="'+options.handlerId+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+'">'+options.name+'</button>';
+    return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+' ">'+options.name+'</button>';
     }
 },
 getQuickRepliesTemplate:function(options,elemWidthClass){
@@ -251,12 +251,12 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     var payload = JSON.parse(options.payload);
     var formData= payload? JSON.parse(options.formData||"{}"):"";
     var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
-
+    var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
-        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],elemWidthClass)
+        containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,elemWidthClass)
     }
     if(formData){
-        containerMarkup+="<form method ='post'  target='_blank' class= km-btn-hidden-form action ="+options.formAction+">";
+        containerMarkup+="<form method ='post'  target='_blank' class= 'km-btn-hidden-form' action ="+options.formAction+ ">";
         for (var key in formData) {
             if (formData.hasOwnProperty(key)) {
                 containerMarkup+= '<input type="hidden" name ="'+key+'" value="'+formData[key]+'" />';
