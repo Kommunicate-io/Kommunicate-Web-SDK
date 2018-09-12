@@ -54,6 +54,22 @@ class AgentMap(object):
     agent_map = {}
     interpreter_map = {}
 
+class Question:
+    def __init__(self, data):
+        self.id = str(data["id"])
+        self.application_id = data["applicationId"]
+        self.name = data["name"]
+        self.content = data["content"]
+        self.reference_id = str(data["referenceId"])
+    
+    def get_intent(self):
+        print("id: ")
+        print(self.id)
+        print (self.reference_id)
+        if self.reference_id is None:
+            return self.id
+        return self.reference_id
+
 # #This is to create Log file to read logs from rasa
 # import logging
 # logging.basicConfig(filename='example.log',level=logging.DEBUG)
@@ -75,7 +91,7 @@ def upload_training_data(applicationKey):
    filename = "../customers/" + applicationKey + "/faq_config.yml"
    s3.meta.client.upload_file(filename, bucket_name, filename[13:])
 
-def add_domain(intent, answer, app_key):
+def add_domain(questions, app_key):
     yaml = YAML(typ='rt')
     yaml.default_flow_style = False
     #yaml.preserve_quotes = True
@@ -83,53 +99,66 @@ def add_domain(intent, answer, app_key):
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
-    data['intents'].append(intent)
-    data['actions'].append('utter_' + intent)
-    data['templates']['utter_' + intent] = [json.dumps({'message': answer})]
+    for question in questions:
+        print(question.get_intent())
+        #print(data['intents'][question.get_intent()])
+        if question.get_intent() not in data['intents']:
+            data['intents'].append(question.get_intent())
+        if 'utter_' + question.get_intent() not in data['actions']:
+            data['actions'].append('utter_' + question.get_intent())
+        #if data['templates'].get('utter_' + question.get_intent(), None) is None:
+        data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
 
 
-def add_stories(intent, app_key):
+def add_stories(questions, app_key):
+    intents = []
+    for question in questions:
+        intents.append(question.get_intent())
+
     num = str(random.randint(1, 2345678))
     bot_stories_path = 'customers/' + app_key + '/faq_stories.md'
 
     file = open(get_abs_path(bot_stories_path), 'a')
     file.write('\n\n## story_' + num)
-    file.write('\n* ' + intent)
-    file.write('\n - utter_' + intent)
+    for intent in intents:
+        file.write('\n* ' + intent)
+        file.write('\n - utter_' + intent)
     file.close()
     return
 
 
-def add_nludata(intent, questions, app_key):
+def add_nludata(questions, app_key):
     data = {}
     with open(get_abs_path('customers/' + app_key + '/faq_data.json')) as json_file:
         data = json.load(json_file)
 
-        if(isinstance(questions, str)):
-            ques =[questions]
-
-        for question in ques:
-            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
-            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
-            data["rasa_nlu_data"]["common_examples"].append({"text": question, "intent": intent, "entities": []})
+        for question in questions:
+            intent = question.get_intent()
+            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
     with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
 
 
 
-def update_domain(body):
-    delete_domain(intent=str(body['id']), app_key=body['applicationId'])
-    add_domain(intent=str(body['id']), answer=body['content'], app_key=body['applicationId'])
+def update_domain(questions, app_key):
+    for question in questions:
+        delete_domain(intent=question.get_intent(), app_key=app_key)
+
+    add_domain(questions, app_key=app_key)
     return
 
 
-def update_nludata(body):
-    delete_nludata(intent=str(body['id']), app_key=body['applicationId'])
-    add_nludata(intent=str(body['id']), questions=body['name'], app_key=body['applicationId'])
+def update_nludata(questions, app_key):
+    for question in questions:
+        delete_nludata(intent=question.get_intent(), app_key=app_key)
+
+    add_nludata(questions, app_key=app_key)
     return
 
 
@@ -331,24 +360,21 @@ def webhook():
 def addfaq():
     body = request.json
     print(body)
-    #Check if training data is present
-    load_training_data(body["applicationId"])
 
-    if(body['referenceId'] is None):
-        intent = body['id']
-        #add_domain(str(intent),body['content'],body['applicationId'])
-        update_domain(body)
-        add_stories(str(intent),body['applicationId'])
-        add_nludata(str(intent),body['name'],body['applicationId'])
-    else:
-        intent = body['referenceId']
-        #update_domain(str(intent),body['content'],1,body['applicationKey'])
-        add_nludata(str(intent),body['name'],body['applicationId'])
+    questions = []
+    for que in body:
+        questions.append(Question(que))
+
+    application_id = questions[0].application_id
+    load_training_data(application_id)
+
+    add_domain(questions, application_id)
+    add_stories(questions, application_id)
+    add_nludata(questions, application_id)
 
     #Upload the training data to s3 after updating
     print ('Uploading new data to s3..')
-    upload_training_data(body['applicationId'])
-
+    upload_training_data(application_id)
     return jsonify({"Success":"We have more data!"})
 
 
@@ -356,20 +382,24 @@ def addfaq():
 def deletefaq():
     body = request.json
     print(body)
-     
-    #Check if training data is present
-    load_training_data(body['applicationId'])
+
+    questions = []
+    for que in body:
+        questions.append(Question(que))
+
+    application_id = questions[0].application_id
+    load_training_data(application_id)
     
     #Delete data for specified applicationId with id as intent
-    intent = str(body["id"])
-
-    delete_domain(intent, body['applicationId'])
-    delete_nludata(intent, body['applicationId'])
-    delete_story(intent, body['applicationId'])
+    for question in questions:
+        intent = question.get_intent()
+        delete_domain(intent, application_id)
+        delete_nludata(intent, application_id)
+        delete_story(intent, application_id)
     
     print("Data deleted succesfully")
     
-    upload_training_data(body['applicationId'])
+    upload_training_data(application_id)
     
     return jsonify({"Success":"FAQ data has been deleted"})
 
@@ -378,23 +408,18 @@ def updatefaq():
     body = request.json
     print(body)
 
-    #Check if training data is present
-    load_training_data(body['applicationId'])
-    
-    #To find the application id of request as it was not passed from node
-    conn = MongoClient(env.uri)
-    db = conn.kommunicate
-    data = db.knowledgebase.find_one({'id':body['id']})
-    print(data)
-    data = data['applicationId']
-    body['applicationId'] = data
-    #Check if training data is present
-    load_training_data(body["applicationId"])
-    
-    update_domain(body)
-    update_nludata(body)
+    questions = []
+    for que in body:
+        questions.append(Question(que))
 
-    upload_training_data(body['applicationId'])
+    #Check if training data is present
+    application_id = questions[0].application_id
+    load_training_data(application_id)
+
+    add_domain(questions, application_id)
+    update_nludata(questions, application_id)
+
+    upload_training_data(application_id)
 
     return jsonify({"Success":"FAQ data has been updated"})
 
