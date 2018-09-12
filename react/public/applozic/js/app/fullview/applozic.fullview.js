@@ -3895,7 +3895,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							isGroup: params.isGroup
 						});
 					}
-					//kusum
 					var section = CONVERSATION_SECTION_MAP[params.tabViewId];
 					var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 					var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
@@ -4584,7 +4583,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 			};
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {
-				if (list && list.sectionId) {
+				if (list && list.sectionId && !list.assigneupdate) {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
 				} else if (list && list.assigneupdate) {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
@@ -5387,6 +5386,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					} else if (messageType === "APPLOZIC_02") {
 						if (message.groupId && (message.metadata.KM_ASSIGN === MCK_USER_ID || message.metadata.KM_STATUS === "Close")) {
+							mckMessageLayout.addGroupFromMessage(message, true, list)
+						}
+						if (message.groupId && (message.metadata.KM_ASSIGN === MCK_USER_ID || message.metadata.KM_STATUS === "Open")) {
 							mckMessageLayout.addGroupFromMessage(message, true, list)
 						}
 						if (($kmApplozic("." + message.oldKey).length === 0 && $kmApplozic("." + message.key).length === 0) || message.contentType === 10) {
@@ -7798,6 +7800,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.metadata && message.metadata.KM_STATUS === "Open") {
 							list.sectionId = "km-contact-list";
+						}
+						if (message.metadata && message.metadata.KM_STATUS === "Open" && message.metadata.KM_ASSIGN === MCK_USER_ID ) {
+							list.sectionId = "km-contact-list";
+							list.assigneupdate =true;
 						}
 
 						if (message.metadata && message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
