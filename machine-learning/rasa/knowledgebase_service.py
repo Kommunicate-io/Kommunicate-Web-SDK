@@ -21,7 +21,7 @@ print('request sent to : ', env.rasa_endpoint)
 response = requests.get(env.cron_endpoint + '/' +cron_key)
 print(response.text)
 data = json.loads(response.text)
-last_update_time = int(data['lastRunTime'])
+last_update_time = 1000 #int(data['lastRunTime'])
 print(last_update_time)
 
 # appkeys = ['2222','1111']

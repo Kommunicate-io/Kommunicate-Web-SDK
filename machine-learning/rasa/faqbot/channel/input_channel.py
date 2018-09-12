@@ -60,7 +60,10 @@ class Question:
         self.application_id = data["applicationId"]
         self.name = data["name"]
         self.content = data["content"]
-        self.reference_id = str(data["referenceId"])
+        print ("value of: ")
+        self.reference_id = None
+        if data["referenceId"] is not None:
+            self.reference_id = str(data["referenceId"])
     
     def get_intent(self):
         if self.reference_id is None:
@@ -97,8 +100,6 @@ def add_domain(questions, app_key):
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
     for question in questions:
-        print(question.get_intent())
-        #print(data['intents'][question.get_intent()])
         if question.get_intent() not in data['intents']:
             data['intents'].append(question.get_intent())
         if 'utter_' + question.get_intent() not in data['actions']:
