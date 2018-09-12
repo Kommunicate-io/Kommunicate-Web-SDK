@@ -4078,7 +4078,8 @@ const MESSAGE_CONTENT_TYPE = {
                         $mck_msg_form.removeClass('vis').addClass('n-vis');
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
-                    mckInitializeChannel.subscibeToTypingChannel(subscribeId);
+                    var isGroup = params.isGroup;
+                    mckInitializeChannel.subscibeToTypingChannel(subscribeId,isGroup);
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
@@ -4112,7 +4113,7 @@ const MESSAGE_CONTENT_TYPE = {
                             message: mckMessageArray
                         }, params);
 
-                        _this.openConversation();
+                         _this.openConversation();
                         CONTACT_SYNCING = false;
                         return;
                     }
@@ -4438,7 +4439,6 @@ const MESSAGE_CONTENT_TYPE = {
                     emailMsgIndicatorExpr: emailMsgIndicator
 
                 }];
-
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
                 if (!(msg.metadata.obsolete && msg.metadata.obsolete == "true") && msg.metadata.KM_AUTO_SUGGESTION) {
@@ -8124,6 +8124,8 @@ const MESSAGE_CONTENT_TYPE = {
             var $mck_offline_message_box = $applozic("#mck-offline-message-box");
             var $mck_typing_label = $applozic('#mck-typing-label');
             var $mck_message_inner = $applozic("#mck-message-cell .mck-message-inner");
+            var $mck_msg_inner_content = $applozic('.mck-message-inner');
+
             _this.init = function () {
                 if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
                     var port = (!mckUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
@@ -8281,7 +8283,7 @@ const MESSAGE_CONTENT_TYPE = {
                     var group = mckGroupUtils.getGroup(currTabId);
                     if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
                         if (status === 1) {
-                            if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || currTabId === tabId)) {
+                            if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || parseInt(currTabId) === parseInt(tabId))) {
                                 var isGroup = $mck_message_inner.data('isgroup');
                                 if (isGroup) {
                                     if (publisher !== MCK_USER_ID) {
@@ -8301,12 +8303,16 @@ const MESSAGE_CONTENT_TYPE = {
                                 } else {
                                     $mck_tab_title.addClass('mck-tab-title-w-typing');
                                     $mck_tab_status.removeClass('vis').addClass('n-vis');
-                                    $mck_typing_label.html(MCK_LABELS['typing']);
                                 }
-                                $mck_typing_box.removeClass('n-vis').addClass('vis');
+                                $applozic('.km-typing-wrapper').remove();
+                                $mck_msg_inner_content.append('<div class="km-typing-wrapper"><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div><div class="km-typing-indicator"></div></div>');
+                                 $mck_msg_inner_content.animate({
+                                scrollTop: $mck_msg_inner_content.prop("scrollHeight")
+                            }, 0);
+
                                 setTimeout(function () {
                                     $mck_tab_title.removeClass("mck-tab-title-w-typing");
-                                    $mck_typing_box.removeClass('vis').addClass('n-vis');
+                                    $applozic('.km-typing-wrapper').remove();
                                     if ($mck_tab_title.hasClass("mck-tab-title-w-status" && (typeof group === "undefined" || group.type != 7))) {
                                         $mck_tab_status.removeClass('n-vis').addClass('vis');
                                     }
@@ -8316,6 +8322,7 @@ const MESSAGE_CONTENT_TYPE = {
                         } else {
                             $mck_tab_title.removeClass("mck-tab-title-w-typing");
                             $mck_typing_box.removeClass('vis').addClass('n-vis');
+                            $applozic('.km-typing-wrapper').remove();
                             if ($mck_tab_title.hasClass("mck-tab-title-w-status") && (typeof group === "undefined" || group.type != 7)) {
                                 $mck_tab_status.removeClass('n-vis').addClass('vis');
                             }
