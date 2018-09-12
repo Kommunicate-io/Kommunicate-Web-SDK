@@ -60,7 +60,6 @@ class Question:
         self.application_id = data["applicationId"]
         self.name = data["name"]
         self.content = data["content"]
-        print ("value of: ")
         self.reference_id = None
         if data["referenceId"] is not None:
             self.reference_id = str(data["referenceId"])
