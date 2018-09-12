@@ -63,9 +63,6 @@ class Question:
         self.reference_id = str(data["referenceId"])
     
     def get_intent(self):
-        print("id: ")
-        print(self.id)
-        print (self.reference_id)
         if self.reference_id is None:
             return self.id
         return self.reference_id
