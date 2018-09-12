@@ -1,3 +1,5 @@
+<img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Live%20chat%20plugin.png" />
+
 # Kommunicate-Live-Chat-Plugin
 
 
