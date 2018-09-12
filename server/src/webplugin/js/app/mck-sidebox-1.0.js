@@ -4078,8 +4078,7 @@ const MESSAGE_CONTENT_TYPE = {
                         $mck_msg_form.removeClass('vis').addClass('n-vis');
                     }
                     var subscribeId = params.isGroup ? params.tabId : MCK_USER_ID;
-                    var isGroup = params.isGroup;
-                    mckInitializeChannel.subscibeToTypingChannel(subscribeId,isGroup);
+                    mckInitializeChannel.subscibeToTypingChannel(subscribeId,params.isGroup);
                     if (typeof MCK_ON_TAB_CLICKED === 'function') {
                         MCK_ON_TAB_CLICKED({
                             tabId: params.tabId,
@@ -5926,6 +5925,7 @@ const MESSAGE_CONTENT_TYPE = {
             _this.populateMessage = function (messageType, message, notifyUser) {
                 var callDuration = mckDateUtils.convertMilisIntoTime(message.metadata.CALL_DURATION);
                 alUserService.loadUserProfile(message.to);
+                $applozic('.km-typing-wrapper').remove();
 
                 if (message.contentType == 103) {
                     if (message.type == 4 && message.metadata.MSG_TYPE == "CALL_REJECTED") {
@@ -8283,7 +8283,7 @@ const MESSAGE_CONTENT_TYPE = {
                     var group = mckGroupUtils.getGroup(currTabId);
                     if (!MCK_BLOCKED_TO_MAP[publisher] && !MCK_BLOCKED_BY_MAP[publisher]) {
                         if (status === 1) {
-                            if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || parseInt(currTabId) === parseInt(tabId))) {
+                            if ((MCK_USER_ID !== publisher || !isGroup) && (currTabId === publisher || currTabId == tabId)) {
                                 var isGroup = $mck_message_inner.data('isgroup');
                                 if (isGroup) {
                                     if (publisher !== MCK_USER_ID) {
