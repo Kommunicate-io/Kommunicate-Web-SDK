@@ -341,15 +341,18 @@ def index():
 def webhook():
     body = request.json
     agent = get_customer_agent(body['applicationKey'])
-    reply_message = json.loads(agent.handle_message(body['message'])[0]['text'])
-    outchannel = KommunicateChatBot(body)
-    print ("sending message: ")
-    print (reply_message)
-    reply = reply_message['message']
+    message = agent.handle_message(body['message'])
+
+    if isinstance(message[0]['text'], dict):
+        reply = json.loads(message[0]['text'])['message']
+    else:
+        reply = message[0]['text']
+
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         addQusInMongo(body['message'], body['applicationKey'])
 
+    outchannel = KommunicateChatBot(body)
     outchannel.send_text_message('', reply)
     return reply
 
