@@ -61,6 +61,15 @@ class Question:
         self.name = data["name"]
         self.content = data["content"]
         self.reference_id = str(data["referenceId"])
+    
+    def get_intent(self):
+        print("id: ")
+        print(self.id)
+        print (self.reference_id)
+        #if self.reference_id is None:
+         #   return self.id
+        #return self.reference_id
+        return self.id
 
 # #This is to create Log file to read logs from rasa
 # import logging
@@ -91,11 +100,15 @@ def add_domain(questions, app_key):
     abs_bot_path = get_abs_path(bot_path)
     file = Path(abs_bot_path)
     data = yaml.load(open(abs_bot_path))
-    #Todo: check if the intent and action is already present
     for question in questions:
-        data['intents'].append(question.id)
-        data['actions'].append('utter_' + question.id)
-        data['templates']['utter_' + question.id] = [json.dumps({'message': question.content})]
+        print(question.get_intent())
+        #print(data['intents'][question.get_intent()])
+        if question.get_intent() not in data['intents']:
+            data['intents'].append(question.get_intent())
+        if 'utter_' + question.get_intent() not in data['actions']:
+            data['actions'].append('utter_' + question.get_intent())
+        #if data['templates'].get('utter_' + question.get_intent(), None) is None:
+        data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
@@ -104,7 +117,7 @@ def add_domain(questions, app_key):
 def add_stories(questions, app_key):
     intents = []
     for question in questions:
-        intents.append(question.id)
+        intents.append(question.get_intent())
 
     num = str(random.randint(1, 2345678))
     bot_stories_path = 'customers/' + app_key + '/faq_stories.md'
@@ -124,9 +137,7 @@ def add_nludata(questions, app_key):
         data = json.load(json_file)
 
         for question in questions:
-            intent = question.id
-            if question.reference_id is not None:
-                intent = question.reference_id
+            intent = question.get_intent()
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
@@ -138,7 +149,7 @@ def add_nludata(questions, app_key):
 
 def update_domain(questions, app_key):
     for question in questions:
-        delete_domain(intent=question.id, app_key=app_key)
+        delete_domain(intent=question.get_intent(), app_key=app_key)
 
     add_domain(questions, app_key=app_key)
     return
@@ -146,7 +157,7 @@ def update_domain(questions, app_key):
 
 def update_nludata(questions, app_key):
     for question in questions:
-        delete_nludata(intent=question.id, app_key=app_key)
+        delete_nludata(intent=question.get_intent(), app_key=app_key)
 
     add_nludata(questions, app_key=app_key)
     return
@@ -358,9 +369,7 @@ def addfaq():
     application_id = questions[0].application_id
     load_training_data(application_id)
 
-    #Todo: Figure out what to do in case of reference_id is not None:
-
-    update_domain(questions, application_id)
+    add_domain(questions, application_id)
     add_stories(questions, application_id)
     add_nludata(questions, application_id)
 
@@ -384,7 +393,7 @@ def deletefaq():
     
     #Delete data for specified applicationId with id as intent
     for question in questions:
-        intent = question.id
+        intent = question.get_intent()
         delete_domain(intent, application_id)
         delete_nludata(intent, application_id)
         delete_story(intent, application_id)
@@ -408,7 +417,7 @@ def updatefaq():
     application_id = questions[0].application_id
     load_training_data(application_id)
 
-    update_domain(questions, application_id)
+    add_domain(questions, application_id)
     update_nludata(questions, application_id)
 
     upload_training_data(application_id)
