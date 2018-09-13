@@ -313,7 +313,30 @@ const checkUserInApplozic = ({ header, data }) => {
     })
 }
 
-const getAllSuggestions = () => {
+const fetchContactsFromApplozic = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  var API_HEADERS = {
+    'Content-Type': 'application/json',
+    'Apz-AppId': userSession.application.applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Product-App': 'true',
+  }
+  var url = getConfig().applozicPlugin.fetchContactsUrl;
+
+  return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+    headers: API_HEADERS,
+    params: data
+  }))
+    .then(response => {
+      // console.log("in response")
+      // console.log(response)
+      return response.data;
+    })
+} 
+
+const getAllSuggestions = () => { 
 
   const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest
 
@@ -1043,6 +1066,7 @@ const getSubscriptionDetail = (userId) => {
 }
 
 export {
+  fetchContactsFromApplozic,
   createCustomer,
   getCustomerInfo,
   getUserInfo,
