@@ -963,12 +963,12 @@ const getApplication = () => {
   })
 
 }
-const deleteUserByUserId = (userName) => {
+const deleteUserByUserId = (userNames) => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
-  // userName = encodeURIComponent(userName);
+  // userNames = encodeURIComponent(userNames);
   let postData = {
-    "userNames": userName
+    "userNames": userNames
   };
   const headers = {
     'Content-Type': 'application/json',
