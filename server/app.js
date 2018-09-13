@@ -17,7 +17,7 @@ const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
 //var concat = require('concat-files');
 app.use(cors());
-
+console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m")
 // minify applozic plugin code files into a single file
 compressor.minify({
   //compressor: 'gcc',

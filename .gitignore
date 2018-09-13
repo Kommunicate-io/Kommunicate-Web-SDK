@@ -85,3 +85,4 @@ website/Gemfile.lock
 website/_config.yml
 website/_site
 
+server/dist/build/
