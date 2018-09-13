@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config ./conf/webpack.js --mode development",
-    "build": "webpack --config ./conf/webpack.js --mode production"
+    "dev": "webpack --config ./conf/webpack.config.js --mode development",
+    "build": "webpack --config ./conf/webpack.config.js --mode development "
   },
   "author": "Suraj <suraj@applozic.com>",
   "license": "ISC",
