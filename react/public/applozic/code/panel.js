@@ -72,7 +72,7 @@ $(document).ready(function() {
             } 
             else if(user && user.lastSeenAtTime) {
                 // This code will convert millisecond into date and time string 
-                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.lastSeenAtTime,callback:function(resp){
+                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.lastSeenAtTime, "dateFormat":"fullYearDateFormat",callback:function(resp){
                     //This code will remove last seen on from above string 
                     lastSeenAtText = resp.includes(KM_LABELS["last.seen.on"])?resp.split(KM_LABELS["last.seen.on"]):resp.split(KM_LABELS["last.seen"]);
                     $kmApplozic(".km-lastseen").removeClass("km-lastseen-online");
@@ -81,7 +81,7 @@ $(document).ready(function() {
             $kmApplozic(".km-lastseen").html(lastSeenAtText);
             if(user && user.messagePxy.createdAtTime) {
                  // This code will convert millisecond into date and time string 
-                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.messagePxy.createdAtTime,callback:function(resp){
+                $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.messagePxy.createdAtTime,"dateFormat":"fullYearDateFormat",callback:function(resp){
                       //This code will remove last seen on from above string 
                     if (resp.includes("Last seen on ")) {
                         $kmApplozic(".km-lastMessageAtTime").html(resp.split("Last seen on "));
