@@ -94,21 +94,10 @@ $(document).ready(function() {
             var ul = document.getElementById("km-user-info-list");
             
                     if (typeof user !== "undefined") {
-                        for (key in user.metadata) {
-                            var li = document.createElement("li");
-                            var div1 = document.createElement('div');
-                            var div2 = document.createElement('div');
-                            div1.appendChild(document.createTextNode(key +":"));
-                            div2.appendChild(document.createTextNode(user.metadata[key]));
-                            li.setAttribute("class","customli");
-                            div1.setAttribute("class","km-userinfo-keydiv");
-                            div2.setAttribute("class","km-userinfo-valuediv");
-                            }
                         if(!$kmApplozic.isEmptyObject(user.metadata) ){
                             var userMetadata = user.metadata;
                             // delete userMetadata.kmClearbitData;
                             if(!$kmApplozic.isEmptyObject(userMetadata)){
-                                $kmApplozic("#km-sidebar-user-info-wrapper").removeClass('n-vis').addClass('vis');
                                 $kmApplozic.map( userMetadata, function( value, key ) {
                                     try{
                                         value= JSON.parse(userMetadata[key]);
@@ -134,7 +123,8 @@ $(document).ready(function() {
                                     } 
                                     
                                        
-                                    }else if (typeof  value =='string'){
+                                    }else if (value && key){
+                                        $kmApplozic("#km-sidebar-user-info-wrapper").addClass("vis").removeClass("n-vis");
                                         $kmApplozic("#km-user-info-metadata-wrapper").append('<p class="km-user-info-metadata"><span class="km-user-info-meatadata-key">'+key+'</span><span class="km-user-info-meatadata-value">'+value+'</span></p>');
                                     }
                                     
