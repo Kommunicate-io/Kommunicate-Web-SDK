@@ -201,6 +201,7 @@ class Users extends Component {
                   {showrResult}
                 </tbody>
               </table>
+              { this.state.result &&
                 <Pagination
                     total={this.state.total}
                     limit={limit}
@@ -285,6 +286,7 @@ class Users extends Component {
                       </div>
                     )}
                 </Pagination>
+                }
               <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
                 <img src="/img/empty-customers.png" alt="Customers Empty State" className="empty-state-customers-img"/>
                 <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>
