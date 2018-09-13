@@ -9,7 +9,7 @@
     "gulp-sass": "2.3.2",
     "prop-types": "15.6.2",
     "react-overlays": "0.8.3",
-    "react-scripts": "1.0.6"
+    "react-scripts": "1.1.5"
   },
   "dependencies": {
     "@material/tabs": "0.35.0",
@@ -21,6 +21,7 @@
     "form-data": "2.3.1",
     "history": "4.6.1",
     "jstz": "1.0.11",
+    "lodash": "4.17.10",
     "memory-cache": "0.2.0",
     "moment": "2.22.2",
     "moment-timezone": "0.5.13",
@@ -35,6 +36,7 @@
     "react-dropdown": "1.2.5",
     "react-modal": "3.1.6",
     "react-notifications": "1.4.3",
+    "react-paginating": "1.0.1",
     "react-phone-number-input": "1.0.11",
     "react-popover": "0.5.4",
     "react-responsive-modal": "2.0.1",
