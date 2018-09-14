@@ -30,7 +30,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
     case "BOT":
       return createAgent(userInfo,userType);
     default:
-      return createCustomer(userInfo.email, userInfo.accessToken, userInfo.name, userInfo.userName);
+      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName);
   }
 }
 const createCustomer = function (email, password, name, userName) {

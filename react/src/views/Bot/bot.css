@@ -62,8 +62,6 @@
 
 .banner-container {
   margin: 20px 0px 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 .banner-div {
@@ -76,15 +74,9 @@
   border-radius: 2px;
   background-color: #ffc107;
   padding: 10px 15px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
 }
 .banner-sub-text {
@@ -127,15 +119,9 @@
   color: #97999b;
 }
 .km-bot-name-slider-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 }
 .modal-dialog--edit .modal-header {
     display: block;
@@ -158,8 +144,7 @@
   padding-bottom: 23px;
 }
 .upgrade-plan-bot-integration .integrations-icons-container {
-  -ms-flex-wrap: nowrap;
-      flex-wrap: nowrap;
+  flex-wrap: nowrap;
 }
 .upgrade-plan-bot-integration .integrations-icons.dialogflow {
   /* border-right: 1px solid #cfcaca; */
@@ -199,8 +184,6 @@
   color: #717374;
 }
 .km-dialogflow-radio {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
   padding: 0px 5px;
   font-size: 16px;
@@ -259,7 +242,6 @@
   visibility: hidden;
   opacity: 0;
   padding-top: 3px;
-  -webkit-transition: all 0.3s cubic-bezier(1, 0, 0, 1);
   transition: all 0.3s cubic-bezier(1, 0, 0, 1);
 
 }
@@ -269,44 +251,30 @@
 }
 
 .km-image-name {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .incoming-email-forward-email-id-container-test {
   padding: 5px 0px 5px 8px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: start;
-      -ms-flex-pack: start;
-          justify-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   border-radius: 2px;
-  -webkit-transition: all .3s cubic-bezier(1, 0, 0, 1);
   transition: all .3s cubic-bezier(1, 0, 0, 1);
   border: 1px dashed #FFF;
 
 }
-.km-integrated-bot-list-row:hover .incoming-email-forward-email-id-container-test{
+.bot-main-card-container .km-integrated-bot-list-row:hover .incoming-email-forward-email-id-container-test{
   border: 1px dashed #bcb7b7;
 
 }
-.incoming-email-forward-email-id-container-test textarea {
+.bot-main-card-container .incoming-email-forward-email-id-container-test textarea {
   overflow: hidden;
   width: 100%;
   resize: none;
-  -moz-appearance: none;
-       appearance: none;
+  appearance: none;
   -webkit-appearance: none;
   outline: none;
   border: none;
@@ -325,12 +293,10 @@
   height:30px;
   border: none;
   outline: none;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
   color: #969393;
   visibility: hidden;
   opacity: 0;
-  -webkit-transition: all .3s cubic-bezier(1, 0, 0, 1);
   transition: all .3s cubic-bezier(1, 0, 0, 1);
 
 }
@@ -365,12 +331,8 @@
   text-transform: capitalize;
 }
 .km-delete-box-header{
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #cfd8dc;
 }
@@ -378,8 +340,6 @@
 .km-cancel-delete{
   margin-top: 20px;
   margin-left: 60%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
@@ -411,12 +371,8 @@
 .km-edit-section-header{
 display: block;
 padding-right: 75px;
-display: -webkit-box;
-display: -ms-flexbox;
 display: flex;
--webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-        justify-content: space-between;
+justify-content: space-between;
 padding: 15px;
 border-bottom: 1px solid #cfd8dc;
 }
@@ -428,19 +384,13 @@ border-bottom: 1px solid #cfd8dc;
 }
 
 .km-edit-bot-name-container{
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
 }
 
 .km-bot-edit-name-font{
   width: 50%;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   font-size: 16px;
   font-weight: normal;
   font-style: normal;
@@ -481,13 +431,11 @@ border-bottom: 1px solid #cfd8dc;
   left: 50%;
   display: block;
   width: 100%;
-  -webkit-transform: translate(-50%);
-          transform: translate(-50%);
+  transform: translate(-50%);
   text-transform: capitalize;
   height: 31px;
   padding: 4px 0 0 0;
   font-size: 14px;
-  -webkit-transition: .3s;
   transition: .3s;
   letter-spacing: 0.8px;
 }
@@ -497,12 +445,8 @@ border-bottom: 1px solid #cfd8dc;
 }
 
 .km-edit-bot-credentials{
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
     display: inline-flex;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
+    align-items: center;
     width: 100%;
 }
 .km-edit-bot-credentials-text{
@@ -516,11 +460,9 @@ border-bottom: 1px solid #cfd8dc;
   display: block;
   padding-right: 75px;
   display: -ms-flexbox;
-  display: -webkit-box;
   display: flex;
   -ms-flex-pack: justify;
-  -webkit-box-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   padding: 15px;
   border-bottom: 1px solid #cfd8dc;
   margin: 0 auto;
@@ -608,8 +550,7 @@ border-bottom: 1px solid #cfd8dc;
   position: absolute;
   left: 50%;
   top: 50%;
-  -webkit-transform: translate(-50%,-50%);
-          transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
 }
 
 .km-bot-image-edit-section{
