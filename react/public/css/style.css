@@ -10566,6 +10566,10 @@ input:required {
 .faq-modal-discard-btn-box {
   margin-left: 23px;
 }
+
+.faq-modal-discard-btn-box-shift {
+  margin-left :60px;
+}
 .faq-yes-delete-box {
   padding-right: 3px;
 }

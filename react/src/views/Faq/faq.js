@@ -367,7 +367,7 @@ class Tabs extends Component {
                   </Label>
                 </div>
               </div> 
-              <div className="col-sm-2 text-right faq-modal-discard-btn-box">
+              <div className={this.state.addFaqSectionCheck ? "col-sm-2 text-right faq-modal-discard-btn-box-shift":"col-sm-2 text-right faq-modal-discard-btn-box"} >
                 <button className="km-button km-button--secondary" onClick={this.toggleFaqModal}>
                   Discard 
                 </button>
