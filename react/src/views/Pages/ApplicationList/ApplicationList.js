@@ -31,13 +31,13 @@ class ApplicationList extends Component {
       // } else { 
       //   this.setState({
       //     userName: userDetails.userName,
-      //     password: userDetails.password
+      //     password: userDetails.accessToken
       //   });
       // }
       if(userDetails) {
         this.setState({
           userName: userDetails.userName,
-          password: userDetails.password
+          password: userDetails.accessToken
         });
       } else if(!userDetails && !CommonUtils.getApplicationIds()) {
         window.location = "/login";
@@ -112,7 +112,7 @@ class ApplicationList extends Component {
       
                 _this.setState({'applicationId': response.data.result.application.applicationId});
       
-                response.data.result.password = password=='' ? response.data.result.accessToken : password;
+                // response.data.result.password = password=='' ? response.data.result.accessToken : password;
                 response.data.result.displayName=response.data.result.name;
                 CommonUtils.setUserSession(response.data.result);
               }
