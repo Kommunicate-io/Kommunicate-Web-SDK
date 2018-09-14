@@ -5396,10 +5396,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							}
 						}
 					} else if (messageType === "APPLOZIC_02") {
-						if (message.groupId && (message.metadata.KM_ASSIGN === MCK_USER_ID || message.metadata.KM_STATUS === "Close")) {
-							mckMessageLayout.addGroupFromMessage(message, true, list)
-						}
-						if (message.groupId && (message.metadata.KM_ASSIGN === MCK_USER_ID || message.metadata.KM_STATUS === "Open")) {
+						if (message.groupId) {
 							mckMessageLayout.addGroupFromMessage(message, true, list)
 						}
 						if (($kmApplozic("." + message.oldKey).length === 0 && $kmApplozic("." + message.key).length === 0) || message.contentType === 10) {
@@ -7830,10 +7827,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 	
 								if (message.metadata.KM_STATUS == "Open") {
 									//remove from closed
+									console.log("remove from closed");
 									var cldiv = document.getElementById("km-li-cl-" + contactHtmlExpr);
 									cldiv && cldiv.remove();
 								} else {
 									//remove from assigned and all conversations
+									console.log("remove from assigned and all conversations.");
+
 									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
 									asdiv && asdiv.remove();
 
