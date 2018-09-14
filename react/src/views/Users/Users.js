@@ -92,7 +92,7 @@ class Users extends Component {
                 })
               }
             });    
-          } else if (response.response.users.length == 0) {
+          } else if (response.response.users.length == 0 && this.state.result == 0) {
             _this.setState({showEmptyStateImage: false});
           }
           }
@@ -229,7 +229,7 @@ class Users extends Component {
                         </button>
 
                         {hasPreviousPage && (
-                          <button className="km-previous-page" style={{border: "none", color: "#5c5aa7"}}
+                          <button className="km-previous-page" style={{border: "none", color: "#5c5aa7", backgroundColor: "transparent"}}
                             {...getPageItemProps({
                               pageValue: previousPage,
                               onPageChange: this.handlePageChange
@@ -262,7 +262,7 @@ class Users extends Component {
                         })}
 
                         {hasNextPage && (
-                          <button className="km-next-page" style={{border: "none", color: "#5c5aa7"}}
+                          <button className="km-next-page" style={{border: "none", color: "#5c5aa7", backgroundColor: "transparent"}}
                             {...getPageItemProps({
                               pageValue: nextPage,
                               onPageChange: this.handlePageChange
