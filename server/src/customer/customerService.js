@@ -4,6 +4,9 @@ const user = require("../models").user;
 const applicationService = require('./applicationService');
 const appSettingService = require('../setting/application/appSettingService');
 const logger = require('../utils/logger');
+const { SUBSCRIPTION_PLAN } = require('../utils/utils');
+const chargebeeService = require('../chargebee/chargebeeService');
+const userService = require('../users/userService');
 
 
 const createCustomer = (customer, application, transaction) => {
@@ -84,7 +87,21 @@ const isAdmin = (userName) => {
 const createApplication = (application) => {
     return applicationService.createApplication(application);
 }
+
+const reactivateAgents = async function (appId) {
+    let customer = await getCustomerByApplicationId(appId);
+    if (customer.subscription && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
+        let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
+        let users = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC']])
+        for (var i = 0; i < result.subscription.plan_quantity; i++) {
+            userService.updateOnlyKommunicateUser(users[i].userName, appId, { status: 1, bot_availability_status: 0 });
+        }
+    }
+    return "success";
+}
+
 module.exports = {
+    reactivateAgents: reactivateAgents,
     createCustomer: createCustomer,
     updateCustomer: updateCustomer,
     getCustomerByUserName: getCustomerByUserName,
