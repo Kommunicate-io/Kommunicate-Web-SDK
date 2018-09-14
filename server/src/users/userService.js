@@ -648,6 +648,14 @@ const updateSubscriptionQuantity = (user, count) => {
     });
   }
 }
+const getUserByCriteria = async (criteria)=>{
+  logger.info("fetching user by criteria", criteria);
+  if(typeof criteria == 'object'){
+    return Promise.resolve(userModel.findAll({where:criteria}));
+    }else{
+    return null;
+  }
+}
 
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
@@ -674,3 +682,4 @@ exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
+exports.getUserListByCriteria = getUserByCriteria;
