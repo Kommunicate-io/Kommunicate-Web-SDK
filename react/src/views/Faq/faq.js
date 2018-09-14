@@ -46,6 +46,7 @@ class Tabs extends Component {
       faqId: null,
       modalIsOpen:false,
       helpdocsKey:[],
+      addFaqSectionCheck: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -116,6 +117,7 @@ class Tabs extends Component {
   }
   setFAQDetails = (title, content, status, id) => {
     this.setState({
+      addFaqSectionCheck : false,
       faqId: id,
       faqContent: content,
       faqTitle: title,
@@ -133,6 +135,7 @@ class Tabs extends Component {
 
   toggleFaqModal = () => {
     this.setState({
+      addFaqSectionCheck : true,
       faqModal: !this.state.faqModal,
       showDeleteFaq: false
     }, this.clearFAQDetails)
@@ -346,7 +349,7 @@ class Tabs extends Component {
               </div>
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>
-              <div className="col-sm-1 km-bot-align-item-v-center">
+              <div className={this.state.addFaqSectionCheck ?"n-vis":"col-sm-1 km-bot-align-item-v-center"}>
                 <div onClick={this.toggleDeleteFaq}>
                   <img src={trash2x} style={{width: "22px", height: "22px"}}/>
                 </div>
