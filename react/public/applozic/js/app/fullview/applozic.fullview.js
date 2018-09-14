@@ -7819,7 +7819,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
 								//remove from assigned once its assigned to other agent
 								var asdiv = document.getElementById("km-li-as-group-" + contact.groupId);
-								asdiv && asdiv.remove();
+								if (asdiv != null) {
+									asdiv.remove();
+								}
 							}
 
 							if (message.metadata.KM_STATUS && contact) {
@@ -7835,10 +7837,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									console.log("remove from assigned and all conversations.");
 
 									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
-									asdiv && asdiv.remove();
+									if (asdiv != null) {
+										asdiv.remove();
+									}
 
 									var csdiv = document.getElementById("km-li-cs-" + contactHtmlExpr);
-									csdiv && csdiv.remove();
+									if (csdiv != null) {
+										csdiv.remove();
+									}
 								}
 							}
 						}
