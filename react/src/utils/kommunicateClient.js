@@ -30,7 +30,7 @@ const createCustomerOrAgent = (userInfo, userType) => {
     case "BOT":
       return createAgent(userInfo,userType);
     default:
-      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName);
+      return createCustomer(userInfo.email, userInfo.accessToken, userInfo.name, userInfo.userName);
   }
 }
 const createCustomer = function (email, password, name, userName) {
@@ -318,7 +318,7 @@ const fetchContactsFromApplozic = (data) => {
   var API_HEADERS = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
   }
   var url = getConfig().applozicPlugin.fetchContactsUrl;
@@ -427,7 +427,7 @@ const updateApplozicUser = (userInfo) => {
   const headers = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
     'Of-User-Id': ofUserId
   }
@@ -817,7 +817,7 @@ const createZendeskIntegrationTicket = (data, groupId) => {
   const headers = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
     'Of-User-Id': userSession.userName
   }
@@ -887,7 +887,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   const header = {
     'Content-Type': 'application/json',
     'Apz-AppId': applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': true
 
   }

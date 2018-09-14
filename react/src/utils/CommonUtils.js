@@ -5,6 +5,9 @@ const CommonUtils = {
     setUserSession: function(userSession) {
         userSession.isAdmin = userSession.isAdmin | false;
         userSession.imageLink = userSession.imageLink ||(userSession.applozicUser&&userSession.applozicUser.imageLink?userSession.applozicUser.imageLink: getResource().defaultImageUrl);
+        if(userSession.password) {
+            delete userSession.password;
+        }
         localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
     },
     getUserSession: function() {
