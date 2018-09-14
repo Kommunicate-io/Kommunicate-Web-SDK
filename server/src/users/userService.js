@@ -596,7 +596,8 @@ const activateOrDeactivate = (userNames, applicationId, deactivate) => {
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-        return userModel.update({ deleted_at: new Date(), status:  CONST.USER_STATUS.DELETED},{
+      if (user !== null) {
+        return userModel.update({ deleted_at: new Date(), status: CONST.USER_STATUS.DELETED }, {
           where: {
             userName: userName,
             applicationId: applicationId
@@ -604,8 +605,11 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
           updateSubscriptionQuantity(user, -1);
-          return{"userId": userName ,"result":result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED"};
+          return { "userId": userName, "result": result[0] = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED" };
         })
+      } else {
+        return { "userId": userName, "result": "ALREADY DELETED" };
+      }
     })
   } else {
     return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
@@ -623,7 +627,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
             });
           }
         })
-        return{"userId": userName ,"result":result = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
+        return{"userId": userName ,"result":result[0] = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
       })
   }
 }
