@@ -56,13 +56,13 @@ class AgentMap(object):
 
 class Question:
     def __init__(self, data):
-        self.id = str(data["id"])
+        self.id = 'intent_' + str(data["id"])
         self.application_id = data["applicationId"]
         self.name = data["name"]
         self.content = data["content"]
         self.reference_id = None
         if data["referenceId"] is not None:
-            self.reference_id = str(data["referenceId"])
+            self.reference_id = 'intent_' + str(data["referenceId"])
     
     def get_intent(self):
         if self.reference_id is None:
@@ -119,8 +119,8 @@ def add_stories(questions, app_key):
     bot_stories_path = 'customers/' + app_key + '/faq_stories.md'
 
     file = open(get_abs_path(bot_stories_path), 'a')
-    file.write('\n\n## story_' + num)
     for intent in intents:
+        file.write('\n\n## story_' + num)
         file.write('\n* ' + intent)
         file.write('\n - utter_' + intent)
     file.close()
@@ -137,6 +137,7 @@ def add_nludata(questions, app_key):
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+
     with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
@@ -170,9 +171,9 @@ def delete_domain(intent, app_key):
         print(data['intents'])
         index = data['intents'].index(intent)
         del data['intents'][index]
-        index = data['actions'].index('utter_' + str(intent))
+        index = data['actions'].index('utter_' + intent)
         del data['actions'][index]
-        del data['templates']['utter_' + str(intent)]
+        del data['templates']['utter_' + intent]
         yaml.indent(mapping=1, sequence=1, offset=0)
         yaml.dump(data, file)
     except Exception as e:
@@ -188,7 +189,7 @@ def delete_story(intent, app_key):
     temp_list = []
     for i in range(0, len(story), 4):
         temp_list.append(story[i:i + 3])
-    action = '* ' + str(intent)
+    action = '* ' + intent
     index = -1
     for i in range(len(temp_list)):
         if temp_list[i][1] == action:
@@ -288,8 +289,8 @@ def train_dialogue(app_key, domain_file, model_path, training_data_file):
     fallback = FallbackPolicy(fallback_action_name="utter_default",
                           core_threshold=env.nlu_threshold,
                           nlu_threshold=env.core_threshold)
-    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
     #agent = Agent(domain_file, policies=[KerasPolicy(), MemoizationPolicy()])
+    agent = Agent(domain_file, policies=[KerasPolicy(), fallback, MemoizationPolicy()])
     training_data = agent.load_data(training_data_file)
 
     agent.train(training_data, epochs=300)
@@ -342,16 +343,21 @@ def webhook():
     body = request.json
     agent = get_customer_agent(body['applicationKey'])
     message = agent.handle_message(body['message'])
+    print(message)
 
-    if isinstance(message[0]['text'], dict):
-        reply = json.loads(message[0]['text'])['message']
+    if not message:
+        print("No answered found")
+        reply = fallback_reply
     else:
-        reply = message[0]['text']
+        try:
+            json_object = json.loads(message[0]['text'])
+            reply = json.loads(message[0]['text'])['message']
+        except:
+            reply = message[0]['text']
 
     #If the reply was of Fallback Policy then it should be stored in MongoDB (knowledgebase) as well
     if(reply == fallback_reply):
         addQusInMongo(body['message'], body['applicationKey'])
-
     outchannel = KommunicateChatBot(body)
     outchannel.send_text_message('', reply)
     return reply
