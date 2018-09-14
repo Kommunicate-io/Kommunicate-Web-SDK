@@ -7828,17 +7828,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (message.metadata.KM_STATUS && contact) {
 								var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 	
-								if (message.metadata.KM_STATUS == "Close") {
-									//remove from assigned and all conversations
-									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
-									asdiv && asdiv.remove();
-								
-									var csdiv = document.getElementById("km-li-cs-" + contactHtmlExpr);
-									csdiv && csdiv.remove();
-								} else {
+								if (message.metadata.KM_STATUS == "Open") {
 									//remove from closed
 									var cldiv = document.getElementById("km-li-cl-" + contactHtmlExpr);
 									cldiv && cldiv.remove();
+								} else {
+									//remove from assigned and all conversations
+									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
+									asdiv && asdiv.remove();
+
+									var csdiv = document.getElementById("km-li-cs-" + contactHtmlExpr);
+									csdiv && csdiv.remove();
 								}
 							}
 						}
