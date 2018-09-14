@@ -2876,7 +2876,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KM_CONVERSATION_STATE.OPEN+"&status="+KM_CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
 						var list = {};
-						console.log("#loadAssignedGroup");
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-assigned-search-list", list);
 						_this.tabViewUnreadCount(data, 'km-assigned-unread-icon');
@@ -4602,23 +4601,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (typeof list.sectionId == "undefined" || list.sectionId == null) {
 					list.sectionId = "km-contact-list";
 				}
-				console.log("adding to list.sectionId: " + list.sectionId);
 
 				_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
 
 				if (list.sectionId == "km-assigned-search-list") {
 					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
 				}
-				
-
-				/*if (list && list.sectionId && !list.assigneupdate) {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
-				} else if (list && list.assigneupdate) {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
-					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-assigned-search-list");
-				} else {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
-				}*/
 			};
 			_this.addContactsToSearchList = function () {
 				if (MCK_CONTACT_ARRAY.length === 0 && MCK_CHAT_CONTACT_ARRAY.length === 0) {
@@ -6377,11 +6365,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var groupFeed = response.data;
 					if (groupFeed && groupFeed.metadata && groupFeed.metadata.CONVERSATION_ASSIGNEE) {
 						if (groupFeed.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
-							//list.assigneupdate = groupFeed.metadata.CONVERSATION_ASSIGNEE;
-							console.log("#inside group feed");
-							//Todo: check if its required.
 							list.sectionId = "km-assigned-search-list";
-							//list.assigneupdate = true;
 						} else {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
@@ -7825,16 +7809,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
 
-						//Todo: check if its correct
 						if (message && message.to && !message.groupId) {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
 
 						var assignedToLoggedUser = false;
 						if (contact && contact.metadata && contact.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
-							//list.assigneupdate = true;
 							assignedToLoggedUser = true;
-							console.log("#assignedToLoggeduser");
 							list.sectionId = "km-assigned-search-list";
 
 							if (mckStorage.getMckAssignedMessageArray() !== null && mckStorage.getMckAssignedMessageArray().length > 0) {
@@ -7843,16 +7824,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 
 						if (message.metadata) {
-							console.log(message.metadata);
 							if (message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
-								console.log("#1: " + CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]);
 								list.sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
 							}
 
 							if ((assignedToLoggedUser || (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN == MCK_USER_ID)) && message.metadata.KM_STATUS && message.metadata.KM_STATUS == "Open") {
-								console.log("#2: setting sectionId: km-assigned-search-list");
 								list.sectionId = "km-assigned-search-list";
-								//list.assigneupdate = true;
 							} 
 
 							if (message.metadata.KM_ASSIGN && message.metadata.KM_ASSIGN !== MCK_USER_ID && contact) {
