@@ -386,15 +386,10 @@ exports.updateUser = (userId, appId, userInfo) => {
   var email = userInfo.email ? userInfo.email : null;
   return Promise.all([getByUserNameAndAppId(userId, appId)])
     .then(([user]) => {
-      var userKey = user.userKey;
       if (user == null) {
-        throw new Error("No customer in customer table with appId", appId);
+        throw new Error("No customer found with the application Id "+appId);
       }
-      // if (isvalid) {
-      //   var error = new Error("user already exist for this email");
-      //   error.code = 'DUPLICATE_EMAIL';
-      //   throw error;
-      // }
+      var userKey = user.userKey;
       let userDetail = { userId: userId, displayName: userInfo.name, email: userInfo.email, phoneNumber: userInfo.contactNo };
       applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail, null, user.type === registrationService.USER_TYPE.BOT)
         .then(response => {
