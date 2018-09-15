@@ -1816,6 +1816,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var isGroup = ($this.data("isgroup") === true);
 					var conversationId = $this.data("km-conversationid");
 					conversationId = (typeof conversationId !== "undefined" && conversationId !== "") ? conversationId.toString() : "";
+					
+					var time = $this.data("msg-time");
+
 					// Todo: if contact is not present
 					// in the list then add it first.
 					/*
@@ -1843,7 +1846,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'userName': userName,
 							'conversationId': conversationId,
 							'topicId': topicId,
-							'tabViewId': tabViewId
+							'tabViewId': tabViewId,
+							'lastContactedTime': time,
 						}
 						var groupInfo = kmGroupUtils.getGroup(tabId);
 						if (typeof groupInfo === 'object') {
@@ -1871,6 +1875,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
 						$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
 						$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+						$kmApplozic("#upgrade-plan-container").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -2883,6 +2888,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				})
 			}
+			$kmApplozic(d).on("click", "#navigate", function() {
+					// window.history.pushState('/settings/billing');
+					window.appHistory.push("/settings/billing");
+				})
 			_this.loadMessageList = function (params, callback) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
@@ -2917,6 +2926,22 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (!params.startTime) {
 					$mck_msg_inner.html('');
 				}
+
+				var currentTimeStamp = Math.ceil(new Date().getTime());
+				var threeMonthsDiff = currentTimeStamp - params.startTime;
+				var currentMessageContainer = ".chat.km-message-inner." + params.tabId + ".active-chat.km-group-inner"
+				var upgradePlanContainer = '<div id="upgrade-plan-container" class="upgrade-your-plan-container n-vis"><svg xmlns="http://www.w3.org/2000/svg" width="58" height="54" viewBox="0 0 38 34"><g fill="none" fill-rule="evenodd" transform="translate(1 1)"><path fill="#EEE" fill-rule="nonzero" stroke="#4B4A4A" d="M33.13611839 32.4045712c-.22331853.1097667-.85163846-.4314968-.85163846-.4314968l-6.90962669-5.6889449c-.33901498-.2644484-.71122824-.4833225-1.10713-.6510303a6.46677362 6.46677362 0 0 0-1.45724804-.253599H11.6218384c-6.2712924 0-11.3551795-5.083887-11.3551795-11.3551795 0-6.27129241 5.0838871-11.35517942 11.3551795-11.35517942h10.3332133c6.27129243 0 11.35517944 5.08388701 11.35517944 11.35517942v17.3753171s.05299084.8894891-.17411275 1.0049334zM11.9397834 11.4580502c-.0616415-.7690388-.7037218-1.3617132-1.475227-1.3617132-.7715052 0-1.4135856.5926744-1.4752271 1.3617132v4.8827271c.0616415.7690388.7037219 1.3617132 1.4752271 1.3617132.7715052 0 1.4135855-.5926744 1.475227-1.3617132v-4.8827271zm6.3229424-2.30320892c-.0616414-.76903875-.7037218-1.36171313-1.475227-1.36171313-.7715052 0-1.4135856.59267438-1.4752271 1.36171313v9.48725242c.0616415.7690388.7037219 1.3617131 1.4752271 1.3617131.7715052 0 1.4135856-.5926743 1.475227-1.3617131V9.15484128zm6.32483499 2.30320892c-.05548633-.7743283-.69985961-1.3741797-1.47617329-1.3741797-.7763137 0-1.420687.5998514-1.4761734 1.3741797v4.8827271c.0554864.7743283.6998597 1.3741797 1.4761734 1.3741797.77631368 0 1.42068696-.5998514 1.47617329-1.3741797v-4.8827271z"/><circle cx="31" cy="5" r="5" fill="#E45D6C" stroke="#FFF" stroke-width="1.50999999"/><circle cx="31" cy="5" r="1" fill="#FFF"/></g></svg><p>Upgrade your plan to see messages older than 3 months </p><button id="navigate">Upgrade Plan</button></div>';
+				
+				if(params.startTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+					$kmApplozic(currentMessageContainer).prepend(upgradePlanContainer);
+					$mck_loading.removeClass('vis').addClass('n-vis');
+					$mck_msg_loading.removeClass('vis').addClass('n-vis');
+					if($("#upgrade-plan-container").hasClass("n-vis")) {
+						$("#upgrade-plan-container").addClass("vis").removeClass("n-vis")
+					}
+					return;
+				}
+
 				kmUtils.ajax({
 					url: KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type: 'get',
@@ -3965,7 +3990,23 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.loadAssignedGroup(params, callback);
 					mckMessageService.loadCloseGroup(params, callback);
 				} else {
-					mckMessageService.loadMessageList(params, callback);
+					var currentTimeStamp = Math.ceil(new Date().getTime());
+					var currentMessageContainer = ".chat.km-message-inner." + params.tabId + ".active-chat.km-group-inner"
+					var upgradePlanContainer = '<div id="upgrade-your-plan-container" class="upgrade-your-plan-container n-vis"><svg xmlns="http://www.w3.org/2000/svg" width="58" height="54" viewBox="0 0 38 34"><g fill="none" fill-rule="evenodd" transform="translate(1 1)"><path fill="#EEE" fill-rule="nonzero" stroke="#4B4A4A" d="M33.13611839 32.4045712c-.22331853.1097667-.85163846-.4314968-.85163846-.4314968l-6.90962669-5.6889449c-.33901498-.2644484-.71122824-.4833225-1.10713-.6510303a6.46677362 6.46677362 0 0 0-1.45724804-.253599H11.6218384c-6.2712924 0-11.3551795-5.083887-11.3551795-11.3551795 0-6.27129241 5.0838871-11.35517942 11.3551795-11.35517942h10.3332133c6.27129243 0 11.35517944 5.08388701 11.35517944 11.35517942v17.3753171s.05299084.8894891-.17411275 1.0049334zM11.9397834 11.4580502c-.0616415-.7690388-.7037218-1.3617132-1.475227-1.3617132-.7715052 0-1.4135856.5926744-1.4752271 1.3617132v4.8827271c.0616415.7690388.7037219 1.3617132 1.4752271 1.3617132.7715052 0 1.4135855-.5926744 1.475227-1.3617132v-4.8827271zm6.3229424-2.30320892c-.0616414-.76903875-.7037218-1.36171313-1.475227-1.36171313-.7715052 0-1.4135856.59267438-1.4752271 1.36171313v9.48725242c.0616415.7690388.7037219 1.3617131 1.4752271 1.3617131.7715052 0 1.4135856-.5926743 1.475227-1.3617131V9.15484128zm6.32483499 2.30320892c-.05548633-.7743283-.69985961-1.3741797-1.47617329-1.3741797-.7763137 0-1.420687.5998514-1.4761734 1.3741797v4.8827271c.0554864.7743283.6998597 1.3741797 1.4761734 1.3741797.77631368 0 1.42068696-.5998514 1.47617329-1.3741797v-4.8827271z"/><circle cx="31" cy="5" r="5" fill="#E45D6C" stroke="#FFF" stroke-width="1.50999999"/><circle cx="31" cy="5" r="1" fill="#FFF"/></g></svg><p>Upgrade your plan to see messages older than 3 months </p><button id="navigate">Upgrade Plan</button></div>';
+					
+					var threeMonthsDiff = currentTimeStamp - params.lastContactedTime;
+					if(params.lastContactedTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+						$kmApplozic(currentMessageContainer).prepend(upgradePlanContainer);
+						// $mck_loading.removeClass('vis').addClass('n-vis');
+						// $mck_msg_loading.removeClass('vis').addClass('n-vis');
+						if($("#upgrade-your-plan-container").hasClass("n-vis")) {
+							$("#upgrade-your-plan-container").addClass("vis").removeClass("n-vis")
+						}
+						$mck_group_tab_title.trigger('click');
+						// console.log("this conversation is older than 3 months.");
+					} else {
+						mckMessageService.loadMessageList(params, callback);
+					}
 				}
 				_this.openConversation();
 			};
