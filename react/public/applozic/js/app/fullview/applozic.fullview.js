@@ -1909,7 +1909,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var $kmMessageInner = $kmApplozic(".km-message-inner");
 				$kmMessageInner.bind('scroll', function () {
-					if ($kmMessageInner.scrollTop() + $kmMessageInner.innerHeight() >= $kmMessageInner[0].scrollHeight) {
+					if ($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
 						var activeConversationTabId = $kmApplozic(".km-conversation-tabView.km-conversation-icon-active")[0].id;
 						var $conversation = $conversationAll;
 						var conversationLoadingFunc = mckMessageService.loadSupportGroup;
@@ -6366,6 +6366,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (groupFeed && groupFeed.metadata && groupFeed.metadata.CONVERSATION_ASSIGNEE) {
 						if (groupFeed.metadata.CONVERSATION_ASSIGNEE === MCK_USER_ID) {
 							list.sectionId = "km-assigned-search-list";
+							//list.assigneupdate = true;
 						} else {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
