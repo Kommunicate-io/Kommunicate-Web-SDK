@@ -2936,7 +2936,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 
 				var threeMonthsDiff = currentTimeStamp - params.startTime;				
-				if($userSession.subscription === "startup" && params.startTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+				if(user_session.subscription === "startup" && params.startTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
 					$kmApplozic(mckMessageService.currentMessageContainer(params.tabId)).prepend(upgradePlanContainer);
 					$mck_loading.removeClass('vis').addClass('n-vis');
 					$mck_msg_loading.removeClass('vis').addClass('n-vis');
@@ -3995,7 +3995,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.loadCloseGroup(params, callback);
 				} else {
 					var threeMonthsDiff = currentTimeStamp - params.lastContactedTime;
-					if($userSession.subscription === "startup" && params.lastContactedTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+					if(user_session.subscription === "startup" && params.lastContactedTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
 						$kmApplozic(mckMessageService.currentMessageContainer(params.tabId)).prepend(upgradePlanContainer);
 						// $mck_loading.removeClass('vis').addClass('n-vis');
 						// $mck_msg_loading.removeClass('vis').addClass('n-vis');
