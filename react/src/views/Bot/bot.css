@@ -216,7 +216,7 @@
   line-height: normal;
   letter-spacing: 0.6px;
   text-align: left;
-  color: #504e4e;
+  color: #504e4e; 
 }
 
 .km-dialogflow-radio .radiobutton .radio-button-container .radio-wrapper {
@@ -256,7 +256,7 @@
   justify-content: flex-start;
 }
 
-.incoming-email-forward-email-id-container-test {
+.km-copy-name-from-box {
   padding: 5px 0px 5px 8px;
   display: flex;
   align-items: center;
@@ -266,11 +266,11 @@
   border: 1px dashed #FFF;
 
 }
-.km-integrated-bot-list-row:hover .incoming-email-forward-email-id-container-test{
+.km-integrated-bot-list-row:hover .km-copy-name-from-box{
   border: 1px dashed #bcb7b7;
 
 }
-.incoming-email-forward-email-id-container-test textarea {
+.km-copy-name-from-box textarea {
   overflow: hidden;
   width: 100%;
   resize: none;
@@ -287,7 +287,7 @@
   color: #666464;
 
 }
-.incoming-email-forward-copy-icon button {
+.km-copy-name-from-box-icon button {
   min-width: 80px;
   background: transparent;
   height:30px;
@@ -300,11 +300,11 @@
   transition: all .3s cubic-bezier(1, 0, 0, 1);
 
 }
-.km-integrated-bot-list-row:hover .incoming-email-forward-copy-icon button {
+.km-integrated-bot-list-row:hover .km-copy-name-from-box-icon button {
   visibility: visible;
   opacity: 1;
 }
-.incoming-email-forward-copy-icon button svg {
+.km-copy-name-from-box-icon button svg {
   width: 16px;
   height: auto;
   vertical-align: text-top;
@@ -560,4 +560,30 @@ border-bottom: 1px solid #cfd8dc;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
+}
+
+.km-bot-create-box-body{
+  margin-bottom: 5px;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  text-align: left;
+  color: #8c8787;
+}
+
+.km-change-bot-name-color-onfocus:focus {
+  color:#000;
+}
+
+#km-client-token-bot:focus, #km-dev-token-bot:focus, #km-integrated-bots-client-token:focus, #km-integrated-bots-dev-token:focus{
+  color:#000;
+}
+
+.km-copy-text-from-input-bot-section {
+    padding: 5px 0px 5px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 2px;
+    transition: all .3s cubic-bezier(1, 0, 0, 1);
+    border: 1px dashed #FFF;
 }
