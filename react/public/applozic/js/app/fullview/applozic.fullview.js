@@ -7846,12 +7846,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 	
 								if (message.metadata.KM_STATUS == "Open") {
 									//remove from closed
-									console.log("remove from closed");
 									var cldiv = document.getElementById("km-li-cl-" + contactHtmlExpr);
 									cldiv && cldiv.remove();
 								} else {
 									//remove from assigned and all conversations
-									console.log("remove from assigned and all conversations.");
 
 									var asdiv = document.getElementById("km-li-as-" + contactHtmlExpr);
 									if (asdiv != null) {
