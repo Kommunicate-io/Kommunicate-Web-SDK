@@ -14,25 +14,24 @@ fs.readdirSync(path.resolve(__dirname, '../node_modules'))
     nodeModules[mod] = 'commonjs ' + mod;
   });
 
+if (!process.env.NODE_ENV) {
+  console.log("\x1b[41m------ you are not set any environment: will set default -----\x1b[0m")
+}
 
+const env = process.env.NODE_ENV ? '"' + process.env.NODE_ENV + '"' : '"default"';
 module.exports = {
   entry: "./app.js",
   target: 'node',
   externals: nodeModules,
   plugins: [
-    new CleanWebpackPlugin(['dist'])
+    new CleanWebpackPlugin(['dist']),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': env
+      }
+    }),
   ],
-  // module: {
-  //   rules: [
-  //   ]
-  // },
-  // resolve: {
-  //   alias: {
-  //     plugin: path.resolve(__dirname, './src/webplugin/'),
-  //   }
-  // },
   output: {
-    filename: "./build/kommunicateServer.js",
-    //publicPath:"./build/assets"
+    filename: "./build/server.bundle.js",
   }
 }

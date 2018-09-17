@@ -266,10 +266,11 @@
   border: 1px dashed #FFF;
 
 }
+
 .km-integrated-bot-list-row:hover .km-copy-name-from-box{
   border: 1px dashed #bcb7b7;
-
 }
+
 .km-copy-name-from-box textarea {
   overflow: hidden;
   width: 100%;
@@ -285,8 +286,8 @@
   font-stretch: normal;
   letter-spacing: 0.4px;
   color: #666464;
-
 }
+
 .km-copy-name-from-box-icon button {
   min-width: 80px;
   background: transparent;
@@ -304,6 +305,7 @@
   visibility: visible;
   opacity: 1;
 }
+  
 .km-copy-name-from-box-icon button svg {
   width: 16px;
   height: auto;

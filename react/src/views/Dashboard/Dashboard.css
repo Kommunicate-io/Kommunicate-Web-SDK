@@ -97,6 +97,19 @@
 .card-stats.card-stats--messages {
     border-top-right-radius: 4px;
 }
+.card-stats a {
+    display: block;
+    color: #f16464;
+    font-size: 15px;
+    margin-top: -10px;
+    text-decoration: none;
+}
+.card-stats a:hover {
+    text-decoration: underline;
+}
+.card-stats.active a {
+    text-decoration: underline;
+}
 .vertical-line {
     position: absolute;
     width: 1px;

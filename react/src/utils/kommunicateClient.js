@@ -318,7 +318,7 @@ const fetchContactsFromApplozic = (data) => {
   var API_HEADERS = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
   }
   var url = getConfig().applozicPlugin.fetchContactsUrl;
@@ -427,7 +427,7 @@ const updateApplozicUser = (userInfo) => {
   const headers = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
     'Of-User-Id': ofUserId
   }
@@ -817,7 +817,7 @@ const createZendeskIntegrationTicket = (data, groupId) => {
   const headers = {
     'Content-Type': 'application/json',
     'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': 'true',
     'Of-User-Id': userSession.userName
   }
@@ -887,7 +887,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   const header = {
     'Content-Type': 'application/json',
     'Apz-AppId': applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.password).toString('base64'),
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
     'Apz-Product-App': true
 
   }
@@ -986,12 +986,23 @@ const getApplication = () => {
   })
 
 }
-const deleteUserByUserId = (userName) => {
+const deleteUserByUserId = (userNames) => {
   let userSession = CommonUtils.getUserSession();
   let appId = userSession.application.applicationId;
-  userName = encodeURIComponent(userName);
-  let url = getConfig().kommunicateBaseUrl + '/users/?applicationId=' + appId + '&userName=' + userName + '&deactivate=' + true;
-  return Promise.resolve(axios.patch(url)).then(response => {
+  // userNames = encodeURIComponent(userNames);
+  let postData = {
+    "userNames": userNames
+  };
+  const headers = {
+    'Content-Type': 'application/json',
+  }
+  let url = getConfig().kommunicateBaseUrl + '/users/?applicationId=' + appId + '&deactivate=' + true;
+  return Promise.resolve(axios({
+    method: 'PATCH',
+    url: url,
+    data: postData,
+    headers: headers
+  })).then(response => {
     if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
       return response;
     }
