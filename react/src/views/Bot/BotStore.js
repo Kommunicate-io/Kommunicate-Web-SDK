@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import CommonUtils from '../../utils/CommonUtils';
-import {getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot} from '../../utils/kommunicateClient';
+import {sendProfileImage,getUsersByType,createCustomerOrAgent, callSendEmailAPI, getIntegratedBots, patchUserInfo, conversationHandlingByBot} from '../../utils/kommunicateClient';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import BotDescription from './BotDescription.js';
 import Notification from '../model/Notification';
 import  {getConfig,getEnvironmentId,get} from '../../config/config.js';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import CloseButton from './../../components/Modal/CloseButton.js';
 import Cato from './images/cato-bot-integration.png'
 import Amazon from './images/amazon-icon.png'
 import Diaglflow from './images/dialogflow-icon.png'
@@ -18,6 +19,7 @@ import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
 import {acEventTrigger} from '../../../src/utils/ActiveCampaign';
+import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
 
 export default class BotStore extends Component {
     constructor(props) {
@@ -74,7 +76,8 @@ export default class BotStore extends Component {
           botAvailable: true,
           conversationsAssignedToBot: null,
           hideIntegratedBots: true,
-          defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png"
+          defaultBotUrl:"https://applozicbucket.s3.amazonaws.com/APPLOZIC/APP/prod_website/kommunicate-support/_Attachment/639f7f0f1d06c5604cadce69291023fda846d67a_default_bot_image.png",
+          setbotImageLink:''
         };
       let userSession = CommonUtils.getUserSession();
       this.applicationId = userSession.application.applicationId;
@@ -98,6 +101,7 @@ export default class BotStore extends Component {
           editedBotName: '',
           editedClientToken: '',
           editedDevToken: '',
+          setbotImageLink:''
         });
        }
 
@@ -343,7 +347,7 @@ export default class BotStore extends Component {
           data: userIdList,
           headers: {
             "Apz-Product-App": true,
-            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
             "Content-Type": "application/json",
             "Apz-AppId":applicationId
           }}).then(function(response) {
@@ -436,7 +440,7 @@ export default class BotStore extends Component {
             name:this.state.botName,
             aiPlatform:aiPlatform,
             roleType: ROLE_TYPE.BOT,
-            imageLink: this.state.defaultBotUrl
+            imageLink: this.state.setbotImageLink ? this.state.setbotImageLink : this.state.defaultBotUrl
 
           },"BOT")).then( bot => {
             var bot = bot.data.data;
@@ -451,6 +455,46 @@ export default class BotStore extends Component {
       gotoBotIntegration() {
         document.querySelector(".ui.pointing.secondary a.item:last-child").click();
       }
+
+      handleScale = (botUserNameUpload) => {
+        let that=this;
+        document.getElementById("km-upload-bot-image-select").addEventListener("change", function(){
+          that.setState({
+            botImagefileObject: document.getElementById("km-upload-bot-image-select").files[0]
+          });
+          document.getElementById("km-upload-bot-image-select").value="";
+          that.uploadBotProfileImage(that.state.botImagefileObject, botUserNameUpload);
+        });
+      }
+      
+      uploadBotProfileImage = (blob, botUserNameUpload) => {
+        let that=this;
+        let file = blob;
+        if (file) {
+          sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
+            .then(response => {
+              if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+                that.setState({ setbotImageLink: response.data.profileImageUrl });
+              } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
+                Notification.info(response.data.message)
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              Notification.info("Error while uploading")
+            })
+        } else {
+          Notification.info("No file to upload")
+        }
+      }
+     
+      onCloseModal = () => {
+        this.clearBotDetails();
+        this.setState({
+          dialogFlowModal: false,
+          botProfileModal: false
+        });
+      };
 
 
     render() {
@@ -603,11 +647,11 @@ export default class BotStore extends Component {
           </ModalBody>
         </Modal>
 
-                <Modal isOpen={this.state.dialogFlowModal} toggle={this.toggleDialogFlowModal} className="modal-dialog">
-          <ModalHeader toggle={this.toggleDialogFlowModal}>
-            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
-            <span className="km-bot-integration-use-case-modal-text">Integrating your Dialogflow bot with Kommunicate</span>
-          </ModalHeader>
+          {/* Select dialogflow version modal */}
+          <Modal isOpen={this.state.dialogFlowModal} toggle={this.toggleDialogFlowModal} className="modal-dialog">
+                <div className="km-edit-section-header">
+                  <span className="km-bot-delete-bot-modal-heading">Integrating your Dialogflow bot with Kommunicate</span>
+              </div>
           <ModalBody>
               <div className="km-dialogflow-version-select">
                 Select your Dialogflow version:
@@ -628,13 +672,13 @@ export default class BotStore extends Component {
               <div className="row">
                 <label className="col-sm-3" htmlFor="hf-password">Client Token:</label>
                 <div className="col-sm-9">
-                  <input type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
+                  <input id= "km-client-token-bot"type="text" onChange = {(event) => this.setState({clientToken:event.target.value})} value ={this.state.clientToken} name="hf-password" className="form-control input-field"/>
                 </div>
               </div>
               <div className="row mt-4">
                 <label className="col-sm-3" htmlFor="hf-password">Dev Token:</label>
                 <div className="col-sm-9">
-                  <input type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
+                  <input id="km-dev-token-bot"type="text" onChange = {(event) => this.setState({devToken:event.target.value})} value ={this.state.devToken} name="hf-password" className="form-control input-field"/>
                 </div>
               </div>
             </div>
@@ -662,84 +706,56 @@ export default class BotStore extends Component {
                 </div>
               </div>
           </ModalBody>
+          <span onClick={this.onCloseModal}><CloseButton/></span>
         </Modal>
 
-                <Modal isOpen={this.state.botProfileModal} toggle={this.toggleBotProfileModal} className="modal-dialog">
-          <ModalHeader toggle={this.toggleBotProfileModal}>
-            <img src={KmIcon} className="km-bot-integration-dialogflow-icon" />
-            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Bot Profile</span>
-          </ModalHeader>
-          <ModalBody>
-            <div className="row">
-              <div className="col-sm-12">
-                <p className="km-bot-integration-use-case-modal-text">Give a name to your bot from DialogFlow   </p>
+          {/* Set bot image and name modal */}
+          <Modal isOpen={this.state.botProfileModal} toggle={this.toggleBotProfileModal} className="modal-dialog">
+            <div className="km-edit-section-header">
+              <div>
+                <span className="km-bot-delete-bot-modal-heading">Bot profile - </span>
+                <span className="km-selected-bot-name">Give your bot a name and face</span>
               </div>
             </div>
-            <div className="row" style={{marginTop: "75px"}}>
-              <label className="col-sm-3" htmlFor="hf-password">Bot Name:</label>
-              <div className="col-sm-6">
-                <input type="text" onChange = {(event) => this.setState({botName:event.target.value})} value ={this.state.botName} name="hf-password" className="form-control input-field" placeholder="Example: Alex, Bot " />
+            <ModalBody>
+              <div className="km-bot-create-box-body">
+                You may use the default bot photo or use a custom one
               </div>
-            </div>
-            <div className="row" style={{marginTop: "0px"}}>
-              <label className="col-sm-3" htmlFor="hf-password"></label>
-              <div className="col-sm-7">
-                <span className={this.state.botNameAlreadyExists ? "n-vis":"help-block km-bot-profile-modal-text"}>The name you select here will be seen <br /> by your customers</span>
-                <span className={this.state.botNameAlreadyExists ? "help-block":"n-vis"} style={{color: "red"}}>Bot name is taken. Try again.</span>
+              <div className="km-edit-section-body" style={{borderBottom:"none", width:"100%"}}>
+                <div className="km-edit-bot-image">
+                  { this.state.setbotImageLink!== "" ?
+                     <img src={this.state.setbotImageLink} className="km-default-bot-dp km-bot-image-circle"/>
+                     :
+                    <BotDefaultImage/>
+                  }
+                    <label htmlFor="km-upload-bot-image-select" id= "km-upload-bot-image-check" className="km-edit-section-hover" onClick={this.handleScale} style={{bottom:"-8px"}}> Update 
+                      <input className="km-hide-input-element" type="file" id="km-upload-bot-image-select" accept="image/png, image/jpeg" />
+                    </label>
               </div>
-            </div>
-            <div className="row" style={{marginTop: "66px"}}>
-              <div className="col-sm-12 text-right">
-                <button className="btn btn-primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
-                  Integrate and Setup Bot Profile
-                </button>
-              </div>
-            </div>
-          </ModalBody>
-        </Modal>
-
-                {/* <Modal isOpen={this.state.listOfDialogFlowModal} toggle={this.toggleListOfDialogFlowModal} className="modal-dialog">
-          <ModalHeader toggle={this.toggleListOfDialogFlowModal}>
-            <img src={Diaglflow} className="km-bot-integration-dialogflow-icon" />
-            <span style={{fontSize: "14px", color: "#6c6a6a", marginLeft: "10px"}}>Your Dialogflow integrations</span>
-          </ModalHeader>
-          <ModalBody style={{padding: "0px"}}>
-            <div className="km-bot-list-of-dialogflow-bots-container">
-                  {this.state.dialogFlowBots.map((bot,index) => (
-                    <div style={{marginTop: "1em", marginBottom: "1em"}} key={index}>
-                      <div className="row col-sm-12" style={{marginLeft: "10px"}}>
-                        <div className="col-sm-5">
-                            <p className="km-bot-list-of-integrated-bots-bot-name">{bot.name}</p>
-                            <p className="km-bot-list-of-integrated-bots-bot-name">Bot ID: {bot.userName}</p>
-                        </div>
-                        <div className="col-sm-3">
-                          {
-                            bot.bot_availability_status == 1 ? <span className="km-bot-list-of-integrated-bots-badge badge-enabled">Enabled</span> : <span className="km-bot-list-of-integrated-bots-badge badge-disabled">Disabled</span>
-                          }
-                        </div>
-                        <div className="col-sm-4" style={{textAlign: "right"}}>
-                          <button className="btn btn-primary" data-user-name={bot.userName} onClick={(event) => {console.log(event.target.getAttribute('data-user-name')); this.toggleEditBotIntegrationModal(bot.id, bot.key, bot.name, bot.userName, bot.token, bot.devToken, bot.bot_availability_status)}}>
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                      <hr />
+                <div className="km-bot-detail-design" style={{ marginTop: "22px"}}>
+                  <div>
+                    <div className="km-edit-bot-name-container" style={{marginBottom: "15px"}}>
+                      <label style={{width:"40%"}}className="km-bot-edit-name-font km-restrict-bootstrap-margin">Bot Name:</label>
+                        <input style={{border: "solid 1px #979797"}} type="text" onChange = {(event) => this.setState({botName:event.target.value})} value ={this.state.botName} className="form-control input-field" placeholder="Example: Alex, Bot " />
                     </div>
-                  ))}
+                  </div>
+                  <div>
+                  </div>
                 </div>
-            <div className="row">
-            </div>
-            <div className="row" style={{marginTop: "66px", padding: "10px"}}>
-              <div className="col-sm-6">
               </div>
-              <div className="col-sm-6 text-right">
-                <button className="btn btn-primary" onClick={() => {this.toggleDialogFlowModal(); this.toggleListOfDialogFlowModal()}}>
-                  New Integration
-                </button>
+              <div className="" style={{marginTop: "20px"}}>
+                <div className="km-cancel-delete">
+                  <button className="km-button km-button--secondary " onClick={this.onCloseModal} style={{marginRight: "16px",width: "40%"}}>
+                    Cancel
+                  </button>
+                  <button className="km-button km-button--primary" onClick={() => {this.integrateBot("dialogflow")}} disabled={this.state.disableIntegrateBotButton}>
+                    Integrate bot
+                  </button>
+                </div>
               </div>
-            </div>
-          </ModalBody>
-        </Modal> */}
+            </ModalBody>
+        </Modal>
+
 
             </div>
 

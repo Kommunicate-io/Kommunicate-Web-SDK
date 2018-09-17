@@ -133,7 +133,7 @@ export default class IntegratedBots extends Component {
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
         let authorization = userSession.authorization;
-        let password = CommonUtils.getUserSession().password;
+        let password = CommonUtils.getUserSession().accessToken;
         let device = atob(authorization);
         let devicekey = device.split(":")[1];
         let env = getEnvironmentId();
@@ -149,7 +149,7 @@ export default class IntegratedBots extends Component {
           data: userIdList,
           headers: {
             "Apz-Product-App": true,
-            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
             "Content-Type": "application/json",
             "Apz-AppId":applicationId
           }}).then(function(response) {
@@ -487,7 +487,7 @@ export default class IntegratedBots extends Component {
         data: userIdList,
         headers: {
           "Apz-Product-App": true,
-          "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+          "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
           "Content-Type": "application/json",
           "Apz-AppId":applicationId
         }}).then(function(response) {
@@ -513,7 +513,6 @@ export default class IntegratedBots extends Component {
 
     render() {
 
-      // console.log(this.state.listOfIntegratedBots);
       let listOfIntegratedBotWithoutLiz = this.state.listOfIntegratedBots.filter(function(i) {
         return i.userName !== "liz";
       });
@@ -559,9 +558,9 @@ export default class IntegratedBots extends Component {
                         </div>
                         <div className="km-edit-bot-name-container" style={{border:"1px dashed #bcb7b7",width:'184px',paddingLeft:"8px",marginLeft:"3px"}}>
                            <label className="km-bot-edit-name-font km-restrict-bootstrap-margin" >Bot ID:</label>
-                               <div className="incoming-email-forward-email-id-container-test " style={{width:"190px"}}>
+                               <div className="km-copy-name-from-box" style={{width:"190px"}}>
                                      <textarea className="km-textArea-custom-color" style={{marginBottom : "3px" , width:"25px"}} id="bot202" value='liz' readOnly/>
-                                  <div className="incoming-email-forward-copy-icon">
+                                  <div className="km-copy-name-from-box-icon">
                                     <button onClick={this.copyToClipboard} style={{display:"block",opacity:1,visibility:"visible"}}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                             <path fill="none" d="M0 0h24v24H0z"/>
@@ -607,9 +606,9 @@ export default class IntegratedBots extends Component {
                       </div>
 
                       <div className="col-md-4 col-sm-6 col-xs-12">
-                        <div className="incoming-email-forward-email-id-container-test" style={{marginLeft:"-10px"}}>
+                        <div className="km-copy-name-from-box" style={{marginLeft:"-10px"}}>
                                   <textarea className="km-textArea-custom-color"id={"km-"+bot.userName+"copy-text"} value={bot.userName} readOnly/>
-                              <div style={{opacity:1,visibility:"visible"}} className="incoming-email-forward-copy-icon">
+                              <div style={{opacity:1,visibility:"visible"}} className="km-copy-name-from-box-icon">
                                 <button onClick={this.copyToClipboard}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                         <path fill="none" d="M0 0h24v24H0z"/>
@@ -676,15 +675,15 @@ export default class IntegratedBots extends Component {
                         <div>
                           <div className="km-edit-bot-name-container" style={{marginBottom: "15px"}}>
                             <label className="km-bot-edit-name-font km-restrict-bootstrap-margin">Bot Name:</label>
-                              <input type="text" onChange = {(event) => this.setState({editedBotName:event.target.value})} value={this.state.editedBotName} className="form-control input-field" />
+                              <input type="text" onChange = {(event) => this.setState({editedBotName:event.target.value})} value={this.state.editedBotName} className="form-control input-field km-change-bot-name-color-onfocus" />
                           </div>
                         </div>
                         <div>
                           <div className="km-edit-bot-name-container">
                             <label className="km-bot-edit-name-font km-restrict-bootstrap-margin">Bot ID:</label>
-                            <div className="incoming-email-forward-email-id-container-test" style={{marginLeft:"-25px", border:"1px dashed #bcb7b7"}}>
+                            <div className="km-copy-name-from-box" style={{marginLeft:"-25px", border:"1px dashed #bcb7b7"}}>
                                       <textarea className="km-textArea-custom-color" id="km-copy-liz-text" value={this.state.botUserName} readOnly/>
-                                  <div style={{opacity:1,visibility:"visible",display:'block'}} className="incoming-email-forward-copy-icon">
+                                  <div style={{opacity:1,visibility:"visible",display:'block'}} className="km-copy-name-from-box-icon">
                                     <button onClick={this.copyToClipboard} style={{opacity:1,visibility:'visible'}}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                             <path fill="none" d="M0 0h24v24H0z"/>
@@ -710,13 +709,13 @@ export default class IntegratedBots extends Component {
                       <div className="km-edit-bot-credentials" style={{marginBottom: "20px"}}>
                         <label className="km-restrict-bootstrap-margin km-edit-bot-credentials-text">Client Token:</label>
                         <div style={{width: "50%"}}>
-                          <input type="text" onChange = {(event) => this.setState({editedClientToken:event.target.value})} value ={this.state.editedClientToken} name="hf-password" className="form-control input-field"/>
+                          <input id="km-integrated-bots-client-token" type="text" onChange = {(event) => this.setState({editedClientToken:event.target.value})} value ={this.state.editedClientToken} name="hf-password" className="form-control input-field"/>
                         </div>
                       </div>
                       <div className="km-edit-bot-credentials">
                         <label className="km-restrict-bootstrap-margin km-edit-bot-credentials-text">Dev Token:</label>
                         <div style={{width: "50%"}}>
-                          <input type="text" onChange = {(event) => this.setState({editedDevToken:event.target.value})} value ={this.state.editedDevToken} name="hf-password" className="form-control input-field"/>
+                          <input id="km-integrated-bots-dev-token" type="text" onChange = {(event) => this.setState({editedDevToken:event.target.value})} value ={this.state.editedDevToken} name="hf-password" className="form-control input-field"/>
                         </div>
                       </div>
                     </div>

@@ -386,15 +386,10 @@ exports.updateUser = (userId, appId, userInfo) => {
   var email = userInfo.email ? userInfo.email : null;
   return Promise.all([getByUserNameAndAppId(userId, appId)])
     .then(([user]) => {
-      var userKey = user.userKey;
       if (user == null) {
-        throw new Error("No customer in customer table with appId", appId);
+        throw new Error("No customer found with the application Id "+appId);
       }
-      // if (isvalid) {
-      //   var error = new Error("user already exist for this email");
-      //   error.code = 'DUPLICATE_EMAIL';
-      //   throw error;
-      // }
+      var userKey = user.userKey;
       let userDetail = { userId: userId, displayName: userInfo.name, email: userInfo.email, phoneNumber: userInfo.contactNo };
       applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail, null, user.type === registrationService.USER_TYPE.BOT)
         .then(response => {
@@ -601,7 +596,8 @@ const activateOrDeactivate = (userNames, applicationId, deactivate) => {
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-        return userModel.update({ deleted_at: new Date(), status:  CONST.USER_STATUS.DELETED},{
+      if (user !== null) {
+        return userModel.update({ deleted_at: new Date(), status: CONST.USER_STATUS.DELETED }, {
           where: {
             userName: userName,
             applicationId: applicationId
@@ -609,8 +605,11 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
           updateSubscriptionQuantity(user, -1);
-          return{"userId": userName ,"result":result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED"};
+          return { "userId": userName, "result": result[0] = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED" };
         })
+      } else {
+        return { "userId": userName, "result": "ALREADY DELETED" };
+      }
     })
   } else {
     return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
@@ -628,7 +627,7 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
             });
           }
         })
-        return{"userId": userName ,"result":result = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
+        return{"userId": userName ,"result":result[0] = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
       })
   }
 }
@@ -651,6 +650,14 @@ const updateSubscriptionQuantity = (user, count) => {
       }
       return;
     });
+  }
+}
+const getUserByCriteria = async (criteria)=>{
+  logger.info("fetching user by criteria", criteria);
+  if(typeof criteria == 'object'){
+    return Promise.resolve(userModel.findAll({where:criteria}));
+    }else{
+    return null;
   }
 }
 
@@ -679,3 +686,4 @@ exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
+exports.getUserListByCriteria = getUserByCriteria;

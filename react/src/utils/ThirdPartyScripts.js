@@ -22,7 +22,7 @@ class ThirdPartyScripts extends Component {
               "groupName":"Kommunicate Support","baseUrl":kommunicateSupportChatUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true, emojilibrary : false}
               if(userId){
                 o.userId = userId;
-                o.password =CommonUtils.getUserSession().password;
+                o.password =CommonUtils.getUserSession().accessToken;
               }
               o.onInit=function(response) {
                 var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');

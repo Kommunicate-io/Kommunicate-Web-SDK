@@ -12,7 +12,8 @@ export default {
         DEV_URL: "/rest/ws/v2/invite/dev",
         CREATE_APPLOZIC_USER: '/rest/ws/user/v2/create',
         UPDATE_APPLOZIC_USER: '/rest/ws/user/update',
-    },
+        CONTACT_LIST_URL:"/rest/ws/user/v3/filter",
+    }, 
     kommunicateApi: {
         LOGIN: "/login",
         SIGN_UP: "/customers",

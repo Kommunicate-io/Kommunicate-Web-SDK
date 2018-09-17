@@ -109,7 +109,7 @@ class Full extends Component {
       window.$applozic.fn.applozic('logout');
       var options = window.applozic._globals;
       options.userId = CommonUtils.getUserSession().userName;
-      options.accessToken = CommonUtils.getUserSession().password;
+      options.accessToken = CommonUtils.getUserSession().accessToken;
       window.$applozic.fn.applozic(options);
       CommonUtils.setCookie(COOKIES.KM_LOGGEDIN_USER_ID,dashboardLoggedInUserId,"",CommonUtils.getDomain());
     }else{

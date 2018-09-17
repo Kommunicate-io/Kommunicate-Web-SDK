@@ -38,7 +38,8 @@ function getEnvironmentId() {
     "autoreplyUrl": kommunicateBaseUrl + url.kommunicateApi.AUTO_REPLY,
     "getTimeZoneUrl": kommunicateBaseUrl + url.kommunicateApi.TIME_ZONE,
     "createApplozicUser": applozicBaseUrl + url.applozic.CREATE_APPLOZIC_USER,
-    "updateApplozicUser": applozicBaseUrl + url.applozic.UPDATE_APPLOZIC_USER
+    "updateApplozicUser": applozicBaseUrl + url.applozic.UPDATE_APPLOZIC_USER,
+    "fetchContactsUrl": applozicBaseUrl + url.applozic.CONTACT_LIST_URL,
   };
   config.kommunicateApi = {
     "login": kommunicateBaseUrl + url.kommunicateApi.LOGIN,

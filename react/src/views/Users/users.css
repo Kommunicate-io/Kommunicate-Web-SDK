@@ -112,3 +112,11 @@
   cursor: pointer;
   text-decoration: underline;
 }
+
+.km-pagination-check {
+    height: 28px;
+    width: 28px;
+    border: solid 1px #d0caca;
+    margin: 0 3px;
+    border-radius: 4px;
+}
