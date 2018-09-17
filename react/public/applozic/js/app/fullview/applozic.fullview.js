@@ -420,6 +420,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 		var currentTimeStamp = Math.ceil(new Date().getTime());
 		var user_session = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
+		var threeMonthsTimeStamp = 7776000000; // value of 90 days converted to milliseconds.
 
 		_this.events = {
 			'onConnectFailed': function () {
@@ -2946,7 +2947,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				
 				var threeMonthsDiff = currentTimeStamp - params.startTime;
-				if(user_session.subscription === "startup" && params.startTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+				if(user_session.subscription === "startup" && params.startTime && threeMonthsDiff && threeMonthsDiff > threeMonthsTimeStamp ) {
 					mckMessageService.upgradePlanContainer(params.tabId);
 					return;
 				}
@@ -4000,7 +4001,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.loadCloseGroup(params, callback);
 				} else {
 					var threeMonthsDiff = currentTimeStamp - params.lastContactedTime;
-					if(user_session.subscription === "startup" && params.lastContactedTime && threeMonthsDiff && threeMonthsDiff > 7776000000 ) {
+					if(user_session.subscription === "startup" && params.lastContactedTime && threeMonthsDiff && threeMonthsDiff > threeMonthsTimeStamp ) {
 						mckMessageService.upgradePlanContainer(params.tabId);
 						$mck_group_tab_title.trigger('click');
 					} else {
