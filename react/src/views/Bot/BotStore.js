@@ -456,19 +456,6 @@ export default class BotStore extends Component {
         document.querySelector(".ui.pointing.secondary a.item:last-child").click();
       }
 
-      botImageFileInput = (e) => {
-        e.preventDefault();
-        var botUserNameUpload = this.state.botUserName;
-        var inputDiv = document.getElementById('km-upload-bot-image-check');
-        const fileSelector = document.createElement('input');
-        fileSelector.setAttribute( 'id', "km-upload-bot-image-select");
-        fileSelector.setAttribute('type', 'file');
-        fileSelector.setAttribute('multiple', 'multiple');
-        fileSelector.click();
-        inputDiv.appendChild(fileSelector);
-        this.handleScale(botUserNameUpload);
-      };
-
       handleScale = (botUserNameUpload) => {
         let that=this;
         document.getElementById("km-upload-bot-image-select").addEventListener("change", function(){
@@ -741,8 +728,9 @@ export default class BotStore extends Component {
                      :
                     <BotDefaultImage/>
                   }
-                    <div id= "km-upload-bot-image-check" className="km-edit-section-hover" onClick={this.botImageFileInput}>Update
-                    </div>
+                    <label htmlFor="km-upload-bot-image-select" id= "km-upload-bot-image-check" className="km-edit-section-hover" onClick={this.handleScale} style={{bottom:"-8px"}}> Update 
+                      <input className="km-hide-input-element" type="file" id="km-upload-bot-image-select" accept="image/png, image/jpeg" />
+                    </label>
               </div>
                 <div className="km-bot-detail-design" style={{ marginTop: "22px"}}>
                   <div>

@@ -581,11 +581,24 @@ border-bottom: 1px solid #cfd8dc;
 }
 
 .km-copy-text-from-input-bot-section {
-    padding: 5px 0px 5px 8px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    border-radius: 2px;
-    transition: all .3s cubic-bezier(1, 0, 0, 1);
-    border: 1px dashed #FFF;
+  padding: 5px 0px 5px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 2px;
+  transition: all .3s cubic-bezier(1, 0, 0, 1);
+  border: 1px dashed #FFF;
+}
+
+.km-hide-input-element {
+  opacity: 0.0;
+  position: absolute;
+  top:0;
+  left: 0;
+  bottom: 0;
+  right:0;
+  width:100%;
+  height:100%;
+  font-size: 0px;
+  cursor: pointer;
 }
