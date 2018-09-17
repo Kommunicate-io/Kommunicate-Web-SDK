@@ -1,6 +1,6 @@
 <img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Live%20chat%20plugin.png" />
 
-# Kommunicate Live Chat Plugin For Web
+# [Kommunicate ](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web)Live Chat Plugin For Web
 
 
 ### Overview :
@@ -40,7 +40,7 @@ https://jsfiddle.net/Kommunicate/wgLuLLbu/
 
 ### Getting Started :
 
-Create your account by [signing](https://dashboard.kommunicate.io/signup) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to Settings -> Install section and copy the script.
+Create your account by [signing](https://www.kommunicate.io/?utm_source=github&utm_medium=readme&utm_campaign=web) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to Settings -> Install section and copy the script.
 
 Or
 
