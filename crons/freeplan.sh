@@ -12,7 +12,9 @@ env="$1"
 
 if [ "$env" == "prod" ]; then
 	echo "PROD: Restricitng features in free plan"
-	MASTER_DB_HOST='db@pr0ddb@applozicdbserver.celtixdshllg.us-east-1.rds.amazonaws.com'
+        MASTER_DB_USER='dbauser'
+        MASTER_DB_PASSWD='db@pr0ddb'
+	MASTER_DB_HOST='applozicdbserver.celtixdshllg.us-east-1.rds.amazonaws.com'
 	MASTER_DB_NAME='kommunicate'
 else
 	echo "Restricitng features in free plan"
