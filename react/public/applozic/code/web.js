@@ -67,6 +67,7 @@ var autoSuggestions = {};
       autoTypeSearchEnabled :false,
       // awsS3Server :true,
       onInit: onInitialize,
+      maxHistory: userSession.subscription === "startup" ? 90 : "", // Number of days' history that needs to be restricted
       onTabClicked : function(tabDetail) {
             var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
             $mck_group_info_btn.trigger('click');
