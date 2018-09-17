@@ -7,6 +7,7 @@
 Kommunicate provides open source live chat Plugin. The Kommunicate plugin is flexible, lightweight and easily integrable. 
 It lets you easily add real time live chat and in-app messaging in your mobile applications and websites for customer support.
 The live chat plugin is equipped with advance messaging options such as sending attachments, sharing location and rich messaging.
+<img src="https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/images/KM%20Plugin.gif" />
 
 
 ### Features:
@@ -33,24 +34,41 @@ Quick Replies: Quickly respond to generic user queries using Quick Replies. Easi
 
 Welcome Messages: Create custom and conditional welcome messages based on whether your customer support agents are online or offline. 
 
+### Example :
+
+https://jsfiddle.net/Kommunicate/wgLuLLbu/
+
 ### Getting Started :
 
-To get started with Kommunicate live chat plugin, head over to Kommunicate website and [Signup](https://dashboard.kommunicate.io/signup?utm_source=github&utm_medium=readme&utm_campaign=web) to get your Application ID. 
+Create your account by [signing](https://dashboard.kommunicate.io/signup) up for Kommunicate. If you already have a Kommunicate account, log in to your account and go to Settings -> Install section and copy the script.
 
-To integrate the Kommunicate plugin, you will have to include below file in your project:
+Or
 
-https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/template/km-sidebox.html
+You can copy the below script and replace required parameters manually.
 
-https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/js/app/km-login.js
+Script
 
-Take reference from  https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/example/demo.html (Please run this file on any server such as python or tomcat).
+```
+<script type="text/javascript">
+    (function(d, m){
 
-For feature and design modifications, the following files can be modified:
+    /*---------------- Kommunicate settings start ----------------*/
 
-CSS: https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/css/app/mck-sidebox-1.0.css
+     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
 
-JS: https://github.com/Kommunicate-io/Kommunicate-Live-Chat-Plugin/blob/master/js/app/mck-sidebox-1.0.js
+    /*----------------- Kommunicate settings end ------------------*/
 
+     var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = "https://api.kommunicate.io/kommunicate.app";
+      var h = document.getElementsByTagName("head")[0];
+      h.appendChild(s);
+      window.kommunicate = m;
+      m._globals = kommunicateSettings;
+    })(document, window.kommunicate || {});
+</script>
+```
 
 ### Docs:
 
