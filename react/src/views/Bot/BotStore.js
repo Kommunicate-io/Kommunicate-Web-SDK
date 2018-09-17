@@ -347,7 +347,7 @@ export default class BotStore extends Component {
           data: userIdList,
           headers: {
             "Apz-Product-App": true,
-            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
             "Content-Type": "application/json",
             "Apz-AppId":applicationId
           }}).then(function(response) {

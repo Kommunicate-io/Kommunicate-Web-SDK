@@ -133,7 +133,7 @@ export default class IntegratedBots extends Component {
         let userSession = CommonUtils.getUserSession();
         let applicationId = userSession.application.applicationId;
         let authorization = userSession.authorization;
-        let password = CommonUtils.getUserSession().password;
+        let password = CommonUtils.getUserSession().accessToken;
         let device = atob(authorization);
         let devicekey = device.split(":")[1];
         let env = getEnvironmentId();
@@ -149,7 +149,7 @@ export default class IntegratedBots extends Component {
           data: userIdList,
           headers: {
             "Apz-Product-App": true,
-            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+            "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
             "Content-Type": "application/json",
             "Apz-AppId":applicationId
           }}).then(function(response) {
@@ -487,7 +487,7 @@ export default class IntegratedBots extends Component {
         data: userIdList,
         headers: {
           "Apz-Product-App": true,
-          "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().password).toString('base64'),
+          "Apz-Token": 'Basic ' + new Buffer(CommonUtils.getUserSession().userName+':'+CommonUtils.getUserSession().accessToken).toString('base64'),
           "Content-Type": "application/json",
           "Apz-AppId":applicationId
         }}).then(function(response) {

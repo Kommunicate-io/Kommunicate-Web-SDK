@@ -7,7 +7,6 @@ const getEnvId= function() {
   return process.env.NODE_ENV || "default";
 };
 
-//const configPath = "./config-"+getEnvId();
 
 const config = require("./config-"+getEnvId()+".json");
 
@@ -15,7 +14,7 @@ module.exports =  config;
 module.exports.getEnvId = getEnvId;
 
 module.exports.getProperties = function() {
-  
+
   return config;
 };
 module.exports.getCommonProperties = function() {

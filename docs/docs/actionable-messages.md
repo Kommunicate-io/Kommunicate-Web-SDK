@@ -66,8 +66,9 @@ Link Button redirects users to a given URL in a new tab. Use below metadata to r
 ```
 
 * **Submit Button** 
-Submit button allows you to post given data on a given URL.
-
+Submit button allows you to post given data or redirect the user to a given URL. If parameter `requestType:json` is included it will post the data with content type `application/json` on the `formAction` url and `replyText` will be used as acknowledgement message. Default value for `replyText` is same as the value passed in `name` parameter. <br><br>
+If `requestType` parameter is not passed, it will submit the `formData` with contentType `application/x-www-form-urlencoded` and redirect the user on `formAction` url. The response will be rendered in new tab.
+  
 ``` JSON 
 {
 	"message": "click the pay button",
@@ -77,13 +78,14 @@ Submit button allows you to post given data on a given URL.
 		"templateId": "3",
 		"payload": [{
 			"name": "Pay",
-			"handlerId": "km-eh-001"
+			"replyText":"optional, will be used as acknowledgement message to user in case of requestType JSON. Default value is same as name parameter"
 		}],
 		"formData": {
 			"amount": "1000",
 			"discription": "movie ticket"
 		},
-		"formAction": "https://example.com/book"
+		"formAction": "https://example.com/book",
+		"requestType":"json"   
 	}
 }
 ```

@@ -792,16 +792,24 @@ function KmGroupService() {
 }
 function KmDateUtils() {
     var _this = this;
-    var fullDateFormat = 'mmm d, h:MM TT';
-    var onlyDateFormat = 'mmm d';
-    var onlyTimeFormat = 'h:MM TT';
     var months = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
+    var dateFormats = {
+        "fullDateFormat": "mmm d, h:MM TT",
+        "onlyDateFormat": 'mmm d',
+        "fullYearDateFormat": 'd mmm yyyy',
+        "onlyTimeFormat": 'h:MM TT'
+    };
+
     _this.getDate = function(createdAtTime) {
         var date = new Date(parseInt(createdAtTime, 10));
         var currentDate = new Date();
-        return ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ? dateFormat(date, onlyTimeFormat, false) : dateFormat(date, fullDateFormat, false);
+        return ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ? dateFormat(date, dateFormats["onlyTimeFormat"], false) : dateFormat(date, dateFormats["fullDateFormat"], false);
     };
-    _this.getLastSeenAtStatus = function(lastSeenAtTime) {
+    _this.getLastSeenAtStatus = function(lastSeenAtTime,yearDateFormat) {
+        var format = dateFormats["onlyDateFormat"];
+        if (yearDateFormat) {
+            format = dateFormats[yearDateFormat];
+        } 
         var date = new Date(parseInt(lastSeenAtTime, 10));
         var currentDate = new Date();
         if ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) {
@@ -814,21 +822,21 @@ function KmDateUtils() {
         } else if ( ((currentDate.getDate() - date.getDate() === 1) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ) {
             return KM_LABELS['last.seen.on'] + ' yesterday';
         } else {
-            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(date, onlyDateFormat, false);
+            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(date, format, false);
         }
     };
     _this.getTimeOrDate = function(createdAtTime, timeFormat) {
         var date = new Date(parseInt(createdAtTime, 10));
         var currentDate = new Date();
         if (timeFormat) {
-            return ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ? dateFormat(date, onlyTimeFormat, false) : dateFormat(date, onlyDateFormat, false);
+            return ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ? dateFormat(date, dateFormats["onlyTimeFormat"], false) : dateFormat(date, dateFormats["onlyDateFormat"], false);
         } else {
-            return dateFormat(date, fullDateFormat, false);
+            return dateFormat(date, dateFormats["fullDateFormat"], false);
         }
     };
     _this.getSystemDate = function(time) {
         var date = new Date(parseInt(time, 10));
-        return dateFormat(date, fullDateFormat, false);
+        return dateFormat(date, dateFormats["fullDateFormat"], false);
     };
     var dateFormat = function() {
         var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZ]|"[^"]*"|'[^']*'/g,

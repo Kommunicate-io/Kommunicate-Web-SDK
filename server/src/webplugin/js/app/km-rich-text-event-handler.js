@@ -159,14 +159,42 @@ Kommunicate.richMsgEventHandler = {
 
     handlleRichButtonClick: function (e) {
         //console.log("event generated: ", e);
-        var target = e.target || e.srcElement;
-        var eventHandlerId = target.dataset.eventhandlerid;
-        if (eventHandlerId == "km-eh-001") {
-            //var buttonContainer = target.parentElement;
-            var form = target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
-            // handling paymet gateway button callback
-            form.submit();
 
+        var target = e.target || e.srcElement;
+        var requestType = target.dataset.requesttype;
+        var replyText = target.title || target.innerHTML;
+        var buttonType = target.dataset.buttontype;
+        var data = {};
+        var form =target.parentElement.getElementsByClassName('km-btn-hidden-form')[0];
+       if(buttonType !="submit"){   
+        return ;
+       }
+        if (requestType == "json") {
+           var  inputs = form.getElementsByTagName('input');
+           for(var i = 0; i<inputs.length;i++){
+            data[inputs[i].name] = inputs[i].value; 
+           }  
+           window.Applozic.ALApiService.ajax({
+            url: form.action,
+            async: false,
+            type: "post",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success: function (data) { 
+            },
+            error: function (xhr,desc, err) {
+               console.log("error while sending data ",err); 
+            }
+        })    
+        } else {
+            form.submit();
+        }
+        if(replyText){
+            var messagePxy = {
+                'message': replyText, //message to send 
+            };
+    
+            Kommunicate.sendMessage(messagePxy);
         }
 
     },

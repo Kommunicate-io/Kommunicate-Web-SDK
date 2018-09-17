@@ -17,7 +17,7 @@ const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
 //var concat = require('concat-files');
 app.use(cors());
-
+console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m")
 // minify applozic plugin code files into a single file
 compressor.minify({
   //compressor: 'gcc',
@@ -40,7 +40,7 @@ compressor.minify({
   compressor: 'clean-css',
   // compressor: 'no-compress',
   input: ['./src/webplugin/lib/css/mck-combined.min.css', './src/webplugin/css/app/mck-sidebox-1.0.css', './src/webplugin/css/app/km-rich-message.css', './src/webplugin/css/app/km-login-model.css',
-  './src/webplugin/lib/css/tiny-slider-2.4.0.css'],
+  './src/webplugin/lib/css/tiny-slider-2.4.0.css','./src/webplugin/css/app/km-sidebox.css'],
   output: './src/webplugin/css/kommunicatepluginrequirements.min.css',
   options: {
   advanced: true, // set to false to disable advanced optimizations - selector & property merging, reduction, etc.
