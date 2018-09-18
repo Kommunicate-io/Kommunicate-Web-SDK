@@ -55,7 +55,33 @@ const ApplozicClient ={
         console.log(err);
         throw err;
       });
-   }
+   },
+
+
+
+
+   getUserListByCriteria:function(criteria,callback){
+   let headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+      'Apz-AppId': criteria.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
+      'Apz-Product-App': 'true',
+    }
+    var url = getConfig().applozicPlugin.fetchContactsUrl;
+  
+    return Promise.resolve(axios.get(url,{"headers":headers,"params": criteria.params||{}}))
+      .then(response => {
+        return typeof callback=="function"? callback(null, response.data):  response.data 
+      }).catch(e=>{
+        console.log("error",e);
+       if( typeof callback=="function"){
+         callback(e, null)
+        }else{
+          throw e;
+        } 
+
+      });
+  }
 }
 
 export default ApplozicClient;

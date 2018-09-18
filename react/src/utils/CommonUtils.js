@@ -191,6 +191,19 @@ const CommonUtils = {
             var calculatedDate = dd + ' ' + mm + ', '+ y;
             return calculatedDate;
         }
+    },
+    updateUserSession : function(data){
+        if(typeof data =='object'){
+            let userSession = CommonUtils.getUserSession()||{};
+           for (const key in data) {
+               if (data.hasOwnProperty(key)) {
+                   const element = data[key];
+                   userSession[key] = data[key];
+               }
+           }
+
+            CommonUtils.setUserSession(userSession);
+        }
     }
 }
 
