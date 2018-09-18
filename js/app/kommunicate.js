@@ -348,6 +348,10 @@ $applozic.extend(true,Kommunicate,{
         }
     },
     updateSettings:function(options){
+        let type = typeof options;
+        if(type !='object'){
+            throw new error("update settings expects an object, found "+type);
+        }
         var settings = KommunicateUtils.getDataFromKmSession("settings");
         settings=  settings?JSON.parse(settings):{}
 
@@ -357,9 +361,7 @@ $applozic.extend(true,Kommunicate,{
         KommunicateUtils.storeDataIntoKmSession("settings",JSON.stringify(settings));
     },
     getSettings:function(setting){
-        var settings = KommunicateUtils.getDataFromKmSession("settings");
-        settings=  settings?JSON.parse(settings):null;
-        return setting&&settings?settings[setting]:(settings?settings:"");
+        return KommunicateUtils.getSettings(setting);
     }
 
 });

@@ -2617,10 +2617,6 @@ const MESSAGE_CONTENT_TYPE = {
                         "contentType": 0,
                         "message": message
                     };
-                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-                    if(chatContext){
-                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
-                    }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
                     if (conversationId) {
@@ -2987,7 +2983,11 @@ const MESSAGE_CONTENT_TYPE = {
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
                 if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    metadata = $applozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
+                    // chat context is metadata will be sent with every message 
+                    var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
+                    MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
+                    chatContext = typeof chatContext =="object"?$applozic.extend(chatContext, MCK_DEFAULT_MESSAGE_METADATA):{};
+                    $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(chatContext)});
                 }
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
