@@ -8,6 +8,8 @@ import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
 import {acEventTrigger} from '../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 
 class AutoSuggest extends Component {
@@ -389,17 +391,11 @@ class AutoSuggest extends Component {
 
 		return (
 
-			<div className="animated fadeIn message-shortcut-div">
-				<div className="row">
-					<div className="col-sm-12 col-md-8">
-						<div className="message-shortcuts-title-wrapper">
-							<div className="message-shortcuts-title">Save your time by setting up shortcuts for common responses</div>
-							<div className="message-shortcuts-description">(Press / before typing the shortcut term during a conversation to get the full message)</div>
-						</div>
-						<hr className="title-line" />
-					</div>
-				</div>
-				<div className="row">
+			<div className="animated fadeIn message-shortcut-div ">
+				<div className="km-heading-wrapper">
+					<SettingsHeader  />
+				</div>	
+				<div className="row ">
 					<div className="col-md-12">
 						<button disabled={this.state.visibleButtons} className="km-button km-button--primary" onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create Shortcut</button>
 					</div>

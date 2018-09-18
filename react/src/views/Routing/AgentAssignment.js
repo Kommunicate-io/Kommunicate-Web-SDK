@@ -15,6 +15,8 @@ import Diaglflow from '../Bot/images/dialogflow-icon.png';
 import botPlatformClient from '../../utils/botPlatformClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import { acEventTrigger } from '../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 class AgentAssignemnt extends Component{
     constructor(props) {
@@ -188,14 +190,12 @@ toggleConversationAssignment = () => {
 
     return (
         <div>
-            <div className="col-md-8 col-sm-12">
-                <div className="row" className="conversation-routing-title-wrapper">
-                    <h4 className="agent-assignment-title">Set up how you want conversations to be assigned to your bots and agents</h4>
-                </div>
-            </div>
-            <div className="col-md-9 col-sm-12">
-                <div className="card-block">
-                    <div className="row agent-assignment-wrapper">
+            <div className="km-heading-wrapper">
+					<SettingsHeader  />
+				</div>
+            <div className=" agent-assignment-wrapper row">
+                <div className="card col-md-8 mb-3">
+                    <div className="row ">
                         <div className="options-wrapper">
                             <div className="row">
                                 <div className="col-md-8 col-sm-8">
@@ -267,7 +267,7 @@ toggleConversationAssignment = () => {
                                     </div>
                                 </div>
                                 <div className="row" style={{marginTop: "73px"}}>
-                                    <div className="col-md-11 col-sm-11">
+                                    <div className="col-md-12">
                                         <p style={{ border: "1px solid #c0c0c0", padding:"6px"}} className="km-routing-assign-bot-text-3">Want more routing rules for bot assignment? <a className="see-docs-link" href="https://docs.kommunicate.io/docs/web-installation.html" target="_blank" >See Docs</a></p>
                                     </div>
                                 </div>
@@ -275,8 +275,8 @@ toggleConversationAssignment = () => {
                         </div>
                     </div>
                 </div>
-                <div className="card-block">
-                    <div className="row agent-assignment-wrapper">
+                <div className="card col-md-8">
+                    <div className="row">
                         <div className="options-wrapper">
                             <div className="row" onClick={() => {this.setState({openAgentRoutingRules:!this.state.openAgentRoutingRules})}} style={{cursor: "pointer"}}>
                                 <div className="col-md-8 col-sm-8">
@@ -297,7 +297,7 @@ toggleConversationAssignment = () => {
                                     <div  >{automaticAssignmentContainer}</div>*/}
                             </form>
                             <div className={this.state.openAgentRoutingRules ? "row":"n-vis"} style={{backgroundColor: "#cce7f8"}}>
-                                <span style={{padding: "6px"}} className="km-agent-routing-note-text"><strong>NOTE:</strong> An agent will also be assigned to every conversation irrespective of bot routing rules</span>
+                                <span className="km-agent-routing-note-text"><strong>NOTE:</strong> An agent will also be assigned to every conversation irrespective of bot routing rules</span>
                             </div>
                         </div>
                     </div>

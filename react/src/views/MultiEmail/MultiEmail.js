@@ -98,9 +98,9 @@ class MultiEmail extends Component {
                         onClick={this.showEmailInput}
                     >
                         {" "}
-                        Send instructions to team{" "}
+                        Send instructions {" "}
                     </button> : <a href="#/" className={this.state.instructionButtonShow === true ?"multiemail-button-link":"n-vis"}
-                        onClick={this.showEmailInput}>Send instructions to team </a>}
+                        onClick={this.showEmailInput}>Send instructions </a>}
                     
                     
                 </div>}

@@ -5,6 +5,8 @@ import Notification from '../../views/model/Notification';
 import axios from 'axios';
 import { getConfig } from '../../config/config';
 import Select from 'react-select';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 export default class EmailNotification extends Component {
 
@@ -66,13 +68,11 @@ export default class EmailNotification extends Component {
 
         return(
             <div className="animated fadeIn email-notifications-div">
+             <div className="km-heading-wrapper">
+					<SettingsHeader  />
+				</div>
                 <div className="row">
                     <div className="col-sm-12 col-md-8">
-                        <div className="email-notifications-container">
-                            <h2 className="email-notifications-heading">Notification preferences</h2>
-                            <p className="email-notifications-description">We will send you email notifications if you are offline/away for more than 5 minutes and you have unread messages.</p>
-                            <hr/>
-                        </div>
                         <div className="email-notifications-dropdown-container">
                             <p className="email-notifications-description">Email notifications will be sent for:</p>
                             <Select

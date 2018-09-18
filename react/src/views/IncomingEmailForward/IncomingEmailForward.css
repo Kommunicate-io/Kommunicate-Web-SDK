@@ -1,5 +1,6 @@
 .incoming-email-forward-container {
-    padding: 20px;
+    padding: 0px 20px 0px 20px;
+    margin-top: -5px;
 }
 .incoming-email-forward-heading {
     font-size: 18px;
@@ -11,13 +12,11 @@
     color: #354052;
 }
 .incoming-email-forward-description {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
     line-height: 1.21;
     letter-spacing: 0.3px;
-    color: #969393;
+    color: #616366;
     margin-bottom: 0px;
 }
 .incoming-email-forward-email-id-container {

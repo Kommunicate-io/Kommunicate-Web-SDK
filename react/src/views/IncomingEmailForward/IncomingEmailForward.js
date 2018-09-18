@@ -4,6 +4,8 @@ import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
 import { Link } from 'react-router-dom';
 import {acEventTrigger} from '../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 export default class IncomingEmailForward extends Component {
 
@@ -37,12 +39,12 @@ export default class IncomingEmailForward extends Component {
         let incomingEmailForwardEmailId = `support${envVar}+app.${CommonUtils.getUserSession().applicationId}@kommunicatemail.io`;
         return(
             <div className="animated fadeIn incoming-email-forward-div">
+                <div className="km-heading-wrapper">
+					<SettingsHeader  />
+				</div>
                 <div className="row">
                     <div className="col-sm-12 col-md-8">
                         <div className="incoming-email-forward-container">
-                            <h2 className="incoming-email-forward-heading">
-                            You can reply to support emails from Kommunicate
-                            </h2>
                             <p className="incoming-email-forward-description">In your email service provider settings, set up email forwarding from your support email address (example: support@yourcompany.com) to this email address:</p>
                         </div>
                         <div className="incoming-email-forward-email-id-container">
