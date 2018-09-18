@@ -26,14 +26,14 @@ const addMemberIntoConversation = (data) => {
                                 applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
                                 assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                             }
-                            return { code: "SUCCESS", data: 'success' }
+                            return { code: "SUCCESS", data: agents }
                         } else if (!customer.agentRouting) {
                             agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
                             let groupInfo = { groupDetails: userIds };
                             logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                             return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
                                 logger.info('response', response.data)
-                                return { code: "SUCCESS", data: 'success' };
+                                return { code: "SUCCESS", data: agents };
                             });
                         } else {
                             logger.info("adding assignee in round robin fashion");
@@ -47,6 +47,7 @@ const addMemberIntoConversation = (data) => {
                                 }
                             });
                         }
+                        return agents;
                     })
                 }
             })

@@ -109,21 +109,21 @@ class UserItem extends Component {
     
     deleteUser  = () => {
       this.onCloseModal();
-      let userId = this.state.userToBeDeleted.userId;
+      let userId = [];
+      userId.push(this.state.userToBeDeleted.userId);
       return Promise.resolve(deleteUserByUserId(userId)).then(response => {
         if(response && response.data.code == "SUCCESS") {
-          if (response.data.message == "DELETED SUCCESSFULLY"){
+          if (response.message.data[0].result == "DELETED SUCCESSFULLY"){
             Notification.success('Agent Deleted Successfully');
             this.props.getUsers();
-          } else if (response.data.message == "USER DOES NOT EXIST OR ALREADY DELETED") {
+          } else if (response.message.data[0].result == "USER DOES NOT EXIST OR ALREADY DELETED") {
             Notification.warning('Agent does not exist or already deleted');
           }
         }
       }).catch(err => {
-        console.log(err.message.response.data);
+        // console.log(err.message.response.data);
         Notification.error('There was a problem while deleteing the agent');
       })
-
     }
     onOpenModal = (e) => {
       let index = e.target.dataset.index;

@@ -25,7 +25,7 @@ var autoSuggestions = {};
     var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
     var userId = userSession.userName;
     var appId = userSession.application.applicationId;
-    var userPassword = userSession.password;
+    var userPassword = userSession.accessToken;
     var userContactNumber = "";
     var topicBoxEnabled = true;
     if (typeof userId === "undefined" || userId == null) {
@@ -67,6 +67,7 @@ var autoSuggestions = {};
       autoTypeSearchEnabled :false,
       // awsS3Server :true,
       onInit: onInitialize,
+      maxHistory: userSession.subscription === "startup" ? 90 : "", // Number of days' history that needs to be restricted
       onTabClicked : function(tabDetail) {
             var $mck_group_info_btn = $kmApplozic(".km-group-info-btn");
             $mck_group_info_btn.trigger('click');

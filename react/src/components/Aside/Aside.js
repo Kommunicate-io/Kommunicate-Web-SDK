@@ -1085,6 +1085,11 @@ class Aside extends Component {
                       <span className="km-user-info-meatadata-value km-lastMessageAtTime"></span>
                       </p>
                       </div>
+                      {/* user metadata */}
+                      <div id="km-sidebar-user-info-wrapper" className="n-vis" >
+                        <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
+                        <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper"></div>
+                      </div>    
                       <div>
                         <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
                         Clearbit</div>

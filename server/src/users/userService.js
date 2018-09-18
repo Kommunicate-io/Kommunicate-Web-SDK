@@ -19,6 +19,7 @@ const botPlatformClient = require("../utils/botPlatformClient");
 const CONST = require("./constants.js");
 const customerService = require('../customer/customerService');
 const deepmerge = require('deepmerge');
+const chargebeeService = require('../chargebee/chargebeeService');
 /*
 this method returns a promise which resolves to the user instance, rejects the promise if user not found in db.
 */
@@ -148,6 +149,7 @@ const createUser = (user, customer) => {
     return userModel.create(user).catch(err => {
       logger.error("error while creating bot", err);
     }).then(user => {
+      updateSubscriptionQuantity(user, 1);
       if (user.type == registrationService.USER_TYPE.BOT) {
         // keeping it async for now.
         botPlatformClient.createBot({
@@ -384,15 +386,10 @@ exports.updateUser = (userId, appId, userInfo) => {
   var email = userInfo.email ? userInfo.email : null;
   return Promise.all([getByUserNameAndAppId(userId, appId)])
     .then(([user]) => {
-      var userKey = user.userKey;
       if (user == null) {
-        throw new Error("No customer in customer table with appId", appId);
+        throw new Error("No customer found with the application Id "+appId);
       }
-      // if (isvalid) {
-      //   var error = new Error("user already exist for this email");
-      //   error.code = 'DUPLICATE_EMAIL';
-      //   throw error;
-      // }
+      var userKey = user.userKey;
       let userDetail = { userId: userId, displayName: userInfo.name, email: userInfo.email, phoneNumber: userInfo.contactNo };
       applozicClient.updateApplozicClient(user.userName, user.accessToken, appId, userDetail, null, user.type === registrationService.USER_TYPE.BOT)
         .then(response => {
@@ -590,18 +587,34 @@ const updateThirdPartyData = (userName, apiKey, metadata) => {
  * @param {String} applicationId 
  * @param {boolean} deactivate 
  */
+const activateOrDeactivate = (userNames, applicationId, deactivate) => {
+  let func = userNames.map(user => {
+    return activateOrDeactivateUser(user, applicationId, deactivate);
+  })
+  return Promise.all(func).then(data => {
+    return { result: 'success', data: data };
+  }).catch(err => {
+    console.log(err);
+    throw err;
+  })
+}
 const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
   if (deactivate) {
     return getByUserNameAndAppId(userName, applicationId).then(user => {
-        return userModel.update({ deleted_at: new Date(), status:  CONST.USER_STATUS.DELETED},{
+      if (user !== null) {
+        return userModel.update({ deleted_at: new Date(), status: CONST.USER_STATUS.DELETED }, {
           where: {
             userName: userName,
             applicationId: applicationId
           }
         }).then(result => {
           applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
-          return result = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED";
+          updateSubscriptionQuantity(user, -1);
+          return { "userId": userName, "result": result[0] = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED" };
         })
+      } else {
+        return { "userId": userName, "result": "ALREADY DELETED" };
+      }
     })
   } else {
     return userModel.update({deleted_at: null, status:  CONST.USER_STATUS.ONLINE}, {
@@ -613,12 +626,13 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
       }).then(result => {
         getByUserNameAndAppId(userName, applicationId).then(user => {
           if(user){
+            updateSubscriptionQuantity(user, 1);
             applozicClient.createApplozicClient(user.userName, user.accessToken, user.applicationId).catch(err=>{
               console.log("message: ", err.code)
             });
           }
         })
-        return result[0] == 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED";
+        return{"userId": userName ,"result":result[0] = 1 ? "ACTIVATED SUCCESSFULLY" : "ALREADY ACTIVATED"};
       })
   }
 }
@@ -633,9 +647,29 @@ const isDeletedUser= (userName, applicationId) => {
   })
 }
 
+const updateSubscriptionQuantity = (user, count) => {
+  if (user && (user.type == registrationService.USER_TYPE.AGENT || user.type == registrationService.USER_TYPE.ADMIN)) {
+    return customerService.getCustomerByApplicationId(user.applicationId).then(customer => {
+      if (customer.billingCustomerId) {
+        return chargebeeService.updateSubscriptionQuantity(customer.billingCustomerId, count);
+      }
+      return;
+    });
+  }
+}
+const getUserByCriteria = async (criteria)=>{
+  logger.info("fetching user by criteria", criteria);
+  if(typeof criteria == 'object'){
+    return Promise.resolve(userModel.findAll({where:criteria}));
+    }else{
+    return null;
+  }
+}
+
 exports.isDeletedUser = isDeletedUser;
 exports.updateThirdPartyData = updateThirdPartyData;
 exports.activateOrDeactivateUser = activateOrDeactivateUser;
+exports.activateOrDeactivate =activateOrDeactivate;
 exports.getAgentByUserKey = getAgentByUserKey;
 exports.changeBotStatus = changeBotStatus;
 exports.getUserDisplayName = getUserDisplayName;
@@ -658,3 +692,4 @@ exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameA
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
 exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
+exports.getUserListByCriteria = getUserByCriteria;

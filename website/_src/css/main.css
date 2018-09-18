@@ -1430,7 +1430,7 @@ body {
       .hero_main {
         width: 1200px;
         margin: 0 auto;
-        background-position: 130.5% 75.4%, 53% 59%;
+        background-position: 130.5% 75.4%, 53% 42%;
         background-size: 83.8%, 98%; } }
     @media (max-width: 75em) {
       .hero_main {
@@ -1515,20 +1515,24 @@ body {
         top: 30rem;
         left: 2rem; } }
   .hero_text {
-    font-size: 2.2rem;
-    width: 40%;
+    font-size: 3.1rem;
+    width: 48%;
     color: #fff;
     position: absolute;
     top: 30rem;
-    font-style: italic;
-    font-weight: 300;
-    left: 18rem; }
+    font-weight: 100 !important;
+    left: 14rem; }
+    .hero_text span {
+      font-weight: 800;
+      font-size: 1.15em; }
     @media (max-width: 75em) {
       .hero_text {
+        font-size: 2.8rem;
         top: 10rem;
         left: 8rem; } }
     @media (max-width: 56.25em) {
       .hero_text {
+        font-size: 2.5rem;
         width: 60%; } }
     @media (max-width: 37.5em) {
       .hero_text {
@@ -1537,11 +1541,11 @@ body {
         top: 2rem;
         left: 2rem; } }
   .hero_author {
-    font-size: 3rem;
+    font-size: 2.1rem;
     color: #fff;
     position: absolute;
-    top: 48rem;
-    left: 18rem; }
+    top: 56rem;
+    right: 12rem; }
     @media (max-width: 75em) {
       .hero_author {
         top: 35rem;
@@ -1551,7 +1555,7 @@ body {
         top: 30rem;
         left: 2rem; } }
   .hero_designation {
-    font-size: 2.5rem;
+    font-size: 1.9rem;
     font-weight: lighter; }
   .hero_landing_chat {
     background-image: url(../images/landing_bg.svg);

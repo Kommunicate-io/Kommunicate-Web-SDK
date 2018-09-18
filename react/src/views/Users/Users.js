@@ -6,7 +6,12 @@ import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
+import {fetchContactsFromApplozic} from '../../utils/kommunicateClient';
+import _ from 'lodash';
+import Pagination from "react-paginating";
 
+const limit = 2;
+const pageCount = 3;
 class Users extends Component {
 
   constructor(props) {
@@ -14,51 +19,152 @@ class Users extends Component {
 
     this.state = {
       result: [],
+      lastFetchTime:"",
       showEmptyStateImage: true,
+      total:0,
+      currentPage: 1,
+      intial:0,
+      final:20,
+      pageNumber:1,
+      pageFlag:2,
+      stopFlag:1,
+      getUsersFlag:1
     };
 
     window.addEventListener("kmFullViewInitilized",this.getUsers,true);
 
   }
   componentWillMount() {
-    this.getUsers(); 
+    this.getUsers();
+    this.updateConversationWithRespectToPageNumber();
   }
 
   getUsers = () => {
     var _this = this;
-    var assignedUser=[];
-    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
-    window.$kmApplozic.fn.applozic("fetchContacts", {
-      "roleNameList": ["USER"],
-      'callback': function(response) {
-        if (response && response.response && (response.response.users.length > 0)) {
-          const users=response.response.users.map((user, index)=>{
-            if (user.messagePxy && user.messagePxy.groupId) {
-              window.$kmApplozic.fn.applozic("getGroupFeed", { groupId: user.messagePxy.groupId,
-                callback: function(group) {
-                  if (botAgentMap && typeof group !== "undefined" && group !== null && group.status == "success" && group.data.metadata) {
-                    user.assignee = (group.data.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
-                    assignedUser.push(user);
-                    _this.setState({result: assignedUser, showEmptyStateImage: true})
-                    
-                  } 
-                }
-              });
-            } else {
-              assignedUser.push(user);
-              _this.setState({result: assignedUser, showEmptyStateImage: true})
-            }
-          });     
-        } else if (response.response.users.length == 0) {
-          _this.setState({showEmptyStateImage: false});
-        }
+    if(_this.state.getUsersFlag === 1){
+      _this.setState({
+        getUsersFlag:0
+      })
+      var params = {
+        startIndex : 0,
+        pageSize : 60,
+        orderBy : 1,
+        roleNameList : "USER"
+      };
+      if(_this.state.lastFetchTime !== ""){
+        params.startTime = _this.state.lastFetchTime;
       }
-    });
-    
+      var assignedUser = _this.state.result;
+      let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+        fetchContactsFromApplozic(params).then(response => {
+          if(response.status == "success"){
+            if (response && response.response && (response.response.users.length > 0)) {
+              if(response.response.users.length < 60){
+                _this.setState({stopFlag:0})
+              }
+              var setPageNumbers = assignedUser.length + response.response.users.length;
+              _this.setState({
+                total: (Math.ceil(setPageNumbers / 20)*limit),
+                lastFetchTime : response.response.lastFetchTime
+              });
+            const users=response.response.users.map((user, index)=>{
+              if (user.messagePxy && user.messagePxy.groupId) {
+                window.$kmApplozic.fn.applozic("getGroupFeed", { groupId: user.messagePxy.groupId,
+                  callback: function(group) {
+                    if (botAgentMap && typeof group !== "undefined" && group !== null && group.status == "success" && group.data.metadata) {
+                      user.assignee = (group.data.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
+                      assignedUser.push(user);
+                      // Sort array after pushing
+                      var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
+                      _this.setState({
+                        result: arrObj, 
+                        showEmptyStateImage: true
+                      })
+                    } 
+                  }
+                });
+              } 
+              else {
+                assignedUser.push(user);
+                _this.setState({
+                  result: assignedUser.reverse(), 
+                  showEmptyStateImage: true
+                })
+              }
+            });    
+          } else if (response.response.users.length == 0 && this.state.result == 0) {
+            _this.setState({showEmptyStateImage: false});
+          }
+          }
+        });
+    } 
   }
+
+  handlePageChange = page => {
+    this.setState({
+      currentPage: page
+    });
+  };
+
+  updateConversationWithRespectToPageNumber = () => {
+    var _this = this;
+    var hasClass = function(el, className) {
+      return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+    };
+    document.addEventListener('click', function(e) {
+      if (hasClass(e.target, 'km-pagination-check')) {
+        e.preventDefault();
+        var checkPreviousPageNumber = _this.state.pageNumber;
+        var getPageNumber = parseInt(e.target.id.replace('km-pagination-',''));
+        _this.setState({
+          pageNumber: getPageNumber,
+          intial: (getPageNumber-1)*20,
+          final:((getPageNumber-1)*20)+20
+        });
+
+        if((((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1 ) || _this.state.pageNumber === (checkPreviousPageNumber +2)){
+          _this.setState({ 
+            pageFlag: _this.state.pageNumber + 2,
+            getUsersFlag:1
+          })
+          _this.getUsers();
+        };
+        }
+
+        else if (hasClass(e.target, 'km-previous-page')){
+          e.preventDefault();
+          var previousPageNumber = _this.state.pageNumber - 1;
+          _this.setState({
+            pageNumber: previousPageNumber,
+            intial: (previousPageNumber-1)*20,
+            final:((previousPageNumber-1)*20)+20
+          });
+        }
+
+        else if (hasClass(e.target, 'km-next-page')){
+          e.preventDefault();
+          var nextPageNumber = _this.state.pageNumber +1;
+          _this.setState({
+            pageNumber: nextPageNumber,
+            intial: (nextPageNumber-1)*20,
+            final:((nextPageNumber-1)*20)+20
+          });
+          if(((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1) {
+            _this.setState({ 
+              pageFlag: _this.state.pageNumber + 2,
+              getUsersFlag:1
+            })
+            _this.getUsers();
+          }
+        }
+
+      });
+
+  };
+
   render() {
     const infoText = Labels["lastcontacted.tooltip"];
-    var result = this.state.result.map(function (result, index) {
+    var showrResult = this.state.result.slice(this.state.intial, this.state.final).map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
    return (<div className="animated fadeIn customer-list-item">
@@ -92,9 +198,95 @@ class Users extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {result}
+                  {showrResult}
                 </tbody>
               </table>
+              { this.state.result &&
+                <Pagination
+                    total={this.state.total}
+                    limit={limit}
+                    pageCount={pageCount}
+                    currentPage={this.state.currentPage}
+                  >
+                    {({
+                      pages,
+                      currentPage,
+                      hasNextPage,
+                      hasPreviousPage,
+                      previousPage,
+                      nextPage,
+                      totalPages,
+                      getPageItemProps
+                    }) => (
+                      <div style={{textAlign: "center",margin: "30px auto"}}>
+                        <button style={{display:"none"}}
+                          {...getPageItemProps({
+                            pageValue: 1,
+                            onPageChange: this.handlePageChange
+                          })}
+                        >
+                          first
+                        </button>
+
+                        {hasPreviousPage && (
+                          <button className="km-previous-page" style={{border: "none", color: "#5c5aa7", backgroundColor: "transparent"}}
+                            {...getPageItemProps({
+                              pageValue: previousPage,
+                              onPageChange: this.handlePageChange
+                            })}
+                          >
+                          <span style={{ fontSize: "30px", verticalAlign: "sub",marginRight: "5px"}}>
+                            &#8249;
+                          </span>
+                            Previous
+                          </button>
+                        )}
+
+                        {pages.map(page => {
+                          let activePage = null;
+                          if (currentPage === page) {
+                            activePage = { backgroundColor: "#f1efef" };
+                          }
+                          return (
+                            <button id={"km-pagination-"+page+""} className="km-pagination-check"
+                              key={page}
+                              style={activePage}
+                              {...getPageItemProps({
+                                pageValue: page,
+                                onPageChange: this.handlePageChange
+                              })}
+                            >
+                              {page}
+                            </button>
+                          );
+                        })}
+
+                        {hasNextPage && (
+                          <button className="km-next-page" style={{border: "none", color: "#5c5aa7", backgroundColor: "transparent"}}
+                            {...getPageItemProps({
+                              pageValue: nextPage,
+                              onPageChange: this.handlePageChange
+                            })}
+                          >
+                            Next 
+                            <span style={{ fontSize: "30px", verticalAlign: "sub",marginLeft: "5px"}}>
+                              &#8250;
+                            </span>
+                          </button>
+                        )}
+
+                        <button style={{display:"none"}}
+                          {...getPageItemProps({
+                            pageValue: totalPages,
+                            onPageChange: this.handlePageChange
+                          })}
+                        >
+                          last
+                        </button>
+                      </div>
+                    )}
+                </Pagination>
+                }
               <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
                 <img src="/img/empty-customers.png" alt="Customers Empty State" className="empty-state-customers-img"/>
                 <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>

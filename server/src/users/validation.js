@@ -86,10 +86,12 @@ module.exports.botStatus = {
   }
 }
 module.exports.userActivation={
+  body:{
+    userNames: joi.array().required(),
+  },
   query: {
-    userName: joi.string().required(),
     applicationId: joi.string().required(),
-    deactivate: joi.string().only(['true', 'false'])
+    deactivate: joi.string().only(['true', 'false']).required()
   }
 }
 

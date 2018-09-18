@@ -103,7 +103,7 @@ exports.patchCustomer = (req, res) => {
   if (customer.websiteUrl) {
     let appName = (customer.companyName) ? customer.companyName : "";
     applozicClient.updateApplication({ applicationId: customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName }).catch(err => {
-      console.log('error while updating application')
+      console.log('error while updating application',err);
     })
   }
 

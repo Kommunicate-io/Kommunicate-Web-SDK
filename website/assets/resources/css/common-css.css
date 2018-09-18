@@ -219,7 +219,7 @@
     /* filter: opacity(0.2); */
 }
 .footer-cta-section {
-    background-color: #5c5aa7;
+    /* background-color: #5c5aa7; */
     padding: 20px 0px 15px;
 }
 .footer-cta-title {
@@ -587,4 +587,14 @@ footer .copyright {
 }
 .footer-lines-shape {
     display: none;
+}
+
+.footer-ab-section .footer-cta-section .container {
+    border-radius: 10px;
+    background-color: #595ca8;
+    -webkit-box-shadow: 4px 4px 25px 0 rgba(0,0,0,.25);
+    box-shadow: 4px 4px 25px 0 rgba(0,0,0,.25);
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
 }
