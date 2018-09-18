@@ -420,6 +420,11 @@ exports.updateUser = (userId, appId, userInfo) => {
       throw err;
     });
 };
+const updateOnlyKommunicateUser = (userId, appId, userInfo) => {
+  return userModel.update(userInfo, { where: { userName: userId, applicationId: appId } }).then(result=>{
+    return "success";
+  });
+}
 const updateUserStatus = (userId, appId, status) => {
   return Promise.resolve(userModel.update({status: status }, { where: { "userName": userId, applicationId: appId } })).then(result => {
     console.log("successfully updated user status ", result[0]);
@@ -470,13 +475,13 @@ exports.goOnline = (userId, appId) => {
  * @param {Array} type
  * @return {Object}
  */
-const getUsersByAppIdAndTypes = (applicationId, type) => {
+const getUsersByAppIdAndTypes = (applicationId, type, order) => {
   logger.info("fetching Users for customer, ", applicationId);
   let criteria = { applicationId: applicationId };
   if (type) {
     criteria.type = { $in: type };
   }
-  var order = [['name', 'ASC']];
+  order =  order ? order : [['name', 'ASC']];
   return Promise.resolve(userModel.findAll({ where: criteria, order })).then(result => {
     return result;
   }).catch(err => {
@@ -686,4 +691,5 @@ exports.getAdminUserNameFromGroupInfo = getAdminUserNameFromGroupInfo;
 exports.getUserBusinessHoursByUserNameAndAppId = getUserBusinessHoursByUserNameAndAppId;
 exports.getUsersByAppIdAndTypes = getUsersByAppIdAndTypes;
 exports.updateUserStatus = updateUserStatus;
+exports.updateOnlyKommunicateUser = updateOnlyKommunicateUser;
 exports.getUserListByCriteria = getUserByCriteria;
