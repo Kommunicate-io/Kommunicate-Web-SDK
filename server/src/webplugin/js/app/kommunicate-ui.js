@@ -56,6 +56,21 @@ KommunicateUI={
             this.hideAwayMessage();
         }
     },
+    displayProgressMeter: function(key) {
+        $applozic(".progress-meter-"+key).removeClass("n-vis").addClass("vis");
+    },
+    deleteProgressMeter: function(key) {
+        $applozic(".progress-meter-"+key).remove();
+    },
+    updateAttachmentTemplate: function(file_meta,key){
+        let div = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key)
+
+        div.setAttribute("data-filemetakey", file_meta.blobKey);
+        div.setAttribute("data-filename", file_meta.name);
+        div.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+        div.setAttribute("data-filesize", file_meta.size);
+        div.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+    },
     populateLeadCollectionTemplate:function() {
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
