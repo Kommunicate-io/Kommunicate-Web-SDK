@@ -10,6 +10,8 @@ import AvatarEditor from 'react-avatar-editor'
 import PasswordAccordion from './PasswordAccordion';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 
 
@@ -201,8 +203,10 @@ class Forms extends Component {
     return (
 
       <div className="animated fadeIn">
-
-        <div className="row">
+      <div className="km-heading-wrapper ">
+					<SettingsHeader  />
+				</div>	
+        <div className="row km-profile-wrapper">
 
           <div className="col-md-12">
 

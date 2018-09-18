@@ -8,8 +8,9 @@ const findRouteName = url => routes[url];
 
 const getPaths = (pathname) => {
   const paths = ['/'];
-
+  // const settingsURL = '/settings';
   if (pathname === '/') return paths;
+  // if (pathname.includes(settingsURL))  pathname=" ";
 
   pathname.split('/').reduce((prev, curr, index) => {
     const currPath = `${prev}/${curr}`;
@@ -25,13 +26,13 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
     return (
       match.isExact ?
       (
-        <BreadcrumbItem active>{routeName}</BreadcrumbItem>
+        <BreadcrumbItem active className={match.url.includes('/settings/') ? "invisible" : ""}>{routeName}</BreadcrumbItem>
       ) :
-      (
+      ( 
         <BreadcrumbItem>
           <Link to={match.url || ''}>
             {routeName}
-          </Link>
+          </Link> 
         </BreadcrumbItem>
       )
     );
@@ -44,7 +45,7 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
   const i = 0;
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);
   return (
-    <Breadcrumb>
+    <Breadcrumb className={paths[1].includes("/settings")? "km-remove-border" : ""}>
       {items}
       { paths[1] === '/conversations' ? " " : <TrialDaysLeft />}    
     </Breadcrumb>
@@ -52,7 +53,7 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
 };
 
 export default props => (
-  <div>
-    <Route path="/:path" component={Breadcrumbs} {...props} />
+  <div >
+    <Route path="/:path" component={Breadcrumbs} {...props} className="hidden" />
   </div>
 );

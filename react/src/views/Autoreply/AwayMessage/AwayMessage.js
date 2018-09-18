@@ -8,6 +8,8 @@ import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, 
 import axios from 'axios';
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import {acEventTrigger} from '../../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
+
 
 class AwayMessage extends Component{
   constructor(props){
@@ -389,16 +391,15 @@ class AwayMessage extends Component{
       </div>  
       });
     return (
-      <div className="away-message-wrapper">
+      <div className="away-message-wrapper animated fadeIn">
+            <SettingsHeader />
+
         <div className="row">
           <div className="col-md-8 col-sm-12">
-            <div className="card-block away-message-header">
+            <div className="away-message-header">
               <div className="row">
                 <h4 className="away-message-title">Show away message to customers </h4>
                 <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
-              </div>
-              <div className="row" >
-                <p className="away-message-description">The away message will be shown to your customers if and when they send you a message while you are away.</p>
               </div>
             </div>
           </div>

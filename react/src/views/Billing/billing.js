@@ -22,6 +22,8 @@ import RadioButton from '../../components/RadioButton/RadioButton';
 import CloseButton from '../../components/Modal/CloseButton';
 import { Link } from 'react-router-dom';
 import { USER_TYPE, USER_STATUS } from '../../utils/Constant';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 class Billing extends Component {
 
@@ -503,9 +505,10 @@ class Billing extends Component {
                                         )
                                     )
                                     :
-                                    null
-                                }
-
+                                    null}
+                                
+				                       <SettingsHeader  />
+				                    
                                 {/* Subscribe successfully box */}
 
                                 <div className={this.state.subscription == '' || this.state.subscription == 'startup' ? (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ? ("n-vis") : ("n-vis")): "subscription-complete-container"}>

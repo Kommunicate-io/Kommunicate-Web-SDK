@@ -2,7 +2,7 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 .agent-assignment-wrapper{
-    margin-left: -7px;
+    margin-left: 15px;
 }
 .agent-assignment-title{  
     font-size: 18px;
@@ -21,7 +21,6 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     background-color: #f4f5f7;
-    border: 1px solid #ddd7d7;
 }
 .options-wrapper-title{
     margin-bottom:25px;
@@ -124,6 +123,7 @@ body {
     letter-spacing: 0.1px;
     text-align: left;
     color: #716d6d;
+    padding: 25px;
 }
 
 .drop-down-list-of-bots {

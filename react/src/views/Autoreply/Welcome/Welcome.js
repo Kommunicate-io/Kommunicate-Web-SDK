@@ -6,7 +6,8 @@ import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
 import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
-import {acEventTrigger} from '../../../utils/ActiveCampaign'
+import {acEventTrigger} from '../../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 
 class Welcome extends Component{
   constructor(props){
@@ -223,6 +224,7 @@ class Welcome extends Component{
   }
   
   render() {
+    
     const welcomeMsgTextArea = this.state.welcomeMessages.map((message, index) => {
       if(index < 3) {
         return <div key = {index}>
@@ -259,29 +261,16 @@ class Welcome extends Component{
       }
     });
     return (
-      <div className="welcome-message-wrapper">
-        <div className="row">
-          <div className="col-md-8 col-sm-12">
-            <div className="card-block welcome-message-header">
-              <div className="row">
-                <h4 className="welcome-message-title">Show welcome message to customers </h4>
-                <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
-              </div>
-              <div className="row" >
-                <p className="welcome-message-description">The welcome message will greet your customers when they initiate a
-                new conversation. Welcome messages are common for all team members across your company.</p>
-              </div>
-            </div>
+      <div className="animated fadeIn welcome-message-wrapper">
+        <SettingsHeader />    
+          <div className="welcome-message-action-wrapper">
+          <h4 className="welcome-message-title">Show welcome message to customers</h4>
+          <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
           </div>
-        </div>
-        <div className="row">
+          <div className="row">
           <div className="col-sm-12 col-md-12">
-            <div className="card">
               <div className="card-header welcome-card-header">
                 <div className="message-wrapper">
-                  <div className="row">
-                    <h5 className="message-title">Welcome message </h5>
-                  </div>
                   {welcomeMsgTextArea}                  
                 </div>
                 {  this.state.welcomeMessages.length <= 2 &&
@@ -297,9 +286,7 @@ class Welcome extends Component{
                     }}
                     >Save</button>
                   <button disabled = {this.state.disableButton} className="km-button km-button--secondary discard-btn" onClick={this.discardWelcomeMessage}>Discard</button>
-                </div>
-              </div>
-              
+                </div>              
             </div>
           </div>
         </div>

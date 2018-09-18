@@ -11101,6 +11101,10 @@ input:required {
   cursor: pointer;
 }
 
+.km-remove-border > ol {
+  border:none!important;
+}
+
 @-webkit-keyframes button-spin {
   from {
     -webkit-transform: rotate(0deg);
