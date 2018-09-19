@@ -11101,6 +11101,9 @@ input:required {
   cursor: pointer;
 }
 
+.km-remove-border {
+  border:none!important;
+}
 .km-remove-border > ol {
   border:none!important;
 }

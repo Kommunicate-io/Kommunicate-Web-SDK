@@ -16,7 +16,7 @@ const SettingsHeader = (props) =>{
             break;
         
         case 'message shortcuts':
-            subHeading="Press / beforetyping the shortcut term during a conversation to get the full message"
+            subHeading="Press / before typing the shortcut term during a conversation to get the full message"
             currPath = "Quick reply"
             break;
         case 'email notifications':
