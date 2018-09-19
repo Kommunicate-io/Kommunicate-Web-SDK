@@ -82,6 +82,7 @@ const MESSAGE_CONTENT_TYPE = {
             'typing': 'typing...',
             'is.typing': 'is typing...',
             'online': 'Online',
+            'offline': 'Offline',
             'clear.messages': 'Clear Messages',
             'delete': 'Delete',
             'reply': 'Reply',
@@ -3486,6 +3487,34 @@ const MESSAGE_CONTENT_TYPE = {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
                                 }
+
+                                // Setting Online and Offline status for the agent to whom the conversation is assigned to.
+                                if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
+                                    var CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var detailOfAssignedUser;
+                                    $applozic.each(data.userDetails, function (i, userDetail) {
+                                        if(userDetail.userId == CONVERSATION_ASSIGNEE) {
+                                            detailOfAssignedUser = userDetail;
+                                            return false;
+                                        }
+                                    });
+                                    $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    if(detailOfAssignedUser.roleType === 1) {
+                                        // Checking if the CONVERSATION_ASSIGNEE is bot or not
+                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online");
+                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                    } else if(detailOfAssignedUser.roleType === 8) {
+                                        if(detailOfAssignedUser.connected == true) {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                        } else {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+                                        }
+                                    }
+                                }
+
+
                             }
                         }
 
@@ -6208,13 +6237,13 @@ const MESSAGE_CONTENT_TYPE = {
             _this.lastSeenOfGroupOfTwo = function (tabId) {
                 if (w.MCK_OL_MAP[tabId]) {
                     $mck_tab_status.attr('title', MCK_LABELS['online']).html(MCK_LABELS['online']);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 } else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
                     var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
                     $mck_tab_status.html(lastSeenAt);
                     $mck_tab_status.attr('title', lastSeenAt);
                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 }
             };
             _this.toggleBlockUser = function (tabId, isBlocked) {
@@ -6242,7 +6271,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_tab_status.attr('title', lastSeenAt);
                         }
                         $mck_tab_title.addClass('mck-tab-title-w-status');
-                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     }
                 }
             };
@@ -6813,7 +6842,7 @@ const MESSAGE_CONTENT_TYPE = {
                     groupMembers = groupMembers.replace(/,\s*$/, '');
                     $mck_tab_status.html(groupMembers);
                     $mck_tab_status.attr('title', groupMembers);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     $mck_tab_title.addClass('mck-tab-title-w-status');
                     $mck_group_menu_options.removeClass('n-vis').addClass('vis');
                 } else {
@@ -8317,7 +8346,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     $mck_tab_title.removeClass("mck-tab-title-w-typing");
                                     $applozic('.km-typing-wrapper').remove();
                                     if ($mck_tab_title.hasClass("mck-tab-title-w-status" && (typeof group === "undefined" || group.type != 7))) {
-                                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                     }
                                     $mck_typing_label.html(MCK_LABELS['typing']);
                                 }, 60000);
@@ -8327,7 +8356,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_typing_box.removeClass('vis').addClass('n-vis');
                             $applozic('.km-typing-wrapper').remove();
                             if ($mck_tab_title.hasClass("mck-tab-title-w-status") && (typeof group === "undefined" || group.type != 7)) {
-                                $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                // $mck_tab_status.removeClass('n-vis').addClass('vis');
                             }
                             $mck_typing_label.html(MCK_LABELS['typing']);
                         }
@@ -8614,7 +8643,7 @@ const MESSAGE_CONTENT_TYPE = {
                                         $mck_tab_status.html(mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
                                     }
                                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                 }
                             }
                         } else if (w.MCK_OL_MAP[tabId]) {
