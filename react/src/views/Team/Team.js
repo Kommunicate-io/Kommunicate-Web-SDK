@@ -447,7 +447,7 @@ class Integration extends Component {
           </div>
           <div className="col-md-12 new">
             <div className="card">
-              { !this.state.isTrialPlan && this.state.isStartupPlan && this.state.disabledUsers.length > 0 &&
+              { !this.state.isTrialPlan && this.state.disabledUsers.length > 0 &&
                 <div className="card-block">
                   <div className="container disabled-account-info-container">
                     <div className="row">

@@ -15,6 +15,8 @@
   padding: 15px;
   border-radius: 4px;
   background-color: #ffffff;
+  outline: none;
+  border: solid 1px #a1a1a1;
 }
 
 .km-pushnotification-hr {
@@ -114,10 +116,13 @@
   margin-top: 22px;
   border-radius: 4px;
   background-color: #ffffff;
+  border: solid 1px #a1a1a1;
+
 }
 
 .km-input-component {
   margin-top: 20px;
+
 }
 
 

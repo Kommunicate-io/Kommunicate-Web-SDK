@@ -47,7 +47,7 @@ class Users extends Component {
       })
       var params = {
         startIndex : 0,
-        pageSize : 60,
+        pageSize : 100,
         orderBy : 1,
         roleNameList : "USER"
       };
@@ -59,7 +59,7 @@ class Users extends Component {
         fetchContactsFromApplozic(params).then(response => {
           if(response.status == "success"){
             if (response && response.response && (response.response.users.length > 0)) {
-              if(response.response.users.length < 60){
+              if(response.response.users.length < 100){
                 _this.setState({stopFlag:0})
               }
               var setPageNumbers = assignedUser.length + response.response.users.length;

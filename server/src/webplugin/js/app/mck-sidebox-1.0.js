@@ -87,6 +87,7 @@ const MESSAGE_CONTENT_TYPE = {
             'typing': 'typing...',
             'is.typing': 'is typing...',
             'online': 'Online',
+            'offline': 'Offline',
             'clear.messages': 'Clear Messages',
             'delete': 'Delete',
             'reply': 'Reply',
@@ -547,7 +548,8 @@ const MESSAGE_CONTENT_TYPE = {
             'onUserBlocked': function () { },
             'onUserUnblocked': function () { },
             'onUserActivated': function () { },
-            'onUserDeactivated': function () { }
+            'onUserDeactivated': function () { },
+            'onMessageNotification':function(resp){}
         };
 
         _this.loadConversationWithAgent = function (params) {
@@ -1335,6 +1337,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
                 if (typeof events.onUserActivated === 'function') {
                     _this.events.onUserActivated = events.onUserActivated;
+                }
+                if (typeof events.onMessageNotification === 'function') {
+                    _this.events.onMessageNotification = events.onMessageNotification;
                 }
                 if (typeof events.onUserDeactivated === 'function') {
                     _this.events.onUserDeactivated = events.onUserDeactivated;
@@ -2633,10 +2638,6 @@ const MESSAGE_CONTENT_TYPE = {
                         "contentType": 0,
                         "message": message
                     };
-                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-                    if(chatContext){
-                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
-                    }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
                     if (conversationId) {
@@ -3018,7 +3019,11 @@ const MESSAGE_CONTENT_TYPE = {
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
                 if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    metadata = $applozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
+                    // chat context is metadata will be sent with every message 
+                    var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
+                    MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
+                    chatContext = typeof chatContext =="object"?$applozic.extend(chatContext, MCK_DEFAULT_MESSAGE_METADATA):{};
+                    $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(chatContext)});
                 }
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
@@ -3518,6 +3523,34 @@ const MESSAGE_CONTENT_TYPE = {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
                                 }
+
+                                // Setting Online and Offline status for the agent to whom the conversation is assigned to.
+                                if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
+                                    var CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var detailOfAssignedUser;
+                                    $applozic.each(data.userDetails, function (i, userDetail) {
+                                        if(userDetail.userId == CONVERSATION_ASSIGNEE) {
+                                            detailOfAssignedUser = userDetail;
+                                            return false;
+                                        }
+                                    });
+                                    $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    if(detailOfAssignedUser.roleType === 1) {
+                                        // Checking if the CONVERSATION_ASSIGNEE is bot or not
+                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online");
+                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                    } else if(detailOfAssignedUser.roleType === 8) {
+                                        if(detailOfAssignedUser.connected == true) {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                        } else {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+                                        }
+                                    }
+                                }
+
+
                             }
                         }
 
@@ -5053,6 +5086,9 @@ const MESSAGE_CONTENT_TYPE = {
             };
 
             _this.updateRecentConversationList = function (contact, message, update) {
+                if(message && message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
+                    return;
+                }
                 var $listId = 'mck-contact-list';
                 var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 if ($applozic('#' + $listId + ' #li-' + contactHtmlExpr).length > 0) {
@@ -6253,13 +6289,13 @@ const MESSAGE_CONTENT_TYPE = {
             _this.lastSeenOfGroupOfTwo = function (tabId) {
                 if (w.MCK_OL_MAP[tabId]) {
                     $mck_tab_status.attr('title', MCK_LABELS['online']).html(MCK_LABELS['online']);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 } else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
                     var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
                     $mck_tab_status.html(lastSeenAt);
                     $mck_tab_status.attr('title', lastSeenAt);
                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 }
             };
             _this.toggleBlockUser = function (tabId, isBlocked) {
@@ -6287,7 +6323,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_tab_status.attr('title', lastSeenAt);
                         }
                         $mck_tab_title.addClass('mck-tab-title-w-status');
-                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     }
                 }
             };
@@ -6858,7 +6894,7 @@ const MESSAGE_CONTENT_TYPE = {
                     groupMembers = groupMembers.replace(/,\s*$/, '');
                     $mck_tab_status.html(groupMembers);
                     $mck_tab_status.attr('title', groupMembers);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     $mck_tab_title.addClass('mck-tab-title-w-status');
                     $mck_group_menu_options.removeClass('n-vis').addClass('vis');
                 } else {
@@ -8199,6 +8235,7 @@ const MESSAGE_CONTENT_TYPE = {
                 // setTimeout(function () {
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
+                mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
                     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     $mck_msg_preview_visual_indicator_text.html('');
@@ -8416,7 +8453,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     $mck_tab_title.removeClass("mck-tab-title-w-typing");
                                     $applozic('.km-typing-wrapper').remove();
                                     if ($mck_tab_title.hasClass("mck-tab-title-w-status" && (typeof group === "undefined" || group.type != 7))) {
-                                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                     }
                                     $mck_typing_label.html(MCK_LABELS['typing']);
                                 }, 60000);
@@ -8426,7 +8463,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_typing_box.removeClass('vis').addClass('n-vis');
                             $applozic('.km-typing-wrapper').remove();
                             if ($mck_tab_title.hasClass("mck-tab-title-w-status") && (typeof group === "undefined" || group.type != 7)) {
-                                $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                // $mck_tab_status.removeClass('n-vis').addClass('vis');
                             }
                             $mck_typing_label.html(MCK_LABELS['typing']);
                         }
@@ -8439,6 +8476,9 @@ const MESSAGE_CONTENT_TYPE = {
                 _this.disconnect();
                 _this.init();
             };
+            _this.onNotificationEvent = function(msg){
+               events.onMessageNotification(msg);
+            }
             _this.onError = function (err) {
                 w.console.log("Error in channel notification. " + err);
                 events.onConnectFailed();
@@ -8713,7 +8753,7 @@ const MESSAGE_CONTENT_TYPE = {
                                         $mck_tab_status.html(mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
                                     }
                                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                 }
                             }
                         } else if (w.MCK_OL_MAP[tabId]) {

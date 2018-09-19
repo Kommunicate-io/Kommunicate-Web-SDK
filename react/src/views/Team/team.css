@@ -195,7 +195,7 @@
   visibility: hidden;
 } */
 .teammates-table td{
-  width: 315px;
+  width: auto;
 }
 .km-truncate {
 	white-space: nowrap;
