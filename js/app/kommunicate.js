@@ -256,6 +256,9 @@ $applozic.extend(true,Kommunicate,{
         // contentType should be 300 for rich text message in metadata
         return metadata && metadata.contentType == 300;
     },
+    isAttachment: function(msg) {
+        return (typeof msg.fileMeta === "object" && msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION; 
+    },
     getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
         var metadata = message.metadata;

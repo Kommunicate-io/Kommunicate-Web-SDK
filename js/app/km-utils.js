@@ -21,7 +21,8 @@ KommunicateConstants = {
  * 
  */
 Kommunicate = {
-    settings: {}
+    settings: {},
+    internetStatus:true
 };
 
 /**
