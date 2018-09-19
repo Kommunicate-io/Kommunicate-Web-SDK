@@ -1453,7 +1453,7 @@ const MESSAGE_CONTENT_TYPE = {
                         var kmChatLoginModal = document.getElementById("km-chat-login-modal");
                         kmChatLoginModal.style.visibility='visible';
                         kmChatLoginModal.style.display='none';
-                        $('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
+                        $applozic('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         kmAnonymousChatLauncher.classList.remove('n-vis');
                         kmAnonymousChatLauncher.classList.add('vis');
@@ -2720,16 +2720,16 @@ const MESSAGE_CONTENT_TYPE = {
             };
             $applozic('.mck-sidebox').on("click", "#mck-mike-btn", function () {
                 $applozic(this).removeClass('vis').addClass('n-vis');
-                $(".mck-stop-btn").addClass("vis").removeClass("n-vis");
+                $applozic(".mck-stop-btn").addClass("vis").removeClass("n-vis");
                 Fr.voice.record(false, function () {
-                    $("#mck-audio").removeClass('n-vis').addClass('vis');
+                    $applozic("#mck-audio").removeClass('n-vis').addClass('vis');
                     mckMessageService.timer();
                 });
             });
             $applozic('.mck-sidebox').on("click", "#mck-stop-recording", function () {
-                $("#mck-mike-btn").addClass('vis').removeClass('n-vis');
-                $(".mck-stop-btn").addClass("n-vis").removeClass("vis");
-                $("#mck-audio").removeClass('vis').addClass('n-vis');
+                $applozic("#mck-mike-btn").addClass('vis').removeClass('n-vis');
+                $applozic(".mck-stop-btn").addClass("n-vis").removeClass("vis");
+                $applozic("#mck-audio").removeClass('vis').addClass('n-vis');
                 mckMessageService.stoptimer();
                 Fr.voice.export(function (blob) {
                     var params = {};
@@ -2780,10 +2780,10 @@ const MESSAGE_CONTENT_TYPE = {
             _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
-             	if(Kommunicate.internetStatus && $("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey') !== undefined){
-             	key = $("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey');
-            	     message = alMessageService.getReplyMessageByKey(key);
-             	}
+              	if(Kommunicate.internetStatus && $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey') !== undefined){
+             	      key = $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey');
+            	      message = alMessageService.getReplyMessageByKey(key);
+             	  }
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
@@ -3109,7 +3109,7 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                     }
                 });
-                $('#mck-reply-to-div').removeClass('vis').addClass('n-vis');
+                $applozic('#mck-reply-to-div').removeClass('vis').addClass('n-vis');
             };
 
             _this.updateMessageMetadata = function (messagePxy) {
@@ -3141,23 +3141,23 @@ const MESSAGE_CONTENT_TYPE = {
                 var tabId = $mck_msg_inner.data('mck-id');
                 var message = alMessageService.getReplyMessageByKey(msgKey);
                 $mck_text_box.focus().select();
-                $('#mck-reply-to-div').removeClass('n-vis').addClass('vis');
+                $applozic('#mck-reply-to-div').removeClass('n-vis').addClass('vis');
                 if (message.type === 5) {
                     displayName = 'You';
                 } else {
                     displayName = mckMessageLayout.getTabDisplayName(message.to, false);
                 }
-                $('#mck-reply-to').html(displayName);
+                $applozic('#mck-reply-to').html(displayName);
                 if (typeof message.fileMeta === "object" || message.contentType === 2) {
-                    $('#mck-reply-msg').html(mckMessageLayout.getImageForMessagePreview(message));
+                    $applozic('#mck-reply-msg').html(mckMessageLayout.getImageForMessagePreview(message));
                 } else {
-                    $('#mck-reply-msg').html(message.message);
+                    $applozic('#mck-reply-msg').html(message.message);
                 }
                 $applozic("#mck-text-box").data("AL_REPLY", msgKey);
             };
 
-            $("#close").click(function () {
-                $('#mck-reply-to-div').removeClass('vis').addClass('n-vis');
+            $applozic("#close").click(function () {
+                $applozic('#mck-reply-to-div').removeClass('vis').addClass('n-vis');
                 $applozic("#mck-text-box").data("AL_REPLY", '');
             });
 
@@ -8957,7 +8957,7 @@ const MESSAGE_CONTENT_TYPE = {
                 //receive call button
                 $applozic("#mck-vid-receive-btn").on('click', function (e) {
                     console.log("call received");
-                    $("#mck-video-call-indicator").addClass('n-vis').removeClass('vis');
+                    $applozic("#mck-video-call-indicator").addClass('n-vis').removeClass('vis');
                     $mck_videocall_btn.removeClass('vis').addClass('n-vis');
                     var callId = $applozic("#mck-video-call-indicator").data("call-id");
                     var isAudioCall = $applozic("#mck-video-call-indicator").data("isAudioCall");
