@@ -378,7 +378,7 @@ class Integration extends Component {
       <div className="animated fadeIn ">
         <div className="km-heading-wrapper">
           <SettingsHeader />
-          <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? true : false}>+ Add a team member</button>
+          <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</button>
         </div>
         <div className="row teammate-table">
           <div className="col-md-12">
