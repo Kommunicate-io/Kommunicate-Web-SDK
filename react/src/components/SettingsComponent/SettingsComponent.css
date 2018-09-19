@@ -2,7 +2,8 @@
     margin-top: -20px ;
     margin-bottom: 25px;
     width: auto;
-    max-width: 930px;
+    max-width:930px;
+
 }
 
 .km-settings-header-border{
@@ -16,16 +17,19 @@
     padding-bottom: 10px;
     color: #242424;   
     display: inline-block;
+    min-width: 600px;
+
 }
 .km-settings-component-subheading h2{
     font-size: 18px;
     letter-spacing: 0.6px;
-    font-weight: 400;
-    color: #adabab;
+    font-weight: 300;
+    color:  #615f5f;
     padding-bottom: 25px;
-    border-bottom: 2px solid #e9e9e9;
+    border-bottom: 1px solid #cacaca;
     display: inline-block;
-    max-width: 100%;
+    min-width: 600px;
+
 
 }
 .km-heading-wrapper{

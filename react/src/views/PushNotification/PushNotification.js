@@ -326,7 +326,7 @@ class PushNotification extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="card">
-              <div className="card-header away-card-header km-div">
+              <div className="card-header away-card-header km-div km-remove-border">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
 
@@ -353,8 +353,8 @@ class PushNotification extends Component {
         </div>
         <div className="row">
           <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-header away-card-header km-div">
+            <div className="card km-remove-border">
+              <div className="card-header away-card-header km-remove-border km-div">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
 
