@@ -5085,7 +5085,8 @@ margin-top: 243px;
 }
 .mck-name-status-container .mck-tab-title-w-status, .mck-name-status-container .mck-tab-title-w-typing {
 	line-height: 22px;
-    height: auto;
+	height: auto;
+	width:148px;
 }
 #mck-conversation-back-btn, .mck-close-sidebox {
 	border-radius: 6px;
