@@ -5,6 +5,7 @@
  */
 
 Kommunicate.postPluginInitialization = function (err, data) {
+    Kommunicate.initilizeEventListners();
     // hiding away message when new message received from agents.
     $applozic.fn.applozic('subscribeToEvents', {
         onMessageReceived: function (obj) {

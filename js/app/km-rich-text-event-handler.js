@@ -15,7 +15,7 @@ Kommunicate.attachEvents = function($applozic){
     $applozic("#mck-message-cell").on('click', '.km-list-item-handler', Kommunicate.richMsgEventHandler.processClickOnListItem); 
     $applozic("#mck-message-cell").on('click', '.km-list-button-item-handler', Kommunicate.richMsgEventHandler.processClickOnButtonItem); 
     $applozic("#mck-message-cell").on('click', '.km-faq-dialog-button', Kommunicate.richMsgEventHandler.processClickOnDialogButton); 
-    $applozic("#mck-message-cell ").on('click', ".km-progress-meter-container",Kommunicate.attachmentEventHandler.stopUploading); 
+    $applozic("#mck-message-cell").on('click', ".km-progress-meter-container",Kommunicate.attachmentEventHandler.manageUploadAttachment); 
     
     
 }
@@ -27,33 +27,35 @@ Kommunicate.attachEvents = function($applozic){
  * define your event listeners.
  */
 Kommunicate.attachmentEventHandler= {
-    stopUploading: function (e) {
-        var isStopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
-        var isUploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
-        var div= $applozic(e.target).closest('.km-msg-box-attachment').children();
-        let msgkey = div[0].dataset.msgkey;    
+    manageUploadAttachment: function (e) {
+        var stopUploadIconHidden = $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon').hasClass('n-vis');
+        var uploadIconHidden= $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon').hasClass('n-vis');
+        var attachmentDiv= $applozic(e.target).closest('.km-msg-box-attachment').children();
+        let msgkey = attachmentDiv[0].dataset.msgkey;    
         
-        if(isInternetConected) {
-            if(!isStopUploadIconHidden && isUploadIconHidden) {
+        if(Kommunicate.internetStatus) {
+            if(!stopUploadIconHidden && uploadIconHidden) {
                 stopUpload = true;
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon')[0].classList.remove("vis")
-                $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon')[0].classList.add("n-vis")
-                $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon')[0].classList.remove("n-vis")
-                $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon')[0].classList.add("vis");
+                let stopUploadIconDiv =  $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon')[0];
+                stopUploadIconDiv.classList.remove("vis");
+                stopUploadIconDiv.classList.add("n-vis");
+                let uploadIconDiv =$applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon')[0]
+                uploadIconDiv.classList.remove("n-vis");
+                uploadIconDiv.classList.add("vis");
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey); 
-                var div1= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');
-                div1[0].querySelector(".mck-sending-failed").style.display = "block";
+                var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').find('.mck-msg-right-muted');
+                deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
           
             } else {
                 stopUpload = false;
-                let fileMetaKey = div[0].dataset.filemetakey;
-                let fileName = div[0].dataset.filename;
-                let fileSize = div[0].dataset.filesize;
-                let fileUrl = div[0].dataset.fileurl;
-                let fileType = div[0].dataset.filetype
-                let groupId = div[0].dataset.groupid;
-                let thumbnailUrl = div[0].dataset.thumbnailurl;
+                let fileMetaKey = attachmentDiv[0].dataset.filemetakey;
+                let fileName = attachmentDiv[0].dataset.filename;
+                let fileSize = attachmentDiv[0].dataset.filesize;
+                let fileUrl = attachmentDiv[0].dataset.fileurl;
+                let fileType = attachmentDiv[0].dataset.filetype
+                let groupId = attachmentDiv[0].dataset.groupid;
+                let thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
                 if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) {
                     stopUpload = false;  
                     messagePxy = {
@@ -76,12 +78,15 @@ Kommunicate.attachmentEventHandler= {
                     var optns = {
                         tabId: groupId,
                     };
-                    let params = {messagePxy:messagePxy, optns:optns };
+                    let params = {
+                        messagePxy: messagePxy,
+                        optns: optns
+                    };
                     $applozic.fn.applozic("submitMessage",params);
-                    $applozic(e.target).closest('.km-msg-box-progressMeter').children()[0].removeClass('km-progress-meter-back-drop')
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop')
 
-                    var div1= $applozic(e.target).closest('.mck-clear').children();
-                    div1[2].children[1].remove();              
+                    var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').children();
+                    deliveryStatusDiv[2].children[1].remove();              
                 } 
                 else if (thumbnailUrl  && groupId  && msgkey ) {
                     messagePxy = {
@@ -97,26 +102,24 @@ Kommunicate.attachmentEventHandler= {
                         type:5,
                         metadata:{}
                     }
-                    // var div= $applozic(e.target).closest('.km-msg-box-attachment').children();
-                    // let msgkey = div[0].dataset.msgkey;
                     let file = KM_PENDING_ATTACHMENT_FILE[msgkey];
-                    
-                    params = {params:{file:file, name:file.name}, messagePxy:messagePxy};
-    
+                    params = {
+                        params: {
+                            file: file,
+                            name: file.name
+                        },
+                        messagePxy: messagePxy
+                    };
                     $applozic.fn.applozic("uploadAttachemnt", params);
-                    var div1= $applozic(e.target).closest('.mck-clear').children();
-                    div1[2].children[1].remove();
+                    var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').children();
+                    deliveryStatusDiv[2].children[1].remove();
                     delete KM_PENDING_ATTACHMENT_FILE[msgkey];
-                    $applozic(e.target).closest('.km-msg-box-progressMeter').children()[0].removeClass('km-progress-meter-back-drop')
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop')
                 }
-
-
             }
 
         } else {
-            $applozic(".km-progress-upload-icon").removeClass("n-vis").addClass("vis");
-            $applozic(".km-progress-stop-upload-icon").removeClass("vis").addClass("n-vis");
-            Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
+            KommunicateUI.displayUploadIconForAttachment(msgkey);
         }
             
     },
@@ -125,11 +128,9 @@ Kommunicate.attachmentEventHandler= {
         let selector = ".progress-meter-"+key+ " .km-progress-value"
         var progressValue = document.querySelector(selector);
         if(progressValue) {
-            console.log(progressValue);
             progressValue.style.strokeDasharray = KM_PROGRESS_METER_CIRCUMFERENCE;
             var progress = value / 100;
             var dashoffset = KM_PROGRESS_METER_CIRCUMFERENCE * (1 - progress);
-            console.log('progress:', value + '%', '|', 'offset:', dashoffset);progressValue.style.strokeDashoffset = dashoffset;
        }
         
      }
