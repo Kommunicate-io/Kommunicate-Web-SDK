@@ -15,6 +15,7 @@
   padding: 15px;
   border-radius: 4px;
   background-color: #ffffff;
+  outline: none;
   border: solid 1px #a1a1a1;
 }
 
@@ -116,14 +117,18 @@
   border-radius: 4px;
   background-color: #ffffff;
   border: solid 1px #a1a1a1;
+
 }
 
 .km-input-component {
   margin-top: 20px;
+
 }
 
+
+
 .rectangle-7 {
-  width: 297px;
+  width: 500px;
   border-radius: 2px;
   background-color: #cce7f8;
   font-size: 14px;

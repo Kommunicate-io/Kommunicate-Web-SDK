@@ -1,0 +1,15 @@
+{  
+        "Welcome Message":"The welcome message will greet your customers when they initiate a new conversation",
+        "Away Message":"The away message will be shown to your users if and when they open an existing conversation or initiate a new one when when entire team is away or offline.",
+        "Quick Replies":"Press / before typing the shortcut term during a conversation to get the full message",
+        "Email Notifications":"We will send you email notifications if you are offline/away for more than 5 minutes and you have unread messages.",
+        "Teammates":"See the list of all the team members, their roles, add new team members and edit member details.",
+        "Conversation Routing":"Set up the way you want conversations to be assigned among your team members.",
+        "Connect Support Email":"Reply to support emails from Kommunicate.",
+        "Billing":"empty",
+        "Install":"Follow the steps below to install Kommunicate Chat in your product.",
+        "Push Notifications":"Enabling push notification allows Kommunicate to send notifications even when your mobile app is not in the foreground.",
+        "Profile":"empty"
+
+}
+

@@ -33,6 +33,7 @@ import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
 import config from '../../config/index';
 import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
+import ApplozicClient from '../../utils/applozicClient';
 const enableIntegry = true;
 const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
@@ -73,9 +74,29 @@ class Full extends Component {
       this.setState(
         {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName}
       )
-
     }
+    this.isIntegrationStarted({callback : this.populateIntegrationDetailInSession});
+  }
+  isIntegrationStarted= (options)=>{
+    let userSession = CommonUtils.getUserSession();
+    let criteria ={
+      applicationId : userSession.applicationId,
+      userName : userSession.userName,
+      accessToken : userSession.accessToken,
+      params:{
+        roleNameList : "USER",
+        pageSize:15
+      }
+      }
+   Promise.resolve(ApplozicClient.getUserListByCriteria(criteria)).then(response=>{
+   let userList = (response && response.response&& response.response.users)?response.response.users:[];
+   let appUsers = userList.filter(user=>!(user.metadata&&user.metadata['KM_SOURCE']=="KOMMUNICATE_DASHBOARD"));
+   options && typeof options.callback == 'function' ? options.callback(appUsers.length?true:false):"";
+   })
+}
 
+  populateIntegrationDetailInSession= (isIntegrationStarted)=>{
+    CommonUtils.updateUserSession({isIntegrationStarted:isIntegrationStarted});
   }
   initiateIntegry = () => {
     window.appKey = "a85c28bb-40c5-4d6c-b8e5-3e8c4fe4a32f";
@@ -109,7 +130,7 @@ class Full extends Component {
       window.$applozic.fn.applozic('logout');
       var options = window.applozic._globals;
       options.userId = CommonUtils.getUserSession().userName;
-      options.accessToken = CommonUtils.getUserSession().password;
+      options.accessToken = CommonUtils.getUserSession().accessToken;
       window.$applozic.fn.applozic(options);
       CommonUtils.setCookie(COOKIES.KM_LOGGEDIN_USER_ID,dashboardLoggedInUserId,"",CommonUtils.getDomain());
     }else{

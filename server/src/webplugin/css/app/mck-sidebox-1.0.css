@@ -1373,7 +1373,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: inherit;
+	width: inherit;
+	line-height: 22px;
 }
 .mck-close-btn{
 	width: 45px;
@@ -1624,6 +1625,76 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
 }
+.mck-msg-right .km-msg-box-attachment {
+	float: right !important;
+    font-size: 14px;
+    margin-right: 15px;
+    min-height: 20px;
+    padding: 10px 14px 12px;
+    -webkit-align-self: flex-start;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+    -webkit-animation-name: slideFromLeft;
+    animation-name: slideFromLeft;
+    border-radius: 5px;
+	/* max-width: 70%; */
+	width: 220px;
+    max-width: -moz-calc(85% - 58px);
+    max-width: calc(85% - 58px);
+    display: inline-block;
+    padding: 0;
+    position: relative;
+}
+.km-attachment-img {
+	border-radius: 10px;
+}
+.km-msg-box-attachment img {
+	width: 100%;
+	height: auto;
+	border-radius: 5px;
+}
+
+
+.km-progress-svg {
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.km-progress-meter, .km-progress-value {
+	fill: none;
+}
+.km-progress-meter {
+	stroke: none;
+}
+.km-progress-value {
+	stroke: #fff;
+	stroke-linecap: round;
+}
+.km-progress-meter-input {
+	visibility: hidden;
+}
+.km-msg-box-progressMeter {
+	position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+	width: 100%;
+    height: 100%;
+}
+.km-progress-meter-container {
+	position: absolute;
+    top: 0;
+    right: 50%;
+	transform: translate(50%, 0);
+	width: 100%;
+    height: 98%;
+    border-radius: 5px;
+}
+.km-progress-meter-back-drop {
+	background-color: rgba(0,0,0,0.3);
+}
 
 .mck-cont-msg-wrapper img, .mck-file-text .mck-file-name img {
 	width: 18px;
@@ -1828,6 +1899,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-msg-avator-bubble .mck-msg-right-muted {
 	/*margin-right: 44px;*/
+	position: relative;
 }
 
 .mck-msg-box .mck-attachment img {
@@ -2741,18 +2813,21 @@ display: none;
 
 .mck-audio-player {
 	width: 180px;
-	/* height: 40px; */
-	margin-bottom: 8px;
-	overflow: hidden;
-	outline: none;
+    /* height: 40px; */
+    margin-bottom: 8px;
+    overflow: hidden;
+    outline: none;
+    position: relative;
+    z-index: 88888;
 }
 
 .mck-video-player {
 	overflow: hidden;
 	outline: none;
 	transform-origin: left top;
-	z-index: 2;
+	z-index: 8888;
 	width: 100%;
+	position: relative;
 }
 
 .mck-typing-box {
@@ -5078,13 +5153,14 @@ margin-top: 243px;
 	max-width: 190px;
     width: 100%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 }
 .mck-name-status-container .mck-tab-title-w-status, .mck-name-status-container .mck-tab-title-w-typing {
 	line-height: 22px;
-    height: auto;
+	height: auto;
+	width:148px;
 }
 #mck-conversation-back-btn, .mck-close-sidebox {
 	border-radius: 6px;
@@ -5500,6 +5576,24 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	display: none;
 }
 
+.mck-sending-failed {
+	display: none;
+	position: absolute;
+    left: -16px;
+	top: 0;
+	font-size: 12px;
+	color: rgba(234, 61, 61, 0.87);
+	background-color: #fff;
+}
+
+.mck-failed-text + .mck-sending-failed {
+	display: block;
+}
+
+.mck-failed-text {
+	display: none;
+}
+
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
 	select,
 	textarea,
@@ -5531,4 +5625,45 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 .vis-table{
 	display: table-cell!important;
 	visibility:visible;
+}
+.mck-agent-status-text {
+	font-size: 12px;
+	font-weight: 300;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.8px;
+	color: rgba(255, 255, 255, 0.70);
+	transition: all 0.3s ease-in-out;
+}
+.mck-agent-image-container {
+	width: 45px;
+    height: 45px;
+	margin-right: 8px;
+	border-radius: 50%;
+	position: relative;
+}
+.mck-agent-image-container .mck-agent-image {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.mck-agent-image-container .mck-agent-status-indicator {
+	position: absolute;
+    bottom: 1px;
+	right: 0;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: solid 1px #ffffff;	
+}
+.mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
+	background-color: #22d674;
+}
+.mck-agent-image-container .mck-agent-status-indicator.mck-status--offline {
+	background-color: #737774;
+}
+.mck-sidebox .force-n-vis {
+	display:none !important;
 }

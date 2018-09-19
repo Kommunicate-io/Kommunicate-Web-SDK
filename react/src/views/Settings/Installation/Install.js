@@ -5,6 +5,8 @@ import Accordion from './Accordion';
 import { getJsCode, getJsInstructions } from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
 import Notification from '../../model/Notification';
+import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
+
 
 const multiEmailLink = {
     backgroundColor: 'transparent',
@@ -75,13 +77,9 @@ class Install extends Component {
         <div className="row">
           <div className="col-md-12">
             <div className="card">
-              <div className="card-block">
+              <div className="card-block" style={{marginTop : "-15px"}}  >
+					        <SettingsHeader/>
                 <div className="intgration-card-header">
-                {
-                   (currentPath.includes('setUpPage')) ? " " : <h5>
-                   Follow the steps below to install Kommunicate Chat in your product
-                 </h5>
-                }
                   {
                     ((currentPath.includes('installation')) || (currentPath.includes('setUpPage')) ) ? " " : <h3>Want help from your team members? <span className="multi-email-span-container"><MultiEmail template="SEND_KOMMUNICATE_SCRIPT" />
                     </span> </h3>

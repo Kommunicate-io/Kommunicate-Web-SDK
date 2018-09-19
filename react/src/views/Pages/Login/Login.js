@@ -224,7 +224,7 @@ submitForm = ()=>{
 
           _this.setState({'applicationId': response.data.result.application.applicationId});
 
-          response.data.result.password = password=='' ? response.data.result.accessToken : password;
+          // response.data.result.password = password=='' ? response.data.result.accessToken : password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
         }

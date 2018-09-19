@@ -103,42 +103,42 @@ exports.patchCustomer = (req, res) => {
   if (customer.websiteUrl) {
     let appName = (customer.companyName) ? customer.companyName : "";
     applozicClient.updateApplication({ applicationId: customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName }).catch(err => {
-      console.log('error while updating application')
+      console.log('error while updating application',err);
     })
   }
 
-customerService.getCustomerByUserName(userId).then(async dbCostomer => {
-    console.log("got the user from db", dbCostomer);
+customerService.getCustomerByUserName(userId).then(async dbCustomer => {
+    console.log("got the user from db", dbCustomer);
     if (activeCampaignEnable) {
       activeCampaignClient.updateActiveCampaign({
         "email": userId,
-        "subscriberId": dbCostomer.dataValues.activeCampaignId,
+        "subscriberId": dbCustomer.dataValues.activeCampaignId,
         "name": customer.name,
         "role": customer.role,
         "companyUrl": customer.websiteUrl,
         "contactNo": customer.contactNo,
         "industry": customer.industry,
         "companySize": customer.companySize,
-        "tags": subscribed || dbCostomer.isPaidCustomer ? "K-customer" : undefined
+        "tags": subscribed || dbCustomer.isPaidCustomer ? "K-customer" : undefined
       }).catch(error => {
         console.log("Error while updating company URL to activeCampaign", error);
       });
     }
-    let adminUser=  await userService.getByUserNameAndAppId(dbCostomer.userName,dbCostomer.applications[0].applicationId);
+    let adminUser=  await userService.getByUserNameAndAppId(dbCustomer.userName,dbCustomer.applications[0].applicationId);
     if (pipeDriveEnable) {
-      applozicClient.getUserDetails([dbCostomer.userName], dbCostomer.applications[0].applicationId, new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64')).then(users => {
+      applozicClient.getUserDetails([dbCustomer.userName], dbCustomer.applications[0].applicationId, new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64')).then(users => {
         let integration = users[0].metadata && users[0].metadata.KM_INTEGRATION ? JSON.parse(users[0].metadata.KM_INTEGRATION) : {};
         if (integration.pipeDriveId) {
           let deal = { id: integration.pipeDriveId, title: customer.companyName, name: customer.name, email: userId, phone: customer.contactNo }
-          subscribed || dbCostomer.isPaidCustomer ? deal.status = "won" : undefined;
+          subscribed || dbCustomer.isPaidCustomer ? deal.status = "won" : undefined;
           pipeDrive.updateDeal(deal);
         } else {
           let organization = { name: customer.companyName };
           let person = { name: customer.name, email: userId, phone: customer.contactNo, }
           pipeDrive.createDealInPipeDrive(organization, person).then(result => {
             integration['pipeDriveId'] = result.data.data.id;
-            let user = { userId: dbCostomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
-            applozicClient.updateApplozicClient(dbCostomer.userName, dbCostomer.accessToken, dbCostomer.applications[0].applicationId, user, { apzToken: new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64') }, false);
+            let user = { userId: dbCustomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
+            applozicClient.updateApplozicClient(dbCustomer.userName, dbCustomer.accessToken, dbCustomer.applications[0].applicationId, user, { apzToken: new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64') }, false);
           });
         }
       }).catch(error => {
@@ -150,6 +150,7 @@ customerService.getCustomerByUserName(userId).then(async dbCostomer => {
   });
   registrationService.updateCustomer(userId, customer).then(isUpdated => {
     if (isUpdated) {
+      subscribed ? customerService.reactivateAgents(customer.applicationId) : "";
       response.code = "SUCCESS";
       response.message = "Updated";
       res.status(200).json(response);
@@ -214,15 +215,6 @@ exports.signUpWithAplozic = (req, res) => {
         return;
       } else {
         return registrationService.signUpWithApplozic(req.body).then(result => {
-          try {
-            /*inAppMessageService.postWelcomeMsg({customer:{id:result.id},message:inAppMessageService.defaultMessage})
-            .catch(err=>{
-              console.log("err while storing welcome message in db");
-            });*/
-            //registrationService.sendWelcomeMail(email, userName, false,'');
-          } catch (err) {
-            console.log("Error while sending welcom mail to user  ", err);
-          }
           response.code = "SUCCESS";
           // replacing user Id with user name. can't delete userId from system for backward compatibility.
           delete result.userId;

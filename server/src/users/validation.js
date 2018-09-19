@@ -91,7 +91,7 @@ module.exports.userActivation={
   },
   query: {
     applicationId: joi.string().required(),
-    deactivate: joi.string().only(['true', 'false'])
+    deactivate: joi.string().only(['true', 'false']).required()
   }
 }
 

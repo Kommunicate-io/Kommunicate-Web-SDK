@@ -9,6 +9,8 @@ import { getConfig } from "../../config/config.js";
 import InputFile from '../.../../../components/InputFile/InputFile';
 import './pushNotification.css';
 import { getApplication } from '../../utils/kommunicateClient';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 class PushNotification extends Component {
   constructor(props) {
@@ -310,31 +312,21 @@ class PushNotification extends Component {
 
   render() {
 
-    return (
+    return (   
       <div className="away-message-wrapper">
-        <div className="row">
-          <div className="col-md-8 col-sm-12">
-            <div className="card-block away-message-header">
-              <div className="row">
-                <h4 className="enabling-push-notification">Enabling push notification allows Kommunicate to send notifications even when your mobile app is in background</h4>
-                <div className="app-id-container">
-                  <div className="app-id-div">
-                    <span className="rectangle-7">
-                      This setup is for mobile sdk only
-                    </span>
-                    <span className="app-id-main-text">
-                      {this.yourApplicationId}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+         <div className="km-heading-wrapper">
+         <div className="app-id-container " style={{margin: "-15px 0 50px 0"}}>
+                <div className="app-id-div">
+                 <span className="rectangle-7"> This setup is for mobile sdk only</span>
+                    <span className="app-id-main-text">{this.yourApplicationId}</span>
+             </div>
+           </div>
+            <SettingsHeader  />
         </div>
         <div className="row">
-          <div className="col-sm-12 col-md-12">
+          <div className="col-md-12">
             <div className="card">
-              <div className="card-header away-card-header km-div">
+              <div className="card-header away-card-header km-div km-remove-border">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
 
@@ -361,8 +353,8 @@ class PushNotification extends Component {
         </div>
         <div className="row">
           <div className="col-sm-12 col-md-12">
-            <div className="card">
-              <div className="card-header away-card-header km-div">
+            <div className="card km-remove-border">
+              <div className="card-header away-card-header km-remove-border km-div">
                 <div className="away-message-known-customers-wrapper">
                   <div className="">
 

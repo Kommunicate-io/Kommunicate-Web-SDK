@@ -416,6 +416,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 		var ringToneService;
 		var mckNotificationTone = null;
+
+
+		var MCK_MAX_HISTORY = appOptions.maxHistory;
+		var currentTimeStamp = Math.ceil(new Date().getTime());
+		var maxHistoryInMillisec = (!MCK_MAX_HISTORY == "") ? MCK_MAX_HISTORY * 24 * 60 * 60 * 1000 : currentTimeStamp; // value of inputed days (or number) converted to milliseconds. If MCK_MAX_HISTORY is empty string then currentTimeStamp value will taken to break the condition for loading messages.
+
 		_this.events = {
 			'onConnectFailed': function () {
 				if (navigator.onLine) {
@@ -1612,6 +1618,24 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$mck_sidebox_content.addClass("minimized");
 				}
 			});
+			_this.monthsDiffCalculator = function(msgTimestamp) {
+				var monthsDiff = currentTimeStamp - msgTimestamp;
+				return monthsDiff && monthsDiff > maxHistoryInMillisec;
+			}
+			_this.upgradePlanContainer = function(groupId) {
+				var $upgrade_plan_div = $kmApplozic("#upgrade-plan-container");
+				var upgradePlanContainerMarkup = '<div id="upgrade-plan-container" class="upgrade-your-plan-container"><svg xmlns="http://www.w3.org/2000/svg" width="58" height="54" viewBox="0 0 38 34"><g fill="none" fill-rule="evenodd" transform="translate(1 1)"><path fill="#EEE" fill-rule="nonzero" stroke="#4B4A4A" d="M33.13611839 32.4045712c-.22331853.1097667-.85163846-.4314968-.85163846-.4314968l-6.90962669-5.6889449c-.33901498-.2644484-.71122824-.4833225-1.10713-.6510303a6.46677362 6.46677362 0 0 0-1.45724804-.253599H11.6218384c-6.2712924 0-11.3551795-5.083887-11.3551795-11.3551795 0-6.27129241 5.0838871-11.35517942 11.3551795-11.35517942h10.3332133c6.27129243 0 11.35517944 5.08388701 11.35517944 11.35517942v17.3753171s.05299084.8894891-.17411275 1.0049334zM11.9397834 11.4580502c-.0616415-.7690388-.7037218-1.3617132-1.475227-1.3617132-.7715052 0-1.4135856.5926744-1.4752271 1.3617132v4.8827271c.0616415.7690388.7037219 1.3617132 1.4752271 1.3617132.7715052 0 1.4135855-.5926744 1.475227-1.3617132v-4.8827271zm6.3229424-2.30320892c-.0616414-.76903875-.7037218-1.36171313-1.475227-1.36171313-.7715052 0-1.4135856.59267438-1.4752271 1.36171313v9.48725242c.0616415.7690388.7037219 1.3617131 1.4752271 1.3617131.7715052 0 1.4135856-.5926743 1.475227-1.3617131V9.15484128zm6.32483499 2.30320892c-.05548633-.7743283-.69985961-1.3741797-1.47617329-1.3741797-.7763137 0-1.420687.5998514-1.4761734 1.3741797v4.8827271c.0554864.7743283.6998597 1.3741797 1.4761734 1.3741797.77631368 0 1.42068696-.5998514 1.47617329-1.3741797v-4.8827271z"/><circle cx="31" cy="5" r="5" fill="#E45D6C" stroke="#FFF" stroke-width="1.50999999"/><circle cx="31" cy="5" r="1" fill="#FFF"/></g></svg><p>Upgrade your plan to see messages older than 3 months </p><button id="navigate">Upgrade Plan</button></div>';
+				var currentMessageContainer = ".chat.km-message-inner." + groupId + ".active-chat.km-group-inner"
+				if($upgrade_plan_div) {
+					$upgrade_plan_div.remove();
+				}
+				$kmApplozic(currentMessageContainer).prepend(upgradePlanContainerMarkup);
+				$mck_loading.removeClass('vis').addClass('n-vis');
+				$mck_msg_loading.removeClass('vis').addClass('n-vis');
+				if($upgrade_plan_div.hasClass("n-vis")) {
+					$upgrade_plan_div.addClass("vis").removeClass("n-vis")
+				}
+			};
 			_this.initSearch = function () {
 				$mck_contacts_content.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_content.removeClass('vis').addClass('n-vis');
@@ -1816,6 +1840,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var isGroup = ($this.data("isgroup") === true);
 					var conversationId = $this.data("km-conversationid");
 					conversationId = (typeof conversationId !== "undefined" && conversationId !== "") ? conversationId.toString() : "";
+					
+					var time = $this.data("msg-time");
+
 					// Todo: if contact is not present
 					// in the list then add it first.
 					/*
@@ -1843,7 +1870,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'userName': userName,
 							'conversationId': conversationId,
 							'topicId': topicId,
-							'tabViewId': tabViewId
+							'tabViewId': tabViewId,
+							'lastContactedTime': time,
 						}
 						var groupInfo = kmGroupUtils.getGroup(tabId);
 						if (typeof groupInfo === 'object') {
@@ -2883,6 +2911,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				})
 			}
+			$kmApplozic(d).on("click", "#navigate", function() {
+					// window.history.pushState('/settings/billing');
+					window.appHistory.push("/settings/billing");
+				})
 			_this.loadMessageList = function (params, callback) {
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
@@ -2917,6 +2949,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (!params.startTime) {
 					$mck_msg_inner.html('');
 				}
+				
+				if(mckMessageService.monthsDiffCalculator(params.startTime)) {
+					mckMessageService.upgradePlanContainer(params.tabId);
+					return;
+				}
+
 				kmUtils.ajax({
 					url: KM_BASE_URL + MESSAGE_LIST_URL + "?startIndex=0" + reqData,
 					type: 'get',
@@ -3799,10 +3837,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						delete TAB_MESSAGE_DRAFT[currTabId];
 					}
 				}
-				if (!params.reconnect) {
 					_this.clearMessageField();
 					_this.addDraftMessage(params.tabId);
-				}
 				$mck_msg_error.html("");
 				$mck_msg_error.removeClass('vis').addClass('n-vis');
 				$mck_response_text.html("");
@@ -3931,7 +3967,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							}
 						}
 					});
-					$mck_text_box.focus();
+					var kminputbox = document.getElementById('km-text-box');
+					if (kminputbox.value) {
+						_this.setCaretPosition(kminputbox, kminputbox.value.length);
+					} else {
+						$mck_text_box.focus();
+					}
 				} else {
 					params.tabId = "";
 					$mck_tab_header.removeClass('vis').addClass('n-vis');
@@ -3965,10 +4006,25 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageService.loadAssignedGroup(params, callback);
 					mckMessageService.loadCloseGroup(params, callback);
 				} else {
-					mckMessageService.loadMessageList(params, callback);
+					if(mckMessageService.monthsDiffCalculator(params.lastContactedTime)) {
+						mckMessageService.upgradePlanContainer(params.tabId);
+						$mck_group_tab_title.trigger('click');
+					} else {
+						mckMessageService.loadMessageList(params, callback);
+					}
 				}
 				_this.openConversation();
 			};
+			_this.setCaretPosition = function (el, pos) {
+				var range = document.createRange();
+				var sel = window.getSelection();
+				range.setStart(el.childNodes[0], pos);
+				range.collapse(true);
+				sel.removeAllRanges();
+				sel.addRange(range);
+				el.focus();
+			}
+			
 			_this.setProductProperties = function (topicDetail) {
 				$mck_product_title.html(topicDetail.title);
 				$mck_product_icon.html(_this.getTopicLink(topicDetail.link));
@@ -4182,8 +4238,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmRichTextMarkup: kmRichTextMarkup,
 					containerType: containerType,
 				}];
-				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
-				append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
+
+				if(mckMessageService.monthsDiffCalculator(msg.createdAtTime)) {
+					mckMessageService.upgradePlanContainer(msg.groupId);
+				} else {
+					append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo("#km-message-cell .km-message-inner-right") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo("#km-message-cell .km-message-inner-right");
+
+					append ? $kmApplozic.kmtmpl("KMmessageTemplate", msgList).appendTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']") : $kmApplozic.kmtmpl("KMmessageTemplate", msgList).prependTo(".km-message-inner[data-km-id='" + contact.contactId + "'][data-isgroup='" + contact.isGroup + "']");
+				}
+
 				var emoji_template = "";
 				if (msg.message) {
 					var msg_text = msg.message.replace(/\n/g, '<br/>');

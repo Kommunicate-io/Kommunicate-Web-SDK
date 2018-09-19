@@ -24,7 +24,7 @@ In the callback, clientChannelKey will be returned.
 ```
 Kommunicate.createConversation(
     userId: userId,
-    agentId: agentId,
+    agentIds: [agentId],
     botIds: [botId],
     completion: { response in
         guard !response.isEmpty else {return}

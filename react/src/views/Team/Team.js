@@ -21,6 +21,8 @@ import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
 import { acEventTrigger } from '../../utils/ActiveCampaign';
+import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+
 
 
 
@@ -373,17 +375,17 @@ class Integration extends Component {
         loggedInUserRoleType={loggedInUserRoleType} disabledUsers={this.state.disabledUsers} isDisabledUsersListHidden={this.state.isDisabledUsersListHidden} getUsers={getUsers} />
     })
     return (
-      <div className="animated fadeIn teammate-table">
-        <div className="row">
+      <div className="animated fadeIn ">
+        <div className="km-heading-wrapper">
+          <SettingsHeader />
+          <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</button>
+        </div>
+        <div className="row teammate-table">
           <div className="col-md-12">
             <div className="card">
               {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
                 <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
               }
-              <div className="card-block">
-                <h5 className="form-control-label teammates-description">See the list of all the team members, their roles, add new team members and edit member details.</h5>
-                <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT ? true : false}>+ Add a team member</button>
-              </div>
               <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
                 { !this.state.restrictInvite &&
                   <div className="teammates-add-member-modal-wrapper">
@@ -445,7 +447,7 @@ class Integration extends Component {
           </div>
           <div className="col-md-12 new">
             <div className="card">
-              { !this.state.isTrialPlan && this.state.isStartupPlan && this.state.disabledUsers.length > 0 &&
+              { !this.state.isTrialPlan && this.state.disabledUsers.length > 0 &&
                 <div className="card-block">
                   <div className="container disabled-account-info-container">
                     <div className="row">

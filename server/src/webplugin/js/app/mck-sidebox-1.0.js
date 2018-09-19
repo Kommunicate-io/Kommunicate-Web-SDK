@@ -1,8 +1,13 @@
 var MCK_GROUP_MAP = [];
 var MCK_CLIENT_GROUP_MAP = [];
 var MCK_EVENT_HISTORY = [];
+var KM_PROGRESS_METER_RADIUS = 54;
+var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * KM_PROGRESS_METER_RADIUS;
 var count = 0 ;
 var isFirstLaunch = true;
+var stopUpload = false;
+var KM_PENDING_ATTACHMENT_FILE = new Map();
+
 const MESSAGE_SOURCE = { DEVICE: 0, WEB: 1, ANDROID: 2, IOS: 3, PLATFORM: 4, DESKTOP_BROWSER: 5, MOBILE_BROWSER: 6, MAIL_INTERCEPTOR: 7 };
 const MESSAGE_CONTENT_TYPE = {
     DEFAULT: 0, ATTACHMENT: 1, LOCATION: 2, TEXT_HTML: 3, PRICE: 4, IMAGELINK: 5, HYPERLINK: 6, CONTACT: 7, AUDIO: 8, VIDEO: 9, NOTIFY_MESSAGE: 10, HIDDEN_MESSAGE: 11, RECEIVER_ONLY: 12, BLOCK_NOTIFY_MESSAGE: 13, AUDIO_VIDEO_CALL: 102, MISSED_CALL: 103
@@ -82,6 +87,7 @@ const MESSAGE_CONTENT_TYPE = {
             'typing': 'typing...',
             'is.typing': 'is typing...',
             'online': 'Online',
+            'offline': 'Offline',
             'clear.messages': 'Clear Messages',
             'delete': 'Delete',
             'reply': 'Reply',
@@ -171,6 +177,9 @@ const MESSAGE_CONTENT_TYPE = {
                     case "uploadFile":
                         oInstance.uploadFile(params);
                         break;
+                    case "uploadAttachemnt":
+                        oInstance.uploadAttachemnt(params);
+                        break;   
                     case 'loadTabView':
                         oInstance.loadTabView(params);
                         break;
@@ -290,6 +299,9 @@ const MESSAGE_CONTENT_TYPE = {
                         break;
                     case 'openChat':
                         return oInstance.openChat(params);
+                        break;
+                    case 'submitMessage':
+                        return oInstance.submitMessage(params);
                         break;
 
                 }
@@ -496,6 +508,9 @@ const MESSAGE_CONTENT_TYPE = {
         var DEFAULT_AGENT_NAME = appOptions.agentName;
         w.MCK_OL_MAP = new Array();
 
+        _this.submitMessage = function (params) {
+            mckMessageService.submitMessage(params.messagePxy, params.optns);
+        }
         _this.mckLaunchSideboxChat = function() {
             $applozic("#mck-sidebox-launcher").removeClass('vis').addClass('n-vis');
             KommunicateUI.showChat();
@@ -533,7 +548,8 @@ const MESSAGE_CONTENT_TYPE = {
             'onUserBlocked': function () { },
             'onUserUnblocked': function () { },
             'onUserActivated': function () { },
-            'onUserDeactivated': function () { }
+            'onUserDeactivated': function () { },
+            'onMessageNotification':function(resp){}
         };
 
         _this.loadConversationWithAgent = function (params) {
@@ -668,7 +684,9 @@ const MESSAGE_CONTENT_TYPE = {
         _this.uploadFile = function (file) {
             mckFileService.uploadFile(file);
         };
-
+        _this.uploadAttachemnt = function (file) {
+            mckFileService.uploadAttachemnt(file.params, file.messagePxy);
+        };
         _this.audioAttach = function (file) {
             mckFileService.audioRecoder(file);
 
@@ -1319,6 +1337,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
                 if (typeof events.onUserActivated === 'function') {
                     _this.events.onUserActivated = events.onUserActivated;
+                }
+                if (typeof events.onMessageNotification === 'function') {
+                    _this.events.onMessageNotification = events.onMessageNotification;
                 }
                 if (typeof events.onUserDeactivated === 'function') {
                     _this.events.onUserDeactivated = events.onUserDeactivated;
@@ -2617,10 +2638,6 @@ const MESSAGE_CONTENT_TYPE = {
                         "contentType": 0,
                         "message": message
                     };
-                    var chatContext = Kommunicate.getSettings("KM_CHAT_CONTEXT");
-                    if(chatContext){
-                        messagePxy.metadata ={"KM_CHAT_CONTEXT":chatContext}
-                    }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     var topicId = $mck_msg_inner.data('mck-topicid');
                     if (conversationId) {
@@ -2760,13 +2777,13 @@ const MESSAGE_CONTENT_TYPE = {
                 }
                 $mck_search.val('');
             };
-            _this.sendMessage = function (messagePxy) {
+            _this.sendMessage = function (messagePxy, file, callback) {
                 var key;
                 var message;
-             	if($applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey') !== undefined){
-             	key = $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey');
-            	    message = alMessageService.getReplyMessageByKey(key);
-             	}
+              	if(Kommunicate.internetStatus && $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey') !== undefined){
+             	      key = $applozic("#mck-message-cell .mck-message-inner div[name='message']:last-child").data('msgkey');
+            	      message = alMessageService.getReplyMessageByKey(key);
+             	  }
                 if (typeof messagePxy !== 'object') {
                     return;
                 }
@@ -2889,7 +2906,21 @@ const MESSAGE_CONTENT_TYPE = {
                             tabId: contact.contactId,
                             isTopPanelAdded: isTopPanelAdded
                         };
-                        _this.submitMessage(messagePxy, optns);
+                        if(!Kommunicate.internetStatus || stopUpload) {
+                            KM_PENDING_ATTACHMENT_FILE[messagePxy.key] = file;
+                            KommunicateUI.displayUploadIconForAttachment(messagePxy.key);
+                            return
+                        }
+                        if(FILE_META && (FILE_META[0].contentType =="image/jpeg" ||  FILE_META[0].contentType == "image/png") &&!FILE_META[0].isUploaded) {
+                            KommunicateUI.displayProgressMeter(messagePxy.key);
+                            KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
+                            if(typeof callback =="function"){
+                                callback(messagePxy);
+                            }
+                        } else {
+                            _this.submitMessage(messagePxy, optns);
+                        }
+                        
                     });
                 }
                 $mck_text_box.removeClass('mck-text-req');
@@ -2973,6 +3004,7 @@ const MESSAGE_CONTENT_TYPE = {
                 });
             };
             _this.submitMessage = function (messagePxy, optns) {
+                stopUpload = false;
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
 
@@ -2987,7 +3019,11 @@ const MESSAGE_CONTENT_TYPE = {
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
                 if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    metadata = $applozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
+                    // chat context is metadata will be sent with every message 
+                    var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
+                    MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
+                    chatContext = typeof chatContext =="object"?$applozic.extend(chatContext, MCK_DEFAULT_MESSAGE_METADATA):{};
+                    $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(chatContext)});
                 }
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
@@ -2999,6 +3035,7 @@ const MESSAGE_CONTENT_TYPE = {
                     success: function (data) {
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
+                            KommunicateUI.deleteProgressMeter(messagePxy.key);
                             var messageKey = data.messageKey;
                             if (currentTabId && (currentTabId.toString() === optns.tabId)) {
                                 var conversationId = data.conversationId;
@@ -3486,6 +3523,34 @@ const MESSAGE_CONTENT_TYPE = {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
                                     }
                                 }
+
+                                // Setting Online and Offline status for the agent to whom the conversation is assigned to.
+                                if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
+                                    var CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    var detailOfAssignedUser;
+                                    $applozic.each(data.userDetails, function (i, userDetail) {
+                                        if(userDetail.userId == CONVERSATION_ASSIGNEE) {
+                                            detailOfAssignedUser = userDetail;
+                                            return false;
+                                        }
+                                    });
+                                    $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    if(detailOfAssignedUser.roleType === 1) {
+                                        // Checking if the CONVERSATION_ASSIGNEE is bot or not
+                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online");
+                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                    } else if(detailOfAssignedUser.roleType === 8) {
+                                        if(detailOfAssignedUser.connected == true) {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
+                                        } else {
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online");
+                                            $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
+                                        }
+                                    }
+                                }
+
+
                             }
                         }
 
@@ -3884,16 +3949,12 @@ const MESSAGE_CONTENT_TYPE = {
                                     '<div class="mck-msgreply-border ${textreplyVisExpr}">${msgReply}</div>'+
                                     '<div class="mck-msgreply-border ${msgpreviewvisExpr}">{{html msgPreview}}</div>'+
                                 '</div>'+
-                                '<div class="mck-file-text notranslate mck-attachment downloadimage ${downloadIconVisibleExpr}" data-filemetakey="${fileMetaKeyExpr}"'+
-                                'data-filename="${fileNameExpr}" data-fileurl="${fileUrlExpr}" data-filesize="${fileSizeExpr}">'+
-                                    '<div>{{html fileExpr}}</div> {{html downloadMediaUrlExpr}}'+
-                                '</div>'+
                                 '<div class="mck-msg-text mck-msg-content"></div>'+
-                                '</div>'+
+                                '</div>'+ '<div class="km-msg-box-attachment">{{html attachmentTemplate}}<div class="km-msg-box-progressMeter">{{html progressMeter}}</div></div>'+
                                 '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}">'+'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+
                             '</div>'+
                         '</div>'+
-                        '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs"><span class="mck-created-at-time">${createdAtTimeExpr}</span> <span class="mck-message-status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg></span></div>'+
+                        '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs"><span class="mck-created-at-time">${createdAtTimeExpr}</span> <span class="mck-message-status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed.</p></span></div>'+
                 '</div>'+
 
                 '<div class="n-vis mck-context-menu">'+
@@ -4274,6 +4335,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var replyTo = '';
                 var msgReplyToVisible = 'n-vis';
                 var emailMsgIndicator = "n-vis";
+                var messageClass= "vis";
                 if (typeof msg.metadata === "object" && typeof msg.metadata.AL_REPLY !== "undefined") {
                     metadatarepiledto = msg.metadata.AL_REPLY;
                     replyMsg = alMessageService.getReplyMessageByKey(metadatarepiledto);
@@ -4319,8 +4381,12 @@ const MESSAGE_CONTENT_TYPE = {
                 // if ($mck_no_messages.hasClass('vis')) {
                 //     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 // }
-                var messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
-
+    
+                if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION){
+                    messageClass = "n-vis"
+                } else {
+                    messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
+                }	
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
                 var statusIcon = 'mck-pending-icon';
@@ -4390,7 +4456,13 @@ const MESSAGE_CONTENT_TYPE = {
                 var kmRichTextMarkupVisibility=richText ? 'vis' : 'n-vis';
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
-
+                var attachment = Kommunicate.isAttachment(msg);
+                var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg)):"";
+                if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+                    var progressMeterClass = attachment ? "n-vis" : "vis";
+                    var progressMeter = attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey ? Kommunicate.messageTemplate.getProgressMeterContanier(msg.key) : "";
+                }
+                
                 var msgList = [{
                     msgReply: replyMsg ? replyMsg.message + "\n" : '',
                     msgReplyTo: replyMsg ? replyTo + "\n" : '',
@@ -4436,7 +4508,10 @@ const MESSAGE_CONTENT_TYPE = {
                     kmRichTextMarkupVisibility:kmRichTextMarkupVisibility,
                     kmRichTextMarkup: kmRichTextMarkup,
                     containerType: containerType,
-                    emailMsgIndicatorExpr: emailMsgIndicator
+                    emailMsgIndicatorExpr: emailMsgIndicator,
+                    attachmentTemplate:attachmentTemplate,
+                    progressMeter:progressMeter,
+                    progressMeterExpr:progressMeterClass,
 
                 }];
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
@@ -5011,6 +5086,9 @@ const MESSAGE_CONTENT_TYPE = {
             };
 
             _this.updateRecentConversationList = function (contact, message, update) {
+                if(message && message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
+                    return;
+                }
                 var $listId = 'mck-contact-list';
                 var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 if ($applozic('#' + $listId + ' #li-' + contactHtmlExpr).length > 0) {
@@ -5625,6 +5703,9 @@ const MESSAGE_CONTENT_TYPE = {
                 return '<span class="' + _this.getStatusIconName(msg) + ' move-right ' + msg.key + '_status status-icon"></span>';
             };
             _this.getStatusIconName = function (msg) {
+                if(!Kommunicate.internetStatus && msg.contentType === 1) {
+                    return 'mck-failed-text'
+                }
                 if (msg.type === 7 || msg.type === 6 || msg.type === 4 || msg.type === 0) {
                     return '';
                 }
@@ -6208,13 +6289,13 @@ const MESSAGE_CONTENT_TYPE = {
             _this.lastSeenOfGroupOfTwo = function (tabId) {
                 if (w.MCK_OL_MAP[tabId]) {
                     $mck_tab_status.attr('title', MCK_LABELS['online']).html(MCK_LABELS['online']);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 } else if (MCK_LAST_SEEN_AT_MAP[tabId]) {
                     var lastSeenAt = mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]);
                     $mck_tab_status.html(lastSeenAt);
                     $mck_tab_status.attr('title', lastSeenAt);
                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                 }
             };
             _this.toggleBlockUser = function (tabId, isBlocked) {
@@ -6242,7 +6323,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_tab_status.attr('title', lastSeenAt);
                         }
                         $mck_tab_title.addClass('mck-tab-title-w-status');
-                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     }
                 }
             };
@@ -6813,7 +6894,7 @@ const MESSAGE_CONTENT_TYPE = {
                     groupMembers = groupMembers.replace(/,\s*$/, '');
                     $mck_tab_status.html(groupMembers);
                     $mck_tab_status.attr('title', groupMembers);
-                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                     $mck_tab_title.addClass('mck-tab-title-w-status');
                     $mck_group_menu_options.removeClass('n-vis').addClass('vis');
                 } else {
@@ -7501,21 +7582,26 @@ const MESSAGE_CONTENT_TYPE = {
                     _this.uplaodFileToAWS(file, UPLOAD_VIA[1]);
                     return false;
                 });
-                $mck_file_input.on('change', function (e) {
-                                        e.preventDefault();
-										var file = $applozic(this)[0].files[0];
-										var params = {};
-										params.file = file;
-										params.name = file.name;
-										if(MCK_CUSTOM_UPLOAD_SETTINGS === "awsS3Server"){
-										_this.uploadAttachment2AWS(params);
-										}
-										else if (MCK_CUSTOM_UPLOAD_SETTINGS ===	"googleCloud") {
-										_this.customFileUpload(params);
-										}
-										else {
-										_this.uploadFile(params);
-										}
+                $mck_file_input.on('change', function () {
+                                        var file = $applozic(this)[0].files[0];
+                                        var tabId = $mck_msg_inner.data('mck-id');
+                                        if(file.type.includes("image/") ){
+                                            Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
+                                                FILE_META = file_meta
+                                                mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
+                                                    messagePxy["key"] = msgProxy.key
+                                                    var params = {};
+                                                    params.file = file;
+                                                    params.name = file.name;
+                                                    Kommunicate.attachmentService.uploadAttachment(params, messagePxy, MCK_CUSTOM_UPLOAD_SETTINGS);
+                                                });
+                                            });
+                                        } else {
+                                            var params = {};
+                                            params.file = file;
+                                            params.name = file.name;
+                                            Kommunicate.attachmentService.uploadAttachment(params,null,MCK_CUSTOM_UPLOAD_SETTINGS)
+                                        }
 								});
                 $applozic(d).on("click", '.mck-remove-file', function () {
                     var $currFileBox = $applozic(this).parents('.mck-file-box');
@@ -7547,7 +7633,9 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 });
             };
+            // _this.generateDataURl =function (params) {
 
+            // }
             _this.audioRecoder = function(params) {
              if(MCK_CUSTOM_UPLOAD_SETTINGS === "awsS3Server"){
              _this.uploadAttachment2AWS(params);
@@ -7559,8 +7647,7 @@ const MESSAGE_CONTENT_TYPE = {
              _this.uploadFile(params);
              }
              };
-
-             _this.customFileUpload = function (params) {
+             _this.customFileUpload = function (params, messagePxy) {
               var file = params.file;
               var data = new FormData();
 
@@ -7591,10 +7678,11 @@ const MESSAGE_CONTENT_TYPE = {
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
+                    messagePxy && Kommunicate.attachmentEventHandler.progressMeter(0, messagePxy.key);
                     $file_progress.removeClass('n-vis').addClass('vis');
                     $file_remove.attr("disabled", true);
                     $mck_file_upload.attr("disabled", true);
-                    $file_box.removeClass('n-vis').addClass('vis');
+                    KommunicateUI.hideFileBox(file, $file_box, $mck_file_upload);
                     if (params.name === $applozic(".mck-file-box." + randomId + " .mck-file-lb a").html()) {
                         var currTab = $mck_msg_inner.data('mck-id');
                         var uniqueId = params.name + file.size;
@@ -7605,11 +7693,22 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText);
                             if (typeof responseJson === "object") {
                                 var file_meta = responseJson.fileMeta;
+                                if (messagePxy) {
+                                    messagePxy["fileMeta"] = file_meta
+                                    var optns = {
+                                        tabId: messagePxy.groupId
+                                    };
+                                    KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
+                                    !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
+                                    return
+                                }             
                                 var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
                                 var name = file_meta.name;
                                 var size = file_meta.size;
@@ -7658,8 +7757,19 @@ const MESSAGE_CONTENT_TYPE = {
                     return false;
                 }
             };
-
-            _this.uploadFile = function (params) {
+            _this.uploadAttachemnt = function (params, messagePxy) {
+                
+                if(MCK_CUSTOM_UPLOAD_SETTINGS === "awsS3Server"){
+                    _this.uploadAttachment2AWS(params, messagePxy);
+                    }
+                    else if (MCK_CUSTOM_UPLOAD_SETTINGS ===	"googleCloud") {
+                    _this.customFileUpload(params, messagePxy);
+                    }
+                    else {
+                    _this.uploadFile(params, messagePxy);
+                }
+            }
+            _this.uploadFile = function (params, messagePxy) {
                 var file = params.file;
                 var data = new Object();
                 var uploadErrors = [];
@@ -7689,10 +7799,11 @@ const MESSAGE_CONTENT_TYPE = {
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
+                    messagePxy && Kommunicate.attachmentEventHandler.progressMeter(0, messagePxy.key);
                     $file_progress.removeClass('n-vis').addClass('vis');
                     $file_remove.attr("disabled", true);
                     $mck_file_upload.attr("disabled", true);
-                    $file_box.removeClass('n-vis').addClass('vis');
+                    KommunicateUI.hideFileBox(file, $file_box, $mck_file_upload);
                     if (params.name === $applozic(".mck-file-box." + randomId + " .mck-file-lb a").html()) {
                         var currTab = $mck_msg_inner.data('mck-id');
                         var uniqueId = params.name + file.size;
@@ -7704,11 +7815,23 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText);
                             if (typeof responseJson.fileMeta === "object") {
                                 var file_meta = responseJson.fileMeta;
+                                if (messagePxy) {
+                                    messagePxy["fileMeta"] = file_meta
+                                    var optns = {
+                                        tabId: messagePxy.groupId
+                                    };
+                                    KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
+                                    !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
+                                    return
+                                }             
+                                !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
                                 var fileExpr = alFileService.getFilePreviewPath(file_meta);
                                 file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
                                 var name = file_meta.name;
@@ -7759,7 +7882,7 @@ const MESSAGE_CONTENT_TYPE = {
                     return false;
                 }
             };
-            _this.uploadAttachment2AWS = function (params) {
+            _this.uploadAttachment2AWS = function (params, messagePxy) {
                 var file = params.file;
                 var data = new FormData();
                 var uploadErrors = [];
@@ -7789,10 +7912,11 @@ const MESSAGE_CONTENT_TYPE = {
                     var $file_progress = $applozic(".mck-file-box." + randomId + " .km-progress");
                     var $file_remove = $applozic(".mck-file-box." + randomId + " .mck-remove-file");
                     $file_progressbar.css('width', '0%');
+                    messagePxy && Kommunicate.attachmentEventHandler.progressMeter(0, messagePxy.key);
                     $file_progress.removeClass('n-vis').addClass('vis');
                     $file_remove.attr("disabled", true);
                     $mck_file_upload.attr("disabled", true);
-                    $file_box.removeClass('n-vis').addClass('vis');
+                    KommunicateUI.hideFileBox(file, $file_box, $mck_file_upload);
                     if (params.name === $applozic(".mck-file-box." + randomId + " .mck-file-lb a").html()) {
                         var currTab = $mck_msg_inner.data('mck-id');
                         var uniqueId = params.name + file.size;
@@ -7803,11 +7927,22 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText);
                             if (typeof responseJson === "object") {
                                 var file_meta = responseJson;
+                                if (messagePxy) {
+                                    messagePxy["fileMeta"] = file_meta
+                                    var optns = {
+                                        tabId: messagePxy.groupId
+                                    };
+                                    KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
+                                    !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
+                                    return
+                                }             
                                 var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
                                 var name = file_meta.name;
                                 var size = file_meta.size;
@@ -8100,6 +8235,7 @@ const MESSAGE_CONTENT_TYPE = {
                 // setTimeout(function () {
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
+                mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
                     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     $mck_msg_preview_visual_indicator_text.html('');
@@ -8317,7 +8453,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     $mck_tab_title.removeClass("mck-tab-title-w-typing");
                                     $applozic('.km-typing-wrapper').remove();
                                     if ($mck_tab_title.hasClass("mck-tab-title-w-status" && (typeof group === "undefined" || group.type != 7))) {
-                                        $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                        // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                     }
                                     $mck_typing_label.html(MCK_LABELS['typing']);
                                 }, 60000);
@@ -8327,7 +8463,7 @@ const MESSAGE_CONTENT_TYPE = {
                             $mck_typing_box.removeClass('vis').addClass('n-vis');
                             $applozic('.km-typing-wrapper').remove();
                             if ($mck_tab_title.hasClass("mck-tab-title-w-status") && (typeof group === "undefined" || group.type != 7)) {
-                                $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                // $mck_tab_status.removeClass('n-vis').addClass('vis');
                             }
                             $mck_typing_label.html(MCK_LABELS['typing']);
                         }
@@ -8340,6 +8476,9 @@ const MESSAGE_CONTENT_TYPE = {
                 _this.disconnect();
                 _this.init();
             };
+            _this.onNotificationEvent = function(msg){
+               events.onMessageNotification(msg);
+            }
             _this.onError = function (err) {
                 w.console.log("Error in channel notification. " + err);
                 events.onConnectFailed();
@@ -8614,7 +8753,7 @@ const MESSAGE_CONTENT_TYPE = {
                                         $mck_tab_status.html(mckDateUtils.getLastSeenAtStatus(MCK_LAST_SEEN_AT_MAP[tabId]));
                                     }
                                     $mck_tab_title.addClass('mck-tab-title-w-status');
-                                    $mck_tab_status.removeClass('n-vis').addClass('vis');
+                                    // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                 }
                             }
                         } else if (w.MCK_OL_MAP[tabId]) {

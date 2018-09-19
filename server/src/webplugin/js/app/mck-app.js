@@ -291,6 +291,7 @@ function ApplozicSidebox() {
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
+            options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {
                 if (!options.userId) {
                     if (KommunicateUtils.getCookie('kommunicate-id')) {
@@ -305,13 +306,16 @@ function ApplozicSidebox() {
                                 KommunicateUtils.setCookie('userName', data.userName, 1);
                                 options.userName = data.userName;
                             }
-                            options.metadata = {"KM_PSEUDO_USER":JSON.stringify({pseudoName: "true", hidden: "true" })};
+                            options.metadata["KM_PSEUDO_USER"]= JSON.stringify({pseudoName: "true", hidden: "true" });
                         }
                     }
 
                 } else {
                     // ask for email id;
                 }
+               if(typeof options.metadata == 'object'){
+
+               }
             }
             if (typeof options !== 'undefined') {
                 options.ojq = $original;

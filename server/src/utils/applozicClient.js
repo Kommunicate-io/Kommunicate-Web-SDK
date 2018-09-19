@@ -129,6 +129,7 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
     mailProviderPxy: config.getProperties().mailProvider,
     applicationWebhookPxys: config.getCommonProperties().applicationWebhooks,
     websiteUrl: config.getCommonProperties().companyDetail.websiteUrl,
+    pricingPackage: 101
   }
 
   return Promise.resolve(axios.post(config.getProperties().urls.createApplication, applicationPxy, {
@@ -141,6 +142,9 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
     if (response.status == 200) {
       console.log(" applozic response :", response.data);
       if (response.data.status != "error") {
+        if(response.data.pricingPackage == 0 || response.data.pricingPackage == -1) {
+          updateApplication({applicationId: response.data.applicationId, pricingPackage: 101})
+        }
         return response.data;
       } else {
         console.error("applozic error response : ", applicationName);
@@ -440,7 +444,7 @@ exports.addMemberIntoConversation = (groupInfo, applicationId, apzToken, ofUserI
   });
 }
 
-exports.updateApplication = (data) => {
+const updateApplication = (data) => {
   let apzToken = config.getProperties().kommunicateAdminApzToken
   let applicationId = config.getProperties().kommunicateParentKey
   let url = config.getProperties().urls.applozicHostUrl + '/rest/ws/application/update'
@@ -456,6 +460,7 @@ exports.updateApplication = (data) => {
     console.log('error  ', err)
   })
 }
+exports.updateApplication = updateApplication;
 /**
  *
  * @param {List} userNameList

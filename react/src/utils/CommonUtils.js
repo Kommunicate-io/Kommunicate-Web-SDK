@@ -5,6 +5,9 @@ const CommonUtils = {
     setUserSession: function(userSession) {
         userSession.isAdmin = userSession.isAdmin | false;
         userSession.imageLink = userSession.imageLink ||(userSession.applozicUser&&userSession.applozicUser.imageLink?userSession.applozicUser.imageLink: getResource().defaultImageUrl);
+        if(userSession.password) {
+            delete userSession.password;
+        }
         localStorage.setItem('KM_USER_SESSION', JSON.stringify(userSession));
     },
     getUserSession: function() {
@@ -187,6 +190,19 @@ const CommonUtils = {
             var y = date.getFullYear();
             var calculatedDate = dd + ' ' + mm + ', '+ y;
             return calculatedDate;
+        }
+    },
+    updateUserSession : function(data){
+        if(typeof data =='object'){
+            let userSession = CommonUtils.getUserSession()||{};
+           for (const key in data) {
+               if (data.hasOwnProperty(key)) {
+                   const element = data[key];
+                   userSession[key] = data[key];
+               }
+           }
+
+            CommonUtils.setUserSession(userSession);
         }
     }
 }

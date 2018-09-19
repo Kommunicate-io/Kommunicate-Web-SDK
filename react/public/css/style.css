@@ -10566,6 +10566,10 @@ input:required {
 .faq-modal-discard-btn-box {
   margin-left: 23px;
 }
+
+.faq-modal-discard-btn-box-shift {
+  margin-left :60px;
+}
 .faq-yes-delete-box {
   padding-right: 3px;
 }
@@ -11095,6 +11099,13 @@ input:required {
   background-color: transparent;
   color: rgba(0,0,0,.87);
   cursor: pointer;
+}
+
+.km-remove-border {
+  border:none!important;
+}
+.km-remove-border > ol {
+  border:none!important;
 }
 
 @-webkit-keyframes button-spin {
