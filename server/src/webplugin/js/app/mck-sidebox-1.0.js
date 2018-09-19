@@ -5040,6 +5040,9 @@ const MESSAGE_CONTENT_TYPE = {
             };
 
             _this.updateRecentConversationList = function (contact, message, update) {
+                if(message && message.metadata && (message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
+                    return;
+                }
                 var $listId = 'mck-contact-list';
                 var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                 if ($applozic('#' + $listId + ' #li-' + contactHtmlExpr).length > 0) {
