@@ -534,7 +534,8 @@ const MESSAGE_CONTENT_TYPE = {
             'onUserBlocked': function () { },
             'onUserUnblocked': function () { },
             'onUserActivated': function () { },
-            'onUserDeactivated': function () { }
+            'onUserDeactivated': function () { },
+            'onMessageNotification':function(resp){}
         };
 
         _this.loadConversationWithAgent = function (params) {
@@ -1320,6 +1321,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
                 if (typeof events.onUserActivated === 'function') {
                     _this.events.onUserActivated = events.onUserActivated;
+                }
+                if (typeof events.onMessageNotification === 'function') {
+                    _this.events.onMessageNotification = events.onMessageNotification;
                 }
                 if (typeof events.onUserDeactivated === 'function') {
                     _this.events.onUserDeactivated = events.onUserDeactivated;
@@ -8132,6 +8136,7 @@ const MESSAGE_CONTENT_TYPE = {
                 // setTimeout(function () {
                 //     $mck_msg_preview.fadeOut(1000);
                 // }, 10000);
+                mckInitializeChannel.onNotificationEvent(message);
                 $applozic(d).on("click", "#mck-msg-preview-visual-indicator .mck-close-btn, #mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text", function() {
                     $mck_msg_preview_visual_indicator.removeClass('vis').addClass('n-vis');
                     $mck_msg_preview_visual_indicator_text.html('');
@@ -8372,6 +8377,9 @@ const MESSAGE_CONTENT_TYPE = {
                 _this.disconnect();
                 _this.init();
             };
+            _this.onNotificationEvent = function(msg){
+               events.onMessageNotification(msg);
+            }
             _this.onError = function (err) {
                 w.console.log("Error in channel notification. " + err);
                 events.onConnectFailed();
