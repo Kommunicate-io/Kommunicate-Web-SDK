@@ -5,18 +5,9 @@
  */
 
 Kommunicate.postPluginInitialization = function (err, data) {
+    Kommunicate.initilizeEventListners();
     // hiding away message when new message received from agents.
-    $applozic.fn.applozic('subscribeToEvents', {
-        onMessageReceived: function (obj) {
-            //message received
-            var message = obj && obj.message;
-            var isValidMetadata = message.metadata && (message.metadata.category != 'HIDDEN' && message.metadata.hide != "true");
-            var isSentByBot = isValidMetadata && message.metadata && message.metadata.skipBot == "true";
-            if (!message.metadata || (isValidMetadata)) {
-                KommunicateUI.hideAwayMessage();
-            }
-        }
-    });
+        $applozic.fn.applozic('subscribeToEvents', Kommunicate.ApplozicEvents);
     // get the third party settings
     // 1: for helpDocs
     KommunicateKB.init(Kommunicate.getBaseUrl());

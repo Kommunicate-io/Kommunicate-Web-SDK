@@ -256,6 +256,9 @@ $applozic.extend(true,Kommunicate,{
         // contentType should be 300 for rich text message in metadata
         return metadata && metadata.contentType == 300;
     },
+    isAttachment: function(msg) {
+        return (typeof msg.fileMeta === "object" && msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION; 
+    },
     getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
         var metadata = message.metadata;
@@ -348,6 +351,10 @@ $applozic.extend(true,Kommunicate,{
         }
     },
     updateSettings:function(options){
+        let type = typeof options;
+        if(type !='object'){
+            throw new error("update settings expects an object, found "+type);
+        }
         var settings = KommunicateUtils.getDataFromKmSession("settings");
         settings=  settings?JSON.parse(settings):{}
 
@@ -357,9 +364,7 @@ $applozic.extend(true,Kommunicate,{
         KommunicateUtils.storeDataIntoKmSession("settings",JSON.stringify(settings));
     },
     getSettings:function(setting){
-        var settings = KommunicateUtils.getDataFromKmSession("settings");
-        settings=  settings?JSON.parse(settings):null;
-        return setting&&settings?settings[setting]:(settings?settings:"");
+        return KommunicateUtils.getSettings(setting);
     }
 
 });

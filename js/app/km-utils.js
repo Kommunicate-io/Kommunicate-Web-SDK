@@ -21,7 +21,8 @@ KommunicateConstants = {
  * 
  */
 Kommunicate = {
-    settings: {}
+    settings: {},
+    internetStatus:true
 };
 
 /**
@@ -94,5 +95,10 @@ KommunicateUtils = {
                 cancelable: options.cancelable || true
             }));
         }
+    },
+    getSettings:function(key){
+        var settings = KommunicateUtils.getDataFromKmSession("settings");
+        settings=  settings?JSON.parse(settings):null;
+        return key&&settings?settings[key]:(settings?settings:"");
     }
 }
