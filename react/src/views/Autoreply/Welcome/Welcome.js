@@ -264,16 +264,17 @@ class Welcome extends Component{
       <div className="animated fadeIn welcome-message-wrapper">
         <SettingsHeader />    
           <div className="welcome-message-action-wrapper">
-          <h4 className="welcome-message-title">Show welcome message to customers</h4>
+          <h4 className="welcome-message-title">Show welcome message to users</h4>
           <SliderToggle checked={this.state.enableDisableCheckbox} handleOnChange={this.handleCheckboxChange} />
           </div>
           <div className="row">
           <div className="col-sm-12 col-md-12">
               <div className="card-header welcome-card-header">
                 <div className="message-wrapper">
+                <div className="km-welcome-messge-textarea-heading">Welcome message</div>
                   {welcomeMsgTextArea}                  
                 </div>
-                {  this.state.welcomeMessages.length <= 2 &&
+                {  this.state.welcomeMessages.length <= 2 && 
                   <button className ="add-new-msg-btn" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</button>
                 }                
                 <div className="btn-group">
