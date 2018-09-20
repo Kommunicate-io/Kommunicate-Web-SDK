@@ -1909,8 +1909,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-file-text {
-	padding-left: 0 !important;
-	padding-right: 0 !important;
+	/* padding-left: 0 !important;
+	padding-right: 0 !important; */
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	word-break: break-all;

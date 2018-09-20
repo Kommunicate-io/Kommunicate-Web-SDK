@@ -82,7 +82,8 @@ Kommunicate.attachmentEventHandler= {
                         optns: optns
                     };
                     $applozic.fn.applozic("submitMessage",params);
-                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop')
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').children().removeClass('km-progress-meter-back-drop');
+                    $applozic(e.target).closest('.km-msg-box-progressMeter').addClass("n-vis");
 
                     var deliveryStatusDiv= $applozic(e.target).closest('.mck-clear').children();
                     deliveryStatusDiv[2].children[1].remove();              
