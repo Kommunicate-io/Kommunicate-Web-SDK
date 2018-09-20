@@ -12,8 +12,10 @@ Kommunicate.messageTemplate = {
         data.downloadMediaUrlExpr = alFileService.getFileAttachment(data)
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
-        data.attachmentClass = (data.fileMeta.contentType.includes("image/") || data.fileMeta.contentType.includes("audio/") || data.fileMeta.contentType.includes("video/")) ? "" : "mck-msg-box" ;
-        data.attachmentDownloadClass = data.fileMeta.contentType.includes("image/") ? "n-vis" : "vis"
+        if (typeof data.fileMeta === 'object') {
+            data.attachmentClass = (data.fileMeta.contentType.includes("image/") || data.fileMeta.contentType.includes("audio/") || data.fileMeta.contentType.includes("video/")) ? "" : "mck-msg-box" ;
+            data.attachmentDownloadClass = data.fileMeta.contentType.includes("image/") ? "n-vis" : "vis"
+        }
         return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
     },
     getProgressMeterContanier:function(key) {
