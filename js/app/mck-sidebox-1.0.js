@@ -5,7 +5,6 @@ var KM_PROGRESS_METER_RADIUS = 54;
 var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * KM_PROGRESS_METER_RADIUS;
 var count = 0 ;
 var isFirstLaunch = true;
-var stopUpload = false;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 
 const MESSAGE_SOURCE = { DEVICE: 0, WEB: 1, ANDROID: 2, IOS: 3, PLATFORM: 4, DESKTOP_BROWSER: 5, MOBILE_BROWSER: 6, MAIL_INTERCEPTOR: 7 };
@@ -2906,9 +2905,11 @@ const MESSAGE_CONTENT_TYPE = {
                             tabId: contact.contactId,
                             isTopPanelAdded: isTopPanelAdded
                         };
+                        var stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                         if(!Kommunicate.internetStatus || stopUpload) {
                             KM_PENDING_ATTACHMENT_FILE[messagePxy.key] = file;
                             KommunicateUI.displayUploadIconForAttachment(messagePxy.key);
+                            KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
                         if(FILE_META && (FILE_META[0].contentType =="image/jpeg" ||  FILE_META[0].contentType == "image/png") &&!FILE_META[0].isUploaded) {
@@ -3004,7 +3005,6 @@ const MESSAGE_CONTENT_TYPE = {
                 });
             };
             _this.submitMessage = function (messagePxy, optns) {
-                stopUpload = false;
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
 
@@ -3033,6 +3033,7 @@ const MESSAGE_CONTENT_TYPE = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
+                        KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
                             KommunicateUI.deleteProgressMeter(messagePxy.key);
@@ -7649,6 +7650,7 @@ const MESSAGE_CONTENT_TYPE = {
              };
              _this.customFileUpload = function (params, messagePxy) {
               var file = params.file;
+              var stopUpload = false
               var data = new FormData();
 
                 var uploadErrors = [];
@@ -7693,11 +7695,12 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
                             messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
                         xhr.addEventListener('load', function (e) {
-                            var responseJson = $applozic.parseJSON(this.responseText);
+                            var responseJson = $applozic.parseJSON(this.responseText); 
                             if (typeof responseJson === "object") {
                                 var file_meta = responseJson.fileMeta;
                                 if (messagePxy) {
@@ -7705,6 +7708,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     var optns = {
                                         tabId: messagePxy.groupId
                                     };
+                                    stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
                                     return
@@ -7772,6 +7776,7 @@ const MESSAGE_CONTENT_TYPE = {
             _this.uploadFile = function (params, messagePxy) {
                 var file = params.file;
                 var data = new Object();
+                var stopUpload = false
                 var uploadErrors = [];
                 if (typeof file === 'undefined') {
                     return;
@@ -7815,6 +7820,7 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
                             messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
@@ -7827,6 +7833,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     var optns = {
                                         tabId: messagePxy.groupId
                                     };
+                                    stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
                                     return
@@ -7886,6 +7893,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var file = params.file;
                 var data = new FormData();
                 var uploadErrors = [];
+                var stopUpload = false
                 if (typeof file === 'undefined') {
                     return;
                 }
@@ -7927,6 +7935,7 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
+                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                             messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
                             messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
                         });
@@ -7939,6 +7948,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     var optns = {
                                         tabId: messagePxy.groupId
                                     };
+                                    stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
                                     return

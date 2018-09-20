@@ -35,7 +35,7 @@ Kommunicate.attachmentEventHandler= {
         
         if(Kommunicate.internetStatus) {
             if(!stopUploadIconHidden && uploadIconHidden) {
-                stopUpload = true;
+                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
                 let stopUploadIconDiv =  $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon')[0];
                 stopUploadIconDiv.classList.remove("vis");
@@ -48,7 +48,7 @@ Kommunicate.attachmentEventHandler= {
                 deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
           
             } else {
-                stopUpload = false;
+                KommunicateUI.updateAttachmentStopUploadStatus(msgkey, false);
                 let fileMetaKey = attachmentDiv[0].dataset.filemetakey;
                 let fileName = attachmentDiv[0].dataset.filename;
                 let fileSize = attachmentDiv[0].dataset.filesize;
@@ -56,8 +56,7 @@ Kommunicate.attachmentEventHandler= {
                 let fileType = attachmentDiv[0].dataset.filetype
                 let groupId = attachmentDiv[0].dataset.groupid;
                 let thumbnailUrl = attachmentDiv[0].dataset.thumbnailurl;
-                if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) {
-                    stopUpload = false;  
+                if(fileSize && fileUrl && fileMetaKey  && fileName&& fileType ) { 
                     messagePxy = {
                         contentType: 1,
                         groupId:groupId,
@@ -120,6 +119,7 @@ Kommunicate.attachmentEventHandler= {
 
         } else {
             KommunicateUI.displayUploadIconForAttachment(msgkey);
+            KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
         }
             
     },
