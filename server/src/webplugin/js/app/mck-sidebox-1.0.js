@@ -4402,7 +4402,7 @@ const MESSAGE_CONTENT_TYPE = {
     
                 if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION){
                     messageClass = "n-vis";
-                    progressMeterClass = "vis";
+                    progressMeterClass = "n-vis";
                 } else {
                     messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
                 }	
