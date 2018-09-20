@@ -35,6 +35,7 @@ class MultiEmail extends Component {
             multipleEmailAddress = multipleEmailAddress.concat([this.state.emailAddress]);
             this.setState({ multipleEmailAddress: this.state.multipleEmailAddress.concat([this.state.emailAddress]) })
             this.setState({ emailAddress: '' });
+            Notification.success("Email sent successfully");
         }
         if (multipleEmailAddress.length >= 1) {
             for (let i = 0; i < multipleEmailAddress.length; i++) {
@@ -107,7 +108,7 @@ class MultiEmail extends Component {
                 <div className={
                     ((this.state.emailInstructions === true) && ((currentPath.includes('installation')) || (currentPath.includes('setUpPage'))))
                         ? "form-group flex-center" : ((this.state.emailInstructions === true))
-                        ? "form-group m-top-10 row" : "n-vis"
+                        ? "form-group m-top-10 row flex-center" : "n-vis"
                 }
                     style={{ marginLeft: "0" }}>
                     <div className="form-group group multiple-email-container">
