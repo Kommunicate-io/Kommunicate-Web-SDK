@@ -3546,17 +3546,16 @@ const MESSAGE_CONTENT_TYPE = {
                                             return false;
                                         }
                                     });
-
-                                    if(typeof detailOfAssignedUser.imageLink !== "undefined") {
+                                    if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
                                     
-                                    if(detailOfAssignedUser.roleType === 1) {
+                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 1) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
                                         $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
                                         $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
-                                    } else if(detailOfAssignedUser.roleType === 8) {
-                                        if(detailOfAssignedUser.connected == true) {
+                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 8) {
+                                        if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.connected == true) {
                                             $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
                                             $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
                                         } else {
