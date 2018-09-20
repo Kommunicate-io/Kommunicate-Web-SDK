@@ -57,7 +57,8 @@ class Billing extends Component {
             kmActiveUsers: 0,
             boughtQuantity: 0,
             totalPlanQuantity: 0,
-            nextBillingDate: 0
+            nextBillingDate: 0,
+            disableSelectedPlanButton: false
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -164,9 +165,13 @@ class Billing extends Component {
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
                     subscribeElems[i].value = "Current Plan";
             }
-            if(currentPlanElems[i].getAttribute('data-choose-plan') == that.state.subscription) {
+            if(that.state.subscription.indexOf('per_agent') > -1 && subscribeElems[i].getAttribute('data-subscription') == "startup") {
+                subscribeElems[i].disabled = true;
+            }
+            if(that.state.subscription != "startup" && currentPlanElems[i].getAttribute('data-choose-plan') && currentPlanElems[i].getAttribute('data-choose-plan').indexOf('per_agent') > -1) {
                 currentPlanElems[i].textContent = "Current Plan";
-                currentPlanElems[i].disabled = true;
+                currentPlanElems[i].disabled = true;           
+                currentPlanElems[i].setAttribute("data-plan","growth");     
             } 
         }
     }
@@ -348,11 +353,14 @@ class Billing extends Component {
 
 
     seatSelectionModal(e) {
-        this.setState({
-            choosePlan: e.target.getAttribute("data-choose-plan"),
-            seatSelectionModalIsOpen: true,
-            modalIsOpen: false
-        }, () => this.chargebeeInit())
+        if(!e.target.getAttribute("data-plan")) {
+            this.setState({
+                choosePlan: e.target.getAttribute("data-choose-plan"),
+                seatSelectionModalIsOpen: true,
+                modalIsOpen: false
+            }, () => this.chargebeeInit())
+        }
+        
     }
 
     closeSeatSelectionModal() {
