@@ -3535,7 +3535,10 @@ const MESSAGE_CONTENT_TYPE = {
                                             return false;
                                         }
                                     });
-                                    $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    if(detailOfAssignedUser.imageLink) {
+                                        $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
+                                    }
+                                    
                                     if(detailOfAssignedUser.roleType === 1) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
                                         $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online");
