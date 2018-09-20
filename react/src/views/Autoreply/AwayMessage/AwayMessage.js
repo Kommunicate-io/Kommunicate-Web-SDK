@@ -398,7 +398,7 @@ class AwayMessage extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Show away message to customers </h4>
+                <h4 className="away-message-title">Show away message to users. </h4>
                 <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
               </div>
             </div>
@@ -408,13 +408,13 @@ class AwayMessage extends Component{
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="card">
-              <div className="card-header away-card-header anonymous-wrapper">
+              <div className="card-header away-card-header anonymous-wrapper  km-remove-border">
                 <div className="away-message-anonymous-customers-wrapper">
                   <div className="row">
-                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> anonymous </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
+                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> anonymous </span>users<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
                   </div>
                   <div className="row away-msg-collect-email-checkbox">
-                    <Checkbox idCheckbox={'away-msg-collect-email-checkbox'} label={'Collect email ID from customer'}
+                    <Checkbox idCheckbox={'away-msg-collect-email-checkbox'} label={'Collect email ID from user'}
                     checked = {this.state.isChecked} handleOnChange = {this.toggleChangeCheckbox} />
                   </div>
                   {textAreaForAnonymousCustomersMsg}                  
@@ -442,10 +442,10 @@ class AwayMessage extends Component{
         <div className="row">
           <div className="col-sm-12 col-md-12">
             <div className="card">
-              <div className="card-header away-card-header">
+              <div className="card-header away-card-header  km-remove-border">
                 <div className="away-message-known-customers-wrapper">
                   <div className="row">
-                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> known </span>customers<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
+                    <h5 className="customers-message-title">Away Message for<span className="customer-type"> known </span>users<span className="info-icon"><i className="fa fa-info-circle"></i></span></h5>
                   </div>
                   {textAreaForKnownCustomersMsg}                  
                 </div>            

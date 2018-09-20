@@ -10,6 +10,9 @@
     line-height: normal;
     letter-spacing: 0.6px;
     color: #354052;
+    letter-spacing: 1.2px;
+    text-align: left;
+    color: #616366;
 }
 .incoming-email-forward-description {
     font-size: 16px;
@@ -62,15 +65,17 @@
     padding: 20px
 }
 .incoming-email-forward-helper-text-conntainer p {
-    font-size: 14px;
+    font-size: 17px;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
     line-height: 1.21;
     letter-spacing: 0.3px;
     color: #969393;
+    font-family: Roboto;
+  color: #616366;
 }
 .incoming-email-forward-helper-text-conntainer p>a {
-    font-weight: 500;
+    font-weight: 400;
     color: #4831d9;
 }
