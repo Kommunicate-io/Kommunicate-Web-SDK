@@ -16,7 +16,6 @@ Kommunicate.attachmentService = {
             }
         };
         reader.onloadend = function () {
-            console.log(reader.result);
             FILE_META = [];
             FILE_META.push({
                 thumbnailUrl: reader.result,
