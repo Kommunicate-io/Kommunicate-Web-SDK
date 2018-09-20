@@ -3527,21 +3527,33 @@ const MESSAGE_CONTENT_TYPE = {
 
                                 // Setting Online and Offline status for the agent to whom the conversation is assigned to.
                                 if(data.userDetails.length > 0 && data.groupFeeds.length > 0 ) {
-                                    var CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
-                                    var detailOfAssignedUser;
+                                    
+                                    var CONVERSATION_ASSIGNEE, detailOfAssignedUser, name;
+                                    if(typeof params.groupName !== "undefined") {
+                                        name = params.groupName;
+                                    } else {
+                                        name = mckMessageLayout.getTabDisplayName(params.tabId, params.isGroup, params.userName);
+                                    }
+                                    if(DEFAULT_GROUP_NAME == name) {
+                                        CONVERSATION_ASSIGNEE = data.groupFeeds[0].metadata.CONVERSATION_ASSIGNEE;
+                                    } else {
+                                        CONVERSATION_ASSIGNEE = name;
+                                    }
+
                                     $applozic.each(data.userDetails, function (i, userDetail) {
-                                        if(userDetail.userId == CONVERSATION_ASSIGNEE) {
+                                        if(userDetail.userId == CONVERSATION_ASSIGNEE || userDetail.displayName == CONVERSATION_ASSIGNEE) {
                                             detailOfAssignedUser = userDetail;
                                             return false;
                                         }
                                     });
-                                    if(detailOfAssignedUser.imageLink) {
+
+                                    if(typeof detailOfAssignedUser.imageLink !== "undefined") {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
                                     
                                     if(detailOfAssignedUser.roleType === 1) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
-                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online");
+                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
                                         $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
                                     } else if(detailOfAssignedUser.roleType === 8) {
                                         if(detailOfAssignedUser.connected == true) {
