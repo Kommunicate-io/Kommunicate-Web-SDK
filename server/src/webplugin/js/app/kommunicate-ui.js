@@ -77,13 +77,21 @@ KommunicateUI={
         }
     },
     updateAttachmentTemplate: function(file_meta,key){
-        let div = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key)
-
-        div.setAttribute("data-filemetakey", file_meta.blobKey);
-        div.setAttribute("data-filename", file_meta.name);
-        div.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
-        div.setAttribute("data-filesize", file_meta.size);
-        div.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+        let template = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key);
+        template.setAttribute("data-filemetakey", file_meta.blobKey);
+        template.setAttribute("data-filename", file_meta.name);
+        template.setAttribute("data-fileurl", file_meta.thumbnailUrl || file_meta.fileMeta.thumbnailUrl);
+        template.setAttribute("data-filesize", file_meta.size);
+        template.setAttribute("data-filetype", file_meta.contentType ||file_meta.fileMeta.contentType);
+    },
+    updateAttachmentStopUploadStatus: function(key, status) {
+        let template = document.querySelector(".mck-message-inner.mck-group-inner").querySelector(".mck-attachment-"+key);
+        template.setAttribute("data-stopupload", status);
+    },
+    getAttachmentStopUploadStatus: function (key) {
+        $applozic('.mck-attachment-'+key).attr('data-stopupload');
+        var stopUpload = stopUpload == "true" ? true : false;
+        return stopUpload;
     },
     populateLeadCollectionTemplate:function() {
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");

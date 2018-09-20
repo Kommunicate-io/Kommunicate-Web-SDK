@@ -23,6 +23,7 @@ Kommunicate.attachmentService = {
                 contentType: file.type,
                 isUploaded: false,
                 contentType: file.type,
+                stopUpload:false
             });
             if (typeof callback == "function") {
                 callback(FILE_META, messagePxy, file);
