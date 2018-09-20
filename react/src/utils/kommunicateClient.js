@@ -1,6 +1,7 @@
 import validator from 'validator';
 import axios from 'axios';
 import { getConfig } from '../config/config';
+import config from '../config/index';
 import isEmail from 'validator/lib/isEmail';
 import { getJsCode } from './customerSetUp';
 import Notification from '../views/model/Notification'
@@ -189,6 +190,10 @@ const callSendEmailAPI = (options) => {
   let roleType = options.roleType;
   let data = {}
 
+let url = config.baseurl.kommunicateAPI+"/misc/mail";
+if(options.templateName == "INVITE_TEAM_MAIL"){
+  url=  getConfig().kommunicateAPI.sendMail;
+  };
   if (options.templateName === "BOT_USE_CASE_EMAIL") {
     data = {
       to: [userSession.email],
@@ -209,10 +214,9 @@ const callSendEmailAPI = (options) => {
       "roleType":roleType
     }
   }
-
   return Promise.resolve(axios({
     method: 'post',
-    url: getConfig().kommunicateApi.sendMail,
+    url: url,
     data: { ...data }
   }))
     .then((response) => {
