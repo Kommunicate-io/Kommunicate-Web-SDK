@@ -398,7 +398,7 @@ class AwayMessage extends Component{
           <div className="col-md-8 col-sm-12">
             <div className="away-message-header">
               <div className="row">
-                <h4 className="away-message-title">Show away message to users. </h4>
+                <h4 className="away-message-title">Show away message to users </h4>
                 <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
               </div>
             </div>
