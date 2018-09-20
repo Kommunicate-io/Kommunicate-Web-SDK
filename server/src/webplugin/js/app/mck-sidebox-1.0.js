@@ -2912,7 +2912,7 @@ const MESSAGE_CONTENT_TYPE = {
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
-                        if(FILE_META && (FILE_META[0].contentType =="image/jpeg" ||  FILE_META[0].contentType == "image/png") &&!FILE_META[0].isUploaded) {
+                        if(FILE_META && (FILE_META[0].contentType.includes("image/"))) {
                             KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
                             if(typeof callback =="function"){
@@ -3033,7 +3033,9 @@ const MESSAGE_CONTENT_TYPE = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
+                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.includes("image/")) {
+                            KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
+                        }
                         var currentTabId = $mck_msg_inner.data('mck-id');
                         if (typeof data === 'object') {
                             KommunicateUI.deleteProgressMeter(messagePxy.key);
@@ -7709,9 +7711,11 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
-                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
-                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
-                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            if (messagePxy) {
+                                stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
+                                Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                                progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            }
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText); 
@@ -7834,9 +7838,11 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
-                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
-                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
-                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            if (messagePxy) {
+                                stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
+                                Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                                progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            }
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText);
@@ -7949,9 +7955,11 @@ const MESSAGE_CONTENT_TYPE = {
                         (xhr.upload || xhr).addEventListener('progress', function (e) {
                             var progress = parseInt(e.loaded / e.total * 100, 10);
                             $file_progressbar.css('width', progress + '%');
-                            stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
-                            messagePxy && Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
-                            messagePxy && progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            if (messagePxy) {
+                                stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key)
+                                Kommunicate.attachmentEventHandler.progressMeter(progress, messagePxy.key);
+                                progress == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(messagePxy.key);
+                            }
                         });
                         xhr.addEventListener('load', function (e) {
                             var responseJson = $applozic.parseJSON(this.responseText);
