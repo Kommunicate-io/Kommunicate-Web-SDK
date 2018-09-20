@@ -7591,7 +7591,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}, MCK_APP_ID + "," + MCK_USER_ID + "," + status);
 						setTimeout(function () {
 							MCK_TYPING_STATUS = 0;
-						}, 60000);
+						}, 10000);
 					} else if (status === 0) {
 						stompClient.send('/topic/typing-' + MCK_APP_ID + "-" + TYPING_TAB_ID, {
 							"content-type": "text/plain"
