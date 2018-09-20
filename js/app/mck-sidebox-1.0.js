@@ -8481,7 +8481,7 @@ const MESSAGE_CONTENT_TYPE = {
                                         // $mck_tab_status.removeClass('n-vis').addClass('vis');
                                     }
                                     $mck_typing_label.html(MCK_LABELS['typing']);
-                                }, 60000);
+                                }, 10000);
                             }
                         } else {
                             $mck_tab_title.removeClass("mck-tab-title-w-typing");
