@@ -19,7 +19,8 @@ class Users extends Component {
 
     this.state = {
       result: [],
-      lastFetchTime:"",
+      startTime:"",
+      lastSeenTime:"",
       showEmptyStateImage: true,
       total:0,
       currentPage: 1,
@@ -47,25 +48,29 @@ class Users extends Component {
       })
       var params = {
         startIndex : 0,
-        pageSize : 100,
+        pageSize : 60,
         orderBy : 1,
         roleNameList : "USER"
       };
-      if(_this.state.lastFetchTime !== ""){
-        params.startTime = _this.state.lastFetchTime;
+      if(_this.state.lastSeenTime){
+        params.lastSeenTime = _this.state.lastSeenTime;
+      }
+      else if (_this.state.startTime){
+        params.startTime = _this.state.startTime;
       }
       var assignedUser = _this.state.result;
       let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
         fetchContactsFromApplozic(params).then(response => {
           if(response.status == "success"){
             if (response && response.response && (response.response.users.length > 0)) {
-              if(response.response.users.length < 100){
+              if(response.response.users.length < params.pageSize || response.response.lastSeenFetchTime === 0 ){
                 _this.setState({stopFlag:0})
               }
               var setPageNumbers = assignedUser.length + response.response.users.length;
               _this.setState({
                 total: (Math.ceil(setPageNumbers / 20)*limit),
-                lastFetchTime : response.response.lastFetchTime
+                startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime, 
+                lastSeenTime : response.response.lastSeenFetchTime
               });
             const users=response.response.users.map((user, index)=>{
               if (user.messagePxy && user.messagePxy.groupId) {

@@ -301,6 +301,7 @@ class Integration extends Component {
   }
 
   render() {
+    let userSession = CommonUtils.getUserSession();
     var agentList = this.state.result;
     var getUsers = this.getUsers;
     var loggedInUserId = this.state.loggedInUserId;
@@ -311,8 +312,8 @@ class Integration extends Component {
     var roleType;
     var status;
     var result = this.state.result.map(function (result, index) {
-      let userId = result.userId.toLowerCase();;
-      let isOnline = userId == loggedInUserId || result.connected;
+      let userId = result.userId.toLowerCase();
+      let isOnline = userId == userSession.userName || result.connected;
       if (!result.deactivated) {
         usersList.map(function (user, i) {
           if (userId == user.userName.toLowerCase()) {
