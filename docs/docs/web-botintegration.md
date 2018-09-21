@@ -31,3 +31,24 @@ You can start group conversations with bot using `startConversation(conversation
   console.log("new conversation created");
   }); 
 ```
+## Pass Custom data to bot platform 
+Kommunicate allow to send custom data to your Dialogflow agent. Create a `CHAT_CONTEXT` object and update it to Kommunicate settings. The chat context object will be sent along with every message user sends.  When kommunicate plugin successfully loaded call `Kommunicate.updateSettings` method to update the chat context. The best place to call this method is the `onInit` method you pass <a href="web-installation.html#step-2-add-the-customized-kommunicate-plugin-to-your-website" target="_blank">installation script</a>.
+
+
+```javascript
+var chatContext = {
+  "key1":"value1",
+  "key2":"value2"
+}
+Kommunicate.updateSettings({"CHAT_CONTEXT":chatContext})
+
+```
+Dialogflow will send this data in the configured webhook in `originalDetectIntentRequest` param.
+ 
+ ```javascript
+ "originalDetectIntentRequest": {
+    "payload": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  }```
