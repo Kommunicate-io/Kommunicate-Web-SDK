@@ -56,20 +56,24 @@ KommunicateUI={
             this.hideAwayMessage();
         }
     },
-    displayProgressMeter: function(key) {
+    displayProgressMeter: function(key, uploadStatus) {
         $applozic(".progress-meter-"+key).removeClass("n-vis").addClass("vis");
         $applozic(".mck-attachment-"+key).next().removeClass("n-vis").addClass("vis");
         $applozic(".mck-attachment-"+key+" .mck-image-download").addClass("n-vis");
     },
-    deleteProgressMeter: function(key) {
+    deleteProgressMeter: function(key, uploadStatus) {
         $applozic(".progress-meter-"+key).remove();
-        $applozic(".mck-attachment-"+key).next().removeClass("vis").addClass("n-vis");
+        uploadStatus && $applozic(".mck-attachment-"+key).next().removeClass("vis").addClass("n-vis");
     },
-    displayUploadIconForAttachment: function(key) {
+    displayUploadIconForAttachment: function(key, uploadStatus) {
         $applozic(".progress-meter-"+key+" .km-progress-upload-icon").removeClass("n-vis").addClass("vis");
         $applozic(".progress-meter-"+key+" .km-progress-stop-upload-icon").removeClass("vis").addClass("n-vis");
-        Kommunicate.attachmentEventHandler.progressMeter(100,key);            
+        Kommunicate.attachmentEventHandler.progressMeter(100,key);
+        !uploadStatus && $applozic(".mck-attachment-"+key).next().removeClass("n-vis").addClass("vis");            
 
+    },
+    showImageAttachmentPreview: function(fileMeta, key) {
+        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", fileMeta.url);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
         if(file.type.includes("image/")) {
@@ -92,8 +96,8 @@ KommunicateUI={
         template.setAttribute("data-stopupload", status);
     },
     getAttachmentStopUploadStatus: function (key) {
-        $applozic('.mck-attachment-'+key).attr('data-stopupload');
-        var stopUpload = stopUpload == "true" ? true : false;
+        var stopUpload = $applozic('.mck-attachment-'+key).attr('data-stopupload');
+        stopUpload = stopUpload == "true" ? true : false;
         return stopUpload;
     },
     populateLeadCollectionTemplate:function() {
