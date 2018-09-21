@@ -192,7 +192,7 @@ const callSendEmailAPI = (options) => {
 
 let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){
-  url=  getConfig().kommunicateAPI.sendMail;
+  url=  getConfig().kommunicateApi.sendMail;
   };
   if (options.templateName === "BOT_USE_CASE_EMAIL") {
     data = {
