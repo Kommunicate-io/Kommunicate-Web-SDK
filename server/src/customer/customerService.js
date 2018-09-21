@@ -95,7 +95,9 @@ const reactivateAgents = async function (appId) {
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
         let users = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC']])
         for (var i = 0; i < result.subscription.plan_quantity; i++) {
-            userService.updateOnlyKommunicateUser(users[i].userName, appId, { status: 1, bot_availability_status: 0 });
+            let dataToBeUpdated = {status: 1};
+            users[i].type ==2 &&  (dataToBeUpdated["bot_availability_status"]=1)
+            userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
         }
     }
     return "success";
