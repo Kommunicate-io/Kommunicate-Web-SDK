@@ -58,9 +58,12 @@ KommunicateUI={
     },
     displayProgressMeter: function(key) {
         $applozic(".progress-meter-"+key).removeClass("n-vis").addClass("vis");
+        $applozic(".mck-attachment-"+key).next().removeClass("n-vis").addClass("vis");
+        $applozic(".mck-attachment-"+key+" .mck-image-download").addClass("n-vis");
     },
     deleteProgressMeter: function(key) {
         $applozic(".progress-meter-"+key).remove();
+        $applozic(".mck-attachment-"+key).next().removeClass("vis").addClass("n-vis");
     },
     displayUploadIconForAttachment: function(key) {
         $applozic(".progress-meter-"+key+" .km-progress-upload-icon").removeClass("n-vis").addClass("vis");

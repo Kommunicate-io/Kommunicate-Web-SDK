@@ -1,6 +1,6 @@
 Kommunicate.messageTemplate = {
     getAttachmentTemplate: function () {
-         return `<div class="mck-file-text mck-attachment notranslate mck-attachment-{{key}}" data-groupId="{{groupId}}" data-filemetakey="{{fileMetaKey}}" data-stopupload="{{fileMeta.stopUpload}}" data-filename="{{fileMeta.name}}" data-thumbnailUrl="{{fileMeta.thumbnailUrl}}"  data-filetype="{{fileMeta.contentType}}" data-fileurl="{{fileUrl}" data-filesize="{{fileMeta.size}}+" data-msgkey ="{{key}}"><div>{{{fileExpr}}}</div></div>`;
+         return `<div class="mck-file-text mck-attachment {{attachmentClass}} notranslate mck-attachment-{{key}}" data-groupId="{{groupId}}" data-filemetakey="{{fileMetaKey}}" data-stopupload="{{fileMeta.stopUpload}}" data-filename="{{fileMeta.name}}" data-thumbnailUrl="{{fileMeta.thumbnailUrl}}"  data-filetype="{{fileMeta.contentType}}" data-fileurl="{{fileUrl}" data-filesize="{{fileMeta.size}}+" data-msgkey ="{{key}}"><div>{{{fileExpr}}}</div><div class="{{attachmentDownloadClass}}">{{{downloadMediaUrlExpr}}}</div></div>`;
         
     },
     getProgressMeter:function(key) {
@@ -9,8 +9,13 @@ Kommunicate.messageTemplate = {
     getAttachmentContanier:function(data, fileExpr) {
         var alFileService = new AlFileService();
         let fileUrl = alFileService.getFileurl(data);
+        data.downloadMediaUrlExpr = alFileService.getFileAttachment(data)
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
+        if (typeof data.fileMeta === 'object') {
+            data.attachmentClass = (data.fileMeta.contentType.includes("image/") || data.fileMeta.contentType.includes("audio/") || data.fileMeta.contentType.includes("video/")) ? "" : "mck-msg-box" ;
+            data.attachmentDownloadClass = data.fileMeta.contentType.includes("image/") ? "n-vis" : "vis"
+        }
         return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
     },
     getProgressMeterContanier:function(key) {
