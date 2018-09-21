@@ -119,21 +119,26 @@ Kommunicate.attachmentEventHandler= {
             }
 
         } else {
-            KommunicateUI.displayUploadIconForAttachment(msgkey);
+            KommunicateUI.displayUploadIconForAttachment(msgkey, false);
             KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
         }
             
     },
     progressMeter : function (value, key) {
         var control = document.getElementById('km-progress-meter-input');
-        let selector = ".progress-meter-"+key+ " .km-progress-value"
+        let selector = ".progress-meter-"+key+ " .km-progress-value";
+        let stopUpload = KommunicateUI.getAttachmentStopUploadStatus(key);
+        if(stopUpload) {
+            value = 100;
+        }
         var progressValue = document.querySelector(selector);
         if(progressValue) {
-            progressValue.style.strokeDasharray = KM_PROGRESS_METER_CIRCUMFERENCE;
-            var progress = value / 100;
-            var dashoffset = KM_PROGRESS_METER_CIRCUMFERENCE * (1 - progress);
-       }
-        
+        progressValue.style.strokeDasharray = KM_PROGRESS_METER_CIRCUMFERENCE;
+        var progress = value / 100;
+        var dashoffset = KM_PROGRESS_METER_CIRCUMFERENCE * (1 - progress);
+        progressValue.style.strokeDashoffset = dashoffset;
+        // value == 100 && !stopUpload && KommunicateUI.deleteProgressMeter(key);
+        }      
      }
 }
 
