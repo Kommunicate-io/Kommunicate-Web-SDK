@@ -176,7 +176,10 @@ KommunicateUI={
         $applozic("#mck-contacts-content").addClass("n-vis").removeClass("vis");
         $applozic("#mck-msg-new").attr("disabled", false);
         $applozic('.km-contact-input-container').removeClass("n-vis").addClass("vis");
+        $applozic('.mck-agent-image-container').removeClass("vis").addClass("n-vis");
+        $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
         $applozic("#mck-conversation-back-btn").removeClass("km-visibility-hidden").addClass('vis-table');
+
     });
 
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
@@ -254,6 +257,8 @@ KommunicateUI={
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+                $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
+                 $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
                 $applozic.fn.applozic("openChat", elem);
                 MCK_EVENT_HISTORY.splice(MCK_EVENT_HISTORY.length - 1, 1);

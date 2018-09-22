@@ -3549,6 +3549,9 @@ const MESSAGE_CONTENT_TYPE = {
                                             return false;
                                         }
                                     });
+                                    $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
+                                    $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
+
                                     if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
