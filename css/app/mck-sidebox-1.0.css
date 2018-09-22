@@ -5637,7 +5637,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	transition: all 0.3s ease-in-out;
 }
 .mck-agent-image-container {
-	width: 45px;
+	width: 47px;
     height: 45px;
 	margin-right: 8px;
 	border-radius: 50%;
@@ -5656,7 +5656,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	border: solid 1px #ffffff;	
+	border: solid 2.5px #716fb3;	
 }
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
 	background-color: #22d674;
