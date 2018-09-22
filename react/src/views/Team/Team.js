@@ -397,11 +397,13 @@ class Integration extends Component {
                     { this.state.isTrialPlan &&
                       <Banner indicator={"warning"} isVisible={false} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     }
+                    { this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container">
                       <div className="teammates-billing-update-text">
                       Adding a team member will automatically increase the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
                       </div>
                     </div>
+                    }
                     <div className="teammates-add-member-modal-content-wrapper">
                       <h5 className="teammates-add-member-modal-content-title">Whom do you want to add?</h5>
                       <input type="text" className="form-control email-field" id="email-field"
