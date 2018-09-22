@@ -118,12 +118,11 @@
   font-stretch: normal;
   line-height: 1.43;
   letter-spacing: 0.4px;
-  text-align: left;
+  margin-top: 20px;
   color: #505152;
 }
 .team-delete-modal-divider {
-  margin-left: -20px;
-  margin-right: -20px;
+  margin: 15px -20px 0px;
   height: 2px;
   opacity: 0.36;
   border: none;
@@ -185,8 +184,15 @@
 }
 .teammates-add-member-modal-content-wrapper input  {
   max-width: 73%;
-  border: solid 1px #d8d8d8;
+  border-radius: 4px;
+  border: solid 1px #a1a1a1;
   margin-bottom: 26px; 
+}
+.teammates-add-member-modal-content-wrapper input::placeholder  {
+  font-size: 14px;
+  line-height: 1.36;
+  letter-spacing: normal;
+  color: #a1a1a1;
 }
 .km-status-indicator-text {
   font-size: 16px !important;
@@ -340,4 +346,16 @@
 }
 .team-invite {
   background-color: #f9f9f9;
+}
+
+.teammates-billing-update-container {
+  background-color: #cce7f8;
+  padding: 15px 20px;
+  margin: -2px -20px 0px;
+}
+.teammates-billing-update-text {
+  font-size: 14px;
+  line-height: 1.29;
+  letter-spacing: 0.7px;
+  color: #6a6b6d;
 }
