@@ -4454,6 +4454,7 @@ color: rgba(0,0,0,0.5);
 
 }
 .km-cta-multi-button-container .km-cta-button-many {
+	background: white;
 	margin-top: 10px
 }
 .km-cta-multi-button-container .km-cta-button-1{
