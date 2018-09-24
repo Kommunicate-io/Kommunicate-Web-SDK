@@ -154,6 +154,7 @@ class Register extends Component {
     userInfo.subscription = _this.state.subscription;
     userInfo.roleType = this.state.roleType;
     userInfo.token = this.state.token;
+    userInfo.deviceType = "0";
 
     if (window.heap) {
       window.heap.identify(email);
