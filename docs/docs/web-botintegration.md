@@ -54,3 +54,8 @@ Dialogflow will send this data in the configured webhook in `originalDetectInten
     }
   }
   ```
+## Welcome message from bot
+
+When a conversation routed through bot it will trigger an `WELCOME` event to Dialogflow agent. You can enable default welcome intent in Dialogflow or create an custom event `WELCOME`. 
+This message is different from the Welcome message you set in Kommunicate dashboard. If 
+welcome message for bot and agent(confugured from dashboard) both are enabled, both welcome message will be sent to the users. We recommend to disable the welcome message from dashboard in this case.  
