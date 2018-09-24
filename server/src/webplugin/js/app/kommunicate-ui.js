@@ -178,8 +178,8 @@ KommunicateUI={
         $applozic('.km-contact-input-container').removeClass("n-vis").addClass("vis");
         $applozic('.mck-agent-image-container').removeClass("vis").addClass("n-vis");
         $applozic('.mck-agent-status-text').removeClass("vis").addClass("n-vis");
-        $applozic("#mck-conversation-back-btn").removeClass("km-visibility-hidden").addClass('vis-table');
-
+        $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis").addClass('vis-table');
+        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding")
     });
 
     $applozic(d).on("click", "#km-faqanswer a", function (e) {
@@ -296,13 +296,13 @@ showChat :function () {
     $applozic('#km-faq').removeClass("n-vis").addClass("vis");
     $applozic("#mck-msg-new").attr("disabled", false);
     if ($applozic("#mck-message-cell .mck-message-inner div[name='message']").length === 0 && isFirstLaunch == true) {
-        $applozic("#mck-conversation-back-btn").addClass("km-visibility-hidden");
+        $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").addClass("n-vis");
+        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").addClass("padding")
+
         isFirstLaunch = false;
     }else{
-        $applozic("#mck-conversation-back-btn").removeClass("km-visibility-hidden");
-    }
-    
-    if($applozic('#mck-tab-conversation').hasClass('vis')){
+        $applozic("#mck-tab-individual .mck-tab-link.mck-back-btn-container").removeClass("n-vis");
+        $applozic("#mck-tab-individual .mck-name-status-container.mck-box-title").removeClass("padding")
     }
 },
 showHeader :function(){
