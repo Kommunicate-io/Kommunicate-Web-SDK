@@ -47,3 +47,17 @@ You can open a particular conversation if you have the group ID of that particul
 Kommunicate.openConversation(groupId);
 ```
 
+## Open chat window when a new message comes:
+Add "openConversationOnNewMessage:true" in Kommunicate settings. This will open chat window when a new message comes.
+### Example:
+```javascript
+
+    var kommunicateSettings = {"appId": applicationId,
+            "agentId": agentId,
+            "userName": userName,
+            "conversationTitle":conversationTitle,
+            "openConversationOnNewMessage";true
+            };
+
+
+```
