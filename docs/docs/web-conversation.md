@@ -56,7 +56,7 @@ Add "openConversationOnNewMessage:true" in Kommunicate settings. This will open 
             "agentId": agentId,
             "userName": userName,
             "conversationTitle":conversationTitle,
-            "openConversationOnNewMessage";true
+            "openConversationOnNewMessage":true
             };
 
 
