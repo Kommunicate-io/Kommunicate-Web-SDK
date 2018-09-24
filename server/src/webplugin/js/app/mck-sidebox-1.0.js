@@ -7862,8 +7862,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
                                     // KommunicateUI.showImageAttachmentPreview(file_meta,messagePxy.key )
                                     return
-                                }             
-                                !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
+                                }
                                 var fileExpr = alFileService.getFilePreviewPath(file_meta);
                                 file_meta.url = MCK_FILE_URL + FILE_PREVIEW_URL + "/"+file_meta.blobKey;
                                 var name = file_meta.name;
