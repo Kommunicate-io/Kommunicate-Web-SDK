@@ -1,9 +1,11 @@
 Kommunicate.KmEventHandler = {
     'openChatOnNotification': function (message) {
-        if (message && message.groupId && !(document.getElementById("mck-sidebox").style.display === 'block')) {
-            window.Kommunicate.openConversation(message.groupId);
-        } else {
-            window.Kommunicate.openDirectConversation(message.to);
+        if (!(document.getElementById("mck-sidebox").style.display === 'block')) {
+            if (message && message.groupId) {
+                window.Kommunicate.openConversation(message.groupId);
+            } else {
+                window.Kommunicate.openDirectConversation(message.to);
+            }
         }
     },
     'notificationEvent': function (message) {
