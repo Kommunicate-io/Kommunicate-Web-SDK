@@ -189,7 +189,7 @@ submitForm = ()=>{
     }
 
     this.setState({loginButtonDisabled:true});
-    axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
+    axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId,deviceType:0})
     .then(function(response){
       if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
         // Notification.warning("Invalid credentials");
