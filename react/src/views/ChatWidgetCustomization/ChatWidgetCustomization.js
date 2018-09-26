@@ -66,10 +66,8 @@ class ChatWidgetCustomization extends Component{
             if (file) {
               sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
                 .then(response => {
-                    console.log(response);
                   if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
                     that.setState({ widgetImageLink: response.data.profileImageUrl });
-                    console.log(that.state.widgetImageLink);
                     Notification.info(response.data.message);
                     that.setState({hasCustomImage : true, iconIndex : "image", changesMade:true});
                   } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
@@ -78,7 +76,6 @@ class ChatWidgetCustomization extends Component{
                   }
                 })
                 .catch(err => {
-                  console.log(err)
                   Notification.info("Error while uploading")
                 })
             } else {

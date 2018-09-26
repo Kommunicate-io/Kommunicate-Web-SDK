@@ -1,4 +1,4 @@
-    .color {
+    .km-chat-customization-wrapper .color {
         border-radius: 2px;
         display: inline-block;
         width: 29px;
@@ -7,7 +7,7 @@
         margin-right: 10px;
     }
 
-    #selectedColorHex {
+    .km-chat-customization-wrapper  #selectedColorHex {
         display: inline-block;
         width: 63px;
         font-size: 14px;
@@ -15,25 +15,25 @@
         margin-left: 10px;
     }
 
-    .km-customizer-heading {
+    .km-chat-customization-wrapper  .km-customizer-heading {
         font-size: 16px;
         color: #57595b;
     }
 
-    .km-color-picker {
+    .km-chat-customization-wrapper  .km-color-picker {
         position: relative;
         margin-top: 90px;
     }
 
-    .km-logo-picker {
+    .km-chat-customization-wrapper  .km-logo-picker {
         margin-top: 50px;
     }
 
-    .logo-selection {
+    .km-chat-customization-wrapper  .logo-selection {
         display: flex;
     }
 
-    .logo-design {
+    .km-chat-customization-wrapper .logo-design {
         margin: 10px 20px 0 0;
         width: 40px;
         height: 40px;
@@ -49,7 +49,7 @@
         width: 22px;
     }
 
-    .swatch {
+    .km-chat-customization-wrapper  .swatch {
         background: #fff;
         display: inline-block;
         width: 196px;
@@ -62,7 +62,7 @@
         cursor: pointer;
     }
 
-    .popover {
+    .km-chat-customization-wrapper  .popover {
         position: absolute;
         z-index: 2;
         top: 110%;
@@ -70,7 +70,7 @@
 
     }
 
-    .popover .sketch-picker {
+    .km-chat-customization-wrapper  .popover .sketch-picker {
         border: none;
         /* padding: 2px!important; */
         /* box-shadow: none!important; */
@@ -80,7 +80,7 @@
         display: none;
     } */
 
-    .cover {
+    .km-chat-customization-wrapper  .cover {
         position: fixed;
         top: 0px;
         right: 0px;
