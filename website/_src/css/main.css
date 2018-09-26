@@ -916,7 +916,7 @@ body {
       margin-top: -5rem; } }
   @media (max-width: 56.25em) {
     .footer_account {
-      margin-top: 0;
+      margin-top: -30px;
       width: 95%;
       position: absolute;
       left: 50%;
@@ -1387,7 +1387,7 @@ body {
 
 .header_heading {
   font-size: 50px;
-  line-height: 5.8rem;
+  line-height: 7.8rem;
   font-weight: 600;
   color: #1D2731;
   width: 70%;
@@ -1419,13 +1419,13 @@ body {
   animation: fade-in-top .8s; }
   .hero_main {
     position: relative;
-    overflow: visible;
     border-radius: 4px;
     background: url(../images/jeremy.png), url(../images/hero1.svg);
     height: 85rem;
     background-position: 123% 122.3%, 1% 59%;
     background-size: 83.8%, 98%;
-    background-repeat: no-repeat, no-repeat; }
+    background-repeat: no-repeat, no-repeat;
+    overflow: visible; }
     @media (max-width: 1400px) and (min-width: 1200px) {
       .hero_main {
         width: 1200px;
@@ -1645,9 +1645,11 @@ body {
     margin-bottom: 2rem;
     font-size: 2.2rem; }
   .services_heading {
-    font-weight: 600; }
+    font-weight: 600;
+    font-size: 2.4rem; }
   .services_box_text {
-    padding: 1.2rem; }
+    padding: 1.2rem;
+    font-size: 2.1rem; }
 
 .customers {
   padding: 0; }

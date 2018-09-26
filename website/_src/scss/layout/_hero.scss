@@ -3,13 +3,13 @@
 
     &_main {
         position: relative;
-        overflow: visible;
         border-radius: 4px;
         background: url(../images/jeremy.png), url(../images/hero1.svg);
         height: 85rem;
         background-position: 123% 122.3%, 1% 59%;
         background-size: 83.8%, 98%;
         background-repeat: no-repeat, no-repeat;
+        overflow: visible;
 
         @media (max-width: 1400px) and (min-width:1200px) {
             width: 1200px;
