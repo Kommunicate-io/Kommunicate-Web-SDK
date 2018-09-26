@@ -1367,7 +1367,7 @@ const MESSAGE_CONTENT_TYPE = {
             _this.getLauncherHtml = function (isAnonymousChat) {
 
               var anonymousCheck = isAnonymousChat ? "km-launcher-logo-gradient-2" : "km-launcher-logo-gradient-1";
-              var defaultHtml=  `<div id="launcher-svg-container"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
+              var defaultHtml=  `<div id="launcher-svg-container" class="vis"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
               <style type="text/css">
                   .km-launcher-logo-0{fill:url(#`+anonymousCheck+`);}
                   .km-launcher-logo-1{fill:#FFFFFF;}
@@ -2345,6 +2345,13 @@ const MESSAGE_CONTENT_TYPE = {
                     e.preventDefault();
                     $mck_sidebox.mckModal('hide');
                     $applozic('#mck-sidebox-launcher').removeClass('n-vis').addClass('vis');
+                    if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {
+                        document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.add("n-vis");
+                        document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.remove("vis");
+                    } else {
+                        document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.add("vis");
+                        document.querySelector('#mck-sidebox-launcher #launcher-svg-container').classList.remove("n-vis");
+                    }
                     var conversationId = $mck_msg_inner.data('mck-conversationid');
                     $mck_msg_inner.data("mck-id", '');
                     $mck_msg_inner.data("mck-topicid", '');
