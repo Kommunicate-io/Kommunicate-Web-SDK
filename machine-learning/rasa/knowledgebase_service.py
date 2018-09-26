@@ -6,10 +6,12 @@ import time
 import datetime
 import requests
 import json
+
 if(len(argv) < 2):
     env = get_config(None)
 else:
     env = get_config(argv[1])
+
 client = MongoClient(env.mongo_url)
 db = client['kommunicate']
 collection = db['knowledgebase']
@@ -21,7 +23,7 @@ print('request sent to : ', env.rasa_endpoint)
 response = requests.get(env.cron_endpoint + '/' +cron_key)
 print(response.text)
 data = json.loads(response.text)
-last_update_time = 1000 #int(data['lastRunTime'])
+last_update_time = int(data['lastRunTime'])
 print(last_update_time)
 
 # appkeys = ['2222','1111']
@@ -47,7 +49,7 @@ for data in new_data:
             print("applicationId not found, this might happen if its very old record.")
             continue
         print(data)
-        if int(round(data['created_at']))>=last_update_time:
+        if data['created_at'] >= last_update_time:
             if data['deleted'] == True or 'deleted-at' in data:
                 #new create is placed and then deleted, so no need to do anything for that
                 #simply remove that entity from Mongo
