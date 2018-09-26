@@ -10,6 +10,7 @@ Kommunicate.KmEventHandler = {
             } else {
                 window.Kommunicate.openDirectConversation(message.to);
             }
+               KommunicateUI.hideMessagePreview();
         }
     },
     'notificationEvent': function (message) {
