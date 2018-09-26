@@ -94,11 +94,11 @@ If the user is already logged in your website, then pass the user details to kom
             "email": emailId
             };
 
-
 ```
 
 
-**Update user's identity after plugin initialized**
+
+## **Update user's identity after plugin initialized**
 
 Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 
