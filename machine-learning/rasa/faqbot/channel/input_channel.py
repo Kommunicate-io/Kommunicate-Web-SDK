@@ -135,9 +135,6 @@ def add_nludata(questions, app_key):
         for question in questions:
             intent = question.get_intent()
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
-            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
-            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
-
     with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
