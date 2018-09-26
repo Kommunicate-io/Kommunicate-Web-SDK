@@ -1,0 +1,278 @@
+    .km-chat-customization-wrapper .color {
+        border-radius: 2px;
+        display: inline-block;
+        width: 29px;
+        height: 18px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .km-chat-customization-wrapper  #selectedColorHex {
+        display: inline-block;
+        width: 63px;
+        font-size: 14px;
+        color: #625e5e;
+        margin-left: 10px;
+    }
+
+    .km-chat-customization-wrapper  .km-customizer-heading {
+        font-size: 16px;
+        color: #57595b;
+    }
+
+    .km-chat-customization-wrapper  .km-color-picker {
+        position: relative;
+        margin-top: 90px;
+    }
+
+    .km-chat-customization-wrapper  .km-logo-picker {
+        margin-top: 50px;
+    }
+
+    .km-chat-customization-wrapper  .logo-selection {
+        display: flex;
+    }
+
+    .km-chat-customization-wrapper .logo-design {
+        margin: 10px 20px 0 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .logo-design svg {
+        height: 22px;
+        width: 22px;
+    }
+
+    .km-chat-customization-wrapper  .swatch {
+        background: #fff;
+        display: inline-block;
+        width: 196px;
+        border-radius: 4px;
+        background-color: #ffffff;
+        border: solid 1px #a1a1a1;
+        display: flex;
+        align-items: center;
+        padding: 6px 10px;
+        cursor: pointer;
+    }
+
+    .km-chat-customization-wrapper  .popover {
+        position: absolute;
+        z-index: 2;
+        top: 110%;
+        border: none;
+
+    }
+
+    .km-chat-customization-wrapper  .popover .sketch-picker {
+        border: none;
+        /* padding: 2px!important; */
+        /* box-shadow: none!important; */
+    }
+
+    /* .sketch-picker .flexbox-fix:nth-child(2) div:nth-child(2) {
+        display: none;
+    } */
+
+    .km-chat-customization-wrapper  .cover {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    }
+
+    .km-demo-chat-box {
+        width: 368px;
+        height: 382px;
+        border-radius: 6px;
+        background-color: #ffffff;
+        box-shadow: 2px 3px 10px 2px rgba(139, 133, 133, 0.5);
+    }
+
+    .km-chat-box-header {
+        width: 100%;
+        height: 60px;
+        border-radius: 8px 8px 0 0;
+        display: flex;
+        align-items: center;
+        color: #fff;
+    }
+
+    .km-chat-box-img {
+        display: inline-block;
+        margin-left: 15px;
+    }
+
+    .km-chat-box-img img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .chat-backarrow {
+        height: 3px;
+        display: block;
+        width: 20px;
+        background: #fff;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform-origin: right;
+    }
+
+    .km-chat-box-back-button {
+        position: relative;
+        width: 38px;
+        display: inline-block;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .km-chat-box-name {
+        height: 16px;
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0.6px;
+        align-self: flex-start;
+        margin: 12px 0 0 10px;
+    }
+
+    .km-chat-box-status {
+        height: 16px;
+        font-size: 14px;
+        letter-spacing: 0.8px;
+        color: #f1eded;
+        font-weight: 300;
+        margin-top: -6px;
+        font-style: italic;
+    }
+
+    .km-chat-box-close {
+        width: 38px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        align-self: flex-end;
+        width: 38%;
+    }
+
+    .km-chat-box-converstaions {
+        padding-top: 28px;
+    }
+
+    .km-message-left {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+
+    .km-conversation-img img {
+        width: 30px;
+        height: 30px;
+        margin-left: 30px;
+    }
+
+    .km-conversation-img {
+        align-self: flex-start;
+    }
+
+    .km-conversation-content {
+        max-width: 236px;
+        border-radius: 5px;
+        background-color: #e6e5ec;
+        padding: 12px;
+        margin-left: 10px;
+        font-size: 14px;
+        line-height: 1.36;
+        letter-spacing: 0.5px;
+        color: #646262;
+    }
+
+    .km-message-right {
+        margin-bottom: 10px;
+        margin-left: 102px;
+    }
+
+    .km-message-right .km-conversation-content {
+        color: #fff;
+    }
+
+    .km-chat-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        float: right;
+        margin-top: 90px;
+        box-shadow: 0 2px 5px 1px rgba(107, 104, 104, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .km-chat-icon-img img {
+        width: 54px;
+    }
+
+    .km-chat-icon svg {
+        /* height: 30px; */
+        width: 28px;
+    }
+
+    .km-custom-icon-upload {
+         color: #625e5e;
+        font-size: 14px;
+        line-height: 1.36;
+    }
+    .km-non-selected{
+        opacity: .5;
+    }
+
+    .km-custom-icon-upload button {
+        width: 30px;
+        height: 30px;
+        padding: 6px;
+        margin-left: 10px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        box-shadow: 0 2px 3px 1px rgba(165, 161, 161, 0.5);
+        outline: none;
+        border: none;
+    }
+
+    .km-custom-icon-upload a svg {
+        height: 10px;
+        width: 15px;
+    }
+
+    .km-img-picker {
+        border-radius: 4px;
+        border: solid 1px #bab8b8;
+        max-width: 263px;
+        padding: 8px 4px 15px 5px;
+        position: relative;
+    }
+
+    .km-customizer-heading-icon {
+        font-size: 14px;
+        line-height: 1.36;
+        color: #2e2c2c;
+    }
+
+    .km-img-upload-input {
+        top: 15px;
+        left: 199px;
+        width: 17%;
+        height: 53%;
+    }
