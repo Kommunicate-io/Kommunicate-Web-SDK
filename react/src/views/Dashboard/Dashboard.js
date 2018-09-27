@@ -113,6 +113,7 @@ class Dashboard extends Component {
         datasets: [
           {
             label: '',
+            fill: true,
             backgroundColor: 'rgba(92,90,167,0.25)',
             borderColor: '#5c5aa7',
             pointHoverBackgroundColor: '#fff',
@@ -256,6 +257,7 @@ class Dashboard extends Component {
         xAxes: [{
           gridLines: {
             drawOnChartArea: true,
+            display: false
           }
         }],
         yAxes: [{

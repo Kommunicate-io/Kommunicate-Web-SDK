@@ -1972,7 +1972,7 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 
 .mck-msg-avator-bubble.mck-msg-left .mck-msg-avator {
 	float: left;
-	left: 24px;
+	left: 22px;
 	margin-left: 3px;
 }
 
@@ -1984,8 +1984,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 }
 
 .mck-msg-avator img {
-	height: 30px;
-	width: 30px;
+	height: 32px;
+	width: 32px;
 	border-radius: 50%;
 	vertical-align: middle;
 }
@@ -5703,4 +5703,8 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 .mck-sidebox .force-n-vis {
 	display:none !important;
+}
+
+.mck-msg-text.mck-msg-content>div {
+	line-height: 20px;
 }

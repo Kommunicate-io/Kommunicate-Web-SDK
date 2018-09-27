@@ -735,3 +735,18 @@ ul#km-group-search-list li {
     outline: none;
     border: none;
   }
+
+.km-unread-msg {
+    /* background-color: rgb(255, 255, 0) !important; */
+}
+.km-container .left .people .person.km-unread-msg .name, .km-container .left .people .person.km-unread-msg .preview {
+    color: #000000;
+    font-weight: 500;
+}
+.km-container .left .people .person.km-unread-msg .time {
+    color: #000000;
+}
+
+#km-contact-list.km-allconversation .km-unread-count-box {
+    display: none;
+}
