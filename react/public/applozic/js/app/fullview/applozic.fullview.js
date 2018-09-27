@@ -1393,9 +1393,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$("." + conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
 					$("." + conversationTabViewMap[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
 					$("." + conversationTabViewMap[tabId] + " li:first-child").trigger("click");
-					if(tabId == "km-conversation") {
-						$kmApplozic(".km-allconversation .km-unread-count-box.unreadcount").addClass("n-vis").removeClass("vis");
-					}
 
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function (e) {
