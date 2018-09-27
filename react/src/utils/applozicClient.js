@@ -14,7 +14,7 @@ const ApplozicClient ={
                 return null;
             }else{
                 console.log("error",response);
-                throw new Error("error while fetching user deatil by email");
+                throw new Error("error while fetching user detail by email");
             }
         })
 
