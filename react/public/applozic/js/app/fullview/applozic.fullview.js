@@ -5238,11 +5238,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
 				var emoji_template = "", senderName;
-				// var senderName = (typeof message.fromUserName !== "undefined") ? message.fromUserName : _this.getContactDisplayName(message.senderName);
-				// var senderName = _this.getContactDisplayName(message.senderName);
 				if(contact.users[message.senderName].role !== 3) {
-					senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
-					senderName = senderName.split(" ")[0] + ": ";
+					if(contact.users[message.senderName].userId == MCK_USER_ID) {
+						senderName = "You: ";
+					} else {
+						senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
+						senderName = senderName.split(" ")[0] + ": ";
+					}
 				} else {
 					senderName = "";
 				}
