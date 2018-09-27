@@ -288,6 +288,10 @@ hideFaq:function(){
     $applozic('.km-faqdiv').removeClass("vis").addClass("n-vis");
     $applozic("#mck-msg-new").attr("disabled", false);
 },
+hideMessagePreview: function(){
+    $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis');
+    $applozic("#mck-msg-preview-visual-indicator .mck-msg-preview-visual-indicator-text").html('');
+},
 
 showChat :function () {
 
