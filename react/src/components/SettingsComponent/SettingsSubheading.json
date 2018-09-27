@@ -9,7 +9,8 @@
         "Billing":"empty",
         "Install":"Follow the steps below to install Kommunicate Chat in your product.",
         "Push Notifications":"Enabling push notification allows Kommunicate to send notifications even when your mobile app is not in the foreground.",
-        "Profile":"empty"
+        "Profile":"empty",
+        "Chat Widget":"Stylize the chat widget according to your brand colors"
 
 }
 
