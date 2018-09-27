@@ -1204,7 +1204,7 @@ ol, ul {
 
 .km-box-body .km-message-inner {
 	position: absolute;
-	background-color: #F0F0F0;
+	background-color: #ffffff;
 	display: table-row;
 	top: 0;
 	right: 0;
@@ -2280,7 +2280,7 @@ ol, ul {
 
 .km-unread-count-box {
 	width: 22px !important;
-	height: 22px;
+	height: 19px;
 	background-color: red;
 	border-radius: 110px;
 }
@@ -3239,7 +3239,7 @@ ol, ul {
 		float: left;
 	}
 	.km-contact-list .blk-lg-3 {
-		width: 50px;
+		width: 45px;
 	}
 	.km-contact-list .blk-lg-8 {
 		width: 155px;
@@ -3287,7 +3287,7 @@ ol, ul {
 		width: 120px;
 	}
 	.km-contact-list .blk-lg-9 {
-		width: 200px;
+		width: 223px;
 	}
 	.km-group-member-list .blk-lg-9 {
 		width: 190px
@@ -3629,4 +3629,12 @@ ol, ul {
     margin-bottom: -5px;
     background-color: #fff;
     border-radius: 5px 5px 0px 0px;
+}
+
+#km-contact-cell .km-alpha-contact-image, #km-contact-cell .km-alpha-contact-image .km-contact-icon {
+	width: 35px;
+	height: 35px;
+	line-height: 36px;
+	font-weight: 500;
+	font-size: 20px;
 }

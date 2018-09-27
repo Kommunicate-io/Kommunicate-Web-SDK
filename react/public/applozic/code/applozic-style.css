@@ -222,7 +222,7 @@ body {
 .km-container .left .people .person {
 	position: relative;
 	width: 100%;
-	padding: 12px 15px;
+	padding: 20px 10px;
 	cursor: pointer;
 	background-color: #fff;
 	border-bottom: 1px solid #F3F3F3 !important;
@@ -240,65 +240,74 @@ body {
 	line-height: 40px;
 }
 
+
 .km-container .left .people .person img {
 	float: left;
-	width: 43px;
-	height: 43px;
+	width: 35px;
+	height: 35px;
 	margin-right: 12px;
 	border-radius: 50%;
+}
+
+.km-container .left .people .person .km-row {
+	display: flex;
+	align-items: center;
 }
 
 .km-container .left .people .person .name {
 	font-size: 14px;
 	line-height: 22px;
-	color: #1a1a1a;
-	font-family: 'Source Sans Pro', sans-serif;
-	font-weight: 600;
+	color: #7d7a7a;
+	font-weight: 400;
 	text-overflow: ellipsis;
 	display: inline-block;
 	white-space: nowrap;
 	overflow: hidden;
-	width: 55%;
+	width: 80%;
 }
 
 .km-container .left .people .person .time {
-	font-size: 14px;
-	line-height:22px;
-	position: absolute;
-	right: 5%;
-	padding-left: 5px;
-	color: #999;
+	/* padding-left: 5px; */
+	font-size: 11px;
+	font-weight: normal;
+	font-style: normal;
+	font-stretch: normal;
+	line-height: normal;
+	letter-spacing: 0.2px;
+	color: #989595;
 }
 
 .km-container .left .people .person .preview {
 	font-size: 14px;
-	line-height: 1.2;
-	height: 20px;
+	font-weight: 400;
+	line-height: 1.36;
+	letter-spacing: 0.4px;
+	color: #848487;
 	display: inline-block;
 	overflow: hidden !important;
-	width: 65%;
+	width: 100%;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	color: #999;
-	display: inline-block;
 }
 
 .km-container .left .people .person .unreadcount {
-	font-size: 14px;
-	position: absolute;
-	float: right;
-	right: 5%;
 	color: #999;
-	/* background-color: #fff; */
+	width: auto !important;
+	max-width: 100%;
+    text-align: center;
 }
 
 .unreadcount .text {
-	margin-top: 1px;
+	padding: 0px 6.88px;
+    font-size: 11px;
+	font-weight: 500;
+	min-width: 20px;
+	line-height: 19px;
 }
 
 .km-container .left .people .person.active, .km-container .left .people .person:hover
 	{
-	padding: 12px 15px;
+	padding: 20px 10px;
 	border: 0;
 	background-color: #eceff1;
 	border-bottom: 1px solid #F3F3F3 !important;
