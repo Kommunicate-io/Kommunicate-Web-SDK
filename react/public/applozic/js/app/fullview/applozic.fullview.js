@@ -80,6 +80,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			'last.seen': 'Last seen',
 			'last.seen.on': 'Last seen on',
 			'ago': 'ago',
+			'you': 'You',
 			'group.metadata': {
 				'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
 				'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
@@ -5240,7 +5241,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var emoji_template = "", senderName;
 				if(contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
-						senderName = "You: ";
+						senderName = KM_LABELS['you'] + ": ";
 					} else {
 						senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
 						senderName = senderName.split(" ")[0] + ": ";
