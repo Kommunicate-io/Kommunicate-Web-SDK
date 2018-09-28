@@ -832,3 +832,21 @@
     margin: 6px 0px 0px;
     border: none;
 }
+
+.info-detail-container p {
+    font-size: 15px;
+    line-height: 1.43;
+    letter-spacing: 0.4px;
+    color: #505152;
+    margin-bottom: 0px;
+}
+.info-detail-container p:last-child {
+    margin-bottom: 30px;
+}
+.info-detail-container p>strong {
+    font-weight: 500;
+    color: #000;
+}  
+.info-detail-container p>strong>span {
+    text-transform: uppercase;
+}  
