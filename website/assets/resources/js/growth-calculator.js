@@ -162,23 +162,23 @@ generateMonths();
 
 
 function calculateMrr() {
-    var weekInMonths, growthPercent, mrrChart = [];
+    var weekInMonths, growthPercent, mrrChart = [],timeInYears=projectionTimeValue;
     growthPercent = (growthRateValue / 100).toFixed(2);
-    !rateSwitcher.checked ? (weekInMonths = 4.34, projectionTimeValue != 1 ? growthTimeText = "" : growthTimeText = "") : (weekInMonths = 1, projectionTimeValue !== 1 ? growthTimeText = "" : growthTimeText = "");
+    !rateSwitcher.checked ? (weekInMonths = 4.34) : (weekInMonths = 1);
     for (let i = 1; i <= projectionTimeValue; i++) {
         finalMrr = Math.floor((currentMrrValue * Math.pow((1 + parseFloat(growthPercent)), (weekInMonths * (i)))));
         mrrChart.push(finalMrr);
     }
-    projectionTimeValue > 12 ? (finalMrr *= projectionTimeValue, projectionTimeValue = getWords(projectionTimeValue , revenueTime.innerHTML = "yearly"), growthTimeText = "") :( projectionTimeValue>1 ? growthTimeText="months" : growthTimeText = "month", revenueTime.innerHTML = "monthly");
+    projectionTimeValue > 12 ? (finalMrr *= projectionTimeValue, timeInYears = getWords(projectionTimeValue), revenueTime.innerHTML = "yearly", growthTimeText = "") : (growthTimeText = "months", revenueTime.innerHTML = "monthly");
     growthMrrTwitter.innerHTML = "$" + FormatLongNumber(finalMrr);
-    growthMonthsTwitter.innerHTML = projectionTimeValue + " " + growthTimeText;
-    window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue + "-" + monthlyExpenseValue + "-" + projectionTimeValue + "-" + growthTimeText);
+    growthMonthsTwitter.innerHTML = timeInYears + " " + growthTimeText;
+    window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue  + "-" + projectionTimeValue);
     myChart.data.datasets[0].data = mrrChart;
     myChart.update();
 }
 
 function switchRate() {
-    !rateSwitcher.checked == true ? (rateMonthly.style.color = "#c6c6c8", rateWeekly.style.color = "#000") : (rateWeekly.style.color = "#c6c6c8", rateMonthly.style.color = "#000");
+    // !rateSwitcher.checked == true ? (rateMonthly.style.color = "#c6c6c8", rateWeekly.style.color = "#000") : (rateWeekly.style.color = "#c6c6c8", rateMonthly.style.color = "#000");
     projectionTimeValue > 12 ? (growthTimeText = "") : null;
     calculateMrr();
 }
@@ -224,9 +224,11 @@ function getWords(monthCount) {
             one: '.',
             other: '.'
         },
-        m = monthCount % 12,
+        m = monthCount % 12;
         y = Math.floor(monthCount / 12),
         result = [];
+        m == 0 ? years.other = "years": null;
+        console.log(years.other);
 
     y && result.push(y + '' + getPlural(y, years));
     m && result.push(m + '' + getPlural(m, months));
