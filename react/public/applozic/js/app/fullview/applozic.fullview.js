@@ -5239,12 +5239,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
 				var emoji_template = "", senderName;
-				if(contact.users[message.senderName].role !== 3) {
+				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
 						senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
-						senderName = senderName.split(" ")[0] + ": ";
+						(senderName) ? senderName = senderName.split(" ")[0] + ": " : "";
 					}
 				} else {
 					senderName = "";
