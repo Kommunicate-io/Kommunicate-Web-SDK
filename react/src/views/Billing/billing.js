@@ -58,7 +58,9 @@ class Billing extends Component {
             boughtQuantity: 0,
             totalPlanQuantity: 0,
             nextBillingDate: 0,
-            disableSelectedPlanButton: false
+            disableSelectedPlanButton: false,
+            infoModalIsOpen: false,
+            clickedPlan:  'startup'
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -75,6 +77,8 @@ class Billing extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.getPlanDetails = this.getPlanDetails.bind(this);
         this.keyPress = this.keyPress.bind(this);
+        this.openInfoModal = this.openInfoModal.bind(this);
+        this.closeInfoModal = this.closeInfoModal.bind(this);
 
         window.addEventListener("openBillingModal",this.onOpenModal,true);
     };
@@ -165,15 +169,16 @@ class Billing extends Component {
             if (subscribeElems[i].getAttribute('data-subscription') == that.state.subscription) {
                     subscribeElems[i].value = "Current Plan";
             }
-            if(that.state.subscription.indexOf('per_agent') > -1 && subscribeElems[i].getAttribute('data-subscription') == "startup") {
-                subscribeElems[i].disabled = true;
-            }
+            // if(that.state.subscription.indexOf('per_agent') > -1 && subscribeElems[i].getAttribute('data-subscription') == "startup") {
+            //     subscribeElems[i].disabled = true;
+            // }
             if(that.state.subscription != "startup" && currentPlanElems[i].getAttribute('data-choose-plan') && currentPlanElems[i].getAttribute('data-choose-plan').indexOf('per_agent') > -1) {
                 currentPlanElems[i].textContent = "Current Plan";
                 currentPlanElems[i].disabled = true;           
                 currentPlanElems[i].setAttribute("data-plan","growth");     
-            } 
+            }
         }
+
     }
 
     showHideFeatures(e) {
@@ -412,6 +417,18 @@ class Billing extends Component {
             e.preventDefault();
     }
 
+    openInfoModal(e) {
+        this.setState({
+            clickedPlan: e.target.getAttribute("data-cb-plan-id"),
+            infoModalIsOpen: true,
+        })
+    }
+    closeInfoModal() {
+        this.setState({
+            infoModalIsOpen: false
+        })
+    }
+
     getAgents() {
         var that = this;
         let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN];
@@ -486,7 +503,7 @@ class Billing extends Component {
                     currentPlanElems[i].disabled = false;
                 } else {
                     currentPlanElems[i].textContent = "Current Plan";
-                    currentPlanElems[i].disabled = true;
+                    // currentPlanElems[i].disabled = true;
                 }
                 
             }
@@ -586,81 +603,10 @@ class Billing extends Component {
                                 </div>) : ""
                                 }
 
-
-                                {/* <div className="subscribe-success-error-container text-center" hidden={this.state.hideSubscribedSuccess}>
-                                    <div className="subscribe-success_img-container">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56">
-                                            <g fill="#2DD35C">
-                                                <path d="M16.7125 23.275l-2.5375 2.3625 11.9 12.775 27.9125-28-2.45-2.45L26.075 33.425z" />
-                                                <path d="M.525 28C.525 43.225 12.8625 55.475 28 55.475c15.1375 0 27.475-12.25 27.475-27.475h-3.5c0 13.2125-10.7625 23.975-23.975 23.975C14.7875 51.975 4.025 41.2125 4.025 28 4.025 14.7875 14.7875 4.025 28 4.025v-3.5C12.8625.525.525 12.8625.525 28z" />
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    <h3 className="subscribe-success-error-text">You have been successfully subscribed</h3>
-                                    <button className="close-modal-btn" onClick={this.onCloseSubscribedSuccess}>
-                                        CLOSE
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24">
-                                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                                            <path d="M0 0h24v24H0z" fill="none" />
-                                        </svg>
-                                    </button>
-                                </div> */}
-
                                 <h2 className="plan-agent-details upgrade-text">
                                 Upgrade to scale your customer support
                                 </h2>
 
-                                <div className="current-plan-container flexi" hidden>                              
-                                    <div className="col-md-6">
-                                    {(CommonUtils.isTrialPlan()) ? <p className="current-plan-details-text">{this.state.currentPlanDetailsText}</p> : <p className="current-plan-details-text">Current plan details</p>
-                                        
-                                    }
-                                    </div>
-                                    <div className="col-md-6 text-right">
-
-                                        {this.state.subscription == 'startup' && this.state.trialLeft > 0 && this.state.trialLeft <= 31 && !this.state.showPlanSelection?
-                                            (
-                                            <button id="buy-plan-btn" className="km-button km-button--primary buy-plan-btn" onClick={this.buyThisPlanClick}>Buy this plan</button>
-                                            )
-                                            :
-                                            null
-                                        }
-                                        {!this.state.showPlanSelection ?
-                                            (<button id="change-plan-btn" className="km-button km-button--secondary change-plan-btn" onClick={this.onOpenModal}>Change plan</button>)
-                                            :
-                                            null
-                                        }
-
-                                        {/* Next and Cancel Buttons */}
-                                        {this.state.showPlanSelection ?
-                                        (
-                                            <div>
-                                                <button hidden={!this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly">
-                                                    Next
-                                                </button>
-                                                <button hidden={this.state.yearlyChecked} className="next-step-btn n-vis checkout chargebee km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly">
-                                                    Next
-                                                </button>
-                                                <button id="cancel-step-btn" className="km-button km-button--secondary cancel-step-btn " onClick={() => {this.buyThisPlanClick(); this.cancelThisPlan()}}>Cancel</button>
-                                            </div>
-                                        ) : null
-                                        }
-
-                                    </div>
-                                    {this.state.showPlanSelection ?
-                                        (
-                                        <div className="radio-btn-container">
-                                            <form>
-                                                <RadioButton idRadioButton={'billed-yearly-radio'} handleOnChange={this.selectYearly} checked={this.state.yearlyChecked} label={billedYearly} />
-                                                <RadioButton idRadioButton={'billed-monthly-radio'} handleOnChange={this.selectMonthly} checked={!this.state.yearlyChecked} label={billedMonthly} />
-                                            </form>
-                                        </div>
-                                        ) : null
-                                    }
-                                </div>
-
-                                {/* Plan Name should be either of these : Startup, Launch, Growth, Enterprise */}
-                                {/* <PlanDetails PlanIcon={this.state.currentPlan.icon} PlanName={this.state.currentPlan.name} PlanMAU={this.state.currentPlan.mau} PlanAmount={this.state.currentPlan.amount} /> */}
 
                                 <div className="manage-accountr">
                                     <a id="portal" className="n-vis" href="javascript:void(0)" data-cb-type="portal">Manage account</a>
@@ -709,6 +655,17 @@ class Billing extends Component {
                                 <CloseButton onClick={this.closeSeatSelectionModal}/>
                             </Modal>
 
+                            <Modal isOpen={this.state.infoModalIsOpen} onRequestClose={this.closeInfoModal} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
+
+                                <div className="info-detail-container">
+                                    <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
+                                    <br/>
+                                    <p>If you want to downgrade your plan to the <strong><span>{SUBSCRIPTION_PLANS[this.state.clickedPlan].name}</span></strong> plan, just leave us a mail <br/> at support@kommunicate.io or start a conversation from the chat widget, and <br/> we will get back to you.</p>
+                                </div>
+
+                                <CloseButton onClick={this.closeInfoModal}/>
+                            </Modal>
+
                                 <div className="row text-center" style={{padding:"13px 13px 13px 0px",margin:"0px"}}>
 
                                     {/* <!-- Pricing Toggle --> */}
@@ -745,8 +702,10 @@ class Billing extends Component {
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     
-                                                    {
-                                                        <button className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup">
+                                                    { (this.state.subscription !== "startup") ?
+                                                         <button className=" chargebee km-button km-button--secondary" data-cb-plan-id="startup" onClick={this.openInfoModal}>
+                                                            Choose Plan
+                                                        </button> : <button className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup">
                                                             Choose Plan
                                                         </button>
                                                     }
@@ -796,12 +755,24 @@ class Billing extends Component {
                                                     <p className="plan-agent-details n-vis">Unlimited agents</p>
                                                 </div>
                                                 <div className="pricing-table-body">
+                                                {
+                                                    (this.state.subscription.includes("enterprise")) ? <div>
+                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" onClick={this.openInfoModal}>
+                                                            Choose Plan
+                                                        </button>
+                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" onClick={this.openInfoModal}>
+                                                            Choose Plan
+                                                        </button>
+                                                    </div>
+                                                     : <div>
                                                     <button hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_monthly">
                                                         Choose Plan
                                                      </button>
-                                                    <button hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_yearly">
+                                                    <button hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_yearly" data-current-plan={this.state.subscription}>
                                                         Choose Plan
-                                                    </button>
+                                                    </button> </div>
+                                                    
+                                                }
                                                 </div>
                                                 <div className="pricing-table-footer">
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -856,9 +827,9 @@ class Billing extends Component {
                                                 <div className="pricing-table-body">
                                                     {
                                                         (this.state.subscription.indexOf('enterprise') != -1) ? 
-                                                        <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly">Current Plan</button>
+                                                        <button hidden={this.state.pricingMonthlyHidden} className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="enterprise_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise_monthly" data-current-plan={this.state.subscription}>Current Plan</button>
                                                         : 
-                                                        <button className="km-button km-button--secondary" onClick={()=> window.open("https://calendly.com/kommunicate/15min", "_blank")}>Contact Us</button>
+                                                        <button className="km-button km-button--secondary" onClick={()=> window.open("https://calendly.com/kommunicate/15min", "_blank")} data-current-plan={this.state.subscription}>Contact Us</button>
                                                     }
                                                 </div>
                                                 <div className="pricing-table-footer">
@@ -922,12 +893,14 @@ class Billing extends Component {
 
 const SUBSCRIPTION_PLANS = {
     'startup': {
+        'index': '1',
         'icon': StartupPlanIcon,
         'name': 'Free',
         'mau': 'Unlimited',
         'amount': '0'
     },
     'launch_monthly': {
+        'index': '2',
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
@@ -935,6 +908,7 @@ const SUBSCRIPTION_PLANS = {
         'term': 'monthly'
     },
     'launch_yearly': {
+        'index': '3',
         'icon': LaunchPlanIcon,
         'name': 'Launch',
         'mau': 'Unlimited',
@@ -942,6 +916,7 @@ const SUBSCRIPTION_PLANS = {
         'term': 'Yearly'
     },
     'growth_monthly': {
+        'index': '4',
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
@@ -949,6 +924,7 @@ const SUBSCRIPTION_PLANS = {
         'term': 'Monthly'
     },
     'growth_yearly': {
+        'index': '5',
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
@@ -956,6 +932,7 @@ const SUBSCRIPTION_PLANS = {
         'term': 'Yearly'
     },
      'early_bird_monthly': {
+        'index': '6',
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
@@ -963,27 +940,15 @@ const SUBSCRIPTION_PLANS = {
         'term': 'Monthly'
     },
     'early_bird_yearly': {
+        'index': '7',
         'icon': EarlyBirdPlanIcon,
         'name': 'Early Bird',
         'mau': 'Unlimited',
         'amount': '39',
         'term': 'Yearly'
     },
-    'enterprise_monthly': {
-        'icon': EnterprisePlanIcon,
-        'name': 'Enterprise',
-        'mau': 'Unlimited',
-        'amount': 'Custom',
-        'term': 'Monthly'
-    },
-    'enterprise_yearly': {
-        'icon': EnterprisePlanIcon,
-        'name': 'Enterprise',
-        'mau': 'Unlimited',
-        'amount': 'Custom',
-        'term': 'Yearly'
-    },
     'per_agent_monthly': {
+        'index': '8',
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
@@ -991,10 +956,27 @@ const SUBSCRIPTION_PLANS = {
         'term': 'Monthly'
     },
     'per_agent_yearly': {
+        'index': '9',
         'icon': GrowthPlanIcon,
         'name': 'Growth',
         'mau': 'Unlimited',
         'amount': '8',
+        'term': 'Yearly'
+    },
+    'enterprise_monthly': {
+        'index': '10',
+        'icon': EnterprisePlanIcon,
+        'name': 'Enterprise',
+        'mau': 'Unlimited',
+        'amount': 'Custom',
+        'term': 'Monthly'
+    },
+    'enterprise_yearly': {
+        'index': '11',
+        'icon': EnterprisePlanIcon,
+        'name': 'Enterprise',
+        'mau': 'Unlimited',
+        'amount': 'Custom',
         'term': 'Yearly'
     }
 };
