@@ -9,6 +9,7 @@ var rateSwitcher = document.getElementById("rate-switcher"),
     growthMrrTwitter = document.getElementById("final-mrr"),
     shareButton = document.getElementById("share-button"),
     shareTool = document.getElementById("share-tool"),
+    revenueTime = document.getElementById("revenueTime"),
     currentMrrValue, growthRateValue, projectionTimeValue, monthlyExpenseValue, finalMrr, growthTimeText, myChart, ctx
 monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     date = new Date(),
@@ -62,54 +63,54 @@ myChart = new Chart(ctx, {
 });
 
 currMrr.addEventListener("keyup", function () {
-    if(this.value == ""){
+    if (this.value == "") {
         currentMrrValue = 1;
-    }else if(this.value  >9000000 ){
+    } else if (this.value > 9000000) {
         this.value = 9000000;
         currentMrrValue = 9000000;
-    }else{
-        currentMrrValue = this.value; 
+    } else {
+        currentMrrValue = this.value;
     }
     calculateMrr();
 });
 growthRate.addEventListener("keyup", function () {
-    if(this.value == ""){
+    if (this.value == "") {
         growthRateValue = 1;
-    }else if(this.value  >1000 ){
+    } else if (this.value > 1000) {
         this.value = 1000;
         growthRateValue = 1000;
-    }else{
-        growthRateValue = this.value; 
+    } else {
+        growthRateValue = this.value;
     }
     calculateMrr();
 });
-monthlyExpense.addEventListener("keyup", function () {
-    if(this.value == ""){
-        monthlyExpenseValue = 1;
-    }else if(this.value  >9000000 ){
-        this.value = 9000000;
-        monthlyExpenseValue = 9000000;
-    }else{
-        monthlyExpenseValue = this.value; 
-    }
-    calculateMrr();
-    
-});
+// monthlyExpense.addEventListener("keyup", function () {
+//     if(this.value == ""){
+//         monthlyExpenseValue = 1;
+//     }else if(this.value  >9000000 ){
+//         this.value = 9000000;
+//         monthlyExpenseValue = 9000000;
+//     }else{
+//         monthlyExpenseValue = this.value; 
+//     }
+//     calculateMrr();
+
+// });
 projectionTime.addEventListener("keyup", function () {
-    if(this.value == ""){
+    if (this.value == "") {
         projectionTimeValue = 1;
-    }else if(this.value  >99 ){
+    } else if (this.value > 99) {
         this.value = 99;
         projectionTimeValue = 99;
-    }else{
-        projectionTimeValue = this.value; 
+    } else {
+        projectionTimeValue = this.value;
         growthTimeText = "months";
         growthMonthsTwitter.innerHTML = projectionTimeValue + " " + growthTimeText;
         generateMonths();
     }
     calculateMrr();
 
-   
+
 });
 
 function generateMonths() {
@@ -138,7 +139,7 @@ function populateFields() {
         currentMrrValue = parseFloat(customValues[0]);
         growthRate.value = parseFloat(customValues[1]);
         growthRateValue = parseFloat(customValues[1]);
-        monthlyExpense.value = parseFloat(customValues[2]);
+        // monthlyExpense.value = parseFloat(customValues[2]);
         monthlyExpenseValue = parseFloat(customValues[2]);
         projectionTime.value = parseFloat(customValues[3]);
         projectionTimeValue = parseFloat(customValues[3]); {
@@ -149,8 +150,8 @@ function populateFields() {
         currentMrrValue = 10000;
         growthRate.value = 10;
         growthRateValue = 10;
-        monthlyExpense.value = 5000;
-        monthlyExpenseValue = 5000;
+        // monthlyExpense.value = 5000;
+        // monthlyExpenseValue = 5000;
         projectionTime.value = 12;
         projectionTimeValue = 12;
     }
@@ -163,12 +164,13 @@ generateMonths();
 function calculateMrr() {
     var weekInMonths, growthPercent, mrrChart = [];
     growthPercent = (growthRateValue / 100).toFixed(2);
-    !rateSwitcher.checked ? (weekInMonths = 4.34, projectionTimeValue !== 1 ? growthTimeText = "months" : growthTimeText = "month") : (weekInMonths = 1, projectionTimeValue !== 1 ? growthTimeText = "months" : growthTimeText = "month");
+    !rateSwitcher.checked ? (weekInMonths = 4.34, projectionTimeValue != 1 ? growthTimeText = "" : growthTimeText = "") : (weekInMonths = 1, projectionTimeValue !== 1 ? growthTimeText = "" : growthTimeText = "");
     for (let i = 1; i <= projectionTimeValue; i++) {
-        finalMrr = Math.floor((currentMrrValue * Math.pow((1 + parseFloat(growthPercent)), (weekInMonths * (i)))) - monthlyExpenseValue);
+        finalMrr = Math.floor((currentMrrValue * Math.pow((1 + parseFloat(growthPercent)), (weekInMonths * (i)))));
         mrrChart.push(finalMrr);
     }
-    growthMrrTwitter.innerHTML = "$ " + FormatLongNumber(finalMrr);
+    projectionTimeValue > 12 ? (finalMrr *= projectionTimeValue, projectionTimeValue = getWords(projectionTimeValue , revenueTime.innerHTML = "yearly"), growthTimeText = "") :( projectionTimeValue>1 ? growthTimeText="months" : growthTimeText = "month", revenueTime.innerHTML = "monthly");
+    growthMrrTwitter.innerHTML = "$" + FormatLongNumber(finalMrr);
     growthMonthsTwitter.innerHTML = projectionTimeValue + " " + growthTimeText;
     window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue + "-" + monthlyExpenseValue + "-" + projectionTimeValue + "-" + growthTimeText);
     myChart.data.datasets[0].data = mrrChart;
@@ -177,6 +179,7 @@ function calculateMrr() {
 
 function switchRate() {
     !rateSwitcher.checked == true ? (rateMonthly.style.color = "#c6c6c8", rateWeekly.style.color = "#000") : (rateWeekly.style.color = "#c6c6c8", rateMonthly.style.color = "#000");
+    projectionTimeValue > 12 ? (growthTimeText = "") : null;
     calculateMrr();
 }
 
@@ -189,7 +192,7 @@ function round(n, precision) {
 
 function FormatLongNumber(n) {
     var base = floor(log(abs(n)) / log(1000));
-    var suffix = 'kmb' [base - 1];
+    var suffix = 'KMB' [base - 1];
     return suffix ? round(n / pow(1000, base), 2) + suffix : '' + n;
 }
 
@@ -200,13 +203,35 @@ function FormatLongNumber(n) {
 //     window.open(url, '_blank');
 
 //} );  
-shareTool.addEventListener('click', function shareRevenue(event){
+shareTool.addEventListener('click', function shareRevenue(event) {
     event.preventDefault();
     var shareText = "This super cool Growth Calculator from @kommunicateio helped me project my company’s growth easily. Give it a go, now! www.kommunicate.io/resources/growth-calculator";
-    var url = "https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText);
+    var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText);
     window.open(url, '_blank');
 
-}  ); 
+});
+
+function getWords(monthCount) {
+    function getPlural(number, word) {
+        return number === 1 && word.one || word.other;
+    }
+
+    var months = {
+            one: ' year',
+            other: ' years'
+        },
+        years = {
+            one: '.',
+            other: '.'
+        },
+        m = monthCount % 12,
+        y = Math.floor(monthCount / 12),
+        result = [];
+
+    y && result.push(y + '' + getPlural(y, years));
+    m && result.push(m + '' + getPlural(m, months));
+    return result.join('');
+}
 
 
 

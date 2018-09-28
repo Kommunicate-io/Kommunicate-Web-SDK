@@ -75,12 +75,15 @@
         text-align: center;
         letter-spacing: 0.4px;
 
-        & span {
+        & .highlighted {
             font-weight: 700;
             color: #44d76e;
         }
         &-primary{
             padding:  0 97px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             @media (max-width:1000px) {
                 padding: 0;
             }
@@ -155,7 +158,7 @@
     }
 
     &_field {
-        padding: 15px 4px;
+        padding: 18px 4px;
 
         &-name {
             display: inline-block;
