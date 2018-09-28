@@ -169,16 +169,16 @@ function calculateMrr() {
         finalMrr = Math.floor((currentMrrValue * Math.pow((1 + parseFloat(growthPercent)), (weekInMonths * (i)))));
         mrrChart.push(finalMrr);
     }
-    projectionTimeValue > 12 ? (finalMrr *= projectionTimeValue, timeInYears = getWords(projectionTimeValue), revenueTime.innerHTML = "yearly", growthTimeText = "") : (growthTimeText = "months", revenueTime.innerHTML = "monthly");
+    projectionTimeValue > 11 ? (finalMrr *= projectionTimeValue, timeInYears = getWords(projectionTimeValue), revenueTime.innerHTML = "yearly", growthTimeText = "") : (projectionTimeValue == 1 ?growthTimeText = " month":growthTimeText = " months", revenueTime.innerHTML = "monthly");
     growthMrrTwitter.innerHTML = "$" + FormatLongNumber(finalMrr);
-    growthMonthsTwitter.innerHTML = timeInYears + " " + growthTimeText;
+    growthMonthsTwitter.innerHTML = timeInYears +  growthTimeText;
     window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue  + "-" + projectionTimeValue);
     myChart.data.datasets[0].data = mrrChart;
     myChart.update();
 }
 
 function switchRate() {
-    // !rateSwitcher.checked == true ? (rateMonthly.style.color = "#c6c6c8", rateWeekly.style.color = "#000") : (rateWeekly.style.color = "#c6c6c8", rateMonthly.style.color = "#000");
+    !rateSwitcher.checked == true ? (rateMonthly.style.color = "#c6c6c8", rateWeekly.style.color = "#000") : (rateWeekly.style.color = "#c6c6c8", rateMonthly.style.color = "#000");
     projectionTimeValue > 12 ? (growthTimeText = "") : null;
     calculateMrr();
 }
@@ -217,18 +217,18 @@ function getWords(monthCount) {
     }
 
     var months = {
-            one: ' year',
+            one: ' years',
             other: ' years'
         },
         years = {
-            one: '.',
+            one: ' year',
             other: '.'
         },
         m = monthCount % 12;
         y = Math.floor(monthCount / 12),
         result = [];
-        m == 0 ? years.other = "years": null;
-        console.log(years.other);
+        projectionTimeValue > 12 ? years.one = "." : "";
+        m == 0 ? years.other = " years": "";
 
     y && result.push(y + '' + getPlural(y, years));
     m && result.push(m + '' + getPlural(m, months));
