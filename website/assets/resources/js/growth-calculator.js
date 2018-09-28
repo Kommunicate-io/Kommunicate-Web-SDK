@@ -62,23 +62,54 @@ myChart = new Chart(ctx, {
 });
 
 currMrr.addEventListener("keyup", function () {
-    this.value == "" || this.value >9000000 ? (currentMrrValue = 1,this.value=1) : currentMrrValue = parseInt(this.value);
+    if(this.value == ""){
+        currentMrrValue = 1;
+    }else if(this.value  >9000000 ){
+        this.value = 9000000;
+        currentMrrValue = 9000000;
+    }else{
+        currentMrrValue = this.value; 
+    }
     calculateMrr();
 });
 growthRate.addEventListener("keyup", function () {
-    this.value == "" || this.value >1000 ? (growthRateValue = 1,this.value=1) : growthRateValue = parseInt(this.value);
+    if(this.value == ""){
+        growthRateValue = 1;
+    }else if(this.value  >1000 ){
+        this.value = 1000;
+        growthRateValue = 1000;
+    }else{
+        growthRateValue = this.value; 
+    }
     calculateMrr();
 });
 monthlyExpense.addEventListener("keyup", function () {
-    this.value == "" || this.value >9000000 ?(monthlyExpenseValue = 1,this.value=1) : monthlyExpenseValue = parseInt(this.value);
+    if(this.value == ""){
+        monthlyExpenseValue = 1;
+    }else if(this.value  >9000000 ){
+        this.value = 9000000;
+        monthlyExpenseValue = 9000000;
+    }else{
+        monthlyExpenseValue = this.value; 
+    }
     calculateMrr();
+    
 });
 projectionTime.addEventListener("keyup", function () {
-    this.value == "" || this.value >99 ? (projectionTimeValue = 1,this.value=1) : projectionTimeValue = parseInt(this.value);
-    !rateSwitcher.checked ? (growthTimeText = "months") : (growthTimeText = "months");
-    growthMonthsTwitter.innerHTML = projectionTimeValue + " " + growthTimeText;
-    generateMonths();
+    if(this.value == ""){
+        projectionTimeValue = 1;
+    }else if(this.value  >99 ){
+        this.value = 99;
+        projectionTimeValue = 99;
+    }else{
+        projectionTimeValue = this.value; 
+        growthTimeText = "months";
+        growthMonthsTwitter.innerHTML = projectionTimeValue + " " + growthTimeText;
+        generateMonths();
+    }
     calculateMrr();
+
+   
 });
 
 function generateMonths() {
