@@ -37,7 +37,8 @@ body {
     background: $color-white;
     margin: 0 auto;
     overflow-x: hidden;
-
+    -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .container{
