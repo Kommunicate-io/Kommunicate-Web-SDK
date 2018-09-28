@@ -27,7 +27,9 @@ body {
   box-sizing: border-box;
   background: #fff;
   margin: 0 auto;
-  overflow-x: hidden; }
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
 
 .container {
   display: block;
