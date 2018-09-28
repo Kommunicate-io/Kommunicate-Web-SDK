@@ -407,11 +407,17 @@ Kommunicate.richMsgEventHandler = {
     processClickOnDialogButton:function(e){
         var target = e.currentTarget;
         var reply = target.dataset.reply;
+        var metadata = {};
+        try{
+            metadata=  JSON.parse(target.dataset.metadata);
+        }catch(e){
+        }
+        
+        // default value for  metadata.skipBot is true for backward compatibility
+        metadata.skipBot = typeof metadata.skipBot != 'undefined'?metadata.skipBot:true;
         var messagePxy = {
             'message': reply, //message to send 
-            'metadata': {
-                skipBot:true
-            }
+            'metadata': metadata
         };
 
         Kommunicate.sendMessage(messagePxy);
