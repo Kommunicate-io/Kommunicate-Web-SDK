@@ -11,7 +11,9 @@
         margin-bottom: 3rem !important;
     }
 }
-
+.pb-big{
+    padding-bottom: 200px;
+}
 .u-mt-big {
     margin-top: 8rem !important;
     @include respond (tab-por) {
