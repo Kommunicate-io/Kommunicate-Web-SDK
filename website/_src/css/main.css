@@ -1316,6 +1316,9 @@ body {
       flex-direction: column;
       margin-bottom: 150px;
       width: 98%; } }
+  @media (max-width: 500px) and (max-width: 500px) {
+    .growth-twitter-box {
+      margin-bottom: 50px; } }
   @media (max-width: 1000px) {
     .growth-twitter-box div {
       margin: 20px 0; } }
@@ -1329,6 +1332,11 @@ body {
     .growth-twitter-box_text span {
       font-weight: 700;
       color: #44d76e; }
+    .growth-twitter-box_text-primary {
+      padding: 0 97px; }
+      @media (max-width: 1000px) {
+        .growth-twitter-box_text-primary {
+          padding: 0; } }
   .growth-twitter-box_button {
     border: solid 1px #efefef;
     border-radius: 4px;

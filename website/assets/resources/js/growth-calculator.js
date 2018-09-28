@@ -193,13 +193,13 @@ function FormatLongNumber(n) {
     return suffix ? round(n / pow(1000, base), 2) + suffix : '' + n;
 }
 
-shareButton.addEventListener('click', function shareRevenue(event){
-    event.preventDefault();
-    var shareText = "We’re going to reach $" + FormatLongNumber(finalMrr) + " in "+ projectionTimeValue +" months. Calculate your projections here: www.kommunicate.io/resources/growth-calculator @kommunicateio";
-    var url = "https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText);
-    window.open(url, '_blank');
+// shareButton.addEventListener('click', function shareRevenue(event){
+//     event.preventDefault();
+//     var shareText = "We’re going to reach $" + FormatLongNumber(finalMrr) + " in "+ projectionTimeValue +" months. Calculate your projections here: www.kommunicate.io/resources/growth-calculator @kommunicateio";
+//     var url = "https://twitter.com/intent/tweet?text="+encodeURIComponent(shareText);
+//     window.open(url, '_blank');
 
-} );  
+//} );  
 shareTool.addEventListener('click', function shareRevenue(event){
     event.preventDefault();
     var shareText = "This super cool Growth Calculator from @kommunicateio helped me project my company’s growth easily. Give it a go, now! www.kommunicate.io/resources/growth-calculator";
