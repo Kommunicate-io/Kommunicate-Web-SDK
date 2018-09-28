@@ -50,6 +50,10 @@
     @media (max-width:500px) {
       flex-direction: column;
       margin-bottom: 150px;
+      @media (max-width:500px) {
+        margin-bottom: 50px;
+      }
+
       width: 98%;
     }
     & div{
@@ -74,6 +78,14 @@
         & span {
             font-weight: 700;
             color: #44d76e;
+        }
+        &-primary{
+            padding:  0 97px;
+            @media (max-width:1000px) {
+                padding: 0;
+            }
+
+            
         }
     }
 
