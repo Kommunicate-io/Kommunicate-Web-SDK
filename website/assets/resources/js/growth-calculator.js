@@ -26,7 +26,7 @@ myChart = new Chart(ctx, {
     data: {
         labels: [],
         datasets: [{
-            label: 'Monthly MRR',
+            label: 'MRR',
             data: [100, 200],
             backgroundColor: [
                 'rgba(20, 25, 232, .2)',

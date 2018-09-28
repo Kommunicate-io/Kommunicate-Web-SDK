@@ -1328,8 +1328,7 @@ body {
     letter-spacing: 0.4px; }
     .growth-twitter-box_text span {
       font-weight: 700;
-      color: #000;
-      border-bottom: 4px solid #44d76e; }
+      color: #44d76e; }
   .growth-twitter-box_button {
     border: solid 1px #efefef;
     border-radius: 4px;
