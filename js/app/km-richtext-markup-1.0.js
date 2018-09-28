@@ -224,7 +224,7 @@ getListMarkup:function(){
              <div class="km-faq-answer--footer_button-text-container">
                  <p>{{buttonLabel}}</p>
                  {{#buttons}}
-                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}">{{name}}</button>
+                 <button class="km-faq-dialog-button km-quick-replies km-cta-button km-add-more-rooms" data-reply="{{name}}" data-metadata ="{{replyMetadata}}">{{name}}</button>
                 {{/buttons}}
              </div>
          </div>
@@ -369,6 +369,9 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
     if(metadata && metadata.payload){
         var json = JSON.parse(metadata.payload);
         
+        json.buttons.length>0 && json.buttons.forEach(element => {
+            element.replyMetadata  = typeof element.replyMetadata == 'object'? JSON.stringify(element.replyMetadata): element.replyMetadata;
+        });
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
      }
      return "";
