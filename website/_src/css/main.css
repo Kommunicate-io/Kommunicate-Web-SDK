@@ -1329,11 +1329,14 @@ body {
     font-size: 22px;
     text-align: center;
     letter-spacing: 0.4px; }
-    .growth-twitter-box_text span {
+    .growth-twitter-box_text .highlighted {
       font-weight: 700;
       color: #44d76e; }
     .growth-twitter-box_text-primary {
-      padding: 0 97px; }
+      padding: 0 97px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
       @media (max-width: 1000px) {
         .growth-twitter-box_text-primary {
           padding: 0; } }
@@ -1387,7 +1390,7 @@ body {
     font-size: 18px;
     margin-bottom: 40px; }
   .growth-mrr-calc-box_field {
-    padding: 15px 4px; }
+    padding: 18px 4px; }
     .growth-mrr-calc-box_field-name {
       display: inline-block;
       font-size: 16px;
