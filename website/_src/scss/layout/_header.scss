@@ -14,6 +14,8 @@
         }
         @include respond(tab-lan) {
             width: 85%;
+            line-height: 5.8rem;
+
         }
         @include respond(tab-por) {
             padding-top: 2rem;
