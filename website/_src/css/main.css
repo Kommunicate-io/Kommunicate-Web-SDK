@@ -938,7 +938,13 @@ body {
     text-align: center; }
     @media (max-width: 37.5em) {
       .footer_account_text {
-        font-size: 2.8rem; } }
+        font-size: 2.4rem; } }
+
+.footer-growth {
+  font-size: 2.8rem; }
+  @media (max-width: 37.5em) {
+    .footer-growth {
+      font-size: 2.3rem; } }
 
 .footer_email {
   position: relative;
@@ -1339,7 +1345,8 @@ body {
       white-space: nowrap; }
       @media (max-width: 1000px) {
         .growth-twitter-box_text-primary {
-          padding: 0; } }
+          padding: 1px;
+          white-space: pre-line; } }
   .growth-twitter-box_button {
     border: solid 1px #efefef;
     border-radius: 4px;
@@ -1606,7 +1613,8 @@ body {
       padding-top: 2rem; } }
   @media (max-width: 75em) {
     .header_heading {
-      width: 85%; } }
+      width: 85%;
+      line-height: 5.8rem; } }
   @media (max-width: 56.25em) {
     .header_heading {
       padding-top: 2rem;
