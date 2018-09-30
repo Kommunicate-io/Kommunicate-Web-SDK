@@ -355,11 +355,14 @@ Kommunicate.richMsgEventHandler = {
     },
     processQuickReplies : function(e){
        var message = e.target.title;
+       var metadata = {};
+        try{
+            metadata=  JSON.parse(e.target.dataset.metadata);
+        }catch(e){
+        }
         var messagePxy = {
             'message': message, //message to send 
-            'metadata': {
-
-            }
+            'metadata': metadata
         };
 
         Kommunicate.sendMessage(messagePxy);
