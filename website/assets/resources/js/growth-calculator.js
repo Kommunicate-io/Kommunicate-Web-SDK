@@ -12,6 +12,8 @@ var rateSwitcher = document.getElementById("rate-switcher"),
     shareTool = document.getElementById("share-tool"),
     revenueTime = document.getElementById("revenueTime"),
     growthTime = document.getElementById("growth-time-selector"),
+    mobMonthlyMrr = document.getElementById("mob-monthly-mrr"),
+    mobYearlyMrr = document.getElementById("mob-yearly-mrr"),
     currentMrrValue, growthRateValue, projectionTimeValue, monthlyExpenseValue, finalMrr, growthTimeText, myChart, ctx
 monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     date = new Date(),
@@ -185,6 +187,8 @@ function calculateMrr() {
     growthMrrTwitter.innerHTML = "$" + FormatLongNumber(finalMrr);
     growthMrrMonthRevenue.innerHTML = "$" + FormatLongNumber(lastMonthMrr);
     growthMonthsTwitter.innerHTML = timeInYears + growthTimeText;
+    mobMonthlyMrr.innerHTML = "$" + FormatLongNumber(lastMonthMrr);
+    mobYearlyMrr.innerHTML = "$" + FormatLongNumber(finalMrr);
     window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue + "-" + projectionTimeValue);
     myChart.data.datasets[0].data = mrrChart;
     myChart.update();

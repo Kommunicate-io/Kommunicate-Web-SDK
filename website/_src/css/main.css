@@ -1386,7 +1386,8 @@ body {
   flex-direction: column; }
   @media (max-width: 1000px) {
     .growth-mrr-calc-box {
-      margin-bottom: 30px; } }
+      margin-bottom: 30px;
+      height: auto; } }
   .growth-mrr-calc-box_heading {
     text-align: center;
     letter-spacing: 0.3px;
@@ -1489,6 +1490,18 @@ body {
       width: 368px;
       margin-left: 0;
       height: auto; } }
+
+@media (max-width: 1000px) {
+  .hide-on-mobile {
+    display: none; } }
+
+@media (min-width: 1000px) {
+  .hide-on-desktop {
+    display: none; } }
+
+.mob-divide-border {
+  height: 2px;
+  background: #eee; }
 
 .navbar {
   display: flex;

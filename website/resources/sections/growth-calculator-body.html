@@ -16,7 +16,7 @@
             <h1>Startup growth calculator</h1>
         </div>
     </div>
-    <div class="growth-twitter-box" style="justify-content: flex-start  ; padding: 30px 0px">
+    <div class="growth-twitter-box hide-on-mobile" style="justify-content: flex-start  ; padding: 30px 0px">
         <div class="growth-twitter-box_img">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 42 40">
                 <g fill="#44D76E">
@@ -34,7 +34,7 @@
 
     <div class="growth-calc-wrapper">
         <div class="growth-mrr-calc-box">
-            <div class="growth-mrr-calc-box_heading">Your metrics</div>
+            <div class="growth-mrr-calc-box_heading">Your Metrics</div>
             <div class="growth-mrr-calc-box_field">
                 <div class="growth-mrr-calc-box_field-name">Current MRR</div>
                 <div class="growth-mrr-calc-box_field-input">$<input id="current-mrr" type="number" max="9999999"></div>
@@ -45,8 +45,8 @@
                 <div class="growth-mrr-calc-box_field-input"><input
                         id="growth-rate" type="number" max="1000">%</div>
                         <select id="growth-time-selector" class = "growth-mrr-calc-box_field-select">
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
+                            <option value="weekly">weekly</option>
+                            <option value="monthly">monthly</option>
                         </select>
                 <br>
             </div>
@@ -62,6 +62,15 @@
                 <div class="growth-mrr-calc-box_field-name">Projection time</div>
                 <div class="growth-mrr-calc-box_field-input"><input id="projection-time" type="number" max="99">&nbsp;&nbsp;<span
                         style="font-size: 14px">months</span></div>
+            </div>
+            <span class="mob-divide-border hide-on-desktop"></span>
+            <div class="growth-mrr-calc-box_field hide-on-desktop">
+                <div class="growth-mrr-calc-box_field-name" style="width:auto">Projected monthly revenue:</div>
+                <div id="mob-monthly-mrr" class="growth-mrr-calc-box_field-name" style="width:auto"></div>
+            </div>
+            <div class="growth-mrr-calc-box_field hide-on-desktop">
+                <div class="growth-mrr-calc-box_field-name" style="width:63%">Projected yearly revenue:</div>
+                <div id="mob-yearly-mrr" class="growth-mrr-calc-box_field-name" style="width:auto"></div>
             </div>
         </div>
         <div class="growth-mrr-graph-box">
