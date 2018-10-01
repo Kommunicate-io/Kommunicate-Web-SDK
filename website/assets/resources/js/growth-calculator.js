@@ -7,9 +7,11 @@ var rateSwitcher = document.getElementById("rate-switcher"),
     projectionTime = document.getElementById("projection-time"),
     growthMonthsTwitter = document.getElementById("final-months"),
     growthMrrTwitter = document.getElementById("final-mrr"),
+    growthMrrMonthRevenue = document.getElementById("monthRevenue"),
     shareButton = document.getElementById("share-button"),
     shareTool = document.getElementById("share-tool"),
     revenueTime = document.getElementById("revenueTime"),
+    growthTime = document.getElementById("growth-time-selector"),
     currentMrrValue, growthRateValue, projectionTimeValue, monthlyExpenseValue, finalMrr, growthTimeText, myChart, ctx
 monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
     date = new Date(),
@@ -17,6 +19,12 @@ monthArr = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'O
     currYear = date.getFullYear(),
     monthLabelsArray = [],
     pow = Math.pow, floor = Math.floor, abs = Math.abs, log = Math.log;
+
+
+growthTime.addEventListener("change", function () {
+    growthTime.selectedIndex == "1" ? rateSwitcher.checked = true : rateSwitcher.checked = false;
+    switchRate();
+});
 
 ctx = document.getElementById("myChart").getContext('2d');
 var gradientFill = ctx.createLinearGradient(0, 500, 0, 0);
@@ -162,17 +170,22 @@ generateMonths();
 
 
 function calculateMrr() {
-    var weekInMonths, growthPercent, mrrChart = [],timeInYears=projectionTimeValue;
+    var weekInMonths, growthPercent, mrrChart = [],
+        timeInYears = projectionTimeValue,
+        lastMonthMrr;
     growthPercent = (growthRateValue / 100).toFixed(2);
     !rateSwitcher.checked ? (weekInMonths = 4.34) : (weekInMonths = 1);
     for (let i = 1; i <= projectionTimeValue; i++) {
         finalMrr = Math.floor((currentMrrValue * Math.pow((1 + parseFloat(growthPercent)), (weekInMonths * (i)))));
         mrrChart.push(finalMrr);
     }
-    projectionTimeValue > 11 ? (finalMrr *= projectionTimeValue, timeInYears = getWords(projectionTimeValue), revenueTime.innerHTML = "yearly", growthTimeText = "") : (projectionTimeValue == 1 ?growthTimeText = " month":growthTimeText = " months", revenueTime.innerHTML = "monthly");
+    lastMonthMrr = finalMrr;
+    finalMrr *= 12;
+    projectionTimeValue > 11 ? (timeInYears = getWords(projectionTimeValue), growthTimeText = "") : (projectionTimeValue == 1 ? growthTimeText = " month" : growthTimeText = " months");
     growthMrrTwitter.innerHTML = "$" + FormatLongNumber(finalMrr);
-    growthMonthsTwitter.innerHTML = timeInYears +  growthTimeText;
-    window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue  + "-" + projectionTimeValue);
+    growthMrrMonthRevenue.innerHTML = "$" + FormatLongNumber(lastMonthMrr);
+    growthMonthsTwitter.innerHTML = timeInYears + growthTimeText;
+    window.history.pushState("", "mrrurl", "?" + currentMrrValue + "-" + growthRateValue + "-" + projectionTimeValue);
     myChart.data.datasets[0].data = mrrChart;
     myChart.update();
 }
@@ -203,13 +216,13 @@ function FormatLongNumber(n) {
 //     window.open(url, '_blank');
 
 //} );  
-shareTool.addEventListener('click', function shareRevenue(event) {
-    event.preventDefault();
-    var shareText = "This super cool Growth Calculator from @kommunicateio helped me project my company’s growth easily. Give it a go, now! www.kommunicate.io/resources/growth-calculator";
-    var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText);
-    window.open(url, '_blank');
+// shareTool.addEventListener('click', function shareRevenue(event) {
+//     event.preventDefault();
+//     var shareText = "This super cool Growth Calculator from @kommunicateio helped me project my company’s growth easily. Give it a go, now! www.kommunicate.io/resources/growth-calculator";
+//     var url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText);
+//     window.open(url, '_blank');
 
-});
+// });
 
 function getWords(monthCount) {
     function getPlural(number, word) {
@@ -225,10 +238,10 @@ function getWords(monthCount) {
             other: '.'
         },
         m = monthCount % 12;
-        y = Math.floor(monthCount / 12),
+    y = Math.floor(monthCount / 12),
         result = [];
-        projectionTimeValue > 12 ? years.one = "." : "";
-        m == 0 ? years.other = " years": "";
+    projectionTimeValue > 12 ? years.one = "." : "";
+    m == 0 ? years.other = " years" : "";
 
     y && result.push(y + '' + getPlural(y, years));
     m && result.push(m + '' + getPlural(m, months));

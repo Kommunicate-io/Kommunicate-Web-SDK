@@ -71,8 +71,7 @@
 
     &_text {
         font-weight: 500;
-        font-size: 22px;
-        text-align: center;
+        font-size: 21px;
         letter-spacing: 0.4px;
 
         & .highlighted {
@@ -80,13 +79,11 @@
             color: #44d76e;
         }
         &-primary{
-            padding:  0 97px;
+            padding:  0 11px;
             overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
             @media (max-width:1000px) {
                 padding: 1px;
-                white-space: pre-line;
 
             }
 
@@ -160,7 +157,8 @@
     }
 
     &_field {
-        padding: 18px 4px;
+        padding: 24px 4px;
+        position: relative;
 
         &-name {
             display: inline-block;
@@ -193,7 +191,7 @@
 
             & input {
                 display: inline-block;
-                width: 100px;
+                width: 60px;
                 outline: none;
                 box-shadow: none;
                 border: none;
@@ -207,6 +205,15 @@
                 border-bottom: 1px solid #1419e8;
             }
 
+        }
+        &-select{
+            position: absolute;
+            top: 38%;
+            right: 4%;
+            outline: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
         }
     }
 
