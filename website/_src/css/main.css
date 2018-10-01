@@ -1332,21 +1332,18 @@ body {
     width: 42px; }
   .growth-twitter-box_text {
     font-weight: 500;
-    font-size: 22px;
-    text-align: center;
+    font-size: 21px;
     letter-spacing: 0.4px; }
     .growth-twitter-box_text .highlighted {
       font-weight: 700;
       color: #44d76e; }
     .growth-twitter-box_text-primary {
-      padding: 0 97px;
+      padding: 0 11px;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
+      text-overflow: ellipsis; }
       @media (max-width: 1000px) {
         .growth-twitter-box_text-primary {
-          padding: 1px;
-          white-space: pre-line; } }
+          padding: 1px; } }
   .growth-twitter-box_button {
     border: solid 1px #efefef;
     border-radius: 4px;
@@ -1397,7 +1394,8 @@ body {
     font-size: 18px;
     margin-bottom: 40px; }
   .growth-mrr-calc-box_field {
-    padding: 18px 4px; }
+    padding: 24px 4px;
+    position: relative; }
     .growth-mrr-calc-box_field-name {
       display: inline-block;
       font-size: 16px;
@@ -1421,7 +1419,7 @@ body {
       font-weight: 500; }
       .growth-mrr-calc-box_field-input input {
         display: inline-block;
-        width: 100px;
+        width: 60px;
         outline: none;
         box-shadow: none;
         border: none;
@@ -1431,6 +1429,14 @@ body {
       .growth-mrr-calc-box_field-input input:active,
       .growth-mrr-calc-box_field-input input:focus {
         border-bottom: 1px solid #1419e8; }
+    .growth-mrr-calc-box_field-select {
+      position: absolute;
+      top: 38%;
+      right: 4%;
+      outline: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer; }
   .growth-mrr-calc-box .switch {
     position: relative;
     display: inline-block;
