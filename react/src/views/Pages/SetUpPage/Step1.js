@@ -180,7 +180,7 @@ onFocusName() {
 }
 
 getCoutryCodeFromTimezone() {
-  
+  var countryId;
   var timezone = Moment.tz.guess().toString();
   if(timezone === "Asia/Calcutta") {
     timezone = "Asia/Kolkata";
@@ -192,7 +192,11 @@ getCoutryCodeFromTimezone() {
   // console.log(timezone);
   var country = countriesAndTimezones.getCountriesForTimezone(timezone);
   // console.log(country);
-  var countryId = country[0].id;
+  if(typeof country !== "undefined" && country.length > 0) {
+    countryId = country[0].id;
+  } else {
+    countryId = undefined;
+  }
   // console.log(countryId);
   return countryId;
 }
