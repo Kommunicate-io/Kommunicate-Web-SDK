@@ -520,7 +520,7 @@ class Billing extends Component {
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
-                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Free Plan at the end of the trial period.</p>
+                                            <p className="info-bar-text"><strong>{this.state.trialLeft} left of full feature trial.</strong> If no plan is chosen, you will be subscribed to the FREE PLAN at the end of the trial period.</p>
                                         </div>
                                         )
                                         : (
