@@ -559,8 +559,8 @@ class Dashboard extends Component {
 
         })
         res.response.avgResponseTime.length && res.response.avgResponseTime.map((item, index) => {
-          totalNoOfResponse.dayWise++;
           if (typeof item.average != 'undefined' ) {
+            totalNoOfResponse.dayWise++;
             let avgResponseTime = parseFloat(item.average);
             countForADay.avgResponseTime += avgResponseTime;
             let getIndex = hoursDistribution.indexOf(item.HOUR);
@@ -571,8 +571,8 @@ class Dashboard extends Component {
 
         })
         res.response.avgResolutionTime.length && res.response.avgResolutionTime.map((item, index) => {
-          totalNoOfResolutions.dayWise++;
           if (typeof item.average != 'undefined' ) {
+            totalNoOfResolutions.dayWise++;
             let avgResolutionTime = parseFloat(item.average);
             countForADay.avgResolutionTime += avgResolutionTime;
             let getIndex = hoursDistribution.indexOf(item.HOUR);
@@ -648,56 +648,46 @@ class Dashboard extends Component {
         res.response.avgResponseTime.length && res.response.avgResponseTime.map((item, index) => {
           // filter average response time
           let dateInmSec = new Date(item.DATE).getTime();
-          if (dateInmSec > date8DaysAgoInmSec) { //last 7 days days
+          if (dateInmSec > date8DaysAgoInmSec && typeof item.average != 'undefined') { //last 7 days days
             totalNoOfResponse.last7Days++;
-            if(typeof item.average != 'undefined') {
-              avgResponseTime.last7Days += parseFloat(item.average);
-              let m = last7DaysYYYYMMDD.indexOf(item.DATE);
-              let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
-              time = time === "NaN" ? null : parseFloat(time);
-              last7DaysData.avgResponseTime.splice(m, 1, time);
-            }
+            avgResponseTime.last7Days += parseFloat(item.average);
+            let m = last7DaysYYYYMMDD.indexOf(item.DATE);
+            let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
+            time = time === "NaN" ? null : parseFloat(time);
+            last7DaysData.avgResponseTime.splice(m, 1, time);
           }
-          if (dateInmSec > date31DaysAgoInmSec) { //last 30 days data
+          if (dateInmSec > date31DaysAgoInmSec && typeof item.average != 'undefined') { //last 30 days data
             totalNoOfResponse.last30Days++;
-            if(typeof item.average != 'undefined') {
-              avgResponseTime.last30Days += parseFloat(item.average);
-              let n = last30DaysYYYYMMDD.indexOf(item.DATE);
-              let time= this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
-              time = time === "NaN" ? null : parseFloat(time);
-              last30DaysData.avgResponseTime.splice(n, 1, time);
-            }
-
+            avgResponseTime.last30Days += parseFloat(item.average);
+            let n = last30DaysYYYYMMDD.indexOf(item.DATE);
+            let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
+            time = time === "NaN" ? null : parseFloat(time);
+            last30DaysData.avgResponseTime.splice(n, 1, time);
           }
         })
 
         res.response.avgResolutionTime.length && res.response.avgResolutionTime.map((item, index) => {
           //Filter average resolutin time
           let dateInmSec = new Date(item.DATE).getTime();
-          if (dateInmSec > date8DaysAgoInmSec) { // last 7 days
-            totalNoOfResolutions.last7Days++ ;
-            if (typeof item.average != 'undefined') {
-              let avgResolutionTime_7 = parseFloat(item.average);
-              avgResolutionTime.last7Days += avgResolutionTime_7
-              let index = last7DaysYYYYMMDD.indexOf(item.DATE);
-              let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
-              time = time === "NaN" ? null : parseFloat(time);
-              last7DaysData.avgResolutionTime.splice(index, 1, time);
-            }
-
+          if (dateInmSec > date8DaysAgoInmSec && typeof item.average != 'undefined') { // last 7 days
+            totalNoOfResolutions.last7Days++;
+            let avgResolutionTime_7 = parseFloat(item.average);
+            avgResolutionTime.last7Days += avgResolutionTime_7
+            let index = last7DaysYYYYMMDD.indexOf(item.DATE);
+            let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart);
+            time = time === "NaN" ? null : parseFloat(time);
+            last7DaysData.avgResolutionTime.splice(index, 1, time);
           }
-          if (dateInmSec > date31DaysAgoInmSec) { //last 30 days
+          if (dateInmSec > date31DaysAgoInmSec && typeof item.average != 'undefined') { //last 30 days
             totalNoOfResolutions.last30Days++;
-            if(typeof item.average != 'undefined') {
-              let avgResolutionTime_30 = parseFloat(item.average)
-              avgResolutionTime.last30Days += avgResolutionTime_30;
-              let index = last30DaysYYYYMMDD.indexOf(item.DATE);
-              let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart)
-              time = time === "NaN" ? null : parseFloat(time);
-              last30DaysData.avgResolutionTime.splice(index, 1, time);
-            }
-
+            let avgResolutionTime_30 = parseFloat(item.average)
+            avgResolutionTime.last30Days += avgResolutionTime_30;
+            let index = last30DaysYYYYMMDD.indexOf(item.DATE);
+            let time = this.secondsToHms(parseFloat(item.average), timeConverterKey.toDisplayInsideChart)
+            time = time === "NaN" ? null : parseFloat(time);
+            last30DaysData.avgResolutionTime.splice(index, 1, time);
           }
+
         })
         // console.log(closedConversationCount, newConversationCount, avgResponseTime, avgResolutionTime);
 
