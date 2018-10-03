@@ -4938,7 +4938,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
-					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 50);
 					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : kmDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
@@ -5238,12 +5238,21 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				return emoji_template;
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
+				if(contact.members.length > contact.userCount) {
+					kmGroupService.getGroupFeed({
+						'groupId': contact.groupId,
+						'callback': function(resp) {
+							kmGroupUtils.getGroup(resp.groupId);
+						}
+					});
+				}
+				
 				var emoji_template = "", senderName;
 				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
-						senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
+						senderName = mckContactService.getContactDisplayName([contact.users[message.senderName].userId]);
 						(senderName) ? senderName = senderName.split(" ")[0] + ": " : "";
 					}
 				} else {
@@ -5722,6 +5731,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var userId = uniqueUserIdArray[i];
 						if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
 							data += "userIds=" + encodeURIComponent(userId) + "&";
+						} else {
+							return MCK_CONTACT_NAME_MAP[userId];
 						}
 					}
 					if (data.lastIndexOf("&") === data.length - 1) {
