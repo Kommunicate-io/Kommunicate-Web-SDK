@@ -103,15 +103,16 @@ Quick Replies provides a way to send messages on a click without typing them all
 		"templateId": "6",
 		"payload": [{
 			"title": "Yes",
-			"message": "Cool! send me more."
+			"message": "Cool! send me more.",
+			"replyMetadata":{"key1":"value1"} // optional. custom data will be sent along with message when user click on Quick reply button .
 		}, {
 			"title": "No ",
-			"message": "Don't send it to me again"
+			"message": "Don't send it to me again" 
 		}]
 	}
 }
 ```
-
+`replyMetadata` can be used to set [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform). 
 The appearance of the Quick Replies and Buttons will be adjusted automatically.
 
 ## Images
