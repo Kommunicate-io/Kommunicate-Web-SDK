@@ -15,6 +15,7 @@ const routes = {
   '/settings/welcome-message': 'Welcome Message',
   '/settings/away-message': 'Away Message',
   '/settings/agent-app': 'Agent App',
+  '/settings/redux-test': 'Redux Test',
   '/settings/agent-assignment':'Conversation Routing',
   '/faq':'FAQ',
   '/settings/billing': 'Billing',

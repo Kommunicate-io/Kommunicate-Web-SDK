@@ -71,6 +71,9 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item agent-app-link">
                             <NavLink to={'/settings/agent-app'} className="ss-nav-link" activeClassName="active">Agent app</NavLink>
                         </li>
+                        <li className="ss-nav-item agent-app-link">
+                            <NavLink to={'/settings/redux-test'} className="ss-nav-link" activeClassName="active">Redux</NavLink>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -19,6 +19,7 @@ import Welcome from '../../views/Autoreply/Welcome/Welcome.js'
 import AwayMessage from '../../views/Autoreply/AwayMessage/AwayMessage.js'
 import AutoSuggest from '../../views/Autoreply/AutoSuggest.js'
 import Download from '../../views/Download/Download.js'
+import ReduxTest from '../../views/ReduxTest/ReduxTest.js'
 import Faq from '../../views/Faq/'
 import Billing from '../../views/Billing/'
 import PushNotification from '../../views/PushNotification/PushNotification.js'
@@ -214,6 +215,7 @@ class Full extends Component {
                 <Route exact path="/settings/message-shortcuts" name="AutoSuggest" component={AutoSuggest}/>
                 <Route exact path="/settings/install" name="Install" component={Install}/>
                 <Route exact path="/settings/agent-app" name="Download" component={Download}/>
+                <Route exact path="/settings/redux-test" name="Redux Test" component={ReduxTest}/>
                 <Route exact path="/settings/agent-assignment" name="AgentAssignment" component={AgentAssignemnt}/>
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Integrations" component={Integrations}/>
