@@ -132,13 +132,12 @@ $(document).ready(function() {
 
                             }
                         }
-                        $kmApplozic("#km-user-name-sec .km-user-title").html(user.userName);
+                        $kmApplozic("#km-user-name-sec .km-user-title").html(user.userName);    
+                        $kmApplozic("#km-sidebar-userId").html(user.userId);  
                         if (user.email) {
-                            $kmApplozic("#km-user-info-list .email").html(user.email);                       
-                        } else {
-                            $kmApplozic("#km-user-info-list .email").html(user.userId);
-                        }
-                        //$kmApplozic("#km-user-info-icon-box .km-user-icon img").attr('src', contact.imageLink);
+                            $kmApplozic("#km-user-info-list .email").html(user.email); 
+                            localStorage.setItem('km-email', user.email);
+                        }                      
                         var imageLink = $kmApplozic.fn.applozic("getContactImage", user);
                         imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
                         $kmApplozic("#km-group-info-tab .km-group-contact-icon").html(imageLink);
@@ -146,11 +145,17 @@ $(document).ready(function() {
                         
                             $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
                             
-                             var emailtext = typeof user.email !== 'undefined' ? (user.email) :"email not available";
-                            if(typeof user.email === 'undefined'){
-                                $kmApplozic("#km-sidebar-user-email").removeClass("km-sidebar-user-email").addClass("km-sidebar-user-emailnotfound");
-                            }
-                            $kmApplozic("#km-sidebar-user-email").html(emailtext);
+                             var emailtext = typeof user.email !== 'undefined' ? (user.email) :"";
+                        if (user.email) {
+                            localStorage.setItem('km-email', user.email);
+                        }
+                        $kmApplozic("#km-sidebar-user-email").html(emailtext);
+                            var phone = typeof user.phoneNumber !== 'undefined' ? (user.phoneNumber) :"";
+                        if (user.phoneNumber) {
+                            localStorage.setItem('km-phonenumber', user.phoneNumber);
+                        }
+                        $kmApplozic("#km-sidebar-user-number").html(phone);
+                            
                         
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {
                             userSession.clearbitKey && clearbit(user.email, user.userId);
