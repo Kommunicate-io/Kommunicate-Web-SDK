@@ -1679,6 +1679,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .km-progress-value {
 	stroke: #fff;
 	stroke-linecap: round;
+	transform: rotate(-90deg);
+    transform-origin: center;
 }
 .km-progress-meter-input {
 	visibility: hidden;
