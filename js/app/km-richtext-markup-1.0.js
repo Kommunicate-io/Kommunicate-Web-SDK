@@ -372,7 +372,7 @@ Kommunicate.markup.getDialogboxContainer = function(metadata){
     if(metadata && metadata.payload){
         var json = JSON.parse(metadata.payload);
         
-        json.buttons.length>0 && json.buttons.forEach(element => {
+        json.buttons.length>0 && json.buttons.forEach(function(element) {
             element.replyMetadata  = typeof element.replyMetadata == 'object'? JSON.stringify(element.replyMetadata): element.replyMetadata;
         });
         return Mustache.to_html(Kommunicate.markup.getDialogboxTemplate(), json);
