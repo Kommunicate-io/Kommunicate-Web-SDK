@@ -37,12 +37,8 @@ Kommunicate.attachmentEventHandler= {
             if(!stopUploadIconHidden && uploadIconHidden) {
                 KommunicateUI.updateAttachmentStopUploadStatus(msgkey, true);
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
-                let stopUploadIconDiv =  $applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-stop-upload-icon')[0];
-                stopUploadIconDiv.classList.remove("vis");
-                stopUploadIconDiv.classList.add("n-vis");
-                let uploadIconDiv =$applozic(e.target).closest('.km-msg-box-attachment').find('.km-progress-upload-icon')[0]
-                uploadIconDiv.classList.remove("n-vis");
-                uploadIconDiv.classList.add("vis");
+                $applozic(".km-progress-stop-upload-icon-"+msgkey).removeClass("vis").addClass("n-vis");
+                $applozic(".km-progress-upload-icon-"+msgkey).removeClass("n-vis").addClass("vis");
                 Kommunicate.attachmentEventHandler.progressMeter(100, msgkey);
                 $applozic(".mck-timestamp-"+msgkey).removeClass("n-vis").addClass("vis"); 
                 deliveryStatusDiv[0].querySelector(".mck-sending-failed").style.display = "block";
