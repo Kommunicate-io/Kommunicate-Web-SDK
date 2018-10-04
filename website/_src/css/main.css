@@ -938,7 +938,13 @@ body {
     text-align: center; }
     @media (max-width: 37.5em) {
       .footer_account_text {
-        font-size: 2.8rem; } }
+        font-size: 2.4rem; } }
+
+.footer-growth {
+  font-size: 2.8rem; }
+  @media (max-width: 37.5em) {
+    .footer-growth {
+      font-size: 2.3rem; } }
 
 .footer_email {
   position: relative;
@@ -1326,20 +1332,18 @@ body {
     width: 42px; }
   .growth-twitter-box_text {
     font-weight: 500;
-    font-size: 22px;
-    text-align: center;
+    font-size: 21px;
     letter-spacing: 0.4px; }
     .growth-twitter-box_text .highlighted {
       font-weight: 700;
       color: #44d76e; }
     .growth-twitter-box_text-primary {
-      padding: 0 97px;
+      padding: 0 11px;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap; }
+      text-overflow: ellipsis; }
       @media (max-width: 1000px) {
         .growth-twitter-box_text-primary {
-          padding: 0; } }
+          padding: 1px; } }
   .growth-twitter-box_button {
     border: solid 1px #efefef;
     border-radius: 4px;
@@ -1382,7 +1386,8 @@ body {
   flex-direction: column; }
   @media (max-width: 1000px) {
     .growth-mrr-calc-box {
-      margin-bottom: 30px; } }
+      margin-bottom: 30px;
+      height: auto; } }
   .growth-mrr-calc-box_heading {
     text-align: center;
     letter-spacing: 0.3px;
@@ -1390,7 +1395,8 @@ body {
     font-size: 18px;
     margin-bottom: 40px; }
   .growth-mrr-calc-box_field {
-    padding: 18px 4px; }
+    padding: 24px 4px;
+    position: relative; }
     .growth-mrr-calc-box_field-name {
       display: inline-block;
       font-size: 16px;
@@ -1414,7 +1420,7 @@ body {
       font-weight: 500; }
       .growth-mrr-calc-box_field-input input {
         display: inline-block;
-        width: 100px;
+        width: 60px;
         outline: none;
         box-shadow: none;
         border: none;
@@ -1424,6 +1430,14 @@ body {
       .growth-mrr-calc-box_field-input input:active,
       .growth-mrr-calc-box_field-input input:focus {
         border-bottom: 1px solid #1419e8; }
+    .growth-mrr-calc-box_field-select {
+      position: absolute;
+      top: 38%;
+      right: 4%;
+      outline: none;
+      border: none;
+      font-size: 14px;
+      cursor: pointer; }
   .growth-mrr-calc-box .switch {
     position: relative;
     display: inline-block;
@@ -1476,6 +1490,18 @@ body {
       width: 368px;
       margin-left: 0;
       height: auto; } }
+
+@media (max-width: 1000px) {
+  .hide-on-mobile {
+    display: none; } }
+
+@media (min-width: 1000px) {
+  .hide-on-desktop {
+    display: none; } }
+
+.mob-divide-border {
+  height: 2px;
+  background: #eee; }
 
 .navbar {
   display: flex;
@@ -1606,7 +1632,8 @@ body {
       padding-top: 2rem; } }
   @media (max-width: 75em) {
     .header_heading {
-      width: 85%; } }
+      width: 85%;
+      line-height: 5.8rem; } }
   @media (max-width: 56.25em) {
     .header_heading {
       padding-top: 2rem;

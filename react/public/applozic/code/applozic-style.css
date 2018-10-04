@@ -97,7 +97,7 @@ body {
 	width: 300px;
 	/*height: calc(100% - 60px);*/
 	height: 100%;
-	/* border-right: 1px solid #e6e6e6; */
+	border-right: 1px solid #e6e6e6;
 	background-color: #fff;
 	display: flex;
 	position: relative;

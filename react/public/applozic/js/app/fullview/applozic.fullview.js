@@ -4018,13 +4018,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
-				var range = document.createRange();
-				var sel = window.getSelection();
-				range.setStart(el.childNodes[0], pos);
-				range.collapse(true);
-				sel.removeAllRanges();
-				sel.addRange(range);
-				el.focus();
+				if(el.childNodes.length !== 0 ){ 
+					var range = document.createRange();
+					var sel = window.getSelection();
+					range.setStart(el.childNodes[0], pos);
+					range.collapse(true);
+					sel.removeAllRanges();
+					sel.addRange(range);
+					el.focus(); 
+				}
+				else {
+				return false;
+			}
+			
 			}
 			
 			_this.setProductProperties = function (topicDetail) {
@@ -4938,7 +4944,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
-					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 50);
 					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : kmDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
@@ -5734,6 +5740,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var userId = uniqueUserIdArray[i];
 						if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
 							data += "userIds=" + encodeURIComponent(userId) + "&";
+						} else {
+							return MCK_CONTACT_NAME_MAP[userId];
 						}
 					}
 					if (data.lastIndexOf("&") === data.length - 1) {

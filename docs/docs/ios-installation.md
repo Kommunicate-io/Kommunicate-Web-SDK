@@ -18,6 +18,14 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'Kommunicate'
 ```
+This is how the podfile will look:
+
+```
+target 'MyTargetName' do
+    use_frameworks!
+    pod 'Kommunicate'
+end
+```
 
 Then run `pod install`.
 

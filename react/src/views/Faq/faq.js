@@ -327,10 +327,8 @@ class Tabs extends Component {
             </div>
           </div>
         </div>
-        <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog modal-dialog--add-faq-modal">
-          <ModalHeader toggle={this.toggleFaqModal}>
-            <h4 className="faq-modal-title">FAQ</h4>
-          </ModalHeader>
+        <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog modal-dialog--add-faq-modal">          
+            <h4 className="faq-modal-title km-faq-heading-section">FAQ</h4>      
           <ModalBody>
             <div className="row">
               <label className="col-sm-12 km-faq-label">Title:</label>

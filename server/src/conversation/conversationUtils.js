@@ -18,7 +18,8 @@ function GroupInfo() {
         CONVERSATION_ASSIGNEE: "agentId",
         KM_CONVERSATION_TITLE: "agentId",
         HIDE: "true",
-        WELCOME_MESSAGE: ""
+        WELCOME_MESSAGE: "",
+        SKIP_BOT_EVENT:'["WELCOME_EVENT"]'
     };
 };
 module.exports = GroupInfo;
