@@ -112,7 +112,7 @@ class UserItem extends Component {
       let userId = [];
       userId.push(this.state.userToBeDeleted.userId);
       return Promise.resolve(deleteUserByUserId(userId)).then(response => {
-        if(response || response.code == "SUCCESS") {
+        if(response && response.code == "SUCCESS") {
           if (response.message.data[0].result === "DELETED SUCCESSFULLY"){
             Notification.success('Agent Deleted Successfully');
             this.props.getUsers();
