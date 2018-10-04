@@ -5,6 +5,9 @@
     max-width:930px;
 
 }
+.km-settings-banner{
+    margin: -25px 0 30px 10px;
+}
 
 .km-settings-header-border{
     border-bottom: 1px solid #cacaca;
