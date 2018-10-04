@@ -2921,7 +2921,7 @@ const MESSAGE_CONTENT_TYPE = {
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
-                        if(FILE_META && (FILE_META[0].contentType.includes("image/"))) {
+                        if(FILE_META && (FILE_META[0].contentType.indexOf("image/") != -1 )) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("vis").addClass("n-vis");
                             KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
@@ -3043,7 +3043,7 @@ const MESSAGE_CONTENT_TYPE = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.includes("image/")) {
+                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.indexOf("image/") != -1) {
                             $applozic(".mck-timestamp-"+messagePxy.key).removeClass("n-vis").addClass("vis");
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
                         }
@@ -7623,7 +7623,7 @@ const MESSAGE_CONTENT_TYPE = {
                 $mck_file_input.on('change', function () {
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
-                                        if(file.type.includes("image/") ){
+                                        if(file.type.indexOf("image/") != -1 ){
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
@@ -8261,7 +8261,7 @@ const MESSAGE_CONTENT_TYPE = {
                 //     $mck_preview_name.html(displayName);
                 // }
                 // $mck_preview_icon.html(imgsrctag);
-                if(!imgsrctag.includes('/avatars/default.png')) {
+                if(!imgsrctag.indexOf('/avatars/default.png') != -1) {
                     $applozic("#launcher-agent-img-container").html(imgsrctag);
                     $applozic("#launcher-agent-img-container").addClass('vis').removeClass('n-vis');
                     $applozic("#launcher-svg-container").addClass('n-vis').removeClass('vis');
