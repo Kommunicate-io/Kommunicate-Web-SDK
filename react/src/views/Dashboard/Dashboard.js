@@ -525,8 +525,8 @@ class Dashboard extends Component {
     this.setState({chartFor24Hrs: chartFor24Hrs});
     return Promise.resolve(getConversationStatsByDayAndMonth(timeFilterSelectedOption, agentFilterSelectedOption,hoursWiseDistribution)).then(result => {
       let res=result.response;
-      if (res.unansweredConversation) {
-        this.setState({ unansweredConversation: res.unansweredConversation })
+      if (typeof res.response.unansweredConversation != "undefined") {
+        this.setState({ unansweredConversation: res.response.unansweredConversation })
       }
       // console.log(res);
       let countForADay ={newConversationCount:0, closedConversationCount:0, avgResponseTime:null, avgResolutionTime:null};
