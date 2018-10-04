@@ -5516,6 +5516,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-cs-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-as-" + contactHtmlExpr).addClass("km-unread-msg");
+							$kmApplozic(".km-li-cs-" + contactHtmlExpr).addClass("km-unread-msg");
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
