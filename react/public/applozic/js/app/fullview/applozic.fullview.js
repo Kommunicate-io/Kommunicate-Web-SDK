@@ -5786,7 +5786,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					async: false,
 					global: false,
 					type: 'get',
-					success: function (data) {						
+					success: function (data) {	
+						MCK_CONTACT_NAME_MAP[userId] = data[userId];					
 						callback(data);
 					},
 					error: function (err) { 
