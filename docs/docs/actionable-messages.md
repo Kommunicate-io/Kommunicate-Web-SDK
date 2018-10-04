@@ -9,9 +9,10 @@ A pure textual experience is not enough to make a conversation interactive, frui
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Quick Replies along with the message:
 
- ``` JSON
+ ``` js
  {
-    "message":"Do you want more updates?",
+	"message":"Do you want more updates?",
+	"ignoreTextResponse": false, // pass true if you want to hide the text response which you're passing along with custom payload in intent. 
     "platform":"kommunicate",
     "metadata": {
         "contentType": "300",
@@ -26,6 +27,9 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
     }
 }
 ```
+If you're passing both text response and custom payload in intent and want to hide the text response you can pass 
+**ignoreTextResponse : true**. 
+
 Here is a list of available Actionable Messages:
 
 * Buttons
