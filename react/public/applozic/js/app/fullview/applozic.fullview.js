@@ -5248,7 +5248,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					kmGroupService.getGroupFeed({
 						'groupId': contact.groupId,
 						'callback': function(resp) {
-							kmGroupUtils.getGroup(resp.groupId);
+							KM_GROUP_MAP[contact.groupId] = resp.groupId;
 						}
 					});
 				}
@@ -5258,7 +5258,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
-						senderName = mckContactService.getContactDisplayName([contact.users[message.senderName].userId]);
+						mckContactService.getSenderDisplayName([contact.users[message.senderName].userId], function(data) {
+							senderName = data[message.senderName];
+						});
 						(senderName) ? senderName = senderName.split(" ")[0] + ": " : "";
 					}
 				} else {
@@ -5531,6 +5533,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-cs-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-as-" + contactHtmlExpr).addClass("km-unread-msg");
+							$kmApplozic(".km-li-cs-" + contactHtmlExpr).addClass("km-unread-msg");
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
@@ -5758,13 +5761,38 @@ var KM_ASSIGNE_GROUP_MAP = [];
 										var contact = mckMessageLayout.fetchContact(userId);
 										contact.displayName = data[userId];
 									}
-								}
+								}				
 								mckStorage.updateMckContactNameArray(mckContactNameArray);
 							},
 							error: function () { }
 						});
 					}
 				}
+			};
+
+			_this.getSenderDisplayName =  function (userId, callback) {
+				var data = "";
+				
+				if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
+					data += "userIds=" + encodeURIComponent(userId) + "&";
+				} else {
+					callback(MCK_CONTACT_NAME_MAP[userId]);
+					return;
+				}
+				
+				kmUtils.ajax({
+					url: KM_BASE_URL + CONTACT_NAME_URL,
+					data: data,
+					async: false,
+					global: false,
+					type: 'get',
+					success: function (data) {						
+						callback(data);
+					},
+					error: function (err) { 
+						
+					}
+				});								
 			};
 
 			_this.fetchContacts = function (params) {
