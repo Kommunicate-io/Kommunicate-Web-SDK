@@ -79,7 +79,7 @@ $(document).ready(function() {
                 }});
             }  
             $kmApplozic(".km-lastseen").html(lastSeenAtText);
-            if(user && user.messagePxy.createdAtTime) {
+            if(user && user.messagePxy && user.messagePxy.createdAtTime) {
                  // This code will convert millisecond into date and time string 
                 $kmApplozic.fn.applozic("getLastSeenAtStatus",{"lastseenTime":user.messagePxy.createdAtTime,"dateFormat":"fullYearDateFormat",callback:function(resp){
                       //This code will remove last seen on from above string 
