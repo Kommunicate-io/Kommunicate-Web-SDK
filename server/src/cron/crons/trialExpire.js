@@ -3,7 +3,7 @@ const userService = require('../../users/userService');
 const botPlatform = require('../../utils/botPlatformClient');
 const BOT_STATUS = require('../../users/constants').USER_STATUS
 const exec = require('child_process').exec;
-const env = process.env.NODE_ENV ? process.env.NODE_ENV : "test"
+const env = process.env.NODE_ENV ? process.env.NODE_ENV : "test";
 
 
 exports.trialExpireCron = async function () {
