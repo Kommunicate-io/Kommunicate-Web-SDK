@@ -5575,6 +5575,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	box-shadow: none;
 	line-height: inherit;
 	padding: 0 3px;
+	width: 15px;
 }
 .mck-contact-list .mck-cont-name {
 	display: flex;
