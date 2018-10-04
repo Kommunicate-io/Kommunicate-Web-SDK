@@ -35,7 +35,7 @@ import config from '../../config/index';
 import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
-const enableIntegry = true;
+const enableIntegry = false;
 const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
   constructor (props) {
