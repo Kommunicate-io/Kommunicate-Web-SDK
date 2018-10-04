@@ -5625,6 +5625,10 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	color: rgba(234, 61, 61, 0.87);
 	background-color: #fff;
 }
+.km-progress-stop-upload-icon {
+	transform-origin: center;
+    transform: scale(0.9, 0.9);
+}
 
 .mck-failed-text + .mck-sending-failed {
 	display: block;
