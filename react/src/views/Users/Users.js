@@ -179,9 +179,7 @@ class Users extends Component {
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
-              { this.state.result.length !== 0 ?
-                <div>
-                <table className="table table-hover mb-0 hidden-sm-down">
+            <table className={this.state.result.length !== 0 ? "table table-hover mb-0 hidden-sm-down km-show-visibility":"table table-hover mb-0 hidden-sm-down km-hide-visibility"}>
                   <thead className="thead-default">
                     <tr className="users-table">
                       <th>Name</th>
@@ -208,7 +206,9 @@ class Users extends Component {
                   <tbody>
                     {showrResult}
                   </tbody>
-                </table>
+          </table>
+              { this.state.result.length !== 0 ?
+                <div>
                 <Pagination
                     total={this.state.total}
                     limit={limit}
