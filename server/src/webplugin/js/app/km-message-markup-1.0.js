@@ -14,8 +14,8 @@ Kommunicate.messageTemplate = {
         data.fileExpr = fileExpr;
         data.fileUrl = fileUrl;
         if (typeof data.fileMeta === 'object') {
-            data.attachmentClass = (data.fileMeta.contentType.includes("image/") || data.fileMeta.contentType.includes("audio/") || data.fileMeta.contentType.includes("video/")) ? "" : "mck-msg-box" ;
-            data.attachmentDownloadClass = data.fileMeta.contentType.includes("image/") ? "n-vis" : "vis"
+            data.attachmentClass = (data.fileMeta.contentType.indexOf("image/") != 1 || data.fileMeta.contentType.indexOf("audio/") != -1 || data.fileMeta.contentType.indexOf("video/") != 1) ? "" : "mck-msg-box";
+            data.attachmentDownloadClass = data.fileMeta.contentType.indexOf("image/") != -1 ? "n-vis" : "vis";
         }
         return Mustache.to_html(Kommunicate.messageTemplate.getAttachmentTemplate(), data);
     },
