@@ -608,9 +608,12 @@ const activateOrDeactivateUser = (userName, applicationId, deactivate) => {
             applicationId: applicationId
           }
         }).then(result => {
-          applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate);
-          updateSubscriptionQuantity(user, -1);
-          return { "userId": userName, "result": result[0] = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED" };
+          return applozicClient.activateOrDeactivateUser(userName, applicationId, deactivate).then(applozicresult=>{
+            updateSubscriptionQuantity(user, -1);
+            return { "userId": userName, "result": result[0] = 1 ? "DELETED SUCCESSFULLY" : "ALREADY DELETED" };
+          });
+          
+          
         })
       } else {
         return { "userId": userName, "result": "ALREADY DELETED" };
