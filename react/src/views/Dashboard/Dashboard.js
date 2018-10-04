@@ -944,7 +944,7 @@ render() {
                   <span className="card-time-text">{this.state.avgResponseTime.secText}</span>
                 </h4>
                 <p className="card-count-title">First Response Time</p>
-                <Link className={this.state.unansweredConversation > 0 ? "vis" : "n-vis"} to="/conversations" >{this.state.unansweredConversation} {this.state.unansweredConversation == 1 ? " user" : " users"} waiting for a reply</Link>
+                <Link className={this.state.unansweredConversation > 0 ? "vis" : "n-vis"} to="/conversations" >{this.state.unansweredConversation} {this.state.unansweredConversation == 1 ? " user" : " users"} waiting for first response</Link>
               </div>
             </div>
           </div>
