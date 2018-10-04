@@ -288,6 +288,7 @@ body {
 	width: 100%;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+	height: 19px;
 }
 
 .km-container .left .people .person .unreadcount {
