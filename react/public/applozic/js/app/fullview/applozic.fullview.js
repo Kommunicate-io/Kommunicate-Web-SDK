@@ -5776,7 +5776,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
 					data += "userIds=" + encodeURIComponent(userId) + "&";
 				} else {
-					callback(MCK_CONTACT_NAME_MAP[userId]);
+					callback(MCK_CONTACT_NAME_MAP);
 					return;
 				}
 				
