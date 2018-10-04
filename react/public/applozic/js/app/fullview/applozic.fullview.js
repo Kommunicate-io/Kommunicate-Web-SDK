@@ -4018,13 +4018,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
-				var range = document.createRange();
-				var sel = window.getSelection();
-				range.setStart(el.childNodes[0], pos);
-				range.collapse(true);
-				sel.removeAllRanges();
-				sel.addRange(range);
-				el.focus();
+				if(el.childNodes.length !== 0 ){ 
+					var range = document.createRange();
+					var sel = window.getSelection();
+					range.setStart(el.childNodes[0], pos);
+					range.collapse(true);
+					sel.removeAllRanges();
+					sel.addRange(range);
+					el.focus(); 
+				}
+				else {
+				return false;
+			}
+			
 			}
 			
 			_this.setProductProperties = function (topicDetail) {
