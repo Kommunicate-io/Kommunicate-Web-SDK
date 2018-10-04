@@ -133,3 +133,5 @@ DROP COLUMN agent_routing;
 
 ALTER TABLE customers
 DROP COLUMN bot_routing;
+
+alter table applications add column status tinyint default 1;
