@@ -4008,13 +4008,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
-				var range = document.createRange();
-				var sel = window.getSelection();
-				range.setStart(el.childNodes[0], pos);
-				range.collapse(true);
-				sel.removeAllRanges();
-				sel.addRange(range);
-				el.focus();
+				if(el.childNodes.length !== 0 ){ 
+					var range = document.createRange();
+					var sel = window.getSelection();
+					range.setStart(el.childNodes[0], pos);
+					range.collapse(true);
+					sel.removeAllRanges();
+					sel.addRange(range);
+					el.focus(); 
+				}
+				else {
+				return false;
+			}
+			
 			}
 			
 			_this.setProductProperties = function (topicDetail) {
@@ -4928,7 +4934,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (message && message.createdAtTime > currentMessageTime || update) {
 					var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
 					var unreadCount = _this.getUnreadCount(ucTabId);
-					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 15);
+					var emoji_template = _this.getMessageTextForContactPreview(message, contact, 50);
 					emoji_template = _this.getScriptMessagePreview(message,emoji_template);
 					$kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .time").html(typeof message.createdAtTime === 'undefined' ? "" : kmDateUtils.getTimeOrDate(message ? message.createdAtTime : "", true));
 					var $messageText = $kmApplozic(".km-li-" + section + "-" + contHtmlExpr + " .km-cont-msg-wrapper");
@@ -5228,12 +5234,23 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				return emoji_template;
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
+				if(contact.members.length > contact.userCount) {
+					kmGroupService.getGroupFeed({
+						'groupId': contact.groupId,
+						'callback': function(resp) {
+							KM_GROUP_MAP[contact.groupId] = resp.groupId;
+						}
+					});
+				}
+				
 				var emoji_template = "", senderName;
 				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
-						senderName = _this.getContactDisplayName(contact.users[message.senderName].userId);
+						mckContactService.getSenderDisplayName([contact.users[message.senderName].userId], function(data) {
+							senderName = data[message.senderName];
+						});
 						(senderName) ? senderName = senderName.split(" ")[0] + ": " : "";
 					}
 				} else {
@@ -5506,6 +5523,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-cs-" + contactHtmlExpr + " .km-unread-count-box").removeClass("n-vis").addClass("vis");
 							$kmApplozic(".km-li-as-" + contactHtmlExpr).addClass("km-unread-msg");
+							$kmApplozic(".km-li-cs-" + contactHtmlExpr).addClass("km-unread-msg");
 						}
 						mckMessageService.sendDeliveryUpdate(message);
 					}
@@ -5712,6 +5730,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var userId = uniqueUserIdArray[i];
 						if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
 							data += "userIds=" + encodeURIComponent(userId) + "&";
+						} else {
+							return MCK_CONTACT_NAME_MAP[userId];
 						}
 					}
 					if (data.lastIndexOf("&") === data.length - 1) {
@@ -5731,13 +5751,39 @@ var KM_ASSIGNE_GROUP_MAP = [];
 										var contact = mckMessageLayout.fetchContact(userId);
 										contact.displayName = data[userId];
 									}
-								}
+								}				
 								mckStorage.updateMckContactNameArray(mckContactNameArray);
 							},
 							error: function () { }
 						});
 					}
 				}
+			};
+
+			_this.getSenderDisplayName =  function (userId, callback) {
+				var data = "";
+				
+				if (typeof MCK_CONTACT_NAME_MAP[userId] === 'undefined') {
+					data += "userIds=" + encodeURIComponent(userId) + "&";
+				} else {
+					callback(MCK_CONTACT_NAME_MAP);
+					return;
+				}
+				
+				kmUtils.ajax({
+					url: KM_BASE_URL + CONTACT_NAME_URL,
+					data: data,
+					async: false,
+					global: false,
+					type: 'get',
+					success: function (data) {	
+						MCK_CONTACT_NAME_MAP[userId] = data[userId];					
+						callback(data);
+					},
+					error: function (err) { 
+						
+					}
+				});								
 			};
 
 			_this.fetchContacts = function (params) {
