@@ -1,7 +1,6 @@
 var KM_GROUP_MAP = [];
 var KM_CLIENT_GROUP_MAP = [];
 var KM_ASSIGNE_GROUP_MAP = [];
-var KOMMUNICATE_CONSTANTS={}
 (function ($kmApplozic, w, d) {
 	"use strict";
 	var default_options = {
