@@ -1388,7 +1388,7 @@ const MESSAGE_CONTENT_TYPE = {
                     </g>
                 </g>
                 </svg></div>`;
-                var customLauncherHtml =  `<div id="launcher-svg-container" class="vis" style ="white-space: initial;">
+                var customLauncherHtml =  `<div id="launcher-svg-container" class="vis" style ="white-space: nowrap;">
                 `+CUSTOM_CHAT_LAUNCHER+`
                 </div>`
                   if (isAnonymousChat) {
