@@ -5695,13 +5695,14 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	vertical-align: baseline;
 }
 .mck-agent-image-container .mck-agent-status-indicator {
-	position: absolute;
-    bottom: 1px;
-	right: 0;
-	width: 10px;
-	height: 10px;
-	border-radius: 50%;
-	border: solid 2.5px #716fb3;	
+    position: absolute;
+    bottom: -3px;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: solid 2.5px #716fb3;
+    background: #aaa;	
 }
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
 	background-color: #2bef84;
