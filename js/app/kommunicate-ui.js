@@ -76,7 +76,7 @@ KommunicateUI={
         $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", fileMeta.url);
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
-        if(file.type.includes("image/")) {
+        if(file.type.indexOf("image/") != -1) {
             $file_box.removeClass('vis').addClass('n-vis');
             $mck_file_upload.attr("disabled", false);
         } else {
