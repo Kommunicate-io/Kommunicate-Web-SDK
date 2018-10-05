@@ -737,7 +737,7 @@ body {
     text-overflow: ellipsis;
 }
 
-.km-sidebar-user-emailnotfound{
+.km-sidebar-user-emailnotfound,.km-sidebar-user-numbernotfound{
 	font-size: 14px!important;
     font-weight: 300!important;
     font-style: normal!important;

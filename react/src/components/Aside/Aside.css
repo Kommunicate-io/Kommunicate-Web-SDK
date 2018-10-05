@@ -536,7 +536,7 @@ ul#km-group-search-list li {
     text-align: center;
     margin: 0 auto;
 }
-.km-sidebar-user-email {
+.km-sidebar-user-email , .km-sidebar-user-number {
     text-align: center;
     margin-bottom: 0px;
   }
@@ -812,6 +812,9 @@ margin-bottom: 0!important;
     letter-spacing: 0.4px;
     text-align: left;
     color: #4831d9;
+  }
+  .km-sidebar-contact-svg{
+    vertical-align: text-top;
   }
   
   /* */
