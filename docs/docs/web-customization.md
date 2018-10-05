@@ -10,7 +10,7 @@ Customize the chat icon by passing  `chatLauncherHtml: your html for chat icon` 
 ```
      var kommunicateSettings = {"appId": appId,
 
-            "chatLauncherHtml": "<img src='https://api.kommunicate.io/img/logo02.svg' width='70px' height='70px'/>",
+            "chatLauncherHtml": "<img src='https://api.kommunicate.io/img/logo02.svg'/>",
 
             "agentId": agentId,
             "groupName": groupName,

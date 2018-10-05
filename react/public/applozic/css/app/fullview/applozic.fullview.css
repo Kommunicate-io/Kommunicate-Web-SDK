@@ -1509,7 +1509,9 @@ ol, ul {
 	word-wrap: break-word;
 	position: relative;
 	max-width:350px;
+	font-weight: 400!important;
 }
+
 
 .km-msg-content img {
 	max-width: 225px !important;

@@ -1679,6 +1679,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .km-progress-value {
 	stroke: #fff;
 	stroke-linecap: round;
+	transform: rotate(-90deg);
+    transform-origin: center;
 }
 .km-progress-meter-input {
 	visibility: hidden;
@@ -5575,6 +5577,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	box-shadow: none;
 	line-height: inherit;
 	padding: 0 3px;
+	width: 15px;
 }
 .mck-contact-list .mck-cont-name {
 	display: flex;
@@ -5622,6 +5625,10 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	font-size: 12px;
 	color: rgba(234, 61, 61, 0.87);
 	background-color: #fff;
+}
+.km-progress-stop-upload-icon {
+	transform-origin: center;
+    transform: scale(0.9, 0.9);
 }
 
 .mck-failed-text + .mck-sending-failed {

@@ -1008,7 +1008,7 @@ const deleteUserByUserId = (userNames) => {
     headers: headers
   })).then(response => {
     if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
-      return response;
+      return response.data;
     }
   }).catch(err => {
     throw { message: err };
