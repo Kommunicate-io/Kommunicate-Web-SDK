@@ -758,7 +758,7 @@ ul#km-group-search-list li {
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
 .km-sidebar-user-numbernotfound{
-    width: 125px;
+    width: 100%;
     height: 16px;
     font-family: Roboto;
     font-size: 14px;
@@ -816,6 +816,17 @@ margin-bottom: 0!important;
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }
+
+#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit{
+     text-align: left;
+     width: 100%;
+ }
+
+#km-phone-submit ,#km-email-submit{
+        text-align: left;
+        position: relative;
+        width: 100%;
+}
   
   /* */
   
