@@ -377,6 +377,11 @@ class Integration extends Component {
     })
     return (
       <div className="animated fadeIn ">
+      <div className="km-settings-banner">
+      {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
+                <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
+              }
+              </div>
         <div className="km-heading-wrapper">
           <SettingsHeader />
           <button className="km-button km-button--primary teammates-add-member-btn" onClick={this.onOpenModal} disabled={this.state.loggedInUserRoleType == ROLE_TYPE.AGENT && true}>+ Add a team member</button>
@@ -384,9 +389,7 @@ class Integration extends Component {
         <div className="row teammate-table">
           <div className="col-md-12">
             <div className="card">
-              {this.state.loggedInUserRoleType == ROLE_TYPE.AGENT &&
-                <Banner indicator={"warning"} isVisible={false} text={"You need admin permissions to manage your team"} />
-              }
+             
               <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.onCloseModal} style={customStyles} ariaHideApp={false} >
                 { !this.state.restrictInvite &&
                   <div className="teammates-add-member-modal-wrapper">

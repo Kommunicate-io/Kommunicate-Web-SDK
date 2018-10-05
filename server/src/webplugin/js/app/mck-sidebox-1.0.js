@@ -1398,6 +1398,7 @@ const MESSAGE_CONTENT_TYPE = {
                   }
                   
                     };
+          
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {
@@ -2080,6 +2081,7 @@ const MESSAGE_CONTENT_TYPE = {
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
+                        document.getElementById('launcher-agent-img-container').classList.remove('vis');
                         if(typeof CUSTOM_CHAT_LAUNCHER !== 'undefined'){
                           document.getElementById("mck-sidebox-launcher").childNodes[0].childNodes[0].classList.remove('n-vis');
                         }
@@ -2924,7 +2926,8 @@ const MESSAGE_CONTENT_TYPE = {
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, true);
                             return
                         }
-                        if(FILE_META && (FILE_META[0].contentType.includes("image/"))) {
+                        if(FILE_META && (FILE_META[0].contentType.indexOf("image/") != -1 )) {
+                            $applozic(".mck-timestamp-"+messagePxy.key).removeClass("vis").addClass("n-vis");
                             KommunicateUI.displayProgressMeter(messagePxy.key);
                             KommunicateUI.updateAttachmentTemplate(messagePxy, messagePxy.key);
                             if(typeof callback =="function"){
@@ -3045,7 +3048,8 @@ const MESSAGE_CONTENT_TYPE = {
                     data: w.JSON.stringify(messagePxy),
                     contentType: 'application/json',
                     success: function (data) {
-                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.includes("image/")) {
+                        if(messagePxy && typeof messagePxy.fileMeta === 'object' && messagePxy.fileMeta.contentType.indexOf("image/") != -1) {
+                            $applozic(".mck-timestamp-"+messagePxy.key).removeClass("n-vis").addClass("vis");
                             KommunicateUI.updateAttachmentStopUploadStatus(messagePxy.key, false);
                         }
                         var currentTabId = $mck_msg_inner.data('mck-id');
@@ -3986,7 +3990,7 @@ const MESSAGE_CONTENT_TYPE = {
                                 '<div class="mck-msg-box-rich-text-container ${kmRichTextMarkupVisibility} ${containerType}">'+'<div class="email-message-indicator ${emailMsgIndicatorExpr}"><span><svg xmlns="http://www.w3.org/2000/svg" width="12" height="11" viewBox="0 0 12 11"><path fill="#BCBABA" fill-rule="nonzero" d="M12 3.64244378L7.82144281 0v2.08065889h-.0112584c-1.2252898.0458706-2.30872368.23590597-3.23022417.58877205-1.03614858.39436807-1.89047392.92952513-2.56710409 1.60169828-.53552482.53356847-.95771502 1.14100649-1.27501442 1.8173497-.08349984.17792235-.16437271.35624185-.23304899.54349718-.32987128.89954044-.56029331 1.87632619-.49311816 2.87991943C.02781163 9.76011309.1572833 10.5.30795828 10.5c0 0 .18801538-1.03695368.94795775-2.22482365.23267371-.36259621.50437656-.70533502.81698495-1.02186205l.0350887.03038182v-.06533086c.19420749-.19301397.40079923-.37828356.63497407-.54588006.63272238-.45433742 1.40748832-.8141536 2.32279668-1.0796471.74962217-.21763716 1.60432278-.34412883 2.54909064-.39019801h.20809286l-.00150112 2.08085746L12 3.64244378z"/></svg></span><span>via email</span></div>{{html kmRichTextMarkup}}</div>'+
                             '</div>'+
                         '</div>'+
-                        '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs"><span class="mck-created-at-time">${createdAtTimeExpr}</span> <span class="mck-message-status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed.</p></span></div>'+
+                        '<div class="${msgFloatExpr}-muted mck-text-light mck-text-xs mck-t-xs ${timeStampExpr} vis"><span class="mck-created-at-time">${createdAtTimeExpr}</span> <span class="mck-message-status"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.06103 10.90199" width="24" height="24" class="${statusIconExpr} mck-message-status"><path fill="#859479" d="M16.89436.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.5.5 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.6a.436.436 0 0 0-.076-.609z" class="mck-delivery-report--delivered-read"></path><path fill="#859479" d="M12.00236.53548l-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.2a.38.38 0 0 1-.577.039l-2.614-2.558a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.6A.435.435 0 0 0 12.00109.536l-.00073-.00052z"  class="mck-delivery-report--sent"></path><path fill="#859479" d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" class="mck-delivery-report--pending"></path></svg><p class="mck-sending-failed">Sending failed</p></span></div>'+
                 '</div>'+
 
                 '<div class="n-vis mck-context-menu">'+
@@ -4427,6 +4431,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var floatWhere = 'mck-msg-right';
                 var statusIcon = 'mck-pending-icon';
                 var contactExpr = 'vis';
+                var timeStamp = "mck-timestamp-"+msg.key;
                 if (msg.type === 0 || msg.type === 4 || msg.type === 6) {
                     floatWhere = 'mck-msg-left';
                 }
@@ -4527,6 +4532,7 @@ const MESSAGE_CONTENT_TYPE = {
                     msgImgExpr: imgsrctag,
                     nameTextExpr: nameTextExpr,
                     msgFloatExpr: floatWhere,
+                    timeStampExpr:timeStamp,
                     replyIdExpr: replyId,
                     createdAtTimeExpr: mckDateUtils.getDate(msg.createdAtTime),
                     msgFeatExpr: msgFeatExpr,
@@ -7622,7 +7628,7 @@ const MESSAGE_CONTENT_TYPE = {
                 $mck_file_input.on('change', function () {
                                         var file = $applozic(this)[0].files[0];
                                         var tabId = $mck_msg_inner.data('mck-id');
-                                        if(file.type.includes("image/") ){
+                                        if(file.type.indexOf("image/") != -1 ){
                                             Kommunicate.attachmentService.getFileMeta(file,tabId, function(file_meta, messagePxy,file){
                                                 FILE_META = file_meta
                                                 mckMessageService.sendMessage(messagePxy,file, function(msgProxy) {
@@ -8260,7 +8266,7 @@ const MESSAGE_CONTENT_TYPE = {
                 //     $mck_preview_name.html(displayName);
                 // }
                 // $mck_preview_icon.html(imgsrctag);
-                if(!imgsrctag.includes('/avatars/default.png')) {
+                if(!imgsrctag.indexOf('/avatars/default.png') != -1) {
                     $applozic("#launcher-agent-img-container").html(imgsrctag);
                     $applozic("#launcher-agent-img-container").addClass('vis').removeClass('n-vis');
                     $applozic("#launcher-svg-container").addClass('n-vis').removeClass('vis');
