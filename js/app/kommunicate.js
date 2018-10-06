@@ -45,7 +45,9 @@ $applozic.extend(true,Kommunicate,{
            "agentId":params.agentId,
            "assignee":assignee,
            "users": user,
-           "clientGroupId":params.clientGroupId
+           "clientGroupId":params.clientGroupId,
+           "isMessage": params.isMessage,
+           "isInternal": params.isInternal
        }
        
         Kommunicate.client.createConversation(conversationDetail,callback);
