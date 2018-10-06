@@ -1271,13 +1271,11 @@ const MESSAGE_CONTENT_TYPE = {
         _this.triggerMsgNotification = function() {
             if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
                 MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
-                    console.log("Hello from the Inside!"); 
                     var params = {
                         isMessage: false,
                         isInternal: true,
                     };
                     Kommunicate.startConversation({isMessage: false, isInternal: true}, function (response) {
-                        console.log("LOL!");
                     });
 
                 }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
