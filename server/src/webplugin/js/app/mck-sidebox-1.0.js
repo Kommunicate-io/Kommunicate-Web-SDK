@@ -6,6 +6,7 @@ var KM_PROGRESS_METER_CIRCUMFERENCE = 2 * Math.PI * KM_PROGRESS_METER_RADIUS;
 var count = 0 ;
 var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
+var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
 const MESSAGE_SOURCE = { DEVICE: 0, WEB: 1, ANDROID: 2, IOS: 3, PLATFORM: 4, DESKTOP_BROWSER: 5, MOBILE_BROWSER: 6, MAIL_INTERCEPTOR: 7 };
 const MESSAGE_CONTENT_TYPE = {
@@ -50,6 +51,7 @@ const MESSAGE_CONTENT_TYPE = {
         groupName: "Conversations",
         agentId: "",
         agentName: "",
+        msgTriggerTimeout: 0,
         labels: {
             'conversations.title': 'Conversations',
             'start.new': 'Start New Conversation',
@@ -296,6 +298,9 @@ const MESSAGE_CONTENT_TYPE = {
                     case 'mckLaunchSideboxChat':
                         return oInstance.mckLaunchSideboxChat();
                         break;
+                    case 'triggerMsgNotification':
+                        return oInstance.triggerMsgNotification();
+                        break;
                     case 'openChat':
                         return oInstance.openChat(params);
                         break;
@@ -466,6 +471,7 @@ const MESSAGE_CONTENT_TYPE = {
         var USER_TYPE_ID = (typeof appOptions.userTypeId === "number") ? appOptions.userTypeId : false;
         var CONVERSATION_STATUS_MAP = ["DEFAULT", "NEW", "OPEN"];
         var BLOCK_STATUS_MAP = ["BLOCKED_TO", "BLOCKED_BY", "UNBLOCKED_TO", "UNBLOCKED_BY"];
+        var MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT = (typeof appOptions.msgTriggerTimeout === "number") ? appOptions.msgTriggerTimeout : 0;
         var TAB_FILE_DRAFT = new Object();
         var MCK_GROUP_ARRAY = new Array();
         var MCK_CONTACT_ARRAY = new Array();
@@ -592,6 +598,7 @@ const MESSAGE_CONTENT_TYPE = {
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
+            $applozic.fn.applozic("triggerMsgNotification");
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -1260,6 +1267,21 @@ const MESSAGE_CONTENT_TYPE = {
                 return 'Unsupported Format. Please check format';
             }
         };
+
+        _this.triggerMsgNotification = function() {
+            if(MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT != 0) {
+                MCK_TRIGGER_MSG_NOTIFICATION_PARAM = setTimeout(function(){ 
+                    var params = {
+                        isMessage: false,
+                        isInternal: true,
+                    };
+                    Kommunicate.startConversation({isMessage: false, isInternal: true}, function (response) {
+                    });
+
+                }, MCK_TRIGGER_MSG_NOTIFICATION_TIMEOUT);
+            }
+        }
+
         _this.initGroupTab = function (params) {
             if (typeof params === "object") {
                 var users = params.users;
@@ -1398,7 +1420,7 @@ const MESSAGE_CONTENT_TYPE = {
                   }
                   
                     };
-          
+
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
                 var userPxy = {
@@ -2068,6 +2090,7 @@ const MESSAGE_CONTENT_TYPE = {
                     if ($applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).hide();
                     }
+                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 });
                 mckMessageLayout.initSearchAutoType();
                 $mck_contact_search.click(function () {
@@ -2077,7 +2100,7 @@ const MESSAGE_CONTENT_TYPE = {
                         // Kommunicate.triggerEvent(KommunicateConstants.EVENT_IDS.WELCOME_MESSAGE, { groupId: conversationId, applicationId: MCK_APP_ID });
                     });
                     $applozic("#mck-msg-new").attr("disabled", true);
-
+                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
                 });
                 $applozic(d).on('click', '#mck-sidebox-launcher', function () {
                         document.getElementById('launcher-agent-img-container').classList.add('n-vis');
@@ -2273,6 +2296,7 @@ const MESSAGE_CONTENT_TYPE = {
                         return;
                     }
                     $applozic.fn.applozic("mckLaunchSideboxChat");
+                    clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
 
                 });
                 $applozic("#km-form-chat-login").submit(function (e) {
