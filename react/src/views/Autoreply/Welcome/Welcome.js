@@ -9,6 +9,7 @@ import axios from 'axios';
 import {acEventTrigger} from '../../../utils/ActiveCampaign';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
 import Checkbox from '../../../components/Checkbox/Checkbox'
+import { connect } from 'react-redux'
 
 class Welcome extends Component{
   constructor(props){
@@ -290,6 +291,7 @@ class Welcome extends Component{
     });
     return (
       <div className="animated fadeIn welcome-message-wrapper">
+      <p>{JSON.stringify(this.props.applicationInfo)}</p>
         <SettingsHeader />    
           <div className="welcome-message-action-wrapper">
           <h4 className="welcome-message-title">Show welcome message to users</h4>
@@ -329,4 +331,10 @@ class Welcome extends Component{
   }
 }
 
-export default Welcome;
+// export default Welcome;
+const mapStateToProps = state => ({
+  applicationInfo: state.reducerA.applicationInfo, 
+});
+const mapDispatchToProps = dispatch => ({}) ;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Welcome)
