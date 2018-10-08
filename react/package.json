@@ -51,6 +51,7 @@
     "react-tooltip": "3.4.0",
     "reactstrap": "6.3.0",
     "redux": "4.0.0",
+    "redux-persist": "5.10.0",
     "save": "2.3.1",
     "segmented-control": "0.1.9",
     "semantic-ui-css": "2.3.1",
