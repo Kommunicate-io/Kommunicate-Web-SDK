@@ -598,7 +598,6 @@ const MESSAGE_CONTENT_TYPE = {
                 mckVideoCallringTone = ringToneService.loadRingTone(Kommunicate.BASE_URL[MCK_BASE_URL] + "/plugin/audio/applozic_video_call_ring_tone.mp3", notificationtoneoption);
                 mckCallService.init();
             }
-            $applozic.fn.applozic("triggerMsgNotification");
         };
         _this.reInit = function (optns) {
              // storing custum appOptions into session Storage.
@@ -1576,8 +1575,10 @@ const MESSAGE_CONTENT_TYPE = {
                             }
                         }
                     });
+                    
             }
             _this.onInitApp = function (data) {
+                var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
                 _this.setLabels();
                 $applozic('.applozic-launcher').each(function () {
@@ -1661,7 +1662,12 @@ const MESSAGE_CONTENT_TYPE = {
                 });
                 if(typeof KM_ASK_USER_DETAILS !== 'undefined'){
                   $applozic.fn.applozic("mckLaunchSideboxChat");
-                 }
+                } else {
+                    $applozic.fn.applozic("triggerMsgNotification");
+                    if($mck_sidebox.css('display') === 'block') {
+                        clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
+                    }
+                }
                 // calling Kommunicate for post initialization processing. error first style.
                 Kommunicate.postPluginInitialization(null,data);
                  // dispatch an event "kmInitilized".
@@ -8240,7 +8246,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
                 if (message.message) {
                     var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 82);
-                    (msg.length > 81) ? msg = msg + "..." : msg;
+                    (msg && msg.length > 81) ? msg = msg + "..." : msg;
                     // $mck_preview_msg_content.html('');
                     $mck_msg_preview_visual_indicator_text.html('');
                     $mck_msg_preview_visual_indicator_text.removeClass('mck-flexi');
