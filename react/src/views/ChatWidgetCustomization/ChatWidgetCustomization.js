@@ -5,7 +5,7 @@ import { ChromePicker } from 'react-color';
 import Notification from '../model/Notification';
 import {KmDefaultIcon , KmCustomIcon1, KmCustomIcon2, KmCustomIcon3, AgentIcon,UploadIconButton} from './ChatWidgetCustomizationAssets';
 import './ChatWidgetCustomization.css';
-import {sendProfileImage} from '../../utils/kommunicateClient';
+import {sendProfileImage,updateAppSetting,getAppSetting} from '../../utils/kommunicateClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
 
 
@@ -16,72 +16,112 @@ class ChatWidgetCustomization extends Component{
         this.state = {
             displayColorPicker: false,
             color:'#5c5aa7',
+            secondaryColor:"",
             currentIcon : <KmDefaultIcon />,
             chatWidgetImagefileObject: "",
             widgetImageLink: "",
             hasCustomImage : false,
             changesMade : false,
             iconIndex : 1,
-            currWidgetIcon: ""
+            currWidgetIcon: "",
+            customSettingsEnabled: false
+        }
+    }
+    componentWillMount(){
+        this.getwidgetSettings();
     }
 
-}
+    handleClick = () => {
+        this.setState({ displayColorPicker: !this.state.displayColorPicker })
+    };
 
+    handleClose = () => {
+        this.setState({ displayColorPicker: false })
+    };
 
-        handleClick = () => {
-            this.setState({ displayColorPicker: !this.state.displayColorPicker })
-        };
-
-        handleClose = () => {
-            this.setState({ displayColorPicker: false })
-        };
-
-        handleChange = (changedColor) => {
-            this.setState({ color: changedColor.hex , changesMade:true });   
-            
-        };
-        changeIcon = () =>{
-            this.setState.currentIcon = <KmCustomIcon1 />;
-            return(
-                this.state.currentIcon
-            );
-        };
-        uploadImage = () =>{
-            if( ( CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ){
-            let that=this;
-            document.getElementById("km-upload-chatwidget-image").addEventListener("change", function(){
-              that.setState({
-                chatWidgetImagefileObject: document.getElementById("km-upload-chatwidget-image").files[0]
-              });
-              document.getElementById("km-upload-chatwidget-image").value="";
-              that.uploadBotProfileImage(that.state.chatWidgetImagefileObject);
+    handleChange = (changedColor) => {
+        this.setState({ color: changedColor.hex , changesMade:true });   
+        
+    };
+    changeIcon = () =>{
+        this.setState.currentIcon = <KmCustomIcon1 />;
+        return(
+            this.state.currentIcon
+        );
+    };
+    uploadImage = () =>{
+        if( ( CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ){
+        let that=this;
+        document.getElementById("km-upload-chatwidget-image").addEventListener("change", function(){
+            that.setState({
+            chatWidgetImagefileObject: document.getElementById("km-upload-chatwidget-image").files[0]
             });
-        }else{
-            Notification.error("Only available in growth plan");
-        }
-            
-        };
-        uploadBotProfileImage = (file) => {
-            let that=this;
-            if (file) {
-              sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
-                .then(response => {
-                  if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
-                    that.setState({ widgetImageLink: response.data.profileImageUrl });
-                    Notification.info(response.data.message);
-                    that.setState({hasCustomImage : true, iconIndex : "image", changesMade:true});
-                  } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
-                    Notification.info(response.data.message)
+            document.getElementById("km-upload-chatwidget-image").value="";
+            that.uploadBotProfileImage(that.state.chatWidgetImagefileObject);
+        });
+    }else{
+        Notification.error("Only available in growth plan");
+    }
+        
+    };
+    uploadBotProfileImage = (file) => {
+        let that=this;
+        if (file) {
+            sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
+            .then(response => {
+                if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
+                that.setState({ widgetImageLink: response.data.profileImageUrl });
+                Notification.info(response.data.message);
+                that.setState({hasCustomImage : true, iconIndex : "image", changesMade:true});
+                } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
+                Notification.info(response.data.message)
 
-                  }
-                })
-                .catch(err => {
-                  Notification.info("Error while uploading")
-                })
-            } else {
-              Notification.info("No file to upload")
+                }
+            })
+            .catch(err => {
+                Notification.info("Error while uploading")
+            })
+        } else {
+            Notification.info("No file to upload")
+        }
+        };
+        
+    updateWidgetSettings = () => {
+        console.log("abcd");
+        var widgetSettingsJson = {
+            "widgetTheme":{
+                "primaryColor": this.state.color,
+                "secondaryColor": this.state.secondaryColor,
+                "widgetImageLink": this.state.widgetImageLink,
+                "iconIndex": this.state.iconIndex,
+                "customSettingsEnabled": this.state.customSettingsEnabled
             }
-          };
+        };
+        updateAppSetting("", widgetSettingsJson).then(response => {
+            Notification.info(response.data.message)
+            }).catch(err => {
+            Notification.info(err)
+            })
+    };
+    
+    getwidgetSettings = () => {
+        return Promise.resolve(getAppSetting().then(response => {
+            if(response.status == 200) {
+                console.log(response.data.response.widgetTheme);
+                var widgetThemeResponse = response.data.response.widgetTheme;
+                this.setState({
+                    color: widgetThemeResponse.primaryColor,
+                    secondaryColor: widgetThemeResponse.secondaryColor,
+                    widgetImageLink: widgetThemeResponse.widgetImageLink,
+                    iconIndex: widgetThemeResponse.iconIndex,
+                    customSettingsEnabled: widgetThemeResponse.customSettingsEnabled
+                });
+                console.log(this.state.iconIndex);
+            }
+            })).catch(err => {
+            // console.log(err);
+            })
+    }
 
 
     render(){
@@ -121,7 +161,7 @@ class ChatWidgetCustomization extends Component{
                             <button ><UploadIconButton /></button></div>
                         </div>
                         <div className="km-logo-picker">
-                        <button href="#" className="km-button km-button--primary" disabled ={!this.state.changesMade}>Save Changes</button>
+                        <button href="#" className="km-button km-button--primary" onClick={this.updateWidgetSettings} disabled ={!this.state.changesMade}>Save Changes</button>
                         </div>
                     </div>
                     <div className="col-md-6">
