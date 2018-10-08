@@ -9203,8 +9203,6 @@ hr.transparent {
   text-decoration: none!important;
 }
 .header-user-email {
-  /* width: 87px; */
-  height: 11px;
   font-size: 11px;
   letter-spacing: 0.7px;
   color: #696464;
@@ -10703,6 +10701,11 @@ input:required {
   text-overflow: ellipsis;
   max-width: 200px;
 }
+.km-text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /* Sidebar Profile Dropdown New Design */
 .sidebar-profile-dropdown--fixed {
   position: fixed;
@@ -10714,6 +10717,7 @@ input:required {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.32);
   z-index: 1000;
   background-color: #fff;
+  max-width: 170px;
 }
 .sidebar-profile-dropdown button, .sidebar-profile-dropdown {
   padding: 0 !important;
@@ -10751,6 +10755,18 @@ input:required {
   background: transparent !important;
   text-decoration: none;
   color: #1c2429;
+}
+.sidebar-profile-dropdown--fixed button#go-away {
+  padding: 10px 0px !important;
+}
+.sidebar-profile-dropdown--fixed button#go-away span[data-tip='true'] {
+  padding: 0px 20px;
+  display: block;
+}
+.sidebar-profile-dropdown--fixed .dropdown-item:active {
+  background-color: #eceff1;
+  text-decoration: none;
+  color: #263238;
 }
 .sidebar .nav .nav-item .sidebar-profile-dropdown:hover {
   border-radius: 50%;
