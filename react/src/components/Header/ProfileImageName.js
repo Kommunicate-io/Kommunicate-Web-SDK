@@ -5,18 +5,19 @@ import { NavLink } from 'react-router-dom';
 import {goAway, goOnline, updateUserStatus} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import { COOKIES, USER_STATUS } from '../../utils/Constant';
+import ReactTooltip from 'react-tooltip';
 
 class TurnOnAwayMode extends Component {
   render() {
     return(
-      <span>Turn on <strong>Away</strong> mode</span>
+        <span data-for='away-mode' data-tip className={this.props.className}>Turn on <strong>Away</strong> mode</span>
     );
   }
 }
 class TurnOnOnlineMode extends Component {
   render() {
     return(
-      <span><span className="away">Away</span> <span>Go <strong>Online</strong></span></span>
+      <span data-for='online-mode' data-tip className={this.props.className}><span className="away">Away</span> <span>Go <strong>Online</strong></span></span>
     );
   }
 }
@@ -72,6 +73,8 @@ export default class ProfileImageName extends Component {
           this.setState({
             status: status,
             changeStatusLabel: status ? <TurnOnOnlineMode /> : <TurnOnAwayMode />
+          }, () => {
+            ReactTooltip.rebuild()
           })
         }).catch(err => {
           console.log("Error while updating user status")
@@ -79,6 +82,9 @@ export default class ProfileImageName extends Component {
       }
       goToProfile(e) {
         window.appHistory.push("/settings/profile");
+      }
+      goToBilling(e) {
+        window.appHistory.push("/settings/billing");
       }
       goToApplicationsPage(e) {
         window.location.assign("/apps");
@@ -88,21 +94,24 @@ export default class ProfileImageName extends Component {
         event.preventDefault();
         this.setState({ showDropdownMenu: true }, () => {
           document.addEventListener('click', this.hideDropdownMenu);
+        }, () => {
+          ReactTooltip.rebuild()
         });
       }
 
       hideDropdownMenu(event) {
-        var elem = document.getElementById("go-away");
+        var elem = document.getElementById("go-away"), 
+           elem2 = document.querySelector("span[data-tip]");
                   
           if (this.dropdownMenu.contains(event.target)) {
 
-            if(event.target !== elem) {
-              this.setState({ showDropdownMenu: false }, () => {
-                document.removeEventListener('click', this.hideDropdownMenu);
-              });
-            } else {
+            if(event.target === elem || event.target === elem2) {
               this.setState({ showDropdownMenu: true }, () => {
                 document.addEventListener('click', this.hideDropdownMenu);
+              });
+            } else {
+              this.setState({ showDropdownMenu: false }, () => {
+                document.removeEventListener('click', this.hideDropdownMenu);
               });
             }
           } else  {
@@ -159,41 +168,41 @@ export default class ProfileImageName extends Component {
                   <span className="d-md-down-none" hidden={this.props.hideDisplayName}>{this.props.displayName}</span>
                 </button>
         
-        {
-          this.state.showDropdownMenu
-            ? (
+        
               <div tabIndex="-1" aria-hidden="false" role="menu"
-                className="menu dropdown-menu-right sidebar-profile-dropdown--fixed"
+                className={this.state.showDropdownMenu ? "menu dropdown-menu-right sidebar-profile-dropdown--fixed" : "n-vis"}
                 ref={(element) => {
                   this.dropdownMenu = element;
                 }}
               >
-                <button className="dropdown-item" type="button" tabIndex="0">
-                  <p className="header-user-name">{this.props.displayName}</p>
-                  <p className="header-user-email">{CommonUtils.getUserSession().userName}</p>
+                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}>
+                  <p className="header-user-name km-text-overflow-ellipsis">{this.props.displayName}</p>
+                  <p className="header-user-email km-text-overflow-ellipsis">{CommonUtils.getUserSession().userName}</p>
                   {/* <p><span className="header-user-online"> You are online</span></p> */}
                   {/* <span className="header-user-online"> {CommonUtils.getUserSession().availabilitStatus === 1 ? "You are online" : "You are away"}</span><span className={this.state.status === "1" ? "online-indicator" : null}></span> */}
                 </button>
 
-                <button className={userAppsList > 0 ? `dropdown-item app-list-dropdown-item vis` : "dropdown-item n-vis"} type="button" tabIndex="0" onClick={this.goToApplicationsPage}> 
-                  <p className="application-name">{userSession.application.name}</p>
-                  <p className="switch-app-text">Switch Application</p>
+                <button className={userAppsList > 0 ? "dropdown-item app-list-dropdown-item vis" : "dropdown-item n-vis"} type="button" tabIndex="0" onClick={this.goToApplicationsPage}> 
+                  <p className="application-name km-text-overflow-ellipsis">{userSession.application.name}</p>
+                  <p className="switch-app-text km-text-overflow-ellipsis">Switch Application</p>
                 </button>                
 
                 <button className="dropdown-item" type="button" tabIndex="0" id="go-away" onClick={this.toggleStatus}>
-                  {CommonUtils.getUserStatus() === 1 ? <TurnOnAwayMode /> : <TurnOnOnlineMode />}
+                  {CommonUtils.getUserStatus() === 1 ? <div><TurnOnAwayMode className="vis" /><TurnOnOnlineMode className="n-vis" /></div> : <div><TurnOnAwayMode className="n-vis" /><TurnOnOnlineMode className="vis" /></div>}
                 </button>
 
-                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button>
+                {/* <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToProfile}> Profile </button> */}
+
+                <button className="dropdown-item" type="button" tabIndex="0" onClick={this.goToBilling}> Billing </button>
 
                 <button className="dropdown-item" type="button" tabIndex="0"  onClick={this.logout} id="logout"> Logout </button>
               </div>
-            )
-            : (
-              null
-            )
-        }
-
+              <ReactTooltip id='away-mode' type='dark' effect='solid' data-offset="{'left': 10}">
+                <span>In away mode, you will be offline from all the conversation <br/> and no new conversation will be assigned to you.</span>
+              </ReactTooltip>
+              <ReactTooltip id='online-mode' type='dark' effect='solid' data-offset="{'left': 10}">
+                <span>In online mode, you will appear online in all the conversations <br/> and new conversation will be assigned to you.</span>
+              </ReactTooltip>
             </div>
         );
     }
