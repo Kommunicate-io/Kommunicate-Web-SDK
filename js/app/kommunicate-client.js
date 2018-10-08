@@ -65,7 +65,8 @@ Kommunicate.client={
                 CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
-                HIDE: "true"
+                HIDE: "true",
+                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false"
             },
             callback: function (response) {
                 console.log("response", response);
