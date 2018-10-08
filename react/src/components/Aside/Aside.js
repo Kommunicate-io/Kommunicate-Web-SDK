@@ -231,7 +231,7 @@ class Aside extends Component {
 
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
-      window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+      window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED ? window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN : this.state.group.metadata.CONVERSATION_STATUS);
     } else {
       window.$kmApplozic("#conversation-status").val(0);
     }

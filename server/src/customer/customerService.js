@@ -7,6 +7,7 @@ const logger = require('../utils/logger');
 const { SUBSCRIPTION_PLAN } = require('../utils/utils');
 const chargebeeService = require('../chargebee/chargebeeService');
 const userService = require('../users/userService');
+const botClientService = require('../utils/botPlatformClient');
 
 
 const createCustomer = (customer, application, transaction) => {
@@ -92,12 +93,22 @@ const createApplication = (application) => {
 const reactivateAgents = async function (appId) {
     let customer = await getCustomerByApplicationId(appId);
     if (customer.subscription && customer.subscription != SUBSCRIPTION_PLAN.initialPlan) {
+        let users = [];
         let result = await chargebeeService.getSubscriptionDetail(customer.billingCustomerId);
-        let users = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC']])
+        let dbUsers = await userService.getUsersByAppIdAndTypes(appId, null, [['type', 'DESC']])
+        let admin = dbUsers.filter(user => { return user.type == 3 });
+        let agents = dbUsers.filter(user => { return user.type == 1 });
+        let bots = dbUsers.filter(user => { return user.type == 2 && user.userName != 'bot' });
+        users.push(...admin, ...agents, ...bots);
         for (var i = 0; i < result.subscription.plan_quantity; i++) {
-            let dataToBeUpdated = {status: 1};
-            users[i].type ==2 &&  (dataToBeUpdated["bot_availability_status"]=1)
+            let dataToBeUpdated = { status: 1 };
+            users[i].type == 2 && (dataToBeUpdated["bot_availability_status"] = 1)
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
+            try {
+                users[i].type == 2 && botClientService.updateBot({ 'key': users[i].userKey, 'status': 1 })
+            } catch (error) {
+                console.log("bot updation error", error)
+            }
         }
     }
     return "success";

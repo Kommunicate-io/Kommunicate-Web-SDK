@@ -389,16 +389,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var mckContactService = new MckContactService();
 		var mckNotificationService = new MckNotificationService();
 		var $mckChatLauncherIcon = $kmApplozic(".chat-launcher-icon");
-		var KM_CONVERSATION_STATE = {
-			INITIAL: -1,
-			OPEN: 0,
-			PROGRESS: 1,
-			CLOSED: 2,
-			SPAM: 3,
-			DUPLICATE: 4,
-			ARCHIVE: 5,
-			UNRESPONDED: 6
-		}
 		w.MCK_OL_MAP = new Array();
 
 		var CONVERSATION_SECTION_MAP = {
@@ -2851,7 +2841,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KM_CONVERSATION_STATE.OPEN+"&status="+KM_CONVERSATION_STATE.UNRESPONDED,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
 						mckMessageService.addContactInConversationList(data);
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
@@ -2902,7 +2892,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KM_CONVERSATION_STATE.OPEN+"&status="+KM_CONVERSATION_STATE.UNRESPONDED,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
