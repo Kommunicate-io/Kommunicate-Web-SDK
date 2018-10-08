@@ -115,7 +115,11 @@ $(document).ready(function() {
                                             break;
                                             case 'kmClearbitData':
                                                 $kmApplozic("#km-clearbit-title-panel, .km-user-info-inner").addClass("vis").removeClass("n-vis");
-                                                $kmApplozic("#km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+                                                if($kmApplozic("#km-user-info-metadata-wrapper").text().length == 0) {
+                                                    $kmApplozic("#km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+                                                } else {
+                                                    $kmApplozic("#km-sidebar-user-info-wrapper").addClass("vis").removeClass("n-vis");
+                                                }
                                                 displayCustInfo(value);
                                             break;
                                             default :
