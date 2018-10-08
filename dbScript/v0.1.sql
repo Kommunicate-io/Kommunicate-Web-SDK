@@ -140,4 +140,4 @@ alter table applications add column status tinyint default 1;
 KM-1489 Chat widget color and launcher icon setting
 When executed this script will add widget_theme column in app_setings table (kommunicate_test DB) with data-type JSON.
 */
-ALTER TABLE `kommunicate_test`.`app_settings` ADD COLUMN `widget_theme` JSON
+ALTER TABLE `app_settings` ADD COLUMN `widget_theme` JSON
