@@ -290,6 +290,7 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
+            options["widgetSettings"]=data.widgetTheme;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {
