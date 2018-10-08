@@ -21,33 +21,37 @@ const addMemberIntoConversation = (data) => {
                         let userIds = agents.userIds;
                         let agentIds = agents.agentIds;
                         header = agents.header;
-                        if (customer.botRouting) {
-                            if (agents.assignTo != customer.userName) {
-                                applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
-                                assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                        return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
+                            if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
+                                return { code: "SUCCESS", data: agents }
                             }
-                            return { code: "SUCCESS", data: agents }
-                        } else if (!customer.agentRouting) {
-                            agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
-                            let groupInfo = { groupDetails: userIds };
-                            logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
-                            return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
-                                logger.info('response', response.data)
-                                return { code: "SUCCESS", data: agents };
-                            });
-                        } else {
-                            logger.info("adding assignee in round robin fashion");
-                            return inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
-                                let onlineUser = onlineUsers.find(agent => agent.connected);
-                                if (onlineUser) {
-                                    console.log("online user: ", onlineUser)
-                                    return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
-                                } else {
-                                    return assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                            if (customer.botRouting) {
+                                if (agents.assignTo != customer.userName) {
+                                    applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
+                                    assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                                 }
-                            });
-                        }
-                        return agents;
+                                return { code: "SUCCESS", data: agents }
+                            } else if (!customer.agentRouting) {
+                                agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                                let groupInfo = { groupDetails: userIds };
+                                logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
+                                return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
+                                    logger.info('response', response.data)
+                                    return { code: "SUCCESS", data: agents };
+                                });
+                            } else {
+                                logger.info("adding assignee in round robin fashion");
+                                return inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
+                                    let onlineUser = onlineUsers.find(agent => agent.connected);
+                                    if (onlineUser) {
+                                        console.log("online user: ", onlineUser)
+                                        return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
+                                    } else {
+                                        return assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                                    }
+                                });
+                            }
+                        })
                     })
                 }
             })
@@ -55,7 +59,7 @@ const addMemberIntoConversation = (data) => {
             return { code: "SUCCESS", data: 'customer not found' };
         }
     }).catch(err => {
-        logger.info("error during adding member into conversation" , err)
+        logger.info("error during adding member into conversation", err)
         return { code: "ERROR", data: 'error during adding member into conversation' };
     });
 }
@@ -76,14 +80,14 @@ const assingConversationInRoundRobin = (groupId, userIds, appId, header, onlineU
         return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
             if (group.metadata.CONVERSATION_ASSIGNEE != assignTo) {
                 let params = { "clientGroupIds": [groupId], "userIds": [group.metadata.CONVERSATION_ASSIGNEE] }
-                return assignConversationToUser(groupId, assignTo, appId, header).then(res=>{
-                   applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
-                   return assignTo;
-                })  
+                return assignConversationToUser(groupId, assignTo, appId, header).then(res => {
+                    applozicClient.removeGroupMembers(params, appId, header.apzToken, assignTo);
+                    return assignTo;
+                })
             }
             return;
         })
-    }).catch(err=>{
+    }).catch(err => {
         console.log("error: user fetching from cache", err)
         return;
     });
@@ -120,7 +124,7 @@ const assignToDefaultAgent = (groupId, appId, userId, header) => {
         metadata: { CONVERSATION_ASSIGNEE: userId }
     };
     logger.info("updating assignee for conversation : ", groupInfo);
-   return applozicClient.updateGroup(
+    return applozicClient.updateGroup(
         groupInfo,
         appId,
         header.apzToken,
@@ -219,18 +223,21 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                 isValidUser = true;
             }
             //swich acording to conditions of botRouting and agentRouting
-            return applozicClient.getGroupInfo(groupId, appId, new Buffer(bot[0].userName+":"+bot[0].accessToken).toString('base64'), true).then(group => {
+            return applozicClient.getGroupInfo(groupId, bot[0].apzToken, true).then(group => {
+                if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
+                    return "ASSIGNMENT SKIPED";
+                }
                 if (group && group.metadata && group.metadata.CONVERSATION_ASSIGNEE) {
                     let assignee = users.filter(user => {
                         return user.userName == group.metadata.CONVERSATION_ASSIGNEE;
                     });
                     if (assignee[0].type == 2) {
-                        if(isValidUser || !customer.agentRouting){
+                        if (isValidUser || !customer.agentRouting) {
                             return assignToDefaultAgent(groupId, appId, assignToUserId || customer.userName, agents.header).then(res => {
                                 sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.userName, assignee[0].apzToken);
                                 return "success";
                             });
-                        }else if (customer.agentRouting) {
+                        } else if (customer.agentRouting) {
                             inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
                                 let onlineUser = onlineUsers.find(agent => agent.connected);
                                 if (onlineUser) {
@@ -278,7 +285,7 @@ const sendAssigneeChangedNotification = (groupId, appId, assignTo, apzToken) => 
             category: "ARCHIVE",
             skipBot: true
         }, botHeaders);
-    }).catch(err=>{
+    }).catch(err => {
         return;
     });
 }
