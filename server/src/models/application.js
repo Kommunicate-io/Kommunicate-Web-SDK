@@ -19,7 +19,7 @@ let application = function (sequelize, DataTypes) {
     status: {
       type: DataTypes.INTEGER,
       field: 'status',
-      allowNull: false
+      defaultValue: 1
     }
   }, {
       underscored: true,
