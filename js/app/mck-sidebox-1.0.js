@@ -1654,7 +1654,6 @@ const MESSAGE_CONTENT_TYPE = {
                     });
                 }
                 alFileService.init(data);
-                mckContactService.loadContacts();
                 alNotificationService.subscribeToServiceWorker();
                 ALStorage.setAppHeaders(data);
                 mckGroupService.loadGroups({
@@ -2581,15 +2580,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     $mck_no_gsm_text.removeClass('n-vis').addClass('vis');
                                 }
                             } else {
-                              alUserService.getUserStatus({
-                                'callback': mckGroupLayout.addMembersToGroupSearchList
-                            }, function(data){
-                              $applozic.each(data.users, function (i, user) {
-                                  var contact = mckMessageLayout.getContact('' + user.userId);
-                                 contact = (typeof contact === 'undefined') ? mckMessageLayout.createContactWithDetail(user) : mckMessageLayout.updateContactDetail(contact, user);
-                                  MCK_GROUP_MEMBER_SEARCH_ARRAY.push(contact.contactId);
-                              });
-                            });
+                                mckContactService.loadContacts();
                             }
                         } else {
                             $mck_group_admin_options.removeClass('vis').addClass('n-vis');
