@@ -22,26 +22,17 @@ class ChatWidgetCustomization extends Component{
             widgetImageLink: "",
             hasCustomImage : false,
             changesMade : false,
-            iconIndex : 1,
+            iconIndex : 1 ,
             currWidgetIcon: "",
             customSettingsEnabled: false
         }
-        this.widgetTheme = {
-            primaryColor : this.state.primaryColor,
-            secondaryColor : this.state.secondaryColor,
-            widgetImageLink : this.state.widgetImageLink,
-            iconIndex : this.state.iconIndex,
-            customSettingsEnabled : this.state.customSettingsEnabled
-        }
+       
     }
     componentWillMount(){
         this.getwidgetSettings();
     }
     componentDidMount() {
         this.setState(this.widgetTheme);
-        this.state.hasCustomImage ? "" : (document.getElementById("icon"+this.state.iconIndex).click());
-        this.setState({changesMade : false});
-        this.forceUpdate();
 
     }
 
@@ -101,12 +92,20 @@ class ChatWidgetCustomization extends Component{
         };
         
     updateWidgetSettings = () => {
+        this.widgetTheme = {
+            primaryColor : this.state.primaryColor,
+            secondaryColor : this.state.secondaryColor,
+            widgetImageLink : this.state.widgetImageLink,
+            iconIndex : this.state.iconIndex,
+            customSettingsEnabled : this.state.customSettingsEnabled
+        }
         var widgetSettingsJson = {
             "widgetTheme":this.widgetTheme
         };
         updateAppSetting("", widgetSettingsJson).then(response => {
             this.setState.changesMade = false;
-            Notification.info(response.data.message)
+            Notification.info(response.data.message);
+            this.setState({changesMade : false});
             }).catch(err => {
             Notification.info(err)
             this.setState.changesMade = false;
@@ -118,6 +117,8 @@ class ChatWidgetCustomization extends Component{
             if(response.status == 200) {
                 var widgetThemeResponse = response.data.response.widgetTheme;
                 this.setState(widgetThemeResponse);
+                widgetThemeResponse.iconIndex == "image"? this.setState({ hasCustomImage : true }) : (document.getElementById("icon"+this.state.iconIndex).click());
+                this.setState({changesMade : false});
             }
             })).catch(err => {
             // console.log(err);
