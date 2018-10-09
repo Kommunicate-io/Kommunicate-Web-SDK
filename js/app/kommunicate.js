@@ -26,31 +26,37 @@ $applozic.extend(true,Kommunicate,{
         });
     },
     startConversation: function (params, callback) {
-        params= typeof params=='object' ?params:{};
-        if(!params.agentId){
-            params.agentId  = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
+        params = typeof params == 'object' ? params : {};
+        if (!params.agentId && !params.agentIds) {
+            params.agentId = KommunicateUtils.getDataFromKmSession('appOptions').agentId;
         }
-        var user=[{"userId":params.agentId,"groupRole":1},{"userId":"bot","groupRole":2}];
-    
-        if(params.botIds){
+        var user = [{ "userId": "bot", "groupRole": 2 }];
+        if (params.agentIds) {
+            for (var i = 0; i < params.agentIds.length; i++) {
+                user.push({ "userId": params.agentIds[i], "groupRole": 1 });
+            }
+        } else {
+            user.push({ "userId": params.agentId, "groupRole": 1 });
+        }
+        if (params.botIds) {
             for (var i = 0; i < params.botIds.length; i++) {
-                user.push({"userId":params.botIds[i],"groupRole":2});
+                user.push({ "userId": params.botIds[i], "groupRole": 2 });
             }
         }
-        var groupName = params.conversationTitle || params.groupName||kommunicate._globals.conversationTitle||kommunicate._globals.groupName||kommunicate._globals.agentId;
-       var assignee = params.assignee || params.agentId;
+        var groupName = params.conversationTitle || params.groupName || kommunicate._globals.conversationTitle || kommunicate._globals.groupName || kommunicate._globals.agentId;
+        var assignee = params.assignee || params.agentId;
         var conversationDetail = {
-           "groupName": groupName,
-           "type":10,
-           "agentId":params.agentId,
-           "assignee":assignee,
-           "users": user,
-           "clientGroupId":params.clientGroupId,
-           "isMessage": params.isMessage,
-           "isInternal": params.isInternal
-       }
-       
-        Kommunicate.client.createConversation(conversationDetail,callback);
+            "groupName": groupName,
+            "type": 10,
+            "agentId": params.agentId,
+            "assignee": assignee,
+            "users": user,
+            "clientGroupId": params.clientGroupId,
+            "isMessage": params.isMessage,
+            "isInternal": params.isInternal,
+            "skipRouting": params.skipRouting
+        }
+        Kommunicate.client.createConversation(conversationDetail, callback);
     },
     openConversationList: function () {
         window.$applozic.fn.applozic('loadTab', '');
