@@ -170,7 +170,7 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-
+   
     return (
       <div className="app" suppressContentEditableWarning={true}>
         {/* <Header
@@ -191,7 +191,7 @@ class Full extends Component {
               <Switch >
                 <Route path="/dashboard" name="Dashboard"  component={Dashboard}/>
                 <Route exact path="/users" name="Tables" component={Users}/>
-                <Route exact path="/conversations" name="Conversations" component={Conversations}/>
+                <Route exact ={false} path="/conversations" name="Conversations" component={Conversations}/>  
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
                 <Route exact path="/settings/profile" name="Admin" render={()=>{

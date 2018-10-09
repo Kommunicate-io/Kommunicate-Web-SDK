@@ -2780,7 +2780,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
-
+				let groupId = window.location.href.split("/").pop();
+				if(!status && groupId) {
+					mckMessageLayout.loadTab({
+					'tabId': groupId,
+					'isGroup': true,
+					'isSearch' : false
+						});
+				}
 			}
 			_this.checkForRoleType = function (group) {
 				if (typeof group.groupId !== 'undefined' && typeof group.userId !== 'undefined') {
@@ -4005,6 +4012,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.loadMessageList(params, callback);
 					}
 				}
+				params.tabId && window.history.replaceState(null, null, "/conversations/"+params.tabId);
 				_this.openConversation();
 			};
 			_this.setCaretPosition = function (el, pos) {
