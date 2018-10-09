@@ -2780,12 +2780,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
-				let groupId = window.location.pathname.substr(15);
+				let groupId = window.location.href.split("/").pop();
 				if(!status && groupId) {
 					mckMessageLayout.loadTab({
 					'tabId': groupId,
 					'isGroup': true,
-					isSearch: false
+					'isSearch' : false
 						});
 				}
 			}
