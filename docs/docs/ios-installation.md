@@ -32,7 +32,7 @@ Then run `pod install`.
 In any file you'd like to use Kommunicate in, don't forget to
 import the framework with `import Kommunicate`.
 
-Note: If you are using Kommunicate in an Objective-C app then you can check this [sample app in Objective-C].
+Note: If you are using Kommunicate in an Objective-C app then you can check this [sample app in Objective-C](https://github.com/Kommunicate-io/Kommunicate-Objective-C-Sample-App).
 In case of Objective-C we create a [wrapper file](https://github.com/Kommunicate-io/Kommunicate-Objective-C-Sample-App/blob/master/KommunicateObjcSample/KommunicateWrapper.swift) in Swift and call that from Objective-C files in the Project.
 
 
