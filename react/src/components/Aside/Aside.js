@@ -51,6 +51,7 @@ class Aside extends Component {
       trialDaysLeftComponent: ""
     };
     this.dismissInfo = this.dismissInfo.bind(this);
+    this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -76,7 +77,7 @@ class Aside extends Component {
      this.setState({
       trialDaysLeftComponent: <TrialDaysLeft />
      })
-
+    window.addEventListener("group-update", this.handleGroupUpdate);
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
@@ -94,6 +95,12 @@ class Aside extends Component {
     } else {
         console.log("Please update your browser.");
     }
+    window.removeEventListener("group-update",this.handleGroupUpdate);
+  }
+  handleGroupUpdate(e) {
+    this.setState({ group: e.detail.data });
+    this.selectStatus();
+    this.selectAssignee();
   }
 
   getThirdparty = () => {

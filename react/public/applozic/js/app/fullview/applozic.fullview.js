@@ -7921,7 +7921,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						if (mckStorage.getMckMessageArray() !== null && mckStorage.getMckMessageArray().length > 0) {
 							mckStorage.updateMckMessageArray(messageArray);
 						}
-
+						
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
@@ -7994,6 +7994,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							events.onMessageSent({
 								'message': messageFeed
 							});
+							if (resp.notifyUser) {
+								kmGroupService.getGroupFeed({
+									groupId: message.groupId,
+									callback: function (response) {
+										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
+									}
+								})
+							}
 						}
 						if (!$mck_sidebox_content.hasClass('n-vis')) {
 							if (message.conversationId) {
