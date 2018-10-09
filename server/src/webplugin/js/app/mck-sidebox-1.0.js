@@ -5965,9 +5965,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
             };
             _this.isValidMetaData = function (message) {
-                if (!message.metadata) {
+                if (!message.metadata || message.contentType !== 102) {
                     return true;
-                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE'||message.metadata.hide=="true") {
+                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE'||message.metadata.hide=="true" || message.metadata.show == "false") {
                     return false;
                 } else {
                     return true;
@@ -6188,10 +6188,13 @@ const MESSAGE_CONTENT_TYPE = {
                                         });
                                         return;
                                     }
-                                    if ((isValidMeta && message.contentType !== 10) || message.contentType !== 102) {
-                                        var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
-                                        mckMessageLayout.incrementUnreadCount(ucTabId);
-                                    }
+                                    
+                                        if (message.contentType !== 10 && message.contentType !== 102) {
+                                            var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
+                                            mckMessageLayout.incrementUnreadCount(ucTabId);
+                                        }
+                                    
+                                    
                                     alMessageService.sendDeliveryUpdate(message);
                                 }
                                 if (notifyUser && contact.type !== 6) {
