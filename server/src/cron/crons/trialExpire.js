@@ -26,7 +26,7 @@ const markBotAsExpire = async function (appId) {
     let bots = await userService.getUsersByAppIdAndTypes(appId, [2]);
     for (var i = 0; i < bots.length; i++) {
         if (bots[i].userName != 'bot') {
-            let botObj = { 'key': bots[i].userKey, 'status': BOT_STATUS.EXPIRED }
+            let botObj = { 'key': bots[i].userKey, 'expired': true }
             try {
                 let res = await botPlatform.updateBot(botObj)
             } catch (err) {
