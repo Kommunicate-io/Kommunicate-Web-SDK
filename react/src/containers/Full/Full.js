@@ -170,7 +170,10 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-
+    if(currentPath.includes("/conversations")) {
+     this.props.history.location.pathname = "/conversations";
+    }
+   
     return (
       <div className="app" suppressContentEditableWarning={true}>
         {/* <Header
