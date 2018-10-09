@@ -22,7 +22,7 @@ class ChatWidgetCustomization extends Component{
             widgetImageLink: "",
             hasCustomImage : false,
             changesMade : false,
-            iconIndex : 2,
+            iconIndex : 1,
             currWidgetIcon: "",
             customSettingsEnabled: false
         }
@@ -40,7 +40,9 @@ class ChatWidgetCustomization extends Component{
     componentDidMount() {
         this.setState(this.widgetTheme);
         this.state.hasCustomImage ? "" : (document.getElementById("icon"+this.state.iconIndex).click());
-        this.setState.changesMade = false;
+        this.setState({changesMade : false});
+        this.forceUpdate();
+
     }
 
     handleClick = () => {
