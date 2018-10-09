@@ -185,6 +185,7 @@ exports.getApplication = (customer, isApplicationWebAdmin) => {
   const getApplicationUrl = config.getProperties().urls.getApplicationDetail.replace(":applicationId", applicationId);
   const apzToken = new Buffer(customer.userName + ":" + customer.accessToken).toString('base64');
   console.log("calling applozic.. url: ", getApplicationUrl, " apzToken: ", apzToken);
+  isApplicationWebAdmin =isApplicationWebAdmin||false;
   let err = {};
   return Promise.resolve(axios.get(getApplicationUrl, {
     headers: {
