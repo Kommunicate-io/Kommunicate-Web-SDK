@@ -21,7 +21,7 @@ const addMemberIntoConversation = (data) => {
                         let userIds = agents.userIds;
                         let agentIds = agents.agentIds;
                         header = agents.header;
-                        return applozicClient.getGroupInfo(groupId, appId, header.apzToken, true).then(group => {
+                        return applozicClient.getGroupInfo(groupId, customer.applications[0].applicationId, header.apzToken, true).then(group => {
                             if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
                                 return { code: "SUCCESS", data: agents }
                             }
@@ -223,7 +223,7 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                 isValidUser = true;
             }
             //swich acording to conditions of botRouting and agentRouting
-            return applozicClient.getGroupInfo(groupId, bot[0].apzToken, true).then(group => {
+            return applozicClient.getGroupInfo(groupId, appId, bot[0].apzToken, true).then(group => {
                 if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
                     return "ASSIGNMENT SKIPED";
                 }
