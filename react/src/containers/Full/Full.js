@@ -141,16 +141,23 @@ class Full extends Component {
 
   componentDidMount() {
     if(CommonUtils.getUserSession()){
+      if (window.heap) {
+        window.heap.identify(CommonUtils.getUserSession().userName);
+        window.heap.addUserProperties({
+                                      "email": CommonUtils.getUserSession().userName, 
+                                      "subscription": CommonUtils.getUserSession().subscription
+                                    });
+      }
+      
       // initilizing full view plugin for dashboard user
-    window.chatLogin(chatUrl);
-      //listen for kommunicate plugin initilized event. initilized support chat user.
-    window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
+      window.chatLogin(chatUrl);
+        //listen for kommunicate plugin initilized event. initilized support chat user.
+      window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
 
-    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
-      // when user logs in this will get called.
-      this.initilizeSupportChatUser();
-    }
-
+      if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+        // when user logs in this will get called.
+        this.initilizeSupportChatUser();
+      }
     }
   }
   componentWillUnmount(){
