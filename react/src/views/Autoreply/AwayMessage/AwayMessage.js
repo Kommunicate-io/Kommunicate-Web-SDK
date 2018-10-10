@@ -494,7 +494,6 @@ class AwayMessage extends Component{
         </div>
         {/* known customers container ends here */}
         <ReactTooltip />
-us
       </div>
 
     )
