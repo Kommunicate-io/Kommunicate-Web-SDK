@@ -26,7 +26,16 @@ Script
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"onInit":callback};
+     var kommunicateSettings = {
+      "appId": appId,
+      "conversationTitle":conversationTitle
+      /*
+      "onInit": function (){
+        // paste your code here
+      },
+        "botIds":["bot1","bot2"]
+      */
+      };
 
     /*----------------- Kommunicate settings end ------------------*/
 
