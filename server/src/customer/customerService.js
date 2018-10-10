@@ -106,7 +106,7 @@ const reactivateAgents = async function (appId) {
             userService.updateOnlyKommunicateUser(users[i].userName, appId, dataToBeUpdated);
             applicationService.updateApplication(appId, { status: applicationService.STATUS.ACTIVE })
             try {
-                users[i].type == 2 && botClientService.updateBot({ 'key': users[i].userKey, 'status': 1 })
+                users[i].type == 2 && botClientService.updateBot({ 'key': users[i].userKey, 'status': 'expired' })
             } catch (error) {
                 console.log("bot updation error", error)
             }
