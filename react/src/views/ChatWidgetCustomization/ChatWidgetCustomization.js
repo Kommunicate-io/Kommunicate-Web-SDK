@@ -15,20 +15,25 @@ class ChatWidgetCustomization extends Component{
         super();
         this.state = {
             displayColorPicker: false,
-            color:'#5c5aa7',
+            primaryColor:'#5c5aa7',
             secondaryColor:"",
             currentIcon : <KmDefaultIcon />,
             chatWidgetImagefileObject: "",
             widgetImageLink: "",
             hasCustomImage : false,
             changesMade : false,
-            iconIndex : 1,
+            iconIndex : 1 ,
             currWidgetIcon: "",
             customSettingsEnabled: false
         }
+       
     }
     componentWillMount(){
         this.getwidgetSettings();
+    }
+    componentDidMount() {
+        this.setState(this.widgetTheme);
+
     }
 
     handleClick = () => {
@@ -40,7 +45,7 @@ class ChatWidgetCustomization extends Component{
     };
 
     handleChange = (changedColor) => {
-        this.setState({ color: changedColor.hex , changesMade:true });   
+        this.setState({ primaryColor: changedColor.hex , changesMade:true });   
         
     };
     changeIcon = () =>{
@@ -87,36 +92,33 @@ class ChatWidgetCustomization extends Component{
         };
         
     updateWidgetSettings = () => {
-        console.log("abcd");
+        this.widgetTheme = {
+            primaryColor : this.state.primaryColor,
+            secondaryColor : this.state.secondaryColor,
+            widgetImageLink : this.state.widgetImageLink,
+            iconIndex : this.state.iconIndex,
+            customSettingsEnabled : this.state.customSettingsEnabled
+        }
         var widgetSettingsJson = {
-            "widgetTheme":{
-                "primaryColor": this.state.color,
-                "secondaryColor": this.state.secondaryColor,
-                "widgetImageLink": this.state.widgetImageLink,
-                "iconIndex": this.state.iconIndex,
-                "customSettingsEnabled": this.state.customSettingsEnabled
-            }
+            "widgetTheme":this.widgetTheme
         };
         updateAppSetting("", widgetSettingsJson).then(response => {
-            Notification.info(response.data.message)
+            this.setState.changesMade = false;
+            Notification.info(response.data.message);
+            this.setState({changesMade : false});
             }).catch(err => {
             Notification.info(err)
+            this.setState.changesMade = false;
             })
     };
     
     getwidgetSettings = () => {
         return Promise.resolve(getAppSetting().then(response => {
             if(response.status == 200) {
-                console.log(response.data.response.widgetTheme);
                 var widgetThemeResponse = response.data.response.widgetTheme;
-                this.setState({
-                    color: widgetThemeResponse.primaryColor,
-                    secondaryColor: widgetThemeResponse.secondaryColor,
-                    widgetImageLink: widgetThemeResponse.widgetImageLink,
-                    iconIndex: widgetThemeResponse.iconIndex,
-                    customSettingsEnabled: widgetThemeResponse.customSettingsEnabled
-                });
-                console.log(this.state.iconIndex);
+                this.setState(widgetThemeResponse);
+                widgetThemeResponse.iconIndex == "image"? this.setState({ hasCustomImage : true }) : (document.getElementById("icon"+this.state.iconIndex).click());
+                this.setState({changesMade : false});
             }
             })).catch(err => {
             // console.log(err);
@@ -134,26 +136,26 @@ class ChatWidgetCustomization extends Component{
                         <div className="km-color-picker">
                         <div className="km-customizer-heading">Color:</div>
                         <div className="swatch" onClick={ this.handleClick }>
-                                <div className="color"  style={{background :  this.state.color}} /> <div >{this.state.color}</div>
+                                <div className="color"  style={{background :  this.state.primaryColor}} /> <div >{this.state.primaryColor}</div>
                             </div>
                             { this.state.displayColorPicker ? <div className="popover">
                             <div className="cover" onClick={ this.handleClose }/>
-                            <ChromePicker disableAlpha={true} color={ this.state.color } onChange={ this.handleChange } />
+                            <ChromePicker disableAlpha={true} color={ this.state.primaryColor } onChange={ this.handleChange } />
                         </div> : null }</div>
                         <div className="km-logo-picker">
                             <div className="km-customizer-heading">Launcher icon:</div>
                             <div className="logo-selection">
-                            <div className={this.state.iconIndex === 1 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmDefaultIcon /> , hasCustomImage : false, iconIndex : 1 , changesMade:true})}} style={{background :  this.state.color}}> <KmDefaultIcon /> </div>
-                            <div className={this.state.iconIndex === 2 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon1 /> , hasCustomImage : false , iconIndex : 2 , changesMade:true})}} style={{background :  this.state.color}}> <KmCustomIcon1 /> </div>
-                            <div className={this.state.iconIndex === 3 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon2 /> , hasCustomImage : false , iconIndex : 3 , changesMade:true})}} style={{background :  this.state.color}}> <KmCustomIcon2 /> </div>
-                            <div className={this.state.iconIndex === 4 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon3 /> , hasCustomImage : false , iconIndex : 4 , changesMade:true})}} style={{background :  this.state.color}}> <KmCustomIcon3 /> </div>
+                            <div id="icon1" className={this.state.iconIndex === 1 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmDefaultIcon /> , hasCustomImage : false, iconIndex : 1 , changesMade:true})}} style={{background :  this.state.primaryColor}}> <KmDefaultIcon  /></div>
+                            <div id ="icon2" className={this.state.iconIndex === 2 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon1 /> , hasCustomImage : false , iconIndex : 2 , changesMade:true})}} style={{background :  this.state.primaryColor}}> <KmCustomIcon1 /> </div>
+                            <div id ="icon3" className={this.state.iconIndex === 3 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon2 /> , hasCustomImage : false , iconIndex : 3 , changesMade:true})}} style={{background :  this.state.primaryColor}}> <KmCustomIcon2 /> </div>
+                            <div id ="icon4" className={this.state.iconIndex === 4 ? "logo-design" : "logo-design km-non-selected"} onClick={  ()=>{this.setState({currentIcon : <KmCustomIcon3 /> , hasCustomImage : false , iconIndex : 4 , changesMade:true})}} style={{background :  this.state.primaryColor}}> <KmCustomIcon3 /> </div>
                         </div>
                         </div>
                         <div className="km-logo-picker km-img-picker">
                         <div className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ? "n-vis" : "vis"}>
                         <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                         </div>
-                        <div className={ this.state.hasCustomImage && this.setState.currWidgetIcon  ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.color, float:"none", margin:"0"}}>
+                        <div className={ this.state.hasCustomImage && this.setState.currWidgetIcon  ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.primaryColor, float:"none", margin:"0"}}>
                            <img src={this.state.currWidgetIcon} /> 
                          </div>
                             <div className="km-custom-icon-upload">Upload your own launcher icon
@@ -166,7 +168,7 @@ class ChatWidgetCustomization extends Component{
                     </div>
                     <div className="col-md-6">
                         <div className="km-demo-chat-box">
-                            <div className="km-chat-box-header" style={{background:this.state.color}}>
+                            <div className="km-chat-box-header" style={{background:this.state.primaryColor}}>
                                 <div className="km-chat-box-back-button"> 
                                 <svg xmlns="http://www.w3.org/2000/svg" width="10" height="18" viewBox="0 0 10 18">
                                      <path fill="#FFF" height="24" width="24" fillRule="nonzero" d="M9.653 1.818C10.686.862 9.176-.651 8.223.305L.358 8.188a.98.98 0 0 0 0 1.513l7.865 7.883c.953 1.035 2.463-.478 1.43-1.513L2.582 8.984l7.07-7.166z"/>
@@ -186,18 +188,18 @@ class ChatWidgetCustomization extends Component{
                                     <div className="km-conversation-content">Hi, how may I help you?</div>
                                 </div>
                                 <div className="km-message-right">
-                                    <div className="km-conversation-content" style={{background:this.state.color}}>Hey, can I change the delivery address of my order? </div>
+                                    <div className="km-conversation-content" style={{background:this.state.primaryColor}}>Hey, can I change the delivery address of my order? </div>
                                 </div>
                                 <div className="km-message-left">
                                     <div className="km-conversation-img"><AgentIcon /></div>
                                     <div className="km-conversation-content">Sure, I can help you with this. Can you give me your updated delivery address?</div>
                                 </div>
                             </div>
-                            <div className={this.state.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{background:this.state.color}} >
+                            <div className={this.state.hasCustomImage ? "n-vis" : "km-chat-icon"} style={{background:this.state.primaryColor}} >
                             {this.state.currentIcon} 
                          </div>
-                            <div className={ this.state.hasCustomImage ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.color}}>
-                           <img src={ this.state.widgetImageLink } /> 
+                            <div className={ this.state.hasCustomImage ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.primaryColor}}>
+                           <img src={ this.state.widgetImageLink }/> 
                          </div>
                         </div>
                       
