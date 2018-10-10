@@ -5974,9 +5974,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
             };
             _this.isValidMetaData = function (message) {
-                if (!message.metadata || message.contentType !== 102) {
+                if (!message.metadata) {
                     return true;
-                } else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE'||message.metadata.hide=="true" || message.metadata.show == "false") {
+                } else if (message.metadata.category === 'HIDDEN' ||message.metadata.hide=="true" || message.metadata.show == "false" || message.metadata.KM_ASSIGN || message.metadata.KM_STATUS) {
                     return false;
                 } else {
                     return true;
@@ -6198,7 +6198,7 @@ const MESSAGE_CONTENT_TYPE = {
                                         return;
                                     }
                                     
-                                        if (message.contentType !== 10 && message.contentType !== 102) {
+                                        if (isValidMeta && message.contentType !== 10 && message.contentType !== 102) {
                                             var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                                             mckMessageLayout.incrementUnreadCount(ucTabId);
                                         }
@@ -8225,7 +8225,7 @@ const MESSAGE_CONTENT_TYPE = {
                 }
             };
             _this.showNewMessageNotification = function (message, contact, displayName) {
-                if (!IS_NOTIFICATION_ENABLED || message.contentType === 102) {
+                if (!IS_NOTIFICATION_ENABLED || message.contentType === 102 || message.metadata.KM_ASSIGN || message.metadata.KM_STATUS) {
                     return;
                 }
                 var currTabId = $mck_msg_inner.data('mck-id');
