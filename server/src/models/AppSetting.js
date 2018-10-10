@@ -20,7 +20,7 @@ let AppSetting= function(sequelize, DataTypes) {
       },
       widgetTheme:{
         type:DataTypes.JSON,
-        allowNull: false,
+        allowNull: true,
         field: "widget_theme"
       },
       collectEmail:{
