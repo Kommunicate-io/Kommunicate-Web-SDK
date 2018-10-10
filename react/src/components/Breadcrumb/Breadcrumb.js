@@ -26,7 +26,7 @@ const BreadcrumbsItem = ({ ...rest, match }) => {
     return (
       match.isExact ?
       (
-        <BreadcrumbItem active className={match.url.includes('/settings/') || match.url.includes('/conversation/oops') ? "invisible" : ""}>{routeName}</BreadcrumbItem>
+        <BreadcrumbItem active className={match.url.includes('/settings/') || match.url.includes('/conversations/oops') ? "invisible" : ""}>{routeName}</BreadcrumbItem>
       ) :
       ( 
         <BreadcrumbItem>
@@ -45,7 +45,7 @@ const Breadcrumbs = ({ ...rest, location : { pathname }, match }) => {
   const i = 0;
   const items = paths.map((path, i) => <Route key={i++} path={path} component={BreadcrumbsItem} />);
   return (
-    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversation/oops') ? "km-remove-border" : ""}>
+    <Breadcrumb className={paths[1].includes("/settings") || paths[paths.length-1].includes('/conversations/oops') ? "km-remove-border" : ""}>
       {items}
       { paths[1] === '/conversations' ? " " : <TrialDaysLeft />}    
     </Breadcrumb>

@@ -4040,7 +4040,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.loadMessageList(params, function (data) {
 							if (data == "AL-G-01") {
 							  //errorCode "AL-G-01" - group not found
-							  window.appHistory.push("/conversation/oops");
+							  window.appHistory.push("/conversations/oops");
 							  $kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
 							  $kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
 							return

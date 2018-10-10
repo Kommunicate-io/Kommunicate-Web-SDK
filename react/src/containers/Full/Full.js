@@ -190,6 +190,7 @@ class Full extends Component {
             <Breadcrumb />
             <div className="container-fluid">
               <Switch >
+                <Route exact path="/conversations/oops" name="" component={Conversation404}/>
                 <Route path="/dashboard" name="Dashboard"  component={Dashboard}/>
                 <Route exact path="/users" name="Tables" component={Users}/>
                 <Route exact ={false} path="/conversations" name="Conversations" component={Conversations}/>  
@@ -213,7 +214,7 @@ class Full extends Component {
                 <Route exact path="/settings/connect-support-email" name="IncomingEmailForward" component={IncomingEmailForward}/>
                 <Route exact path="/settings/email-notifications" name="EmailNotifications" component={EmailNotifications}/>
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
-                <Route exact path="/conversation/oops" name="" component={Conversation404}/>
+                
 
                 <Redirect from="/" to="/dashboard"/>
 
