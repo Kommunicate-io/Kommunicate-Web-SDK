@@ -7934,7 +7934,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-
+						//start
 						if (message && message.to && !message.groupId) {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
@@ -7950,6 +7950,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 
 						if (message.metadata) {
+							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
+								kmGroupService.getGroupFeed({
+									groupId: message.groupId,
+									callback: function (response) {
+										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
+									}
+								})
+							}
 							if (message.metadata.KM_STATUS && CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS]) {
 								list.sectionId = CONVERSATION_STATUS_SECTION[message.metadata.KM_STATUS];
 							}
@@ -7988,10 +7996,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								}
 							}
 						}
-
+						
 						if ((message && message.type !== 5) || ((message && message.metadata.KM_STATUS) && (message && message.metadata.KM_ASSIGN)) || (message && message.metadata.hide === true)) {
 							mckMessageService.tabviewUnreadIconUpdate(list);
 						}
+						//
 						if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
 							var messageFeed = mckMessageLayout.getMessageFeed(message);
 							events.onMessageReceived({
@@ -8002,14 +8011,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							events.onMessageSent({
 								'message': messageFeed
 							});
-							if (resp.notifyUser) {
-								kmGroupService.getGroupFeed({
-									groupId: message.groupId,
-									callback: function (response) {
-										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
-									}
-								})
-							}
 						}
 						if (!$mck_sidebox_content.hasClass('n-vis')) {
 							if (message.conversationId) {
