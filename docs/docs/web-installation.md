@@ -26,7 +26,7 @@ Script
 
     /*---------------- Kommunicate settings start ----------------*/
 
-     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"botIds":["bot1","bot2"],"onInit":callback};
+     var kommunicateSettings = {"appId": appId,"conversationTitle":conversationTitle,"onInit":callback};
 
     /*----------------- Kommunicate settings end ------------------*/
 
@@ -52,7 +52,7 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |parameters|Descriptions|
 |---	   |---	    |
 |appId |A unique application ID assigned to your Kommunicate account|
-|botIds|Array of bot ids will be added in conversation. eg. botIds=['bot1','bot2']. Bot Ids will be visible in bot section in dashboard if you have created any bot.|
+|botIds|Array of bot ids will be added in conversation. eg. "botIds":["bot1","bot2"]. Bot Ids will be visible in bot section in dashboard if you have created any bot.|
 |conversationTitle |All conversation will have this title|
 |askUserDetails| Enable <a href="web-authentication#2-pre-chat-lead-collection" target="_blank">lead collection</a>, user will be asked to enter name, email and phone details when he/she starts a conversation|
 |userId| This is your user’s/visiter's user ID. Kommunicate will generate a random Id if this is not defined|
@@ -60,7 +60,9 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |email | Email ID of the user. User will be notified on this email if not online|
 |chatLauncherHtml | Pass html for customize chat icon|
 |onInit| This takes a function which will be called after plugin initialized. it takes two parameter error and data.|
-|emojilibrary| Default value false, pass this parameter true if you want to include emoticons in your chatwidget. 
+|emojilibrary| Pass this parameter true if you want to include emoticons in your chatwidget.|
+|locShare| Pass this parameter true if you want to enable location sharing in your chatwidget.|  
+|msgTriggerTimeout| This will automatically start conversation after the user has spent a certain amount of time on your page which you have passed. Example: "msgTriggerTimeout" : 10000 (Note: time is set in milliseconds)|
 |openConversationOnNewMessage | This will open the chat window when a new message comes. Pass this parameter true. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage </a>|
 
 
