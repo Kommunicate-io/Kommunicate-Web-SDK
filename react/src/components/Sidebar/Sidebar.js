@@ -86,7 +86,7 @@ class Sidebar extends Component {
 
     const currentPath = window.location.pathname;
     var settingsSidebarShow, sidebarWidth;
-    if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/integrations')) {
+    if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/conversation/oops') || currentPath.includes('/integrations')) {
       settingsSidebarShow = " ";
     } else {
       settingsSidebarShow = <SettingsSidebar />;

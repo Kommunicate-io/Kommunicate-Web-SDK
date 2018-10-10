@@ -189,15 +189,17 @@ class Aside extends Component {
     var that = this;
     window.$kmApplozic.fn.applozic("getGroup", {
         groupId: groupId, callback: function(response) {
-          that.setState({
-            group: response,
-            visibleIntegartion:false,
-            visibleReply:true,
-          });
-          that.selectAssignee();
-          that.selectStatus();
-          that.setUpAgentTakeOver(response);
-        }
+          if(response) {
+            that.setState({
+              group: response,
+              visibleIntegartion:false,
+              visibleReply:true,
+            });
+            that.selectAssignee();
+            that.selectStatus();
+            that.setUpAgentTakeOver(response);
+          }
+          }
     });
   }
 
