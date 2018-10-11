@@ -750,10 +750,17 @@ ul#km-group-search-list li {
 #km-contact-list.km-allconversation .km-unread-count-box {
     display: none;
 }
+.km-display-email-number-wrapper div {
+	display: flex;
+    align-items: baseline;
+	justify-content: flex-start;
+	margin-bottom: 15px;
+}
 .km-rectangle{
+    margin-bottom: 0!important;
     width: 19px;
     height: 17px;
-    border-radius: 2px;
+    align-items: center!important;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
@@ -771,9 +778,11 @@ ul#km-group-search-list li {
     color: #4831d9;
   
 }
-.km-sidebar-user-email{
+.km-sidebar-user-email:hover, .km-sidebar-user-number:hover{
+    background-color: #f4f5f7;
+}
+.km-sidebar-user-email,.km-sidebar-user-number{
     width: 100%;
-    text-align:  left;
 font-family: Roboto;
 font-size: 14px;
 font-weight: normal;
@@ -785,9 +794,6 @@ text-align: left;
 color: #595757;
 }
 
-.km-rectangle  { 
-margin-bottom: 0!important;
-}
 .km-editemail{
    position:  absolute;
    bottom: 0;
@@ -816,6 +822,10 @@ margin-bottom: 0!important;
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }
+  .km-sidebar-submit-svg{
+    vertical-align: middle;
+    margin-left: 2px;
+  }
 
 #km-sidebar-user-number-edit ,#km-sidebar-user-email-edit{
      text-align: left;
@@ -826,6 +836,11 @@ margin-bottom: 0!important;
         text-align: left;
         position: relative;
         width: 100%;
+}
+.km-sidebar-svg{
+    position: absolute;
+    bottom: -35px;
+    right: 0;
 }
   
   /* */

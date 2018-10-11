@@ -10,6 +10,7 @@ import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import LocationIcon from './Icons/location.png';
 import DomainIcon from './Icons/web-icon.png';
+import Notification from '../../views/model/Notification';
 import FacebookIcon from './Icons/facebook-icon.png';
 import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
@@ -140,7 +141,9 @@ class Aside extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
-   validateEmail=() =>{
+
+   validateEmail=(e) =>{
+    e.stopPropagation();
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     if(document.getElementById("km-sidebar-user-email-edit").innerHTML.match(mailformat))
     {
@@ -148,11 +151,12 @@ class Aside extends Component {
     }
     else
     {
-    alert("You have entered an invalid email address!");
+      Notification.error("You have entered an invalid email address!");
     return false;
     }
   }
-  validatePhoneNumber =() =>{
+  validatePhoneNumber =(e) =>{
+    e.stopPropagation();
     var phoneNumberformat = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/; 
     if(document.getElementById("km-sidebar-user-number-edit").innerHTML.match(phoneNumberformat))
     {
@@ -160,7 +164,7 @@ class Aside extends Component {
     }
     else
     {
-    alert("You have entered an invalid phone Number!");
+      Notification.error("You have entered an invalid phone Number");
     return false;
     }
   }
@@ -185,14 +189,18 @@ class Aside extends Component {
     this.hideEditUserDetailDiv(params);
 
   }
-  cancelEdit = function (elem) {
-    this.hideEditUserDetailDiv(elem);
+  cancelEdit = function (elemId) {
+    this.hideEditUserDetailDiv(elemId);
+    document.getElementById(userDetailMap[elemId]+"-edit").innerHTML= document.getElementById(userDetailMap[elemId]).innerHTML;
   }
   showEditUserDetailDiv = function (elemId) {
     document.getElementById(userDetailMap[elemId]).classList.remove("vis");
     document.getElementById(userDetailMap[elemId]).classList.add("n-vis");
     document.getElementById("km-"+elemId+"-submit").classList.remove("n-vis");
     document.getElementById("km-"+elemId+"-submit").classList.add("vis");
+    if(document.getElementById(userDetailMap[elemId]+"-edit").classList.contains("vis")) {
+      document.getElementById(userDetailMap[elemId]+"-edit").focus();
+    }
   }
   
   hideEditUserDetailDiv = function (elemId) {
@@ -1120,17 +1128,19 @@ class Aside extends Component {
                                 data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
                             </svg>
                           </div>
-                          <div id="km-displayName-submit" className="n-vis">
-                          <p id="km-sidebar-display-name-edit"  contentEditable="true" className="km-sidebar-display-name km-truncate"></p>
+                          <div id="km-displayName-submit" className="n-vis" onBlur={() => this.updateUserDetail("displayName")}>
+                          <p id="km-sidebar-display-name-edit"  contentEditable="true" className="km-sidebar-display-name km-truncate vis"></p>
+                          <div className="km-sidebar-svg">
                           <div className="km-rectangle" onClick={() => this.updateUserDetail("displayName")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10">
+                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-rectangle" onClick={() => this.cancelEdit("displayName")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
+                            </div>
                             </div>
                             </div>
                         </div>
@@ -1139,17 +1149,19 @@ class Aside extends Component {
                           <div className="km-postion-relative">
                             <p className="n-vis">@</p> 
                             <p id="km-sidebar-user-email" className="km-sidebar-user-email vis" contentEditable="true" placeholder="Add Email" onClick={() => this.showEditUserDetailDiv("email")}></p>
-                            <div id= "km-email-submit" className="km-editemail n-vis"> 
-                            <p id="km-sidebar-user-email-edit" contentEditable="true" className="km-sidebar-user-email" placeholder="Add Email"onBlur={() => this.cancelEdit("email")} ></p>
-                            <div className="km-rectangle" onClick={() => this.validateEmail()}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10">
+                            <div id= "km-email-submit" className="km-editemail n-vis" onBlur={this.validateEmail}> 
+                            <p id="km-sidebar-user-email-edit" contentEditable="true" className="km-sidebar-user-email" placeholder="Add Email" ></p>
+                            <div className="km-sidebar-svg">
+                            <div className="km-rectangle" onClick={this.validateEmail}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className ="km-sidebar-submit-svg">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-rectangle" onClick={() => this.cancelEdit("email")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
+                            </div>
                             </div>
                             </div>
                           </div>
@@ -1160,17 +1172,19 @@ class Aside extends Component {
                               </svg>
                             </p>
                             <p id="km-sidebar-user-number" placeholder ="Add Phone Number" contentEditable="true" className="km-sidebar-user-number" onClick={() => this.showEditUserDetailDiv("phone")}></p>
-                            <div id="km-phone-submit" className="km-editemail n-vis">
-                            <p id="km-sidebar-user-number-edit" placeholder ="Add Phone Number"contentEditable="true" onBlur={() => this.cancelEdit("phone")} className="km-sidebar-user-number"></p>
+                            <div id="km-phone-submit" className="km-editemail n-vis" onBlur={this.validatePhoneNumber}>
+                            <p id="km-sidebar-user-number-edit" placeholder ="Add Phone Number"contentEditable="true" className="km-sidebar-user-number"></p>
+                            <div className="km-sidebar-svg">
                             <div className="km-rectangle" onClick={() => this.validatePhoneNumber()}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" className ="km-sidebar-submit-svg">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-rectangle" onClick={() => this.cancelEdit("phone")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
+                            </div>
                             </div>
                             </div>
                           </div>
