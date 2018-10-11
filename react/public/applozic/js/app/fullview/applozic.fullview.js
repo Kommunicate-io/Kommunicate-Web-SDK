@@ -7955,6 +7955,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									groupId: message.groupId,
 									callback: function (response) {
 										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
+										_this.updateConversationList(response.data );
 									}
 								})
 							}
@@ -8047,6 +8048,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					}
 				}
 			};
+
+			_this.updateConversationList = function (group) {
+				if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
+					$('#km-assigned').click();
+				}
+				else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
+					$('#km-conversation').click();
+				}
+			}
 		}
 	}
 }($kmApplozic, window, document));
