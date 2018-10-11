@@ -9,11 +9,11 @@ This plugin uses native UI screens and can be used for cordova, ionic and phoneg
 You can add the plugin using the below command:
  
 ```
-cordova plugin add https://github.com/Kommunicate-io/Kommunicate-Cordova-Ionic-PhoneGap-Chat-Plugin.git
+cordova plugin add kommunicate-cordova-plugin
 ```
 
 For ionic, use the below command:
 
 ```
-ionic cordova plugin add https://github.com/Kommunicate-io/Kommunicate-Cordova-Ionic-PhoneGap-Chat-Plugin.git
+ionic cordova plugin add kommunicate-cordova-plugin
 ```
