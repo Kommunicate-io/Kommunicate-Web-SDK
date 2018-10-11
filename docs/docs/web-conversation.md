@@ -34,7 +34,7 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 ### Example :
 ```
 var conversationDetail = {
-    agentId: "debug6",
+    agentIds: ["debug6"],
     botIds: ['botId1', 'botId2'] //optional
 };
 Kommunicate.startConversation(conversationDetail, function (response) {
