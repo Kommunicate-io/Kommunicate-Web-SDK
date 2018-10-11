@@ -12,7 +12,7 @@ Installing Kommunicate in your Android app is easy and fast. We will walk you th
 Add the following in your app build.gradle dependency:
 
 ```
-compile 'io.kommunicate:kommunicate:1.5.1'
+compile 'io.kommunicate:kommunicate:1.5.4'
 ```
 
 After the app has successfully build, open your Application Class(If you do not have an application class, create one) and add implement the ```KmActionCallback``` interface:
