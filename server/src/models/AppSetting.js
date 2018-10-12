@@ -23,10 +23,16 @@ let AppSetting= function(sequelize, DataTypes) {
         allowNull: true,
         field: "widget_theme"
       },
-      collectEmail:{
+      collectEmailOnAwayMessage:{
         type:DataTypes.BOOLEAN,
         allowNull: false,
-        field: 'collect_email',
+        field: 'collect_email_away',
+        defaultValue: 0
+      },  
+      collectEmailOnWelcomeMessage:{
+        type:DataTypes.BOOLEAN,
+        allowNull: false,
+        field: 'collect_email_welcome',
         defaultValue: 0
       }  
     },
