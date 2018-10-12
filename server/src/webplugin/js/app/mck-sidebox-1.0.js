@@ -2708,7 +2708,7 @@ const MESSAGE_CONTENT_TYPE = {
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
                     let sendMsgCount = $applozic("[data-msgtype=5]").length;
                     //Lead Collection -Email Validation
-                    if (sendMsgCount == 1 && KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) {
+                    if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1)||(KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage))) {
                         var isValid = KommunicateUI.validateEmail(messagePxy.message);
                         if (!isValid) {
                             return false;
@@ -3118,9 +3118,9 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                         // Lead Collection (Email)
                         let sendMsgCount = $applozic("[data-msgtype=5]").length;
-                        if (sendMsgCount == 1 && KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) {
+                        if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) || (KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage)) ) {
                             KommunicateUI.displayLeadCollectionTemplate(null)
-                        }
+                        } 
                         sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
 
                         var displayName = mckMessageLayout.getTabDisplayName(currentTabId, false);
