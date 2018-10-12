@@ -946,7 +946,6 @@ const updateAppSetting = (status, data) => {
     return result;
   }).catch(err => {
     throw { message: err };
-    console.log("Error while updating application settings", err)
   })
 
 }
