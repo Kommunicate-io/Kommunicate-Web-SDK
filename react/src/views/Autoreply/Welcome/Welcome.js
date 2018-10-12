@@ -4,15 +4,17 @@ import './Welcome.css';
 import { EVENT_ID, CATEGORY, STATUS, WELCOME_MSG_METADATA } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
-import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId }  from '../../../utils/kommunicateClient'
+import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId, updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import axios from 'axios';
 import {acEventTrigger} from '../../../utils/ActiveCampaign';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
+import Checkbox from '../../../components/Checkbox/Checkbox'
 
 class Welcome extends Component{
   constructor(props){
     super(props);
     this.state = {
+     checked:false,
      enableDisableCheckbox: true,
      status:STATUS.ENABLE,
      welcomeMessages:[{messageField:''}],
@@ -27,7 +29,18 @@ class Welcome extends Component{
 
   componentDidMount(){
        this.getWelcomeMessges();
+       this.getStatusOfCollectEmailID();
   }
+  getStatusOfCollectEmailID = () => {
+    return Promise.resolve(getAppSetting().then(response => {
+       if(response.status == 200) {
+         response.data.response.collectEmailOnWelcomeMessage && this.setState({checked:true});
+         response.data.response.collectEmailOnWelcomeMessage == false && this.setState({checked:false});
+       }
+     })).catch(err => {
+       // console.log(err);
+     })
+   }
   getWelcomeMessges = () => {
     let eventIds = [3]; // Event ID 3 for welcome message
     let welcomeMessages = [];
@@ -123,8 +136,21 @@ class Welcome extends Component{
       }).catch(err => {
         console.log("Error while updating welcome message", err)
       })
-    }
-    
+    }  
+  }
+
+  toggleChangeCheckbox = () => {
+    let checked = !this.state.checked
+    this.setState({
+      checked: checked,
+    });
+    let data = { "collectEmailOnWelcomeMessage": checked }
+    updateAppSetting(checked, data).then(response => {
+      // console.log(response);
+    }).catch(err => {
+      // console.log(err);
+      console.log("Error while updating application settings", err)
+    })
   }
   deleteWelcomeMessage = () => {
     let index = this.state.activeTextField;
@@ -272,6 +298,10 @@ class Welcome extends Component{
               <div className="card-header welcome-card-header">
                 <div className="message-wrapper">
                 <div className="km-welcome-messge-textarea-heading">Welcome message</div>
+                   <div className="row welcome-msg-collect-email-checkbox">
+                     <Checkbox idCheckbox={'welcome-msg-collect-email-checkbox'} label={'Collect email ID from user'}
+                      checked = {this.state.checked} handleOnChange = {this.toggleChangeCheckbox} />
+                    </div>
                   {welcomeMsgTextArea}                  
                 </div>
                 {  this.state.welcomeMessages.length <= 2 && 

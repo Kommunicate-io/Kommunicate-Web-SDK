@@ -12,9 +12,7 @@ KommunicateUI={
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
             // supporting only one away message for now.
-            // KommunicateUI.awayMessageStatus = true;
-            // KommunicateUI.leadCollectionStatus = message.data.collectEmail;
-            KommunicateUI.isLeadCollectionEnabled = message.data.collectEmail;
+            KommunicateUI.isLeadCollectionEnabled = message.data.collectEmailOnAwayMessage;
             KommunicateUI.awayMessageInfo["isEnabled"] = true;
             KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
             awayMessage =message.data.messageList[0].message;

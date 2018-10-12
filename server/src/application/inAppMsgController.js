@@ -317,7 +317,7 @@ exports.processAwayMessage = function(req,res){
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
-        let collectEmail = false;
+        let collectEmailOnAwayMessage = false;
         let groupUsers = [];
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
@@ -341,15 +341,15 @@ exports.processAwayMessage = function(req,res){
                }
                 Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId)])
                 .then(([response,assignedUser]) => {  
-                     collectEmail = response.data.collectEmail;
+                     collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
                      return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
-                        let data = {"messageList":messageList, "collectEmail":collectEmail}
+                        let data = {"messageList":messageList, "collectEmailOnAwayMessage":collectEmailOnAwayMessage}
                         // res.json({"code":"SUCCESS",data:data}).status(200);
                         // conversation assigned to bot, skip away message
                         if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
-                            data = {"messageList":[], "collectEmail":collectEmail}
+                            data = {"messageList":[], "collectEmailOnAwayMessage":collectEmailOnAwayMessage}
                             res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
                         } else {
                             res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO AGENT", data:data}).status(200);

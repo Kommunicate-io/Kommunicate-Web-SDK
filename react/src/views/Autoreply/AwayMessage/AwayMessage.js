@@ -37,8 +37,8 @@ class AwayMessage extends Component{
   getStatusOfCollectEmailID = () => {
    return Promise.resolve(getAppSetting().then(response => {
       if(response.status == 200) {
-        response.data.response.collectEmail && this.setState({isChecked:true});
-        response.data.response.collectEmail == false && this.setState({isChecked:false});
+        response.data.response.collectEmailOnAwayMessage && this.setState({isChecked:true});
+        response.data.response.collectEmailOnAwayMessage == false && this.setState({isChecked:false});
       }
     })).catch(err => {
       // console.log(err);
@@ -338,11 +338,12 @@ class AwayMessage extends Component{
     this.setState({
       isChecked: isChecked,
     });
-    let data = { "collectEmail": isChecked }
+    let data = { "collectEmailOnAwayMessage": isChecked }
     updateAppSetting(isChecked, data).then(response => {
       // console.log(response);
     }).catch(err => {
       // console.log(err);
+      console.log("Error while updating application settings", err)
     })
   }
   
