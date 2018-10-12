@@ -8051,10 +8051,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 			_this.updateConversationList = function (group) {
 				if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
-					$('#km-assigned').click();
+					$kmApplozic('#km-assigned').click();
 				}
 				else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
-					$('#km-conversation').click();
+					$kmApplozic('#km-conversation').click();
 				}
 			}
 		}
