@@ -318,6 +318,7 @@ exports.processAwayMessage = function(req,res){
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
         let collectEmailOnAwayMessage = false;
+        let collectEmailOnWelcomeMessage = false;
         let groupUsers = [];
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
@@ -339,13 +340,20 @@ exports.processAwayMessage = function(req,res){
                 // agents are offline and user is known.
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
                }
-                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId)])
-                .then(([response,assignedUser]) => {  
+                Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
+                .then(([response, assignedUser, welcomeMessage]) => {  
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
+                     collectEmailOnWelcomeMessage = response.data.collectEmailOnWelcomeMessage;
+                     let welcomeMessageEnabled = welcomeMessage.length > 0 ? true : false ; 
                      return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
                         logger.info("got data from db.. sending response.");
                         let messageList = result.map(data=>data.dataValues);
-                        let data = {"messageList":messageList, "collectEmailOnAwayMessage":collectEmailOnAwayMessage}
+                        let data = {
+                             "messageList": messageList,
+                             "collectEmailOnAwayMessage": collectEmailOnAwayMessage,
+                             "welcomeMessageEnabled": welcomeMessageEnabled,
+                             "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage
+                         }
                         // res.json({"code":"SUCCESS",data:data}).status(200);
                         // conversation assigned to bot, skip away message
                         if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
