@@ -4,7 +4,9 @@
  */
 KommunicateUI={
     awayMessageInfo : {},
-    isLeadCollectionEnabled: false,
+    leadCollectionEnabledOnAwayMessage: false,
+    welcomeMessageEnabled : false,
+    leadCollectionEnabledOnWelcomeMessage:false,
     CONSTS:{
 
     },
@@ -12,13 +14,16 @@ KommunicateUI={
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
             // supporting only one away message for now.
-            KommunicateUI.isLeadCollectionEnabled = message.data.collectEmailOnAwayMessage;
+            KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
             KommunicateUI.awayMessageInfo["isEnabled"] = true;
             KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
-        }else{
+        }else if (!err && message.code =="SUCCESS" && message.data.welcomeMessageEnabled){
+            KommunicateUI.leadCollectionEnabledOnWelcomeMessage = message.data.collectEmailOnWelcomeMessage;
+            KommunicateUI.welcomeMessageEnabled = message.data.welcomeMessageEnabled;
+        } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
     },
@@ -39,7 +44,7 @@ KommunicateUI={
                 }
             }
             if (countMsg == 1) {
-                if (KommunicateUI.isLeadCollectionEnabled && KommunicateUI.awayMessageInfo.isEnabled && 
+                if (KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && 
                     KommunicateUI.awayMessageInfo.eventId == 1) {
                     this.populateLeadCollectionTemplate();
                     this.hideAwayMessage();
