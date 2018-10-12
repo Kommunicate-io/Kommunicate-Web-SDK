@@ -50,3 +50,20 @@ You can start a new conversation by using the below function:
       console.log("Kommunicate create conversation failed : " + response);
     });
  ```
+ 
+## Starting a Unique Conversation
+
+You can create a unique conversation using the below method. A unique conversation is identified by the list of agentIds and botIds used to create the conversation. If the same set of Ids are passed to the below method, then the already created conversation would be returned instead of creating a new conversation:
+
+```
+ var vary = {
+        'agentIds':['reytum@live.com'],
+        'botIds' : ['bot1', 'bot2']
+       };
+
+       kommunicate.startOrGetConversation(vary, (response) => {  
+         console.log("Kommunicate create conversation successfull : " + response);
+      },(response) => {
+         console.log("Kommunicate create conversation failed : " + response);
+      });
+```
