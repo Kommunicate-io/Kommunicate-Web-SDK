@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {getConfig} from '../config/config';
+import CommonUtils from '../utils/CommonUtils';
 
 const ApplozicClient ={
 
@@ -57,7 +58,30 @@ const ApplozicClient ={
       });
    },
 
+updateUserDetail:function(params){
+  let userSession = CommonUtils.getUserSession();
+  let headers = {
+    'Content-Type': 'application/json',
+      'Apz-AppId': userSession.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Of-User-Id':params.ofUserId
+    }
+    var url = getConfig().applozicPlugin.updateApplozicUser;
+   
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    data: params.userDetails,
+    headers: headers
+  })).then(response => {
+    if(params.userDetails.callback){
+      params.userDetails.callback();
+    }
+  }).catch(e => {
+    console.log("error", e);
+  });
 
+},
 
 
    getUserListByCriteria:function(criteria,callback){

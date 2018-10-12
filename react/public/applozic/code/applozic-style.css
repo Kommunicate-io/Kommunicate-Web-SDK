@@ -712,12 +712,7 @@ body {
 .km-display-email-number-wrapper {
 	padding: 0px 15px;
 }
-.km-display-email-number-wrapper div {
-	display: flex;
-    align-items: center;
-	justify-content: flex-start;
-	margin-bottom: 15px;
-}
+
 .km-display-email-number-wrapper div p:first-child {
 	color: #817e7e;
 	font-size: 14px;
@@ -738,7 +733,7 @@ body {
     text-overflow: ellipsis;
 }
 
-.km-sidebar-user-emailnotfound{
+.km-sidebar-user-emailnotfound,.km-sidebar-user-numbernotfound{
 	font-size: 14px!important;
     font-weight: 300!important;
     font-style: normal!important;

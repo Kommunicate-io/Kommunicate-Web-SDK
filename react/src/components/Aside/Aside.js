@@ -3,12 +3,14 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap
 import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
+import ApplozicClient from '../../utils/applozicClient';
 import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
 import LocationIcon from './Icons/location.png';
 import DomainIcon from './Icons/web-icon.png';
+import Notification from '../../views/model/Notification';
 import FacebookIcon from './Icons/facebook-icon.png';
 import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
 import TwitterIcon from './Icons/twitter-icon.png';
@@ -22,7 +24,11 @@ import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
 import Labels from '../../utils/Labels';
 
-
+const userDetailMap = {
+  "displayName": "km-sidebar-display-name",
+  "email": "km-sidebar-user-email",
+  "phone": "km-sidebar-user-number",
+};
 class Aside extends Component {
   constructor(props) {
     super(props);
@@ -142,6 +148,76 @@ class Aside extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
+
+   validateEmail=(e) =>{
+    e.stopPropagation();
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(document.getElementById("km-sidebar-user-email-edit").innerHTML.match(mailformat))
+    {
+    this.updateUserDetail("email");
+    }
+    else
+    {
+      Notification.error("You have entered an invalid email address!");
+    return false;
+    }
+  }
+  validatePhoneNumber =(e) =>{
+    e.stopPropagation();
+    var phoneNumberformat = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/; 
+    if(document.getElementById("km-sidebar-user-number-edit").innerHTML.match(phoneNumberformat))
+    {
+    this.updateUserDetail("phone");
+    }
+    else
+    {
+      Notification.error("You have entered an invalid phone Number");
+    return false;
+    }
+  }
+  
+  updateUserDetail = (params) => {
+    var userDetails = {};
+    var elemId = '';
+    var userId = document.getElementById("km-sidebar-userId").innerHTML;
+    var displayName = document.getElementById("km-sidebar-display-name").innerHTML;
+    var userDetails ={};
+    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+    elemId ="km-"+params+"-submit";
+
+    userDetails.callback = function (userDetails) {
+       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+      var list = document.querySelectorAll(".person.active .name");
+      for (var i = 0; i < list.length; i++) {
+        list[i].innerText = document.getElementById("km-sidebar-display-name").innerHTML;
+      }
+    }
+    ApplozicClient.updateUserDetail({ "userDetails": userDetails, "ofUserId": userId });
+    this.hideEditUserDetailDiv(params);
+
+  }
+  cancelEdit = function (event,elemId) {
+    event.stopPropagation();
+    this.hideEditUserDetailDiv(elemId);
+    document.getElementById(userDetailMap[elemId]+"-edit").innerHTML= document.getElementById(userDetailMap[elemId]).innerHTML;
+  }
+  showEditUserDetailDiv = function (elemId) {
+    document.getElementById(userDetailMap[elemId]).classList.remove("vis");
+    document.getElementById(userDetailMap[elemId]).classList.add("n-vis");
+    document.getElementById("km-"+elemId+"-submit").classList.remove("n-vis");
+    document.getElementById("km-"+elemId+"-submit").classList.add("vis");
+    if(document.getElementById(userDetailMap[elemId]+"-edit").classList.contains("vis")) {
+      document.getElementById(userDetailMap[elemId]+"-edit").focus();
+    }
+  }
+  
+  hideEditUserDetailDiv = function (elemId) {
+    document.getElementById(userDetailMap[elemId]).classList.remove("n-vis");
+    document.getElementById(userDetailMap[elemId]).classList.add("vis");
+    document.getElementById("km-"+elemId+"-submit").classList.remove("vis");
+    document.getElementById("km-"+elemId+"-submit").classList.add("n-vis");
+  }
+
 
   loadAgents() {
      // var that = this;
@@ -1025,7 +1101,7 @@ class Aside extends Component {
                             </button>
                           </div>
                         </div>
-                        <div className="km-group-icon-sec">
+                        <div className="km-group-icon-sec km-postion-relative">
                           <div id="km-group-info-icon-box"
                             className="km-group-icon-box km-group-info-icon-box km-hover-on">
                             <div className="km-group-icon"></div>
@@ -1049,9 +1125,10 @@ class Aside extends Component {
                             </a>
                           </div>
                         </div>
+                        <p id="km-sidebar-userId"  hidden></p>
                         <div className="km-dispalyname-wrapper">
                           <div>
-                            <p id="km-sidebar-display-name"  className="km-sidebar-display-name km-truncate"></p>
+                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" onClick={() => this.showEditUserDetailDiv("displayName")}></p>
                           </div>
                           <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
                             <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
@@ -1065,20 +1142,65 @@ class Aside extends Component {
                                 data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
                             </svg>
                           </div>
+                          <div id="km-displayName-submit" className="n-vis" onBlur={() => this.updateUserDetail("displayName")}>
+                          <p id="km-sidebar-display-name-edit"  contentEditable="true" className="km-sidebar-display-name km-truncate vis"></p>
+                          <div className="km-sidebar-displayName-svg">
+                          <div className="km-rectangle km-displayName" onMouseDown={() => this.updateUserDetail("displayName")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
+                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
+                              </svg>
+                            </div>
+                            <div className="km-rectangle km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 9 9">
+                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
+                              </svg>
+                            </div>
+                            </div>
+                            </div>
                         </div>
                         <hr className="hr"/>
                         <div className="km-display-email-number-wrapper">
-                          <div>
+                          <div className="km-postion-relative">
                             <p className="n-vis">@</p> 
-                            <p id="km-sidebar-user-email"  className="km-sidebar-user-email"></p>
+                            <p id="km-sidebar-user-email" className="km-sidebar-user-email vis" contentEditable="true" placeholder="Add Email" onClick={() => this.showEditUserDetailDiv("email")}></p>
+                            <div id= "km-email-submit" className="km-editemail n-vis"> 
+                            <p id="km-sidebar-user-email-edit" contentEditable="true" className="km-sidebar-user-email" placeholder="Add Email" onBlur={this.validateEmail} ></p>
+                            <div className="km-sidebar-svg">
+                            <div className="km-rectangle" onMouseDown={this.validateEmail}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className ="km-sidebar-submit-svg">
+                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
+                              </svg>
+                            </div>
+                            <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"email")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
+                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
+                              </svg>
+                            </div>
+                            </div>
+                            </div>
                           </div>
-                          <div className="n-vis">
+                          <div className="vis km-postion-relative">
                             <p>
                               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
                                 <path fill="#686363" fillRule="nonzero" d="M8.33515566 13.38715016c-.05926722-.00832946-.11912954-.01893995-.1798423-.0313181-.72433044-.15252154-1.42626503-.47091322-2.27774871-1.03226124-1.50153202-1.01436369-2.75189609-2.31205273-3.719929-3.85938861l-.00046307-.00061446C1.3837426 7.22173723.86397466 5.99028636.61187513 4.80377854.4862773 4.21186996.38029987 3.50772098.5469947 2.77121015c.08723782-.46695842.34864425-.87135055.75334045-1.15635487L2.33561942.83451216c.60636074-.45717604 1.33570037-.35723769 1.81417846.2492895.14774114.18154096.29022762.37571102.42813376.56337758.06890112.0935513.13821485.18807619.20968376.28290396l.61744193.81924641c.469604.65142567.3703215 1.35785726-.25450303 1.8499775-.18127857.13658208-.3557812.26404499-.5302838.39150789-.1481799.10827262-.29633457.21636566-.44489304.32733183.10639789.37276514.28599585.75636724.5736771 1.22968834.6024601.98579219 1.21545411 1.72201055 1.92827981 2.31605998l.01516317.01330119c.08826528.0821727.19996166.15921504.31820799.240474.03239393.02231508.06478785.04463015.09679734.06707434l.97048089-.73103612c.2994681-.22563053.6334768-.3204217.96573219-.27372625.33225544.04669546.62740205.22972555.85307703.52916007l1.26573083 1.67963472c.47218866.62651871.36846445 1.36455479-.25814961 1.83682991-.11040583.08318392-.2205088.16421292-.32963818.2448294-.21777313.1603857-.42330672.3118708-.62381623.47321778-.44092231.38117707-.98627486.53196492-1.61576413.44349597zM2.77280686 8.0798434c.913921 1.46062416 2.09409806 2.68563972 3.50749335 3.64037227.76851357.50665465 1.39348005.79280436 2.02335274.92545858.48637304.1007671.8618835.0182177 1.1828808-.25895616.22203942-.17901343.44352489-.34235665.6578159-.50011874.1072605-.07904801.2154948-.15850851.32369789-.24035386.31073397-.2341187.34954852-.5102986.11535848-.82081824l-1.26575596-1.6794551c-.21502418-.28530257-.51782556-.32785853-.80316011-.1128768l-1.04486104.78723747c-.08541597.06435566-.3452753.25966173-.68298256.0276175-.06818674-.05041825-.12799042-.09141809-.18758932-.13257223-.13206778-.0910755-.26832263-.18493687-.39352062-.30013397-.7726529-.64530714-1.43247918-1.4366335-2.07605379-2.48954839-.35330624-.58106136-.56403643-1.05199111-.6840576-1.52720247-.0867049-.3526013.11851632-.53965504.2325599-.61353803.17183095-.12930333.34305621-.25429695.5143067-.37947015.17163493-.12530229.34326986-.25060458.51535612-.38042137.31675166-.2495704.35357249-.51156423.1132766-.8450992l-.61281112-.81310207c-.07316686-.0970807-.14435816-.19388374-.21493201-.28986755-.1388323-.18889543-.26997182-.36737072-.40973962-.53918457-.16789546-.2127567-.44141-.40245184-.81118683-.123527l-1.0446562.78708317c-.25998966.18320201-.41482075.42220147-.47016174.71693416-.13830646.6114026-.05063776 1.19431823.06401915 1.73506428.234443 1.10363771.7227653 2.25650656 1.45135088 3.42647847z"/>
                               </svg>
                             </p>
-                            <p id="km-sidebar-user-number"  className="km-sidebar-user-number"></p>
+                            <p id="km-sidebar-user-number" placeholder ="Add Phone Number" contentEditable="true" className="km-sidebar-user-number" onClick={() => this.showEditUserDetailDiv("phone")}></p>
+                            <div id="km-phone-submit" className="km-editemail n-vis" onBlur={this.validatePhoneNumber}>
+                            <p id="km-sidebar-user-number-edit" placeholder ="Add Phone Number"contentEditable="true" className="km-sidebar-user-number"></p>
+                            <div className="km-sidebar-svg">
+                            <div className="km-rectangle" onMouseDown={() => this.validatePhoneNumber()}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" className ="km-sidebar-submit-svg">
+                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
+                              </svg>
+                            </div>
+                            <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"phone")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
+                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
+                              </svg>
+                            </div>
+                            </div>
+                            </div>
                           </div>
                         </div>
                       </div>
