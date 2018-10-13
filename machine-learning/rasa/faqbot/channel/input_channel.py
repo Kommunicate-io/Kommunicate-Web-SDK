@@ -104,7 +104,12 @@ def add_domain(questions, app_key):
         if 'utter_' + question.get_intent() not in data['actions']:
             data['actions'].append('utter_' + question.get_intent())
         #if data['templates'].get('utter_' + question.get_intent(), None) is None:
+        #Todo: use append
         data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
+
+        #data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
+        #data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
+
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
@@ -115,12 +120,19 @@ def add_stories(questions, app_key):
     for question in questions:
         intents.append(question.get_intent())
 
-    num = str(random.randint(1, 2345678))
     bot_stories_path = 'customers/' + app_key + '/faq_stories.md'
 
     file = open(get_abs_path(bot_stories_path), 'a')
     for intent in intents:
-        file.write('\n\n## story_' + num)
+        file.write('\n\n## story_' + str(random.randint(1, 2345678)))
+        file.write('\n* ' + intent)
+        file.write('\n - utter_' + intent)
+
+        file.write('\n\n## story_' + str(random.randint(1, 2345678)))
+        file.write('\n* ' + intent)
+        file.write('\n - utter_' + intent)
+
+        file.write('\n\n## story_' + str(random.randint(1, 2345678)))
         file.write('\n* ' + intent)
         file.write('\n - utter_' + intent)
     file.close()
@@ -135,6 +147,9 @@ def add_nludata(questions, app_key):
         for question in questions:
             intent = question.get_intent()
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+            data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
+
     with open(get_abs_path('customers/' + app_key + '/faq_data.json'), 'w') as outfile:
         json.dump(data, outfile, indent=3)
     return
