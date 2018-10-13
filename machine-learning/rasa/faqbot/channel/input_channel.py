@@ -104,12 +104,7 @@ def add_domain(questions, app_key):
         if 'utter_' + question.get_intent() not in data['actions']:
             data['actions'].append('utter_' + question.get_intent())
         #if data['templates'].get('utter_' + question.get_intent(), None) is None:
-        #Todo: use append
         data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
-
-        #data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
-        #data['templates']['utter_' + question.get_intent()] = [json.dumps({'message': question.content})]
-
     yaml.indent(mapping=1, sequence=1, offset=0)
     yaml.dump(data, file)
     return
