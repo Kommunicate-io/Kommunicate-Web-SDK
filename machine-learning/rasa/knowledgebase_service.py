@@ -97,4 +97,4 @@ for key in appkeys:
     r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
                     data=json.dumps({'data':[key],
                                     'lastRunTime':str(current_time_stamp)}))
-    print (data)
+    print (key)
