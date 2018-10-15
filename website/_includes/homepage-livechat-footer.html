@@ -160,4 +160,13 @@
     profitwell('user_email', '');
   </script> 
   <!-- End of Profitwell Awesomeness Code. -->
+
+  <script>
+        $("a").click(function(){
+          var heapData;
+          heap.identity = null ? heapData = heap.identity : heapData = heap.userId;
+          $(this).attr("href").indexOf("calendly") > -1 ? ( window.open($(this).attr("href")+"?utm_source="+heapData, '_blank') ): ($(this).attr("target") == '_blank' ? window.open($(this).attr("href"),"_blank" ) : window.open($(this).attr("href"),"_self" ) );
+          return false;
+        });
+</script>
   
