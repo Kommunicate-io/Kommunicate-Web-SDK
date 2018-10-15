@@ -11,6 +11,7 @@ import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
+import kmloadinganimation from './km-loading-animation.svg';
 
 class Register extends Component {
   constructor(props){
@@ -32,9 +33,19 @@ class Register extends Component {
       googleOAuth :false,
       isInvited:false,
       roleType:null,
+      googleSignUpUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_up"
     };
     this.showHide = this.showHide.bind(this);
     this.state=Object.assign({type: 'password'},this.initialState);
+  }
+  componentDidMount(){
+    const search = this.props.location.search;
+    const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp');
+
+    if(googleOAuth === 'true'){
+      this.setState({googleOAuth: true})
+      document.getElementById("create-button").click();
+    }
   }
   componentWillMount(){
 
@@ -56,14 +67,11 @@ class Register extends Component {
       token:token,
     });
     
-    localStorage.removeItem('Google_OAuth');
-
     const googleOAuth = CommonUtils.getUrlParameter(search, 'googleSignUp')
     console.log(googleOAuth)
 
     if(googleOAuth === 'true'){
       this.setState({googleOAuth: true})
-      localStorage.setItem('Google_OAuth', true);
     }else if(googleOAuth === 'false'){
       console.log(googleOAuth)
       Notification.warning("User Already Exists", 3000);
@@ -162,7 +170,7 @@ class Register extends Component {
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
-    Promise.resolve(createCustomerOrAgent(userInfo,userType)).then((response) => {
+    Promise.resolve(createCustomerOrAgent(userInfo,userType,"GOOGLE")).then((response) => {
       if (window.Kommunicate && window.$applozic) { 
         //window.Kommunicate.updateUserIdentity(userInfo.userName);
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
@@ -230,7 +238,8 @@ class Register extends Component {
   render() {
     console.log("invite",this.state.invitedUserEmail);
     return (
-      <div className="app flex-row align-items-center signup-app-div">
+     <div> 
+      <div className= {this.state.googleOAuth?"n-vis":"app flex-row align-items-center signup-app-div"}>
         <div className="container">
           <div className="logo-container text-center">
             <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 729.5 138.5">
@@ -271,7 +280,7 @@ class Register extends Component {
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
-                  {/* <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
+                  <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                       <defs>
                         <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
@@ -290,7 +299,7 @@ class Register extends Component {
                   <div className="or-seperator">
                     <div className="or-seperator--line"></div>
                     <div className="or-seperator--text">OR</div>
-                  </div> */}
+                  </div>
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
@@ -346,6 +355,10 @@ class Register extends Component {
             <div className="bottom-shape-container"></div>
           </div>
         </div>
+      <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
+      <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+      </div>
+     </div> 
     );
   }
 }

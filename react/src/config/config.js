@@ -17,6 +17,7 @@ function getEnvironmentId() {
   const botPlatformAPI =config.baseurl.botPlatformAPI;
   const kmWebsiteUrl = config.kommunicateWebsiteUrl;
   const serviceUrl = config.services.baseurl;
+  const googleApiBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   config.homeUrl = applozicBaseUrl;
   config.kommunicateBaseUrl = kommunicateBaseUrl;
   config.baseurl.baseUrl = applozicBaseUrl;
@@ -59,7 +60,9 @@ function getEnvironmentId() {
   config.kommunicateWebsiteUrls = {
     "kmConversationsTestUrl": kmWebsiteUrl + url.kommunicateWebsite.KM_WEBSITE_CONVERSATIONS_TEST
   }
-  
+  config.googleApi = {
+    "googleApiUrl": googleApiBaseUrl + "?scope=profile%20email&access_type=offline&redirect_uri=" + kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com"
+  }
 
 export function get(env) {
   return config;
