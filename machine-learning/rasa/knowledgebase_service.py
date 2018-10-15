@@ -48,7 +48,7 @@ for data in new_data:
         except KeyError:
             print("applicationId not found, this might happen if its very old record.")
             continue
-        print(data.encode("utf-8"))
+        #print(data)
         if data['created_at'] >= last_update_time:
             if data['deleted'] == True or 'deleted-at' in data:
                 #new create is placed and then deleted, so no need to do anything for that

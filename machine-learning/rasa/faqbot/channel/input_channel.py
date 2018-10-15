@@ -372,7 +372,7 @@ def webhook():
 @app.route("/faq/add", methods=["POST"])
 def addfaq():
     body = request.json
-    print(body.encode("utf-8"))
+    print(body)
 
     questions = []
     for que in body:
