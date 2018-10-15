@@ -93,7 +93,8 @@ for key in faq_update:
     print('Data updated for applicationId :', key)
 
 #to train bots with new data
-r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
-                  data=json.dumps({'data':appkeys,
-                                   'lastRunTime':str(current_time_stamp)}))
-print (appkeys)
+for key in appkeys:
+    r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
+                    data=json.dumps({'data':[key],
+                                    'lastRunTime':str(current_time_stamp)}))
+    print (data)
