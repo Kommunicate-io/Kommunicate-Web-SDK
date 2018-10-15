@@ -299,7 +299,7 @@ class Welcome extends Component{
                 <div className="message-wrapper">
                 <div className="km-welcome-messge-textarea-heading">Welcome message</div>
                    <div className="row welcome-msg-collect-email-checkbox">
-                     <Checkbox idCheckbox={'welcome-msg-collect-email-checkbox'} label={'Collect email ID from user'}
+                     <Checkbox idCheckbox={'welcome-msg-collect-email-checkbox'} label={'Collect email ID from anonymous users'}
                       checked = {this.state.checked} handleOnChange = {this.toggleChangeCheckbox} />
                     </div>
                   {welcomeMsgTextArea}                  
