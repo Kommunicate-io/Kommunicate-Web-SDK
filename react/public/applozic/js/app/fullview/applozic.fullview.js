@@ -7562,7 +7562,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			var $mck_tab_status = $kmApplozic("#km-tab-individual .km-tab-status");
 			var $mck_typing_box_text = $kmApplozic(".km-typing-box .name-text");
 			var $mck_message_inner = $kmApplozic("#km-message-cell .km-message-inner-right");
-			var applicationKey = JSON.parse(localStorage.KM_USER_SESSION).application.key;
 			_this.init = function () {
 				if (typeof MCK_WEBSOCKET_URL !== 'undefined') {
 					var port = (!kmUtils.startsWith(MCK_WEBSOCKET_URL, "https")) ? "15674" : "15675";
@@ -7659,8 +7658,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.unsubscibeToNotification = function () {
 				if (stompClient && stompClient.connected) {
-					if (subscriber && supportChannelSubscriber) {
+					if (subscriber) {
 						subscriber.unsubscribe();
+					}
+					if (supportChannelSubscriber) {
 						supportChannelSubscriber.unsubscribe();
 					}
 				}
@@ -7771,13 +7772,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						_this.unsubscibeToNotification();
 					}
 					subscriber = stompClient.subscribe("/topic/" + MCK_TOKEN, _this.onMessage);
-					supportChannelSubscriber = stompClient.subscribe("/topic/" + "support-channel-"+applicationKey, _this.supportChannelSubscribedMessages);
+					supportChannelSubscriber = stompClient.subscribe("/topic/" + "support-channel-"+MCK_APP_ID, _this.supportChannelSubscribedMessages);
 					_this.sendStatus(1);
 					_this.checkConnected(true);
 				} else {
 					setTimeout(function () {
 						subscriber = stompClient.subscribe("/topic/" + MCK_TOKEN, _this.onMessage);
-						supportChannelSubscriber = stompClient.subscribe("/topic/" + "support-channel-"+applicationKey, _this.supportChannelSubscribedMessages);
+						supportChannelSubscriber = stompClient.subscribe("/topic/" + "support-channel-"+MCK_APP_ID, _this.supportChannelSubscribedMessages);
 						_this.sendStatus(1);
 						_this.checkConnected(true);
 					}, 5000);
