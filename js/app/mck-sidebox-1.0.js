@@ -5492,7 +5492,7 @@ const MESSAGE_CONTENT_TYPE = {
                 if (message && message.createdAtTime > currentMessageTime) {
                     var ucTabId = (message.groupId) ? 'group_' + contact.contactId : 'user_' + contact.contactId;
                     var unreadCount = _this.getUnreadCount(ucTabId);
-                    var emoji_template = _this.getMessageTextForContactPreview(message, contact, 200);
+                    var emoji_template = _this.getMessageTextForContactPreview(message, contact);
                     $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-date").html(typeof message.createdAtTime === 'undefined' ? '' : mckDateUtils.getTimeOrDate(message ? message.createdAtTime : '', true));
                     var $messageText = $applozic("#li-" + contHtmlExpr + " .mck-cont-msg-wrapper");
                     $messageText.html('');
@@ -5529,7 +5529,7 @@ const MESSAGE_CONTENT_TYPE = {
                 $applozic("#li-" + contactIdExpr + " .mck-cont-msg-wrapper").html('');
             };
             _this.addContact = function (contact, $listId, message) {
-                var emoji_template = _this.getMessageTextForContactPreview(message, contact, 100);
+                var emoji_template = _this.getMessageTextForContactPreview(message, contact);
                 var groupUserCount = contact.userCount;
                 var conversationId = '';
                 var isGroupTab = false;
@@ -5852,7 +5852,7 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 }
             };
-            _this.getMessageTextForContactPreview = function (message, contact, size) {
+            _this.getMessageTextForContactPreview = function (message, contact) {
                 var emoji_template = '';
                 if (typeof message !== 'undefined') {
                     if (message.message) {
@@ -5872,7 +5872,7 @@ const MESSAGE_CONTENT_TYPE = {
                                 if (w.emoji !== null && typeof w.emoji !== 'undefined') {
                                     emoji_template = w.emoji.replace_unified(msg);
                                     emoji_template = w.emoji.replace_colons(emoji_template);
-                                    emoji_template = (emoji_template.indexOf('</span>') !== -1) ? emoji_template.substring(0, emoji_template.lastIndexOf('</span>')) : emoji_template.substring(0, size);
+                                    emoji_template = (emoji_template.indexOf('</span>') !== -1) ? emoji_template.substring(0, emoji_template.lastIndexOf('</span>')) : emoji_template;
                                 } else {
                                     emoji_template = msg;
                                 }
@@ -8239,8 +8239,7 @@ const MESSAGE_CONTENT_TYPE = {
                 // $mck_msg_preview.data('mck-conversationid', conversationId);
                 var imgsrctag = mckMessageLayout.getContactImageLink(contact, displayName);
                 if (message.message) {
-                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact, 82);
-                    (msg && msg.length > 81) ? msg = msg + "..." : msg;
+                    var msg = mckMessageLayout.getMessageTextForContactPreview(message, contact);
                     // $mck_preview_msg_content.html('');
                     $mck_msg_preview_visual_indicator_text.html('');
                     $mck_msg_preview_visual_indicator_text.removeClass('mck-flexi');
