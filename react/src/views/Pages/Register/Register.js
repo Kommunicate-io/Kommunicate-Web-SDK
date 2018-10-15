@@ -11,6 +11,7 @@ import GoogleSignIn from './btn_google_signin_dark_normal_web@2x.png';
 import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
+import kmloadinganimation from './km-loading-animation.svg';
 
 class Register extends Component {
   constructor(props){
@@ -240,7 +241,8 @@ class Register extends Component {
   render() {
     console.log("invite",this.state.invitedUserEmail);
     return (
-      <div className="app flex-row align-items-center signup-app-div">
+     <div> 
+      <div className= {this.state.googleOAuth?"n-vis":"app flex-row align-items-center signup-app-div"}>
         <div className="container">
           <div className="logo-container text-center">
             <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 729.5 138.5">
@@ -279,7 +281,7 @@ class Register extends Component {
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
-                  <p className="text-muted login-signup-sub-heading text-center">Your account information</p>
+                  {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
                   <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_up"}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
@@ -356,6 +358,11 @@ class Register extends Component {
             <div className="bottom-shape-container"></div>
           </div>
         </div>
+      <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
+      <kmloadinganimation/>
+      <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+      </div>
+     </div> 
     );
   }
 }
