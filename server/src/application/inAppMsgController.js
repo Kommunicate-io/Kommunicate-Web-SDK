@@ -317,6 +317,7 @@ exports.processAwayMessage = function(req,res){
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
         let eventId = 0;
+        let collectEmail = false; // backward compatibility 
         let collectEmailOnAwayMessage = false;
         let collectEmailOnWelcomeMessage = false;
         let groupUsers = [];
@@ -342,6 +343,7 @@ exports.processAwayMessage = function(req,res){
                }
                 Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
                 .then(([response, assignedUser, welcomeMessage]) => {  
+                     collectEmail = response.data.collectEmailOnAwayMessage
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
                      collectEmailOnWelcomeMessage = response.data.collectEmailOnWelcomeMessage;
                      let welcomeMessageEnabled = welcomeMessage.length > 0 ? true : false ; 
@@ -350,6 +352,7 @@ exports.processAwayMessage = function(req,res){
                         let messageList = result.map(data=>data.dataValues);
                         let data = {
                              "messageList": messageList,
+                             "collectEmail":collectEmail, 
                              "collectEmailOnAwayMessage": collectEmailOnAwayMessage,
                              "welcomeMessageEnabled": welcomeMessageEnabled,
                              "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage
