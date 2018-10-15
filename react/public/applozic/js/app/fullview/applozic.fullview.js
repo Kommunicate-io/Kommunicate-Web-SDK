@@ -4709,9 +4709,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
 
-				if (list.sectionId == "km-assigned-search-list") {
-					_this.updateRecentConversationListSection(contact, message, update, prepend, "km-contact-list");
-				}
 			};
 			_this.addContactsToSearchList = function () {
 				if (MCK_CONTACT_ARRAY.length === 0 && MCK_CHAT_CONTACT_ARRAY.length === 0) {
