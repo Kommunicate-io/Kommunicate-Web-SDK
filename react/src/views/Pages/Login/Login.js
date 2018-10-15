@@ -18,6 +18,7 @@ import GoogleLogo from '../Register/logo_google.svg';
 import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
+import kmloadinganimation from '../Register/km-loading-animation.svg';
 
 
 class Login extends Component {
@@ -407,7 +408,8 @@ showPasswordField = () => {
 
   render() {
     return (
-      <div className="app flex-row align-items-center login-app-div">
+      <div>
+        <div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
         <div className="container">
         <div className="logo-container text-center">
             <a href="#" onClick={this.websiteUrl}>
@@ -620,6 +622,10 @@ showPasswordField = () => {
           <div className="bottom-shape-container"></div>
         </div>
 
+      </div>
+        <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
+        <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+        </div>
       </div>
     );
   }
