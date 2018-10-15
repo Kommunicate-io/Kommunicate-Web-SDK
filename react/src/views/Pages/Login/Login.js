@@ -57,7 +57,7 @@ constructor(props){
     loginType: 'email',
     hideGoogleLoginBtn:false,
     marginBottomFrgtPassHead:'',
-    googleLoginUrl: "https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"
+    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in"
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
