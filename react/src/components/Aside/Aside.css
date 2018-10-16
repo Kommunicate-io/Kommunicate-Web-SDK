@@ -792,6 +792,12 @@ color: #595757;
    right:  0;
    margin-bottom: -15px;
 }
+.km-editphone{
+    position:  absolute;
+    bottom: -10;
+    left:  35px;
+  
+}
 .km-postion-relative{
     position:  relative;
     
@@ -804,10 +810,18 @@ color: #595757;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
+.km-displayname-wrapper .km-rectangle{
+    margin-bottom: 0;
+    width: 19px;
+    height: 17px;
+    align-items: center;
+    background-color: #e5e5e5;
+    box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+}
 [contenteditable=true]:empty:before{
     content: attr(placeholder);
     display: block; /* For Firefox */
-    width: 125px;
+    width: 100%;
     height: 16px;
     font-family: Roboto;
     font-size: 14px;
