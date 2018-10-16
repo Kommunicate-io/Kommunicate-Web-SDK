@@ -37,6 +37,8 @@ Kommunicate.client={
      * @param {String} conversationDetail.agentId
      * @param {Object} conversationDetail.users
      * @param {String} conversationDetail.clientGroupId
+     * @param {Boolean} conversationDetail.isMessage
+     * @param {Boolean} conversationDetail.isInternal
      */
      createConversation : function(conversationDetail,callback){
         $applozic.fn.applozic("createGroup", {
@@ -46,6 +48,8 @@ Kommunicate.client={
             admin: conversationDetail.agentId,
             users: conversationDetail.users,
             clientGroupId:conversationDetail.clientGroupId,
+            isMessage: conversationDetail.isMessage,
+            isInternal: conversationDetail.isInternal,
             metadata: {
                 CREATE_GROUP_MESSAGE: "",
                 REMOVE_MEMBER_MESSAGE: "",
@@ -61,7 +65,8 @@ Kommunicate.client={
                 CONVERSATION_ASSIGNEE: conversationDetail.assignee || conversationDetail.agentId,
                 KM_CONVERSATION_TITLE:conversationDetail.groupName,
                 //ALERT: "false",
-                HIDE: "true"
+                HIDE: "true",
+                SKIP_ROUTING: conversationDetail.skipRouting ? conversationDetail.skipRouting : "false"
             },
             callback: function (response) {
                 console.log("response", response);

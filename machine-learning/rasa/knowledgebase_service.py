@@ -48,7 +48,7 @@ for data in new_data:
         except KeyError:
             print("applicationId not found, this might happen if its very old record.")
             continue
-        print(data)
+        #print(data)
         if data['created_at'] >= last_update_time:
             if data['deleted'] == True or 'deleted-at' in data:
                 #new create is placed and then deleted, so no need to do anything for that
@@ -93,7 +93,8 @@ for key in faq_update:
     print('Data updated for applicationId :', key)
 
 #to train bots with new data
-r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
-                  data=json.dumps({'data':appkeys,
-                                   'lastRunTime':str(current_time_stamp)}))
-print (appkeys)
+for key in appkeys:
+    r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
+                    data=json.dumps({'data':[key],
+                                    'lastRunTime':str(current_time_stamp)}))
+    print (key)

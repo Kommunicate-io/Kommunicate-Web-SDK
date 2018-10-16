@@ -18,10 +18,21 @@ let AppSetting= function(sequelize, DataTypes) {
         type: DataTypes.BOOLEAN,
         field: "bot_routing"
       },
-      collectEmail:{
+      widgetTheme:{
+        type:DataTypes.JSON,
+        allowNull: true,
+        field: "widget_theme"
+      },
+      collectEmailOnAwayMessage:{
         type:DataTypes.BOOLEAN,
         allowNull: false,
-        field: 'collect_email',
+        field: 'collect_email_away',
+        defaultValue: 0
+      },  
+      collectEmailOnWelcomeMessage:{
+        type:DataTypes.BOOLEAN,
+        allowNull: false,
+        field: 'collect_email_welcome',
         defaultValue: 0
       }  
     },

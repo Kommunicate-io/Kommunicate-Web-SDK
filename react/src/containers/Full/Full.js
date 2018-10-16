@@ -25,6 +25,7 @@ import PushNotification from '../../views/PushNotification/PushNotification.js'
 import Integrations from '../../views/Integrations/Integrations.js'
 import IncomingEmailForward from '../../views/IncomingEmailForward/IncomingEmailForward.js'
 import EmailNotifications from '../../views/EmailNotifications/EmailNotifications.js'
+import Conversation404 from '../../views/Pages/Page404/Conversation404'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -35,7 +36,7 @@ import config from '../../config/index';
 import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
-const enableIntegry = true;
+const enableIntegry = false;
 const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
   constructor (props) {
@@ -141,16 +142,23 @@ class Full extends Component {
 
   componentDidMount() {
     if(CommonUtils.getUserSession()){
+      if (window.heap) {
+        window.heap.identify(CommonUtils.getUserSession().userName);
+        window.heap.addUserProperties({
+                                      "email": CommonUtils.getUserSession().userName, 
+                                      "subscription": CommonUtils.getUserSession().subscription
+                                    });
+      }
+      
       // initilizing full view plugin for dashboard user
-    window.chatLogin(chatUrl);
-      //listen for kommunicate plugin initilized event. initilized support chat user.
-    window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
+      window.chatLogin(chatUrl);
+        //listen for kommunicate plugin initilized event. initilized support chat user.
+      window.addEventListener("kmInitilized",this.initilizeSupportChatUser,true);
 
-    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
-      // when user logs in this will get called.
-      this.initilizeSupportChatUser();
-    }
-
+      if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+        // when user logs in this will get called.
+        this.initilizeSupportChatUser();
+      }
     }
   }
   componentWillUnmount(){
@@ -170,7 +178,7 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-
+   
     return (
       <div className="app" suppressContentEditableWarning={true}>
         {/* <Header
@@ -189,9 +197,10 @@ class Full extends Component {
             <Breadcrumb />
             <div className="container-fluid">
               <Switch >
+                <Route exact path="/conversations/oops" name="" component={Conversation404}/>
                 <Route path="/dashboard" name="Dashboard"  component={Dashboard}/>
                 <Route exact path="/users" name="Tables" component={Users}/>
-                <Route exact path="/conversations" name="Conversations" component={Conversations}/>
+                <Route exact ={false} path="/conversations" name="Conversations" component={Conversations}/>  
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
                 <Route exact path="/settings/profile" name="Admin" render={()=>{
@@ -212,6 +221,7 @@ class Full extends Component {
                 <Route exact path="/settings/connect-support-email" name="IncomingEmailForward" component={IncomingEmailForward}/>
                 <Route exact path="/settings/email-notifications" name="EmailNotifications" component={EmailNotifications}/>
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
+                
 
                 <Redirect from="/" to="/dashboard"/>
 

@@ -123,6 +123,9 @@
                     <li class="footer_list_item">
                         <a href="/sla" class="footer_link">SLA</a>
                     </li>
+                    <li class="footer_list_item">
+                        <a href="/resources/growth-calculator" class="footer_link">Growth Calculator</a>
+                    </li>
                 </ul>
             </div>
             <div class="footer_column">
@@ -157,4 +160,13 @@
     profitwell('user_email', '');
   </script> 
   <!-- End of Profitwell Awesomeness Code. -->
+
+  <script>
+        $("a").click(function(){
+          var heapData;
+          heap.identity = null ? heapData = heap.identity : heapData = heap.userId;
+          $(this).attr("href").indexOf("calendly") > -1 ? ( window.open($(this).attr("href")+"?utm_source="+heapData, '_blank') ): ($(this).attr("target") == '_blank' ? window.open($(this).attr("href"),"_blank" ) : window.open($(this).attr("href"),"_self" ) );
+          return false;
+        });
+</script>
   

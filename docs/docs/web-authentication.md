@@ -51,7 +51,7 @@ Once configured, user will see the form on click of the chat widget launch icon
 
 |parameters | description| required |
 |---    |---    |---    |
-|askUserDetails  | ['name', 'email', 'phone']| atleast one is required |
+|askUserDetails  | ["name", "email", "phone"]| atleast one is required |
 
 
 <img align="middle" src="https://www.kommunicate.io/blog/wp-content/uploads/2018/06/Screen-Shot-2018-06-05-at-8.40.22-PM.png" />

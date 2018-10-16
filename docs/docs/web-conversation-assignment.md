@@ -21,16 +21,19 @@ sidebar_label: Conversation Assignment
   - The **take over from bot** button will be displayed in the conversation, if agent takes over from bot, conversation will assign to that particular agent..
 
 
-# Assign to agent
-You can assign conversation to the particular agent on particular intent. Add the following custom payload into your dialogflow intent. Kommunicate will assign the conversation to the agent that you mentioned into "KM_ASSIGN_TO".
+# Bot to agent handoff
+There are multiple ways your can assign the conversation to agents. 
 
-```
+  1. Set action `input.unknown` in Dialogflow. If Default fallback intents are enabled, Dialogflow automatically adds this action in response. It means whenever fallback intent is triggered the conversation will be assigned to an agent according to your conversation routing settings. 
+
+  2. Assign conversation to an agent when an intent detected. Set below json as the custom payload in dialogflow. specify the agent's Id(same as the agent use to login to dashboard) in `KM_ASSIGN_TO` parameter. If `KM_ASSIGN_TO` parameter left empty conversation routing rules will be applied. 
+
+```js
 {
   "platform": "kommunicate",
-  "message": text message, //ex. "our sales agent will help you on price negotiation"
+  "message": "our agents will get back to you", //optional 
   "metadata": {
-    "KM_ASSIGN_TO": agent's userId,
-    "payload": {}
+    "KM_ASSIGN_TO": "agent's userId" // pass empty string to use conversation routing rules. 
   }
 }
 ```

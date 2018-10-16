@@ -76,7 +76,7 @@ KommunicateUtils = {
     },
     triggerCustomEvent: function(eventName, options) {
 
-        options = typeof options != 'object' ? options : {}
+        options = typeof options == 'object' ? options : {}
         options.bubbles = options.bubbles || true;
         options.cancelable = options.cancelable || true;
 

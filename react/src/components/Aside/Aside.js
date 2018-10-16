@@ -63,6 +63,7 @@ class Aside extends Component {
     this.validateAndUpdateUserDetail = this.validateAndUpdateUserDetail.bind(this);
     this.onKeyDown =this.onKeyDown.bind(this);
     this.setInputFlag=this.setInputFlag.bind(this);
+    this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -88,7 +89,7 @@ class Aside extends Component {
      this.setState({
       trialDaysLeftComponent: <TrialDaysLeft />
      })
-
+    window.addEventListener("group-update", this.handleGroupUpdate);
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
@@ -107,6 +108,12 @@ class Aside extends Component {
     } else {
         console.log("Please update your browser.");
     }
+    window.removeEventListener("group-update",this.handleGroupUpdate);
+  }
+  handleGroupUpdate(e) {
+    this.setState({ group: e.detail.data });
+    this.selectStatus();
+    this.selectAssignee();
   }
 
   getThirdparty = () => {
@@ -290,15 +297,17 @@ class Aside extends Component {
     var that = this;
     window.$kmApplozic.fn.applozic("getGroup", {
         groupId: groupId, callback: function(response) {
-          that.setState({
-            group: response,
-            visibleIntegartion:false,
-            visibleReply:true,
-          });
-          that.selectAssignee();
-          that.selectStatus();
-          that.setUpAgentTakeOver(response);
-        }
+          if(response) {
+            that.setState({
+              group: response,
+              visibleIntegartion:false,
+              visibleReply:true,
+            });
+            that.selectAssignee();
+            that.selectStatus();
+            that.setUpAgentTakeOver(response);
+          }
+          }
     });
   }
 
@@ -332,7 +341,11 @@ class Aside extends Component {
 
   selectStatus() {
     if (this.state.group.metadata && this.state.group.metadata.CONVERSATION_STATUS) {
-      window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+      if(this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || this.state.group.metadata.CONVERSATION_STATUS == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN){
+        window.$kmApplozic("#conversation-status").val(window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN);
+      }else{
+        window.$kmApplozic("#conversation-status").val(this.state.group.metadata.CONVERSATION_STATUS);
+      }
     } else {
       window.$kmApplozic("#conversation-status").val(0);
     }
@@ -929,8 +942,15 @@ class Aside extends Component {
                         </div>
                         <div id="empty-state-conversations-div" className="empty-state-conversations-div text-center n-vis">
                             <ConversationsEmptyStateImage />
-                            <p className="empty-state-message-shortcuts-first-text">You have no pending conversations</p>
-                            <p className="empty-state-message-shortcuts-second-text">You may check how a conversation looks like by starting a <a href={`${getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl}?appId=${CommonUtils.getUserSession().applicationId}&title=${CommonUtils.getUserSession().adminDisplayName}`} target="_blank">demo conversation</a> </p>
+                            
+                            <p className="empty-state-message-shortcuts-first-text km-empty-state-heading">You have no pending conversations</p>
+
+                            <p className="empty-state-message-shortcuts-second-text km-empty-state-subheading">You may check how a conversation looks like by starting a <a href={`${getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl}?appId=${CommonUtils.getUserSession().applicationId}&title=${CommonUtils.getUserSession().adminDisplayName}`} target="_blank">demo conversation</a> </p>
+
+                            <button className="km-button km-button--primary" onClick={() => {
+                              window.appHistory.push('/settings/install');
+                            }}>See how to install</button>
+
                         </div>
                       </div>
                       <div className="write">

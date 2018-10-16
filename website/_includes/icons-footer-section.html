@@ -51,6 +51,7 @@
             <li><a href="/resources/podcast" class="footer-features">Podcast</a></li>
             <li><a href="/customer-support-standards">Support Metrics</a></li>
             <li><a href="/resources/icons" class="footer-pricing">Free SaaS Icons</a></li>
+            <li><a href="/resources/growth-calculator" class="footer-pricing">Growth Calculator</a></li>
           </ul>
       </li>
       <li class="footer-links-listbox">
@@ -128,3 +129,11 @@ function myScrollFunction() {
     profitwell('user_email', '');
 </script> 
 <!-- End of Profitwell Awesomeness Code. -->
+<script>
+    $("a").click(function(){
+      var heapData;
+      heap.identity = null ? heapData = heap.identity : heapData = heap.userId;
+      $(this).attr("href").indexOf("calendly") > -1 ? ( window.open($(this).attr("href")+"?utm_source="+heapData, '_blank') ): ($(this).attr("target") == '_blank' ? window.open($(this).attr("href"),"_blank" ) : window.open($(this).attr("href"),"_self" ) );
+      return false;
+    });
+  </script>

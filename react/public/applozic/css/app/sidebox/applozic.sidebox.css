@@ -1489,6 +1489,7 @@ km-sidebox .km-dropdown-menu>li>a:focus, .km-dropup-menu>li>a:focus,
 	white-space: pre-wrap;
 	word-wrap: break-word;
 	position: relative;
+	font-weight: 400!important;
 }
 
 .km-msg-content img {
