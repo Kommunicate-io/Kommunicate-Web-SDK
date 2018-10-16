@@ -1425,7 +1425,8 @@ mck-sidebox .mck-dropdown-menu>li>a:focus, .mck-dropup-menu>li>a:focus,
 .mck-box-ft .mck-box-form {
 	padding: 10px 5px 10px 0px;
     border: 0.5px solid #cecbcb;
-    border-radius: 4px;
+	border-radius: 4px;
+	background-color: white;
 }
 
 .mck-box-ft .mck-row {
@@ -5716,4 +5717,17 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 
 .mck-msg-text.mck-msg-content>div {
 	line-height: 20px;
+}
+
+.mck-closed-conv-banner{
+	background-color: #f6f5f5;
+}
+#mck-conversation-status-box{
+	padding: 20px 0px 20px 0px;
+	font-family: Roboto;
+    font-size: 14px;
+    line-height: 1.21;
+    letter-spacing: 0.4px;
+    text-align: center;
+    color: #8b8888;
 }
