@@ -147,8 +147,7 @@ class Register extends Component {
     var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
-  
-
+    let signUpVia = this.state.googleOAuth ? "GOOGLE" : "";
    // creating user
     let userType = this.state.isInvited ? (this.state.roleType == ROLE_TYPE.AGENT ? "AGENT" : "ADMIN"):"CUSTOMER";
     // let userType = this.state.isInvited?"AGENT":"CUSTOMER";
@@ -170,7 +169,7 @@ class Register extends Component {
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
-    Promise.resolve(createCustomerOrAgent(userInfo,userType,"GOOGLE")).then((response) => {
+    Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
       if (window.Kommunicate && window.$applozic) { 
         //window.Kommunicate.updateUserIdentity(userInfo.userName);
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
