@@ -3679,27 +3679,21 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					closedConversationList = document.querySelector("#km-closed-conversation-list"),
 					emptyStateDiv = document.getElementById("empty-state-conversations-div"),
 					emptyStateDivFirstPara = document.querySelector("#empty-state-conversations-div .empty-state-message-shortcuts-first-text"),
-					emptyStateDivSecondPara = document.querySelector("#empty-state-conversations-div .empty-state-message-shortcuts-second-text"),
-					emptyStateActionBtn = document.querySelector("#empty-state-conversations-div button"),
 					activeConnversationBox = document.querySelector('#km-toolbar'),
 					activeAllConversationList = document.querySelector("#km-conversation"),
 					activeAssignedConversationList = document.querySelector("#km-assigned");
 
 				if(!MCK_INTEGRATION_STARTED) {
 					if (emptyStateDiv.classList.contains("n-vis")) {
+						emptyStateDiv.classList.add("km-empty-state-not-integrated");
 						emptyStateDivFirstPara.innerHTML = "You have not installed Kommunicate in your website";
-						emptyStateActionBtn.classList.add("d-inline-block");
-						emptyStateActionBtn.classList.remove("n-vis");
 						emptyStateDiv.classList.add("vis");
 						emptyStateDiv.classList.remove("n-vis");
 					}
 				} else if(assignedToMeList.getElementsByTagName("li").length === 0) {
 					if((activeAllConversationList.classList.contains("km-conversation-icon-active") && allConversationList.getElementsByTagName("li").length === 0) || (activeAssignedConversationList.classList.contains("km-conversation-icon-active") && allConversationList.getElementsByTagName("li").length !== 0)) {
-						emptyStateDiv.classList.add('vis');
+						emptyStateDiv.classList.add('vis', 'km-default-empty-state');
 						emptyStateDiv.classList.remove('n-vis', 'km-assigned-conv-empty-state');
-						emptyStateActionBtn.classList.add('n-vis');
-						emptyStateActionBtn.classList.remove('vis');
-						emptyStateDivSecondPara.classList.remove("n-vis");
 					} else {
 						emptyStateDiv.classList.add('n-vis');
 						emptyStateDiv.classList.remove('vis');
@@ -3710,7 +3704,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.add("km-assigned-conv-empty-state", "vis");
 						emptyStateDiv.classList.remove("n-vis");
 						emptyStateDivFirstPara.innerHTML = "Select a conversation to interact with your customers";
-						emptyStateDivSecondPara.classList.add("n-vis");
 					} else {
 						emptyStateDiv.classList.add('n-vis');
 						emptyStateDiv.classList.remove('vis');
