@@ -919,6 +919,9 @@ class Aside extends Component {
                             <ConversationsEmptyStateImage />
                             <p className="empty-state-message-shortcuts-first-text">You have no pending conversations</p>
                             <p className="empty-state-message-shortcuts-second-text">You may check how a conversation looks like by starting a <a href={`${getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl}?appId=${CommonUtils.getUserSession().applicationId}&title=${CommonUtils.getUserSession().adminDisplayName}`} target="_blank">demo conversation</a> </p>
+                            <button className="km-button km-button--primary n-vis" onClick={() => {
+                              window.appHistory.push('/settings/install');
+                            }}>See how to install</button>
                         </div>
                       </div>
                       <div className="write">
