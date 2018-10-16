@@ -272,14 +272,14 @@ class Register extends Component {
           
           <div className="row justify-content-center signup-form-div">
             <div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-            <hr className="hr"/>
+            <hr className={ this.state.isInvited ? "n-vis":"hr"}/>
               <div className="card">
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
-                  <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
+                  <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                       <defs>
                         <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
