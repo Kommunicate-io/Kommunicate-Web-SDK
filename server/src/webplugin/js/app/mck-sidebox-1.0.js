@@ -2708,7 +2708,7 @@ const MESSAGE_CONTENT_TYPE = {
                     $mck_msg_response.removeClass('vis').addClass('n-vis');
                     let sendMsgCount = $applozic("[data-msgtype=5]").length;
                     //Lead Collection -Email Validation
-                    if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1)||(KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage))) {
+                    if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1)||(KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage &&KommunicateUI.anonymousUser))) {
                         var isValid = KommunicateUI.validateEmail(messagePxy.message);
                         if (!isValid) {
                             return false;
@@ -3118,7 +3118,7 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                         // Lead Collection (Email)
                         let sendMsgCount = $applozic("[data-msgtype=5]").length;
-                        if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) || (KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage)) ) {
+                        if (sendMsgCount == 1 && ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && KommunicateUI.awayMessageInfo.eventId == 1) || (KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage && KommunicateUI.anonymousUser)) ) {
                             KommunicateUI.displayLeadCollectionTemplate(null)
                         } 
                         sendMsgCount > 1 && $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
@@ -3272,10 +3272,7 @@ const MESSAGE_CONTENT_TYPE = {
                             mckMessageLayout.addConversationMenu(params.tabId, params.isGroup);
                         }
                     }
-                   // populate away messsage for support group..
-                    if (params.isGroup) {
-                        Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, KommunicateUI.populateAwayMessage);
-                    }
+                    
                   } else {
                     CONTACT_SYNCING = true;
                     if (params.startTime) {
@@ -3294,7 +3291,16 @@ const MESSAGE_CONTENT_TYPE = {
                     success: function (data) {
                         var isMessages = true;
                         //Display/hide lead(email) collection template
-                        KommunicateUI.displayLeadCollectionTemplate(data.message)
+                        if (params.isGroup) {
+                            Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, 
+                            function(err,message){
+                                // populate away messsage for support group..
+                                KommunicateUI.populateAwayMessage(err,message);
+                                KommunicateUI.updateLeadCollectionStatus(err,message,data.message)       
+                            }
+                            );
+                        }
+                        
                         var currTabId = $mck_msg_inner.data('mck-id');
                         var isGroupTab = $mck_msg_inner.data('isgroup');
                         if (!params.isGroup || params.startTime) {

@@ -320,6 +320,7 @@ exports.processAwayMessage = function(req,res){
         let collectEmail = false; // backward compatibility 
         let collectEmailOnAwayMessage = false;
         let collectEmailOnWelcomeMessage = false;
+        let anonymousUser = false;
         let groupUsers = [];
         if(customer){
             return Promise.all([inAppMsgService.checkOnlineAgents(customer),
@@ -327,7 +328,8 @@ exports.processAwayMessage = function(req,res){
                 .then(([agentsDetail,group])=>{
                  groupUsers = group.groupInfo.groupUsers;              
                  let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;  
-                 let onlineUser = agentsDetail.find(agent=>agent.connected);              
+                 let onlineUser = agentsDetail.find(agent=>agent.connected); 
+                 anonymousUser = !group.isGroupUserAnonymous            
                if(onlineUser){
                 // agents are online. skip away message
                 logger.info("agents are online. skip away message");
@@ -355,7 +357,8 @@ exports.processAwayMessage = function(req,res){
                              "collectEmail":collectEmail, 
                              "collectEmailOnAwayMessage": collectEmailOnAwayMessage,
                              "welcomeMessageEnabled": welcomeMessageEnabled,
-                             "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage
+                             "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage,
+                             "anonymousUser": anonymousUser
                          }
                         // res.json({"code":"SUCCESS",data:data}).status(200);
                         // conversation assigned to bot, skip away message
