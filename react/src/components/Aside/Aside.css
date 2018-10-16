@@ -851,7 +851,7 @@ color: #595757;
     display: inline;
 }
   
-/* For eempty state when there are conversations present in all conversations but none of then are assigned to you. */
+/* For empty state when there are conversations present in all conversations but none of then are assigned to you. */
 .km-default-empty-state button {
     display: none;
 }
