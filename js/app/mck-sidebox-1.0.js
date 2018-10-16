@@ -2207,7 +2207,7 @@ const MESSAGE_CONTENT_TYPE = {
                         } else {
                             // callback method 'Kommunicate.conversation.processConversationOpnedFromList' will be called when conversation clicked from the cpnversation list. 
                             // use this method to perform all post conversation opned operations i.e. populate welcome and away message, show lead collection template etc. 
-                            mckMessageService.openChat(elem, Kommunicate.conversation.processConversationOpnedFromList);
+                            mckMessageService.openChat(elem, Kommunicate.conversation.processConversationOpenedFromList);
                         }
                         return;
                     }
