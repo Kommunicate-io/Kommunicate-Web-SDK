@@ -3042,19 +3042,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 											conversationStatus = groupFeed.metadata.CONVERSATION_STATUS
 
 										});
-
+										let chatThread = $kmApplozic('#km-li-as-group-'+params.tabId)[0]
 										if(params.callFromUrl && conversationAssignee == loggedinUserId && (conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN || conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
 											//select Assigned to me button
 											$kmApplozic('#km-assigned').click();
-											$kmApplozic('#km-li-as-group-'+params.tabId)[0].scrollIntoView();
+											chatThread && chatThread.scrollIntoView();
 
 										} else if (params.callFromUrl && conversationAssignee != loggedinUserId && (conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN || conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
 											//select All conversation button
 											$kmApplozic('#km-conversation').click();
-											$kmApplozic('#km-li-as-group-'+params.tabId)[0].scrollIntoView();										
+											chatThread && chatThread.scrollIntoView();				
 										} else if(params.callFromUrl && conversationStatus == KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED){
 											$kmApplozic('#km-closed').click();
-											$kmApplozic('#km-li-as-group-'+params.tabId)[0].scrollIntoView();
+											chatThread && chatThread.scrollIntoView();
 										} 
 
 									}
@@ -4623,7 +4623,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var photoData = (data.imageData) ? data.imageData : '';
 				var contact = {
 					'contactId': contactId,
-					'htmlId': kmContactUtils.formatContactId(contactId),
+					'htmlId': contactId && kmContactUtils.formatContactId(contactId),
 					'displayName': displayName,
 					'name': displayName + " <" + contactId + ">" + " [" + "Main" + "]",
 					'value': contactId,
