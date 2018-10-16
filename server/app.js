@@ -76,7 +76,7 @@ compressor.minify({
   compressor: 'uglify-es',
   //compressor: 'no-compress',
   input: ['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
-  './src/webplugin/js/app/labels/default-lables.js',
+  './src/webplugin/js/app/labels/default-labels.js',
   './src/webplugin/js/app/kommunicate-client.js',
   './src/webplugin/js/app/conversation/km-conversation-helper.js',
   './src/webplugin/js/app/conversation/km-conversation-service.js',

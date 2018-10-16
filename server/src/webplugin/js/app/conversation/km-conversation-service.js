@@ -13,7 +13,7 @@ Kommunicate.conversation = {
      * @param {object} data group data received from Applozic
      * @param {object} error  error if any.
      */
-    processConversationOpnedFromList : function(data,error){
+    processConversationOpenedFromList : function(data,error){
         if(error){
             console.log("Error received. can not post process the conversation ",error);
             return;
