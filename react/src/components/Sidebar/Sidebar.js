@@ -86,6 +86,7 @@ class Sidebar extends Component {
   render() {
 
     const currentPath = window.location.pathname;
+    let kmScripIntegrated = (CommonUtils.getUserSession().isIntegrationStarted) ? (CommonUtils.getUserSession().isIntegrationStarted) : true;  
     var settingsSidebarShow, sidebarWidth;
     if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/conversations/oops') || currentPath.includes('/integrations')) {
       settingsSidebarShow = " ";
@@ -223,7 +224,7 @@ class Sidebar extends Component {
             </li> */}
 
             {/* IntegrationStarted icon */}
-            { !CommonUtils.getUserSession().isIntegrationStarted &&
+            { !kmScripIntegrated &&
               <li className="nav-item">
                 <IntegrationStarted />
               </li>
