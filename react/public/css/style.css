@@ -9810,7 +9810,8 @@ pointer-events: none;
   position: absolute;
   top: 46%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -54%);
+  width: 100%;
 }
 .empty-state-conversations-div .empty-state-message-shortcuts-second-text {
   margin-top: 10px;
