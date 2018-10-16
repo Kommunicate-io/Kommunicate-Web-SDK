@@ -409,7 +409,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var mckNotificationTone = null;
 
 
-		var MCK_IS_CONVERSATION_ACTIVE = false;
 		var MCK_MAX_HISTORY = appOptions.maxHistory;
 		var MCK_INTEGRATION_STARTED = appOptions.isIntegrationStarted;
 		var currentTimeStamp = Math.ceil(new Date().getTime());
@@ -1882,7 +1881,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (!member) {
 								kmGroupService.addGroupMember(conversationDetail);
 							} else {
-								MCK_IS_CONVERSATION_ACTIVE = true;
 								mckMessageLayout.loadTab(groupDetail);
 							}
 
