@@ -346,6 +346,26 @@ sendFaqQueryAsMsg: function(groupId){
 },
 activateTypingField: function(){
         $applozic('#mck-text-box').focus();
+},
+showClosedConversationBanner  : function(){
+var messageText = MCK_LABELS["closed.conversation.message"];
+var messageFooterDiv= document.getElementById("mck-sidebox-ft");
+var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
+conversationStatusDiv.innerHTML= messageText;
+messageFooterDiv.classList.add("mck-closed-conv-banner");
+conversationStatusDiv.classList.add("vis");
+conversationStatusDiv.classList.remove("n-vis");
+
+},
+hideClosedConversationBanner : function(){
+    var messageFooterDiv = document.getElementById("mck-sidebox-ft");
+    var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
+    if(messageFooterDiv.classList.contains("mck-closed-conv-banner") ||conversationStatusDiv.classList.contains('vis') ){
+    
+    messageFooterDiv.classList.remove("mck-closed-conv-banner")
+    conversationStatusDiv.classList.remove("vis");
+    conversationStatusDiv.classList.add("n-vis");
+    }
 }
   
 }
