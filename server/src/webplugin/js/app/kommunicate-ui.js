@@ -7,22 +7,31 @@ KommunicateUI={
     leadCollectionEnabledOnAwayMessage: false,
     welcomeMessageEnabled : false,
     leadCollectionEnabledOnWelcomeMessage:false,
+    anonymousUser:false,
     CONSTS:{
 
+    },
+    updateLeadCollectionStatus:function(err,message,data){
+        KommunicateUI.awayMessageInfo = {};
+        if(!err && message.code =="SUCCESS"){
+            KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
+            if( message.data.messageList.length > 0 ) {
+                KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
+                KommunicateUI.awayMessageInfo["isEnabled"] = true;
+            }
+            KommunicateUI.leadCollectionEnabledOnWelcomeMessage = message.data.collectEmailOnWelcomeMessage;
+            KommunicateUI.welcomeMessageEnabled = message.data.welcomeMessageEnabled;
+            KommunicateUI.anonymousUser =message.data.anonymousUser;
+            KommunicateUI.displayLeadCollectionTemplate(data);
+        } 
     },
     populateAwayMessage:function(err,message){
         var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
         if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
-            // supporting only one away message for now.
-            KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
-            KommunicateUI.awayMessageInfo["isEnabled"] = true;
-            KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
+            
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
-        }else if (!err && message.code =="SUCCESS" && message.data.welcomeMessageEnabled){
-            KommunicateUI.leadCollectionEnabledOnWelcomeMessage = message.data.collectEmailOnWelcomeMessage;
-            KommunicateUI.welcomeMessageEnabled = message.data.welcomeMessageEnabled;
         } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
@@ -44,8 +53,8 @@ KommunicateUI={
                 }
             }
             if (countMsg == 1) {
-                if (KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && 
-                    KommunicateUI.awayMessageInfo.eventId == 1) {
+                if ((KommunicateUI.leadCollectionEnabledOnAwayMessage && KommunicateUI.awayMessageInfo.isEnabled && 
+                    KommunicateUI.awayMessageInfo.eventId == 1)||(KommunicateUI.welcomeMessageEnabled && KommunicateUI.leadCollectionEnabledOnWelcomeMessage && KommunicateUI.anonymousUser)) {
                     this.populateLeadCollectionTemplate();
                     this.hideAwayMessage();
                 }
@@ -123,6 +132,7 @@ KommunicateUI={
             this.hideLeadCollectionTemplate();
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
             window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
+            
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
