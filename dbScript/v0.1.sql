@@ -133,3 +133,17 @@ DROP COLUMN agent_routing;
 
 ALTER TABLE customers
 DROP COLUMN bot_routing;
+
+alter table applications add column status tinyint default 1;
+
+/* 
+KM-1489 Chat widget color and launcher icon setting
+When executed this script will add widget_theme column in app_setings table (kommunicate_test DB) with data-type JSON.
+*/
+ALTER TABLE `app_settings` ADD COLUMN `widget_theme` JSON
+
+/*
+KM-1503 :Collect email in welcome message
+*/
+alter table app_settings add  column collect_email_welcome tinyint(1)  default 0;
+alter table app_settings change collect_email collect_email_away tinyint(1);

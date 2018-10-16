@@ -178,20 +178,19 @@ function ApplozicSidebox() {
     }
     function mckInitPluginScript() {
         try {
-        	if(applozic.PRODUCT_ID =='kommunicate'){
-       		 //applozic._globals.locShare = ((applozic._globals.locShare)=== false) ? false : true;
-           if (typeof applozic._globals.locShare === 'undefined') {
-             applozic._globals.locShare = false;
-           } else if (typeof applozic._globals.locShare === 'string') {
-             throw new Error("locShare should be a boolean value");
-           }
-           if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
-             applozic._globals.excludeGoogleMap = true;
-           } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
-             throw new Error("excludeGoogleMap should be a boolean value");
-           }
-       		 applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
-       	 }
+            if(applozic.PRODUCT_ID =='kommunicate'){
+                if (typeof applozic._globals.locShare === 'undefined') {
+                    applozic._globals.locShare = false;
+                } else if (typeof applozic._globals.locShare === 'string') {
+                    throw new Error("locShare should be a boolean value");
+                }
+                if (typeof applozic._globals.excludeGoogleMap === 'undefined') {
+                    applozic._globals.excludeGoogleMap = applozic._globals.locShare ? false : true;
+                } else if(typeof applozic._globals.excludeGoogleMap === 'string') {
+                    throw new Error("excludeGoogleMap should be a boolean value");
+                }
+                    applozic._globals.googleApiKey= (applozic._globals.googleApiKey)?applozic._globals.googleApiKey :"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI";
+       	    }
             $.each(mck_script_loader1, function(i, data) {
                 if (data.name === "km-utils") {
                     try {
@@ -290,6 +289,7 @@ function ApplozicSidebox() {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
             options["agentName"]=data.agentName;
+            options["widgetSettings"]=data.widgetTheme;
             var pseudoNameEnabled = KM_PLUGIN_SETTINGS.pseudoNameEnabled;
             options.metadata = typeof options.metadata=='object'?options.metadata: {};
             if (applozic.PRODUCT_ID == 'kommunicate') {

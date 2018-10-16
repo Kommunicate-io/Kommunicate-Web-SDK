@@ -24,17 +24,19 @@ import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../
  * @param {String} userType
  */
 
-const createCustomerOrAgent = (userInfo, userType) => {
+const createCustomerOrAgent = (userInfo, userType, signUpVia) => {
+  // signUpVia is the source from where you were redirected eg: google
   switch (userType) {
     case "AGENT":
     case "ADMIN":
     case "BOT":
       return createAgent(userInfo,userType);
     default:
-      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName);
+      return createCustomer(userInfo.email, userInfo.password, userInfo.name, userInfo.userName, signUpVia);
   }
 }
-const createCustomer = function (email, password, name, userName) {
+const createCustomer = function (email, password, name, userName, signUpVia ) {
+  // signUpVia is the source from where you were redirected eg: google
   let signUpUrl = getConfig().kommunicateApi.signup;
   let loginType = 'email';
   let  roleType = ROLE_TYPE.SUPER_ADMIN ;
@@ -43,7 +45,7 @@ const createCustomer = function (email, password, name, userName) {
   * When login is done via 'Sign in with Google' make password = 'VERY SECURE' and loginType = 'oauth'.
   * Adding a query param OAuthSignUp as a backend flag
   */
-  if (localStorage.getItem('Google_OAuth') === 'true') {
+  if (signUpVia === "GOOGLE") {
     signUpUrl += '?OAuthSignUp=true'
     password = "VERY SECURE"
     loginType = 'oauth'
@@ -946,7 +948,6 @@ const updateAppSetting = (status, data) => {
     return result;
   }).catch(err => {
     throw { message: err };
-    console.log("Error while updating application settings", err)
   })
 
 }
@@ -1008,7 +1009,7 @@ const deleteUserByUserId = (userNames) => {
     headers: headers
   })).then(response => {
     if (response !== undefined && response.data !== undefined && response.status === 200 && response.data.code.toLowerCase() === "success") {
-      return response;
+      return response.data;
     }
   }).catch(err => {
     throw { message: err };

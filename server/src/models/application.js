@@ -15,6 +15,11 @@ let application = function (sequelize, DataTypes) {
       type: DataTypes.STRING(150),
       field: 'application_id',
       allowNull: false
+    },
+    status: {
+      type: DataTypes.INTEGER,
+      field: 'status',
+      defaultValue: 1
     }
   }, {
       underscored: true,

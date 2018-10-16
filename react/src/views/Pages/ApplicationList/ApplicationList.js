@@ -15,6 +15,7 @@ class ApplicationList extends Component {
         this.state = {
             userName:'',
             email:'',
+            loginType:'',
             password:'',
             applicationId:'',
             applicationName:'',
@@ -51,7 +52,8 @@ class ApplicationList extends Component {
       if(!userDetails) {
         this.setState({
           userName: this.props.location.state.userid,
-          password: this.props.location.state.pass
+          password: this.props.location.state.pass,
+          loginType:this.props.location.state.loginType
         })
       }
     }

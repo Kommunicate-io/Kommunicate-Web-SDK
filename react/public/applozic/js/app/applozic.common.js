@@ -23,6 +23,7 @@ var kmGroupUtils = new KmGroupUtils();
 var kmContactUtils = new KmContactUtils();
 var kmGroupService = new KmGroupService();
 var kmMapUtils = new KmMapUtils();
+var kmEvents = new KmEvents();
 var kmNotificationUtils = new KmNotificationUtils();
 function KmUtils() {
     var _this = this;
@@ -937,5 +938,27 @@ function KmDateUtils() {
     dateFormat.i18n = {
         dayNames: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
         monthNames: [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+    };
+}
+function KmEvents() {
+    var _this = this;
+    _this.triggerCustomEvent = function (eventName, options) {
+        options = typeof options == 'object' ? options : {}
+        options.bubbles = options.bubbles || true;
+        options.cancelable = options.cancelable || true;
+        if (navigator.userAgent.indexOf('MSIE') !== -1 ||
+            navigator.appVersion.indexOf('Trident/') > 0) {
+            /* Microsoft Internet Explorer detected in. */
+            var evt = document.createEvent('Event');
+            evt.initEvent(eventName, options.bubbles, options.cancelable);
+            window.dispatchEvent(evt);
+        } else {
+            //Custom event trigger
+            window.dispatchEvent(new CustomEvent(eventName, {
+                detail: options.data || {},
+                bubbles: options.bubbles || true,
+                cancelable: options.cancelable || true
+            }));
+        }
     };
 }

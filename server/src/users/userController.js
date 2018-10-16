@@ -16,6 +16,7 @@ const CLEARBIT = require('../application/utils').INTEGRATION_PLATFORMS.CLEARBIT;
 const constant =require('../../src/utils/constant');
 const customerService = require('../customer/customerService');
 const CONSTANT = require("./constants.js");
+const appSettingService = require("../setting/application/appSettingService");
 /**
  *
  * @param {Http request object} req
@@ -512,7 +513,10 @@ exports.defaultPluginSettings=(req, res)=>{
     if(user){
       return getPseudoName().then(result=>{
         let response=Object.assign(result, {"agentId": user.userName, "agentName":user.name});
-        return res.status(200).json({ "code": "SUCCESS", "response": response });
+        return appSettingService.getAppSettingsByApplicationId({ applicationId: req.query.appId }).then(resp=>{
+          response.widgetTheme = resp.data.widgetTheme;
+          return res.status(200).json({ "code": "SUCCESS", "response": response });
+        })       
       })
     }
   }).catch(err=>{

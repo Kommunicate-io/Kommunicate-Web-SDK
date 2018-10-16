@@ -1,4 +1,7 @@
 const application = require("../models").application;
+const customer = require("../models").customer;
+const moment = require('moment');
+const STATUS = { ACTIVE: 1, EXPIRED: 2 }
 
 /**
  * 
@@ -68,7 +71,20 @@ const getAllApplications = (criteria) => {
     })
 }
 
+const getExpiredApplication = () => {
+    return Promise.resolve(application.findAll({ where: { 'status': {$ne: 2}, 'created_at': { $lt: moment().subtract(31, 'days').toDate() } }, include: [{ model: customer, where: { 'subscription': 'startup' } }] })).then(applications => {
+        return applications;
+    })
+}
+
+const updateApplication = (appId, options) => {
+    return application.update(options, { where: { "applicationId": appId } });
+}
+
 module.exports = {
+    STATUS:STATUS,
+    updateApplication: updateApplication,
+    getExpiredApplication: getExpiredApplication,
     getApplication: getApplication,
     getAllApplications: getAllApplications,
     getApplicationListByCustomerId: getApplicationListByCustomerId,

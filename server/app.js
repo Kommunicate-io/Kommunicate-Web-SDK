@@ -15,9 +15,10 @@ var cleanCss = require ('clean-css');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
 const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
+global['__basedir'] = __dirname
 //var concat = require('concat-files');
 app.use(cors());
-console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m")
+process.env.NODE_ENV?console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m"):console.log("\x1b[41m ------Warning: environment is not -----\x1b[0m");
 // minify applozic plugin code files into a single file
 compressor.minify({
   //compressor: 'gcc',

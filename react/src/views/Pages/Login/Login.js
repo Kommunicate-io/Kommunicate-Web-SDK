@@ -18,6 +18,7 @@ import GoogleLogo from '../Register/logo_google.svg';
 import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
+import kmloadinganimation from '../Register/km-loading-animation.svg';
 
 
 class Login extends Component {
@@ -57,6 +58,7 @@ constructor(props){
     loginType: 'email',
     hideGoogleLoginBtn:false,
     marginBottomFrgtPassHead:'',
+    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in"
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -84,7 +86,7 @@ constructor(props){
         email: email,
         userName: email,
         password: '',
-        loginButtonAction: 'getAppList',
+        loginButtonAction: 'Login',
         loginType: loginType,
         hideGoogleLoginBtn: true
       }, () => {
@@ -305,7 +307,12 @@ checkForMultipleApps=(result)=>{
       _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,hideSignupLink:true, isForgotPwdHidden:true, hideSignupLink:true, hideGoogleLoginBtn:true});
     }else{
     _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple applications',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Hi! Select your application",subHeading:false,hideBackButton:false,isForgotPwdHidden:true,hideSignupLink:false,hideSignupLink:true, hideGoogleLoginBtn:true});
-    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});
+    if (this.state.googleOAuth){
+      _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: "",loginType :'oauth'}});
+    }
+    else{
+    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});}
+
   }
 }else{
   // Notification.info("You are not a registered user. Please sign up!!!");
@@ -406,7 +413,8 @@ showPasswordField = () => {
 
   render() {
     return (
-      <div className="app flex-row align-items-center login-app-div">
+      <div>
+        <div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
         <div className="container">
         <div className="logo-container text-center">
             <a href="#" onClick={this.websiteUrl}>
@@ -470,7 +478,7 @@ showPasswordField = () => {
                        </div>
                     </div> */}
                           {/* login with google is hidden for release 1.5.2 . To make it visible uncomment   */}
-                         {/* <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={"https://accounts.google.com/o/oauth2/v2/auth?scope=profile%20email&access_type=offline&redirect_uri=" + getConfig().kommunicateBaseUrl + "/google/authCode&response_type=code&client_id=155543752810-134ol27bfs1k48tkhampktj80hitjh10.apps.googleusercontent.com&state=google_sign_in"}>
+                         <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
                               <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
@@ -489,7 +497,7 @@ showPasswordField = () => {
                         <div className="or-seperator" hidden={this.state.hideGoogleLoginBtn}>
                           <div className="or-seperator--line"></div>
                           <div className="or-seperator--text">OR</div>
-                        </div> */}
+                        </div>
 
                     <div hidden ={this.state.hideUserNameInputbox}>
                       <InputField
@@ -619,6 +627,10 @@ showPasswordField = () => {
           <div className="bottom-shape-container"></div>
         </div>
 
+      </div>
+        <div className= {this.state.googleOAuth?"vis":"n-vis"} style={{ width:"6em",height: "6em",position: "fixed",top: "50%",left: "calc(50% - 4em)",transform: "translateY(-50%)"}}>
+        <img src={kmloadinganimation} style={{width: "6em", height: "6em"}}/> 
+        </div>
       </div>
     );
   }

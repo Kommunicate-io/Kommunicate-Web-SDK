@@ -9,9 +9,10 @@ A pure textual experience is not enough to make a conversation interactive, frui
 
 Kommunicate renders a valid JSON into Actionable Message. Pass the JSON described below as metadata to utilize Actionable Messages. This example renders Quick Replies along with the message:
 
- ``` JSON
+ ``` js
  {
-    "message":"Do you want more updates?",
+	"message":"Do you want more updates?",
+	"ignoreTextResponse": false, // pass true if you want to hide the text response which you're passing along with custom payload in intent. 
     "platform":"kommunicate",
     "metadata": {
         "contentType": "300",
@@ -26,6 +27,9 @@ Kommunicate renders a valid JSON into Actionable Message. Pass the JSON describe
     }
 }
 ```
+If you're passing both text response and custom payload in intent and want to hide the text response you can pass 
+**ignoreTextResponse : true**. 
+
 Here is a list of available Actionable Messages:
 
 * Buttons
@@ -103,15 +107,16 @@ Quick Replies provides a way to send messages on a click without typing them all
 		"templateId": "6",
 		"payload": [{
 			"title": "Yes",
-			"message": "Cool! send me more."
+			"message": "Cool! send me more.",
+			"replyMetadata":{"key1":"value1"} // optional. custom data will be sent along with message when user click on Quick reply button .
 		}, {
 			"title": "No ",
-			"message": "Don't send it to me again"
+			"message": "Don't send it to me again" 
 		}]
 	}
 }
 ```
-
+`replyMetadata` can be used to set [KM_CHAT_CONTEXT](web-botintegration#pass-custom-data-to-bot-platform). 
 The appearance of the Quick Replies and Buttons will be adjusted automatically.
 
 ## Images

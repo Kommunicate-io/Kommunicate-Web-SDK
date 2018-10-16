@@ -38,9 +38,9 @@ class Billing extends Component {
         this.state = {
             modalIsOpen: false,
             seatSelectionModalIsOpen: false,
-            toggleSlider: true,
-            pricingMonthlyHidden: true,
-            pricingYearlyHidden: false,
+            toggleSlider: false,
+            pricingMonthlyHidden: false,
+            pricingYearlyHidden: true,
             hideFeatureList: true,
             showFeatures: 'See plan details',
             yearlyChecked: false,
@@ -520,7 +520,7 @@ class Billing extends Component {
                                 {this.state.subscription == '' || this.state.subscription == 'startup' ?
                                     (this.state.trialLeft > 0 && this.state.trialLeft <= 31 ?
                                         (<div className="info-bar-container">
-                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days trial left.</strong> If no plan is chosen, you will be subscribed to the Free Plan at the end of the trial period.</p>
+                                            <p className="info-bar-text"><strong>{this.state.trialLeft} days left of full feature trial.</strong> If no plan is chosen, you will be subscribed to the FREE PLAN at the end of the trial period.</p>
                                         </div>
                                         )
                                         : (
@@ -670,12 +670,12 @@ class Billing extends Component {
 
                                     {/* <!-- Pricing Toggle --> */}
                                     <div className="pricing-toggle text-left">
-                                        <label className={this.state.toggleSlider === true ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
+                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
                                         <div className="toggle n-vis">
                                             <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
                                             <b className="b switch"></b>
                                         </div>
-                                        <label className={this.state.toggleSlider === true ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Annual <span>(Save 20%)</span></label>
+                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
                                     </div>
 
                                     <div className="col-lg-4 col-md-4 col-xs-12">

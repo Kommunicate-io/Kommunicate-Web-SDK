@@ -66,7 +66,7 @@ class Install extends Component {
   };
   getApiKey(){
     let apiKey = CommonUtils.getUserSession().apiKey;
-    return apiKey? apiKey:"Please contact to Kommunicate support to get api key";
+    return apiKey? apiKey:"Please contact Kommunicate support to get API key";
 
   }
 
