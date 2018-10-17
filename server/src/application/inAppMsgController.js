@@ -316,7 +316,7 @@ exports.processAwayMessage = function(req,res){
     const conversationId = req.query.conversationId;
     logger.info("processing awayMessage for application: ",applicationId);
     return customerService.getCustomerByApplicationId(applicationId).then(customer=>{
-        let eventId = 0;
+        let eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
         let collectEmail = false; // backward compatibility 
         let collectEmailOnAwayMessage = false;
         let collectEmailOnWelcomeMessage = false;
@@ -329,21 +329,14 @@ exports.processAwayMessage = function(req,res){
                  groupUsers = group.groupInfo.groupUsers;              
                  let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;  
                  let onlineUser = agentsDetail.find(agent=>agent.connected); 
-                 anonymousUser = !group.isGroupUserAnonymous            
-                if(group.isGroupUserAnonymous){
-                // agents are offline. group user is anonymous
-                eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
-                
-               }else{
-                // agents are offline and user is known.
-                eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN;
-               }
+                 anonymousUser = group.groupUserAnonymous            
+                 !group.groupUserAnonymous && (eventId = constant.EVENT_ID.AWAY_MESSAGE.KNOWN);
                 Promise.all([appSetting.getAppSettingsByApplicationId({ applicationId: applicationId }),assignee && userService.getByUserNameAndAppId(assignee,applicationId),inAppMsgService.getInAppMessage(applicationId, constant.EVENT_ID.WELCOME_MESSAGE)])
                 .then(([response, assignedUser, welcomeMessage]) => {  
                      collectEmail = response.data.collectEmailOnAwayMessage
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
                      collectEmailOnWelcomeMessage = response.data.collectEmailOnWelcomeMessage;
-                     let welcomeMessageEnabled = welcomeMessage.length > 0 ? true : false ;
+                     let welcomeMessageEnabled = welcomeMessage.length > 0 ;
                      if(onlineUser){
                         // agents are online. skip away message
                         logger.info("agents are online. skip away message");
