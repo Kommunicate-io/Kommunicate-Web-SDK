@@ -1026,8 +1026,7 @@ class Aside extends Component {
                                   </div>
                                 </div>
 
-                                <span id="km-text-box"
-                                  contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required"></span>
+                                <div id="km-text-box" contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required" data-text="Type your message..."></div>
 
                                 <a href="javascript:void(0)" type="button" id="km-btn-smiley"
                                   className="write-link smiley km-btn-smiley km-btn-text-panel"
