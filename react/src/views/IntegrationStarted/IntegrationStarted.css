@@ -40,9 +40,9 @@
     max-width: 300px;
 }
 
-.km-pulse {
+/* .km-pulse {
     animation: pulse 2s infinite;
-}
+} */
   
 @-webkit-keyframes pulse {
     0% {
