@@ -810,7 +810,7 @@ color: #595757;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
-.km-displayname-wrapper .km-rectangle{
+ .km-rectangle{
     margin-bottom: 0;
     width: 19px;
     height: 17px;
@@ -841,10 +841,17 @@ color: #595757;
     margin-left: 2px;
   }
 
-#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit{
+#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit,#km-sidebar-display-name-edit{
      text-align: left;
      width: 100%;
+     -webkit-appearance: none;
+     border: 1px solid #5c5aa7;
+     outline: none;
  }
+ #km-sidebar-user-number-edit:focus ,#km-sidebar-user-email-edit:focus,#km-sidebar-display-name-edit:focus{
+    border: 1px solid #5c5aa7;
+    outline: none;
+}
 
 #km-phone-submit ,#km-email-submit,#km-displayName-submit{
         text-align: left;
