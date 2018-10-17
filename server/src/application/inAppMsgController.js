@@ -330,12 +330,7 @@ exports.processAwayMessage = function(req,res){
                  let assignee = group.groupInfo.metadata.CONVERSATION_ASSIGNEE;  
                  let onlineUser = agentsDetail.find(agent=>agent.connected); 
                  anonymousUser = !group.isGroupUserAnonymous            
-               if(onlineUser){
-                // agents are online. skip away message
-                logger.info("agents are online. skip away message");
-                res.json({"code":"AGENTS_ONLINE","message":"skiping away message. some agents are online"}).status(200);
-                return;
-               }else if(group.isGroupUserAnonymous){
+                if(group.isGroupUserAnonymous){
                 // agents are offline. group user is anonymous
                 eventId = constant.EVENT_ID.AWAY_MESSAGE.ANONYMOUS;
                 
@@ -348,27 +343,42 @@ exports.processAwayMessage = function(req,res){
                      collectEmail = response.data.collectEmailOnAwayMessage
                      collectEmailOnAwayMessage = response.data.collectEmailOnAwayMessage;
                      collectEmailOnWelcomeMessage = response.data.collectEmailOnWelcomeMessage;
-                     let welcomeMessageEnabled = welcomeMessage.length > 0 ? true : false ; 
-                     return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
-                        logger.info("got data from db.. sending response.");
-                        let messageList = result.map(data=>data.dataValues);
-                        let data = {
-                             "messageList": messageList,
-                             "collectEmail":collectEmail, 
-                             "collectEmailOnAwayMessage": collectEmailOnAwayMessage,
-                             "welcomeMessageEnabled": welcomeMessageEnabled,
-                             "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage,
-                             "anonymousUser": anonymousUser
-                         }
-                        // res.json({"code":"SUCCESS",data:data}).status(200);
-                        // conversation assigned to bot, skip away message
-                        if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
-                            data = {"messageList":[], "collectEmailOnAwayMessage":collectEmailOnAwayMessage}
-                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
-                        } else {
-                            res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO AGENT", data:data}).status(200);
-                        }
-                    })
+                     let welcomeMessageEnabled = welcomeMessage.length > 0 ? true : false ;
+                     if(onlineUser){
+                        // agents are online. skip away message
+                        logger.info("agents are online. skip away message");
+                           res.json({
+                               "code": "AGENTS_ONLINE",
+                               "message": "skiping away message. some agents are online",
+                                data: {
+                                    "welcomeMessageEnabled": welcomeMessageEnabled,
+                                    "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage,
+                                    "anonymousUser": anonymousUser
+                                }
+                           }).status(200);
+                        return;
+                    } else {
+                        return inAppMsgService.getInAppMessage(applicationId,eventId).then(result=>{
+                            logger.info("got data from db.. sending response.");
+                            let messageList = result.map(data=>data.dataValues);
+                            let data = {
+                                 "messageList": messageList,
+                                 "collectEmail":collectEmail, 
+                                 "collectEmailOnAwayMessage": collectEmailOnAwayMessage,
+                                 "welcomeMessageEnabled": welcomeMessageEnabled,
+                                 "collectEmailOnWelcomeMessage": collectEmailOnWelcomeMessage,
+                                 "anonymousUser": anonymousUser
+                             }
+                            // res.json({"code":"SUCCESS",data:data}).status(200);
+                            // conversation assigned to bot, skip away message
+                            if (assignedUser && assignedUser.type== GROUP_ROLE.MODERATOR) {
+                                data = {"messageList":[], "collectEmailOnAwayMessage":collectEmailOnAwayMessage}
+                                res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO BOT" , data:data}).status(200);
+                            } else {
+                                res.json({"code":"SUCCESS",message:"CONVERSATION ASSIGNED TO AGENT", data:data}).status(200);
+                            }
+                        })
+                    }         
                 })
                
             });
