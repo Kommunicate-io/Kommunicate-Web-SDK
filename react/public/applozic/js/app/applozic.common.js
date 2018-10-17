@@ -950,7 +950,8 @@ function KmEvents() {
             navigator.appVersion.indexOf('Trident/') > 0) {
             /* Microsoft Internet Explorer detected in. */
             var evt = document.createEvent('Event');
-            evt.initEvent(eventName, options.bubbles, options.cancelable, options.data);
+            evt.detail = options.data || {};
+            evt.initEvent(eventName, options.bubbles, options.cancelable);
             window.dispatchEvent(evt);
         } else {
             //Custom event trigger
