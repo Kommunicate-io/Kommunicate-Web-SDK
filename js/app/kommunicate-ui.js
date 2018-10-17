@@ -13,9 +13,9 @@ KommunicateUI={
     },
     updateLeadCollectionStatus:function(err,message,data){
         KommunicateUI.awayMessageInfo = {};
-        if(!err && message.code =="SUCCESS"){
+        if(!err && (message.code =="SUCCESS" || message.code == "AGENTS_ONLINE")){
             KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
-            if( message.data.messageList.length > 0 ) {
+            if(message.code != "AGENTS_ONLINE" && message.data.messageList.length > 0 ) {
                 KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
                 KommunicateUI.awayMessageInfo["isEnabled"] = true;
             }
@@ -113,6 +113,7 @@ KommunicateUI={
         return stopUpload;
     },
     populateLeadCollectionTemplate:function() {
+        KommunicateUI.hideAwayMessage();
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-text-box").blur();  
@@ -253,6 +254,8 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
+        KommunicateUI.hideAwayMessage();
+        KommunicateUI.hideLeadCollectionTemplate();
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
                 KommunicateUI.showHeader();
