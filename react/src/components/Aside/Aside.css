@@ -883,3 +883,8 @@ color: #595757;
     display: inline-block;
 }
 
+#km-text-box[contenteditable="true"]:empty:not(:focus)::before {
+    content: attr(data-text);
+    color: #949494;
+    opacity: .6;
+}
