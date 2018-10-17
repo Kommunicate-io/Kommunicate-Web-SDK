@@ -142,7 +142,7 @@ $(document).ready(function() {
                         imageLink=imageLink.replace('km-alpha-contact-image','km-alpha-group-contact-image').replace('km-contact-icon','km-group-contact-icon');
                         $kmApplozic("#km-group-info-tab .km-group-contact-icon").html(imageLink);
                         $kmApplozic("#km-sidebar-display-name").html(user.displayName || user.userId)
-                        $kmApplozic("#km-sidebar-display-name-edit").html(user.displayName || user.userId)
+                        $kmApplozic("#km-sidebar-display-name-edit").val(user.displayName || user.userId)
                         
                             $kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("vis").removeClass("n-vis");
 
@@ -153,7 +153,7 @@ $(document).ready(function() {
                             $kmApplozic("#km-sidebar-user-email").removeClass("km-sidebar-user-email").addClass("km-sidebar-user-emailnotfound");
                         }
                         $kmApplozic("#km-sidebar-user-email").html(emailtext).removeClass("n-vis").addClass("vis");
-                        $kmApplozic("#km-sidebar-user-email-edit").html(emailtext);
+                        $kmApplozic("#km-sidebar-user-email-edit").val(emailtext);
                         $kmApplozic("#km-email-submit").removeClass("vis").addClass("n-vis");
 
 
@@ -164,9 +164,9 @@ $(document).ready(function() {
                             $kmApplozic("#km-user-info-list .email").html(user.email); 
                             $kmApplozic("#km-sidebar-user-number").removeClass("km-sidebar-user-number").addClass("km-sidebar-user-numbernotfound");
                         }
-                        $kmApplozic("#km-phone-submit").removeClass("vis").addClass("n-vis");
+                        $kmApplozic("#km-phoneNumber-submit").removeClass("vis").addClass("n-vis");
                         $kmApplozic("#km-sidebar-user-number").html(phone).removeClass("n-vis").addClass("vis");
-                        $kmApplozic("#km-sidebar-user-number-edit").html(phone);
+                        $kmApplozic("#km-sidebar-user-number-edit").val(phone);
 
                         
                         if (typeof user.email !== "undefined" && user.metadata && !user.metadata.kmClearbitData) {

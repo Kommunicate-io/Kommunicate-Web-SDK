@@ -175,8 +175,8 @@ class Aside extends Component {
   }
 
   validateEmail = (e) => {
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (document.getElementById("km-sidebar-user-email-edit").innerHTML.match(mailformat)) {
+    var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(mailformat.test(document.getElementById("km-sidebar-user-email-edit").value)){
       this.updateUserDetail("email");
     }
     else {
@@ -189,9 +189,8 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
-    if (e.which !== 8 && e.which !== 127) {
-      if (isNaN(e.key))
-        e.preventDefault();
+    if (!((e.keyCode > 95 && e.keyCode < 106) || (e.keyCode > 47 && e.keyCode < 58) || e.keyCode == 8)) {
+      e.preventDefault();
     }
 
   }
@@ -202,11 +201,11 @@ class Aside extends Component {
     var userId = document.getElementById("km-sidebar-userId").innerHTML;
     var displayName = document.getElementById("km-sidebar-display-name").innerHTML;
     var userDetails ={};
-    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").value;
     elemId ="km-"+params+"-submit";
 
     userDetails.callback = function (userDetails) {
-       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").value;
       var list = document.querySelectorAll(".person.active .name");
       for (var i = 0; i < list.length; i++) {
         list[i].innerText = document.getElementById("km-sidebar-display-name").innerHTML;
@@ -1162,7 +1161,7 @@ class Aside extends Component {
                         <p id="km-sidebar-userId"  hidden></p>
                         <div className="km-dispalyname-wrapper">
                           <div>
-                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" onClick={() => this.showEditUserDetailDiv("displayName")}></p>
+                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate"></p>
                           </div>
                           <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
                             <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
@@ -1176,21 +1175,21 @@ class Aside extends Component {
                                 data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
                             </svg>
                           </div>
-                          <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
-                          <p id="km-sidebar-display-name-edit"  contentEditable="true" className="km-sidebar-display-name km-truncate vis" onFocus={this.setInputFlag} data-km-editfield ="displayName"></p>
+                          {/* <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
+                          <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name km-truncate vis" onFocus={this.setInputFlag} data-km-editfield ="displayName"></input>
                           <div className="km-sidebar-displayName-svg">
-                          <div className="km-rectangle km-displayName" onMouseDown={() => this.onMouseDown("displayName")}>
+                          <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={() => this.onMouseDown("displayName")}>
                               <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
-                            <div className="km-rectangle km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
+                            <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
                               <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
                             </div>
                             </div>
-                            </div>
+                            </div> */}
                         </div>
                         <hr className="hr"/>
                         <div className="km-display-email-number-wrapper">
@@ -1198,7 +1197,7 @@ class Aside extends Component {
                             <p className="n-vis">@</p> 
                             <p id="km-sidebar-user-email" className="km-sidebar-user-email vis" contentEditable="true" placeholder="Add Email" onClick={() => this.showEditUserDetailDiv("email")} data-km-editfield ="email" onFocus={this.setInputFlag}></p>
                             <div id= "km-email-submit" className="km-editemail n-vis"  onBlur={() => this.onBlur("email")}> 
-                            <p id="km-sidebar-user-email-edit" type ="text" contentEditable="true"  className="km-sidebar-user-email" placeholder="Add Email" ></p>
+                            <input id="km-sidebar-user-email-edit" type ="text" className="km-sidebar-user-email" placeholder="Add Email" ></input>
                             <div className="km-sidebar-svg">
                             <div className="km-rectangle" onMouseDown={() => this.onMouseDown("email")}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className ="km-sidebar-submit-svg">
@@ -1221,7 +1220,7 @@ class Aside extends Component {
                             </p>
                             <p id="km-sidebar-user-number" placeholder ="Add Phone Number" contentEditable="true" className="km-sidebar-user-number" data-km-editfield ="phoneNumber" onFocus={this.setInputFlag} onClick={() => this.showEditUserDetailDiv("phoneNumber")}></p>
                             <div id="km-phoneNumber-submit" className="km-editphone n-vis"  onBlur={() => this.onBlur("phoneNumber")}>
-                            <p id="km-sidebar-user-number-edit" placeholder ="Add Phone Number"contentEditable="true" className="km-sidebar-user-number"  onKeyDown={(e) => this.onKeyDown(e)}></p>
+                            <input id="km-sidebar-user-number-edit" placeholder ="Add Phone Number" type="number" min="0" className="km-sidebar-user-number"  onKeyDown={(e) => this.onKeyDown(e)}></input>
                             <div className="km-sidebar-svg">
                             <div className="km-rectangle" onMouseDown={() => this.onMouseDown("phoneNumber")}>
                               <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" className ="km-sidebar-submit-svg">
