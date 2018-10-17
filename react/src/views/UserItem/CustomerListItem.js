@@ -85,31 +85,20 @@ class CustomerListItem extends Component {
   }
 
   converastionAssignee() {
-    var convoStatus;
     var displayIconColor;
     var user = this.props.user;
     var status = user.messagePxy.status;
+    var convoStatus = user.convoStatus;
     var assignee = user.assignee
       ? user.assignee
       : "";
-    var groupId = user.messagePxy
-      ? user.messagePxy.groupId
-      : "";
-    window.$kmApplozic.fn.applozic("getGroup", {
-      groupId: groupId,
-      callback: function(response) {
-        if (response) {
-          convoStatus = response.metadata.CONVERSATION_STATUS;
-        }
-      }
-    });
     if (assignee !== (undefined || "" || null)) {
-      if (convoStatus == 0) {
+      if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
         return <span className="assignee-open">
           <strong>
             ASSIGNED -</strong>{assignee}
         </span>;
-      } else if (convoStatus == 2) {
+      } else if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.SPAM) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.DUPLICATE)) {
         return <span className="assignee-closed">
           <strong>
             CLOSED -</strong>{assignee}
@@ -117,7 +106,7 @@ class CustomerListItem extends Component {
       }
     } else
       return "";
-    }
+  }
 
   render() {
     var conversationStyle = {

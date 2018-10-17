@@ -373,8 +373,8 @@ return userService.getAdminUserByAppId(customer.applications[0].applicationId).t
       .then(userInfo => { 
         logger.info("received group user info...");
       //  return Boolean(userInfo[0].email || userInfo[0].phoneNumber);
-        let isGroupUserAnonymous = Boolean(userInfo[0].email || userInfo[0].phoneNumber);
-        return {"groupInfo":groupDetail, "isGroupUserAnonymous":isGroupUserAnonymous }
+        let groupUserAnonymous = !Boolean(userInfo[0].email || userInfo[0].phoneNumber);
+        return {"groupInfo":groupDetail, "groupUserAnonymous":groupUserAnonymous }
       })
     })
   })

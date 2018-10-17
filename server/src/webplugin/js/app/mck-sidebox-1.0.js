@@ -2372,6 +2372,8 @@ const MESSAGE_CONTENT_TYPE = {
                 });
                 $applozic(d).on("click", ".mck-close-sidebox", function (e) {
                     e.preventDefault();
+                    KommunicateUI.hideAwayMessage();
+                    KommunicateUI.hideLeadCollectionTemplate();
                     $mck_sidebox.mckModal('hide');
                     $applozic('#mck-sidebox-launcher').removeClass('n-vis').addClass('vis');
                     if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {

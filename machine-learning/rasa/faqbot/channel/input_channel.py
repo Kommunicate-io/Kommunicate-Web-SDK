@@ -372,7 +372,6 @@ def webhook():
 @app.route("/faq/add", methods=["POST"])
 def addfaq():
     body = request.json
-    print(body)
 
     questions = []
     for que in body:
@@ -394,7 +393,6 @@ def addfaq():
 @app.route("/faq/delete",methods=["POST"])
 def deletefaq():
     body = request.json
-    print(body)
 
     questions = []
     for que in body:
@@ -419,7 +417,6 @@ def deletefaq():
 @app.route("/faq/update",methods=["POST"])
 def updatefaq():
     body = request.json
-    print(body)
 
     questions = []
     for que in body:

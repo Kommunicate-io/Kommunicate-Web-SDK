@@ -6,7 +6,7 @@ import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
-import {fetchContactsFromApplozic} from '../../utils/kommunicateClient';
+import {fetchContactsFromApplozic, getGroupFeed} from '../../utils/kommunicateClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
@@ -32,8 +32,6 @@ class Users extends Component {
       stopFlag:1,
       getUsersFlag:1
     };
-
-    window.addEventListener("kmFullViewInitilized",this.getUsers,true);
 
   }
   componentWillMount() {
@@ -75,10 +73,10 @@ class Users extends Component {
               });
             const users=response.response.users.map((user, index)=>{
               if (user.messagePxy && user.messagePxy.groupId) {
-                window.$kmApplozic.fn.applozic("getGroupFeed", { groupId: user.messagePxy.groupId,
-                  callback: function(group) {
-                    if (botAgentMap && typeof group !== "undefined" && group !== null && group.status == "success" && group.data.metadata) {
-                      user.assignee = (group.data.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[group.data.metadata.CONVERSATION_ASSIGNEE].name || group.data.metadata.CONVERSATION_ASSIGNEE ;
+                getGroupFeed({groupId: user.messagePxy.groupId}).then(response => {
+                    if (botAgentMap && typeof response !== "undefined" && response !== null && response.status == "success" && response.response.metadata) {
+                      user.assignee = (response.response.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[response.response.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[response.response.metadata.CONVERSATION_ASSIGNEE].name || response.response.metadata.CONVERSATION_ASSIGNEE ;
+                      user.convoStatus = response.response.metadata.CONVERSATION_STATUS;
                       assignedUser.push(user);
                       // Sort array after pushing
                       var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
@@ -87,7 +85,6 @@ class Users extends Component {
                         showEmptyStateImage: true
                       })
                     } 
-                  }
                 });
               } 
               else {

@@ -15,11 +15,11 @@ dependencies {
      resolutionStrategy.eachDependency { DependencyResolveDetails details ->
          def requested = details.requested
          if (requested.group == 'com.google.firebase' || requested.group == 'com.google.android.gms') {
-            details.useVersion '11.6.0'  //use a common firebase/google version here
+            details.useVersion '17.1.0'  //use a common firebase/google version here
         }
 
          if (requested.group == 'com.android.support' && requested.name != 'multidex') {
-            details.useVersion '27.0.2'  //use a common support libraries version here
+            details.useVersion '27.1.1'  //use a common support libraries version here
         }
      }
    }
@@ -33,4 +33,28 @@ Open the `YourProject.xcworkspace` from yourApp/platforms/ios directory in your 
 Then click on the Kommunicate module and specify the `SWIFT_VERSION`.
 
 Similary for ApplozicSwift module.
+
+## kommunicate is not defined
+
+If you get the error related to `'ReferenceError: kommunicate is not defined'`, then it could be one of the 3 reasons below:
+1) kommunicate varibale has not been defined:
+
+   Make sure you define the varibale in the page where you are calling any function from the plugin.
+  ```
+  declare var kommunicate: any;
+  ```
+  
+2) Kommunicate plugin is not added:
+   
+   Please run the below command to check the plugin list in your application. Verify if the plugin `kommunicate-cordova-plugin` is present in the list.
+   ```
+   ionic cordova plugin ls
+   ```
+   
+ 3) You are running the app on platforms other than iOS/Android
+ 
+   This plugin is a wrapper around the native iOS and Android platforms. If you are running the plugin on browser, windows etc    platforms then it would throw this error. Also do not use the `ionic serve` command to run/debug the app with kommunicate      plugin added.
+   
+ If you still face this error after verifying these 3 reasons, please contact Kommunicate support.
+   
 
