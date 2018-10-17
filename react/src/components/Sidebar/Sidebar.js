@@ -24,7 +24,7 @@ class Sidebar extends Component {
     let userSession = CommonUtils.getUserSession()
     if(userSession){
       this.setState(
-        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName , kmScripIntegrated: (typeof CommonUtils.getUserSession().isIntegrationStarted != undefined) ? (CommonUtils.getUserSession().isIntegrationStarted) : true}
+        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName , kmScripIntegrated: (typeof CommonUtils.getUserSession().isIntegrationStarted !== "undefined") ? (CommonUtils.getUserSession().isIntegrationStarted) : true}
       )
       
     }
