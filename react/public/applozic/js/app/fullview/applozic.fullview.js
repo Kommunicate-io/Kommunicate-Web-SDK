@@ -2786,12 +2786,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				let groupId = window.location.href.split("/").pop();
 				if(!status && parseInt(groupId)) {
-					mckMessageLayout.loadTab({
-					'tabId': groupId,
-					'isGroup': true,
-					'isSearch' : false,
-					'callFromUrl':true
-						});
+					kmGroupService.getGroupFeed({
+						'groupId': groupId,
+						'callFromUrl':true,
+						'apzCallback': mckGroupLayout.onGroupFeed,
+						'callback': mckGroupLayout.loadGroupTab
+					});
 				}
 			}
 			_this.checkForRoleType = function (group) {
@@ -6613,14 +6613,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageLayout.loadTab(params);
 				}
 			};
-			_this.loadGroupTab = function (response) {
+			_this.loadGroupTab = function (response, params) {
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
 				} else {
 					var group = response.data;
 					mckMessageLayout.loadTab({
 						tabId: group.contactId,
-						'isGroup': true
+						'isGroup': true,
+						'callFromUrl':params.callFromUrl ? true : false
 					});
 					$kmApplozic("#km-search").val("");
 				}
