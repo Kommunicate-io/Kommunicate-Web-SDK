@@ -36,6 +36,13 @@ KommunicateUI={
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
     },
+    showAwayMessage: function() {
+        var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(KommunicateUI.awayMessageInfo && KommunicateUI.awayMessageInfo.isEnabled) {
+            $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
+            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
+        }    
+    },
     hideAwayMessage:function(){
         // $applozic("#mck-away-msg").html("");
         $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
@@ -127,13 +134,11 @@ KommunicateUI={
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
             this.hideLeadCollectionTemplate();
-            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
             window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
-            
+            // KommunicateUI.showAwayMessage();  lead collection feature improvement- [WIP]
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
