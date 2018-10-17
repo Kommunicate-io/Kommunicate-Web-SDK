@@ -529,7 +529,7 @@ function KmGroupService() {
                     response.errorMessage = data.errorResponse[0].description;
                 }
                 if (params.callback) {
-                    params.callback(response);
+                    params.callback(response,params);
                 }
                 if (params.apzCallback) {
                     if (response.status === "success") {
