@@ -16,6 +16,7 @@ class Sidebar extends Component {
     this.state = {
       // imageLink: this.props.profilePicUrl,
       // displayName: ''
+      kmScripIntegrated: true  
     };
   }
 
@@ -23,7 +24,7 @@ class Sidebar extends Component {
     let userSession = CommonUtils.getUserSession()
     if(userSession){
       this.setState(
-        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName}
+        {displayName:(userSession.name !=="undefined") ? userSession.name:userSession.userName , kmScripIntegrated: (typeof CommonUtils.getUserSession().isIntegrationStarted != undefined) ? (CommonUtils.getUserSession().isIntegrationStarted) : true}
       )
       
     }
@@ -86,7 +87,6 @@ class Sidebar extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-    let kmScripIntegrated = (CommonUtils.getUserSession().isIntegrationStarted) ? (CommonUtils.getUserSession().isIntegrationStarted) : true;  
     var settingsSidebarShow, sidebarWidth;
     if (currentPath.includes('/dashboard') || currentPath.includes('/conversations') || currentPath.includes('/users') || currentPath.includes('/bot') || currentPath.includes('/faq') || currentPath.includes('/conversations/oops') || currentPath.includes('/integrations')) {
       settingsSidebarShow = " ";
@@ -224,7 +224,7 @@ class Sidebar extends Component {
             </li> */}
 
             {/* IntegrationStarted icon */}
-            { !kmScripIntegrated &&
+            { !this.state.kmScripIntegrated &&
               <li className="nav-item">
                 <IntegrationStarted />
               </li>
