@@ -2420,6 +2420,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				metadata = $kmApplozic.extend(metadata, MCK_DEFAULT_MESSAGE_METADATA);
 				messagePxy.metadata = metadata;
 				messagePxy.source = MCK_SOURCE;
+				if (messagePxy.message && messagePxy.contentType == 0) {
+					kmEvents.triggerCustomEvent("_sendMessageEvent", { 'data': { 'data': messagePxy } });
+				}	
 				var $mck_msg_div = $kmApplozic("#km-message-cell div[name='message']." + randomId);
 				kmUtils.ajax({
 					type: "POST",

@@ -20,7 +20,7 @@ class ModalContent extends Component {
             id: "",
             groupInfo:null
         }
-
+        this.insertTicketIdIntoGroupInfo = this.insertTicketIdIntoGroupInfo.bind(this);
     }
 
     componentWillMount() {
@@ -32,6 +32,14 @@ class ModalContent extends Component {
                 }
             }
         });
+    }
+    insertTicketIdIntoGroupInfo(ticketId, groupId) {
+        var group = window.KM_GROUP_MAP[groupId];
+        if (group) {
+            group.metadata.KM_ZENDESK_TICKET_ID = ticketId;
+            window.KM_GROUP_MAP[groupId] = group;
+            window.kmEvents.triggerCustomEvent("group-update", { data: { data: group } });
+        }
     }
 
     componentDidMount() {
@@ -69,6 +77,7 @@ class ModalContent extends Component {
             createZendeskIntegrationTicket(data, this.state.groupId)
                 .then(response => {
                     if (response.status === 200 && response.data.code === "SUCCESS") {
+                        this.insertTicketIdIntoGroupInfo(response.data.data.ticket.id, this.state.groupId)
                         Notification.info(thirdPartyList[this.state.activeModal].name + " ticket created")
                         this.props.handleCloseModal();
 

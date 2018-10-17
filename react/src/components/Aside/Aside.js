@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import classes from './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -64,6 +64,7 @@ class Aside extends Component {
     this.onKeyDown =this.onKeyDown.bind(this);
     this.setInputFlag=this.setInputFlag.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
+    this.farwardMessageToZendesk = this.farwardMessageToZendesk.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -90,6 +91,7 @@ class Aside extends Component {
       trialDaysLeftComponent: <TrialDaysLeft />
      })
     window.addEventListener("group-update", this.handleGroupUpdate);
+    window.addEventListener("_sendMessageEvent", this.farwardMessageToZendesk);
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
@@ -109,11 +111,29 @@ class Aside extends Component {
         console.log("Please update your browser.");
     }
     window.removeEventListener("group-update",this.handleGroupUpdate);
+    window.removeEventListener("_sendMessageEvent", this.farwardMessageToZendesk);
   }
   handleGroupUpdate(e) {
     this.setState({ group: e.detail.data });
     this.selectStatus();
     this.selectAssignee();
+  }
+  farwardMessageToZendesk(e) {
+    var message = e.detail.data;
+    if (this.state.group && this.state.group.metadata && this.state.group.metadata.KM_ZENDESK_TICKET_ID) {
+      var data = {
+        "ticket": {
+          "comment": { "body": message.message }
+        }
+      }
+      updateZendeskIntegrationTicket(data, this.state.group.metadata.KM_ZENDESK_TICKET_ID)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    }
   }
 
   getThirdparty = () => {
