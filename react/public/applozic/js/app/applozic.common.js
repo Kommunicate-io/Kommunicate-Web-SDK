@@ -216,7 +216,7 @@ function KmContactUtils() {
         return _this.formatContactId(contactId);
     };
     _this.formatContactId = function(contactId) {
-        if (contactId.indexOf('+') === 0) {
+        if (contactId && contactId.indexOf('+') === 0) {
             contactId = contactId.substring(1);
         }
         contactId = decodeURIComponent(contactId);
