@@ -400,7 +400,7 @@ class Integration extends Component {
                     { this.state.isTrialPlan &&
                       <Banner indicator={"warning"} isVisible={false} text={"This user will not be able to login post trial period. Upgrade before " + this.state.applicationExpiryDate + " to ensure access."} />
                     }
-                    { this.state.isTrialPlan &&
+                    { !this.state.isTrialPlan &&
                     <div className="teammates-billing-update-container">
                       <div className="teammates-billing-update-text">
                       Adding a team member will automatically increase the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
