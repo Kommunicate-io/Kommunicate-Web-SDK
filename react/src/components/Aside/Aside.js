@@ -1176,12 +1176,12 @@ class Aside extends Component {
                           {/* <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
                           <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name km-truncate vis" onFocus={this.setInputFlag} data-km-editfield ="displayName"></input>
                           <div className="km-sidebar-displayName-svg">
-                          <div className="km-rectangle km-displayName" onMouseDown={() => this.onMouseDown("displayName")}>
+                          <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={() => this.onMouseDown("displayName")}>
                               <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
-                            <div className="km-rectangle km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
+                            <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
                               <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
