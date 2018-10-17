@@ -818,9 +818,9 @@ color: #595757;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
-[contenteditable=true]:empty:before{
+/* [contenteditable=true]:empty:before{
     content: attr(placeholder);
-    display: block; /* For Firefox */
+    display: block; 
     width: 100%;
     height: 16px;
     font-family: Roboto;
@@ -832,7 +832,7 @@ color: #595757;
     letter-spacing: 0.4px;
     text-align: left;
     color: #4831d9;
-  }
+  } */
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }

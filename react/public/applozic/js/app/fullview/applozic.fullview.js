@@ -3685,9 +3685,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				if(!MCK_INTEGRATION_STARTED) {
 					if (emptyStateDiv.classList.contains("n-vis")) {
-						emptyStateDiv.classList.add("km-empty-state-not-integrated");
+						emptyStateDiv.classList.add("vis", "km-empty-state-not-integrated");
 						emptyStateDivFirstPara.innerHTML = "You have not installed Kommunicate in your website";
-						emptyStateDiv.classList.add("vis");
 						emptyStateDiv.classList.remove("n-vis");
 					}
 				} else if(assignedToMeList.getElementsByTagName("li").length === 0) {
