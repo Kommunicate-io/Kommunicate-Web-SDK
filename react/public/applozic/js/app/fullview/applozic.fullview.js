@@ -2786,12 +2786,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				let groupId = window.location.href.split("/").pop();
 				if(!status && parseInt(groupId)) {
-					mckMessageLayout.loadTab({
-					'tabId': groupId,
-					'isGroup': true,
-					'isSearch' : false,
-					'callFromUrl':true
-						});
+					kmGroupService.getGroupFeed({
+						'groupId': groupId,
+						'callFromUrl':true,
+						'apzCallback': mckGroupLayout.onGroupFeed,
+						'callback': mckGroupLayout.loadGroupTab
+					});
 				}
 			}
 			_this.checkForRoleType = function (group) {
@@ -3685,9 +3685,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 				if(!MCK_INTEGRATION_STARTED) {
 					if (emptyStateDiv.classList.contains("n-vis")) {
-						emptyStateDiv.classList.add("km-empty-state-not-integrated");
+						emptyStateDiv.classList.add("vis", "km-empty-state-not-integrated");
 						emptyStateDivFirstPara.innerHTML = "You have not installed Kommunicate in your website";
-						emptyStateDiv.classList.add("vis");
 						emptyStateDiv.classList.remove("n-vis");
 					}
 				} else if(assignedToMeList.getElementsByTagName("li").length === 0) {
@@ -5308,17 +5307,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				return emoji_template;
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
-				if(contact.members.length > contact.userCount) {
-					kmGroupService.getGroupFeed({
-						'groupId': contact.groupId,
-						'callback': function(resp) {
-							KM_GROUP_MAP[contact.groupId] = resp.groupId;
-						}
-					});
+				if(contact.isGroup) {
+					if(contact.members.length > contact.userCount) {
+						kmGroupService.getGroupFeed({
+							'groupId': contact.groupId,
+							'callback': function(resp) {
+								KM_GROUP_MAP[contact.groupId] = resp.groupId;
+							}
+						});
+					}
 				}
 				
 				var emoji_template = "", senderName;
-				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
+				if(typeof contact.users !== "undefined" && typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
@@ -6614,14 +6615,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					mckMessageLayout.loadTab(params);
 				}
 			};
-			_this.loadGroupTab = function (response) {
+			_this.loadGroupTab = function (response, params) {
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
 				} else {
 					var group = response.data;
 					mckMessageLayout.loadTab({
 						tabId: group.contactId,
-						'isGroup': true
+						'isGroup': true,
+						'callFromUrl':params.callFromUrl ? true : false
 					});
 					$kmApplozic("#km-search").val("");
 				}

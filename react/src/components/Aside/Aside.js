@@ -319,6 +319,9 @@ class Aside extends Component {
   }
 
   getGroupAdmin(group) {
+    if(typeof this.state.group =='undefined'){
+      return "";
+    }
     var assignee = this.state.group.adminName;
     for(var key in this.state.group.users) {
       if(this.state.group.users.hasOwnProperty(key)) {
@@ -1030,8 +1033,7 @@ class Aside extends Component {
                                   </div>
                                 </div>
 
-                                <span id="km-text-box"
-                                  contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required"></span>
+                                <div id="km-text-box" contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required" data-text="Type your message..."></div>
 
                                 <a href="javascript:void(0)" type="button" id="km-btn-smiley"
                                   className="write-link smiley km-btn-smiley km-btn-text-panel"

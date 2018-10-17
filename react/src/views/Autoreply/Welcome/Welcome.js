@@ -48,23 +48,25 @@ class Welcome extends Component{
     let  hideTrashBtn = Object.assign([],this.state.hideTrashBtn)
     hideTrashBtn.splice(0,2,false,false);
     return Promise.resolve(getInAppMessagesByEventId(eventIds)).then(response => {
-      response.forEach(item => {
-        welcomeMessages.push({
-          messageField: item.message,
-          messageId: item.id,
-          status: item.status
+      if(typeof response != "undefined" && response.length > 0) {
+        response.forEach(item => {
+          welcomeMessages.push({
+            messageField: item.message,
+            messageId: item.id,
+            status: item.status
+          })
+          welcomeMessagesCopy.push({
+            messageField: item.message,
+            messageId: item.id,
+            status: item.status
+          })
         })
-        welcomeMessagesCopy.push({
-          messageField: item.message,
-          messageId: item.id,
-          status: item.status
-        })
-      })
-      this.setState({
-        welcomeMessages: welcomeMessages,
-        welcomeMessagesCopy: welcomeMessagesCopy,
-        hideTrashBtn: hideTrashBtn
-      }, this.updateUserStatus);
+        this.setState({
+          welcomeMessages: welcomeMessages,
+          welcomeMessagesCopy: welcomeMessagesCopy,
+          hideTrashBtn: hideTrashBtn
+        }, this.updateUserStatus);
+      }
     }).catch(err => {
       console.log("error while fetching welcome message", err);
     })
