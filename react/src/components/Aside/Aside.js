@@ -180,8 +180,8 @@ class Aside extends Component {
 
   validateEmail = (e) => {
     var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (document.getElementById("km-sidebar-user-email-edit").value.length > 35) {
-      Notification.error("Email length should be less than 35");
+    if (document.getElementById("km-sidebar-user-email-edit").value.length > 100) {
+      Notification.error("Email length should be less than 100");
       return;
     }
     if(mailformat.test(document.getElementById("km-sidebar-user-email-edit").value)){
