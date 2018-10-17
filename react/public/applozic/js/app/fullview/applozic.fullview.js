@@ -5307,17 +5307,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				return emoji_template;
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
-				if(contact.members.length > contact.userCount) {
-					kmGroupService.getGroupFeed({
-						'groupId': contact.groupId,
-						'callback': function(resp) {
-							KM_GROUP_MAP[contact.groupId] = resp.groupId;
-						}
-					});
+				if(contact.isGroup) {
+					if(contact.members.length > contact.userCount) {
+						kmGroupService.getGroupFeed({
+							'groupId': contact.groupId,
+							'callback': function(resp) {
+								KM_GROUP_MAP[contact.groupId] = resp.groupId;
+							}
+						});
+					}
 				}
 				
 				var emoji_template = "", senderName;
-				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
+				if(typeof contact.users !== "undefined" && typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
