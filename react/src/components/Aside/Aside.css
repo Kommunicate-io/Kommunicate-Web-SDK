@@ -818,7 +818,7 @@ color: #595757;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
-[contenteditable=true]:empty:before{
+.contenteditable[contenteditable=true]:empty:before{
     content: attr(placeholder);
     display: block; /* For Firefox */
     width: 100%;
