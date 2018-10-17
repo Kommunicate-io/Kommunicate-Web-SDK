@@ -312,6 +312,9 @@ class Aside extends Component {
   }
 
   getGroupAdmin(group) {
+    if(typeof this.state.group =='undefined'){
+      return "";
+    }
     var assignee = this.state.group.adminName;
     for(var key in this.state.group.users) {
       if(this.state.group.users.hasOwnProperty(key)) {
