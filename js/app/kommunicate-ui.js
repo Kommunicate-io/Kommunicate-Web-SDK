@@ -26,8 +26,8 @@ KommunicateUI={
         } 
     },
     populateAwayMessage:function(err,message){
-        var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
-        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!conversationWindowNotActive){
             
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
@@ -37,8 +37,8 @@ KommunicateUI={
         }
     },
     showAwayMessage: function() {
-        var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
-        if(KommunicateUI.awayMessageInfo && KommunicateUI.awayMessageInfo.isEnabled) {
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(KommunicateUI.awayMessageInfo && KommunicateUI.awayMessageInfo.isEnabled && !conversationWindowNotActive) {
             $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
         }    
