@@ -276,3 +276,29 @@
         width: 17%;
         height: 53%;
     }
+
+    .km-coming-soon-style {
+        margin-bottom: 33px;
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: #2cd55c;
+        margin-top: -25px;
+    }
+
+    .km-coming-soon-state {
+        max-width: 600px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 100px;
+    }
+
+    .km-coming-soon-text {
+        max-width: 600px;
+        font-size: 16px;
+        letter-spacing: 0.6px;
+        text-align: center;
+        color: #746f6f;
+        margin-top: 30px;
+    }
