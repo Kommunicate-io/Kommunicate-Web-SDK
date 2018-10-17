@@ -159,7 +159,7 @@ class Aside extends Component {
     if (elem === "email") {
       this.validateEmail();
     }
-    else if (elem === "phoneNumber" && document.getElementById("km-sidebar-user-number-edit").value.length > 10 ) {
+    else if (elem === "phoneNumber" && document.getElementById("km-sidebar-user-number-edit").value.length > 20 ) {
         Notification.error("Phone number length should be less than 20");
         return;
     } else {
