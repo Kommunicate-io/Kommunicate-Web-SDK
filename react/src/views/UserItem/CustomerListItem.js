@@ -93,12 +93,12 @@ class CustomerListItem extends Component {
       ? user.assignee
       : "";
     if (assignee !== (undefined || "" || null)) {
-      if (convoStatus == (0 || -1)) {
+      if (convoStatus == (window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN || window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL || window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED )) {
         return <span className="assignee-open">
           <strong>
             ASSIGNED -</strong>{assignee}
         </span>;
-      } else if (convoStatus == ( 2 || 3 || 4)) {
+      } else if (convoStatus == ( window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED || window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.SPAM || window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.DUPLICATE)) {
         return <span className="assignee-closed">
           <strong>
             CLOSED -</strong>{assignee}
