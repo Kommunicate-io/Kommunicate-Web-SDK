@@ -175,8 +175,8 @@ class Aside extends Component {
   }
 
   validateEmail = (e) => {
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (document.getElementById("km-sidebar-user-email-edit").innerHTML.match(mailformat)) {
+    var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(mailformat.test(document.getElementById("km-sidebar-user-email-edit").innerHTML)){
       this.updateUserDetail("email");
     }
     else {
