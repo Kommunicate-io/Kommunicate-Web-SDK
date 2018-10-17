@@ -216,7 +216,7 @@ function KmContactUtils() {
         return _this.formatContactId(contactId);
     };
     _this.formatContactId = function(contactId) {
-        if (contactId.indexOf('+') === 0) {
+        if (contactId && contactId.indexOf('+') === 0) {
             contactId = contactId.substring(1);
         }
         contactId = decodeURIComponent(contactId);
@@ -950,7 +950,8 @@ function KmEvents() {
             navigator.appVersion.indexOf('Trident/') > 0) {
             /* Microsoft Internet Explorer detected in. */
             var evt = document.createEvent('Event');
-            evt.initEvent(eventName, options.bubbles, options.cancelable, options.data);
+            evt.detail = options.data || {};
+            evt.initEvent(eventName, options.bubbles, options.cancelable);
             window.dispatchEvent(evt);
         } else {
             //Custom event trigger
