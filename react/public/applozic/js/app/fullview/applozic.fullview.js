@@ -5319,7 +5319,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 				
 				var emoji_template = "", senderName;
-				if(typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
+				if(typeof contact.users !== "undefined" && typeof contact.users[message.senderName] !== "undefined" && contact.users[message.senderName].role !== 3) {
 					if(contact.users[message.senderName].userId == MCK_USER_ID) {
 						senderName = KM_LABELS['you'] + ": ";
 					} else {
