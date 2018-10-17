@@ -41,7 +41,8 @@ function getEnvironmentId() {
     "createApplozicUser": applozicBaseUrl + url.applozic.CREATE_APPLOZIC_USER,
     "updateApplozicUser": applozicBaseUrl + url.applozic.UPDATE_APPLOZIC_USER,
     "fetchContactsUrl": applozicBaseUrl + url.applozic.CONTACT_LIST_URL,
-    "groupFeedUrl": applozicBaseUrl + url.applozic.GROUP_FEED_URL
+    "groupFeedUrl": applozicBaseUrl + url.applozic.GROUP_FEED_URL,
+    "multipleGroupInfo": applozicBaseUrl + url.applozic.MULTIPLE_GROUP_INFO
   };
   config.kommunicateApi = {
     "login": kommunicateBaseUrl + url.kommunicateApi.LOGIN,

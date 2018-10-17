@@ -6,7 +6,7 @@ import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
-import {fetchContactsFromApplozic, getGroupFeed} from '../../utils/kommunicateClient';
+import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
@@ -57,6 +57,7 @@ class Users extends Component {
       else if (_this.state.startTime){
         params.startTime = _this.state.startTime;
       }
+      var groupList=[];
       var assignedUser = _this.state.result;
       let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
         fetchContactsFromApplozic(params).then(response => {
@@ -71,30 +72,43 @@ class Users extends Component {
                 startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime, 
                 lastSeenTime : response.response.lastSeenFetchTime
               });
-            const users=response.response.users.map((user, index)=>{
-              if (user.messagePxy && user.messagePxy.groupId) {
-                getGroupFeed({groupId: user.messagePxy.groupId}).then(response => {
-                    if (botAgentMap && typeof response !== "undefined" && response !== null && response.status == "success" && response.response.metadata) {
-                      user.assignee = (response.response.metadata.CONVERSATION_ASSIGNEE&&botAgentMap[response.response.metadata.CONVERSATION_ASSIGNEE])&& botAgentMap[response.response.metadata.CONVERSATION_ASSIGNEE].name || response.response.metadata.CONVERSATION_ASSIGNEE ;
-                      user.convoStatus = response.response.metadata.CONVERSATION_STATUS;
-                      assignedUser.push(user);
-                      // Sort array after pushing
-                      var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                      _this.setState({
-                        result: arrObj, 
-                        showEmptyStateImage: true
-                      })
-                    } 
-                });
-              } 
-              else {
-                assignedUser.push(user);
-                _this.setState({
-                  result: assignedUser.reverse(), 
-                  showEmptyStateImage: true
-                })
-              }
-            });    
+              const usersMap=response.response.users.map((user, index)=>{ 
+                if (user.messagePxy && user.messagePxy.groupId) {
+                  groupList.push(user.messagePxy.groupId.toString()); 
+                }
+              });  
+              multipleGroupInfo(groupList).then(data => { 
+                var arr = [];
+                for(var j = 0; j < data.response.length; j++){
+                  arr[data.response[j].id] = data.response[j];
+                };
+                const users=response.response.users.map((user, index)=>{
+                  if (user.messagePxy && user.messagePxy.groupId) {
+                        if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
+                            if (arr[user.messagePxy.groupId]) {
+                              user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE ;
+                              if(user.assignee == ""){
+                              };
+                              user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
+                              assignedUser.push(user);
+                              // Sort array after pushing
+                              var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
+                              _this.setState({
+                                result: arrObj, 
+                                showEmptyStateImage: true
+                              })
+                            }
+                        } 
+                  } 
+                  else {
+                    assignedUser.push(user);
+                    _this.setState({
+                      result: assignedUser.reverse(), 
+                      showEmptyStateImage: true
+                    })
+                  }
+                }); 
+              });
           } else if (response.response.users.length == 0 && this.state.result == 0) {
             _this.setState({showEmptyStateImage: false});
           }
