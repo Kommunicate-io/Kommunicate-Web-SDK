@@ -413,11 +413,12 @@ class Dashboard extends Component {
       "displayName": userSession.displayName !== null ? userSession.displayName: "",
       "userId": userSession.userName !== null ? userSession.userName: "",
       "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
-          "billingCustomerId": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
-          "created_at": userSession.created_at !== null ? userSession.created_at: "",
-          "subscription": userSession.subscription !== null ? userSession.subscription : "" ,
-          "applicationId": userSession.applicationId !== null ? userSession.applicationId : "",
-          "industry": userSession.industry !== null ? userSession.industry : ""
+          "Billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+          "Signup": userSession.created_at !== null ? userSession.created_at: "",
+          "Subscription": userSession.subscription !== null ? userSession.subscription : "" ,
+          "Application": userSession.applicationId !== null ? userSession.applicationId : "",
+          "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
+          "Industry": userSession.industry !== null ? userSession.industry : ""
       }
     };
     window.Kommunicate.updateUser(userdetail);
