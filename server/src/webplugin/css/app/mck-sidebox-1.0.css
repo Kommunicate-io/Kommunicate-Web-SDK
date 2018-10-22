@@ -5523,12 +5523,15 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 	border-radius: 5px;
 	padding: 10px 14px 12px;
 	width: 100%;
+	border: none;
+	height: 60vh;
 	white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
 	word-wrap: break-word;
-	overflow: auto;
+	overflow: hidden;
+	
 }
 .mck-msg-preview-visual-indicator-container:hover .mck-close-btn-container {
 	display: block;
