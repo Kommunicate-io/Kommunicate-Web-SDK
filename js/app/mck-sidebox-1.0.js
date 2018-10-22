@@ -138,6 +138,13 @@ const MESSAGE_CONTENT_TYPE = {
                 'GROUP_META_DATA_UPDATED_MESSAGE': '',
                 'ALERT': '',
                 'HIDE': ''
+            },
+            'lead.collection': {
+                'email':'Email',
+                'name':'Name',
+                'contactNumber':'Contact Number',
+                'heading':'Before starting, we just need a few details so that we may serve you better',
+                'submit':'Start Conversation',
             }
         },
         openGroupSettings: {
@@ -1473,6 +1480,7 @@ const MESSAGE_CONTENT_TYPE = {
                         kmChatLoginModal.style.visibility='visible';
                         kmChatLoginModal.style.display='none';
                         $applozic('#km-anonymous-chat-launcher').append(mckInit.getLauncherHtml(true));
+                        _this.setLeadCollectionLabels();
                         var kmAnonymousChatLauncher =  document.getElementById("km-anonymous-chat-launcher");
                         kmAnonymousChatLauncher.classList.remove('n-vis');
                         kmAnonymousChatLauncher.classList.add('vis');
@@ -1706,6 +1714,14 @@ const MESSAGE_CONTENT_TYPE = {
                 if (MCK_APP_MODULE_NAME) {
                     jqXHR.setRequestHeader("App-Module-Name", MCK_APP_MODULE_NAME);
                 }
+            };
+            _this.setLeadCollectionLabels = function () {
+                var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
+                document.getElementById('km-email').setAttribute('placeholder', LEAD_COLLECTION_LABEL.email); 
+                document.getElementById('km-userName').setAttribute('placeholder', LEAD_COLLECTION_LABEL.name); 
+                document.getElementById('km-contact').setAttribute('placeholder', LEAD_COLLECTION_LABEL.contactNumber); 
+                document.getElementById('km-submit-chat-login').innerHTML= LEAD_COLLECTION_LABEL.submit;
+                document.getElementById('km-lead-collection-heading').innerHTML= LEAD_COLLECTION_LABEL.heading;           
             };
             _this.setLabels = function () {
                 $applozic('#mck-conversation-title').html(MCK_LABELS['conversations.title']).attr('title', MCK_LABELS['conversations.title']);
