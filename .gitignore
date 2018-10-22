@@ -86,3 +86,4 @@ website/_config.yml
 website/_site
 
 server/dist/build/
+website/package-lock.json

@@ -798,7 +798,8 @@ function KmDateUtils() {
         "fullDateFormat": "mmm d, h:MM TT",
         "onlyDateFormat": 'mmm d',
         "fullYearDateFormat": 'd mmm yyyy',
-        "onlyTimeFormat": 'h:MM TT'
+        "onlyTimeFormat": 'h:MM TT',
+        "onlyDateFormatReverse": 'd mmm'
     };
 
     _this.getDate = function(createdAtTime) {
@@ -807,23 +808,24 @@ function KmDateUtils() {
         return ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ? dateFormat(date, dateFormats["onlyTimeFormat"], false) : dateFormat(date, dateFormats["fullDateFormat"], false);
     };
     _this.getLastSeenAtStatus = function(lastSeenAtTime,yearDateFormat) {
-        var format = dateFormats["onlyDateFormat"];
+        var format = dateFormats["onlyDateFormatReverse"];
         if (yearDateFormat) {
             format = dateFormats[yearDateFormat];
         } 
-        var date = new Date(parseInt(lastSeenAtTime, 10));
-        var currentDate = new Date();
-        if ((currentDate.getDate() === date.getDate()) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) {
-            var hoursDiff = currentDate.getHours() - date.getHours();
-            var timeDiff = w.Math.floor((currentDate.getTime() - date.getTime()) / 60000);
-            if (timeDiff < 60) {
-                return (timeDiff <= 1) ? KM_LABELS['last.seen'] + ' 1 min ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + timeDiff + ' mins ' + KM_LABELS['ago'];
-            }
-            return (hoursDiff === 1) ? KM_LABELS['last.seen'] + ' 1 hour ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + hoursDiff + ' hours ' + KM_LABELS['ago'];
-        } else if ( ((currentDate.getDate() - date.getDate() === 1) && (currentDate.getMonth() === date.getMonth()) && (currentDate.getYear() === date.getYear())) ) {
-            return KM_LABELS['last.seen.on'] + ' yesterday';
-        } else {
-            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(date, format, false);
+        var timeStamp = new Date(lastSeenAtTime);
+        var currentTime = new Date(),
+            secondsPast = (currentTime.getTime() - timeStamp.getTime() ) / 1000;
+        if(secondsPast < 60){
+            return (parseInt(secondsPast)<=1) ? KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast) + ' sec ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast) + ' secs ' + KM_LABELS['ago'];
+        }
+        if(secondsPast < 3600){
+            return (parseInt(secondsPast/60)<=1) ? KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast/60)  + ' min ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast/60) + ' mins ' + KM_LABELS['ago'];
+        }
+        if(secondsPast <= 172800){
+            return (parseInt(secondsPast/3600)<=1) ? KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast/3600) + ' hr ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast/3600) + ' hrs ' + KM_LABELS['ago'];
+        }
+        if(secondsPast > 172800){
+            return KM_LABELS['last.seen.on'] + ' ' + dateFormat(timeStamp, format, false);
         }
     };
     _this.getTimeOrDate = function(createdAtTime, timeFormat) {
