@@ -4793,6 +4793,11 @@ const MESSAGE_CONTENT_TYPE = {
                         'apzCallback': mckGroupLayout.onGroupFeed
                     });
                 }
+                if(msg.source === 4) {
+                    $applozic(".mck-msg-box-rich-text-container .km-faq-answer--body_ans").linkify({
+                        target: '_blank'
+                    });
+                }
             };
             _this.addContactForSearchList = function (contact, $listId) {
                 var groupUserCount = contact.userCount;
