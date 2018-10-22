@@ -4581,7 +4581,6 @@ const MESSAGE_CONTENT_TYPE = {
                     attachmentTemplate:attachmentTemplate,
                     progressMeter:progressMeter,
                     googleTranslate: msg.type == 5 ? "notranslate" : ""
-
                 }];
                 append ? $applozic.tmpl("messageTemplate", msgList).appendTo("#mck-message-cell .mck-message-inner") : $applozic.tmpl("messageTemplate", msgList).prependTo("#mck-message-cell .mck-message-inner");
 
