@@ -169,7 +169,7 @@
 <script>
         $("a").click(function(){
           var heapData;
-          heap.identity = null ? heapData = heap.identity : heapData = heap.userId;
+          heap.identity == null ? heapData = heap.userId : heapData = heap.identity;ntity : heapData = heap.userId;
           $(this).attr("href").indexOf("calendly") > -1 ? ( window.open($(this).attr("href")+"?utm_source="+heapData, '_blank') ): ($(this).attr("target") == '_blank' ? window.open($(this).attr("href"),"_blank" ) : window.open($(this).attr("href"),"_self" ) );
           return false;
         });
