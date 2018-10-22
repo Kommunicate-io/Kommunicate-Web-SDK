@@ -170,7 +170,9 @@ KommunicateUI={
                     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-tab-conversation').removeClass("vis").addClass("n-vis");
                     $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
-
+                    $applozic('#km-faqanswer .km-faqanswer').linkify({
+                        target: '_blank'
+                    });
                 }
             }
             , error: function () { }
