@@ -419,6 +419,8 @@ showPasswordField = () => {
       <div>
         <div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
         <div className="container">
+        <p>Redux</p>
+        <p>{JSON.stringify(this.props.userInfo,0,4)}</p>
         <div className="logo-container text-center">
             <a href="#" onClick={this.websiteUrl}>
               <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 729.5 138.5">
@@ -643,7 +645,9 @@ showPasswordField = () => {
 }
 
 // export default Login;
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  userInfo:state.loginReducer.userInfo
+})
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
