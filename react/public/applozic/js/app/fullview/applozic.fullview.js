@@ -4131,6 +4131,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$kmApplozic.each(data.message, function (i, message) {
 						if (typeof message.to !== "undefined") {
 							_this.addMessage(message, contact, false, false, true);
+							kommunicateDashboard.appendEmailToIframe(message);
 							showMoreDateTime = message.createdAtTime;
 						}
 					});
