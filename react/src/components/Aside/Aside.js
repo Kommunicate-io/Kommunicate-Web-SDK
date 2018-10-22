@@ -1294,6 +1294,10 @@ class Aside extends Component {
                       </span>
                       <span className="km-user-info-meatadata-value km-lastMessageAtTime"></span>
                       </p>
+                      <p className="km-user-info-metadata">
+                        <span className="km-user-info-meatadata-key">Conversation<br/>started</span>
+                        <span className="km-user-info-meatadata-value"></span>
+                      </p>
                       </div>
                       {/* user metadata */}
                       <div id="km-sidebar-user-info-wrapper" className="n-vis" >
