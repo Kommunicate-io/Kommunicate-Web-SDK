@@ -4282,6 +4282,7 @@ const MESSAGE_CONTENT_TYPE = {
                     $applozic.each(data.message, function (i, message) {
                         if (!(typeof message.to === 'undefined')) {
                             _this.addMessage(message, contact, false, false, isValidated);
+                            Kommunicate.appendEmailToIframe(message);
                             showMoreDateTime = message.createdAtTime;
                         }
                     });
