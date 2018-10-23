@@ -793,9 +793,9 @@ color: #595757;
    margin-bottom: -15px;
 }
 .km-editphone{
-    position:  absolute;
-    bottom: -10;
-    left:  35px;
+    width:100%;
+    margin-bottom: 0;
+    right:0;
   
 }
 .km-postion-relative{
@@ -862,6 +862,12 @@ color: #595757;
 .km-sidebar-svg{
     position: absolute;
     bottom: -35px;
+    right: 0;
+}
+
+.km-sidebar-phone-svg{
+    position: absolute;
+    bottom: -19px;
     right: 0;
 }
 .km-sidebar-displayName-svg{
