@@ -4227,6 +4227,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (msg.contentType === 4 || msg.contentType === 10) {
 					floatWhere = "km-msg-center";
 				}
+				if(msg.type === 5 && typeof msg.to!=="undefined" && msg.to!==MCK_USER_ID){
+					floatWhere = "km-msg-left";
+ 				}
 				statusIcon = _this.getStatusIconName(msg);
 				var replyId = msg.key;
 				var replyMessageParameters = "'" + msg.deviceKey + "'," + "'" + msg.to + "'" + ",'" + msg.to + "'" + ",'" + replyId + "'";
@@ -4235,7 +4238,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var nameTextExpr = "";
 				var showNameExpr = "n-vis";
 				var msgAvatorClassExpr = "";
-				if (msg.groupId && msg.contentType !== 4 && (msg.type === 0 || msg.type === 4 || msg.type === 6)) {
+				if (msg.groupId && msg.contentType !== 4 && (msg.type === 0 || msg.type === 4 || msg.type === 6)||(msg.type === 5 && typeof msg.to!=="undefined"  && msg.to!==MCK_USER_ID)) {
 					showNameExpr = "vis";
 					nameTextExpr = _this.getNameTextClassByAlphabet(displayName);
 				}
@@ -4286,7 +4289,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var msgList = [{
 					msgKeyExpr: msg.key,
 					msgDeliveredExpr: msg.delivered,
-					msgSentExpr: msg.sent,
+					msgSentExpr: msg.type !== 5 ?msg.sent:false,
 					msgCreatedAtTime: msg.createdAtTime,
 					msgTypeExpr: msg.type,
 					msgSourceExpr: msg.source,
@@ -5248,7 +5251,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (msg.status === 4) {
 					return 'km-icon-delivered';
 				}
-				if (msg.type === 3 || msg.type === 5 || (msg.type === 1 && (msg.source === 0 || msg.source === 1))) {
+				if (msg.type === 3 || (msg.type === 5 && typeof msg.to!=="undefined" && msg.to ===MCK_USER_ID)|| (msg.type === 1 && (msg.source === 0 || msg.source === 1))) {
 					return 'km-icon-sent';
 				}
 				return "";
