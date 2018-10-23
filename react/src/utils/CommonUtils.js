@@ -206,5 +206,6 @@ const CommonUtils = {
         }
     }
 }
+window.CommonUtils = CommonUtils;
 
 export default CommonUtils;
