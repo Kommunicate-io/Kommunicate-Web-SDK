@@ -73,7 +73,7 @@ Kommunicate.defaultLabels = {
     'private':'Private',
     'open':'Open',
     'you':'You',
-    'closed.conversation.message':'This conversation has been marked as close. If you have other queries, just send a message here or start a new conversation.',
+    'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',

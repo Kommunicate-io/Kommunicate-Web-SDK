@@ -5727,10 +5727,10 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 }
 #mck-conversation-status-box{
 	padding: 20px 0px 20px 0px;
-	font-family: Roboto;
     font-size: 14px;
     line-height: 1.21;
     letter-spacing: 0.4px;
     text-align: center;
-    color: #8b8888;
+    color: #6f6d6d;
+    font-weight: 300;
 }
