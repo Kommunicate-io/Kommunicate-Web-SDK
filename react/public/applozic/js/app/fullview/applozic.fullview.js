@@ -5568,7 +5568,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							// Todo: use contactNumber instead of contactId
 							// for Google Contacts API.
 							if (notifyUser && isValidMeta) {
-								mckNotificationService.notifyUser(message);
+								mckMessageLayout.processNotification(message);
 							}
 						}
 					} else if (messageType === "APPLOZIC_02") {
@@ -5599,7 +5599,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if (message.contentType !== 10) {
 								mckMessageLayout.incrementUnreadCount(ucTabId);
 							}
-							mckNotificationService.notifyUser(message);
+							mckMessageLayout.processNotification(message);
 						}
 						var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
 						$kmApplozic(".km-li-as-" + contactHtmlExpr + " .km-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
@@ -5621,6 +5621,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				 */
 				$mck_loading.removeClass('vis').addClass('n-vis');
 			};
+			_this.processNotification = function(message){
+				var groupDetail =  KM_GROUP_MAP[message.groupId];
+				if(groupDetail&& groupDetail.metadata["CONVERSATION_ASSIGNEE"]== MCK_USER_ID){
+					mckNotificationService.notifyUser(message);
+				}
+					 
+			}
 			_this.getMessageFeed = function (message) {
 				var messageFeed = {};
 				messageFeed.key = message.key;
