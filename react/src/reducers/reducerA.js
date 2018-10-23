@@ -8,7 +8,7 @@ const reducerA = (state = initialState, action) => { //function it will accepts 
     case 'HIDE_BANNER':
       return {
         ...state,
-        isHidden: true
+        isHidden: action.payload
       }
     case 'APPLICATION_INFO':
       return {

@@ -1,5 +1,6 @@
-export const hideBanner = () => ({
-  type: 'HIDE_BANNER'
+export const hideBanner = (payload) => ({
+  type: 'HIDE_BANNER',
+  payload
 });
 export const applicationInfo = (payload) => ({
   type: 'APPLICATION_INFO',
