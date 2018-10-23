@@ -135,7 +135,7 @@ const MESSAGE_CONTENT_TYPE = {
                         return oInstance.initGroupTab(params);
                         break;
                     case 'loadGroupTab':
-                        return oInstance.loadGroupTab(params);
+                        return oInstance.loadGroupTab(params,callback);
                         break;
                     case 'loadGroupTabByClientGroupId':
                         return oInstance.loadGroupTabByClientGroupId(params);
@@ -438,10 +438,10 @@ const MESSAGE_CONTENT_TYPE = {
                     groupName: DEFAULT_GROUP_NAME,
                     agentId: DEFAULT_AGENT_ID,
                     botIds: DEFAULT_BOT_IDS
-                }, function () {
+                }, function (data) {
                     console.log("conversation created successfully");
                     KommunicateUI.activateTypingField();
-
+                    Kommunicate.conversation.processConversationOpenedFromList(data);
                 });
             ($applozic("#mck-msg-preview-visual-indicator").hasClass('vis')) ? $applozic("#mck-msg-preview-visual-indicator").removeClass('vis').addClass('n-vis'):'';
         };
@@ -609,7 +609,7 @@ const MESSAGE_CONTENT_TYPE = {
             mckFileService.audioRecoder(file);
 
         };
-        _this.loadGroupTab = function (tabId) {
+        _this.loadGroupTab = function (tabId,callback) {
             if (typeof tabId === 'undefined' || tabId === '') {
                 return 'GroupId required';
             }
@@ -618,7 +618,7 @@ const MESSAGE_CONTENT_TYPE = {
                 mckMessageLayout.loadTab({
                     tabId: tabId,
                     'isGroup': true
-                });
+                },callback);
                 $applozic('#mck-search').val('');
             } else {
                 mckGroupService.getGroupFeed({
@@ -1945,11 +1945,10 @@ const MESSAGE_CONTENT_TYPE = {
                         });
                     } else if(result.response.length ==1) {
                         var groupId = result.response[0].id;
-                        $applozic.fn.applozic("loadGroupTab", groupId);
-                        callback();
+                        $applozic.fn.applozic("loadGroupTab", groupId,callback);
                     }else {
-                        $applozic.fn.applozic("loadTab");
-                        callback();
+                        $applozic.fn.applozic("loadTab",null,callback);
+                        
                     }
 
                 });
@@ -2288,6 +2287,7 @@ const MESSAGE_CONTENT_TYPE = {
                     var isGroup = $mck_msg_inner.data("isgroup");
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
+                    KommunicateUI.hideClosedConversationBanner();
                     mckMessageLayout.loadTab({
                         'tabId': '',
                         'isGroup': false,
@@ -2299,6 +2299,7 @@ const MESSAGE_CONTENT_TYPE = {
                     e.preventDefault();
                     KommunicateUI.hideAwayMessage();
                     KommunicateUI.hideLeadCollectionTemplate();
+                    KommunicateUI.hideClosedConversationBanner();
                     $mck_sidebox.mckModal('hide');
                     $applozic('#mck-sidebox-launcher').removeClass('n-vis').addClass('vis');
                     if(document.getElementById('launcher-agent-img-container').classList.contains('vis')) {
