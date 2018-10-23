@@ -86,7 +86,7 @@ constructor(props){
         email: email,
         userName: email,
         password: '',
-        loginButtonAction: 'getAppList',
+        loginButtonAction: 'Login',
         loginType: loginType,
         hideGoogleLoginBtn: true
       }, () => {
@@ -307,7 +307,12 @@ checkForMultipleApps=(result)=>{
       _this.setState({loginButtonText:'Submit',loginButtonAction:'passwordResetAppSected',loginFormSubText:'please select your application and submit',hidePasswordInputbox:true,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Select Application..",hideBackButton:false,hideSignupLink:true, isForgotPwdHidden:true, hideSignupLink:true, hideGoogleLoginBtn:true});
     }else{
     _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple applications',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Hi! Select your application",subHeading:false,hideBackButton:false,isForgotPwdHidden:true,hideSignupLink:false,hideSignupLink:true, hideGoogleLoginBtn:true});
-    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});
+    if (this.state.googleOAuth){
+      _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: "",loginType :'oauth'}});
+    }
+    else{
+    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});}
+
   }
 }else{
   // Notification.info("You are not a registered user. Please sign up!!!");
@@ -472,7 +477,8 @@ showPasswordField = () => {
                         <p className="input-error-message">{this.state.errorMessageText}</p>
                        </div>
                     </div> */}
-                          {/* login with google is hidden for release 1.5.2 . To make it visible uncomment   */}
+                         {/* Login with Google code STARTS here. */}
+                          {/* To show or hide Login with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
                          <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
@@ -493,6 +499,8 @@ showPasswordField = () => {
                           <div className="or-seperator--line"></div>
                           <div className="or-seperator--text">OR</div>
                         </div>
+
+                      {/* Login with Google code ENDS here */}
 
                     <div hidden ={this.state.hideUserNameInputbox}>
                       <InputField

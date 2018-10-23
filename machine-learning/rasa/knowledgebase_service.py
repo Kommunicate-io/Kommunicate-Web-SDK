@@ -26,11 +26,13 @@ data = json.loads(response.text)
 last_update_time = int(data['lastRunTime'])
 print(last_update_time)
 
+last_faq_time = int(data['lastRunTime'])
+
 # appkeys = ['2222','1111']
 appkeys = set()
 
 new_data = list(collection.find({'updated_at':{'$gte':last_update_time, 
-                                          '$lte':current_time_stamp}, 'type':'faq'}))
+                                          '$lte':current_time_stamp}, 'type':'faq'}).sort("updated_at", 1).limit(100))
 print('\n\n\n\n\n')
 
 faq_add = {}
@@ -49,6 +51,9 @@ for data in new_data:
             print("applicationId not found, this might happen if its very old record.")
             continue
         #print(data)
+
+        last_faq_time = data['updated_at']
+
         if data['created_at'] >= last_update_time:
             if data['deleted'] == True or 'deleted-at' in data:
                 #new create is placed and then deleted, so no need to do anything for that
@@ -96,5 +101,5 @@ for key in faq_update:
 for key in appkeys:
     r = requests.post(env.rasa_endpoint+'train',headers={'content-type':'application/json'},
                     data=json.dumps({'data':[key],
-                                    'lastRunTime':str(current_time_stamp)}))
+                                    'lastRunTime':str(last_faq_time)}))
     print (key)

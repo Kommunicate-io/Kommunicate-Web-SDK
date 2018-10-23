@@ -342,6 +342,51 @@ const fetchContactsFromApplozic = (data) => {
     })
 } 
 
+const getGroupFeed = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  var API_HEADERS = {
+    'Content-Type': 'application/json',
+    'Apz-AppId': userSession.application.applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+    'Apz-Product-App': 'true',
+  }
+  var url = getConfig().applozicPlugin.groupFeedUrl;
+
+  return Promise.resolve(axios({
+    method: 'get',
+    url: url,
+    headers: API_HEADERS,
+    params: data
+  }))
+    .then(response => {
+      return response.data;
+    })
+} 
+
+const multipleGroupInfo = (data) => {
+  let userSession = CommonUtils.getUserSession();
+  var API_HEADERS = {
+    'Apz-AppId': userSession.application.applicationId,
+    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+    'Apz-Product-App': 'true',
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
+  var multipleGroup = {
+    "clientGroupIds": data 
+  };
+  var url = getConfig().applozicPlugin.multipleGroupInfo;
+  
+  return Promise.resolve(axios({
+    method: 'post',
+    url: url,
+    headers: API_HEADERS,
+    data: multipleGroup
+  }))
+    .then(response => {
+      return response.data;
+    })
+} 
+
 const getAllSuggestions = () => { 
 
   const autoSuggestUrl = getConfig().kommunicateApi.autoSuggest
@@ -1083,6 +1128,8 @@ const getSubscriptionDetail = (userId) => {
 
 export {
   fetchContactsFromApplozic,
+  getGroupFeed,
+  multipleGroupInfo,
   createCustomer,
   getCustomerInfo,
   getUserInfo,

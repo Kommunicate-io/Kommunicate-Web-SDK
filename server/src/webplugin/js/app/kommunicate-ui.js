@@ -13,9 +13,9 @@ KommunicateUI={
     },
     updateLeadCollectionStatus:function(err,message,data){
         KommunicateUI.awayMessageInfo = {};
-        if(!err && message.code =="SUCCESS"){
+        if(!err && (message.code =="SUCCESS" || message.code == "AGENTS_ONLINE")){
             KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
-            if( message.data.messageList.length > 0 ) {
+            if(message.code != "AGENTS_ONLINE" && message.data.messageList.length > 0 ) {
                 KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
                 KommunicateUI.awayMessageInfo["isEnabled"] = true;
             }
@@ -26,8 +26,8 @@ KommunicateUI={
         } 
     },
     populateAwayMessage:function(err,message){
-        var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
-        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!conversationWindowNotActive){
             
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
@@ -35,6 +35,13 @@ KommunicateUI={
         } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
+    },
+    showAwayMessage: function() {
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(KommunicateUI.awayMessageInfo && KommunicateUI.awayMessageInfo.isEnabled && !conversationWindowNotActive) {
+            $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
+            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
+        }    
     },
     hideAwayMessage:function(){
         // $applozic("#mck-away-msg").html("");
@@ -113,6 +120,7 @@ KommunicateUI={
         return stopUpload;
     },
     populateLeadCollectionTemplate:function() {
+        KommunicateUI.hideAwayMessage();
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-text-box").blur();  
@@ -126,13 +134,11 @@ KommunicateUI={
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
             this.hideLeadCollectionTemplate();
-            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
             window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
-            
+            // KommunicateUI.showAwayMessage();  lead collection feature improvement- [WIP]
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
@@ -164,7 +170,9 @@ KommunicateUI={
                     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-tab-conversation').removeClass("vis").addClass("n-vis");
                     $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
-
+                    $applozic('#km-faqanswer .km-faqanswer').linkify({
+                        target: '_blank'
+                    });
                 }
             }
             , error: function () { }
@@ -253,6 +261,8 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
+        KommunicateUI.hideAwayMessage();
+        KommunicateUI.hideLeadCollectionTemplate();
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
                 KommunicateUI.showHeader();

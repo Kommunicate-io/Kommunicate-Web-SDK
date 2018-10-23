@@ -40,7 +40,7 @@
                 <li><a href="/features" class="footer-features">Features</a></li>
                 <li><a href="/pricing" class="footer-pricing">Pricing and FAQs</a></li>
                 <li><a href="https://docs.kommunicate.io/" target="_blank">Docs</a></li>
-                <li><a href="https://calendly.com/kommunicate/15min" target="_blank">Get Demo</a></li>
+                <li><a href="https://calendly.com/kommunicate/15min" class="calendly-url" target="_blank">Get Demo</a></li>
             </ul>
         </li>
         <li class="footer-links-listbox">
@@ -129,10 +129,10 @@ function myScrollFunction() {
 </script> 
 <!-- End of Profitwell Awesomeness Code. -->
 <script>
-$("a").click(function(){
+$(".calendly-url").click(function(){
   var heapData;
-  heap.identity = null ? heapData = heap.identity : heapData = heap.userId;
-  $(this).attr("href").indexOf("calendly") > -1 ? ( window.open($(this).attr("href")+"?utm_source="+heapData, '_blank') ): ($(this).attr("target") == '_blank' ? window.open($(this).attr("href"),"_blank" ) : window.open($(this).attr("href"),"_self" ) );
+  heap.identity == null ? heapData = heap.userId : heapData = heap.identity;
+  window.open($(this).attr("href")+"?utm_source="+heapData, '_blank');
   return false;
 });
 </script>

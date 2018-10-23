@@ -13,6 +13,8 @@ export default {
         CREATE_APPLOZIC_USER: '/rest/ws/user/v2/create',
         UPDATE_APPLOZIC_USER: '/rest/ws/user/update',
         CONTACT_LIST_URL:"/rest/ws/user/v3/filter",
+        GROUP_FEED_URL : "/rest/ws/group/info",
+        MULTIPLE_GROUP_INFO : "/rest/ws/group/v3/info"
     }, 
     kommunicateApi: {
         LOGIN: "/login",

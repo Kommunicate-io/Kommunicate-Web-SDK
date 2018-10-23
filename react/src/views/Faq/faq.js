@@ -66,12 +66,10 @@ class Tabs extends Component {
   getFaqsWrapper = () => {
 
     getSuggestionsByCriteria(this.applicationId, 'type', 'faq').then(response => {
-      console.log(response)
+      // console.log(response)
       if(response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
         this.setState({
           listOfFAQs :  response.data ? response.data : []
-        }, () => {
-          console.log(this.state.listOfFAQs)
         })
       }
     }).catch(err => {console.log(err)});
@@ -124,7 +122,7 @@ class Tabs extends Component {
       isDraft: status == "draft" ? true:false,
       isPublished: status == "published" ? true:false,
       faqModal: !this.state.faqModal,
-    }, () => {console.log(this.state)})
+    })
   }
 
   toggleBotAvailability = () => {

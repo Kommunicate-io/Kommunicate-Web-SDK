@@ -792,6 +792,12 @@ color: #595757;
    right:  0;
    margin-bottom: -15px;
 }
+.km-editphone{
+    position:  absolute;
+    bottom: -10;
+    left:  35px;
+  
+}
 .km-postion-relative{
     position:  relative;
     
@@ -804,10 +810,19 @@ color: #595757;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
-[contenteditable=true]:empty:before{
+.km-sidebar-display-name-submit{
+    margin-bottom: 0;
+    width: 19px;
+    height: 17px;
+    align-items: center;
+    background-color: #e5e5e5;
+    box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+}
+
+.contenteditable[contenteditable=true]:empty:before{
     content: attr(placeholder);
-    display: block; /* For Firefox */
-    width: 125px;
+    display: block; 
+    width: 100%;
     height: 16px;
     font-family: Roboto;
     font-size: 14px;
@@ -818,7 +833,7 @@ color: #595757;
     letter-spacing: 0.4px;
     text-align: left;
     color: #4831d9;
-  }
+  } */
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }
@@ -827,10 +842,17 @@ color: #595757;
     margin-left: 2px;
   }
 
-#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit{
+#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit,#km-sidebar-display-name-edit{
      text-align: left;
      width: 100%;
+     -webkit-appearance: none;
+     border: 1px solid #5c5aa7;
+     outline: none;
  }
+ #km-sidebar-user-number-edit:focus ,#km-sidebar-user-email-edit:focus,#km-sidebar-display-name-edit:focus{
+    border: 1px solid #5c5aa7;
+    outline: none;
+}
 
 #km-phone-submit ,#km-email-submit,#km-displayName-submit{
         text-align: left;
@@ -851,5 +873,26 @@ color: #595757;
     display: inline;
 }
   
-  /* */
-  
+/* For empty state when there are conversations present in all conversations but none of then are assigned to you. */
+.km-default-empty-state button {
+    display: none;
+}
+
+/* For empty state when there are conversation present in Assigned to me tab but no conversation is selected for chatting. */
+.km-assigned-conv-empty-state #Oval-5, .km-assigned-conv-empty-state #_0, .km-assigned-conv-empty-state .km-empty-state-subheading, .km-assigned-conv-empty-state button {
+    display: none;
+}
+
+/* For empty state when Kommunicate script is not installed in the dashboard. */
+.km-empty-state-not-integrated .km-empty-state-subheading-1 {
+    display: block
+}
+.km-empty-state-not-integrated button {
+    display: inline-block;
+}
+
+#km-text-box[contenteditable="true"]:empty:not(:focus)::before {
+    content: attr(data-text);
+    color: #949494;
+    opacity: .6;
+}

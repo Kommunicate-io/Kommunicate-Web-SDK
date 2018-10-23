@@ -8,7 +8,7 @@
         <h1 class="hero-text">
           Delight your customers with intelligent chat-based support
         </h1>
-        <a href="https://calendly.com/kommunicate/15min" class="km-button km-button--primary cta-signup-btn" target="_blank">Request a demo</a>
+        <a href="https://calendly.com/kommunicate/15min" class="calendly-url km-button km-button--primary cta-signup-btn" target="_blank">Request a demo</a>
 
         <form {% if jekyll.environment == "production" %} action="{{site.dashboard.dashboardPathProd}}/signup"{% else %} action="{{site.dashboard.dashboardPathTest}}/signup"{% endif %} method="get" id="pre-signup-form" class="pre-signup-form">
           <input type="email" name="email" id="email-pre-signup" placeholder="Your email address" autocomplete="off" class="cta-email-pre-signup" required>

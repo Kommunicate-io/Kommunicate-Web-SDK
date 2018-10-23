@@ -9453,7 +9453,7 @@ hr.transparent {
 .km-input-label-group {
   position: relative;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .password-input-label-group {
   position: relative;
@@ -9810,7 +9810,8 @@ pointer-events: none;
   position: absolute;
   top: 46%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -54%);
+  width: 100%;
 }
 .empty-state-conversations-div .empty-state-message-shortcuts-second-text {
   margin-top: 10px;
@@ -10717,7 +10718,8 @@ input:required {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.32);
   z-index: 1000;
   background-color: #fff;
-  max-width: 170px;
+  max-width: 190px;
+  border-radius: 2px;
 }
 .sidebar-profile-dropdown button, .sidebar-profile-dropdown {
   padding: 0 !important;

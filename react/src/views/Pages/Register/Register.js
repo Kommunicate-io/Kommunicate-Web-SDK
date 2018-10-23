@@ -147,8 +147,7 @@ class Register extends Component {
     var password = this.state.password;
     var repeatPassword =this.state.repeatPassword;
     var name = this.state.name;
-  
-
+    let signUpVia = this.state.googleOAuth ? "GOOGLE" : "";
    // creating user
     let userType = this.state.isInvited ? (this.state.roleType == ROLE_TYPE.AGENT ? "AGENT" : "ADMIN"):"CUSTOMER";
     // let userType = this.state.isInvited?"AGENT":"CUSTOMER";
@@ -170,7 +169,7 @@ class Register extends Component {
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
-    Promise.resolve(createCustomerOrAgent(userInfo,userType,"GOOGLE")).then((response) => {
+    Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
       if (window.Kommunicate && window.$applozic) { 
         //window.Kommunicate.updateUserIdentity(userInfo.userName);
         let user = {'email': userInfo.email, 'displayName': userInfo.name};
@@ -273,14 +272,16 @@ class Register extends Component {
           
           <div className="row justify-content-center signup-form-div">
             <div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-            <hr className="hr"/>
+            <hr className={ this.state.isInvited ? "n-vis":"hr"}/>
               <div className="card">
               <div className={this.state.isInvited?"card-header text-center display-invitee-email":"n-vis"}>You were invited by {this.state.invitedBy}</div>
                 <div className="card-block p-4 signup-card-block">
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
-                  <a className={ (this.state.googleOAuth) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
+                  {/* Signup with Google code STARTS here. */}
+                    {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
+                  <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                       <defs>
                         <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.6 4.1 29.6 2 24 2 11.8 2 2 11.8 2 24s9.8 22 22 22c11 0 21-8 21-22 0-1.3-.2-2.7-.5-4z" />
@@ -300,6 +301,8 @@ class Register extends Component {
                     <div className="or-seperator--line"></div>
                     <div className="or-seperator--text">OR</div>
                   </div>
+
+                  {/* Signup with Google code ENDS here. */}
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}

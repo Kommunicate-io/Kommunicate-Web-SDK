@@ -251,11 +251,13 @@ class UserItem extends Component {
                         <p className="team-delete-modal-header-title" >Delete - <span className="team-delete-modal-header-title-user-name">{this.state.userToBeDeleted.displayName || this.state.userToBeDeleted.userId}</span></p>
                       </div>
                       <hr className="team-delete-modal-divider" />
-                      <div className="teammates-billing-update-container">
-                        <div className="teammates-billing-update-text">
-                        Deleting a team member will automatically reduce the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
-                        </div>
-                      </div>
+                      { !CommonUtils.isTrialPlan() &&
+                        <div className="teammates-billing-update-container">
+                          <div className="teammates-billing-update-text">
+                          Deleting a team member will automatically reduce the number of seats in your plan. Your bill will be adjusted on a pro-rata basis.
+                          </div>
+                        </div> 
+                      }
                       <div className="team-delete-modal-content">
                         <p>On deleting this account, the user will not be able to log into this Kommunicate account. Though, this profile shall be visible in all existing conversations this user has been a part of.</p>
                         <p>Are you sure?</p>
