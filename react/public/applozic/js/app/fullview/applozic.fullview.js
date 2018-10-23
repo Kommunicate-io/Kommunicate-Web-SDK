@@ -5612,9 +5612,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			};
 			_this.processNotification = function(message){
 				var groupDetail =  KM_GROUP_MAP[message.groupId];
-				var userSession = window.CommonUtils && window.CommonUtils.getUserSession();
-				var loggedInUserId =userSession && userSession.userName;
-				if(groupDetail&& groupDetail.metadata["CONVERSATION_ASSIGNEE"]== loggedInUserId){
+				if(groupDetail&& groupDetail.metadata["CONVERSATION_ASSIGNEE"]== MCK_USER_ID){
 					mckNotificationService.notifyUser(message);
 				}
 					 
