@@ -250,7 +250,9 @@ class Aside extends Component {
        document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").value;
       var list = document.querySelectorAll(".person.active .name");
       for (var i = 0; i < list.length; i++) {
+        if(userDetails.displayName){
         list[i].innerText = document.getElementById("km-sidebar-display-name").innerHTML;
+        }
       }
     }
     ApplozicClient.updateUserDetail({ "userDetails": userDetails, "ofUserId": userId });
