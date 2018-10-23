@@ -39,7 +39,7 @@ compressor.minify({
 // minify applozic css files into a single file
 compressor.minify({
   compressor: 'clean-css',
-  // compressor: 'no-compress',
+  //compressor: 'no-compress',
   input: ['./src/webplugin/lib/css/mck-combined.min.css', './src/webplugin/css/app/mck-sidebox-1.0.css', './src/webplugin/css/app/km-rich-message.css', './src/webplugin/css/app/km-login-model.css',
   './src/webplugin/lib/css/tiny-slider-2.4.0.css','./src/webplugin/css/app/km-sidebox.css'],
   output: './src/webplugin/css/kommunicatepluginrequirements.min.css',
@@ -74,8 +74,24 @@ compressor.minify({
 compressor.minify({
   // compressor: 'gcc',
   compressor: 'uglify-es',
-  // compressor: 'no-compress',
-  input: ['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js', './src/webplugin/js/app/km-message-markup-1.0.js','./src/webplugin/js/app/km-event-listner.js','./src/webplugin/js/app/km-attachment-service.js', './src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/events/applozic-event-listener.js','./src/webplugin/js/app/events/applozic-event-handler.js','./src/webplugin/js/app/km-post-initialization.js', './src/webplugin/js/app/mck-ringtone-service.js'],
+  //compressor: 'no-compress',
+  input: ['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js',
+  './src/webplugin/js/app/labels/default-labels.js',
+  './src/webplugin/js/app/kommunicate-client.js',
+  './src/webplugin/js/app/conversation/km-conversation-helper.js',
+  './src/webplugin/js/app/conversation/km-conversation-service.js',
+  './src/webplugin/js/app/kommunicate.js',
+  './src/webplugin/js/app/km-richtext-markup-1.0.js', 
+  './src/webplugin/js/app/km-message-markup-1.0.js',
+  './src/webplugin/js/app/km-event-listner.js',
+  './src/webplugin/js/app/km-attachment-service.js',
+  './src/webplugin/js/app/mck-sidebox-1.0.js',
+  './src/webplugin/js/app/km-rich-text-event-handler.js',
+  './src/webplugin/js/app/kommunicate-ui.js',
+  './src/webplugin/js/app/events/applozic-event-listener.js',
+  './src/webplugin/js/app/events/applozic-event-handler.js',
+  './src/webplugin/js/app/km-post-initialization.js',
+  './src/webplugin/js/app/mck-ringtone-service.js'],
   output: './src/webplugin/js/app/km-chat-combined-0.1.min.js',
   callback: function (err, min) {
     if(!err)
@@ -100,11 +116,6 @@ compressor.minify({
   }
 });
 
-// concat(['./src/webplugin/knowledgebase/kommunicate-kb-0.1.min.js','./src/webplugin/js/app/kommunicate-client.js','./src/webplugin/js/app/kommunicate.js','./src/webplugin/js/app/km-richtext-markup-1.0.js','./src/webplugin/js/app/mck-sidebox-1.0.js','./src/webplugin/js/app/km-rich-text-event-handler.js','./src/webplugin/js/app/kommunicate-ui.js','./src/webplugin/js/app/km-post-initialization.js'],
-// './src/webplugin/js/app/kommunicate-plugin-0.1.min.js', function(err) {
-//   if (err) throw err
-//   console.log('done');
-// });
 compressor.minify({
   compressor: 'clean-css',
   input: ['./src/webplugin/css/app/km-rich-message.css','./src/webplugin/css/app/mck-sidebox-1.0.css'],
