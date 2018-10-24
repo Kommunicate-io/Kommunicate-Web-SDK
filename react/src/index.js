@@ -60,8 +60,8 @@ class App extends Component {
           <Route exact path="/password/update" name = "Update Password" component = {PasswordReset}/>
           <Route exact path='/applozicsignup' name='Applozic User Sign Up' component={ApplozicUserSignUp} />
           <Route exact path="/apps" name="Select Application" component={ApplicationList} />
-          <Route path="/" name="Home" render={ (history) => { 
-           return  CommonUtils.getUserSession() ?<Full history ={history}/> : <Redirect to={'/login?referrer='+history.location.pathname}/> }}/>
+          <Route path="/" name="Home" render={ (data) => { 
+           return  CommonUtils.getUserSession() ?<Full history ={data.history}/> : <Redirect to={'/login?referrer='+data.location.pathname}/> }}/>
         
         </Switch>
       </BrowserRouter>
