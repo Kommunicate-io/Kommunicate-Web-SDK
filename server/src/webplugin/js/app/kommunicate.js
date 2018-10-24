@@ -273,6 +273,10 @@ $applozic.extend(true,Kommunicate,{
             doc.open();
             doc.write(message.message);
             doc.close();
+            var anchors = doc.getElementsByTagName('a');
+            for (var i=0; i<anchors.length; i++){
+              anchors[i].setAttribute('target', '_blank');
+            };
         }
     },
     isAttachment: function(msg) {
