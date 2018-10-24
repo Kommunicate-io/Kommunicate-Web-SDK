@@ -120,7 +120,7 @@ const reactivateAgents = async function (appId) {
 const updateApplicationInApplozic = async (customer) => {
     let application = {};
     if (typeof customer == 'object') {
-        let applozicPackage = utils.getApplozicPackage(customer.subscription);
+        let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
         customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
         customer.companyName && (application.name = customer.companyName);
         applozicPackage && (application.pricingPackage = applozicPackage);
