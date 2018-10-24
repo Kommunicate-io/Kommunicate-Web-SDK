@@ -70,7 +70,11 @@ constructor(props){
   componentWillMount() {
     const search = this.props.location.search;
     let referer  = CommonUtils.getUrlParameter(search, 'referrer')
-    referer && (this.state.next=referer);
+    if(referer){
+      var url = this.state.googleLoginUrl+"&referrer="+referer;
+      this.setState({next:referer,googleLoginUrl:url});
+    };
+
 
     if (CommonUtils.getUserSession()) {
      window.location = this.state.next;
