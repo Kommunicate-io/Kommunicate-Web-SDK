@@ -53,6 +53,7 @@ const MESSAGE_CONTENT_TYPE = {
         agentName: "",
         msgTriggerTimeout: 0,
         labels: Kommunicate.defaultLabels,
+        useBranding :true,
         openGroupSettings: {
             'deleteChatAccess': 0, // NONE(0), ADMIN(1), ALL_GROUP_MEMBER(2)
             'allowInfoAccessGroupMembers': true,
@@ -424,6 +425,7 @@ const MESSAGE_CONTENT_TYPE = {
         var DEFAULT_AGENT_ID = appOptions.agentId;
         var DEFAULT_BOT_IDS = appOptions.botIds;
         var DEFAULT_AGENT_NAME = appOptions.agentName;
+        var USE_BRANDING = typeof appOptions.useBranding  == 'boolean'? appOptions.useBranding : true;
         w.MCK_OL_MAP = new Array();
 
         _this.submitMessage = function (params) {
@@ -1491,6 +1493,13 @@ const MESSAGE_CONTENT_TYPE = {
                     });
                     
             }
+            _this.shouldBrandingIncluded = function(data){
+                if(!data  || !data.pricingPackage){
+                    return true;
+                }
+                return USE_BRANDING && (data.pricingPackage !== KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY && KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY);
+
+            }
             _this.onInitApp = function (data) {
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
@@ -1533,11 +1542,11 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 });
                 // Showing powered by kommunicate for all, will be removed incase of white label enterprises.
-                // if (data.betaPackage) {
+                if (_this.shouldBrandingIncluded(data)) {
                     var poweredByUrl = "https://www.kommunicate.io/?utm_source=" + w.location.href + "&utm_medium=webplugin&utm_campaign=poweredby";
                     $applozic('.mck-running-on a').attr('href', poweredByUrl);
                     $applozic('.mck-running-on').removeClass('n-vis').addClass('vis');
-                // }
+                 }
                 var mckContactNameArray = ALStorage.getMckContactNameArray();
                 if (mckContactNameArray !== null && mckContactNameArray.length > 0) {
                     for (var i = 0; i < mckContactNameArray.length; i++) {
