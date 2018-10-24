@@ -18,7 +18,6 @@ export default class Onboarding extends Component {
         let onboarding = localStorage.getItem("KM_ONBOARDING");
         if(typeof (Storage) !== "undefined") {
             this.setState({ hideOnboardingBanner: !(onboarding === "true") });
-            this.setState({ hideOnboardingBanner: onboarding != "true" });
         } else {
             console.log("Please upgrade your browser.");
         }
