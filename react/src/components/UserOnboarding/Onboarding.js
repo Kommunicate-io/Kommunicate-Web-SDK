@@ -37,23 +37,25 @@ export default class Onboarding extends Component {
         var fullName = CommonUtils.getUserSession().name;
         var firstName = fullName.split(" ")[0];
         return (
-            <div className="km-onboarding-container" hidden={this.state.hideOnboardingBanner}>
-                <h3>Hi {firstName}, let’s get you started!</h3>
-                <div className="km-onboarding--block">
-                    <div className="km-onboarding--text-block">
-                        <ul>
-                            <li><span>Install</span> Kommunicate live chat in your website or app</li>
-                            <li><span>Read</span> how to set up a chat bot in Kommunicate</li>
-                            <li>Setup <span>Mailbox</span> to manage support emails from Kommunicate</li>
-                            <li>Customise your <span>Chat Widget</span></li>
-                            <li>Invite your <span>Teammates</span></li>
-                        </ul>
+            <div>
+                {!this.state.hideOnboardingBanner && <div className="km-onboarding-container">
+                    <h3>Hi {firstName}, let’s get you started!</h3>
+                    <div className="km-onboarding--block">
+                        <div className="km-onboarding--text-block">
+                            <ul>
+                                <li><span>Install</span> Kommunicate live chat in your website or app</li>
+                                <li><span>Read</span> how to set up a chat bot in Kommunicate</li>
+                                <li>Setup <span>Mailbox</span> to manage support emails from Kommunicate</li>
+                                <li>Customise your <span>Chat Widget</span></li>
+                                <li>Invite your <span>Teammates</span></li>
+                            </ul>
+                        </div>
+                        <div className="km-onboarding--image-block">
+                            <OnBoardingSVG />
+                        </div>
                     </div>
-                    <div className="km-onboarding--image-block">
-                        <OnBoardingSVG />
-                    </div>
-                </div>
-                <CloseButton onClick={this.closeOnboadringBanner} />
+                    <CloseButton onClick={this.closeOnboadringBanner} />
+                </div>}
             </div>
         );
     }
