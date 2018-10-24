@@ -26,6 +26,9 @@ class ApplicationList extends Component {
 
 
     componentWillMount() {
+      const search = this.props.location.search;
+      let next  = CommonUtils.getUrlParameter(search, 'referrer');
+      this.state.next = next;
       var userDetails = CommonUtils.getUserSession();
       // if(!userDetails) {
       //   window.location = "/login";
@@ -43,7 +46,7 @@ class ApplicationList extends Component {
       } else if(!userDetails && !CommonUtils.getApplicationIds()) {
         window.location = "/login";
       } else if(userDetails && !CommonUtils.getApplicationIds()) {
-        window.location = "/dashboard";
+        window.location = next;
       }
     }
 
@@ -58,8 +61,8 @@ class ApplicationList extends Component {
       }
     }
 
-    gotoDashboard() {
-      window.location = "/dashboard";
+    gotoNextPage(url) {
+      window.location = url;
     }
 
     submitForm = (key)=>{
@@ -119,7 +122,7 @@ class ApplicationList extends Component {
                 CommonUtils.setUserSession(response.data.result);
               }
               // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
-              window.location.assign("/dashboard");
+              window.location.assign(_this.state.next);
           }
           }).catch(function(err){
             console.log(err);
@@ -134,7 +137,7 @@ class ApplicationList extends Component {
         if(appIdList) {
           var applicationLists = new Map(Object.entries(appIdList));
         } else {
-          this.gotoDashboard();
+          this.gotoNextPage(this.state.next);
         }
         var allApps = [];
         applicationLists.forEach(function(value, key) {

@@ -313,10 +313,10 @@ checkForMultipleApps=(result)=>{
     }else{
     _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple applications',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Hi! Select your application",subHeading:false,hideBackButton:false,isForgotPwdHidden:true,hideSignupLink:false,hideSignupLink:true, hideGoogleLoginBtn:true});
     if (this.state.googleOAuth){
-      _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: "",loginType :'oauth'}});
+      _this.props.history.push("/apps?referrer="+_this.state.next, {userid: _this.state.userName, pass: "",loginType :'oauth'});
     }
     else{
-    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});}
+    _this.props.history.push("/apps?referrer="+_this.state.next, {userid: _this.state.userName, pass: _this.state.password});}
 
   }
 }else{
