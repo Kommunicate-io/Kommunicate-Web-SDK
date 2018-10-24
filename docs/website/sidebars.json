@@ -5,7 +5,7 @@
     "iOS":["ios-installation","ios-authentication","ios-conversation","ios-pushnotification","ios-logout"],
     "Ionic/Cordova/Phonegap":["cordova-installation","cordova-authentication","cordova-conversation","cordova-pushnotification","cordova-logout","cordova-resolving-errors"],
     "Platform APIs":["api-authentication","api-detail"],
-    "Configration":["bot-configration","km-samples"]
+    "Configration":["bot-configration","bot-samples"]
     
     
   },
