@@ -15,16 +15,8 @@ export default class Onboarding extends Component {
     }
 
     componentDidMount() {
-        if (typeof (Storage) !== "undefined") {
-            if (localStorage.getItem("KM_ONBOARDING") === null) {
-                this.setState({ hideOnboardingBanner: true })
-            }
-            else if(localStorage.getItem("KM_ONBOARDING") === "true") {
-                this.setState({ hideOnboardingBanner: false })
-            }
-        } else {
-            console.log("Please upgrade your browser.");
-        }
+        let onboarding = localStorage.getItem("KM_ONBOARDING");
+        (typeof (Storage) !== "undefined") ? ( (onboarding === null) ? this.setState({ hideOnboardingBanner: true }) : ((onboarding === "true") ? this.setState({ hideOnboardingBanner: false }) : null) ) : console.log("Please upgrade your browser.");
     }
 
     closeOnboadringBanner() {
@@ -35,12 +27,10 @@ export default class Onboarding extends Component {
             });
             localStorage.setItem("KM_ONBOARDING","false");
         }
-        
     }
 
     render() {
         var fullName = CommonUtils.getUserSession().name;
-        // var firstWord = totalWords.replace(/ .*/,'');
         var firstName = fullName.split(" ")[0];
         return(
             <div className="km-onboarding-container" hidden={this.state.hideOnboardingBanner}>
