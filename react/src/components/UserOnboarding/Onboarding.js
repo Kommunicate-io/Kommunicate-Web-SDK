@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Onboarding.css';
 import CommonUtils from '../../utils/CommonUtils';
 import CloseButton from '../../components/Modal/CloseButton';
-import {OnBoardingSVG} from '../../views/Faq/LizSVG';
+import { OnBoardingSVG } from '../../views/Faq/LizSVG';
 
 export default class Onboarding extends Component {
 
@@ -16,23 +16,28 @@ export default class Onboarding extends Component {
 
     componentDidMount() {
         let onboarding = localStorage.getItem("KM_ONBOARDING");
-        (typeof (Storage) !== "undefined") ? ( (onboarding === null) ? this.setState({ hideOnboardingBanner: true }) : ((onboarding === "true") ? this.setState({ hideOnboardingBanner: false }) : null) ) : console.log("Please upgrade your browser.");
+        if(typeof (Storage) !== "undefined") {
+            this.setState({ hideOnboardingBanner: !(onboarding === "true") });
+            this.setState({ hideOnboardingBanner: onboarding != "true" });
+        } else {
+            console.log("Please upgrade your browser.");
+        }
     }
 
     closeOnboadringBanner() {
         let onboarding = localStorage.getItem("KM_ONBOARDING");
-        if(onboarding === "true") {
+        if (onboarding === "true") {
             this.setState({
                 hideOnboardingBanner: true
             });
-            localStorage.setItem("KM_ONBOARDING","false");
+            localStorage.setItem("KM_ONBOARDING", "false");
         }
     }
 
     render() {
         var fullName = CommonUtils.getUserSession().name;
         var firstName = fullName.split(" ")[0];
-        return(
+        return (
             <div className="km-onboarding-container" hidden={this.state.hideOnboardingBanner}>
                 <h3>Hi {firstName}, let’s get you started!</h3>
                 <div className="km-onboarding--block">
