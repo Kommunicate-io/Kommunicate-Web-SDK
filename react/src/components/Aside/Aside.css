@@ -817,6 +817,7 @@ color: #595757;
     align-items: center;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+    padding: 3px;
 }
 
 .contenteditable[contenteditable=true]:empty:before{
