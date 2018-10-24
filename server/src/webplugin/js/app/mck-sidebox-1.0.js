@@ -1678,6 +1678,7 @@ const MESSAGE_CONTENT_TYPE = {
                 $applozic('#mck-group-name-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
+                document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
             };
             $applozic(d).on('click', '.fancybox', function (e) {
                 var $this = $applozic(this);
