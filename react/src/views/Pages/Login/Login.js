@@ -58,7 +58,8 @@ constructor(props){
     loginType: 'email',
     hideGoogleLoginBtn:false,
     marginBottomFrgtPassHead:'',
-    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in"
+    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in",
+    next : "/dashboard"
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
@@ -67,11 +68,15 @@ constructor(props){
 }
 
   componentWillMount() {
+    const search = this.props.location.search;
+    let referer  = CommonUtils.getUrlParameter(search, 'referrer')
+    referer && (this.state.next=referer);
+
     if (CommonUtils.getUserSession()) {
-      window.location = "/dashboard";
+     window.location = this.state.next;
     }
 
-    const search = this.props.location.search;
+   
     const googleLogin = CommonUtils.getUrlParameter(search, 'googleLogin');
     // console.log(googleLogin)
 
@@ -231,7 +236,7 @@ submitForm = ()=>{
           CommonUtils.setUserSession(response.data.result);
         }
         // _this.props.history.push("/dashboard");
-        window.location.assign("/dashboard");
+        window.location.assign(_this.state.next);
         _this.state=_this.initialState;
     }
     }).catch(function(err){
