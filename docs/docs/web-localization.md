@@ -9,6 +9,7 @@ Modify the labels like "Start Conversation",etc by adding following labels in ko
 
 ``` JSON
 "labels": {
+    'input.message':'Type your message...',
     'conversations.title': 'Conversations',
     'start.new': 'Start New Conversation',
     'empty.messages': 'No messages yet!',
