@@ -4171,7 +4171,8 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 }
 
-                mckMessageService.loadMessageList(params,_this.openConversation);
+                mckMessageService.loadMessageList(params, callback);
+                _this.openConversation();
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
