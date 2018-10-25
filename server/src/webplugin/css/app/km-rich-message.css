@@ -713,6 +713,7 @@
         /*width: calc(100% - 106px);*/
         text-overflow: ellipsis;
         white-space: nowrap;
+        max-height: 51px;
         overflow: hidden;
         transition: all 0.3s ease-in-out;
     }
