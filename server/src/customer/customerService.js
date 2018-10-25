@@ -8,6 +8,8 @@ const { SUBSCRIPTION_PLAN } = require('../utils/utils');
 const chargebeeService = require('../chargebee/chargebeeService');
 const userService = require('../users/userService');
 const botClientService = require('../utils/botPlatformClient');
+const utils = require("../register/utils");
+const applozicClient = require("../utils/applozicClient");
 
 
 const createCustomer = (customer, application, transaction) => {
@@ -115,6 +117,24 @@ const reactivateAgents = async function (appId) {
     return "success";
 }
 
+const updateApplicationInApplozic = async (customer) => {
+    let application = {};
+    if (typeof customer == 'object') {
+        let applozicPackage = utils.APPLOZIC_PRICING_PACKAGE[customer.subscription];
+        customer.websiteUrl && (application.websiteUrl = customer.websiteUrl);
+        customer.companyName && (application.name = customer.companyName);
+        applozicPackage && (application.pricingPackage = applozicPackage);
+    } else {
+        logger.info("received empty customer object to update");
+    }
+    if (Object.keys(application).length > 0) {
+        application.applicationId = customer.applicationId;
+        applozicClient.updateApplication(application).catch(err => {
+            console.log('error while updating application', err);
+        });
+    }
+}
+
 module.exports = {
     reactivateAgents: reactivateAgents,
     createCustomer: createCustomer,
@@ -126,5 +146,6 @@ module.exports = {
     updateRoutingState: updateRoutingState,
     getCustomerByAgentUserKey: getCustomerByAgentUserKey,
     isAdmin: isAdmin,
-    createApplication: createApplication
+    createApplication: createApplication,
+    updateApplicationInApplozic:updateApplicationInApplozic
 }

@@ -297,7 +297,7 @@ class Register extends Component {
                     Sign up with Google
                   </a>
 
-                  <div className="or-seperator">
+                  <div className={(this.state.googleOAuth || this.state.isInvited) ? "n-vis":"or-seperator"}>
                     <div className="or-seperator--line"></div>
                     <div className="or-seperator--text">OR</div>
                   </div>

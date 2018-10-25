@@ -22,7 +22,9 @@ const routes = {
   '/settings/pushnotification': 'Push Notifications',
   '/settings/connect-support-email': 'Connect Support Email',
   '/settings/email-notifications': 'Email Notifications',
-  '/settings/chat-widget-customization':'Chat Widget'
+  '/settings/chat-widget-customization':'Chat Widget',
+  '/settings/email-fallback':'Fallback Emails',
+  '/settings/webhooks-security':'Webhooks and Security',
 };
 
 export default routes;

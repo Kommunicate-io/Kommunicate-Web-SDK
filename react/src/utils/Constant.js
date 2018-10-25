@@ -8,7 +8,23 @@ export{
     LIZ,
     ROLE_TYPE,
     INVITED_USER_STATUS,
-    USER_STATUS
+    USER_STATUS,
+    FALLBACK_TYPE,
+    NOTIFY_VIA
+}
+
+const FALLBACK_TYPE = {
+    MESSAGE_FORWARDING: 0,
+    UNDELIVERED_MESSAGE: 1,
+    UNREAD_MESSAGE: 2,
+    UNANSWERED_MESSAGE: 3
+}
+
+const NOTIFY_VIA = {
+    NONE: -1, 
+    MAIL: 0, 
+    SMS: 1, 
+    BOTH: 2
 }
 
 const USER_TYPE = {

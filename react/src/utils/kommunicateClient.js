@@ -1126,6 +1126,22 @@ const getSubscriptionDetail = (userId) => {
   })
 }
 
+const editApplicationDetails = (data) => {
+  let url = getConfig().applozicPlugin.editApplication;
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json",
+      "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+      "Apz-AppId": CommonUtils.getUserSession().applicationId,
+    }
+  };
+  return Promise.resolve(axios.post(url, data, axiosConfig)).then(response => {
+    if(response !== undefined) {
+      return response;
+    } 
+  })
+}
+
 export {
   fetchContactsFromApplozic,
   getGroupFeed,
@@ -1188,5 +1204,6 @@ export {
   getUserDetailsByToken,
   updateInvitedUserStatus,
   updateUserStatus,
-  getSubscriptionDetail
+  getSubscriptionDetail,
+  editApplicationDetails
 }
