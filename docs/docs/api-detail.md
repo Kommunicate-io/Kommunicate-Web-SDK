@@ -5,7 +5,7 @@ sidebar_label: Endpoints
 ---
 All endpoints are relative to the [base url](api-authentication.html#base-url).
 
-## Get user detail :
+## Get user detail.
 Accepts the list of userIds in and return the list of user detail object.   
 
 Request 
@@ -36,22 +36,6 @@ Response
   "lastLoggedInAtTime": 1483342919147,//  Timestamp of the user's last logged in 																			 //(long)
   "lastMessageAtTime": 1483343150550  //Timestamp of the user's last message 																				 //(long)
  }]
-```
-
-## Send Message :
-
-``` JS
-
-SEND MESSAGE URL:
-https://chat.kommunicate.io/rest/ws/message/v2/send
-Method Type: POST
-Content-Type: application/json
-Request Body:
-{ 
-  "groupId": "group Unique Identifier", 
-  "message":"Hi John"
-}
-
 ```
 
 
