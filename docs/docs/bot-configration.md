@@ -27,7 +27,9 @@ You can easily integrate your bot in Kommunicate if you already have a bot devel
 
 Here is the list of supported platforms(we will add more platform in due course):
 
-* [Dialogflow](https://dialogflow.com/)
+* <a href="bot-configration#to-integrate-bot-built-using-dialogflow-follow-the-below-steps" >Dialogflow</a>
+
+* <a href="bot-configration#to-integrate-your-custom-bot-follow-the-below-steps" >Integrate custom bot</a>
 
 * [Amazon Lex](https://aws.amazon.com/lex/) (coming soon)
 
@@ -48,13 +50,35 @@ Here is the list of supported platforms(we will add more platform in due course)
 
 On successful integration, the bot will be given an ID(botId) and will be listed under My Integrated Bots section. The botId will be used to identify the bot in the Kommunicate system.
 
+### To integrate your custom bot, follow the below steps:
+
+* * *
+1. Webhook API is required at your backend server so that all messages received by Kommunicate can be fowarded to your server.
+JSON format of the request body will contain the following:
+
+``` JS
+
+{   
+    "key":"message key", 
+    "from":"sender unique id", 
+    "groupId": 123456, // In case of Group Chat 
+    "clientGroupId": "123456", // In case of Group Chat 
+    "groupName": "applozicGroup", // In case of Group Chat 
+    "conversationId": 23456, // In case of Contextual Chat 
+    "message":"message content", "timeStamp":1457958424000, // Long timestamp value 
+    "receiverConnected": true, // Boolean value 
+    "receiverLastSeenAtTime": 1457958424000 //Long timestamp value 
+}
+
+```
+2. Upon receiving the chat message in webhook API, call the bot platform api provided by Microsoft to get the response, send that response to  <a href="api-detail#send-message" target="_blank">Kommunicate send message API.</a>
 
 ## Use Actionable messages to make conversations interactive
 
 * * *
 
 
-Your bot is designed to send rich text messages to make conversations more interactive and useful. Here is a list of [rich text messages](https://docs.kommunicate.io/docs/actionable-messages.html) supported by Kommunicate.
+Your bot is designed to send rich text messages to make conversations more interactive and useful. Here is a list of <a href="actionable-messages" target="_blank">rich text messages</a> supported by Kommunicate.
 
 When setting an intent [response](https://dialogflow.com/docs/intents#response) in Dialogflow console, click on Add Response under `DEFAULT` tab and choose Custom Payload. Set below JSON as the response of the intent.
 
@@ -67,7 +91,7 @@ When setting an intent [response](https://dialogflow.com/docs/intents#response) 
 }
 ```
 
-Pass any kind of Kommunicate supported [actionable messages](https://docs.kommunicate.io/docs/actionable-messages.html) inside metadata.
+Pass any kind of Kommunicate supported <a href="actionable-messages" target="_blank">actionable messages</a>
 
 * ### Example: Sample JSON for Quick Replies
 ``` JSON
