@@ -1384,8 +1384,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var tabId = $(".km-conversation-icon-active")[0].id;
 					$kmApplozic("." + conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
 					$kmApplozic("." + conversationTabViewMap[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
+					$("." + conversationTabViewMap[tabId] + " li:first-child").trigger("click");
 					typeof e.originalEvent !== "undefined" && $kmApplozic("." + conversationTabViewMap[tabId] + " li:first-child");
-
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function (e) {
 					var $this = $kmApplozic(this);
