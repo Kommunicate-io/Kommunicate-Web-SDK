@@ -1384,8 +1384,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var tabId = $(".km-conversation-icon-active")[0].id;
 					$kmApplozic("." + conversationTabViewMap[tabId]).removeClass('n-vis').addClass('vis');
 					$kmApplozic("." + conversationTabViewMap[tabId] + " .km-unread-icon").removeClass('n-vis').addClass('vis');
-					$("." + conversationTabViewMap[tabId] + " li:first-child").trigger("click");
-					typeof e.originalEvent !== "undefined" && $kmApplozic("." + conversationTabViewMap[tabId] + " li:first-child");
+					typeof e.originalEvent !== "undefined" && $kmApplozic("." + conversationTabViewMap[tabId] + " li:first-child").trigger("click");
 				});
 				$kmApplozic(d).on("click", ".kmfancybox", function (e) {
 					var $this = $kmApplozic(this);
@@ -2788,7 +2787,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				let groupId = window.location.href.split("/").pop();
-				if(!status && parseInt(groupId)) {
+				if(status == "km-all-conversation-list" && parseInt(groupId)) {
 					kmGroupService.getGroupFeed({
 						'groupId': groupId,
 						'callFromUrl':true,
@@ -2820,6 +2819,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
 				var isConvReq = false;
+				var conversationList = typeof params.startTime == "number" ? "load-old-conversation" : "km-all-conversation-list"
 				var reqData = '';
 				if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
 					MESSAGE_SYNCING = true;
@@ -2858,7 +2858,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
-						mckMessageService.addContactInConversationList(data);
+						 mckMessageService.addContactInConversationList(data, null, conversationList);
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
 					}
 				})
