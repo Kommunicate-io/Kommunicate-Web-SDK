@@ -218,6 +218,9 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
+    if (e.which === 101) {
+      e.preventDefault();
+    }
     if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
       this.updateUserDetail('phoneNumber');
     }
