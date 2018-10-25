@@ -45,7 +45,7 @@ class App extends Component {
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
-
+    
     return (
       
       <div>
@@ -53,7 +53,7 @@ class App extends Component {
       <ThirdPartyScripts/>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/login" name="Login Page" component={Login}/>
+          <Route  path="/login" name="Login Page" component={Login}/>
           <Route exact path="/signup" name="Register Page" component={Register}/>
           <Route exact path="/setUpPage" name="SetUpPage" render={ ({history}) => CommonUtils.getUserSession() ? <SetUpPage hideSkipForNow={false} history={history}/>: <Redirect to={{pathname: '/signup'}}/> }/>
           <Route exact path="/installation" name="Installation" render={() => <SetUpPage hideSkipForNow={true} />} />
@@ -62,8 +62,9 @@ class App extends Component {
           <Route exact path="/password/update" name = "Update Password" component = {PasswordReset}/>
           <Route exact path='/applozicsignup' name='Applozic User Sign Up' component={ApplozicUserSignUp} />
           <Route exact path="/apps" name="Select Application" component={ApplicationList} />
-          <Route path="/" name="Home" render={ ({history}) =>  CommonUtils.getUserSession() ?<Full history ={history}/> : <Redirect to={{pathname: '/login'}}/> }/>
-          
+          <Route path="/" name="Home" render={ (data) => { 
+           return  CommonUtils.getUserSession() ?<Full history ={data.history}/> : <Redirect to={'/login?referrer='+data.location.pathname}/> }}/>
+        
         </Switch>
       </BrowserRouter>
       </div>
