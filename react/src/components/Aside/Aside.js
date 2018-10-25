@@ -218,18 +218,9 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
-    var a = [];
-    var k = e.which;
-
-    for (var i = 48; i < 58; i++)
-        a.push(i);
-
     if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
       this.updateUserDetail('phoneNumber');
     }
-
-    if (!(a.indexOf(k,a)>=0))
-      e.preventDefault();
   }
   onKeyPress = (e) => {
     if (e.which == 13 && e.target.dataset.kmEditfield == "displayName") {
