@@ -218,7 +218,7 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
-    if (e.which === 101) {
+    if (e.which === 101 || e.which === 69) {
       e.preventDefault();
     }
     if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
