@@ -67,9 +67,6 @@ constructor(props){
 
   this.websiteUrl = this.websiteUrl.bind(this);
 }
-/*getGoogleLoginUrl= ()=>{
-  var googleBaseUrl =getConfig().googleApi.googleApiUrl + "&state=google_sign_in",
-}*/
 
   componentWillMount() {
     const search = this.props.location.search;
