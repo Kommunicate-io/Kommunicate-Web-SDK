@@ -3419,9 +3419,6 @@ const MESSAGE_CONTENT_TYPE = {
                                                     if (typeof (MCK_CALLBACK) === 'function') {
                                                         MCK_CALLBACK(params.tabId);
                                                     }
-                                                    if (typeof callback === 'function') {
-                                                        callback(params);
-                                                    }
                                                 }
                                             }
                                         });
@@ -3497,9 +3494,6 @@ const MESSAGE_CONTENT_TYPE = {
                                         mckMessageLayout.addContactsFromMessageList(data, params);
                                     } else {
                                         $mck_msg_inner.data('datetime', '');
-                                    }
-                                    if (typeof callback === 'function') {
-                                        callback(params);
                                     }
                                     if (params.isLaunch) {
                                         mckMessageLayout.updateUnreadCountonChatIcon(data.userDetails);
