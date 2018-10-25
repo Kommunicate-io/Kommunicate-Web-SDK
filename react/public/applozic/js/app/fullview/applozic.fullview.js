@@ -2819,7 +2819,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_msg_inner = mckMessageLayout.getMckMessageInner();
 				var individual = false;
 				var isConvReq = false;
-				var loadOldConversation = typeof params.startTime == "number" 
+				var conversationList = typeof params.startTime == "number" ? "load-old-conversation" : "km-all-conversation-list"
 				var reqData = '';
 				if (typeof params.tabId !== 'undefined' && params.tabId !== '') {
 					MESSAGE_SYNCING = true;
@@ -2858,8 +2858,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					method: 'get',
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
-						!loadOldConversation && mckMessageService.addContactInConversationList(data,null,"km-all-conversation-list");
-						loadOldConversation && mckMessageService.addContactInConversationList(data, null, "load-old-conversation");
+						 mckMessageService.addContactInConversationList(data, null, conversationList);
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
 					}
 				})
