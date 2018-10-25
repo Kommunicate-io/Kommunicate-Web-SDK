@@ -24,6 +24,9 @@
 }
 .km-modal-title{
 	margin-left:20px;
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .km-sidemodal .km-modal-content {
 border-spacing: 0;
@@ -192,7 +195,8 @@ input[type=number]::-webkit-outer-spin-button {
 #km-tab-title {
 	text-transform: capitalize;
 	display: inline-block;
-    vertical-align: middle;
+	vertical-align: middle;
+	font-weight: 400;
 }
 
 .km-form-group-container {
@@ -214,4 +218,9 @@ input[type=number]::-webkit-outer-spin-button {
 		left: 0 !important;
 		border-radius: 0px !important;
 	}
+}
+
+.km-close-sidebox{
+	border-radius: 6px;
+	transition: background-color .2s ease-in-out;
 }
