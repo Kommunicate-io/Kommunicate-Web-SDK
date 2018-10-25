@@ -771,8 +771,9 @@ ul#km-group-search-list li {
     color: #4831d9;
   
 }
-.km-sidebar-user-email:hover, .km-sidebar-user-number:hover,.km-sidebar-display-name:hover{
+#km-sidebar-user-email:hover, #km-sidebar-user-number:hover,#km-sidebar-display-name:hover{
     background-color: #f4f5f7;
+    cursor: text;
 }
 .km-sidebar-user-email,.km-sidebar-user-number{
     width: 100%;
