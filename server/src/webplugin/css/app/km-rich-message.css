@@ -827,6 +827,9 @@
     .km-faq-answer--body_container {
         padding: 10px;
     }
+    .km-faq-answer--body_container ol, .km-faq-answer--body_container ul {
+        margin-left: 12px;
+    }
     .km-faq-answer--body_que {
         font-size: 14px;
         font-weight: normal;
