@@ -2969,7 +2969,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var isMessages = true;
 						var currTabId = $mck_msg_inner.data('km-id');
 						var isGroupTab = $mck_msg_inner.data('isgroup');
-						var conversationCreatedAtTime = kmDateUtils.getLastSeenAtStatus(data.groupFeeds[0].createdAtTime, "fullYearDateFormat");
+						var conversationCreatedAtTime = data.groupFeeds.length ? kmDateUtils.getLastSeenAtStatus(data.groupFeeds[0].createdAtTime, "fullYearDateFormat"):"";
 						conversationCreatedAtTime = conversationCreatedAtTime.includes(KM_LABELS["last.seen.on"])?conversationCreatedAtTime.split(KM_LABELS["last.seen.on"]+' '):conversationCreatedAtTime.split(KM_LABELS["last.seen"]+' ');
 						$kmApplozic(".km-user-lastseen-info .km-user-info-metadata:last-child .km-user-info-meatadata-value").html(conversationCreatedAtTime);
 						if(data.errorResponse && data.errorResponse[0].errorCode == "AL-G-01" && typeof callback =="function") {
