@@ -195,7 +195,9 @@ getListMarkup:function(){
                                      {{title}}
                                  </p>
                                  <p class="km-faq-list--body_ans">
-                                     {{description}}
+                                     
+                                 
+                                 {{{description}}}
                                  </p>
                              </div>
                          </a>
