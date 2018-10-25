@@ -10,7 +10,9 @@
         "Install":"Follow the steps below to install Kommunicate Chat in your product.",
         "Push Notifications":"Enabling push notification allows Kommunicate to send notifications even when your mobile app is not in the foreground.",
         "Profile":"empty",
-        "Chat Widget":"Stylize the chat widget according to your brand colors"
+        "Chat Widget":"Stylize the chat widget according to your brand colors",
+        "Fallback Emails": "We send fallback emails to your users and/or your team members if they miss any new messages.",
+        "Webhooks and Security": "Setting up the webhook URLs of your APIs here will allow us to notify your server for messages and send copies of these messages. Configuring the security settings will add a layer of authentication."
 
 }
 
