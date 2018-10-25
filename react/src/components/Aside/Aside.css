@@ -535,6 +535,7 @@ ul#km-group-search-list li {
     color: #5b5959;
     text-align: center;
     margin: 0 auto;
+    max-width: 263px;
 }
 .km-sidebar-user-email , .km-sidebar-user-number {
     text-align: center;
@@ -809,6 +810,10 @@ color: #595757;
     align-items: center;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+    display: flex;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
 }
 .km-sidebar-display-name-submit{
     margin-bottom: 0;
@@ -817,6 +822,12 @@ color: #595757;
     align-items: center;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+    display: flex;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    padding: 2px;
 }
 
 .contenteditable[contenteditable=true]:empty:before{
@@ -848,6 +859,9 @@ color: #595757;
      -webkit-appearance: none;
      border: 1px solid #5c5aa7;
      outline: none;
+     padding: 5px;
+     border-radius: 2px;
+     
  }
  #km-sidebar-user-number-edit:focus ,#km-sidebar-user-email-edit:focus,#km-sidebar-display-name-edit:focus{
     border: 1px solid #5c5aa7;
