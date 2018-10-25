@@ -8803,8 +8803,6 @@ const MESSAGE_CONTENT_TYPE = {
                         } else if (messageType === "APPLOZIC_01" || messageType === "APPLOZIC_02" || messageType === "MESSAGE_RECEIVED") {
                             ALStorage.updateLatestMessage(message);
                             var contact = (message.groupId) ? mckGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
-                            var params = {};
-                            params.callback = function () {
                                 var $mck_sidebox_content = $applozic("#mck-sidebox-content");
                                 var tabId = $mck_message_inner.data('mck-id');
                                 if (messageType === "APPLOZIC_01" || messageType === "MESSAGE_RECEIVED") {
@@ -8908,10 +8906,6 @@ const MESSAGE_CONTENT_TYPE = {
                                     mckMessageLayout.populateMessage(messageType, message, resp.notifyUser);
                                 }            
 
-                            }
-                            var userIdArray = [];
-                            userIdArray.push(message.contactIds);
-                            mckContactService.getUsersDetail(userIdArray, { params });
                         }
                     }
                 }
