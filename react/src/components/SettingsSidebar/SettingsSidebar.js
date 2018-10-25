@@ -65,7 +65,7 @@ class SettingsSidebar extends Component {
                         <li className="ss-nav-item">
                             <NavLink to={'/settings/pushnotification'} className="ss-nav-link" activeClassName="active">Push Notifications</NavLink>
                         </li>
-                        <li className="ss-nav-item">
+                        <li className="ss-nav-item n-vis">
                             <NavLink to={'/settings/email-fallback'} className="ss-nav-link" activeClassName="active">Fallback Emails</NavLink>
                         </li>
                         <li className="ss-nav-item n-vis">
