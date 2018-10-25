@@ -22,7 +22,8 @@ class IntegrationDescription extends Component {
             zendeskKeys: this.props.zendeskKeys,
             clearbitKeys: this.props.clearbitKeys,
             agilecrmKeys: this.props.agilecrmKeys,
-            deleteStatement: false
+            deleteStatement: false,
+            integrationEnabled:this.props.integrationEnabled
         }
 
     }
@@ -60,7 +61,7 @@ class IntegrationDescription extends Component {
 
     }
     showDeleteStatement = () => { // "You want to Delete" Statement
-        switch (this.state.activeModal) {
+    switch (this.state.activeModal) {
             case 'helpdocs':
             case 'clearbit':
                 if (this.state.accessKey !== "") {
@@ -296,7 +297,11 @@ class IntegrationDescription extends Component {
             </div>
             {this.state.deleteStatement == false &&
                 <div className="row zendesk-integration-save-delete-wrapper">
-                    <div className="integration-trash-icon"> <DeleteIcon handleOnClick={this.showDeleteStatement} /></div>
+                    <div className="integration-trash-icon">
+                        { this.state.integrationEnabled &&
+                            <DeleteIcon handleOnClick={this.showDeleteStatement} />
+                        }       
+                    </div>
                     <div className="zendesk-integration-save-btn">
                         <button className="km-button km-button--primary save-integrate-btn" onClick={this.validateIntegrationInput}>Save and Integrate</button>
                     </div>

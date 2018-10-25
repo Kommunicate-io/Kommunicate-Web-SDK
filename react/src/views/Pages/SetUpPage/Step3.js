@@ -54,6 +54,7 @@ class Step3 extends Component {
 		e.preventDefault()
     // this.props.history.push('/dashboard');
     window.location.assign("/dashboard");
+    localStorage.setItem("KM_ONBOARDING","true");
 	}
 
   render() {

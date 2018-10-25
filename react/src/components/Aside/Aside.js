@@ -218,18 +218,12 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
-    var a = [];
-    var k = e.which;
-
-    for (var i = 48; i < 58; i++)
-        a.push(i);
-
+    if (e.which === 101 || e.which === 69) {
+      e.preventDefault();
+    }
     if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
       this.updateUserDetail('phoneNumber');
     }
-
-    if (!(a.indexOf(k,a)>=0))
-      e.preventDefault();
   }
   onKeyPress = (e) => {
     if (e.which == 13 && e.target.dataset.kmEditfield == "displayName") {
@@ -1223,15 +1217,15 @@ class Aside extends Component {
                             </svg>
                           </div>
                           <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
-                          <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name km-truncate vis" data-km-editfield ="displayName"  onFocus={this.setInputFlag}  onKeyPress={this.onKeyPress} data-km-editfield ="displayName"></input>
+                          <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name vis" data-km-editfield ="displayName"  onFocus={this.setInputFlag}  onKeyPress={this.onKeyPress} data-km-editfield ="displayName"></input>
                           <div className="km-sidebar-displayName-svg">
-                          <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={() => this.onMouseDown("displayName")}>
+                          <div className="km-sidebar-display-name-submit km-displayName" style={{marginRight :"4px"}} onMouseDown={() => this.onMouseDown("displayName")}>
                               <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
                             </div>
@@ -1246,13 +1240,13 @@ class Aside extends Component {
                             <div id= "km-email-submit" className="km-editemail n-vis"  onBlur={() => this.onBlur("email")}> 
                             <input id="km-sidebar-user-email-edit" type ="text" className="km-sidebar-user-email" placeholder="Add Email" onKeyPress={this.onKeyPress}></input>
                             <div className="km-sidebar-svg">
-                            <div className="km-rectangle" onMouseDown={() => this.onMouseDown("email")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className ="km-sidebar-submit-svg">
+                            <div className="km-rectangle" style={{marginRight :"4px"}}  onMouseDown={() => this.onMouseDown("email")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" >
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"email")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
                             </div>
@@ -1269,13 +1263,13 @@ class Aside extends Component {
                             <div id="km-phoneNumber-submit" className="km-editphone n-vis"  onBlur={() => this.onBlur("phoneNumber")}>
                             <input id="km-sidebar-user-number-edit" placeholder ="Add Phone Number" type="number" min="0" className="km-sidebar-user-number"  onKeyPress={(e) => this.onKeyDown(e)}></input>
                             <div className="km-sidebar-phone-svg">
-                            <div className="km-rectangle" onMouseDown={() => this.onMouseDown("phoneNumber")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" className ="km-sidebar-submit-svg">
+                            <div className="km-rectangle" style={{marginRight :"4px"}} onMouseDown={() => this.onMouseDown("phoneNumber")}>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" >
                                 <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
                               </svg>
                             </div>
                             <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"phoneNumber")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" className ="km-sidebar-submit-svg" viewBox="0 0 9 9">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 9 9">
                                 <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
                               </svg>
                             </div>

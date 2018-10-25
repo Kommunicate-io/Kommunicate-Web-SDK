@@ -11,7 +11,8 @@ import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 import Checkbox from '../../components/Checkbox/Checkbox'
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import Onboarding from '../../components/UserOnboarding/Onboarding';
 
 const brandPrimary = '#5c5aa7';
 const brandSuccess = '#18A9B7';
@@ -855,6 +856,9 @@ render() {
         null
       } */}
       {/* <ProductHuntOffer /> */}
+      
+      <Onboarding />
+
       <div className="animated fadeIn dashboard-card">
         <div className="row filter-dropdown-wrapper">
           <div className="col-lg-2 col-sm-4">
