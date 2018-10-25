@@ -706,6 +706,7 @@
         justify-content: flex-start;
         text-decoration: none;
         border-bottom: solid 1px #e5e5e5;
+        color: grey;
         transition: all 0.3s ease-in-out;
     }
     .km-faq-list--body_que-ans {
@@ -719,6 +720,7 @@
     }
     .km-faq-list--body_list li>a:hover {
         background-color: #efefef;
+        color: grey;
     }
     
     .km-faq-list--body_que-ans .km-faq-list--body_que {
