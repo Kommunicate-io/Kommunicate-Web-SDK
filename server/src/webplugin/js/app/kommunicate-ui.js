@@ -91,8 +91,10 @@ KommunicateUI={
         !uploadStatus && $applozic(".mck-attachment-"+key).next().removeClass("n-vis").addClass("vis");            
 
     },
-    showImageAttachmentPreview: function(fileMeta, key) {
-        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", fileMeta.url);
+    updateImageAttachmentPreview: function(fileMeta, key) {
+        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", 
+        fileMeta.url || fileMeta.thumbnailUrl);
+        $applozic("." +key + " .mck-file-text a:first").trigger('click'); 
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
         if(file.type.indexOf("image/") != -1) {
