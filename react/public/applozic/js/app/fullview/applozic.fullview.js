@@ -8073,10 +8073,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
-
+						if (message.metadata.KM_ASSIGN) {
+							contact.metadata.CONVERSATION_ASSIGNEE = message.metadata.KM_ASSIGN;
+						}
+						if (message.metadata.KM_STATUS) {
+							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_ASSIGN;
+						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
-						//start
 						if (message && message.to && !message.groupId) {
 							list.sectionId = CONVERSATION_STATUS_SECTION.Open;
 						}
