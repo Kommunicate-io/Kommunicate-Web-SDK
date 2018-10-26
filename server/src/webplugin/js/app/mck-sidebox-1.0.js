@@ -4690,7 +4690,7 @@ const MESSAGE_CONTENT_TYPE = {
                 }
 
                 if (msg.fileMeta) {
-                    if ($applozic("." + replyId + " .mck-file-text a:first")[0].dataset.url.indexOf("undefined") == -1) {
+                    if (msg.fileMeta.contentType.indexOf('image') != -1 &&  $applozic("." + replyId + " .mck-file-text a:first")[0].dataset.url.indexOf("undefined") == -1) {
                         $applozic("." + replyId + " .mck-file-text a:first").trigger('click');  
                     }
                     $applozic("." + replyId + " .mck-file-text").removeClass('n-vis').addClass('vis');
