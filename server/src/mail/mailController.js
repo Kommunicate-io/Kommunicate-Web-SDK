@@ -84,7 +84,7 @@ const getEmailFormat = (options, custInfo) => {
                     options.templatePath = templatePath;
                     options.cc = ["support@kommunicate.io"],
                         options.templateReplacement = templateReplacement;
-                    options.subject = "Lets start with Kommunicate! ";
+                    options.subject = "Let's start with Kommunicate!";
                     break;
 
                 case "INVITE_TEAM_MAIL":

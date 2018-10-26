@@ -775,6 +775,10 @@ ul#km-group-search-list li {
     background-color: #f4f5f7;
     cursor: text;
 }
+#km-sidebar-display-name:hover {
+    background-color: transparent;
+    cursor: default;
+}
 .km-sidebar-user-email,.km-sidebar-user-number{
     width: 100%;
 font-family: Roboto;

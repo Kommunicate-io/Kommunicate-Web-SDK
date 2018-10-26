@@ -219,7 +219,7 @@ class Full extends Component {
                 <Route exact path="/settings/billing" name="Billing" component={Billing}/>
                 <Route exact path="/integrations" name="Integrations" component={Integrations}/>
                 <Route exact path="/settings/pushnotification" name="PushNotification" component={PushNotification}/>
-                <Route exact path="/settings/connect-support-email" name="IncomingEmailForward" component={IncomingEmailForward}/>
+                <Route exact path="/settings/mailbox" name="IncomingEmailForward" component={IncomingEmailForward}/>
                 <Route exact path="/settings/email-notifications" name="EmailNotifications" component={EmailNotifications}/>
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
                 <Route exact path="/settings/email-fallback" name="EmailFallback" component={EmailFallback}/>

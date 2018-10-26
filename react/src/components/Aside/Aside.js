@@ -1202,7 +1202,8 @@ class Aside extends Component {
                         <p id="km-sidebar-userId"  hidden></p>
                         <div className="km-dispalyname-wrapper">
                           <div>
-                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" onClick={() => this.showEditUserDetailDiv("displayName")} data-km-editfield ="displayName" onFocus={this.setInputFlag}></p>
+                            {/* <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" onClick={() => this.showEditUserDetailDiv("displayName")} data-km-editfield ="displayName" onFocus={this.setInputFlag}></p> */}
+                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" data-km-editfield ="displayName"></p>
                           </div>
                           <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
                             <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
@@ -1216,7 +1217,7 @@ class Aside extends Component {
                                 data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
                             </svg>
                           </div>
-                          <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
+                          {/* <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
                           <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name vis" data-km-editfield ="displayName"  onFocus={this.setInputFlag}  onKeyPress={this.onKeyPress} data-km-editfield ="displayName"></input>
                           <div className="km-sidebar-displayName-svg">
                           <div className="km-sidebar-display-name-submit km-displayName" style={{marginRight :"4px"}} onMouseDown={() => this.onMouseDown("displayName")}>
@@ -1230,7 +1231,7 @@ class Aside extends Component {
                               </svg>
                             </div>
                             </div>
-                            </div>
+                            </div> */}
                         </div>
                         <hr className="hr"/>
                         <div className="km-display-email-number-wrapper">
