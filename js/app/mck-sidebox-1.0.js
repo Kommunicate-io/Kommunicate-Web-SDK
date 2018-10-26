@@ -1707,7 +1707,6 @@ const MESSAGE_CONTENT_TYPE = {
                         }
                     });
                 } else {
-                    // var href = $this[0].dataset.url;
                     var href = $this.data('url');
                     $applozic(this).fancybox({
                         'openEffect': 'none',
@@ -4691,7 +4690,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
 
                 if (msg.fileMeta) {
-                    $applozic("." + replyId + " .mck-file-text a:first").trigger('click');
+                    if ($applozic("." + replyId + " .mck-file-text a:first")[0].dataset.url.indexOf("undefined") == -1) {
+                        $applozic("." + replyId + " .mck-file-text a:first").trigger('click');  
+                    }
                     $applozic("." + replyId + " .mck-file-text").removeClass('n-vis').addClass('vis');
                     if ($textMessage.html() === '') {
                         $textMessage.removeClass('vis').addClass('n-vis');
@@ -7720,7 +7721,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                    // KommunicateUI.showImageAttachmentPreview(file_meta,messagePxy.key )
+                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key )
                                     return
                                 }             
                                 var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
@@ -7844,7 +7845,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                    // KommunicateUI.showImageAttachmentPreview(file_meta,messagePxy.key )
+                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key )
                                     return
                                 }
                                 var fileExpr = alFileService.getFilePreviewPath(file_meta);
@@ -7957,7 +7958,7 @@ const MESSAGE_CONTENT_TYPE = {
                                     stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                    // KommunicateUI.showImageAttachmentPreview(file_meta,messagePxy.key )
+                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key )
                                     return
                                 }             
                                 var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
