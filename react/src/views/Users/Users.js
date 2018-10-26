@@ -102,8 +102,10 @@ class Users extends Component {
                   } 
                   else {
                     assignedUser.push(user);
+                    // Sort array after pushing
+                    var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
                     _this.setState({
-                      result: assignedUser.reverse(), 
+                      result: arrObj, 
                       showEmptyStateImage: true
                     })
                   }
