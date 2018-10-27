@@ -1,24 +1,8 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
-import classnames from 'classnames';
-import CommonUtils from '../../utils/CommonUtils';
-import ApplozicClient from '../../utils/applozicClient';
-import { updateApplozicUser, getThirdPartyListByApplicationId, updateConversation, getUsersByType, updateZendeskIntegrationTicket } from '../../utils/kommunicateClient';
-import Modal from 'react-responsive-modal';
-import LocationIcon from './Icons/location.png';
-import DomainIcon from './Icons/web-icon.png';
-import Notification from '../../views/model/Notification';
-import FacebookIcon from './Icons/facebook-icon.png';
-import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
-import TwitterIcon from './Icons/twitter-icon.png';
-import LinkedinIcon from './Icons/linkedin-icon.png';
-import ReactTooltip from 'react-tooltip';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT } from '../../utils/Constant';
 import './PersonInfo.css'
 import ClearBitInfo from './ClearbitInfo'
-import { UserMetadata, LastSeenSection, SubmitSvg, DisplayPsuedoIcon, PseudonymModel } from './MetaInfo'
+import { UserMetadata, LastSeenSection, DisplayPseudoIcon, PseudonymModal } from './MetaInfo'
 import EditableText from './EditableText';
-import { CSSTransitionGroup } from 'react-transition-group'
 
 
 
@@ -79,11 +63,11 @@ class PersonInfoCard extends Component {
                         }
                         {
                             this.state.pseudoUser ?
-                                <DisplayPsuedoIcon onOpenModal={this.onOpenModal} /> : null
+                                <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
                         }
 
                         {
-                            this.state.modalOpen ? <PseudonymModel modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
+                            this.state.modalOpen ? <PseudonymModal modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
                         }
                         <hr className="hr" />
                         <div className="km-display-email-number-wrapper">

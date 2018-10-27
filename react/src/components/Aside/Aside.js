@@ -8,22 +8,15 @@ import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
-import LocationIcon from './Icons/location.png';
-import DomainIcon from './Icons/web-icon.png';
 import Notification from '../../views/model/Notification';
-import FacebookIcon from './Icons/facebook-icon.png';
-import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
-import TwitterIcon from './Icons/twitter-icon.png';
-import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT} from '../../utils/Constant';
-import ReactModal from 'react-modal';
-import {PseudoNameImage, ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
+import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
-import Labels from '../../utils/Labels';
 import PersonInfoCard from '../PersonInfo/PersonInfoCard'
+import {PseudonymModal} from '../PersonInfo/MetaInfo'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -54,7 +47,7 @@ class Aside extends Component {
         4: 'Duplicate'
       },
       group: null,
-      // modalOpen: false,
+      modalOpen: false,
       hideInfoBox: false,
       trialDaysLeftComponent: "",
       userInfo: null,
@@ -176,12 +169,12 @@ class Aside extends Component {
   openModal = (index) => {
     this.setState({ modalIsOpen: true});
   }
-  // onOpenModal = () => {
-  //   this.setState({ modalOpen: true});
-  // }
-  // onCloseModal = () => {
-  //   this.setState({ modalOpen: false});
-  // }
+  onOpenModal = () => {
+    this.setState({ modalOpen: true});
+  }
+  onCloseModal = () => {
+    this.setState({ modalOpen: false});
+  }
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
@@ -555,7 +548,6 @@ class Aside extends Component {
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
-    const infoText = Labels["lastcontacted.tooltip"];
     const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().applicationId +"title="+CommonUtils.getUserSession().adminDisplayName;
 
     return (
@@ -606,6 +598,9 @@ class Aside extends Component {
                           <div className="introducing-text-container">
                             <p>Introducing Pseudonyms for anonymous users</p>
                             <a href="#" onClick={this.onOpenModal}>Learn more</a>
+                            {
+                              this.state.modalOpen ? <PseudonymModal modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
+                            }
                           </div>
                           <div className="introducing-close-icon-container" onClick={this.dismissInfo}>
                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 24 24" >
@@ -845,11 +840,6 @@ class Aside extends Component {
                                 </div>
                               </div>
                             </div>
-
-                            {/*<div className="col-sm-1">
-                              <i className="fa fa-user fa-lg mt-2"></i>
-                            </div>
-                            */}
                             <div className="select-labels">
                                 <span className="">Status:</span>
                             </div>
@@ -870,29 +860,10 @@ class Aside extends Component {
                               <div className="select-container">
                                 <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
                               </div>
-
-                              {/*
-                               {
-                                  this.state.agents.map(function(user) {
-                                    return <option key={user.userId}
-                                      value={user.userId}>{user.displayName}</option>;
-                                  })
-                               }
-                                */}
-
-
                             </div>
-
-                            {/*
-                            <div className="col-sm-1">
-                              <i className="fa fa-flag-o fa-lg mt-2"></i>
-                            </div>
-                            */}
                             <div className="trial-period-container">
                               {this.state.trialDaysLeftComponent}
                             </div>
-
-
                           </div>
                           <hr/>
                           <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">

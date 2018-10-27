@@ -87,12 +87,12 @@ export const UserMetadata = (props) => {
 }
 
 /**
- * This fuction will render pseudo icon
+ * This function will render pseudo icon
  * @param {Object} props 
  * @param {function} props.onOpenModal onclick open model
  * 
  */
-export const DisplayPsuedoIcon = (props) => {
+export const DisplayPseudoIcon = (props) => {
     return (
         <div className="pseudo-name-icon text-center" id="pseudo-name-icon" onClick={props.onOpenModal}>
             <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
@@ -111,9 +111,9 @@ export const DisplayPsuedoIcon = (props) => {
 /**
  * 
  * @param {Object} props 
- * PseudonymModel
+ * PseudonymModal
  */
-export const PseudonymModel = (props) => {
+export const PseudonymModal = (props) => {
     const customStyles = {
         content: {
             top: '80px',
