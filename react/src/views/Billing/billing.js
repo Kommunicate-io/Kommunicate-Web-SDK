@@ -717,7 +717,7 @@ class Billing extends Component {
                                                         <ul>
                                                             <li>Up to 2 agents</li>
                                                             <li>Live Chat</li>
-                                                            <li>Web and Mobile SDKs</li>
+                                                            <li>Web SDK</li>
                                                             <li>Agent apps</li>
                                                             <li>Basic reporting</li>
                                                             <li>Welcome messages</li>
@@ -780,6 +780,7 @@ class Billing extends Component {
                                                         <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
                                                             <li>Bot integrations</li>
+                                                            <li>Mobile SDK</li>
                                                             <li>Quick Replies</li>
                                                             <li>Away Messages</li>
                                                             <li>Lead Collection</li>
