@@ -780,7 +780,7 @@ class Billing extends Component {
                                                         <p>Everything in <strong>FREE Plan</strong>, plus...</p>
                                                         <ul>
                                                             <li>Bot integrations</li>
-                                                            <li>Mobile SDK</li>
+                                                            <li>Mobile SDKs</li>
                                                             <li>Quick Replies</li>
                                                             <li>Away Messages</li>
                                                             <li>Lead Collection</li>
