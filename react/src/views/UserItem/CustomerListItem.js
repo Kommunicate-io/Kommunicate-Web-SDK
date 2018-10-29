@@ -26,6 +26,10 @@ class CustomerListItem extends Component {
         {
           "userId": user.userId,
           "groupRole": 3
+        },
+        {
+          "userId": "bot",
+          "groupRole": 2
         }
       ], //userId of user
       //clientGroupId: ''
