@@ -92,8 +92,8 @@ KommunicateUI={
 
     },
     updateImageAttachmentPreview: function(fileMeta, key) {
-        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", 
-        fileMeta.url || fileMeta.thumbnailUrl);
+        let thumbnailUrl = $applozic(".mck-attachment-"+key)[0].dataset.thumbnailurl;
+        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
         $applozic("." +key + " .mck-file-text a:first").trigger('click'); 
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
