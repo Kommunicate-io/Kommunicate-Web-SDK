@@ -26,6 +26,10 @@ class CustomerListItem extends Component {
         {
           "userId": user.userId,
           "groupRole": 3
+        },
+        {
+          "userId": "bot",
+          "groupRole": 2
         }
       ], //userId of user
       //clientGroupId: ''
@@ -46,6 +50,7 @@ class CustomerListItem extends Component {
         GROUP_NAME_CHANGE_MESSAGE: "",
         GROUP_ICON_CHANGE_MESSAGE: "",
         GROUP_LEFT_MESSAGE: "",
+        CONVERSATION_STATUS:0, 
         DELETED_GROUP_MESSAGE: "",
         GROUP_USER_ROLE_UPDATED_MESSAGE: "",
         GROUP_META_DATA_UPDATED_MESSAGE: "",
@@ -85,31 +90,20 @@ class CustomerListItem extends Component {
   }
 
   converastionAssignee() {
-    var convoStatus;
     var displayIconColor;
     var user = this.props.user;
     var status = user.messagePxy.status;
+    var convoStatus = user.convoStatus;
     var assignee = user.assignee
       ? user.assignee
       : "";
-    var groupId = user.messagePxy
-      ? user.messagePxy.groupId
-      : "";
-    window.$kmApplozic.fn.applozic("getGroup", {
-      groupId: groupId,
-      callback: function(response) {
-        if (response) {
-          convoStatus = response.metadata.CONVERSATION_STATUS;
-        }
-      }
-    });
     if (assignee !== (undefined || "" || null)) {
-      if (convoStatus == 0) {
+      if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED)) {
         return <span className="assignee-open">
           <strong>
             ASSIGNED -</strong>{assignee}
         </span>;
-      } else if (convoStatus == 2) {
+      } else if ((convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.CLOSED) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.SPAM) || (convoStatus == window.KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.DUPLICATE)) {
         return <span className="assignee-closed">
           <strong>
             CLOSED -</strong>{assignee}
@@ -117,7 +111,7 @@ class CustomerListItem extends Component {
       }
     } else
       return "";
-    }
+  }
 
   render() {
     var conversationStyle = {

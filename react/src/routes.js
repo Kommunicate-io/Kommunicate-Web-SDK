@@ -20,9 +20,11 @@ const routes = {
   '/settings/billing': 'Billing',
   '/integrations': 'Integrations',
   '/settings/pushnotification': 'Push Notifications',
-  '/settings/connect-support-email': 'Connect Support Email',
+  '/settings/mailbox': 'Mailbox',
   '/settings/email-notifications': 'Email Notifications',
-  '/settings/chat-widget-customization':'Chat Widget'
+  '/settings/chat-widget-customization':'Chat Widget',
+  '/settings/email-fallback':'Fallback Emails',
+  '/settings/webhooks-security':'Webhooks and Security',
 };
 
 export default routes;

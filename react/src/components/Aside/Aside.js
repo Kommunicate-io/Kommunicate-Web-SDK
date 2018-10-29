@@ -57,6 +57,7 @@ class Aside extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.validateAndUpdateUserDetail = this.validateAndUpdateUserDetail.bind(this);
     this.onKeyDown =this.onKeyDown.bind(this);
+    this.onKeyPress =this.onKeyPress.bind(this);
     this.setInputFlag=this.setInputFlag.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
     this.forwardMessageToZendesk = this.forwardMessageToZendesk.bind(this);
@@ -182,6 +183,10 @@ class Aside extends Component {
   validateAndUpdateUserDetail = function (elem) {
     if (elem === "email") {
       this.validateEmail();
+    }
+    else if (elem === "phoneNumber" && document.getElementById("km-sidebar-user-number-edit").value.length > 20 ) {
+        Notification.error("Phone number length should be less than 20");
+        return;
     } else {
       this.updateUserDetail(elem);
     }
@@ -199,8 +204,12 @@ class Aside extends Component {
   }
 
   validateEmail = (e) => {
-    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    if (document.getElementById("km-sidebar-user-email-edit").innerHTML.match(mailformat)) {
+    var mailformat = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (document.getElementById("km-sidebar-user-email-edit").value.length > 100) {
+      Notification.error("Email length should be less than 100");
+      return;
+    }
+    if(mailformat.test(document.getElementById("km-sidebar-user-email-edit").value)){
       this.updateUserDetail("email");
     }
     else {
@@ -213,11 +222,20 @@ class Aside extends Component {
      this.showEditUserDetailDiv(e.target.dataset.kmEditfield);
   }
   onKeyDown = (e) => {
-    if (e.which !== 8 && e.which !== 127) {
-      if (isNaN(e.key))
-        e.preventDefault();
+    if (e.which === 101 || e.which === 69) {
+      e.preventDefault();
     }
-
+    if (e.which == 13 && e.currentTarget.className == "km-sidebar-user-number") {
+      this.updateUserDetail('phoneNumber');
+    }
+  }
+  onKeyPress = (e) => {
+    if (e.which == 13 && e.target.dataset.kmEditfield == "displayName") {
+      this.updateUserDetail('displayName');
+    }
+    if(e.which == 13 && e.currentTarget.className == "km-sidebar-user-email"){
+      this.validateAndUpdateUserDetail("email");
+    }
   }
   
   updateUserDetail = (params) => {
@@ -226,14 +244,16 @@ class Aside extends Component {
     var userId = document.getElementById("km-sidebar-userId").innerHTML;
     var displayName = document.getElementById("km-sidebar-display-name").innerHTML;
     var userDetails ={};
-    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+    userDetails[params] = document.getElementById(userDetailMap[params]+"-edit").value;
     elemId ="km-"+params+"-submit";
 
     userDetails.callback = function (userDetails) {
-       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").innerHTML;
+       document.getElementById(userDetailMap[params]).innerHTML = document.getElementById(userDetailMap[params]+"-edit").value;
       var list = document.querySelectorAll(".person.active .name");
       for (var i = 0; i < list.length; i++) {
+        if(userDetails.displayName){
         list[i].innerText = document.getElementById("km-sidebar-display-name").innerHTML;
+        }
       }
     }
     ApplozicClient.updateUserDetail({ "userDetails": userDetails, "ofUserId": userId });
@@ -319,6 +339,9 @@ class Aside extends Component {
   }
 
   getGroupAdmin(group) {
+    if(typeof this.state.group =='undefined'){
+      return "";
+    }
     var assignee = this.state.group.adminName;
     for(var key in this.state.group.users) {
       if(this.state.group.users.hasOwnProperty(key)) {
@@ -1010,8 +1033,7 @@ class Aside extends Component {
                                   </div>
                                 </div>
 
-                                <span id="km-text-box"
-                                  contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required"></span>
+                                <div id="km-text-box" contentEditable="true" suppressContentEditableWarning="true" className="km-text-box km-text required" data-text="Type your message..."></div>
 
                                 <a href="javascript:void(0)" type="button" id="km-btn-smiley"
                                   className="write-link smiley km-btn-smiley km-btn-text-panel"
@@ -1074,7 +1096,7 @@ class Aside extends Component {
                                   <div className="km-label">Group Title</div>
                                 </div>
                                 <div className="blk-lg-12">
-                                  <div id="km-group-create-title" className="km-group-create-title km-group-title"
+                                  <div id="km-group-create-title" className="km-group-create-title km-group-title contenteditable"
                                     contentEditable="true" suppressContentEditableWarning="true">Group title</div>
                                 </div>
                               </div>

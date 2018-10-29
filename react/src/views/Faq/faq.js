@@ -26,6 +26,8 @@ import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import {acEventTrigger} from '../../utils/ActiveCampaign'
+import ReactQuill from 'react-quill';
+import './ReactQuill.css';
 
 
 class Tabs extends Component {
@@ -66,12 +68,10 @@ class Tabs extends Component {
   getFaqsWrapper = () => {
 
     getSuggestionsByCriteria(this.applicationId, 'type', 'faq').then(response => {
-      console.log(response)
+      // console.log(response)
       if(response.code === 'GOT_ALL_SUGGESTIONS_BY_CRITERIA_type'){
         this.setState({
           listOfFAQs :  response.data ? response.data : []
-        }, () => {
-          console.log(this.state.listOfFAQs)
         })
       }
     }).catch(err => {console.log(err)});
@@ -124,7 +124,7 @@ class Tabs extends Component {
       isDraft: status == "draft" ? true:false,
       isPublished: status == "published" ? true:false,
       faqModal: !this.state.faqModal,
-    }, () => {console.log(this.state)})
+    })
   }
 
   toggleBotAvailability = () => {
@@ -243,7 +243,15 @@ class Tabs extends Component {
 
   }
 
-
+  modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline','strike', 'blockquote', 'code-block'],
+      [{ 'color': [] }, { 'background': [] }],
+      [{'list': 'ordered'}, {'list': 'bullet'}],
+      ['link']
+    ],
+  }
 
   render() {
     return (
@@ -343,7 +351,8 @@ class Tabs extends Component {
             </div>
             <div className="row">
               <div className="col-md-12">
-                <textarea rows="10" style={{"borderRadius": "4px"}} type="text" name="faq-content" placeholder="Enter your FAQ content here" className="form-control" value={this.state.faqContent} onChange={(e) => {this.setState({faqContent:e.target.value})}} />
+                <ReactQuill theme="snow" value={this.state.faqContent}
+                  onChange={(value) => {this.setState({faqContent: value})}} modules={this.modules} />
               </div>
             </div>
             <div className={this.state.showDeleteFaq ? "n-vis":"row mt-4"} style={{borderTop: "1px solid #c8c2c2", paddingTop: "8px"}}>

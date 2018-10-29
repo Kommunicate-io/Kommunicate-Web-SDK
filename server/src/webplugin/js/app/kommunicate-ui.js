@@ -13,9 +13,9 @@ KommunicateUI={
     },
     updateLeadCollectionStatus:function(err,message,data){
         KommunicateUI.awayMessageInfo = {};
-        if(!err && message.code =="SUCCESS"){
+        if(!err && (message.code =="SUCCESS" || message.code == "AGENTS_ONLINE")){
             KommunicateUI.leadCollectionEnabledOnAwayMessage = message.data.collectEmailOnAwayMessage;
-            if( message.data.messageList.length > 0 ) {
+            if(message.code != "AGENTS_ONLINE" && message.data.messageList.length > 0 ) {
                 KommunicateUI.awayMessageInfo["eventId"] = message.data.messageList[0].eventId;
                 KommunicateUI.awayMessageInfo["isEnabled"] = true;
             }
@@ -26,15 +26,22 @@ KommunicateUI={
         } 
     },
     populateAwayMessage:function(err,message){
-        var isCnversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
-        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!isCnversationWindowNotActive){
-            
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        var closedConversation = $applozic("#mck-conversation-status-box").hasClass('vis');
+        if(!err && message.code =="SUCCESS" &&message.data.messageList.length>0 &&!conversationWindowNotActive && !closedConversation){ 
             awayMessage =message.data.messageList[0].message;
             $applozic("#mck-away-msg").html(awayMessage);
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
         } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
+    },
+    showAwayMessage: function() {
+        var conversationWindowNotActive = $applozic("#mck-tab-individual").hasClass('n-vis');
+        if(KommunicateUI.awayMessageInfo && KommunicateUI.awayMessageInfo.isEnabled && !conversationWindowNotActive) {
+            $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
+            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
+        }    
     },
     hideAwayMessage:function(){
         // $applozic("#mck-away-msg").html("");
@@ -84,8 +91,10 @@ KommunicateUI={
         !uploadStatus && $applozic(".mck-attachment-"+key).next().removeClass("n-vis").addClass("vis");            
 
     },
-    showImageAttachmentPreview: function(fileMeta, key) {
-        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", fileMeta.url);
+    updateImageAttachmentPreview: function(fileMeta, key) {
+        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", 
+        fileMeta.url || fileMeta.thumbnailUrl);
+        $applozic("." +key + " .mck-file-text a:first").trigger('click'); 
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
         if(file.type.indexOf("image/") != -1) {
@@ -113,6 +122,7 @@ KommunicateUI={
         return stopUpload;
     },
     populateLeadCollectionTemplate:function() {
+        KommunicateUI.hideAwayMessage();
         $applozic("#mck-email-collection-box").removeClass("n-vis").addClass("vis");
         $applozic("#mck-btn-attach-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-text-box").blur();  
@@ -122,17 +132,15 @@ KommunicateUI={
         $applozic("#mck-email-collection-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
         $applozic("#mck-btn-attach-box").removeClass("n-vis").addClass("vis");
-        $applozic('#mck-text-box').attr('data-text', "Type your message...");
+        $applozic('#mck-text-box').attr('data-text', MCK_LABELS['input.message']);
     },
     validateEmail: function (sendMsg) {
         var mailformat = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
-
         if (sendMsg.match(mailformat)) {
             $applozic("#mck-email-error-alert-box").removeClass("vis").addClass("n-vis");
             this.hideLeadCollectionTemplate();
-            $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");
             window.$applozic.fn.applozic("updateUser",{data: {'email': sendMsg}});
-            
+            // KommunicateUI.showAwayMessage();  lead collection feature improvement- [WIP]
             return true;
         } else {
             $applozic("#mck-email-error-alert-box").removeClass("n-vis").addClass("vis");
@@ -164,7 +172,9 @@ KommunicateUI={
                     $applozic('#mck-tab-individual').removeClass("n-vis").addClass("vis");
                     $applozic('#mck-tab-conversation').removeClass("vis").addClass("n-vis");
                     $applozic('#mck-no-conversations').removeClass("vis").addClass("n-vis");
-
+                    $applozic('#km-faqanswer .km-faqanswer').linkify({
+                        target: '_blank'
+                    });
                 }
             }
             , error: function () { }
@@ -253,6 +263,8 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
+        KommunicateUI.hideAwayMessage();
+        KommunicateUI.hideLeadCollectionTemplate();
         if (MCK_EVENT_HISTORY.length >= 2) {
             if (MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2] == "km-faq-list") {
                 KommunicateUI.showHeader();
@@ -346,6 +358,26 @@ sendFaqQueryAsMsg: function(groupId){
 },
 activateTypingField: function(){
         $applozic('#mck-text-box').focus();
+},
+showClosedConversationBanner  : function(){
+var messageText = MCK_LABELS["closed.conversation.message"];
+var messageFooterDiv= document.getElementById("mck-sidebox-ft");
+var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
+conversationStatusDiv.innerHTML= messageText;
+messageFooterDiv.classList.add("mck-closed-conv-banner");
+conversationStatusDiv.classList.add("vis");
+conversationStatusDiv.classList.remove("n-vis");
+
+},
+hideClosedConversationBanner : function(){
+    var messageFooterDiv = document.getElementById("mck-sidebox-ft");
+    var conversationStatusDiv = document.getElementById("mck-conversation-status-box");
+    if(messageFooterDiv.classList.contains("mck-closed-conv-banner") ||conversationStatusDiv.classList.contains('vis') ){
+    
+    messageFooterDiv.classList.remove("mck-closed-conv-banner")
+    conversationStatusDiv.classList.remove("vis");
+    conversationStatusDiv.classList.add("n-vis");
+    }
 }
   
 }

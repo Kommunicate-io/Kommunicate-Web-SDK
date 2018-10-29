@@ -2,6 +2,7 @@ const loginService = require("./loginService");
 const kommunicateApplicationName= require('../../conf/config').getProperties().kommunicateParentAppName;
 const kommunicateApplicationId = require('../../conf/config').getProperties().kommunicateParentKey;
 const authorizationService =require("../authentication/authenticationService");
+const userService = require("../users/userService");
 exports.login = async function(req, res) {
   const userName= req.body.userName;
   let password = req.body.password;
@@ -10,7 +11,20 @@ exports.login = async function(req, res) {
   let userDetail = req.body;
   console.log("request received to login : ", userName, "applicationName : ", applicationId);
   if(req.query.loginType === 'oauth'){
-    userDetail.password = 'mi8&zG#0rLyE^$1&MXSe'
+    userDetail.password = 'mi8&zG#0rLyE^$1&MXSe';
+    try{
+      let user = await userService.getByUserNameAndAppId(userName,applicationId);
+      if(user && user.loginType =="oauth"){
+        userDetail.password = 'mi8&zG#0rLyE^$1&MXSe';
+      }
+      else{
+        userDetail.password = user.accessToken;
+      }    
+      userDetail.loginType='oauth';
+    }
+    catch(e){
+      console.log( "error while fecting user",e)
+    }
   }
  
 

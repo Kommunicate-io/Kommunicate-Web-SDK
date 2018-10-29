@@ -69,6 +69,7 @@ exports.authCode = (req, res) => {
 	let numOfApp = 1
 	let email = null
 	let name = null
+	let referrer = req.query.state;
 
 	getToken(authCode).then(response => {
 		logger.info(response.data);
@@ -97,12 +98,12 @@ exports.authCode = (req, res) => {
 		logger.info(user.loginType);
 		if(user.loginType === 'oauth'){
 			logger.info("oauth oauth oauth oauth oauth oauth oauth oauth")
-			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
+			res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp+"&referrer="+referrer)
 			throw 'Ignore this error. It is present to by pass the promise chain'
 		} else if(user.loginType === 'email' || user.loginType === null) {
 			logger.info("email email email email email email email email")
 			if(_numOfApp > 1){
-				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp)
+				res.redirect(KOMMUNICATE_LOGIN_URL + "?googleLogin=true&email=" + email + "&loginType=" + user.loginType + "&numOfApp=" + _numOfApp+"&referrer="+referrer)
 				throw 'Ignore this error. It is present to by pass the promise chain'
 			} else {
 				const loginDetails = {

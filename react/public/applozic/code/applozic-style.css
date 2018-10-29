@@ -690,11 +690,13 @@ body {
 	margin-left: 2px;
 	font-weight: bold;
 }
-.km-mail-fixed-view{
+.km-mail-fixed-view-iframe{
 	background-color: white;
 	border-radius: 5px;
 	padding: 10px 14px 12px;
 	width: 100%;
+	border: none;
+	height: 100vh;
 	white-space: pre-wrap;
     white-space: -moz-pre-wrap;
     white-space: -pre-wrap;
@@ -706,7 +708,8 @@ body {
 .km-box-top .hr {
 	width: 90%;
 	border-top: solid 1px #ececec;
-	margin: 15px auto;
+	margin: 39px auto;
+	margin-bottom: 20px;
 }
 
 .km-display-email-number-wrapper {

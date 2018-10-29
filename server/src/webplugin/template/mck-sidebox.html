@@ -238,12 +238,13 @@
 				</div>
 				<div id="mck-email-error-alert" class="mck-email-error-alert">It seems you have entered an invalid email</div>
 			</div>
+			
 			<!-- Footer With Input Field -->
 			<div id="mck-sidebox-ft" class="mck-box-ft">
 				<!-- <div id="mck-away-msg-box" class="n-vis">
 					<p id="mck-away-msg" class="mck-away-msg"></p>
 				</div> -->
-
+				<div id = "mck-conversation-status-box" class= "n-vis mck-row"></div>
 				<div class="mck-box-form mck-row n-vis">
 					<div class="blk-lg-12">
 						<p id="mck-msg-error" class="mck-sidebox-error n-vis"></p>
@@ -309,7 +310,7 @@
 									<input id="mck-autosuggest-search-input" type="text" data-provide="typeahead" placeholder="" class="mck-blk-8 n-vis mck-text mck-typeahead"
 									 autocomplete="off">
 									<input id="mck-autosuggest-metadata" type="hidden" name="city-detail" />
-									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required" data-text="Type your message..."></div>
+									<div id="mck-text-box" contenteditable="true" class="mck-blk-8 mck-text-box mck-text required notranslate" data-text="Type your message..."></div>
 									<div class="mck-blk-2 mck-text-box-panel move-right n-vis">
 										<div class="mck-blk-12">
 											<button type="submit" id="mck-msg-sbmt" class="mck-btn mck-btn-text-panel" title="Send Message">
@@ -325,7 +326,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="mck-running-on n-vis">
+			<div class="mck-running-on n-vis notranslate">
 					<svg xmlns="http://www.w3.org/2000/svg" width="10" height="15" style="vertical-align: middle;"><path fill="#513DD8" fill-rule="nonzero" d="M7.69879975.54941587L5.81596948 6.3447902l3.87961917.47635733c.13377998.01642612.19891133.17720919.10092463.28401145l-7.24573967 7.4456573c-.05838132.06073652-.1713319.01291556-.14228864-.0853757l1.54838036-5.83643965-3.71239422-.45582469C.11069114 8.15675014.0455598 7.99596707.1435465 7.8891648L7.55445767.48076424c.06043478-.07746063.17133188-.01291553.14434208.06865163z"/></svg> by
 				<a class="mck-powered-by" href="https://www.kommunicate.io" target="_blank">
 					<span class="n-vis">Applozic Chat SDK</span> Kommunicate.io
@@ -674,7 +675,7 @@
 							<div id="km-tab-title" class="mck-tab-title mck-truncate mck-display-name"></div>
 					</div>
 				<div class="blk-lg-2 mck-close-btn">
-					<button type="button" id="km-modal-close" class="mck-box-close mck-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
+					<button type="button" id="km-modal-close" class="mck-box-close km-close-sidebox move-right" data-dismiss="mckbox" aria-label="Close">
 						<svg xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" height="24" viewBox="0 0 24 24" width="24">
 							<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
 							<path d="M0 0h24v24H0z" fill="none" />
@@ -684,7 +685,7 @@
 			</div>
 			<div class="km-modal-body">
 				<div class="km-section-title">
-					<p class="km-modal-span">Before starting, we just need a few details so that we may serve you better</p>
+					<p id="km-lead-collection-heading" class="km-modal-span"></p>
 				</div>
 				<p id="km-error-chat-login" class="km-modal-error n-vis"></p>
 				<div class="km-modal-form">
@@ -693,20 +694,20 @@
 								<input class="km-form-control km-input-width n-vis" id="km-userId" name="km-userId"/>
 							</div>
 						<div class="km-form-group km-form-group-container">
-								<input type="email" class="km-form-control km-input-width n-vis" id="km-email" name="email" placeholder="Email" required/>
+								<input type="email" class="km-form-control km-input-width n-vis" id="km-email" name="email" placeholder="" required/>
 						</div>
 						<div class="km-form-group km-form-group-container">
-							<input type="text" class="km-form-control km-input-width n-vis" id="km-userName" name="km-userName" placeholder="Name" required/>
+							<input type="text" class="km-form-control km-input-width n-vis" id="km-userName" name="km-userName" placeholder="" required/>
 						</div>
 						<!--  <div class="form-group">
 							<input type="password" class="form-control" id="password"
 								name="password" placeholder="Password" required />
 						</div>-->
 						<div class="km-form-group km-form-group-container">
-							<input type="number" class="km-form-control km-input-width n-vis" id="km-contact" name="km-contact" placeholder="Contact Number" min="5" required/>
+							<input type="number" class="km-form-control km-input-width n-vis" id="km-contact" name="km-contact" placeholder="" min="5" required/>
 						</div>
 						<div class="km-form-group km-last km-last-child km-text-center">
-							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation">Start Conversation</button>
+							<button type="submit" id="km-submit-chat-login" class="mck-btn btn-primary km-start-conversation"></button>
 						</div>
 					</form>
 				</div>

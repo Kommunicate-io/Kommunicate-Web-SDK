@@ -100,13 +100,8 @@ exports.patchCustomer = (req, res) => {
   let userId = req.params.userId;
   let subscribed = customer.subscription && customer.subscription != "startup";
   console.log("request recieved to update customer: ", userId, "body", customer);
-  if (customer.websiteUrl) {
-    let appName = (customer.companyName) ? customer.companyName : "";
-    applozicClient.updateApplication({ applicationId: customer.applicationId, websiteUrl: customer.websiteUrl, pricingPackage: config.getCommonProperties().kommunicatePricingPackage, name: appName }).catch(err => {
-      console.log('error while updating application',err);
-    })
-  }
-
+  
+  customerService.updateApplicationInApplozic(customer);
 customerService.getCustomerByUserName(userId).then(async dbCustomer => {
     console.log("got the user from db", dbCustomer);
     if (activeCampaignEnable) {

@@ -195,7 +195,9 @@ getListMarkup:function(){
                                      {{title}}
                                  </p>
                                  <p class="km-faq-list--body_ans">
-                                     {{description}}
+                                     
+                                 
+                                 {{{description}}}
                                  </p>
                              </div>
                          </a>
@@ -389,7 +391,8 @@ Kommunicate.markup.getImageContainer = function(options) {
 }
 Kommunicate.markup.getHtmlMessageMarkups = function (message) {
     if (message && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
-        return "<pre class='km-mail-fixed-view'>" + message.message.replace(/\n/g, " ") + "</pre>";
+        var uniqueId = "km-iframe-" + message.groupId;
+        return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
     }
     return ""; 
 }

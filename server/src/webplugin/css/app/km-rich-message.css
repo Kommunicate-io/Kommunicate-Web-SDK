@@ -706,6 +706,7 @@
         justify-content: flex-start;
         text-decoration: none;
         border-bottom: solid 1px #e5e5e5;
+        color: grey;
         transition: all 0.3s ease-in-out;
     }
     .km-faq-list--body_que-ans {
@@ -713,11 +714,13 @@
         /*width: calc(100% - 106px);*/
         text-overflow: ellipsis;
         white-space: nowrap;
+        max-height: 51px;
         overflow: hidden;
         transition: all 0.3s ease-in-out;
     }
     .km-faq-list--body_list li>a:hover {
         background-color: #efefef;
+        color: grey;
     }
     
     .km-faq-list--body_que-ans .km-faq-list--body_que {
@@ -825,6 +828,9 @@
     }
     .km-faq-answer--body_container {
         padding: 10px;
+    }
+    .km-faq-answer--body_container ol, .km-faq-answer--body_container ul {
+        margin-left: 12px;
     }
     .km-faq-answer--body_que {
         font-size: 14px;

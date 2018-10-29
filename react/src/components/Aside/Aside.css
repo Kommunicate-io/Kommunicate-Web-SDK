@@ -508,6 +508,7 @@ ul#km-group-search-list li {
     color: #5b5959;
     text-align: center;
     margin: 0 auto;
+    max-width: 263px;
 }
 .km-sidebar-user-email , .km-sidebar-user-number {
     text-align: center;
@@ -735,8 +736,13 @@ ul#km-group-search-list li {
     color: #4831d9;
   
 }
-.km-sidebar-user-email:hover, .km-sidebar-user-number:hover,.km-sidebar-display-name:hover{
+#km-sidebar-user-email:hover, #km-sidebar-user-number:hover,#km-sidebar-display-name:hover{
     background-color: #f4f5f7;
+    cursor: text;
+}
+#km-sidebar-display-name:hover {
+    background-color: transparent;
+    cursor: default;
 }
 .km-sidebar-user-email,.km-sidebar-user-number{
     width: 100%;
@@ -758,9 +764,9 @@ color: #595757;
    margin-bottom: -15px;
 }
 .km-editphone{
-    position:  absolute;
-    bottom: -10;
-    left:  35px;
+    width:100%;
+    margin-bottom: 0;
+    right:0;
   
 }
 .km-postion-relative{
@@ -774,18 +780,29 @@ color: #595757;
     align-items: center;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+    display: flex;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
 }
-.km-displayname-wrapper .km-rectangle{
+.km-sidebar-display-name-submit{
     margin-bottom: 0;
     width: 19px;
     height: 17px;
     align-items: center;
     background-color: #e5e5e5;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
+    display: flex;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    padding: 2px;
 }
-[contenteditable=true]:empty:before{
+
+.contenteditable[contenteditable=true]:empty:before{
     content: attr(placeholder);
-    display: block; /* For Firefox */
+    display: block; 
     width: 100%;
     height: 16px;
     font-family: Roboto;
@@ -797,7 +814,7 @@ color: #595757;
     letter-spacing: 0.4px;
     text-align: left;
     color: #4831d9;
-  }
+  } */
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }
@@ -806,10 +823,20 @@ color: #595757;
     margin-left: 2px;
   }
 
-#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit{
+#km-sidebar-user-number-edit ,#km-sidebar-user-email-edit,#km-sidebar-display-name-edit{
      text-align: left;
      width: 100%;
+     -webkit-appearance: none;
+     border: 1px solid #5c5aa7;
+     outline: none;
+     padding: 5px;
+     border-radius: 2px;
+     
  }
+ #km-sidebar-user-number-edit:focus ,#km-sidebar-user-email-edit:focus,#km-sidebar-display-name-edit:focus{
+    border: 1px solid #5c5aa7;
+    outline: none;
+}
 
 #km-phone-submit ,#km-email-submit,#km-displayName-submit{
         text-align: left;
@@ -821,9 +848,15 @@ color: #595757;
     bottom: -35px;
     right: 0;
 }
+
+.km-sidebar-phone-svg{
+    position: absolute;
+    bottom: -19px;
+    right: 0;
+}
 .km-sidebar-displayName-svg{
     position: absolute;
-    bottom: -20px;
+    bottom: -22px;
     right: 4%;
 }
 .km-displayName{
@@ -848,3 +881,8 @@ color: #595757;
     display: inline-block;
 }
 
+#km-text-box[contenteditable="true"]:empty:not(:focus)::before {
+    content: attr(data-text);
+    color: #949494;
+    opacity: .6;
+}

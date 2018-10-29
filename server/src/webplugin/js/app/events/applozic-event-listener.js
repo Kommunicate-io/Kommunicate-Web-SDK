@@ -10,6 +10,9 @@
         if (!message.metadata || (validMessageMetadata)) {
             KommunicateUI.hideAwayMessage();
         }
+    },
+    'onMessageSent': function(message){
+        KommunicateUI.hideClosedConversationBanner();
     }
 
 } 

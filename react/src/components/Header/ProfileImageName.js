@@ -6,6 +6,7 @@ import {goAway, goOnline, updateUserStatus} from '../../utils/kommunicateClient'
 import CommonUtils from '../../utils/CommonUtils';
 import { COOKIES, USER_STATUS } from '../../utils/Constant';
 import ReactTooltip from 'react-tooltip';
+import { persistor} from '../../store/store';
 
 class TurnOnAwayMode extends Component {
   render() {
@@ -59,10 +60,12 @@ export default class ProfileImageName extends Component {
         if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" &&typeof window.$applozic.fn.applozic!=="undefined"&& window.$applozic.fn.applozic("getLoggedInUser")) {
           window.$applozic.fn.applozic('logout');       
         }
+        // clear the data persisted in storage
+        persistor.purge()
         sessionStorage.clear();
         localStorage.clear();
         CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
-        window.location.assign("/login");
+        window.location.assign("/login");    
       }
 
       toggleStatus = (e) => {

@@ -31,6 +31,21 @@ kommunicateDashboard ={
         // contentType should be 300 for rich text message in metadata
         return metadata&&metadata.contentType==300;
     },
+    appendEmailToIframe:function (message){
+        var richText = kommunicateDashboard.isRichTextMessage(message.metadata) || message.contentType == 3;
+        if(richText && message.source === 7 ){
+            var iframeID = "km-iframe-"+ message.groupId;
+            var iframe = document.getElementById(iframeID);
+            var doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(message.message);
+            doc.close();
+            var anchors = doc.getElementsByTagName('a');
+            for (var i=0; i<anchors.length; i++){
+              anchors[i].setAttribute('target', '_blank');
+            };
+        }
+    },
     processPaymentRequest:function(options){
 
     },

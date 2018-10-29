@@ -18,7 +18,8 @@ class Integrations extends Component {
             modalIsOpen: false,      
             activeDiv:'zendesk',
             hideHelpdocsOfferBanner: false,
-            isIntegrationFromIntegry: false
+            isIntegrationFromIntegry: false,
+            integrationEnabled:false
 
         };
         this.openModal = this.openModal.bind(this);
@@ -86,9 +87,11 @@ class Integrations extends Component {
   
     }
     openModal = (event) => {
+        let integrationEnabled = (event.currentTarget.dataset.integrationEnabled === "true")
         this.setState({
             activeDiv:event.target.getAttribute("data-key"),
-            modalIsOpen: true
+            modalIsOpen: true,
+            integrationEnabled:integrationEnabled
         });
         
     }
@@ -101,10 +104,12 @@ class Integrations extends Component {
      const thirdParties = [thirdPartyList].map((party) => {
          var party = thirdPartyList;
          var result = [];
+         let integrationEnabled = false
          for (var key in party) {
             var partyKey = key;
              if (party.hasOwnProperty(key)) {
                  var item = party[key];
+                 integrationEnabled =this.state[item.key]
                  var enabledClass = this.state[item.key] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
                  result.push(<div key={key} className="col-lg-4 col-md-4 col-lg-4-integration ">
                     <div className ={ enabledClass !== "content-wrapper" ? "active-integrated" : "hide-integrated" }>INTEGRATED</div>
@@ -112,7 +117,7 @@ class Integrations extends Component {
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} className="integration-settings" onClick={this.openModal}>{item.label}
+                         <span data-key={item.key} data-integration-enabled ={integrationEnabled} className="integration-settings" onClick={this.openModal}>{item.label}
                          </span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
@@ -137,7 +142,7 @@ class Integrations extends Component {
             <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
-                  getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys}/>
+                  getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys} integrationEnabled={this.state.integrationEnabled}/>
             </div>
             </Modal>
         }

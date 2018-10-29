@@ -3571,7 +3571,7 @@ ol, ul {
 	display: flex;
 	align-items: flex-start;
 	justify-content: center;
-	margin-bottom: 10px;
+	margin-bottom: 30px;
 	padding: 0px 10px;
 }
 .km-dispalyname-wrapper div:first-child {

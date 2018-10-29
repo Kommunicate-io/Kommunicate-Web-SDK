@@ -6,14 +6,24 @@ KommunicateConstants = {
     EVENT_IDS: {
         WELCOME_MESSAGE: "3",
         AWAY_MESSAGE: {
-            KNOWN: "1",
-            ANONYMOUS: "2"
+            KNOWN: "2",
+            ANONYMOUS: "1"
         }
     },
     THIRD_PARTY_APPLICATION: {
         HELPDOCS: "1"
     },
-    KOMMUNICATE_SESSION_KEY: "kommunicate"
+    KOMMUNICATE_SESSION_KEY: "kommunicate",
+    PRICING_PACKAGE : {
+        STARTUP: 101,
+        PER_AGENT_MONTHLY:102,
+        PER_AGENT_YEARLY:103,
+        GROWTH_MONTHLEY:104,
+        ENTERPRISE_MONTHLY:105,
+        ENTERPRISE_YEARLY:106,
+        EARLY_BIRD_MONTHLY:107,
+        EARLY_BIRD_YEARLY:108,
+   }
 }
 
 /**

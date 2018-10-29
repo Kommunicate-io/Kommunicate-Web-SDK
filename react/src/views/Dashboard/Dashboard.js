@@ -11,7 +11,8 @@ import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 import Checkbox from '../../components/Checkbox/Checkbox'
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import Onboarding from '../../components/UserOnboarding/Onboarding';
 
 const brandPrimary = '#5c5aa7';
 const brandSuccess = '#18A9B7';
@@ -413,10 +414,13 @@ class Dashboard extends Component {
       "displayName": userSession.displayName !== null ? userSession.displayName: "",
       "userId": userSession.userName !== null ? userSession.userName: "",
       "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
-          "billingCustomerId": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
-          "created_at": userSession.created_at !== null ? userSession.created_at: "",
-          "subscription": userSession.subscription !== null ? userSession.subscription : "" ,
-          "industry": userSession.industry !== null ? userSession.industry : ""
+          "Billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+          "Signup": userSession.created_at !== null ? userSession.created_at: "",
+          "Subscription": userSession.subscription !== null ? userSession.subscription : "" ,
+          "Application": userSession.applicationId !== null ? userSession.applicationId : "",
+          "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
+          "Industry": userSession.industry !== null ? userSession.industry : "",
+          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
       }
     };
     window.Kommunicate.updateUser(userdetail);
@@ -853,6 +857,9 @@ render() {
         null
       } */}
       {/* <ProductHuntOffer /> */}
+      
+      <Onboarding />
+
       <div className="animated fadeIn dashboard-card">
         <div className="row filter-dropdown-wrapper">
           <div className="col-lg-2 col-sm-4">

@@ -19,6 +19,8 @@ import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions'
 
 
 class Login extends Component {
@@ -58,20 +60,30 @@ constructor(props){
     loginType: 'email',
     hideGoogleLoginBtn:false,
     marginBottomFrgtPassHead:'',
-    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in"
+    googleLoginUrl: getConfig().googleApi.googleApiUrl,
+    next : "/dashboard"
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
   this.submitForm = this.submitForm.bind(this);
+
   this.websiteUrl = this.websiteUrl.bind(this);
 }
 
   componentWillMount() {
+    const search = this.props.location.search;
+    let referer  = CommonUtils.getUrlParameter(search, 'referrer')
+    if(referer){
+      var url = this.state.googleLoginUrl+"&state="+referer;
+      this.setState({next:referer,googleLoginUrl:url});
+    };
+
+
     if (CommonUtils.getUserSession()) {
-      window.location = "/dashboard";
+     window.location = this.state.next;
     }
 
-    const search = this.props.location.search;
+   
     const googleLogin = CommonUtils.getUrlParameter(search, 'googleLogin');
     // console.log(googleLogin)
 
@@ -229,9 +241,10 @@ submitForm = ()=>{
           // response.data.result.password = password=='' ? response.data.result.accessToken : password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
+          _this.props.saveUserInfo(response.data.result);
         }
         // _this.props.history.push("/dashboard");
-        window.location.assign("/dashboard");
+        window.location.assign(_this.state.next);
         _this.state=_this.initialState;
     }
     }).catch(function(err){
@@ -308,10 +321,10 @@ checkForMultipleApps=(result)=>{
     }else{
     _this.setState({loginButtonDisabled:false, loginButtonText:'Login',loginButtonAction:'Login',loginFormSubText:'You are registered in multiple applications',hidePasswordInputbox:false,hideAppListDropdown:false,hideUserNameInputbox:true,loginFormText:"Hi! Select your application",subHeading:false,hideBackButton:false,isForgotPwdHidden:true,hideSignupLink:false,hideSignupLink:true, hideGoogleLoginBtn:true});
     if (this.state.googleOAuth){
-      _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: "",loginType :'oauth'}});
+      _this.props.history.push("/apps?referrer="+_this.state.next, {userid: _this.state.userName, pass: "",loginType :'oauth'});
     }
     else{
-    _this.props.history.push({pathname:"/apps", state:{userid: _this.state.userName, pass: _this.state.password}});}
+    _this.props.history.push("/apps?referrer="+_this.state.next, {userid: _this.state.userName, pass: _this.state.password});}
 
   }
 }else{
@@ -477,7 +490,8 @@ showPasswordField = () => {
                         <p className="input-error-message">{this.state.errorMessageText}</p>
                        </div>
                     </div> */}
-                          {/* login with google is hidden for release 1.5.2 . To make it visible uncomment   */}
+                         {/* Login with Google code STARTS here. */}
+                          {/* To show or hide Login with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
                          <a className="signup-with-google-btn" hidden={this.state.hideGoogleLoginBtn} href={this.state.googleLoginUrl}>
                           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                             <defs>
@@ -498,6 +512,8 @@ showPasswordField = () => {
                           <div className="or-seperator--line"></div>
                           <div className="or-seperator--text">OR</div>
                         </div>
+
+                      {/* Login with Google code ENDS here */}
 
                     <div hidden ={this.state.hideUserNameInputbox}>
                       <InputField
@@ -636,4 +652,13 @@ showPasswordField = () => {
   }
 }
 
-export default Login;
+// export default Login;
+const mapStateToProps = state => ({
+  userInfo:state.loginReducer.userInfo
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

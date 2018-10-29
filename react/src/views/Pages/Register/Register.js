@@ -279,6 +279,8 @@ class Register extends Component {
                   <h1 className="login-signup-heading text-center">Sign up to Kommunicate</h1>
                   {/* <p className="text-muted login-signup-sub-heading text-center">Your account information</p> */}
 
+                  {/* Signup with Google code STARTS here. */}
+                    {/* To show or hide Signup with Google just add "n-vis" to  "signup-with-google-btn" and "or-seperator" class.*/}
                   <a className={ (this.state.googleOAuth || this.state.isInvited) ? "n-vis":"signup-with-google-btn"} href={this.state.googleSignUpUrl}>
                     <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48" width="24" height="24">
                       <defs>
@@ -295,10 +297,12 @@ class Register extends Component {
                     Sign up with Google
                   </a>
 
-                  <div className="or-seperator">
+                  <div className={(this.state.googleOAuth || this.state.isInvited) ? "n-vis":"or-seperator"}>
                     <div className="or-seperator--line"></div>
                     <div className="or-seperator--text">OR</div>
                   </div>
+
+                  {/* Signup with Google code ENDS here. */}
 
                   <div className={this.state.googleOAuth?"input-group mb-3":"n-vis"}>
                   {/*<span className="input-group-addon"><i className="icon-user"></i></span>*/}
