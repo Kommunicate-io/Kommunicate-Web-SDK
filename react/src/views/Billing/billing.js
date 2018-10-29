@@ -318,7 +318,7 @@ class Billing extends Component {
     updateCustomerSubscription(customerInfo) {
         let userSession = CommonUtils.getUserSession();
 
-        const patchCustomerUrl = getConfig().kommunicateApi.signup + '/' + userSession.userName;
+        const patchCustomerUrl = getConfig().kommunicateApi.signup + '/' + userSession.adminUserName;
 
         return Promise.resolve(axios({
             method: 'patch',
