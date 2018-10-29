@@ -44,8 +44,12 @@
   float: left;
   transition: background-size 0.3s;
   }
-.km-onboarding--text-block ul li>span {
+.km-onboarding--text-block ul li>a {
     color: #4831d9;
+    text-decoration: none;
+}
+.km-onboarding--text-block ul li>a:hover {
+    text-decoration: none;
 }
 
 

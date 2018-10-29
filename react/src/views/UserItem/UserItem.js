@@ -39,7 +39,7 @@ class UserItem extends Component {
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
     }
-    
+  
     getContactImageByAlphabet() {
       var displayIconColor;
       var user = this.props.user;

@@ -19,6 +19,8 @@ import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions'
 
 
 class Login extends Component {
@@ -239,6 +241,7 @@ submitForm = ()=>{
           // response.data.result.password = password=='' ? response.data.result.accessToken : password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
+          _this.props.saveUserInfo(response.data.result);
         }
         // _this.props.history.push("/dashboard");
         window.location.assign(_this.state.next);
@@ -649,4 +652,13 @@ showPasswordField = () => {
   }
 }
 
-export default Login;
+// export default Login;
+const mapStateToProps = state => ({
+  userInfo:state.loginReducer.userInfo
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
