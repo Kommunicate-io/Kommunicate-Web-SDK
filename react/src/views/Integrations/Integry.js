@@ -11,10 +11,12 @@ function initilizeIntegry(settings) {
     // this function should be called after integry SDK is loaded completely
     // todo : replace hardcoded data with  settings object. 
     window.integryAppSDK.load({
-        app_key: "6ab3030f-cbcc-40c0-9e89-7bf33e71a4da",
-        user_id: "yasir@integry.io",
-        hash: "24bee38347a2f3a39b9846ad47b2e57c34c77ac693e63f99bbad619929940a53",
-        bundle_id: "23",
+        app_key: "6ab3030f-cbcc-40c0-9e89-7bf33e71a4da", // provided by Integry . 
+        user_id: "1de42a6e4a0caadad66e22f694e693750",  // customer_Id kommunicate.  use applicationId here to share the integration with all agents within application 
+        hash :"382c40f9703330e96e0a2d30c857a09bde41b896bd9b6b455b63e9b3143fdcc9",
+        //hash: "24bee38347a2f3a39b9846ad47b2e57c34c77ac693e63f99bbad619929940a53",
+        //bundle_id: "23",
+        bundle_id :"32",
         bundle_instance_id: "",
         callback: integrationSuccessCallback,
         callback_render_integration_row: renderIntegrationRowCallback,
@@ -25,11 +27,13 @@ function initilizeIntegry(settings) {
             view_container: 'intcontainer',
             view_url: '',
             app_auth: {
-                api_key: 'c690bd29-7987-4e02-8c34-09a1547477f8'
+               // api_key: 'c690bd29-7987-4e02-8c34-09a1547477f8' // Kommunicate API key for customer. this wiil be used to access the kommunicate APIs from integry   
+               "api_key":  "OTTHTvrCRR72YW93XlasZxa9UXHd9Mjx"
             }
         },
         x_custom_variables: {
-            "application_id": "23cab6b8b34de229c0aaa6add5dfc4f78"
+           // "application_id": "23cab6b8b34de229c0aaa6add5dfc4f78"
+           "application_id": "1de42a6e4a0caadad66e22f694e693750"
         }
     });
 }
