@@ -34,9 +34,11 @@ class Integrations extends Component {
         let url = window.location.href;
         const newRegex = new RegExp('integrations/#templates_inline');
         const isIntegryUrl = url.match(newRegex);
-        if (isIntegryUrl) {
+        this.openIntegryModal();
+       // commented if condition for testing
+        /*if (trisIntegryUrl) {
            this.openIntegryModal();
-        }
+        }*/
     }
     openIntegryModal = () => {
         this.setState({
@@ -141,8 +143,9 @@ class Integrations extends Component {
             </div>
             </Modal>
         }
-        { this.state.isIntegrationFromIntegry &&        
-          
+        { //this.state.isIntegrationFromIntegry &&        
+          // check if integration is from integry 
+          // commented for testing
             <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
                 <h1>Integry Modal</h1>
                 <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
