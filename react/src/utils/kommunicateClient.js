@@ -1142,6 +1142,24 @@ const editApplicationDetails = (data) => {
   })
 }
 
+const updateKommunicateCustomerSubscription = (data) => {
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail'
+  let subscriptionDetails = {
+    applicationId: data.applicationId,
+    billingCustomerId: data.billingCustomerId,
+    subscription: data.subscription
+  }
+  return Promise.resolve(axios({
+    method: 'PATCH',
+    url: url,
+    data: data
+  })).then(response => {
+    if(typeof response !== "undefined" && response.data.code == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { throw { message: err }; })
+}
+
 export {
   fetchContactsFromApplozic,
   getGroupFeed,
@@ -1205,5 +1223,6 @@ export {
   updateInvitedUserStatus,
   updateUserStatus,
   getSubscriptionDetail,
-  editApplicationDetails
+  editApplicationDetails,
+  updateKommunicateCustomerSubscription
 }
