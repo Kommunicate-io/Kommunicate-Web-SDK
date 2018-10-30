@@ -43,3 +43,11 @@ module.exports.updateSubscription = {
         planQuantity: joi.number().integer().required()
     }
 }
+module.exports.updateKommunicateSubscription = {
+    body: {
+        applicationId: joi.string().required(),
+        billingCustomerId: joi.string().required(),
+        subscription: joi.string().required()
+
+    }
+}
