@@ -27,6 +27,7 @@ import IncomingEmailForward from '../../views/IncomingEmailForward/IncomingEmail
 import EmailNotifications from '../../views/EmailNotifications/EmailNotifications.js'
 import Conversation404 from '../../views/Pages/Page404/Conversation404'
 import EmailFallback from '../../views/EmailFallback/EmailFallback.js'
+import WebhooksAndSecurity from '../../views/WebhooksAndSecurity/WebhooksAndSecurity'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -223,6 +224,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-notifications" name="EmailNotifications" component={EmailNotifications}/>
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
                 <Route exact path="/settings/email-fallback" name="EmailFallback" component={EmailFallback}/>
+                <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" component={WebhooksAndSecurity}/>
                 
 
                 <Redirect from="/" to="/dashboard"/>
