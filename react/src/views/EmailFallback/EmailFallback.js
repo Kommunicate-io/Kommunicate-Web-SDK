@@ -42,13 +42,8 @@ export default class EmailFallback extends Component {
     checkForFallbackSettings = () => {
         let userSession = CommonUtils.getUserSession();
         let webhooks = userSession.application.applicationWebhookPxys;
-        for(var i=0; i<webhooks.length; i++) {
-            if(webhooks[i].notifyVia == -1){
-                return true;
-            } else {
-                return false;
-            }
-        }
+        let result = webhooks.filter(webhooks => webhooks.notifyVia === -1);
+        return (result.length == webhooks.length);
     }
 
     uploadImage = (file) => {
@@ -137,7 +132,7 @@ export default class EmailFallback extends Component {
     }
 
     editApplicationApiCall = (details) => {
-        return Promise.resolve(editApplicationDetails(details)).then((response) => {
+        return editApplicationDetails(details).then((response) => {
             return response.data;
         }).catch((error) => {
             Notification.info("Something went wrong");
