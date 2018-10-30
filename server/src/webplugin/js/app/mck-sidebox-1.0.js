@@ -4229,8 +4229,6 @@ const MESSAGE_CONTENT_TYPE = {
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 'slow');
                 }
-                var messageBody = document.querySelectorAll(".mck-message-inner.mck-group-inner")[0];
-                messageBody.scrollTop = messageBody.scrollHeight;
             };
             _this.closeConversation = function (data) {
                 if (typeof MCK_DISPLAY_TEXT === 'function') {
@@ -4707,8 +4705,6 @@ const MESSAGE_CONTENT_TYPE = {
                         scrollTop: $mck_msg_inner.prop("scrollHeight")
                     }, 'slow');
                 }
-                var messageBody = document.querySelectorAll(".mck-message-inner.mck-group-inner")[0];
-                messageBody.scrollTop = messageBody.scrollHeight;
                 if ($mck_tab_message_option.hasClass('n-vis')) {
                     if (msg.groupId) {
                         var group = mckGroupUtils.getGroup(msg.groupId);
