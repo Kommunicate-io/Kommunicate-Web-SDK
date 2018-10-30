@@ -10,7 +10,7 @@ import {SettingsHeader} from '../../../src/components/SettingsComponent/Settings
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 
 
-const InnputFields = (props) => {
+const InputFields = (props) => {
     return ( <div className="input-group">
         <input id={props.id} type="url" className="input" autoComplete="off" placeholder=" " value={props.value} onChange={props.onChange} required/>
         <label className="label-for-input email-label">{props.label}</label>
@@ -164,7 +164,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Send a copy of all new messages to your server:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                        <InnputFields id={"input-new-messages"} value={this.state.newMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
+                                        <InputFields id={"input-new-messages"} value={this.state.newMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                            
                                 </div>
                                 <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
@@ -175,7 +175,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Notify your server for unread incoming messages:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                        <InnputFields id={"input-unread-messages"} value={this.state.unreadMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
+                                        <InputFields id={"input-unread-messages"} value={this.state.unreadMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is unread for more than</p>
                                     <Select
@@ -197,7 +197,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Notify your server for undelivered messages to user:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                        <InnputFields id={"input-undelivered-messages"} value={this.state.undeliveredMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
+                                        <InputFields id={"input-undelivered-messages"} value={this.state.undeliveredMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is undelivered for more than</p>
                                     <Select
@@ -219,7 +219,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Add an authentication layer for the API calls going from Kommunicate <br/> to your server:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                        <InnputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />
+                                        <InputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />
                                     </div>                                
                                 </div>
                                 <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
@@ -239,7 +239,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>URL for authorising users from your end:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                        <InnputFields id={"input-authorization-url"} value={this.state.authorizationUrl} onChange={this.handleOnChange} label={"Enter your API URL"} />
+                                        <InputFields id={"input-authorization-url"} value={this.state.authorizationUrl} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                                
                                 </div>
                                 <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
