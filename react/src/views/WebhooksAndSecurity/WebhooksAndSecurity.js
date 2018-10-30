@@ -10,6 +10,22 @@ import {SettingsHeader} from '../../../src/components/SettingsComponent/Settings
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 
 
+const InnputFields = (props) => {
+    return ( <div className="input-group">
+        <input id={props.id} type="url" className="input" autoComplete="off" placeholder=" " value={props.value} onChange={props.onChange} required/>
+        <label className="label-for-input email-label">{props.label}</label>
+    </div> );
+}
+const MoreInfoLink = (props) => {
+    return ( <p>{props.descriptionLabel}  
+        <a href={props.url} target="_blank"> {props.Linklabel} 
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
+                <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
+            </svg>
+        </a> 
+    </p> );
+}
+
 export default class WebhooksAndSecurity extends Component {
 
     constructor(props) {
@@ -87,6 +103,9 @@ export default class WebhooksAndSecurity extends Component {
         delete applicationData.application.adminUser;
         applicationData.applicationWebhookPxys = [];
 
+        let authenticationToken = this.state.authenticationToken;
+        let accessTokenUrl = this.state.authorizationUrl;
+
         if(!securitySectionDetail) {
             // New Messages Input Field Data
             applicationData.applicationWebhookPxys.push(this.createApplicationWebhookPxy(this.state.newMessages, 300, FALLBACK_TYPE.UNANSWERED_MESSAGE, NOTIFY_VIA.MAIL));
@@ -97,13 +116,13 @@ export default class WebhooksAndSecurity extends Component {
             // Undelivered Messages Input Field Data
             applicationData.applicationWebhookPxys.push(this.createApplicationWebhookPxy(this.state.undeliveredMessages, this.state.selectUndeliveredMsgTime.value, FALLBACK_TYPE.UNDELIVERED_MESSAGE, NOTIFY_VIA.MAIL));
 
-            // Webhook Authentication Token URL
-            let authenticationToken = this.state.authenticationToken;
+            // Webhook Authentication Token URL and Security URL
             applicationData.webhookAuthentication = authenticationToken;
+            applicationData.accessTokenUrl = accessTokenUrl;
         } else {
             // Access Token URL - Security Section
-            let accessTokenUrl = this.state.authorizationUrl;
             applicationData.accessTokenUrl = accessTokenUrl;
+            applicationData.webhookAuthentication = authenticationToken;
         }
         
 
@@ -115,6 +134,7 @@ export default class WebhooksAndSecurity extends Component {
                     Notification.info("Security configuration updated successfully");
                 } else {   
                     userSession.application.applicationWebhookPxys = response.data.applicationWebhookPxys;
+                    userSession.application.webhookAuthentication = response.data.webhookAuthentication;
                     CommonUtils.setUserSession(userSession);                 
                     Notification.info("Webhooks configured successfully");
                 }
@@ -144,17 +164,10 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Send a copy of all new messages to your server:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                            <input id="input-new-messages" type="url" className="input" autoComplete="off" placeholder=" " value={this.state.newMessages} onChange={this.handleOnChange} required/>
-                                            <label className="label-for-input email-label">Enter your API URL</label>
+                                        <InnputFields id={"input-new-messages"} value={this.state.newMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                            
                                 </div>
-                                <p>For more information, see our  
-                                    <a href="https://docs.applozic.com/docs/webhooks" target="_blank"> Docs 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                                            <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-                                        </svg>
-                                    </a> 
-                                </p>
+                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -162,8 +175,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Notify your server for unread incoming messages:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                            <input id="input-unread-messages" type="url" className="input" autoComplete="off" placeholder=" "  value={this.state.unreadMessages} onChange={this.handleOnChange} required/>
-                                            <label className="label-for-input email-label">Enter your API URL</label>
+                                        <InnputFields id={"input-unread-messages"} value={this.state.unreadMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is unread for more than</p>
                                     <Select
@@ -177,13 +189,7 @@ export default class WebhooksAndSecurity extends Component {
                                         options={options}
                                     />                                 
                                 </div>
-                                <p>For more information, see our  
-                                    <a href="https://docs.applozic.com/docs/webhooks" target="_blank"> Docs 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                                            <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-                                        </svg>
-                                    </a> 
-                                </p>
+                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -191,8 +197,7 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Notify your server for undelivered messages to user:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                            <input id="input-undelivered-messages" type="url" className="input" autoComplete="off" placeholder=" " value={this.state.undeliveredMessages} onChange={this.handleOnChange} required/>
-                                            <label className="label-for-input email-label">Enter your API URL</label>
+                                        <InnputFields id={"input-undelivered-messages"} value={this.state.undeliveredMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>
                                     <p>if message is undelivered for more than</p>
                                     <Select
@@ -206,13 +211,7 @@ export default class WebhooksAndSecurity extends Component {
                                         options={options}
                                     />                                 
                                 </div>
-                                <p>For more information, see our  
-                                    <a href="https://docs.applozic.com/docs/webhooks" target="_blank"> Docs 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                                            <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-                                        </svg>
-                                    </a> 
-                                </p>
+                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -220,17 +219,10 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>Add an authentication layer for the API calls going from Kommunicate <br/> to your server:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                            <input id="input-authentication-token" type="url" className="input" autoComplete="off" placeholder=" " value={this.state.authenticationToken} onChange={this.handleOnChange} required/>
-                                            <label className="label-for-input email-label">Enter your authentication token</label>
+                                        <InnputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />
                                     </div>                                
                                 </div>
-                                <p>For more information, see our  
-                                    <a href="https://docs.applozic.com/docs/webhooks" target="_blank"> Docs 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                                            <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-                                        </svg>
-                                    </a> 
-                                </p>
+                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -247,17 +239,10 @@ export default class WebhooksAndSecurity extends Component {
                                 <p>URL for authorising users from your end:</p>
                                 <div className="input-dropdown-container">
                                     <div className="input-group">
-                                            <input id="input-authorization-url" type="url" className="input" autoComplete="off" placeholder=" " value={this.state.authorizationUrl} onChange={this.handleOnChange} required/>
-                                            <label className="label-for-input email-label">Enter your API URL</label>
+                                        <InnputFields id={"input-authorization-url"} value={this.state.authorizationUrl} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                                
                                 </div>
-                                <p>For more information, see our  
-                                    <a href="https://docs.applozic.com/docs/webhooks" target="_blank"> Docs 
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                                            <path fill="none" fillRule="evenodd" stroke="#4831D9" d="M8.111 5.45v2.839A.711.711 0 0 1 7.4 9H1.711A.711.711 0 0 1 1 8.289V2.6c0-.393.318-.711.711-.711H4.58M5.889 1h2.667C8.8 1 9 1.199 9 1.444v2.667m-.222-2.889L4.503 5.497" />
-                                        </svg>
-                                    </a> 
-                                </p>
+                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
                             <div className="security-action-buttons-container">
