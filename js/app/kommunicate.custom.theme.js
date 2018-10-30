@@ -49,27 +49,15 @@ function KmCustomTheme() {
 
     _this.reutrnCutomWidget = function () {
         if (WIDGET_SETTINGS !== null) {
-            switch (WIDGET_SETTINGS.iconIndex) {
-                case 1:
-                    return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmDefaultIcon;
-                    break;
-                case 2:
-                    return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmCustomIcon1;
-                    break;
-                case 3:
-                    return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmCustomIcon2;
-                    break;
-                case 4:
-                    return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmCustomIcon3;
-                    break;
-                case 'image':
-                    return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
-                    break;
-                default:
-                    return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmDefaultIcon;
+            if ( WIDGET_SETTINGS.iconIndex === "image"){
+                return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
             }
+            else {
+            // NOTE : We're sending icondIndex as integer value from kommunicate    
+                return KommunicateConstants.CUSTOM_WIDGETS_SVG[WIDGET_SETTINGS.iconIndex];
+            };
         } else {
-            return KommunicateConstants.CUSTOM_WIDGETS_SVG.KmDefaultIcon;
+            return KommunicateConstants.CUSTOM_WIDGETS_SVG[1]; // DEFAULT ICON
         }
 
     };
