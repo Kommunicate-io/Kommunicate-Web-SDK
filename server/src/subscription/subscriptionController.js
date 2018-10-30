@@ -1,6 +1,7 @@
 const logger = require("../utils/logger");
 const subscriptionService = require("./subscriptionService");
 const Boom = require('boom');
+const customerService = require('../customer/customerService')
 exports.createSubscription = async function (req,res) {
     logger.info("request received to create Subscription from : ",req.body);
     let response={};
@@ -90,6 +91,40 @@ exports.getAllSubscriptionByApiKey = async (req,res)=>{
 const getAppIdByAppKey =()=>{
     // todo : create authentication service. get Authentication object from request and return AppId 
     return "";
+}
+
+exports.updateKommunicateCustomerSubscription = (req, res) => {
+    let subscribed = req.body.subscription != "startup";
+    let applicationId = req.body.applicationId;
+    let response = {};
+    let customerDetail = {
+        'subscription': req.body.subscription,
+        'billingCustomerId': req.body.billingCustomerId
+    }
+    customerService.getCustomerByApplicationId(applicationId).then(customer => {
+        let userId = customer.userName
+        customerService.updateCustomer(userId, customerDetail).then(updated => {
+            if (updated) {
+                subscribed ? customerService.reactivateAgents(applicationId) : "";
+                response.code = "SUCCESS";
+                response.message = { "subscription": req.body.subscription, "status": "updated" };
+                res.status(200).json(response);
+            } else {
+                response.code = "NOT_FOUND";
+                response.message = "resource not found by userId " + userId;
+                res.status(404).json(response);
+            }
+
+        }).catch(err => {
+            console.log("Error while updating kommunicate subscription details ", err);
+            res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
+        });
+
+    }).catch(err => {
+        console.log("err while fetching data for customer", err);
+        res.status(500).json({ code: "INTERNAL_SERVER_ERROR", message: "something went wrong" });
+    })
+
 }
 
 

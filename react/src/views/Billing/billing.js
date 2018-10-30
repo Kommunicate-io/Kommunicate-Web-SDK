@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { getConfig } from '../.../../../config/config.js';
-import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId } from '../../utils/kommunicateClient'
+import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId, updateKommunicateCustomerSubscription } from '../../utils/kommunicateClient'
 import Notification from '../model/Notification';
 import { getResource } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
@@ -106,6 +106,8 @@ class Billing extends Component {
             this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false, boughtSubscription: subscription, boughtQuantity: quantity});
             // console.log(this.state.boughtSubscription);
+        } else {
+            this.getPlanDetails();
         }
 
         document.getElementById("portal").addEventListener("click", function (event) {
@@ -117,7 +119,6 @@ class Billing extends Component {
 
         this.chargebeeInit();
         this.getAgents();
-        this.getPlanDetails();
     }
 
     buyThisPlanClick = () => {
@@ -265,33 +266,48 @@ class Billing extends Component {
         this.setState({ currentPlan: SUBSCRIPTION_PLANS[subscription] });
 
         let userSession = CommonUtils.getUserSession();
-
         const customerInfo = {
             applicationId: userSession.application.applicationId,
             subscription: subscription
         };
-
         if (typeof billingCustomerId !== "undefined") {
             customerInfo.billingCustomerId = billingCustomerId;
             userSession.billingCustomerId = billingCustomerId;
         }
+        // that.updateCustomerSubscription(customerInfo)
+        //     .then(response => {
+        //         if (response.data.code === 'SUCCESS') {
+        //             userSession.subscription = subscription;
+        //             CommonUtils.setUserSession(userSession);
+        //             that.state.subscription = subscription;
 
-        that.updateCustomerSubscription(customerInfo)
-            .then(response => {
-                if (response.data.code === 'SUCCESS') {
-                    userSession.subscription = subscription;
-                    CommonUtils.setUserSession(userSession);
-                    that.state.subscription = subscription;
+        //             if (typeof billingCustomerId !== "undefined") {
+        //                 that.setState({billingCustomerId: billingCustomerId});
+        //             }
+        //             Notification.info(response.data.message);
+        //         }
+        //     }).catch(err => {
+        //         console.log(err);
+        //         alert(err);
+        //     });
+        updateKommunicateCustomerSubscription (customerInfo)
+        .then(response => {
+            if (response.data.code === 'SUCCESS') {
+                Notification.info("Subscribed successfully");
+                that.getPlanDetails()
+                userSession.subscription = subscription;
+                CommonUtils.setUserSession(userSession);
+                that.state.subscription = subscription;
 
-                    if (typeof billingCustomerId !== "undefined") {
-                        that.setState({billingCustomerId: billingCustomerId});
-                    }
-                    Notification.info(response.data.message);
+                if (typeof billingCustomerId !== "undefined") {
+                    that.setState({billingCustomerId: billingCustomerId});
                 }
-            }).catch(err => {
-                console.log(err);
-                alert(err);
-            });
+                
+            }
+        } ).catch(err => {
+            console.log(err);
+            alert(err);
+        });
     }
 
     processSubscriptionPlanStatus() {
