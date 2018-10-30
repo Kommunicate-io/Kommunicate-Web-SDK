@@ -312,6 +312,7 @@ const MESSAGE_CONTENT_TYPE = {
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var WIDGET_SETTINGS = appOptions.widgetSettings;
         var EMOJI_LIBRARY = appOptions.emojilibrary;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
@@ -409,9 +410,10 @@ const MESSAGE_CONTENT_TYPE = {
         var mckNotificationService = new MckNotificationService();
         var alMessageService = new AlMessageService();
         var alFileService = new AlFileService();
-				var mckNotificationUtils = new MckNotificationUtils();
-				var alNotificationService = new AlNotificationService();
-				var alUserService = new AlUserService();
+        var kmCustomTheme = new KmCustomTheme();
+        var mckNotificationUtils = new MckNotificationUtils();
+        var alNotificationService = new AlNotificationService();
+        var alUserService = new AlUserService();
         var $mckChatLauncherIcon = $applozic('.chat-launcher-icon');
         var mckCallService = new MckCallService();
         var mckNotificationTone = null;
@@ -490,6 +492,7 @@ const MESSAGE_CONTENT_TYPE = {
             window.Applozic.ALApiService.initServerUrl(MCK_BASE_URL);
             alFileService.get(appOptions);
             alMessageService.init(appOptions);
+            kmCustomTheme.init(appOptions);
             alNotificationService.init(appOptions);
             mckMessageLayout.init();
             notificationtoneoption.loop = false;
@@ -1297,28 +1300,7 @@ const MESSAGE_CONTENT_TYPE = {
             var INITIALIZE_APP_URL = "/v2/tab/initialize.page";
             _this.getLauncherHtml = function (isAnonymousChat) {
 
-                var anonymousCheck = isAnonymousChat ? "km-launcher-logo-gradient-2" : "km-launcher-logo-gradient-1";
-                var defaultHtml=  `<div id="launcher-svg-container" class="vis"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 500 500" width="56" height="56" style="enable-background:new 0 0 500 500;" xml:space="preserve">
-                <style type="text/css">
-                    .km-launcher-logo-0{fill:url(#`+anonymousCheck+`);}
-                    .km-launcher-logo-1{fill:#FFFFFF;}
-                </style>
-                <g>
-                    <linearGradient id=`+anonymousCheck+` gradientUnits="userSpaceOnUse" x1="3.367313e-08" y1="250" x2="500" y2="250">
-                        <stop offset="0" style="stop-color:#3A3C80"/>
-                        <stop offset="0.1658" style="stop-color:#4B4C93"/>
-                        <stop offset="0.3516" style="stop-color:#5858A2"/>
-                        <stop offset="0.5063" style="stop-color:#5C5CA7"/>
-                        <stop offset="0.6795" style="stop-color:#53549D"/>
-                        <stop offset="0.9706" style="stop-color:#3D3E83"/>
-                        <stop offset="1" style="stop-color:#3A3C80"/>
-                    </linearGradient>
-                    <circle class="km-launcher-logo-0" cx="250" cy="250" r="250"/>
-                    <g>
-                        <path class="km-launcher-logo-1" d="M377.5,379.6V237.1c0-51.4-41.7-93.1-93.1-93.1h-84.7c-51.4,0-93.1,41.7-93.1,93.1    c0,51.4,41.7,93.1,93.1,93.1h91.7c0,0,7.4,0.4,11.9,2.1c4.3,1.6,9.1,5.3,9.1,5.3l56.7,46.7c0,0,5.2,4.4,7,3.5    C377.9,386.9,377.5,379.6,377.5,379.6z M202.2,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z M254.1,275c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-77.8    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V275z M306,256.2c0,6.2-5.4,11.2-12.1,11.2c-6.7,0-12.1-5-12.1-11.2v-40    c0-6.2,5.4-11.2,12.1-11.2c6.7,0,12.1,5,12.1,11.2V256.2z"/>
-                    </g>
-                </g>
-                </svg></div>`;
+                var defaultHtml = kmCustomTheme.customSideboxWidget();
                 var customLauncherHtml =  `<div id="launcher-svg-container" class="vis" style ="white-space: nowrap;">
                 `+CUSTOM_CHAT_LAUNCHER+`
                 </div>`
@@ -1328,7 +1310,7 @@ const MESSAGE_CONTENT_TYPE = {
                       return '<div id="mck-sidebox-launcher" class="mck-sidebox-launcher launchershadow"><a href="#" target="_self" class="applozic-launcher">' + (CUSTOM_CHAT_LAUNCHER ?  customLauncherHtml : defaultHtml) + '<div id="launcher-agent-img-container"></div></a><div id="applozic-badge-count" class="applozic-badge-count"></div>' + '<div id="mck-msg-preview-visual-indicator" class="mck-msg-preview-visual-indicator-container n-vis">' + '<div class="mck-close-btn-container">' + '<div class="mck-close-btn"><span class="mck-close-icon-svg"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round"><path d="M1.0262069.0262069l7.9475862 7.9475862M8.9737931.0262069L1.0262069 7.9737931"/></g></svg></span><span class="mck-close-text">Close</span></div></div>' + '<div class="mck-msg-preview-visual-indicator-text  applozic-launcher"></div></div></div>' + '<div id="mck-msg-preview" class="mck-msg-preview applozic-launcher">' + '<div class="mck-row">' + '<div class="blk-lg-3 mck-preview-icon"></div>' + '<div class="blk-lg-9">' + '<div class="mck-row mck-truncate mck-preview-content">' + '<strong class="mck-preview-cont-name"></strong></div>' + '<div class="mck-row mck-preview-content">' + '<div class="mck-preview-msg-content"></div>' + '<div class="mck-preview-file-content mck-msg-text notranslate blk-lg-12 mck-attachment n-vis"></div>' + '</div></div></div><div id="mck-msg-preview-btns" class="n-vis"><button id="mck-vid-call-accept">Accept</button><button id="mck-vid-call-reject">reject</div></div>';
                   }
                   
-                    };
+             };
 
             _this.initializeApp = function (optns, isReInit) {
                 IS_REINITIALIZE = isReInit;
@@ -3934,7 +3916,7 @@ const MESSAGE_CONTENT_TYPE = {
                     '<div class="blk-lg-12">'+
                        '<div class="mck-msg-avator blk-lg-3">{{html msgImgExpr}}</div>'+
                         '<div class ="km-conversation-container-right">'+
-                            '<div class="mck-msg-box ${msgClassExpr}">'+
+                            '<div class="mck-msg-box ${msgClassExpr}" style= "background-color: ${msgBoxColor}">'+
                                 '<div class="move-right mck-msg-text"></div>'+
                                 '<div class="mck-msg-reply mck-verticalLine ${msgReplyToVisibleExpr}">'+
                                     '<div class="mck-msgto">${msgReplyTo} </div>'+
@@ -4386,6 +4368,7 @@ const MESSAGE_CONTENT_TYPE = {
                 }	
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
+                var msgBoxColorStyle = "";
                 var statusIcon = 'mck-pending-icon';
                 var contactExpr = 'vis';
                 var timeStamp = "mck-timestamp-"+msg.key;
@@ -4395,7 +4378,9 @@ const MESSAGE_CONTENT_TYPE = {
                 if (msg.contentType === 4 || msg.contentType === 10 || msg.contentType === 103) {
                     floatWhere = 'mck-msg-center';
                 }
-
+                if(floatWhere === "mck-msg-right" && WIDGET_SETTINGS && WIDGET_SETTINGS.primaryColor){
+                    msgBoxColorStyle = WIDGET_SETTINGS.primaryColor;
+                }
                 statusIcon = _this.getStatusIconName(msg);
                 var replyId = msg.key;
                 var replyMessageParameters = "'" + msg.deviceKey + "'," + "'" + msg.to + "'" + ",'" + msg.to + "'" + ",'" + replyId + "'";
@@ -4496,6 +4481,7 @@ const MESSAGE_CONTENT_TYPE = {
                     replyMessageParametersExpr: replyMessageParameters,
                     downloadMediaUrlExpr: alFileService.getFileAttachment(msg),
                     msgClassExpr: messageClass,
+                    msgBoxColor : msgBoxColorStyle,
                     progressMeterClassExpr:progressMeterClass,
                     attachmentBoxExpr: attachmentBox,
                     msgExpr: frwdMsgExpr,

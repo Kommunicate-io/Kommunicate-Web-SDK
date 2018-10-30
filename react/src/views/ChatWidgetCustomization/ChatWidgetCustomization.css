@@ -204,6 +204,7 @@
 }
 
 .km-chat-icon {
+    position: relative;
     width: 54px;
     height: 54px;
     border-radius: 50%;
@@ -217,7 +218,18 @@
 }
 
 .km-chat-icon-img img {
-    width: 54px;
+    margin-top: 0px;
+    width: auto;
+    height: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    vertical-align: middle;
+    border-style: none;
+    object-fit: contain;
 }
 
 .km-chat-icon svg {
