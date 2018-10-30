@@ -11328,3 +11328,20 @@ border-left-color: #84ca33;
  .letter-36 {
 border-left-color: #5e8631;
 }
+
+*::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+*::-webkit-scrollbar:vertical {
+    width: 7px;
+}
+*::-webkit-scrollbar:horizontal {
+    height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px
+}
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+}
