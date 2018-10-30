@@ -133,7 +133,7 @@ getRoomDetailTemplate: function (options, sessionId) {
 
 getButtonTemplate:function(options,requestType, elemWidthClass){
     if(options.type=="link"){
-    return'<button title= "'+ options.replyText +'" class= "km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+' "><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
+    return'<button title= "'+ options.replyText +'" class= "km-custom-widget-text-color km-cta-button km-add-more-rooms km-undecorated-link '+elemWidthClass+' "><a href ="'+options.url+'" target="_blank">'+options.name+'</a></button>';
     }else{
     return'<button title= "'+ options.replyText +'" data-buttontype="submit" data-requesttype= "'+requestType+'" class="km-cta-button km-add-more-rooms '+elemWidthClass+' ">'+options.name+'</button>';
     }
@@ -141,7 +141,7 @@ getButtonTemplate:function(options,requestType, elemWidthClass){
 getQuickRepliesTemplate:function(){
     return`<div class="km-cta-multi-button-container">
             {{#payload}}
-                 <button title='{{message}}' class="km-cta-button km-add-more-rooms km-quick-replies {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
+                 <button title='{{message}}' class="km-cta-button km-add-more-rooms km-quick-replies km-custom-widget-border-color km-custom-widget-text-color {{elemWidthClass}}" data-metadata = "{{replyMetadata}}">{{title}}</button>
             {{/payload}}
             </div>`;
 },
@@ -186,12 +186,12 @@ getListMarkup:function(){
              <div class="km-faq-list--body_list-container">
                  <ul class="km-faq-list--body_list {{elementClass}}">
                      {{#elements}}
-                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link" >
+                     <li class ={{hadlerClass}} data-type="{{dataType}}" data-reply = "{{dataReply}}" data-articleid= "{{dataArticleId}}" data-source="{{source}}"> <a href={{href}} target="_blank" class="km-undecorated-link km-custom-widget-text-color" >
                              <div class="km-faq-list--body_img">
                                      {{{imgSrc}}}
                              </div>
                          <div class="km-faq-list--body_que-ans">
-                                 <p class="km-faq-list--body_que">
+                                 <p class="km-faq-list--body_que km-custom-widget-text-color">
                                      {{title}}
                                  </p>
                                  <p class="km-faq-list--body_ans">
@@ -210,7 +210,7 @@ getListMarkup:function(){
          <div class="km-faq-list--footer">
                  <div class="km-faq-list--footer_button-container">
                          {{#buttons}}
-                         <button class="km-cta-button km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link" href ="{{href}}" target="_blank">{{name}}</a></button>
+                         <button class="km-cta-button km-custom-widget-border-color km-custom-widget-text-color km-add-more-rooms {{hadlerClass}}" data-type ="{{dataType}}" data-reply="{{dataReply}}"><a class ="km-undecorated-link km-custom-widget-text-color" href ="{{href}}" target="_blank">{{name}}</a></button>
                          {{/buttons}}
                      
              </div>
@@ -256,7 +256,7 @@ Kommunicate.markup.buttonContainerTemplate= function(options){
     var containerMarkup = '<div class="km-cta-multi-button-container">';
     var payload = JSON.parse(options.payload);
     var formData= payload? JSON.parse(options.formData||"{}"):"";
-    var elemWidthClass = payload.length==1?"km-cta-button-1":(payload.length==2?"km-cta-button-2":"km-cta-button-many");
+    var elemWidthClass = payload.length==1?"km-cta-button-1 km-custom-widget-border-color km-custom-widget-text-color":(payload.length==2?"km-cta-button-2 km-custom-widget-border-color km-custom-widget-text-color":"km-cta-button-many km-custom-widget-border-color km-custom-widget-text-color");
     var requestType = options.requestType;
     for(var i = 0;i<payload.length;i++){
         containerMarkup+=  Kommunicate.markup.getButtonTemplate(payload[i],requestType,elemWidthClass)
