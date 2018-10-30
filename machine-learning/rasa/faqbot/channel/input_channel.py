@@ -61,8 +61,11 @@ class Question:
         self.name = data["name"]
         self.content = data["content"]
         self.reference_id = None
-        if data["referenceId"] is not None:
-            self.reference_id = 'intent_' + str(data["referenceId"])
+        try:
+            if data["referenceId"] is not None:
+                self.reference_id = 'intent_' + str(data["referenceId"])
+        except KeyError:
+            print("referenceId not present, must be old record")
     
     def get_intent(self):
         if self.reference_id is None:
