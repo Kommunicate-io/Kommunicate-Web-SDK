@@ -69,7 +69,7 @@ exports.authCode = (req, res) => {
 	let numOfApp = 1
 	let email = null
 	let name = null
-	let referrer = req.query.referrer;
+	let referrer = req.query.state;
 
 	getToken(authCode).then(response => {
 		logger.info(response.data);

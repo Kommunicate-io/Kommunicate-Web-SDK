@@ -19,6 +19,8 @@ import GoogleSignIn from '../Register/btn_google_signin_dark_normal_web@2x.png';
 import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions'
 
 
 class Login extends Component {
@@ -58,12 +60,13 @@ constructor(props){
     loginType: 'email',
     hideGoogleLoginBtn:false,
     marginBottomFrgtPassHead:'',
-    googleLoginUrl: getConfig().googleApi.googleApiUrl + "&state=google_sign_in",
+    googleLoginUrl: getConfig().googleApi.googleApiUrl,
     next : "/dashboard"
   }
   this.showHide = this.showHide.bind(this);
   this.state=Object.assign({type: 'password'},this.initialState);
   this.submitForm = this.submitForm.bind(this);
+
   this.websiteUrl = this.websiteUrl.bind(this);
 }
 
@@ -71,7 +74,7 @@ constructor(props){
     const search = this.props.location.search;
     let referer  = CommonUtils.getUrlParameter(search, 'referrer')
     if(referer){
-      var url = this.state.googleLoginUrl+"&referrer="+referer;
+      var url = this.state.googleLoginUrl+"&state="+referer;
       this.setState({next:referer,googleLoginUrl:url});
     };
 
@@ -238,6 +241,7 @@ submitForm = ()=>{
           // response.data.result.password = password=='' ? response.data.result.accessToken : password;
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
+          _this.props.saveUserInfo(response.data.result);
         }
         // _this.props.history.push("/dashboard");
         window.location.assign(_this.state.next);
@@ -648,4 +652,13 @@ showPasswordField = () => {
   }
 }
 
-export default Login;
+// export default Login;
+const mapStateToProps = state => ({
+  userInfo:state.loginReducer.userInfo
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

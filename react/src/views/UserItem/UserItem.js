@@ -39,55 +39,7 @@ class UserItem extends Component {
       this.onOpenModal = this.onOpenModal.bind(this);
       this.onCloseModal = this.onCloseModal.bind(this);
     }
-    handleClick() {
-      var user = this.props.user;
-      var groupName = CommonUtils.getDisplayName(user);
-      var agentId = window.$kmApplozic.fn.applozic("getLoggedInUser");
-      var conversationDetail = {
-        agentId: agentId,
-        botIds: ["bot"],
-        //groupName: [agentId, user.userId].sort().join().replace(/,/g, "_").substring(0, 250),
-        groupName: groupName,
-        type: 10,
-        admin: agentId,
-        users: [{"userId":user.userId,"groupRole":3}], //userId of user
-        //clientGroupId: ''
-      };
-
-      window.$kmApplozic.fn.applozic("createGroup", {
-        //createUrl: getConfig().kommunicateApi+"/conversations/create",
-        groupName: conversationDetail.groupName,
-        type: conversationDetail.type,
-        admin: conversationDetail.agentId,
-        users: conversationDetail.users,
-        clientGroupId:conversationDetail.clientGroupId,
-        metadata: {
-            CREATE_GROUP_MESSAGE: "",
-            REMOVE_MEMBER_MESSAGE: "",
-            ADD_MEMBER_MESSAGE: "",
-            JOIN_MEMBER_MESSAGE: "",
-            GROUP_NAME_CHANGE_MESSAGE: "",
-            GROUP_ICON_CHANGE_MESSAGE: "",
-            GROUP_LEFT_MESSAGE: "",
-            DELETED_GROUP_MESSAGE: "",
-            GROUP_USER_ROLE_UPDATED_MESSAGE: "",
-            GROUP_META_DATA_UPDATED_MESSAGE: "",
-            CONVERSATION_ASSIGNEE: conversationDetail.agentId,
-            KM_CONVERSATION_TITLE:conversationDetail.groupName,
-            //ALERT: "false",
-            HIDE: "true",
-            WELCOME_MESSAGE:""
-        },
-        callback: function (response) {
-            // console.log("response", response);
-            if (response.status === 'success') {
-              window.$kmApplozic.fn.applozic('loadGroupTab', response.groupId);
-              window.appHistory.push("/conversations");
-            }
-        }
-      });
-    }
-
+  
     getContactImageByAlphabet() {
       var displayIconColor;
       var user = this.props.user;
@@ -269,33 +221,6 @@ class UserItem extends Component {
                       </div>
                       <span onClick={this.onCloseModal}><CloseButton /></span>
                     </Modal>
-                    {this.props.hideConversation == "true" ?
-                        null
-                        :
-
-                        <td className="km-conversation-tab-link" data-km-id={groupId+''} data-isgroup="true">
-                          <span style={conversationStyle} className="km-truncate-block">
-
-                          {latestConversation == null ?
-                            <button type="submit" className="btn btn-sm btn-primary"  onClick={(event) => this.handleClick(event)}>Start New</button>
-                            :
-                            latestConversation
-                          }
-
-                          </span>
-                          <div className="small text-muted">{lastMessageTime} </div>
-                        </td>
-                    }
-
-                    {this.props.hideConversation == "true" ?
-                        null
-                        :
-                        <td className="n-vis">
-                          <div>{asignee}</div>
-                          <div className="small text-muted">
-                          </div>
-                        </td>
-                    }
 
                     <td className="text-center n-vis">
                       <img src={'img/flags/USA.png'} alt="USA" style={{height: 24 + 'px'}}/>

@@ -26,6 +26,10 @@ class CustomerListItem extends Component {
         {
           "userId": user.userId,
           "groupRole": 3
+        },
+        {
+          "userId": "bot",
+          "groupRole": 2
         }
       ], //userId of user
       //clientGroupId: ''
@@ -46,6 +50,7 @@ class CustomerListItem extends Component {
         GROUP_NAME_CHANGE_MESSAGE: "",
         GROUP_ICON_CHANGE_MESSAGE: "",
         GROUP_LEFT_MESSAGE: "",
+        CONVERSATION_STATUS:0, 
         DELETED_GROUP_MESSAGE: "",
         GROUP_USER_ROLE_UPDATED_MESSAGE: "",
         GROUP_META_DATA_UPDATED_MESSAGE: "",

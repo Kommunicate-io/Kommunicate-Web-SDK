@@ -78,10 +78,13 @@ class Users extends Component {
                 }
               });  
               multipleGroupInfo(groupList).then(data => { 
-                var arr = [];
-                for(var j = 0; j < data.response.length; j++){
-                  arr[data.response[j].id] = data.response[j];
-                };
+                var arr = []; 
+                     
+                if(data.status == "success" && data.response && data.response.length){
+                  for(var j = 0; j < data.response.length; j++){
+                    arr[data.response[j].id] = data.response[j];
+                  };
+                }
                 const users=response.response.users.map((user, index)=>{
                   if (user.messagePxy && user.messagePxy.groupId) {
                         if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
@@ -102,8 +105,10 @@ class Users extends Component {
                   } 
                   else {
                     assignedUser.push(user);
+                    // Sort array after pushing
+                    var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
                     _this.setState({
-                      result: assignedUser.reverse(), 
+                      result: arrObj, 
                       showEmptyStateImage: true
                     })
                   }
