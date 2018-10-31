@@ -124,7 +124,7 @@ class AutoSuggest extends Component {
 				.then(response => {
 					console.log(response)
 					if (response.status === 200 && response.data.code === "SUGESSTION_CREATED") {
-						Notification.info("Shortcut created")
+						Notification.info("Quick reply created")
 						this.refs[shortcutRef].blur();
 						this.refs[messageRef].blur();
 						this.getSuggestions();
@@ -180,7 +180,7 @@ class AutoSuggest extends Component {
 			.then(response => {
 				console.log(response)
 				if(response.status === 200 && response.data.code === "SUGESSTION_UPDATED_SUCCESSFULLY"){
-					Notification.info("Suggestion updated")
+					Notification.info("Quick reply updated")
 					this.getSuggestions();
 					quickReply.loadQuickReplies();
 					this.setState({
@@ -397,7 +397,7 @@ class AutoSuggest extends Component {
 				</div>	
 				<div className="row ">
 					<div className="col-md-12">
-						<button disabled={this.state.visibleButtons} className="km-button km-button--primary" onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create Shortcut</button>
+						<button disabled={this.state.visibleButtons} className="km-button km-button--primary" onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create a quick reply</button>
 					</div>
 				</div>
 
