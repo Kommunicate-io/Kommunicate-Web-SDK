@@ -64,9 +64,9 @@ function KmCustomTheme() {
     
     _this.changeColorTheme = function () {
         // #0A090C
-        var MCK_BOX_TOP = document.getElementsByClassName("mck-box-top")
-        for (var i = 0; i < MCK_BOX_TOP.length; i++) {
-            MCK_BOX_TOP[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
+        var messageBoxTop = document.getElementsByClassName("mck-box-top")
+        for (var i = 0; i < messageBoxTop.length; i++) {
+            messageBoxTop[i].style.backgroundColor = WIDGET_SETTINGS.primaryColor;
         };
     };
 }
