@@ -1,0 +1,79 @@
+.km-email-hr{
+	width: 90%;
+    margin-top: 20px;
+	margin-bottom: 20px;
+}
+.km-user-info-metadata{
+    margin-bottom: 10px !important;
+    padding-bottom: 2px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.km-user-info-metadata-wrapper{
+    display: flex;
+    padding: 8px 14px 5px 14px;
+    flex-direction: column;
+}
+.km-user-info-meatadata-key {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.4px;
+    color: #706f6f;
+    min-width: 125px;
+}
+.km-user-info-meatadata-value-wrapper {
+    margin-left: 20px;
+}
+.km-user-info-meatadata-value {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.4px;
+    color: #595757;
+    min-width: 110px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+.km-sidebar-info-panel, .km-clearbit-title-panel {
+    background-color: #efefef;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    color: #5a5858;
+    padding: 4px 15px;
+    line-height: initial;
+}
+.km-user-info-metadata-wrapper{
+    display: flex;
+    padding: 8px 14px 5px 14px;
+    flex-direction: column;
+}
+.km-clearbit-title-panel {
+    background-color: #d8d8d8;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    color: #5a5858;
+    padding-left: 13px;
+}
+.fade-enter {
+opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+opacity: 1;
+transition: opacity 500ms ease-in;
+}
+
+.fade-leave {
+opacity: 1;
+}
+
+.fade-leave.fade-leave-active {
+opacity: 0.01;
+transition: opacity 300ms ease-in;
+}
