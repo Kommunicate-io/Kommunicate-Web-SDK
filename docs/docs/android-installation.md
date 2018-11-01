@@ -26,7 +26,7 @@ You can get the Application Key by signing up on [Kommunicate Dashboard](https:/
 
 ## Launch chat
 
-You can launch the chat using the below method:
+Launch the chat using the below method:
 
 ```java
  Kommunicate.launchSingleChat(context, groupName, kmUser, withPreChat, isUnique, agentList, botList, callback);
@@ -46,7 +46,7 @@ Below are the parameter's description:
 | callback | KmCallback      |    Callback to notify Success or Failure |
 
 ### Launching chat for visitor:
-If you would like to launch the chat directly without the visiting user entering any details, then you can use the method as below:
+If you would like to launch the chat directly without the visiting user entering any details, then use the method as below:
 
 ```java
 List<String> agentList = new ArrayList();
@@ -69,7 +69,7 @@ botList.add("bot1"); //enter your integrated bot Ids
 ```
 
 ### Launching chat for visitor with lead collection:
-If you need the user to fill in details like phone number, emailId and name before starting the support chat then you can launch the chat with `withPreChat` flag as true. In this case you wouldn't need to pass the kmUser. A screen would open up for the user asking for details like emailId, phone number and name. Once the user fills the valid details (atleast emailId or phone number is required), the chat would be launched. Use the method as below:
+If you need the user to fill in details like phone number, emailId and name before starting the support chat then launch the chat with `withPreChat` flag as true. In this case you wouldn't need to pass the kmUser. A screen would open up for the user asking for details like emailId, phone number and name. Once the user fills the valid details (atleast emailId or phone number is required), the chat would be launched. Use the method as below:
 
 ```java
 List<String> agentList = new ArrayList();
@@ -92,7 +92,7 @@ botList.add("bot1"); //enter your integrated bot Ids
 ```
 
 ### Launching chat with existing user:
-If you already have the user details the you can create a KMUser object using the details and launch the chat. Use the method as below to create KMUser with already existing details:
+If you already have the user details then create a KMUser object using the details and launch the chat. Use the method as below to create KMUser with already existing details:
 
 ```java
     KMUser user = new KMUser();
