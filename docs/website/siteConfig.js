@@ -43,26 +43,27 @@ const siteConfig = {
     debug: 'true',
   },
   colors: {
-    primaryColor: '#5C5AA7',
+    primaryColor: '#5553B7',
     secondaryColor: '#312f6f',
   },
   // This copyright info is used in /core/Footer.js and blog rss/atom feeds.
   copyright: 'Copyright © ' + new Date().getFullYear() + ' Kommunicate',
   // organizationName: 'deltice', // or set an env variable ORGANIZATION_NAME
   // projectName: 'test-site', // or set an env variable PROJECT_NAME
-  highlight: {
-    // Highlight.js theme to use for syntax highlighting in code blocks
-    // theme: 'vs2015',
-    themeUrl:['css/vs2015.css']
-  },
-  scripts: ['js/thirdPartyScripts.js'],
+  usePrism: ['jsx', 'js', 'java', 'objectivec', 'swift', 'json', 'css'],
+  // highlight: {
+  //   // Highlight.js theme to use for syntax highlighting in code blocks
+  //   theme: 'vs',
+  //   // themeUrl:['css/vs2015.css']
+  // },
+  scripts: ['/js/thirdPartyScripts.js'],
   // You may provide arbitrary config keys to be used as needed by your template.
   // repoUrl: 'https://github.com/facebook/test-site',
   onPageNav: 'separate',
-  scrollToTop: true,
-  scrollToTopOptions: {
-    zIndex: 100,
-  },
+  // scrollToTop: true,
+  // scrollToTopOptions: {
+  //   zIndex: 100,
+  // },
   cleanUrl: true,
 };
 
