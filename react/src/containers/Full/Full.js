@@ -84,11 +84,11 @@ class Full extends Component {
     // Wootric Script
     window.wootric_survey_immediately = true; // Shows survey immediately for testing purposes. TODO: Comment out for production.
     window.wootricSettings = {
-      email: userSession.email, // TODO: Required to uniquely identify a user. Email is recommended but this can be any unique identifier.
-      // external_id: 'abc123', // TODO: Reference field for external integrations only. Send it along with email. OPTIONAL
-      created_at: moment().unix(), // TODO: The current logged in user's sign-up date as a 10 digit Unix timestamp in seconds. OPTIONAL
-      account_token: 'NPS-954f150b' // This is your unique account token.
+      email: userSession.email,
+      created_at: (new Date(userSession.created_at).getTime()) / 1000,
+      account_token: 'NPS-954f150b'
     };
+    console.log(window.wootricSettings)
 
     this.initWootricScript();
 
