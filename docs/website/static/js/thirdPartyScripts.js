@@ -41,10 +41,7 @@ if (trackByDefault || /(^|; )ac_enable_tracking=([^;]+)/.test(document.cookie)) 
 (function(d, m) {
     let o = {
         "appId": "kommunicate-support",
-        "isAnonymousChat": true,
-        "agentId": "devashish@kommunicate.io",
-        "groupName": "Devashish",
-        "baseUrl": 'https://apps.applozic.com'
+        "isAnonymousChat": true
     };
     let s = document.createElement("script");
     s.type = "text/javascript";
