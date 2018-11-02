@@ -492,14 +492,18 @@ class Aside extends Component {
 
   addGroupMember(groupId, userId, callback) {
     //'role' :  1,  // (optional)  USER(0), ADMIN(1), MODERATOR(2), MEMBER(3)
+    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+    var role = botAgentMap[userId].type == 2 ? 2 : 1
     window.$kmApplozic.fn.applozic('addGroupMember',{'groupId': groupId,
                                         'userId': userId,
+                                        'role': role,
                                         'callback': function(response) {
                                           if (typeof callback === 'function') {
                                             callback();
                                           }
                                         }
                                       });
+   
   }
 
   removeGroupMember(groupId, userId) {

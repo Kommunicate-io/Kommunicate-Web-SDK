@@ -796,6 +796,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var group = {};
 					group.groupId = params.groupId;
 					group.userId = params.userId;
+					group.role = params.role;
 					var conversationDetail = mckMessageService.checkForRoleType(group);
 					if (!member) {
 						kmGroupService.addGroupMember(conversationDetail);
