@@ -5,7 +5,7 @@ sidebar_label: Webhooks
 ---
 Configure webhook Url  in Kommunicate dashboard. All messages will be send to the configured webhook Url in JSON format.
  Login to [Kommunicate ](https://www.kommunicate.io).
-Go to `Dashboard -> Settings -> Webhooks & Security`
+Go to Dashboard -> Settings -> [Webhooks & Security](https://dashboard.kommunicate.io/settings/webhooks-security)
 
 Add authentication to this post data request by configuring webhook authentication token in Kommunicate dashboard. This authentication token can be any random string.
 Scroll down to the **Security** section in **Webhooks & Security** page

@@ -6,7 +6,7 @@ sidebar_label: Access Token URL
 Access Token URL (Authentication URL) is required to ensure your platforms are safe from unauthorized access. Access Token URL can be configured by the Application admin in Kommunicate Dashboard for authenticating users from your backend server. 
 
 
-> Login to [Kommunicate](https://www.kommunicate.io). Go to `Dashboard -> Webhooks and Security`. Scroll down to Security section and enter your server URL for authentication in input field.
+> Login to [Kommunicate](https://www.kommunicate.io). Go to Dashboard -> [Webhooks and Security](https://dashboard.kommunicate.io/settings/webhooks-security). Scroll down to Security section and enter your server URL for authentication in input field.
 
 This URL should accept POST request with the following two request parameters.
 The user should provide the access token in the **accessToken** option while initializing the plugin.

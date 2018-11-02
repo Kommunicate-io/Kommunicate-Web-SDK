@@ -5,7 +5,7 @@ sidebar_label: Email Fallback
 ---
 Login to [Kommunicate ](https://www.kommunicate.io)
 
-Go to `Dashboard -> Settings -> Fallback Emails`
+Go to Dashboard -> Settings -> [Fallback Emails](https://dashboard.kommunicate.io/settings/email-fallback)
 
 Fallback comes for 2 types of messages:
 - Undelivered messages
