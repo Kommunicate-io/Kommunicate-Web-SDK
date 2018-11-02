@@ -5,7 +5,7 @@ import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
-
+import moment from 'moment';
 import Dashboard from '../../views/Dashboard/'
 import Users from '../../views/Users/'
 import Conversations from '../../views/Conversations/'
@@ -80,7 +80,33 @@ class Full extends Component {
       )
     }
     this.isIntegrationStarted({callback : this.populateIntegrationDetailInSession});
+
+    // Wootric Script
+    window.wootric_survey_immediately = true; // Shows survey immediately for testing purposes. TODO: Comment out for production.
+    window.wootricSettings = {
+      email: userSession.email,
+      created_at: (new Date(userSession.created_at).getTime()) / 1000,
+      account_token: 'NPS-954f150b'
+    };
+    console.log(window.wootricSettings)
+
+    this.initWootricScript();
+
   }
+
+  initWootricScript() {
+    let head = document.getElementsByTagName('head')[0];
+    let wootricScript = document.createElement('script');
+    wootricScript.src = "https://cdn.wootric.com/wootric-sdk.js";
+    head.appendChild(wootricScript);
+
+    wootricScript.onload = function () {
+        window.wootric('run');
+    }
+    return false;
+  } 
+
+
   isIntegrationStarted= (options)=>{
     let userSession = CommonUtils.getUserSession();
     let criteria ={
