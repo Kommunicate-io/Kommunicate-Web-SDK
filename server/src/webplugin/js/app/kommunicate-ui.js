@@ -36,8 +36,8 @@ KommunicateUI={
         } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
         }
-        if(KommunicateUI.awayMessageScroll) {
-            var messageBody = document.querySelectorAll(".mck-message-inner.mck-group-inner")[0];
+        var messageBody = document.querySelectorAll(".mck-message-inner.mck-group-inner")[0];
+        if(KommunicateUI.awayMessageScroll && messageBody) {
             messageBody.scrollTop = messageBody.scrollHeight;  
             KommunicateUI.awayMessageScroll = false;
         }
