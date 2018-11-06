@@ -150,11 +150,10 @@
     color: #f1eded;
     font-weight: 300;
     margin-top: -6px;
-    font-style: italic;
 }
 
 .km-chat-box-close {
-    width: 38px;
+    width: 38%;
     height: 60px;
     display: flex;
     align-items: center;
