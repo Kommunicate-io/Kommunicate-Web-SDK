@@ -992,7 +992,9 @@ const updateAppSetting = (status, data) => {
     url: url,
     data: data
   })).then(result => {
-    return result;
+    if(typeof result !== "undefined" && result.data.code == "SUCCESS") {
+      return result;
+    }   
   }).catch(err => {
     throw { message: err };
   })
