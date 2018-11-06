@@ -102,10 +102,10 @@ class ChatWidgetCustomization extends Component{
         };
         updateAppSetting("", widgetSettingsJson).then(response => {
             this.setState.changesMade = false;
-            Notification.info(response.data.message);
+            Notification.success("Chat widget visuals updated successfully");
             this.setState({changesMade : false});
             }).catch(err => {
-            Notification.info(err)
+            Notification.info("Could not update chat widget visuals, please try again")
             this.setState.changesMade = false;
             })
     };
