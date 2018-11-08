@@ -5734,3 +5734,6 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     color: #6f6d6d;
     font-weight: 300;
 }
+.mck-status--away{
+	background-color: #f7bc45 !important;
+}
