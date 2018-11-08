@@ -3,6 +3,37 @@ id: android-conversation
 title: Conversation
 sidebar_label: Conversation
 ---
+## Register Kommunicate Action Callback:
+Before creating or launching chat, you need to implement the ```KmActionCallback``` interface in your Application class. This interface will receive the callbacks with an object. You can do your custom operations based on the actions received or use Kommunicate's default actions.
+
+```
+ public class KommunicateApplication extends MultiDexApplication implements KmActionCallback {
+```
+
+Then override the ```KmActionCallback```'s ```onReceive``` method :
+
+```
+ @Override
+    public void onReceive(Context context, final Object object, String action) {
+
+        switch (action) {
+             //This action will be received on click of the default start new chat button
+            case Kommunicate.START_NEW_CHAT:
+                List<String> agents = new ArrayList<>(); //add your agents to this list
+                List<String> bots = new ArrayList<>(); //add your bots to this list
+                 try {
+                    KmHelper.setStartNewChat(context, agents, bots);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+             //This action will be received on click of logout option in menu
+            case Kommunicate.LOGOUT_CALL:
+                KmHelper.performLogout(context, object); //object will receive the exit Activity, the one that will be launched when logout is successfull
+                break;
+        }
+    }
+```
 
 ## Open Conversation Screen:
 You can launch the chat screen (where all the conversations are listed in descending order of time of communication) by using this method:

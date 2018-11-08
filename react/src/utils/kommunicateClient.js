@@ -77,16 +77,18 @@ const createCustomer = function (email, password, name, userName, signUpVia ) {
 }
 
 const saveToLocalStorage = (email, password, name, response) => {
+  var userDeatils = response.data.data;
   if (typeof (Storage) === "undefined") {
     throw { code: "BROWSER_ERROR", message: "Your browser does not support web storage. please upgrade you browser." };
   }
   if (response !== undefined) {
-    response.data.data.password = password;
-    if (response.data.data.application) {
+    userDeatils.apzToken = new Buffer(userDeatils.userName + ':' + userDeatils.accessToken).toString('base64')
+    userDeatils.password = password;
+    if (userDeatils.application) {
     } else {
       throw { code: "APP_NOT_RECEIVED", message: "Successuflly Registered !! We are having some trouble to log u in, please retry login." }
     }
-    CommonUtils.setUserSession(response.data.data);
+    CommonUtils.setUserSession(userDeatils);
     return { code: "SUCCESS" };
   } else {
     throw { code: "NULL_RESPONSE", message: "received null response" };
@@ -990,7 +992,9 @@ const updateAppSetting = (status, data) => {
     url: url,
     data: data
   })).then(result => {
-    return result;
+    if(typeof result !== "undefined" && result.data.code == "SUCCESS") {
+      return result;
+    }   
   }).catch(err => {
     throw { message: err };
   })
@@ -1142,6 +1146,24 @@ const editApplicationDetails = (data) => {
   })
 }
 
+const updateKommunicateCustomerSubscription = (data) => {
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail'
+  let subscriptionDetails = {
+    applicationId: data.applicationId,
+    billingCustomerId: data.billingCustomerId,
+    subscription: data.subscription
+  }
+  return Promise.resolve(axios({
+    method: 'PATCH',
+    url: url,
+    data: data
+  })).then(response => {
+    if(typeof response !== "undefined" && response.data.code == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { throw { message: err }; })
+}
+
 export {
   fetchContactsFromApplozic,
   getGroupFeed,
@@ -1205,5 +1227,6 @@ export {
   updateInvitedUserStatus,
   updateUserStatus,
   getSubscriptionDetail,
-  editApplicationDetails
+  editApplicationDetails,
+  updateKommunicateCustomerSubscription
 }

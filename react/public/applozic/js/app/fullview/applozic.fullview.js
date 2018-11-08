@@ -1819,8 +1819,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
 					var emptyStateDiv = document.getElementById("empty-state-conversations-div");
-					resetCustomerInfoTab();
-					resetClearbitInfoAndUserInfo();
+					//resetCustomerInfoTab();
+					//resetClearbitInfoAndUserInfo();
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis');
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
@@ -1892,8 +1892,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
-						$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
-						$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
+						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -4009,8 +4009,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (kmGroupUtils.getGroup(params.tabId)) {
 						var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 						var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-						$kmApplozic(".km-li-" + section + "-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
-						$kmApplozic(".km-li-" + section + "-" + contactHtmlExpr).removeClass("km-unread-msg");
+						$kmApplozic(".person."+params.tabId+" .km-unread-count-box").removeClass("vis").addClass("n-vis");
+						$kmApplozic(".person."+params.tabId).removeClass("km-unread-msg");
 					}			
 					$mck_msg_inner.bind('scroll', function () {
 						if ($mck_msg_inner.scrollTop() === 0) {

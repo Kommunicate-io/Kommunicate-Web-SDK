@@ -44,9 +44,9 @@ $(document).ready(function() {
         
     });
     $kmApplozic(document).on('click', '.km-group-member-list li, #km-tab-info-individual', function (event) {
-        $kmApplozic("#km-user-name-sec .km-user-title").html("");
-        $kmApplozic("#km-user-info-list .email").html("");
-        $kmApplozic("#km-user-info-icon-box .km-user-icon img").attr('src', "");
+        //$kmApplozic("#km-user-name-sec .km-user-title").html("");
+        //$kmApplozic("#km-user-info-list .email").html("");
+        //$kmApplozic("#km-user-info-icon-box .km-user-icon img").attr('src', "");
 
         var contactId = $kmApplozic(this).data('km-id');
         if (typeof contactId == "undefined" || typeof contactId == "") {
@@ -57,13 +57,15 @@ $(document).ready(function() {
     });
 
     function getContactDetail(contactId){
-        resetCustomerInfoTab();
+        //resetCustomerInfoTab();
         var userSession = JSON.parse(localStorage.getItem('KM_USER_SESSION'));
             $kmApplozic.fn.applozic("fetchContacts", {
                 "roleNameList": ["USER"],
                 "userId": encodeURIComponent(contactId),
                 'callback': function(response) {
             var user = response.response.users[0];
+            kmEvents.triggerCustomEvent("_userDetailUpdate", { 'data': { 'data': user } });
+            return;
             resetClearbitInfoAndUserInfo();
             var lastSeenAtText ="";
             if(user&& user.connected){
@@ -193,18 +195,18 @@ $(document).ready(function() {
 });
 
 function resetClearbitInfoAndUserInfo(){
-    $kmApplozic("#km-user-info-list .km-clearbit-field").html('');
-    $kmApplozic("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
-    $kmApplozic("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
-    $kmApplozic("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
-    $kmApplozic("#km-user-info-list .km-clearbit-link").attr('href', '');
-    $kmApplozic("#km-sidebar-user-info-wrapper").removeClass('vis').addClass('n-vis');
-    $kmApplozic("#km-user-info-metadata-wrapper").children('p').remove();
+    // $kmApplozic("#km-user-info-list .km-clearbit-field").html('');
+    // $kmApplozic("#km-user-info-list .km-cl-icon-wrapper").addClass('n-vis');
+    // $kmApplozic("#km-user-info-list .km-clearbit-logo-wrapper").addClass('n-vis');
+    // $kmApplozic("#km-user-info-list .km-clearbit-divider").addClass('n-vis');
+    // $kmApplozic("#km-user-info-list .km-clearbit-link").attr('href', '');
+    // $kmApplozic("#km-sidebar-user-info-wrapper").removeClass('vis').addClass('n-vis');
+    // $kmApplozic("#km-user-info-metadata-wrapper").children('p').remove();
 
 }
 function resetCustomerInfoTab() {
-    $kmApplozic("#km-sidebar-display-name").html("");
-    $kmApplozic("#km-sidebar-user-email").html("");
+    // $kmApplozic("#km-sidebar-display-name").html("");
+    // $kmApplozic("#km-sidebar-user-email").html("");
 }
 
 

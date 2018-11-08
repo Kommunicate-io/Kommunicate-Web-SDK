@@ -8,21 +8,15 @@ import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
-import LocationIcon from './Icons/location.png';
-import DomainIcon from './Icons/web-icon.png';
 import Notification from '../../views/model/Notification';
-import FacebookIcon from './Icons/facebook-icon.png';
-import CrunchbaseIcon from './Icons/crunchbaseIcon-icon.png';
-import TwitterIcon from './Icons/twitter-icon.png';
-import LinkedinIcon from './Icons/linkedin-icon.png';
 import ReactTooltip from 'react-tooltip';
 import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT} from '../../utils/Constant';
-import ReactModal from 'react-modal';
-import {PseudoNameImage, ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
+import {ConversationsEmptyStateImage} from '../../views/Faq/LizSVG';
 import TrialDaysLeft from '../TrialDaysLeft/TrialDaysLeft';
 import quickReply from '../../views/quickReply/quickReply';
 import { getConfig } from '../../config/config';
-import Labels from '../../utils/Labels';
+import PersonInfoCard from '../PersonInfo/PersonInfoCard'
+import {PseudonymModal} from '../PersonInfo/MetaInfo'
 
 const userDetailMap = {
   "displayName": "km-sidebar-display-name",
@@ -55,7 +49,8 @@ class Aside extends Component {
       group: null,
       modalOpen: false,
       hideInfoBox: false,
-      trialDaysLeftComponent: ""
+      trialDaysLeftComponent: "",
+      userInfo: null,
     };
     this.dismissInfo = this.dismissInfo.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -66,6 +61,7 @@ class Aside extends Component {
     this.setInputFlag=this.setInputFlag.bind(this);
     this.handleGroupUpdate =this.handleGroupUpdate.bind(this);
     this.forwardMessageToZendesk = this.forwardMessageToZendesk.bind(this);
+    this.handleUpdateUser = this.handleUpdateUser.bind(this);
   }
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -93,6 +89,7 @@ class Aside extends Component {
      })
     window.addEventListener("group-update", this.handleGroupUpdate);
     window.addEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
+    window.addEventListener("_userDetailUpdate", this.handleUpdateUser);
   }
   componentWillMount() {
     let userSession = CommonUtils.getUserSession();
@@ -113,7 +110,14 @@ class Aside extends Component {
     }
     window.removeEventListener("group-update",this.handleGroupUpdate);
     window.removeEventListener("_sendMessageEvent", this.forwardMessageToZendesk);
+    window.removeEventListener("_userDetailUpdate", this.handleUpdateUser);
   }
+  handleUpdateUser(e) {
+    var user = e.detail.data;
+    this.setState({
+        userInfo: user,
+    })
+}
   handleGroupUpdate(e) {
     this.setState({ group: e.detail.data });
     this.selectStatus();
@@ -285,23 +289,6 @@ class Aside extends Component {
 
 
   loadAgents() {
-     // var that = this;
-      // window.$kmApplozic.fn.applozic('fetchContacts', {roleNameList: ['APPLICATION_WEB_ADMIN'], callback: function(response) {
-      //   if(response.status === 'success') {
-      //         var assign = window.$kmApplozic("#assign");
-      //         that.setState({agents: response.response.users});
-      //         window.$kmApplozic.each(response.response.users, function() {
-      //             assign.append(window.$kmApplozic("<option />").val(this.userId).text(CommonUtils.getDisplayName(this)));
-      //         });
-      //         if(sessionStorage.getItem("userProfileUrl")!=null){
-      //           that.props.updateProfilePicUrl(sessionStorage.getItem("userProfileUrl"));
-      //           let userSession = CommonUtils.getUserSession();
-      //           userSession.imageLink = sessionStorage.getItem("userProfileUrl");
-      //           CommonUtils.setUserSession(userSession);
-      //         }
-      //       }
-      //    }
-      // });
       var that = this;
       window.$kmApplozic("#assign").empty();
       let users = [USER_TYPE.AGENT, USER_TYPE.ADMIN,USER_TYPE.BOT];
@@ -427,8 +414,8 @@ class Aside extends Component {
       takeOverEleText = document.querySelector("#km-bot-active-text p>strong"),
       pseudoNameIcon = document.getElementById("pseudo-name-icon");
     takeOverEleContainer.style.display = "none";
-    pseudoNameIcon.classList.remove("vis");
-    pseudoNameIcon.classList.add("n-vis");
+    //pseudoNameIcon.classList.remove("vis");
+    //pseudoNameIcon.classList.add("n-vis");
     let allBotsInGroup = [];
     for (var key in group.users) {
       if (group.users.hasOwnProperty(key)) {
@@ -588,7 +575,8 @@ class Aside extends Component {
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
-    const infoText = Labels["lastcontacted.tooltip"];
+    const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().applicationId +"title="+CommonUtils.getUserSession().adminDisplayName;
+
     return (
       <aside className="aside-menu">
         <div className="animated fadeIn applozic-chat-container">
@@ -637,6 +625,9 @@ class Aside extends Component {
                           <div className="introducing-text-container">
                             <p>Introducing Pseudonyms for anonymous users</p>
                             <a href="#" onClick={this.onOpenModal}>Learn more</a>
+                            {
+                              this.state.modalOpen ? <PseudonymModal modalOpen={this.state.modalOpen} onCloseModal={this.onCloseModal} /> : null
+                            }
                           </div>
                           <div className="introducing-close-icon-container" onClick={this.dismissInfo}>
                             <svg xmlns="http://www.w3.org/2000/svg" version="1.1" x="0px" y="0px" width="20px" height="20px" viewBox="0 0 24 24" >
@@ -876,11 +867,6 @@ class Aside extends Component {
                                 </div>
                               </div>
                             </div>
-
-                            {/*<div className="col-sm-1">
-                              <i className="fa fa-user fa-lg mt-2"></i>
-                            </div>
-                            */}
                             <div className="select-labels">
                                 <span className="">Status:</span>
                             </div>
@@ -901,29 +887,10 @@ class Aside extends Component {
                               <div className="select-container">
                                 <select id="assign" onChange = {(event) => this.changeAssignee(event.target.value)} > </select>
                               </div>
-
-                              {/*
-                               {
-                                  this.state.agents.map(function(user) {
-                                    return <option key={user.userId}
-                                      value={user.userId}>{user.displayName}</option>;
-                                  })
-                               }
-                                */}
-
-
                             </div>
-
-                            {/*
-                            <div className="col-sm-1">
-                              <i className="fa fa-flag-o fa-lg mt-2"></i>
-                            </div>
-                            */}
                             <div className="trial-period-container">
                               {this.state.trialDaysLeftComponent}
                             </div>
-
-
                           </div>
                           <hr/>
                           <div className="km-new-conversation-header-bot" id="km-take-over-bot-container">
@@ -992,7 +959,7 @@ class Aside extends Component {
                             
                             <p className="empty-state-message-shortcuts-first-text km-empty-state-heading">You have no pending conversations</p>
 
-                            <p className="empty-state-message-shortcuts-second-text km-empty-state-subheading">You may check how a conversation looks like by starting a <a href={`${getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl}?appId=${CommonUtils.getUserSession().applicationId}&title=${CommonUtils.getUserSession().adminDisplayName}`} target="_blank">demo conversation</a> </p>
+                            <p className="empty-state-message-shortcuts-second-text km-empty-state-subheading">You may check how a conversation looks like by starting a <a href={kmConversationsTestUrl+""} target="_blank">demo conversation</a> </p>
 
                             <button className="km-button km-button--primary" onClick={() => {
                               window.appHistory.push('/settings/install');
@@ -1163,244 +1130,8 @@ class Aside extends Component {
                       </div>
                     </div>
                   </div>
-                  <div id="km-group-info-tab"
-                    className="km-group-info-tab km-panel-sm km-panel">
-                    <div className="panel-content">
-                      <div className="km-box-top">
-                        <div className="km-title-wrapper n-vis">
-                          <div className="blk-lg-10">
-                            <div className="km-box-title km-truncate" title="Group Info">Details
-                            </div>
-                          </div>
-                          <div className="blk-lg-2">
-                            <button type="button" id="km-group-info-close"
-                              className="km-box-close km-close-panel move-right">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                        </div>
-                        <div className="km-group-icon-sec km-postion-relative">
-                          <div id="km-group-info-icon-box"
-                            className="km-group-icon-box km-group-info-icon-box km-hover-on">
-                            <div className="km-group-icon"></div>
-                            {/* <span className="km-overlay-box n-vis">
-                              <div className="km-overlay">
-                                <span className="km-camera-icon"></span> <span
-                                  className="km-overlay-label">Change Group Icon</span>
-                              </div>
-                              <div id="km-group-info-icon-loading" className="km-loading n-vis">
-                                <img src="/applozic/images/mck-loading.gif"/>
-                              </div> <input id="km-group-icon-change"
-                              className="km-group-icon-change n-vis" type="file" name="file[]" />
-                            </span> */}
-                          </div>
-                          <div className="km-text-center">
-                            <a id="km-btn-group-icon-save" href="javascript:void(0)" role="link"
-                              className="km-btn-group-icon-save n-vis" title="Click to save">
-                              <img
-                              src="/applozic/images/mck-icon-save.png"
-                              alt="Save"/>
-                            </a>
-                          </div>
-                        </div>
-                        <p id="km-sidebar-userId"  hidden></p>
-                        <div className="km-dispalyname-wrapper">
-                          <div>
-                            {/* <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" onClick={() => this.showEditUserDetailDiv("displayName")} data-km-editfield ="displayName" onFocus={this.setInputFlag}></p> */}
-                            <p id="km-sidebar-display-name" className="km-sidebar-display-name km-truncate" data-km-editfield ="displayName"></p>
-                          </div>
-                          <div className="pseudo-name-icon text-center n-vis" id="pseudo-name-icon" onClick={this.onOpenModal}>
-                            <svg xmlns="http://www.w3.org/2000/svg" id="Incognito_Copy_3" data-name="Incognito Copy 3"
-                            viewBox="0 0 15.433 13.883">
-                                <path id="Shape" d="M7.75 0A12.3 12.3 0 0 0 0 2.83h15.433A12.128 12.128 0 0 0 7.75 0z"
-                              transform="translate(0 5.998)" fill="#42b9e8" />
-                                <path id="Shape-2" d="M9.3 5.257A2.564 2.564 0 0 1 6.739 2.7v-.2A2.946 2.946 0 0 0 5.7 2.289a2.355 2.355 0 0 0-.573.07v.269A2.561 2.561 0 1 1 2.561.068a2.58 2.58 0 0 1 2.426 1.617 3.734 3.734 0 0 1 .824-.094 3.641 3.641 0 0 1 1.063.162A2.556 2.556 0 0 1 9.3 0a2.634 2.634 0 0 1 2.561 2.7A2.564 2.564 0 0 1 9.3 5.257zm0-4.515a1.936 1.936 0 0 0-1.887 1.886A1.889 1.889 0 0 0 9.3 4.515a1.937 1.937 0 0 0 1.887-1.887A1.936 1.936 0 0 0 9.3.742zm-6.739 0A1.936 1.936 0 0 0 .674 2.628a1.887 1.887 0 1 0 3.774 0 2.066 2.066 0 0 0-.135-.741A1.859 1.859 0 0 0 2.561.742z"
-                              data-name="Shape" transform="translate(1.954 8.626)"
-                                fill="#42b9e8" />
-                                <path id="Shape-3" d="M8.289 0L3.707.741 1.483 0 0 4.515h9.772z"
-                                data-name="Shape" transform="translate(2.965)" fill="#42b9e8" />
-                            </svg>
-                          </div>
-                          {/* <div id="km-displayName-submit" className="n-vis" onBlur={() => this.onBlur("displayName")}>
-                          <input id="km-sidebar-display-name-edit" className="km-sidebar-display-name vis" data-km-editfield ="displayName"  onFocus={this.setInputFlag}  onKeyPress={this.onKeyPress} data-km-editfield ="displayName"></input>
-                          <div className="km-sidebar-displayName-svg">
-                          <div className="km-sidebar-display-name-submit km-displayName" style={{marginRight :"4px"}} onMouseDown={() => this.onMouseDown("displayName")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
-                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
-                              </svg>
-                            </div>
-                            <div className="km-sidebar-display-name-submit km-displayName" onMouseDown={(e) => this.cancelEdit(e,"displayName")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" className ="km-sidebar-submit-svg" width="11" height="10" viewBox="0 0 11 10">
-                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
-                              </svg>
-                            </div>
-                            </div>
-                            </div> */}
-                        </div>
-                        <hr className="hr"/>
-                        <div className="km-display-email-number-wrapper">
-                          <div className="km-postion-relative">
-                            <p className="n-vis">@</p> 
-                            <p id="km-sidebar-user-email" className="km-sidebar-user-email contenteditable vis" contentEditable="true" placeholder="Add Email" onClick={() => this.showEditUserDetailDiv("email")} data-km-editfield ="email" onFocus={this.setInputFlag}></p>
-                            <div id= "km-email-submit" className="km-editemail n-vis"  onBlur={() => this.onBlur("email")}> 
-                            <input id="km-sidebar-user-email-edit" type ="text" className="km-sidebar-user-email" placeholder="Add Email" onKeyPress={this.onKeyPress}></input>
-                            <div className="km-sidebar-svg">
-                            <div className="km-rectangle" style={{marginRight :"4px"}}  onMouseDown={() => this.onMouseDown("email")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" >
-                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
-                              </svg>
-                            </div>
-                            <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"email")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 9 9">
-                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
-                              </svg>
-                            </div>
-                            </div>
-                            </div>
-                          </div>
-                          <div className="vis km-postion-relative">
-                            <p>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14">
-                                <path fill="#686363" fillRule="nonzero" d="M8.33515566 13.38715016c-.05926722-.00832946-.11912954-.01893995-.1798423-.0313181-.72433044-.15252154-1.42626503-.47091322-2.27774871-1.03226124-1.50153202-1.01436369-2.75189609-2.31205273-3.719929-3.85938861l-.00046307-.00061446C1.3837426 7.22173723.86397466 5.99028636.61187513 4.80377854.4862773 4.21186996.38029987 3.50772098.5469947 2.77121015c.08723782-.46695842.34864425-.87135055.75334045-1.15635487L2.33561942.83451216c.60636074-.45717604 1.33570037-.35723769 1.81417846.2492895.14774114.18154096.29022762.37571102.42813376.56337758.06890112.0935513.13821485.18807619.20968376.28290396l.61744193.81924641c.469604.65142567.3703215 1.35785726-.25450303 1.8499775-.18127857.13658208-.3557812.26404499-.5302838.39150789-.1481799.10827262-.29633457.21636566-.44489304.32733183.10639789.37276514.28599585.75636724.5736771 1.22968834.6024601.98579219 1.21545411 1.72201055 1.92827981 2.31605998l.01516317.01330119c.08826528.0821727.19996166.15921504.31820799.240474.03239393.02231508.06478785.04463015.09679734.06707434l.97048089-.73103612c.2994681-.22563053.6334768-.3204217.96573219-.27372625.33225544.04669546.62740205.22972555.85307703.52916007l1.26573083 1.67963472c.47218866.62651871.36846445 1.36455479-.25814961 1.83682991-.11040583.08318392-.2205088.16421292-.32963818.2448294-.21777313.1603857-.42330672.3118708-.62381623.47321778-.44092231.38117707-.98627486.53196492-1.61576413.44349597zM2.77280686 8.0798434c.913921 1.46062416 2.09409806 2.68563972 3.50749335 3.64037227.76851357.50665465 1.39348005.79280436 2.02335274.92545858.48637304.1007671.8618835.0182177 1.1828808-.25895616.22203942-.17901343.44352489-.34235665.6578159-.50011874.1072605-.07904801.2154948-.15850851.32369789-.24035386.31073397-.2341187.34954852-.5102986.11535848-.82081824l-1.26575596-1.6794551c-.21502418-.28530257-.51782556-.32785853-.80316011-.1128768l-1.04486104.78723747c-.08541597.06435566-.3452753.25966173-.68298256.0276175-.06818674-.05041825-.12799042-.09141809-.18758932-.13257223-.13206778-.0910755-.26832263-.18493687-.39352062-.30013397-.7726529-.64530714-1.43247918-1.4366335-2.07605379-2.48954839-.35330624-.58106136-.56403643-1.05199111-.6840576-1.52720247-.0867049-.3526013.11851632-.53965504.2325599-.61353803.17183095-.12930333.34305621-.25429695.5143067-.37947015.17163493-.12530229.34326986-.25060458.51535612-.38042137.31675166-.2495704.35357249-.51156423.1132766-.8450992l-.61281112-.81310207c-.07316686-.0970807-.14435816-.19388374-.21493201-.28986755-.1388323-.18889543-.26997182-.36737072-.40973962-.53918457-.16789546-.2127567-.44141-.40245184-.81118683-.123527l-1.0446562.78708317c-.25998966.18320201-.41482075.42220147-.47016174.71693416-.13830646.6114026-.05063776 1.19431823.06401915 1.73506428.234443 1.10363771.7227653 2.25650656 1.45135088 3.42647847z"/>
-                              </svg>
-                            </p>
-                            <p id="km-sidebar-user-number" placeholder ="Add Phone Number" contentEditable="true" className="km-sidebar-user-number contenteditable" data-km-editfield ="phoneNumber" onFocus={this.setInputFlag} onClick={() => this.showEditUserDetailDiv("phoneNumber")}></p>
-                            <div id="km-phoneNumber-submit" className="km-editphone n-vis"  onBlur={() => this.onBlur("phoneNumber")}>
-                            <input id="km-sidebar-user-number-edit" placeholder ="Add Phone Number" type="number" min="0" className="km-sidebar-user-number"  onKeyPress={(e) => this.onKeyDown(e)}></input>
-                            <div className="km-sidebar-phone-svg">
-                            <div className="km-rectangle" style={{marginRight :"4px"}} onMouseDown={() => this.onMouseDown("phoneNumber")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" className="km-sidebar-contact-svg" >
-                                <path fill="#656161" fillRule="nonzero" d="M1.111 5.019a.66.66 0 1 0-.902.962l3.52 3.3a.66.66 0 0 0 .972-.076l6.16-7.92a.66.66 0 0 0-1.042-.81L4.103 7.823 1.111 5.02z" />
-                              </svg>
-                            </div>
-                            <div className="km-rectangle" onMouseDown={(e) => this.cancelEdit(e,"phoneNumber")}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 9 9">
-                                <path fill="#656161" fillRule="nonzero" d="M4.274 3.597L1.454.777a.479.479 0 0 0-.677.677l2.82 2.82a.32.32 0 0 1 0 .452l-2.82 2.82a.479.479 0 1 0 .677.677l2.82-2.82a.32.32 0 0 1 .452 0l2.82 2.82a.479.479 0 1 0 .677-.677l-2.82-2.82a.32.32 0 0 1 0-.452l2.82-2.82a.479.479 0 0 0-.677-.677l-2.82 2.82a.32.32 0 0 1-.452 0z" />
-                              </svg>
-                            </div>
-                            </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr className="km-email-hr"></hr>
-                      <div className ="km-user-lastseen-info">
-                     <p className="km-user-info-metadata">
-                      <span className="km-user-info-meatadata-key">
-                      Last seen</span>
-                      <span className="km-user-info-meatadata-value km-lastseen"></span>
-                      </p>
-                      <p className="km-user-info-metadata">
-                      <span className="km-user-info-meatadata-key">Last contacted
-                      <span className="km-tooltipsvg">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" data-tip={infoText} data-effect="solid" data-place="right" data-multiline="True" currentitem="false"><g fill="#514E4E" fillRule="nonzero"><path d="M6.6.073c-.014-.002-.026 0-.04 0C2.983.094.073 2.975.073 6.5c0 3.525 2.914 6.409 6.494 6.426a.56.56 0 0 0 .035.002l.001-.002c3.489-.017 6.326-2.9 6.326-6.426 0-3.525-2.837-6.41-6.329-6.427zm.003 12.098l-.03-.001C3.404 12.155.827 9.61.827 6.5S3.405.845 6.598.83c3.073.015 5.574 2.56 5.574 5.67 0 3.108-2.498 5.652-5.569 5.671z"></path><path d="M6.485 5.38H5.84v4.317h1.32V5.38zM6.509 3.306v-.003l-.004-.001-.008.001-.006-.001v.003c-.399.007-.643.29-.651.659 0 .354.246.64.651.656v.004h.012l.003-.001.003.001v-.001a.636.636 0 0 0 .651-.66c0-.366-.257-.646-.651-.657z"></path></g></svg>
-                      </span>
-                      </span>
-                      <span className="km-user-info-meatadata-value km-lastMessageAtTime"></span>
-                      </p>
-                      <p className="km-user-info-metadata">
-                        <span className="km-user-info-meatadata-key">Conversation<br/>started</span>
-                        <span className="km-user-info-meatadata-value"></span>
-                      </p>
-                      </div>
-                      {/* user metadata */}
-                      <div id="km-sidebar-user-info-wrapper" className="n-vis" >
-                        <div id="km-user-info-panel" className="km-sidebar-info-panel">User Info</div>
-                        <div id="km-user-info-metadata-wrapper" className="km-user-info-metadata-wrapper"></div>
-                      </div>    
-                      <div>
-                        <div id="km-clearbit-title-panel" className={this.state.clearbitKey != "" ? "km-clearbit-title-panel" : "n-vis" }>
-                        Clearbit</div>
-                        <div className="km-tab-cell">
-                          <div className="km-user-info-inner">
-                            <div id="km-user-info-list" className="km-user-info-list">
-                              <h4 id="full-name" className="km-clearbit-field km-clearbit-user-full-name"></h4>
-                              <p id="bio" className="km-clearbit-field km-clearbit-user-bio n-vis"></p>
-                              <div className="km-clearbit-user-domain-location-wrapper">
-                                <div id="location-icon" className="km-clearbit-logo-wrapper n-vis">
-                                  <img src = {LocationIcon} className="km-clearbit-location-icon" />
-                                  <p id="location" className="km-clearbit-field km-clearbit-user-data"></p>
-                                </div>
-                                <div id="domain-icon" className="km-clearbit-logo-wrapper n-vis">
-                                  <img src={DomainIcon} className="km-clearbit-domain-icon" />
-                                  <a id= "domain-link" className="km-clearbit-link" href="" target="_blank">
-                                    <p id="domain" className="km-clearbit-field km-clearbit-user-domain"></p>
-                                  </a>
-                              </div>
-                              </div>
-                              <div id="divider-1" className="km-clearbit-divider n-vis"></div>
-                              <div id="industry" className="km-clearbit-field km-clearbit-user-industry"></div>
-                              <div id="foundedYear" className="km-clearbit-field km-clearbit-user-industry"></div>
-                              <div className="km-clearbit-company-description-wrapper">
-                                <p id="description" className="km-clearbit-field km-clearbit-user-data"></p>
-                              </div>
-                              <div id="divider-2" className="km-clearbit-divider n-vis"></div>
-                              <div className="km-clearbit-user-social-info-wrapper">
-                                <div id="km-cl-ln-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="linkedin" className="km-cl-icon km-clearbit-link" href="" target="_blank">
-                                    <img src={LinkedinIcon} className="km-clearbit-social-icon " />
-                                  </a>
-                                </div>
-                                <div id="km-cl-fb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="facebook" className="km-cl-icon km-clearbit-link" href="" target="_blank">
-                                    <img src={FacebookIcon} className="km-clearbit-social-icon " />
-                                  </a>
-                                </div>
-                                <div id="km-cl-tw-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="twitter" className="km-cl-icon km-clearbit-link" href="" target="_blank">
-                                    <img src={TwitterIcon} className="km-clearbit-social-icon" />
-                                  </a>
-                                </div>
-                                <div id="km-cl-cb-icon-box" className="km-cl-icon-wrapper n-vis">
-                                  <a id="crunchbase" className="km-cl-icon km-clearbit-link"  href="" target="_blank">
-                                    <img src={CrunchbaseIcon} className="km-clearbit-social-icon" />
-                                  </a>
-                                </div>
-                              </div>
-
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {/* user metadata */}
-                     
-                      {/* <div id="km-group-info-panel" className="km-sidebar-info-panel">Group Info</div> */}
-                      {/* <div id="km-group-detail-panel" className="km-group-detail-box">
-                        <div id="km-group-member-panel"
-                          className="km-tab-panel km-group-member-panel vis">
-                          <div className="km-group-md-sec">
-                            <div className="km-row km-group-member-text">Members</div>
-                            <div id="km-group-add-member-box"
-                              className="km-row km-group-admin-options km-group-add-member-box n-vis">
-                              <a id="km-group-add-member" className="km-group-add-member"
-                                href="javascript:void(0)">
-                                <div className="blk-lg-3">
-                                  <img src="/applozic/images/mck-icon-add-member.png"
-                                    alt="Add Member"/>
-                                </div>
-                                <div className="blk-lg-9">Add member</div>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div> */}
-                      {/* <div className="km-box-body">
-                        <div className="km-tab-cell">
-                          <div className="km-group-member-inner">
-                            <ul id="km-group-member-list"
-                              className="km-group-member-list km-contact-list km-nav km-nav-tabs km-nav-stacked">
-                            </ul>
-                          </div>
-                        </div>
-                      </div> */}
-                      {/* <div id="km-group-info-ft" className="km-group-info-ft">
-                        <button type="button" id="km-btn-group-exit"
-                          className="km-btn km-btn-blue km-btn-group-exit"
-                          title="Exit Group">Exit Group</button>
-                      </div> */}
-                    </div>
+                  <PersonInfoCard user={this.state.userInfo}/>
                   </div>
-                </div>
                 <div id="km-loc-box" className="km-box km-loc-box fade"
                   aria-hidden="false">
                   <div className="km-box-dialog km-box-md">
@@ -1499,6 +1230,7 @@ class Aside extends Component {
 
           <ModalContent activeModal={this.state.clickedButton} handleCloseModal={this.closeModal} />
         </Modal>
+        {/* moved to separate component
         <ReactModal isOpen={this.state.modalOpen} style={customStyles}  shouldCloseOnOverlayClick={true} ariaHideApp={false}>
           <div className="row" style={{marginTop:"80px"}}>
             <div className="col-lg-5 col-md-6 col-sm-12 pseudo-name-intro-text-container">
@@ -1515,7 +1247,7 @@ class Aside extends Component {
           <div className="close-button-container" onClick={this.onCloseModal}>
             <button className="close-btn"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" height="24" viewBox="0 0 24 24" width="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></button>
           </div>
-        </ReactModal>
+        </ReactModal> */}
       </aside>
 
     )

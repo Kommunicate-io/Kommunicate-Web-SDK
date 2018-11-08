@@ -36,3 +36,40 @@ if (trackByDefault || /(^|; )ac_enable_tracking=([^;]+)/.test(document.cookie)) 
     profitwell('auth_token', '71e77c6a8d59f50233d1705120049bf1'); // Your unique Profitwell public API token
     profitwell('user_email', '');
 /* ========= Profitwell Script ends here ========= */
+
+/* ===== Komunicate Support Chat Script starts here ===== */
+(function(d, m) {
+    let o = {
+        "appId": "kommunicate-support",
+        "isAnonymousChat": true
+    };
+    let s = document.createElement("script");
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = 'https://api.kommunicate.io/kommunicate.app';
+    let h = document.getElementsByTagName("head")[0];
+    h.appendChild(s);
+    window.kommunicate = m;
+    m._globals = o;
+}
+)(document, window.kommunicate || {});
+/* ===== Komunicate Support Chat Script ends here ===== */
+
+/* ===== Script to scroll the sidebar automatically to make the active link come into view starts here ===== */
+document.addEventListener('DOMContentLoaded', function() {
+    // Find the active nav item in the sidebar
+    const item = document.getElementsByClassName('navListItemActive')[0];
+    if (!item) { return; }
+    const bounding = item.getBoundingClientRect();
+    if (
+      bounding.top >= 0 &&
+      bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+    ) {
+      // Already visible.  Do nothing.
+    } else {
+      // Not visible.  Scroll sidebar.
+      item.scrollIntoView({block: 'center', inline: 'nearest'});
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
+    }
+  });
+/* ===== The above scroll script ends here ===== */
