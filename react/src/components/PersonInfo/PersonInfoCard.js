@@ -59,11 +59,11 @@ class PersonInfoCard extends Component {
                         </div>
                         {
                             this.state.user ?
-                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} /> : null
-                        }
-                        {
-                            this.state.pseudoUser ?
-                                <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
+                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} >
+                                {
+                                    this.state.pseudoUser ?
+                                        <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
+                                }</EditableText> : null
                         }
 
                         {

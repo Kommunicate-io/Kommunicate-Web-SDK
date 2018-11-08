@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import ApplozicClient from "../../utils/applozicClient";
 import Notification from '../../views/model/Notification';
 import { SubmitSvg, CancelSvg } from '../../views/Faq/LizSVG';;
@@ -7,8 +8,9 @@ class EditableText extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      oldValue: this.props.value,
-      isInEditMode: false
+      value: this.props.value,
+      isInEditMode: false,
+      renderChild: this.props.children? true:false
     };
     this.changeEditMode = this.changeEditMode.bind(this);
     this.onKeyPressHandler = this.onKeyPressHandler.bind(this);
@@ -66,13 +68,13 @@ class EditableText extends Component {
 
   updateComponentValue = (e) => {
     var text = this.refs[this.props.reference].value;
-    if (!this.isValid(this.props.reference,text)){
+    if (!this.isValid(this.props.reference, text)) {
       return;
     }
     this.setState({
       isInEditMode: !this.state.isInEditMode
     });
-    if (text == this.state.oldValue) {
+    if (text == this.state.value) {
       return;
     }
     var params = {
@@ -84,8 +86,13 @@ class EditableText extends Component {
       .then(result => {
         if (result && result.data && result.data.status == "success") {
           this.setState({
-            oldValue: text
+            value: text
           })
+          if (this.props.reference == 'email' || this.props.reference == 'displayName') {
+            this.setState({
+              renderChild: false
+            })
+          }
         }
       })
   };
@@ -103,8 +110,8 @@ class EditableText extends Component {
           autoFocus="true"
           key={this.props.keyname}
           ref={this.props.reference}
-          placeholder={this.state.oldValue || this.props.placeholder}
-          defaultValue={this.state.oldValue}
+          placeholder={this.state.value || this.props.placeholder}
+          defaultValue={this.state.value}
           onKeyPress={this.onKeyPressHandler}
           onBlur={this.updateComponentValue}
         />
@@ -121,7 +128,8 @@ class EditableText extends Component {
   renderDefaultView = () => {
     return (
       <div onClick={this.changeEditMode}>
-        <p id={this.props.style} className={this.props.style}>{this.state.oldValue || this.props.placeholder}</p>
+        <p id={this.props.style} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
+        {this.state.renderChild? this.props.children : null}
       </div>
     );
   };
@@ -132,4 +140,9 @@ class EditableText extends Component {
       : this.renderDefaultView();
   }
 }
+EditableText.propTypes = {
+  keyname: PropTypes.string.isRequired,
+  reference:PropTypes.string.isRequired,
+  placeholder: PropTypes.string
+};
 export default EditableText;
