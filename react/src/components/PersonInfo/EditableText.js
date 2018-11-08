@@ -100,6 +100,7 @@ class EditableText extends Component {
         <input
           style={style}
           type="text"
+          autoFocus="true"
           key={this.props.keyname}
           ref={this.props.reference}
           placeholder={this.state.oldValue || this.props.placeholder}
