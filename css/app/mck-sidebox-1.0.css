@@ -3761,7 +3761,7 @@ display: none;
 
 	.mck-sidebox {
 		right: 25px !important;
-		bottom: 25px;
+		bottom: 8px;
 	}
 	.mck-sidebox.fade.in{
 		width:300px;
