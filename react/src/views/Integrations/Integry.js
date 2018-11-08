@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Integrations from './Integrations';
 import { Link } from 'react-router-dom';
 import CommonUtils from '../../utils/CommonUtils';
+import { createIntegrySubscription } from '../../utils/kommunicateClient'
     
 function initilizeIntegry(settings) {
     if(typeof settings !='object'){
@@ -44,6 +45,20 @@ function integrationSuccessCallback(data) {
     //for example you can save bundle instance id returned in your database 
    console.log("integration data ",data); 
    alert("Integration added successfully");
+   let subscriptionData = {
+       platform:"integry",
+       apiKey:"OTTHTvrCRR72YW93XlasZxa9UXHd9Mjx",
+       integrationName:"pipedrive",
+       eventType:"1",
+       triggerUrl:data.endpoint
+   }
+
+   createIntegrySubscription(subscriptionData).then(response => {1`1`
+    console.log("db updated", response)
+   })
+   .catch( err => {
+       console.log(err)
+   })
    cancelAddNewIntegration();
 }
 
@@ -92,10 +107,16 @@ function renderTemplateRowCallback(template) {
             integrationType: 0,
             state: key+"Keys",
             // label :<Link to= {template.link} data-key = {key} className="integration-settings">Add</Link>,
-            label :<span  data-key = {key} className="integration-settings" onClick ={ function(e){addNewIntegration(template.id);e.preventDefault();e.stopPropagation();}}>Add</span>,
+            
+            // label :<span  data-key = {key} className="integration-settings" onClick ={ function(e){addNewIntegration(template.id);e.preventDefault();e.stopPropagation();}}>Add</span>,
+            
+            label :"Add",
+            
             docsLink: "",
             domain:"",
-            instructions:["instruction1","instruction 2"]
+            instructions:["instruction1","instruction 2"],
+            source:"integry",
+            templateId:template.id,
             // label :<span href= {template.link} data-key = {key} target="_blank" className="integration-settings">Add</span> 
         }
         CommonUtils.triggerCustomEvent("kmIntegryInitilized",{detail:{"status": "success","list":thirdPartyList},bubbles: true,cancelable: true});
@@ -109,4 +130,7 @@ function cancelAddNewIntegration() {
     window.$kmApplozic(".integration-form-preview").hide();
 }
 
-export { initilizeIntegry }
+export { 
+    initilizeIntegry,
+    addNewIntegration 
+}

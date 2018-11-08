@@ -18,6 +18,7 @@ export let thirdPartyList = {
         domain:".zendesk.com",
         state: "zendeskKeys",
         label:"SETTINGS",
+        source:"km", // kommunicate
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://www.zendesk.com/login/#support">
             Zendesk dashboard</a></span>,
@@ -39,6 +40,7 @@ export let thirdPartyList = {
         docsLink: "https://clearbit.com/docs",
         state: "clearbitKeys",
         label:"SETTINGS",
+        source:"km", // kommunicate
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://dashboard.clearbit.com/login">
             Clearbit account</a></span>,
@@ -55,6 +57,7 @@ export let thirdPartyList = {
         state:"helpdocsKeys",
         label:"SETTINGS",
         docsLink: "https://apidocs.helpdocs.io/article/qVqI4u0iqG-managing-api-keys",
+        source:"km", // kommunicate
         instructions: [
             <span>Login to your <a  target="_blank" className="integration-api-support-link" href="https://my.helpdocs.io/login">
             HelpDocs dashboard</a></span>,
@@ -86,6 +89,7 @@ export let thirdPartyList = {
         domain:".agilecrm.com",
         label:"SETTINGS",
         state:"agilecrmKeys",
+        source:"km", // kommunicate
         instructions: [
             <span>Sign in to your <a  target="_blank" className="integration-api-support-link" href="https://my.agilecrm.com/enter-domain?to=login">
             Agile CRM dashboard</a></span>,

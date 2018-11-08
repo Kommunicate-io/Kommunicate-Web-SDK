@@ -297,7 +297,7 @@ class IntegrationDescription extends Component {
             {this.state.deleteStatement == false &&
                 <div className="row zendesk-integration-save-delete-wrapper">
                     <div className="integration-trash-icon"> <DeleteIcon handleOnClick={this.showDeleteStatement} /></div>
-                    <div className="zendesk-integration-save-btn">
+                    <div className="integration-save-btn">
                         <button className="km-button km-button--primary save-integrate-btn" onClick={this.validateIntegrationInput}>Save and Integrate</button>
                     </div>
                 </div>

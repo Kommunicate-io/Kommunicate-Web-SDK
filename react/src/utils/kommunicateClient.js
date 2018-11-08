@@ -1080,6 +1080,24 @@ const getSubscriptionDetail = (userId) => {
   })
 }
 
+const createIntegrySubscription = (subscriptionData) => {
+  let userSession = CommonUtils.getUserSession();
+  let appId = userSession.application.applicationId;
+  subscriptionData.applicationId = appId;
+  let url = getConfig().kommunicateBaseUrl + '/subscription?apiKey='+ subscriptionData.apiKey;
+  return Promise.resolve(axios({
+    method: 'POST',
+    url: url,
+    data: subscriptionData
+  })).then(response => {
+    if (response !== undefined) {
+      return response
+    }
+  }).catch(err => {
+    throw { message: err };
+  })
+}
+
 export {
   fetchContactsFromApplozic,
   createCustomer,
@@ -1140,5 +1158,6 @@ export {
   getUserDetailsByToken,
   updateInvitedUserStatus,
   updateUserStatus,
-  getSubscriptionDetail
+  getSubscriptionDetail,
+  createIntegrySubscription
 }
