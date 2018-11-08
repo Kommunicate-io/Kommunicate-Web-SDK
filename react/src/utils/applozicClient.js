@@ -76,6 +76,8 @@ updateUserDetail:function(params){
   })).then(response => {
     if(params.userDetails.callback){
       params.userDetails.callback(params.userDetails);
+    }else {
+      return response;
     }
   }).catch(e => {
     console.log("error", e);
