@@ -1476,11 +1476,7 @@ const MESSAGE_CONTENT_TYPE = {
                     
             }
             _this.shouldBrandingIncluded = function(data){
-                if(!data  || !data.pricingPackage){
-                    return true;
-                }
-                return USE_BRANDING && (data.pricingPackage !== KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY && KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY);
-
+                return !data  || !data.pricingPackage || USE_BRANDING && (data.pricingPackage !== KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_MONTHLY && KommunicateConstants.PRICING_PACKAGE.ENTERPRISE_YEARLY);
             }
             _this.onInitApp = function (data) {
                 var $mck_sidebox = $applozic("#mck-sidebox");
@@ -3214,6 +3210,7 @@ const MESSAGE_CONTENT_TYPE = {
                             Kommunicate.getAwayMessage({ "applicationId": MCK_APP_ID, "conversationId": params.tabId }, 
                             function(err,message){
                                 // populate away messsage for support group..
+                                MCK_LABELS['away'] = message.code != 'AGENTS_ONLINE' ? 'Away' : null;
                                 KommunicateUI.populateAwayMessage(err,message);
                                 KommunicateUI.updateLeadCollectionStatus(err,message,data.message)       
                             }
@@ -3508,8 +3505,11 @@ const MESSAGE_CONTENT_TYPE = {
                                     if( typeof detailOfAssignedUser !== "undefined" && typeof detailOfAssignedUser.imageLink !== "undefined" ) {
                                         $applozic(".mck-agent-image-container img").attr("src", detailOfAssignedUser.imageLink);
                                     }
-                                    
-                                    if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 1) {
+
+                                    if(MCK_LABELS['away']){
+                                        $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--away").removeClass("mck-status--online").removeClass("mck-status--offline");
+                                        $applozic("#mck-agent-status-text").text(MCK_LABELS['away']).addClass("vis").removeClass("n-vis");
+                                    } else if(typeof detailOfAssignedUser !== "undefined" && detailOfAssignedUser.roleType === 1) {
                                         // Checking if the CONVERSATION_ASSIGNEE is bot or not
                                         $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline");
                                         $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
