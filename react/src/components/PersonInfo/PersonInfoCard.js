@@ -59,11 +59,11 @@ class PersonInfoCard extends Component {
                         </div>
                         {
                             this.state.user ?
-                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} /> : null
-                        }
-                        {
-                            this.state.pseudoUser ?
-                                <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
+                                <EditableText style={"km-sidebar-display-name km-truncate"} keyname={this.state.user.userId} reference={"displayName"} value={this.state.user.userName || this.state.user.userId} >
+                                {
+                                    this.state.pseudoUser ?
+                                        <DisplayPseudoIcon onOpenModal={this.onOpenModal} /> : null
+                                }</EditableText> : null
                         }
 
                         {
@@ -75,7 +75,7 @@ class PersonInfoCard extends Component {
                                 <p className="">@</p>
                                 {
                                     this.state.user ?
-                                        <EditableText style={"km-sidebar-user-email"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email || "Add Email"} /> : null
+                                        <EditableText style={"km-sidebar-user-email"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email} placeholder={"Add Email"} /> : null
                                 }
                             </div>
                             <div className="km-postion-relative">
@@ -86,7 +86,7 @@ class PersonInfoCard extends Component {
                                 </p>
                                 {
                                     this.state.user ?
-                                        <EditableText style={"km-sidebar-user-number"} keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber || "Add Phone Number"} /> : null
+                                        <EditableText style={"km-sidebar-user-number"} keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
                                 }
                             </div>
                         </div>
