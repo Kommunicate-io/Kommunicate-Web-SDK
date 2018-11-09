@@ -26,7 +26,7 @@ There are multiple ways your can assign the conversation to agents.
 
   1. Set action `input.unknown` in Dialogflow. If Default fallback intents are enabled, Dialogflow automatically adds this action in response. It means whenever fallback intent is triggered the conversation will be assigned to an agent according to your conversation routing settings. 
 
-  2. Assign conversation to an agent when an intent detected. Set below json as the custom payload in dialogflow. specify the agent's Id(same as the agent use to login to dashboard) in `KM_ASSIGN_TO` parameter. If `KM_ASSIGN_TO` parameter left empty conversation routing rules will be applied. 
+  2. Assign conversation to an agent when an intent detected. Set below json as the custom payload in dialogflow. Specify the agent's emailId in `KM_ASSIGN_TO` parameter. If `KM_ASSIGN_TO` parameter left empty conversation routing rules will be applied. 
 
 ```js
 {
