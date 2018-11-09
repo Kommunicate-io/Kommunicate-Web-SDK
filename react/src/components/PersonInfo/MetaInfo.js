@@ -51,6 +51,10 @@ export const LastSeenSection = (props) => {
                 </span>
                 <span className="km-user-info-meatadata-value km-lastMessageAtTime">{lastMessageAt}</span>
             </p>
+            <p className="km-user-info-metadata">
+                <span className="km-user-info-meatadata-key">Conversation<br/>started</span>
+                <span className="km-user-info-meatadata-value"></span>
+            </p>
         </div>
     )
 }
