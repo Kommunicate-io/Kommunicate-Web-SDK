@@ -87,6 +87,7 @@
 }
 .input-field:focus {
     border: solid 1px #5553b7;
+    color: #4a4a4a;
 }
 .change-courser {
     cursor: pointer;
