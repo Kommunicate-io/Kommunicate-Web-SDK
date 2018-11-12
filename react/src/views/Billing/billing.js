@@ -648,15 +648,7 @@ class Billing extends Component {
                                         </div>
                                     </div>
                                     <hr/>
-                                    {/* <!-- Pricing Toggle --> */}
-                                    <div className="pricing-toggle text-left">
-                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
-                                        <div className="toggle n-vis">
-                                            <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
-                                            <b className="b switch"></b>
-                                        </div>
-                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly <span>(Save 20%)</span></label>
-                                    </div>
+                                    
                                     <div className="seat-selector--amount-container">
                                         <div className="amount-payable-container flexi">
                                             <p>Amount payable:</p>
