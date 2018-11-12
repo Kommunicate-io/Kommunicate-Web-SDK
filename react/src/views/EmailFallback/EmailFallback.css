@@ -18,6 +18,9 @@
     letter-spacing: 0.3px;
     color: #929396;
 }
+.email-fallback--branding-description a {
+    color: #4831d9;
+}
 .email-fallback--branding_logo-container, .branding_logo--image-upload {
     display: flex;
     align-items: center;

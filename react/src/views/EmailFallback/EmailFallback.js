@@ -6,6 +6,15 @@ import { SettingsHeader } from '../../../src/components/SettingsComponent/Settin
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import { editApplicationDetails, sendProfileImage } from '../../utils/kommunicateClient';
+import { Link } from 'react-router-dom';
+
+const FallbackEnabled = (props) => {
+    return (props.enabled) ? (
+        <p className="email-fallback--branding-description">We will send fallback emails to your users and/or your team members if they miss any new messages. The emails will have your logo if you have enabled the company branding option above.</p>
+    ) : (
+        <p className="email-fallback--branding-description">We will not send fallback emails to your users. Just set up the API URLs from the <Link to="/settings/webhooks-security">Webhook Setup</Link> section to get the relevant data from us and use it to send fallback notifications from your end.</p>
+    );
+} 
 
 export default class EmailFallback extends Component {
     constructor(props) {
@@ -188,7 +197,7 @@ export default class EmailFallback extends Component {
                                     <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
                                 </div>
                             </div>
-                            <p className="email-fallback--branding-description">We will stop sending fallback emails to your users from our side. Just set up the API URLs from the Webhook Setup section to get the relevant data from us. You can use the data to send fallback emails from your end.</p>
+                            <FallbackEnabled enabled={this.state.switchIsEnabled}/>
                         </div>
                     </div>
                 </div>

@@ -229,7 +229,7 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="webhooks-action-buttons-container">
                                 <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</button>
-                                <button className="km-button km-button--secondary">Cancel</button>
+                                <button className="km-button km-button--secondary n-vis">Cancel</button>
                             </div>
 
                             <hr/>
@@ -247,7 +247,7 @@ export default class WebhooksAndSecurity extends Component {
 
                             <div className="security-action-buttons-container">
                                 <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</button>
-                                <button className="km-button km-button--secondary">Cancel</button>
+                                <button className="km-button km-button--secondary n-vis">Cancel</button>
                             </div>
 
                         </div>

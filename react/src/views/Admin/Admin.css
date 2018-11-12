@@ -1,10 +1,8 @@
 .form-control-label{
     padding: 0;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-align: left;
-    color: #7d7f81;
+    font-size: 16px;
+    letter-spacing: 1.3px;
+    color: #616366;
 }
 .label-contact {
     color: #b8babb;
@@ -28,15 +26,14 @@
     color: rgba(35, 33, 33, 0.6);
 }
 .divider {
-    opacity: 0.36;
-    border-top: 1px solid rgba(14, 14, 14, 0.26);
+    border-top: 1px solid #e9e9e9;
+    max-width: 930px;
+    margin-left: 0px;
 }
 .default-dp{
-    width: 133px;
-    height: 134px;
-    border-radius: 65px;
-    margin-left: 25px;
-    
+    width: 173px;
+    height: 173px;
+    border-radius: 50%;
 }
 .pt-100 {
     padding-top: 100px;
@@ -45,17 +42,15 @@
     color: #dad8d8;
 }
 .edit-dp-btn {
-    /* position: absolute; */
+    margin-top: 15px;
 }
 .default-dp-hide {
     visibility: hidden;
 }
 .edit-dp-btn > span {
-    font-size: 14px;
+    font-size: 15px;
     letter-spacing: 1.1px;
-    color: #0d77f2;
-    margin: 0 auto;
-    margin-left: 25px;
+    color: #555bB7;
     
 }
 .user-dp-input{
@@ -80,21 +75,27 @@
     color: #aea8a8;
 }
 .input-field{
-    width: 238px;
-    height: 35px;
-    opacity: 0.63;
     border-radius: 4px;
-    border: solid 1px #9cb3de;
+    border: solid 1px #a1a1a1;
+    padding: 10px 16px;
+    color: #4a4a4a;
+}
+.input-field:disabled {
+    background-color: #f2f2f2;
+    border: none;
+    padding: 11px 16px;
+}
+.input-field:focus {
+    border: solid 1px #5553b7;
 }
 .change-courser {
-    cursor:pointer;
+    cursor: pointer;
 }
 .about-password-text {
-    font-size: 14px;
-    letter-spacing: 0.7px;
-    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.5px;
     color: #87898b;
-    padding-bottom: 5px;
+    margin-top: 3px;
 }
 .setup-btn-group {
     margin-top: 20px;
@@ -104,13 +105,10 @@
     background-color: white;
 }
 .about-dp{
-    /* width: 183px;
-    height: 14px; */
-    font-size: 12px;
-    letter-spacing: 0.7px;
-    /* text-align: left; */
-    color: #87898b;
-    /* margin-left: 17px; */
+    font-size: 15px;
+    letter-spacing: 1.1px;
+    color: #9b9b9b;
+    margin-top: 1px;
 }
 .hidden-cropped-img{
     visibility: hidden;
@@ -208,7 +206,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     padding: 5px;
 }
 .display-photo-wrapper{
-    padding: 35px;
+    padding: 4px 35px 35px;
    
 }
 /* For Firefox */
@@ -222,7 +220,40 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-.km-profile-wrapper{
-    /* margin-top: -65px; */
-    /* padding-top: 10px; */
+.forgot-password-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 930px;
+    padding: 15px 20px;
 }
+.forgot-password-container:hover {
+    background-color: #f0efff;
+}
+.forgot-password-container .forgot-password-texts h2 {
+    font-size: 18px;
+    color: #242424;
+}
+.forgot-password-container .forgot-password-texts p {
+    font-size: 16px;
+    color: #adabab;
+    margin-bottom: 0px;
+}
+
+.km-profile-section-container {
+    margin-bottom: 50px;
+}
+
+.km-profile-section-container .km-settings-component-subheading h2 {
+    width: 100%;
+}
+
+#content-area h2 {
+    font-size: 22px;
+    letter-spacing: 1.5px;
+    color: #242424;  
+}
+
+.m-left {
+    margin-left: 15px;
+} 
