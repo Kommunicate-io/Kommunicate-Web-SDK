@@ -6024,7 +6024,8 @@ const MESSAGE_CONTENT_TYPE = {
                 if ((typeof tabId === 'undefined') || tabId === '') {
                     var mckContactListLength = $applozic("#mck-contact-list").length;
                     if (mckContactListLength > 0 && isValidMeta) {
-                        (message.groupId) ? mckGroupService.addGroupFromMessage(message, true, function(group, message, update){
+                        var update = typeof message.metadata == 'object' && (typeof message.metadata.KM_ASSIGN == 'undefined' || typeof message.metadata.KM_STATUS== 'undefined');
+                        (message.groupId) ? mckGroupService.addGroupFromMessage(message, update, function(group, message, update){
                           _this.updateRecentConversationList(group, message, update);
                         }) : mckMessageLayout.addContactsFromMessage(message, true);
                     } else {
