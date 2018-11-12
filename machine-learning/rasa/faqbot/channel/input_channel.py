@@ -143,6 +143,8 @@ def add_nludata(questions, app_key):
         data = json.load(json_file)
 
         for question in questions:
+            if question.name == "":
+                continue
             intent = question.get_intent()
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
             data["rasa_nlu_data"]["common_examples"].append({"text": question.name, "intent": intent, "entities": []})
