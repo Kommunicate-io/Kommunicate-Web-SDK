@@ -3,7 +3,7 @@ var kmCustomTheme = new KmCustomTheme();
 function KmCustomTheme() {
     var _this = this;
     var WIDGET_SETTINGS;
-    var DEFAULT_BACKGROUND_COLOR = "linear-gradient(to right, #3a3c80 0%,#3d3e83 6%,#53549d 34%,#5858A0 61%,#5858a2 72%,#53549d 80%,#3d3e83 96%,#3a3c80 100%)";
+    var DEFAULT_BACKGROUND_COLOR = "#5553B7";
 
     _this.init = function (optns) {
         WIDGET_SETTINGS = optns.widgetSettings;
