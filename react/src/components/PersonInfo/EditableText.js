@@ -68,7 +68,7 @@ class EditableText extends Component {
 
   updateComponentValue = (e) => {
     var text = this.refs[this.props.reference].value;
-    if (!this.isValid(this.props.reference, text)) {
+    if (text && !this.isValid(this.props.reference, text)) {
       return;
     }
     this.setState({
@@ -127,9 +127,11 @@ class EditableText extends Component {
 
   renderDefaultView = () => {
     return (
-      <div onClick={this.changeEditMode}>
-        <p id={this.props.style} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
-        {this.state.renderChild? this.props.children : null}
+      <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
+        <div onClick={this.changeEditMode}>
+          <p id={this.props.style} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
+        </div>
+        {this.state.renderChild ? this.props.children : null}
       </div>
     );
   };
