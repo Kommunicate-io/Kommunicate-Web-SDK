@@ -137,13 +137,11 @@ class Billing extends Component {
 
     afterOpenModal = () => {
         this.chargebeeInit();
-        if(this.state.choosePlan === "per_agent_monthly") {
-            var elem = document.getElementById('checkout-monthly');
-            elem.cbProduct.planQuantity = this.state.seatsBillable;
-        } else {
-            var elem = document.getElementById('checkout-yearly');
-            elem.cbProduct.planQuantity = this.state.seatsBillable;
-        }
+            var elemMonthly = document.getElementById('checkout-monthly');
+            elemMonthly.cbProduct.planQuantity = this.state.seatsBillable;
+
+            var elemYearly = document.getElementById('checkout-yearly');
+            elemYearly.cbProduct.planQuantity = this.state.seatsBillable;
     }
 
     onCloseModal = () => {
@@ -191,6 +189,7 @@ class Billing extends Component {
         });
     }
     handleToggleSliderChange = () => {
+        
         this.setState({ toggleSlider: !this.state.toggleSlider }, () => {
             if (this.state.toggleSlider) {
                 this.setState({ pricingMonthlyHidden: true, pricingYearlyHidden: false });
@@ -394,32 +393,13 @@ class Billing extends Component {
     handleChange(states, e) {
         this.setState({
             seatsBillable: e.target.value
-        })
-        if(states === "per_agent_monthly") {
-            var elem = document.getElementById('checkout-monthly');
-            if(e.target.value <= 0 ) {
-                elem.disabled = true;
-            } else {
-                elem.parentNode.removeChild(elem);
-                elem.disabled = false;
-                elem.setAttribute("data-cb-plan-quantity", e.target.value);
-                elem.cbProduct.planQuantity = e.target.value;
-                document.querySelector(".seat-selection-modal--footer").appendChild(elem);
-            }
-           
-            
-        } else {
-            var elem = document.getElementById('checkout-yearly');
-            if(e.target.value <= 0 ) {
-                elem.disabled = true;
-            } else {
-                elem.disabled = false;
-                elem.parentNode.removeChild(elem);
-                elem.setAttribute("data-cb-plan-quantity", e.target.value);
-                elem.cbProduct.planQuantity = e.target.value;
-                document.querySelector(".seat-selection-modal--footer").appendChild(elem);
-            }
-        }
+        });
+
+        var elemMonthly = document.getElementById('checkout-monthly');
+        elemMonthly.cbProduct.planQuantity =  e.target.value;
+
+        var elemYearly = document.getElementById('checkout-yearly');
+        elemYearly.cbProduct.planQuantity = e.target.value;
     }
 
     keyPress(e) {
@@ -648,25 +628,40 @@ class Billing extends Component {
                                         </div>
                                     </div>
                                     <hr/>
-                                    
+
+
+                                    {/* <!-- Pricing Toggle --> */}
+                                    <div className="pricing-toggle text-left">
+                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly billing</label>
+                                        <div className="toggle n-vis">
+                                            <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
+                                            <b className="b switch"></b>
+                                        </div>
+                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing <span>(Save 20%)</span></label>
+                                    </div>
+
+
                                     <div className="seat-selector--amount-container">
                                         <div className="amount-payable-container flexi">
-                                            <p>Amount payable:</p>
-                                            <p>${(this.state.choosePlan === "per_agent_monthly") ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={this.state.choosePlan === "per_agent_monthly" ? false : true}>Save ${(this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)} in yearly plan!</span></p>
+                                            <p>Amount payable now:</p>
+                                            <p>${(!this.state.toggleSlider) ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={!this.state.toggleSlider ? false : true}>Save ${(this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)} in yearly plan!</span></p>
                                         </div>
                                         <div className="renewal-date-container flexi">
                                             <p>Auto renewal date:</p>
-                                            <p>{(this.state.choosePlan === "per_agent_monthly") ?CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
+                                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="seat-selection-modal--footer text-right">
                                     <button className="km-button km-button--secondary" onClick={this.closeSeatSelectionModal}>Cancel</button>
                                     {
-                                        (this.state.choosePlan === "per_agent_monthly") ?
-                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button> :
-                                        <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
+                                        <button className="km-button km-button--primary" onClick={() => {
+                                            (!this.state.toggleSlider) ? document.getElementById("checkout-monthly").click() : document.getElementById("checkout-yearly").click()
+                                        }}>Continue</button>
                                     }
+                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button>
+                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
+                                    
                                     
                                 </div>
                                 <CloseButton onClick={this.closeSeatSelectionModal}/>
