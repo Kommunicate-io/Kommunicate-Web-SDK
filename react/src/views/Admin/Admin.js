@@ -8,9 +8,6 @@ import PasswordAccordion from './PasswordAccordion';
 import CommonUtils from '../../utils/CommonUtils';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
-
-
-
 const customStyles = {
   content: {
     top: '50%',
@@ -25,7 +22,6 @@ const customStyles = {
 
   }
 };
-
 class Forms extends Component {
   constructor(props) {
     super(props);
@@ -41,7 +37,8 @@ class Forms extends Component {
       industryOthers: '',
       modalIsOpen: false,
       scale: 1.2,
-      imageFile: CommonUtils.getUserSession().imageLink
+      imageFile: CommonUtils.getUserSession().imageLink,
+      fileObject: {}
      
     };
 
@@ -147,6 +144,58 @@ class Forms extends Component {
     })
   }
 
+  invokeImageUpload = (e) => {
+    e.preventDefault()
+
+    let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
+
+    if (hiddenImageInputElem) {
+      hiddenImageInputElem.click()
+    }
+  };
+  handleImageFiles = (e) => {
+    var file_name = document.getElementById("hidden-image-input-element").value;
+    var file_extn = file_name.split('.').pop().toLowerCase();
+    console.log(file_name)
+    console.log(file_extn)
+    e.preventDefault()
+    const files = e.target.files;
+    const file = files[0];
+    this.setState({ fileObject: file })
+    console.log(file)
+    let imageTypeRegex = /^image\//
+
+    //let thumbnail = document.getElementById("thumbnail")
+
+    if (file && imageTypeRegex.test(file.type)) {
+
+      // while (thumbnail.hasChildNodes()) {
+      //   thumbnail.removeChild(thumbnail.firstChild)
+      //}
+
+      if (file.size <= 5000000) {
+
+        let img = document.createElement("img")
+        img.height = 90
+        img.width = 60
+        img.classList.add("obj")
+        img.file = file
+
+        //thumbnail.appendChild(img)
+
+        let reader = new FileReader()
+        reader.onload = (function (aImg) { return function (e) { aImg.src = e.target.result; }; })(img);
+        reader.readAsDataURL(file);
+
+        this.openModal();
+
+      } else if (file.size > 5000000) {
+        Notification.info("Size exceeds 5MB")
+        return
+      }
+    }
+  }
+
 
   componentWillMount() {
     var userSession = CommonUtils.getUserSession();
@@ -233,19 +282,15 @@ class Forms extends Component {
 
                     <div className="col-md-4 display-photo-wrapper">
 
-                      {/* <ImageUploader
-                          handleImageFiles={this.handleImageFiles}
-                          invokeImageUpload={this.invokeImageUpload}
-                          uploadImageToS3={this.uploadImageToS3}
-                          updateProfilePicUrl={this.props.updateProfilePicUrl}
-                        /> */}
-
                       <div className="display-photo-wrapper-container text-center">
-                        <img src={ this.props.profilePicUrl } className="default-dp change-courser"  onClick={this.openModal}/> 
+
+                        <img src={ this.props.profilePicUrl } className="default-dp change-courser"  onClick={this.invokeImageUpload}/> 
 
                         <div className="edit-dp-btn">
-                          <span className="change-courser" onClick={this.openModal}>Edit Display Photo</span>
+                          <span className="change-courser" onClick={this.invokeImageUpload}>Edit Display Photo</span>
                           <div className="about-dp">Your customers will see this photo</div>
+
+                          <input type="file" accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
 
                           <Modal
                             isOpen={this.state.modalIsOpen}
@@ -259,10 +304,13 @@ class Forms extends Component {
                                 uploadImageToS3={this.uploadImageToS3}
                                 updateProfilePicUrl={this.props.updateProfilePicUrl}
                                 handleClose={this.closeModal}
+                                fileObject={this.state.fileObject}
                               />
                             </div>
                           </Modal>
+
                         </div>
+
                       </div>
 
                       

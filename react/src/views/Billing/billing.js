@@ -637,7 +637,7 @@ class Billing extends Component {
                                             <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
                                             <b className="b switch"></b>
                                         </div>
-                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing <span>(Save 20%)</span></label>
+                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing</label>
                                     </div>
 
 
