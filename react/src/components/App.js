@@ -42,7 +42,6 @@ class App extends Component {
     setTimeout(() => this.setState({ loading: false }), 1500); // simulates an async action, and hides the spinner
   }
   componentDidCatch(error, errorInfo) {
-     let userSession = CommonUtils.getUserSession();
     this.setState({ error });
     Sentry.withScope(scope => {
       Object.keys(errorInfo).forEach(key => {
@@ -51,6 +50,7 @@ class App extends Component {
       Sentry.captureException(error);
     });
     Sentry.configureScope((scope) => {
+      let userSession = CommonUtils.getUserSession();
       scope.setUser({
         "username": userSession.userName,
         "id": userSession.application.applicationId});
