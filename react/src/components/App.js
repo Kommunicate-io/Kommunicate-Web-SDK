@@ -7,6 +7,8 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from '../utils/ThirdPartyScripts';
 import {ActiveCampaign} from '../utils/ActiveCampaign';
+import * as Sentry from '@sentry/browser';
+import { getConfig } from '../config/config';
 
 // Containers
 import Full from './../containers/Full/'
@@ -30,13 +32,30 @@ import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
 class App extends Component {
   static defaultProps ={ hideSkip : false }
   constructor(props,defaultProps){
-    super(props,defaultProps)
+    super(props,defaultProps);
+    this.state = {
+       error: null,
+       loading: true
+      }
   }
-  state = {
-    loading: true
-  };
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500); // simulates an async action, and hides the spinner
+  }
+  componentDidCatch(error, errorInfo) {
+     let userSession = CommonUtils.getUserSession();
+    this.setState({ error });
+    Sentry.withScope(scope => {
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
+    });
+    Sentry.configureScope((scope) => {
+      scope.setUser({
+        "username": userSession.userName,
+        "id": userSession.application.applicationId});
+    });
+    
   }
 
   render() {
@@ -45,8 +64,7 @@ class App extends Component {
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
-    
-    return (
+      return (
       
       <div>
       <NotificationContainer />
@@ -69,7 +87,7 @@ class App extends Component {
       </BrowserRouter>
       </div>
     )
-  }
+    }
 }
 
 export default App
