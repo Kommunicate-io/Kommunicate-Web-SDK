@@ -123,7 +123,7 @@ class ChatWidgetCustomization extends Component{
                 this.setState({changesMade : false});
             }
             })).catch(err => {
-            // console.log(err);
+            Notification.error("Unable to load custom widget settings, please try again.");
             })
     }
 
@@ -170,7 +170,7 @@ class ChatWidgetCustomization extends Component{
                         <div className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ? "n-vis" : "vis"}>
                         <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                         </div>
-                        <div className={ this.state.changedLogoUrl || this.state.widgetImageLink ? "km-chat-icon-img km-chat-icon km-pointer-cursor" : "n-vis" } style={{background:this.state.primaryColor, float:"none", margin:"0"}} onClick={ ()=>{this.setState({currWidgetIcon : this.state.changedLogoUrl , widgetImageLink : this.state.changedLogoUrl, hasCustomImage : true, iconIndex : "image"}); console.log(this.state) }}>
+                        <div className={ this.state.changedLogoUrl || this.state.widgetImageLink ? "km-chat-icon-img km-chat-icon km-pointer-cursor" : "n-vis" } style={{background:this.state.primaryColor, float:"none", margin:"0"}} onClick={ ()=>{this.setState({currWidgetIcon : this.state.changedLogoUrl , widgetImageLink : this.state.changedLogoUrl, hasCustomImage : true, iconIndex : "image"}) }}>
                            <img src={this.state.changedLogoUrl}  /> 
                          </div>
                             <div className="km-custom-icon-upload">Upload your own launcher icon
