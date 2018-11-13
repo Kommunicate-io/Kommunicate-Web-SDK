@@ -4094,11 +4094,11 @@ box-shadow: none!important;
 	/* width:100% !important; */
 }
 #mck-msg-new{
-	background-color: #716fb3;
+	background-color: #5553b7;
     color: white;
     border-radius: 26px;
     box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
-    border: solid 1px #716fb3;
+    border: solid 1px #5553b7;
     height: 42px;
     min-width: 220px;
     padding: 0;
@@ -4902,10 +4902,10 @@ color: rgba(0,0,0,0.5);
 	margin-left: 35px;
 }
 .km-faqbtn{
-	background-color: #716fb3;
+	background-color: #5553b7;
 }
 .button:hover #km-faqbtn {
-	background-color: #716fb3;
+	background-color: #5553b7;
 }
 
 .km-faqback{
@@ -5705,7 +5705,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: solid 2.5px #716fb3;
+    border: solid 2.5px #5553b7;
     background: #aaa;	
 }
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
