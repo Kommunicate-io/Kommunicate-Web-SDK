@@ -14,7 +14,9 @@
     color: #625e5e;
     margin-left: 10px;
 }
-
+.km-pointer-cursor{
+    cursor: pointer;
+}
 .km-chat-customization-wrapper .km-customizer-heading {
     font-size: 16px;
     color: #57595b;
@@ -277,7 +279,7 @@
 }
 
 .km-img-upload-input {
-    top: 15px;
+    top: 44%;
     left: 199px;
     width: 17%;
     height: 53%;

@@ -7,6 +7,8 @@ import {KmDefaultIcon , KmCustomIcon1, KmCustomIcon2, KmCustomIcon3, AgentIcon,U
 import './ChatWidgetCustomization.css';
 import {sendProfileImage,updateAppSetting,getAppSetting} from '../../utils/kommunicateClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
+import ReactTooltip from 'react-tooltip'
+
 
 
 
@@ -23,7 +25,8 @@ class ChatWidgetCustomization extends Component{
             hasCustomImage : false,
             changesMade : false,
             iconIndex : 1 ,
-            currWidgetIcon: ""
+            currWidgetIcon: "",
+            changedLogoUrl:""
         }
        
     }
@@ -31,9 +34,9 @@ class ChatWidgetCustomization extends Component{
         this.getwidgetSettings();
     }
     componentDidMount() {
-        this.setState(this.widgetTheme);
-
+        // this.setState(this.widgetTheme);
     }
+
 
     handleClick = () => {
         this.setState({ displayColorPicker: !this.state.displayColorPicker })
@@ -74,7 +77,7 @@ class ChatWidgetCustomization extends Component{
             sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
             .then(response => {
                 if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
-                that.setState({ widgetImageLink: response.data.profileImageUrl });
+                that.setState({ widgetImageLink: response.data.profileImageUrl  , changedLogoUrl : response.data.profileImageUrl});
                 Notification.info(response.data.message);
                 that.setState({hasCustomImage : true, iconIndex : "image", changesMade:true});
                 } else if (response.data.code === "FAILED_TO_UPLOAD_TO_S3") {
@@ -116,6 +119,7 @@ class ChatWidgetCustomization extends Component{
                 var widgetThemeResponse = response.data.response.widgetTheme;
                 this.setState(widgetThemeResponse);
                 widgetThemeResponse.iconIndex == "image"? this.setState({ hasCustomImage : true }) : (document.getElementById("icon"+this.state.iconIndex).click());
+                this.setState({changedLogoUrl : widgetThemeResponse.widgetImageLink})
                 this.setState({changesMade : false});
             }
             })).catch(err => {
@@ -132,7 +136,20 @@ class ChatWidgetCustomization extends Component{
                     <div className="row">
                     <div className="col-md-6">
                         <div className="km-color-picker">
-                        <div className="km-customizer-heading">Color:</div>
+                        <div className="km-customizer-heading">Color: 
+                            <span className="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" style={{
+                                verticalAlign: "middle",
+                                marginLeft: "8px",
+                                marginBottom: "2px"
+                            }} data-tip="Default chat widget Color code is #5553b7" data-effect="solid" data-place="right" data-multiline="True">
+                            <g fill="#514E4E" fillRule="nonzero">
+                                <path d="M6.6.073c-.014-.002-.026 0-.04 0C2.983.094.073 2.975.073 6.5c0 3.525 2.914 6.409 6.494 6.426a.56.56 0 0 0 .035.002l.001-.002c3.489-.017 6.326-2.9 6.326-6.426 0-3.525-2.837-6.41-6.329-6.427zm.003 12.098l-.03-.001C3.404 12.155.827 9.61.827 6.5S3.405.845 6.598.83c3.073.015 5.574 2.56 5.574 5.67 0 3.108-2.498 5.652-5.569 5.671z"/>
+                                <path d="M6.485 5.38H5.84v4.317h1.32V5.38zM6.509 3.306v-.003l-.004-.001-.008.001-.006-.001v.003c-.399.007-.643.29-.651.659 0 .354.246.64.651.656v.004h.012l.003-.001.003.001v-.001a.636.636 0 0 0 .651-.66c0-.366-.257-.646-.651-.657z"/>
+                            </g>
+                            </svg>
+                        </span>
+                        </div>
                         <div className="swatch" onClick={ this.handleClick }>
                                 <div className="color"  style={{background :  this.state.primaryColor}} /> <div >{this.state.primaryColor}</div>
                             </div>
@@ -153,8 +170,8 @@ class ChatWidgetCustomization extends Component{
                         <div className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ? "n-vis" : "vis"}>
                         <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
                         </div>
-                        <div className={ this.state.hasCustomImage && this.setState.currWidgetIcon  ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.primaryColor, float:"none", margin:"0"}}>
-                           <img src={this.state.currWidgetIcon} /> 
+                        <div className={ this.state.changedLogoUrl || this.state.widgetImageLink ? "km-chat-icon-img km-chat-icon km-pointer-cursor" : "n-vis" } style={{background:this.state.primaryColor, float:"none", margin:"0"}} onClick={ ()=>{this.setState({currWidgetIcon : this.state.changedLogoUrl , widgetImageLink : this.state.changedLogoUrl, hasCustomImage : true, iconIndex : "image"}); console.log(this.state) }}>
+                           <img src={this.state.changedLogoUrl}  /> 
                          </div>
                             <div className="km-custom-icon-upload">Upload your own launcher icon
                             <input onClick={this.uploadImage } className="km-hide-input-element km-img-upload-input" type="file" id="km-upload-chatwidget-image" accept="image/png, image/jpeg" />
@@ -197,7 +214,7 @@ class ChatWidgetCustomization extends Component{
                             {this.state.currentIcon} 
                          </div>
                             <div className={ this.state.hasCustomImage ? "km-chat-icon-img km-chat-icon" : "n-vis" } style={{background:this.state.primaryColor}}>
-                           <img src={ this.state.widgetImageLink }/> 
+                           <img src={ this.state.changedLogoUrl }/> 
                          </div>
                         </div>
                       
