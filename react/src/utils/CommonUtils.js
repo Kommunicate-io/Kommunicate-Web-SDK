@@ -204,6 +204,10 @@ const CommonUtils = {
 
             CommonUtils.setUserSession(userSession);
         }
+    },
+    isInternetExplorer: function() {
+        return (navigator.userAgent.indexOf('MSIE') !== -1 ||
+        navigator.appVersion.indexOf('Trident/') > 0);
     }
 }
 

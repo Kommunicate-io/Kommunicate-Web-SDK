@@ -11,13 +11,8 @@ import CommonUtils from '../../utils/CommonUtils';
 class ImageUploader extends Component {
 
   static defaultProps = {
-    updateProfilePicUrl: function (url) {
-      //default
-
-    },updateProfileImgUrl: function (url){
-
-    }
-    
+    updateProfilePicUrl: function (url) {},
+    updateProfileImgUrl: function (url) {}
   }
 
   constructor(props, defaultProps) {
@@ -25,84 +20,31 @@ class ImageUploader extends Component {
     this.state = {
       imageFile: CommonUtils.getUserSession().imageLink,
       file : getResource().defaultImageUrl,
-      scale: 1.2,
+      scale: 1,
       canvas: '',
-      imageUrl: ''
+      imageUrl: '',
+      fileObjectProp: this.props.fileObject
     }
     this.handleScale = this.handleScale.bind(this);
     this.onClickSave = this.onClickSave.bind(this);
     this.dataURItoBlob = this.dataURItoBlob.bind(this);
     this.handleRemoveImage = this.handleRemoveImage.bind(this);
   }
-  invokeImageUpload = (e) => {
-    e.preventDefault()
 
-    let hiddenImageInputElem = document.getElementById("hidden-image-input-element");
-
-    if (hiddenImageInputElem) {
-      hiddenImageInputElem.click()
-    }
-  };
-  handleImageFiles = (e) => {
-    var file_name = document.getElementById("hidden-image-input-element").value;
-    var file_extn = file_name.split('.').pop().toLowerCase();
-    console.log(file_name)
-    console.log(file_extn)
-    e.preventDefault()
-    const files = e.target.files;
-    const file = files[0];
-    this.setState({ imageFile: file })
-    console.log(file)
-    let imageTypeRegex = /^image\//
-
-    //let thumbnail = document.getElementById("thumbnail")
-
-    if (file && imageTypeRegex.test(file.type)) {
-
-      // while (thumbnail.hasChildNodes()) {
-      //   thumbnail.removeChild(thumbnail.firstChild)
-      //}
-
-      if (file.size <= 5000000) {
-
-        let img = document.createElement("img")
-        img.height = 90
-        img.width = 60
-        img.classList.add("obj")
-        img.file = file
-
-        //thumbnail.appendChild(img)
-
-        let reader = new FileReader()
-        reader.onload = (function (aImg) { return function (e) { aImg.src = e.target.result; }; })(img);
-        reader.readAsDataURL(file)
-
-      } else if (file.size > 5000000) {
-        Notification.info("Size exceeds 5MB")
-        return
-      }
-    }
-  }
   cropMethod = (e) => {
     e.preventDefault()
     if (document.getElementById("hidden-image-input-element").value != "") {
        var _this = this;
       return Promise.resolve(_this.onClickSave()).then(res => {
         _this.uploadImageToS3()
-      })
-         .catch(err => {
+      }).catch(err => {
        console.log(err);
-      
       })
-
     }
     else {
       Notification.info("Upload a Photo")
       return
     }
-
-
-
   }
 
   uploadImageToS3 = () => {
@@ -116,7 +58,7 @@ class ImageUploader extends Component {
     let file = blob
     let imageUrl = ''
     if (file) {
-      sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name.split('.').pop()}`)
+      sendProfileImage(file, `${CommonUtils.getUserSession().application.applicationId}-${CommonUtils.getUserSession().userName}.${file.name}`)
         .then(response => {
           console.log(response)
           if (response.data.code === "SUCCESSFUL_UPLOAD_TO_S3") {
@@ -151,11 +93,13 @@ class ImageUploader extends Component {
       Notification.info("No file to upload")
     }
   }
+
   handleScale(event) {
     this.setState({
       scale: event.target.value / 100
     })
   }
+
   dataURItoBlob(dataURI) {
 
     // convert base64 to raw binary data held in a string
@@ -180,13 +124,19 @@ class ImageUploader extends Component {
 
     //New Code
     // return new Blob([this.state.ab], {type:this.state.mimeString});
+    let file;
     let blob = new Blob([ia], { type: 'image/jpeg' });
-    let file = new File([blob], "image.jpg");
-    return file
-    console.log(file)
-
-
+    if(CommonUtils.isInternetExplorer()) {
+      blob.name = "image.jpg";
+      blob.lastModifiedDate = new Date();
+      return blob;
+    } else {
+      file = new File([blob], "image.jpg");
+      return file;
+    }
   }
+
+
   onClickSave = () => {
     //e.preventDefault()
     //let img = this.editor.getImage().toDataURL();
@@ -234,35 +184,39 @@ class ImageUploader extends Component {
                       */}
             <AvatarEditor
               ref={this.setEditorRef}
-              image={this.state.imageFile}
-              /* width={300}
-               height={300}
-               border={60}*/
-              borderRadius={130}
+              image={this.state.fileObjectProp}
+              width={300}
+              height={300}
+              // border={60}
+              borderRadius={250}
               color={[255, 255, 255, 0.6]} // RGBA
               scale={this.state.scale}
               rotate={0}
             />
 
             </div>
-            <div className="range-slider"><i className="icon-picture zoom-icon-left"></i>
-              <input type="range" className="slider-input" min="100" max="500" step="50" onChange={this.handleScale} /><i className="icon-picture zoom-icon-right"></i>
-            </div>
-            <div className="modal-btn-group">
+            
+            {/* <div className="modal-btn-group">
               <button className="upload-img-button" autoFocus={false} id="upload-img-button" onClick={this.invokeImageUpload}>Upload Photo</button>
               <button className="remove-img-button" autoFocus={false} id="remove-img-button" onClick={this.handleRemoveImage}>Remove Photo</button>
-            </div>
+            </div> */}
 
-            {/* <button type="submit" autoFocus={true} className="btn btn-sm btn-danger"  onClick={this.cropMethod}> Save Image</button> */}
           </div>
 
-          <input type="file" accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-12 flexi flexi-jc-sb">
+            <div className="range-slider">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"/></svg>
+              </span>
+              <input type="range" className="slider-input" min="100" max="500" step="10" onChange={this.handleScale} />
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.86 8.86l-3 3.87L9 13.14 6 17h12l-3.86-5.14z"/></svg>
+              </span>
+            </div>
               <div className="modal-footer-button">
-                <button type="submit" autoFocus={false} className="btn btn-sm" id="cancel-button" onClick={this.props.handleClose}> Cancel</button>
-                <button type="submit" autoFocus={false} className="btn btn-sm" id="image-input-button" onClick={this.cropMethod}>Save</button>
-
+                <button type="submit" autoFocus={false} className="km-button km-button--secondary" onClick={this.props.handleClose}> Cancel</button>
+                <button type="submit" autoFocus={false} className="km-button km-button--primary m-left" onClick={this.cropMethod}>Save changes</button>
               </div>
             </div>
           </div>
