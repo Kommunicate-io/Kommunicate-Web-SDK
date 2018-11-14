@@ -65,3 +65,7 @@ if Kommunicate.isLoggedIn {
 ```
 
 Note: To avoid calling in registration everytime use `isLoggedIn` to check if the user is already logged in or not.
+
+### What Next?
+1. Check out the [Conversation Section](https://docs.kommunicate.io/docs/ios-conversation) where you will get the details for creating and launching a conversation.
+2. [Enable Push Notifications](https://docs.kommunicate.io/docs/ios-pushnotification) to get real-time updates.
