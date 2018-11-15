@@ -7,6 +7,7 @@ import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
 import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
+import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
@@ -30,7 +31,8 @@ class Users extends Component {
       pageNumber:1,
       pageFlag:2,
       stopFlag:1,
-      getUsersFlag:1
+      getUsersFlag:1,
+      isFromSearch: false
     };
 
   }
@@ -59,8 +61,7 @@ class Users extends Component {
       }
       var groupList=[];
       var assignedUser = _this.state.result;
-      let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
-        fetchContactsFromApplozic(params).then(response => {
+        ApplozicClient.fetchContactsFromApplozic(params).then(response => {
           if(response.status == "success"){
             if (response && response.response && (response.response.users.length > 0)) {
               if(response.response.users.length < params.pageSize || response.response.lastSeenFetchTime === 0 ){
@@ -69,62 +70,104 @@ class Users extends Component {
               var setPageNumbers = assignedUser.length + response.response.users.length;
               _this.setState({
                 total: (Math.ceil(setPageNumbers / 20)*limit),
-                startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime, 
+                startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime,
                 lastSeenTime : response.response.lastSeenFetchTime
               });
-              const usersMap=response.response.users.map((user, index)=>{ 
-                if (user.messagePxy && user.messagePxy.groupId) {
-                  groupList.push(user.messagePxy.groupId.toString()); 
-                }
-              });  
-              multipleGroupInfo(groupList).then(data => { 
-                var arr = []; 
-                     
-                if(data.status == "success" && data.response && data.response.length){
-                  for(var j = 0; j < data.response.length; j++){
-                    arr[data.response[j].id] = data.response[j];
-                  };
-                }
-                const users=response.response.users.map((user, index)=>{
-                  if (user.messagePxy && user.messagePxy.groupId) {
-                        if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
-                            if (arr[user.messagePxy.groupId]) {
-                              user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE ;
-                              if(user.assignee == ""){
-                              };
-                              user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
-                              assignedUser.push(user);
-                              // Sort array after pushing
-                              var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                              _this.setState({
-                                result: arrObj, 
-                                showEmptyStateImage: true
-                              })
-                            }
-                        } 
-                  } 
-                  else {
-                    assignedUser.push(user);
-                    // Sort array after pushing
-                    var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                    _this.setState({
-                      result: arrObj, 
-                      showEmptyStateImage: true
-                    })
-                  }
-                }); 
-              });
-          } else if (response.response.users.length == 0 && this.state.result == 0) {
+              _this.listUsers(response,assignedUser);
+
+            } else if (response.response.users.length == 0 && this.state.result == 0) {
             _this.setState({showEmptyStateImage: false});
-          }
+            }
           }
         });
-    } 
-  }
+    }
+  };
 
-  handlePageChange = page => {
-    this.setState({
-      currentPage: page
+  listUsers = (response,assignedUser,isFromSearch) => {
+    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+    var groupList=[];
+    var test = this.state.isFromSearch ? response.response : response.response.users;
+    const usersMap=test.map((user, index)=>{
+      if (user.messagePxy && user.messagePxy.groupId) {
+        groupList.push(user.messagePxy.groupId.toString());
+      }
+    });
+    if(groupList.length === 0 ){
+      this.mapUserDeatils(botAgentMap,response, assignedUser,[],[]);
+    }
+    else{
+      this.getmMultipleGroupInfo(botAgentMap, groupList, response, assignedUser);
+    }
+  };
+
+  getmMultipleGroupInfo = (botAgentMap, groupList, response, assignedUser)=> {
+    var _this = this;
+    ApplozicClient.multipleGroupInfo(groupList).then(data => {
+      var arr = [];
+      if(data.status == "success" && data.response && data.response.length){
+        for(var j = 0; j < data.response.length; j++){
+          arr[data.response[j].id] = data.response[j];
+        };
+      }
+      _this.mapUserDeatils(botAgentMap, response, assignedUser, data, arr);
+    });
+  };
+
+  mapUserDeatils = (botAgentMap, response, assignedUser, data, arr) => {
+    var _this = this;
+    var test = this.state.isFromSearch ? response.response : response.response.users;
+    const users=test.map((user, index)=>{
+      if (user.messagePxy && user.messagePxy.groupId) {
+            if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
+                if (arr[user.messagePxy.groupId]) {
+                  user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE ;
+                  user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
+                  assignedUser.push(user);
+                  // Sort array after pushing
+                  var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
+                  _this.setState({
+                    result: arrObj,
+                    showEmptyStateImage: true
+                  })
+                }
+            }
+      }
+      else {
+        assignedUser.push(user);
+        var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
+        _this.setState({
+          result: arrObj,
+          showEmptyStateImage: true
+        })
+      }
+    });
+  };
+
+  searchContactInApplozic = (searchQuery) => {
+    var _this = this;
+    var params = {
+      name : searchQuery
+    }
+    ApplozicClient.searchContact(params).then(response => {
+      console.log(response);
+      if(response.response.length !== 0){
+        var setPageNumbers = response.response.length;
+        _this.setState({
+          isFromSearch: true,
+          total: (Math.ceil(setPageNumbers / 20)*limit)
+        });
+        _this.listUsers(response,[]);
+      }
+     else {
+      var setPageNumbers = response.response.length;
+      _this.setState({
+        isFromSearch: true,
+        result: [],
+        total: (Math.ceil(setPageNumbers / 20)*limit),
+        showEmptyStateImage: false
+      }); 
+      _this.listUsers(response,[]);
+     }
     });
   };
 
@@ -145,7 +188,7 @@ class Users extends Component {
         });
 
         if((((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1 ) || _this.state.pageNumber === (checkPreviousPageNumber +2)){
-          _this.setState({ 
+          _this.setState({
             pageFlag: _this.state.pageNumber + 2,
             getUsersFlag:1
           })
@@ -172,7 +215,7 @@ class Users extends Component {
             final:((nextPageNumber-1)*20)+20
           });
           if(((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1) {
-            _this.setState({ 
+            _this.setState({
               pageFlag: _this.state.pageNumber + 2,
               getUsersFlag:1
             })
@@ -181,8 +224,44 @@ class Users extends Component {
         }
 
       });
-
   };
+
+  handlePageChange = page => {
+    this.setState({
+      currentPage: page
+    });
+  };
+
+  handleClick = (e) => {
+    var _this = this;
+    e.preventDefault();
+    //km-text-box-wrapper
+    var specifiedElement = document.getElementById('km-search-box');
+    document.getElementById("km-search-svg").classList.add('n-vis');
+    document.getElementById("km-clear-search-text").classList.remove('n-vis');
+    specifiedElement.style.marginLeft="0px"
+
+    document.addEventListener('click', function(event) {
+      event.preventDefault();
+      var isClickInside = specifiedElement.contains(event.target) || specifiedElement.id === event.target.id;
+      if (!isClickInside) {
+        //the click was outside the specifiedElement
+        document.getElementById("km-search-svg") && document.getElementById("km-search-svg").classList.remove('n-vis');
+        document.getElementById("km-clear-search-text") && document.getElementById("km-clear-search-text").classList.add('n-vis');
+        specifiedElement && (specifiedElement.style.marginLeft="20px");
+        specifiedElement && (specifiedElement.value ="");
+      }
+    });
+
+    document.addEventListener('keyup', function(event){
+      event.stopImmediatePropagation(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
+      var key = event.which || event.keyCode;
+       if(key=== 13){
+        _this.searchContactInApplozic(document.getElementById('km-search-box').value);
+       };
+    });
+  }
+
 
   render() {
     const infoText = Labels["lastcontacted.tooltip"];
@@ -195,6 +274,13 @@ class Users extends Component {
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
+           <div id="km-text-box-wrapper" className="km-text-box-wrapper">
+           <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
+                <path fill="#a8a8a8" d="M51.704 51.273L36.845 35.82c3.79-3.801 6.138-9.041 6.138-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.083 0 9.748-1.817 13.384-4.832l14.895 15.491a.998.998 0 0 0 1.414.028 1 1 0 0 0 .028-1.414zM21.983 40c-10.477 0-19-8.523-19-19s8.523-19 19-19 19 8.523 19 19-8.524 19-19 19z"/>
+              </svg>
+            <input id="km-search-box" type="text" className="km-search-box required" placeholder="Search in users" onClick={(event) => {this.handleClick(event)} } ></input>
+            <span id="km-clear-search-text" className="n-vis"> &times; </span>
+            </div>
             <table className={this.state.result.length !== 0 ? "table table-hover mb-0 hidden-sm-down km-show-visibility":"table table-hover mb-0 hidden-sm-down km-hide-visibility"}>
                   <thead className="thead-default">
                     <tr className="users-table">
