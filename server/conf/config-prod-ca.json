@@ -116,5 +116,11 @@
        "chargebeeApiKey": "live_TY45sFsefggFLWQCxIgI5m3rzIK5yWpQ",
        "crons":[
          {"time": "0 0 10 * * 1", "job":"sendWeeklyReportsToCustomers", "enable":true }     
-       ]
+       ],
+       "thirdPartyIntegration": {
+        "sentry":{
+          "dsn":"https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+          "enable":true
+        }
+      }
    }

@@ -119,5 +119,11 @@
     "crons":[
       {"time": "0 0 10 * * 1", "job":"sendWeeklyReportsToCustomers", "enable":true },
       {"time": "0 0 11 * * *", "job":"trialExpireCron", "enable":true }      
-]
+    ],
+    "thirdPartyIntegration": {
+      "sentry":{
+        "dsn":"https://a7fe0d3754264f649630801e7349da27@sentry.io/1324243",
+        "enable":true
+      }
+    } 
   }
