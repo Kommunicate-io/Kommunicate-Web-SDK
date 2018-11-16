@@ -1,5 +1,6 @@
 var $original;
 var oModal = "";
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -257,7 +258,7 @@ function ApplozicSidebox() {
         }
     }
     function mckLoadAppScript() {
-        let userId = KommunicateUtils.getRandomId();
+        var userId = KommunicateUtils.getRandomId();
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
@@ -270,14 +271,14 @@ function ApplozicSidebox() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        (MCK_ENVIRONMENT == "prod" || options.enableSentry === "true") && loadErrorTracking(userId);
+                        sentryConfig.enable && loadErrorTracking(userId);
                         getPseudoName(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                    (MCK_ENVIRONMENT == "prod" || options.enableSentry === "true")&& loadErrorTracking(userId);
+                    sentryConfig.enable && loadErrorTracking(userId);
                     getPseudoName(userId);
                 };
             }
@@ -355,7 +356,7 @@ function ApplozicSidebox() {
     function loadErrorTracking(userId) {
         userId = KommunicateUtils.getCookie('kommunicate-id') || userId;
         Sentry.init({
-            dsn: 'https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911'
+            dsn: sentryConfig.dsn
         });
         Sentry.configureScope((scope) => {
             scope.setTag("applicationId", options.appId);
