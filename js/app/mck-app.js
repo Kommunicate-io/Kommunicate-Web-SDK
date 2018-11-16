@@ -304,7 +304,7 @@ function ApplozicSidebox() {
                     if (KommunicateUtils.getCookie('kommunicate-id')) {
                         options.userId = KommunicateUtils.getCookie('kommunicate-id');
                     } else {
-                        options.userId = userId
+                        options.userId = userId;
                         KommunicateUtils.setCookie('kommunicate-id', userId, 1);
                         if (pseudoNameEnabled) {
                             if (KommunicateUtils.getCookie('userName')) {
