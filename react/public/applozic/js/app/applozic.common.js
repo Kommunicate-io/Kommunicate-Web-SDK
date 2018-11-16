@@ -527,6 +527,7 @@ function KmGroupService() {
                 } else if (data.status === "error") {
                     response.status = "error";
                     response.errorMessage = data.errorResponse[0].description;
+                    response.errorCode = data.errorResponse[0].errorCode;
                 }
                 if (params.callback) {
                     params.callback(response,params);
