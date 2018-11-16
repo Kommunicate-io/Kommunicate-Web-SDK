@@ -1,5 +1,6 @@
 var $original;
 var oModal = "";
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -86,6 +87,7 @@ function ApplozicSidebox() {
             var head = document.getElementsByTagName('head')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
+            script.crossOrigin = "anonymous";
             script.src = MCK_STATICPATH + "/lib/js/jquery-3.2.1.min.js";
             if (script.readyState) { // IE
                 script.onreadystatechange = function() {
@@ -153,6 +155,7 @@ function ApplozicSidebox() {
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
+            script.crossOrigin = "anonymous";
             if (callback) {
                 if (script.readyState) { // IE
                     script.onreadystatechange = function() {
@@ -255,10 +258,12 @@ function ApplozicSidebox() {
         }
     }
     function mckLoadAppScript() {
+        var userId = KommunicateUtils.getRandomId();
         try {
             var body = document.getElementsByTagName('body')[0];
             var script = document.createElement('script');
             script.type = 'text/javascript';
+            script.crossOrigin = "anonymous";
             script.src = MCK_STATICPATH + "/js/app/kommunicate-plugin-0.2.min.js";
             //script.src = MCK_STATICPATH + "/js/app/mck-sidebox-1.0.js";
             if (script.readyState) { // IE
@@ -266,13 +271,15 @@ function ApplozicSidebox() {
                     if (script.readyState === "loaded" || script.readyState === "complete") {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
-                        getPseudoName();
+                        sentryConfig.enable && loadErrorTracking(userId);
+                        loadPseudoName(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
-                     getPseudoName();
+                    sentryConfig.enable && loadErrorTracking(userId);
+                    loadPseudoName(userId);
                 };
             }
             body.appendChild(script);
@@ -284,7 +291,7 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function mckInitSidebox(data) {
+    function mckInitSidebox(data, userId) {
         try {
             var options = applozic._globals;
             options["agentId"]= data.agentId;
@@ -297,8 +304,8 @@ function ApplozicSidebox() {
                     if (KommunicateUtils.getCookie('kommunicate-id')) {
                         options.userId = KommunicateUtils.getCookie('kommunicate-id');
                     } else {
-                        options.userId = KommunicateUtils.getRandomId();
-                        KommunicateUtils.setCookie('kommunicate-id', options.userId, 1);
+                        options.userId = userId;
+                        KommunicateUtils.setCookie('kommunicate-id', userId, 1);
                         if (pseudoNameEnabled) {
                             if (KommunicateUtils.getCookie('userName')) {
                                 options.userName = KommunicateUtils.getCookie('userName');
@@ -332,19 +339,32 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function getPseudoName() {
+    function loadPseudoName(userId) {
         $applozic.ajax({
             url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
             method: 'GET',
             data: applozic._globals,
             success: function (data) {
-                mckInitSidebox(data.response);
+                mckInitSidebox(data.response, userId);
             },
             error: function (error) {
                 console.log(error);
             }
 
         })
+    }
+    function loadErrorTracking(userId) {
+        userId = KommunicateUtils.getCookie('kommunicate-id') || userId;
+        Sentry.init({
+            dsn: sentryConfig.dsn
+        });
+        Sentry.configureScope((scope) => {
+            scope.setTag("applicationId", options.appId);
+            scope.setTag("userId", userId);
+            scope.setUser({
+                id: options.appId,
+            });
+        });
     }
 
 }
