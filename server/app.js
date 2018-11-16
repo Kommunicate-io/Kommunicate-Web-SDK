@@ -24,7 +24,8 @@ compressor.minify({
   //compressor: 'gcc',
    compressor: 'no-compress',
   input: ['./src/webplugin/lib/js/jquery-3.2.1.min.js','./src/webplugin/lib/js/mck-ui-widget.min.js', './src/webplugin/lib/js/mck-ui-plugins.min.js', './src/webplugin/lib/js/mqttws31.js', './src/webplugin/lib/js/mck-emojis.min.js',
-  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js'],
+  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js',
+  './src/webplugin/lib/js/sentry-error-tracker.js'],
   output: './src/webplugin/js/kommunicatepluginrequirements.min.js',
   callback: function (err, min) {
     if(!err){
