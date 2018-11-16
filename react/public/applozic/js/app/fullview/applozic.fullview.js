@@ -4075,15 +4075,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.upgradePlanContainer(params.tabId);
 						$mck_group_tab_title.trigger('click');
 					} else {
-						mckMessageService.loadMessageList(params, function (data) {
-							if (data == "AL-G-01") {
-							  //errorCode "AL-G-01" - group not found
-							  window.appHistory.push("/conversations/oops");
-							  $kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
-							  $kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
-							return
-							}
-						});
+						mckMessageService.loadMessageList(params);
 					}
 				}
 				params.tabId && window.history.replaceState(null, null, "/conversations/"+params.tabId);
@@ -6636,6 +6628,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadGroupTab = function (response, params) {
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
+					if(response.status === 'error' && response.errorCode == "AL-G-01" ) {
+						//errorCode "AL-G-01" - group not found
+						window.appHistory.push("/conversations/oops");
+						$kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
+						$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+					}
+
 				} else {
 					var group = response.data;
 					mckMessageLayout.loadTab({
