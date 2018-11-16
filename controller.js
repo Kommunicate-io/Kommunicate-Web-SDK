@@ -6,6 +6,7 @@ exports.getPlugin =(req,res)=>{
   const MCK_CONTEXTPATH = config.getProperties().urls.hostUrl;
   const MCK_STATICPATH = MCK_CONTEXTPATH+"/plugin";
   const PLUGIN_SETTING = config.getProperties().pluginProperties;
+  const MCK_ENVIRONMENT = config.getEnvId();
   PLUGIN_SETTING.kommunicateApiUrl = PLUGIN_SETTING.kommunicateApiUrl || MCK_CONTEXTPATH;
   PLUGIN_SETTING.applozicBaseUrl = PLUGIN_SETTING.applozicBaseUrl || config.getProperties().urls.baseUrl;
 
@@ -15,7 +16,7 @@ exports.getPlugin =(req,res)=>{
     res.send("err while getting plugin...");
     return console.log(err);
   }
-  var plugin= data.replace(":MCK_CONTEXTPATH",MCK_CONTEXTPATH).replace(":MCK_STATICPATH",MCK_STATICPATH).replace(":PRODUCT_ID","kommunicate").replace(":PLUGIN_SETTINGS",JSON.stringify(PLUGIN_SETTING));
+  var plugin= data.replace(":MCK_CONTEXTPATH",MCK_CONTEXTPATH).replace(":MCK_ENVIRONMENT", MCK_ENVIRONMENT).replace(":MCK_STATICPATH",MCK_STATICPATH).replace(":PRODUCT_ID","kommunicate").replace(":PLUGIN_SETTINGS",JSON.stringify(PLUGIN_SETTING));
   res.setHeader('content-type', 'application/javascript');
   res.send(plugin);
   console.log("plugin code sent successfully");
