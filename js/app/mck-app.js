@@ -272,14 +272,14 @@ function ApplozicSidebox() {
                         script.onreadystatechange = null;
                         // mckInitSidebox();
                         sentryConfig.enable && loadErrorTracking(userId);
-                        getPseudoName(userId);
+                        loadPseudoName(userId);
                     }
                 };
             } else { // Others
                 script.onload = function() {
                     // mckInitSidebox();
                     sentryConfig.enable && loadErrorTracking(userId);
-                    getPseudoName(userId);
+                    loadPseudoName(userId);
                 };
             }
             body.appendChild(script);
@@ -339,7 +339,7 @@ function ApplozicSidebox() {
             return false;
         }
     }
-    function getPseudoName(userId) {
+    function loadPseudoName(userId) {
         $applozic.ajax({
             url: MCK_CONTEXTPATH + "/users/chat/plugin/settings",
             method: 'GET',
