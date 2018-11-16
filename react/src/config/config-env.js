@@ -24,7 +24,7 @@ export default {
         'sentry' :{
             //Sentry:error tracking platform
             'enable': false,
-            'dsn': "https://7d26002ef4f145f49a21f43e940624ca@sentry.io/1321802"
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
         }
     }
 },
@@ -54,8 +54,8 @@ export default {
     "thirdPartyIntegration":{
         'sentry' :{
             //Sentry:error tracking platform
-            'enable': false,
-            'dsn': "https://7d26002ef4f145f49a21f43e940624ca@sentry.io/1321802"
+            'enable': true,
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
         }
     }
 },
@@ -86,7 +86,7 @@ export default {
         'sentry' :{
             //Sentry:error tracking platform
             'enable': false,
-            'dsn': "https://7d26002ef4f145f49a21f43e940624ca@sentry.io/1321802"
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
         }
     }
 },
@@ -118,7 +118,7 @@ export default {
         'sentry' :{
             //Sentry:error tracking platform
             'enable': true,
-            'dsn': "https://7d26002ef4f145f49a21f43e940624ca@sentry.io/1321802"
+            'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
         }
     }
 },
@@ -148,7 +148,7 @@ export default {
     'sentry' :{
         //Sentry:error tracking platform
         'enable': true,
-        'dsn': "https://7d26002ef4f145f49a21f43e940624ca@sentry.io/1321802"
+        'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
     }
    }
 }
