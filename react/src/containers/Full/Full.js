@@ -170,8 +170,9 @@ class Full extends Component {
 
   componentDidMount() {
     if(CommonUtils.getUserSession()){
+      CommonUtils.analyticsIdentify(CommonUtils.getUserSession().userName);
+
       if (window.heap) {
-        window.heap.identify(CommonUtils.getUserSession().userName);
         window.heap.addUserProperties({
                                       "email": CommonUtils.getUserSession().userName, 
                                       "subscription": CommonUtils.getUserSession().subscription
@@ -179,7 +180,6 @@ class Full extends Component {
       }
       if (window.mixpanel) {
         let userSession = CommonUtils.getUserSession();
-        window.mixpanel.identify(userSession.userName);
         window.mixpanel.register({
           "email": userSession.userName, 
           "subscription": userSession.subscription,
@@ -188,6 +188,9 @@ class Full extends Component {
           "industry": userSession.industry !== null ? userSession.industry : "",
           "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
         });
+        if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
+          window.mixpanel.track("integrated");
+        }
       }
       
       // initilizing full view plugin for dashboard user

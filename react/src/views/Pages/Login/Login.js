@@ -192,13 +192,7 @@ submitForm = ()=>{
       _this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Email Id or Password can't be empty!"});
     
   }else{
-    if (window.heap) {
-      window.heap.identify(userName);
-    }
-
-    if (window.mixpanel) {
-      window.mixpanel.identify(userName);
-    }
+    CommonUtils.analyticsIdentify(userName);
 
     if (this.state.loginType === 'oauth'){
       loginUrl += "?loginType=oauth"

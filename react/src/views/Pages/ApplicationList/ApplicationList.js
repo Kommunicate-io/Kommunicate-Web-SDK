@@ -74,13 +74,7 @@ class ApplicationList extends Component {
         // this.setState({
         //   randomColorClass: rn
         // });
-        
-          if (window.heap) {
-            window.heap.identify(userName);
-          }
-          if (window.mixpanel) {
-            window.mixpanel.identify(userName);
-          }
+          CommonUtils.analyticsIdentify(userName);
       
           if (this.state.loginType === 'oauth'){
             loginUrl += "?loginType=oauth"

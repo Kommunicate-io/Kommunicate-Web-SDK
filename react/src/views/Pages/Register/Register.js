@@ -163,13 +163,7 @@ class Register extends Component {
     userInfo.token = this.state.token;
     userInfo.deviceType = "0";
 
-    if (window.heap) {
-      window.heap.identify(email);
-    }
-
-    if (window.mixpanel) {
-      window.mixpanel.identify(email);
-    }
+    CommonUtils.analyticsIdentify(email);
 
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
