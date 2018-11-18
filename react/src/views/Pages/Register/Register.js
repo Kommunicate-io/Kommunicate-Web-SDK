@@ -239,7 +239,6 @@ class Register extends Component {
   }
 
   render() {
-    console.log("signup");
     if (window.mixpanel) {
       window.mixpanel.track("/signup");
     }

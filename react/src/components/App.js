@@ -60,7 +60,6 @@ class App extends Component {
 
   render() {
     const currentPath = window.location.pathname;
-    console.log(currentPath);
     let mixpanelEvent = currentPath;
     if (currentPath.startsWith("/conversations/")) {
         mixpanelEvent = "/conversations/thread";

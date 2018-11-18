@@ -218,12 +218,13 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-    console.log(currentPath);
     let mixpanelEvent = currentPath;
     if (currentPath.startsWith("/conversations/")) {
         mixpanelEvent = "/conversations/thread";
     }
-    window.mixpanel.track(mixpanelEvent);
+    if (window.mixpanel) {
+      window.mixpanel.track(mixpanelEvent);
+    }
    
     return (
       <div className="app" suppressContentEditableWarning={true}>
