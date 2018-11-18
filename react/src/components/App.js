@@ -59,6 +59,16 @@ class App extends Component {
   }
 
   render() {
+    const currentPath = window.location.pathname;
+    console.log(currentPath);
+    let mixpanelEvent = currentPath;
+    if (currentPath.startsWith("/conversations/")) {
+        mixpanelEvent = "/conversations/thread";
+    }
+
+    if (window.mixpanel) {
+      window.mixpanel.track(mixpanelEvent);
+    }
 
     const { loading } = this.state;
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 

@@ -196,6 +196,10 @@ submitForm = ()=>{
       window.heap.identify(userName);
     }
 
+    if (window.mixpanel) {
+      window.mixpanel.identify(userName);
+    }
+
     if (this.state.loginType === 'oauth'){
       loginUrl += "?loginType=oauth"
     } else if (this.state.loginType === 'email'){

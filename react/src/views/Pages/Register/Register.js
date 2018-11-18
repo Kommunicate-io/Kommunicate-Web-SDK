@@ -167,6 +167,10 @@ class Register extends Component {
       window.heap.identify(email);
     }
 
+    if (window.mixpanel) {
+      window.mixpanel.identify(email);
+    }
+
     this.setState({disableRegisterButton:true}); 
     //Promise.resolve(applozic)
     Promise.resolve(createCustomerOrAgent(userInfo,userType,signUpVia)).then((response) => {
@@ -235,6 +239,11 @@ class Register extends Component {
   }
 
   render() {
+    console.log("signup");
+    if (window.mixpanel) {
+      window.mixpanel.track("/signup");
+    }
+
     console.log("invite",this.state.invitedUserEmail);
     return (
      <div> 

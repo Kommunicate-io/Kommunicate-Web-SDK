@@ -177,6 +177,18 @@ class Full extends Component {
                                       "subscription": CommonUtils.getUserSession().subscription
                                     });
       }
+      if (window.mixpanel) {
+        let userSession = CommonUtils.getUserSession();
+        window.mixpanel.identify(userSession.userName);
+        window.mixpanel.register({
+          "email": userSession.userName, 
+          "subscription": userSession.subscription,
+          "billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+          "signup": userSession.created_at !== null ? userSession.created_at: "",
+          "industry": userSession.industry !== null ? userSession.industry : "",
+          "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
+        });
+      }
       
       // initilizing full view plugin for dashboard user
       window.chatLogin(chatUrl);
@@ -206,6 +218,12 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
+    console.log(currentPath);
+    let mixpanelEvent = currentPath;
+    if (currentPath.startsWith("/conversations/")) {
+        mixpanelEvent = "/conversations/thread";
+    }
+    window.mixpanel.track(mixpanelEvent);
    
     return (
       <div className="app" suppressContentEditableWarning={true}>

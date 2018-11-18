@@ -78,6 +78,9 @@ class ApplicationList extends Component {
           if (window.heap) {
             window.heap.identify(userName);
           }
+          if (window.mixpanel) {
+            window.mixpanel.identify(userName);
+          }
       
           if (this.state.loginType === 'oauth'){
             loginUrl += "?loginType=oauth"
