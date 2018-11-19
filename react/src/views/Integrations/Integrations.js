@@ -1,16 +1,30 @@
 import React, { Component } from 'react';
 import './Integrations.css';
 import { thirdPartyList, modals } from './ThirdPartyList'
-import Modal from 'react-responsive-modal';
+import Modal from 'react-modal';
 import IntegrationDescription from './IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import { THIRD_PARTY_INTEGRATION_TYPE }  from '../../utils/Constant'
 import CommonUtils from '../../utils/CommonUtils';
 import LockBadge from '../../components/LockBadge/LockBadge';
-import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from './Integry';
+import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row, addNewIntegration}  from './Integry';
 import Integration from '../Team/Team';
+import CloseButton from './../../components/Modal/CloseButton.js';
 // import Integry from './integry'
 import {integryModalHtmlContent} from './integryModalTemplate'
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '650px',
+      // maxWidth: '580px',
+      overflow: 'visible'
+    }
+  };
 class Integrations extends Component {
     constructor(props){
         super(props);
@@ -18,8 +32,8 @@ class Integrations extends Component {
             modalIsOpen: false,      
             activeDiv:'zendesk',
             hideHelpdocsOfferBanner: false,
-            isIntegrationFromIntegry: false,
-            integrationEnabled:false
+            integryIntegration: false,
+            integryTemplateId:null,
 
         };
         this.openModal = this.openModal.bind(this);
@@ -27,24 +41,12 @@ class Integrations extends Component {
         window.addEventListener("kmIntegryInitilized",this.getThirdPartyList, true);
     }
     componentDidMount () {
-        this.getUrl ();
         this.getThirdPartyList();           
-    }
-    getUrl = () => {
-        //check url if url contains #template_inline in case of integry, open model()
-        let url = window.location.href;
-        const newRegex = new RegExp('integrations/#templates_inline');
-        const isIntegryUrl = url.match(newRegex);
-        this.openIntegryModal();
-       // commented if condition for testing
-        /*if (trisIntegryUrl) {
-           this.openIntegryModal();
-        }*/
     }
     openIntegryModal = () => {
         this.setState({
             modalIsOpen: true,
-            isIntegrationFromIntegry:true
+            integryIntegration:true
         });
     }
     getThirdPartyList = () =>{    
@@ -88,13 +90,24 @@ class Integrations extends Component {
         
   
     }
+    afterOpenModal = () => {
+        addNewIntegration(this.state.integryTemplateId)
+    }
     openModal = (event) => {
-        let integrationEnabled = (event.currentTarget.dataset.integrationEnabled === "true")
+        let integrationSource = event.currentTarget.dataset.integrationSource;
+        if (integrationSource == "integry") {
+            let templateId = event.currentTarget.dataset.integryTemplateId;
+            this.setState({integryTemplateId:templateId})
+            this.openIntegryModal();
+        } else {
         this.setState({
             activeDiv:event.target.getAttribute("data-key"),
             modalIsOpen: true,
-            integrationEnabled:integrationEnabled
+            integryIntegration:false
+            
         });
+        }
+        
         
     }
     
@@ -115,11 +128,11 @@ class Integrations extends Component {
                  var enabledClass = this.state[item.key] ? "content-wrapper enable-integration-wrapper" : "content-wrapper";
                  result.push(<div key={key} className="col-lg-4 col-md-4 col-lg-4-integration ">
                     <div className ={ enabledClass !== "content-wrapper" ? "active-integrated" : "hide-integrated" }>INTEGRATED</div>
-                     <div className={enabledClass}>
+                     <div className={enabledClass} data-integration-source ={item.source}>
                          <img src={item.logo} className="integration-brand-logo" />
                          <h6 className="logo-title">{item.name}</h6>
                          <p className="integration-description">{item.subTitle}</p>
-                         <span data-key={item.key} data-integration-enabled ={integrationEnabled} className="integration-settings" onClick={this.openModal}>{item.label}
+                         <span data-key={item.key} className="integration-settings" data-integry-template-id = {item.templateId} data-integration-source ={item.source} onClick={this.openModal}>{item.label}
                          </span>
                          <div className={key === 'helpdocs' ? "percent-off-pill vis" : "percent-off-pill n-vis" } hidden={this.state.hideHelpdocsOfferBanner}>{item.discountCouponOff} off</div>
                      </div>
@@ -138,22 +151,26 @@ class Integrations extends Component {
             </div>
             <div className="row">
             {thirdParties}
+            {/* <div className="integry-modal-content-wrapper">
+            <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
+            </div> */}
             </div>
         </div>
-        { !this.state.isIntegrationFromIntegry &&
-            <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
+        { !this.state.integryIntegration &&
+            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles} ariaHideApp= {false}  >
             <div>
                 <IntegrationDescription activeModal={this.state.activeDiv} handleCloseModal={this.closeModal} hideHelpdocsOfferBanner={this.state.hideHelpdocsOfferBanner} 
                   getThirdPartyList = {this.getThirdPartyList} helpdocsKeys = {this.state.helpdocsKeys} zendeskKeys={this.state.zendeskKeys} clearbitKeys={this.state.clearbitKeys} agilecrmKeys={this.state.agilecrmKeys} integrationEnabled={this.state.integrationEnabled}/>
             </div>
+            <span onClick={this.closeModal}><CloseButton /></span>
             </Modal>
         }
-        { //this.state.isIntegrationFromIntegry &&        
+        { this.state.integryIntegration &&        
           // check if integration is from integry 
           // commented for testing
-            <Modal open={this.state.modalIsOpen} onClose={this.closeModal}>
-                <h1>Integry Modal</h1>
+            <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal} style={customStyles} ariaHideApp= {false} onAfterOpen={this.afterOpenModal} >
                 <div dangerouslySetInnerHTML={{__html: integryModalHtmlContent}} ></div>
+                <span onClick={this.closeModal}><CloseButton /></span>
             </Modal>
         }  
      </div>

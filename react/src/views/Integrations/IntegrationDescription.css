@@ -43,7 +43,7 @@ body {
     letter-spacing: 1px;
 }
 .integration-save-btn{
-    margin-left: 380px;
+    margin-left: 427px;
     padding-right: 16px;
     
 }
@@ -78,10 +78,6 @@ body {
     margin-top: 20px;
     display: flex;
     align-items: flex-end;
-}
-.zendesk-integration-save-btn {
-    margin-left: 418px;
-    padding-right: 16px;
 }
 .zendesk-email-input {
     width: 238px;

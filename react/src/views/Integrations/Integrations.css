@@ -370,3 +370,9 @@ body {
     font-size: 14px;
     letter-spacing: 0.048em;
 }
+.integry-modal-content-wrapper {
+    width: 80%
+}
+.integry-preview {
+display: block;
+}
