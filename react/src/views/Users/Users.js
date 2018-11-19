@@ -14,8 +14,11 @@ import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoa
 
 const limit = 2;
 const pageCount = 3;
+var hasClass = function(el, className) {
+  return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+};
+var _this;
 class Users extends Component {
-
   constructor(props) {
     super(props);
 
@@ -23,7 +26,7 @@ class Users extends Component {
       result: [],
       startTime:"",
       lastSeenTime:"",
-      showEmptyStateImage: true,
+      hideEmptyStateImage: true,
       total:0,
       currentPage: 1,
       intial:0,
@@ -32,17 +35,20 @@ class Users extends Component {
       pageFlag:2,
       stopFlag:1,
       getUsersFlag:1,
-      isFromSearch: false
+      isFromSearch: false,
+      oldResult : [],
+      searchBoxEmpty : true,
+      isSearchBoxActive : true
     };
 
   }
   componentWillMount() {
+    _this = this;
     this.getUsers();
     this.updateConversationWithRespectToPageNumber();
   }
 
   getUsers = () => {
-    var _this = this;
     if(_this.state.getUsersFlag === 1){
       _this.setState({
         getUsersFlag:0
@@ -76,103 +82,131 @@ class Users extends Component {
               _this.listUsers(response,assignedUser);
 
             } else if (response.response.users.length == 0 && this.state.result == 0) {
-            _this.setState({showEmptyStateImage: false});
+            _this.setState({hideEmptyStateImage: false});
             }
           }
         });
     }
   };
 
-  listUsers = (response,assignedUser,isFromSearch) => {
-    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
-    var groupList=[];
-    var test = this.state.isFromSearch ? response.response : response.response.users;
-    const usersMap=test.map((user, index)=>{
+  listUsers = (response, assignedUser) => {
+    var groupList = [];
+    var userdetail = this.state.isFromSearch ? response.response : response.response.users;
+    const usersMap = userdetail.map((user, index) => {
       if (user.messagePxy && user.messagePxy.groupId) {
         groupList.push(user.messagePxy.groupId.toString());
       }
     });
-    if(groupList.length === 0 ){
-      this.mapUserDeatils(botAgentMap,response, assignedUser,[],[]);
+    if (groupList.length === 0) {
+      this.mapUserDeatils(response, assignedUser, [], []);
     }
-    else{
-      this.getmMultipleGroupInfo(botAgentMap, groupList, response, assignedUser);
+    else {
+      this.getmMultipleGroupInfo(groupList, response, assignedUser);
     }
   };
 
-  getmMultipleGroupInfo = (botAgentMap, groupList, response, assignedUser)=> {
-    var _this = this;
+  getmMultipleGroupInfo = (groupList, response, assignedUser) => {
+    // var _this = this;
     ApplozicClient.multipleGroupInfo(groupList).then(data => {
       var arr = [];
-      if(data.status == "success" && data.response && data.response.length){
-        for(var j = 0; j < data.response.length; j++){
+      if (data.status == "success" && data.response && data.response.length) {
+        for (var j = 0; j < data.response.length; j++) {
           arr[data.response[j].id] = data.response[j];
         };
       }
-      _this.mapUserDeatils(botAgentMap, response, assignedUser, data, arr);
+      _this.mapUserDeatils(response, assignedUser, data, arr);
     });
   };
 
-  mapUserDeatils = (botAgentMap, response, assignedUser, data, arr) => {
-    var _this = this;
-    var test = this.state.isFromSearch ? response.response : response.response.users;
-    const users=test.map((user, index)=>{
+  mapUserDeatils = (response, assignedUser, data, arr) => {
+    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+    var userdetail = this.state.isFromSearch ? response.response : response.response.users;
+    const users = userdetail.map((user, index) => {
       if (user.messagePxy && user.messagePxy.groupId) {
-            if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
-                if (arr[user.messagePxy.groupId]) {
-                  user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE ;
-                  user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
-                  assignedUser.push(user);
-                  // Sort array after pushing
-                  var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                  _this.setState({
-                    result: arrObj,
-                    showEmptyStateImage: true
-                  })
-                }
-            }
+        if (botAgentMap && typeof data !== "undefined" && data !== null) {
+          if (arr[user.messagePxy.groupId]) {
+            user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE;
+            user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
+            assignedUser.push(user);
+            // Sort array after pushing
+            var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
+            _this.setState({
+              result: arrObj,
+              hideEmptyStateImage: true
+            })
+          }
+        }
       }
       else {
         assignedUser.push(user);
-        var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
+        var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
         _this.setState({
           result: arrObj,
-          showEmptyStateImage: true
+          hideEmptyStateImage: true
         })
       }
     });
   };
 
   searchContactInApplozic = (searchQuery) => {
-    var _this = this;
     var params = {
-      name : searchQuery
+      name: searchQuery
     }
     ApplozicClient.searchContact(params).then(response => {
-      console.log(response);
-      if(response.response.length !== 0){
+      if (response.response.length !== 0) {
+        var setPageNumbers = response.response.length;
+        if (_this.state.isSearchBoxActive) {
+          _this.setState({
+            oldResult: _this.state.result
+          })
+        };
+        _this.setState({
+          isFromSearch: true,
+          result: [],
+          isSearchBoxActive: false,
+          total: (Math.ceil(setPageNumbers / 20) * limit),
+          currentPage: 1,       // default value 
+          intial: 0,            // default value 
+          final: 20,            // default value 
+          pageNumber: 1,        // default value 
+          pageFlag: 2           // default value 
+        });
+        _this.listUsers(response, []);
+      }
+      else {
         var setPageNumbers = response.response.length;
         _this.setState({
           isFromSearch: true,
-          total: (Math.ceil(setPageNumbers / 20)*limit)
+          result: [],
+          total: (Math.ceil(setPageNumbers / 20) * limit),
+          hideEmptyStateImage: false,
+          currentPage: 1,   // default value 
+          intial: 0,        // default value
+          final: 20,        // default value
+          pageNumber: 1,    // default value 
+          pageFlag: 2,      // default value 
         });
-        _this.listUsers(response,[]);
+        _this.listUsers(response, []);
       }
-     else {
-      var setPageNumbers = response.response.length;
-      _this.setState({
-        isFromSearch: true,
-        result: [],
-        total: (Math.ceil(setPageNumbers / 20)*limit),
-        showEmptyStateImage: false
-      }); 
-      _this.listUsers(response,[]);
-     }
     });
   };
 
-  updateConversationWithRespectToPageNumber = () => {
-    var _this = this;
+  detectEmptySearchBox = (event) => {
+    event.preventDefault();
+    var setPageNumbers = this.state.oldResult.length;
+    var searchBox = document.getElementById('km-search-box');
+    if (searchBox && searchBox.value === "" && (hasClass(event.target, 'km-search-box') || hasClass(event.target, 'km-clear-search-text')) && !this.state.searchBoxEmpty) {
+      this.setState({
+        isFromSearch: true,
+        isSearchBoxActive: true,
+        total: (Math.ceil(setPageNumbers / 20) * limit),
+        result: this.state.oldResult,
+        hideEmptyStateImage: true
+      });
+    }
+  };
+
+  updateConversationWithRespectToPageNumber = (e) => {
     var hasClass = function(el, className) {
       return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
     };
@@ -190,7 +224,8 @@ class Users extends Component {
         if((((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1 ) || _this.state.pageNumber === (checkPreviousPageNumber +2)){
           _this.setState({
             pageFlag: _this.state.pageNumber + 2,
-            getUsersFlag:1
+            getUsersFlag:1,
+            isFromSearch:false
           })
           _this.getUsers();
         };
@@ -217,7 +252,8 @@ class Users extends Component {
           if(((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1) {
             _this.setState({
               pageFlag: _this.state.pageNumber + 2,
-              getUsersFlag:1
+              getUsersFlag:1,
+              isFromSearch:false
             })
             _this.getUsers();
           }
@@ -232,35 +268,36 @@ class Users extends Component {
     });
   };
 
-  handleClick = (e) => {
-    var _this = this;
-    e.preventDefault();
-    //km-text-box-wrapper
+  handleClickEventForSearch = (event) => {
+    event.preventDefault();
     var specifiedElement = document.getElementById('km-search-box');
-    document.getElementById("km-search-svg").classList.add('n-vis');
-    document.getElementById("km-clear-search-text").classList.remove('n-vis');
-    specifiedElement.style.marginLeft="0px"
+    var isClickInside = specifiedElement ? (specifiedElement.contains(event.target) || specifiedElement.id === event.target.id) : false;
 
-    document.addEventListener('click', function(event) {
-      event.preventDefault();
-      var isClickInside = specifiedElement.contains(event.target) || specifiedElement.id === event.target.id;
-      if (!isClickInside) {
-        //the click was outside the specifiedElement
-        document.getElementById("km-search-svg") && document.getElementById("km-search-svg").classList.remove('n-vis');
-        document.getElementById("km-clear-search-text") && document.getElementById("km-clear-search-text").classList.add('n-vis');
-        specifiedElement && (specifiedElement.style.marginLeft="20px");
-        specifiedElement && (specifiedElement.value ="");
-      }
-    });
+    if (hasClass(event.target, 'km-search-box')) {
+      document.getElementById("km-search-svg").classList.add('n-vis');
+      document.getElementById("km-clear-search-text").classList.remove('n-vis');
+      specifiedElement.style.marginLeft = "0px"
+    }
+    else if (!isClickInside && hasClass(event.target, 'km-clear-search-text')) {
+      document.getElementById("km-search-svg") && document.getElementById("km-search-svg").classList.remove('n-vis');
+      document.getElementById("km-clear-search-text") && document.getElementById("km-clear-search-text").classList.add('n-vis');
+      specifiedElement && (specifiedElement.style.marginLeft = "20px");
+      specifiedElement && (specifiedElement.value = "");
+      _this.detectEmptySearchBox(event);
+    }
+  };
 
-    document.addEventListener('keyup', function(event){
-      event.stopImmediatePropagation(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
-      var key = event.which || event.keyCode;
-       if(key=== 13){
-        _this.searchContactInApplozic(document.getElementById('km-search-box').value);
-       };
-    });
-  }
+  handleKeyboardEventForSearch = (event) => {
+    event.preventDefault(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
+    var key = event.which || event.keyCode;
+    if (key === 13) {
+      _this.searchContactInApplozic(document.getElementById('km-search-box').value);
+      _this.setState({
+        searchBoxEmpty: false,
+      })
+    };
+    _this.detectEmptySearchBox(event);
+  };
 
 
   render() {
@@ -278,8 +315,8 @@ class Users extends Component {
            <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
                 <path fill="#a8a8a8" d="M51.704 51.273L36.845 35.82c3.79-3.801 6.138-9.041 6.138-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.083 0 9.748-1.817 13.384-4.832l14.895 15.491a.998.998 0 0 0 1.414.028 1 1 0 0 0 .028-1.414zM21.983 40c-10.477 0-19-8.523-19-19s8.523-19 19-19 19 8.523 19 19-8.524 19-19 19z"/>
               </svg>
-            <input id="km-search-box" type="text" className="km-search-box required" placeholder="Search in users" onClick={(event) => {this.handleClick(event)} } ></input>
-            <span id="km-clear-search-text" className="n-vis"> &times; </span>
+            <input id="km-search-box" type="text" className="km-search-box required"  onClick={(event) => this.handleClickEventForSearch(event)} onKeyUp={(event) => this.handleKeyboardEventForSearch(event)} placeholder="Search in users"></input>
+            <span id="km-clear-search-text" className=" km-clear-search-text n-vis"  onClick={(event) => this.handleClickEventForSearch(event)}> &times; </span>
             </div>
             <table className={this.state.result.length !== 0 ? "table table-hover mb-0 hidden-sm-down km-show-visibility":"table table-hover mb-0 hidden-sm-down km-hide-visibility"}>
                   <thead className="thead-default">
@@ -397,9 +434,9 @@ class Users extends Component {
                 </Pagination>
                   </div>
                 :
-                this.state.showEmptyStateImage && <UserSectionLoader/>
+                this.state.hideEmptyStateImage && <UserSectionLoader/>
                 }
-              <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
+              <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.hideEmptyStateImage}>
                 <img src="/img/empty-customers.png" alt="Customers Empty State" className="empty-state-customers-img"/>
                 <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>
                 <p className="empty-state-message-shortcuts-second-text">There are no users to show</p>

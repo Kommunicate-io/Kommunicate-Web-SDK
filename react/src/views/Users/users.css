@@ -130,6 +130,7 @@
 }
 
 .km-search-box {
+  width: 90%;
   outline: none;
   border: none;
   color: #97999b;

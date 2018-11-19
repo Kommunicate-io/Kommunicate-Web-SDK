@@ -183,7 +183,7 @@ updateUserDetail:function(params){
       'Content-Type': 'application/json;charset=UTF-8'
     }
     var multipleGroup = {
-      "clientGroupIds": data 
+      "groupIds": data 
     };
     var url = getConfig().applozicPlugin.multipleGroupInfo;
     
