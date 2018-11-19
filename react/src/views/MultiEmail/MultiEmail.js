@@ -30,6 +30,7 @@ class MultiEmail extends Component {
     sendMail = e => {
         const _this = this;
         e.preventDefault();
+
         let multipleEmailAddress = this.state.multipleEmailAddress;
         if(isEmail(this.state.emailAddress)) {
             multipleEmailAddress = multipleEmailAddress.concat([this.state.emailAddress]);
@@ -64,6 +65,10 @@ class MultiEmail extends Component {
                     _this.setState({ multipleEmailAddress: [], emailAddress: "" });
                 });
             }
+        }
+
+        if (window.mixpanel && this.state.template == "SEND_KOMMUNICATE_SCRIPT") {
+            window.mixpanel.track("integration.instructions.mail.sent");
         }
     };
 

@@ -208,6 +208,15 @@ const CommonUtils = {
     isInternetExplorer: function() {
         return (navigator.userAgent.indexOf('MSIE') !== -1 ||
         navigator.appVersion.indexOf('Trident/') > 0);
+    },
+    analyticsIdentify: function(identity) {
+        if (window.heap) {
+            window.heap.identify(identity);
+          }
+      
+          if (window.mixpanel) {
+            window.mixpanel.identify(identity);
+          }
     }
 }
 
