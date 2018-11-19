@@ -1,6 +1,6 @@
 import CommonUtils from './CommonUtils';
 import axios from 'axios';
-import  { getConfig }  from '../../src/config/config';
+import  { getConfig }  from '../config/config';
 
 export function acEventTrigger(trigger) {
     var event;
@@ -42,6 +42,10 @@ export function acEventTrigger(trigger) {
       case 'ac-configured-routing':
         event = "configuredRouting"
         break;
+    }
+
+    if (window.mixpanel) {
+      window.mixpanel.track(event);
     }
   
     //  ActiveCampaign id. 

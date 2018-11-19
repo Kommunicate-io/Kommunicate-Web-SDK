@@ -25,7 +25,7 @@ import IntegrationDescription from '../Integrations/IntegrationDescription.js';
 import { getThirdPartyListByApplicationId }  from '../../utils/kommunicateClient'
 import LockBadge from '../../components/LockBadge/LockBadge';
 import CloseButton from './../../components/Modal/CloseButton.js';
-import {acEventTrigger} from '../../utils/ActiveCampaign'
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking.js'
 import ReactQuill from 'react-quill';
 import './ReactQuill.css';
 

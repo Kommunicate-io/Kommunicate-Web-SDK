@@ -3,7 +3,7 @@ import './IncomingEmailForward.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
 import { Link } from 'react-router-dom';
-import {acEventTrigger} from '../../utils/ActiveCampaign';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 

@@ -192,7 +192,15 @@ const callSendEmailAPI = (options) => {
   let userSession = CommonUtils.getUserSession();
   let userId = userSession.userName;
   let roleType = options.roleType;
-  let data = {}
+  let data = {};
+
+  if (window.mixpanel) {
+    if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
+      window.mixpanel.track("integration.instructions.mail.sent");
+    } else {
+      window.mixpanel.track("mail." + options.templateName);
+    }
+  }
 
 let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){

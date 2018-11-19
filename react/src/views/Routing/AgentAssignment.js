@@ -14,7 +14,7 @@ import { getIntegratedBots, conversationHandlingByBot  } from '../../utils/kommu
 import Diaglflow from '../Bot/images/dialogflow-icon.png';
 import botPlatformClient from '../../utils/botPlatformClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
-import { acEventTrigger } from '../../utils/ActiveCampaign';
+import { acEventTrigger } from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 
