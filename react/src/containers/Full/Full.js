@@ -171,6 +171,8 @@ class Full extends Component {
   componentDidMount() {
     if(CommonUtils.getUserSession()){
       CommonUtils.analyticsIdentify(CommonUtils.getUserSession().userName);
+
+      let userSession = CommonUtils.getUserSession();
       let userProperties = {
         "email": userSession.userName, 
         "subscription": userSession.subscription,
@@ -184,7 +186,6 @@ class Full extends Component {
         window.heap.addUserProperties(userProperties);
       }
       if (window.mixpanel) {
-        let userSession = CommonUtils.getUserSession();
         window.mixpanel.register(userProperties);
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
           window.mixpanel.track("integrated");
