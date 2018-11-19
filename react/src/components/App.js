@@ -45,7 +45,7 @@ class App extends Component {
   componentDidCatch(error, errorInfo) {
     this.setState({ error });
     enableSentry && Sentry.withScope((scope) => {
-      setTag (scope)
+      setTag (scope);
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
       });
