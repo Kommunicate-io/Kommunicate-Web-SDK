@@ -28,7 +28,7 @@ import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
 
 
 // const history = createBrowserHistory();
-
+const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 class App extends Component {
   static defaultProps ={ hideSkip : false }
   constructor(props,defaultProps){
@@ -43,17 +43,18 @@ class App extends Component {
   }
   componentDidCatch(error, errorInfo) {
     this.setState({ error });
-    Sentry.withScope(scope => {
+    enableSentry && Sentry.withScope((scope) => {
+      let userSession = CommonUtils.getUserSession();
+      scope.setTag("applicationId", userSession.application.applicationId);
+      scope.setTag("userId", userSession.userName);
+      scope.setUser({
+        id: userSession.application.applicationId,
+        username: userSession.userName
+      });
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
       });
       Sentry.captureException(error);
-    });
-    Sentry.configureScope((scope) => {
-      let userSession = CommonUtils.getUserSession();
-      scope.setUser({
-        "username": userSession.userName,
-        "id": userSession.application.applicationId});
     });
     
   }
