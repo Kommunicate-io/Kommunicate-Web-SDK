@@ -25,6 +25,7 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
 import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
+import {setTag} from '../../src/sentry/sentry'
 
 
 // const history = createBrowserHistory();
@@ -44,13 +45,7 @@ class App extends Component {
   componentDidCatch(error, errorInfo) {
     this.setState({ error });
     enableSentry && Sentry.withScope((scope) => {
-      let userSession = CommonUtils.getUserSession();
-      scope.setTag("applicationId", userSession.application.applicationId);
-      scope.setTag("userId", userSession.userName);
-      scope.setUser({
-        id: userSession.application.applicationId,
-        username: userSession.userName
-      });
+      setTag (scope)
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
       });
