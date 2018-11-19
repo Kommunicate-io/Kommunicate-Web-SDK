@@ -43,7 +43,8 @@ function getEnvironmentId() {
     "fetchContactsUrl": applozicBaseUrl + url.applozic.CONTACT_LIST_URL,
     "groupFeedUrl": applozicBaseUrl + url.applozic.GROUP_FEED_URL,
     "multipleGroupInfo": applozicBaseUrl + url.applozic.MULTIPLE_GROUP_INFO,
-    "editApplication": applozicBaseUrl + url.applozic.EDIT_APPLICATION
+    "editApplication": applozicBaseUrl + url.applozic.EDIT_APPLICATION,
+    "searchContact": applozicBaseUrl +url.applozic.SEARCH_USER
   };
   config.kommunicateApi = {
     "login": kommunicateBaseUrl + url.kommunicateApi.LOGIN,

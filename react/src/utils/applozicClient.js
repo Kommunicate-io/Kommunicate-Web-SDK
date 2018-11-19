@@ -107,6 +107,95 @@ updateUserDetail:function(params){
         } 
 
       });
+  },
+
+  searchContact : (data) => {
+    let userSession = CommonUtils.getUserSession();
+    var API_HEADERS = {
+      'Content-Type': 'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': 'true',
+    }
+    var url = getConfig().applozicPlugin.searchContact;
+  
+    return Promise.resolve(axios({
+      method: 'GET',
+      url: url,
+      headers: API_HEADERS,
+      params: data
+    }))
+      .then(response => {
+        return response.data;
+      })
+  },
+
+  fetchContactsFromApplozic : (data) => {
+    let userSession = CommonUtils.getUserSession();
+    var API_HEADERS = {
+      'Content-Type': 'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': 'true',
+    }
+    var url = getConfig().applozicPlugin.fetchContactsUrl;
+  
+    return Promise.resolve(axios({
+      method: 'get',
+      url: url,
+      headers: API_HEADERS,
+      params: data
+    }))
+      .then(response => {
+        // console.log("in response")
+        // console.log(response)
+        return response.data;
+      })
+  }, 
+  
+  getGroupFeed : (data) => {
+    let userSession = CommonUtils.getUserSession();
+    var API_HEADERS = {
+      'Content-Type': 'application/json',
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': 'true',
+    }
+    var url = getConfig().applozicPlugin.groupFeedUrl;
+  
+    return Promise.resolve(axios({
+      method: 'get',
+      url: url,
+      headers: API_HEADERS,
+      params: data
+    }))
+      .then(response => {
+        return response.data;
+      })
+  }, 
+  
+  multipleGroupInfo : (data) => {
+    let userSession = CommonUtils.getUserSession();
+    var API_HEADERS = {
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Apz-Product-App': 'true',
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+    var multipleGroup = {
+      "groupIds": data 
+    };
+    var url = getConfig().applozicPlugin.multipleGroupInfo;
+    
+    return Promise.resolve(axios({
+      method: 'post',
+      url: url,
+      headers: API_HEADERS,
+      data: multipleGroup
+    }))
+      .then(response => {
+        return response.data;
+      })
   }
 }
 
