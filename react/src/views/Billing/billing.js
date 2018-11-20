@@ -382,7 +382,6 @@ class Billing extends Component {
 
     seatSelectionModal(e) {
         var selectedPlanButton = e.target.getAttribute("data-choose-plan");
-        console.log(selectedPlanButton);
         if(selectedPlanButton.includes("enterprise")) {
             this.setState({
                 planHeading: "Enterprise",
@@ -402,7 +401,6 @@ class Billing extends Component {
         this.setState({
             seatSelectionModalIsOpen: false,
         });
-
     }
 
     handleChange(e) {
@@ -413,12 +411,6 @@ class Billing extends Component {
         for(var i = 0; i < elements.length; i++) {
             elements[i].cbProduct.planQuantity = e.target.value;
         }
-        console.log(elements);
-        var elemMonthly = document.getElementById('checkout-monthly');
-        elemMonthly.cbProduct.planQuantity =  e.target.value;
-
-        var elemYearly = document.getElementById('checkout-yearly');
-        elemYearly.cbProduct.planQuantity = e.target.value;
     }
 
     keyPress(e) {
@@ -496,11 +488,10 @@ class Billing extends Component {
     openChargebeeModal() {
         if(this.state.planHeading.includes("Enterprise")) {
             (!this.state.toggleSlider) ? document.getElementById("checkout-enterprise-monthly").click() : document.getElementById("checkout-enterprise-yearly").click();
-            this.closeSeatSelectionModal();
         } else {
             (!this.state.toggleSlider) ? document.getElementById("checkout-monthly").click() : document.getElementById("checkout-yearly").click();
-            this.closeSeatSelectionModal();
         }
+        this.closeSeatSelectionModal();
     }
 
     render() {
