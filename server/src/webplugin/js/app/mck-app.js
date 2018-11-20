@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;

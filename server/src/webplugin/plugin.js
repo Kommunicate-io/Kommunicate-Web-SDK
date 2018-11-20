@@ -16,7 +16,7 @@ if (typeof options !== 'undefined') {
   MCK_ONINIT = options.onInit;
 }
 window.addEventListener('error', function(e) {
-  let sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
+  let sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
   sentryConfig.enable && Sentry.withScope((scope) => {
     scope.setTag("applicationId", options.appId);
     scope.setTag("userId", options.userId);

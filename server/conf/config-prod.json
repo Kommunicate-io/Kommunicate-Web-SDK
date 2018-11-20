@@ -121,9 +121,15 @@
           {"time": "0 30 7 * * *", "job":"trialExpireCron", "enable":true }         
          ],
          "thirdPartyIntegration": {
-          "sentry":{
-            "dsn":"https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
-            "enable":true
+          "sentry": {
+            "plugin": {
+              "dsn": "https://9f71614ef8184d0cab00074555dad9a7@sentry.io/1321911",
+              "enable": true
+            },
+            "server": {
+              "dsn": "https://2e93f54edb1f42078cd61c6998fee13b@sentry.io/1325833",
+              "enable": true
+            }
           }
         }
     }
