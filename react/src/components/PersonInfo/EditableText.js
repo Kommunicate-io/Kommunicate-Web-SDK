@@ -10,11 +10,14 @@ class EditableText extends Component {
     this.state = {
       value: this.props.value,
       isInEditMode: false,
-      renderChild: this.props.children? true:false
+      renderChild: this.props.children? true:false,
+      inputBoxMouseDown:false,
     };
     this.changeEditMode = this.changeEditMode.bind(this);
     this.onKeyPressHandler = this.onKeyPressHandler.bind(this);
     this.updateComponentValue = this.updateComponentValue.bind(this);
+    this.submitComponentValue = this.submitComponentValue.bind(this);
+    this.updateMouseDownFlag = this.updateMouseDownFlag.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,7 +60,8 @@ class EditableText extends Component {
 
   changeEditMode = () => {
     this.setState({
-      isInEditMode: !this.state.isInEditMode
+      isInEditMode: !this.state.isInEditMode,
+      inputBoxMouseDown: true 
     });
   };
   onKeyPressHandler = (e) => {
@@ -65,14 +69,29 @@ class EditableText extends Component {
       this.updateComponentValue();
     }
   }
+  updateMouseDownFlag =() =>{
+    this.setState({
+      inputBoxMouseDown: false 
+    });
+  }
+  submitComponentValue =(e)=>{
+      this.updateComponentValue(e);
+      this.setState({
+        inputBoxMouseDown: true 
+      });
+  }
 
   updateComponentValue = (e) => {
+    if (this.state.inputBoxMouseDown) {
+      return;
+    } else {
     var text = this.refs[this.props.reference].value;
     if (text && !this.isValid(this.props.reference, text)) {
       return;
     }
     this.setState({
-      isInEditMode: !this.state.isInEditMode
+      isInEditMode: !this.state.isInEditMode,
+      inputBoxMouseDown: false 
     });
     if (text == this.state.value) {
       return;
@@ -95,6 +114,7 @@ class EditableText extends Component {
           }
         }
       })
+    }
   };
 
   renderEditView = () => {
@@ -114,11 +134,12 @@ class EditableText extends Component {
           defaultValue={this.state.value}
           onKeyPress={this.onKeyPressHandler}
           onBlur={this.updateComponentValue}
+          onFocus ={this.updateMouseDownFlag}
         />
-        <button onClick={this.changeEditMode}>
+        <button onMouseDown={this.changeEditMode}>
           <CancelSvg />
         </button>
-        <button onClick={this.updateComponentValue}>
+        <button onMouseDown={this.submitComponentValue}>
           <SubmitSvg />
         </button>
       </div>
