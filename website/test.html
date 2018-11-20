@@ -46,7 +46,7 @@ layout:
 
     // KM Script
     (function(d, m){
-       let o = {"appId":applicationId,"isAnonymousChat":true,"metadata":{'KM_SOURCE':"KOMMUNICATE_DASHBOARD"},"conversationTitle":conversationTitle.replace(/%20/g," "),"baseUrl":'{% if jekyll.environment == "production" %} {{site.dashboard.supportChatBaseUrlProd}}{% else %}{{site.dashboard.supportChatBaseUrlTest}}{% endif %}'};
+       let o = {"appId":applicationId,"isAnonymousChat":true,"metadata":{'KM_SOURCE':"KOMMUNICATE_DASHBOARD"},"conversationTitle":conversationTitle.replace(/%20/g," ")};
        o.onInit = function(response) {
         Kommunicate.launchConversation();
        };
