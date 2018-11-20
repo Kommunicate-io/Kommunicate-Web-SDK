@@ -71,8 +71,8 @@ class Full extends Component {
       return resolve({})
        }).then((data)=>{
          setTimeout(function(){
-          initilizeIntegry({});
-         }, 3000)
+          initilizeIntegry({applicationId:CommonUtils.getUserSession().applicationId});
+         }, 5000)
          
        });
        

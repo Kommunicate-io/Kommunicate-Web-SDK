@@ -1,6 +1,6 @@
 export const integryModalHtmlContent =
 `<div class="animated fadeIn dashboard-card integration-form-preview" style="border: none; display: none;">
-<h2>Setup integration <a style="float: right;" href="#" onclick="cancelAddNewIntegration();" class="btn btn-primary">Cancel</a></h2>
+<h2>Setup integration <a style="float: right;" href="#" onclick="closeIntegrationPreview();" class="btn btn-primary">Cancel</a></h2>
 <div id="intcontainer" class="hidden">
     <div class="wrapper">
         <a id="integrations-wrapper"></a>
