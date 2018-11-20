@@ -138,11 +138,10 @@ class Billing extends Component {
 
     afterOpenModal = () => {
         this.chargebeeInit();
-            var elemMonthly = document.getElementById('checkout-monthly');
-            elemMonthly.cbProduct.planQuantity = this.state.seatsBillable;
-
-            var elemYearly = document.getElementById('checkout-yearly');
-            elemYearly.cbProduct.planQuantity = this.state.seatsBillable;
+        var elements = document.querySelectorAll('.km-subscription-buttons-container button');
+        for(var i = 0; i < elements.length; i++) {
+            elements[i].cbProduct.planQuantity = this.state.seatsBillable;
+        }
     }
 
     onCloseModal = () => {
@@ -407,7 +406,7 @@ class Billing extends Component {
         this.setState({
             seatsBillable: e.target.value
         });
-        var elements = document.querySelectorAll('.seat-selection-modal--footer button:nth-child(n+3)');
+        var elements = document.querySelectorAll('.km-subscription-buttons-container button');
         for(var i = 0; i < elements.length; i++) {
             elements[i].cbProduct.planQuantity = e.target.value;
         }
@@ -668,15 +667,8 @@ class Billing extends Component {
                                 </div>
                                 <div className="seat-selection-modal--footer text-right">
                                     <button className="km-button km-button--secondary" onClick={this.closeSeatSelectionModal}>Cancel</button>
-                                    {
-                                        <button className="km-button km-button--primary" onClick={this.openChargebeeModal}>Continue</button>
-                                    }
-                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button>
-                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
-
-                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="enterprise_per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="enterprise-per-agent-monthly" id="checkout-enterprise-monthly">Continue</button>
-                                        <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="enterprise_per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="enterprise" id="checkout-enterprise-yearly">Continue</button>
                                     
+                                    <button className="km-button km-button--primary" onClick={this.openChargebeeModal}>Continue</button>                                   
                                     
                                 </div>
                                 <CloseButton onClick={this.closeSeatSelectionModal}/>
@@ -784,10 +776,10 @@ class Billing extends Component {
                                                 <div className="pricing-table-body">
                                                 {
                                                     (this.state.subscription.includes("enterprise")) ? <div>
-                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" onClick={this.openInfoModal}>
+                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" data-choose-plan="per_agent_monthly" onClick={this.openInfoModal}>
                                                             Choose Plan
                                                         </button>
-                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" onClick={this.openInfoModal}>
+                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" data-choose-plan="per_agent_yearly" onClick={this.openInfoModal}>
                                                             Choose Plan
                                                         </button>
                                                     </div> : <div>
@@ -902,6 +894,14 @@ class Billing extends Component {
                             </div>
                         </div>
 
+                        {/* Below div "km-subscription-buttons-container n-vis" is a hack to update the number of seats in the chargebee checkout modal. */}
+                        <div className="km-subscription-buttons-container n-vis">
+                            <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_monthly" data-cb-type="checkout" data-cb-plan-id="per_agent_monthly" id="checkout-monthly">Continue</button>
+                            <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="per_agent_yearly" data-cb-type="checkout" data-cb-plan-id="per_agent_yearly" id="checkout-yearly">Continue</button>
+
+                            <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="enterprise-per-agent-monthly" data-cb-type="checkout" data-cb-plan-id="enterprise-per-agent-monthly" id="checkout-enterprise-monthly">Continue</button>
+                            <button className="checkout chargebee n-vis km-button km-button--primary km-display-none" data-subscription="enterprise" data-cb-type="checkout" data-cb-plan-id="enterprise" id="checkout-enterprise-yearly">Continue</button>
+                        </div>
                     </div>
                 </div>
             </div>
