@@ -71,6 +71,7 @@ class Full extends Component {
         document.getElementsByTagName('head')[0].appendChild(integryScript);
       return resolve({})
        }).then((data)=>{
+         //TODO: load integry SDK synchronously, remove setTimeout 
          setTimeout(function(){
           initilizeIntegry({applicationId:CommonUtils.getUserSession().applicationId});
          }, 5000)

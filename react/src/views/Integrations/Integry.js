@@ -19,7 +19,7 @@ function initilizeIntegry(settings) {
     }    
     window.integryAppSDK.load({
         app_key: INTEGRY_CONFIG.appKey,
-        user_id: "1de42a6e4a0caadad66e22f694e693750",  // customer_Id kommunicate.  use applicationId here to share the integration with all agents within application 
+        user_id: settings.applicationId,  // customer_Id kommunicate.  use applicationId here to share the integration with all agents within application 
         hash : CryptoJS.HmacSHA256(settings.applicationId,INTEGRY_CONFIG.appSecret),
         bundle_id :INTEGRY_CONFIG.bundleId,
         bundle_instance_id: "",
@@ -127,7 +127,7 @@ function addNewIntegration(templateId) {
     window.integryAppSDK.renderTemplateForm(templateId);
 }
 function closeIntegrationPreview() {
-    window.$kmApplozic(".integration-form-preview").hide();
+    window.$kmApplozic(".integration-form-preview").hide(); 
 }
 
 export { 
