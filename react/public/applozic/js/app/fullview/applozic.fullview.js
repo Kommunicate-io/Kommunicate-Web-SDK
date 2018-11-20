@@ -6628,7 +6628,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadGroupTab = function (response, params) {
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
-					if(response.status === 'error' && response.errorCode == "AL-G-01" ) {
+					if(response.status === 'error') {
 						//errorCode "AL-G-01" - group not found
 						window.appHistory.push("/conversations/oops");
 						$kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
