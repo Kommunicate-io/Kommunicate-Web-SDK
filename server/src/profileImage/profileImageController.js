@@ -27,7 +27,9 @@ exports.uploadImageToS3 = (req, res) => {
 			})	
 		}
 		var filePath=path.join(__dirname,'../../../uploads/'+req.file.filename)
-		fs.unlink(filePath);
+		fs.unlink(filePath, (err) => {
+			console.log(err);
+		  });
 	}).catch(err=>{
 		console.log('uploading error',err)
 	});

@@ -139,7 +139,7 @@ class Sidebar extends Component {
             </li>
             {/* Customers Link */}
             <li className="nav-item">
-              <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Customers" data-effect="solid" data-place="right">
+              <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Users" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 8">
                     <path fill="none" d="M0 0h24v24H0z" data-name="Rectangle 6" />
