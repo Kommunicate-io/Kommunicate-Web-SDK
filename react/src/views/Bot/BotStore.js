@@ -18,7 +18,7 @@ import NoteIcon from './images/note-icon.png';
 import { ROLE_TYPE } from '../../utils/Constant';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import InputFile from '../../components/InputFile/InputFile';
-import {acEventTrigger} from '../../../src/utils/ActiveCampaign';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {PseudoNameImage, ConversationsEmptyStateImage, LizProfileSVG, LizFullSVG, BotDefaultImage , LizBotSvg} from '../../views/Faq/LizSVG.js';
 
 export default class BotStore extends Component {

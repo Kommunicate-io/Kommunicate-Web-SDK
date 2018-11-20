@@ -7,7 +7,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
-import {acEventTrigger} from '../../utils/ActiveCampaign';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 

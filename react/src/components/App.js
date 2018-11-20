@@ -6,7 +6,7 @@ import { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from '../utils/ThirdPartyScripts';
-import {ActiveCampaign} from '../utils/ActiveCampaign';
+import {ActiveCampaign} from '../utils/AnalyticsEventTracking';
 import * as Sentry from '@sentry/browser';
 import { getConfig } from '../config/config';
 

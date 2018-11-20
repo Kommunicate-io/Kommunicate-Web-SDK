@@ -66,10 +66,6 @@ class MultiEmail extends Component {
                 });
             }
         }
-
-        if (window.mixpanel && this.state.template == "SEND_KOMMUNICATE_SCRIPT") {
-            window.mixpanel.track("integration.instructions.mail.sent");
-        }
     };
 
     multipleEmailHandler = e => {

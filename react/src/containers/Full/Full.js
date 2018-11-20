@@ -172,22 +172,21 @@ class Full extends Component {
     if(CommonUtils.getUserSession()){
       CommonUtils.analyticsIdentify(CommonUtils.getUserSession().userName);
 
+      let userSession = CommonUtils.getUserSession();
+      let userProperties = {
+        "email": userSession.userName, 
+        "subscription": userSession.subscription,
+        "billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+        "signup": userSession.created_at !== null ? userSession.created_at: "",
+        "industry": userSession.industry !== null ? userSession.industry : "",
+        "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
+      };
+
       if (window.heap) {
-        window.heap.addUserProperties({
-                                      "email": CommonUtils.getUserSession().userName, 
-                                      "subscription": CommonUtils.getUserSession().subscription
-                                    });
+        window.heap.addUserProperties(userProperties);
       }
       if (window.mixpanel) {
-        let userSession = CommonUtils.getUserSession();
-        window.mixpanel.register({
-          "email": userSession.userName, 
-          "subscription": userSession.subscription,
-          "billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
-          "signup": userSession.created_at !== null ? userSession.created_at: "",
-          "industry": userSession.industry !== null ? userSession.industry : "",
-          "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
-        });
+        window.mixpanel.register(userProperties);
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
           window.mixpanel.track("integrated");
         }
