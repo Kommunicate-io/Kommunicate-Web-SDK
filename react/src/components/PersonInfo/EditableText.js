@@ -59,10 +59,12 @@ class EditableText extends Component {
   }
 
   changeEditMode = () => {
-    this.setState({
-      isInEditMode: !this.state.isInEditMode,
-      inputBoxMouseDown: true 
-    });
+    if (this.props.reference !== "displayName") {
+      this.setState({
+        isInEditMode: !this.state.isInEditMode,
+        inputBoxMouseDown: true
+      });
+    }
   };
   onKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
