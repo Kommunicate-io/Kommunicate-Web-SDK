@@ -15,7 +15,7 @@ exports.createSubscription = async function (req,res) {
         //ToDo: for now applicationId is mendatory field. figure out a way to get applicationId from application Key
         // populate ApplicationId in subscriptionData. 
     }
-    return subscriptionService.createSubscription(req.body).then((data)=>{
+    return subscriptionService.createOrUpdateSubscription(req.body).then((data)=>{
         return res.status(201).json(data);
     }).catch((err)=>{
         let code,response, httpCode;

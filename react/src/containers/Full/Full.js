@@ -35,7 +35,7 @@ import SettingsSidebar from '../../components/SettingsSidebar/SettingsSidebar';
 import AgentAssignemnt from '../../views/Routing/AgentAssignment';
 import { COOKIES } from '../../utils/Constant';
 import config from '../../config/index';
-import {callbackFunc_Render_Integration_Row, callbackFunc_Render_Template_Row}  from '../../views/Integrations/Integry';
+import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 const enableIntegry = false;
@@ -61,8 +61,25 @@ class Full extends Component {
     });
    }
   componentWillMount(){
+       // integry SDK
+       new Promise(function(resolve,reject){
+        const integryScript = document.createElement("script");
+
+        integryScript.src = "https://app.integry.io/w/assets/sdk-1.1.js?q=4";
+        integryScript.async = true;
     
-    enableIntegry && this.initiateIntegry();
+        document.getElementsByTagName('head')[0].appendChild(integryScript);
+      return resolve({})
+       }).then((data)=>{
+         setTimeout(function(){
+          initilizeIntegry({applicationId:CommonUtils.getUserSession().applicationId});
+         }, 5000)
+         
+       });
+       
+       
+    
+   // enableIntegry && initilizeIntegry({});
     
     window.appHistory = this.props.history;
     const search = window.location.href;
@@ -128,7 +145,7 @@ class Full extends Component {
   populateIntegrationDetailInSession= (isIntegrationStarted)=>{
     CommonUtils.updateUserSession({isIntegrationStarted:isIntegrationStarted});
   }
-  initiateIntegry = () => {
+  /*initiateIntegry = () => {
     window.appKey = "a85c28bb-40c5-4d6c-b8e5-3e8c4fe4a32f";
     window.userId = "suraj@integry-demoapp.com";
     window.hash = "e407c3f9d2520874607e2379a2b2c0e891e2e37e3a2f81c1ef3c5944a528aa27";
@@ -144,13 +161,13 @@ class Full extends Component {
         view_url: './integrations/'
     };
     window.demo_app_user_api_key = "0c57e8e79e27cd965e75512079f6a6cc"
-    const script = document.createElement("script");
+   /* const script = document.createElement("script");
 
     script.src = "https://app.integry.io/w/assets/sdk.js";
     script.async = true;
 
     document.body.appendChild(script);
-}
+}*/
 
   initilizeSupportChatUser (){
     let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
