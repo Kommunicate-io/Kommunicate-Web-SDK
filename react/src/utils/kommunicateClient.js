@@ -77,16 +77,18 @@ const createCustomer = function (email, password, name, userName, signUpVia ) {
 }
 
 const saveToLocalStorage = (email, password, name, response) => {
+  var userDeatils = response.data.data;
   if (typeof (Storage) === "undefined") {
     throw { code: "BROWSER_ERROR", message: "Your browser does not support web storage. please upgrade you browser." };
   }
   if (response !== undefined) {
-    response.data.data.password = password;
-    if (response.data.data.application) {
+    userDeatils.apzToken = new Buffer(userDeatils.userName + ':' + userDeatils.accessToken).toString('base64')
+    userDeatils.password = password;
+    if (userDeatils.application) {
     } else {
       throw { code: "APP_NOT_RECEIVED", message: "Successuflly Registered !! We are having some trouble to log u in, please retry login." }
     }
-    CommonUtils.setUserSession(response.data.data);
+    CommonUtils.setUserSession(userDeatils);
     return { code: "SUCCESS" };
   } else {
     throw { code: "NULL_RESPONSE", message: "received null response" };
@@ -190,7 +192,15 @@ const callSendEmailAPI = (options) => {
   let userSession = CommonUtils.getUserSession();
   let userId = userSession.userName;
   let roleType = options.roleType;
-  let data = {}
+  let data = {};
+
+  if (window.mixpanel) {
+    if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
+      window.mixpanel.track("integration.instructions.mail.sent");
+    } else {
+      window.mixpanel.track("mail." + options.templateName);
+    }
+  }
 
 let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){
@@ -318,74 +328,6 @@ const checkUserInApplozic = ({ header, data }) => {
       return response;
     })
 }
-
-const fetchContactsFromApplozic = (data) => {
-  let userSession = CommonUtils.getUserSession();
-  var API_HEADERS = {
-    'Content-Type': 'application/json',
-    'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-    'Apz-Product-App': 'true',
-  }
-  var url = getConfig().applozicPlugin.fetchContactsUrl;
-
-  return Promise.resolve(axios({
-    method: 'get',
-    url: url,
-    headers: API_HEADERS,
-    params: data
-  }))
-    .then(response => {
-      // console.log("in response")
-      // console.log(response)
-      return response.data;
-    })
-} 
-
-const getGroupFeed = (data) => {
-  let userSession = CommonUtils.getUserSession();
-  var API_HEADERS = {
-    'Content-Type': 'application/json',
-    'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-    'Apz-Product-App': 'true',
-  }
-  var url = getConfig().applozicPlugin.groupFeedUrl;
-
-  return Promise.resolve(axios({
-    method: 'get',
-    url: url,
-    headers: API_HEADERS,
-    params: data
-  }))
-    .then(response => {
-      return response.data;
-    })
-} 
-
-const multipleGroupInfo = (data) => {
-  let userSession = CommonUtils.getUserSession();
-  var API_HEADERS = {
-    'Apz-AppId': userSession.application.applicationId,
-    'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-    'Apz-Product-App': 'true',
-    'Content-Type': 'application/json;charset=UTF-8'
-  }
-  var multipleGroup = {
-    "clientGroupIds": data 
-  };
-  var url = getConfig().applozicPlugin.multipleGroupInfo;
-  
-  return Promise.resolve(axios({
-    method: 'post',
-    url: url,
-    headers: API_HEADERS,
-    data: multipleGroup
-  }))
-    .then(response => {
-      return response.data;
-    })
-} 
 
 const getAllSuggestions = () => { 
 
@@ -990,7 +932,9 @@ const updateAppSetting = (status, data) => {
     url: url,
     data: data
   })).then(result => {
-    return result;
+    if(typeof result !== "undefined" && result.data.code == "SUCCESS") {
+      return result;
+    }   
   }).catch(err => {
     throw { message: err };
   })
@@ -1160,10 +1104,25 @@ const createIntegrySubscription = (subscriptionData) => {
   })
 }
 
+const updateKommunicateCustomerSubscription = (data) => {
+  let url = getConfig().kommunicateBaseUrl + '/subscription/detail'
+  let subscriptionDetails = {
+    applicationId: data.applicationId,
+    billingCustomerId: data.billingCustomerId,
+    subscription: data.subscription
+  }
+  return Promise.resolve(axios({
+    method: 'PATCH',
+    url: url,
+    data: data
+  })).then(response => {
+    if(typeof response !== "undefined" && response.data.code == "SUCCESS") {
+      return response;
+    }   
+  }).catch(err => { throw { message: err }; })
+}
+
 export {
-  fetchContactsFromApplozic,
-  getGroupFeed,
-  multipleGroupInfo,
   createCustomer,
   getCustomerInfo,
   getUserInfo,
@@ -1225,4 +1184,5 @@ export {
   getSubscriptionDetail,
   createIntegrySubscription,
   editApplicationDetails
+  updateKommunicateCustomerSubscription
 }

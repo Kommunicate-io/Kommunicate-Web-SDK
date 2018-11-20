@@ -41,6 +41,9 @@ class Install extends Component {
     e.target.focus();
     this.setState({ copySuccess: "Copy code" });
     Notification.info("Code copied successfully!");
+    if (window.mixpanel) {
+      window.mixpanel.track("integration.instructions.copycode");
+    }
   };
 
   hideJSInstructions = e => {

@@ -240,6 +240,10 @@ this.cronServiceRouter.get('/:cronKey', cronService.getLastRunTime)
 /**
  * Chargebee subscription
  */
+//kommunicate customer subscription APIs
+subscriptionRouter.patch('/detail',validate(subscriptionValidation.updateKommunicateSubscription),
+subscriptionController.updateKommunicateCustomerSubscription)
+
 // third party Subscription APIs
 subscriptionRouter.get('/count', chargebeeController.subscriptionCount);
 subscriptionRouter.get('/detail/:userId', validate(subscriptionValidation.getSubscription), chargebeeController.getSubscriptionDetail);

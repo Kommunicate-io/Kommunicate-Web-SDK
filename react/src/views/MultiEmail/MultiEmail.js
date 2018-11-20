@@ -30,6 +30,7 @@ class MultiEmail extends Component {
     sendMail = e => {
         const _this = this;
         e.preventDefault();
+
         let multipleEmailAddress = this.state.multipleEmailAddress;
         if(isEmail(this.state.emailAddress)) {
             multipleEmailAddress = multipleEmailAddress.concat([this.state.emailAddress]);

@@ -19,6 +19,13 @@ export default {
     },
     "services":{
         'baseurl':"https://kong-api.applozic.com"
+    },
+    "thirdPartyIntegration":{
+        'sentry' :{
+            //Sentry:error tracking platform
+            'enable': false,
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        }
     }
 },
 
@@ -43,6 +50,13 @@ export default {
     },
     "services":{
         'baseurl':"https://kong-api.applozic.com"
+    },
+    "thirdPartyIntegration":{
+        'sentry' :{
+            //Sentry:error tracking platform
+            'enable': true,
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        }
     }
 },
     
@@ -67,6 +81,13 @@ export default {
     },
     "services":{
         'baseurl':"https://kong-api.applozic.com"
+    },
+    "thirdPartyIntegration":{
+        'sentry' :{
+            //Sentry:error tracking platform
+            'enable': false,
+            'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        }
     }
 },
     
@@ -92,6 +113,13 @@ export default {
     },
     "services":{
         'baseurl':"https://services.kommunicate.io"
+    },
+    "thirdPartyIntegration":{
+        'sentry' :{
+            //Sentry:error tracking platform
+            'enable': true,
+            'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+        }
     }
 },
     
@@ -115,6 +143,13 @@ export default {
    },
    "services":{
        'baseurl':"https://services.kommunicate.io"
+   },
+   "thirdPartyIntegration":{
+    'sentry' :{
+        //Sentry:error tracking platform
+        'enable': true,
+        'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+    }
    }
 }
 }

@@ -10,7 +10,7 @@ const SettingsHeader = (props) =>{
      
    return(
         <div className="km-settings-heading-wrapper">
-            <div className={currPath == "Profile" || currPath == "Billing" ? "km-settings-component-heading km-settings-header-border" : "km-settings-component-heading"}>
+            <div className={currPath == "Billing" ? "km-settings-component-heading km-settings-header-border" : "km-settings-component-heading"}>
                 <h1>{currPath}</h1>
             </div>
             

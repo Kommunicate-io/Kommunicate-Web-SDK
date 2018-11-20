@@ -20,7 +20,7 @@ import Banner from '../../components/Banner/Banner';
 import { ROLE_TYPE, USER_STATUS } from '../../utils/Constant';
 import DisabledUsersList from './DisabledUsersList';
 import { Link } from 'react-router-dom';
-import { acEventTrigger } from '../../utils/ActiveCampaign';
+import { acEventTrigger } from '../../utils/AnalyticsEventTracking.js';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 
 

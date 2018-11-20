@@ -5,7 +5,7 @@ import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
 import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
-
+import moment from 'moment';
 import Dashboard from '../../views/Dashboard/'
 import Users from '../../views/Users/'
 import Conversations from '../../views/Conversations/'
@@ -27,6 +27,7 @@ import IncomingEmailForward from '../../views/IncomingEmailForward/IncomingEmail
 import EmailNotifications from '../../views/EmailNotifications/EmailNotifications.js'
 import Conversation404 from '../../views/Pages/Page404/Conversation404'
 import EmailFallback from '../../views/EmailFallback/EmailFallback.js'
+import WebhooksAndSecurity from '../../views/WebhooksAndSecurity/WebhooksAndSecurity'
 
 import LoggedInAuthentication from  '../../views/Pages/Login/LoggedInAuthentication'
 import CommonUtils from '../../utils/CommonUtils';
@@ -96,7 +97,33 @@ class Full extends Component {
       )
     }
     this.isIntegrationStarted({callback : this.populateIntegrationDetailInSession});
+
+    // Wootric Script
+    window.wootric_survey_immediately = true; // Shows survey immediately for testing purposes. TODO: Comment out for production.
+    window.wootricSettings = {
+      email: userSession.email,
+      created_at: (new Date(userSession.created_at).getTime()) / 1000,
+      account_token: 'NPS-954f150b'
+    };
+    console.log(window.wootricSettings)
+
+    this.initWootricScript();
+
   }
+
+  initWootricScript() {
+    let head = document.getElementsByTagName('head')[0];
+    let wootricScript = document.createElement('script');
+    wootricScript.src = "https://cdn.wootric.com/wootric-sdk.js";
+    head.appendChild(wootricScript);
+
+    wootricScript.onload = function () {
+        window.wootric('run');
+    }
+    return false;
+  } 
+
+
   isIntegrationStarted= (options)=>{
     let userSession = CommonUtils.getUserSession();
     let criteria ={
@@ -160,12 +187,26 @@ class Full extends Component {
 
   componentDidMount() {
     if(CommonUtils.getUserSession()){
+      CommonUtils.analyticsIdentify(CommonUtils.getUserSession().userName);
+
+      let userSession = CommonUtils.getUserSession();
+      let userProperties = {
+        "email": userSession.userName, 
+        "subscription": userSession.subscription,
+        "billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
+        "signup": userSession.created_at !== null ? userSession.created_at: "",
+        "industry": userSession.industry !== null ? userSession.industry : "",
+        "integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
+      };
+
       if (window.heap) {
-        window.heap.identify(CommonUtils.getUserSession().userName);
-        window.heap.addUserProperties({
-                                      "email": CommonUtils.getUserSession().userName, 
-                                      "subscription": CommonUtils.getUserSession().subscription
-                                    });
+        window.heap.addUserProperties(userProperties);
+      }
+      if (window.mixpanel) {
+        window.mixpanel.register(userProperties);
+        if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
+          window.mixpanel.track("integrated");
+        }
       }
       
       // initilizing full view plugin for dashboard user
@@ -196,6 +237,13 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
+    let mixpanelEvent = currentPath;
+    if (currentPath.startsWith("/conversations/")) {
+        mixpanelEvent = "/conversations/thread";
+    }
+    if (window.mixpanel) {
+      window.mixpanel.track(mixpanelEvent);
+    }
    
     return (
       <div className="app" suppressContentEditableWarning={true}>
@@ -240,6 +288,7 @@ class Full extends Component {
                 <Route exact path="/settings/email-notifications" name="EmailNotifications" component={EmailNotifications}/>
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
                 <Route exact path="/settings/email-fallback" name="EmailFallback" component={EmailFallback}/>
+                <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" component={WebhooksAndSecurity}/>
                 
 
                 <Redirect from="/" to="/dashboard"/>

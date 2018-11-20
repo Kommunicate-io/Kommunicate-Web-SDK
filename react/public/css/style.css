@@ -9859,11 +9859,11 @@ pointer-events: none;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .39);
 }
 .km-button--primary {
-  background-color: #5C5AA7;
+  background-color: #5553b7;
   color: #FFFFFF;
 }
 .km-button--primary a {
-  background-color: #5C5AA7;
+  background-color: #5553b7;
   color: #FFFFFF;
 }
 .km-button--primary:hover {
@@ -9871,14 +9871,14 @@ pointer-events: none;
   color: #FFFFFF;
 }
 .km-button--secondary {
-  border: solid 1px #5c5aa7;
+  border: solid 1px #5553b7;
   background-color: #FFFFFF;
-  color: #5c5aa7;
+  color: #5553b7;
 }
 .km-button--secondary:hover {
-  border: solid 1px #5c5aa7;
+  border: solid 1px #5553b7;
   background-color: #F5F5F5;
-  color: #5c5aa7;
+  color: #5553b7;
 }
 .km-button--primary:disabled {
   background-color: #bbbbbb;
@@ -11327,4 +11327,21 @@ border-left-color: #84ca33;
 }
  .letter-36 {
 border-left-color: #5e8631;
+}
+
+*::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+*::-webkit-scrollbar:vertical {
+    width: 7px;
+}
+*::-webkit-scrollbar:horizontal {
+    height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px
+}
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
 }

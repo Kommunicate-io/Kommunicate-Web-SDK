@@ -15,16 +15,22 @@ var cleanCss = require ('clean-css');
 var hazelCastClient= require("./src/cache/hazelCacheClient");
 const eventProcessor= require("./src/events/eventProcessor");
 const cronInitializer = require('./src/cron/cronJobInitializer');
+const Sentry = require('@sentry/node');
 global['__basedir'] = __dirname
 //var concat = require('concat-files');
 app.use(cors());
 process.env.NODE_ENV?console.log("\x1b[41m ------Warning: build running into "+process.env.NODE_ENV+" -----\x1b[0m"):console.log("\x1b[41m ------Warning: environment is not -----\x1b[0m");
 // minify applozic plugin code files into a single file
+const sentryConfig = config.getProperties().thirdPartyIntegration.sentry.server;
+sentryConfig.enable && Sentry.init({ 
+  dsn: sentryConfig.dsn 
+});
 compressor.minify({
   //compressor: 'gcc',
    compressor: 'no-compress',
   input: ['./src/webplugin/lib/js/jquery-3.2.1.min.js','./src/webplugin/lib/js/mck-ui-widget.min.js', './src/webplugin/lib/js/mck-ui-plugins.min.js', './src/webplugin/lib/js/mqttws31.js', './src/webplugin/lib/js/mck-emojis.min.js',
-  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js'],
+  './src/webplugin/lib/js/howler-2.0.2.min.js', './src/webplugin/lib/js/tiny-slider-2.4.0.js', './src/webplugin/lib/js/mustache.js', './src/webplugin/lib/js/aes.js', './src/webplugin/js/app/km-utils.js',
+  './src/webplugin/lib/js/sentry-error-tracker.js'],
   output: './src/webplugin/js/kommunicatepluginrequirements.min.js',
   callback: function (err, min) {
     if(!err){
@@ -86,6 +92,7 @@ compressor.minify({
   './src/webplugin/js/app/km-event-listner.js',
   './src/webplugin/js/app/km-attachment-service.js',
   './src/webplugin/js/app/mck-sidebox-1.0.js',
+  './src/webplugin/js/app/kommunicate.custom.theme.js',
   './src/webplugin/js/app/km-rich-text-event-handler.js',
   './src/webplugin/js/app/kommunicate-ui.js',
   './src/webplugin/js/app/events/applozic-event-listener.js',

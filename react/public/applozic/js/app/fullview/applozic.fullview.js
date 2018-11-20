@@ -796,6 +796,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var group = {};
 					group.groupId = params.groupId;
 					group.userId = params.userId;
+					group.role = params.role;
 					var conversationDetail = mckMessageService.checkForRoleType(group);
 					if (!member) {
 						kmGroupService.addGroupMember(conversationDetail);
@@ -1818,8 +1819,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$kmApplozic(d).on("click", ".left .person,." + MCK_LAUNCHER + ",.km-conversation-tab-link, .km-contact-list ." + MCK_LAUNCHER, function (e) {
 					e.preventDefault();
 					var emptyStateDiv = document.getElementById("empty-state-conversations-div");
-					resetCustomerInfoTab();
-					resetClearbitInfoAndUserInfo();
+					//resetCustomerInfoTab();
+					//resetClearbitInfoAndUserInfo();
 					$kmApplozic(".km-conversation-header-icons .km-conversation-icon-active .km-unread-icon").removeClass('vis').addClass('n-vis');
 					var $this = $kmApplozic(this);
 					var tabId = $this.data("km-id");
@@ -1891,8 +1892,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
 						$kmApplozic(".email-conversation-indicator").addClass("n-vis").removeClass("vis");
-						$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
-						$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
+						//$kmApplozic(".km-display-email-number-wrapper div p:first-child").addClass("n-vis").removeClass("vis");
+						//$kmApplozic("#km-clearbit-title-panel, .km-user-info-inner, #km-sidebar-user-info-wrapper").addClass("n-vis").removeClass("vis");
 				});
 				$kmApplozic(d).on("click", ".km-close-sidebox", function (e) {
 					e.preventDefault();
@@ -2907,7 +2908,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				data += "&pageSize=60";
 				kmUtils.ajax({
 					method: 'get',
-					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
+					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data +"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.INITIAL,
 					success: function (data) {
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
@@ -4008,8 +4009,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (kmGroupUtils.getGroup(params.tabId)) {
 						var contact = (params.isGroup) ? kmGroupUtils.getGroup(params.tabId) : mckMessageLayout.getContact(params.tabId);
 						var contactHtmlExpr = (contact.isGroup) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
-						$kmApplozic(".km-li-" + section + "-" + contactHtmlExpr + " .km-unread-count-box").removeClass("vis").addClass("n-vis");
-						$kmApplozic(".km-li-" + section + "-" + contactHtmlExpr).removeClass("km-unread-msg");
+						$kmApplozic(".person."+params.tabId+" .km-unread-count-box").removeClass("vis").addClass("n-vis");
+						$kmApplozic(".person."+params.tabId).removeClass("km-unread-msg");
 					}			
 					$mck_msg_inner.bind('scroll', function () {
 						if ($mck_msg_inner.scrollTop() === 0) {
@@ -4074,15 +4075,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						mckMessageService.upgradePlanContainer(params.tabId);
 						$mck_group_tab_title.trigger('click');
 					} else {
-						mckMessageService.loadMessageList(params, function (data) {
-							if (data == "AL-G-01") {
-							  //errorCode "AL-G-01" - group not found
-							  window.appHistory.push("/conversations/oops");
-							  $kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
-							  $kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
-							return
-							}
-						});
+						mckMessageService.loadMessageList(params);
 					}
 				}
 				params.tabId && window.history.replaceState(null, null, "/conversations/"+params.tabId);
@@ -6635,6 +6628,13 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.loadGroupTab = function (response, params) {
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
+					if(response.status === 'error' && response.errorCode == "AL-G-01" ) {
+						//errorCode "AL-G-01" - group not found
+						window.appHistory.push("/conversations/oops");
+						$kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
+						$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+					}
+
 				} else {
 					var group = response.data;
 					mckMessageLayout.loadTab({

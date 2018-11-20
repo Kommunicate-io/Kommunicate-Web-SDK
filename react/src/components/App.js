@@ -6,7 +6,9 @@ import { Component } from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { createBrowserHistory } from 'history';
 import ThirdPartyScripts from '../utils/ThirdPartyScripts';
-import {ActiveCampaign} from '../utils/ActiveCampaign';
+import {ActiveCampaign} from '../utils/AnalyticsEventTracking';
+import * as Sentry from '@sentry/browser';
+import { getConfig } from '../config/config';
 
 // Containers
 import Full from './../containers/Full/'
@@ -23,30 +25,51 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
 import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
+import {setTag} from '../../src/sentry/sentry'
 
 
 // const history = createBrowserHistory();
-
+const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 class App extends Component {
   static defaultProps ={ hideSkip : false }
   constructor(props,defaultProps){
-    super(props,defaultProps)
+    super(props,defaultProps);
+    this.state = {
+       error: null,
+       loading: true
+      }
   }
-  state = {
-    loading: true
-  };
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500); // simulates an async action, and hides the spinner
   }
+  componentDidCatch(error, errorInfo) {
+    this.setState({ error });
+    enableSentry && Sentry.withScope((scope) => {
+      setTag (scope);
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+      Sentry.captureException(error);
+    });
+    
+  }
 
   render() {
+    const currentPath = window.location.pathname;
+    let mixpanelEvent = currentPath;
+    if (currentPath.startsWith("/conversations/")) {
+        mixpanelEvent = "/conversations/thread";
+    }
+
+    if (window.mixpanel) {
+      window.mixpanel.track(mixpanelEvent);
+    }
 
     const { loading } = this.state;
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
-    
-    return (
+      return (
       
       <div>
       <NotificationContainer />
@@ -69,7 +92,7 @@ class App extends Component {
       </BrowserRouter>
       </div>
     )
-  }
+    }
 }
 
 export default App

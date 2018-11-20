@@ -297,11 +297,22 @@ body {
 #back-to-top {
     height: 40px;
     width: 40px;
+    right: 43px;
+    bottom: 50px;
 }
 #back-to-top svg {
     height: 24px;
     margin: 8px auto 0;
     width: 24px;
+}
+
+.mck-sidebox-launcher {
+    width: 60px !important;
+    height: 60px !important;
+}
+.mck-sidebox-launcher svg {
+    width: 60px !important;
+    height: 60px !important;
 }
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {

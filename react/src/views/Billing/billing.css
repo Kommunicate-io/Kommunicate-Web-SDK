@@ -850,3 +850,7 @@
 .info-detail-container p>strong>span {
     text-transform: uppercase;
 }  
+
+.km-display-none {
+    display: none !important;
+}

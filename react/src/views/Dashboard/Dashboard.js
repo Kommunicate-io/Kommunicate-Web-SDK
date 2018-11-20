@@ -419,7 +419,8 @@ class Dashboard extends Component {
           "Subscription": userSession.subscription !== null ? userSession.subscription : "" ,
           "Application": userSession.applicationId !== null ? userSession.applicationId : "",
           "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
-          "Industry": userSession.industry !== null ? userSession.industry : ""
+          "Industry": userSession.industry !== null ? userSession.industry : "",
+          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
       }
     };
     window.Kommunicate.updateUser(userdetail);

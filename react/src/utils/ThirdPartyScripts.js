@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { getConfig } from '../config/config';
 import CommonUtils from './CommonUtils';
-import {acEventTrigger} from './ActiveCampaign';
+import {acEventTrigger} from './AnalyticsEventTracking';
 import axios from 'axios';
 // import Notification from '../views/model/Notification';
 

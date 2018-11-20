@@ -5,7 +5,7 @@ import { createAndUpdateThirdPArtyIntegration, deleteThirdPartyByIntegrationType
 import { thirdPartyList } from './ThirdPartyList'
 import Notification from '../model/Notification';
 import CommonUtils from '../../utils/CommonUtils';
-import { acEventTrigger } from '../../utils/ActiveCampaign';
+import { acEventTrigger } from '../../utils/AnalyticsEventTracking';
 
 class IntegrationDescription extends Component {
 

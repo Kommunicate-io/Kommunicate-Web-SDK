@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import './EmailFallback.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
-import axios from 'axios';
-import { getConfig } from '../../config/config';
 import { SettingsHeader } from '../../../src/components/SettingsComponent/SettingsComponents';
-// import SliderToggle from '../../components/SliderToggle/SliderToggle';
+import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import { editApplicationDetails, sendProfileImage } from '../../utils/kommunicateClient';
-import KMLogo from '../Faq/LizSVG';
-import ThirdPartyScripts from '../../utils/ThirdPartyScripts';
+import { Link } from 'react-router-dom';
+
+const FallbackEnabled = (props) => {
+    return (props.enabled) ? (
+        <p className="email-fallback--branding-description">We will send fallback emails to your users and/or your team members if they miss any new messages. The emails will have your logo if you have enabled the company branding option above.</p>
+    ) : (
+        <p className="email-fallback--branding-description">We will not send fallback emails to your users. Just set up the API URLs from the <Link to="/settings/webhooks-security">Webhook Setup</Link> section to get the relevant data from us and use it to send fallback notifications from your end.</p>
+    );
+} 
+
 export default class EmailFallback extends Component {
     constructor(props) {
         super(props);
@@ -21,8 +27,16 @@ export default class EmailFallback extends Component {
         };
         this.handleFileOnChange = this.handleFileOnChange.bind(this);
         this.uploadImage = this.uploadImage.bind(this);
-        this.submitWebhooksDetails = this.submitWebhooksDetails.bind(this);
+        this.submitEmailFallbackDetails = this.submitEmailFallbackDetails.bind(this);
+        this.handleToggleSwitch = this.handleToggleSwitch.bind(this);
     }
+
+    componentDidMount = () => {
+        this.setState({
+            switchIsEnabled: (!this.checkForFallbackSettings())
+        });
+    }
+
     handleFileOnChange(e) {
         var file = e.target.files[0];
         if(file) {
@@ -31,10 +45,15 @@ export default class EmailFallback extends Component {
                 disableUploadBtn: true
             })
         }
-        
         this.uploadImage(file);
     }
 
+    checkForFallbackSettings = () => {
+        let userSession = CommonUtils.getUserSession();
+        let webhooks = userSession.application.applicationWebhookPxys;
+        let result = webhooks.filter(webhooks => webhooks.notifyVia === -1);
+        return (result.length == webhooks.length);
+    }
 
     uploadImage = (file) => {
         let that=this;
@@ -46,7 +65,7 @@ export default class EmailFallback extends Component {
                     Notification.info(response.data.message);
                     let imgTag = document.querySelector("#branding_logo--image-placeholder img");
                     imgTag.src = response.data.profileImageUrl;
-                    that.submitWebhooksDetails();
+                    that.submitEmailFallbackDetails(this.state.uploadedCompanyLogo, false);
                     that.setState({
                         uploadImageText: "Replace",
                         disableUploadBtn: false
@@ -75,19 +94,59 @@ export default class EmailFallback extends Component {
         }
     }
 
-    submitWebhooksDetails = () => {
+    handleToggleSwitch = () => {
+        let userSession = CommonUtils.getUserSession();
+        let applicationData = userSession;
+        let webhooks = applicationData.application.applicationWebhookPxys;
+
+        this.setState({
+            switchIsEnabled: !this.state.switchIsEnabled
+        }, () => {
+            if(!this.state.switchIsEnabled) {
+                for(var i=0; i<webhooks.length; i++) {
+                    webhooks[i].notifyVia = -1;
+                }
+                applicationData.applicationWebhookPxys = webhooks;
+                this.submitEmailFallbackDetails(applicationData, true);
+            } else {
+                for(var i=0; i<webhooks.length; i++) {
+                    webhooks[i].notifyVia = 0;
+                }
+                applicationData.applicationWebhookPxys = webhooks;
+                this.submitEmailFallbackDetails(applicationData, true);
+            }
+        });
+    }
+
+    submitEmailFallbackDetails = (fallbackSettingsData, enableFallback) => {
         let userSession = CommonUtils.getUserSession();
         let applicationData = userSession;
 
-        let companyLogo = this.state.uploadedCompanyLogo;
+        if(!enableFallback) {
+            let companyLogo = fallbackSettingsData;
+            applicationData.companyLogo = companyLogo;
+            this.editApplicationApiCall(applicationData).then(response => {
+                console.log(response);
+                userSession.application.companyLogo = response.companyLogo;
+                CommonUtils.setUserSession(userSession);
+            });   
+        } else {
+            this.editApplicationApiCall(fallbackSettingsData).then( response => {
+                console.log(response);
+                userSession.application.applicationWebhookPxys = response.applicationWebhookPxys;
+                CommonUtils.setUserSession(userSession);
+                (this.checkForFallbackSettings()) ? Notification.info("Fallback emails disabled succesfully") : Notification.info("Fallback emails enabled succesfully");
+            });
+        }
+    }
 
-        applicationData.application.companyLogo = companyLogo;
-
-        Promise.resolve(editApplicationDetails(applicationData)).then((response) => {
-            CommonUtils.setUserSession(applicationData);
+    editApplicationApiCall = (details) => {
+        return editApplicationDetails(details).then((response) => {
+            return response.data;
         }).catch((error) => {
+            Notification.info("Something went wrong");
             console.log(error);
-        })
+        });
     }
 
     render() {
@@ -128,7 +187,7 @@ export default class EmailFallback extends Component {
                             <hr />
                         </div>
                         {/* COMMENTING BELOW CODE BECAUSE THE FUNCTIONALITY IS NOT YET CREATED FROM API SIDE */}
-                        {/* <div className="email-fallback--how-to-container">
+                        <div className="email-fallback--how-to-container">
                             <h3>How to send fallback emails?</h3>
                             <div className="email-fallback--how-to_toggle-switch">
                                 <div className="email-fallback--branding-description">
@@ -138,8 +197,8 @@ export default class EmailFallback extends Component {
                                     <SliderToggle checked={this.state.switchIsEnabled} handleOnChange={this.handleToggleSwitch} />
                                 </div>
                             </div>
-                            <p className="email-fallback--branding-description">We will stop sending fallback emails to your users from our side. Just set up the API URLs from the Webhook Setup section to get the relevant data from us. You can use the data to send fallback emails from your end.</p>
-                        </div> */}
+                            <FallbackEnabled enabled={this.state.switchIsEnabled}/>
+                        </div>
                     </div>
                 </div>
             </div>

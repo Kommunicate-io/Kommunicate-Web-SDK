@@ -16,6 +16,7 @@ export default {
         GROUP_FEED_URL : "/rest/ws/group/info",
         MULTIPLE_GROUP_INFO : "/rest/ws/group/v3/info",
         EDIT_APPLICATION:"/rest/ws/application/v2/edit",
+        SEARCH_USER:"/rest/ws/user/search/contact"
     }, 
     kommunicateApi: {
         LOGIN: "/login",

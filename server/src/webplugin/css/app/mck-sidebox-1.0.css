@@ -718,7 +718,7 @@
 	min-height: 60px;
 	text-align: left;
 	border-bottom: 1px solid #e5e5e5;
-	background-color:#716fb3;
+	background-color:#5553b7;
 	color:white;
 }
 
@@ -3761,7 +3761,7 @@ display: none;
 
 	.mck-sidebox {
 		right: 25px !important;
-		bottom: 25px;
+		bottom: 8px;
 	}
 	.mck-sidebox.fade.in{
 		width:300px;
@@ -4094,11 +4094,11 @@ box-shadow: none!important;
 	/* width:100% !important; */
 }
 #mck-msg-new{
-	background-color: #716fb3;
+	background-color: #5553b7;
     color: white;
     border-radius: 26px;
     box-shadow: 2px 2px 6px 1px rgba(24, 23, 23, 0.35);
-    border: solid 1px #716fb3;
+    border: solid 1px #5553b7;
     height: 42px;
     min-width: 220px;
     padding: 0;
@@ -4902,10 +4902,10 @@ color: rgba(0,0,0,0.5);
 	margin-left: 35px;
 }
 .km-faqbtn{
-	background-color: #716fb3;
+	background-color: #5553b7;
 }
 .button:hover #km-faqbtn {
-	background-color: #716fb3;
+	background-color: #5553b7;
 }
 
 .km-faqback{
@@ -5705,7 +5705,7 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    border: solid 2.5px #716fb3;
+    border: solid 2.5px #5553b7;
     background: #aaa;	
 }
 .mck-agent-image-container .mck-agent-status-indicator.mck-status--online {
@@ -5733,4 +5733,44 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
     text-align: center;
     color: #6f6d6d;
     font-weight: 300;
+}
+.mck-status--away{
+	background-color: #f7bc45 !important;
+}
+.km-chat-icon-sidebox {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	float: right;
+	-webkit-box-shadow: 0 2px 5px 1px rgba(107, 104, 104, 0.5);
+	box-shadow: 0 2px 5px 1px rgba(107, 104, 104, 0.5);
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-align: center;
+	align-items: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	overflow: hidden;
+	display: flex !important;
+}
+.km-chat-icon-sidebox img {
+	margin-top: 0px;
+	width: auto;
+	height: 100%;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	vertical-align: middle;
+	border-style: none;
+	-o-object-fit: contain;
+	object-fit: contain;
+	}
+.km-chat-icon-sidebox svg {
+	/* height: 30px; */
+	width: 35px;
+	margin-top: 3px;
 }

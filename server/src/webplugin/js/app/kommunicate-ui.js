@@ -4,6 +4,7 @@
  */
 KommunicateUI={
     awayMessageInfo : {},
+    awayMessageScroll : true,
     leadCollectionEnabledOnAwayMessage: false,
     welcomeMessageEnabled : false,
     leadCollectionEnabledOnWelcomeMessage:false,
@@ -34,6 +35,11 @@ KommunicateUI={
             $applozic("#mck-away-msg-box").removeClass("n-vis").addClass("vis");     
         } else {
             $applozic("#mck-away-msg-box").removeClass("vis").addClass("n-vis");
+        }
+        var messageBody = document.querySelectorAll(".mck-message-inner.mck-group-inner")[0];
+        if(KommunicateUI.awayMessageScroll && messageBody) {
+            messageBody.scrollTop = messageBody.scrollHeight;  
+            KommunicateUI.awayMessageScroll = false;
         }
     },
     showAwayMessage: function() {
@@ -92,8 +98,8 @@ KommunicateUI={
 
     },
     updateImageAttachmentPreview: function(fileMeta, key) {
-        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url", 
-        fileMeta.url || fileMeta.thumbnailUrl);
+        let thumbnailUrl = $applozic(".mck-attachment-"+key)[0].dataset.thumbnailurl;
+        $applozic(".mck-attachment-"+key+" .file-preview-link").attr("data-url",thumbnailUrl);
         $applozic("." +key + " .mck-file-text a:first").trigger('click'); 
     },
     hideFileBox: function (file,$file_box, $mck_file_upload) {
@@ -185,6 +191,7 @@ KommunicateUI={
     // On Click of FAQ button the FAQ List will open.
     $applozic(d).on("click", "#km-faq", function () {
         KommunicateUI.showHeader();
+        KommunicateUI.awayMessageScroll = true;
         MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length-1] !== "km-faq-list" && MCK_EVENT_HISTORY.push("km-faq-list");
         $applozic('#km-contact-search-input-box').removeClass("n-vis").addClass("vis");
         $applozic('#km-faq').removeClass("vis").addClass("n-vis");
@@ -263,6 +270,7 @@ KommunicateUI={
    
     $applozic(d).on("click", "#mck-conversation-back-btn", function () {
         $applozic('.km-contact-input-container').removeClass("vis").addClass("n-vis");
+        KommunicateUI.awayMessageScroll = true;
         KommunicateUI.hideAwayMessage();
         KommunicateUI.hideLeadCollectionTemplate();
         if (MCK_EVENT_HISTORY.length >= 2) {
