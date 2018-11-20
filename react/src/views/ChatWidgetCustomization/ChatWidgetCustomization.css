@@ -7,6 +7,10 @@
     margin-right: 10px;
 }
 
+.km-cursor-default{
+    cursor:default;
+}
+
 .km-chat-customization-wrapper #selectedColorHex {
     display: inline-block;
     width: 63px;

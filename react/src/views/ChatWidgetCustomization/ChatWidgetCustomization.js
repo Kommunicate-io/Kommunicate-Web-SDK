@@ -177,8 +177,8 @@ class ChatWidgetCustomization extends Component{
                            <img src={this.state.changedLogoUrl}  /> 
                          </div>
                             <div className="km-custom-icon-upload">Upload your own launcher icon
-                            <input className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "km-hide-input-element km-img-upload-input vis" : "vis"} onClick={this.uploadImage } type="file" id="km-upload-chatwidget-image" accept="image/png, image/jpeg" />
-                            <button ><UploadIconButton /></button></div>
+                            <input className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "km-hide-input-element km-img-upload-input vis" : "n-vis km-cursor-default"} onClick={this.uploadImage } type="file" id="km-upload-chatwidget-image" accept="image/png, image/jpeg" />
+                            <button className="km-cursor-default"><UploadIconButton /></button></div>
                         </div>
                         <div className="km-logo-picker">
                         <button href="#" className="km-button km-button--primary" onClick={this.updateWidgetSettings} disabled ={!this.state.changesMade}>Save Changes</button>
