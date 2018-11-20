@@ -36,9 +36,12 @@ class EditableText extends Component {
         return true;
     }
   }
-  isValidNo(value){
+  isValidNo(value) {
     if (value.length > 40) {
       Notification.error("Number length should be less than 40");
+      return false;
+    } else {
+      return true;
     }
   }
 
