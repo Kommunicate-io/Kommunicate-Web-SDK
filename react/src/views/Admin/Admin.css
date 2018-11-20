@@ -283,6 +283,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .forgot-password-container .forgot-password-texts h2 {
     font-size: 18px;
     color: #242424;
+    font-weight: 400;
 }
 .forgot-password-container .forgot-password-texts p {
     font-size: 16px;
@@ -302,6 +303,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 22px;
     letter-spacing: 1.5px;
     color: #242424;
+    font-weight: 400;
 }
 
 .m-left {
