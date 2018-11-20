@@ -776,10 +776,10 @@ class Billing extends Component {
                                                 <div className="pricing-table-body">
                                                 {
                                                     (this.state.subscription.includes("enterprise")) ? <div>
-                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" onClick={this.openInfoModal}>
+                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" data-choose-plan="per_agent_monthly" onClick={this.openInfoModal}>
                                                             Choose Plan
                                                         </button>
-                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" onClick={this.openInfoModal}>
+                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" data-choose-plan="per_agent_yearly" onClick={this.openInfoModal}>
                                                             Choose Plan
                                                         </button>
                                                     </div> : <div>
