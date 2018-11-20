@@ -4440,7 +4440,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var kmRichTextMarkup = richText ? Kommunicate.getRichTextMessageTemplate(msg) : "";
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
-                var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg)):"";
+                var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg), alFileService.getFileAttachment(msg), alFileService.getFileurl(msg)):"";
                 if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) {
                     var progressMeterClass = attachment ? "n-vis" : "vis";
                     attachmentBox = attachment ? "vis" : "n-vis";
