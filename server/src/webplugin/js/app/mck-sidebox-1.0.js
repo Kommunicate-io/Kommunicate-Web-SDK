@@ -3521,7 +3521,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                             $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--online").removeClass("mck-status--offline").removeClass("mck-status--away");
                                             $applozic("#mck-agent-status-text").text(MCK_LABELS['online']).addClass("vis").removeClass("n-vis");
                                         } else {
-                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online");
+                                            $applozic(".mck-agent-image-container .mck-agent-status-indicator").addClass("mck-status--offline").removeClass("mck-status--online").removeClass("mck-status--away");
                                             $applozic("#mck-agent-status-text").text(MCK_LABELS['offline']).addClass("vis").removeClass("n-vis");
                                         }
                                     }
