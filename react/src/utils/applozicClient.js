@@ -196,6 +196,52 @@ updateUserDetail:function(params){
       .then(response => {
         return response.data;
       })
+    },
+  validateApplozicUser: function (auth) {
+    let params = {
+      loginId: auth.userName,
+      loginPassword: auth.password,
+      utm_source: null
+    }
+    let url = getConfig().applozicPlugin.applozicHosturl + '/signin/validate.page'
+    return Promise.resolve(axios.post(url, {}, { "params": params }))
+      .then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
+  },
+
+  getApplication: function (criteria, isAdminUser) {
+    let url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/application/get'
+    let headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+        'Apz-AppId': criteria.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
+        'Apz-Product-App': !isAdminUser,
+      }
+    return Promise.resolve(axios.get(url, { "headers": headers, "params": { 'applicationId': criteria.applicationId } }))
+      .then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
+  },
+  getMessageList: function (params, headers) {
+    let url = getConfig().applozicPlugin.applozicHosturl+ '/rest/ws/message/filter'
+    let query = {
+      'startIndex': params.startIndex || 0,
+      'appKey': params.appId,
+      'orderBy': params.orderBy || 1,
+      'startTime': params.startTime,
+      'endTime': params.endTime
+    }
+    return Promise.resolve(axios.get(url, { "headers": headers, "params": query }))
+      .then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
   }
 }
 

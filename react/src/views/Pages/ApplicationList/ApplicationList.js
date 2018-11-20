@@ -8,6 +8,7 @@ import './ApplicationList.css';
 import {USER_STATUS} from '../../../utils/Constant';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
+import ApplozicClient from '../../../utils/applozicClient'
 
 
 class ApplicationList extends Component {
@@ -32,14 +33,6 @@ class ApplicationList extends Component {
       let next  = CommonUtils.getUrlParameter(search, 'referrer');
       this.state.next = next;
       var userDetails = CommonUtils.getUserSession();
-      // if(!userDetails) {
-      //   window.location = "/login";
-      // } else { 
-      //   this.setState({
-      //     userName: userDetails.userName,
-      //     password: userDetails.accessToken
-      //   });
-      // }
       if(userDetails) {
         this.setState({
           userName: userDetails.userName,
@@ -67,71 +60,80 @@ class ApplicationList extends Component {
       window.location = url;
     }
 
-    submitForm = (key)=>{
-        var _this=this;
-      
-        let loginUrl= getConfig().kommunicateApi.login;
-        var userName= this.state.userName, password= this.state.password,applicationName=this.state.applicationName, applicationId=key;
+  submitForm = (key) => {
+    var _this = this;
+    let loginUrl = getConfig().kommunicateApi.login;
+    var userName = this.state.userName, password = this.state.password, applicationName = this.state.applicationName, applicationId = key;
+    if (window.heap) {
+      window.heap.identify(userName);
+    }
 
-        // this.setState({
-        //   randomColorClass: rn
-        // });
-          CommonUtils.analyticsIdentify(userName);
-      
-          if (this.state.loginType === 'oauth'){
-            loginUrl += "?loginType=oauth"
-          } else if (this.state.loginType === 'email'){
-            loginUrl += "?loginType=email"
+    if (this.state.loginType === 'oauth') {
+      loginUrl += "?loginType=oauth"
+    } else if (this.state.loginType === 'email') {
+      loginUrl += "?loginType=email"
+    }
+    if (window.location.host.indexOf('kommunicate') !== -1) {
+      axios.post(loginUrl, { userName: userName, password: password, applicationName: applicationName, applicationId: applicationId })
+        .then(function (response) {
+          if (response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
+            Notification.error("Invalid Password");
+          } else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
+            Notification.error("Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.");
+            return
+          } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
+            return;
           }
-      
-          axios.post(loginUrl,{ userName: userName,password:password,applicationName:applicationName,applicationId:applicationId})
-          .then(function(response){
-            if(response.status==200&&response.data.code=='INVALID_CREDENTIALS'){
-              Notification.error("Invalid Password");
-            }else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
-              Notification.error("Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.");
-              return
-            } else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
-              return;
-            }
-            
-            if (response.status == 200 && response.data.code == 'SUCCESS') {
-              console.log("logged in successfully");
-              if (typeof (Storage) !== "undefined") {
-      
-                if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
-                  window.$applozic.fn.applozic('logout');
-                }
-      
-                if (response.data.result.apzToken) {
-                } else {
-                  var apzToken = new Buffer(userName + ":" + password).toString('base64');
-                  response.data.result.apzToken = apzToken;
-                }
-      
-                if (!response.data.result.application) {
-                  console.log("response doesn't have application, create {}");
-                  response.data.result.application = {};
-                }
-      
-                _this.setState({'applicationId': response.data.result.application.applicationId});
-      
-                // response.data.result.password = password=='' ? response.data.result.accessToken : password;
-                response.data.result.displayName=response.data.result.name;
-                CommonUtils.setUserSession(response.data.result);
-                _this.props.saveUserInfo(response.data.result);
-                _this.props.logInStatus(true);
+
+          if (response.status == 200 && response.data.code == 'SUCCESS') {
+            console.log("logged in successfully");
+            if (typeof (Storage) !== "undefined") {
+
+              if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
+                window.$applozic.fn.applozic('logout');
               }
-              // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
-              window.location.assign(_this.state.next);
+
+              if (response.data.result.apzToken) {
+              } else {
+                var apzToken = new Buffer(userName + ":" + password).toString('base64');
+                response.data.result.apzToken = apzToken;
+              }
+
+              if (!response.data.result.application) {
+                console.log("response doesn't have application, create {}");
+                response.data.result.application = {};
+              }
+
+              _this.setState({ 'applicationId': response.data.result.application.applicationId });
+
+              // response.data.result.password = password=='' ? response.data.result.accessToken : password;
+              response.data.result.displayName = response.data.result.name;
+              CommonUtils.setUserSession(response.data.result);
+            }
+            // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
+            window.location.assign(_this.state.next);
           }
-          }).catch(function(err){
-            console.log(err);
-            Notification.error("Error during login.");
-            _this.setState({loginButtonDisabled:false});
-          });
-        
-      }
+        }).catch(function (err) {
+          console.log(err);
+          Notification.error("Error during login.");
+          _this.setState({ loginButtonDisabled: false });
+        });
+
+    } else {
+      //applozic login
+      ApplozicClient.validateApplozicUser({ userName: userName, password: password, applicationName: applicationName, applicationId: applicationId, deviceType: 0 }).then(res => {
+        if (res.status === 200 && res.data === 'LOGIN') {
+          ApplozicClient.getApplication({ userName: userName, accessToken: password, applicationName: applicationName, applicationId: applicationId }, true).then(result => {
+            let user = { ...result.data.adminUser, name: result.data.adminUser.displayName, userName: userName, accessToken: password, application: result.data }
+            CommonUtils.setUserSession(user);
+            window.location.assign(_this.state.next);
+          })
+        }
+      }).catch(err => {
+        console.log('applozic login err')
+      })
+    }
+  }
 
     render() {
         var appIdList = CommonUtils.getApplicationIds();
