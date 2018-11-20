@@ -116,6 +116,9 @@ class ChatWidgetCustomization extends Component{
     getwidgetSettings = () => {
         return Promise.resolve(getAppSetting().then(response => {
             if(response.status == 200) {
+                if(response.data.response.widgetTheme === null){
+                    return;
+                }
                 var widgetThemeResponse = response.data.response.widgetTheme;
                 this.setState(widgetThemeResponse);
                 widgetThemeResponse.iconIndex == "image"? this.setState({ hasCustomImage : true }) : (document.getElementById("icon"+this.state.iconIndex).click());
@@ -174,8 +177,8 @@ class ChatWidgetCustomization extends Component{
                            <img src={this.state.changedLogoUrl}  /> 
                          </div>
                             <div className="km-custom-icon-upload">Upload your own launcher icon
-                            <input className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "km-hide-input-element km-img-upload-input vis" : "vis"} onClick={this.uploadImage } type="file" id="km-upload-chatwidget-image" accept="image/png, image/jpeg" />
-                            <button ><UploadIconButton /></button></div>
+                            <input className={(CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ?  "km-hide-input-element km-img-upload-input vis" : "n-vis km-cursor-default"} onClick={this.uploadImage } type="file" id="km-upload-chatwidget-image" accept="image/png, image/jpeg" />
+                            <button className="km-cursor-default"><UploadIconButton /></button></div>
                         </div>
                         <div className="km-logo-picker">
                         <button href="#" className="km-button km-button--primary" onClick={this.updateWidgetSettings} disabled ={!this.state.changesMade}>Save Changes</button>
