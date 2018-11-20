@@ -1183,6 +1183,6 @@ export {
   updateUserStatus,
   getSubscriptionDetail,
   createIntegrySubscription,
-  editApplicationDetails
+  editApplicationDetails,
   updateKommunicateCustomerSubscription
 }
