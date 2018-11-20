@@ -38,7 +38,8 @@ class Users extends Component {
       isFromSearch: false,
       oldResult : [],
       searchBoxEmpty : true,
-      isSearchBoxActive : true
+      isSearchBoxActive : true,
+      checkEnter: false
     };
 
   }
@@ -201,7 +202,13 @@ class Users extends Component {
         isSearchBoxActive: true,
         total: (Math.ceil(setPageNumbers / 20) * limit),
         result: this.state.oldResult,
-        hideEmptyStateImage: true
+        currentPage: 1,   // default value 
+        intial: 0,        // default value
+        final: 20,        // default value
+        pageNumber: 1,    // default value 
+        pageFlag: 2,      // default value 
+        hideEmptyStateImage: true,
+        checkEnter:false
       });
     }
   };
@@ -227,6 +234,9 @@ class Users extends Component {
             getUsersFlag:1,
             isFromSearch:false
           })
+          if(!_this.state.searchBoxEmpty && _this.state.checkEnter){
+            return;
+          }
           _this.getUsers();
         };
         }
@@ -255,6 +265,9 @@ class Users extends Component {
               getUsersFlag:1,
               isFromSearch:false
             })
+            if(!_this.state.searchBoxEmpty && _this.state.checkEnter){
+              return;
+            }
             _this.getUsers();
           }
         }
@@ -294,6 +307,7 @@ class Users extends Component {
       _this.searchContactInApplozic(document.getElementById('km-search-box').value);
       _this.setState({
         searchBoxEmpty: false,
+        checkEnter:true
       })
     };
     _this.detectEmptySearchBox(event);
