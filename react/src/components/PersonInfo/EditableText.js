@@ -37,12 +37,9 @@ class EditableText extends Component {
     }
   }
   isValidNo(value){
-    var phNoReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    if(phNoReg.test(value)){
-      return true;
+    if (value.length > 40) {
+      Notification.error("Number length should be less than 40");
     }
-    Notification.error("You have entered an invalid No!");
-    return false;
   }
 
   isValidateEmail = (email) => {
@@ -126,7 +123,7 @@ class EditableText extends Component {
       <div className={this.props.style}>
         <input
           style={style}
-          type="text"
+          type= {this.props.inputType?this.props.inputType :"text" }
           autoFocus="true"
           key={this.props.keyname}
           ref={this.props.reference}
@@ -135,6 +132,7 @@ class EditableText extends Component {
           onKeyPress={this.onKeyPressHandler}
           onBlur={this.updateComponentValue}
           onFocus ={this.updateMouseDownFlag}
+          maxLength={40}
         />
         <button onMouseDown={this.changeEditMode}>
           <CancelSvg />
@@ -166,6 +164,7 @@ class EditableText extends Component {
 EditableText.propTypes = {
   keyname: PropTypes.string.isRequired,
   reference:PropTypes.string.isRequired,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  inputType:PropTypes.string
 };
 export default EditableText;

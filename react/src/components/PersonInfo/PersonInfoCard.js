@@ -86,7 +86,7 @@ class PersonInfoCard extends Component {
                                 </p>
                                 {
                                     this.state.user ?
-                                        <EditableText style={"km-sidebar-user-number"} keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
+                                        <EditableText style={"km-sidebar-user-number"} className ="km-sidebar-user-number-edit" inputType={"number"}  keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
                                 }
                             </div>
                         </div>

@@ -77,3 +77,8 @@ opacity: 1;
 opacity: 0.01;
 transition: opacity 300ms ease-in;
 }
+.km-sidebar-user-number-edit{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
