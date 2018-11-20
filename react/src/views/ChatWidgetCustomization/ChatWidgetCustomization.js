@@ -116,6 +116,9 @@ class ChatWidgetCustomization extends Component{
     getwidgetSettings = () => {
         return Promise.resolve(getAppSetting().then(response => {
             if(response.status == 200) {
+                if(response.data.response.widgetTheme === null){
+                    return;
+                }
                 var widgetThemeResponse = response.data.response.widgetTheme;
                 this.setState(widgetThemeResponse);
                 widgetThemeResponse.iconIndex == "image"? this.setState({ hasCustomImage : true }) : (document.getElementById("icon"+this.state.iconIndex).click());
