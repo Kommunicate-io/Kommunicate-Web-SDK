@@ -205,9 +205,9 @@ const CommonUtils = {
             CommonUtils.setUserSession(userSession);
         }
     },
-    isInternetExplorer: function() {
-        return (navigator.userAgent.indexOf('MSIE') !== -1 ||
-        navigator.appVersion.indexOf('Trident/') > 0);
+    isInternetExplorerOrEdge: function() {
+        return ((navigator.userAgent.indexOf('MSIE') !== -1 ||
+        navigator.appVersion.indexOf('Trident/') > 0) || (window.navigator.userAgent.indexOf("Edge") > -1));
     },
     analyticsIdentify: function(identity) {
         if (window.heap) {
