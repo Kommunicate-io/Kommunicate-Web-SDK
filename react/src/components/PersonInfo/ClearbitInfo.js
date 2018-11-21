@@ -8,6 +8,17 @@ import LinkedinIcon from "./Icons/linkedin-icon.png";
 
 function ClearBitInfo(props) {
     const userDetail = props.userDetail;
+    const userInfo = {
+        fullName: userDetail.person.name ? userDetail.person.name : "",
+        bio: userDetail.person.bio ? userDetail.person.bio : "",
+        location: userDetail.person.location ? userDetail.person.location : "",
+    }
+    const companyInfo = {
+        domain: userDetail.company.domain ? userDetail.company.domain : "",
+        industry: userDetail.company.category ? (userDetail.company.category.industry ? userDetail.company.category.industry : "" ):"",
+        foundedYear: userDetail.company.foundedYear ? userDetail.company.foundedYear : "",
+        description: userDetail.company.description ? userDetail.company.description : ""
+    }
     return (
         <div>
             <div id="km-clearbit-title-panel" className="km-clearbit-title-panel">Clearbit</div>
@@ -18,10 +29,10 @@ function ClearBitInfo(props) {
                             id="full-name"
                             className="km-clearbit-field km-clearbit-user-full-name"
                         >
-                            {userDetail.person.name.fullName}
+                            {userInfo.fullName}
                         </h4>
                         <p id="bio" className="km-clearbit-field km-clearbit-user-bio">
-                            {userDetail.person.bio}
+                            {userInfo.bio}
                         </p>
                         <div className="km-clearbit-user-domain-location-wrapper">
                             <div id="location-icon" className="km-clearbit-logo-wrapper">
@@ -30,7 +41,7 @@ function ClearBitInfo(props) {
                                     id="location"
                                     className="km-clearbit-field km-clearbit-user-data"
                                 >
-                                    {userDetail.person.location}
+                                    {userInfo.location}
                                 </p>
                             </div>
                             {userDetail.company.domain ?
@@ -59,7 +70,7 @@ function ClearBitInfo(props) {
                             className="km-clearbit-field km-clearbit-user-industry"
                         >
                             <span className="clearbit-industry-details">Industry</span>
-                            {userDetail.company.category.industry}
+                            {companyInfo.industry}
                         </div>
 
                         <div
@@ -67,7 +78,7 @@ function ClearBitInfo(props) {
                             className="km-clearbit-field km-clearbit-user-industry"
                         >
                             <span className="clearbit-industry-details">Founded</span>
-                            {userDetail.company.foundedYear}
+                            {companyInfo.foundedYear}
                         </div>
 
                         <div className="km-clearbit-company-description-wrapper">
@@ -75,7 +86,7 @@ function ClearBitInfo(props) {
                                 id="description"
                                 className="km-clearbit-field km-clearbit-user-data"
                             >
-                                {userDetail.company.description.substr(0, 100) + '...'}
+                                {companyInfo.description.substr(0, 100) + '...'}
                             </p>
                         </div>
                         {/* social info */}
