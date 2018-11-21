@@ -818,11 +818,7 @@ color: #595757;
   .km-sidebar-contact-svg{
     vertical-align: text-top;
   }
-  .km-sidebar-submit-svg{
-    vertical-align: middle;
-    margin-left: 2px;
-  }
-
+ 
 #km-sidebar-user-number-edit ,#km-sidebar-user-email-edit,#km-sidebar-display-name-edit{
      text-align: left;
      width: 100%;

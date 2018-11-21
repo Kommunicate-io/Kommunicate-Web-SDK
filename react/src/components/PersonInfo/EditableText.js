@@ -139,10 +139,10 @@ class EditableText extends Component {
           onFocus ={this.updateMouseDownFlag}
           maxLength={40}
         />
-        <button onMouseDown={this.changeEditMode}>
+        <button className ="km-cancel-postion" onMouseDown={this.changeEditMode}>
           <CancelSvg />
         </button>
-        <button onMouseDown={this.submitComponentValue}>
+        <button className ="km-submit-postion" onMouseDown={this.submitComponentValue}>
           <SubmitSvg />
         </button>
       </div>
