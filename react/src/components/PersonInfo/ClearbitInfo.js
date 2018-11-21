@@ -26,7 +26,7 @@ function ClearBitInfo(props) {
     };
     if (userDetail.person) {
         userInfo = {
-            fullName: userDetail.person.name ? userDetail.person.name : "",
+            fullName: userDetail.person.name && userDetail.person.name.fullName ? userDetail.person.name.fullName: "",
             bio: userDetail.person.bio ? userDetail.person.bio : "",
             location: userDetail.person.location ? userDetail.person.location : "",
             linkedin: { handle: userDetail.person.linkedin ? userDetail.person.linkedin.handle : "" },
