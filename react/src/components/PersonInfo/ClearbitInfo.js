@@ -35,7 +35,7 @@ function ClearBitInfo(props) {
             crunchbase: { handle: userDetail.person.crunchbase ? userDetail.person.crunchbase.handle : "" }
         };
     }
-    if (userDetail.companyInfo) {
+    if (userDetail.company) {
         companyInfo = {
             domain: userDetail.company.domain ? userDetail.company.domain : "",
             industry: userDetail.company.category ? (userDetail.company.category.industry ? userDetail.company.category.industry : "") : "",
