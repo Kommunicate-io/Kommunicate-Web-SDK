@@ -155,7 +155,7 @@ class EditableText extends Component {
   renderDefaultView = () => {
     return (
       <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
-        <div onClick={this.changeEditMode} className ="km-edit">
+        <div onClick={this.changeEditMode} className={this.props.reference !== "displayName" ? "km-edit" : ""}>
           <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
         </div>
         {this.state.renderChild ? this.props.children : null}
