@@ -21,7 +21,7 @@ export default class EmailFallback extends Component {
         super(props);
         this.state = {
             switchIsEnabled: true,
-            uploadedCompanyLogo: CommonUtils.getUserSession().application.companyLogo,
+            uploadedCompanyLogo: CommonUtils.getUserSession().application.companyLogo || "",
             uploadImageText: "Replace",
             disableUploadBtn: false
         };
@@ -151,9 +151,7 @@ export default class EmailFallback extends Component {
 
     render() {
         let defaultLogoClass = "";
-        if(this.state.uploadedCompanyLogo.indexOf('/img/logo02.png') > 0) {
-            defaultLogoClass = "km-default-logo";
-        }
+        (this.state.uploadedCompanyLogo.includes('/img/logo02.png')) ? defaultLogoClass = "km-default-logo" : ""
 
         return (
             <div className="animated fadeIn email-fallback-div">
