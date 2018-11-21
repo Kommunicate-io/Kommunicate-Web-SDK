@@ -126,7 +126,7 @@ class ImageUploader extends Component {
     // return new Blob([this.state.ab], {type:this.state.mimeString});
     let file;
     let blob = new Blob([ia], { type: 'image/jpeg' });
-    if(CommonUtils.isInternetExplorer()) {
+    if(CommonUtils.isInternetExplorerOrEdge()) {
       blob.name = "image.jpg";
       blob.lastModifiedDate = new Date();
       return blob;
