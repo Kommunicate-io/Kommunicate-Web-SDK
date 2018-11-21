@@ -138,7 +138,7 @@ class EditableText extends Component {
           defaultValue={this.state.value}
           onKeyPress={this.onKeyPressHandler}
           className ="km-edit-input"
-          // onBlur={this.updateComponentValue}
+          onBlur={this.updateComponentValue}
           onFocus ={this.updateMouseDownFlag}
           maxLength={40}
         />
