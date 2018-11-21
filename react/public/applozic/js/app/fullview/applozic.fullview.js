@@ -5342,7 +5342,16 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						if (message.contentType === 2) {
 							emoji_template = '<span class="km-icon-marker"></span>';
-						}else if(message.contentType === 3){
+						}
+						else if(message.source === 7 && message.contentType === 3){
+							var s = message.message;
+							var result = s.match(/<b>(.*?)<\/b>/g).map(function(val){
+								return val.replace(/<\/?b>/g,'');
+							 });
+							var mailSvg = '<span class="mck-icon--email"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-6.54 4.09c-.65.41-1.47.41-2.12 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z" fill="rgba(38,50,56,.52)"/></svg></span>';
+							emoji_template = result ? (mailSvg + result[0]) : (mailSvg + "Email");
+						}
+						else if(message.contentType === 3){
 							emoji_template = message.message;
 						}
 						 else {
@@ -5388,7 +5397,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var msg = message.message;
 						if (kmUtils.startsWith(msg, "<img")) {
 							emoji_template = 'Image attachment';
-						} else {
+						} 
+						else if(message.source === 7 && message.contentType === 3){
+							var s = message.message;
+							var result = s.match(/<b>(.*?)<\/b>/g).map(function(val){
+								return val.replace(/<\/?b>/g,'');
+							 });
+							emoji_template = result ? (result[0]) : ("Email");
+						}
+						else {
 							var x = d.createElement('div');
 							x.innerHTML = msg;
 							msg = $kmApplozic.trim(kmUtils.textVal(x));
