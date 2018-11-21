@@ -358,11 +358,11 @@ function ApplozicSidebox() {
         Sentry.init({
             dsn: sentryConfig.dsn
         });
-        Sentry.configureScope((scope) => {
+        Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", options.appId);
             scope.setTag("userId", userId);
             scope.setUser({
-                id: options.appId,
+                id: options.appId
             });
         });
     }
