@@ -94,7 +94,6 @@ transition: opacity 300ms ease-in;
     -webkit-box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
 }
 .km-cancel-postion{
-    align-items: center;
     width: 19px;
     height: 17px;
     position: absolute;
