@@ -498,10 +498,10 @@ class Billing extends Component {
         let currentPlanElems = document.querySelectorAll(".pricing-table-body button");
         
         const growthPlanAmount = (
-            <p>${(!this.state.toggleSlider) ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={!this.state.toggleSlider ? false : true}>Save ${(this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)} in yearly plan!</span></p>
+            <p>${(!this.state.toggleSlider) ? this.state.seatsBillable * 10 : (this.state.seatsBillable * 96)} <span hidden={!this.state.toggleSlider ? false : true}>Save ${((this.state.seatsBillable * 10) - (this.state.seatsBillable * 8)) * 12} in yearly plan!</span></p>
         )
         const enterprisePlanAmount = (
-            <p>${(!this.state.toggleSlider) ? this.state.seatsBillable * 30 : (this.state.seatsBillable * 300)} <span hidden={!this.state.toggleSlider ? false : true}>Save ${(this.state.seatsBillable * 30) - (this.state.seatsBillable * 25)} in yearly plan!</span></p>
+            <p>${(!this.state.toggleSlider) ? this.state.seatsBillable * 30 : (this.state.seatsBillable * 300)} <span hidden={!this.state.toggleSlider ? false : true}>Save ${((this.state.seatsBillable * 30) - (this.state.seatsBillable * 25)) * 12} in yearly plan!</span></p>
         )
 
         for(var i = 0; i < currentPlanElems.length; i++) {
