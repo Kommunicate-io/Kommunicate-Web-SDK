@@ -58,6 +58,7 @@ class Billing extends Component {
             boughtQuantity: 0,
             totalPlanQuantity: 0,
             nextBillingDate: 0,
+            totalPlanAmount: 0,
             disableSelectedPlanButton: false,
             infoModalIsOpen: false,
             clickedPlan:  'startup'
@@ -107,9 +108,7 @@ class Billing extends Component {
             this.updateSubscription(subscription, customerId);
             this.setState({hideSubscribedSuccess: false, boughtSubscription: subscription, boughtQuantity: quantity});
             // console.log(this.state.boughtSubscription);
-        } else {
-            this.getPlanDetails();
-        }
+        } 
 
         document.getElementById("portal").addEventListener("click", function (event) {
             if (event.target.classList.contains('n-vis')) {
@@ -120,6 +119,7 @@ class Billing extends Component {
 
         this.chargebeeInit();
         this.getAgents();
+        this.getPlanDetails();
     }
 
     buyThisPlanClick = () => {
@@ -462,7 +462,7 @@ class Billing extends Component {
             this.setState({
                 totalPlanQuantity: response.plan_quantity,
                 nextBillingDate: response.next_billing_at,
-                
+                totalPlanAmount: response.plan_amount
             })
             if((this.state.subscription === "" || this.state.subscription === "startup")) {
                 this.setState({
@@ -564,7 +564,7 @@ class Billing extends Component {
                                             {this.state.subscription === "launch_yearly" || this.state.subscription === "launch_monthly" ? "" :
                                             <div className="subscription-success-purchased-plan-billing">
                                                 <p>Next billing:</p>
-                                                <p>You will be charged <strong>${this.state.subscription === "per_agent_yearly" ? this.state.totalPlanQuantity * 96 : this.state.subscription === "per_agent_monthly" ? this.state.totalPlanQuantity * 10 : 0}</strong> on <strong>{this.state.subscription === "per_agent_yearly" ? CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp") : this.state.subscription === "per_agent_monthly" ? CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp") : 0}</strong></p>
+                                                <p>You will be charged <strong>${this.state.totalPlanAmount / 100}</strong> on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
                                             </div>
                                             }
                                         </div>
