@@ -25,13 +25,6 @@ function getJsCode (){
     // options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
 
-
-  // var env = getEnvironmentId();
-
-  // if(env=="test"||env=="development"){
-  //   options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
-  // }
-  // options.email = '';
   console.log(options);
 
 var jsScript= `<script type="text/javascript">
