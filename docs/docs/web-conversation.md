@@ -4,19 +4,19 @@ title: Conversation
 sidebar_label: Conversation
 ---
 
-## Launch conversation List:
+## Launch conversation List
 To launch the conversation list use the following method.
 ```
 Kommunicate.launchConversation();
 ```
-## Show conversation list:
+## Show conversation list
 To show the conversation list use the following method.
 
 ```
 Kommunicate.openConversationList();
 ```
 
-## Create a new Conversation:
+## Create a new Conversation
 
 A conversation can be created using `startConversation` method.
 ```javascript
@@ -31,7 +31,7 @@ Kommunicate.startConversation(conversationDetail, function (response) {
 });                    
 ```
 
-### Example :
+### Example 
 ```
 var conversationDetail = {
     agentIds: ["debug6"],
@@ -41,16 +41,16 @@ Kommunicate.startConversation(conversationDetail, function (response) {
     console.log("new conversation created");
 });
 ```
-## Open a particular conversation:
+## Open a particular conversation
 You can open a particular conversation if you have the group ID of that particular conversation by this method:
 
 ```
 Kommunicate.openConversation(groupId);
 ```
 
-## Open chat window when a new message comes:
+## Open chat window when a new message comes
 Add "openConversationOnNewMessage:true" in Kommunicate settings. This will open chat window when a new message comes.
-### Example:
+### Example
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
