@@ -26,15 +26,16 @@ function getJsCode (){
   }
 
 
-  var env = getEnvironmentId();
+  // var env = getEnvironmentId();
 
-  if(env=="test"||env=="development"){
-    options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
-  }
-  options.email = '';
+  // if(env=="test"||env=="development"){
+  //   options.baseUrl=getConfig().applozicPlugin.applozicHosturl;
+  // }
+  // options.email = '';
   console.log(options);
 
 var jsScript= `<script type="text/javascript">
+    /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
     (function(d, m){
       var kommunicateSettings = ${JSON.stringify(options)};
       var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;

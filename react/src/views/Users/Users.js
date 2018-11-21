@@ -11,6 +11,7 @@ import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import Notification from '../model/Notification';
 
 const limit = 2;
 const pageCount = 3;
@@ -85,6 +86,10 @@ class Users extends Component {
             _this.setState({hideEmptyStateImage: false});
             }
           }
+        }).catch(err=>{
+          Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+          console.log('uploading error',err)
+          return;
         });
     }
   };
@@ -188,6 +193,10 @@ class Users extends Component {
         });
         _this.listUsers(response, []);
       }
+    }).catch(err=>{
+      Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+      console.log('uploading error',err)
+      return;
     });
   };
 
