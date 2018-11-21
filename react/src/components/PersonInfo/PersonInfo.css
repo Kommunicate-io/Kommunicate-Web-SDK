@@ -120,7 +120,7 @@ transition: opacity 300ms ease-in;
     color: #595757;
   }
   .km-edit-input::placeholder {
-    opacity: 6;
+    opacity: 0.6;
     color: #949494;
 }
   .km-sidebar-user-emailnotfound, .km-sidebar-user-numbernotfound {
