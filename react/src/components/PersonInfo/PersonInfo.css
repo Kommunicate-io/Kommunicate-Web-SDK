@@ -89,12 +89,9 @@ transition: opacity 300ms ease-in;
     border-radius: 2px;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
     background-color: #e5e5e5;
-    justify-content: center;
-    align-items: center;
     width: 19px;
     height: 17px;
     -webkit-box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
-    -ms-flex-pack: center;
 }
 .km-cancel-postion{
     align-items: center;
@@ -107,8 +104,6 @@ transition: opacity 300ms ease-in;
     -webkit-box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
     background-color: #e5e5e5;
-    -ms-flex-pack: center;
-    justify-content: center;
 }
 .km-sidebar-submit-svg{
     margin-left: -4px;
@@ -128,4 +123,7 @@ transition: opacity 300ms ease-in;
   .km-sidebar-user-emailnotfound, .km-sidebar-user-numbernotfound {
     color: #4831d9!important;
     width:100%;
+  }
+  .km-edit {
+      margin-bottom: 15px;
   }

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import ApplozicClient from "../../utils/applozicClient";
 import Notification from '../../views/model/Notification';
-import { SubmitSvg, CancelSvg } from '../../views/Faq/LizSVG';;
+import { SubmitSvg, CancelSvg } from '../../views/Faq/LizSVG';
+import './PersonInfo.css';
 
 class EditableText extends Component {
   constructor(props) {
@@ -152,7 +153,7 @@ class EditableText extends Component {
   renderDefaultView = () => {
     return (
       <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
-        <div onClick={this.changeEditMode}>
+        <div onClick={this.changeEditMode} className ="km-edit">
           <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
         </div>
         {this.state.renderChild ? this.props.children : null}

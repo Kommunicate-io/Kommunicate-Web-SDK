@@ -720,7 +720,6 @@ ul#km-group-search-list li {
 	display: flex;
     align-items: baseline;
 	justify-content: flex-start;
-	margin-bottom: 15px;
 }
 
 #km-sidebar-user-email:hover, #km-sidebar-user-number:hover,#km-sidebar-display-name:hover{
