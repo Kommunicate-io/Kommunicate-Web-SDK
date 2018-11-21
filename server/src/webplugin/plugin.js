@@ -17,11 +17,11 @@ if (typeof options !== 'undefined') {
 }
 window.addEventListener('error', function(e) {
   let sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
-  sentryConfig.enable && Sentry.withScope((scope) => {
+  sentryConfig.enable && Sentry.withScope(function (scope) {
     scope.setTag("applicationId", options.appId);
     scope.setTag("userId", options.userId);
     scope.setUser({
-      id: options.appId,
+      id: options.appId
     });
     Sentry.captureException(e);
   });
