@@ -123,7 +123,8 @@ class EditableText extends Component {
   renderEditView = () => {
     const style = {
       width: "100%",
-      textAlign: "center"
+      textAlign: "left",
+      padding:"5px"
     };
     return (
       <div className={this.props.style}>
@@ -136,7 +137,8 @@ class EditableText extends Component {
           placeholder={this.state.value || this.props.placeholder}
           defaultValue={this.state.value}
           onKeyPress={this.onKeyPressHandler}
-          onBlur={this.updateComponentValue}
+          className ="km-edit-input"
+          // onBlur={this.updateComponentValue}
           onFocus ={this.updateMouseDownFlag}
           maxLength={40}
         />
