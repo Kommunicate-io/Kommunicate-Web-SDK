@@ -299,8 +299,9 @@ class Users extends Component {
   handleKeyboardEventForSearch = (event) => {
     event.preventDefault(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
     var key = event.which || event.keyCode;
-    if (key === 13) {
-      _this.searchContactInApplozic(document.getElementById('km-search-box').value);
+    var kmSearchBoxValue = document.getElementById('km-search-box').value;
+    if (key === 13 && kmSearchBoxValue.length !== 0) {
+      _this.searchContactInApplozic(kmSearchBoxValue);
       _this.setState({
         searchBoxEmpty: false,
       })
