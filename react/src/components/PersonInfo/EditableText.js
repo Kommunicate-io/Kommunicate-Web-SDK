@@ -121,7 +121,7 @@ class EditableText extends Component {
 
   renderEditView = () => {
     const style = {
-      width: "60%",
+      width: "100%",
       textAlign: "center"
     };
     return (
@@ -153,7 +153,7 @@ class EditableText extends Component {
     return (
       <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
         <div onClick={this.changeEditMode}>
-          <p id={this.props.style} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
+          <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
         </div>
         {this.state.renderChild ? this.props.children : null}
       </div>
@@ -170,6 +170,7 @@ EditableText.propTypes = {
   keyname: PropTypes.string.isRequired,
   reference:PropTypes.string.isRequired,
   placeholder: PropTypes.string,
-  inputType:PropTypes.string
+  inputType:PropTypes.string,
+  id:PropTypes.string
 };
 export default EditableText;

@@ -84,7 +84,7 @@ transition: opacity 300ms ease-in;
 }
 .km-submit-postion{
     position: absolute;
-    right: 33%;
+    right: 10%;
     bottom: -16%;
     border-radius: 2px;
     box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
@@ -101,7 +101,7 @@ transition: opacity 300ms ease-in;
     width: 19px;
     height: 17px;
     position: absolute;
-    right: 41%;
+    right: 2%;
     bottom: -16%;
     border-radius: 2px;
     -webkit-box-shadow: 0 0 2px 1px rgba(152, 149, 149, 0.5);
@@ -112,10 +112,10 @@ transition: opacity 300ms ease-in;
 }
 .km-sidebar-submit-svg{
     margin-left: -4px;
-    margin-bottom: 1px;
+    margin-bottom: 2px;
   }
 
-  .km-sidebar-user-email :focus ,.km-sidebar-user-number :focus{
+  .km-sidebar-user-email :focus ,.km-sidebar-user-number :focus, .km-sidebar-user-emailnotfound :focus, .km-sidebar-user-numbernotfound :focus{
     border: 1px solid #5c5aa7;
     outline: none;
     border-radius: 2px;
@@ -124,4 +124,8 @@ transition: opacity 300ms ease-in;
 
   .km-sidebar-user-email, .km-sidebar-user-number{
     color: #595757;
+  }
+  .km-sidebar-user-emailnotfound, .km-sidebar-user-numbernotfound {
+    color: #4831d9!important;
+    width:100%;
   }
