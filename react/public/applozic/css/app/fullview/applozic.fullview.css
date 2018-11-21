@@ -3640,3 +3640,11 @@ ol, ul {
 	font-weight: 500;
 	font-size: 20px;
 }
+
+.mck-icon--email {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.mck-icon--email svg {
+	vertical-align: sub;
+}
