@@ -16,6 +16,7 @@ import Modal from 'react-modal';
 import SliderToggle from '../.../../../components/SliderToggle/SliderToggle';
 import PlanDetails from '../.../../../components/PlanDetails/PlanDetails';
 import PlanView from '../.../../../components/PlanDetails/PlanView';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
  
 import RadioButton from '../../components/RadioButton/RadioButton';
 // import {RadioGroup, Radio} from '../../components/Radio/Radio';
@@ -381,6 +382,7 @@ class Billing extends Component {
 
     seatSelectionModal(e) {
         var selectedPlanButton = e.target.getAttribute("data-choose-plan");
+        acEventTrigger("ac-choose-plan");
         if(selectedPlanButton.includes("enterprise")) {
             this.setState({
                 planHeading: "Enterprise",
