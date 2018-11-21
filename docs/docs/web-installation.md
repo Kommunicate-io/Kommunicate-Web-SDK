@@ -19,6 +19,8 @@ Or
 
 You can copy the below script and replace required parameters manually.
 
+**NOTE :** `Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser.`
+
 Script
 ```javascript
 <script type="text/javascript">

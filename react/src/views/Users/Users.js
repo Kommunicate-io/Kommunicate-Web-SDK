@@ -11,6 +11,7 @@ import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import Notification from '../model/Notification';
 
 const limit = 2;
 const pageCount = 3;
@@ -86,6 +87,10 @@ class Users extends Component {
             _this.setState({hideEmptyStateImage: false});
             }
           }
+        }).catch(err=>{
+          Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+          console.log('uploading error',err)
+          return;
         });
     }
   };
@@ -189,6 +194,10 @@ class Users extends Component {
         });
         _this.listUsers(response, []);
       }
+    }).catch(err=>{
+      Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+      console.log('uploading error',err)
+      return;
     });
   };
 
@@ -303,8 +312,9 @@ class Users extends Component {
   handleKeyboardEventForSearch = (event) => {
     event.preventDefault(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
     var key = event.which || event.keyCode;
-    if (key === 13) {
-      _this.searchContactInApplozic(document.getElementById('km-search-box').value);
+    var kmSearchBoxValue = document.getElementById('km-search-box').value;
+    if (key === 13 && kmSearchBoxValue.length !== 0) {
+      _this.searchContactInApplozic(kmSearchBoxValue);
       _this.setState({
         searchBoxEmpty: false,
         checkEnter:true

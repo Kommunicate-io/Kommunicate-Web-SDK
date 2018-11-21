@@ -508,6 +508,10 @@ export default class IntegratedBots extends Component {
               listOfIntegratedBots: sortedListOfIntegratedBots
             });
           }
+        }).catch(err=>{
+          Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+          console.log('uploading error',err)
+          return;
         });
       }
 
