@@ -100,13 +100,13 @@ class Full extends Component {
     this.isIntegrationStarted({callback : this.populateIntegrationDetailInSession});
 
     // Wootric Script
-    window.wootric_survey_immediately = true; // Shows survey immediately for testing purposes. TODO: Comment out for production.
+    // window.wootric_survey_immediately = true; // Shows survey immediately for testing purposes. TODO: Comment out for production.
     window.wootricSettings = {
       email: userSession.email,
       created_at: (new Date(userSession.created_at).getTime()) / 1000,
       account_token: 'NPS-954f150b'
     };
-    console.log(window.wootricSettings)
+    // console.log(window.wootricSettings)
 
     this.initWootricScript();
 
