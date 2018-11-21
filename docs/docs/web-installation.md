@@ -4,12 +4,12 @@ title: Installation
 sidebar_label: Installation
 ---
 
-## Overview:
+## Overview
 Kommunicate allows you to add live chat in your website that enables you to serve your website visitors and customers through conversation.<br>
 Installing Kommunicate is fast and easy. Just add a few lines of code in your website and you can start answering your support queries within few minutes.
 Kommunicate can also be used with any of [Website Builder](#install-on-website-builder).
 
-## Install on web:  
+## Install on web
 
 ### Step 1 : Get the customized plugin script from [Kommunicate dashboard](https://dashboard.kommunicate.io/dashboard).
 
@@ -75,7 +75,7 @@ You can customize the plugin by passing below parameter in option object. Visit 
 |openConversationOnNewMessage | This will open the chat window when a new message comes. Pass this parameter true. For more detail check <a href="web-conversation#open-chat-window-when-a-new-message-comes" target="_blank">openConversationOnNewMessage </a>|
 
 
-## Install on website Builder:
+## Install on website Builder
   - <a href="https://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/" target="_blank">Wordpress</a>
   - <a href="https://www.kommunicate.io/blog/squarespace-live-chat-software-for-website/" target="_blank">Squarespace</a>
   - <a href="https://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/" target="_blank">Wix</a>

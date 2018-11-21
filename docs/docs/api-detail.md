@@ -6,7 +6,7 @@ sidebar_label: Endpoints
 
 > Note: All endpoints are relative to the [base url](api-authentication.html#base-url).
 
-## Get user detail :
+## Get user detail
 Accepts the list of userIds in and return the list of user detail object.   
 
 Request 
@@ -39,7 +39,7 @@ Response
  }]
 ```
 
-## Send Message : 
+## Send Message
 
 Send a message to a conversation/group. A group Id is assigned to every conversation when its created and can not be changed. If messages are received from webhook, every message will have the groupId parameter associated with them. Use this group Id to send the messages in the conversation. 
 You can also send [Actionable messages](actionable-messages.html) by adding a valid metadata. 

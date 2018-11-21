@@ -4,14 +4,12 @@ title: Customization
 sidebar_label: Customization
 ---
 
-## Chat icon:
+## Chat icon
 Customize the chat icon by passing  `chatLauncherHtml: your html for chat icon` parameter into [initialization script](https://docs.kommunicate.io/docs/web-installation.html#script')
 
-```
+``` js
      var kommunicateSettings = {"appId": appId,
-
             "chatLauncherHtml": "<img src='https://api.kommunicate.io/img/logo02.svg'/>",
-
             "agentId": agentId,
             "groupName": groupName,
             "email":email
@@ -26,7 +24,7 @@ box-shadow: none !important;  /* change to 'none' to remove underlying shadow */
 background: #6350A9 !important; /* if user is using an image with transparency they can add this property and define a background color*/
 }
 ```
-## Top Header color:
+## Top Header color
 Add below code to change color of Top header Color in your css file
 ```
 .mck-box-top {
@@ -34,7 +32,7 @@ background-color: green;
 }
 ```
 
-## Start new conversation button color:
+## Start new conversation button color
 Add below code to change color of 'Start new conversation' button in your css file
 ```
 #mck-msg-new.mck-btn{
@@ -42,7 +40,7 @@ background-color: green!important;
 }
 ```
 
-## Received messages color:
+## Received messages color
 Add below code to change color of received messages in your css file
 ```
 .mck-msg-right .mck-msg-box{
@@ -51,7 +49,7 @@ color:white;
 }
 ```
 
-## Sent messages color:
+## Sent messages color
 Add below code to change color of sent messages in your css file
 ```
 mck-msg-left .mck-msg-box{
@@ -60,10 +58,10 @@ color:black;
 }
 ```
 
-## Default metadata :
+## Default metadata 
 Add this metadata in kommunicate setting.This will send defaultMessageMetaData with every message.
 
-### Example
+Example
 
 ```
 var kommunicateSettings = {"appId": appId,
