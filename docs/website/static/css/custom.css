@@ -310,10 +310,7 @@ body {
     width: 60px !important;
     height: 60px !important;
 }
-.mck-sidebox-launcher svg {
-    width: 60px !important;
-    height: 60px !important;
-}
+
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
