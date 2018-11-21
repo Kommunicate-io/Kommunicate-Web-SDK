@@ -47,7 +47,7 @@ export default class Onboarding extends Component {
                                 <li><Link to="/settings/install">Install</Link> Kommunicate live chat in your website or app</li>
                                 <li><a href="https://www.kommunicate.io/blog/how-to-integrate-bot-using-dialogflow-in-kommunicate-1ac32911a7d0/" target="_blank">Read</a> how to set up a chat bot in Kommunicate</li>
                                 <li>Setup <Link to="/settings/mailbox">Mailbox</Link> to manage support emails from Kommunicate</li>
-                                <li>Customise your <Link to="/settings/chat-widget-customization">Chat Widget</Link></li>
+                                <li>Customize your <Link to="/settings/chat-widget-customization">Chat Widget</Link></li>
                                 <li>Invite your <Link to="/settings/team">Teammates</Link></li>
                             </ul>
                         </div>
