@@ -10,7 +10,7 @@ Go to Dashboard -> Settings -> [Webhooks & Security](https://dashboard.kommunica
 Add authentication to this post data request by configuring webhook authentication token in Kommunicate dashboard. This authentication token can be any random string.
 Scroll down to the **Security** section in **Webhooks & Security** page
 
-> **NOTE:** We recommend configuring this authentication token in Kommunicate dashboard as it adds authentication layer for all the API call going from Kommunicate to your server. This authentication token will be passed as **Authentication**  header in the form of base64 value of authentication token.\nBasic Base64Encode of authentication token\nExample: **Basic YWJjZGVm**
+> **NOTE:** We recommend configuring this authentication token in Kommunicate dashboard as it adds authentication layer for all the API call going from Kommunicate to your server. This authentication token will be passed as **Authentication**  header in the form of base64 value of authentication token. Basic Base64Encode of authentication token <br>Example: **Basic YWJjZGVm**
 
 Now Kommunicate Server POST data to the configured Url with following headers:
 
