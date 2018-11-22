@@ -31,7 +31,7 @@ class ApplicationList extends Component {
     componentWillMount() {
       const search = this.props.location.search;
       let next  = CommonUtils.getUrlParameter(search, 'referrer');
-      this.state.next = next;
+      this.state.next = next==""? '/':next;
       var userDetails = CommonUtils.getUserSession();
       if(userDetails) {
         this.setState({
