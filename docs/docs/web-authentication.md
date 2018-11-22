@@ -19,9 +19,9 @@ Here are the parameters you can pass in [initialization script](https://docs.kom
 |conversationTitle | Conversation Title|
 |defaultMessageMetaData |This will send defaultMessageMetaData with every message.|
 
-## There are 3 ways to Login
+There are 3 ways to Login
 
-## **1. Visitors**
+## 1. Visitors
 
 Whenever users come to your website, they are assigned with a random ID by default. This behaviour is best suited for anonymous user.
 Add below setting to allow anonymous user
@@ -30,8 +30,7 @@ Add below setting to allow anonymous user
 |parameters | description|
 |---    |---    |
 
-
-### Example:
+Example:
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
@@ -43,7 +42,7 @@ Add below setting to allow anonymous user
 
 ```
 
-## **2. Pre chat Lead Collection**
+## 2. Pre chat Lead Collection
 
 For collecting user contact information before initiating chat, use the following setting 'askUserDetails':
 
@@ -70,7 +69,7 @@ Once configured, user will see the form on click of the chat widget launch icon
 
 ```
 
-## **3. Logged In Users**
+## 3. Logged In Users
 
 If the user is already logged in your website, then pass the user details to kommunicate using the following setting:
 
@@ -83,7 +82,7 @@ If the user is already logged in your website, then pass the user details to kom
 
 
 
-### Example:
+Example:
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
@@ -98,7 +97,7 @@ If the user is already logged in your website, then pass the user details to kom
 
 
 
-## **Update user's identity after plugin initialized**
+## Update user's identity after plugin initialized
 
 Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 

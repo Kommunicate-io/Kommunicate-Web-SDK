@@ -57,7 +57,7 @@ Modify the labels like "Start Conversation",etc by adding following labels in ko
     }
 }
 ```
-### Example:
+### Example
 This example will change the text for pre chat lead collection screen :- 
 
 ```javascript

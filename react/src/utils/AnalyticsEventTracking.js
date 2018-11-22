@@ -7,8 +7,8 @@ export function acEventTrigger(trigger) {
     if(!getConfig().thirdPartyIntegration.analytics.enable) {
       return;
     }
+    var event = trigger;
 
-    var event;
     // Changing the event name 
     switch(trigger){
       case 'ac-away-message':
@@ -45,8 +45,22 @@ export function acEventTrigger(trigger) {
         event = "addedAgent"
         break;
       case 'ac-configured-routing':
-        event = "configuredRouting"
+        event = "configuredBotRouting"
         break;
+      case 'ac-choose-plan':
+        event ="clickedChangePlan"
+        break;
+      case 'ac-android-push':
+        event ="setupAndroidPush"
+        break;
+      case 'ac-ios-dist':
+        event ="setupApplePushDis"
+        break;
+     
+      case 'ac-ios-dev':
+        event ="setupApplePushDis"
+        break;
+     
     }
 
     if (window.mixpanel) {

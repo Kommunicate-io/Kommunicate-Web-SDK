@@ -31,4 +31,30 @@ exports.getAllSubscriptionByApiKey = async (applicationId)=>{
     applicationId && (criteria.applicationId = applicationId);
     return Promise.resolve(db.AppSubscription.findAll({where:criteria}));
 }
-
+/***
+ *This method find the subscription by (applicationId, platform, eventType) and update it.
+ *@param {Object} subscriptionData  
+ */
+exports.updateSubscription = async (criteria, subscription)=>{
+    logger.info("updating  sucscription by criteria..",criteria);
+    return Promise.resolve(db.AppSubscription.update(subscription,{where :criteria }));
+    }
+/***
+ *This method find the subscription  by (applicationId, platform, eventType) and update it if found. if not found It will creat ea new subscription.
+ *@param {Object} subscriptionData  
+ */
+exports.createOrUpdateSubscription = async (subscription)=>{
+    let criteria ={applicationId:subscription.applicationId,platform:subscription.platform,eventType:subscription.eventType}; 
+    let oldSubscription = await this.getSubscription(criteria);
+    let data = {};
+    if(oldSubscription){
+       let noOfRows=  await this.updateSubscription(criteria,subscription)
+        data.code = "UPDATED";
+        data.affectedRows = noOfRows && noOfRows[0];
+        
+    }else {
+        data.code = "CREATED";
+        data.data = await this.createSubscription(subscription);
+    };
+    return data;
+}

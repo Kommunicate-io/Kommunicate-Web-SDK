@@ -167,7 +167,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-new-messages"} value={this.state.newMessages} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                            
                                 </div>
-                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={"https://docs.kommunicate.io/docs/webhooks-configuration"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -189,7 +189,7 @@ export default class WebhooksAndSecurity extends Component {
                                         options={options}
                                     />                                 
                                 </div>
-                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={"https://docs.kommunicate.io/docs/webhooks-configuration"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -211,7 +211,7 @@ export default class WebhooksAndSecurity extends Component {
                                         options={options}
                                     />                                 
                                 </div>
-                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={"https://docs.kommunicate.io/docs/webhooks-configuration"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -222,7 +222,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-authentication-token"} value={this.state.authenticationToken} onChange={this.handleOnChange} label={"Enter your authentication token"} />
                                     </div>                                
                                 </div>
-                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={"https://docs.kommunicate.io/docs/access-token-url-configuration"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
 
@@ -242,7 +242,7 @@ export default class WebhooksAndSecurity extends Component {
                                         <InputFields id={"input-authorization-url"} value={this.state.authorizationUrl} onChange={this.handleOnChange} label={"Enter your API URL"} />
                                     </div>                                
                                 </div>
-                                <MoreInfoLink url={"https://docs.applozic.com/docs/webhooks"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
+                                <MoreInfoLink url={"https://docs.kommunicate.io/docs/access-token-url-configuration"} descriptionLabel={"For more information, see our "} Linklabel={"Docs"} />
                             </div>
 
                             <div className="security-action-buttons-container">

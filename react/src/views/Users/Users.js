@@ -7,14 +7,19 @@ import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
 import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
+import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
 import {UserSectionLoader} from '../../components/EmptyStateLoader/emptyStateLoader.js';
+import Notification from '../model/Notification';
 
 const limit = 2;
 const pageCount = 3;
+var hasClass = function(el, className) {
+  return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
+};
+var _this;
 class Users extends Component {
-
   constructor(props) {
     super(props);
 
@@ -22,7 +27,7 @@ class Users extends Component {
       result: [],
       startTime:"",
       lastSeenTime:"",
-      showEmptyStateImage: true,
+      hideEmptyStateImage: true,
       total:0,
       currentPage: 1,
       intial:0,
@@ -30,17 +35,22 @@ class Users extends Component {
       pageNumber:1,
       pageFlag:2,
       stopFlag:1,
-      getUsersFlag:1
+      getUsersFlag:1,
+      isFromSearch: false,
+      oldResult : [],
+      searchBoxEmpty : true,
+      isSearchBoxActive : true,
+      checkEnter: false
     };
 
   }
   componentWillMount() {
+    _this = this;
     this.getUsers();
     this.updateConversationWithRespectToPageNumber();
   }
 
   getUsers = () => {
-    var _this = this;
     if(_this.state.getUsersFlag === 1){
       _this.setState({
         getUsersFlag:0
@@ -59,8 +69,7 @@ class Users extends Component {
       }
       var groupList=[];
       var assignedUser = _this.state.result;
-      let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
-        fetchContactsFromApplozic(params).then(response => {
+        ApplozicClient.fetchContactsFromApplozic(params).then(response => {
           if(response.status == "success"){
             if (response && response.response && (response.response.users.length > 0)) {
               if(response.response.users.length < params.pageSize || response.response.lastSeenFetchTime === 0 ){
@@ -69,67 +78,151 @@ class Users extends Component {
               var setPageNumbers = assignedUser.length + response.response.users.length;
               _this.setState({
                 total: (Math.ceil(setPageNumbers / 20)*limit),
-                startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime, 
+                startTime : response.response.lastSeenFetchTime ? "": response.response.lastFetchTime,
                 lastSeenTime : response.response.lastSeenFetchTime
               });
-              const usersMap=response.response.users.map((user, index)=>{ 
-                if (user.messagePxy && user.messagePxy.groupId) {
-                  groupList.push(user.messagePxy.groupId.toString()); 
-                }
-              });  
-              multipleGroupInfo(groupList).then(data => { 
-                var arr = []; 
-                     
-                if(data.status == "success" && data.response && data.response.length){
-                  for(var j = 0; j < data.response.length; j++){
-                    arr[data.response[j].id] = data.response[j];
-                  };
-                }
-                const users=response.response.users.map((user, index)=>{
-                  if (user.messagePxy && user.messagePxy.groupId) {
-                        if (botAgentMap && typeof data !== "undefined" && data !== null && data.status == "success") {
-                            if (arr[user.messagePxy.groupId]) {
-                              user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE ;
-                              if(user.assignee == ""){
-                              };
-                              user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
-                              assignedUser.push(user);
-                              // Sort array after pushing
-                              var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                              _this.setState({
-                                result: arrObj, 
-                                showEmptyStateImage: true
-                              })
-                            }
-                        } 
-                  } 
-                  else {
-                    assignedUser.push(user);
-                    // Sort array after pushing
-                    var arrObj = _.sortBy(assignedUser,"lastSeenAtTime").reverse();
-                    _this.setState({
-                      result: arrObj, 
-                      showEmptyStateImage: true
-                    })
-                  }
-                }); 
-              });
-          } else if (response.response.users.length == 0 && this.state.result == 0) {
-            _this.setState({showEmptyStateImage: false});
-          }
-          }
-        });
-    } 
-  }
+              _this.listUsers(response,assignedUser);
 
-  handlePageChange = page => {
-    this.setState({
-      currentPage: page
+            } else if (response.response.users.length == 0 && this.state.result == 0) {
+            _this.setState({hideEmptyStateImage: false});
+            }
+          }
+        }).catch(err=>{
+          Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+          console.log('uploading error',err)
+          return;
+        });
+    }
+  };
+
+  listUsers = (response, assignedUser) => {
+    var groupList = [];
+    var userdetail = this.state.isFromSearch ? response.response : response.response.users;
+    const usersMap = userdetail.map((user, index) => {
+      if (user.messagePxy && user.messagePxy.groupId) {
+        groupList.push(user.messagePxy.groupId.toString());
+      }
+    });
+    if (groupList.length === 0) {
+      this.mapUserDeatils(response, assignedUser, [], []);
+    }
+    else {
+      this.getmMultipleGroupInfo(groupList, response, assignedUser);
+    }
+  };
+
+  getmMultipleGroupInfo = (groupList, response, assignedUser) => {
+    // var _this = this;
+    ApplozicClient.multipleGroupInfo(groupList).then(data => {
+      var arr = [];
+      if (data.status == "success" && data.response && data.response.length) {
+        for (var j = 0; j < data.response.length; j++) {
+          arr[data.response[j].id] = data.response[j];
+        };
+      }
+      _this.mapUserDeatils(response, assignedUser, data, arr);
     });
   };
 
-  updateConversationWithRespectToPageNumber = () => {
-    var _this = this;
+  mapUserDeatils = (response, assignedUser, data, arr) => {
+    let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
+    var userdetail = this.state.isFromSearch ? response.response : response.response.users;
+    const users = userdetail.map((user, index) => {
+      if (user.messagePxy && user.messagePxy.groupId) {
+        if (botAgentMap && typeof data !== "undefined" && data !== null) {
+          if (arr[user.messagePxy.groupId]) {
+            user.assignee = (arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE]) && botAgentMap[arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE].name || arr[user.messagePxy.groupId].metadata.CONVERSATION_ASSIGNEE;
+            user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
+            assignedUser.push(user);
+            // Sort array after pushing
+            var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
+            _this.setState({
+              result: arrObj,
+              hideEmptyStateImage: true
+            })
+          }
+        }
+      }
+      else {
+        assignedUser.push(user);
+        var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
+        _this.setState({
+          result: arrObj,
+          hideEmptyStateImage: true
+        })
+      }
+    });
+  };
+
+  searchContactInApplozic = (searchQuery) => {
+    var params = {
+      name: searchQuery
+    }
+    ApplozicClient.searchContact(params).then(response => {
+      if (response.response.length !== 0) {
+        var setPageNumbers = response.response.length;
+        if (_this.state.isSearchBoxActive) {
+          _this.setState({
+            oldResult: _this.state.result
+          })
+        };
+        _this.setState({
+          isFromSearch: true,
+          result: [],
+          isSearchBoxActive: false,
+          total: (Math.ceil(setPageNumbers / 20) * limit),
+          currentPage: 1,       // default value 
+          intial: 0,            // default value 
+          final: 20,            // default value 
+          pageNumber: 1,        // default value 
+          pageFlag: 2           // default value 
+        });
+        _this.listUsers(response, []);
+      }
+      else {
+        var setPageNumbers = response.response.length;
+        _this.setState({
+          isFromSearch: true,
+          result: [],
+          total: (Math.ceil(setPageNumbers / 20) * limit),
+          hideEmptyStateImage: false,
+          currentPage: 1,   // default value 
+          intial: 0,        // default value
+          final: 20,        // default value
+          pageNumber: 1,    // default value 
+          pageFlag: 2,      // default value 
+        });
+        _this.listUsers(response, []);
+      }
+    }).catch(err=>{
+      Notification.error("Oops! Something went wrong. Please refresh the page or try again after sometime");
+      console.log('uploading error',err)
+      return;
+    });
+  };
+
+  detectEmptySearchBox = (event) => {
+    event.preventDefault();
+    var setPageNumbers = this.state.oldResult.length;
+    var searchBox = document.getElementById('km-search-box');
+    if (searchBox && searchBox.value === "" && (hasClass(event.target, 'km-search-box') || hasClass(event.target, 'km-clear-search-text')) && !this.state.searchBoxEmpty) {
+      this.setState({
+        isFromSearch: true,
+        isSearchBoxActive: true,
+        total: (Math.ceil(setPageNumbers / 20) * limit),
+        result: this.state.oldResult,
+        currentPage: 1,   // default value 
+        intial: 0,        // default value
+        final: 20,        // default value
+        pageNumber: 1,    // default value 
+        pageFlag: 2,      // default value 
+        hideEmptyStateImage: true,
+        checkEnter:false
+      });
+    }
+  };
+
+  updateConversationWithRespectToPageNumber = (e) => {
     var hasClass = function(el, className) {
       return (' ' + el.className + ' ').indexOf(' ' + className + ' ') > -1;
     };
@@ -145,10 +238,14 @@ class Users extends Component {
         });
 
         if((((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1 ) || _this.state.pageNumber === (checkPreviousPageNumber +2)){
-          _this.setState({ 
+          _this.setState({
             pageFlag: _this.state.pageNumber + 2,
-            getUsersFlag:1
+            getUsersFlag:1,
+            isFromSearch:false
           })
+          if(!_this.state.searchBoxEmpty && _this.state.checkEnter){
+            return;
+          }
           _this.getUsers();
         };
         }
@@ -172,17 +269,60 @@ class Users extends Component {
             final:((nextPageNumber-1)*20)+20
           });
           if(((_this.state.pageNumber % 2) === 0) && _this.state.pageFlag === _this.state.pageNumber && _this.state.stopFlag === 1) {
-            _this.setState({ 
+            _this.setState({
               pageFlag: _this.state.pageNumber + 2,
-              getUsersFlag:1
+              getUsersFlag:1,
+              isFromSearch:false
             })
+            if(!_this.state.searchBoxEmpty && _this.state.checkEnter){
+              return;
+            }
             _this.getUsers();
           }
         }
 
       });
-
   };
+
+  handlePageChange = page => {
+    this.setState({
+      currentPage: page
+    });
+  };
+
+  handleClickEventForSearch = (event) => {
+    event.preventDefault();
+    var specifiedElement = document.getElementById('km-search-box');
+    var isClickInside = specifiedElement ? (specifiedElement.contains(event.target) || specifiedElement.id === event.target.id) : false;
+
+    if (hasClass(event.target, 'km-search-box')) {
+      document.getElementById("km-search-svg").classList.add('n-vis');
+      document.getElementById("km-clear-search-text").classList.remove('n-vis');
+      specifiedElement.style.marginLeft = "0px"
+    }
+    else if (!isClickInside && hasClass(event.target, 'km-clear-search-text')) {
+      document.getElementById("km-search-svg") && document.getElementById("km-search-svg").classList.remove('n-vis');
+      document.getElementById("km-clear-search-text") && document.getElementById("km-clear-search-text").classList.add('n-vis');
+      specifiedElement && (specifiedElement.style.marginLeft = "20px");
+      specifiedElement && (specifiedElement.value = "");
+      _this.detectEmptySearchBox(event);
+    }
+  };
+
+  handleKeyboardEventForSearch = (event) => {
+    event.preventDefault(); // When clicking on a button, execute the first event handler, and stop the rest of the event handlers from being executed.
+    var key = event.which || event.keyCode;
+    var kmSearchBoxValue = document.getElementById('km-search-box').value;
+    if (key === 13 && kmSearchBoxValue.length !== 0) {
+      _this.searchContactInApplozic(kmSearchBoxValue);
+      _this.setState({
+        searchBoxEmpty: false,
+        checkEnter:true
+      })
+    };
+    _this.detectEmptySearchBox(event);
+  };
+
 
   render() {
     const infoText = Labels["lastcontacted.tooltip"];
@@ -195,6 +335,13 @@ class Users extends Component {
         <div className="col-md-12">
           <div className="card">
             <div className="card-block">
+           <div id="km-text-box-wrapper" className="km-text-box-wrapper">
+           <svg id="km-search-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966">
+                <path fill="#a8a8a8" d="M51.704 51.273L36.845 35.82c3.79-3.801 6.138-9.041 6.138-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.083 0 9.748-1.817 13.384-4.832l14.895 15.491a.998.998 0 0 0 1.414.028 1 1 0 0 0 .028-1.414zM21.983 40c-10.477 0-19-8.523-19-19s8.523-19 19-19 19 8.523 19 19-8.524 19-19 19z"/>
+              </svg>
+            <input id="km-search-box" type="text" className="km-search-box required"  onClick={(event) => this.handleClickEventForSearch(event)} onKeyUp={(event) => this.handleKeyboardEventForSearch(event)} placeholder="Search for email or user name"></input>
+            <span id="km-clear-search-text" className=" km-clear-search-text n-vis"  onClick={(event) => this.handleClickEventForSearch(event)}> &times; </span>
+            </div>
             <table className={this.state.result.length !== 0 ? "table table-hover mb-0 hidden-sm-down km-show-visibility":"table table-hover mb-0 hidden-sm-down km-hide-visibility"}>
                   <thead className="thead-default">
                     <tr className="users-table">
@@ -311,9 +458,9 @@ class Users extends Component {
                 </Pagination>
                   </div>
                 :
-                this.state.showEmptyStateImage && <UserSectionLoader/>
+                this.state.hideEmptyStateImage && <UserSectionLoader/>
                 }
-              <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.showEmptyStateImage}>
+              <div className="empty-state-customers-div text-center col-lg-12" hidden={this.state.hideEmptyStateImage}>
                 <img src="/img/empty-customers.png" alt="Customers Empty State" className="empty-state-customers-img"/>
                 <p className="empty-state-message-shortcuts-first-text">Couldn't find anyone!</p>
                 <p className="empty-state-message-shortcuts-second-text">There are no users to show</p>

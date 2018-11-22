@@ -1,6 +1,6 @@
 var $original;
 var oModal = "";
-var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry;
+var sentryConfig = MCK_THIRD_PARTY_INTEGRATION.sentry.plugin;
 if (typeof jQuery !== 'undefined') {
     $original = jQuery.noConflict(true);
     $ = $original;
@@ -358,11 +358,11 @@ function ApplozicSidebox() {
         Sentry.init({
             dsn: sentryConfig.dsn
         });
-        Sentry.configureScope((scope) => {
+        Sentry.configureScope(function (scope) {
             scope.setTag("applicationId", options.appId);
             scope.setTag("userId", userId);
             scope.setUser({
-                id: options.appId,
+                id: options.appId
             });
         });
     }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import '../Settings/Installation/Accordion.css';
 import {changePassword } from '../../utils/kommunicateClient';
 import Notification from '../model/Notification';
@@ -22,31 +21,31 @@ const customStyles = {
   }
 };
 
-class PasswordAccordion extends Component{
+class PasswordAccordion extends Component {
 
   
     constructor(props) {
-        super(props);
-        this.state =  {
-          dropDown:false,
-          currentPassword: '',
-          newPassword: '',
-          repeatPassword:'',
-          forgotPasswordModalOpen: false,
-        };
-        this.data=this.props.data;
-        this.handleClick = this.handleClick.bind(this);
-        this.handlePassword = this.handlePassword.bind(this);
-        this.validatePassword = this.validatePassword.bind(this);
-        this.clearPasswordfields = this.clearPasswordfields.bind(this);
-        this.openForgotPasswordModal = this.openForgotPasswordModal.bind(this);
-        this.closeForgotPasswordModal = this.closeForgotPasswordModal.bind(this);
+      super(props);
+      this.state =  {
+        dropDown:false,
+        currentPassword: '',
+        newPassword: '',
+        repeatPassword:'',
+        forgotPasswordModalOpen: false,
+      };
+      this.data=this.props.data;
+      this.handleClick = this.handleClick.bind(this);
+      this.handlePassword = this.handlePassword.bind(this);
+      this.validatePassword = this.validatePassword.bind(this);
+      this.clearPasswordfields = this.clearPasswordfields.bind(this);
+      this.openForgotPasswordModal = this.openForgotPasswordModal.bind(this);
+      this.closeForgotPasswordModal = this.closeForgotPasswordModal.bind(this);
     }
 
     handleClick (e) { 
       e.preventDefault();
       this.setState({
-        dropDown:!this.state.dropDown
+        dropDown: !this.state.dropDown
       }); 
     }
 
@@ -59,50 +58,47 @@ class PasswordAccordion extends Component{
       this.setState({ forgotPasswordModalOpen: false });
     }
 
-    validatePassword(e){
-        e.preventDefault();
-        console.log('validate password')
-        if(this.state.currentPassword.length < 1){
-          Notification.info("Enter Your Current Password")
-          console.log("Current password is not entered")
-          return
-        }
-        else if(this.state.newPassword.length < 6){
-          Notification.info("Your password must have at least 6 characters ")
-          return
-        }else{
-         this.handlePassword(e)
-        }
+    validatePassword(e) {
+      e.preventDefault();
+      if(this.state.currentPassword.length < 1) {
+        Notification.info("Enter Your Current Password");
+        console.log("Current password is not entered");
+        return;
       }
-      handlePassword(e){
-        
-        e.preventDefault();
-        
-        console.log('handle password')
-        
-        if (this.state.newPassword !== this.state.repeatPassword){
-          Notification.info("Password does not match")
-           
-        return      
-        }else{
-          changePassword({
-            oldPassword : this.state.currentPassword,
-            newPassword: this.state.newPassword,
-          })
-          this.clearPasswordfields() 
-          
-        }
+      else if(this.state.newPassword.length < 6) {
+        Notification.info("Your password must have at least 6 characters ");
+        return;
+      } else {
+        this.handlePassword(e);
       }
-      clearPasswordfields(){
-        console.log('clear password')
-        this.setState({
-          currentPassword: '',
-          newPassword: '',
-          repeatPassword: '',
-          rePassword: ''  
-    
-        })
+    }
+
+    handlePassword(e) {
+      e.preventDefault();      
+      if (this.state.newPassword !== this.state.repeatPassword){
+        Notification.info("Password does not match");
+        return;   
+      } else {
+        changePassword({
+          oldPassword : this.state.currentPassword,
+          newPassword: this.state.newPassword,
+        }).then(data => {
+          if(data === "SUCCESS")
+            this.clearPasswordfields(e);
+        });
+        
       }
+    }
+
+    clearPasswordfields(e) {
+      this.setState({
+        currentPassword: '',
+        newPassword: '',
+        repeatPassword: '',
+        rePassword: ''
+      });
+      this.closeForgotPasswordModal(e);
+    }
 
     render () {
         return (

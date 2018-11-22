@@ -6,6 +6,8 @@ import axios from 'axios';
 import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+
 import InputFile from '../.../../../components/InputFile/InputFile';
 import './pushNotification.css';
 import { getApplication } from '../../utils/kommunicateClient';
@@ -342,7 +344,8 @@ class PushNotification extends Component {
                         onClick={(e) => {
                           this.setState({
                             disableButtonForAndroid: true
-                          }, this.submitGcmkey)
+                          }, this.submitGcmkey),
+                          acEventTrigger("ac-android-push");
                         }} >Save</button>
                     </div>
                   </div>
@@ -378,7 +381,8 @@ class PushNotification extends Component {
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDistribution: true
-                          }, this.uploadDistributionapnsFile)
+                          }, this.uploadDistributionapnsFile),
+                          acEventTrigger("ac-ios-dist");
                         }} >Save</button>
                     </div>
                     <div>
@@ -402,7 +406,8 @@ class PushNotification extends Component {
                         onClick={(e) => {
                           this.setState({
                             disableButtonForIosDevelopment: true
-                          }, this.uploadDevelopmentapnsFile)
+                          }, this.uploadDevelopmentapnsFile),
+                          acEventTrigger("ac-ios-dev");
                         }} >Save</button>
                     </div>
                   </div>

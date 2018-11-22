@@ -124,6 +124,42 @@
 .km-hide-visibility {
 	visibility: hidden !important;
 }
+
 .km-show-visibility {
 	visibility: visible !important;
+}
+
+.km-search-box {
+  width: 90%;
+  outline: none;
+  border: none;
+  color: #97999b;
+  margin-left: 20px;
+  font-size: 14px;
+  letter-spacing: 0.4px;
+  display: inline;
+}
+
+.km-text-box-wrapper {
+  position: relative;
+  width: 20%;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #dce2e4;
+}
+.km-text-box-wrapper svg{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.km-text-box-wrapper span#km-clear-search-text{
+  position: absolute;
+  right: 0;
+  font-size: 22px;
+  color: #97999b;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
 }

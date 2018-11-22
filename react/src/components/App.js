@@ -25,10 +25,11 @@ import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
 import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
+import {setTag} from '../../src/sentry/sentry'
 
 
 // const history = createBrowserHistory();
-
+const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 class App extends Component {
   static defaultProps ={ hideSkip : false }
   constructor(props,defaultProps){
@@ -43,17 +44,12 @@ class App extends Component {
   }
   componentDidCatch(error, errorInfo) {
     this.setState({ error });
-    Sentry.withScope(scope => {
+    enableSentry && Sentry.withScope((scope) => {
+      setTag (scope);
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
       });
       Sentry.captureException(error);
-    });
-    Sentry.configureScope((scope) => {
-      let userSession = CommonUtils.getUserSession();
-      scope.setUser({
-        "username": userSession.userName,
-        "id": userSession.application.applicationId});
     });
     
   }
