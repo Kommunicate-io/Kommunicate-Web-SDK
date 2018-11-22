@@ -36,7 +36,7 @@ export default class Onboarding extends Component {
 
     render() {
         var fullName = CommonUtils.getUserSession().name;
-        var firstName = fullName.split(" ")[0];
+        var firstName = fullName ? fullName.split(" ")[0] : "";
         return (
             <div>
                 {!this.state.hideOnboardingBanner && <div className="km-onboarding-container">
