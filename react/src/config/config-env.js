@@ -25,6 +25,9 @@ export default {
             //Sentry:error tracking platform
             'enable': false,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -56,6 +59,9 @@ export default {
             //Sentry:error tracking platform
             'enable': true,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -87,6 +93,9 @@ export default {
             //Sentry:error tracking platform
             'enable': false,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -119,6 +128,9 @@ export default {
             //Sentry:error tracking platform
             'enable': true,
             'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+        },
+        'analytics' : {
+            'enable': true
         }
     }
 },
@@ -149,6 +161,9 @@ export default {
         //Sentry:error tracking platform
         'enable': true,
         'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+    },
+    'analytics' : {
+        'enable': true
     }
    }
 }

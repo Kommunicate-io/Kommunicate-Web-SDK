@@ -12,6 +12,7 @@ import GoogleLogo from './logo_google.svg';
 import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
+import { acEventTrigger } from '../../../utils/AnalyticsEventTracking.js';
 
 class Register extends Component {
   constructor(props){
@@ -233,9 +234,8 @@ class Register extends Component {
   }
 
   render() {
-    if (window.mixpanel) {
-      window.mixpanel.track("/signup");
-    }
+    
+    acEventTrigger("/signup");
 
     console.log("invite",this.state.invitedUserEmail);
     return (

@@ -38,6 +38,9 @@ import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+
+
 const enableIntegry = false;
 const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
@@ -206,7 +209,7 @@ class Full extends Component {
       if (window.mixpanel) {
         window.mixpanel.register(userProperties);
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
-          window.mixpanel.track("integrated");
+          acEventTrigger("integrated");
         }
       }
       
@@ -238,13 +241,11 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-    let mixpanelEvent = currentPath;
+    let analyticsEvent = currentPath;
     if (currentPath.startsWith("/conversations/")) {
-        mixpanelEvent = "/conversations/thread";
+      analyticsEvent = "/conversations/thread";
     }
-    if (window.mixpanel) {
-      window.mixpanel.track(mixpanelEvent);
-    }
+    acEventTrigger(analyticsEvent);
    
     return (
       <div className="app" suppressContentEditableWarning={true}>
