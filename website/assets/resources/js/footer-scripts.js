@@ -26,4 +26,13 @@ $(".calendly-url").click(function(){
       window.open($(this).attr("href")+"?utm_source="+heapData, '_blank');
       return false;
     });
-window.location.search == "?ref=sifterydeals" ? $(".announcement").css("display","inline-block") : "";
+
+
+if(window.location.search == "?ref=sifterydeals") {
+  $(".announcement").css("display","inline-block");
+  $("#coupon").text("SIFTERY");
+} else if(window.location.search == "?ref=deal") {
+  $(".announcement").css("display","inline-block");
+  $("#coupon").text("FRIDAY");
+}
+
