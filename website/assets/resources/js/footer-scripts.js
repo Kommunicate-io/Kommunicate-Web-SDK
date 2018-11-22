@@ -28,13 +28,11 @@ $(".calendly-url").click(function(){
     });
 
 
-var coupon = document.getElementById("coupon");
-
 if(window.location.search == "?ref=sifterydeals") {
   $(".announcement").css("display","inline-block");
-  coupon.innerHTML = "SIFTERY";
+  $("#coupon").text("SIFTERY");
 } else if(window.location.search == "?ref=deal") {
   $(".announcement").css("display","inline-block");
-  coupon.innerHTML = "FRIDAY";
+  $("#coupon").text("FRIDAY");
 }
 
