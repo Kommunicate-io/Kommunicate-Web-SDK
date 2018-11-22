@@ -6,6 +6,8 @@ import { getJsCode, getJsInstructions } from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
 import Notification from '../../model/Notification';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
+import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
+
 
 
 const multiEmailLink = {
@@ -41,9 +43,7 @@ class Install extends Component {
     e.target.focus();
     this.setState({ copySuccess: "Copy code" });
     Notification.info("Code copied successfully!");
-    if (window.mixpanel) {
-      window.mixpanel.track("integration.instructions.copycode");
-    }
+    acEventTrigger("integration.instructions.copycode");
   };
 
   hideJSInstructions = e => {

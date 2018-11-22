@@ -9,6 +9,7 @@ import FormData from 'form-data'
 import CommonUtils from '../utils/CommonUtils';
 import cache from 'memory-cache';
 import { MEMORY_CACHING_TIME_DURATION, ROLE_TYPE, INVITED_USER_STATUS} from '../utils/Constant'
+import { acEventTrigger } from './AnalyticsEventTracking';
 
 
 
@@ -196,9 +197,9 @@ const callSendEmailAPI = (options) => {
 
   if (window.mixpanel) {
     if (options.templateName == "SEND_KOMMUNICATE_SCRIPT") {
-      window.mixpanel.track("integration.instructions.mail.sent");
+      acEventTrigger("integration.instructions.mail.sent");
     } else {
-      window.mixpanel.track("mail." + options.templateName);
+      acEventTrigger("mail." + options.templateName);
     }
   }
 
