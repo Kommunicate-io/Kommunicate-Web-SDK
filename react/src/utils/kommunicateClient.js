@@ -882,7 +882,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
     'Content-Type': 'application/json',
     'Apz-AppId': applicationId,
     'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
-    'Apz-Product-App': true
+    'Apz-Product-App': userSession.roleName != 'APPLICATION_ADMIN'
 
   }
   agentId = encodeURIComponent(agentId)

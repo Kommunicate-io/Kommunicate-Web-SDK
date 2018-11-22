@@ -130,9 +130,10 @@ class Full extends Component {
   isIntegrationStarted= (options)=>{
     let userSession = CommonUtils.getUserSession();
     let criteria ={
-      applicationId : userSession.applicationId,
+      applicationId : userSession.application.applicationId,
       userName : userSession.userName,
       accessToken : userSession.accessToken,
+      isAdmin: userSession.roleName=='APPLICATION_ADMIN',
       params:{
         roleNameList : "USER",
         pageSize:15
