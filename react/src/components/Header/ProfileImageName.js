@@ -60,14 +60,15 @@ export default class ProfileImageName extends Component {
         if (typeof window.$applozic !== "undefined" && typeof window.$applozic.fn !== "undefined" &&typeof window.$applozic.fn.applozic!=="undefined"&& window.$applozic.fn.applozic("getLoggedInUser")) {
           window.$applozic.fn.applozic('logout');       
         }
+      }
+      renderLogin = () => {
+        window.appHistory.push("/login");
         // clear the data persisted in storage
         persistor.purge()
         sessionStorage.clear();
         localStorage.clear();
-        CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
-        window.location.assign("/login");    
+        CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID); 
       }
-
       toggleStatus = (e) => {
         let userSession = CommonUtils.getUserSession();
         let status = !this.state.status ? USER_STATUS.ONLINE : USER_STATUS.AWAY;
@@ -104,15 +105,18 @@ export default class ProfileImageName extends Component {
 
       hideDropdownMenu(event) {
         var elem = document.getElementById("go-away"), 
-           elem2 = document.querySelector("span[data-tip]");
-                  
-          if (this.dropdownMenu.contains(event.target)) {
-
+           elem2 = document.querySelector("span[data-tip]");     
+          if (this.dropdownMenu && this.dropdownMenu.contains(event.target)) {
             if(event.target === elem || event.target === elem2) {
               this.setState({ showDropdownMenu: true }, () => {
                 document.addEventListener('click', this.hideDropdownMenu);
               });
-            } else {
+            } else if (event.target.id == "logout"){
+              this.setState({ showDropdownMenu: false }, () => {
+                document.removeEventListener('click', this.hideDropdownMenu);
+                this.renderLogin();
+              });
+            }  else {
               this.setState({ showDropdownMenu: false }, () => {
                 document.removeEventListener('click', this.hideDropdownMenu);
               });
