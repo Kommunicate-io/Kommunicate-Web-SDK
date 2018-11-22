@@ -2884,7 +2884,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 			}
 			_this.tabViewUnreadCount = function (data, sectionId) {
-				var group = data.response.groupFeeds;
+				var group = data && data.response && data.response.groupFeeds? data.response.groupFeeds:[];
 				for (var i = 0; i < group.length; i++) {
 					if (group[i].unreadCount) {
 						document.getElementById(sectionId).classList.remove("n-vis");

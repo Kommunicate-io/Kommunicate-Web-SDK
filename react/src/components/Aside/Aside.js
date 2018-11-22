@@ -143,7 +143,7 @@ class Aside extends Component {
 
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
-      if(response !== undefined ) {
+      if(response !== undefined  && response.data.message !== "no user found") {
         let zendeskKeys = response.data.message.filter(function (integration) {
           return integration.type == 2;});
           if(zendeskKeys.length > 0 ){

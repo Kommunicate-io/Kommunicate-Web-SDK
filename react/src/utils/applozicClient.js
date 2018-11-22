@@ -91,7 +91,7 @@ updateUserDetail:function(params){
     'Content-Type': 'application/x-www-form-urlencoded',
       'Apz-AppId': criteria.applicationId,
       'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
+      'Apz-Product-App': !criteria.isAdmin,
     }
     var url = getConfig().applozicPlugin.fetchContactsUrl;
   
