@@ -2,8 +2,6 @@ const applicationSettingModel = require("../../models").AppSetting;
 exports.getAppSettingsByApplicationId = (criteria) => {
     return applicationSettingModel.findAll({ where: criteria }).then(res => {
         return { message: "SUCCESS", data: res[0] };
-    }).catch(err => {
-        return { message: "application settings fetch error " }
     });
 }
 exports.insertAppSettings = (settings) => {
