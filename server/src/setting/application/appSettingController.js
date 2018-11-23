@@ -1,5 +1,6 @@
 
 const applicationService = require("./appSettingService");
+
 exports.getAppSettingsByApplicationId = (req, res) => {
   let settings = { applicationId: req.params.appId };
   return applicationService.getAppSettingsByApplicationId(settings).then(response => {
