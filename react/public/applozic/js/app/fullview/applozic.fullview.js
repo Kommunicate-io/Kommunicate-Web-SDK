@@ -5439,7 +5439,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.isValidMetaData = function (message) {
 				if (!message.metadata) {
 					return true;
-				} else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE' || message.metadata.hide == "true") {
+				} else if ((message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE' || message.metadata.hide == "true")&&!(message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
 					return false;
 				} else {
 					return true;
@@ -8072,9 +8072,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						if (message.metadata.KM_ASSIGN) {
 							contact.metadata.CONVERSATION_ASSIGNEE = message.metadata.KM_ASSIGN;
+							KM_GROUP_MAP[contact.contactId]=contact;
 						}
 						if (message.metadata.KM_STATUS) {
 							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_ASSIGN;
+							KM_GROUP_MAP[contact.contactId]=contact;
 						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
