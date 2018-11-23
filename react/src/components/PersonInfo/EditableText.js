@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import ApplozicClient from "../../utils/applozicClient";
 import Notification from '../../views/model/Notification';
-import { SubmitSvg, CancelSvg } from '../../views/Faq/LizSVG';;
+import { SubmitSvg, CancelSvg } from '../../views/Faq/LizSVG';
+import './PersonInfo.css';
 
 class EditableText extends Component {
   constructor(props) {
@@ -36,13 +37,13 @@ class EditableText extends Component {
         return true;
     }
   }
-  isValidNo(value){
-    var phNoReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-    if(phNoReg.test(value)){
+  isValidNo(value) {
+    if (value.length > 40) {
+      Notification.error("Number length should be less than 40");
+      return false;
+    } else {
       return true;
     }
-    Notification.error("You have entered an invalid No!");
-    return false;
   }
 
   isValidateEmail = (email) => {
@@ -59,10 +60,12 @@ class EditableText extends Component {
   }
 
   changeEditMode = () => {
-    this.setState({
-      isInEditMode: !this.state.isInEditMode,
-      inputBoxMouseDown: true 
-    });
+    if (this.props.reference !== "displayName") {
+      this.setState({
+        isInEditMode: !this.state.isInEditMode,
+        inputBoxMouseDown: true
+      });
+    }
   };
   onKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
@@ -119,27 +122,30 @@ class EditableText extends Component {
 
   renderEditView = () => {
     const style = {
-      width: "60%",
-      textAlign: "center"
+      width: "100%",
+      textAlign: "left",
+      padding:"5px"
     };
     return (
       <div className={this.props.style}>
         <input
           style={style}
-          type="text"
+          type= {this.props.inputType?this.props.inputType :"text" }
           autoFocus="true"
           key={this.props.keyname}
           ref={this.props.reference}
           placeholder={this.state.value || this.props.placeholder}
           defaultValue={this.state.value}
           onKeyPress={this.onKeyPressHandler}
+          className ="km-edit-input"
           onBlur={this.updateComponentValue}
           onFocus ={this.updateMouseDownFlag}
+          maxLength={40}
         />
-        <button onMouseDown={this.changeEditMode}>
+        <button className ="km-cancel-postion" onMouseDown={this.changeEditMode}>
           <CancelSvg />
         </button>
-        <button onMouseDown={this.submitComponentValue}>
+        <button className ="km-submit-postion" onMouseDown={this.submitComponentValue}>
           <SubmitSvg />
         </button>
       </div>
@@ -149,8 +155,8 @@ class EditableText extends Component {
   renderDefaultView = () => {
     return (
       <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
-        <div onClick={this.changeEditMode}>
-          <p id={this.props.style} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
+        <div onClick={this.changeEditMode} className={this.props.reference !== "displayName" ? "km-edit" : ""}>
+          <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
         </div>
         {this.state.renderChild ? this.props.children : null}
       </div>
@@ -166,6 +172,8 @@ class EditableText extends Component {
 EditableText.propTypes = {
   keyname: PropTypes.string.isRequired,
   reference:PropTypes.string.isRequired,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  inputType:PropTypes.string,
+  id:PropTypes.string
 };
 export default EditableText;

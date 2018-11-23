@@ -30,6 +30,8 @@ class PersonInfoCard extends Component {
             imageLink = imageLink.replace('km-alpha-contact-image', 'km-alpha-group-contact-image').replace('km-contact-icon', 'km-group-contact-icon');
             this.setState({
                 user: user,
+                email:user.email,
+                phoneNumber:user.phoneNumber,
                 clearbitData: clearbitData,
                 userMetadata: metadata,
                 pseudoUser: KM_PSEUDO_USER && (KM_PSEUDO_USER.hidden != "true" || KM_PSEUDO_USER.pseudoName == "true" && user.roleType === 3),
@@ -75,7 +77,7 @@ class PersonInfoCard extends Component {
                                 <p className="">@</p>
                                 {
                                     this.state.user ?
-                                        <EditableText style={"km-sidebar-user-email"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email} placeholder={"Add Email"} /> : null
+                                        <EditableText id ="km-sidebar-user-email" style={this.state.email ?"km-sidebar-user-email km-edit":"km-sidebar-user-emailnotfound km-edit"} keyname={this.state.user.userId} reference={"email"} value={this.state.user.email} placeholder={"Add Email"} /> : null
                                 }
                             </div>
                             <div className="km-postion-relative">
@@ -86,7 +88,7 @@ class PersonInfoCard extends Component {
                                 </p>
                                 {
                                     this.state.user ?
-                                        <EditableText style={"km-sidebar-user-number"} keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
+                                        <EditableText id ="km-sidebar-user-number" style={this.state.phoneNumber ?"km-sidebar-user-number km-edit":"km-sidebar-user-numbernotfound km-edit"} className ="km-sidebar-user-number-edit" inputType={"number"}  keyname={this.state.user.userId} reference={"phoneNumber"} value={this.state.user.phoneNumber} placeholder={"Add Phone Number"}/> : null
                                 }
                             </div>
                         </div>
