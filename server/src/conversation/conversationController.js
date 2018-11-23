@@ -9,7 +9,7 @@ exports.addMemberIntoConversation = (req, res) => {
         res.status(201).json(response);
     }).catch(err => {
         logger.info("error while adding member into conversation ", err);
-        res.status(204).json(response);
+        res.status(204).json({response:"error"});
     });
 
 }
