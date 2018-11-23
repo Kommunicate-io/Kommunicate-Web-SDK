@@ -242,6 +242,18 @@ updateUserDetail:function(params){
       }).catch(error => {
         throw error;
       });
+  },
+  getApplicationIdList:function(email){
+    const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
+    return axios.get(APP_LIST_URL).then(response=> {
+        if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
+          return response.data;
+        }
+        return "error";
+      }
+      ).catch(err => {
+        return "error";
+      });
   }
 }
 
