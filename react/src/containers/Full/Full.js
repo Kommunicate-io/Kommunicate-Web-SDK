@@ -246,18 +246,13 @@ class Full extends Component {
     if (window.mixpanel) {
       window.mixpanel.track(mixpanelEvent);
     }
+    const settingStyle={'marginLeft': '280px'}
    
     return (
       <div className="app" suppressContentEditableWarning={true}>
-        {/* <Header
-        // profilePicUrl={this.state.imageLink} displayName={this.state.displayName}
-        /> */}
-
         <div className="app-body">
           <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
-          {currentPath.includes('/settings') ? <SettingsSidebar {...this.props}/> : null}
-
-          <main className="main">
+          <main className="main" style={currentPath.includes('/settings')?settingStyle:null}>
             <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
               <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>
               <div className="dismiss-icon" onClick={this.closeInvitedMemberBar}>&#xd7;</div>
