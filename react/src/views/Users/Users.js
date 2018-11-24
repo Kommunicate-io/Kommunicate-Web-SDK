@@ -135,7 +135,8 @@ class Users extends Component {
             user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
             assignedUser.push(user);
             // Sort array after pushing
-            var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
+            var sortOnBasisOf = assignedUser.lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+            var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
             _this.setState({
               result: arrObj,
               hideEmptyStateImage: true
@@ -145,7 +146,8 @@ class Users extends Component {
       }
       else {
         assignedUser.push(user);
-        var arrObj = _.sortBy(assignedUser, "lastSeenAtTime").reverse();
+        var sortOnBasisOf = assignedUser.lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+        var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
         _this.setState({
           result: arrObj,
           hideEmptyStateImage: true
