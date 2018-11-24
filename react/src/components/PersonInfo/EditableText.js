@@ -60,12 +60,10 @@ class EditableText extends Component {
   }
 
   changeEditMode = () => {
-    if (this.props.reference !== "displayName") {
       this.setState({
         isInEditMode: !this.state.isInEditMode,
         inputBoxMouseDown: true
       });
-    }
   };
   onKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
@@ -114,6 +112,16 @@ class EditableText extends Component {
             this.setState({
               renderChild: false
             })
+          }
+          if (this.props.reference !== 'displayName') {
+            document.getElementById(this.props.id).classList.remove("km-sidebar-user-datanotfound");
+            document.getElementById(this.props.id).classList.add("km-sidebar-user-dataFound");
+          }
+          var list = document.querySelectorAll(".person.active .name");
+          for (var i = 0; i < list.length; i++) {
+            if(this.props.reference == 'displayName'){
+            list[i].innerText = document.getElementsByClassName("km-sidebar-display-name")[0].innerHTML;
+            }
           }
         }
       })

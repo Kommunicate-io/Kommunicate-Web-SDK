@@ -116,14 +116,14 @@ transition: opacity 300ms ease-in;
     color: #595757;
   }
 
-  .km-sidebar-user-email, .km-sidebar-user-number{
+  .km-sidebar-user-dataFound{
     color: #595757;
   }
   .km-edit-input::placeholder {
     opacity: 0.6;
     color: #949494;
 }
-  .km-sidebar-user-emailnotfound, .km-sidebar-user-numbernotfound {
+  .km-sidebar-user-datanotfound {
     color: #4831d9!important;
     width:100%;
   }
