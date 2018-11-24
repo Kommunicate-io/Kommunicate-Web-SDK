@@ -238,7 +238,7 @@ function MckNotificationUtils() {
         return notification;
     };
     _this.sendDesktopNotification = function(displayName, iconLink, msg) {
-        if (_this.permissionLevel() !== PERMISSION_GRANTED) {
+        if (_this.permissionLevel() !== PERMISSION_GRANTED && w.Notification) {
             w.Notification.requestPermission();
         }
         if (_this.permissionLevel() === PERMISSION_GRANTED) {
