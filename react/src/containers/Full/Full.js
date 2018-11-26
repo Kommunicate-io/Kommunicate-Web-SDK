@@ -186,7 +186,7 @@ class Full extends Component {
       window.$applozic.fn.applozic(options);
       CommonUtils.setCookie(COOKIES.KM_LOGGEDIN_USER_ID,dashboardLoggedInUserId,"",CommonUtils.getDomain());
     }else{
-      console.log("user already logged in");
+      console.log("user already logged in or user session is empty");
     }
   }
 
