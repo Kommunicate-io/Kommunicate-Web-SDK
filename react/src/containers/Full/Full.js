@@ -263,6 +263,7 @@ class Full extends Component {
                 <Route exact path="/conversations/oops" name="" component={Conversation404}/>
                 <Route path="/dashboard" name="Dashboard"  component={Dashboard}/>
                 <Route exact path="/users" name="Tables" component={Users}/>
+                <Route exact path="/user" name="Tables" component={Users}/>
                 <Route exact ={false} path="/conversations" name="Conversations" component={Conversations}/>  
                 <Route exact path="/reports" name="Reports" component={Reports}/>
                 <Route exact path="/bot" name="Bot" component={Bot}/>
