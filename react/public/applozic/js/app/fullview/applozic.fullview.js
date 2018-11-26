@@ -1449,6 +1449,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.tabFocused = function () {
 				var hidden = "hidden";
 				// Standards:
+				window.onblur = function(e) { 
+					onchange(e);
+				};
+				window.onfocus = function(e) {
+					onchange(e);
+				};
 				if (hidden in d)
 					d.addEventListener("visibilitychange", onchange);
 				else if ((hidden === "mozHidden") in d)
