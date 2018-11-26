@@ -176,7 +176,7 @@ class Full extends Component {
   initilizeSupportChatUser (){
     let userSession = CommonUtils.getUserSession();
     // if loggedIn user not present then logout the kommunciate support chat user.
-    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID && userSession)){
+    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID) && userSession){
       let dashboardLoggedInUserId = userSession.userName;
       console.log("logging out the anonymous user  from chat.")
       window.$applozic.fn.applozic('logout');
