@@ -74,11 +74,11 @@ class Full extends Component {
         document.getElementsByTagName('head')[0].appendChild(integryScript);
       return resolve({})
        }).then((data)=>{
+          let userSession = CommonUtils.getUserSession();
          //TODO: load integry SDK synchronously, remove setTimeout 
-         setTimeout(function(){
-          initilizeIntegry({applicationId:CommonUtils.getUserSession().applicationId});
+          userSession && setTimeout(function(){
+            initilizeIntegry({applicationId:userSession.applicationId});
          }, 5000)
-         
        });
        
        
@@ -174,9 +174,10 @@ class Full extends Component {
 }*/
 
   initilizeSupportChatUser (){
-    let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
+    let userSession = CommonUtils.getUserSession();
     // if loggedIn user not present then logout the kommunciate support chat user.
-    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID && userSession)){
+      let dashboardLoggedInUserId = userSession.userName;
       console.log("logging out the anonymous user  from chat.")
       window.$applozic.fn.applozic('logout');
       var options = window.applozic._globals;
