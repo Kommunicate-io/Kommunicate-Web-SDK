@@ -114,8 +114,8 @@ class EditableText extends Component {
             })
           }
           if (this.props.reference !== 'displayName') {
-            document.getElementById(this.props.id).classList.remove("km-sidebar-user-datanotFound");
-            document.getElementById(this.props.id).classList.add("km-sidebar-user-dataFound");
+            document.getElementById(this.props.id).classList.remove("km-sidebar-user-data-notfound");
+            document.getElementById(this.props.id).classList.add("km-sidebar-user-data-found");
           }
           var list = document.querySelectorAll(".person.active .name");
           for (var i = 0; i < list.length; i++) {
