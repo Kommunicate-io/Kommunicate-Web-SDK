@@ -58,6 +58,7 @@
     "segmented-control": "0.1.9",
     "semantic-ui-css": "2.3.1",
     "semantic-ui-react": "0.80.2",
+    "styled-components": "^4.1.1",
     "uuid": "3.2.1",
     "validator": "8.0.0"
   },

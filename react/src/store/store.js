@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose  } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
@@ -17,20 +17,17 @@ const persistConfig = {
     stateReconciler: autoMergeLevel2
 };
 
-pReducer = persistReducer(persistConfig, rootReducer);
-if(enableDevTools) {
-    // redux dev tool extension for chrome 
-    const composeEnhancers =
-        typeof window === 'object' &&
-            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-            window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-            }) : compose;
-    const enhancer = composeEnhancers(
-        applyMiddleware(logger),
-    );
-    
-    store = createStore(pReducer, enhancer);
-} else {
-    store = createStore(pReducer);
-}
-persistor = persistStore(store);
+const composeEnhancers =
+  typeof window === 'object' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    }) : compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(logger),
+);
+
+const pReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = createStore(pReducer, enhancer);
+export const persistor = persistStore(store);

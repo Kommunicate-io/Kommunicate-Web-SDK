@@ -24,6 +24,40 @@ class Step1 extends Component {
     
     }
 
+    componentWillMount() {
+      // document.getElementById("number-input").required;
+    }
+    componentDidUpdate() {
+      var _rrui_input_field = document.getElementById("number-input");
+      _rrui_input_field.required = true;
+      _rrui_input_field.classList.add("input");
+      var _label = document.createElement("label");
+      _label.classList.add("label-for-input");
+      _label.innerHTML = "Contact Number";
+      // _rrui_input_field.after(_label);
+
+      if(document.querySelector(".rrui__select.rrui__select--collapsed.react-phone-number-input__country")) {
+        _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
+        this.removePrevAllElements(_rrui_input_field, "label-for-input");
+        this.removeNextAllElements(_rrui_input_field, "label-for-input");
+      } 
+      if(document.querySelector(".label-for-input") === null) {
+        _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
+        this.removePrevAllElements(_rrui_input_field, "label-for-input");
+        this.removeNextAllElements(_rrui_input_field, "label-for-input");
+      }
+      // _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
+      // this.removeNextAllElements(_rrui_input_field, "label-for-input");
+
+      // rrui__select rrui__select--collapsed react-phone-number-input__country
+      // rrui__select rrui__select--expanded react-phone-number-input__country
+      
+      // if(document.querySelector(".react-phone-number-input__row .label-for-input")) {
+      //   null
+      // } else {
+      //   _rrui_input_field.after(_label);
+      // }
+    }
     componentDidMount() {
       this.getCoutryCodeFromTimezone();
       var _rrui_input_field = document.getElementById("number-input");

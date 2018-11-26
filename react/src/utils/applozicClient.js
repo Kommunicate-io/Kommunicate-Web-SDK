@@ -197,6 +197,8 @@ updateUserDetail:function(params){
         return response.data;
       })
     },
+
+  // To login and validate user in Applozic Dashboard
   validateApplozicUser: function (auth) {
     let params = {
       loginId: auth.userName,
@@ -212,21 +214,22 @@ updateUserDetail:function(params){
       });
   },
 
+  // To login the Applozic user into a particular application 
   getApplication: function (criteria, isAdminUser) {
     let url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/application/get'
     let headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
         'Apz-AppId': criteria.applicationId,
         'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
         'Apz-Product-App': !isAdminUser,
       }
-    return Promise.resolve(axios.get(url, { "headers": headers, "params": { 'applicationId': criteria.applicationId } }))
-      .then(response => {
+    return Promise.resolve(axios.get(url, { "headers": headers, "params": { 'applicationId': criteria.applicationId } })).then(response => {
         return response;
       }).catch(error => {
         throw error;
       });
   },
+
   getMessageList: function (params, headers) {
     let url = getConfig().applozicPlugin.applozicHosturl+ '/rest/ws/message/filter'
     let query = {
@@ -243,6 +246,8 @@ updateUserDetail:function(params){
         throw error;
       });
   },
+
+  // To fetch all the applications of the Applozic user
   getApplicationIdList:function(email){
     const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
     return axios.get(APP_LIST_URL).then(response=> {

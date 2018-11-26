@@ -31,7 +31,7 @@ class ApplicationList extends Component {
     componentWillMount() {
       const search = this.props.location.search;
       let next  = CommonUtils.getUrlParameter(search, 'referrer');
-      this.state.next = next==""? '/':next;
+      this.state.next = next == "" ? '/' : next;
       var userDetails = CommonUtils.getUserSession();
       if(userDetails) {
         this.setState({
@@ -120,18 +120,22 @@ class ApplicationList extends Component {
         });
 
     } else {
-      //applozic login
-      ApplozicClient.validateApplozicUser({ userName: userName, password: password, applicationName: applicationName, applicationId: applicationId, deviceType: 0 }).then(res => {
-        if (res.status === 200 && res.data === 'LOGIN') {
-          ApplozicClient.getApplication({ userName: userName, accessToken: password, applicationName: applicationName, applicationId: applicationId }, true).then(result => {
-            let user = { ...result.data.adminUser, name: result.data.adminUser.displayName, userName: userName, accessToken: password, application: result.data }
-            CommonUtils.setUserSession(user);
-            window.location.assign(_this.state.next);
-          })
-        }
-      }).catch(err => {
-        console.log('applozic login err')
-      })
+		//applozic login
+		let details = {
+			"userName": userName,
+			"accessToken": password,
+			"applicationId": applicationId
+		}
+		ApplozicClient.getApplication(details, true).then( response => {
+			if(response.status === 200) {
+				let session = { ...response.data.adminUser, name: response.data.adminUser.displayName, userName: userName, accessToken: password, application: response.data }
+				CommonUtils.setUserSession(session);
+				window.location.assign(_this.state.next);
+			}
+		}).catch( err => {
+			console.log(err);
+			Notification.error("Something went wrong.");
+		});
     }
   }
 
@@ -195,7 +199,7 @@ class ApplicationList extends Component {
                               <div className="card-block-login-frgtpass-container">
                                 <h1 className="login-signup-heading text-center">Select your Application ID</h1>
                                 <p className="setup-sub-heading text-center">You are registered in multiple applications</p>
-
+								
                                 <div className="application-list-main-container">
                                   {
                                     allApps.map((item, index) => (
