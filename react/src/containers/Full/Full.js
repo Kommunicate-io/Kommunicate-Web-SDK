@@ -38,6 +38,8 @@ import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
+import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
+
 const enableIntegry = false;
 const chatUrl = config.baseurl.applozicAPI;
 class Full extends Component {
@@ -287,6 +289,7 @@ class Full extends Component {
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" component={ChatWigetCustomization}/>
                 <Route exact path="/settings/email-fallback" name="EmailFallback" component={EmailFallback}/>
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" component={WebhooksAndSecurity}/>
+                <Route exact path="/AlDashboard" name="ApplozicDashboard"  component={ALDashboard} />
                 
 
                 <Redirect from="/" to="/dashboard"/>
