@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose  } from 'redux'
+import { createStore, applyMiddleware  } from 'redux'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import logger from 'redux-logger'
@@ -16,16 +16,6 @@ const persistConfig = {
     storage: storage,
     stateReconciler: autoMergeLevel2
 };
-
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    }) : compose;
-
-const enhancer = composeEnhancers(
-  applyMiddleware(logger),
-);
 
 const pReducer = persistReducer(persistConfig, rootReducer);
 
