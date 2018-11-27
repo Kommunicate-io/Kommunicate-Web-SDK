@@ -1657,6 +1657,11 @@ const MESSAGE_CONTENT_TYPE = {
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
                 document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
+                document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
+                document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
+                document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
             };
             $applozic(d).on('click', '.fancybox', function (e) {
                 var $this = $applozic(this);
