@@ -1640,7 +1640,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				// $mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_search.removeClass('n-vis').addClass('vis');
 				$mck_search_inner.html('<ul id="km-search-list" class="km-search-list km-contact-list km-nav km-nav-tabs km-nav-stacked"></ul>');
-				if (MCK_CONTACT_ARRAY.length !== 0) {
+				if (Object.keys(MCK_CONTACT_ARRAY).length !== 0) {
 					mckMessageLayout.addContactsToSearchList();
 				} else if (!IS_MCK_OWN_CONTACTS) {
 					mckContactService.loadContacts();
@@ -4732,14 +4732,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 			};
 			_this.addContactsToSearchList = function () {
-				if (MCK_CONTACT_ARRAY.length === 0 && MCK_CHAT_CONTACT_ARRAY.length === 0) {
+				if (Object.keys(MCK_CONTACT_ARRAY).length === 0 && Object.keys(MCK_CHAT_CONTACT_ARRAY).length === 0) {
 					return;
 				}
 				var contactsArray = [],
 					userIdArray = [],
 					groupIdArray = [];
-				$kmApplozic.each(MCK_CONTACT_ARRAY, function (i, contact) {
-					contact ? userIdArray.push(contact.contactId) : "";
+				Object.keys(MCK_CONTACT_ARRAY).forEach(function (key) {
+					var userId = MCK_CONTACT_ARRAY[key].contactId ? MCK_CONTACT_ARRAY[key].contactId : MCK_CONTACT_ARRAY[key].userId;
+					MCK_CONTACT_ARRAY[key] ? userIdArray.push(MCK_CONTACT_ARRAY[key].userId) : "";
 				});
 				$kmApplozic.each(MCK_CHAT_CONTACT_ARRAY, function (i, contact) {
 					(contact.isGroup) ? groupIdArray.push(contact.contactId) : userIdArray.push(contact.contactId);
