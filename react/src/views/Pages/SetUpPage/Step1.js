@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import isURL from 'validator/lib/isURL';
 import Notification from '../../model/Notification';
 import Phone from 'react-phone-number-input';
-import 'react-phone-number-input/rrui.css'
 import 'react-phone-number-input/style.css';
 import Moment from 'moment-timezone';
 import countriesAndTimezones from 'countries-and-timezones';
@@ -25,40 +24,6 @@ class Step1 extends Component {
     
     }
 
-    componentWillMount() {
-      // document.getElementById("number-input").required;
-    }
-    componentDidUpdate() {
-      var _rrui_input_field = document.getElementById("number-input");
-      _rrui_input_field.required = true;
-      _rrui_input_field.classList.add("input");
-      var _label = document.createElement("label");
-      _label.classList.add("label-for-input");
-      _label.innerHTML = "Contact Number";
-      // _rrui_input_field.after(_label);
-
-      if(document.querySelector(".rrui__select.rrui__select--collapsed.react-phone-number-input__country")) {
-        _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
-        this.removePrevAllElements(_rrui_input_field, "label-for-input");
-        this.removeNextAllElements(_rrui_input_field, "label-for-input");
-      } 
-      if(document.querySelector(".label-for-input") === null) {
-        _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
-        this.removePrevAllElements(_rrui_input_field, "label-for-input");
-        this.removeNextAllElements(_rrui_input_field, "label-for-input");
-      }
-      // _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
-      // this.removeNextAllElements(_rrui_input_field, "label-for-input");
-
-      // rrui__select rrui__select--collapsed react-phone-number-input__country
-      // rrui__select rrui__select--expanded react-phone-number-input__country
-      
-      // if(document.querySelector(".react-phone-number-input__row .label-for-input")) {
-      //   null
-      // } else {
-      //   _rrui_input_field.after(_label);
-      // }
-    }
     componentDidMount() {
       this.getCoutryCodeFromTimezone();
       var _rrui_input_field = document.getElementById("number-input");
@@ -67,23 +32,7 @@ class Step1 extends Component {
       var _label = document.createElement("label");
       _label.classList.add("label-for-input");
       _label.innerHTML = "Contact Number";
-      // _rrui_input_field.after(_label);
       _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
-    }
-
-    removePrevAllElements(element, elementToDelete) {  
-      while (element = element.previousElementSibling) {
-      if(element.classList.contains(elementToDelete)) {
-            element.remove();
-          }
-      }
-    }
-    removeNextAllElements(element, elementToDelete) {  
-      while (element = element.nextElementSibling) {
-      if(element.classList.contains(elementToDelete)) {
-            element.remove();
-          }
-      }
     }
 
     comapnyUrlValidationOnEnter = (e) => {
@@ -309,7 +258,7 @@ getCoutryCodeFromTimezone() {
                     placeholder=" "
                     value={ this.state.contact_no }
                     onChange={ contact_no => this.setState({ contact_no }) }
-                    id="number-input"
+					id="number-input"
                   />
                   <div id="emptyerror" className="input-error-div n-vis">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
