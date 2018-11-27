@@ -217,7 +217,10 @@ const CommonUtils = {
           if (window.mixpanel) {
             window.mixpanel.identify(identity);
           }
-    }
+    },
+    isKommunicateDashboard: function() {
+		return window.location.hostname.includes("kommunicate");
+	}
 }
 
 export default CommonUtils;

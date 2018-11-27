@@ -65,11 +65,7 @@ class Login extends Component {
 		this.submitForm = this.submitForm.bind(this);
 		this.websiteUrl = this.websiteUrl.bind(this);
 	}
-
-	isKommunicateDashboard = () => {
-		return window.location.hostname.includes("kommunicate");
-	}
-
+	
 	componentWillMount() {
 		const search = this.props.location.search;
 		let referer = CommonUtils.getUrlParameter(search, 'referrer');
@@ -210,7 +206,7 @@ class Login extends Component {
 
 			this.setState({loginButtonDisabled:true});
 			
-			if(this.isKommunicateDashboard()) {
+			if(CommonUtils.isKommunicateDashboard()) {
 				axios.post( loginUrl, { userName: userName, password:password, applicationName:applicationName, applicationId:applicationId, deviceType:0}).then( function(response) {
 
 					if(response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
@@ -480,7 +476,7 @@ class Login extends Component {
 
 	websiteUrl = (e) => {
 		e.preventDefault();
-		let websiteUrl = this.isKommunicateDashboard() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
+		let websiteUrl = CommonUtils.isKommunicateDashboard() ? getConfig().kommunicateWebsiteUrl : getConfig().applozicWebsiteUrl;
 		window.location = websiteUrl;
 	}
 
@@ -533,7 +529,7 @@ class Login extends Component {
 				<div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
 					<div className="container">
 						<div className="logo-container text-center">
-							<a href="#" onClick={this.websiteUrl}>  {this.isKommunicateDashboard() ? <KommunicateLogo/> : <ApplozicLogo /> } </a>
+							<a href="#" onClick={this.websiteUrl}>  {CommonUtils.isKommunicateDashboard() ? <KommunicateLogo/> : <ApplozicLogo /> } </a>
 						</div>
 						<div className="row justify-content-center login-form-div">
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
