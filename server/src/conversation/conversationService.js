@@ -7,6 +7,7 @@ const logger = require('../utils/logger');
 const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
 const { EMAIL_NOTIFY } = require('../users/constants');
+const GROUP_ROLE = require("../utils/constant").GROUP_ROLE;
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -25,7 +26,10 @@ const addMemberIntoConversation = (data) => {
                             if (group && group.metadata && group.metadata.SKIP_ROUTING && group.metadata.SKIP_ROUTING == 'true') {
                                 return { code: "SUCCESS", data: agents }
                             }
-                            if (customer.botRouting) {
+                            if (customer.botRouting ) {
+                               // if assigned bot is already present in the conversation let the client know so that it can avoid the duplicate welcome messgaes. 
+                     
+                                agents.assignedBotAlreadyPresent = isAssignedBotAlreadyPresentIngroup(group,userIds) && true; //converting to true false
                                 if (agents.assignTo != customer.userName) {
                                     applozicClient.addMemberIntoConversation({ groupDetails: [{ groupId: groupId, userId: agents.assignTo, role: 2 }] }, customer.applications[0].applicationId, header.apzToken, header.ofUserId);
                                     assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
@@ -110,8 +114,7 @@ const assignConversationToUser = (groupId, assignTo, appId, header) => {
         return { code: "SUCCESS", data: 'success' };
     })
 }
-/**
- * 
+/** 
  * @param {Integer} groupId 
  * @param {String} appId 
  * @param {Strig} assignTo 
@@ -357,6 +360,21 @@ const sendMessageIntoConversation = (groupId, messages, applicationId, user) => 
         console.log('send ', resp);
         return resp.data
     });
+}
+
+const isAssignedBotAlreadyPresentIngroup = (group,agents) =>{
+    let assignedBot  = agents.find(element =>{
+        return element.role == GROUP_ROLE.MODERATOR;
+    });
+
+    let groupUsers =group.groupUsers;
+    let isBotPresent;
+    if(assignedBot && groupUsers){
+        isBotPresent = groupUsers.find(element => {
+            return element.userId ==assignedBot.userId && element.role == GROUP_ROLE.MODERATOR;
+        });
+    }
+    return isBotPresent;
 }
 
 
