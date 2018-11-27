@@ -4734,6 +4734,9 @@ color: rgba(0,0,0,0.5);
 	text-decoration: none;
 	overflow-x: hidden;
 }
+.km-faqanswer-list * {
+    word-break: break-word;
+}
 .km-faqimage{
 	height: 33px;
     width: 33px;
