@@ -48,6 +48,7 @@ Modify the labels like "Start Conversation",etc by adding following labels in ko
     'user':'User',
     'member':'Member',
     'you':'You',
+    'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
     'search.faq':'Search in FAQs...',
     'looking.for.something.else':'Looking for something else?',
     'talk.to.agent': 'Talk to an agent',
