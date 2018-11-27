@@ -48,6 +48,11 @@ Modify the labels like "Start Conversation",etc by adding following labels in ko
     'user':'User',
     'member':'Member',
     'you':'You',
+    'search.faq':'Search in FAQs...',
+    'looking.for.something.else':'Looking for something else?',
+    'talk.to.agent': 'Talk to an agent',
+    'how.to.reachout': 'How may we reach you?',
+    'email.error.alert': 'It seems you have entered an invalid email',
     'lead.collection': {
         'email':'Email',
         'name':'Name',
