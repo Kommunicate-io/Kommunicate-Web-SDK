@@ -5,6 +5,23 @@
 .font-normal{
     font-weight: 400!important;
 }
+
+.download-dpa-btn{
+    display: block;
+    background: #2dd35c;
+    text-align: center;
+    padding: 11px 0px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 20px;
+    margin: 36px 0px;
+    transition: all .3s;
+}
+.download-dpa-btn:hover{
+    color: white;
+    background: #2cbd55;
+}
+
 .heading-base-line {
     border-bottom: solid 1px #222;
     text-align: center;
