@@ -247,19 +247,31 @@ updateUserDetail:function(params){
       });
   },
 
-  // To fetch all the applications of the Applozic user
-  getApplicationIdList:function(email){
-    const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
-    return axios.get(APP_LIST_URL).then(response=> {
-        if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
-          return response.data;
-        }
-        return "error";
-      }
-      ).catch(err => {
-        return "error";
-      });
-  }
+	// To fetch all the applications of the Applozic user
+	getApplicationIdList:function(email){
+		const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
+		return axios.get(APP_LIST_URL).then(response=> {
+			if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
+			return response.data;
+			}
+			return "error";
+		}
+		).catch(err => {
+			return "error";
+		});
+	},
+
+    applozicResetPassword: function(email) {
+		const url = getConfig().applozicPlugin.applozicHosturl + "/frgt/password.page";
+		let data = "frgtPassId=" + encodeURIComponent(email);
+		return axios.post(url, data).then( response => {
+			if(response.status === 200) {
+				return response;	
+			}
+		}).catch( err => {
+			return err;
+		});
+    }
 }
 
 export default ApplozicClient;
