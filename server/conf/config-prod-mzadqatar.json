@@ -20,7 +20,7 @@
          "reconnectInterval": 1000
        },
        "urls": {
-         "baseUrl": "https://chat-ca.kommunicate.io",
+         "baseUrl": "https://mzadqatar.applozic.com",
          "getApplicationDetail": "https://mzadqatar.applozic.com/rest/ws/application/get?applicationId=:applicationId",
          "createApplozicClient": "https://mzadqatar.applozic.com/rest/ws/register/client",
          "createApplication": "https://mzadqatar.applozic.com/rest/ws/application/add",
@@ -56,7 +56,7 @@
        "s3Access": {
          "accessKeyId": "AKIAJ7QAZU7R2GPBCXGQ",
          "secretAccessKey": "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",
-         "region": "ca-central-1"
+         "region": "us-east-1"
        },
        "commonProperties": {
          "applicationWebhooks":[
