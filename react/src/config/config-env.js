@@ -169,7 +169,8 @@ export default {
   }
     
 },
-    "prod_mzadqatar" :{
+ 
+"prod_mzadqatar" :{
    "baseurl": {
        "applozicAPI": "https://mzadqatar.applozic.com",
        "kommunicateAPI": "https://api-mzadqatar.applozic.com",
