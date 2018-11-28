@@ -1029,8 +1029,7 @@ body {
   @media (max-width: 37.5em) {
     .footer_column {
       display: block;
-      margin: 0 auto;
-      text-align: center; } }
+      margin: 0 auto; } }
   .footer_column:first-child {
     width: 50%;
     color: #fff;
@@ -1057,12 +1056,13 @@ body {
   list-style: none;
   margin-top: 2.3rem; }
   .footer_list_item:first-child {
-    font-weight: 600; }
+    font-weight: 700;
+    font-size: 2rem; }
   .footer_list_item:not(:first-child) {
     margin: .5rem 0; }
     @media (max-width: 37.5em) {
       .footer_list_item:not(:first-child) {
-        margin: 1.8rem; } }
+        margin: 1rem 0; } }
 
 .footer_link {
   text-decoration: none;
