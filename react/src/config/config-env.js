@@ -16,7 +16,26 @@ export default {
         "kommunicateAdminApzToken": "c3VyYWpAYXBwbG96aWMuY29tOjEyMzQ1Njc4OTA="
     },
     "resources": {
-        "defaultImageUrl": "/img/avatars/default.png"
+        "defaultImageUrl": "/img/avatars/default.png",
+         "docsLink" : {
+            applozic:{
+              installation:'https://docs.applozic.com/docs/web-javascript-chat-plugin#section-adding-sidebox-chat-ui-plugin-to-your-website',
+              android:'https://docs.applozic.com/docs/android-chat-sdk',
+              ios:"https://docs.applozic.com/docs/ios-chat-sdk#section-automated-installation-using-cocoapods",
+              cordova:"https://docs.applozic.com/docs/ionic-phonegap-cordova-chat-sdk",
+              nativeScript:"https://docs.applozic.com/docs/nativescript-installation",
+              reactNative:"https://docs.applozic.com/docs/react-native-chat-sdk",
+            },
+            kommunicate:{
+              installation:"https://docs.kommunicate.io/docs/web-installation.html",
+              android:"https://docs.kommunicate.io/docs/android-installation.html",
+              ios:"https://docs.kommunicate.io/docs/ios-installation.html",
+              cordova:"https://docs.kommunicate.io/docs/cordova-installation.html",
+              wordpress:"http://www.kommunicate.io/blog/how-to-add-live-chat-plugin-in-wordpress-websites-b449f0f5e12f/",
+              wix:"http://www.kommunicate.io/blog/how-to-integrate-live-chat-plugin-in-wix-websites-469f155ab314/",
+              squareSpace:"https://www.kommunicate.io/blog/squarespace-live-chat-software-for-website/"
+            }
+          }
     },
     "services":{
         'baseurl':"https://kong-api.applozic.com"
