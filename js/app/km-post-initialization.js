@@ -19,9 +19,9 @@ Kommunicate.postPluginInitialization = function (err, data) {
                 return;
             }
             if (settings && settings.code == "SUCCESS") {
-                var helpdocsKey = settings.message.find(function (item) {
+                var helpdocsKey = settings.message.filter(function (item) {
                     return item.type == KommunicateConstants.THIRD_PARTY_APPLICATION.HELPDOCS;
-                });
+                })[0];
 
                 if (helpdocsKey) {
                     helpdocsAccessKey = helpdocsKey.accessKey;

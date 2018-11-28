@@ -48,7 +48,7 @@ function KmCustomTheme() {
     };
 
     _this.reutrnCutomWidget = function () {
-        if (WIDGET_SETTINGS !== null) {
+        if (WIDGET_SETTINGS) {
             if ( WIDGET_SETTINGS.iconIndex === "image"){
                 return _this.KmCustomImageIcon(WIDGET_SETTINGS.widgetImageLink);
             }
