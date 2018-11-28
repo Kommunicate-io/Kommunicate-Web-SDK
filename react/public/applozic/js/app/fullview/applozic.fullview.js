@@ -97,6 +97,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		"messageType": 5,
 		"type": 0
 	};
+	function renderConversation404(){
+		window.appHistory.push("/conversations/oops");
+		$kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
+		$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+	}
 
 	$kmApplozic.fn.applozic = function (appOptions, params) {
 		var $mck_sidebox = $kmApplozic('#km-sidebox');
@@ -2774,14 +2779,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				$mck_loading.removeClass('vis').addClass('n-vis');
 				$mck_msg_loading.removeClass('vis').addClass('n-vis');
 				let groupId = window.location.href.split("/").pop();
-				if(status == "km-all-conversation-list" && parseInt(groupId)) {
+				var number = /^\d+$/.test(groupId)
+				if (status == "km-all-conversation-list" && number) {
 					kmGroupService.getGroupFeed({
 						'groupId': groupId,
-						'callFromUrl':true,
+						'callFromUrl': true,
 						'apzCallback': mckGroupLayout.onGroupFeed,
 						'callback': mckGroupLayout.loadGroupTab
 					});
-				}
+				} else if (status == "km-all-conversation-list" && !window.location.pathname.indexOf("/conversations/") && groupId) {
+					renderConversation404();
+				} 
 			}
 			_this.checkForRoleType = function (group) {
 				if (typeof group.groupId !== 'undefined' && typeof group.userId !== 'undefined') {
@@ -6633,10 +6641,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				if (response.status === 'error') {
 					console.log("Unable to process your request. " + response.errorMessage);
 					if(response.status === 'error') {
-						//errorCode "AL-G-01" - group not found
-						window.appHistory.push("/conversations/oops");
-						$kmApplozic("#km-conversation-heading").addClass('vis').removeClass('n-vis');
-						$kmApplozic("#km-toolbar").addClass('n-vis').removeClass('vis');
+						renderConversation404();
 					}
 
 				} else {
