@@ -1,4 +1,4 @@
-import  {getConfig, getEnvironmentId} from '../config/config.js';
+import  {getConfig, getResource} from '../config/config.js';
 import CommonUtils from '../utils/CommonUtils';
 
 const fs = require('fs');
@@ -45,6 +45,20 @@ console.log(yourAppId);
 return [jsScript, yourAppId];
 }
 
+const getApplozicScript=()=>{
+ return `<script type="text/javascript">
+                (function(d, m){var s, h;       
+                s = document.createElement("script");
+                s.type = "text/javascript";
+                s.async=true;
+                s.src="https://apps.applozic.com/sidebox.app";
+                h=document.getElementsByTagName('head')[0];
+                h.appendChild(s);
+                window.applozic=m;
+                m.init=function(t){m._globals=t;}})(document, window.applozic || {});
+          </script>`;
+}
+
 const getJsInstructions = () => {
   return `
   <div  class="instruction-display-area">
@@ -58,4 +72,9 @@ const getJsInstructions = () => {
 }
 
 
-export {getJsCode, getJsInstructions}
+const getDocsLink = (product)=>{
+ var resources = getResource();
+ return resources.docsLink[product]
+}
+
+export {getJsCode, getJsInstructions, getApplozicScript, getDocsLink}

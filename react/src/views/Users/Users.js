@@ -331,8 +331,8 @@ class Users extends Component {
     var showrResult = this.state.result.slice(this.state.intial, this.state.final).map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
-   return (<div className="animated fadeIn customer-list-item">
-
+   return (
+   <div className="animated fadeIn customer-list-item">
       <div className="row">
         <div className="col-md-12">
           <div className="card">
