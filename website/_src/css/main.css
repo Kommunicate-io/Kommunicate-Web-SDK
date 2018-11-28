@@ -1059,7 +1059,7 @@ body {
   .footer_list_item:first-child {
     font-weight: 600; }
   .footer_list_item:not(:first-child) {
-    margin: 2rem 0; }
+    margin: .5rem 0; }
     @media (max-width: 37.5em) {
       .footer_list_item:not(:first-child) {
         margin: 1.8rem; } }

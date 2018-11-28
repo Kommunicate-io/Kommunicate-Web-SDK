@@ -185,7 +185,7 @@
         }
         &_item {
             &:not(:first-child) {
-                margin: 2rem 0;
+                margin: .5rem 0;
                 @include respond(phone) {
                     margin: 1.8rem;
                 }
