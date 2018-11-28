@@ -109,7 +109,7 @@ class ApplicationList extends Component {
     } else if (this.state.loginType === 'email') {
       loginUrl += "?loginType=email"
     }
-    if (window.location.host.indexOf('kommunicate') !== -1) {
+    if (CommonUtils.isKommunicateDashboard()) {
       axios.post(loginUrl, { userName: userName, password: password, applicationName: applicationName, applicationId: applicationId })
         .then(function (response) {
           if (response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
