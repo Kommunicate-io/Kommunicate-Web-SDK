@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo } from '../../utils/kommunicateClient'
+import ApplozicClient from '../../utils/applozicClient'
 import Notification from '../model/Notification';
 import ImageUploader from './ImageUploader'
 import './Admin.css';
@@ -195,7 +196,20 @@ class Forms extends Component {
       }
     }
   }
-
+  setCustomerProfile=(customerInfo)=>{
+    this.setState({
+      name: customerInfo.name ? customerInfo.name : '',
+      role: customerInfo.role ? customerInfo.role : '',
+      email: customerInfo.email ? customerInfo.email : '',
+      contact: customerInfo.contactNo ? customerInfo.contactNo : '',
+      companyname: customerInfo.companyName ? customerInfo.companyName : '',
+      industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
+      companysize: customerInfo.companySize ? customerInfo.companySize : ''
+    });
+    if (this.state.industry === 'Other') {
+      this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
+    }
+  }
 
   componentWillMount() {
     var userSession = CommonUtils.getUserSession();
@@ -203,40 +217,17 @@ class Forms extends Component {
       return Promise.resolve(getCustomerInfo(CommonUtils.getUserSession().userName))
         .then(response => {
           if (response.data.code === 'SUCCESS') {
-            const customerInfo = response.data.data;
-            this.setState({
-              name: customerInfo.name ? customerInfo.name : '',
-              role: customerInfo.role ? customerInfo.role : '',
-              email: customerInfo.email ? customerInfo.email : '',
-              contact: customerInfo.contactNo ? customerInfo.contactNo : '',
-              companyname: customerInfo.companyName ? customerInfo.companyName : '',
-              industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
-              companysize: customerInfo.companySize ? customerInfo.companySize : ''
-            });
-            if (this.state.industry === 'Other') {
-              this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
-            }
+            this.setCustomerProfile(response.data.data);
           }
         }).catch(err => { alert(err) });
-    } else {
+    } else if(userSession.roleName=='APPLICATION_ADMIN'){
+      //ApplozicClient.
+    }else {
       console.log("isNotAdmin")
-
       return Promise.resolve(getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId))
         .then(response => {
           if (response.data.code === 'SUCCESS') {
-            const customerInfo = response.data.data;
-            this.setState({
-              name: customerInfo.name ? customerInfo.name : '',
-              role: customerInfo.role ? customerInfo.role : '',
-              email: customerInfo.email ? customerInfo.email : '',
-              contact: customerInfo.contactNo ? customerInfo.contactNo : '',
-              companyname: customerInfo.companyName ? customerInfo.companyName : '',
-              industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
-              companysize: customerInfo.companySize ? customerInfo.companySize : ''
-            });
-            if (this.state.industry === 'Other') {
-              this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
-            }
+            this.setCustomerProfile(response.data.data);
           }
         }).catch(err => { console.log(err) });
     }

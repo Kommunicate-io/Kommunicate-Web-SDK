@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
-import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
+//import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
 import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
-import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
+//import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
 import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";

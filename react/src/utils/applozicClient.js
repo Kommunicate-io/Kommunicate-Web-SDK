@@ -271,6 +271,27 @@ updateUserDetail:function(params){
 		}).catch( err => {
 			return err;
 		});
+    },
+    changeApplozicUserPassword: function(params){
+      const url = getConfig().applozicPlugin.applozicHosturl +'/change/password.page'
+      let headers = {
+        'Content-Type': 'application/json',
+          'Apz-AppId': params.applicationId,
+          'Apz-Token': 'Basic ' + new Buffer(params.userName + ':' + params.accessToken).toString('base64'),
+          'Apz-Product-App': !params.isAdminUser,
+        }
+      let data = {
+        currPassword:params.currPassword,
+        newPassword:params.newPassword,
+        confirmPassword:params.confirmPassword
+      } 
+      return axios.post(url,{}, {"headers": headers, "params": data }).then( response => {
+        if(response.status === 200) {
+          return response;	
+        }
+      }).catch( err => {
+        return err;
+      });
     }
 }
 

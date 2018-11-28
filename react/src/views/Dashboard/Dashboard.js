@@ -1,30 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Bar, Line } from 'react-chartjs-2';
-import { Dropdown, DropdownMenu, DropdownItem, Progress } from 'reactstrap';
-import { getConfig } from '../../config/config.js';
+import { Line } from 'react-chartjs-2';
 import CommonUtils from '../../utils/CommonUtils';
 import './Dashboard.css';
-import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
+// import ProductHuntOffer from '../.../../../components/EarlyBirdOffer/ProductHuntOffer';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { getUsersByType, getConversationStatsByDayAndMonth} from '../../utils/kommunicateClient';
 import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
-import Checkbox from '../../components/Checkbox/Checkbox'
+// import Checkbox from '../../components/Checkbox/Checkbox'
 import {Link} from 'react-router-dom';
 import Onboarding from '../../components/UserOnboarding/Onboarding';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
-const brandPrimary = '#5c5aa7';
-const brandSuccess = '#18A9B7';
-const brandInfo = '#D13351';
-const brandDanger = '#f86c6b';
 
 // Main Chart
-
-var elements = 27;
 const tab = {newConversation:0, closedConversation:1, firstResponseTime:2, resolutionTime:3};
-const numOfSteps = 5;
 const  dayWiseFilterOptions = {today: 0, yesterday:1, last7Days:7, last30Days: 30};
 const timeConverterKey = {toDisplayInsideChart: 0, toDisplayTotalAvg: 1}
 class Dashboard extends Component {
@@ -430,22 +420,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    //  var env = getEnvironmentId();
     let userSession = CommonUtils.getUserSession();
     var application = userSession.application;
     this.getAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
-    // For Tooltip
-    // var tooltipSpan = document.getElementById('tooltip-span');
-    // var selectDropdown = document.querySelector(".tooltip-for-lock .Select");
-    // selectDropdown.appendChild(tooltipSpan);
-    // window.onmousemove = function (e) {
-    //     var x = e.clientX,
-    //         y = e.clientY;
-    //     tooltipSpan.style.top = (y + 20) + 'px';
-    //     tooltipSpan.style.left = (x + 20) + 'px';
-    // };
+
   }
 
   componentWillUnmount(){
@@ -472,11 +452,9 @@ class Dashboard extends Component {
 
     let date1DayAgo = new Date();
     date1DayAgo.setDate(today.getDate() - 1);
-    let date1DayAgoInmSec = date1DayAgo.getTime();
 
     let date2DaysAgo = new Date();
     date2DaysAgo.setDate(today.getDate() - 2);
-    let date2DaysAgoInmSec = date2DaysAgo.getTime();
 
     let date7DaysAgo = new Date();
     date7DaysAgo.setDate(today.getDate() - 6);
@@ -488,7 +466,6 @@ class Dashboard extends Component {
 
     let date30DaysAgo = new Date();
     date30DaysAgo.setDate(today.getDate() - 29);
-    let date30DaysAgoInmSec = date30DaysAgo.getTime();
 
     let date31DaysAgo = new Date();
     date31DaysAgo.setDate(today.getDate() - 30);

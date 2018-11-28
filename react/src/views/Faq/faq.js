@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Select from 'react-select';
+//import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, FormGroup, Label, Input} from 'reactstrap';
 import classnames from 'classnames';

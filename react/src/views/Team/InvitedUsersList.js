@@ -24,11 +24,9 @@ class invitedUsersList extends Component {
   };
   render() {
     var index = this.props.index;
-    var loggedInUserRoleType = this.props.loggedInUserRoleType;
     var deleteRef = "delete" + index;
     let roleType = this.props.user.roleType;
     var emailId = this.props.user.userId;
-    let status = this.props.user.status
     return (
       <tr className="team-data-allign team-invite" >
         <td>

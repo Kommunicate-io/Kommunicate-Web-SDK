@@ -5,8 +5,7 @@ import './AwayMessage.css';
 import { EVENT_ID, CATEGORY, STATUS, SEQUENCE, WELCOME_MSG_METADATA } from '../Constant'
 import SliderToggle from '../../../components/SliderToggle/SliderToggle';
 import Notification from '../../model/Notification';
-import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, createSuggestions, editInAppMsg, getWelcomeMessge, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
-import axios from 'axios';
+import { addInAppMsg, deleteInAppMsg, editInAppMsg, disableInAppMsgs, enableInAppMsgs,getInAppMessagesByEventId,updateAppSetting, getAppSetting }  from '../../../utils/kommunicateClient'
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
