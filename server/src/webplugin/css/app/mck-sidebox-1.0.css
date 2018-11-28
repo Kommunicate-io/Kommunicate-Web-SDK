@@ -4734,6 +4734,9 @@ color: rgba(0,0,0,0.5);
 	text-decoration: none;
 	overflow-x: hidden;
 }
+.km-faqanswer-list * {
+    word-break: break-word;
+}
 .km-faqimage{
 	height: 33px;
     width: 33px;
@@ -5551,17 +5554,17 @@ box-shadow: 0 0 4px rgba(0,0,0,.22), 0 4px 8px rgba(0,0,0,.31);
 
 #launcher-agent-img-container {
 	overflow: hidden;
-	width: 56px;
-	height: 56px;
+	width: 60px;
+	height: 60px;
 	border-radius: 56px;
 }
 #launcher-agent-img-container img {
-	width: 56px;
+	width: 60px;
 	height: auto;
 }
 #launcher-agent-img-container .mck-videocall-image {
-	width: 56px;
-    height: 56px;
+	width: 60px;
+    height: 60px;
     line-height: 56px;
 }
 

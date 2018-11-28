@@ -74,7 +74,7 @@
 
             }, error: function(err) {
                 if(typeof options.error ==='function' ){
-                    options.err(err);
+                    options.error(err);
                 }
                 
             }});

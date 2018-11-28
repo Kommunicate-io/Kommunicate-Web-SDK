@@ -409,21 +409,23 @@ class Dashboard extends Component {
 
   updateDetailsToKommunicate (){
     let userSession = CommonUtils.getUserSession();
-    var userdetail = {
-      "email": userSession.email !== null ? userSession.email: "",
-      "displayName": userSession.displayName !== null ? userSession.displayName: "",
-      "userId": userSession.userName !== null ? userSession.userName: "",
-      "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
-          "Billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : ""  ,
-          "Signup": userSession.created_at !== null ? userSession.created_at: "",
-          "Subscription": userSession.subscription !== null ? userSession.subscription : "" ,
+    if (userSession) {
+      var userdetail = {
+        "email": userSession.email !== null ? userSession.email : "",
+        "displayName": userSession.displayName !== null ? userSession.displayName : "",
+        "userId": userSession.userName !== null ? userSession.userName : "",
+        "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
+          "Billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : "",
+          "Signup": userSession.created_at !== null ? userSession.created_at : "",
+          "Subscription": userSession.subscription !== null ? userSession.subscription : "",
           "Application": userSession.applicationId !== null ? userSession.applicationId : "",
           "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
           "Industry": userSession.industry !== null ? userSession.industry : "",
-          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted )? "Done" : "Pending"
-      }
-    };
-    window.Kommunicate.updateUser(userdetail);
+          "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) ? "Done" : "Pending"
+        }
+      };
+      window.Kommunicate.updateUser(userdetail);
+    }
   }
 
   componentDidMount() {

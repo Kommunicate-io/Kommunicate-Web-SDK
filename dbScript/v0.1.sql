@@ -147,3 +147,10 @@ KM-1503 :Collect email in welcome message
 */
 alter table app_settings add  column collect_email_welcome tinyint(1)  default 0;
 alter table app_settings change collect_email collect_email_away tinyint(1);
+
+
+--------------------------- Launch 2.2 - Reduce Friction--------------------------
+
+    -- KM-1642: Bot to stop reply once its assigned to agent.
+
+ALTER TABLE app_settings ADD COLUMN `remove_bot_on_agent_handoff` TINYINT(1) DEFAULT 0 COMMENT 'if enabled, all bots will be removed from conversation when conversation assigned to agent';

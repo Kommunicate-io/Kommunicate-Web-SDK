@@ -280,7 +280,7 @@ $applozic.extend(true,Kommunicate,{
         }
     },
     isAttachment: function(msg) {
-        return (typeof msg.fileMeta === "object" && msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION; 
+        return (typeof msg.fileMeta === "object" && msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) || msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION; 
     },
     getContainerTypeForRichMessage: function (message) {
         // this method is obsolete, not in use. use km-div-slider to get slide effect
@@ -302,7 +302,7 @@ $applozic.extend(true,Kommunicate,{
                     break;
 
             }
-        }else if (message.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+        }else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
             return "km-fixed-container";
         }
 
@@ -366,7 +366,7 @@ $applozic.extend(true,Kommunicate,{
                     return "";
                     break;
             }
-        }else if (message.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+        }else if (message.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
             return Kommunicate.markup.getHtmlMessageMarkups(message); 
         }    
         else {

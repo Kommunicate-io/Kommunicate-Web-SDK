@@ -52,12 +52,27 @@ POST Body:
 { 
   "groupId": "group Unique Identifier", 
   "message":"Hi John",
+  "fromUserName":"userId of sender",
   "metadata":{     // optional. key-value pair for smart and actionable messages.    
       "category": "HIDDEN" // This message will not visible in chat widget.
   }
 }
 
 ```
+## Change Conversation Status
+
+``` javascript
+POST /rest/ws/group/update
+Content-Type: application/json
+POST Body:
+{
+        "groupId": "group Unique Identifier",
+        "metadata":{
+        "CONVERSATION_STATUS": "0" // possible value { OPEN: 0,CLOSED: 2,SPAM: 3,DUPLICATE: 4}
+        }
+    }
+```
+
 
 
 

@@ -26,6 +26,9 @@ export default {
             //Sentry:error tracking platform
             'enable': false,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -58,6 +61,9 @@ export default {
             //Sentry:error tracking platform
             'enable': true,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -90,6 +96,9 @@ export default {
             //Sentry:error tracking platform
             'enable': false,
             'dsn': "https://2bb347bba0df43d3933fe9b80021e948@sentry.io/1324242"
+        },
+        'analytics' : {
+            'enable': false
         }
     }
 },
@@ -123,6 +132,9 @@ export default {
             //Sentry:error tracking platform
             'enable': true,
             'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+        },
+        'analytics' : {
+            'enable': true
         }
     }
 },
@@ -154,8 +166,48 @@ export default {
         //Sentry:error tracking platform
         'enable': true,
         'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+    },
+    'analytics' : {
+        'enable': true
     }
+       
+  }
+    
+},
+    "prod_mzadqatar" :{
+   "baseurl": {
+       "applozicAPI": "https://mzadqatar.applozic.com",
+       "kommunicateAPI": "https://api-mzadqatar.applozic.com",
+       "botPlatformAPI":"https://bot-mzadqatar.applozic.com",
+       "komunicateSupportUrl": "https://mzadqatar.applozic.com"
+   },
+   "kommunicateDashboardUrl": "https://dashboard-mzadqatar.applozic.com",
+   "kommunicateWebsiteUrl": "https://www.kommunicate.io",
+   "adminDetails":{
+       "kommunicateParentKey": "applozic1a93cb1a2320be20d1e15353c3524c72d",
+       "kommunicateAdminId": "techdisrupt@applozic.com",
+       "kommunicateAdminPassword": "techdisrupt",
+       "kommunicateAdminApzToken": "dGVjaGRpc3J1cHRAYXBwbG96aWMuY29tOnRlY2hkaXNydXB0"
+     },
+   "resources": {
+       "defaultImageUrl": "/img/avatars/default.png"
+   },
+   "services":{
+       'baseurl':"https://services.kommunicate.io"
+   },
+   "thirdPartyIntegration":{
+    'sentry' :{
+        //Sentry:error tracking platform
+        'enable': true,
+        'dsn': "https://dcf240024fff420794ba240526b2c223@sentry.io/1324431"
+    },
+    'analytics' : {
+        'enable': true
+    }
+       
    }
-}
+        
+ }
+    
 }
 

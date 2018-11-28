@@ -17,7 +17,7 @@ class ChatWidgetCustomization extends Component{
         super();
         this.state = {
             displayColorPicker: false,
-            primaryColor:'#5c5aa7',
+            primaryColor:'#5553b7',
             secondaryColor:"",
             currentIcon : <KmDefaultIcon />,
             chatWidgetImagefileObject: "",

@@ -130,10 +130,12 @@ customerService.getCustomerByUserName(userId).then(async dbCustomer => {
         } else {
           let organization = { name: customer.companyName };
           let person = { name: customer.name, email: userId, phone: customer.contactNo, }
-          pipeDrive.createDealInPipeDrive(organization, person).then(result => {
-            integration['pipeDriveId'] = result.data.data.id;
-            let user = { userId: dbCustomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
-            applozicClient.updateApplozicClient(dbCustomer.userName, dbCustomer.accessToken, dbCustomer.applications[0].applicationId, user, { apzToken: new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64') }, false);
+          pipeDrive.createDealInPipeDrive(organization, person).then(result => { 
+            if(result && result.data && result.data.data){
+              integration['pipeDriveId'] = result.data.data.id;
+              let user = { userId: dbCustomer.userName, metadata: { KM_INTEGRATION: JSON.stringify(integration) } }
+              applozicClient.updateApplozicClient(dbCustomer.userName, dbCustomer.accessToken, dbCustomer.applications[0].applicationId, user, { apzToken: new Buffer(adminUser.userName+":"+adminUser.accessToken).toString('base64') }, false);
+            }
           });
         }
       }).catch(error => {

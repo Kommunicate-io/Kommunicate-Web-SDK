@@ -34,8 +34,16 @@ let AppSetting= function(sequelize, DataTypes) {
         allowNull: false,
         field: 'collect_email_welcome',
         defaultValue: 0
-      }  
+      },
+      removeBotOnAgentHandOff: { 
+        // if set to 1 it will remove the bot from conversation when conversation assigned to agent.
+        type:DataTypes.BOOLEAN,
+        allowNull: false,
+        field: 'remove_bot_on_agent_handoff',
+        defaultValue: 0
+      }
     },
+    
     {
       underscored: true,
       paranoid: true

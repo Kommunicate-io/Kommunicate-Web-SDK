@@ -3,7 +3,12 @@ import axios from 'axios';
 import  { getConfig }  from '../config/config';
 
 export function acEventTrigger(trigger) {
+
+    if(!getConfig().thirdPartyIntegration.analytics.enable) {
+      return;
+    }
     var event = trigger;
+
     // Changing the event name 
     switch(trigger){
       case 'ac-away-message':

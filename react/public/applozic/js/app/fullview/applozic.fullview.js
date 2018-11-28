@@ -1449,6 +1449,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.tabFocused = function () {
 				var hidden = "hidden";
 				// Standards:
+				window.onblur = function(e) { 
+					onchange(e);
+				};
+				window.onfocus = function(e) {
+					onchange(e);
+				};
 				if (hidden in d)
 					d.addEventListener("visibilitychange", onchange);
 				else if ((hidden === "mozHidden") in d)
@@ -1634,7 +1640,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				// $mck_group_info_tab.removeClass('vis').addClass('n-vis');
 				$mck_sidebox_search.removeClass('n-vis').addClass('vis');
 				$mck_search_inner.html('<ul id="km-search-list" class="km-search-list km-contact-list km-nav km-nav-tabs km-nav-stacked"></ul>');
-				if (MCK_CONTACT_ARRAY.length !== 0) {
+				if (Object.keys(MCK_CONTACT_ARRAY).length !== 0) {
 					mckMessageLayout.addContactsToSearchList();
 				} else if (!IS_MCK_OWN_CONTACTS) {
 					mckContactService.loadContacts();
@@ -1866,28 +1872,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							'tabViewId': tabViewId,
 							'lastContactedTime': time,
 						}
-						var groupInfo = kmGroupUtils.getGroup(tabId);
-						if (typeof groupInfo === 'object') {
-							var member = groupInfo.members.includes(MCK_USER_ID);
-							var group = {};
-							group.groupId = tabId;
-							group.userId = MCK_USER_ID;
-							group.role = 1; // adding agents as group admin
-							var conversationDetail = mckMessageService.checkForRoleType(group);
-							conversationDetail.apzCallback = mckGroupLayout.onAddedGroupMember;
-							conversationDetail.callback = function () {
-								mckMessageLayout.loadTab(groupDetail);
-							}
-							if (!member) {
-								kmGroupService.addGroupMember(conversationDetail);
-							} else {
-								mckMessageLayout.loadTab(groupDetail);
-							}
-
-						} else {
 							mckMessageLayout.loadTab(groupDetail);
-						}
-						$mck_search.val("");
+						    $mck_search.val("");
 					} 
 						emptyStateDiv.classList.add("n-vis");
 						emptyStateDiv.classList.remove("vis");
@@ -4746,14 +4732,15 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 			};
 			_this.addContactsToSearchList = function () {
-				if (MCK_CONTACT_ARRAY.length === 0 && MCK_CHAT_CONTACT_ARRAY.length === 0) {
+				if (Object.keys(MCK_CONTACT_ARRAY).length === 0 && Object.keys(MCK_CHAT_CONTACT_ARRAY).length === 0) {
 					return;
 				}
 				var contactsArray = [],
 					userIdArray = [],
 					groupIdArray = [];
-				$kmApplozic.each(MCK_CONTACT_ARRAY, function (i, contact) {
-					contact ? userIdArray.push(contact.contactId) : "";
+				Object.keys(MCK_CONTACT_ARRAY).forEach(function (key) {
+					var userId = MCK_CONTACT_ARRAY[key].contactId ? MCK_CONTACT_ARRAY[key].contactId : MCK_CONTACT_ARRAY[key].userId;
+					MCK_CONTACT_ARRAY[key] ? userIdArray.push(MCK_CONTACT_ARRAY[key].userId) : "";
 				});
 				$kmApplozic.each(MCK_CHAT_CONTACT_ARRAY, function (i, contact) {
 					(contact.isGroup) ? groupIdArray.push(contact.contactId) : userIdArray.push(contact.contactId);
@@ -5459,7 +5446,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			_this.isValidMetaData = function (message) {
 				if (!message.metadata) {
 					return true;
-				} else if (message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE' || message.metadata.hide == "true") {
+				} else if ((message.metadata.category === 'HIDDEN' || message.metadata.category === 'ARCHIVE' || message.metadata.hide == "true")&&!(message.metadata.KM_ASSIGN || message.metadata.KM_STATUS)){
 					return false;
 				} else {
 					return true;
@@ -8092,9 +8079,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						if (message.metadata.KM_ASSIGN) {
 							contact.metadata.CONVERSATION_ASSIGNEE = message.metadata.KM_ASSIGN;
+							KM_GROUP_MAP[contact.contactId]=contact;
 						}
 						if (message.metadata.KM_STATUS) {
 							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_ASSIGN;
+							KM_GROUP_MAP[contact.contactId]=contact;
 						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');

@@ -39,6 +39,7 @@ import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
+import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 
 const enableIntegry = false;
 const chatUrl = config.baseurl.applozicAPI;
@@ -73,11 +74,11 @@ class Full extends Component {
         document.getElementsByTagName('head')[0].appendChild(integryScript);
       return resolve({})
        }).then((data)=>{
+          let userSession = CommonUtils.getUserSession();
          //TODO: load integry SDK synchronously, remove setTimeout 
-         setTimeout(function(){
-          initilizeIntegry({applicationId:CommonUtils.getUserSession().applicationId});
+          userSession && setTimeout(function(){
+            initilizeIntegry({applicationId:userSession.applicationId});
          }, 5000)
-         
        });
        
        
@@ -174,9 +175,10 @@ class Full extends Component {
 }*/
 
   initilizeSupportChatUser (){
-    let dashboardLoggedInUserId = CommonUtils.getUserSession().userName;
+    let userSession = CommonUtils.getUserSession();
     // if loggedIn user not present then logout the kommunciate support chat user.
-    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID)){
+    if(window.$applozic && !CommonUtils.getCookie(COOKIES.KM_LOGGEDIN_USER_ID) && userSession){
+      let dashboardLoggedInUserId = userSession.userName;
       console.log("logging out the anonymous user  from chat.")
       window.$applozic.fn.applozic('logout');
       var options = window.applozic._globals;
@@ -185,7 +187,7 @@ class Full extends Component {
       window.$applozic.fn.applozic(options);
       CommonUtils.setCookie(COOKIES.KM_LOGGEDIN_USER_ID,dashboardLoggedInUserId,"",CommonUtils.getDomain());
     }else{
-      console.log("user already logged in");
+      console.log("user already logged in or user session is empty");
     }
   }
 
@@ -209,7 +211,7 @@ class Full extends Component {
       if (window.mixpanel) {
         window.mixpanel.register(userProperties);
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
-          window.mixpanel.track("integrated");
+          acEventTrigger("integrated");
         }
       }
       
@@ -241,14 +243,13 @@ class Full extends Component {
   render() {
 
     const currentPath = window.location.pathname;
-    let mixpanelEvent = currentPath;
+    let analyticsEvent = currentPath;
     if (currentPath.startsWith("/conversations/")) {
-        mixpanelEvent = "/conversations/thread";
+      analyticsEvent = "/conversations/thread";
     }
-    if (window.mixpanel) {
-      window.mixpanel.track(mixpanelEvent);
-    }
+
     const settingStyle={'marginLeft': '280px'}
+    acEventTrigger(analyticsEvent);
    
     return (
       <div className="app" suppressContentEditableWarning={true}>
