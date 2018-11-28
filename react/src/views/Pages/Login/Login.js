@@ -242,7 +242,6 @@ class Login extends Component {
 
 						_this.setState({'applicationId': response.data.result.application.applicationId});
 
-						// response.data.result.password = password=='' ? response.data.result.accessToken : password;
 						response.data.result.displayName=response.data.result.name;
 						CommonUtils.setUserSession(response.data.result);
 						_this.props.saveUserInfo(response.data.result);
@@ -293,15 +292,13 @@ class Login extends Component {
 		}).catch( err => {
 			console.log(err);
 			Notification.error("Error during login.");
-			this.setState({ loginButtonDisabled:false });
+			this.setState({ loginButtonDisabled: false });
 		});
 	}
 
 	getApplicationListOfApplozicUser = () => {
 		ApplozicClient.getApplicationIdList(this.state.userName).then( response => {
 			var applicationList = {}, applicationAdminList, applicationWebAdminList
-			console.log(typeof response);
-			console.log(response);
 			if(response) {
 				applicationAdminList = response.APPLICATION_ADMIN;
 				applicationWebAdminList = response.APPLICATION_WEB_ADMIN;
@@ -314,7 +311,6 @@ class Login extends Component {
 					});
 				}
 			}
-			console.log(applicationList);
 		}).catch( err => {
 			console.log(err);
 			Notification.error("Something went wrong.");
@@ -335,11 +331,16 @@ class Login extends Component {
 			});
 		} else if(this.state.loginButtonAction==="passwordResetAppSected") {
 			if(this.state.applicationId) {
-				Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
-					_this.state.userName=data.userId||_this.state.email;
-					resetPassword({userName:this.state.userName,applicationId:this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+				if(CommonUtils.isKommunicateDashboard()) {
+					Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+						_this.state.userName=data.userId||_this.state.email;
+						resetPassword({userName:this.state.userName,applicationId:this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+						return;
+					});
+				} else {
+					_this.passwordResetForApplozicUser();
 					return;
-				});
+				}
 			} else {
 				Notification.info("Please select your application");
 				return;
@@ -369,7 +370,11 @@ class Login extends Component {
 				_this.state.applicationName=result[_this.state.applicationId];
 				_this.state.appIdList= result;
 				if(_this.state.loginButtonAction == "passwordReset") {
-					resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+					if(CommonUtils.isKommunicateDashboard()) {
+						resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
+					} else {
+						_this.passwordResetForApplozicUser();
+					}
 					return 1;
 				}
 				_this.setState({
@@ -386,21 +391,26 @@ class Login extends Component {
 				});
 			} else if(numOfApp>1) {
 				_this.state.appIdList= result;
-				if(_this.state.loginButtonAction=="passwordReset"){
-					_this.setState({
-						loginButtonText:'Submit',
-						loginButtonAction:'passwordResetAppSected',
-						loginFormSubText:'please select your application and submit',
-						hidePasswordInputbox:true,
-						hideAppListDropdown:false,
-						hideUserNameInputbox:true,
-						loginFormText:"Select Application..",
-						hideBackButton:false,
-						hideSignupLink:true,
-						isForgotPwdHidden:true,
-						hideSignupLink:true,
-						hideGoogleLoginBtn:true
-					});
+				if(_this.state.loginButtonAction=="passwordReset") {
+					if(CommonUtils.isKommunicateDashboard()) {
+						_this.setState({
+							loginButtonText:'Submit',
+							loginButtonAction:'passwordResetAppSected',
+							loginFormSubText:'please select your application and submit',
+							hidePasswordInputbox:true,
+							hideAppListDropdown:false,
+							hideUserNameInputbox:true,
+							loginFormText:"Select Application..",
+							hideBackButton:false,
+							hideSignupLink:true,
+							isForgotPwdHidden:true,
+							hideSignupLink:true,
+							hideGoogleLoginBtn:true
+						});
+					} else {
+						_this.passwordResetForApplozicUser();
+					}
+					
 				} else {
 					_this.setState({
 						loginButtonDisabled:false, 
@@ -434,7 +444,7 @@ class Login extends Component {
 				// Notification.info("You are not a registered user. Please sign up!!!");
 				_this.setState({
 					hideErrorMessage: false, 
-					errorMessageText:"You are not a registered user. Please sign up!!!"
+					errorMessageText:"You are not a registered user. Please sign up."
 				});
 			}
 			return numOfApp;
@@ -446,6 +456,18 @@ class Login extends Component {
 
 	register = (event) => {
 		this.props.history.push("/signup");
+	}
+
+	passwordResetForApplozicUser = () => {
+		ApplozicClient.applozicResetPassword(this.state.userName || this.state.email).then( resp => {
+			if(resp.data === "success") {
+				this.handlePasswordResetResponse(resp);
+			} else {
+				Notification.error("Oops, looks like you havn't registered up with this email address.");
+			}	
+		}).catch(err => {
+			this.handlePasswordResetError(err);
+		});
 	}
 
 	initiateForgotPassword = (event) => {
