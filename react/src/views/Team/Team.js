@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import isEmail from 'validator/lib/isEmail';
-import axios from 'axios';
-import { getConfig, getEnvironmentId, get } from '../../config/config.js';
 import UserItem from '../UserItem/';
 import InvitedUsersList from './InvitedUsersList';
 import { notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId } from '../../utils/kommunicateClient';
@@ -11,8 +8,7 @@ import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 import './team.css';
 import CommonUtils from '../../utils/CommonUtils';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, INVITED_USER_STATUS } from '../../utils/Constant';
-import { Agent } from 'https';
+import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';

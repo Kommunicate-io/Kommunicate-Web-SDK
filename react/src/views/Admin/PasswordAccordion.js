@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import '../Settings/Installation/Accordion.css';
 import {changePassword } from '../../utils/kommunicateClient';
+import ApplozicClient from '../../utils/applozicClient'
 import Notification from '../model/Notification';
 import Modal from 'react-modal';
 import CloseButton from '../../components/Modal/CloseButton';
+import CommonUtils from '../../utils/CommonUtils';
 import './Admin.css';
 
 const customStyles = {
@@ -74,19 +76,34 @@ class PasswordAccordion extends Component {
     }
 
     handlePassword(e) {
-      e.preventDefault();      
+      e.preventDefault(); 
+      var isKommunicateUser = {}     
       if (this.state.newPassword !== this.state.repeatPassword){
         Notification.info("Password does not match");
         return;   
-      } else {
+      } else if(isKommunicateUser){
         changePassword({
           oldPassword : this.state.currentPassword,
           newPassword: this.state.newPassword,
         }).then(data => {
           if(data === "SUCCESS")
             this.clearPasswordfields(e);
-        });
-        
+        })
+      }else{
+        let userSession = CommonUtils.getUserSession();
+        let params = {
+          currPassword:this.state.currentPassword,
+          newPassword:this.state.newPassword,
+          confirmPassword:this.state.repeatPassword,
+          userName:userSession.userName,
+          accessToken:this.state.currentPassword,
+          applicationId:userSession.application.applicationId
+        } 
+        ApplozicClient.changeApplozicUserPassword(params).then(data=>{
+          if(data === "SUCCESS"){
+            this.clearPasswordfields(e);
+          }   
+        }) 
       }
     }
 

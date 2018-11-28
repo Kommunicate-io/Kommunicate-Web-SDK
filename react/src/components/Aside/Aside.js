@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
-import classnames from 'classnames';
-import classes from './Aside.css';
+//import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
+import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';

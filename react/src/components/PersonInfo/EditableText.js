@@ -94,7 +94,7 @@ class EditableText extends Component {
       isInEditMode: !this.state.isInEditMode,
       inputBoxMouseDown: false 
     });
-    if (text == this.state.value) {
+    if (text === this.state.value) {
       return;
     }
     var params = {
@@ -104,11 +104,11 @@ class EditableText extends Component {
     params.userDetails[this.props.reference] = text;
     ApplozicClient.updateUserDetail(params)
       .then(result => {
-        if (result && result.data && result.data.status == "success") {
+        if (result && result.data && result.data.status === "success") {
           this.setState({
             value: text
           })
-          if (this.props.reference == 'email' || this.props.reference == 'displayName') {
+          if (this.props.reference === 'email' || this.props.reference === 'displayName') {
             this.setState({
               renderChild: false
             })
@@ -119,7 +119,7 @@ class EditableText extends Component {
           }
           var list = document.querySelectorAll(".person.active .name");
           for (var i = 0; i < list.length; i++) {
-            if(this.props.reference == 'displayName'){
+            if(this.props.reference === 'displayName'){
             list[i].innerText = document.getElementsByClassName("km-sidebar-display-name")[0].innerHTML;
             }
           }
@@ -162,7 +162,7 @@ class EditableText extends Component {
 
   renderDefaultView = () => {
     return (
-      <div className={this.props.reference == "displayName" ? "km-dispalyname-wrapper" : ""}>
+      <div className={this.props.reference === "displayName" ? "km-dispalyname-wrapper" : ""}>
         <div onClick={this.changeEditMode} className={this.props.reference !== "displayName" ? "km-edit" : ""}>
           <p id={this.props.id} className={this.props.style}>{this.state.value || this.props.placeholder}</p>
         </div>
