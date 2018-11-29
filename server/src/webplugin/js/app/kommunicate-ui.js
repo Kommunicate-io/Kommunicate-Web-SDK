@@ -290,6 +290,7 @@ KommunicateUI={
                 $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
                 $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
                 $applozic('#km-faq').removeClass("n-vis").addClass("vis");
+                $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
                 $applozic('.mck-agent-image-container').removeClass("n-vis").addClass("vis");
                  $applozic('.mck-agent-status-text').removeClass("n-vis").addClass("vis");
                 let elem = MCK_EVENT_HISTORY[MCK_EVENT_HISTORY.length - 2];
@@ -309,6 +310,7 @@ KommunicateUI={
             $applozic('#km-faqdiv').removeClass("vis").addClass("n-vis");
             $applozic('#km-faqanswer').removeClass("vis").addClass("n-vis");
             $applozic('#km-contact-search-input-box').removeClass("vis").addClass("n-vis");
+            $applozic(".km-talk-to-human-div").addClass("n-vis").removeClass("vis");
             $applozic('#km-faq').removeClass("n-vis").addClass("vis");
             $applozic("#mck-msg-new").attr("disabled", false);
             MCK_EVENT_HISTORY.length = 0 ;
