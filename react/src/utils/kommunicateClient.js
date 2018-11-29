@@ -1077,7 +1077,7 @@ const editApplicationDetails = (data) => {
     headers: {
       "Content-Type": "application/json",
       "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
-      "Apz-AppId": CommonUtils.getUserSession().applicationId,
+      "Apz-AppId": CommonUtils.getUserSession().application.applicationId,
     }
   };
   return Promise.resolve(axios.post(url, data, axiosConfig)).then(response => {

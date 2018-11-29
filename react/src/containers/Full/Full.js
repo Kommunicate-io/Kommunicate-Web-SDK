@@ -77,7 +77,7 @@ class Full extends Component {
           let userSession = CommonUtils.getUserSession();
          //TODO: load integry SDK synchronously, remove setTimeout 
           userSession && setTimeout(function(){
-            initilizeIntegry({applicationId:userSession.applicationId});
+            initilizeIntegry({applicationId:userSession.application.applicationId});
          }, 5000)
        });
        
