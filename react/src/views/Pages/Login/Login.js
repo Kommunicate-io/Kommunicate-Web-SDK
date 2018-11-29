@@ -254,6 +254,7 @@ class Login extends Component {
 						response.data.result.displayName=response.data.result.name;
 						CommonUtils.setUserSession(response.data.result);
 						_this.props.saveUserInfo(response.data.result);
+						_this.props.logInStatus(true);
 						}
 						// _this.props.history.push("/dashboard");
 						window.location.assign(_this.state.next);
