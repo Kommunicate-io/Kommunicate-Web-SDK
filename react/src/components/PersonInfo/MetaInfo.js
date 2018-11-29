@@ -67,7 +67,7 @@ export const LastSeenSection = (props) => {
 export const UserMetadata = (props) => {
     const userMetaInfo = []
     Object.keys(props.userInfo).forEach(function (key, i) {
-        if (key != "kmClearbitData" && key != "KM_PSEUDO_USER") {
+        if (key !== "kmClearbitData" && key !== "KM_PSEUDO_USER") {
             userMetaInfo.push(<p key={key + i} className="km-user-info-metadata">
                 <span className="km-user-info-meatadata-key">{key}</span>
                 <span className="km-user-info-meatadata-value">{props.userInfo[key]}</span>

@@ -3,7 +3,6 @@
  * do not add any code here.
  */
 import url from "./url";
-import path from 'path';
 import configuration from "./config-env";
 
 const  env = process.env.REACT_APP_NODE_ENV || "development";
