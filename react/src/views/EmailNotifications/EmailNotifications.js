@@ -6,7 +6,6 @@ import axios from 'axios';
 import { getConfig } from '../../config/config';
 import Select from 'react-select';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
-import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 
 export default class EmailNotification extends Component {
@@ -91,7 +90,6 @@ export default class EmailNotification extends Component {
                         </div>
                     </div>
                 </div> 
-                <div style={{width : "100%", maxWidth:"930px"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/mailbox-and-email-support-kommunicate-knowledge-base/" label ="Learn More"/></div>
             </div>
         );
     }
