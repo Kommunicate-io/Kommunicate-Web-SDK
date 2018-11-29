@@ -409,7 +409,7 @@ class Dashboard extends Component {
           "Billing": userSession.billingCustomerId !== null ? userSession.billingCustomerId : "",
           "Signup": userSession.created_at !== null ? userSession.created_at : "",
           "Subscription": userSession.subscription !== null ? userSession.subscription : "",
-          "Application": userSession.applicationId !== null ? userSession.applicationId : "",
+          "Application": userSession.application.applicationId !== null ? userSession.application.applicationId : "",
           "Website": userSession.application.websiteUrl !== null ? userSession.application.websiteUrl : "",
           "Industry": userSession.industry !== null ? userSession.industry : "",
           "Integration": (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) ? "Done" : "Pending"

@@ -574,7 +574,7 @@ class Aside extends Component {
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
-    const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
+    const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
 
     return (
       <aside className="aside-menu">
