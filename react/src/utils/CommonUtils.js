@@ -220,7 +220,11 @@ const CommonUtils = {
     },
     isKommunicateDashboard: function() {
 		return window.location.hostname.includes("kommunicate");
-	}
+    },
+    isApplicationAdmin: function(userSession){
+        userSession = userSession ? userSession : this.getUserSession()
+        return userSession.roleName === 'APPLICATION_ADMIN'
+    }
 }
 
 export default CommonUtils;

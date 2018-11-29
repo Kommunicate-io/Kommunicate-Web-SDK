@@ -62,7 +62,7 @@ updateUserDetail:function(params){
   let userSession = CommonUtils.getUserSession();
   let headers = {
     'Content-Type': 'application/json',
-      'Apz-AppId': userSession.applicationId,
+      'Apz-AppId': userSession.application.applicationId,
       'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
       'Of-User-Id':params.ofUserId
     }
@@ -273,19 +273,17 @@ updateUserDetail:function(params){
 		});
     },
     changeApplozicUserPassword: function(params){
-      const url = getConfig().applozicPlugin.applozicHosturl +'/change/password.page'
+      const url = getConfig().applozicPlugin.applozicHosturl +'/rest/ws/user/update/password'
       let headers = {
         'Content-Type': 'application/json',
-          'Apz-AppId': params.applicationId,
-          'Apz-Token': 'Basic ' + new Buffer(params.userName + ':' + params.accessToken).toString('base64'),
-          'Apz-Product-App': !params.isAdminUser,
-        }
+        'Apz-AppId': params.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(params.userName + ':' + params.accessToken).toString('base64'),
+      }
       let data = {
-        currPassword:params.currPassword,
-        newPassword:params.newPassword,
-        confirmPassword:params.confirmPassword
+        oldPassword:params.currPassword,
+        newPassword:params.newPassword
       } 
-      return axios.post(url,{}, {"headers": headers, "params": data }).then( response => {
+      return axios.get(url, {"headers": headers, "params": data }).then( response => {
         if(response.status === 200) {
           return response;	
         }
