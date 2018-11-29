@@ -82,7 +82,7 @@ class CustomerListItem extends Component {
     var letters = /^[a-zA-Z0-9]+$/;
     if (first_alpha.match(letters)) {
       first_alpha = "alpha_" + first_alpha.toUpperCase();
-      return <span className={`km-contact-icon ${first_alpha}`}>{name}</span>
+      return <span className={'km-contact-icon ' + first_alpha}>{name}</span>
     }
     else {
       return <span className="km-contact-icon alpha_user">{name}</span>
@@ -124,7 +124,7 @@ class CustomerListItem extends Component {
     var status = user.status;
     var displayName = CommonUtils.getDisplayName(user);
     var online = (user.connected)? 'avatar-status badge-success': 'n-vis';
-    var latestConversation = user.messagePxy? user.messagePxy.message: null;
+    var latestConversation = user.messagePxy || null;
     var lastMessageTime = user.messagePxy? (window.$kmApplozic.fn.applozic('getDateTime', user.messagePxy.createdAtTime)) : '';
     var asignee = user.assignee? user.assignee : "";
     var groupId = user.messagePxy? user.messagePxy.groupId : "";

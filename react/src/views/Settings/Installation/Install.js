@@ -103,7 +103,7 @@ class Install extends Component {
                        API Key:
                      </span>
                      <span className="app-id-main-text">
-                       {this.getApiKey()}
+                     {(!(currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) && this.getApiKey()}
                      </span>
                    </div>
                  </div>
