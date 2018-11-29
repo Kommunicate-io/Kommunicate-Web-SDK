@@ -14,7 +14,7 @@ exports.createConsumerAndGenerateKey = async (applicationId, apiKey) => {
     logger.info("creating consumer for application :", applicationId);
     let consumer = await kongClient.createConsumer(applicationId);
     // TODO : check for CONFLICT status
-    if (consumer && consumer.code != "CONFLICT") {
+    if (consumer) {
         let consumerId = consumer.username;
         let creds = await kongClient.registerOrCreateAPIKey(consumerId,apiKey);
         return creds ? creds.key : "";

@@ -41,8 +41,9 @@ import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWid
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 
 
-const enableIntegry = false;
+const enableIntegry = config.integryEnabled;
 const chatUrl = config.baseurl.applozicAPI;
+
 class Full extends Component {
   constructor (props) {
     super(props)
@@ -64,7 +65,8 @@ class Full extends Component {
     });
    }
   componentWillMount(){
-       // integry SDK
+    if(enableIntegry){
+    // integry SDK
        new Promise(function(resolve,reject){
         const integryScript = document.createElement("script");
 
@@ -80,11 +82,8 @@ class Full extends Component {
             initilizeIntegry({applicationId:userSession.applicationId});
          }, 5000)
        });
-       
-       
-    
-   // enableIntegry && initilizeIntegry({});
-    
+
+      }
     window.appHistory = this.props.history;
     const search = window.location.href;
     let invitedBy = CommonUtils.getUrlParameter(search, 'referer');

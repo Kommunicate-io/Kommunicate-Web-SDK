@@ -516,7 +516,7 @@ const getUserDisplayName = (user) => {
   if (user.name) {
     return user.name;
   } else if (user.userName) {
-    return userInfo.userName;
+    return user.userName;
   } else {
     return user.email;
   }

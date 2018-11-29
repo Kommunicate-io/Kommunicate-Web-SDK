@@ -29,7 +29,8 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true
 },
 
 "test" : {
@@ -63,7 +64,8 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true
 },
     
 "staging" : {
@@ -97,7 +99,8 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true
 },
     
  "prod" :{
@@ -132,7 +135,8 @@ export default {
         'analytics' : {
             'enable': true
         }
-    }
+    },
+    'integryEnabled':false
 },
     
 "prod_ca" :{
@@ -166,7 +170,8 @@ export default {
         'enable': true
     }
        
-  }
+  },
+  'integryEnabled':false
     
 },
  
@@ -201,7 +206,8 @@ export default {
         'enable': true
     }
        
-   }
+   },
+   'integryEnabled':false
         
  }
     
