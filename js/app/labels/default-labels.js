@@ -75,6 +75,11 @@ Kommunicate.defaultLabels = {
     'open':'Open',
     'you':'You',
     'closed.conversation.message':'This conversation has been marked as resolved. If you have other queries, just send a message here or start a new conversation.',
+    'search.faq':'Search in FAQs...',
+    'looking.for.something.else':'Looking for something else?',
+    'talk.to.agent': 'Talk to an agent',
+    'how.to.reachout': 'How may we reach you?',
+    'email.error.alert': 'It seems you have entered an invalid email',
     'group.metadata': {
         'CREATE_GROUP_MESSAGE': ':adminName created group :groupName',
         'REMOVE_MEMBER_MESSAGE': ':adminName removed :userName',
@@ -95,5 +100,5 @@ Kommunicate.defaultLabels = {
                 'contactNumber':'Contact Number',
                 'heading':'Before starting, we just need a few details so that we may serve you better',
                 'submit':'Start Conversation',
-            }
+    }
 }
