@@ -20,7 +20,8 @@ import { Link } from 'react-router-dom';
 import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
 import { connect } from 'react-redux'
-import * as Actions from '../../../actions'
+import * as Actions from '../../../actions/loginAction'
+import { persistor} from '../../../store/store';
 
 
 class Login extends Component {
@@ -71,6 +72,8 @@ constructor(props){
 }
 
   componentWillMount() {
+    this.props.logInStatus(false);
+    persistor.purge()
     const search = this.props.location.search;
     let referer  = CommonUtils.getUrlParameter(search, 'referrer')
     if(referer){
@@ -240,6 +243,7 @@ submitForm = ()=>{
           response.data.result.displayName=response.data.result.name;
           CommonUtils.setUserSession(response.data.result);
           _this.props.saveUserInfo(response.data.result);
+          _this.props.logInStatus(true);
         }
         // _this.props.history.push("/dashboard");
         window.location.assign(_this.state.next);
@@ -656,7 +660,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
+    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

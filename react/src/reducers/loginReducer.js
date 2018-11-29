@@ -1,5 +1,6 @@
 const initialState = {
-  userInfo: null
+  userInfo: null,
+  logInStatus: false
 };
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -7,6 +8,12 @@ const loginReducer = (state = initialState, action) => {
       return {
         ...state,
         userInfo: Object.assign({}, action.payload)
+      }
+    case 'UPDATE_LOGIN_STATUS':
+      return {
+        ...state,
+        logInStatus: action.payload
+
       }
     default:
       return state
