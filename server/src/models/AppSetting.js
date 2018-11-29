@@ -41,6 +41,11 @@ let AppSetting= function(sequelize, DataTypes) {
         allowNull: false,
         field: 'remove_bot_on_agent_handoff',
         defaultValue: 0
+      },
+      defaultConversationAssignee:{
+        type: DataTypes.JSON,
+        allowNull:false,
+        field:'default_conversation_assignee',
       }
     },
     
