@@ -156,6 +156,8 @@ alter table app_settings change collect_email collect_email_away tinyint(1);
 ALTER TABLE app_settings ADD COLUMN `remove_bot_on_agent_handoff` TINYINT(1) DEFAULT 0 COMMENT 'if enabled, all bots will be removed from conversation when conversation assigned to agent';
 
 
---------------------------- Release-3.1 --------------------------
+--------------------------- Release-3.1 ------------------------
+
+   -- KM-1655: Setting up default agent
 
 alter table app_settings add  column default_conversation_assignee JSON NULL DEFAULT NULL;
