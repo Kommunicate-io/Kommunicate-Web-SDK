@@ -11,6 +11,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import {Button, Modal as FaqModal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
 import uuid from 'uuid/v1';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 import bot1x from './images/bot-icon.png';
 import bot2x from './images/bot-icon@2x.png';
 import bot3x from './images/bot-icon@3x.png';
@@ -334,6 +335,7 @@ class Tabs extends Component {
               </div>
             </div>
           </div>
+          <div style={{  margin: "0 auto" , width : "64%"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" label ="Learn More"/></div>
         </div>
         <FaqModal isOpen={this.state.faqModal} toggle={this.toggleFaqModal} className="modal-dialog modal-dialog--add-faq-modal">          
             <h4 className="faq-modal-title km-faq-heading-section">FAQ</h4>      
@@ -399,6 +401,7 @@ class Tabs extends Component {
                   No
                 </button>
               </div> 
+              
             </div>
           </ModalBody>
           <span onClick={this.toggleFaqModal} ><CloseButton /></span>
@@ -437,6 +440,7 @@ class Tabs extends Component {
                   </div>
                 </div>
               </div>
+              
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 464" className="faq-svg-liz-svg">
@@ -631,10 +635,15 @@ class Tabs extends Component {
                 </g>
               </svg>
             </div>
+         
+          <div style={{  margin: "0 auto"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/creating-and-using-faqs-kommunicate-knowledge-base/" label ="Learn More"/></div>
+        
           </div>
 
 
+
         </div>
+     
 
 
       </div>

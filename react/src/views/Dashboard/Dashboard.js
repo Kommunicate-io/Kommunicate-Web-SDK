@@ -13,6 +13,7 @@ import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import {Link} from 'react-router-dom';
 import Onboarding from '../../components/UserOnboarding/Onboarding';
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 const brandPrimary = '#5c5aa7';
 const brandSuccess = '#18A9B7';
@@ -979,11 +980,13 @@ render() {
 
 
         </div>
-
+        
       </div>
       { this.state.isChecked &&
         <div className="time-zone-wrapper"><p className="time-zone-text">Time zone : GMT</p></div>
       }
+   <div className="row">
+   <div style={{width : "100%"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/dashboard-analytics-kommunicate-knowledge-base/" label ="Learn More"/></div></div>
 
     </div>
   )

@@ -28,6 +28,7 @@ import {
     updateAppSetting
 } from '../../utils/kommunicateClient'
 import * as Actions from '../../actions/applicationAction'
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 
 
@@ -394,8 +395,9 @@ toggleConversationAssignment = () => {
                         </div>
                     </div>
                 </div>
+                <div style={{width : "69.3%", marginLeft:"-15px"}} className="col-md-11"><LearnMoreButton url="https://www.kommunicate.io/blog/bots-and-automation-kommunicate-knowledge-base/" label ="Learn More"/></div>
             </div>
-        </div>            
+          </div>
     )
   }
 }

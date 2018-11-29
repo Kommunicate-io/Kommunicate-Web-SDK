@@ -1,0 +1,38 @@
+.learn-more-wrapper {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.learn-more-wrapper a span {
+    vertical-align: middle;
+    width: 90px;
+    height: 14px;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.6px;
+    color: #858585;
+    margin-top: -14px;
+    display: inline-block;
+}
+
+.learn-more-wrapper a {
+    display: block;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 7px 0;
+    border-radius: 4px;
+    transition: all .3s;
+}
+.learn-more-wrapper a:hover {
+    text-decoration: none;
+    border: none;
+    background-color: #dbdbdb;
+
+}
+
+.learn-more-wrapper svg {
+    width: 15px;
+    margin-top: 3px;
+}

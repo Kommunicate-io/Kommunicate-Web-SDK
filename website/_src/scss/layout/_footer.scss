@@ -151,7 +151,7 @@
         @include respond(phone) {
             display: block;
             margin: 0 auto;
-            text-align: center;
+            // text-align: center;
         }
         &:first-child {
             width: 50%;
@@ -162,10 +162,13 @@
             }
             @include respond(tab-por) {
                 width: 22%;
+                
             }
             @include respond(phone) {
                 width: 100%;
+              
             }
+        
         }
         &:last-child {
             padding-left: 8rem;
@@ -181,13 +184,14 @@
         list-style: none;
         margin-top: 2.3rem;
         &_item:first-child {
-            font-weight: 600;
+            font-weight: 700;
+                font-size: 2rem;
         }
         &_item {
             &:not(:first-child) {
-                margin: 2rem 0;
+                margin: .5rem 0;
                 @include respond(phone) {
-                    margin: 1.8rem;
+                    margin: 1rem 0;
                 }
             }
         }

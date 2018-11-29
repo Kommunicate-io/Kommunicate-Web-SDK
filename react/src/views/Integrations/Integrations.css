@@ -111,7 +111,7 @@ body {
 }
 
 .upgrade-plan-heading {
-    width: 60%;
+    width: 75%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -206,7 +206,8 @@ body {
 }
 
 .upgrade-plan-container.faq-pricing-restriction .upgrade-plan-integrations {
-    width: 67%;
+    width: 99%;
+    padding-right: 19%;
 }
 
 .faq-restricted-container {

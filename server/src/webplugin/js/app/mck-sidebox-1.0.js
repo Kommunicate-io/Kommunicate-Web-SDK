@@ -8,11 +8,6 @@ var isFirstLaunch = true;
 var KM_PENDING_ATTACHMENT_FILE = new Map();
 var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
-const MESSAGE_SOURCE = { DEVICE: 0, WEB: 1, ANDROID: 2, IOS: 3, PLATFORM: 4, DESKTOP_BROWSER: 5, MOBILE_BROWSER: 6, MAIL_INTERCEPTOR: 7 };
-const MESSAGE_CONTENT_TYPE = {
-    DEFAULT: 0, ATTACHMENT: 1, LOCATION: 2, TEXT_HTML: 3, PRICE: 4, IMAGELINK: 5, HYPERLINK: 6, CONTACT: 7, AUDIO: 8, VIDEO: 9, NOTIFY_MESSAGE: 10, HIDDEN_MESSAGE: 11, RECEIVER_ONLY: 12, BLOCK_NOTIFY_MESSAGE: 13, AUDIO_VIDEO_CALL: 102, MISSED_CALL: 103
-};
-
 (function ($applozic, w, d) {
     "use strict";
     if (!w.applozic) {
@@ -221,7 +216,6 @@ const MESSAGE_CONTENT_TYPE = {
                     case 'submitMessage':
                         return oInstance.submitMessage(params);
                         break;
-
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -1657,6 +1651,11 @@ const MESSAGE_CONTENT_TYPE = {
                 $applozic('#mck-btn-group-icon-save').attr('title', MCK_LABELS['save']);
                 $applozic('#mck-group-name-edit').attr('title', MCK_LABELS['edit']);
                 document.getElementById("mck-text-box").dataset.text = MCK_LABELS['input.message'];
+                document.getElementById('km-faq-search-input').setAttribute('placeholder', MCK_LABELS['search.faq']);
+                document.getElementById('mck-no-faq-found').innerHTML=  MCK_LABELS['looking.for.something.else'];
+                document.getElementById('talk-to-human-link').innerHTML= MCK_LABELS['talk.to.agent'];
+                document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
+                document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
             };
             $applozic(d).on('click', '.fancybox', function (e) {
                 var $this = $applozic(this);
@@ -2950,6 +2949,14 @@ const MESSAGE_CONTENT_TYPE = {
                     }
                 });
             };
+            _this.getChatContext =  function(msgProxy){
+                // chat context can be any extra information i.e. groupId, formUserName etc. 
+                var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
+                chatContext = typeof chatContext == 'object'?chatContext : {};
+                MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
+                return $applozic.extend(MCK_DEFAULT_MESSAGE_METADATA,chatContext);
+            } 
+
             _this.submitMessage = function (messagePxy, optns) {
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
@@ -2964,13 +2971,9 @@ const MESSAGE_CONTENT_TYPE = {
                 }
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
-                if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    // chat context is metadata will be sent with every message 
-                    var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
-                    MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
-                    chatContext = typeof chatContext =="object"?$applozic.extend(chatContext, MCK_DEFAULT_MESSAGE_METADATA):{};
-                    $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(chatContext)});
-                }
+               
+                $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(_this.getChatContext(messagePxy))});
+               
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
                     type: 'POST',
@@ -4350,7 +4353,7 @@ const MESSAGE_CONTENT_TYPE = {
                 if ($applozic("#mck-message-cell ." + msg.key).length > 0) {
                     return;
                 }
-                if (msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+                if (msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
                     emailMsgIndicator = "vis";
                     $applozic(".email-conversation-indicator").addClass("vis").removeClass("n-vis");
                 }
@@ -4359,12 +4362,12 @@ const MESSAGE_CONTENT_TYPE = {
                 //     $mck_no_messages.removeClass('vis').addClass('n-vis');
                 // }
     
-                if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT || msg.contentType == MESSAGE_CONTENT_TYPE.LOCATION){
+                if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT || msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.LOCATION){
                     messageClass = "n-vis";
                     progressMeterClass = "n-vis";
                     attachmentBox = "vis";
                 } else {
-                    messageClass = (msg.contentType == MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
+                    messageClass = (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.TEXT_HTML && msg.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) || (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.DEFAULT && typeof (msg.message) != "string") ? "n-vis" : 'vis';
                 }	
                 var downloadMediaUrl = '';
                 var floatWhere = 'mck-msg-right';
@@ -4441,7 +4444,7 @@ const MESSAGE_CONTENT_TYPE = {
                 var containerType = Kommunicate.getContainerTypeForRichMessage(msg);
                 var attachment = Kommunicate.isAttachment(msg);
                 var attachmentTemplate = attachment ? Kommunicate.messageTemplate.getAttachmentContanier(msg,mckMessageLayout.getFilePath(msg), alFileService.getFileAttachment(msg), alFileService.getFileurl(msg)):"";
-                if (msg.contentType == MESSAGE_CONTENT_TYPE.ATTACHMENT) {
+                if (msg.contentType == KommunicateConstants.MESSAGE_CONTENT_TYPE.ATTACHMENT) {
                     var progressMeterClass = attachment ? "n-vis" : "vis";
                     attachmentBox = attachment ? "vis" : "n-vis";
                     var progressMeter = attachment && !msg.fileMeta.url && !msg.fileMeta.blobKey ? Kommunicate.messageTemplate.getProgressMeterContanier(msg.key) : "";

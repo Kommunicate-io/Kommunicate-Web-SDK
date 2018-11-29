@@ -212,8 +212,9 @@ select:-webkit-autofill:focus {
 }
 .react-phone-number-input__row {
     position: relative;
+    height: 44px;
     font-size: 16px;
-    padding: 0px;
+    padding: 6.6px 8px; 
     width: 100%;
     color: #000;
     border: solid 1px #a1a1a1;
@@ -257,4 +258,15 @@ select:-webkit-autofill:focus {
 }
 .rrui__select__options--left-aligned {
     left: -1px;
+}
+
+.react-phone-number-input--focus .react-phone-number-input__row {
+    outline: none;
+    border: solid 1px #5c5aa7;
+    color: #000;
+}
+.react-phone-number-input__row .input {
+    padding: 10px;
+    height: 44px;
+    background: transparent;
 }
