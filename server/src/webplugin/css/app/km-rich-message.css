@@ -364,7 +364,7 @@
     .km-cta-multi-button-container {
         display: flex;
         flex-flow: row;
-        justify-content: center;
+        justify-content: flex-start;
         flex-wrap: wrap;
     
     }
@@ -381,8 +381,8 @@
         width:33%;
     }
     .km-cta-button {
-        color: #7766B5;
-        border: 1px solid #7766B5;
+        color: #5553b7!important;
+        border: 1px solid #5553b7!important;
     }
     .km-undecorated-link{
         text-decoration:none !important;
