@@ -103,13 +103,8 @@ class Install extends Component {
                      <span className="app-id-sub-text">
                        API Key:
                      </span>
-<<<<<<< HEAD
-                     <span className="app-id-main-text">
-                       {this.getApiKey()}
-=======
                      <span className="app-id-main-text" >
                      {this.getApiKey()}
->>>>>>> e165c43f... fix api key section in install page
                      </span>
                    </div>}
                  </div>
