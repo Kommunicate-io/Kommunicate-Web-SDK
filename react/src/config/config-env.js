@@ -30,7 +30,8 @@ export default {
             'enable': false
         }
     },
-    'integryEnabled':true
+    'integryEnabled':true,
+    'enableDevTools':true
 },
 
 "test" : {
@@ -65,7 +66,8 @@ export default {
             'enable': false
         }
     },
-    'integryEnabled':true
+    'integryEnabled':true,
+    'enableDevTools':true
 },
     
 "staging" : {
@@ -100,7 +102,8 @@ export default {
             'enable': false
         }
     },
-    'integryEnabled':true
+    'integryEnabled':true,
+    'enableDevTools':true
 },
     
  "prod" :{
@@ -136,7 +139,8 @@ export default {
             'enable': true
         }
     },
-    'integryEnabled':false
+    'integryEnabled':false,
+    'enableDevTools':false
 },
     
 "prod_ca" :{
@@ -171,7 +175,8 @@ export default {
     }
        
   },
-  'integryEnabled':false
+  'integryEnabled':false,
+  'enableDevTools':false
     
 },
  
@@ -207,7 +212,8 @@ export default {
     }
        
    },
-   'integryEnabled':false
+   'integryEnabled':false,
+   'enableDevTools':false
         
  }
     
