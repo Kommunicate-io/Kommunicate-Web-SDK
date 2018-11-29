@@ -5,6 +5,7 @@ import Notification from '../../views/model/Notification';
 import { Link } from 'react-router-dom';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 
 export default class IncomingEmailForward extends Component {
@@ -65,6 +66,7 @@ export default class IncomingEmailForward extends Component {
                         <div className="incoming-email-forward-helper-text-conntainer">
                             <p>Once this setup is done, your support emails will show up in the <Link to="/conversations">Conversation section.</Link></p>
                         </div>
+                        <div className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/mailbox-and-email-support-kommunicate-knowledge-base/" label ="Learn More"/></div>
                     </div>
                 </div>
             </div>
