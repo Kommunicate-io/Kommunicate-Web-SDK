@@ -75,7 +75,7 @@ export function acEventTrigger(trigger) {
   
   
     var visit = {
-      email: CommonUtils.getUserSession().email // the user's email address
+      email: CommonUtils.getUserSession() != null ? CommonUtils.getUserSession().email : "" // the user's email address
     }
   
     // get the url of the page and send it as event data
