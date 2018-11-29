@@ -10,7 +10,6 @@ export let store;
 export let persistor;
 export let pReducer;
 
-// const enableDevTools = false;
 const enableDevTools =getConfig().enableDevTools
 const persistConfig = {
     key: 'root',
@@ -18,7 +17,6 @@ const persistConfig = {
     stateReconciler: autoMergeLevel2
 };
 
-// pReducer = persistReducer(persistConfig, rootReducer);
 pReducer = persistReducer(persistConfig, rootReducer);
 if(enableDevTools) {
     // redux dev tool extension for chrome 
@@ -32,11 +30,7 @@ if(enableDevTools) {
     );
     
     store = createStore(pReducer, enhancer);
-    // persistor = persistStore(store);
-
 } else {
-    // pReducer = persistReducer(persistConfig, rootReducer);
     store = createStore(pReducer);
-    // persistor = persistStore(store);
 }
 persistor = persistStore(store);
