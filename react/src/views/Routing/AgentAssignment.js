@@ -16,6 +16,7 @@ import botPlatformClient from '../../utils/botPlatformClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import { acEventTrigger } from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 
 class AgentAssignemnt extends Component{
@@ -302,8 +303,9 @@ toggleConversationAssignment = () => {
                         </div>
                     </div>
                 </div>
+                <div style={{width : "69.3%", marginLeft:"-15px"}} className="col-md-11"><LearnMoreButton url="https://www.kommunicate.io/blog/bots-and-automation-kommunicate-knowledge-base/" label ="Learn More"/></div>
             </div>
-        </div>            
+          </div>
     )
   }
 }

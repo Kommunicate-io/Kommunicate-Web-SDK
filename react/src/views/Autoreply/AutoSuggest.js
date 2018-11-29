@@ -9,6 +9,7 @@ import {AUTOREPLY} from './Constant';
 import EmptyStateImage from './img/empty-message-shortcuts.png';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
 
 
 
@@ -427,6 +428,8 @@ class AutoSuggest extends Component {
 				</div>
 
 				{textFields}
+				<div style={{width : "68%"}} className="col-md-12"><LearnMoreButton url="https://www.kommunicate.io/blog/creating-and-using-quick-replies-kommunicate-knowledge-base/" label ="Learn More"/></div>
+
 
 			</div>
 		)
