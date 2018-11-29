@@ -21,7 +21,7 @@ class RadioButton extends Component {
                 <label className="radio-button-container" htmlFor={idRadioButton} >
                     <input id={idRadioButton} type='radio' value={label} checked={checked} disabled={disabled} onChange={handleOnChange} />
                     <div className="radio-wrapper">
-                        <div className="checkmark" style={(currentpath.includes('billing')) ? {top: '10px'} : {top:'50%'}}></div>
+                        <div className="checkmark" style={(currentpath.includes('billing')) ? {top: '10px'} : {top:'12px'}}></div>
                         {label}
                     </div>
                     
