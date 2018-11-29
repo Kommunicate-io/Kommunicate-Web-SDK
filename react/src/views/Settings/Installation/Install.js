@@ -98,14 +98,20 @@ class Install extends Component {
                        {this.yourApplicationId}
                      </span>
                    </div>
-                   <div className="app-id-div">
+                   {(!(currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) &&
+                   <div   className = {typeof this.getApiKey() === 'undefined' ? "n-vis" : "app-id-div" } >
                      <span className="app-id-sub-text">
                        API Key:
                      </span>
+<<<<<<< HEAD
                      <span className="app-id-main-text">
                        {this.getApiKey()}
+=======
+                     <span className="app-id-main-text" >
+                     {this.getApiKey()}
+>>>>>>> e165c43f... fix api key section in install page
                      </span>
-                   </div>
+                   </div>}
                  </div>
                 }
 
