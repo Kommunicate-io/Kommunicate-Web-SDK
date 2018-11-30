@@ -104,7 +104,7 @@ class Users extends Component {
       }
     });
     if (groupList.length === 0) {
-      this.mapUserDeatils(response, assignedUser, [], []);
+      this.mapUserDetails(response, assignedUser, [], []);
     }
     else {
       this.getmMultipleGroupInfo(groupList, response, assignedUser);
@@ -120,11 +120,11 @@ class Users extends Component {
           arr[data.response[j].id] = data.response[j];
         };
       }
-      _this.mapUserDeatils(response, assignedUser, data, arr);
+      _this.mapUserDetails(response, assignedUser, data, arr);
     });
   };
 
-  mapUserDeatils = (response, assignedUser, data, arr) => {
+  mapUserDetails = (response, assignedUser, data, arr) => {
     let botAgentMap = CommonUtils.getItemFromLocalStorage("KM_BOT_AGENT_MAP");
     var userdetail = this.state.isFromSearch ? response.response : response.response.users;
     const users = userdetail.map((user, index) => {
@@ -135,7 +135,7 @@ class Users extends Component {
             user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
             assignedUser.push(user);
             // Sort array after pushing
-            var sortOnBasisOf = assignedUser.lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+            var sortOnBasisOf = assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
             var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
             _this.setState({
               result: arrObj,
@@ -146,7 +146,7 @@ class Users extends Component {
       }
       else {
         assignedUser.push(user);
-        var sortOnBasisOf = assignedUser.lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+        var sortOnBasisOf = assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
         var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
         _this.setState({
           result: arrObj,
