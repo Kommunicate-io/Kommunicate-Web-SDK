@@ -277,7 +277,7 @@ getCoutryCodeFromTimezone() {
                 </div>
                 
 
-                <div className="group form-group email-form-group">
+                <div className="group form-group email-form-group n-vis">
                               <input className="input" type="text" id="role-input" required name="role-input" placeholder=" " onFocus={this.onFocus} value={this.state.role} onChange={(event) => { this.setState({ role: event.target.value }) }} />
                               <label className="label-for-input email-label">Designation <span className="km-italic">(Optional)</span></label>
                             </div>

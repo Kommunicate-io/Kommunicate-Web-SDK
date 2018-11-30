@@ -295,7 +295,7 @@ hideAllErrors (){
                             </div>
                             </div> */}
 
-                            <div className="group form-group selectt">
+                            <div className="group form-group selectt n-vis">
                               <select className="select" id="industry" name="industry" onChange={(event) => { document.getElementById("km-industry1").className = 'n-vis'; document.getElementById("km-industry2").className = 'n-vis';this.setState({ industry: event.target.value }) }} value={this.state.industry}>
                                 <option value="0" >Please select a value</option>
                                 <option value="E-commerce">E-commerce</option>
