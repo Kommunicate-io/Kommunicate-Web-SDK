@@ -270,3 +270,6 @@ select:-webkit-autofill:focus {
     height: 44px;
     background: transparent;
 }
+.react-phone-number-input__input:-webkit-autofill {
+    box-shadow: none;
+}
