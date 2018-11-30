@@ -2202,7 +2202,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					_this.sendMessage(messagePxy);
 					var currTab = $mck_msg_inner.data('km-id');
 					var group = kmGroupUtils.getGroup(currTab);
-					if (group && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
+					if (group && group.metadata && group.metadata.KM_ZENDESK_TICKET_ID && KmZendesk) {
 						KmZendesk.updateZendeskTicket(group.metadata.KM_ZENDESK_TICKET_ID);
 					} else {
 						console.log("Zendesk ticket not attached to this conversation");
@@ -4748,7 +4748,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					groupIdArray = [];
 				Object.keys(MCK_CONTACT_ARRAY).forEach(function (key) {
 					var userId = MCK_CONTACT_ARRAY[key].contactId ? MCK_CONTACT_ARRAY[key].contactId : MCK_CONTACT_ARRAY[key].userId;
-					MCK_CONTACT_ARRAY[key] ? userIdArray.push(MCK_CONTACT_ARRAY[key].userId) : "";
+					MCK_CONTACT_ARRAY[key] ? userIdArray.push(userId) : "";
 				});
 				$kmApplozic.each(MCK_CHAT_CONTACT_ARRAY, function (i, contact) {
 					(contact.isGroup) ? groupIdArray.push(contact.contactId) : userIdArray.push(contact.contactId);
@@ -4763,14 +4763,18 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					var userId = uniqueUserIdArray[j];
 					if (userId) {
 						var contact = _this.fetchContact('' + userId);
-						contactsArray.push(contact);
+						if (typeof contact !== "undefined") {
+							contactsArray.push(contact);
+						}
 					}
 				}
 				for (var j = 0; j < uniqueGroupIdArray.length; j++) {
 					var groupId = uniqueGroupIdArray[j];
 					if (groupId) {
 						var contact = kmGroupUtils.getGroup('' + groupId);
-						contactsArray.push(contact);
+						if (typeof contact !== "undefined") {
+							contactsArray.push(contact);
+						}
 					}
 				}
 
@@ -5306,11 +5310,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 			}
 			_this.getMessageTextForContactPreview = function (message, contact, size) {
 				if(contact.isGroup) {
-					if(contact.members.length > contact.userCount) {
+					if(contact.members && contact.members.length > contact.userCount) {
 						kmGroupService.getGroupFeed({
 							'groupId': contact.groupId,
 							'callback': function(resp) {
-								KM_GROUP_MAP[contact.groupId] = resp.groupId;
+								(resp.status === "success" && resp.data) && (KM_GROUP_MAP[contact.groupId] = resp.data);
 							}
 						});
 					}
@@ -5339,8 +5343,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							emoji_template = '<span class="km-icon-marker"></span>';
 						}
 						else if(message.source === 7 && message.contentType === 3){
-							var s = message.message;
-							var result = s.match(/<b>(.*?)<\/b>/g).map(function(val){
+							var s = message.message.match(/<b>(.*?)<\/b>/g);
+							var result = s && s.map(function(val){
 								return val.replace(/<\/?b>/g,'');
 							 });
 							var mailSvg = '<span class="mck-icon--email"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path fill="none" d="M0 0h24v24H0V0z"/><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-6.54 4.09c-.65.41-1.47.41-2.12 0L4.4 8.25c-.25-.16-.4-.43-.4-.72 0-.67.73-1.07 1.3-.72L12 11l6.7-4.19c.57-.35 1.3.05 1.3.72 0 .29-.15.56-.4.72z" fill="rgba(38,50,56,.52)"/></svg></span>';
@@ -6349,7 +6353,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (typeof group.removedMembersId === 'object' && (group.removedMembersId.indexOf(userId) !== -1)) {
 						group.removedMembersId.splice(group.removedMembersId.indexOf(userId), 1);
 					}
-					KM_GROUP_MAP[group.contactId] = group;
+					group && (KM_GROUP_MAP[group.contactId] = group);
 				}
 				return group;
 			};
@@ -6360,7 +6364,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else if (group.removedMembersId.indexOf(userId) === -1) {
 					group.removedMembersId.push(userId);
 				}
-				KM_GROUP_MAP[group.contactId] = group;
+				group && (KM_GROUP_MAP[group.contactId] = group);
 				return group;
 			};
 			_this.addGroupStatus = function (group) {
@@ -6568,7 +6572,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							$kmApplozic(".km-li-group-" + group.htmlId + " .icon").html("<img src=' " + group.imageUrl + "'>");
 						}
 					}
-					KM_GROUP_MAP[group.contactId] = group;
+					group && (KM_GROUP_MAP[group.contactId] = group);
 				}
 			};
 			_this.onGroupFeed = function (response, params) {
@@ -8084,11 +8088,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
 						if (message.metadata.KM_ASSIGN) {
 							contact.metadata.CONVERSATION_ASSIGNEE = message.metadata.KM_ASSIGN;
-							KM_GROUP_MAP[contact.contactId]=contact;
+							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
 						if (message.metadata.KM_STATUS) {
 							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_ASSIGN;
-							KM_GROUP_MAP[contact.contactId]=contact;
+							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");
 						var tabId = $mck_message_inner.data('km-id');
@@ -8110,9 +8114,10 @@ var KM_ASSIGNE_GROUP_MAP = [];
 							if(message.metadata.KM_STATUS || message.metadata.KM_ASSIGN ){
 								kmGroupService.getGroupFeed({
 									groupId: message.groupId,
-									callback: function (response) {
+									messageMetadata: message.metadata,
+									callback: function (response,metadata) {
 										kmEvents.triggerCustomEvent("group-update", { data: { data: response.data } });
-										_this.updateConversationList(response.data );
+										_this.updateConversationList(response.data ,metadata);
 									}
 								})
 							}
@@ -8206,12 +8211,14 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				}
 			};
 
-			_this.updateConversationList = function (group) {
-				if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
-					$kmApplozic('#km-assigned').click();
-				}
-				else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
-					$kmApplozic('#km-conversation').click();
+			_this.updateConversationList = function (group, metadata) {
+				if (!metadata.KM_STATUS) {
+					if (group.metadata.CONVERSATION_ASSIGNEE == MCK_USER_ID) {
+						$kmApplozic('#km-assigned').click();
+					}
+					else if (group.metadata.CONVERSATION_ASSIGNEE != MCK_USER_ID) {
+						$kmApplozic('#km-conversation').click();
+					}
 				}
 			}
 		}

@@ -8899,7 +8899,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                     }
                                     // no nedd to handle  message.type==4 and metadata.MSG_TYPE=="CALL_Rejected AND contnetType 103"
                                 } else {
-                                    mckMessageLayout.populateMessage(messageType, message, resp.notifyUser);
+                                    var params = {};
+                                    params.messageType =messageType;
+                                    params.message =message ;
+                                    params.notifyUser =resp.notifyUser;
+                                    if (message.to) {
+                                        mckContactService.getUsersDetail([message.to],params);
+                                    }
                                 }            
 
                         }

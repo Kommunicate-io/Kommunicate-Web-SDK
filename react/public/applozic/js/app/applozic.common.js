@@ -501,7 +501,7 @@ function KmGroupService() {
             if (typeof params.callback === 'function') {
                 response.status = "error";
                 response.errorMessage = "GroupId or Client GroupId Required";
-                params.callback(response);
+                message.metadata ? params.callback(response,message.metadata): params.callback(response);
             }
             return;
         }
