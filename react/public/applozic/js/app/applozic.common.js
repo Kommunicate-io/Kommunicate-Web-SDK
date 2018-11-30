@@ -501,7 +501,7 @@ function KmGroupService() {
             if (typeof params.callback === 'function') {
                 response.status = "error";
                 response.errorMessage = "GroupId or Client GroupId Required";
-                params.callback(response);
+                message.metadata ? params.callback(response,message.metadata): params.callback(response);
             }
             return;
         }
@@ -815,7 +815,7 @@ function KmDateUtils() {
         } 
         var timeStamp = new Date(lastSeenAtTime);
         var currentTime = new Date(),
-            secondsPast = (currentTime.getTime() - timeStamp.getTime() ) / 1000;
+            secondsPast = Math.max(0,(currentTime.getTime() - timeStamp.getTime() ) / 1000);
         if(secondsPast < 60){
             return (parseInt(secondsPast)<=1) ? KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast) + ' sec ' + KM_LABELS['ago'] : KM_LABELS['last.seen'] + ' ' + parseInt(secondsPast) + ' secs ' + KM_LABELS['ago'];
         }

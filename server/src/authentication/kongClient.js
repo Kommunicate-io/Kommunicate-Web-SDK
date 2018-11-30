@@ -19,15 +19,17 @@ const endPoints = {
         logger.info("consumer created ", response.data);
         return response.data;
     }).catch(e=>{
-        logger.info("error while creating consumer : ", e);
-        if(e.response&& e.response.statusCode==409){
+        //printing e.stack to avoid circular structure to JSON. 
+        logger.info("error while creating consumer",e && e.stack);
+        if(e.response&& e.response.status==409){
             logger.info("consumer already exists");
-            return {"code":"CONFLICT"}; 
+            return {"code":"CONFLICT", username:applicationId}; 
         }
         return null;
     })
 
  }
+ 
 /**
  * Register a key in kong. it will create a new key if none is passed.
  * @param {String} applicationId it can be either application Id or consumerId provided by kong 
@@ -42,7 +44,8 @@ const endPoints = {
         logger.info("generated Key for application", applicationId);
         return response.data;
     }).catch(e=>{
-        logger.info("error while generated Key : ", e);
+        // printing e.stack to avoid circular structure to JSON. 
+        logger.info("error while generated Key : ", e && e.stack);
         return null;
     })
 

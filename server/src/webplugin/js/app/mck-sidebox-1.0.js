@@ -216,7 +216,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     case 'submitMessage':
                         return oInstance.submitMessage(params);
                         break;
-
                 }
             } else if ($applozic.type(appOptions) === 'object') {
                 oInstance.reInit(appOptions);
@@ -2950,6 +2949,14 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     }
                 });
             };
+            _this.getChatContext =  function(msgProxy){
+                // chat context can be any extra information i.e. groupId, formUserName etc. 
+                var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
+                chatContext = typeof chatContext == 'object'?chatContext : {};
+                MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
+                return $applozic.extend(MCK_DEFAULT_MESSAGE_METADATA,chatContext);
+            } 
+
             _this.submitMessage = function (messagePxy, optns) {
                 var randomId = messagePxy.key;
                 var metadata = messagePxy.metadata ? messagePxy.metadata : {};
@@ -2964,13 +2971,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
                 messagePxy.source = MCK_SOURCE;
                 var $mck_msg_div = $applozic("#mck-message-cell .mck-message-inner div[name='message']." + randomId);
-                if (messagePxy.contentType != 102 && messagePxy.contentType != 103) {
-                    // chat context is metadata will be sent with every message 
-                    var chatContext = KommunicateUtils.getSettings("KM_CHAT_CONTEXT");
-                    MCK_DEFAULT_MESSAGE_METADATA=  typeof MCK_DEFAULT_MESSAGE_METADATA == 'object'? MCK_DEFAULT_MESSAGE_METADATA:{};
-                    chatContext = typeof chatContext =="object"?$applozic.extend(chatContext, MCK_DEFAULT_MESSAGE_METADATA):{};
-                    $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(chatContext)});
-                }
+               
+                $applozic.extend(metadata, {"KM_CHAT_CONTEXT":JSON.stringify(_this.getChatContext(messagePxy))});
+               
                 messagePxy.metadata = metadata;
                 mckUtils.ajax({
                     type: 'POST',
@@ -8896,7 +8899,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                     }
                                     // no nedd to handle  message.type==4 and metadata.MSG_TYPE=="CALL_Rejected AND contnetType 103"
                                 } else {
-                                    mckMessageLayout.populateMessage(messageType, message, resp.notifyUser);
+                                    var params = {};
+                                    params.messageType =messageType;
+                                    params.message =message ;
+                                    params.notifyUser =resp.notifyUser;
+                                    if (message.to) {
+                                        mckContactService.getUsersDetail([message.to],params);
+                                    }
                                 }            
 
                         }

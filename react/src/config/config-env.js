@@ -29,7 +29,9 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true
 },
 
 "test" : {
@@ -63,7 +65,9 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true
 },
     
 "staging" : {
@@ -97,7 +101,9 @@ export default {
         'analytics' : {
             'enable': false
         }
-    }
+    },
+    'integryEnabled':true,
+    'enableDevTools':true
 },
     
  "prod" :{
@@ -132,7 +138,9 @@ export default {
         'analytics' : {
             'enable': true
         }
-    }
+    },
+    'integryEnabled':false,
+    'enableDevTools':false
 },
     
 "prod_ca" :{
@@ -166,15 +174,18 @@ export default {
         'enable': true
     }
        
-  }
+  },
+  'integryEnabled':false,
+  'enableDevTools':false
     
 },
-    "prod_mzadqatar" :{
+ 
+"prod_mzadqatar" :{
    "baseurl": {
        "applozicAPI": "https://mzadqatar.applozic.com",
        "kommunicateAPI": "https://api-mzadqatar.applozic.com",
        "botPlatformAPI":"https://bot-mzadqatar.applozic.com",
-       "komunicateSupportUrl": "https://mzadqatar.applozic.com"
+        "komunicateSupportUrl": "https://chat.kommunicate.io"
    },
    "kommunicateDashboardUrl": "https://dashboard-mzadqatar.applozic.com",
    "kommunicateWebsiteUrl": "https://www.kommunicate.io",
@@ -200,7 +211,9 @@ export default {
         'enable': true
     }
        
-   }
+   },
+   'integryEnabled':false,
+   'enableDevTools':false
         
  }
     
