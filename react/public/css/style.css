@@ -10812,6 +10812,9 @@ input:required {
   box-shadow: none !important;
   background: #fff !important;
 }
+.Select.is-focused:not(.is-open) > .Select-control {
+  border-color: transparent !important;
+}
 
 .logo-nav {
   margin-bottom: 40px !important;
