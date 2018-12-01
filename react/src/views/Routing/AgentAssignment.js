@@ -63,29 +63,20 @@ componentDidMount(){
     this.getAgents();
 }
 updateDefaultAssigneeDetails = (userList) => {
+    //AssigneeInfo:key value pair for dropdown
     let appSettings = this.props.appSettings;
-    let notifyEveryBodyDefaultAssigneeInfo = {};
-    let automaticAssignmentDefaultAssigneeInfo = {};
     let notifyEveryBodyDefaultAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY];
-    let automaticAssignmentAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT]
-    userList.forEach(item => {
-        for (var key in item) {
-            if (item.hasOwnProperty(key)) {
-                if(item[key] == notifyEveryBodyDefaultAssignee) {
-                    notifyEveryBodyDefaultAssigneeInfo = item;
-                    this.setState({notifyEveryBodyDefaultAssigneeInfo:notifyEveryBodyDefaultAssigneeInfo});
-                    console.log("notifyEveryBodyDefaultAssignee",notifyEveryBodyDefaultAssigneeInfo)
-                } else if (item[key] ==automaticAssignmentAssignee ) {
-                    automaticAssignmentDefaultAssigneeInfo = item;
-                    console.log("automaticAssignmentDefaultSelected", automaticAssignmentDefaultAssigneeInfo);
-                    this.setState({automaticAssignmentDefaultAssigneeInfo:automaticAssignmentDefaultAssigneeInfo})
-                    console.log("automaticAssignmentDefaultSelected", automaticAssignmentDefaultAssigneeInfo);
-                }
-            }
-        }
-
+    let automaticAssignmentAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
+    let notifyEveryBodyDefaultAssigneeInfo = userList.find(result => {
+        if (result.value == notifyEveryBodyDefaultAssignee) return result
+    });
+    let automaticAssignmentDefaultAssigneeInfo = userList.find(result => {
+        if (result.value == automaticAssignmentAssignee) return result
+    });
+    this.setState({
+        notifyEveryBodyDefaultAssigneeInfo: notifyEveryBodyDefaultAssigneeInfo,
+        automaticAssignmentDefaultAssigneeInfo: automaticAssignmentDefaultAssigneeInfo
     })
-    
 }
 updateDefaultAssignee = (selectedAssignee) => {
     let appSettings = this.props.appSettings
