@@ -82,18 +82,9 @@ class Billing extends Component {
         this.openInfoModal = this.openInfoModal.bind(this);
         this.closeInfoModal = this.closeInfoModal.bind(this);
         this.openChargebeeModal = this.openChargebeeModal.bind(this);
-
-        window.addEventListener("openBillingModal",this.onOpenModal,true);
     };
 
-    componentDidMount() {
-        const search = this.props.location.search;
-        const earlyBirdOffer = CommonUtils.getUrlParameter(search, 'offer');
-
-        if(earlyBirdOffer === 'early-bird') {
-            this.onOpenModal();
-        }
-        
+    componentDidMount() {        
         /*Note: hack to create instance of chargebee by creating a hidden element and triggering click on it.
         Chargebee plugin code is modified to read click*/
         document.getElementById("chargebee-init").click();
