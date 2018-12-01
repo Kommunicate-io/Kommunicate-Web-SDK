@@ -248,7 +248,7 @@ updateUserDetail:function(params){
   },
 
 	// To fetch all the applications of the Applozic user
-	getApplicationIdList:function(email){
+	getApplicationIdList: function(email) {
 		const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
 		return axios.get(APP_LIST_URL).then(response=> {
 			if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
@@ -290,6 +290,21 @@ updateUserDetail:function(params){
       }).catch( err => {
         return err;
       });
+    },
+
+    getApplicationStats: function() {
+      let userSession = CommonUtils.getUserSession();
+      let headers = {
+        'Content-Type': 'application/json',
+          'Apz-AppId': userSession.application.applicationId,
+          'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      }
+      const url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/stats/get?appKey=' + userSession.application.key;
+      return Promise.resolve(axios.get(url, {"headers": headers})).then( response => {
+        return response;
+      }).catch( err => {
+        return err;
+      })
     }
 }
 
