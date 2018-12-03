@@ -4,20 +4,18 @@ import './AgentAssignment.css';
 import Notification from '../model/Notification';
 import RadioButton from '../../components/RadioButton/RadioButton';
 import axios from 'axios';
-import { ROUND_ROUBIN, USER_TYPE } from '../../../src/utils/Constant';
+import { ROUTING_RULES_FOR_AGENTS, USER_TYPE } from '../../../src/utils/Constant';
 import CommonUtils from '../../utils/CommonUtils';
 import SliderToggle from '../../components/SliderToggle/SliderToggle';
 import {Link} from 'react-router-dom';
 import {SplitButton, MenuItem, DropdownButton} from 'react-bootstrap';
 import { Collapse } from 'reactstrap';
-// import { getIntegratedBots, conversationHandlingByBot, getUsersByType  } from '../../utils/kommunicateClient';
 import Diaglflow from '../Bot/images/dialogflow-icon.png';
 import botPlatformClient from '../../utils/botPlatformClient';
 import LockBadge from '../../components/LockBadge/LockBadge';
 import { acEventTrigger } from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import DefaultAssignee from './DefaultAssignee'
-import {ROUTING_RULES_FOR_AGENTS} from '../../../src/utils/Constant'
 import {
     getCustomerByApplicationId,
     getAgentandBotRouting,
@@ -64,7 +62,7 @@ componentDidMount(){
     this.getAgents();
 }
 updateDefaultAssigneeDetails = (userList) => {
-    //AssigneeInfo:key value pair for dropdown
+    //AssigneeInfo:key value pair for drop down
     let appSettings = this.props.appSettings;
     let notifyEveryBodyDefaultAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY];
     let automaticAssignmentAssignee = appSettings.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT];
@@ -105,7 +103,6 @@ updateDefaultAssignee = (selectedAssignee) => {
         Notification.warning('There was a problem. Please try again');
     })
 }
-
 getAgents = () => {
     let userList = [];
     return Promise.resolve(getUsersByType(this.props.applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN]))
@@ -171,10 +168,10 @@ handleRadioBtnNotifyEverybody = () => {
         checkedAutomaticAssignemnt: false
     })
     if (this.state.preventMultiCallNotifyEverybody == false) {
-        return Promise.resolve(updateAgentAndBotRouting({ user:'agent', routingState: ROUND_ROUBIN.DISABLE }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({ user:'agent', routingState: ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUND_ROUBIN.DISABLE;
+                userSession.routingState = ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY;
                 CommonUtils.setUserSession(userSession)
                 Notification.success('Notify everybody is enabled');
                 this.setState({
@@ -193,10 +190,10 @@ handleRadioBtnAutomaticAssignment = () => {
         checkedAutomaticAssignemnt: true,
     })
     if (this.state.preventMultiCallAutoAssignment == false) {
-        return Promise.resolve(updateAgentAndBotRouting({ user:'agent',routingState: ROUND_ROUBIN.ENABLE }).then(response => {
+        return Promise.resolve(updateAgentAndBotRouting({ user:'agent',routingState: ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT }).then(response => {
             if (response.status === 200 && response.data.code === "SUCCESS") {
                 let userSession = CommonUtils.getUserSession();
-                userSession.routingState = ROUND_ROUBIN.ENABLE;
+                userSession.routingState = ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT;
                 CommonUtils.setUserSession(userSession);
                 Notification.success('Automatic assignment is enabled');
                 this.setState({
