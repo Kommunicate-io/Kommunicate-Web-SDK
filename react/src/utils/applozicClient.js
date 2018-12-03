@@ -291,7 +291,6 @@ updateUserDetail:function(params){
         return err;
       });
     },
-
     getApplicationStats: function() {
       let userSession = CommonUtils.getUserSession();
       let headers = {
@@ -305,6 +304,26 @@ updateUserDetail:function(params){
       }).catch( err => {
         return err;
       })
+    },
+    sendInvitation:function(email){
+      const url = getConfig().applozicPlugin.applozicHosturl +'/rest/ws/v2/invite/dev';
+      var userSession = CommonUtils.getUserSession();
+      var headers = {
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Content-Type': 'application/json'
+    }
+      let data = {
+        inviteEmails:email,
+        applicationId:userSession.application.applicationId,
+      } 
+      return axios.post(url, {}, {"headers": headers, "params": data }).then( response => {
+        if(response.status === 200) {
+          return response;	
+        }
+      }).catch( err => {
+        return err;
+      });
     }
 }
 
