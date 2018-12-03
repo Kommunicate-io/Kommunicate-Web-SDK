@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 import { ROLE_TYPE, INVITED_USER_STATUS } from '../../../utils/Constant';
 import kmloadinganimation from './km-loading-animation.svg';
 import { acEventTrigger } from '../../../utils/AnalyticsEventTracking.js';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions/loginAction'
 
 class Register extends Component {
   constructor(props){
@@ -181,6 +183,9 @@ class Register extends Component {
       }
       response.data.data.displayName=response.data.data.name;
      saveToLocalStorage(email, password, name, response);
+     _this.props.saveUserInfo(response.data.data);
+     _this.props.logInStatus(true);
+
       _this.setState({disableRegisterButton:false});
 
       CommonUtils.getUserSession().isAdmin ? window.location ="/setUpPage":window.location ="/dashboard?referer="+this.state.invitedBy;
@@ -368,4 +373,10 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapDispatchToProps = dispatch => {
+  return {
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
+    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
+  }
+}
+export default connect(null, mapDispatchToProps)(Register)
