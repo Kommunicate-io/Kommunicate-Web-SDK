@@ -38,6 +38,7 @@ import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
+import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 const enableIntegry = config.integryEnabled;
 import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
@@ -245,6 +246,8 @@ class Full extends Component {
     if (currentPath.startsWith("/conversations/")) {
       analyticsEvent = "/conversations/thread";
     }
+
+    const settingStyle={'marginLeft': '280px'}
     acEventTrigger(analyticsEvent);
     const settingStyle={'marginLeft': '280px'}
    
