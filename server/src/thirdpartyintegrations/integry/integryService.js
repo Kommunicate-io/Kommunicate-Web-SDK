@@ -9,21 +9,24 @@ const platform ={INTEGRY:"integry"}
  */
 exports.sendUserEventToIntegry = async function(eventName, data){
     logger.info('sending event to integry', eventName );
-    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:eventName,applicationId:data.applicationId});
+    let subscription = await subscriptionService.getSubscription({platform:platform.INTEGRY,eventType:"USER_CREATED",applicationId:data.applicationId});
     if(!subscription || ! subscription.triggerUrl){
         logger.info('No subscription found for event ', eventName ,"applicationId :",data.applicationId);
         return;
     }
-    return axios.post(subscription.triggerUrl,getFormatedData(data)).then(response=>{
+    return axios.post(subscription.triggerUrl,getFormatedData(data,eventName)).then(response=>{
         logger.info("respose received from Integry ", response.status, response.data);
     }).catch(e=>{
         logger.error("error while creating user in integry", e);
     })
 }
 
-const getFormatedData=(data)=>{
+const getFormatedData=(data,eventName)=>{
     let formatedInfo = {};
-    formatedInfo.id = data.userId;
+    formatedInfo.eventType = eventName;
+    formatedInfo.id = data.id;
+    formatedInfo.userId  = data.userId;
+    formatedInfo.applicationId = data.applicationId;
     data.displayName &&  (formatedInfo.name = data.displayName);
     data.companyName && (formatedInfo.companyName = data.companyName);
     data.email && (formatedInfo.email = data.email);

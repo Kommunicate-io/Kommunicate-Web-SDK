@@ -67,7 +67,7 @@ exports.processUserUpdatedEvent= (user)=>{
         }).catch(e=>{
             logger.error("error while updating contact id", contactId);           
         })
-        integryService.sendUserEventToIntegry("USER_UPDATED",usser)
+        integryService.sendUserEventToIntegry("USER_UPDATED",user)
     }else{
         logger.info("adding contact in agilecrm");
         processUserCreatedEventInKommunicate(user);
