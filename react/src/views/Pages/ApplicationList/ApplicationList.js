@@ -120,6 +120,7 @@ class ApplicationList extends Component {
                 response.data.result.displayName=response.data.result.name;
                 CommonUtils.setUserSession(response.data.result);
                 _this.props.saveUserInfo(response.data.result);
+                _this.props.logInStatus(true);
               }
               // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
               window.location.assign(_this.state.next);
@@ -222,7 +223,8 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = dispatch => {
   return {
-    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
+    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ApplicationList)
