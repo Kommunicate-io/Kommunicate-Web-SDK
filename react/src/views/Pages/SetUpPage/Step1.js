@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import isURL from 'validator/lib/isURL';
 import Notification from '../../model/Notification';
 import Phone from 'react-phone-number-input';
-import 'react-phone-number-input/rrui.css'
 import 'react-phone-number-input/style.css';
 import Moment from 'moment-timezone';
 import countriesAndTimezones from 'countries-and-timezones';
@@ -25,24 +24,6 @@ class Step1 extends Component {
     
     }
 
-    componentWillMount() {
-      // document.getElementById("number-input").required;
-    }
-    componentDidUpdate() {
-      var _rrui_input_field = document.getElementById("number-input");
-      _rrui_input_field.required = true;
-      _rrui_input_field.classList.add("input");
-      var _label = document.createElement("label");
-      _label.classList.add("label-for-input");
-      _label.innerHTML = "Contact Number";
-      if(document.querySelector(".react-phone-number-input__row .label-for-input")) {
-        null
-      } else {
-        _rrui_input_field.after(_label);
-      }
-      
-
-    }
     componentDidMount() {
       this.getCoutryCodeFromTimezone();
       var _rrui_input_field = document.getElementById("number-input");
@@ -51,7 +32,7 @@ class Step1 extends Component {
       var _label = document.createElement("label");
       _label.classList.add("label-for-input");
       _label.innerHTML = "Contact Number";
-      _rrui_input_field.after(_label);
+      _rrui_input_field.parentNode.insertBefore(_label, _rrui_input_field.nextSibling);
     }
 
     comapnyUrlValidationOnEnter = (e) => {
@@ -277,7 +258,7 @@ getCoutryCodeFromTimezone() {
                     placeholder=" "
                     value={ this.state.contact_no }
                     onChange={ contact_no => this.setState({ contact_no }) }
-                    id="number-input"
+					id="number-input"
                   />
                   <div id="emptyerror" className="input-error-div n-vis">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">

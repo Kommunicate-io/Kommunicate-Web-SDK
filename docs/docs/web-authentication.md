@@ -39,7 +39,6 @@ Example:
             "conversationTitle":conversationTitle
             };
 
-
 ```
 
 ## 2. Pre chat Lead Collection
@@ -59,13 +58,9 @@ Once configured, user will see the form on click of the chat widget launch icon
 ```javascript
 
     var kommunicateSettings = {"appId": applicationId,
-            "userId": userId,
-            "agentId": agentId,
-            "userName": userName,
             "conversationTitle":conversationTitle,
             "askUserDetails":['name', 'email', 'phone']
             };
-
 
 ```
 
@@ -102,17 +97,25 @@ Example:
 Once plugin is initialized and return success response, then you can use `Kommunicate.updateUser(userdetail)` method to update users identity.
 
 ```
-var userdetail = {
-    "email": email,
-    "displayName": displayName,
-    "imageLink": profileImageUrl,
-    "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
-        "companyName": value1 ,
-        "designation": value2 ,
-        "linkedInProfile": value3
+var kommunicateSettings = {
+    "appId": appId,
+    "conversationTitle": conversationTitle,
+    "onInit": function () {
+        // paste your code here
+        var userdetail = {
+            "email": email,
+            "displayName": displayName,
+            "imageLink": profileImageUrl,
+            "metadata": {      // add userinfo you want to show in userinfo section of kommunicate dashboard
+                "companyName": value1,
+                "designation": value2,
+                "linkedInProfile": value3
+            }
+        };
+        Kommunicate.updateUser(userdetail);
     }
 };
-Kommunicate.updateUser(userdetail);
+
 ```
 |parameters | description|
 |---    |---    |

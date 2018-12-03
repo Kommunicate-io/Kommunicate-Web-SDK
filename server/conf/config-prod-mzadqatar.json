@@ -1,7 +1,7 @@
 {
        "port": 3999,
        "db": {
-         "url": "mysql://capletadmin:admin$2018@applozic-caplet.cy7mnhwbxqld.ca-central-1.rds.amazonaws.com:3306/kommunicate_caplet",
+         "url": "mysql://mzadqatardbadmin:mzadqatar$2017@mzadqatarproddb.celtixdshllg.us-east-1.rds.amazonaws.com:3306/kommunicate_mzad",
          "options": {
            "pool": {
              "threadPoolMax": 5,
@@ -10,7 +10,7 @@
            }
          }
        },
-       "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-35-183-11-21.ca-central-1.compute.amazonaws.com:27017/kommunicate?authSource=admin",
+       "mongoDbUrl":"mongodb://applozicdba:applozicdba@ec2-54-205-30-77.compute-1.amazonaws.com:27017/kommunicate?authSource=admin",
        "mongoConfig":{
          "poolSize":20,
          "autoReconnect":true,
@@ -20,23 +20,23 @@
          "reconnectInterval": 1000
        },
        "urls": {
-         "baseUrl": "https://chat-ca.kommunicate.io",
-         "getApplicationDetail": "https://chat-ca.kommunicate.io/rest/ws/application/get?applicationId=:applicationId",
-         "createApplozicClient": "https://chat-ca.kommunicate.io/rest/ws/register/client",
-         "createApplication": "https://chat-ca.kommunicate.io/rest/ws/application/add",
-         "groupInfoUrl": "https://chat-ca.kommunicate.io/rest/ws/group/v2/info?groupId=:groupId",
-         "addMemberIntoConversation":"https://chat-ca.kommunicate.io/rest/ws/group/add/users?role=:role",
-         "createGroup":"https://chat-ca.kommunicate.io/rest/ws/group/v2.1/create",
-         "createBotUrl": "https://bot-ca.kommunicate.io/bot",
-         "updateBotUrl":"http://bot-ca.kommunicate.io/bot/update",
-         "sendMessageUrl": "https://chat-ca.kommunicate.io/rest/ws/message/v2/send",
-         "hostUrl": "https://api-ca.kommunicate.io",
+         "baseUrl": "https://mzadqatar.applozic.com",
+         "getApplicationDetail": "https://mzadqatar.applozic.com/rest/ws/application/get?applicationId=:applicationId",
+         "createApplozicClient": "https://mzadqatar.applozic.com/rest/ws/register/client",
+         "createApplication": "https://mzadqatar.applozic.com/rest/ws/application/add",
+         "groupInfoUrl": "https://mzadqatar.applozic.com/rest/ws/group/v2/info?groupId=:groupId",
+         "addMemberIntoConversation":"https://mzadqatar.applozic.com/rest/ws/group/add/users?role=:role",
+         "createGroup":"https://mzadqatar.applozic.com/rest/ws/group/v2.1/create",
+         "createBotUrl": "https://bot-mzadqatar.applozic.com/bot",
+         "updateBotUrl":"http://bot-mzadqatar.applozic.com/bot/update",
+         "sendMessageUrl": "https://mzadqatar.applozic.com/rest/ws/message/v2/send",
+         "hostUrl": "https://api-mzadqatar.applozic.com",
          "kmWebsiteUrl": "https://www.kommunicate.io",
-         "updatePasswordPage": "http://dashboard-ca.kommunicate.io/password/update?code=:code",
-         "passwordResetUrl": "https://chat-ca.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
-         "dashboardHostUrl":"https://dashboard-ca.kommunicate.io",
-         "applozicHostUrl" : "https://chat-ca.kommunicate.io",
-         "getUserInfo": "https://chat-ca.kommunicate.io/rest/ws/user/v2/detail",
+         "updatePasswordPage": "http://dashboard-mzadqatar.applozic.com/password/update?code=:code",
+         "passwordResetUrl": "https://mzadqatar.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
+         "dashboardHostUrl":"https://dashboard-mzadqatar.applozic.com",
+         "applozicHostUrl" : "https://mzadqatar.applozic.com",
+         "getUserInfo": "https://mzadqatar.applozic.com/rest/ws/user/v2/detail",
          "rasafaq":"https://rasa.kommunicate.io"
        },
        "cache": {
@@ -56,7 +56,7 @@
        "s3Access": {
          "accessKeyId": "AKIAJ7QAZU7R2GPBCXGQ",
          "secretAccessKey": "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",
-         "region": "ca-central-1"
+         "region": "us-east-1"
        },
        "commonProperties": {
          "applicationWebhooks":[
@@ -64,7 +64,7 @@
            {"type": 2, "url": "", "notifyVia": "0", "fallbackTime": 300}
            ],
          "companyDetail":{
-           "companyLogo": "https://dashboard-ca.kommunicate.io/img/logo02.png",
+           "companyLogo": "https://dashboard-mzadqatar.applozic.com/img/logo02.png",
            "companyAddress": "Stanford Financial Square, 2600 El Camino Real, Suite 415, Palo Alto &nbsp;&bull;&nbsp;  CA  &nbsp;&bull;&nbsp; 94306",
            "websiteUrl":"https://www.kommunicate.io/"
          },
@@ -90,10 +90,10 @@
      },
      "pluginProperties": {
        "pseudoNameEnabled": true,
-       "kommunicateApiUrl":"https://api-ca.kommunicate.io",
-       "applozicBaseUrl":"https://chat-ca.kommunicate.io"
+       "kommunicateApiUrl":"https://api-mzadqatar.applozic.com",
+       "applozicBaseUrl":"https://mzadqatar.applozic.com"
      }, "rabbitmq":{
-       "host":"chat-ca.kommunicate.io",
+       "host":"mzadqatar.applozic.com",
        "userName":"applozic",
        "password":"@ppl0zic"
    },"kong":{

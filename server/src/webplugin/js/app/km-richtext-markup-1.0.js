@@ -390,7 +390,7 @@ Kommunicate.markup.getImageContainer = function(options) {
     return ""; 
 }
 Kommunicate.markup.getHtmlMessageMarkups = function (message) {
-    if (message && message.source == MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
+    if (message && message.source == KommunicateConstants.MESSAGE_SOURCE.MAIL_INTERCEPTOR) {
         var uniqueId = "km-iframe-" + message.groupId;
         return "<iframe class='km-mail-fixed-view' id=" + uniqueId + " ></iframe>";
     }
