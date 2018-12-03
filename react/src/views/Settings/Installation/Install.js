@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getConfig } from "../../.../../../config/config.js";
 import MultiEmail from '../../MultiEmail/';
 import { getJsCode, getApplozicScript, getDocsLink } from '../../../utils/customerSetUp';
 import CommonUtils from "../../../utils/CommonUtils";
@@ -9,10 +8,6 @@ import { SettingsHeader } from '../../../../src/components/SettingsComponent/Set
 import { ReactNative, NativeScript, Squarspace, Wordpress, WixIcon, Cordova, IOS, AndroidIcon } from '../../../../src/assets/svg/svgs'
 
 
-const multiEmailLink = {
-  backgroundColor: 'transparent',
-
-}
 const DocsLink = (props, WrappedComponent) => {
   return (
     <div className="code-container col-md-10">
@@ -28,7 +23,6 @@ const DocsLink = (props, WrappedComponent) => {
     </div>
   )
 }
-const pluginBaseUrl = getConfig().kommunicateApi.pluginUrl;
 class Install extends Component {
   static defaultProps = {
     cardSize: 10
