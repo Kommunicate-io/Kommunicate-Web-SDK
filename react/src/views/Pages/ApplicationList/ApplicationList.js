@@ -147,6 +147,8 @@ class ApplicationList extends Component {
               // response.data.result.password = password=='' ? response.data.result.accessToken : password;
               response.data.result.displayName = response.data.result.name;
               CommonUtils.setUserSession(response.data.result);
+              _this.props.saveUserInfo(response.data.result);
+              _this.props.logInStatus(true);
             }
             // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
             window.location.assign(_this.state.next);
