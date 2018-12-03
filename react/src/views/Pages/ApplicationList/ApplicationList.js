@@ -6,6 +6,8 @@ import CommonUtils from '../../../utils/CommonUtils';
 import Notification from '../../model/Notification';
 import './ApplicationList.css';
 import {USER_STATUS} from '../../../utils/Constant';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions/loginAction'
 
 
 class ApplicationList extends Component {
@@ -117,6 +119,7 @@ class ApplicationList extends Component {
                 // response.data.result.password = password=='' ? response.data.result.accessToken : password;
                 response.data.result.displayName=response.data.result.name;
                 CommonUtils.setUserSession(response.data.result);
+                _this.props.saveUserInfo(response.data.result);
               }
               // _this.props.history.push({pathname:"/dashboard", state:{randomNo: _this.state.randomColorClass}});
               window.location.assign(_this.state.next);
@@ -214,4 +217,12 @@ class ApplicationList extends Component {
     }
 }
 
-export default ApplicationList;
+const mapStateToProps = state => ({
+  userInfo:state.loginReducer.userInfo
+})
+const mapDispatchToProps = dispatch => {
+  return {
+    saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ApplicationList)

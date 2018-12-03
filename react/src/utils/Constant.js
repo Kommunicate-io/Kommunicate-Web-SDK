@@ -10,7 +10,9 @@ export{
     INVITED_USER_STATUS,
     USER_STATUS,
     FALLBACK_TYPE,
-    NOTIFY_VIA
+    NOTIFY_VIA,
+    ROUTING_RULES_FOR_AGENTS,
+    ROUND_ROUBIN
 }
 
 const FALLBACK_TYPE = {
@@ -59,6 +61,15 @@ const INVITED_USER_STATUS = {
     INVITED:0,
     SIGNED_UP:1
 }
+const ROUTING_RULES_FOR_AGENTS = {
+    NOTIFY_EVERYBODY : 0 ,
+    AUTOMATIC_ASSIGNMENT : 1
+}
+const ROUND_ROUBIN = {
+    ENABLE:1, //Enbale Automatic assignemnt
+    DISABLE:0 //Enbale Notify everybody
+}
+
 let  getLoggedInCookieName =function(){
     return getEnvironmentId()+"_km_l_u_id";
 }

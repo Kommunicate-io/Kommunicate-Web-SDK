@@ -30,12 +30,9 @@ body {
     color: #878585;
 }
 .routing-title{
-    margin-top: 15px;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
+  font-size: 18px;
+  letter-spacing: 0.8px;
+  color: #908d8d;
 }
 .notify-everybody-sub-title{
     font-size: 12px;
@@ -43,31 +40,45 @@ body {
     font-weight: normal;
 }
 .routing-description{
-    font-size: 14px;
-    letter-spacing: 0.6px;
-    text-align: left;
-    color: #656161;
-    margin: 0;
-    margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.21;
+  letter-spacing: 0.6px;
+  color: #656161;
 }
-.active-agent-routing{
-    margin-left: -5px;
-    width: 99%;
-    border-radius: 3px;
-    background-color: rgba(92, 90, 167, 0.13);
-    border: solid 1px #5c5aa7;
+.active-agent-routing .routing-title{
+    color: #1d1c1c;
 }
 .non-active-agent-routing{
-    margin-left: -5px;
-    width: 99%;
+    /* margin-left: -5px;
+    width: 99%; */
 }
 .col-radio-btn{
-    width: 3%!important
+    width: 7%!important
 }
 .checkmark {
     left: 9px;
 }
-
+.automatic-assignemnt-content {
+    margin-left: 4px
+}
+.default-assignee-container {
+    margin-left: 49px;
+}
+.default-assignee-description-wrapper {
+    margin-top: 7px;
+}
+.km-agent-assigment-radio-container {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+.default-assignee-dropdown-wrapper {
+    width: 20%;
+}
+.default-assignee-description {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #2e2d2d;
+}
 .km-routing-assign-bot-text-1 {
     font-size: 16px;
     font-weight: normal;

@@ -26,6 +26,9 @@ import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
 import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
 import {setTag} from '../../src/sentry/sentry'
+import {getAppSetting} from '../../src/utils/kommunicateClient'
+import { connect } from 'react-redux'
+import * as Actions from '../actions/applicationAction'
 
 
 // const history = createBrowserHistory();
@@ -41,6 +44,16 @@ class App extends Component {
   }
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 1500); // simulates an async action, and hides the spinner
+    this.props.logInStatus && this.getAppSettings()
+  }
+  getAppSettings = () => {
+    return Promise.resolve(getAppSetting().then(response => {
+      if(response.status == 200 && response.data.response) {
+        this.props.updateAppSettings(response.data.response)
+      }
+    })).catch(err => {
+      // console.log(err);
+    })
   }
   componentDidCatch(error, errorInfo) {
     this.setState({ error });
@@ -94,5 +107,13 @@ class App extends Component {
     )
     }
 }
+const mapStateToProps = state => ({
+  logInStatus:state.loginReducer.logInStatus
+})
 
-export default App
+const mapDispatchToProps = dispatch => {
+  return {
+    updateAppSettings: payload => dispatch(Actions.saveAppSettings(payload))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App)
