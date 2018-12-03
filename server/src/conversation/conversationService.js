@@ -7,7 +7,7 @@ const logger = require('../utils/logger');
 const cacheClient = require("../cache/hazelCacheClient");
 const inAppMessageService = require('../application/inAppMsgService');
 const { EMAIL_NOTIFY } = require('../users/constants');
-const GROUP_ROLE = require("../utils/constant").GROUP_ROLE;
+const {GROUP_ROLE, ROUTING_RULES_FOR_AGENTS} = require("../utils/constant");
 
 const addMemberIntoConversation = (data) => {
     //note: getting clientGroupId in data.groupId
@@ -36,7 +36,8 @@ const addMemberIntoConversation = (data) => {
                                 }
                                 return { code: "SUCCESS", data: agents }
                             } else if (!customer.agentRouting) {
-                                agents.assignTo != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header) : "";
+                                //notify everybody
+                                customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header) : "";
                                 let groupInfo = { groupDetails: userIds };
                                 logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                                 return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
@@ -51,7 +52,7 @@ const addMemberIntoConversation = (data) => {
                                         console.log("online user: ", onlineUser)
                                         return assingConversationInRoundRobin(groupId, agentIds, customer.applications[0].applicationId, header, onlineUsers);
                                     } else {
-                                        return assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
+                                        return assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header)
                                     }
                                 });
                             }
@@ -236,8 +237,8 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                     });
                     if (assignee[0].type == 2) {
                         if (isValidUser || !customer.agentRouting) {
-                            return assignToDefaultAgent(groupId, appId, assignToUserId || customer.userName, agents.header).then(res => {
-                                sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.userName, assignee[0].apzToken);
+                            return assignToDefaultAgent(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header).then(res => {
+                                sendAssigneeChangedNotification(groupId, appId, assignToUserId || customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], assignee[0].apzToken);
                                 return "success";
                             });
                         } else if (customer.agentRouting) {
@@ -249,8 +250,8 @@ const switchConversationAssignee = (appId, groupId, assignToUserId) => {
                                         assignTo ? sendAssigneeChangedNotification(groupId, appId, assignTo, assignee[0].apzToken) : "";
                                     });
                                 } else {
-                                    assignToDefaultAgent(groupId, appId, customer.userName, agents.header).then(response => {
-                                        sendAssigneeChangedNotification(groupId, appId, customer.userName, assignee[0].apzToken);
+                                    assignToDefaultAgent(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], agents.header).then(response => {
+                                    sendAssigneeChangedNotification(groupId, appId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT], assignee[0].apzToken);
                                     });
                                 }
                                 return "success";
