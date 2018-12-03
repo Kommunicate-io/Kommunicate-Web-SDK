@@ -10,14 +10,19 @@ const userService = require('../users/userService');
 const botClientService = require('../utils/botPlatformClient');
 const utils = require("../register/utils");
 const applozicClient = require("../utils/applozicClient");
+const {ROUTING_RULES_FOR_AGENTS} = require("../utils/constant")
 
 
 const createCustomer = (customer, application, transaction) => {
     return Promise.resolve(customerModel.findOrCreate({ where: { userName: customer.userName }, defaults: customer })).then((customer) => {
+        let userId = customer[0].userName;
+        let conversationAssignee = {};
+        conversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] = userId;
+        conversationAssignee[ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT] = userId;
         //logger.info('customer created :', 'created');
         application.customerId = customer[0].id;
         return applicationService.createApplication(application, transaction).then(application => {
-            return appSettingService.insertAppSettings({ applicationId: application.applicationId }).then(ersult => {
+            return appSettingService.insertAppSettings({ applicationId: application.applicationId,"defaultConversationAssignee": conversationAssignee}).then(result => {
                 return getCustomerByApplicationId(application.applicationId);
             }); 
         });
