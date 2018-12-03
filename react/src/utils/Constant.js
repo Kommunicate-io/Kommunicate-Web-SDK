@@ -12,7 +12,6 @@ export{
     FALLBACK_TYPE,
     NOTIFY_VIA,
     ROUTING_RULES_FOR_AGENTS,
-    ROUND_ROUBIN
 }
 
 const FALLBACK_TYPE = {
@@ -64,10 +63,6 @@ const INVITED_USER_STATUS = {
 const ROUTING_RULES_FOR_AGENTS = {
     NOTIFY_EVERYBODY : 0 ,
     AUTOMATIC_ASSIGNMENT : 1
-}
-const ROUND_ROUBIN = {
-    ENABLE:1, //Enbale Automatic assignemnt
-    DISABLE:0 //Enbale Notify everybody
 }
 
 let  getLoggedInCookieName =function(){
