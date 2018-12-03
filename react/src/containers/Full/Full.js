@@ -40,8 +40,10 @@ import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
 import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
+
+
+
 const enableIntegry = config.integryEnabled;
-import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
 const chatUrl = config.baseurl.applozicAPI;
 
 class Full extends Component {
@@ -246,8 +248,7 @@ class Full extends Component {
     if (currentPath.startsWith("/conversations/")) {
       analyticsEvent = "/conversations/thread";
     }
-
-    const settingStyle={'marginLeft': '280px'}
+    
     acEventTrigger(analyticsEvent);
     const settingStyle={'marginLeft': '280px'}
    

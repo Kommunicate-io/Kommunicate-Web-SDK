@@ -18,7 +18,6 @@ import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
 import { persistor} from '../../../store/store';
 import {KommunicateLogo, GoogleLogin}from '../../Faq/LizSVG'
-import { KommunicateLogo, GoogleLogin }from '../../Faq/LizSVG'
 import { ApplozicLogo, ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
 
 

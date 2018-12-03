@@ -6,9 +6,7 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import rootReducer from '../reducers/index'
 import { getConfig } from '../config/config';
 
-export let store;
-export let persistor;
-export let pReducer;
+
 
 const enableDevTools =getConfig().enableDevTools
 const persistConfig = {
@@ -19,5 +17,5 @@ const persistConfig = {
 
 const pReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(pReducer, enhancer);
+export const store = createStore(pReducer);
 export const persistor = persistStore(store);
