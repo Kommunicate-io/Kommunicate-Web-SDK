@@ -324,7 +324,30 @@ updateUserDetail:function(params){
       }).catch( err => {
         return err;
       });
-    }
+    },
+  uploadCertificate: function (params) {
+    var data = new FormData();
+    var certificateUploadUrl = getConfig().applozicPlugin.certificateUpload
+    var userSession = CommonUtils.getUserSession();
+    var headers = CommonUtils.isApplicationAdmin() ?
+      {
+        "Apz-AppId": userSession.application.applicationId,
+        "Apz-Token": 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64')
+      } :
+      {
+        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey,
+        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+      }
+    data.append("file", params.file);
+    return axios({
+      "method": 'POST',
+      "url": certificateUploadUrl,
+      "data": data,
+      "headers": headers
+    }).then(response => {
+      return response;
+    })
+  }
 }
 
 export default ApplozicClient;

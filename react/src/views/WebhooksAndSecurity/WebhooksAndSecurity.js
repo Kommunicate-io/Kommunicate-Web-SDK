@@ -99,8 +99,8 @@ export default class WebhooksAndSecurity extends Component {
 
     submitWebhooksDetails = (securitySectionDetail) => {
         let userSession = CommonUtils.getUserSession();
-        let applicationData = userSession;
-        delete applicationData.application.adminUser;
+        let applicationData = userSession.application;
+        delete applicationData.adminUser;
         applicationData.applicationWebhookPxys = [];
 
         let authenticationToken = this.state.authenticationToken;
@@ -132,11 +132,13 @@ export default class WebhooksAndSecurity extends Component {
                     userSession.application.accessTokenUrl = response.data.accessTokenUrl;
                     CommonUtils.setUserSession(userSession);
                     Notification.info("Security configuration updated successfully");
-                } else {   
+                } else if(response.data !== 'error') {   
                     userSession.application.applicationWebhookPxys = response.data.applicationWebhookPxys;
                     userSession.application.webhookAuthentication = response.data.webhookAuthentication;
                     CommonUtils.setUserSession(userSession);                 
                     Notification.info("Webhooks configured successfully");
+                }else{
+                    Notification.info("Webhooks configure error"); 
                 }
             }
             console.log(response)

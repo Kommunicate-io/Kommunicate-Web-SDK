@@ -1073,17 +1073,22 @@ const getSubscriptionDetail = (userId) => {
 
 const editApplicationDetails = (data) => {
   let url = getConfig().applozicPlugin.editApplication;
+  let userSession = CommonUtils.getUserSession();
   let axiosConfig = {
     headers: {
+      "Apz-Token": CommonUtils.isApplicationAdmin(userSession)? "Basic "+new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') :"Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
       "Content-Type": "application/json",
-      "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
-      "Apz-AppId": CommonUtils.getUserSession().application.applicationId,
+      "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
     }
   };
+  data.appModulePxys = data.appModulePxys.map(({createdAt, ...appModulePxy}) => appModulePxy)
   return Promise.resolve(axios.post(url, data, axiosConfig)).then(response => {
     if(response !== undefined) {
       return response;
     } 
+  }).catch(err=>{
+    console.log('application update error: ',err)
+    return err;
   })
 }
 
