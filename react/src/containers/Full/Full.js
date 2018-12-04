@@ -53,7 +53,8 @@ class Full extends Component {
       imageLink: imageLink,
       hideInvitedMemberBar: true,
       invitedBy: '',
-      displayName: ''
+      displayName: '',
+      isIntegrationStarted: true
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
     this.updateUserDisplay  = this.updateUserDisplay.bind(this);
@@ -147,6 +148,9 @@ class Full extends Component {
 
   populateIntegrationDetailInSession= (isIntegrationStarted)=>{
     CommonUtils.updateUserSession({isIntegrationStarted:isIntegrationStarted});
+    this.setState({
+      isIntegrationStarted: isIntegrationStarted
+    });
   }
   /*initiateIntegry = () => {
     window.appKey = "a85c28bb-40c5-4d6c-b8e5-3e8c4fe4a32f";
@@ -254,7 +258,7 @@ class Full extends Component {
         /> */}
 
         <div className="app-body">
-          <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
+          <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName} isIntegrationStarted={this.state.isIntegrationStarted} />
           {currentPath.includes('/settings') ? <SettingsSidebar {...this.props}/> : null}
 
           <main className="main">

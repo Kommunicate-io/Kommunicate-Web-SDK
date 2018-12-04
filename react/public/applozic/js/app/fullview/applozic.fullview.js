@@ -415,7 +415,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 
 		var MCK_MAX_HISTORY = appOptions.maxHistory;
-		var MCK_INTEGRATION_STARTED = appOptions.isIntegrationStarted;
+		var MCK_INTEGRATION_STARTED;
 		var currentTimeStamp = Math.ceil(new Date().getTime());
 		var maxHistoryInMillisec = (!MCK_MAX_HISTORY == "") ? MCK_MAX_HISTORY * 24 * 60 * 60 * 1000 : currentTimeStamp; // value of inputed days (or number) converted to milliseconds. If MCK_MAX_HISTORY is empty string then currentTimeStamp value will taken to break the condition for loading messages.
 
@@ -1355,6 +1355,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								});
 							}
 						}
+
+						//The below "fetchContacts" call is being used for setting the value of MCK_INTEGRATION_STARTED which we are using to show the empty state in dashboard. 
+						mckContactService.fetchContacts({
+							"roleNameList": ["USER"],
+							"pageSize": 15,
+							'callback': function(response) {
+								let userList = (response && response.response&& response.response.users)?response.response.users:[];
+								let appUsers = userList.filter(user=>!(user.metadata&&user.metadata['KM_SOURCE']=="KOMMUNICATE_DASHBOARD"));
+								MCK_INTEGRATION_STARTED = appUsers.length ? true : false;
+								mckMessageService.emptyStateChange();
+							}
+						});
+
 					},
 					error: function () {
 						mckStorage.clearMckMessageArray();
@@ -2627,7 +2640,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
-							mckMessageService.emptyStateChange();
+							// mckMessageService.emptyStateChange();
 							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
@@ -2660,7 +2673,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					_this.initSearch();
 				}
 				if (data && data.message && data.message.length === 0) {
-					mckMessageService.emptyStateChange();
+					// mckMessageService.emptyStateChange();
 				}
 				CONTACT_SYNCING = false;
 				MESSAGE_SYNCING = false;
@@ -2975,10 +2988,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						// 	// _this.initSearch();
 						// }
 						if(data.message.length !== 0) {
-							mckMessageService.emptyStateChange();
+							// mckMessageService.emptyStateChange();
 						}
-
-						// mckMessageService.emptyStateChange();
 
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
@@ -2995,11 +3006,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 											});
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").data('datetime', "");
 
-											mckMessageService.emptyStateChange();
+											// mckMessageService.emptyStateChange();
 										} else if ($kmApplozic("#km-message-cell .km-message-inner-right div[name='message']").length === 0) {
 											$mck_tab_message_option.removeClass('vis').addClass('n-vis');
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").html('<div class="km-no-data-text km-text-muted">No messages yet!</div>');
-											mckMessageService.emptyStateChange();
+											// mckMessageService.emptyStateChange();
 
 										}
 									} else {
@@ -4726,7 +4737,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else {
 					_this.addContact(contact, sectionId, message, prepend);
 					}
-				mckMessageService.emptyStateChange();
+				// mckMessageService.emptyStateChange();
 			};
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {	
 				if (typeof list == "undefined") {
@@ -7902,7 +7913,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
 				var list = {};
-				mckMessageService.emptyStateChange();
+				// mckMessageService.emptyStateChange();
 				if (messageType === "APPLOZIC_34"){
 					w.localStorage.removeItem('KM_USER_SESSION');
 					location.reload();
