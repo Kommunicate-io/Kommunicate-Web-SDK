@@ -175,10 +175,9 @@ const GraphDurationOptions = [
 ];
 
 const months = [{
-        "MonthNameFull": ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        "MonthNameHalf": ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-    }
-];
+    "MonthNameFull": ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    "MonthNameHalf": ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+}];
 
 class AlDashboard extends Component {
 
@@ -211,7 +210,6 @@ class AlDashboard extends Component {
                     analyticsData: resp.data,
                     emptyState: false
                 });
-               console.log(resp.data);
                 let totalUsers = resp.data.reduce((a, b) => a + b.newUserCount, 0);
                 let activeUsers = resp.data[length - 1].activeUserCount;
                 let conversationThreads = resp.data[length - 1].channelCount;
@@ -220,9 +218,6 @@ class AlDashboard extends Component {
                 let currentMonth = new Date(resp.data[length - 1].month).getMonth();
                 currentMonth = months[0].MonthNameFull[currentMonth];
                 let currentYear = new Date(resp.data[length - 1].month).getFullYear();
-    
-                let selectedMonthsRange = this.selectMonthsRange(this.state.analyticsData, this.state.graphDuration.value);
-                console.log(selectedMonthsRange);
     
                 this.setState({
                     totalUsers: this.formatNumbers(totalUsers, 2),
@@ -246,21 +241,11 @@ class AlDashboard extends Component {
             msgSentObj.push(fewMonthsData[i].newMessageCount);
             activeUsersObj.push(fewMonthsData[i].activeUserCount);
         }
-
-        console.log(msgSentObj, activeUsersObj);
-
         this.setState({
             dataForMsgSentGraph: msgSentObj,
             dataForActiveUsersGraph: activeUsersObj
         });
-
-        console.log(this.state.dataForMsgSentGraph, this.state.dataForActiveUsersGraph);
-
-        console.log(data.slice(Math.max(data.length - months, 0)));
-
         this.generateMonths(fewMonthsData);
-
-        return data.slice(Math.max(data.length - months, 0));
     }
 
     generateMonths = (fewMonthsData) => {
@@ -275,8 +260,7 @@ class AlDashboard extends Component {
 
         this.setState({
             monthsLabelForGraph: monthLabelsArray
-        })
-        console.log(monthLabelsArray);
+        });
     }
 
     formatNumbers = (num, decimalPlaces) => {
@@ -325,37 +309,6 @@ class AlDashboard extends Component {
                 ]
             }
         }
-
-        // const data2 = (canvas) => {
-        //     const ctx = canvas.getContext("2d")
-        //     const gradient = ctx.createLinearGradient(0, 800, 0, 0);
-        //     gradient.addColorStop(0, "rgba(142, 140, 224, 0)");
-        //     gradient.addColorStop(1, "rgba(242, 199, 94, 0.35)");
-        //     return {
-        //         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        //         datasets: [
-        //           {
-        //             lineTension: 0.4,
-        //             backgroundColor: gradient,
-        //             borderColor: '#f2c75e',
-        //             borderCapStyle: 'butt',
-        //             borderDash: [],
-        //             borderDashOffset: 0.0,
-        //             borderJoinStyle: 'miter',
-        //             pointBorderColor: 'rgba(75,192,192,1)',
-        //             pointBackgroundColor: '#fff',
-        //             pointBorderWidth: 1,
-        //             pointHoverRadius: 5,
-        //             pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        //             pointHoverBorderColor: 'rgba(220,220,220,1)',
-        //             pointHoverBorderWidth: 2,
-        //             pointRadius: 1,
-        //             pointHitRadius: 10,
-        //             data: this.state.dataForGraph
-        //           }
-        //         ]
-        //     }
-        // }
 
         const options = {
             maintainAspectRatio: false,
@@ -421,7 +374,7 @@ class AlDashboard extends Component {
                             <TotalUsersIcon />
                             <H2>{this.state.totalUsers}</H2>
                             <P>Total registered users</P>
-                            <InfoContainer data-rh="Total number of users registered on your platform" data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right">
+                            <InfoContainer data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right">
                                 <InfoIcon>?</InfoIcon>
                             </InfoContainer>
                         </AnalyticsCards>
