@@ -35,16 +35,16 @@ const addMemberIntoConversation = (data) => {
                                     assignToDefaultAgent(groupId, customer.applications[0].applicationId, agents.assignTo, agents.header)
                                 }
                                 return { code: "SUCCESS", data: agents }
-                            } else if (!customer.agentRouting) {
-                                //notify everybody
-                                customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] != customer.userName ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header) : "";
+                            } else if (customer.agentRouting == ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY) {
+                                
+                                group.metadata.CONVERSATION_ASSIGNEE != customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY] ? assignToDefaultAgent(groupId, customer.applications[0].applicationId, customer.defaultConversationAssignee[ROUTING_RULES_FOR_AGENTS.NOTIFY_EVERYBODY], agents.header) : "";
                                 let groupInfo = { groupDetails: userIds };
                                 logger.info('addMemberIntoConversation - group info:', groupInfo, 'applicationId: ', customer.applications[0].applicationId, 'apzToken: ', header.apzToken, 'ofUserId: ', header.ofUserId)
                                 return Promise.resolve(applozicClient.addMemberIntoConversation(groupInfo, customer.applications[0].applicationId, header.apzToken, header.ofUserId)).then(response => {
                                     logger.info('response', response.data)
                                     return { code: "SUCCESS", data: agents };
                                 });
-                            } else {
+                            } else if (customer.agentRouting == ROUTING_RULES_FOR_AGENTS.AUTOMATIC_ASSIGNMENT) {
                                 logger.info("adding assignee in round robin fashion");
                                 return inAppMessageService.checkOnlineAgents(customer).then(onlineUsers => {
                                     let onlineUser = onlineUsers.find(agent => agent.connected);
