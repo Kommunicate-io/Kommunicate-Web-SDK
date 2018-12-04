@@ -210,8 +210,16 @@ class Full extends Component {
       if (window.heap) {
         window.heap.addUserProperties(userProperties);
       }
+      
       if (window.mixpanel) {
         window.mixpanel.register(userProperties);
+        window.mixpanel.people.set({
+            "$distinct_id": userSession.userName,
+            "$name": userSession.name,
+            "$created": userProperties.signup,
+            "$email": userProperties.email
+        });
+
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
           acEventTrigger("integrated");
         }
