@@ -1,5 +1,4 @@
 import React from 'react';
-import 'core-js';
 // import App from './components/App';
 import ReactDOM from 'react-dom';
 import { Component } from 'react';

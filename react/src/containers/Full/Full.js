@@ -38,7 +38,6 @@ import config from '../../config/index';
 import {initilizeIntegry}  from '../../views/Integrations/Integry';
 import ApplozicClient from '../../utils/applozicClient';
 import ChatWigetCustomization from  '../../views/ChatWidgetCustomization/ChatWidgetCustomization';
-import { default as ALDashboard } from '../../ALDashboard/views/Dashboard/Dashboard';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 
 
@@ -290,8 +289,6 @@ class Full extends Component {
                 <Route exact path="/settings/chat-widget-customization" name="ChatWidgetCustomization" render={() => <ChatWigetCustomization {...this.props} />} />
                 <Route exact path="/settings/email-fallback" name="EmailFallback" render={() => <EmailFallback {...this.props} />} />
                 <Route exact path="/settings/webhooks-security" name="WebhooksAndSecurity" render={() => <WebhooksAndSecurity {...this.props} />} />
-                <Route exact path="/AlDashboard" name="ApplozicDashboard" render={() => <ALDashboard {...this.props} />} />
-
 
                 <Redirect from="/" to="/dashboard" />
 

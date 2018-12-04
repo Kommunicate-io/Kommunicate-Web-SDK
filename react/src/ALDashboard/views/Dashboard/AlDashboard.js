@@ -1,9 +1,12 @@
 import React , { Component, Fragment } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import Select from 'react-select';
 import { Line } from 'react-chartjs-2';
+import 'chartjs-plugin-style';
+import Colors from '../../../assets/theme/colors';
 import ApplozicClient   from '../../../utils/applozicClient';
 import Notification from '../../../views/model/Notification';
+import { ALAnalyticsDashboardLoader } from '../../../components/EmptyStateLoader/emptyStateLoader';
 import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentIcon } from '../../../assets/svg/svgs';
 
 
@@ -24,6 +27,7 @@ const AnalyticsCardsContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
 `;
 
 const H2 = styled.h2`
@@ -46,6 +50,7 @@ const AnalyticsCards = styled.div`
     box-shadow: 0 2px 5px 0 rgba(172, 170, 170, 0.5);
     background-color: #ffffff;
     padding: 10px;
+    margin-bottom: 15px;
 
     & svg {
         width: 40px;
@@ -80,7 +85,7 @@ const InfoIcon = styled.div`
     margin: 0 auto;
 `;
 
-const AnanlyticsGraphContainer = styled.div`
+const AnalyticsGraphContainer = styled.div`
     margin: 35px auto;
 `;
 
@@ -136,7 +141,7 @@ const GraphColor = styled.div`
     width: 20px;
     height: 20px;
     border-radius: 4px;
-    background-color: ${props => props.value ? "#5553B7" : "#F2C75E"};
+    background-color: ${props => props.value ? Colors.ApplozicColors.primary : Colors.ApplozicColors.secondary};
 `;
 const GraphTitle = styled.div`
     font-size: 13px;
@@ -159,14 +164,14 @@ const ChartContainer = styled.div`
 
 const GraphTypeOptions = [
     { value: true, label: 'Messages sent' },
-    { value: false, label: 'Active users' }
+    { value: false, label: 'Active chat users' }
 ];
 
 const GraphDurationOptions = [
     { value: 3, label: 'Last 3 months'},
     { value: 6, label: 'Last 6 months'},
     { value: 12, label: 'Last 12 months'},
-    { value: 24, label: 'Last 24months'},
+    { value: 24, label: 'Last 24 months'},
 ];
 
 const months = [{
@@ -175,11 +180,12 @@ const months = [{
     }
 ];
 
-export default class Dashboard extends Component {
+class AlDashboard extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            emptyState: true,
             totalUsers: 0,
             activeUsers: 0,
             conversationThreads: 0,
@@ -194,36 +200,42 @@ export default class Dashboard extends Component {
     };
 
     componentDidMount = () => {
+        this.getAnalyticsData();   
+    }
+
+    getAnalyticsData = () => {
         ApplozicClient.getApplicationStats().then( resp => {
-            var length = resp.data.length;
-            this.setState({
-                analyticsData: resp.data
-            });
-           console.log(resp.data);
-            let totalUsers = resp.data.reduce((a, b) => a + b.newUserCount, 0);
-            let activeUsers = resp.data[length - 1].activeUserCount;
-            let conversationThreads = resp.data[length - 1].channelCount;
-            let messagesSent = resp.data[length - 1].newMessageCount;
-
-            let currentMonth = new Date(resp.data[length - 1].month).getMonth();
-            currentMonth = months[0].MonthNameFull[currentMonth];
-            let currentYear = new Date(resp.data[length - 1].month).getFullYear();
-
-            let selectedMonthsRange = this.selectMonthsRange(this.state.analyticsData, this.state.graphDuration.value);
-            console.log(selectedMonthsRange);
-
-            this.setState({
-                totalUsers: totalUsers,
-                activeUsers: activeUsers,
-                conversationThreads: conversationThreads,
-                messagesSent: messagesSent,
-                currentMonth: currentMonth + " " + currentYear.toString()
-            });
-            
+            if(resp.status === 200) {
+                var length = resp.data.length;
+                this.setState({
+                    analyticsData: resp.data,
+                    emptyState: false
+                });
+               console.log(resp.data);
+                let totalUsers = resp.data.reduce((a, b) => a + b.newUserCount, 0);
+                let activeUsers = resp.data[length - 1].activeUserCount;
+                let conversationThreads = resp.data[length - 1].channelCount;
+                let messagesSent = resp.data[length - 1].newMessageCount;
+    
+                let currentMonth = new Date(resp.data[length - 1].month).getMonth();
+                currentMonth = months[0].MonthNameFull[currentMonth];
+                let currentYear = new Date(resp.data[length - 1].month).getFullYear();
+    
+                let selectedMonthsRange = this.selectMonthsRange(this.state.analyticsData, this.state.graphDuration.value);
+                console.log(selectedMonthsRange);
+    
+                this.setState({
+                    totalUsers: this.formatNumbers(totalUsers, 2),
+                    activeUsers: this.formatNumbers(activeUsers, 2),
+                    conversationThreads: this.formatNumbers(conversationThreads, 2),
+                    messagesSent: this.formatNumbers(messagesSent, 2),
+                    currentMonth: currentMonth + ", " + currentYear.toString()
+                });    
+            }
         }).catch( err => {
             console.log(err);
             Notification.error("Something went wrong.");
-        })
+        });
     }
 
     selectMonthsRange = (data, months) => {
@@ -267,16 +279,25 @@ export default class Dashboard extends Component {
         console.log(monthLabelsArray);
     }
 
+    formatNumbers = (num, decimalPlaces) => {
+        var base = Math.floor(Math.log(Math.abs(num)) / Math.log(1000));
+        var suffix = 'KMBTQ' [base - 1];
+        var label = suffix ? Math.abs(num / Math.pow(1000, base), 2).toFixed(decimalPlaces) + suffix : '' + num
+        return label;
+    }
+
     render() {
+
+        var _this = this;
 
         const data = (canvas) => {
             const ctx = canvas.getContext("2d")
-            const gradientForMsgSentGraph = ctx.createLinearGradient(0, 800, 0, 0);
-            gradientForMsgSentGraph.addColorStop(0, "rgba(142, 140, 224, 0)");
+            const gradientForMsgSentGraph = ctx.createLinearGradient(0, 350, 0, 0);
+            gradientForMsgSentGraph.addColorStop(0, "rgba(92, 90, 167, 0)");
             gradientForMsgSentGraph.addColorStop(1, "rgba(3, 180, 155, 0.35)");
 
-            const gradientForActiveUsersGraph = ctx.createLinearGradient(0, 800, 0, 0);
-            gradientForActiveUsersGraph.addColorStop(0, "rgba(142, 140, 224, 0)");
+            const gradientForActiveUsersGraph = ctx.createLinearGradient(0, 350, 0, 0);
+            gradientForActiveUsersGraph.addColorStop(0, "rgba(92, 90, 167, 0)");
             gradientForActiveUsersGraph.addColorStop(1, "rgba(242, 199, 94, 0.35)");
             return {
                 labels: this.state.monthsLabelForGraph,
@@ -285,17 +306,17 @@ export default class Dashboard extends Component {
                     lineTension: 0.9,
                     cubicInterpolationMode: 'monotone',
                     backgroundColor: this.state.graphType.value ? gradientForMsgSentGraph : gradientForActiveUsersGraph,
-                    borderColor: '#03b49b',
+                    borderColor: this.state.graphType.value ? this.props.theme.primary : this.props.theme.secondary,
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
                     borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,192,192,1)',
+                    pointBorderColor: this.state.graphType.value ? this.props.theme.primary : this.props.theme.secondary,
                     pointBackgroundColor: '#fff',
                     pointBorderWidth: 1,
                     pointHoverRadius: 5,
                     pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: '#03b49b',
+                    pointHoverBorderColor: this.state.graphType.value ? this.props.theme.primary : this.props.theme.secondary,
                     pointHoverBorderWidth: 2,
                     pointRadius: 1,
                     pointHitRadius: 10,
@@ -345,6 +366,9 @@ export default class Dashboard extends Component {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
+                        callback: function(value, index, values) {
+                            return _this.formatNumbers(value, 0);
+                        },
                         maxTicksLimit: 6
                     }
                 }],
@@ -360,20 +384,36 @@ export default class Dashboard extends Component {
                 }]
             },
             tooltips: {
-                backgroundColor: "#000",
+                backgroundColor: "#ffffff",
                 titleFontColor: "#363637",
                 titleSpacing: 5,
                 titleMarginBottom: 10,
-                bodyFontColor: "#363637"
+                bodyFontColor: "#363637",
+                bodyFontSize: 14,
+                displayColors: false,
+                caretPadding: 10,
+                xPadding: 12,
+                yPadding: 10,
+
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return _this.formatNumbers(tooltipItem.yLabel, 2);
+                    }
+                },
+
+                shadowOffsetX: 0,
+                shadowOffsetY: 2,
+                shadowBlur: 4,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
             }
         }
 
         return (
             <Fragment>
+                { this.state.emptyState && <ALAnalyticsDashboardLoader /> }
+                <Container className="animated fadeIn" hidden={this.state.emptyState}>
 
-                <Container className="animated fadein">
-
-                    <H3>Analytics overview for {this.state.currentMonth}, 2018</H3>
+                    <H3>Analytics overview for {this.state.currentMonth}</H3>
 
                     <AnalyticsCardsContainer>
 
@@ -381,7 +421,7 @@ export default class Dashboard extends Component {
                             <TotalUsersIcon />
                             <H2>{this.state.totalUsers}</H2>
                             <P>Total registered users</P>
-                            <InfoContainer data-rh="Some info about analytics" data-rh-at="right" data-tip="Some info about analytics" data-effect="solid" data-place="right">
+                            <InfoContainer data-rh="Total number of users registered on your platform" data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right">
                                 <InfoIcon>?</InfoIcon>
                             </InfoContainer>
                         </AnalyticsCards>
@@ -389,14 +429,14 @@ export default class Dashboard extends Component {
                         <AnalyticsCards>
                             <ActiveUsersIcon />
                             <H2>{this.state.activeUsers}</H2>
-                            <P>Active users</P>
+                            <P>Active chat users</P>
                         </AnalyticsCards>
 
                         <AnalyticsCards>
                             <ConversationThreadsIcon />
                             <H2>{this.state.conversationThreads}</H2>
                             <P>Conversation threads</P>
-                            <InfoContainer data-rh="Some info about analytics" data-rh-at="right" data-tip="Some info about analytics" data-effect="solid" data-place="right">
+                            <InfoContainer data-rh-at="right" data-effect="solid" data-place="right" data-tip="Total number of one-to-one conversations, group <br> conversations and announcement threads" data-html={true}>
                                 <InfoIcon>?</InfoIcon>
                             </InfoContainer>
                         </AnalyticsCards>
@@ -409,7 +449,7 @@ export default class Dashboard extends Component {
 
                     </AnalyticsCardsContainer>
 
-                    <AnanlyticsGraphContainer>
+                    <AnalyticsGraphContainer>
                         <AnalyticsGraphHeader>
                             <H3>Statistics</H3>
                             <SelectDropdownContainer>
@@ -453,7 +493,7 @@ export default class Dashboard extends Component {
                             
                         </GraphContainer>                                           
 
-                    </AnanlyticsGraphContainer>
+                    </AnalyticsGraphContainer>
 
                 </Container>
 
@@ -461,3 +501,5 @@ export default class Dashboard extends Component {
         );
     }
 }
+
+export default withTheme(AlDashboard);

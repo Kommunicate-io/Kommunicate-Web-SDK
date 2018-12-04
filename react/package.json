@@ -18,6 +18,7 @@
     "axios": "0.16.2",
     "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.7.3",
+    "chartjs-plugin-style": "^0.3.2",
     "core-js": "^2.5.7",
     "countries-and-timezones": "1.0.1",
     "crypto-js": "3.1.9-1",
@@ -59,6 +60,8 @@
     "semantic-ui-css": "2.3.1",
     "semantic-ui-react": "0.80.2",
     "styled-components": "^4.1.1",
+    "styled-theming": "^2.2.0",
+    "tinycolor2": "^1.4.1",
     "uuid": "3.2.1",
     "validator": "8.0.0"
   },

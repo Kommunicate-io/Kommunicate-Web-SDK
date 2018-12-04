@@ -219,7 +219,13 @@ const CommonUtils = {
           }
     },
     isKommunicateDashboard: function() {
-		return window.location.hostname.includes("kommunicate");
+        let userSession = this.getUserSession();
+        if(userSession) {
+            return userSession.application.pricingPackage >= 100;
+        } else {
+            return window.location.hostname.includes("kommunicate");
+        }
+
     },
     isApplicationAdmin: function(userSession){
         userSession = userSession ? userSession : this.getUserSession()
