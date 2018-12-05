@@ -27,7 +27,8 @@ class Sidebar extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      kmScripIntegrated: true  
+      kmScripIntegrated: true,
+      isKommunicateDashboard:CommonUtils.isKommunicateDashboard()  
     };
   }
 
@@ -132,7 +133,7 @@ class Sidebar extends Component {
               </NavLink>
             </li>
             {/* Bot Link */}
-            <li className="nav-item">
+            {this.state.isKommunicateDashboard && <li className="nav-item">
               <NavLink to={'/bot'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-bot-integrations" data-tip="Bot Integration" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 9">
@@ -148,9 +149,9 @@ class Sidebar extends Component {
                 </g>
             </svg>
               </NavLink>
-            </li>
+            </li>}
             {/* Integrations Link */}
-            <li className="nav-item">
+            {this.state.isKommunicateDashboard && <li className="nav-item">
               <NavLink to={'/integrations'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-integrations" data-tip="Integrations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25.363 25.363">
               <g data-name="Group 10">
@@ -168,9 +169,9 @@ class Sidebar extends Component {
               </g>
             </svg>
               </NavLink>
-            </li>
+            </li>}
             {/* FAQ Link */}
-            <li className="nav-item">
+            {this.state.isKommunicateDashboard && <li className="nav-item">
               <NavLink to={'/faq'} className="nav-link ac-trigger-links" activeClassName="active" id="ac-faq" data-tip="FAQ" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 7">
@@ -179,7 +180,7 @@ class Sidebar extends Component {
                 </g>
               </svg>
               </NavLink>
-            </li>
+            </li>}
 
           </ul>
           {/* Options at the bottom of the Sidebar: Profile, Help and Settings */}
