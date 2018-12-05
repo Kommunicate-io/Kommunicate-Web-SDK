@@ -175,9 +175,10 @@ const GraphDurationOptions = [
 ];
 
 const months = [{
-    "MonthNameFull": ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    "MonthNameHalf": ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-}];
+        "MonthNameFull": ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        "MonthNameHalf": ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+    }
+];
 
 class AlDashboard extends Component {
 
@@ -218,6 +219,8 @@ class AlDashboard extends Component {
                 let currentMonth = new Date(resp.data[length - 1].month).getMonth();
                 currentMonth = months[0].MonthNameFull[currentMonth];
                 let currentYear = new Date(resp.data[length - 1].month).getFullYear();
+    
+                this.selectMonthsRange(this.state.analyticsData, this.state.graphDuration.value);
     
                 this.setState({
                     totalUsers: this.formatNumbers(totalUsers, 2),
