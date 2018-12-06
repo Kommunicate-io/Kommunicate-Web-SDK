@@ -205,7 +205,7 @@ class AlDashboard extends Component {
 
     getAnalyticsData = () => {
         ApplozicClient.getApplicationStats().then( resp => {
-            if(resp.status === 200) {
+            if(resp.status === 200 && resp.data.length) {
                 var length = resp.data.length;
                 this.setState({
                     analyticsData: resp.data,
@@ -229,6 +229,10 @@ class AlDashboard extends Component {
                     messagesSent: this.formatNumbers(messagesSent, 2),
                     currentMonth: currentMonth + ", " + currentYear.toString()
                 });    
+            } else {
+                this.setState({
+                    emptyState: false
+                })
             }
         }).catch( err => {
             console.log(err);
@@ -237,18 +241,20 @@ class AlDashboard extends Component {
     }
 
     selectMonthsRange = (data, months) => {
-        let fewMonthsData = data.slice(Math.max(data.length - months, 0));
+        if(data) {
+            let fewMonthsData = data.slice(Math.max(data.length - months, 0));
 
-        var msgSentObj = [], activeUsersObj = [], i = 0;
-        for( ; i < fewMonthsData.length; i++) {
-            msgSentObj.push(fewMonthsData[i].newMessageCount);
-            activeUsersObj.push(fewMonthsData[i].activeUserCount);
+            var msgSentObj = [], activeUsersObj = [], i = 0;
+            for( ; i < fewMonthsData.length; i++) {
+                msgSentObj.push(fewMonthsData[i].newMessageCount);
+                activeUsersObj.push(fewMonthsData[i].activeUserCount);
+            }
+            this.setState({
+                dataForMsgSentGraph: msgSentObj,
+                dataForActiveUsersGraph: activeUsersObj
+            });
+            this.generateMonths(fewMonthsData);
         }
-        this.setState({
-            dataForMsgSentGraph: msgSentObj,
-            dataForActiveUsersGraph: activeUsersObj
-        });
-        this.generateMonths(fewMonthsData);
     }
 
     generateMonths = (fewMonthsData) => {

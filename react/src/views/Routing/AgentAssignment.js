@@ -390,7 +390,7 @@ toggleConversationAssignment = () => {
   }
 }
 const mapStateToProps = state => ({
-    applicationId: state.loginReducer.userInfo.applicationId,
+    applicationId: state.loginReducer.userInfo.application.applicationId,
     appSettings : state.applicationReducer.appSettings 
   });
 const mapDispatchToProps = dispatch => ({

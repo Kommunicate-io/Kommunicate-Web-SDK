@@ -44,7 +44,7 @@ class Install extends Component {
   }
 
   componentDidMount() {
-    if (this.props.application.pricingPackage < 100) {
+    if (!CommonUtils.isKommunicateDashboard()) {
       this.setState({
         script: getApplozicScript(),
         yourApplicationId: this.props.application.applicationId,

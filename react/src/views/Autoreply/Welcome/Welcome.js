@@ -8,7 +8,8 @@ import { addInAppMsg, deleteInAppMsg, getAllSuggestions, getSuggestionsByAppId, 
 import axios from 'axios';
 import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
-import Checkbox from '../../../components/Checkbox/Checkbox'
+import Checkbox from '../../../components/Checkbox/Checkbox';
+import Button from '../../../components/Buttons/Button';
 
 class Welcome extends Component{
   constructor(props){
@@ -307,18 +308,18 @@ class Welcome extends Component{
                   {welcomeMsgTextArea}                  
                 </div>
                 {  this.state.welcomeMessages.length <= 2 && 
-                  <button className ="add-new-msg-btn" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</button>
+                  <Button link className ="add-new-msg-btn" disabled = { this.state.enableAddMsgLink } onClick={this.appendMessageTextArea} >+ Add a follow up welcome message</Button>
                 }                
                 <div className="btn-group">
-                  <button disabled={this.state.disableButton} className="km-button km-button--primary save-changes-btn"
+                  <Button primary disabled={this.state.disableButton} className="save-changes-btn"
                     id = "ac-welcome-message"
                     onClick={(e) => {
                       this.setState({
                         disableButton: true
                       }, this.welcomeMessagesMethod)
                     }}
-                    >Save</button>
-                  <button disabled = {this.state.disableButton} className="km-button km-button--secondary discard-btn" onClick={this.discardWelcomeMessage}>Discard</button>
+                    >Save</Button>
+                  <Button secondary disabled = {this.state.disableButton} className="discard-btn" onClick={this.discardWelcomeMessage}>Discard</Button>
                 </div>              
             </div>
           </div>

@@ -29,7 +29,7 @@ enableSentry && Sentry.configureScope((scope) => {
 ReactDOM.render(
   <Provider store={store}> 
     <PersistGate loading={null} persistor={persistor}>
-      <ThemeProvider theme={CommonUtils.isKommunicateDashboard() ? theme.kommunicate : theme.applozic}>
+      <ThemeProvider theme={theme}>
         <Fragment>
           <App />
         </Fragment>

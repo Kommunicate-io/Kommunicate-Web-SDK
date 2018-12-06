@@ -10,6 +10,7 @@ import EmptyStateImage from './img/empty-message-shortcuts.png';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
+import Button from '../../components/Buttons/Button';
 
 
 
@@ -347,8 +348,8 @@ class AutoSuggest extends Component {
 						{
 							this.state.activeTextField === index &&
 							<div className="shortcut-button-group">
-								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
-								<button type="submit" autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--secondary" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</button>
+								<Button primary type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</Button>
+								<Button secondary type="submit" autoFocus={false} className={this.state.visibleButtons ? "" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</Button>
 							</div>
 						}
 
@@ -392,7 +393,7 @@ class AutoSuggest extends Component {
 				</div>	
 				<div className="row ">
 					<div className="col-md-12">
-						<button disabled={this.state.visibleButtons} className="km-button km-button--primary" onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create a quick reply</button>
+						<Button primary disabled={this.state.visibleButtons} onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create a quick reply</Button>
 					</div>
 				</div>
 

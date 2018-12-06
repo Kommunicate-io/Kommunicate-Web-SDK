@@ -7,6 +7,7 @@ import Modal from 'react-modal';
 import CloseButton from '../../components/Modal/CloseButton';
 import CommonUtils from '../../utils/CommonUtils';
 import './Admin.css';
+import Button from '../../components/Buttons/Button';
 
 const customStyles = {
   content: {
@@ -159,8 +160,8 @@ class PasswordAccordion extends Component {
 
                     <div className="form-group row">
                       <div className="col-md-12 text-right">
-                        <button className="km-button km-button--secondary" onClick={this.closeForgotPasswordModal}>Cancel</button>
-                        <button className="km-button km-button--primary m-left" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes</button>
+                        <Button secondary onClick={this.closeForgotPasswordModal}>Cancel</Button>
+                        <Button primary className="m-left" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes</Button>
                       </div>
                     </div>
 

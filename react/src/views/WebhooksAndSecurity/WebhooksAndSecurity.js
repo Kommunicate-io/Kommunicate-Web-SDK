@@ -8,6 +8,7 @@ import { editApplicationDetails } from '../../utils/kommunicateClient'
 import Select from 'react-select';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
+import Button from '../../components/Buttons/Button';
 
 
 const InputFields = (props) => {
@@ -230,8 +231,8 @@ export default class WebhooksAndSecurity extends Component {
 
 
                             <div className="webhooks-action-buttons-container">
-                                <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</button>
-                                <button className="km-button km-button--secondary n-vis">Cancel</button>
+                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                                <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
                             <hr/>
@@ -248,8 +249,8 @@ export default class WebhooksAndSecurity extends Component {
                             </div>
 
                             <div className="security-action-buttons-container">
-                                <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</button>
-                                <button className="km-button km-button--secondary n-vis">Cancel</button>
+                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                                <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
                         </div>

@@ -8,6 +8,7 @@ import Modal from 'react-modal';
 import PasswordAccordion from './PasswordAccordion';
 import CommonUtils from '../../utils/CommonUtils';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import Button from '../../components/Buttons/Button';
 
 const customStyles = {
   content: {
@@ -274,12 +275,12 @@ class Forms extends Component {
                           <input type="email" id="email-input" name="email-input" onChange={(event) => this.setState({ email: event.target.value })} value={this.state.email} className="form-control input-field" placeholder="Enter Email" disabled /><br />
 
                           <label className="form-control-label" hidden={this.state.hideRole} htmlFor="role-input">Designation:</label>
-                          <input type="text" id="role-input" hidden={this.state.hideRole} name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br />
+                          <input type="text" id="role-input" hidden={this.state.hideRole} name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br hidden={this.state.hideRole} />
 
                           <label className="form-control-label" htmlFor="number-input">Contact Number (optional):</label>
                           <input type="text" id="number-input" maxLength="20" name="number-input" onKeyPress={this.handleKeyPress} onChange={(event) => this.setState({ contact: event.target.value })} value={this.state.contact} className="form-control input-field" placeholder="Enter contact number" /><br />
 
-                          <button className="km-button km-button--primary" autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </button>
+                          <Button autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </Button>
                         </div>
                       </div>
                     </div>

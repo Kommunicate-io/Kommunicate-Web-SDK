@@ -19,7 +19,15 @@ import * as Actions from '../../../actions/loginAction'
 import { persistor} from '../../../store/store';
 import {KommunicateLogo, GoogleLogin}from '../../Faq/LizSVG'
 import { ApplozicLogo, ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
+import styled from 'styled-components';
+import Button from '../../../components/Buttons/Button';
 
+const Hr = styled.hr`
+	width: 12%;
+    border-top: 4px solid ${props => props.theme.primary};
+    margin-top: 20px;
+    margin-bottom: 0;
+`;
 
 class Login extends Component {
 
@@ -552,11 +560,11 @@ class Login extends Component {
 				<div className={this.state.googleOAuth?"n-vis":"app flex-row align-items-center login-app-div"}>
 					<div className="container">
 						<div className="logo-container text-center">
-							<a href="#" onClick={this.websiteUrl}>  {CommonUtils.isKommunicateDashboard() ? <KommunicateLogo/> : <ApplozicLogo /> } </a>
+							<a href="#" onClick={this.websiteUrl}>  {CommonUtils.isKommunicateDashboard() ? <KommunicateLogo/> : <ApplozicLogo style={{ width: "auto", height: "55px"}} /> } </a>
 						</div>
 						<div className="row justify-content-center login-form-div">
 							<div className="col-lg-5 col-md-8 col-sm-12 col-xs-12">
-								<hr className="hr"/>
+								<Hr />
 									<div className="card-group mb-0">
 										<div className="card p-4 login-card-block">
 											<div className="card-block">
@@ -621,9 +629,8 @@ class Login extends Component {
 													</div>
 													<div className="row">
 														<div className="col-12 text-center">
-															<button id="login-button" type="button" className="km-button km-button--primary step-1-submit-btn" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</button>
-															<p className="have-need-account" hidden={this.state.hideSignupLink}>
-															Don’t have an account? <Link to={'/signup'}>Sign up</Link></p>
+															<Button primary large fontSize={"16px"} id="login-button" type="button" disabled={this.state.loginButtonDisabled} onClick={(event) => this.login(event)}>{this.state.loginButtonText}</Button>
+															<p className="have-need-account" hidden={this.state.hideSignupLink}>Don’t have an account? <Link to={'/signup'}>Sign up</Link></p>
 														</div> 
 													</div>
 				
@@ -634,7 +641,7 @@ class Login extends Component {
 													<div className="svg-container">
 														<ConfirmationTick />
 													</div>
-													<button type="button" className="btn btn-primary px-3 km-login-btn btn-primary-custom " onClick ={ this.backToLogin }>Login</button>
+													<Button type="button" onClick ={ this.backToLogin }>Login</Button>
 												</div>
 											</div>
 										</div>

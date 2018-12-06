@@ -9,6 +9,7 @@ import { addInAppMsg, deleteInAppMsg, editInAppMsg, disableInAppMsgs, enableInAp
 import Checkbox from '../../../components/Checkbox/Checkbox';
 import {acEventTrigger} from '../../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../../src/components/SettingsComponent/SettingsComponents';
+import Button from '../../../components/Buttons/Button';
 
 
 class AwayMessage extends Component{
@@ -433,18 +434,18 @@ class AwayMessage extends Component{
                   {textAreaForAnonymousCustomersMsg}                  
                 </div>            
                 <div className="btn-group">
-                  <button disabled={this.state.disableButtonForAnonymousTextArea} className="km-button km-button--primary save-changes-btn"
+                  <Button primary disabled={this.state.disableButtonForAnonymousTextArea} className="save-changes-btn"
                     onClick={(e) => {
                       this.setState({
                         disableButtonForAnonymousTextArea: true
                       }, this.awayMessageAnonymousCustomersMethod)
-                    }} >Save</button>
-                  <button disabled = {this.state.disableButtonForAnonymousTextArea} className="km-button km-button--secondary discard-btn" 
+                    }} >Save</Button>
+                  <Button secondary disabled = {this.state.disableButtonForAnonymousTextArea} className="discard-btn" 
                     onClick={(e) => {
                         this.setState({
                           disableButtonForAnonymousTextArea: true
                         },this.discardAwayMessageAnonymousCustomers)
-                    }}>Discard</button>
+                    }}>Discard</Button>
                 </div>
               </div> 
             </div>
@@ -475,18 +476,18 @@ class AwayMessage extends Component{
                   {textAreaForKnownCustomersMsg}                  
                 </div>            
                 <div className="btn-group">
-                  <button disabled={this.state.disableButtonForKnownTextArea} className="km-button km-button--primary save-changes-btn"
+                  <Button primary disabled={this.state.disableButtonForKnownTextArea} className="save-changes-btn"
                     onClick={(e) => {
                       this.setState({
                         disableButtonForKnownTextArea: true
                       }, this.awayMessageKnownCustomersMethod)
-                    }} >Save</button>
-                  <button disabled = {this.state.disableButtonForKnownTextArea} className="km-button km-button--secondary discard-btn" 
+                    }} >Save</Button>
+                  <Button secondary disabled = {this.state.disableButtonForKnownTextArea} className="discard-btn" 
                     onClick={(e) => {
                         this.setState({
                         disableButtonForKnownTextArea: true
                         },this.discardAwayMessageKnownCustomers)
-                    }}>Discard</button>
+                    }}>Discard</Button>
                 </div>
               </div>          
             </div>
