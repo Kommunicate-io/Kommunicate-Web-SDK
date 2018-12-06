@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import validator from 'validator';
 import './AutoSuggest.css'
 import Notification from '../model/Notification';
-import { getAllSuggestions, getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient';
+import { getSuggestionsByAppId, createSuggestions, deleteSuggestionsById, updateSuggestionsById } from '../../utils/kommunicateClient';
 import CommonUtils from '../../utils/CommonUtils';
 import quickReply from '../../views/quickReply/quickReply';
 import {AUTOREPLY} from './Constant';
@@ -10,6 +10,7 @@ import EmptyStateImage from './img/empty-message-shortcuts.png';
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import LearnMoreButton from '../../components/LearnMoreButton/LearnMoreButton';
+import Button from '../../components/Buttons/Button';
 
 
 
@@ -91,7 +92,6 @@ class AutoSuggest extends Component {
 	suggestionMethod =(e) => {
 		e.preventDefault();
 		let index = this.state.activeTextField;
-		var suggestionId = this.state.userShortcuts[index].suggestionId;
 		this.setState({
 			visibleButtons: false
 		})
@@ -164,8 +164,6 @@ class AutoSuggest extends Component {
 	updateSuggestion = (index) => {
 		let shortcutRef ="shortcut"+index;
 		let messageRef = "message" + index;
-		let userShortcuts = Object.assign([],userShortcuts);
-		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		if (validator.isEmpty(this.state.userShortcuts[index].shortcutField) || validator.isEmpty(this.state.userShortcuts[index].messageField)) {
 			Notification.info(" All fields are mandatory !!");
 		}
@@ -204,11 +202,8 @@ class AutoSuggest extends Component {
 
 	deleteSuggestion = () => {
 		let index = this.state.activeMenu;
-		let userShortcuts = Object.assign([], this.state.userShortcuts);
-		let userShortcutsCopy = Object.assign([],userShortcutsCopy);
 		let userSession = CommonUtils.getUserSession();
-
-		var  suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId,applicationId:userSession.application.applicationId} };
+		var suggestionId= { data: {id : this.state.userShortcuts[index].suggestionId,applicationId:userSession.application.applicationId} };
 		deleteSuggestionsById(suggestionId)
 		.then(response => {
 			console.log(response)
@@ -353,8 +348,8 @@ class AutoSuggest extends Component {
 						{
 							this.state.activeTextField === index &&
 							<div className="shortcut-button-group">
-								<button type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--primary" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</button>
-								<button type="submit" autoFocus={false} className={this.state.visibleButtons ? "km-button km-button--secondary" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</button>
+								<Button primary type="submit" ref={saveRef} autoFocus={false} className={this.state.visibleButtons ? "" : "n-vis"}  id="shorcut-save-button" onClick={this.suggestionMethod} style={{marginRight:"15px"}}>Save changes</Button>
+								<Button secondary type="submit" autoFocus={false} className={this.state.visibleButtons ? "" : "n-vis" } id="shorcut-cancel-button" onClick={this.cancelSuggestion} >Discard</Button>
 							</div>
 						}
 
@@ -398,7 +393,7 @@ class AutoSuggest extends Component {
 				</div>	
 				<div className="row ">
 					<div className="col-md-12">
-						<button disabled={this.state.visibleButtons} className="km-button km-button--primary" onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create a quick reply</button>
+						<Button primary disabled={this.state.visibleButtons} onClick={this.appendShorcutFields} style={{marginLeft:"17px", marginBottom:"20px"}}>+ Create a quick reply</Button>
 					</div>
 				</div>
 

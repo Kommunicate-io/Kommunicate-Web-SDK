@@ -37,6 +37,7 @@
       "updatePasswordPage" : "https://dashboard-test.kommunicate.io/password/update?code=:code",
       "passwordResetUrl" : "https://apps-test.applozic.com/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
       "dashboardHostUrl":"https://dashboard-test.kommunicate.io",
+      "applozicDashboardHostUrl":"https://console-test.applozic.com",
       "applozicHostUrl": "https://apps-test.applozic.com",
       "getUserInfo": "https://apps-test.applozic.com/rest/ws/user/v2/detail",
       "rasafaq":"https://rasa-test.kommunicate.io/faqdata"

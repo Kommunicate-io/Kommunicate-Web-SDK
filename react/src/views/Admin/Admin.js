@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { patchCustomerInfo, patchUserInfo, getCustomerInfo, getUserInfo } from '../../utils/kommunicateClient'
+import ApplozicClient from '../../utils/applozicClient'
 import Notification from '../model/Notification';
 import ImageUploader from './ImageUploader'
 import './Admin.css';
@@ -7,6 +8,7 @@ import Modal from 'react-modal';
 import PasswordAccordion from './PasswordAccordion';
 import CommonUtils from '../../utils/CommonUtils';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
+import Button from '../../components/Buttons/Button';
 
 const customStyles = {
   content: {
@@ -38,16 +40,13 @@ class Forms extends Component {
       modalIsOpen: false,
       scale: 1.2,
       imageFile: CommonUtils.getUserSession().imageLink,
-      fileObject: {}
-     
+      fileObject: {},
+      hideRole:false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.industries = ['Please select', 'E-commerce', 'Marketplaces', 'SaaS', 'E-learning', 'Healthcare', 'On-Demand Services', 'Social', 'Fin Tech', 'Entertainment', 'Gaming', 'Travel', 'Other'];
-    //this.handlePassword = this.handlePassword.bind(this);
-    //this.validatePassword = this.validatePassword.bind(this);
-    //this.clearPasswordfields = this.clearPasswordfields.bind(this)
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleScale = this.handleScale.bind(this);
@@ -117,8 +116,15 @@ class Forms extends Component {
           console.log(err);
           alert(err);
         });
+    }else if(CommonUtils.isApplicationAdmin(userSession)){
+      ApplozicClient.updateUserDetail({ofUserId:userSession.userName, userDetails:user}).then(response=>{
+        if (response.data.status === 'success') {
+          this.updateKommunicateSupportUser(user)
+          Notification.info("user updated successfully")
+        }
+      })
     } else {
-      patchUserInfo(customerInfo, CommonUtils.getUserSession().userName, userSession.application.applicationId)
+      patchUserInfo(customerInfo, userSession.userName, userSession.application.applicationId)
         .then(response => {
           if (response.data.code === 'SUCCESS') {
             this.updateKommunicateSupportUser(user)
@@ -164,15 +170,7 @@ class Forms extends Component {
     this.setState({ fileObject: file })
     console.log(file)
     let imageTypeRegex = /^image\//
-
-    //let thumbnail = document.getElementById("thumbnail")
-
     if (file && imageTypeRegex.test(file.type)) {
-
-      // while (thumbnail.hasChildNodes()) {
-      //   thumbnail.removeChild(thumbnail.firstChild)
-      //}
-
       if (file.size <= 5000000) {
 
         let img = document.createElement("img")
@@ -195,7 +193,20 @@ class Forms extends Component {
       }
     }
   }
-
+  setCustomerProfile=(customerInfo)=>{
+    this.setState({
+      name: customerInfo.name ? customerInfo.name : '',
+      role: customerInfo.role ? customerInfo.role : '',
+      email: customerInfo.email ? customerInfo.email : '',
+      contact: customerInfo.contactNo ? customerInfo.contactNo : '',
+      companyname: customerInfo.companyName ? customerInfo.companyName : '',
+      industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
+      companysize: customerInfo.companySize ? customerInfo.companySize : ''
+    });
+    if (this.state.industry === 'Other') {
+      this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
+    }
+  }
 
   componentWillMount() {
     var userSession = CommonUtils.getUserSession();
@@ -203,40 +214,35 @@ class Forms extends Component {
       return Promise.resolve(getCustomerInfo(CommonUtils.getUserSession().userName))
         .then(response => {
           if (response.data.code === 'SUCCESS') {
-            const customerInfo = response.data.data;
-            this.setState({
-              name: customerInfo.name ? customerInfo.name : '',
-              role: customerInfo.role ? customerInfo.role : '',
-              email: customerInfo.email ? customerInfo.email : '',
-              contact: customerInfo.contactNo ? customerInfo.contactNo : '',
-              companyname: customerInfo.companyName ? customerInfo.companyName : '',
-              industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
-              companysize: customerInfo.companySize ? customerInfo.companySize : ''
-            });
-            if (this.state.industry === 'Other') {
-              this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
-            }
+            this.setCustomerProfile(response.data.data);
           }
         }).catch(err => { alert(err) });
-    } else {
-      console.log("isNotAdmin")
+    } else if(CommonUtils.isApplicationAdmin(userSession)){
+      let criteria ={
+        applicationId : userSession.application.applicationId,
+        userName : userSession.userName,
+        accessToken : userSession.accessToken,
+        isAdmin: CommonUtils.isApplicationAdmin(userSession),
+        params:{
+          roleNameList : "USER",
+          userId:userSession.userName,
+        }
+        }
+     ApplozicClient.getUserListByCriteria(criteria).then(result=>{
+       if (result.status === 'success' && result.response.users.length>0) {
+        result.response.users[0].name=result.response.users[0].displayName;
+        result.response.users[0].contactNo=result.response.users[0].phoneNumber
+        this.setCustomerProfile(result.response.users[0]);
+        this.setState({hideRole:true})
+      }
 
+     })
+    }else {
+      console.log("isNotAdmin")
       return Promise.resolve(getUserInfo(CommonUtils.getUserSession().userName, userSession.application.applicationId))
         .then(response => {
           if (response.data.code === 'SUCCESS') {
-            const customerInfo = response.data.data;
-            this.setState({
-              name: customerInfo.name ? customerInfo.name : '',
-              role: customerInfo.role ? customerInfo.role : '',
-              email: customerInfo.email ? customerInfo.email : '',
-              contact: customerInfo.contactNo ? customerInfo.contactNo : '',
-              companyname: customerInfo.companyName ? customerInfo.companyName : '',
-              industry: this.industries.includes(customerInfo.industry) ? customerInfo.industry : 'Other',
-              companysize: customerInfo.companySize ? customerInfo.companySize : ''
-            });
-            if (this.state.industry === 'Other') {
-              this.setState({ industryOthers: customerInfo.industry ? customerInfo.industry : '' })
-            }
+            this.setCustomerProfile(response.data.data);
           }
         }).catch(err => { console.log(err) });
     }
@@ -268,13 +274,13 @@ class Forms extends Component {
                           <label className="form-control-label" htmlFor="email-input">Email:</label>
                           <input type="email" id="email-input" name="email-input" onChange={(event) => this.setState({ email: event.target.value })} value={this.state.email} className="form-control input-field" placeholder="Enter Email" disabled /><br />
 
-                          <label className="form-control-label" htmlFor="role-input">Designation:</label>
-                          <input type="text" id="role-input" name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br />
+                          <label className="form-control-label" hidden={this.state.hideRole} htmlFor="role-input">Designation:</label>
+                          <input type="text" id="role-input" hidden={this.state.hideRole} name="role-input" onChange={(event) => this.setState({ role: event.target.value })} value={this.state.role} className="form-control input-field" placeholder="Role within the organization" /><br hidden={this.state.hideRole} />
 
                           <label className="form-control-label" htmlFor="number-input">Contact Number (optional):</label>
                           <input type="text" id="number-input" maxLength="20" name="number-input" onKeyPress={this.handleKeyPress} onChange={(event) => this.setState({ contact: event.target.value })} value={this.state.contact} className="form-control input-field" placeholder="Enter contact number" /><br />
 
-                          <button className="km-button km-button--primary" autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </button>
+                          <Button autoFocus={true} type="submit" onClick={this.handleSubmit}>Save changes </Button>
                         </div>
                       </div>
                     </div>

@@ -62,7 +62,7 @@ updateUserDetail:function(params){
   let userSession = CommonUtils.getUserSession();
   let headers = {
     'Content-Type': 'application/json',
-      'Apz-AppId': userSession.applicationId,
+      'Apz-AppId': userSession.application.applicationId,
       'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
       'Of-User-Id':params.ofUserId
     }
@@ -91,7 +91,7 @@ updateUserDetail:function(params){
     'Content-Type': 'application/x-www-form-urlencoded',
       'Apz-AppId': criteria.applicationId,
       'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
-      'Apz-Product-App': 'true',
+      'Apz-Product-App': !criteria.isAdmin,
     }
     var url = getConfig().applozicPlugin.fetchContactsUrl;
   
@@ -196,6 +196,158 @@ updateUserDetail:function(params){
       .then(response => {
         return response.data;
       })
+    },
+
+  // To login and validate user in Applozic Dashboard
+  validateApplozicUser: function (auth) {
+    let params = {
+      loginId: auth.userName,
+      loginPassword: auth.password,
+      utm_source: null
+    }
+    let url = getConfig().applozicPlugin.applozicHosturl + '/signin/validate.page'
+    return Promise.resolve(axios.post(url, {}, { "params": params }))
+      .then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
+  },
+
+  // To login the Applozic user into a particular application 
+  getApplication: function (criteria, isAdminUser) {
+    let url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/application/get'
+    let headers = {
+      'Content-Type': 'application/json',
+        'Apz-AppId': criteria.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(criteria.userName + ':' + criteria.accessToken).toString('base64'),
+        'Apz-Product-App': !isAdminUser,
+      }
+    return Promise.resolve(axios.get(url, { "headers": headers, "params": { 'applicationId': criteria.applicationId } })).then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
+  },
+
+  getMessageList: function (params, headers) {
+    let url = getConfig().applozicPlugin.applozicHosturl+ '/rest/ws/message/filter'
+    let query = {
+      'startIndex': params.startIndex || 0,
+      'appKey': params.appId,
+      'orderBy': params.orderBy || 1,
+      'startTime': params.startTime,
+      'endTime': params.endTime
+    }
+    return Promise.resolve(axios.get(url, { "headers": headers, "params": query }))
+      .then(response => {
+        return response;
+      }).catch(error => {
+        throw error;
+      });
+  },
+
+	// To fetch all the applications of the Applozic user
+	getApplicationIdList: function(email) {
+		const APP_LIST_URL = getConfig().applozicPlugin.applozicHosturl + "/rest/ws/user/getlist/v2.1?emailId=" + encodeURIComponent(email);
+		return axios.get(APP_LIST_URL).then(response=> {
+			if (response.status = 200 && response.data !== "Invalid userId or EmailId") {
+			return response.data;
+			}
+			return "error";
+		}
+		).catch(err => {
+			return "error";
+		});
+	},
+
+    applozicResetPassword: function(email) {
+		const url = getConfig().applozicPlugin.applozicHosturl + "/frgt/password.page";
+		let data = "frgtPassId=" + encodeURIComponent(email);
+		return axios.post(url, data).then( response => {
+			if(response.status === 200) {
+				return response;	
+			}
+		}).catch( err => {
+			return err;
+		});
+    },
+    changeApplozicUserPassword: function(params){
+      const url = getConfig().applozicPlugin.applozicHosturl +'/rest/ws/user/update/password'
+      let headers = {
+        'Content-Type': 'application/json',
+        'Apz-AppId': params.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(params.userName + ':' + params.accessToken).toString('base64'),
+      }
+      let data = {
+        oldPassword:params.currPassword,
+        newPassword:params.newPassword
+      } 
+      return axios.get(url, {"headers": headers, "params": data }).then( response => {
+        if(response.status === 200) {
+          return response;	
+        }
+      }).catch( err => {
+        return err;
+      });
+    },
+    getApplicationStats: function() {
+      let userSession = CommonUtils.getUserSession();
+      let headers = {
+        'Content-Type': 'application/json',
+        'Apz-AppId': userSession.application.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+        'Apz-Product-App': true
+      }
+      const url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/stats/get?appKey=' + userSession.application.key;
+      return Promise.resolve(axios.get(url, {"headers": headers})).then( response => {
+        return response;
+      }).catch( err => {
+        return err;
+      })
+    },
+    sendInvitation:function(email){
+      const url = getConfig().applozicPlugin.applozicHosturl +'/rest/ws/v2/invite/dev';
+      var userSession = CommonUtils.getUserSession();
+      var headers = {
+      'Apz-AppId': userSession.application.applicationId,
+      'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+      'Content-Type': 'application/json'
+    }
+      let data = {
+        inviteEmails:email,
+        applicationId:userSession.application.applicationId,
+      } 
+      return axios.post(url, {}, {"headers": headers, "params": data }).then( response => {
+        if(response.status === 200) {
+          return response;	
+        }
+      }).catch( err => {
+        return err;
+      });
+    },
+  uploadCertificate: function (params) {
+    var data = new FormData();
+    var certificateUploadUrl = getConfig().applozicPlugin.certificateUpload
+    var userSession = CommonUtils.getUserSession();
+    var headers = CommonUtils.isApplicationAdmin() ?
+      {
+        "Apz-AppId": userSession.application.applicationId,
+        "Apz-Token": 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64')
+      } :
+      {
+        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey,
+        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+      }
+    data.append("file", params.file);
+    return axios({
+      "method": 'POST',
+      "url": certificateUploadUrl,
+      "data": data,
+      "headers": headers
+    }).then(response => {
+      return response;
+    })
   }
 }
 

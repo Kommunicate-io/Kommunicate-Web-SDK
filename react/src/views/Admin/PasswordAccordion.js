@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import '../Settings/Installation/Accordion.css';
 import {changePassword } from '../../utils/kommunicateClient';
+import ApplozicClient from '../../utils/applozicClient'
 import Notification from '../model/Notification';
 import Modal from 'react-modal';
 import CloseButton from '../../components/Modal/CloseButton';
+import CommonUtils from '../../utils/CommonUtils';
 import './Admin.css';
+import Button from '../../components/Buttons/Button';
 
 const customStyles = {
   content: {
@@ -73,22 +76,37 @@ class PasswordAccordion extends Component {
       }
     }
 
-    handlePassword(e) {
-      e.preventDefault();      
-      if (this.state.newPassword !== this.state.repeatPassword){
-        Notification.info("Password does not match");
-        return;   
-      } else {
-        changePassword({
-          oldPassword : this.state.currentPassword,
-          newPassword: this.state.newPassword,
-        }).then(data => {
-          if(data === "SUCCESS")
-            this.clearPasswordfields(e);
-        });
-        
+  handlePassword(e) {
+    e.preventDefault();
+    if (this.state.newPassword !== this.state.repeatPassword) {
+      Notification.info("Password does not match");
+      return;
+    } else if (CommonUtils.isApplicationAdmin()) {
+      let userSession = CommonUtils.getUserSession();
+      let params = {
+        currPassword: this.state.currentPassword,
+        newPassword: this.state.newPassword,
+        userName: userSession.userName,
+        accessToken: this.state.currentPassword,
+        applicationId: userSession.application.applicationId,
       }
+      ApplozicClient.changeApplozicUserPassword(params).then(res => {
+        if (res.data && res.data.status === "success") {
+          this.clearPasswordfields(e);
+          return;
+        }
+        Notification.info("Wrong password");
+      })
+    } else {
+      changePassword({
+        oldPassword: this.state.currentPassword,
+        newPassword: this.state.newPassword,
+      }).then(data => {
+        if (data === "SUCCESS")
+          this.clearPasswordfields(e);
+      })
     }
+  }
 
     clearPasswordfields(e) {
       this.setState({
@@ -142,8 +160,8 @@ class PasswordAccordion extends Component {
 
                     <div className="form-group row">
                       <div className="col-md-12 text-right">
-                        <button className="km-button km-button--secondary" onClick={this.closeForgotPasswordModal}>Cancel</button>
-                        <button className="km-button km-button--primary m-left" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes</button>
+                        <Button secondary onClick={this.closeForgotPasswordModal}>Cancel</Button>
+                        <Button primary className="m-left" autoFocus={true} type="submit" onClick={this.validatePassword}>Save changes</Button>
                       </div>
                     </div>
 

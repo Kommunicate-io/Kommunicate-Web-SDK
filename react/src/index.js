@@ -1,6 +1,7 @@
+import 'core-js';
 import ReactDOM from 'react-dom'
 import { render } from 'react-dom'
-import React from 'react'
+import React, { Fragment } from 'react'
 import App from './components/App'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
@@ -12,6 +13,8 @@ import * as Sentry from '@sentry/browser'
 import { getConfig } from '../src/config/config'
 import CommonUtils from '../src/utils/CommonUtils';
 import {setTag} from '../src/sentry/sentry'
+import { ThemeProvider } from 'styled-components';
+import theme from './assets/theme/theme';
 
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 
@@ -26,7 +29,11 @@ enableSentry && Sentry.configureScope((scope) => {
 ReactDOM.render(
   <Provider store={store}> 
     <PersistGate loading={null} persistor={persistor}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <Fragment>
+          <App />
+        </Fragment>
+      </ThemeProvider>
     </PersistGate>
   </Provider>,
   document.getElementById('root')

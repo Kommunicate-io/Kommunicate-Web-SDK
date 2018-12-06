@@ -217,6 +217,19 @@ const CommonUtils = {
           if (window.mixpanel) {
             window.mixpanel.identify(identity);
           }
+    },
+    isKommunicateDashboard: function() {
+        let userSession = this.getUserSession();
+        if(userSession) {
+            return userSession.application.pricingPackage >= 100;
+        } else {
+            return window.location.hostname.includes("kommunicate");
+        }
+
+    },
+    isApplicationAdmin: function(userSession){
+        userSession = userSession ? userSession : this.getUserSession()
+        return userSession.roleName === 'APPLICATION_ADMIN'
     }
 }
 

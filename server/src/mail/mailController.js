@@ -7,6 +7,7 @@ const logger = require('../utils/logger');
 const kommunicateLogoUrl = config.getProperties().urls.hostUrl + "/img/logo1.png";
 const kmWebsiteLogoUrl = config.getProperties().urls.kmWebsiteUrl + "/assets/resources/images/km-logo-new.png";
 let joinKommunicateUrl = config.getProperties().urls.dashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer"
+let applozicDashboardHostUrl = config.getProperties().urls.applozicDashboardHostUrl + "/signup?invite=true&token=:token&referer=:referer"
 
 exports.sendMail = (req, res) => {
     console.log("received request to send mail", req.body.to);
@@ -88,14 +89,19 @@ const getEmailFormat = (options, custInfo) => {
                     break;
 
                 case "INVITE_TEAM_MAIL":
-                    templatePath = path.join(__dirname, "/inviteTeamTemplate.html"),
+                    var dashboardUlr = !options.isApplozic ? joinKommunicateUrl : applozicDashboardHostUrl
+                    templatePath = !options.isApplozic ? path.join(__dirname, "/inviteTeamTemplate.html"): path.join(__dirname, "/inviteApplozicTeamTemplate.html"),
                         templateReplacement[":adminName"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName,
                         templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
-                        templateReplacement[":joinKommunicateUrl"] = joinKommunicateUrl.replace(":token", options.token).replace(":referer", options.agentId),
+                        templateReplacement[":joinKommunicateUrl"] = dashboardUlr.replace(":token", options.token).replace(":referer", options.agentId),
                         templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "from " + custInfo.companyName : "";
                     options.templatePath = templatePath,
                         options.templateReplacement = templateReplacement;
-                    options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on Kommunicate" : "Invitation to Join Kommunicate ";
+                        if(!options.isApplozic){
+                            options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on Kommunicate" : "Invitation to Join Kommunicate ";
+                        }else{
+                            options.subject = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "Join " + custInfo.companyName + " on Applozic" : "Invitation to Join Applozic ";
+                        }
                     options.bcc = "support@kommunicate.io";
                     break;
 

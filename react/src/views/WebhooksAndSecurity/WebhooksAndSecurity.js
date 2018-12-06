@@ -8,6 +8,7 @@ import { editApplicationDetails } from '../../utils/kommunicateClient'
 import Select from 'react-select';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
+import Button from '../../components/Buttons/Button';
 
 
 const InputFields = (props) => {
@@ -99,8 +100,8 @@ export default class WebhooksAndSecurity extends Component {
 
     submitWebhooksDetails = (securitySectionDetail) => {
         let userSession = CommonUtils.getUserSession();
-        let applicationData = userSession;
-        delete applicationData.application.adminUser;
+        let applicationData = userSession.application;
+        delete applicationData.adminUser;
         applicationData.applicationWebhookPxys = [];
 
         let authenticationToken = this.state.authenticationToken;
@@ -132,11 +133,13 @@ export default class WebhooksAndSecurity extends Component {
                     userSession.application.accessTokenUrl = response.data.accessTokenUrl;
                     CommonUtils.setUserSession(userSession);
                     Notification.info("Security configuration updated successfully");
-                } else {   
+                } else if(response.data !== 'error') {   
                     userSession.application.applicationWebhookPxys = response.data.applicationWebhookPxys;
                     userSession.application.webhookAuthentication = response.data.webhookAuthentication;
                     CommonUtils.setUserSession(userSession);                 
                     Notification.info("Webhooks configured successfully");
+                }else{
+                    Notification.info("Webhooks configure error"); 
                 }
             }
             console.log(response)
@@ -228,8 +231,8 @@ export default class WebhooksAndSecurity extends Component {
 
 
                             <div className="webhooks-action-buttons-container">
-                                <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</button>
-                                <button className="km-button km-button--secondary n-vis">Cancel</button>
+                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                                <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
                             <hr/>
@@ -246,8 +249,8 @@ export default class WebhooksAndSecurity extends Component {
                             </div>
 
                             <div className="security-action-buttons-container">
-                                <button className="km-button km-button--primary" onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</button>
-                                <button className="km-button km-button--secondary n-vis">Cancel</button>
+                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                                <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
                         </div>

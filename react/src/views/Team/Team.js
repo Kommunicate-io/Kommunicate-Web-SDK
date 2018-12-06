@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import isEmail from 'validator/lib/isEmail';
-import axios from 'axios';
-import { getConfig, getEnvironmentId, get } from '../../config/config.js';
 import UserItem from '../UserItem/';
 import InvitedUsersList from './InvitedUsersList';
 import { notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId } from '../../utils/kommunicateClient';
@@ -11,8 +8,7 @@ import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
 import './team.css';
 import CommonUtils from '../../utils/CommonUtils';
-import { USER_TYPE, GROUP_ROLE, LIZ, DEFAULT_BOT, INVITED_USER_STATUS } from '../../utils/Constant';
-import { Agent } from 'https';
+import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
 import Modal from 'react-modal';
 import CloseButton from './../../components/Modal/CloseButton.js';
 import RadioButton from '../../components/RadioButton/RadioButton';
@@ -173,18 +169,16 @@ class Integration extends Component {
       if (email.match(mailformat)) {
         this.onCloseModal();
         acEventTrigger('ac-added-agent');
-        return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
-          if (response.data && response.data.code === "SUCCESS") {
-            Notification.success('Invitation sent successfully');
-            this.getInvitedUsers();
-          } else if (response.data && response.data.code === "USER_ALREADY_EXIST") {
-            this.getUsers();
-            Notification.success(response.data.message);
-          }
-        }).catch(err => {
-          Notification.error("Something went wrong!")
-          console.log("error while inviting an user", err.message.response.data);
-        })
+          return Promise.resolve(notifyThatEmailIsSent({ to: email, isKommunicate:CommonUtils.isKommunicateDashboard(), templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
+            if (response && response.data === "success") {
+              Notification.success('Invitation sent successfully');
+              //this.getInvitedUsers();
+            }
+          }).catch(err => {
+            Notification.error("Something went wrong!")
+            console.log("error while inviting an user", err.message.response.data);
+          })
+        
       } else {
         Notification.error(email + " is an invalid Email");
         return false;

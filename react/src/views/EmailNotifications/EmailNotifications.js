@@ -39,7 +39,7 @@ export default class EmailNotification extends Component {
             headers: {
                 "Apz-Token": "Basic " + CommonUtils.getUserSession().apzToken,
                 "Content-Type": "application/json",
-                "Apz-AppId": CommonUtils.getUserSession().applicationId,
+                "Apz-AppId": CommonUtils.getUserSession().application.applicationId,
                 "Apz-Product-App": true,
             }
           };

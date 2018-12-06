@@ -216,9 +216,9 @@ exports.signUpWithApplozic = (options, isApplicationWebAdmin) => {
         return applozicClient.updateApplozicClient(options.userName, options.password, options.applicationId, { userId: options.userName, roleName: "APPLICATION_WEB_ADMIN" }, null, false, isApplicationWebAdmin + '')
           .then(updatedUser => {
             options.role = "APPLICATION_WEB_ADMIN";
-            if(application.pricingPackage == 0 || application.pricingPackage == -1) {
-              applozicClient.updateApplication({applicationId: application.applicationId, pricingPackage: 101})
-            }
+            // if(application.pricingPackage == 0 || application.pricingPackage == -1) {
+            //   applozicClient.updateApplication({applicationId: application.applicationId, pricingPackage: 101})
+            // }
             return populateDataInKommunicateDb(options, application, customer, bot, liz);
           }).catch(e => {
             throw e;

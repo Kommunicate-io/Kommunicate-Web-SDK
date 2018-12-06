@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
-import classnames from 'classnames';
-import classes from './Aside.css';
+//import { TabContent, TabPane, Nav, NavItem, NavLink, Progress } from 'reactstrap';
+import './Aside.css';
 import CommonUtils from '../../utils/CommonUtils';
 import ApplozicClient from '../../utils/applozicClient';
-import {updateApplozicUser, getThirdPartyListByApplicationId, updateConversation,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
+import {updateApplozicUser, getThirdPartyListByApplicationId,getUsersByType, updateZendeskIntegrationTicket} from '../../utils/kommunicateClient';
 import { thirdPartyList } from './km-thirdparty-list'
 import Modal from 'react-responsive-modal';
 import ModalContent from './ModalContent.js';
@@ -143,7 +142,7 @@ class Aside extends Component {
 
   getThirdparty = () => {
     getThirdPartyListByApplicationId().then(response => {
-      if(response !== undefined ) {
+      if(response !== undefined  && response.data.message !== "no user found") {
         let zendeskKeys = response.data.message.filter(function (integration) {
           return integration.type == 2;});
           if(zendeskKeys.length > 0 ){
@@ -575,7 +574,7 @@ class Aside extends Component {
          className="km-button km-button--secondary">
          <img src={item.logo} className="km-fullview-integration-logo" />{item.name}</button>
     });
-    const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
+    const kmConversationsTestUrl = getConfig().kommunicateWebsiteUrls.kmConversationsTestUrl+"?appId="+CommonUtils.getUserSession().application.applicationId +"&title="+CommonUtils.getUserSession().adminDisplayName;
 
     return (
       <aside className="aside-menu">

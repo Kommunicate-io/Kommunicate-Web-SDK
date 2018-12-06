@@ -3,7 +3,6 @@
  * do not add any code here.
  */
 import url from "./url";
-import path from 'path';
 import configuration from "./config-env";
 
 const  env = process.env.REACT_APP_NODE_ENV || "development";
@@ -16,6 +15,7 @@ function getEnvironmentId() {
   const kommunicateBaseUrl = config.baseurl.kommunicateAPI;
   const botPlatformAPI =config.baseurl.botPlatformAPI;
   const kmWebsiteUrl = config.kommunicateWebsiteUrl;
+  const alWebsiteUrl = config.applozicWebsiteUrl;
   const serviceUrl = config.services.baseurl;
   const googleApiBaseUrl = "https://accounts.google.com/o/oauth2/v2/auth";
   config.homeUrl = applozicBaseUrl;

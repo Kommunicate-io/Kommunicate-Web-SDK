@@ -7,7 +7,7 @@ import Checkbox from '../../components/Checkbox/Checkbox';
 import CommonUtils from '../../utils/CommonUtils';
 import { getConfig } from "../../config/config.js";
 import {acEventTrigger} from '../../utils/AnalyticsEventTracking';
-
+import ApplozicClient from '../../utils/applozicClient'
 import InputFile from '../.../../../components/InputFile/InputFile';
 import './pushNotification.css';
 import { getApplication } from '../../utils/kommunicateClient';
@@ -54,19 +54,8 @@ class PushNotification extends Component {
     return filename;
   }
   certificateUpload(params) {
-    var data = new FormData();
-    var certificateUploadUrl = getConfig().applozicPlugin.certificateUpload
     var file = {};
-    data.append("file", params.file);
-    axios({
-      method: 'POST',
-      url: certificateUploadUrl,
-      data: data,
-      headers: {
-        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey,
-        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
-      }
-    }).then(function (response) {
+    ApplozicClient.uploadCertificate(params).then(function (response) {
       if (response.status == 200) {
         file.url = response.data;
         file.success = params.this;
@@ -176,15 +165,16 @@ class PushNotification extends Component {
     }
     userSession.application.appModulePxys[0] = application;
     CommonUtils.setUserSession(userSession);
+    
     axios({
       method: 'post',
       url: userDetailUrl,
       contentType: 'application/json',
       data: application,
       headers: {
-        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
         "Content-Type": "application/json",
-        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey
+        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
       }
     }).then(function (response) {
       if (response.status === 200) {
@@ -240,9 +230,9 @@ class PushNotification extends Component {
       contentType: 'application/json',
       data: application,
       headers: {
-        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
         "Content-Type": "application/json",
-        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey
+        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
       }
     }).then(function (response) {
       if (response.status === 200) {
@@ -298,9 +288,9 @@ class PushNotification extends Component {
       contentType: 'application/json',
       data: application,
       headers: {
-        "Apz-Token": "Basic " + getConfig().adminDetails.kommunicateAdminApzToken,
+        "Apz-Token": "Basic " +CommonUtils.isApplicationAdmin(userSession)? 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64') : getConfig().adminDetails.kommunicateAdminApzToken,
         "Content-Type": "application/json",
-        "Apz-AppId": getConfig().adminDetails.kommunicateParentKey
+        "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
       }
     }).then(function (response) {
       if (response.status === 200) {

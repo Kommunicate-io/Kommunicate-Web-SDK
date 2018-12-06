@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import ReactTooltip from 'react-tooltip';
-import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
+//import {Dropdown, DropdownMenu, DropdownItem, Progress} from 'reactstrap';
 import CustomerListItem from '../UserItem/CustomerListItem';
 import './users.css'
 import CommonUtils from '../../utils/CommonUtils';
 import Labels from '../../utils/Labels';
-import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
+//import {fetchContactsFromApplozic, getGroupFeed, multipleGroupInfo} from '../../utils/kommunicateClient';
 import ApplozicClient from '../../utils/applozicClient';
 import _ from 'lodash';
 import Pagination from "react-paginating";
@@ -135,7 +135,7 @@ class Users extends Component {
             user.convoStatus = arr[user.messagePxy.groupId].metadata.CONVERSATION_STATUS;
             assignedUser.push(user);
             // Sort array after pushing
-            var sortOnBasisOf = assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+            var sortOnBasisOf = assignedUser[index] && assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
             var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
             _this.setState({
               result: arrObj,
@@ -146,7 +146,7 @@ class Users extends Component {
       }
       else {
         assignedUser.push(user);
-        var sortOnBasisOf = assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
+        var sortOnBasisOf = assignedUser[index] && assignedUser[index].lastSeenTime ? "lastSeenAtTime" : "lastLoggedInAtTime"
         var arrObj = _.sortBy(assignedUser, sortOnBasisOf).reverse();
         _this.setState({
           result: arrObj,
@@ -331,8 +331,8 @@ class Users extends Component {
     var showrResult = this.state.result.slice(this.state.intial, this.state.final).map(function (result, index) {
       return <CustomerListItem key={index} user={result} hideConversation="false" />
     });
-   return (<div className="animated fadeIn customer-list-item">
-
+   return (
+   <div className="animated fadeIn customer-list-item">
       <div className="row">
         <div className="col-md-12">
           <div className="card">

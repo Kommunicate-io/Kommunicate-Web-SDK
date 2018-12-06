@@ -7,6 +7,9 @@ const SettingsHeader = (props) =>{
 
     let currPath = routes[window.location.pathname];    
     let subHeading = subHeadings[currPath];
+    if(props.applozicDashboard){
+        subHeading=subHeading.replace('Kommunicate', 'Applozic')
+    }
      
    return(
         <div className="km-settings-heading-wrapper">

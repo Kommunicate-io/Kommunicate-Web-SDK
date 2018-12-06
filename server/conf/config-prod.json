@@ -37,6 +37,7 @@
           "updatePasswordPage": "http://dashboard.kommunicate.io/password/update?code=:code",
           "passwordResetUrl": "https://chat.kommunicate.io/rest/ws/user/update/password?oldPassword=:oldPassword&newPassword=:newPassword",
           "dashboardHostUrl":"https://dashboard.kommunicate.io",
+          "applozicDashboardHostUrl":"https://console.applozic.com",
           "applozicHostUrl" : "https://chat.kommunicate.io",
           "getUserInfo": "https://chat.kommunicate.io/rest/ws/user/v2/detail",
           "rasafaq":"https://rasa.kommunicate.io"
