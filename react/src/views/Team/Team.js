@@ -6,7 +6,6 @@ import { notifyThatEmailIsSent, getUsersByType, getInvitedUserByApplicationId } 
 import '../MultiEmail/multiple-email.css'
 import ValidationUtils from '../../utils/validationUtils'
 import Notification from '../model/Notification';
-import ApplozicClient from '../../utils/applozicClient'
 import './team.css';
 import CommonUtils from '../../utils/CommonUtils';
 import { USER_TYPE, INVITED_USER_STATUS } from '../../utils/Constant';
@@ -170,19 +169,7 @@ class Integration extends Component {
       if (email.match(mailformat)) {
         this.onCloseModal();
         acEventTrigger('ac-added-agent');
-        if (CommonUtils.isApplicationAdmin()) {
-          ApplozicClient.sendInvitation(email).then(response => {
-            if (response.data && response.data.code === "SUCCESS") {
-              Notification.success('Invitation sent successfully');
-              this.getInvitedUsers();
-            } else if (response.data && response.data.code === "USER_ALREADY_EXIST") {
-              this.getUsers();
-              Notification.success(response.data.message);
-            }
-            
-          })
-        }else{
-          return Promise.resolve(notifyThatEmailIsSent({ to: email, templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
+          return Promise.resolve(notifyThatEmailIsSent({ to: email, isKommunicate:CommonUtils.isKommunicateDashboard(), templateName: "INVITE_TEAM_MAIL",     roleType:roleType })).then(response => {
             if (response && response.data === "success") {
               Notification.success('Invitation sent successfully');
               //this.getInvitedUsers();
@@ -191,7 +178,7 @@ class Integration extends Component {
             Notification.error("Something went wrong!")
             console.log("error while inviting an user", err.message.response.data);
           })
-        }
+        
       } else {
         Notification.error(email + " is an invalid Email");
         return false;
