@@ -108,6 +108,7 @@ class Step2 extends Component {
       .then(response => {
         if (response.data.code === 'SUCCESS') {
           console.log("Setup completed successfully");
+          this.reDirectToDashboard();
         }
       }).catch(err => { console.log('userInfo not saved') });
       applozicClient.createKommunicateSupportUser({
@@ -125,7 +126,7 @@ class Step2 extends Component {
       userSession.name = customerInfo.name;
       userSession.adminDisplayName = customerInfo.name;
       CommonUtils.setUserSession(userSession)
-     this.props.moveToNextStep(customerInfo,this.state.nextStep)
+      // this.props.moveToNextStep(customerInfo,this.state.nextStep)
   }
   onFocus (){
     document.getElementById("emptyerror").className = 'n-vis';
@@ -180,7 +181,10 @@ hideAllErrors (){
       this.websiteUrlCheck();
     }
   }
-
+  reDirectToDashboard() {
+    window.location.assign("/dashboard");
+    localStorage.setItem("KM_ONBOARDING","true");
+  }
   openModal() {
     this.setState({ modalIsOpen: true });
   }
@@ -335,7 +339,7 @@ hideAllErrors (){
                             </div> */}
                             <div className="form-group setup-btn-group">
                               <div>
-                                <button className="km-button km-button--primary step-1-submit-btn"onClick={this.finishSetUp}>Continue </button>
+                                <button className="km-button km-button--primary step-1-submit-btn"onClick={this.finishSetUp}>Go to dashboard </button>
                                 {/* <a className="step2-skip-link" onClick={this.finishSetUp}>Skip for now</a> */}
                               </div>
                             </div>
