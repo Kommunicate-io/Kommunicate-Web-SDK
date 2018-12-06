@@ -22,5 +22,18 @@ exports.getPlugin =(req,res)=>{
   res.send(plugin);
   console.log("plugin code sent successfully");
   });
+}
 
+exports.iframePlugin = (req, res) => {
+
+  const MCK_CONTEXTPATH = config.getProperties().urls.hostUrl;
+  fs.readFile(path.join(__dirname, "/kommunicateIframe.js"), 'utf8', function (err, data) {
+    if (err) {
+      res.send("err while getting plugin...");
+      return console.log(err);
+    }
+    var plugin = data.replace(":MCK_CONTEXTPATH", MCK_CONTEXTPATH);
+    res.setHeader('content-type', 'application/javascript');
+    res.send(plugin);
+  });
 }
