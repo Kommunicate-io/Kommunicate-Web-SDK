@@ -126,13 +126,11 @@ export default class EmailFallback extends Component {
             let companyLogo = fallbackSettingsData;
             applicationData.companyLogo = companyLogo;
             this.editApplicationApiCall(applicationData).then(response => {
-                console.log(response);
                 userSession.application.companyLogo = response.companyLogo;
                 CommonUtils.setUserSession(userSession);
             });   
         } else {
             this.editApplicationApiCall(fallbackSettingsData).then( response => {
-                console.log(response);
                 userSession.application.applicationWebhookPxys = response.applicationWebhookPxys;
                 CommonUtils.setUserSession(userSession);
                 (this.checkForFallbackSettings()) ? Notification.info("Fallback emails disabled succesfully") : Notification.info("Fallback emails enabled succesfully");

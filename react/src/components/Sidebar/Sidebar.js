@@ -89,7 +89,7 @@ class Sidebar extends Component {
           <ul className="nav">
 
             <li className="nav-item logo-nav">
-            <NavLink to={'/conversations'} className="nav-link" activeClassName="active" data-rh="Conversations" data-rh-at="right" data-tip="Conversations" data-effect="solid" data-place="right">
+            <NavLink to={this.state.isKommunicateDashboard ?'/conversations':'/dashboard'} className="nav-link" activeClassName="active" data-rh="Conversations" data-rh-at="right" data-tip="Conversations" data-effect="solid" data-place="right">
               <div className="km-logo-circle-bg">
                 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352.7 316.7'>
                   <path className='km-logo-final-logo-beta-0' d='M348.5,302.2V121.2c0-65.4-53-118.3-118.3-118.3H122.5C57.1,2.8,4.1,55.8,4.1,121.2 c0,65.4,53,118.4,118.4,118.4H239c0,0,9.5,0.6,15.2,2.6c5.5,2,11.5,6.8,11.5,6.8l72,59.3c0,0,6.5,5.6,8.9,4.5 C349,311.5,348.5,302.2,348.5,302.2z M125.8,145.3c0,7.9-6.9,14.3-15.4,14.3S95,153.2,95,145.3V94.5c0-7.9,6.9-14.3,15.4-14.3 s15.4,6.4,15.4,14.3V145.3z M191.7,169.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V70.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V169.3z M257.6,145.3c0,7.9-6.9,14.3-15.4,14.3c-8.5,0-15.4-6.4-15.4-14.3V94.5c0-7.9,6.9-14.3,15.4-14.3 c8.5,0,15.4,6.4,15.4,14.3V145.3z' fill="#5C5AA7"/>
@@ -113,8 +113,8 @@ class Sidebar extends Component {
             </svg>
               </NavLink>
             </li>
-            {/* Conversations Link */}
-            <li className="nav-item" onClick={this.hideUnreadCountOnConversationTab}>
+            {/* Conversations Link */
+            this.state.isKommunicateDashboard &&<li className="nav-item" onClick={this.hideUnreadCountOnConversationTab}>
               <NavLink exact= {true} to={'/conversations'} className="nav-link conversation-menu" activeClassName="active"  data-tip="Conversations" data-effect="solid" data-place="right">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g data-name="Group 4">
@@ -126,6 +126,7 @@ class Sidebar extends Component {
             <span id="km-allconversatiom-unread-icon" className="km-allconversatiom-unread-icon n-vis"></span>
               </NavLink>
             </li>
+            }
             {/* Customers Link */}
             <li className="nav-item">
               <NavLink to={'/users'} className="nav-link" activeClassName="active" data-tip="Users" data-effect="solid" data-place="right">

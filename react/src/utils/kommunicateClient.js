@@ -1081,7 +1081,7 @@ const editApplicationDetails = (data) => {
       "Apz-AppId": CommonUtils.isApplicationAdmin(userSession)? userSession.application.applicationId : getConfig().adminDetails.kommunicateParentKey
     }
   };
-  data.appModulePxys = data.appModulePxys.map(({createdAt, ...appModulePxy}) => appModulePxy)
+  data.appModulePxys = data.appModulePxys && data.appModulePxys.map(({createdAt, ...appModulePxy}) => appModulePxy)
   return Promise.resolve(axios.post(url, data, axiosConfig)).then(response => {
     if(response !== undefined) {
       return response;

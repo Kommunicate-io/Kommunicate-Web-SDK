@@ -295,8 +295,9 @@ updateUserDetail:function(params){
       let userSession = CommonUtils.getUserSession();
       let headers = {
         'Content-Type': 'application/json',
-          'Apz-AppId': userSession.application.applicationId,
-          'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+        'Apz-AppId': userSession.application.applicationId,
+        'Apz-Token': 'Basic ' + new Buffer(userSession.userName + ':' + userSession.accessToken).toString('base64'),
+        'Apz-Product-App': true
       }
       const url = getConfig().applozicPlugin.applozicHosturl + '/rest/ws/stats/get?appKey=' + userSession.application.key;
       return Promise.resolve(axios.get(url, {"headers": headers})).then( response => {
