@@ -415,7 +415,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 
 
 		var MCK_MAX_HISTORY = appOptions.maxHistory;
-		var MCK_INTEGRATION_STARTED = appOptions.isIntegrationStarted;
+		var MCK_INTEGRATION_STARTED;
 		var currentTimeStamp = Math.ceil(new Date().getTime());
 		var maxHistoryInMillisec = (!MCK_MAX_HISTORY == "") ? MCK_MAX_HISTORY * 24 * 60 * 60 * 1000 : currentTimeStamp; // value of inputed days (or number) converted to milliseconds. If MCK_MAX_HISTORY is empty string then currentTimeStamp value will taken to break the condition for loading messages.
 
@@ -741,7 +741,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		};
 		_this.getGroup = function (params) {
 			if (typeof params.callback === 'function') {
-				var group = mckGroupLayout.getGroup(params.groupId);
+				var group = kmGroupUtils.getGroup(params.groupId);
 				params.callback(group);
 				return "success";
 			} else {
@@ -1355,6 +1355,19 @@ var KM_ASSIGNE_GROUP_MAP = [];
 								});
 							}
 						}
+
+						//The below "fetchContacts" call is being used for setting the value of MCK_INTEGRATION_STARTED which we are using to show the empty state in dashboard. 
+						mckContactService.fetchContacts({
+							"roleNameList": ["USER"],
+							"pageSize": 15,
+							'callback': function(response) {
+								let userList = (response && response.response&& response.response.users)?response.response.users:[];
+								let appUsers = userList.filter(user=>!(user.metadata&&user.metadata['KM_SOURCE']=="KOMMUNICATE_DASHBOARD"));
+								MCK_INTEGRATION_STARTED = appUsers.length ? true : false;
+								mckMessageService.emptyStateChange();
+							}
+						});
+
 					},
 					error: function () {
 						mckStorage.clearMckMessageArray();
@@ -2231,6 +2244,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (d.activeElement && d.activeElement.id !== 'km-btn-group-create') {
 						$mck_group_create_title.removeClass('km-req-border');
 					}
+					if($kmApplozic(".kmtypeahead").hasClass("vis")){
+						$kmApplozic(".kmtypeahead").removeClass("vis").addClass("n-vis");
+					}
 					$kmApplozic('.mcktypeahead.km-dropdown-menu').hide();
 				});
 			};
@@ -2627,7 +2643,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						resp.status = "success";
 						if (typeof data.message === "undefined" || data.message.length === 0) {
 							resp.messages = [];
-							mckMessageService.emptyStateChange();
+							// mckMessageService.emptyStateChange();
 							console.log("No Messages", data.message);
 						} else {
 							var messages = data.message;
@@ -2656,11 +2672,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var isMessages = true;
 				var currTabId = $mck_msg_inner.data('km-id');
 				var isGroupTab = $mck_msg_inner.data('isgroup');
-				if (!params.startTime) {
-					_this.initSearch();
-				}
 				if (data && data.message && data.message.length === 0) {
-					mckMessageService.emptyStateChange();
+					// mckMessageService.emptyStateChange();
 				}
 				CONTACT_SYNCING = false;
 				MESSAGE_SYNCING = false;
@@ -2703,7 +2716,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 									}
 								}
 							}
-
 							if (data.groupFeeds.length > 0) {
 								$kmApplozic.each(data.groupFeeds, function (i, groupFeed) {
 									kmGroupUtils.addGroup(groupFeed, list);
@@ -2854,6 +2866,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					url: KM_BASE_URL + LOAD_SUPPORT_GROUP + data+ "&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.OPEN+"&status="+KOMMUNICATE_CONSTANTS.CONVERSATION_STATE.UNRESPONDED,
 					success: function (data) {
 						 mckMessageService.addContactInConversationList(data, null, conversationList);
+						 mckMessageService.initSearch();
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
 					}
 				})
@@ -2975,10 +2988,8 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						// 	// _this.initSearch();
 						// }
 						if(data.message.length !== 0) {
-							mckMessageService.emptyStateChange();
+							// mckMessageService.emptyStateChange();
 						}
-
-						// mckMessageService.emptyStateChange();
 
 						CONTACT_SYNCING = false;
 						MESSAGE_SYNCING = false;
@@ -2995,11 +3006,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 											});
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").data('datetime', "");
 
-											mckMessageService.emptyStateChange();
+											// mckMessageService.emptyStateChange();
 										} else if ($kmApplozic("#km-message-cell .km-message-inner-right div[name='message']").length === 0) {
 											$mck_tab_message_option.removeClass('vis').addClass('n-vis');
 											$kmApplozic(".km-message-inner[data-km-id='" + params.tabId + "']").html('<div class="km-no-data-text km-text-muted">No messages yet!</div>');
-											mckMessageService.emptyStateChange();
+											// mckMessageService.emptyStateChange();
 
 										}
 									} else {
@@ -4726,7 +4737,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				} else {
 					_this.addContact(contact, sectionId, message, prepend);
 					}
-				mckMessageService.emptyStateChange();
+				// mckMessageService.emptyStateChange();
 			};
 			_this.updateRecentConversationList = function (contact, message, update, prepend, list) {	
 				if (typeof list == "undefined") {
@@ -4811,9 +4822,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					$kmApplozic.each(uniqueUserIdArray, function (i, userId) {
 						if (userId) {
 							var contact = _this.fetchContact('' + userId);
-							contactsArray.push(contact);
-							if ($kmApplozic("#km-li-cs-user-" + contact.htmlId).length === 0) {
-								_this.addContactForSearchList(contact, "km-contact-search-list");
+							if (contact) {
+								contactsArray.push(contact);
+								if ($kmApplozic("#km-li-cs-user-" + contact.htmlId).length === 0) {
+									_this.addContactForSearchList(contact, "km-contact-search-list");
+								}
 							}
 						}
 					});
@@ -4880,17 +4893,17 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					contact.displayName = _this.getTabDisplayName(contact.contactId, contact.isGroup);
 					var displayName = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
 					if(contact.isGroup){
-					typeaheadEntry =  displayName + $kmApplozic.trim(contact.groupId);
-					}
+					typeaheadEntry =  displayName + $kmApplozic.trim(contact.groupId);	
 					typeaheadMap[typeaheadEntry] = contact;
 					typeaheadArray.push(typeaheadEntry);
 					contactSuggestionsArray.push(typeaheadEntry);
+					}
 				}
 				$searchId.mcktypeahead({
 					source: typeaheadArray,
 					matcher: function (item) {
 						var contact = typeaheadMap[item];
-						var contactNameArray = contact.displayName.split(' ');
+						var contactNameArray = contact.displayName.toString().split(' ');
 						var contactNameLength = contactNameArray.length;
 						var contactFName = contactNameArray[0];
 						var contactMName = '';
@@ -4905,6 +4918,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						return matcher.test(contact.displayName) || matcher.test(contact.contactId) || matcher.test(contactMName) || matcher.test(contactLName) || matcher.test(contact.email) || matcher.test(contactFName + " " + contactLName);
 					},
 					highlighter: function (item) {
+						$kmApplozic(".kmtypeahead").removeClass("n-vis").addClass("vis");
 						var contact = typeaheadMap[item];
 						return contact.displayName;
 					},
@@ -7902,7 +7916,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var resp = $kmApplozic.parseJSON(obj.body);
 				var messageType = resp.type;
 				var list = {};
-				mckMessageService.emptyStateChange();
+				// mckMessageService.emptyStateChange();
 				if (messageType === "APPLOZIC_34"){
 					w.localStorage.removeItem('KM_USER_SESSION');
 					location.reload();
@@ -8086,12 +8100,12 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 						
 						var contact = (message.groupId) ? kmGroupUtils.getGroup(message.groupId) : mckMessageLayout.getContact(message.to);
-						if (message.metadata.KM_ASSIGN) {
+						if (contact && message.metadata && message.metadata.KM_ASSIGN) {
 							contact.metadata.CONVERSATION_ASSIGNEE = message.metadata.KM_ASSIGN;
 							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
-						if (message.metadata.KM_STATUS) {
-							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_ASSIGN;
+						if (contact && message.metadata && message.metadata.KM_STATUS) {
+							contact.metadata.CONVERSATION_STATUS = message.metadata.KM_STATUS;
 							contact && (KM_GROUP_MAP[contact.contactId]=contact);
 						}
 						var $mck_sidebox_content = $kmApplozic("#km-sidebox-content");

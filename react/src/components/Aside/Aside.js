@@ -477,7 +477,7 @@ class Aside extends Component {
                                     });
     var loggedInUserId = window.$kmApplozic.fn.applozic("getLoggedInUser");
     window.$kmApplozic.fn.applozic("getGroup", {'groupId': groupId, 'callback': function(group) {
-                                                  if (group.members.indexOf(userId) == -1) {
+                                                  if (group && group.members.indexOf(userId) == -1) {
                                                     that.addGroupMember(groupId, userId, function() {
                                                       //that.updateGroupRole(groupId, [{userId: that.getGroupAdmin(group), role: 2}]);
                                                     });

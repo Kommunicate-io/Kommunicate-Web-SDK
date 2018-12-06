@@ -397,6 +397,8 @@ body {
 	bottom: 0;
 	left: 0;
 	overflow: auto;
+	z-index: 1;
+	background-color: #f4f5f6;
 }
 
 .km-container .right .chat.active-chat .bubble {

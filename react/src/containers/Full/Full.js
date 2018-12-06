@@ -54,7 +54,8 @@ class Full extends Component {
       imageLink: imageLink,
       hideInvitedMemberBar: true,
       invitedBy: '',
-      displayName: ''
+      displayName: '',
+      isIntegrationStarted: true
     }
     this.updateProfilePic  = this.updateProfilePic.bind(this);
     this.updateUserDisplay  = this.updateUserDisplay.bind(this);
@@ -149,6 +150,9 @@ class Full extends Component {
 
   populateIntegrationDetailInSession= (isIntegrationStarted)=>{
     CommonUtils.updateUserSession({isIntegrationStarted:isIntegrationStarted});
+    this.setState({
+      isIntegrationStarted: isIntegrationStarted
+    });
   }
   /*initiateIntegry = () => {
     window.appKey = "a85c28bb-40c5-4d6c-b8e5-3e8c4fe4a32f";
@@ -208,8 +212,16 @@ class Full extends Component {
       if (window.heap) {
         window.heap.addUserProperties(userProperties);
       }
+      
       if (window.mixpanel) {
         window.mixpanel.register(userProperties);
+        window.mixpanel.people.set({
+            "$distinct_id": userSession.userName,
+            "$name": userSession.name,
+            "$created": userProperties.signup,
+            "$email": userProperties.email
+        });
+
         if (userSession.isIntegrationStarted !== null && userSession.isIntegrationStarted) {
           acEventTrigger("integrated");
         }
@@ -254,7 +266,7 @@ class Full extends Component {
     return (
       <div className="app" suppressContentEditableWarning={true}>
         <div className="app-body">
-          <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName}/>
+          <Sidebar {...this.props} profilePicUrl={this.state.imageLink} displayName={this.state.displayName} isIntegrationStarted={this.state.isIntegrationStarted}/>
           <main className="main" style={currentPath.includes('/settings')?settingStyle:null}>
             <div className="integration-invited-team-div text-center" hidden={this.state.hideInvitedMemberBar}>
               <p>You were invited by <span>{this.state.invitedBy}</span>. You may start with <Link to="/settings/install">Kommunicate Installation</Link> or set up your <Link to="/settings/profile">Profile</Link></p>

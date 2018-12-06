@@ -37,6 +37,7 @@ const getCustomerByApplicationId = (appId) => {
             return appSettingService.getAppSettingsByApplicationId(settings).then(response => {
                 customer.agentRouting = response.data.agentRouting;
                 customer.botRouting = response.data.botRouting;
+                customer.defaultConversationAssignee = response.data.defaultConversationAssignee;
                 return customer;
             })
         }

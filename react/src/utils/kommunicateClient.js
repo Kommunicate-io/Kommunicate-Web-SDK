@@ -892,7 +892,7 @@ const getConversationStatsByDayAndMonth = (days, agentId, hoursWiseDistribution)
   else {
     query.daily = !hoursWiseDistribution;
   }
-  let url = getConfig().homeUrl + "/rest/ws/group/stats?applicationId=" + query.applicationId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
+  let url = getConfig().homeUrl + "/rest/ws/group/stats?"+"timestamp="+new Date().getTime() +"&applicationId=" + query.applicationId + "&days=" + query.days + "&daily=" + query.daily + "&agentId=";
 
   if (agentId && agentId != "allagents") {
     url = url.replace("&agentId=", '&agentId=' + agentId);
