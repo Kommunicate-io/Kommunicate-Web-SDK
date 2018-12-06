@@ -1,4 +1,4 @@
-import  {getConfig, getResource} from '../config/config.js';
+import  {getConfig, getCommonResource} from '../config/config.js';
 import CommonUtils from '../utils/CommonUtils';
 
 const fs = require('fs');
@@ -73,7 +73,7 @@ const getJsInstructions = () => {
 
 
 const getDocsLink = (product)=>{
- var resources = getResource();
+ var resources = getCommonResource();
  return resources.docsLink[product]
 }
 

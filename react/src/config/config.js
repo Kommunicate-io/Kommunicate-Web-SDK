@@ -7,6 +7,7 @@ import configuration from "./config-env";
 
 const  env = process.env.REACT_APP_NODE_ENV || "development";
 let config = configuration[env];
+const commonResource = configuration['commonResources'];
 
 function getEnvironmentId() {
   return env;
@@ -80,6 +81,10 @@ export function getResource() {
 }
 export function getBaseUrl() {
   return config.baseurl;
+}
+
+export function getCommonResource(){
+  return commonResource;
 }
 let baseurl = config.baseurl;
 export {
