@@ -34,3 +34,103 @@ var imported = document.createElement('script');
 imported.src = MCK_STATICPATH + '/js/app/mck-app.js';
 imported.crossOrigin = "anonymous";
 document.head.appendChild(imported);
+addFullviewImageModal();
+
+function addFullviewImageModal () {
+  var modalHtml =
+    '<span id="km-fullscreen-image-modal-close" class="km-fullscreen-image-modal-close">&times;</span>' +
+    '<img class="km-fullscreen-image-modal-content" id="km-fullscreen-image-modal-content">' +
+    '<div id="km-fullscreen-image-modal-caption"></div>'
+
+  var addFullviewImageModalCss = 
+          /* The Modal (background) */
+          '.km-fullscreen-image-modal {' +
+          ' display: none; ' + /* Hidden by default */
+          ' position: fixed;' + /* Stay in place */
+          ' z-index: 100000000;' + /* Sit on top */
+          ' padding-top: 100px;' + /* Location of the box */
+          ' left: 0;' +
+          ' top: 0;' +
+          ' width: 100%;' + /* Full width */
+          ' height: 100%;' + /* Full height */
+          ' overflow: auto;' + /* Enable scroll if needed */
+          ' background-color: rgb(0,0,0);' + /* Fallback color */
+          ' background-color: rgba(0,0,0,0.9);' + /* Black w/ opacity */
+          '}  \n ' +
+
+          /* Modal Content (image) */
+          '.km-fullscreen-image-modal-content {' +
+          ' margin: auto;' +
+          ' display: block;' +
+          ' width: 80%;' +
+          ' max-width: 700px;' +
+          '}  \n ' +
+
+          /* Caption of Modal Image */
+          '#km-fullscreen-image-modal-caption {' +
+          ' margin: auto;' +
+          ' display: block;' +
+          ' width: 80%;' +
+          ' max-width: 700px;' +
+          ' text-align: center;' +
+          ' color: #ccc;' +
+          ' padding: 10px 0;' +
+          ' height: 150px;' +
+          '}  \n ' +
+
+          /* Add Animation */
+          '.km-fullscreen-image-modal-content, #caption {' +
+          ' -webkit-animation-name: zoom;' +
+          ' -webkit-animation-duration: 0.6s;' +
+          ' animation-name: zoom;' +
+          ' animation-duration: 0.6s;' +
+          '}  \n ' +
+
+          '@-webkit-keyframes zoom {' +
+          ' from {-webkit-transform:scale(0)}' +
+          ' to {-webkit-transform:scale(1)}' +
+          '}  \n ' +
+
+          '@keyframes zoom {' +
+          ' from {transform:scale(0)}' +
+          ' to {transform:scale(1)}' +
+          '}  \n ' +
+
+          /* The Close Button */
+          '.km-fullscreen-image-modal-close {' +
+          ' position: absolute;' +
+          ' top: 15px;' +
+          ' right: 35px;' +
+          ' color: #f1f1f1;' +
+          ' font-size: 40px;' +
+          ' font-weight: bold;' +
+          ' transition: 0.3s;' +
+          '}  \n ' +
+
+          '.km-fullscreen-image-modal-close:hover,.km-fullscreen-image-modal-close:focus {' +
+          '  color: #bbb;' +
+          '  text-decoration: none;' +
+          '  cursor: pointer;' +
+          '}  \n ' +
+
+          /* 100% Image Width on Smaller Screens */
+          '@media only screen and (max-width: 700px){' +
+          ' .km-fullscreen-image-modal-content {' +
+          '   width: 100%;' +
+          ' }' +
+          '}  \n '
+
+      // Append HTML of image fullview viewer modal to body of html page
+      var fullscreenModal = parent.document.createElement('div');
+      fullscreenModal.setAttribute("id", "km-fullscreen-image-modal");
+      fullscreenModal.setAttribute("class", "km-fullscreen-image-modal");
+      fullscreenModal.innerHTML = modalHtml;
+      parent.document.body.appendChild(fullscreenModal);
+
+       // Append CSS of image fullview viewer modal to body of html page
+      var style = parent.document.createElement('style');
+      style.type = 'text/css';
+      style.innerHTML = addFullviewImageModalCss;
+      parent.document.getElementsByTagName('head')[0].appendChild(style);
+
+}

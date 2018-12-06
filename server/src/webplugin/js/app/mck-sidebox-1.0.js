@@ -306,13 +306,14 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
         var MCK_CONVERSATION_MAP = [];
         var IS_MCK_TAB_FOCUSED = true;
         var MCK_TOTAL_UNREAD_COUNT = 0;
+        var KOMMUNICATE_VERSION = appOptions.KM_VER ? appOptions.KM_VER : "";
         var WIDGET_SETTINGS = appOptions.widgetSettings;
         var EMOJI_LIBRARY = appOptions.emojilibrary;
         var MCK_MODE = appOptions.mode;
         MCK_LABELS = appOptions.labels;
         MCK_BASE_URL = appOptions.baseUrl;
         var MCK_CUSTOM_URL = appOptions.customFileUrl;
-				var MCK_STORAGE_URL = appOptions.customUploadUrl;
+		var MCK_STORAGE_URL = appOptions.customUploadUrl;
         var MCK_APP_ID = appOptions.appId;
         var OPEN_GROUP_SUBSCRIBER_MAP = [];
         var MCK_CONNECTED_CLIENT_COUNT = 0;
@@ -1476,6 +1477,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 var $mck_sidebox = $applozic("#mck-sidebox");
                 _this.appendLauncher();
                 _this.setLabels();
+                KOMMUNICATE_VERSION === "v2" && _this.configureIframe();
                 $applozic('.applozic-launcher').each(function () {
                     if (!$applozic(this).hasClass('mck-msg-preview')) {
                         $applozic(this).show();
@@ -1602,6 +1604,40 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     jqXHR.setRequestHeader("App-Module-Name", MCK_APP_MODULE_NAME);
                 }
             };
+
+            _this.configureIframe = function (){
+                // update sidebox css for kommunicate v2 version
+                document.getElementById("mck-sidebox-launcher").style.right='10px';
+                document.getElementById("mck-sidebox-launcher").style.bottom='10px';
+                document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
+
+                // handle click events for openning and closing of sidebox
+                var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                var getKommunicateIframeDocument = getKommunicateIframe.contentDocument;
+                var chatbox = getKommunicateIframeDocument.getElementById("mck-sidebox-launcher");
+                chatbox.addEventListener("click", function(){
+                    getKommunicateIframe.style.width="390px";
+                    getKommunicateIframe.style.height="600px";
+                    getKommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+                });
+                var closeButton = getKommunicateIframeDocument.getElementById("km-chat-widget-close-button");
+                closeButton.addEventListener("click", function(){
+                    getKommunicateIframe.style.width="75px";
+                    getKommunicateIframe.style.height="75px";
+                    getKommunicateIframe.style.boxShadow="none";
+                    getKommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+                });
+
+                var iframeMedia = parent.window.matchMedia("(max-width: 600px)");
+                iframeMedia.addListener(function(){
+                    if (iframeMedia.matches) { // If media query matches
+                        document.getElementById("mck-sidebox").classList.remove("km-iframe-sidebox-border-radius");
+                    } else {
+                        document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
+                    }
+                });
+            };
+
             _this.setLeadCollectionLabels = function () {
                 var LEAD_COLLECTION_LABEL = MCK_LABELS['lead.collection'];
                 document.getElementById('km-email').setAttribute('placeholder', LEAD_COLLECTION_LABEL.email); 
@@ -1657,7 +1693,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 document.getElementById('mck-collect-email').innerHTML= MCK_LABELS['how.to.reachout'];
                 document.getElementById('mck-email-error-alert').innerHTML= MCK_LABELS['email.error.alert'];
             };
-            $applozic(d).on('click', '.fancybox', function (e) {
+            $applozic(d).on('click', '.fancybox-kommunicate', function (e) {
+                // $applozic(".fancybox-kommunicate").click(function(e){
+                e.preventDefault();
                 var $this = $applozic(this);
                 var contentType = $this.data('type');
                 if (contentType.indexOf("video") !== -1) {
@@ -1685,15 +1723,24 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                     });
                 } else {
                     var href = $this.data('url');
-                    $applozic(this).fancybox({
-                        'openEffect': 'none',
-                        'closeEffect': 'none',
-                        'padding': 0,
-                        'href': href,
-                        'type': 'image'
-                    });
+                    var title= $this.data('name');
+
+                    // Get the modal
+                    var modal = parent.document.getElementById('km-fullscreen-image-modal');
+                    var modalImg = parent.document.getElementById("km-fullscreen-image-modal-content");
+                    var captionText = parent.document.getElementById("km-fullscreen-image-modal-caption");
+                    modal.style.display = "block";
+                    modalImg.src = href;
+                    captionText.innerHTML = title ? title : "";
+
                 }
             });
+
+
+            parent.document.getElementById("km-fullscreen-image-modal-close").onclick = function(){
+                parent.document.getElementById('km-fullscreen-image-modal').style.display = "none";
+            };
+
             $applozic(w).on('resize', function () {
                 if ($mck_file_menu.css('display') === 'block') {
                     mckMapLayout.fileMenuReposition();
@@ -2206,6 +2253,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         return;
                     }
                     $applozic.fn.applozic("mckLaunchSideboxChat");
+                    // var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    // getKommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                     clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
 
                 });
@@ -4161,6 +4210,10 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
 
                 mckMessageService.loadMessageList(params, callback);
                 _this.openConversation();
+                if (KOMMUNICATE_VERSION === "v2") {
+                    var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    getKommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
+                }
             };
             _this.setProductProperties = function (topicDetail, topicId) {
                 $mck_product_title.html(topicDetail.title);
@@ -4677,9 +4730,6 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
 
                 if (msg.fileMeta) {
-                    if (msg.fileMeta.contentType.indexOf('image') != -1 &&  $applozic("." + replyId + " .mck-file-text a:first")[0].dataset.url.indexOf("undefined") == -1) {
-                        $applozic("." + replyId + " .mck-file-text a:first").trigger('click');  
-                    }
                     $applozic("." + replyId + " .mck-file-text").removeClass('n-vis').addClass('vis');
                     if ($textMessage.html() === '') {
                         $textMessage.removeClass('vis').addClass('n-vis');
@@ -4769,29 +4819,29 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
               if (typeof msg.fileMeta === "object") {
                   if (msg.fileMeta.contentType.indexOf("image") !== -1) {
                       if (msg.fileMeta.contentType.indexOf("svg") !== -1) {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                       } else if (msg.contentType === 5) {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.blobKey + '" area-hidden="true"></img></a>';
                       }
                       else {
                           if((msg.fileMeta).hasOwnProperty("url")){
                             if((msg.fileMeta).hasOwnProperty("thumbnailBlobKey")){
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.cloudupdate(msg.fileMeta.BlobKey) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.cloudupdate(msg.fileMeta.thumbnailBlobKey) + '" area-hidden="true" ></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + _this.cloudupdate(msg.fileMeta.BlobKey) + '" data-name="' + msg.fileMeta.name + '"><img src="' + _this.cloudupdate(msg.fileMeta.thumbnailBlobKey) + '" area-hidden="true" ></img></a>';
                             }
                             else {
-                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                            return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
                             }
                           }
                           else if((msg.fileMeta.thumbnailUrl === "thumbnail_"+msg.fileMeta.name )){
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + MCK_STORAGE_URL + "/files/thumbnail_" + msg.fileMeta.name + '" area-hidden="true" ></img></a>';
                           }
                           else {
-                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
+                          return '<a href="#" target="_self"  role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + alFileService.getFileurl(msg) + '" data-name="' + msg.fileMeta.name + '"><img src="' + msg.fileMeta.thumbnailUrl + '" area-hidden="true" ></img></a>';
                         }
                       }
                   } else if (msg.fileMeta.contentType.indexOf("video") !== -1) {
                       return '<a href= "#" target="_self"  ><video controls class="mck-video-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/mp4">' + '<source src="' + alFileService.getFileurl(msg) + '" type="video/ogg"></video></a>';
-                      //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + alFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
+                      //    return '<a href="#" role="link" class="file-preview-link fancybox-media fancybox-kommunicate" data-type="' + msg.fileMeta.contentType + '" data-url="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" data-name="' + msg.fileMeta.name + '"><div class="mck-video-box n-vis"><video controls preload><source src="' + MCK_FILE_URL + FILE_PREVIEW_URL + msg.fileMeta.blobKey + '" type="' + msg.fileMeta.contentType + '"></video></div><span class="file-detail"><span class="mck-file-name"><span class="mck-icon-attachment"></span>&nbsp;' + msg.fileMeta.name + '</span>&nbsp;<span class="file-size">' + alFileService.getFilePreviewSize(msg.fileMeta.size) + '</span></span></a>';
                   } else if (msg.fileMeta.contentType.indexOf("audio") !== -1) {
                       return '<a href="#" target="_self" ><audio controls class="mck-audio-player">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/ogg">' + '<source src="' + alFileService.getFileurl(msg) + '" type="audio/mpeg"></audio>' + '<p class="mck-file-tag"></p></a>';
                   } else {
@@ -6060,7 +6110,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             if (message.contentType !== 10 && message.contentType !== 102) {
                                 mckMessageLayout.incrementUnreadCount(ucTabId);
                             }
-                            mckNotificationService.notifyUser(message);
+                            if (!(document.getElementById("mck-sidebox").style.display === "block")){
+                                mckNotificationService.notifyUser(message);
+                            }
                         }
                         var contactHtmlExpr = (message.groupId) ? 'group-' + contact.htmlId : 'user-' + contact.htmlId;
                         $applozic("#li-" + contactHtmlExpr + " .mck-unread-count-text").html(mckMessageLayout.getUnreadCount(ucTabId));
@@ -6143,7 +6195,9 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                     alMessageService.sendDeliveryUpdate(message);
                                 }
                                 if (notifyUser && contact.type !== 6) {
-                                    mckNotificationService.notifyUser(message);
+                                    if (!(document.getElementById("mck-sidebox").style.display === "block")){
+                                        mckNotificationService.notifyUser(message);
+                                    }
                                 }
                             }
                         }
@@ -7840,7 +7894,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                     stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key )
+                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key)
                                     return
                                 }
                                 var fileExpr = alFileService.getFilePreviewPath(file_meta);
@@ -7953,7 +8007,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                                     stopUpload = KommunicateUI.getAttachmentStopUploadStatus(messagePxy.key);
                                     KommunicateUI.updateAttachmentTemplate(file_meta, messagePxy.key);
                                     !stopUpload && mckMessageService.submitMessage(messagePxy, optns);
-                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key )
+                                    KommunicateUI.updateImageAttachmentPreview(file_meta,messagePxy.key)
                                     return
                                 }             
                                 var fileExpr = (typeof file_meta === "object") ? '<a href="' + file_meta.url + '" target="_blank">' + file_meta.name + '</a>' : '';
@@ -8144,6 +8198,7 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 var displayName = mckMessageLayout.getTabDisplayName(contact.contactId, isGroup);
                 var notificationsound = mckNotificationTone;
                 _this.showNewMessageNotification(message, contact, displayName);
+                KOMMUNICATE_VERSION === "v2" && _this.handleIframeNotification();
                 if (IS_MCK_NOTIFICATION && !IS_MCK_TAB_FOCUSED) {
                     var iconLink = MCK_NOTIFICATION_ICON_LINK;
                     var msg = mckMessageLayout.getTextForMessagePreview(message, contact);
@@ -8160,6 +8215,13 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 }
                 }
             };
+
+            _this.handleIframeNotification = function (){
+                var testClick = parent.document.getElementById("kommunicate-widget-iframe");
+                testClick.style.width="390px";
+                testClick.style.height="100px";
+            };
+
             _this.showNewMessageNotification = function (message, contact, displayName) {
                 if (!IS_NOTIFICATION_ENABLED || message.contentType === 102 || message.metadata.KM_ASSIGN || message.metadata.KM_STATUS) {
                     return;

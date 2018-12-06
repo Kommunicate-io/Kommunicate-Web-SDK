@@ -32,7 +32,7 @@ var jsScript= `<script type="text/javascript">
     (function(d, m){
       var kommunicateSettings = ${JSON.stringify(options)};
       var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-      s.src = "${getConfig().kommunicateApi.pluginUrl}";
+      s.src = "${getConfig().kommunicateApi.pluginUrlV2}";
       var h = document.getElementsByTagName("head")[0]; h.appendChild(s);
       window.kommunicate = m; m._globals = kommunicateSettings;
     })(document, window.kommunicate || {});

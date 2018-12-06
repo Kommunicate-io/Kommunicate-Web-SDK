@@ -24,6 +24,7 @@ export default {
         PASSWORD_RESET: "/users/password-reset",
         PASSWORD_UPDATE: "/users/password-update",
         PLUGIN_URL: "/kommunicate.app",
+        PLUGIN_URL_V2 : "/v2/kommunicate.app",
         SIGN_UP_APPLOZIC: "/signUpWithApplozic",
         CREATE_USER: "/users",
         LOGO: "/img/logo1.png",
