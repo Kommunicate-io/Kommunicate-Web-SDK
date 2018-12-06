@@ -224,7 +224,8 @@ if(options.templateName == "INVITE_TEAM_MAIL"){
       "applicationId": userSession.application.applicationId,
       "agentName": userSession.name || userSession.name || userId,
       "agentId": userId,
-      "roleType":roleType
+      "roleType":roleType,
+      "isApplozic": !CommonUtils.isKommunicateDashboard()
     }
   }
   return Promise.resolve(axios({
