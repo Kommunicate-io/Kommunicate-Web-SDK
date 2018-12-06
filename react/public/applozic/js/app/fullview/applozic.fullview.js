@@ -2244,6 +2244,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					if (d.activeElement && d.activeElement.id !== 'km-btn-group-create') {
 						$mck_group_create_title.removeClass('km-req-border');
 					}
+					if($kmApplozic(".kmtypeahead").hasClass("vis")){
+						$kmApplozic(".kmtypeahead").removeClass("vis").addClass("n-vis");
+					}
 					$kmApplozic('.mcktypeahead.km-dropdown-menu').hide();
 				});
 			};
@@ -4915,6 +4918,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						return matcher.test(contact.displayName) || matcher.test(contact.contactId) || matcher.test(contactMName) || matcher.test(contactLName) || matcher.test(contact.email) || matcher.test(contactFName + " " + contactLName);
 					},
 					highlighter: function (item) {
+						$kmApplozic(".kmtypeahead").removeClass("n-vis").addClass("vis");
 						var contact = typeaheadMap[item];
 						return contact.displayName;
 					},
