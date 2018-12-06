@@ -2882,7 +2882,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-closed-conversation-list", list);
-						mckMessageService.initSearch();
 					}
 
 				})
@@ -2918,7 +2917,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-assigned-search-list", list);
-						mckMessageService.initSearch();
 						_this.tabViewUnreadCount(data, 'km-assigned-unread-icon');
 					}
 
