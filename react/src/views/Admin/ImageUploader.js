@@ -3,7 +3,7 @@ import { sendProfileImage, updateApplozicUser, patchUserInfo } from '../../utils
 import Notification from '../model/Notification';
 import './Admin.css';
 import AvatarEditor from 'react-avatar-editor'
-import Modal from 'react-modal';
+import Button from '../../components/Buttons/Button';
 import { getResource, get } from '../../config/config.js'
 import CommonUtils from '../../utils/CommonUtils';
 
@@ -215,8 +215,8 @@ class ImageUploader extends Component {
               </span>
             </div>
               <div className="modal-footer-button">
-                <button type="submit" autoFocus={false} className="km-button km-button--secondary" onClick={this.props.handleClose}> Cancel</button>
-                <button type="submit" autoFocus={false} className="km-button km-button--primary m-left" onClick={this.cropMethod}>Save changes</button>
+                <Button secondary type="submit" autoFocus={false} onClick={this.props.handleClose}> Cancel</Button>
+                <Button primary type="submit" autoFocus={false} className="m-left" onClick={this.cropMethod}>Save changes</Button>
               </div>
             </div>
           </div>

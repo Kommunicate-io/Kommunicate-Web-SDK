@@ -66,8 +66,8 @@ export const ConfirmationTick = props => (
 export const TotalUsersIcon = props => (
     <svg width={38} height={38} {...props}>
         <g fill="none" fillRule="evenodd">
-            <circle cx={19} cy={19} r={19} fill="#E5E4FF" fillRule="nonzero" />
-            <g transform="translate(8 12)" fill="#5553B7">
+            <circle cx={19} cy={19} r={19} fill={props.primaryColorLight} fillRule="nonzero" />
+            <g transform="translate(8 12)" fill={props.primaryColor}>
                 <circle cx={11} cy={2.942} r={2.916} />
                 <circle cx={17.549} cy={3.607} r={2.174} />
                 <path d="M21.872 10.923c-.435-2.737-1.867-4.374-4.323-4.374-.947 0-1.714.23-2.354.69.077.077.154.154.256.23 1.049 1.1 1.765 2.687 2.098 4.708 0 .076.025.153.025.204 2.38.026 4.477-.383 4.298-1.458z" />
@@ -81,14 +81,37 @@ export const TotalUsersIcon = props => (
 export const ActiveUsersIcon = props => (
     <svg width={38} height={38} {...props}>
         <g fill="none" fillRule="evenodd">
-            <circle cx={19} cy={19} r={19} fill="#E5E4FF" fillRule="nonzero" />
-            <g transform="translate(13 11)" fill="#5553B7">
+            <circle cx={19} cy={19} r={19} fill={props.primaryColorLight}fillRule="nonzero" />
+            <g transform="translate(13 11)" fill={props.primaryColor}>
                 <circle cx={6} cy={2.942} r={2.916} />
                 <path d="M6 14.3c-3.198 0-6.012-.563-5.781-1.97C.833 8.647 2.75 6.498 6 6.498c3.249 0 5.167 2.174 5.781 5.832.23 1.407-2.583 1.97-5.781 1.97z" />
             </g>
          </g>
     </svg>
 )
+
+export const ConversationThreadsIcon = props => (
+    <svg width={38} height={38} {...props}>
+        <g fill="none" fillRule="evenodd">
+            <circle cx={19} cy={19} r={19} fill={props.primaryColorLight} fillRule="nonzero" />
+            <g fill={props.primaryColor}>
+                <path d="M12.23 23.38v1.853c0 .69.362.828.805.297l1.783-2.131h5.747c1.3 0 2.379-1.09 2.379-2.387v-.195h-4.602c-1.602 0-2.949-1.334-2.949-2.932v-3.56h-3.006c-1.3 0-2.387 1.03-2.387 2.327v4.36c0 1.244 1 2.285 2.23 2.368z" />
+                <path d="M26.297 12h-8.426a1.69 1.69 0 0 0-1.702 1.693v4.574c0 .942.762 1.718 1.702 1.718H23l2.36 2.81c.446.534.809.404.806-.292l-.009-2.518h.141c.94 0 1.703-.776 1.703-1.718v-4.574A1.696 1.696 0 0 0 26.297 12z" />
+            </g>
+        </g>
+    </svg>
+)
+
+export const MessagesSentIcon = props => (
+    <svg width={38} height={38} {...props}>
+        <g fill="none" fillRule="evenodd">
+            <circle cx={19} cy={19} r={19} fill={props.primaryColorLight} fillRule="nonzero" />
+            <path d="M24.799 12H13.904a2.185 2.185 0 0 0-2.201 2.189v5.914c0 1.218.985 2.221 2.201 2.221h6.63l3.05 3.634c.578.69 1.047.52 1.044-.378l-.012-3.256h.183c1.216 0 2.201-1.003 2.201-2.221v-5.914A2.193 2.193 0 0 0 24.799 12z" fill={props.primaryColor} />
+            <path d="M22.222 14.273l-2.334 2.593-.586.65-.498.554-2.161-1.33-.643.57 2.863 2.863 1.249-1.847.631-.934 1.873-2.769z" fill={props.primaryColorLight} fillRule="nonzero" />
+        </g>
+    </svg>
+)
+
 export const ReactNative = props => (
     <svg  width="512" height="512"  viewBox="0 0 841.9 595.3" {...props}>
         <g fill="#61DAFB">
@@ -129,27 +152,6 @@ export const WixIcon = props => (
     </svg>
 )
 
-export const ConversationThreadsIcon = props => (
-    <svg width={38} height={38} {...props}>
-        <g fill="none" fillRule="evenodd">
-            <circle cx={19} cy={19} r={19} fill="#E5E4FF" fillRule="nonzero" />
-            <g fill="#5553B7">
-                <path d="M12.23 23.38v1.853c0 .69.362.828.805.297l1.783-2.131h5.747c1.3 0 2.379-1.09 2.379-2.387v-.195h-4.602c-1.602 0-2.949-1.334-2.949-2.932v-3.56h-3.006c-1.3 0-2.387 1.03-2.387 2.327v4.36c0 1.244 1 2.285 2.23 2.368z" />
-                <path d="M26.297 12h-8.426a1.69 1.69 0 0 0-1.702 1.693v4.574c0 .942.762 1.718 1.702 1.718H23l2.36 2.81c.446.534.809.404.806-.292l-.009-2.518h.141c.94 0 1.703-.776 1.703-1.718v-4.574A1.696 1.696 0 0 0 26.297 12z" />
-            </g>
-        </g>
-    </svg>
-)
-
-export const MessagesSentIcon = props => (
-    <svg width={38} height={38} {...props}>
-        <g fill="none" fillRule="evenodd">
-            <circle cx={19} cy={19} r={19} fill="#E5E4FF" fillRule="nonzero" />
-            <path d="M24.799 12H13.904a2.185 2.185 0 0 0-2.201 2.189v5.914c0 1.218.985 2.221 2.201 2.221h6.63l3.05 3.634c.578.69 1.047.52 1.044-.378l-.012-3.256h.183c1.216 0 2.201-1.003 2.201-2.221v-5.914A2.193 2.193 0 0 0 24.799 12z" fill="#5553B7" />
-            <path d="M22.222 14.273l-2.334 2.593-.586.65-.498.554-2.161-1.33-.643.57 2.863 2.863 1.249-1.847.631-.934 1.873-2.769z" fill="#E5E4FF" fillRule="nonzero" />
-        </g>
-    </svg>
-)
 export const Cordova = props => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352.2 335.5" {...props}>
         <g fill="#444" data-name="Layer 2">

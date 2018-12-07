@@ -11337,6 +11337,25 @@ border-left-color: #5e8631;
 .sidebar .nav .nav-item .nav-link:hover, .sidebar .nav .nav-item .nav-link.active {
   background-color: transparent !important;
 }
+.sidebar .nav .nav-item .sidebar-profile-dropdown.nav-link {
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+.sidebar .nav .nav-item .sidebar-profile-dropdown.nav-link:hover, .sidebar .nav .nav-item .sidebar-profile-dropdown.nav-link.active {
+  background-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.sidebar .nav .nav-item .nav-link::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 100%;
+  left: -6px;
+  top: 0;
+  background-color: transparent;
+  transition: all 0.3s ease-out;
+}
+
 .sidebar .nav .nav-item .nav-link:hover::before, .sidebar .nav .nav-item .nav-link.active::before {
   content: "";
   position: absolute;

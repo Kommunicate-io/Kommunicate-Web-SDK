@@ -8,10 +8,14 @@
     height: 100vh;
 }
 .settings-title {
-    font-size: 22px;
-    margin-top: 12px;
-    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 0px;
+    letter-spacing: 0.3px;
     color: #666464;
+    padding-left: 30px;
+    text-align: left;
 }
 .ss-nav {
     list-style: none;
@@ -27,8 +31,11 @@
 }
 .ss-nav-title {
     text-align: left;
-    padding: 3px 10px;
-    color: #666464;
+    padding: 3px 10px 3px 24px;
+    letter-spacing: 0.3px;
+    color: #cacaca;
+    font-weight: bold;
+    margin-bottom: 2px;
   }
 .ss-nav-title:not(:first-child) {
     margin-top: 20px;
@@ -37,7 +44,8 @@
     display: block;
     font-size: 14px;
     color: #666464;
-    padding: 5px 28px;
+    padding: 5px 24px;
+    letter-spacing: 0.3px;
     transition: all .3s;
     text-align: left;
 }
@@ -104,4 +112,8 @@
 }
 .aside-menu-hidden .aside-menu {
     margin-right: calc(60px - 100%);
+}
+
+.ss-nav-item.agent-app-link {
+    margin-top: 20px;
 }
