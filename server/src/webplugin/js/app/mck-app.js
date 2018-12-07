@@ -155,7 +155,7 @@ function ApplozicSidebox() {
             var script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
-            script.crossOrigin = "anonymous";
+            url.indexOf("maps.google.com") == -1 && (script.crossOrigin = "anonymous")
             if (callback) {
                 if (script.readyState) { // IE
                     script.onreadystatechange = function() {
