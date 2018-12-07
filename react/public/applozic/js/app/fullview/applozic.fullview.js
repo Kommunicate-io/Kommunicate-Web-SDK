@@ -350,6 +350,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 		var MCK_GETCONVERSATIONDETAIL = appOptions.getConversationDetail;
 		var MCK_NOTIFICATION_ICON_LINK = appOptions.notificationIconLink;
 		var MCK_MAP_STATIC_API_KEY = appOptions.mapStaticAPIkey;
+		var typeaheadMap = {};
 		var MCK_DEFAULT_MESSAGE_METADATA = (typeof appOptions.defaultMessageMetaData === 'undefined') ? {} : appOptions.defaultMessageMetaData;
 		var MCK_AWS_S3_SERVER = (appOptions.awsS3Server) ? appOptions.awsS3Server : false;
 		var IS_SW_NOTIFICATION_ENABLED = (typeof appOptions.swNotification === "boolean") ? appOptions.swNotification : false;
@@ -2867,6 +2868,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					success: function (data) {
 						 mckMessageService.addContactInConversationList(data, null, conversationList);
 						 mckMessageService.initSearch();
+						 if (!params.initialcall) {
+							mckMessageLayout.updateSearchSourceMap();
+						}
 						_this.tabViewUnreadCount(data, 'km-allconversation-unread-icon');
 					}
 				})
@@ -2885,6 +2889,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var list = {};
 						list.sectionId = "km-closed-conversation-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-closed-conversation-list", list);
+						if (!params.initialcall) {
+							mckMessageLayout.updateSearchSourceMap();
+						}
 					}
 
 				})
@@ -2920,6 +2927,9 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						var list = {};
 						list.sectionId = "km-assigned-search-list";
 						mckMessageService.addContactInConversationList(data, individual, "km-assigned-search-list", list);
+						if (!params.initialcall) {
+							mckMessageLayout.updateSearchSourceMap();
+						}
 						_this.tabViewUnreadCount(data, 'km-assigned-unread-icon');
 					}
 
@@ -4750,7 +4760,24 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				_this.updateRecentConversationListSection(contact, message, update, prepend, list.sectionId);
 
 			};
-			_this.addContactsToSearchList = function () {
+			_this.updateSearchSourceMap = function () {
+				var contactsArray = mckMessageLayout.getContactSearchListArray();
+				var typeaheadEntry;
+				var typeaheadArray = [];
+				for (var j = 0; j < contactsArray.length; j++) {
+					var contact = contactsArray[j];
+					contact.displayName = mckMessageLayout.getTabDisplayName(contact.contactId, contact.isGroup);
+					var displayName = (contact.displayName) ? $kmApplozic.trim(contact.displayName) : $kmApplozic.trim(contact.contactId);
+					if (contact.isGroup) {
+						typeaheadEntry = displayName + $kmApplozic.trim(contact.groupId);
+						typeaheadMap[typeaheadEntry] = contact;
+						typeaheadArray.push(typeaheadEntry);
+					}
+				}
+				$mck_search.mcktypeahead().data('kmtypeahead').source = typeaheadArray;
+			}
+
+			_this.getContactSearchListArray =function(){
 				if (Object.keys(MCK_CONTACT_ARRAY).length === 0 && Object.keys(MCK_CHAT_CONTACT_ARRAY).length === 0) {
 					return;
 				}
@@ -4788,6 +4815,11 @@ var KM_ASSIGNE_GROUP_MAP = [];
 						}
 					}
 				}
+				return contactsArray;
+
+			}
+			_this.addContactsToSearchList = function () {
+				var contactsArray = _this.getContactSearchListArray();
 
 				_this.initAutoSuggest({
 					'contactsArray': contactsArray,
@@ -4886,7 +4918,6 @@ var KM_ASSIGNE_GROUP_MAP = [];
 				var $searchId = params.$searchId;
 				var typeaheadArray = [];
 				var typeaheadEntry;
-				var typeaheadMap = {};
 				var contactSuggestionsArray = [];
 				for (var j = 0; j < contactsArray.length; j++) {
 					var contact = contactsArray[j];
@@ -4898,7 +4929,7 @@ var KM_ASSIGNE_GROUP_MAP = [];
 					typeaheadArray.push(typeaheadEntry);
 					contactSuggestionsArray.push(typeaheadEntry);
 					}
-				}
+				} 
 				$searchId.mcktypeahead({
 					source: typeaheadArray,
 					matcher: function (item) {
