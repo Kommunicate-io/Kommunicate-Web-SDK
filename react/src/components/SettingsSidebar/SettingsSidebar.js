@@ -68,9 +68,11 @@ class SettingsSidebar extends Component {
                 <hr className="hrr"/>
                 <div className="settings-sidebar-nav">
                     <ul className="ss-nav">
-                        <li className="ss-nav-title">
-                            PERSONAL
-                        </li>
+                        {this.state.isKommunicateDashboard &&
+                            <li className="ss-nav-title">
+                                PERSONAL
+                            </li>
+                        }
                         <li className="ss-nav-item profile-link">
                             <NavLink to={'/settings/profile'} className="ss-nav-link" activeClassName="active">Profile</NavLink>
                         </li>

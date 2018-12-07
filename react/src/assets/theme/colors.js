@@ -3,6 +3,7 @@ const Colors = {
         primary: "#03B49B",
         secondary: "#F2C75E",
         hover: "#0e907e",
+        primaryLight: "#DBF9F5"
     },
     CommonColors: {
         White: "#FFFFFF",
@@ -16,6 +17,7 @@ const Colors = {
     },
     KommunicateColors:  {
         primary: "#5553B7", 
+        primaryLight: "#E5E4FF",
         secondary: "#000",
         buttonSecondary: "#FFFFFF",
         buttonPrimaryColorText: "#FFFFFF",

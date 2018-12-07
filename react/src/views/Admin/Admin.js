@@ -293,7 +293,7 @@ class Forms extends Component {
                         <img src={ this.props.profilePicUrl } className="default-dp change-courser"  onClick={this.invokeImageUpload}/> 
 
                         <div className="edit-dp-btn">
-                          <span className="change-courser" onClick={this.invokeImageUpload}>Edit Display Photo</span>
+                          <Button link className="change-courser" onClick={this.invokeImageUpload} style={{height: "20px"}}>Edit Display Photo</Button>
                           <div className="about-dp">Your customers will see this photo</div>
 
                           <input type="file" accept="image/*" className="form-control user-dp-input" id="hidden-image-input-element" name="file" onChange={this.handleImageFiles} />

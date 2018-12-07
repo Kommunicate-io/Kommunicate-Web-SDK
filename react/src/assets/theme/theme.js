@@ -5,6 +5,7 @@ import CommonUtils from '../../utils/CommonUtils';
 const themes = {
     applozic: {
         primary: Colors.ApplozicColors.primary,
+        primaryLight: Colors.ApplozicColors.primaryLight,
         secondary: Colors.ApplozicColors.secondary,
         buttons: {
             primaryBG: Colors.ApplozicColors.primary,
@@ -21,6 +22,7 @@ const themes = {
     },
     kommunicate: {
         primary: Colors.KommunicateColors.primary,
+        primaryLight: Colors.KommunicateColors.primaryLight,
         secondary: Colors.KommunicateColors.secondary,
         buttons: {
             primaryBG: Colors.KommunicateColors.primary,
