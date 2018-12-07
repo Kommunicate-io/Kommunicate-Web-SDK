@@ -1,9 +1,6 @@
 import  {getConfig, getCommonResource} from '../config/config.js';
 import CommonUtils from '../utils/CommonUtils';
 
-const fs = require('fs');
-const path = require('path');
-
 function getJsCode (){
   let options  = {};
   let userSession = CommonUtils.getUserSession();

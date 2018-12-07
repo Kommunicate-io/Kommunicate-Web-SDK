@@ -1,8 +1,8 @@
-import validator from 'validator';
+//import validator from 'validator';
 import axios from 'axios';
 import { getConfig } from '../config/config';
 import config from '../config/index';
-import isEmail from 'validator/lib/isEmail';
+//import isEmail from 'validator/lib/isEmail';
 import { getJsCode } from './customerSetUp';
 import Notification from '../views/model/Notification'
 import FormData from 'form-data'

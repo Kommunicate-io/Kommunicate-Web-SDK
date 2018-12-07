@@ -20,7 +20,7 @@ import Page500 from '../views/Pages/Page500/'
 import SetUpPage from '../views/Pages/SetUpPage'
 import ApplozicUserSignUp from '../views/Pages/ApplozicUserSignUp'
 import PasswordReset from '../views/Pages/PasswordReset/'
-import 'react-notifications/lib/notifications.css';
+//import 'react-notifications/lib/notifications.css';
 import {NotificationContainer} from 'react-notifications'
 import CommonUtils from '../utils/CommonUtils';
 import ApplicationList from '../views/Pages/ApplicationList/ApplicationList';
@@ -33,7 +33,7 @@ import * as Actions from '../actions/applicationAction'
 // const history = createBrowserHistory();
 const enableSentry = getConfig().thirdPartyIntegration.sentry.enable;
 class App extends Component {
-  static defaultProps ={ hideSkip : false }
+
   constructor(props,defaultProps){
     super(props,defaultProps);
     this.state = {
@@ -105,7 +105,8 @@ class App extends Component {
       </div>
     )
     }
-}
+} 
+App.defaultProps ={ hideSkip : false }
 const mapStateToProps = state => ({
   logInStatus:state.loginReducer.logInStatus
 })

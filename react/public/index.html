@@ -7,36 +7,37 @@
     <meta name="description" content="Kommunicate">
     <meta name="author" content="Applozic Inc">
     <meta name="keyword" content="">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="shortcut icon" href="./favicon.ico">
     <!--
-      Notice the use of %PUBLIC_URL% in the tag above.
+      Notice the use of . in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      Unlike "/favicon.ico" or "favicon.ico", "./favicon.ico" will
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Kommunicate</title>
+    <base href="/" />
 
     <!-- Icons -->
-    <link href="%PUBLIC_URL%/css/font-awesome.min.css" rel="stylesheet">
-    <link href="%PUBLIC_URL%/css/simple-line-icons.css" rel="stylesheet">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <link href="./css/simple-line-icons.css" rel="stylesheet">
 
     <!-- Main styles for this application -->
-    <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
-    <link href="%PUBLIC_URL%/css/dashboard.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
+    <link href="./css/dashboard.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-  <link href="%PUBLIC_URL%/applozic/css/app/fullview/applozic.combined.min.css"
+  <link href="./applozic/css/app/fullview/applozic.combined.min.css"
     rel="stylesheet">
 
-  <link href="%PUBLIC_URL%/applozic/css/app/fullview/applozic.fullview.css" rel="stylesheet">
+  <link href="./applozic/css/app/fullview/applozic.fullview.css" rel="stylesheet">
 
-  <link href="%PUBLIC_URL%/applozic/code/applozic-style.css" rel="stylesheet">
+  <link href="./applozic/code/applozic-style.css" rel="stylesheet">
 
-  <link href="%PUBLIC_URL%/css/tiny-slider.css" rel="stylesheet">
-  <link href="%PUBLIC_URL%/css/dashboard-richtext.css" rel="stylesheet">
+  <link href="./css/tiny-slider.css" rel="stylesheet">
+  <link href="./css/dashboard-richtext.css" rel="stylesheet">
 
   <!--
   <script src="https://js.chargebee.com/v2/chargebee.js" data-cb-site="kommunicate-test" ></script>
@@ -53,13 +54,13 @@
       jQuery = $original;
     }
   </script>
-  <script src="%PUBLIC_URL%/applozic/js/jquery.min.js"></script>
-  <script src="%PUBLIC_URL%/applozic/js/app/km-constant.js"></script>
+  <script src="./applozic/js/jquery.min.js"></script>
+  <script src="./applozic/js/app/km-constant.js"></script>
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/panel.js"></script>
+  <script type="text/javascript" src="./applozic/code/panel.js"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109137709-1"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/js/heapAnalytics.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/js/tiny-slider.js"></script>
+  <script type="text/javascript" src="./js/heapAnalytics.js"></script>
+  <script type="text/javascript" src="./js/tiny-slider.js"></script>
 
   </head>
 
@@ -99,25 +100,25 @@
       To create a production bundle, use `npm run build`.
     -->
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.widget.min.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.plugins.min.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.emojis.min.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/applozic.socket.min.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/howler.2.0.2.min.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/mck-ringtone-service.js"></script>
+  <script type="text/javascript" src="./applozic/js/applozic.widget.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/applozic.plugins.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/applozic.emojis.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/applozic.socket.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/howler.2.0.2.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/mck-ringtone-service.js"></script>
 
   <!-- JS for location sharing plugin, remove it if location sharing not required -->
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI&libraries=places"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/locationpicker.jquery.min.js"></script>
+  <script type="text/javascript" src="./applozic/js/locationpicker.jquery.min.js"></script>
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/applozic.common.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/applozic.common.js"></script>
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/applozic.fullview.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/kommunicate.dashboard.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/km.dashboard.richtext.event.handler.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/zendesk/kommunicate.zendesk.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/app/fullview/km.dashboard.richtext.markup.1.0.js"></script>
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/js/mustache.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/fullview/applozic.fullview.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/fullview/kommunicate.dashboard.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/fullview/km.dashboard.richtext.event.handler.js"></script>
+  <script type="text/javascript" src="./applozic/zendesk/kommunicate.zendesk.js"></script>
+  <script type="text/javascript" src="./applozic/js/app/fullview/km.dashboard.richtext.markup.1.0.js"></script>
+  <script type="text/javascript" src="./applozic/js/mustache.js"></script>
 
   <script type="text/javascript">
     var oModal = "";
@@ -136,20 +137,20 @@
     }
   </script>
 
-  <script type="text/javascript" src="%PUBLIC_URL%/applozic/code/web.js"></script>
+  <script type="text/javascript" src="./applozic/code/web.js"></script>
 
 
   <script type="text/javascript">
     var site = window.location.href;
     var chargebeeScript = document.createElement("script");
-    chargebeeScript.src = "%PUBLIC_URL%/js/chargebee.js";
+    chargebeeScript.src = "./js/chargebee.js";
     chargebeeScript.setAttribute("data-cb-site", /test|local/.test(window.location.href) ? "kommunicate-test":"kommunicate");
     document.body.appendChild(chargebeeScript);
   </script>
 
 <!--
-  <script type="text/javascript" src="%PUBLIC_URL%/js/chargebee.js" data-cb-site="kommunicate-test"></script>
+  <script type="text/javascript" src="./js/chargebee.js" data-cb-site="kommunicate-test"></script>
 -->
-
+<script type="text/javascript" src="./bundle.js"></script>
   </body>
 </html>
