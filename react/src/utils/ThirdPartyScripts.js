@@ -11,15 +11,30 @@ class ThirdPartyScripts extends Component {
           // support chat widget
           var userId = CommonUtils.getUserSession()?CommonUtils.getUserSession().userName:"";
           var currentPath = window.location.pathname;
+          var isKommunicateDashboard = CommonUtils.isKommunicateDashboard()
           // var mckSideboxLauncher = document.getElementById('mck-sidebox-launcher');
 
           /*if(currentPath.includes('/signup') || currentPath.includes('/setUpPage')) {
             null
           } else {*/
-            var kommunicateSupportChatUrl = getConfig().baseurl.komunicateSupportUrl|| getConfig().homeUrl;
+            var support = isKommunicateDashboard ? {
+              "appId": "kommunicate-support",
+              "isAnonymousChat": true,
+              "groupName": "Kommunicate Support",
+              "googleApiKey": "AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI",
+              "googleMapScriptLoaded": true,
+              "emojilibrary": false
+            }
+              : {
+                "appId": "applozic-sample-app",
+                "isAnonymousChat": true,
+                "groupName": "Applozic",
+                "googleApiKey": "AIzaSyCWRScTDtbt8tlXDr6hiceCsU83aS2UuZw",
+                "googleMapScriptLoaded": true,
+                "emojilibrary": false
+              };
             (function(d, m){
-              let  o = {"appId":"kommunicate-support","isAnonymousChat":true,"agentId":"devashish@kommunicate.io",
-              "groupName":"Kommunicate Support","baseUrl":kommunicateSupportChatUrl,"googleApiKey":"AIzaSyCrBIGg8X4OnG4raKqqIC3tpSIPWE-bhwI", googleMapScriptLoaded : true, emojilibrary : false}
+              let  o = support
               if(userId){
                 o.userId = userId;
                 o.password =CommonUtils.getUserSession().accessToken;
@@ -43,9 +58,6 @@ class ThirdPartyScripts extends Component {
                     mckSideboxLauncher.classList.add('force-hide');
                     mckSideboxLauncher.classList.remove('vis');
                   }
-                  // mckSideboxLauncher.classList.add('n-vis');
-                  // mckSideboxLauncher.classList.add('force-hide');
-                  // mckSideboxLauncher.classList.remove('vis');
                 };
 
               };
