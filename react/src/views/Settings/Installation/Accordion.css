@@ -248,6 +248,7 @@
 }
 .script-text-area, .script-text-area:focus, .script-text-area:active {
   padding: 10px 20px;
+  font-size: 15px;
 }
 .copy-code-button-div {
   padding-top: 0px;

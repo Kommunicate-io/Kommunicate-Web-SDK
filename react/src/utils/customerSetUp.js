@@ -10,6 +10,7 @@ function getJsCode (){
 
   if (userSession) {
     options.appId = userSession.application.applicationId;
+    options.userId = userSession.userId;
     //options.agentId = userSession.adminUserName||localStorage.getItem("agentId");
 
     if (userSession.adminDisplayName && userSession.adminDisplayName!="undefined"&& userSession.adminDisplayName!="null"){
@@ -21,11 +22,12 @@ function getJsCode (){
     const search = window.location.href;
     options.appId = CommonUtils.getUrlParameter(search, "applicationId");
     options.conversationTitle=CommonUtils.getUrlParameter(search, "displayName")||CommonUtils.getUrlParameter(search, "agentId");
+    options.userId = CommonUtils.getUrlParameter(search, "referer");
     // options.agentId = CommonUtils.getUrlParameter(search, "agentId");
     // options.agentName = CommonUtils.getUrlParameter(search, "displayName");
   }
 
-  console.log(options);
+  // console.log(options);
 
 var jsScript= `<script type="text/javascript">
     /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
@@ -39,24 +41,34 @@ var jsScript= `<script type="text/javascript">
 </script>`;
 
 var yourAppId = options.appId;
+var yourUserId = options.userId;
 
-console.log(jsScript);
-console.log(yourAppId);
-return [jsScript, yourAppId];
+// console.log(jsScript);
+// console.log(yourAppId);
+return [jsScript, yourAppId, yourUserId];
 }
 
-const getApplozicScript=()=>{
- return `<script type="text/javascript">
-                (function(d, m){var s, h;       
-                s = document.createElement("script");
-                s.type = "text/javascript";
-                s.async=true;
-                s.src="https://apps.applozic.com/sidebox.app";
-                h=document.getElementsByTagName('head')[0];
-                h.appendChild(s);
-                window.applozic=m;
-                m.init=function(t){m._globals=t;}})(document, window.applozic || {});
-          </script>`;
+const getApplozicScript = () => {
+return `<script type="text/javascript">
+    (function(d, m){var s, h;
+        s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async=true;
+        s.src="https://apps.applozic.com/sidebox.app";
+        h=document.getElementsByTagName('head')[0];
+        h.appendChild(s);
+        window.applozic=m;
+        m.init=function(t){m._globals=t;}})(document, window.applozic || {});
+
+        window.applozic.init({
+        appId: '`+ getJsCode()[1] + `',
+        userId: 'applozic-demo-user',   //Logged in user's id, a unique identifier for user
+        accessToken: "",              //Enter password here for the userId passed above
+        onInit : function(response) {
+            //TODO: Handle login response
+        }
+    });
+</script>`;
 }
 
 const getJsInstructions = () => {
