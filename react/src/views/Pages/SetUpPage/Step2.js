@@ -10,6 +10,8 @@ import { getResource } from '../../../config/config.js';
 import isURL from 'validator/lib/isURL';
 import CommonUtils from '../../../utils/CommonUtils';
 import applozicClient from '../../../utils/applozicClient';
+import { connect } from 'react-redux'
+import * as Actions from '../../../actions/signupAction'
 
 const customStyles = {
   content: {
@@ -184,6 +186,7 @@ hideAllErrors (){
   reDirectToDashboard() {
     window.location.assign("/dashboard");
     localStorage.setItem("KM_ONBOARDING","true");
+    this.props.updateStatus(true);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -352,4 +355,9 @@ hideAllErrors (){
   }
 }
 
-export default Step2
+const mapDispatchToProps = dispatch => {
+  return {
+    updateStatus: payload => dispatch(Actions.updateOnBoardingStatus(payload))
+  }
+}
+export default connect(null, mapDispatchToProps)(Step2)

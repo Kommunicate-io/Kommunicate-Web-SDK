@@ -10,6 +10,9 @@ import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 // import Checkbox from '../../components/Checkbox/Checkbox'
 import {Link} from 'react-router-dom';
 import Onboarding from '../../components/UserOnboarding/Onboarding';
+import Modal from 'react-modal';
+import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
+import { connect } from 'react-redux'
 
 
 // Main Chart
@@ -424,6 +427,15 @@ class KmDashboard extends Component {
     this.getAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
+    // let onboarding = localStorage.getItem("KM_ONBOARDING");
+    
+    // if(typeof (Storage) !== "undefined") {
+    //     this.setState({ 
+    //         kmOnBoarding: (onboarding === "true")
+    //     });
+    // } else {
+    //     console.log("Please upgrade your browser.");
+    // }
 
   }
 
@@ -838,6 +850,9 @@ render() {
       {/* <ProductHuntOffer /> */}
       
       <Onboarding />
+      { this.props.kmOnBoarding &&
+        <OnBoardingModal />
+      }   
 
       <div className="animated fadeIn dashboard-card">
         <div className="row filter-dropdown-wrapper">
@@ -974,4 +989,8 @@ const MONTH_NAMES_LONG = ["January", "February", "March", "April", "May", "June"
   "July", "August", "September", "October", "November", "December"
 ];
 
-export default KmDashboard;
+// export default KmDashboard;
+const mapStateToProps = state => ({
+  kmOnBoarding:state.signUpReducer.kmOnBoarding
+})
+export default connect(mapStateToProps,null)(KmDashboard) 
