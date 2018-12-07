@@ -89,11 +89,11 @@ const getEmailFormat = (options, custInfo) => {
                     break;
 
                 case "INVITE_TEAM_MAIL":
-                    var dashboardUlr = !options.isApplozic ? joinKommunicateUrl : applozicDashboardHostUrl
+                    var dashboardUrl = !options.isApplozic ? joinKommunicateUrl : applozicDashboardHostUrl
                     templatePath = !options.isApplozic ? path.join(__dirname, "/inviteTeamTemplate.html"): path.join(__dirname, "/inviteApplozicTeamTemplate.html"),
                         templateReplacement[":adminName"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? options.agentName + " from " + custInfo.companyName : options.agentName,
                         templateReplacement[":kmWebsiteLogoUrl"] = kmWebsiteLogoUrl,
-                        templateReplacement[":joinKommunicateUrl"] = dashboardUlr.replace(":token", options.token).replace(":referer", options.agentId),
+                        templateReplacement[":joinKommunicateUrl"] = dashboardUrl.replace(":token", options.token).replace(":referer", options.agentId),
                         templateReplacement[":ORGANIZATION"] = custInfo.companyName && custInfo.companyName !== '' && null !== custInfo.companyName ? "from " + custInfo.companyName : "";
                     options.templatePath = templatePath,
                         options.templateReplacement = templateReplacement;
