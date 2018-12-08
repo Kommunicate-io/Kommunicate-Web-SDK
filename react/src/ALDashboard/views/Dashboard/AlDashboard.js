@@ -380,7 +380,7 @@ class AlDashboard extends Component {
                     <AnalyticsCardsContainer>
 
                         <AnalyticsCards>
-                            <TotalUsersIcon primaryColor={this.props.theme.primary} primaryColorLight={this.props.theme.primaryLight}  />
+                            <TotalUsersIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.totalUsers}</H2>
                             <P>Total registered users</P>
                             <InfoContainer data-rh-at="right" data-tip="Total number of users registered on your platform" data-effect="solid" data-place="right">
@@ -389,13 +389,13 @@ class AlDashboard extends Component {
                         </AnalyticsCards>
 
                         <AnalyticsCards>
-                            <ActiveUsersIcon primaryColor={this.props.theme.primary} primaryColorLight={this.props.theme.primaryLight}  />
+                            <ActiveUsersIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.activeUsers}</H2>
                             <P>Active chat users</P>
                         </AnalyticsCards>
 
                         <AnalyticsCards>
-                            <ConversationThreadsIcon primaryColor={this.props.theme.primary} primaryColorLight={this.props.theme.primaryLight}  />
+                            <ConversationThreadsIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.conversationThreads}</H2>
                             <P>Conversation threads</P>
                             <InfoContainer data-rh-at="right" data-effect="solid" data-place="right" data-tip="Total number of one-to-one conversations, group <br> conversations and announcement threads" data-html={true}>
@@ -404,7 +404,7 @@ class AlDashboard extends Component {
                         </AnalyticsCards>
 
                         <AnalyticsCards>
-                            <MessagesSentIcon primaryColor={this.props.theme.primary} primaryColorLight={this.props.theme.primaryLight}  />
+                            <MessagesSentIcon primarycolor={this.props.theme.primary} primarycolorlight={this.props.theme.primaryLight}  />
                             <H2>{this.state.messagesSent}</H2>
                             <P>Messages sent</P>
                         </AnalyticsCards>

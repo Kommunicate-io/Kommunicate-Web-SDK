@@ -3,6 +3,7 @@ import CommonUtils from '../../utils/CommonUtils';
 import KmDashboard from './KmDashboard';
 import AlDashboard from '../../ALDashboard/views/Dashboard/AlDashboard';
 import styled, { withTheme } from 'styled-components';
+import CustomizableReports from '../CustomizableReports/CustomizableReports';
 
 
 const DashboardContainer = styled.div`
@@ -84,6 +85,7 @@ class Dashboard extends Component {
 
 		return (
 			<DashboardContainer className="animated fadeIn">
+				<CustomizableReports />
 				{this.renderDashboard()}
 			</DashboardContainer>
 		);

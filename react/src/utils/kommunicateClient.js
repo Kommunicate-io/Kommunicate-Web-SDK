@@ -207,7 +207,7 @@ let url = config.baseurl.kommunicateAPI+"/misc/mail";
 if(options.templateName == "INVITE_TEAM_MAIL"){
   url=  getConfig().kommunicateApi.sendMail;
   };
-  if (options.templateName === "BOT_USE_CASE_EMAIL") {
+  if (options.templateName === "BOT_USE_CASE_EMAIL" || options.templateName === "CUSTOM_REPORTS_REQUIREMENT") {
     data = {
       to: [userSession.email],
       from: "hello@kommunicate.io",

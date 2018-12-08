@@ -609,7 +609,7 @@ export default class BotStore extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <textArea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
+                <textarea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need a bot for hotel booking. It should be able to manage bookings." onChange={(event) => this.setState({botUseCaseText: event.target.value})} value={this.state.botUseCaseText} />
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>
@@ -634,7 +634,7 @@ export default class BotStore extends Component {
             </div>
             <div className="row">
               <div className="col-sm-12">
-                <textArea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need to integrate with this bot platform." onChange={(event) => this.setState({otherPlatformText: event.target.value})} value={this.state.otherPlatformText} />
+                <textarea rows="5" className="form-control" style={{resize: "none"}} placeholder="Example: I need to integrate with this bot platform." onChange={(event) => this.setState({otherPlatformText: event.target.value})} value={this.state.otherPlatformText} />
               </div>
             </div>
             <div className="row" style={{marginTop: "66px"}}>

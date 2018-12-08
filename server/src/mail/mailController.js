@@ -114,7 +114,17 @@ const getEmailFormat = (options, custInfo) => {
                     options.cc = [...options.cc, "support@kommunicate.io"]
                     options.bcc = "techdisrupt@applozic.com";
                     break;
-
+                
+                case "CUSTOM_REPORTS_REQUIREMENT":
+                    logger.info("CUSTOM_REPORTS_REQUIREMENT");
+                    templatePath = path.join(__dirname, "/customReportRequirementTemplate.html");
+                    options.templatePath = path.join(__dirname, "/customReportRequirementTemplate.html");
+                    options.templateReplacement = { ":USER_NAME": options.userName, ":CUSTOM_REPORT_REQUIREMENT_DESCRIPTION": options.customReportsDescription,
+                    ":CUSTOM_REPORT_REQUIREMENT_DURATION": options.customReportsDuration };
+                    options.to = [...options.to];
+                    options.cc = [...options.cc, "support@kommunicate.io"]
+                    options.bcc = "techdisrupt@applozic.com";
+                    break;
             }
         }
         if (!templatePath) {
