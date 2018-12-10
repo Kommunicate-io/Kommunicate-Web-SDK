@@ -215,59 +215,55 @@ class Login extends Component {
 
 			this.setState({loginButtonDisabled:true});
 			
-			if(CommonUtils.isKommunicateDashboard()) {
-				axios.post( loginUrl, { userName: userName, password:password, applicationName:applicationName, applicationId:applicationId, deviceType:0}).then( function(response) {
+			axios.post( loginUrl, { userName: userName, password:password, applicationName:applicationName, applicationId:applicationId, deviceType:0}).then( function(response) {
 
-					if(response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
-						// Notification.warning("Invalid credentials");
-						_this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Invalid Email Id or Password", loginButtonDisabled:false});
-					} else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
-						_this.setState({ hideErrorMessagePassword: false, errorMessageTextPassword:"Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.", loginButtonDisabled:false});
-						return
-					} else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
-						CommonUtils.setApplicationIds(response.data.result);
-						_this.checkForMultipleApps(response.data.result);
-						return;
-					} 
-				
-					if (response.status == 200 && response.data.code == 'SUCCESS') {
-						console.log("logged in successfully");
-						if (typeof (Storage) !== "undefined") {
+				if(response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
+					// Notification.warning("Invalid credentials");
+					_this.setState({hideErrorMessagePassword: false, errorMessageTextPassword:"Invalid Email Id or Password", loginButtonDisabled:false});
+				} else if (response.status == 200 && response.data.result.status == USER_STATUS.EXPIRED) {
+					_this.setState({ hideErrorMessagePassword: false, errorMessageTextPassword:"Your account has been temporarily disabled as trial period has ended. Please contact your admin to upgrade the plan.", loginButtonDisabled:false});
+					return
+				} else if (response.status == 200 && response.data.code == "MULTIPLE_APPS") {
+					CommonUtils.setApplicationIds(response.data.result);
+					_this.checkForMultipleApps(response.data.result);
+					return;
+				} 
+			
+				if (response.status == 200 && response.data.code == 'SUCCESS') {
+					console.log("logged in successfully");
+					if (typeof (Storage) !== "undefined") {
 
-						if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
-							window.$applozic.fn.applozic('logout');
-						}
-
-						if (response.data.result.apzToken) {
-						} else {
-							var apzToken = new Buffer(userName + ":" + password).toString('base64');
-							response.data.result.apzToken = apzToken;
-						}
-
-						if (!response.data.result.application) {
-							console.log("response doesn't have application, create {}");
-							response.data.result.application = {};
-						}
-
-						_this.setState({'applicationId': response.data.result.application.applicationId});
-
-						response.data.result.displayName=response.data.result.name;
-						CommonUtils.setUserSession(response.data.result);
-						_this.props.saveUserInfo(response.data.result);
-						_this.props.logInStatus(true);
-						}
-						// _this.props.history.push("/dashboard");
-						window.location.assign(_this.state.next);
-						_this.state=_this.initialState;
+					if (window.$applozic && window.$applozic.fn && window.$applozic.fn.applozic("getLoggedInUser")) {
+						window.$applozic.fn.applozic('logout');
 					}
-				}).catch( function(err) {
-					console.log(err);
-					Notification.error("Error during login.");
-					_this.setState({loginButtonDisabled:false});
-				});
-			} else {
-				this.apploicUserLogin();
-			}
+
+					if (response.data.result.apzToken) {
+					} else {
+						var apzToken = new Buffer(userName + ":" + password).toString('base64');
+						response.data.result.apzToken = apzToken;
+					}
+
+					if (!response.data.result.application) {
+						console.log("response doesn't have application, create {}");
+						response.data.result.application = {};
+					}
+
+					_this.setState({'applicationId': response.data.result.application.applicationId});
+
+					response.data.result.displayName=response.data.result.name;
+					CommonUtils.setUserSession(response.data.result);
+					_this.props.saveUserInfo(response.data.result);
+					_this.props.logInStatus(true);
+					}
+					// _this.props.history.push("/dashboard");
+					window.location.assign(_this.state.next);
+					_this.state=_this.initialState;
+				}
+			}).catch( function(err) {
+				console.log(err);
+				Notification.error("Error during login.");
+				_this.setState({loginButtonDisabled:false});
+			});
 		}
 	}
 
@@ -341,16 +337,11 @@ class Login extends Component {
 			});
 		} else if(this.state.loginButtonAction==="passwordResetAppSected") {
 			if(this.state.applicationId) {
-				if(CommonUtils.isKommunicateDashboard()) {
-					Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
-						_this.state.userName=data.userId||_this.state.email;
-						resetPassword({userName:this.state.userName,applicationId:this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
-						return;
-					});
-				} else {
-					_this.passwordResetForApplozicUser();
+				Promise.resolve(ApplozicClient.getUserInfoByEmail({"email":this.state.email,"applicationId":this.state.applicationId})).then(data=>{
+					_this.state.userName=data.userId||_this.state.email;
+					resetPassword({userName:this.state.userName,applicationId:this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
 					return;
-				}
+				});
 			} else {
 				Notification.info("Please select your application");
 				return;
@@ -380,11 +371,7 @@ class Login extends Component {
 				_this.state.applicationName=result[_this.state.applicationId];
 				_this.state.appIdList= result;
 				if(_this.state.loginButtonAction == "passwordReset") {
-					if(CommonUtils.isKommunicateDashboard()) {
-						resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
-					} else {
-						_this.passwordResetForApplozicUser();
-					}
+					resetPassword({userName:_this.state.userName||_this.state.email,applicationId:_this.state.applicationId}).then(_this.handlePasswordResetResponse).catch(_this.handlePasswordResetError);
 					return 1;
 				}
 				_this.setState({
@@ -402,25 +389,20 @@ class Login extends Component {
 			} else if(numOfApp>1) {
 				_this.state.appIdList= result;
 				if(_this.state.loginButtonAction=="passwordReset") {
-					if(CommonUtils.isKommunicateDashboard()) {
-						_this.setState({
-							loginButtonText:'Submit',
-							loginButtonAction:'passwordResetAppSected',
-							loginFormSubText:'please select your application and submit',
-							hidePasswordInputbox:true,
-							hideAppListDropdown:false,
-							hideUserNameInputbox:true,
-							loginFormText:"Select Application..",
-							hideBackButton:false,
-							hideSignupLink:true,
-							isForgotPwdHidden:true,
-							hideSignupLink:true,
-							hideGoogleLoginBtn:true
-						});
-					} else {
-						_this.passwordResetForApplozicUser();
-					}
-					
+					_this.setState({
+						loginButtonText:'Submit',
+						loginButtonAction:'passwordResetAppSected',
+						loginFormSubText:'please select your application and submit',
+						hidePasswordInputbox:true,
+						hideAppListDropdown:false,
+						hideUserNameInputbox:true,
+						loginFormText:"Select Application..",
+						hideBackButton:false,
+						hideSignupLink:true,
+						isForgotPwdHidden:true,
+						hideSignupLink:true,
+						hideGoogleLoginBtn:true
+					});					
 				} else {
 					_this.setState({
 						loginButtonDisabled:false, 

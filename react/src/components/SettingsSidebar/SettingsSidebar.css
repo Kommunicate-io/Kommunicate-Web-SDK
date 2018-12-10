@@ -9,12 +9,12 @@
 }
 .settings-title {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: normal;
     margin-top: 20px;
     margin-bottom: 0px;
     letter-spacing: 0.3px;
     color: #666464;
-    padding-left: 30px;
+    padding-left: 21px;
     text-align: left;
 }
 .ss-nav {
@@ -31,7 +31,7 @@
 }
 .ss-nav-title {
     text-align: left;
-    padding: 3px 10px 3px 24px;
+    padding: 3px 10px 3px 15px;
     letter-spacing: 0.3px;
     color: #cacaca;
     font-weight: bold;
