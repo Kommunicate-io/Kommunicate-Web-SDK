@@ -267,62 +267,6 @@ class Login extends Component {
 		}
 	}
 
-	apploicUserLogin = () => {
-		let applozicUserDetail = {
-			"userName": this.state.userName,
-			"password": this.state.password
-		}
-		ApplozicClient.validateApplozicUser(applozicUserDetail).then( response => {
-			console.log(response);
-			if(response.status === 200) {
-				if(response.data === "NO_USER") {
-					this.setState({
-						loginButtonDisabled: false,
-						hideErrorMessagePassword: false, 
-						errorMessageTextPassword:"User does not exist. Please sign up.",
-					});
-				} else if (response.data === "ERROR") {
-					this.setState({
-						loginButtonDisabled: false,
-						hideErrorMessagePassword: false, 
-						errorMessageTextPassword:"Invalid Email Id or Password",
-					});
-				} else if(response.data === "LOGIN") {
-					this.setState({
-						loginButtonDisabled: false,
-					});
-					this.getApplicationListOfApplozicUser();
-				}
-			}
-			
-		}).catch( err => {
-			console.log(err);
-			Notification.error("Error during login.");
-			this.setState({ loginButtonDisabled: false });
-		});
-	}
-
-	getApplicationListOfApplozicUser = () => {
-		ApplozicClient.getApplicationIdList(this.state.userName).then( response => {
-			var applicationList = {}, applicationAdminList, applicationWebAdminList
-			if(response) {
-				applicationAdminList = response.APPLICATION_ADMIN;
-				applicationWebAdminList = response.APPLICATION_WEB_ADMIN;
-				applicationList = Object.assign(applicationAdminList, applicationWebAdminList);
-				if(Object.keys(applicationList).length > 1) {
-					CommonUtils.setApplicationIds(applicationList);
-					this.props.history.push("/apps?referrer=" + this.state.next, {
-						userid: this.state.userName, 
-						pass: this.state.password
-					});
-				}
-			}
-		}).catch( err => {
-			console.log(err);
-			Notification.error("Something went wrong.");
-		});
-	}
-
 	login = (event) => {
 		var _this = this;
 		if(this.state.loginButtonAction === "Login") {
@@ -448,18 +392,6 @@ class Login extends Component {
 
 	register = (event) => {
 		this.props.history.push("/signup");
-	}
-
-	passwordResetForApplozicUser = () => {
-		ApplozicClient.applozicResetPassword(this.state.userName || this.state.email).then( resp => {
-			if(resp.data === "success") {
-				this.handlePasswordResetResponse(resp);
-			} else {
-				Notification.error("Oops, looks like you havn't registered up with this email address.");
-			}	
-		}).catch(err => {
-			this.handlePasswordResetError(err);
-		});
 	}
 
 	initiateForgotPassword = (event) => {
