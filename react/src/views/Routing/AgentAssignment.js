@@ -105,7 +105,7 @@ updateDefaultAssignee = (selectedAssignee) => {
 }
 getAgents = () => {
     let userList = [];
-    return Promise.resolve(getUsersByType(this.props.applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN]))
+    return Promise.resolve(getUsersByType(this.props.appSettings.applicationId, [USER_TYPE.AGENT, USER_TYPE.ADMIN]))
     .then(data => {
         data.map((user, index) => {
             let name = user.name ? user.name : user.email
@@ -390,11 +390,9 @@ toggleConversationAssignment = () => {
   }
 }
 const mapStateToProps = state => ({
-    applicationId: state.loginReducer.userInfo.application.applicationId,
-    appSettings : state.applicationReducer.appSettings 
+    appSettings : state.application 
   });
 const mapDispatchToProps = dispatch => ({
-    // updateAssignee :
     updateAssignee: payload => dispatch(Actions.saveAppSettings(payload))
 }) ;
   
