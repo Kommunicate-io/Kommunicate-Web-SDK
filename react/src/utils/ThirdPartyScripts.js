@@ -58,6 +58,10 @@ class ThirdPartyScripts extends Component {
                     mckSideboxLauncher.classList.add('force-hide');
                     mckSideboxLauncher.classList.remove('vis');
                   }
+
+                  mckSideboxLauncher.addEventListener("click",function(){
+                    acEventTrigger("initiateChatKMdashbaord");
+                  });
                 };
 
               };

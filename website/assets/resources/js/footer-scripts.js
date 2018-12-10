@@ -36,3 +36,45 @@ if(window.location.search == "?ref=sifterydeals") {
   $("#coupon").text("FRIDAY");
 }
 
+
+function acEventTrigger(event) {
+
+  if(!heap.identity){
+    return;
+  }
+
+  var xhttp = new XMLHttpRequest();  
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      // console.log(this.responseText);
+    } else {
+      // console.log(this.responseText)
+    }
+  };
+ 
+  //  ActiveCampaign id. 
+  var actid = "66105982";
+
+  //  event key,
+  var eventKey = "6fcd6450068b76b0eb4e03c32f22cedbd7c5b545";
+
+
+  var visit = {
+    email:  heap.identity // the user's email address
+  }
+
+  // get the url of the page and send it as event data
+  var eventData = "kommunicate";
+
+  // build the eventString based on the variables you just edited above 
+  var eventString = "actid=" + actid +
+    "&key=" + eventKey +
+    "&visit=" + encodeURIComponent(JSON.stringify(visit)) +
+    "&visit=" + heap.identity +
+    "&eventdata=" + eventData;
+    
+    xhttp.open("POST", "https://services.kommunicate.io/track?", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send(eventString);
+
+}
