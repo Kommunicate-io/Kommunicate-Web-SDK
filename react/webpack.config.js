@@ -35,7 +35,7 @@ module.exports = env => {
                     test: /\.css$/
                 },
                 {
-                    test: /\.(jpe?g|png|gif|svg)$/i,
+                    test: /\.(jpe?g|png|gif|svg|woff(2)?|ttf|eot)$/i,
                     loader: "file-loader?name=[name].[ext]&outputPath=icons/"
                 }
             ]

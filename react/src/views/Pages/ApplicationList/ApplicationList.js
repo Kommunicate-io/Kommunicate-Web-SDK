@@ -111,7 +111,6 @@ class ApplicationList extends Component {
     } else if (this.state.loginType === 'email') {
       loginUrl += "?loginType=email"
     }
-    if (CommonUtils.isKommunicateDashboard()) {
       axios.post(loginUrl, { userName: userName, password: password, applicationName: applicationName, applicationId: applicationId })
         .then(function (response) {
           if (response.status == 200 && response.data.code == 'INVALID_CREDENTIALS') {
@@ -158,25 +157,6 @@ class ApplicationList extends Component {
           Notification.error("Error during login.");
           _this.setState({ loginButtonDisabled: false });
         });
-
-    } else {
-		//applozic login
-		let details = {
-			"userName": userName,
-			"accessToken": password,
-			"applicationId": applicationId
-		}
-		ApplozicClient.getApplication(details, true).then( response => {
-			if(response.status === 200) {
-				let session = { ...response.data.adminUser, name: response.data.adminUser.displayName, userName: userName, accessToken: password, application: response.data }
-				CommonUtils.setUserSession(session);
-				window.location.assign(_this.state.next);
-			}
-		}).catch( err => {
-			console.log(err);
-			Notification.error("Something went wrong.");
-		});
-    }
   }
 
 
