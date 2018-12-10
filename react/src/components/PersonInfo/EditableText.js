@@ -60,12 +60,10 @@ class EditableText extends Component {
   }
 
   changeEditMode = () => {
-    if (this.props.reference !== 'displayName') {
       this.setState({
         isInEditMode: !this.state.isInEditMode,
         inputBoxMouseDown: true
       });
-    }
   };
   onKeyPressHandler = (e) => {
     if (e.key === 'Enter') {
@@ -152,10 +150,10 @@ class EditableText extends Component {
           onFocus ={this.updateMouseDownFlag}
           maxLength={40}
         />
-        <button className ="km-cancel-postion" onMouseDown={this.changeEditMode}>
+        <button className ="km-cancel-position" onMouseDown={this.changeEditMode}>
           <CancelSvg />
         </button>
-        <button className ="km-submit-postion" onMouseDown={this.submitComponentValue}>
+        <button className ="km-submit-position" onMouseDown={this.submitComponentValue}>
           <SubmitSvg />
         </button>
       </div>
