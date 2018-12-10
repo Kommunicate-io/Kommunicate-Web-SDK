@@ -2563,6 +2563,35 @@ input:-ms-input-placeholder {
   height: 36px;
 }
 
+.testimonials-trust{
+  font-size: 18px;
+  font-style: italic;
+  text-align: center;
+  color: #4f4c4c;
+  margin-top: -20px;
+}
+.free-forever{
+  margin-top: -80px;
+  margin-bottom: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.free-forever >span{
+  display: inline-block;
+  margin: 4px auto;
+  text-align: center;
+  padding: 10px 30px;
+  font-size: 28px;
+  background-color: #cce7f8;
+
+}
+
+.free-forever span span {
+  font-weight: bolder;
+}
+
 @media only screen and (max-width:991px) {
   .hero-section {
     margin-top: 90px;
