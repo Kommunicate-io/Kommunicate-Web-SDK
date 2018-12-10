@@ -3,7 +3,6 @@ import {
   NotificationContainer,
   NotificationManager
 } from "react-notifications";
-import 'react-notifications/lib/notifications.css';
 
 const  Notification = {
     info : function(message) {
