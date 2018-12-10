@@ -39,6 +39,30 @@ Response
  }]
 ```
 
+## Update User Details
+
+This API can only update a user's details. To update Agent's Detail please contact to Kommunicate support.
+`Of-User-Id` is the user to be updated and should be passed in the request headers. 
+
+``` javascript
+POST  /rest/ws/user/update HTTP/1.1
+Content-Type: application/json  
+Of-User-Id: user_id  // user id to be updated.
+
+POST Body:
+{ 
+  "email":"user email",
+  "displayName":"user display name",
+  "imageLink":"User profile image url",
+  "metadata":{
+    "key-1":"value-1" // any number of key value pairs, it will be visible to agents in dashboard.
+    }
+}
+
+```
+
+ 
+
 ## Send Message
 
 Send a message to a conversation/group. A group Id is assigned to every conversation when its created and can not be changed. If messages are received from webhook, every message will have the groupId parameter associated with them. Use this group Id to send the messages in the conversation. 
@@ -62,7 +86,7 @@ POST Body:
 ## Change Conversation Status
 
 ``` javascript
-POST /rest/ws/group/update
+POST /rest/ws/group/update HTTP/1.1
 Content-Type: application/json
 POST Body:
 {
