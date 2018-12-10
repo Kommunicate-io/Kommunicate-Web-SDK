@@ -11,7 +11,6 @@ import { TotalUsersIcon, ActiveUsersIcon, ConversationThreadsIcon, MessagesSentI
 
 
 const Container = styled.div`
-    width: 90%;
     margin: 25px auto 50px;
 `;
 
@@ -45,7 +44,7 @@ const P = styled.p`
 const AnalyticsCards = styled.div`
     position: relative;
     text-align: center;
-    width: 210px;
+    width: 230px;
     border-radius: 4px;
     box-shadow: 0 2px 5px 0 rgba(172, 170, 170, 0.5);
     background-color: #ffffff;
@@ -303,6 +302,7 @@ class AlDashboard extends Component {
                     borderCapStyle: 'butt',
                     borderDash: [],
                     borderDashOffset: 0.0,
+                    borderWidth: 2,
                     borderJoinStyle: 'miter',
                     pointBorderColor: this.state.graphType.value ? this.props.theme.primary : this.props.theme.secondary,
                     pointBackgroundColor: '#fff',
@@ -450,7 +450,7 @@ class AlDashboard extends Component {
                                 <GraphTitle>{this.state.graphType.label}</GraphTitle>
                             </GraphLegend>
                             <ChartContainer >
-                                <Line data={data} options={options} ref="chart"/>
+                                <Line data={data} options={options}/>
                             </ChartContainer>
                             
                         </GraphContainer>                                           

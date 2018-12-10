@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import styled, { withTheme } from 'styled-components';
 import Modal from 'react-modal';
 import Select from 'react-select';
+import Notification from '../../views/model/Notification';
 import Button from '../../components/Buttons/Button';
 import CloseButton from '../../components/Modal/CloseButton';
 import CommonUtils from '../../utils/CommonUtils';
-import { ConfirmationTick } from '../../assets/svg/svgs';
+import { ConfirmationTick, CustomizableReportsImage } from '../../assets/svg/svgs';
 import { callSendEmailAPI } from '../../utils/kommunicateClient';
 
 
@@ -45,16 +46,24 @@ const ImageContainer = styled.div`
 `;
 
 const Heading = styled.h3`
-    
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1.21;
+    letter-spacing: 0.9px;
+    color: #000000;
 `;
 
 const Description = styled.p`
-
+    font-size: 16px;
+    letter-spacing: 0.6px;
+    color: #88878b;
+    
 `;
 
 const ButtonLink = styled(Button)`
     text-transform: uppercase;
     font-weight: bold;
+    padding-left: 0px;
 `;
 
 const ModalHeading = styled.h4`
@@ -123,6 +132,13 @@ const RequirementForm = styled.div`
 
 const RequirementSubmitted = styled.div`
     text-align: center;
+
+    & svg {
+        width: 85px;
+        height: 85px;
+        margin: 40px auto 25px;
+
+    }
 `;
 
 const reportsDuration = [
@@ -166,21 +182,19 @@ class CustomizableReports extends Component {
         if(this.state.textAreaValue.trim().length > 0){
 
             let options = {
-             templateName: "CUSTOM_REPORTS_REQUIREMENT",
-             customReportsDescription: this.state.textAreaValue,
-             customReportsDuration: this.state.selectedReportsDuration.label,
-             subject: "Custom Reports Requirement"
+                templateName: "CUSTOM_REPORTS_REQUIREMENT",
+                customReportsDescription: this.state.textAreaValue,
+                customReportsDuration: this.state.selectedReportsDuration.label,
+                subject: "Custom Reports Requirement"
             }
   
             callSendEmailAPI(options).then(response => {
-              console.log(response);
-              if(response.status ==  200 && response.data.code == "SUCCESS"){
-                Notification.success("Custom reports request submitted");
-                // this.toggleOtherPlatformModal()
-                this.setState({textAreaValue: '', isRequirementSubmitted: true})
-              }
+                if(response.status ==  200 && response.data.code == "SUCCESS") {
+                    Notification.success("Custom reports request submitted successfully");
+                    this.setState({textAreaValue: '', isRequirementSubmitted: true})
+                }
             });
-          }else if(this.state.textAreaValue.trim().length < 1 || this.state.textAreaValue.trim().length < 1 ){
+        } else if(this.state.textAreaValue.trim().length < 1 ) {
             Notification.info("Please enter the text");
         }
     }
@@ -195,7 +209,7 @@ class CustomizableReports extends Component {
                         <ButtonLink link onClick={this.openModal}>Request Custom Reports</ButtonLink>
                     </TextContainer>
                     <ImageContainer>
-
+                        <CustomizableReportsImage />
                     </ImageContainer>
                 </FlexContainer>
 
@@ -237,7 +251,7 @@ class CustomizableReports extends Component {
                         <ModalHeading>We have received your custom reports requirement</ModalHeading>
                         <ModalDescription>Our team will go through your requirements and will be in touch with you soon</ModalDescription>
                         <ModalButtons>
-                            <Button primary onClick={this.closeModal}>Submit Requirement</Button>
+                            <Button primary onClick={this.closeModal}>Okay</Button>
                         </ModalButtons>
                     </RequirementSubmitted>
 

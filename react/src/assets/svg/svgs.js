@@ -55,10 +55,10 @@ export const BackButton = props => (
 )
 
 export const ConfirmationTick = props => (
-    <svg width={56} height={56} {...props}>
-        <g fillRule="nonzero" fill="#3DE00E">
-            <path d="M16.712 23.275l-2.537 2.363 11.9 12.774 27.912-28-2.45-2.45-25.462 25.463z" />
-            <path d="M.525 28C.525 43.225 12.863 55.475 28 55.475c15.138 0 27.475-12.25 27.475-27.475h-3.5c0 13.212-10.763 23.975-23.975 23.975C14.787 51.975 4.025 41.212 4.025 28 4.025 14.787 14.787 4.025 28 4.025v-3.5C12.863.525.525 12.863.525 28z" />
+    <svg width={86} height={86} viewBox="0 0 86 86" {...props}>
+        <g fill="#2DD35C" fillRule="nonzero">
+            <path d="M25.666 35.744l-3.897 3.628L40.044 58.99l42.865-43-3.762-3.763-39.103 39.103z" />
+            <path d="M.806 43C.806 66.381 19.753 85.194 43 85.194c23.247 0 42.194-18.813 42.194-42.194h-5.375c0 20.29-16.528 36.819-36.819 36.819C22.71 79.819 6.181 63.29 6.181 43 6.181 22.71 22.71 6.181 43 6.181V.806C19.753.806.806 19.753.806 43z" />
         </g>
     </svg>
 )
@@ -195,3 +195,132 @@ export const ApplozicLogoSymbol = props => (
         fill="url(#prefix__a)" />
     </svg>
 )
+
+export const CustomizableReportsImage = props => (
+    <svg width={251} height={170}  viewBox="0 0 251 170" {...props}>
+      <g fill="none" fillRule="evenodd">
+        <path d="M85.265 9.286s-3.308 7.407-18.567 4.816M64.294 36.726S76.036 25 72.447 20.74" stroke="#535461" strokeWidth={2} />
+        <ellipse fill="#6C63FF" opacity={0.1} cx={125.461} cy={158.83} rx={125.461} ry={10.591} />
+        <path
+          d="M213.593 155.757a8.032 8.032 0 0 1-.184 1.58s-12.136.875-15.922.583c-1.826-.139-2.603-.82-2.743-1.472-.165.748.496 1.738 2.743 1.91 3.798.292 15.922-.582 15.922-.582.143-.663.204-1.341.184-2.019z"
+          fill="#FFF"
+          opacity={0.3}
+        />
+        <path fill="#FAFBFC" d="M58.445.195h133.441v159.334H58.445z" />
+        <path fill="#7983A6" d="M58.445.195h133.441v5.401H58.445z" />
+        <path d="M76.478 65.122h97.376" stroke="#7983A6" />
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 54.699h1.549" />
+          <path d="M81.069 54.699h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 54.699h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 44.118h1.549" />
+          <path d="M81.069 44.118h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 44.118h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 33.532h1.549" />
+          <path d="M81.069 33.532h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 33.532h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 22.952h1.549" />
+          <path d="M81.069 22.952h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 22.952h1.55" />
+        </g>
+        <path
+          d="M81.324 43.968h6.988v21.154h-6.988z"
+          opacity={0.3}
+          fill="#6C63FF"
+        />
+        <path fill="#6C63FF" d="M100.821 33.276h6.988v31.957h-6.988z" />
+        <path
+          d="M120.32 54.43h6.988v10.915h-6.988z"
+          opacity={0.3}
+          fill="#6C63FF"
+        />
+        <path fill="#6C63FF" d="M139.816 22.476h6.988v42.76h-6.988z" />
+        <path
+          d="M159.313 32.828h6.988v32.295h-6.988z"
+          opacity={0.3}
+          fill="#6C63FF"
+        />
+        <ellipse fill="#6C63FF" cx={84.818} cy={69.959} rx={1.802} ry={1.8} />
+        <ellipse fill="#6C63FF" cx={104.428} cy={69.959} rx={1.802} ry={1.8} />
+        <ellipse fill="#6C63FF" cx={124.038} cy={69.959} rx={1.802} ry={1.8} />
+        <ellipse fill="#6C63FF" cx={143.648} cy={69.959} rx={1.802} ry={1.8} />
+        <ellipse fill="#6C63FF" cx={163.258} cy={69.959} rx={1.802} ry={1.8} />
+        <path d="M76.478 133.087h97.376" stroke="#7983A6" />
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 122.811h1.549" />
+          <path d="M81.069 122.811h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 122.811h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 112.23h1.549" />
+          <path d="M81.069 112.23h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 112.23h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 101.645h1.549" />
+          <path d="M81.069 101.645h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 101.645h1.55" />
+        </g>
+        <g opacity={0.5} stroke="#7983A6">
+          <path d="M76.478 91.064h1.549" />
+          <path d="M81.069 91.064h89.714" strokeDasharray="11.78" />
+          <path d="M172.304 91.064h1.55" />
+        </g>
+        <path
+          fill="#6C63FF"
+          d="M81.325 111.932h6.988v21.154h-6.988zM100.821 111.819h6.988v21.379h-6.988zM120.32 122.397h6.988v10.914h-6.988zM139.816 90.44h6.988v42.76h-6.988z"
+        />
+        <ellipse
+          cx={1.926}
+          cy={1.815}
+          rx={1.802}
+          ry={1.8}
+          opacity={0.7}
+          transform="translate(82.892 136.108)"
+          fill="#6C63FF"
+        />
+        <ellipse
+          cx={1.911}
+          cy={1.815}
+          rx={1.802}
+          ry={1.8}
+          opacity={0.7}
+          transform="translate(102.517 136.108)"
+          fill="#6C63FF"
+        />
+        <ellipse
+          cx={1.895}
+          cy={1.815}
+          rx={1.802}
+          ry={1.8}
+          opacity={0.7}
+          transform="translate(122.143 136.108)"
+          fill="#6C63FF"
+        />
+        <ellipse
+          cx={1.88}
+          cy={1.815}
+          rx={1.802}
+          ry={1.8}
+          opacity={0.7}
+          transform="translate(141.769 136.108)"
+          fill="#6C63FF"
+        />
+        <ellipse
+          cx={1.864}
+          cy={1.815}
+          rx={1.802}
+          ry={1.8}
+          opacity={0.7}
+          transform="translate(161.394 136.108)"
+          fill="#6C63FF"
+        />
+      </g>
+    </svg>
+  )

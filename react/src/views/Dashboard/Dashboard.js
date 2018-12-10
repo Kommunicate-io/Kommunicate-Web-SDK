@@ -1,13 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CommonUtils from '../../utils/CommonUtils';
 import KmDashboard from './KmDashboard';
 import AlDashboard from '../../ALDashboard/views/Dashboard/AlDashboard';
-import styled, { withTheme } from 'styled-components';
+import styled, { withTheme, css } from 'styled-components';
 import CustomizableReports from '../CustomizableReports/CustomizableReports';
 
 
+const mediaQueryDashboard = css`
+	@media (min-width: 1367px) {
+		width: 100%;
+		max-width: 1130px;
+		margin: 0 auto;
+	}
+`;
+
 const DashboardContainer = styled.div`
-	
+	width: 90%;
+	margin: 0 auto;
+	${mediaQueryDashboard}
+	.early-bird-card {
+		width: 100%;
+	}
 `;
 
 const DashboardHeading = styled.h6`
@@ -37,6 +50,8 @@ const DashboardHeading = styled.h6`
 `;
 
 const KMDashboard = styled.div`
+	${mediaQueryDashboard}
+
 	.customer-support-analytics-heading {
 		max-width: 300px;
 		margin: 10px auto 30px;
@@ -46,6 +61,7 @@ const KMDashboard = styled.div`
 		margin: 10px auto 30px;
 	}
 	.early-bird-card {
+		width: 100%;
 		border-radius: 4px;
 		box-shadow: 0 2px 5px 0 rgba(172, 170, 170, 0.5);
 		background-color: #ffffff;
@@ -68,24 +84,31 @@ class Dashboard extends Component {
 					<KmDashboard />
 					<DashboardHeading className="messaging-analytics-heading">Messaging Analytics</DashboardHeading>
 					<AlDashboard />
+					<CustomizableReports />
 				</KMDashboard>
 			);
 		} else if (pricingPackage >= 100 && pricingPackage < 200) {
-			return <KmDashboard />;
+			return (
+				<Fragment>
+					<KmDashboard />
+					<CustomizableReports />
+				</Fragment>
+			);
 		} else {
-			return <AlDashboard />;
+			return (
+				<Fragment>
+					<AlDashboard />
+					<CustomizableReports />
+				</Fragment>
+			);
 		}
 	}
 
 
 
 	render() {
-
-
-
 		return (
 			<DashboardContainer className="animated fadeIn">
-				<CustomizableReports />
 				{this.renderDashboard()}
 			</DashboardContainer>
 		);
