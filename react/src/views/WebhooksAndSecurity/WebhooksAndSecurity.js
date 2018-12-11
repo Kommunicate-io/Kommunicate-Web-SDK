@@ -9,7 +9,6 @@ import Select from 'react-select';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
-import { link } from 'fs';
 
 const links={
     applozic:{
