@@ -77,8 +77,8 @@ class Login extends Component {
 	}
 	
 	componentWillMount() {
-    this.props.logInStatus(false);
-    this.props.onBoardingStatus(false);
+    this.props.setLogInStatus(false);
+    this.props.setOnBoardingStatus(false);
     persistor.purge()
 		const search = this.props.location.search;
 		let referer = CommonUtils.getUrlParameter(search, 'referrer');
@@ -592,8 +592,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload)),
-    onBoardingStatus: payload => dispatch(signUpActions.updateOnBoardingStatus(payload))
+    setLogInStatus: payload => dispatch(Actions.updateLogInStatus(payload)),
+    setOnBoardingStatus: payload => dispatch(signUpActions.updateOnBoardingStatus(payload))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
