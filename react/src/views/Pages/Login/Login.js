@@ -587,7 +587,7 @@ class Login extends Component {
 
 // export default Login;
 const mapStateToProps = state => ({
-  	userInfo:state.loginReducer.userInfo
+  	userInfo:state.login.userInfo
 });
 const mapDispatchToProps = dispatch => {
   return {
