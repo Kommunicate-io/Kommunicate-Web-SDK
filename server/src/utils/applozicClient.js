@@ -142,6 +142,7 @@ exports.createApplication = (adminUserId, adminPassword, applicationName) => {
       if (response.data.status != "error") {
         if(response.data.pricingPackage == 0 || response.data.pricingPackage == -1) {
           updateApplication({applicationId: response.data.applicationId, pricingPackage: 101})
+          response.data.pricingPackage=101;
         }
         return response.data;
       } else {
