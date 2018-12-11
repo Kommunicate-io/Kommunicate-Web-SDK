@@ -123,7 +123,7 @@ class Install extends Component {
                      {this.state.yourApplicationId}
                      </span>
                    </div>
-                   {(!(currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) &&
+                   {CommonUtils.isKommunicateDashboard() && (!(currentPath.includes('installation')) || (currentPath.includes('setUpPage'))) &&
                    <div   className = {typeof this.getApiKey() === 'undefined' ? "n-vis" : "app-id-div" } >
                      <span className="app-id-sub-text">
                        API Key:
