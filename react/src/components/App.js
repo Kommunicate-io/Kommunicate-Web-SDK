@@ -108,7 +108,7 @@ class App extends Component {
 } 
 App.defaultProps ={ hideSkip : false }
 const mapStateToProps = state => ({
-  logInStatus:state.loginReducer.logInStatus
+  logInStatus:state.login.logInStatus
 })
 
 const mapDispatchToProps = dispatch => {

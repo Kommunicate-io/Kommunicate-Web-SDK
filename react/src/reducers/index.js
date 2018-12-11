@@ -3,6 +3,7 @@ import loginReducer from './loginReducer'
 import applicationReducer from './applicationReducer'
 
 export default combineReducers({
-    loginReducer,
-    applicationReducer
+    login:loginReducer,
+    application:applicationReducer,
+    // signUp:signUpReducer
 })

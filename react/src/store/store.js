@@ -15,7 +15,8 @@ const enableDevTools =getConfig().enableDevTools
 const persistConfig = {
     key: 'root',
     storage: storage,
-    stateReconciler: autoMergeLevel2
+    stateReconciler: autoMergeLevel2,
+    whitelist: ['login']
 };
 
 // pReducer = persistReducer(persistConfig, rootReducer);
