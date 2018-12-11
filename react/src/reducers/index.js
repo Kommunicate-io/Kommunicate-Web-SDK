@@ -6,5 +6,5 @@ import signUpReducer from './signUpReducer'
 export default combineReducers({
     login:loginReducer,
     application:applicationReducer,
-    // signUp:signUpReducer
+    signUp:signUpReducer
 })
