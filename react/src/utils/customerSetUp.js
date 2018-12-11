@@ -58,6 +58,7 @@ return `<script type="text/javascript">
         m.init=function(t){m._globals=t;}})(document, window.applozic || {});
 
         window.applozic.init({
+        baseUrl:'${getConfig().applozicPlugin.applozicHosturl}',
         appId: '`+ getJsCode()[1] + `',
         userId: 'applozic-demo-user',   //Logged in user's id, a unique identifier for user
         accessToken: "",              //Enter password here for the userId passed above
