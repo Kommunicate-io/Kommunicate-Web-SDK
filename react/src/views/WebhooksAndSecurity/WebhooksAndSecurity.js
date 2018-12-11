@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './WebhooksAndSecurity.css';
 import CommonUtils from '../../utils/CommonUtils';
 import Notification from '../../views/model/Notification';
@@ -9,6 +9,7 @@ import Select from 'react-select';
 import {SettingsHeader} from '../../../src/components/SettingsComponent/SettingsComponents';
 import { FALLBACK_TYPE, NOTIFY_VIA } from '../../utils/Constant';
 import Button from '../../components/Buttons/Button';
+import LockBadge from '../../components/LockBadge/LockBadge';
 
 const links={
     applozic:{
@@ -48,7 +49,9 @@ export default class WebhooksAndSecurity extends Component {
             authorizationUrl: "",
             selectUnredMsgTime: { value: 300, label: '5 minutes' },
             selectUndeliveredMsgTime: { value: 300, label: '5 minutes' },
-            links: CommonUtils.isKommunicateDashboard()?links.kommunicate:links.applozic
+            links: CommonUtils.isKommunicateDashboard() ? links.kommunicate : links.applozic,
+            isTrialPlan: CommonUtils.isTrialPlan(),
+            isStartupPlan: CommonUtils.isStartupPlan()
         }
 
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -152,12 +155,10 @@ export default class WebhooksAndSecurity extends Component {
                     Notification.info("Webhooks configure error"); 
                 }
             }
-            console.log(response)
         }).catch((error) => {
             console.log(error);
             Notification.error("Something went wrong");
-        })
-        console.log(applicationData, typeof applicationData);
+        });
     }
 
     render() {
@@ -196,9 +197,7 @@ export default class WebhooksAndSecurity extends Component {
                                         clearable={false}
                                         searchable={false}
                                         value={this.state.selectUnredMsgTime}
-                                        onChange={selectUnredMsgTime => this.setState({ selectUnredMsgTime }, () => {
-                                            console.log(this.state.selectUnredMsgTime)
-                                        })}
+                                        onChange={selectUnredMsgTime => this.setState({ selectUnredMsgTime })}
                                         options={options}
                                     />                                 
                                 </div>
@@ -218,9 +217,7 @@ export default class WebhooksAndSecurity extends Component {
                                         clearable={false}
                                         searchable={false}
                                         value={this.state.selectUndeliveredMsgTime}
-                                        onChange={selectUndeliveredMsgTime => this.setState({ selectUndeliveredMsgTime }, () => {
-                                            console.log(this.state.selectUndeliveredMsgTime)
-                                        })}
+                                        onChange={selectUndeliveredMsgTime => this.setState({ selectUndeliveredMsgTime })}
                                         options={options}
                                     />                                 
                                 </div>
@@ -241,7 +238,13 @@ export default class WebhooksAndSecurity extends Component {
 
 
                             <div className="webhooks-action-buttons-container">
-                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                            {
+                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button> : this.state.isStartupPlan ? <Fragment>
+                                    <Button fontSize={"15px"} disabled>Save changes</Button>
+                                    <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                                </Fragment> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(false)}}>Save changes</Button>
+                            }
+                                
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
 
@@ -259,7 +262,13 @@ export default class WebhooksAndSecurity extends Component {
                             </div>
 
                             <div className="security-action-buttons-container">
-                                <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                            {
+                                this.state.isTrialPlan ? <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button> : this.state.isStartupPlan ? <Fragment>
+                                    <Button fontSize={"15px"} disabled>Save changes</Button>
+                                    <LockBadge className={"lock-with-text"} text={"Available in Growth Plan"} history={this.props.history} onClickGoTo={"/settings/billing"}/>
+                                </Fragment> : <Button fontSize={"15px"} onClick={() => {this.submitWebhooksDetails(true)}}>Save changes</Button>
+                            }
+                                
                                 <Button secondary className="n-vis">Cancel</Button>
                             </div>
 

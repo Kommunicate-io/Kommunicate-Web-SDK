@@ -24,7 +24,6 @@
 }
 
 .fcm {
-  font-family: Roboto;
   font-size: 14px;
   font-weight: 500;
   font-style: normal;
@@ -148,4 +147,9 @@
 
 .km-pushnotification-header {
   margin-left: 5px;
+}
+
+.km-push-notification-container .lock-badge-container {
+  margin-left: 15px;
+  vertical-align: middle;
 }
