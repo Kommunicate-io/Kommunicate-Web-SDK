@@ -18,7 +18,7 @@ implementation 'io.kommunicate:kommunicate:1.6.3'
 ## Initialise SDK
 After the gradle sync has finished with kommunicate dependency, you can initialise the SDK by calling the below method:
 ```java
- Kommunicate.init(context, Your-APP-Key);
+ Kommunicate.init(context, Your APP_ID);
 ```
 
 You can get the Application Key by signing up on [Kommunicate Dashboard](https://dashboard.kommunicate.io).

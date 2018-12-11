@@ -10,13 +10,13 @@ You need to initialise the Kommunicate SDK with your [App ID](https://dashboard.
 You can get the App ID by Signing up on [Kommunicate dashboard](https://dashboard.kommunicate.io):
 
 ```java
-Kommunicate.init(context, <your-app-id>);
+Kommunicate.init(context, <your APP_ID>);
 ```
 You can authorize a user as described below:
 ```java
         KMUser user = new KMUser();
         user.setUserId("reytum_01");  //unique userId
-        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your app id
+        user.setApplicationId("22823b4a764f9944ad7913ddb3e43cae1");   //your APP_ID
 ```
 Post this, call the method described below:
 ```java
