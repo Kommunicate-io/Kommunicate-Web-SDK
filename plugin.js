@@ -12,6 +12,9 @@ window.applozic.PRODUCT_ID =":PRODUCT_ID";
 var options={};
 var options = applozic._globals;
 options.isAnonymousChat =options.isAnonymousChat;
+var KOMMUNICATE_VERSION = localStorage.getItem("KM_VER");
+localStorage.removeItem("KM_VER");
+window.kommunicate.version = KOMMUNICATE_VERSION;
 if (typeof options !== 'undefined') {
   MCK_ONINIT = options.onInit;
 }
