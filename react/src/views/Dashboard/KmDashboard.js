@@ -427,16 +427,6 @@ class KmDashboard extends Component {
     this.getAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
-    // let onboarding = localStorage.getItem("KM_ONBOARDING");
-    
-    // if(typeof (Storage) !== "undefined") {
-    //     this.setState({ 
-    //         kmOnBoarding: (onboarding === "true")
-    //     });
-    // } else {
-    //     console.log("Please upgrade your browser.");
-    // }
-
   }
 
   componentWillUnmount(){
