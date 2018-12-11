@@ -16,7 +16,7 @@ const persistConfig = {
     key: 'root',
     storage: storage,
     stateReconciler: autoMergeLevel2,
-    whitelist: ['login']
+    whitelist: ['login','signUp']
 };
 
 // pReducer = persistReducer(persistConfig, rootReducer);

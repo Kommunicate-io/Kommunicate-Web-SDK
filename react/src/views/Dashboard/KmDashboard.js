@@ -10,6 +10,9 @@ import { USER_TYPE, CONVERSATION_STATS_FILTER_KEY } from '../../utils/Constant'
 // import Checkbox from '../../components/Checkbox/Checkbox'
 import {Link} from 'react-router-dom';
 import Onboarding from '../../components/UserOnboarding/Onboarding';
+import Modal from 'react-modal';
+import OnBoardingModal from '../../views/Pages/SetUpPage/OnBoardingModal'
+import { connect } from 'react-redux'
 
 
 // Main Chart
@@ -424,7 +427,6 @@ class KmDashboard extends Component {
     this.getAllUsers(application.applicationId);
     this.filterConversationDetails(dayWiseFilterOptions.last30Days, "allagents", this.state.isChecked);
     window.addEventListener("kmInitilized",this.updateDetailsToKommunicate,true);
-
   }
 
   componentWillUnmount(){
@@ -823,7 +825,6 @@ toggleChangeCheckbox = () => {
   this.filterConversationDetails(this.state.timeFilterSelectedOption.value, this.state.agentFilterSelectedOption.value,isChecked)
 }
 
-
 render() {
   let names = [];
   const { timeFilterSelectedOption } = this.state;
@@ -838,6 +839,9 @@ render() {
       {/* <ProductHuntOffer /> */}
       
       <Onboarding />
+      { this.props.kmOnBoarding && !this.props.closeOnBoardingModalPermanently &&
+        <OnBoardingModal />
+      }   
 
       <div className="animated fadeIn dashboard-card">
         <div className="row filter-dropdown-wrapper">
@@ -974,4 +978,9 @@ const MONTH_NAMES_LONG = ["January", "February", "March", "April", "May", "June"
   "July", "August", "September", "October", "November", "December"
 ];
 
-export default KmDashboard;
+// export default KmDashboard;
+const mapStateToProps = state => ({
+  kmOnBoarding:state.signUp.kmOnBoarding,
+  closeOnBoardingModalPermanently:state.signUp.closeOnBoardingModalPermanently
+})
+export default connect(mapStateToProps,null)(KmDashboard) 
