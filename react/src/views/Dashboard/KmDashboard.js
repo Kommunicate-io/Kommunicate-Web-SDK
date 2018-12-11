@@ -835,7 +835,6 @@ toggleChangeCheckbox = () => {
   this.filterConversationDetails(this.state.timeFilterSelectedOption.value, this.state.agentFilterSelectedOption.value,isChecked)
 }
 
-
 render() {
   let names = [];
   const { timeFilterSelectedOption } = this.state;
@@ -850,7 +849,7 @@ render() {
       {/* <ProductHuntOffer /> */}
       
       <Onboarding />
-      { this.props.kmOnBoarding &&
+      { this.props.kmOnBoarding && !this.props.closeOnBoardingModalPermanently &&
         <OnBoardingModal />
       }   
 
@@ -991,6 +990,7 @@ const MONTH_NAMES_LONG = ["January", "February", "March", "April", "May", "June"
 
 // export default KmDashboard;
 const mapStateToProps = state => ({
-  kmOnBoarding:state.signUpReducer.kmOnBoarding
+  kmOnBoarding:state.signUp.kmOnBoarding,
+  closeOnBoardingModalPermanently:state.signUp.closeOnBoardingModalPermanently
 })
 export default connect(mapStateToProps,null)(KmDashboard) 

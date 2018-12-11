@@ -16,6 +16,7 @@ import {COOKIES, USER_STATUS} from '../../../utils/Constant';
 import kmloadinganimation from '../Register/km-loading-animation.svg';
 import { connect } from 'react-redux'
 import * as Actions from '../../../actions/loginAction'
+import * as signUpActions from '../../../actions/signupAction'
 import { persistor} from '../../../store/store';
 import {KommunicateLogo, GoogleLogin}from '../../Faq/LizSVG'
 import { ApplozicLogo, ShowPasswordIcon, HidePasswordIcon, ErrorIcon, BackButton, ConfirmationTick } from '../../../assets/svg/svgs';
@@ -76,6 +77,9 @@ class Login extends Component {
 	}
 	
 	componentWillMount() {
+    this.props.logInStatus(false);
+    this.props.onBoardingStatus(false);
+    persistor.purge()
 		const search = this.props.location.search;
 		let referer = CommonUtils.getUrlParameter(search, 'referrer');
 		if(referer) {
@@ -588,7 +592,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
-	}
+    logInStatus: payload => dispatch(Actions.updateLogInStatus(payload)),
+    onBoardingStatus: payload => dispatch(signUpActions.updateOnBoardingStatus(payload))
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

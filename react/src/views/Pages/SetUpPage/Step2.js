@@ -187,6 +187,7 @@ hideAllErrors (){
     window.location.assign("/dashboard");
     localStorage.setItem("KM_ONBOARDING","true");
     this.props.updateStatus(true);
+    this.props.updateModalStatus(false);
   }
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -357,7 +358,8 @@ hideAllErrors (){
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateStatus: payload => dispatch(Actions.updateOnBoardingStatus(payload))
+    updateStatus: payload => dispatch(Actions.updateOnBoardingStatus(payload)),
+    updateModalStatus: payload => dispatch(Actions.updateOnBoardingModalStatus(payload))
   }
 }
 export default connect(null, mapDispatchToProps)(Step2)
