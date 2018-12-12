@@ -61,21 +61,17 @@ $applozic.extend(true,Kommunicate,{
             "skipRouting": params.skipRouting
         }
         Kommunicate.client.createConversation(conversationDetail, callback);
-        KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
     },
     openConversationList: function () {
-        KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
         window.$applozic.fn.applozic('loadTab', '');
         KommunicateUI.showChat();
         KommunicateUI.hideFaq();
     },
     openConversation: function (groupId) {
-        KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
         window.$applozic.fn.applozic('loadGroupTab', groupId);
         KommunicateUI.hideFaq();
     },
     openDirectConversation: function (userId) {
-        KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
         window.$applozic.fn.applozic('loadTab', userId);
         KommunicateUI.showChat(); 
         KommunicateUI.hideFaq();
@@ -142,7 +138,6 @@ $applozic.extend(true,Kommunicate,{
                 }else if(result.status=='success'){
                  // group exist with clientGroupId
                  var groupId = result.data.id;
-                 KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
                  $applozic.fn.applozic('loadGroupTab',groupId);
                  return callback(null, result);
                 }
@@ -175,11 +170,9 @@ $applozic.extend(true,Kommunicate,{
         groupDetail.callback = function (response) {
             if(response.data.groups.length > 0){
               console.log("already have a group");
-              KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
               Kommunicate.openConversation(response.data.groups[0].id);
             }else{
               console.log("new user");
-            KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
             Kommunicate.startConversation(conversationDetail, function (response) {
             });
             }
@@ -226,7 +219,6 @@ $applozic.extend(true,Kommunicate,{
         localStorage.clear();
     },
     launchConversation: function () {
-        KOMMUNICATE_VERSION === "v2" && Kommunicate.setDefaultIframeConfigForOpenChat();
         window.$applozic.fn.applozic("mckLaunchSideboxChat");
     },
     triggerEvent: function (event, options) {
@@ -402,10 +394,10 @@ $applozic.extend(true,Kommunicate,{
         return KommunicateUtils.getSettings(setting);
     },
     setDefaultIframeConfigForOpenChat: function () {
-        var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-        getKommunicateIframe.style.width="390px";
-        getKommunicateIframe.style.height="600px";
-        getKommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        kommunicateIframe.style.width="390px";
+        kommunicateIframe.style.height="600px";
+        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
     customizeWidgetCss : function (classSettings) {
         // Create custom classes, compatible for creating multiple classes in one function call.

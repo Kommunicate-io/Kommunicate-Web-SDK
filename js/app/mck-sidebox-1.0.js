@@ -1382,8 +1382,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         document.getElementById("km-modal-close").addEventListener("click", function(event){
                           event.preventDefault();
                           if (KOMMUNICATE_VERSION === "v2"){
-                            var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                            getKommunicateIframe.style.boxShadow="none";
+                            var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                            kommunicateIframe.style.boxShadow="none";
                           }
                           kmChatLoginModal.style.display='none';
                           kmAnonymousChatLauncher.classList.remove('n-vis');
@@ -1396,8 +1396,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                             kmAnonymousChatLauncher.style.right='10px';
                             kmAnonymousChatLauncher.style.bottom='10px';
                             kmChatLoginModal.classList.add("km-iframe-sidebox-border-radius");
-                            var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                            getKommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
+                            var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                            kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                           }
                           kmChatLoginModal.style.display='block';
                           kmAnonymousChatLauncher.classList.remove('vis');
@@ -1634,20 +1634,20 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                 document.getElementById("mck-sidebox").classList.add("km-iframe-sidebox-border-radius");
 
                 // handle click events for openning and closing of sidebox
-                var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                var getKommunicateIframeDocument = getKommunicateIframe.contentDocument;
-                var chatbox = getKommunicateIframeDocument.getElementById("mck-sidebox-launcher");
+                var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                var kommunicateIframeDocument = kommunicateIframe.contentDocument;
+                var chatbox = kommunicateIframeDocument.getElementById("mck-sidebox-launcher");
                 chatbox.addEventListener("click", function(){
-                    getKommunicateIframe.style.width="390px";
-                    getKommunicateIframe.style.height="600px";
-                    getKommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+                    kommunicateIframe.style.width="390px";
+                    kommunicateIframe.style.height="600px";
+                    kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
                 });
-                var closeButton = getKommunicateIframeDocument.getElementById("km-chat-widget-close-button");
+                var closeButton = kommunicateIframeDocument.getElementById("km-chat-widget-close-button");
                 closeButton.addEventListener("click", function(){
-                    getKommunicateIframe.style.width="75px";
-                    getKommunicateIframe.style.height="75px";
-                    getKommunicateIframe.style.boxShadow="none";
-                    getKommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
+                    kommunicateIframe.style.width="75px";
+                    kommunicateIframe.style.height="75px";
+                    kommunicateIframe.style.boxShadow="none";
+                    kommunicateIframe.classList.remove('kommunicate-iframe-enable-media-query');
                 });
 
                 var iframeMedia = parent.window.matchMedia("(max-width: 600px)");
@@ -2275,8 +2275,8 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                         return;
                     }
                     $applozic.fn.applozic("mckLaunchSideboxChat");
-                    // var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                    // getKommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
+                    // var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    // kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
                     clearTimeout(MCK_TRIGGER_MSG_NOTIFICATION_PARAM);
 
                 });
@@ -4048,11 +4048,17 @@ var MCK_TRIGGER_MSG_NOTIFICATION_PARAM;
                      }
                  }
              };
-            _this.loadTab = function (params, callback) {
+             
+            _this.handleLoadTab = function () {
                 if (KOMMUNICATE_VERSION === "v2") {
-                    var getKommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
-                    getKommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
+                    var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+                    kommunicateIframe.style.boxShadow="0 1.5rem 2rem rgba(0,0,0,.3)";
+                    Kommunicate.setDefaultIframeConfigForOpenChat();
                 };
+            };
+
+            _this.loadTab = function (params, callback) {
+                _this.handleLoadTab();
                 var currTabId = $mck_msg_inner.data('mck-id');
                 if (currTabId) {
                     if ($mck_text_box.html().length > 1 || $mck_file_box.hasClass('vis')) {
