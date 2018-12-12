@@ -59,3 +59,35 @@ Dialogflow will send this data in the configured webhook in `originalDetectInten
 When a conversation routed through bot it will trigger an `WELCOME` event to Dialogflow agent. You can enable default welcome intent in Dialogflow or create an custom event `WELCOME`. 
 This message is different from the Welcome message you set in Kommunicate dashboard. If 
 welcome message for bot and agent(confugured from dashboard) both are enabled, both welcome message will be sent to the users. We recommend to disable the welcome message from dashboard in this case.  
+
+## Send attachments to bot
+
+When user attach a file or share a location, Kommunicate dispatch an event `KOMMUNICATE_MEDIA_EVENT` to your bot along with the attached file information. If you have enabled the fulfillment, you will receive the following data in `originalDetectIntentRequest` parameter.  
+This is sample JSON for file attachment:
+```js
+{
+	"attachments": [{
+		"payload": {
+			"size": "size in bytes",
+			"name": "name of the file",
+			"url": "URL of the file"
+		},
+		"type": "image/png" // media type (in form of type/subtype) . Use the regex 'type/*' to get the generic type
+	}]
+}
+
+```
+Sample JSON for location messages 
+
+```js
+{
+	"attachments": [{
+		"payload": {
+			"lon": "latitude",
+			"lat": "Longitude"
+		},
+		"type": "location"
+	}]
+}
+
+```
