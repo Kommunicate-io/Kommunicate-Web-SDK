@@ -202,7 +202,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .km-form-group-container {
-	width: 92%;
+	width: 100%;
 }
 
 .km-input-width {

@@ -2,6 +2,11 @@
 /**
  * all methods exposed to  users. 
  */
+
+// above code will expose below function from iframe window to browser window.
+var KOMMUNICATE_VERSION = window.kommunicate.version;
+KOMMUNICATE_VERSION === "v2" && (parent.Kommunicate = window.Kommunicate);
+
 $applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
        return KM_PLUGIN_SETTINGS.kommunicateApiUrl;
@@ -388,6 +393,19 @@ $applozic.extend(true,Kommunicate,{
     },
     getSettings:function(setting){
         return KommunicateUtils.getSettings(setting);
-    }
+    },
+    setDefaultIframeConfigForOpenChat: function () {
+        var kommunicateIframe = parent.document.getElementById("kommunicate-widget-iframe");
+        kommunicateIframe.style.width="390px";
+        kommunicateIframe.style.height="600px";
+        kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
+    },
 
+    // add css to style component in window
+    customizeWidgetCss : function (classSettings) {
+            var style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = classSettings;
+            document.getElementsByTagName('head')[0].appendChild(style);
+    }
 });

@@ -53,6 +53,7 @@ function getEnvironmentId() {
     "passwordResetUrl": kommunicateBaseUrl + url.kommunicateApi.PASSWORD_RESET,
     "passwordUpdateUrl": kommunicateBaseUrl + url.kommunicateApi.PASSWORD_UPDATE,
     "pluginUrl": kommunicateBaseUrl + url.kommunicateApi.PLUGIN_URL,
+    "pluginUrlV2": kommunicateBaseUrl + url.kommunicateApi.PLUGIN_URL_V2,
     "createUser": kommunicateBaseUrl + url.kommunicateApi.CREATE_USER,
     "logo": kommunicateBaseUrl + url.kommunicateApi.LOGO,
     "activateAccountUrl": config.kommunicateDashboardUrl + url.dashboard.ACTIVATE_ACCOUNT,

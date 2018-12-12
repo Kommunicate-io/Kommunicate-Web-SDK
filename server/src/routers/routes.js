@@ -105,6 +105,7 @@ home.get('/',function(req,res){
   res.status(200).json({"message":"Welcome to kommunicate"});
 });
 home.get('/kommunicate.app',webpluginController.getPlugin);
+home.get('/v2/kommunicate.app',webpluginController.iframePlugin);
 home.get('/seed/liz', seedLiz.seedLiz)
 
 // requests to user router
