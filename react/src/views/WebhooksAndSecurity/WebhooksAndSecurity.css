@@ -75,3 +75,8 @@
 .webhooks-action-buttons-container button:last-child, .security-action-buttons-container button:last-child {
     margin-left: 25px;
 }
+
+.webhooks-and-security-div .lock-badge-container {
+    margin-left: 15px;
+    vertical-align: middle;
+  }
