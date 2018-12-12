@@ -523,3 +523,39 @@ exports.defaultPluginSettings=(req, res)=>{
     return res.status(500).json({code: "ERROR", message: "error" });
   })
 }
+
+exports.updateApplozicUser = (req, res) => {
+  let userId = req.params.userId
+  let apiKey = req.headers['api-key'];
+  let userInfo = Object.assign({ userId: userId }, req.body);
+  return userService.updateApplozicUser(userInfo, apiKey).then(data => {
+    return res.status(200).json({
+      code: "SUCCESS",
+      response: data
+    });
+  }).catch(err => {
+    let code, message, httpCode;
+    switch (err.code) {
+      case "NOT_FOUND":
+        httpCode = 404;
+        message = "user not exists";
+        code = err.code;
+        break;
+      case 401:
+        httpCode = 401;
+        message = "invalid API key";
+        code = "UNAUTHORIZED";
+        break;
+      default:
+        httpCode = 500;
+        message = "Internal server error";
+        code = "ERROR";
+        break;
+
+    }
+    return res.status(httpCode).json({
+      code: code,
+      response: message
+    });
+  });
+};
