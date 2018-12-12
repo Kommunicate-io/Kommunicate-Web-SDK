@@ -30,9 +30,7 @@ export default {
         'analytics' : {
             'enable': false
         }
-    },
-    'integryEnabled':true,
-    'enableDevTools':true
+    }
 },
 
 "test" : {
@@ -67,9 +65,7 @@ export default {
         'analytics' : {
             'enable': false
         }
-    },
-    'integryEnabled':true,
-    'enableDevTools':true
+    }
 },
     
 "staging" : {
@@ -104,9 +100,7 @@ export default {
         'analytics' : {
             'enable': false
         }
-    },
-    'integryEnabled':true,
-    'enableDevTools':true
+    }
 },
     
  "prod" :{
@@ -142,9 +136,7 @@ export default {
         'analytics' : {
             'enable': true
         }
-    },
-    'integryEnabled':false,
-    'enableDevTools':false
+    }
 },
     
 "prod_ca" :{
@@ -179,9 +171,7 @@ export default {
         'enable': true
     }
        
-  },
-  'integryEnabled':false,
-  'enableDevTools':false
+  }
     
 },
  
@@ -216,9 +206,7 @@ export default {
         'enable': true
     }
        
-   },
-   'integryEnabled':false,
-   'enableDevTools':false
+   }
         
  },
  "commonResources":{
@@ -244,4 +232,3 @@ export default {
  }
     
 }
-
