@@ -41,7 +41,7 @@
        },
        "cache": {
          "hazelCache": {
-           "url": "172.31.3.41",
+           "url": "172.31.50.14",
            "port": "5701",
            "user": "dev",
            "password": "dev"
