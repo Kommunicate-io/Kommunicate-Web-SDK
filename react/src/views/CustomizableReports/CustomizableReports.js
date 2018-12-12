@@ -218,7 +218,7 @@ class CustomizableReports extends Component {
                     <RequirementForm hidden={this.state.isRequirementSubmitted}>
                         <ModalHeading>Custom reports requirement</ModalHeading>
                         <Hr />
-                        <ModalDescription>Please explain your reports requirement. You may ask for multiple requirements. Include as much details as tou can and out team will go through them.</ModalDescription>
+                        <ModalDescription>Please explain your reports requirement. Include as much details as you can and our team will go through them.</ModalDescription>
                         
                         <TextArea rows="5" placeholder="Example: I want a cumulative and individual average response time for all my agents" value={this.state.textAreaValue} onChange={(e) => {
                             this.setState({

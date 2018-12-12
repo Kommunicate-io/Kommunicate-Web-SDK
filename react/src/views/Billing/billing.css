@@ -259,6 +259,11 @@
     text-align: center;
     color: #4a4a4a;
 }
+.launch .pricing-value h2 sup, .startup .pricing-value h2 sup {
+    font-size: 18px;
+    top: -14px;
+    font-weight: normal;
+}
 .enterprise .pricing-value h2 {
     font-size: 30px;
     font-weight: 600;
@@ -388,7 +393,7 @@
 
 .plan-breif-container span {
     border-radius: 2px;
-    background-color: rgba(244, 211, 128, 0.55);
+    background-color: #cce7f8;
     font-size: 13px;
     font-weight: 300;
     font-style: normal;
@@ -642,13 +647,7 @@
 }
 
 
-.seat-selection-modal {
-
-}
-.seat-selection-modal--header {
-
-}
-.seat-selection-modal--header h2 {
+.seat-selection-modal--header h2, .buy-free-plan-modal--header h2 {
     font-size: 20px;
     font-weight: 500;
     font-style: normal;
@@ -656,7 +655,7 @@
     letter-spacing: 0.3px;
     color: #6c6a6a;
 }
-.seat-selection-modal--header > hr {
+.seat-selection-modal--header > hr, .buy-free-plan-modal--header > hr {
     margin: 15px -20px;
 }
 .seat-selector-container {
@@ -732,19 +731,33 @@
     margin: 15px 0px 35px; 
 }
 
-.seat-selection-modal--footer {
+.seat-selection-modal--footer, .buy-free-plan-modal--footer  {
     margin-top: 20px;
 }
-.seat-selection-modal--footer button {
+.seat-selection-modal--footer button, .buy-free-plan-modal--footer button  {
     margin-left: 20px;
 }
 
+.buy-free-plan-modal--header h2 span {
+    color: #aeaeae;
+}
+
+.buy-free-plan-modal--body p {
+    font-size: 15px;
+    line-height: 1.27;
+    letter-spacing: 0.6px;
+    color: #5a5b5c;
+}
+.buy-free-plan-modal--body p span {
+    font-weight: 500;
+    color: #323334;
+}
 
 /* Subscription-success-warning desgin */
 .subscription-complete-container {
     padding-bottom: 20px;
     border-bottom: 1px solid #e9e9e9;
-    margin-bottom: 35px;
+    margin-bottom: 0px;
 }
 .subscription-current-plan-container, .subscription-success-checkmark, .subscription-success-purchased-plan-name, .subscription-success-purchased-plan-billing, .subscription-current-plan-warning-container {
     display: flex;

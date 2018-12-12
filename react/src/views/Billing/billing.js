@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import { getConfig } from '../.../../../config/config.js';
 import { patchCustomerInfo, getCustomerInfo, getUsersByType, getSubscriptionDetail, getCustomerByApplicationId, updateKommunicateCustomerSubscription } from '../../utils/kommunicateClient'
@@ -61,8 +61,9 @@ class Billing extends Component {
             nextBillingDate: 0,
             totalPlanAmount: 0,
             disableSelectedPlanButton: false,
-            infoModalIsOpen: false,
-            clickedPlan:  'startup'
+            clickedPlan:  'startup',
+            currentModal: "",
+            openCurrentModal: false
         };
         this.showHideFeatures = this.showHideFeatures.bind(this);
         //this.subscriptionPlanStatus = this.subscriptionPlanStatus.bind(this);
@@ -75,12 +76,9 @@ class Billing extends Component {
         this.onCloseSubscribedSuccess = this.onCloseSubscribedSuccess.bind(this);
         this.buyThisPlanClick = this.buyThisPlanClick.bind(this);
         this.seatSelectionModal = this.seatSelectionModal.bind(this);
-        this.closeSeatSelectionModal = this.closeSeatSelectionModal.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.getPlanDetails = this.getPlanDetails.bind(this);
         this.keyPress = this.keyPress.bind(this);
-        this.openInfoModal = this.openInfoModal.bind(this);
-        this.closeInfoModal = this.closeInfoModal.bind(this);
         this.openChargebeeModal = this.openChargebeeModal.bind(this);
     };
 
@@ -127,6 +125,12 @@ class Billing extends Component {
     onOpenModal = () => {
         this.setState({ modalIsOpen: true });
     };
+
+    closeBuyFreePlanModal = () => {
+        this.setState({
+            buyFreePlanModalIsOpen: false
+        });
+    }
 
     afterOpenModal = () => {
         this.chargebeeInit();
@@ -177,6 +181,11 @@ class Billing extends Component {
                 }
             }
         } 
+
+        if(!CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan()) {
+            document.querySelector(".startup-plan-btn").innerHTML = "CURRENT PLAN";
+        }
+
     }
 
     showHideFeatures(e) {
@@ -372,28 +381,21 @@ class Billing extends Component {
 
 
     seatSelectionModal(e) {
-        var selectedPlanButton = e.target.getAttribute("data-choose-plan");
+        var selectedPlanButton = e.getAttribute("data-choose-plan");
         acEventTrigger("ac-choose-plan");
         if(selectedPlanButton.includes("enterprise")) {
             this.setState({
                 planHeading: "Enterprise",
-                seatSelectionModalIsOpen: true,
                 modalIsOpen: false
             }, () => this.chargebeeInit());
         } else {
             this.setState({
                 planHeading: "Growth",
-                seatSelectionModalIsOpen: true,
                 modalIsOpen: false
             }, () => this.chargebeeInit());
         }        
     }
 
-    closeSeatSelectionModal() {
-        this.setState({
-            seatSelectionModalIsOpen: false,
-        });
-    }
 
     handleChange(e) {
         this.setState({
@@ -414,18 +416,6 @@ class Billing extends Component {
     
         if (!(a.indexOf(k,a)>=0))
             e.preventDefault();
-    }
-
-    openInfoModal(e) {
-        this.setState({
-            clickedPlan: e.target.getAttribute("data-cb-plan-id"),
-            infoModalIsOpen: true,
-        })
-    }
-    closeInfoModal() {
-        this.setState({
-            infoModalIsOpen: false
-        })
     }
 
     getAgents() {
@@ -483,7 +473,26 @@ class Billing extends Component {
         } else {
             (!this.state.toggleSlider) ? document.getElementById("checkout-monthly").click() : document.getElementById("checkout-yearly").click();
         }
-        this.closeSeatSelectionModal();
+        this.openCurrentModal("");
+    }
+
+    openCurrentModal = (modal, e) => {
+        var event = e && e.target;
+        this.setState({
+            openCurrentModal: true,
+            currentModal: modal
+        });
+		if(modal === "seatSelection") {
+		     this.seatSelectionModal(event);
+		} else if(modal === "infoModal") {
+            this.setState({
+                clickedPlan: event.getAttribute("data-cb-plan-id"),
+            });
+        } else if(modal === "") {
+            this.setState({
+                openCurrentModal: false
+            });
+        }
     }
 
     render() {
@@ -509,6 +518,89 @@ class Billing extends Component {
                 
             }
         }
+
+        const SeatSelectionModalContent = (
+            <Fragment>
+                <div className="seat-selection-modal--header">
+                    <h2>{this.state.planHeading} plan</h2>
+                    <hr/>
+                </div>
+                        
+                <div className="seat-selection-modal--body">
+                    <div className="seat-selector-container">
+                        <div className="seat-selector--text">
+                            <p>Number of seats:</p>
+                        </div>
+                        <div className="seat-selector--input">
+                            <input maxLength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
+                            <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
+                        </div>
+                    </div>
+                    <hr/>
+
+
+                    {/* <!-- Pricing Toggle --> */}
+                    <div className="pricing-toggle text-left">
+                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly billing</label>
+                        <div className="toggle n-vis">
+                            <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
+                            <b className="b switch"></b>
+                        </div>
+                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing</label>
+                    </div>
+
+
+                    <div className="seat-selector--amount-container">
+                        <div className="amount-payable-container flexi">
+                            <p>Amount payable now:</p>
+                            { (this.state.planHeading.includes("Enterprise")) ? (enterprisePlanAmount) : (growthPlanAmount)
+                            }
+                        </div>
+                        <div className="renewal-date-container flexi">
+                            <p>Auto renewal date:</p>
+                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="seat-selection-modal--footer text-right">
+                    <button className="km-button km-button--secondary" onClick={() => this.openCurrentModal("")}>Cancel</button>
+                    
+                    <button className="km-button km-button--primary" onClick={this.openChargebeeModal}>Continue</button>                                   
+                    
+                </div>
+            </Fragment>
+        );
+
+        const InfoModalContent = (
+            <Fragment>
+                <div className="info-detail-container">
+                    <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
+                    <br/>
+                    <p>If you want to downgrade your plan to the <strong><span>{SUBSCRIPTION_PLANS[this.state.clickedPlan].name}</span></strong> plan, just leave us a mail <br/> at support@kommunicate.io or start a conversation from the chat widget, and <br/> we will get back to you.</p>
+                </div>
+            </Fragment>
+        );
+
+        const BuyFreePlanModalContent = (
+            <Fragment>
+                <div className="buy-free-plan-modal--header">
+                    <h2>Free plan subscription - <span>No credit card required</span></h2>
+                    <hr/>
+                </div>
+                        
+                <div className="buy-free-plan-modal--body">
+                    <p>You are about to subscribe to the <span>FREE FOREVER plan.</span>
+                    <br/>
+                    You will have access to basic features and are allowed a maximum of 2 agents.</p>
+                    <p><span>Note: </span>You'll now be taken through our payment checkout flow, but we won’t be<br /> charging you </p>
+                </div>
+                <div className="buy-free-plan-modal--footer text-right">
+                    <button className="km-button km-button--secondary" onClick={() => this.openCurrentModal("")}>Cancel</button>
+                    
+                    <button className="checkout chargebee n-vis km-button km-button--primary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup" data-choose-plan="startup">Subscribe to free plan</button>                                  
+                </div>
+            </Fragment>
+        );
 
         return (
             <div className="animated fadeIn billings-section">
@@ -604,7 +696,7 @@ class Billing extends Component {
                                 </div>) : ""
                                 }
 
-                                <h2 className="plan-agent-details upgrade-text">
+                                <h2 className="plan-agent-details upgrade-text n-vis">
                                 Upgrade to scale your customer support
                                 </h2>
 
@@ -614,74 +706,10 @@ class Billing extends Component {
                                 </div>
                             </div>
 
-
-                            {/* Seat Selection Modal */}
-                            <Modal isOpen={this.state.seatSelectionModalIsOpen} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeSeatSelectionModal} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
-                                <div className="seat-selection-modal--header">
-                                    <h2>{this.state.planHeading} plan</h2>
-                                    <hr/>
-                                </div>
-                                        
-                                <div className="seat-selection-modal--body">
-                                    <div className="seat-selector-container">
-                                        <div className="seat-selector--text">
-                                            <p>Number of seats:</p>
-                                        </div>
-                                        <div className="seat-selector--input">
-                                            <input maxLength="4" min="1" max="10000" type="number" value={this.state.seatsBillable} onChange={this.handleChange} onKeyPress={this.keyPress}/>
-                                            <p>You have {this.state.kmActiveUsers} existing agents. You may still buy lesser number of seats and delete the extra agents later.</p>
-                                        </div>
-                                    </div>
-                                    <hr/>
-
-
-                                    {/* <!-- Pricing Toggle --> */}
-                                    <div className="pricing-toggle text-left">
-                                        <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly billing</label>
-                                        <div className="toggle n-vis">
-                                            <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
-                                            <b className="b switch"></b>
-                                        </div>
-                                        <label className={this.state.toggleSlider ? "toggler toggler--is-active" : "toggler"} id="filt-yearly" onClick={this.handleToggleSliderChange}>Yearly billing</label>
-                                    </div>
-
-
-                                    <div className="seat-selector--amount-container">
-                                        <div className="amount-payable-container flexi">
-                                            <p>Amount payable now:</p>
-                                            { (this.state.planHeading.includes("Enterprise")) ? (enterprisePlanAmount) : (growthPlanAmount)
-                                            }
-                                        </div>
-                                        <div className="renewal-date-container flexi">
-                                            <p>Auto renewal date:</p>
-                                            <p>{(!this.state.toggleSlider) ? CommonUtils.countDaysForward(30, "days") : CommonUtils.countDaysForward(365, "days")}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="seat-selection-modal--footer text-right">
-                                    <button className="km-button km-button--secondary" onClick={this.closeSeatSelectionModal}>Cancel</button>
-                                    
-                                    <button className="km-button km-button--primary" onClick={this.openChargebeeModal}>Continue</button>                                   
-                                    
-                                </div>
-                                <CloseButton onClick={this.closeSeatSelectionModal}/>
-                            </Modal>
-
-                            <Modal isOpen={this.state.infoModalIsOpen} onRequestClose={this.closeInfoModal} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false}>
-
-                                <div className="info-detail-container">
-                                    <p>You are currently in <strong><span>{SUBSCRIPTION_PLANS[this.state.subscription].name}</span> Plan.</strong> Your next billing date is on <strong>{CommonUtils.countDaysForward(this.state.nextBillingDate, "timestamp")}</strong></p>
-                                    <br/>
-                                    <p>If you want to downgrade your plan to the <strong><span>{SUBSCRIPTION_PLANS[this.state.clickedPlan].name}</span></strong> plan, just leave us a mail <br/> at support@kommunicate.io or start a conversation from the chat widget, and <br/> we will get back to you.</p>
-                                </div>
-
-                                <CloseButton onClick={this.closeInfoModal}/>
-                            </Modal>
-
                                 <div className="row text-center" style={{padding:"13px 13px 13px 0px",margin:"0px"}}>
 
                                     {/* <!-- Pricing Toggle --> */}
-                                    <div className="pricing-toggle text-left">
+                                    <div className="pricing-toggle text-center">
                                         <label className={this.state.toggleSlider ? "toggler" : "toggler toggler--is-active"} id="filt-monthly" onClick={this.handleToggleSliderChange}>Monthly</label>
                                         <div className="toggle n-vis">
                                             <input type="checkbox" id="switcher" className="check" checked={this.state.toggleSlider} onChange={this.handleToggleSliderChange} />
@@ -695,31 +723,29 @@ class Billing extends Component {
                                             <div className="pricing-table-container startup">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
-                                                        <span>Basic live chat</span>
+                                                        <span>Basic features</span>
                                                     </div>
                                                     <h2 className="pricing-table-plan-title">Free</h2>
-                                                    <h4 className="pricing-table-plan-subtitle" style={{visibility: "hidden"}}>Essential Features</h4>
+                                                    <h4 className="pricing-table-plan-subtitle">no credit card required</h4>
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div>
-                                                                <h2> $0 </h2>
-                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">up to 2 agents</p>
-                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                                <h2> 0 </h2>
+                                                                <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">free forever</p>
+                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>
 
-                                                    <p className="plan-agent-details n-vis">Up to 2 agents</p>
+                                                    <p className="plan-agent-details vis">Up to 2 agents</p>
 
                                                 </div>
                                                 <div className="pricing-table-body">
                                                     
                                                     { (this.state.subscription !== "startup") ?
-                                                         <button className=" chargebee km-button km-button--secondary" data-cb-plan-id="startup" onClick={this.openInfoModal} data-choose-plan="startup">
+                                                         <button className=" chargebee km-button km-button--secondary" data-cb-plan-id="startup" onClick={(event) => {this.openCurrentModal("infoModal", event)}} data-choose-plan="startup">
                                                             Choose Plan
-                                                        </button> : <button className="checkout chargebee n-vis km-button km-button--secondary" data-subscription="startup" data-cb-type="checkout" data-cb-plan-id="startup" data-choose-plan="startup">
-                                                            Choose Plan
-                                                        </button>
+                                                        </button> : <button className="km-button km-button--secondary startup-plan-btn" onClick={(event) => {this.openCurrentModal("buyFreePlan", event)}}>Choose Plan</button>
                                                     }
                                                 </div>
                                                 <div className="pricing-table-footer">
@@ -746,37 +772,37 @@ class Billing extends Component {
                                             <div className="pricing-table-container launch">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
-                                                        <span>Advanced support features</span>
+                                                        <span>Advanced features</span>
                                                     </div>
                                                     <h2 className="pricing-table-plan-title">Growth</h2>
-                                                    <h4 className="pricing-table-plan-subtitle">most preferred</h4>
+                                                    <h4 className="pricing-table-plan-subtitle">most popular</h4>
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div id="growth-pricing-monthly" className="a hidee" hidden={this.state.pricingMonthlyHidden}>
-                                                                <h2> $10</h2>
+                                                                <h2><sup>$</sup>10</h2>
                                                                 <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
-                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                             <div id="growth-pricing-yearly" className="a " hidden={this.state.pricingYearlyHidden}>
-                                                                <h2>$8</h2>
+                                                                <h2><sup>$</sup>8</h2>
                                                                 <p style={{visibility:"visible",marginTop:"30px"}} className="per-month-span">per agent/mo</p>
-                                                                <p style={{visibility:"visible",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                                <p style={{visibility:"visible",marginTop:"5px",marginBottom:"8px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details n-vis">Unlimited agents</p>
+                                                    <p className="plan-agent-details vis">Unlimited agents</p>
                                                 </div>
                                                 <div className="pricing-table-body">
                                                 {
                                                     (this.state.subscription.includes("enterprise")) ? <div>
-                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" data-choose-plan="per_agent_monthly" onClick={this.openInfoModal}>
+                                                        <button  hidden={this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_monthly" data-choose-plan="per_agent_monthly" onClick={(event) => {this.openCurrentModal("infoModal", event)}}>
                                                             Choose Plan
                                                         </button>
-                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" data-choose-plan="per_agent_yearly" onClick={this.openInfoModal}>
+                                                        <button  hidden={!this.state.pricingMonthlyHidden} className="km-button km-button--primary" data-cb-plan-id="per_agent_yearly" data-choose-plan="per_agent_yearly" onClick={(event) => {this.openCurrentModal("infoModal", event)}}>
                                                             Choose Plan
                                                         </button>
                                                     </div> : <div>
-                                                        <button className="km-button km-button--primary" onClick={this.seatSelectionModal} data-choose-plan="per_agent_monthly">Choose Plan</button>
+                                                        <button className="km-button km-button--primary" onClick={(event) => {this.openCurrentModal("seatSelection", event)}} data-choose-plan="per_agent_monthly">Choose Plan</button>
                                                     </div>
                                                     
                                                 }
@@ -817,23 +843,23 @@ class Billing extends Component {
                                             <div className="pricing-table-container enterprise">
                                                 <div className="pricing-table-header">
                                                     <div className="plan-breif-container">
-                                                        <span>Full-fledged support solution</span>
+                                                        <span>Advanced features</span>
                                                     </div>
                                                     <h2 className="pricing-table-plan-title">Enterprise</h2>
-                                                    <h4 className="pricing-table-plan-subtitle">for big organisations</h4>
+                                                    <h4 className="pricing-table-plan-subtitle">save big</h4>
                                                     <div className="price-image-container">
                                                         <div className="pricing-value">
                                                             <div>
                                                                 <h2> Custom </h2>
-                                                                <p style={{visibility:"hidden",marginTop:"30px"}} className="per-month-span">free forever</p>
-                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"30px",color: "#9b979b"}}>(Billed Annually)</p>
+                                                                <p style={{visibility:"hidden",marginTop:"0px"}} className="per-month-span">free forever</p>
+                                                                <p style={{visibility:"hidden",marginTop:"5px",marginBottom:"5px",color: "#9b979b"}}>(Billed Annually)</p>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <p className="plan-agent-details n-vis">Unlimited agents</p>
+                                                    <p className="plan-agent-details vis">Unlimited agents</p>
                                                 </div>
                                                 <div className="pricing-table-body">
-                                                    <button className="km-button km-button--secondary" onClick={this.seatSelectionModal} data-choose-plan="enterprise">Choose Plan</button>
+                                                    <button className="km-button km-button--secondary" onClick={(event) => {this.openCurrentModal("seatSelection", event)}} data-choose-plan="enterprise">Choose Plan</button>
                                                 </div>
                                                 <div className="pricing-table-footer">
                                                     <a href="#/" className="see-plan-details" style={{ marginBottom: '15px', display: 'block' }} onClick={this.showHideFeatures}>{this.state.showFeatures}</a>
@@ -897,6 +923,16 @@ class Billing extends Component {
                         </div>
                     </div>
                 </div>
+
+                <Modal isOpen={this.state.openCurrentModal} onAfterOpen={this.afterOpenModal} onRequestClose={() => this.openCurrentModal("")} style={stylesForSeatSelectionModal} shouldCloseOnOverlayClick={true} ariaHideApp={false} >
+                    
+                    {
+                        this.state.currentModal === "seatSelection" ? SeatSelectionModalContent : this.state.currentModal === "infoModal" ? InfoModalContent : this.state.currentModal === "buyFreePlan" ? BuyFreePlanModalContent : ""
+                    }
+
+                    <CloseButton onClick={() => this.openCurrentModal("")}/>
+                </Modal>
+
             </div>
         );
     }
