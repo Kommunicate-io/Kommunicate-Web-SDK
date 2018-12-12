@@ -2,9 +2,10 @@
 /**
  * all methods exposed to  users. 
  */
+
+// above code will expose below function from iframe window to browser window.
 var KOMMUNICATE_VERSION = window.kommunicate.version;
 KOMMUNICATE_VERSION === "v2" && (parent.Kommunicate = window.Kommunicate);
-// above code will expose below function from iframe window to browser window.
 
 $applozic.extend(true,Kommunicate,{
     getBaseUrl: function () {
@@ -399,13 +400,12 @@ $applozic.extend(true,Kommunicate,{
         kommunicateIframe.style.height="600px";
         kommunicateIframe.classList.add('kommunicate-iframe-enable-media-query');
     },
+
+    // add css to style component in window
     customizeWidgetCss : function (classSettings) {
-        // Create custom classes, compatible for creating multiple classes in one function call.
-        for (var i = 0; i < classSettings.length; i++) {
             var style = document.createElement('style');
             style.type = 'text/css';
-            style.innerHTML = classSettings[i];
+            style.innerHTML = classSettings;
             document.getElementsByTagName('head')[0].appendChild(style);
-        }
     }
 });
