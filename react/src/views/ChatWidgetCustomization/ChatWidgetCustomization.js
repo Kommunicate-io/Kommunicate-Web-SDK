@@ -59,7 +59,8 @@ class ChatWidgetCustomization extends Component{
     uploadImage = () =>{
         if( ( CommonUtils.isTrialPlan() && CommonUtils.isStartupPlan() ) ||  (!CommonUtils.isTrialPlan() && !CommonUtils.isStartupPlan()) ){
         let that=this;
-        document.getElementById("km-upload-chatwidget-image").addEventListener("change", function(){
+        document.getElementById("km-upload-chatwidget-image").addEventListener("change", function(e){
+            e.stopImmediatePropagation();
             that.setState({
             chatWidgetImagefileObject: document.getElementById("km-upload-chatwidget-image").files[0]
             });
