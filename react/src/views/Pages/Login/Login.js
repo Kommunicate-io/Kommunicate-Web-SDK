@@ -77,9 +77,6 @@ class Login extends Component {
 	}
 	
 	componentWillMount() {
-    this.props.setLogInStatus(false);
-    this.props.setOnBoardingStatus(false);
-    persistor.purge()
 		const search = this.props.location.search;
 		let referer = CommonUtils.getUrlParameter(search, 'referrer');
 		if(referer) {
@@ -585,15 +582,10 @@ class Login extends Component {
   	}
 }
 
-// export default Login;
-const mapStateToProps = state => ({
-  	userInfo:state.login.userInfo
-});
 const mapDispatchToProps = dispatch => {
   return {
     saveUserInfo: payload => dispatch(Actions.saveUserInfo(payload)),
-    setLogInStatus: payload => dispatch(Actions.updateLogInStatus(payload)),
-    setOnBoardingStatus: payload => dispatch(signUpActions.updateOnBoardingStatus(payload))
+	setLogInStatus: payload => dispatch(Actions.updateLogInStatus(payload))
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
