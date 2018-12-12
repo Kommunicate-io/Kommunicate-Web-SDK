@@ -7,6 +7,8 @@ import CommonUtils from '../../utils/CommonUtils';
 import { COOKIES, USER_STATUS } from '../../utils/Constant';
 import ReactTooltip from 'react-tooltip';
 import { persistor} from '../../store/store';
+import { connect } from 'react-redux'
+import * as Actions from '../../actions/index'
 
 class TurnOnAwayMode extends Component {
   render() {
@@ -23,7 +25,7 @@ class TurnOnOnlineMode extends Component {
   }
 }
 
-export default class ProfileImageName extends Component {
+class ProfileImageName extends Component {
 
     static defaultProps={
         displayName: '',
@@ -61,13 +63,17 @@ export default class ProfileImageName extends Component {
           window.$applozic.fn.applozic('logout');       
         }
       }
-      renderLogin = () => {
-        window.appHistory.push("/login");
-        // clear the data persisted in storage
-        persistor.purge()
+      clearCachedData = () => {
+        this.props.resetStore();
         sessionStorage.clear();
         localStorage.clear();
-        CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID); 
+        CommonUtils.deleteCookie(COOKIES.KM_LOGGEDIN_USER_ID);
+        persistor.purge()
+
+      }
+      renderLogin = () => {
+        this.clearCachedData();
+        window.appHistory.push("/login");
       }
       toggleStatus = (e) => {
         let userSession = CommonUtils.getUserSession();
@@ -214,3 +220,9 @@ export default class ProfileImageName extends Component {
         );
     }
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    resetStore: payload => dispatch(Actions.resetStore())
+  }
+}
+export default connect(null, mapDispatchToProps)(ProfileImageName);
